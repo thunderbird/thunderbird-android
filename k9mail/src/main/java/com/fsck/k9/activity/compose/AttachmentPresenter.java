@@ -124,15 +124,12 @@ public class AttachmentPresenter {
     public ArrayList<Attachment> createAttachmentList() {
         ArrayList<Attachment> result = new ArrayList<>();
         for (Attachment attachment : attachments.values()) {
-            if(account.getResizeEnabled() && !attachment.overrideDefault && Utility.isImage(context, attachment.uri)){
+            if(account.getImageResizeEnabled() && !attachment.overrideDefault && Utility.isImage(context, attachment.uri)){
                 float factor = 1.0f / account.getResizeFactor();
-                String newFilename = "";
-                long size = 0;
-                if(factor != 1.0f) {
-                    newFilename = Utility.getResizedImageFile(context, attachment.uri, factor);
+                String newFilename = Utility.getResizedImageFile(context, attachment.uri, factor);
+                long size;
+                if(factor != 1.0f && !newFilename.equals("")) {
                     size = (new File(newFilename)).length();
-                }
-                if(!newFilename.equals("")) {
                     Attachment newAttachment = attachment.createResizedCopy(newFilename, size);
                     result.add(newAttachment);
                 } else {
@@ -140,13 +137,10 @@ public class AttachmentPresenter {
                 }
             } else if(attachment.overrideDefault && Utility.isImage(context, attachment.uri)){
                 float factor = attachment.resizeFactor;
-                String newFilename = "";
-                long size = 0;
-                if(factor != 1.0f) {
-                    newFilename = Utility.getResizedImageFile(context, attachment.uri, factor);
+                String newFilename = Utility.getResizedImageFile(context, attachment.uri, factor);
+                long size;
+                if(factor != 1.0f && !newFilename.equals("")) {
                     size = (new File(newFilename)).length();
-                }
-                if(!newFilename.equals("")) {
                     Attachment newAttachment = attachment.createResizedCopy(newFilename, size);
                     result.add(newAttachment);
                 } else {
@@ -392,7 +386,6 @@ public class AttachmentPresenter {
     public void updateAttachmentsList(Attachment attachment){
         Attachment originalAttachment = attachments.get(attachment.uri);
         originalAttachment.updateResizeInfo(attachment.resizeFactor, attachment.overrideDefault);
-        Log.d("ATTACH","Yes : " + attachments.size());
     }
 
     public void onActivityResult(int resultCode, int requestCode, Intent data) {

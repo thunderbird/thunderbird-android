@@ -11,7 +11,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AudioTrack;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -526,12 +525,12 @@ public class AccountSettings extends K9PreferenceActivity {
 
         mResizeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_RESIZE_ENABLED);
         mResizeFactor = (ListPreference) findPreference(PREFERENCE_RESIZE_FACTOR);
-        mResizeEnabled.setChecked(mAccount.getResizeEnabled());
+        mResizeEnabled.setChecked(mAccount.getImageResizeEnabled());
 
         int resizeFactor = mAccount.getResizeFactor();
-        if(resizeFactor == 1){
+        if(resizeFactor == Account.RESIZE_FACTOR_ORIGINAL_SIZE_SELECTED){
             mResizeFactor.setValueIndex(0);
-        } else if(resizeFactor == 2){
+        } else if(resizeFactor == Account.RESIZE_FACTOR_HALF_SIZE_SELECTED){
             mResizeFactor.setValueIndex(1);
         } else {
             mResizeFactor.setValueIndex(2);
@@ -847,7 +846,7 @@ public class AccountSettings extends K9PreferenceActivity {
             //mAccount.setRemoteSearchFullText(mRemoteSearchFullText.isChecked());
         }
 
-        // Setting image attachment resize preferences.
+        // Global preferences for image attachment resizing
         mAccount.setResizeEnabled(mResizeEnabled.isChecked());
         mAccount.setResizeFactor(Integer.parseInt(mResizeFactor.getValue()));
 

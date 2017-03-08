@@ -29,6 +29,7 @@ import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.mail.Address;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 
 import java.io.File;
@@ -476,19 +477,22 @@ public class Utility {
         File cacheDir = context.getCacheDir();
         File tempAttachmentsDirectory = new File(cacheDir.getPath() + "/tempAttachments/");
         tempAttachmentsDirectory.mkdirs();
-        final File tempFile = new File(tempAttachmentsDirectory, String.valueOf(System.currentTimeMillis()) + ".tmp");
 
+        File tempFile = null;
         Bitmap bitmap = null;
         Bitmap resized = null;
+        FileOutputStream out = null;
         try {
+            tempFile = File.createTempFile("TempResizedAttachment", null, tempAttachmentsDirectory);
             bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
             resized = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * multiplier), (int) (bitmap.getHeight() * multiplier), true);
-            FileOutputStream out = new FileOutputStream(tempFile);
+            out = new FileOutputStream(tempFile);
             resized.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.close();
         } catch (IOException e) {
             e.printStackTrace();
             return "";
+        } finally {
+            IOUtils.closeQuietly(out);
         }
 
         return tempFile.getAbsolutePath();

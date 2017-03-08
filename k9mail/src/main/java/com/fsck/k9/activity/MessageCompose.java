@@ -29,6 +29,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import timber.log.Timber;
@@ -95,6 +96,7 @@ import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
@@ -1174,14 +1176,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 getString(R.string.account_settings_attachments_resize_factor_entry_half),
                 getString(R.string.account_settings_attachments_resize_factor_entry_one_fourth)};
 
-        int selectedChoice = -1;
+        int selectedChoice = Account.RESIZE_FACTOR_NONE_SELECTED;
         if(attachment.overrideDefault){
             if(attachment.resizeFactor == 1.0f){
-                selectedChoice = 0;
+                selectedChoice = Account.RESIZE_FACTOR_ORIGINAL_SIZE_SELECTED;
             } else if (attachment.resizeFactor == 0.5f){
-                selectedChoice = 1;
+                selectedChoice = Account.RESIZE_FACTOR_HALF_SIZE_SELECTED;
             } else {
-                selectedChoice = 2;
+                selectedChoice = Account.RESIZE_FACTOR_ONE_FOURTH_SIZE_SELECTED;
             }
         }
 
@@ -1191,15 +1193,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch(which) {
-                            case 0:
+                            case Account.RESIZE_FACTOR_ORIGINAL_SIZE_SELECTED:
                                 attachment.updateResizeInfo(1.0f, true);
                                 attachmentPresenter.updateAttachmentsList(attachment);
                                 break;
-                            case 1:
+                            case Account.RESIZE_FACTOR_HALF_SIZE_SELECTED:
                                 attachment.updateResizeInfo(0.5f, true);
                                 attachmentPresenter.updateAttachmentsList(attachment);
                                 break;
-                            case 2:
+                            case Account.RESIZE_FACTOR_ONE_FOURTH_SIZE_SELECTED:
                                 attachment.updateResizeInfo(0.25f, true);
                                 attachmentPresenter.updateAttachmentsList(attachment);
                                 break;

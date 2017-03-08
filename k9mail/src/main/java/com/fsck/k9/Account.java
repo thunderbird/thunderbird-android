@@ -118,6 +118,11 @@ public class Account implements BaseAccount, StoreConfig {
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
+    public static final int RESIZE_FACTOR_NONE_SELECTED = -1;
+    public static final int RESIZE_FACTOR_ORIGINAL_SIZE_SELECTED = 0;
+    public static final int RESIZE_FACTOR_HALF_SIZE_SELECTED = 1;
+    public static final int RESIZE_FACTOR_ONE_FOURTH_SIZE_SELECTED = 2;
+
     /*
      * http://developer.android.com/design/style/color.html
      * Note: Order does matter, it's the order in which they will be picked.
@@ -1628,7 +1633,7 @@ public class Account implements BaseAccount, StoreConfig {
         mRemoteSearchNumResults = (val >= 0 ? val : 0);
     }
 
-    public boolean getResizeEnabled() {
+    public boolean getImageResizeEnabled() {
         return mResizeEnabled;
     }
 
