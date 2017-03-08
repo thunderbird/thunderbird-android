@@ -148,4 +148,48 @@ public class MimeUtilityTest {
     public void isFormatFlowed_withTextHtmlFormatFlowed__shouldReturnFalse() throws Exception {
         assertFalse(MimeUtility.isFormatFlowed("text/html; format=flowed"));
     }
+
+    private boolean isFolded(String folded){
+        if (folded.length() <= 998)
+            return true;
+        String[] lines = folded.split("\r\n");
+        for (String s : lines){
+            if (s.length() > 998) {
+                return false;
+            }
+        }
+        for (int i = 1; i < lines.length; i++) {
+            if (lines[i].charAt(0) != ' ')
+                return false;
+        }
+        return true;
+    }
+
+    @Test
+    public void testFolding(){
+        String folded;
+        String unfolded;
+
+        String[] testFolding = new String[3];
+        testFolding[0] = "This is a subject to an email possibly a bit longer than it should be.";
+
+        //long to test folding
+        testFolding[1]="";
+        for (int i = 0; i < 500; i++)
+            testFolding[1]+="random String ";
+
+        //edge case
+        testFolding[2] ="";
+        for (int i = 0; i < 999; i++) {
+            testFolding[2]+="a";
+        }
+
+        for (String toTest : testFolding){
+            folded = MimeUtility.fold(toTest,0);
+            unfolded = MimeUtility.unfold(folded);
+            // Remove spaces to compare
+            assertEquals("folded then unfolded",toTest.replaceAll(" ",""),unfolded.replaceAll(" ",""));
+            assertTrue("Is not folded",isFolded(folded));
+        }
+    }
 }
