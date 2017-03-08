@@ -917,11 +917,13 @@ public class MimeUtility {
         return decode(unfold(s), message);
     }
 
-    public static String fold(String s) {
+    public static String fold(String s, int offset) {
+        int length = 998 - offset;
         String folded="";
-        while (s.length() > 998){
-            folded+=s.substring(0,997)+"\r\n";
-            s = " " + s.substring(997, s.length());
+        while (s.length() > length){
+            folded+=s.substring(0,length)+"\r\n";
+            s = " " + s.substring(length, s.length());
+            length = 998;
         }
         folded+=s;
         return folded;
