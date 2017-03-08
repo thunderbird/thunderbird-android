@@ -1191,16 +1191,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setSingleChoiceItems(resizeOptions, selectedChoice, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        switch(which) {
-                            case Account.RESIZE_FACTOR_ORIGINAL_SIZE_SELECTED:
+                        Account.ResizeFactor factor = Account.ResizeFactor.values()[which];
+                        switch(factor) {
+                            case FULL_SIZE:
                                 attachment.updateResizeInfo(1.0f, true);
                                 attachmentPresenter.updateAttachmentsList(attachment);
                                 break;
-                            case Account.RESIZE_FACTOR_HALF_SIZE_SELECTED:
+                            case HALF_SIZE:
                                 attachment.updateResizeInfo(0.5f, true);
                                 attachmentPresenter.updateAttachmentsList(attachment);
                                 break;
-                            case Account.RESIZE_FACTOR_ONE_FOURTH_SIZE_SELECTED:
+                            case QUARTER_SIZE:
                                 attachment.updateResizeInfo(0.25f, true);
                                 attachmentPresenter.updateAttachmentsList(attachment);
                                 break;

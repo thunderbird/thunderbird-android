@@ -513,15 +513,15 @@
     </string-array>
 
     <string-array name="account_settings_attachment_resize_factor_entries">
-        <item >@string/account_settings_attachments_resize_factor_entry_original</item>
-        <item >@string/account_settings_attachments_resize_factor_entry_half</item>
-        <item >@string/account_settings_attachments_resize_factor_entry_one_fourth</item>
+        <item>@string/account_settings_attachments_resize_factor_entry_original</item>
+        <item>@string/account_settings_attachments_resize_factor_entry_half</item>
+        <item>@string/account_settings_attachments_resize_factor_entry_one_fourth</item>
     </string-array>
 
-    <string-array name="account_settings_attachment_resize_factor_values">
-        <item>1</item>
-        <item>2</item>
-        <item>4</item>
+    <string-array name="account_settings_attachment_resize_factor_values" translatable="false">
+        <item>FULL_SIZE</item>
+        <item>HALF_SIZE</item>
+        <item>QUARTER_SIZE</item>
     </string-array>
 
     <string-array name="global_settings_notification_hide_subject_entries">

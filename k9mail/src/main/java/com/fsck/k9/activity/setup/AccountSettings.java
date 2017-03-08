@@ -540,7 +540,22 @@ public class AccountSettings extends K9PreferenceActivity {
         mResizeFactor.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                updateResizeFactor(Integer.parseInt((String)newValue));
+                final String value = newValue.toString();
+                int index = mResizeFactor.findIndexOfValue(value);
+                switch(index){
+                    case Account.RESIZE_FACTOR_ORIGINAL_SIZE_SELECTED :{
+                        updateResizeFactor(1);
+                        break;
+                    }
+                    case Account.RESIZE_FACTOR_HALF_SIZE_SELECTED :{
+                        updateResizeFactor(2);
+                        break;
+                    }
+                    case Account.RESIZE_FACTOR_ONE_FOURTH_SIZE_SELECTED :{
+                        updateResizeFactor(4);
+                        break;
+                    }
+                }
                 return true;
             }
         });
@@ -848,7 +863,6 @@ public class AccountSettings extends K9PreferenceActivity {
 
         // Global preferences for image attachment resizing
         mAccount.setResizeEnabled(mResizeEnabled.isChecked());
-        mAccount.setResizeFactor(Integer.parseInt(mResizeFactor.getValue()));
 
 
         boolean needsRefresh = mAccount.setAutomaticCheckIntervalMinutes(Integer.parseInt(mCheckFrequency.getValue()));
@@ -1035,6 +1049,7 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private void updateResizeFactor(int factor){
+        mAccount.setResizeFactor(factor);
         if(factor != 1){
             mResizeFactor.setSummary(String.format(getString(R.string.account_settings_attachment_resize_factor_summary), String.valueOf(factor)));
         } else {

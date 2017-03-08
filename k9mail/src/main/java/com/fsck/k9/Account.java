@@ -97,6 +97,10 @@ public class Account implements BaseAccount, StoreConfig {
         }
     }
 
+    public static enum ResizeFactor {
+        FULL_SIZE, HALF_SIZE, QUARTER_SIZE
+    }
+
     public static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
     public static final boolean DEFAULT_MESSAGE_FORMAT_AUTO = false;
     public static final boolean DEFAULT_MESSAGE_READ_RECEIPT = false;
