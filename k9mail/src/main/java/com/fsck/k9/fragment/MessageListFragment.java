@@ -253,6 +253,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private boolean mSingleAccountMode;
     private boolean mSingleFolderMode;
     private boolean mAllAccounts;
+    private boolean mAllAccountsCopyCapable;
 
     private MessageListHandler mHandler = new MessageListHandler(this);
 
@@ -826,6 +827,15 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 }
             } else {
                 mAccountUuids = accountUuids;
+            }
+        }
+
+        mAllAccountsCopyCapable = true;
+        for (String uuid : mAccountUuids) {
+            Account account = mPreferences.getAccount(uuid);
+            if (account == null || !mController.isCopyCapable(account)) {
+                mAllAccountsCopyCapable = false;
+                break;
             }
         }
     }
@@ -2639,11 +2649,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 menu.findItem(R.id.move).setVisible(false);
                 menu.findItem(R.id.copy).setVisible(false);
 
-                //TODO: we could support the archive and spam operations if all selected messages
-                // belong to non-POP3 accounts
-                menu.findItem(R.id.archive).setVisible(false);
-                menu.findItem(R.id.spam).setVisible(false);
-
+                if (!mAllAccountsCopyCapable) {
+                    menu.findItem(R.id.archive).setVisible(false);
+                    menu.findItem(R.id.spam).setVisible(false);
+                }
             } else {
                 // hide unsupported
                 if (!mController.isCopyCapable(account)) {
