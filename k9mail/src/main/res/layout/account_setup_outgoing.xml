@@ -31,7 +31,8 @@
                 android:inputType="textUri"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:contentDescription="@string/account_setup_outgoing_smtp_server_label" />
+                android:contentDescription="@string/account_setup_outgoing_smtp_server_label"
+                android:focusable="false"/>
 
             <TextView
                 android:text="@string/account_setup_outgoing_security_label"
@@ -59,7 +60,8 @@
                 android:inputType="number"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:contentDescription="@string/account_setup_outgoing_port_label" />
+                android:contentDescription="@string/account_setup_outgoing_port_label"
+                android:focusable="false"/>
 
             <CheckBox
                 android:id="@+id/account_require_login"
@@ -87,7 +89,8 @@
                     android:inputType="textEmailAddress"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:contentDescription="@string/account_setup_outgoing_username_label" />
+                    android:contentDescription="@string/account_setup_outgoing_username_label"
+                    android:focusable="false"/>
 
                 <TextView
                     android:text="@string/account_setup_outgoing_authentication_label"
@@ -116,7 +119,8 @@
                     android:inputType="textPassword"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:contentDescription="@string/account_setup_outgoing_password_label" />
+                    android:contentDescription="@string/account_setup_outgoing_password_label"
+                    android:focusable="false"/>
 
                 <TextView
                     android:id="@+id/account_client_certificate_label"

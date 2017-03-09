@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.view.MotionEvent;
 import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -133,6 +134,39 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
             mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
+
+        mServerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
+        mPortView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
+        mUsernameView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
+        mPasswordView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
 
         try {
             ServerSettings settings = Transport.decodeTransportUri(mAccount.getTransportUri());
