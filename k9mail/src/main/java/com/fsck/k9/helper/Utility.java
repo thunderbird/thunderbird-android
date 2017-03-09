@@ -60,6 +60,12 @@ public class Utility {
 
     private static Handler sMainThreadHandler;
 
+    /**
+     * The path of the temporary directory that is used to store resized image attachments.
+     * The directory is cleaned as soon as message is sent.
+     */
+    private static final String RESIZED_ATTACHMENTS_TEMPORARY_DIRECTORY = "/tempAttachments/";
+
     public static boolean arrayContains(Object[] a, Object o) {
         for (Object element : a) {
             if (element.equals(o)) {
@@ -475,7 +481,7 @@ public class Utility {
 
     public static String getResizedImageFile(Context context, Uri uri, float multiplier){
         File cacheDir = context.getCacheDir();
-        File tempAttachmentsDirectory = new File(cacheDir.getPath() + "/tempAttachments/");
+        File tempAttachmentsDirectory = new File(cacheDir.getPath() + RESIZED_ATTACHMENTS_TEMPORARY_DIRECTORY);
         tempAttachmentsDirectory.mkdirs();
 
         File tempFile = null;
@@ -500,11 +506,12 @@ public class Utility {
 
     public static void clearTemporaryAttachmentsCache(Context context){
         File cacheDir = context.getCacheDir();
-        File tempAttachmentsDirectory = new File(cacheDir.getPath() + "/tempAttachments/");
+        File tempAttachmentsDirectory = new File(cacheDir.getPath() + RESIZED_ATTACHMENTS_TEMPORARY_DIRECTORY);
         if(tempAttachmentsDirectory.exists()){
             try {
                 FileUtils.cleanDirectory(tempAttachmentsDirectory);
             } catch (IOException e) {
+                Timber.e("Error occurred while cleaning temporary directory for resized attachments");
                 e.printStackTrace();
             }
         }
