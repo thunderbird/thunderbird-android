@@ -4,6 +4,8 @@ package com.fsck.k9;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
-import android.text.format.Time;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
@@ -979,14 +980,14 @@ public class K9 extends Application {
             return false;
         }
 
-        Time time = new Time();
-        time.setToNow();
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+
         Integer startHour = Integer.parseInt(mQuietTimeStarts.split(":")[0]);
         Integer startMinute = Integer.parseInt(mQuietTimeStarts.split(":")[1]);
         Integer endHour = Integer.parseInt(mQuietTimeEnds.split(":")[0]);
         Integer endMinute = Integer.parseInt(mQuietTimeEnds.split(":")[1]);
 
-        Integer now = (time.hour * 60) + time.minute;
+        Integer now = (gregorianCalendar.get(Calendar.HOUR) * 60) + gregorianCalendar.get(Calendar.MINUTE);
         Integer quietStarts = startHour * 60 + startMinute;
         Integer quietEnds =  endHour * 60 + endMinute;
 
@@ -1422,7 +1423,7 @@ public class K9 extends Application {
         if (save) {
             Editor editor = sDatabaseVersionCache.edit();
             editor.putInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, LocalStore.DB_VERSION);
-            editor.commit();
+            editor.apply();
         }
     }
 

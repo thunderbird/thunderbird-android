@@ -59,7 +59,7 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
             File newFile = File.createTempFile("body", null, mTempDirectory);
             final OutputStream out = new FileOutputStream(newFile);
             try {
-                OutputStream wrappedOut = null;
+                OutputStream wrappedOut;
                 if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(encoding)) {
                     wrappedOut = new QuotedPrintableOutputStream(out, false);
                 } else if (MimeUtil.ENC_BASE64.equals(encoding)) {
@@ -137,7 +137,8 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
                 super.close();
             } finally {
                 Log.d(K9MailLib.LOG_TAG, "deleting temp file");
-                mFile.delete();
+                boolean fileDeleteResult = mFile.delete();
+                if (!fileDeleteResult) Log.i(K9MailLib.LOG_TAG, "fail to delete temp file");
             }
         }
 
