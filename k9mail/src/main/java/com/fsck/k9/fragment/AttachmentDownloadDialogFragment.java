@@ -13,11 +13,11 @@ import com.fsck.k9.controller.SimpleMessagingListener;
 
 public class AttachmentDownloadDialogFragment extends DialogFragment {
 
-    static ProgressDialog dialog;
+    ProgressDialog dialog;
 
     static int progress = 0;
 
-    static MessagingListener messagingListener;
+    MessagingListener messagingListener;
 
     protected static final String ARG_SIZE = "size";
     protected static final String ARG_MESSAGE = "message";
@@ -37,9 +37,7 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
 
     public void updateDownloadProgress(int newProgress) {
         progress = newProgress;
-        for (int i = progress; i <= newProgress; i++) {
-            dialog.setProgress(i);
-        }
+        dialog.setProgress(newProgress);
     }
 
     @Override
@@ -48,7 +46,7 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
         int size = args.getInt(ARG_SIZE);
         String message = args.getString(ARG_MESSAGE);
 
-        messagingListener = new SimpleMessagingListener(){
+        messagingListener = new SimpleMessagingListener() {
             @Override
             public void updateProgress(int progress) {
                 updateDownloadProgress(progress);

@@ -1010,7 +1010,7 @@ public class MimeUtility {
         OutputStream out = tempBody.getOutputStream();
         Timer timer = null;
         try {
-            if(progressCallback != null){
+            if (progressCallback != null) {
                 timer = new Timer();
                 timer.scheduleAtFixedRate(new TimerTask() {
                     @Override
@@ -1021,7 +1021,7 @@ public class MimeUtility {
             }
             IOUtils.copy(in, out);
         } finally {
-            if(timer != null){
+            if (timer != null) {
                 timer.cancel();
             }
             out.close();
