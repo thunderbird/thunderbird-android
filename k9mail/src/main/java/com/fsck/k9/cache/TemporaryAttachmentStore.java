@@ -1,14 +1,14 @@
 package com.fsck.k9.cache;
 
 
-import java.io.File;
-import java.io.IOException;
-
 import android.content.Context;
 import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class TemporaryAttachmentStore {

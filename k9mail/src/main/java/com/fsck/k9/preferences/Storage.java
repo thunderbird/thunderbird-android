@@ -5,9 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import timber.log.Timber;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.filter.Base64;
@@ -18,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import timber.log.Timber;
 
 public class Storage {
     private static ConcurrentMap<Context, Storage> storages =

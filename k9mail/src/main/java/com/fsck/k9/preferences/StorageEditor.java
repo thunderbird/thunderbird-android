@@ -1,13 +1,12 @@
 package com.fsck.k9.preferences;
 
-import timber.log.Timber;
-import com.fsck.k9.K9;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import timber.log.Timber;
 
 
 public class StorageEditor {
