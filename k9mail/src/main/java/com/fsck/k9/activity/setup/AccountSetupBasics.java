@@ -18,6 +18,8 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import timber.log.Timber;
+
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -91,6 +93,7 @@ public class AccountSetupBasics extends K9Activity
         mShowPasswordCheckBox = (CheckBox) findViewById(R.id.show_password);
         mNextButton.setOnClickListener(this);
         mManualSetupButton.setOnClickListener(this);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initializeViewListeners() {
@@ -105,6 +108,16 @@ public class AccountSetupBasics extends K9Activity
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
