@@ -17,11 +17,11 @@ import java.util.TreeMap;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
+
 import timber.log.Timber;
 import android.util.Xml;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.ServerSettings;
@@ -81,7 +81,6 @@ public class SettingsExporter {
             throws SettingsImportExportException {
 
         OutputStream os = null;
-        String filename = null;
         try {
             File dir = new File(Environment.getExternalStorageDirectory() + File.separator + context.getPackageName());
             if (!dir.mkdirs()) {
@@ -89,7 +88,7 @@ public class SettingsExporter {
             }
 
             File file = FileHelper.createUniqueFile(dir, EXPORT_FILENAME);
-            filename = file.getAbsolutePath();
+            String filename = file.getAbsolutePath();
             os = new FileOutputStream(filename);
 
             exportPreferences(context, os, includeGlobals, accountUuids);
@@ -99,13 +98,7 @@ public class SettingsExporter {
         } catch (Exception e) {
             throw new SettingsImportExportException(e);
         } finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException ioe) {
-                    Timber.w("Couldn't close exported settings file: %s", filename);
-                }
-            }
+            closeOrThrow(os);
         }
     }
 
@@ -113,24 +106,29 @@ public class SettingsExporter {
             throws SettingsImportExportException {
 
         OutputStream os = null;
-        String filename = null;
         try {
             os = context.getContentResolver().openOutputStream(uri);
             exportPreferences(context, os, includeGlobals, accountUuids);
         } catch (Exception e) {
             throw new SettingsImportExportException(e);
         } finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException ioe) {
-                    Log.w(K9.LOG_TAG, "Couldn't close exported settings file: " + filename);
-                }
-            }
+            closeOrThrow(os);
         }
     }
 
-   static void exportPreferences(Context context, OutputStream os, boolean includeGlobals, Set<String> accountUuids)
+    private static void closeOrThrow(OutputStream outputStream) throws SettingsImportExportException {
+        if (outputStream == null) {
+            return;
+        }
+
+        try {
+            outputStream.close();
+        } catch (IOException e) {
+            throw new SettingsImportExportException(e);
+        }
+    }
+
+    static void exportPreferences(Context context, OutputStream os, boolean includeGlobals, Set<String> accountUuids)
             throws SettingsImportExportException {
 
         try {
