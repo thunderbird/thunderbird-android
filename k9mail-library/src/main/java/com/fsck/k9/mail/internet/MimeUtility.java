@@ -20,7 +20,9 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.CountingOutputStream;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -1008,6 +1010,7 @@ public class MimeUtility {
         }
 
         OutputStream out = tempBody.getOutputStream();
+        final CountingOutputStream countingOutputStream = new CountingOutputStream(out);
         Timer timer = null;
         try {
             if (progressCallback != null) {
@@ -1015,11 +1018,11 @@ public class MimeUtility {
                 timer.scheduleAtFixedRate(new TimerTask() {
                     @Override
                     public void run() {
-                        progressCallback.onUpdate((int) tempBody.getSize());
+                        progressCallback.onUpdate((int) countingOutputStream.getCount());
                     }
                 }, 0, 50);
             }
-            IOUtils.copy(in, out);
+            IOUtils.copy(in, countingOutputStream);
         } finally {
             if (timer != null) {
                 timer.cancel();
