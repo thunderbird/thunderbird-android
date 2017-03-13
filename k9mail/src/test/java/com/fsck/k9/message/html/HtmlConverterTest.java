@@ -194,21 +194,6 @@ public class HtmlConverterTest {
     }
 
     @Test
-    public void testLinkifyBitcoinAndHttpUri() {
-        String text = "bitcoin:19W6QZkx8SYPG7BBCS7odmWGRxqRph5jFU http://example.com/";
-
-        StringBuffer outputBuffer = new StringBuffer();
-        HtmlConverter.linkifyText(text, outputBuffer);
-
-        assertEquals("<a href=\"bitcoin:19W6QZkx8SYPG7BBCS7odmWGRxqRph5jFU\">" +
-                "bitcoin:19W6QZkx8SYPG7BBCS7odmWGRxqRph5jFU" +
-                "</a> " +
-                "<a href=\"http://example.com/\">" +
-                "http://example.com/" +
-                "</a>", outputBuffer.toString());
-    }
-
-    @Test
     public void issue2259Spec() {
         String text = "text\n" +
                 "---------------------------\n" +
