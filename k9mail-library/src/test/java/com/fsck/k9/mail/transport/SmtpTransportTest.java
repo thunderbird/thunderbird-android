@@ -607,6 +607,78 @@ public class SmtpTransportTest {
         server.verifyInteractionCompleted();
     }
 
+    @Test
+    public void sendMessage_withPipelining() throws Exception {
+        Message message = getDefaultMessage();
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
+        server.expect("MAIL FROM:<user@localhost>");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.expect("DATA");
+        server.output("250 OK");
+        server.output("250 OK");
+        server.output("354 End data with <CR><LF>.<CR><LF>");
+        server.expect("[message data]");
+        server.expect(".");
+        server.output("250 OK: queued as 12345");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        transport.sendMessage(message);
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void sendMessage_withoutPipelining() throws Exception {
+        Message message = getDefaultMessage();
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication();
+        server.expect("MAIL FROM:<user@localhost>");
+        server.output("250 OK");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.output("250 OK");
+        server.expect("DATA");
+        server.output("354 End data with <CR><LF>.<CR><LF>");
+        server.expect("[message data]");
+        server.expect(".");
+        server.output("250 OK: queued as 12345");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        transport.sendMessage(message);
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void sendMessagePipelining_withNegativeReply() throws Exception {
+        Message message = getDefaultMessage();
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
+        server.expect("MAIL FROM:<user@localhost>");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.expect("DATA");
+        server.output("250 OK");
+        server.output("421 4.7.0 Temporary system problem");
+        server.output("354 End data with <CR><LF>.<CR><LF>");
+        server.expect("[message data]");
+        server.expect(".");
+        server.output("250 OK: queued as 12345");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        transport.sendMessage(message);
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
     private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server) throws IOException,
             MessagingException {
         return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);

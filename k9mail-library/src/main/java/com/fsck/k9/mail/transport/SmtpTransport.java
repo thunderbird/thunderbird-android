@@ -18,9 +18,12 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
@@ -213,6 +216,8 @@ public class SmtpTransport extends Transport {
     private boolean m8bitEncodingAllowed;
     private int mLargestAcceptableMessage;
     private boolean retryXoauthWithNewToken;
+    private boolean pipeliningSupported;
+    private Queue<String> pipelinedCommand;
 
     public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
             OAuth2TokenProvider oauth2TokenProvider) throws MessagingException {
@@ -293,7 +298,7 @@ public class SmtpTransport extends Transport {
             Map<String, String> extensions = sendHello(localHost);
 
             m8bitEncodingAllowed = extensions.containsKey("8BITMIME");
-
+            pipeliningSupported = extensions.containsKey("PIPELINING");
 
             if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                 if (extensions.containsKey("STARTTLS")) {
@@ -563,13 +568,27 @@ public class SmtpTransport extends Transport {
         boolean entireMessageSent = false;
         Address[] from = message.getFrom();
         try {
-            executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">"
-                    + (m8bitEncodingAllowed ? " BODY=8BITMIME" : ""));
-            for (String address : addresses) {
-                executeSimpleCommand("RCPT TO:" + "<" + address + ">");
-            }
-            executeSimpleCommand("DATA");
+            if(pipeliningSupported){
+                pipelinedCommand = new LinkedList<>();
+                executeSimpleCommandPipelined("MAIL FROM:" + "<" + from[0].getAddress() + ">"
+                        + (m8bitEncodingAllowed ? " BODY=8BITMIME" : ""));
+                for (String address : addresses) {
+                    executeSimpleCommandPipelined("RCPT TO:" + "<" + address + ">");
+                }
+                executeSimpleCommandPipelined("DATA");
+                CommandResponse response = readPipelinedResponse();
+                if(response.replyCode != 354) {
+                    throw new NegativeSmtpReplyException(response.replyCode,response.message) ;
+                }
+            } else {
 
+                executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">"
+                        + (m8bitEncodingAllowed ? " BODY=8BITMIME" : ""));
+                for (String address : addresses) {
+                    executeSimpleCommand("RCPT TO:" + "<" + address + ">");
+                }
+                executeSimpleCommand("DATA");
+            }
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
                     new LineWrapOutputStream(new SmtpDataStuffing(mOut), 1000));
 
@@ -782,6 +801,52 @@ public class SmtpTransport extends Transport {
             line = readLine();
         }
         return line;
+    }
+
+    private void executeSimpleCommandPipelined(String command) throws IOException{
+        if(command != null){
+            pipelinedCommand.add(command);
+            writeLine(command,false);
+        }
+    }
+
+    private CommandResponse readPipelinedResponse() throws IOException, MessagingException {
+        String line = null ;
+        int noOfPipelinedResponse = pipelinedCommand.size();
+        while(noOfPipelinedResponse > 0){
+            List<String> result = new ArrayList<>();
+            line = readCommandResponseLine(result) ;
+            try {
+                checkLine(line);
+
+            } catch (MessagingException exception){
+                //continue reading response till DATA response .
+            }
+            noOfPipelinedResponse-- ;
+        }
+        return lineToCommandResponse(line);
+    }
+
+    private CommandResponse lineToCommandResponse(String line) throws MessagingException{
+        int length = line.length();
+        if (length < 1) {
+            throw new MessagingException("SMTP response is 0 length");
+        }
+
+        int replyCode = -1;
+        String message = line;
+        if (length >= 3) {
+            try {
+                replyCode = Integer.parseInt(line.substring(0, 3));
+            } catch (NumberFormatException e) { /* ignore */ }
+
+            if (length > 4) {
+                message = line.substring(4);
+            } else {
+                message = "";
+            }
+        }
+        return new CommandResponse(replyCode, message);
     }
 
 
