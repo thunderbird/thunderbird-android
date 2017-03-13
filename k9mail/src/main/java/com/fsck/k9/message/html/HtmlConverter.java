@@ -237,6 +237,11 @@ public class HtmlConverter {
             "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid $$COLOR$$; padding-left: 1ex;\">";
     private static final String HTML_BLOCKQUOTE_END = "</blockquote>";
     private static final String HTML_NEWLINE = "<br />";
+    private static final Pattern ASCII_PATTERN_FOR_HR = Pattern.compile(
+            "(^|\\Q" + HTML_NEWLINE + "\\E)\\s*((\\Q" + HTML_NEWLINE + "\\E)*" +
+            "((((\\Q" + HTML_NEWLINE + "\\E){0,2}([-=_]{3,})(\\Q" + HTML_NEWLINE +
+            "\\E){0,2})|(([-=_]{2,} ?)(8&lt;|<gt>8|%&lt;|<gt>%)" +
+            "( ?[-=_]{2,})))+(\\Q" + HTML_NEWLINE + "\\E|$)))");
 
     /**
      * Convert a text string into an HTML document.
@@ -329,8 +334,7 @@ public class HtmlConverter {
                    HTML_BLOCKQUOTE_END + "$1"
                );
 
-        // Replace lines of -,= or _ with horizontal rules
-        text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr />");
+        text = ASCII_PATTERN_FOR_HR.matcher(text).replaceAll("<hr>");
 
         StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
 
