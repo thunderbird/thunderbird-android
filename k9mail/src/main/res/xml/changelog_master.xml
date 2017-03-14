@@ -5,6 +5,9 @@
      Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.206" versioncode="23260">
+        <change>Fixed crash when starting the app from the unread widget</change>
+    </release>
     <release version="5.205" versioncode="23250">
         <change>Fixed bug where the message body wasn't displayed when no crypto provider was configured</change>
     </release>
