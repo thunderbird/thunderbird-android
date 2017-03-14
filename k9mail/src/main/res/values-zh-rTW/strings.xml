@@ -678,7 +678,7 @@
   <string name="settings_exporting">正在匯出設定…</string>
   <string name="settings_importing">正在匯入設定…</string>
   <string name="settings_import_scanning_file">檢查檔案…</string>
-  <string name="settings_export_success">匯出的設定檔案已經儲存到 <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">匯出的設定檔案已經儲存到 <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">從 <xliff:g id="filename">%s</xliff:g> 匯入全域設定檔案</string>
   <string name="settings_import_success">成功匯入 <xliff:g id="accounts">%s</xliff:g> 從 <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

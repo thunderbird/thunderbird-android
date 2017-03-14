@@ -627,7 +627,7 @@
   <string name="settings_exporting">מייצא הגדרות…</string>
   <string name="settings_importing">מייבא הגדרות…</string>
   <string name="settings_import_scanning_file">סורק קבצים…</string>
-  <string name="settings_export_success">יצוא הגדרות נשמרו ל <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">יצוא הגדרות נשמרו ל <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">יבא הגדרות כלליות מ <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">יבא <xliff:g id="accounts">%s</xliff:g> מ <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

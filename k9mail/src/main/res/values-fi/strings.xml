@@ -785,7 +785,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="settings_exporting">Viedään asetuksia…</string>
   <string name="settings_importing">Tuodaan asetuksia…</string>
   <string name="settings_import_scanning_file">Tarkistetaan tiedostoa…</string>
-  <string name="settings_export_success">Viedyt asetukset tallennettu tiedostoon <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Viedyt asetukset tallennettu tiedostoon <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Yleiset asetukset tuotu tiedostosta <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Tuotu <xliff:g id="accounts">%s</xliff:g> tiedostosta <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

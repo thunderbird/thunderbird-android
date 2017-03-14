@@ -791,7 +791,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="settings_exporting">Експортуються налаштування…</string>
   <string name="settings_importing">Імпортуються налаштування…</string>
   <string name="settings_import_scanning_file">Сканується файл…</string>
-  <string name="settings_export_success">Налаштування були експортовані у <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Налаштування були експортовані у <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Глобальні налаштування були імпортовані з <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Імпортовано <xliff:g id="accounts">%s</xliff:g> з <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

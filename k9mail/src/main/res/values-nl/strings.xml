@@ -782,7 +782,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="settings_exporting">Instellingen exporteren…</string>
   <string name="settings_importing">Instellingen importeren…</string>
   <string name="settings_import_scanning_file">Bestanden scannen…</string>
-  <string name="settings_export_success">Geexporteerde instellingen opgeslagen in <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Geexporteerde instellingen opgeslagen in <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Globale instellingen geimporteerd van <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> geimporteerd vanuit <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

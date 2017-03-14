@@ -700,7 +700,7 @@
   <string name="settings_exporting">Ezarpenak esportatzen…</string>
   <string name="settings_importing">Ezarpenak inportatzen…</string>
   <string name="settings_import_scanning_file">Fitxategia aztertzen…</string>
-  <string name="settings_export_success">Esportatutako ezarpenak hemen gorde dira: <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Esportatutako ezarpenak hemen gorde dira: <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Ezarpen orokorran hemendik inportatu dira: <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> inportatuta hemendik: <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

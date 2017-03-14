@@ -769,7 +769,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="settings_exporting">Beállítások exportálása…</string>
   <string name="settings_importing">Beállítások importálása…</string>
   <string name="settings_import_scanning_file">Fájl beolvasása…</string>
-  <string name="settings_export_success">Exportált beállítások mentve ide: <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Exportált beállítások mentve ide: <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Az általános beállítások importálva innen: <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">A(z) <xliff:g id="accounts">%s</xliff:g> importálva innen: <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

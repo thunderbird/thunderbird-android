@@ -974,7 +974,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_exporting">Exporting settings…</string>
     <string name="settings_importing">Importing settings…</string>
     <string name="settings_import_scanning_file">Scanning file…</string>
-    <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_export_success_path">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_export_success">Saved exported settings to the selected destination</string>
     <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>
     <plurals name="settings_import_accounts">

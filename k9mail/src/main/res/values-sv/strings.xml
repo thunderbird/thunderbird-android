@@ -787,7 +787,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="settings_exporting">Exporterar inställningar…</string>
   <string name="settings_importing">Importerar inställningar…</string>
   <string name="settings_import_scanning_file">Skannar fil…</string>
-  <string name="settings_export_success">Sparade exporterade inställningar till <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Sparade exporterade inställningar till <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Importerade globala inställningar från <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importerade <xliff:g id="accounts">%s</xliff:g> från <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

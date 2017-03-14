@@ -788,7 +788,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="settings_exporting">Esportazione impostazioni…</string>
   <string name="settings_importing">Importazione impostazioni…</string>
   <string name="settings_import_scanning_file">Scansione del file…</string>
-  <string name="settings_export_success">Impostazioni esportate salvate in <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Impostazioni esportate salvate in <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Impostazioni globali importate da <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importato <xliff:g id="accounts">%s</xliff:g> da <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

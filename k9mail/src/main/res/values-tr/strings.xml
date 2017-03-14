@@ -754,7 +754,7 @@
   <string name="settings_exporting">Dışarı aktarma ayarları…</string>
   <string name="settings_importing">İçeri aktarma ayarları…</string>
   <string name="settings_import_scanning_file">Dosya taranıyor…</string>
-  <string name="settings_export_success">Dışarı aktarılan ayarlar <xliff:g id="filename">%s</xliff:g> olarak kaydedildi.</string>
+  <string name="settings_export_success_path">Dışarı aktarılan ayarlar <xliff:g id="filename">%s</xliff:g> olarak kaydedildi.</string>
   <string name="settings_import_global_settings_success">Genel ayarlar <xliff:g id="filename">%s</xliff:g> dosyasından alındı</string>
   <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g>, <xliff:g id="filename">%s</xliff:g> dosyasından alındı</string>
   <plurals name="settings_import_accounts">

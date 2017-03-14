@@ -791,7 +791,7 @@
   <string name="settings_exporting">Извозим поставке…</string>
   <string name="settings_importing">Увозим поставке…</string>
   <string name="settings_import_scanning_file">Очитавам фајл…</string>
-  <string name="settings_export_success">Извезене поставке сачуване у <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Извезене поставке сачуване у <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Увезене опште поставке из <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Увезено <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

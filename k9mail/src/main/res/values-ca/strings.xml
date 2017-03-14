@@ -689,7 +689,7 @@
   <string name="settings_exporting">Exporta els paràmetres</string>
   <string name="settings_importing">S\'està important els paràmetres.</string>
   <string name="settings_import_scanning_file">S\'està examinant el fitxer.</string>
-  <string name="settings_export_success">S\'han exportat els paràmetres globals a <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">S\'han exportat els paràmetres globals a <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">S\'han importat els paràmetres globals de <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">S\'ha importat <xliff:g id="accounts">%s</xliff:g> des de <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

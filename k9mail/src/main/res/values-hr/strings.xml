@@ -740,7 +740,7 @@
   <string name="settings_exporting">Izvozim postavke…</string>
   <string name="settings_importing">Uvozim postavke…</string>
   <string name="settings_import_scanning_file">Skeniram datoteku…</string>
-  <string name="settings_export_success">Spremi izvezene postavke u <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Spremi izvezene postavke u <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Uvezene opće postavke iz  <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Uvezeni <xliff:g id="accounts">%s</xliff:g> iz <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">

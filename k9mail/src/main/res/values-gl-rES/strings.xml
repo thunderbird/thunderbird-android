@@ -727,7 +727,7 @@
   <string name="settings_exporting">A exportar os axustes…</string>
   <string name="settings_importing">A importar os axustes…</string>
   <string name="settings_import_scanning_file">A escanear ficheiro…</string>
-  <string name="settings_export_success">Axustes exportados gardados en <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_path">Axustes exportados gardados en <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Axustes globais importados desde <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importado <xliff:g id="accounts">%s</xliff:g> desde <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
