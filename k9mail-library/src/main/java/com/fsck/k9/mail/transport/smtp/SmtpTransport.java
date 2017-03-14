@@ -698,8 +698,8 @@ public class SmtpTransport extends Transport {
             } catch (NumberFormatException e) { /* ignore */ }
         }
 
-        char c = line.charAt(0);
-        if ((c == '4') || (c == '5')) {
+        char replyCodeCategory = line.charAt(0);
+        if ((replyCodeCategory == '4') || (replyCodeCategory == '5')) {
             if (mEnhancedStatusCodesProvided) {
                 throw buildEnhancedNegativeSmtpReplyException(replyCode, results);
             } else {
