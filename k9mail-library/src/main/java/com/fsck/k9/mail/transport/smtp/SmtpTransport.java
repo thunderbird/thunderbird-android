@@ -699,7 +699,8 @@ public class SmtpTransport extends Transport {
         }
 
         char replyCodeCategory = line.charAt(0);
-        if ((replyCodeCategory == '4') || (replyCodeCategory == '5')) {
+        boolean isReplyCodeErrorCategory = (replyCodeCategory == '4') || (replyCodeCategory == '5');
+        if (isReplyCodeErrorCategory) {
             if (mEnhancedStatusCodesProvided) {
                 throw buildEnhancedNegativeSmtpReplyException(replyCode, results);
             } else {
