@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.transport;
+package com.fsck.k9.mail.transport.smtp;
 
 
 import java.io.IOException;
@@ -22,11 +22,11 @@ import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer;
+import com.fsck.k9.mail.transport.smtp.SmtpTransport;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
-import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;

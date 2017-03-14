@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.transport;
+package com.fsck.k9.mail.transport.smtp;
 
 
 import java.io.BufferedInputStream;
