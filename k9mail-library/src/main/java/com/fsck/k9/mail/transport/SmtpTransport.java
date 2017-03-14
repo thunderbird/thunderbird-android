@@ -285,7 +285,7 @@ public class SmtpTransport extends Transport {
             mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
 
             // Eat the banner
-            executeSimpleCommand(null, false);
+            executeCommand(null);
 
             InetAddress localAddress = mSocket.getLocalAddress();
             String localHost = getCanonicalHostName(localAddress);
@@ -313,7 +313,7 @@ public class SmtpTransport extends Transport {
 
             if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                 if (extensions.containsKey("STARTTLS")) {
-                    executeSimpleCommand("STARTTLS", false);
+                    executeCommand("STARTTLS");
 
                     mSocket = mTrustedSocketFactory.createSocket(
                             mSocket,
@@ -507,7 +507,7 @@ public class SmtpTransport extends Transport {
     private Map<String, String> sendHello(String host) throws IOException, MessagingException {
         Map<String, String> extensions = new HashMap<String, String>();
         try {
-            List<String> results = executeSimpleCommand("EHLO " + host, false).results;
+            List<String> results = executeCommand("EHLO %s", host).results;
             // Remove the EHLO greeting response
             results.remove(0);
             for (String result : results) {
@@ -520,7 +520,7 @@ public class SmtpTransport extends Transport {
             }
 
             try {
-                executeSimpleCommand("HELO " + host, false);
+                executeCommand("HELO %s", host);
             } catch (NegativeSmtpReplyException e2) {
                 Log.w(LOG_TAG, "Server doesn't support the HELO command. Continuing anyway.");
             }
@@ -579,12 +579,18 @@ public class SmtpTransport extends Transport {
         boolean entireMessageSent = false;
         Address[] from = message.getFrom();
         try {
-            executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">"
-                    + (m8bitEncodingAllowed ? " BODY=8BITMIME" : ""), false);
-            for (String address : addresses) {
-                executeSimpleCommand("RCPT TO:" + "<" + address + ">", false);
+            String fromAddress = from[0].getAddress();
+            if (m8bitEncodingAllowed) {
+                executeCommand("MAIL FROM:<%s> BODY=8BITMIME", fromAddress);
+            } else {
+                executeCommand("MAIL FROM:<%s>", fromAddress);
             }
-            executeSimpleCommand("DATA", false);
+
+            for (String address : addresses) {
+                executeCommand("RCPT TO:<%s>", address);
+            }
+
+            executeCommand("DATA");
 
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
                     new LineWrapOutputStream(new SmtpDataStuffing(mOut), 1000));
@@ -593,7 +599,7 @@ public class SmtpTransport extends Transport {
             msgOut.endWithCrLfAndFlush();
 
             entireMessageSent = true; // After the "\r\n." is attempted, we may have sent the message
-            executeSimpleCommand(".", false);
+            executeCommand(".");
         } catch (NegativeSmtpReplyException e) {
             throw e;
         } catch (Exception e) {
@@ -610,7 +616,7 @@ public class SmtpTransport extends Transport {
     @Override
     public void close() {
         try {
-            executeSimpleCommand("QUIT", false);
+            executeCommand("QUIT");
         } catch (Exception e) {
 
         }
@@ -675,10 +681,20 @@ public class SmtpTransport extends Transport {
         }
     }
 
-    private CommandResponse executeSimpleCommand(String command, boolean sensitive)
+    private CommandResponse executeSensitiveCommand(String format, Object... args)
+            throws IOException, MessagingException {
+        return executeCommand(true, format, args);
+    }
+
+    private CommandResponse executeCommand(String format, Object... args) throws IOException, MessagingException {
+        return executeCommand(false, format, args);
+    }
+
+    private CommandResponse executeCommand(boolean sensitive, String format, Object... args)
             throws IOException, MessagingException {
         List<String> results = new ArrayList<>();
-        if (command != null) {
+        if (format != null) {
+            String command = String.format(Locale.ROOT, format, args);
             writeLine(command, sensitive);
         }
 
@@ -771,9 +787,9 @@ public class SmtpTransport extends Transport {
     private void saslAuthLogin(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
         try {
-            executeSimpleCommand("AUTH LOGIN", false);
-            executeSimpleCommand(Base64.encode(username), true);
-            executeSimpleCommand(Base64.encode(password), true);
+            executeCommand("AUTH LOGIN");
+            executeSensitiveCommand(Base64.encode(username));
+            executeSensitiveCommand(Base64.encode(password));
         } catch (NegativeSmtpReplyException exception) {
             if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 // Authentication credentials invalid
@@ -789,7 +805,7 @@ public class SmtpTransport extends Transport {
         AuthenticationFailedException, IOException {
         String data = Base64.encode("\000" + username + "\000" + password);
         try {
-            executeSimpleCommand("AUTH PLAIN " + data, true);
+            executeSensitiveCommand("AUTH PLAIN %s", data);
         } catch (NegativeSmtpReplyException exception) {
             if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 // Authentication credentials invalid
@@ -804,7 +820,7 @@ public class SmtpTransport extends Transport {
     private void saslAuthCramMD5(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
 
-        List<String> respList = executeSimpleCommand("AUTH CRAM-MD5", false).results;
+        List<String> respList = executeCommand("AUTH CRAM-MD5").results;
         if (respList.size() != 1) {
             throw new MessagingException("Unable to negotiate CRAM-MD5");
         }
@@ -813,7 +829,7 @@ public class SmtpTransport extends Transport {
         String b64CRAMString = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
 
         try {
-            executeSimpleCommand(b64CRAMString, true);
+            executeSensitiveCommand(b64CRAMString);
         } catch (NegativeSmtpReplyException exception) {
             if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 // Authentication credentials invalid
@@ -877,20 +893,18 @@ public class SmtpTransport extends Transport {
     private void attemptXoauth2(String username) throws MessagingException, IOException {
         String token = oauthTokenProvider.getToken(username, OAuth2TokenProvider.OAUTH2_TIMEOUT);
         String authString = Authentication.computeXoauth(username, token);
-        CommandResponse response = executeSimpleCommand("AUTH XOAUTH2 " + authString, true);
+        CommandResponse response = executeSensitiveCommand("AUTH XOAUTH2 %s", authString);
 
         if (response.replyCode == SMTP_CONTINUE_REQUEST) {
             retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(join(response.results, ""), mHost);
 
             //Per Google spec, respond to challenge with empty response
-            executeSimpleCommand("", false);
+            executeCommand("");
         }
     }
 
     private void saslAuthExternal(String username) throws MessagingException, IOException {
-        executeSimpleCommand(
-                String.format("AUTH EXTERNAL %s",
-                        Base64.encode(username)), false);
+        executeCommand("AUTH EXTERNAL %s", Base64.encode(username));
     }
 
     @VisibleForTesting
