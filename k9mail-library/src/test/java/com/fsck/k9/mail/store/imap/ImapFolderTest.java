@@ -1250,7 +1250,7 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void equlas_returnsTrue_inboxCaseDifferent(){
+    public void equals_returnsTrue_inboxCaseDifferent(){
         ImapFolder imapFolder = createFolder("Inbox");
         ImapFolder imapFolder2 = createFolder("inbox");
         ImapFolder imapFolder3 = createFolder("INBOX");
@@ -1265,5 +1265,13 @@ public class ImapFolderTest {
         ImapFolder imapFolder2 = createFolder("INBOX");
 
         assertTrue(imapFolder.equals(imapFolder2));
+    }
+
+    @Test
+    public void hashCode_returnTrue_inboxCaseDifferent(){
+        ImapFolder imapFolder = createFolder("Inbox");
+        ImapFolder imapFolder2 = createFolder("inbox");
+
+        assertEquals(imapFolder.hashCode(),imapFolder2.hashCode());
     }
 }
