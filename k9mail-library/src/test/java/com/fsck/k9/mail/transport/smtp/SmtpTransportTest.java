@@ -22,7 +22,6 @@ import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer;
-import com.fsck.k9.mail.transport.smtp.SmtpTransport;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -680,7 +679,7 @@ public class SmtpTransportTest {
         try {
             transport.sendMessage(message);
             fail("Expected exception");
-        } catch (SmtpTransport.NegativeSmtpReplyException e) {
+        } catch (NegativeSmtpReplyException e) {
             assertEquals(421, e.getReplyCode());
             assertEquals("4.7.0 Temporary system problem", e.getReplyText());
         }
