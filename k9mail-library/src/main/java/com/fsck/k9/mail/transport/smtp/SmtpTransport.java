@@ -712,23 +712,24 @@ public class SmtpTransport extends Transport {
     }
 
     private MessagingException buildEnhancedNegativeSmtpReplyException(int replyCode, List<String> results) {
-        SmtpEnhancedStatusCodeClass escClass = null;
-        SmtpEnhancedStatusCodeSubject escSubject = null;
-        SmtpEnhancedStatusCodeDetail escDetail = null;
+        StatusCodeClass statusCodeClass = null;
+        StatusCodeSubject statusCodeSubject = null;
+        StatusCodeDetail statusCodeDetail = null;
 
         String message = "";
-        for (String resultLine: results) {
+        for (String resultLine : results) {
             message += resultLine.split(" ", 2)[1] + " ";
         }
         if (results.size() > 0) {
-            String[] esc = results.get(0).split(" ", 2)[0].split("\\.");
+            String[] statusCodeParts = results.get(0).split(" ", 2)[0].split("\\.");
 
-            escClass = SmtpEnhancedStatusCodeClass.parse(esc[0]);
-            escSubject = SmtpEnhancedStatusCodeSubject.parse(esc[1]);
-            escDetail = SmtpEnhancedStatusCodeDetail.parse(escSubject, esc[2]);
+            statusCodeClass = StatusCodeClass.parse(statusCodeParts[0]);
+            statusCodeSubject = StatusCodeSubject.parse(statusCodeParts[1]);
+            statusCodeDetail = StatusCodeDetail.parse(statusCodeSubject, statusCodeParts[2]);
         }
 
-        return new EnhancedNegativeSmtpReplyException(replyCode, escClass, escSubject, escDetail, message.trim());
+        return new EnhancedNegativeSmtpReplyException(replyCode, statusCodeClass, statusCodeSubject, statusCodeDetail,
+                message.trim());
     }
 
 

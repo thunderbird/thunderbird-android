@@ -1,6 +1,8 @@
 package com.fsck.k9.mail.transport.smtp;
 
 
+import android.text.TextUtils;
+
 import com.fsck.k9.mail.MessagingException;
 
 
@@ -10,15 +12,19 @@ import com.fsck.k9.mail.MessagingException;
 class NegativeSmtpReplyException extends MessagingException {
     private static final long serialVersionUID = 8696043577357897135L;
 
-    private final int mReplyCode;
-    private final String mReplyText;
+
+    private final int replyCode;
+    private final String replyText;
+
 
     public NegativeSmtpReplyException(int replyCode, String replyText) {
-        super((replyText != null && !replyText.isEmpty()) ?
-                replyText : ("Negative SMTP reply: " + replyCode),
-                isPermanentSmtpError(replyCode));
-        mReplyCode = replyCode;
-        mReplyText = replyText;
+        super(buildErrorMessage(replyCode, replyText), isPermanentSmtpError(replyCode));
+        this.replyCode = replyCode;
+        this.replyText = replyText;
+    }
+
+    private static String buildErrorMessage(int replyCode, String replyText) {
+        return TextUtils.isEmpty(replyText) ? "Negative SMTP reply: " + replyCode : replyText;
     }
 
     private static boolean isPermanentSmtpError(int replyCode) {
@@ -26,10 +32,10 @@ class NegativeSmtpReplyException extends MessagingException {
     }
 
     public int getReplyCode() {
-        return mReplyCode;
+        return replyCode;
     }
 
     public String getReplyText() {
-        return mReplyText;
+        return replyText;
     }
 }
