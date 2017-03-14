@@ -56,20 +56,6 @@ import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_SMTP;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 public class SmtpTransport extends Transport {
-
-    public static String join(List<String> strings, String separator) {
-        if (strings == null) {
-            return "";
-        }
-        StringBuilder builtString = new StringBuilder();
-        for (int i = 0; i < strings.size(); i++) {
-            builtString.append(strings.get(i));
-            if (i + 1 < strings.size())
-                builtString.append(separator);
-        }
-        return builtString.toString();
-    }
-
     public static final int SMTP_CONTINUE_REQUEST = 334;
     public static final int SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535;
 
@@ -717,7 +703,8 @@ public class SmtpTransport extends Transport {
             if (mEnhancedStatusCodesProvided) {
                 throw buildEnhancedNegativeSmtpReplyException(replyCode, results);
             } else {
-                throw new NegativeSmtpReplyException(replyCode, join(results, " "));
+                String replyText = TextUtils.join(" ", results);
+                throw new NegativeSmtpReplyException(replyCode, replyText);
             }
         }
 
@@ -896,7 +883,8 @@ public class SmtpTransport extends Transport {
         CommandResponse response = executeSensitiveCommand("AUTH XOAUTH2 %s", authString);
 
         if (response.replyCode == SMTP_CONTINUE_REQUEST) {
-            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(join(response.results, ""), mHost);
+            String replyText = TextUtils.join("", response.results);
+            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(replyText, mHost);
 
             //Per Google spec, respond to challenge with empty response
             executeCommand("");
