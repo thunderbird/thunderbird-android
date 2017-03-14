@@ -39,9 +39,11 @@ import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
 import static java.util.Arrays.asList;
+import static java.util.Arrays.copyOfRange;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -1237,5 +1239,31 @@ public class ImapFolderTest {
 
     private void assertCheckOpenErrorMessage(String folderName, MessagingException e) {
         assertEquals("Folder " + folderName + " is not open.", e.getMessage());
+    }
+
+    @Test
+    public void equals_returnsFalse_whenCaseDifferent() {
+        ImapFolder imapFolder = createFolder("Folder");
+        ImapFolder imapFolder2 = createFolder("folder");
+        assertNotEquals(imapFolder.hashCode(), imapFolder2.hashCode());
+        assertFalse(imapFolder.equals(imapFolder2));
+    }
+
+    @Test
+    public void equlas_returnsTrue_inboxCaseDifferent(){
+        ImapFolder imapFolder = createFolder("Inbox");
+        ImapFolder imapFolder2 = createFolder("inbox");
+        ImapFolder imapFolder3 = createFolder("INBOX");
+
+        assertTrue(imapFolder.equals(imapFolder2));
+        assertTrue(imapFolder2.equals(imapFolder3));
+    }
+
+    @Test
+    public void equals_returnsTrue_inboxCaseSame(){
+        ImapFolder imapFolder = createFolder("INBOX");
+        ImapFolder imapFolder2 = createFolder("INBOX");
+
+        assertTrue(imapFolder.equals(imapFolder2));
     }
 }
