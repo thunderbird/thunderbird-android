@@ -40,7 +40,6 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
-import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.CharsetSupport;
@@ -570,8 +569,7 @@ public class SmtpTransport extends Transport {
             }
             executeSimpleCommand("DATA");
 
-            EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                    new LineWrapOutputStream(new SmtpDataStuffing(mOut), 1000));
+            EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(new SmtpDataStuffing(mOut));
 
             message.writeTo(msgOut);
             msgOut.endWithCrLfAndFlush();
