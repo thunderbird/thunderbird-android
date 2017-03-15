@@ -1,5 +1,5 @@
 
-package com.fsck.k9.mail.transport;
+package com.fsck.k9.mail.transport.smtp;
 
 
 import java.io.BufferedInputStream;
@@ -49,6 +49,7 @@ import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import javax.net.ssl.SSLException;
+import org.apache.commons.io.IOUtils;
 
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_SMTP;
@@ -211,6 +212,7 @@ public class SmtpTransport extends Transport {
     private PeekableInputStream mIn;
     private OutputStream mOut;
     private boolean m8bitEncodingAllowed;
+    private boolean mEnhancedStatusCodesProvided;
     private int mLargestAcceptableMessage;
     private boolean retryXoauthWithNewToken;
 
@@ -269,7 +271,7 @@ public class SmtpTransport extends Transport {
             mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
 
             // Eat the banner
-            executeSimpleCommand(null);
+            executeCommand(null);
 
             InetAddress localAddress = mSocket.getLocalAddress();
             String localHost = getCanonicalHostName(localAddress);
@@ -293,11 +295,11 @@ public class SmtpTransport extends Transport {
             Map<String, String> extensions = sendHello(localHost);
 
             m8bitEncodingAllowed = extensions.containsKey("8BITMIME");
-
+            mEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES");
 
             if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                 if (extensions.containsKey("STARTTLS")) {
-                    executeSimpleCommand("STARTTLS");
+                    executeCommand("STARTTLS");
 
                     mSocket = mTrustedSocketFactory.createSocket(
                             mSocket,
@@ -488,10 +490,10 @@ public class SmtpTransport extends Transport {
      * @throws MessagingException
      *          In case of a malformed response.
      */
-    private Map<String,String> sendHello(String host) throws IOException, MessagingException {
+    private Map<String, String> sendHello(String host) throws IOException, MessagingException {
         Map<String, String> extensions = new HashMap<String, String>();
         try {
-            List<String> results = executeSimpleCommand("EHLO " + host);
+            List<String> results = executeCommand("EHLO %s", host).results;
             // Remove the EHLO greeting response
             results.remove(0);
             for (String result : results) {
@@ -504,7 +506,7 @@ public class SmtpTransport extends Transport {
             }
 
             try {
-                executeSimpleCommand("HELO " + host);
+                executeCommand("HELO %s", host);
             } catch (NegativeSmtpReplyException e2) {
                 Log.w(LOG_TAG, "Server doesn't support the HELO command. Continuing anyway.");
             }
@@ -563,12 +565,18 @@ public class SmtpTransport extends Transport {
         boolean entireMessageSent = false;
         Address[] from = message.getFrom();
         try {
-            executeSimpleCommand("MAIL FROM:" + "<" + from[0].getAddress() + ">"
-                    + (m8bitEncodingAllowed ? " BODY=8BITMIME" : ""));
-            for (String address : addresses) {
-                executeSimpleCommand("RCPT TO:" + "<" + address + ">");
+            String fromAddress = from[0].getAddress();
+            if (m8bitEncodingAllowed) {
+                executeCommand("MAIL FROM:<%s> BODY=8BITMIME", fromAddress);
+            } else {
+                executeCommand("MAIL FROM:<%s>", fromAddress);
             }
-            executeSimpleCommand("DATA");
+
+            for (String address : addresses) {
+                executeCommand("RCPT TO:<%s>", address);
+            }
+
+            executeCommand("DATA");
 
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
                     new LineWrapOutputStream(new SmtpDataStuffing(mOut), 1000));
@@ -577,7 +585,7 @@ public class SmtpTransport extends Transport {
             msgOut.endWithCrLfAndFlush();
 
             entireMessageSent = true; // After the "\r\n." is attempted, we may have sent the message
-            executeSimpleCommand(".");
+            executeCommand(".");
         } catch (NegativeSmtpReplyException e) {
             throw e;
         } catch (Exception e) {
@@ -594,25 +602,13 @@ public class SmtpTransport extends Transport {
     @Override
     public void close() {
         try {
-            executeSimpleCommand("QUIT");
+            executeCommand("QUIT");
         } catch (Exception e) {
 
         }
-        try {
-            mIn.close();
-        } catch (Exception e) {
-
-        }
-        try {
-            mOut.close();
-        } catch (Exception e) {
-
-        }
-        try {
-            mSocket.close();
-        } catch (Exception e) {
-
-        }
+        IOUtils.closeQuietly(mIn);
+        IOUtils.closeQuietly(mOut);
+        IOUtils.closeQuietly(mSocket);
         mIn = null;
         mOut = null;
         mSocket = null;
@@ -660,76 +656,31 @@ public class SmtpTransport extends Transport {
         mOut.flush();
     }
 
-    private void checkLine(String line) throws MessagingException {
-        int length = line.length();
-        if (length < 1) {
-            throw new MessagingException("SMTP response is 0 length");
-        }
-
-        char c = line.charAt(0);
-        if ((c == '4') || (c == '5')) {
-            int replyCode = -1;
-            String message = line;
-            if (length >= 3) {
-                try {
-                    replyCode = Integer.parseInt(line.substring(0, 3));
-                } catch (NumberFormatException e) { /* ignore */ }
-
-                if (length > 4) {
-                    message = line.substring(4);
-                } else {
-                    message = "";
-                }
-            }
-
-            throw new NegativeSmtpReplyException(replyCode, message);
-        }
-
-    }
-    @Deprecated
-    private List<String> executeSimpleCommand(String command) throws IOException, MessagingException {
-        return executeSimpleCommand(command, false);
-    }
-
-    /**
-     * TODO:  All responses should be checked to confirm that they start with a valid
-     * reply code, and that the reply code is appropriate for the command being executed.
-     * That means it should either be a 2xx code (generally) or a 3xx code in special cases
-     * (e.g., DATA & AUTH LOGIN commands).  Reply codes should be made available as part of
-     * the returned object.
-     *
-     * This should be done using the non-deprecated API below.
-     */
-    @Deprecated
-    private List<String> executeSimpleCommand(String command, boolean sensitive)
-    throws IOException, MessagingException {
-        List<String> results = new ArrayList<>();
-        if (command != null) {
-            writeLine(command, sensitive);
-        }
-
-        String line = readCommandResponseLine(results);
-
-        // Check if the reply code indicates an error.
-        checkLine(line);
-
-        return results;
-    }
-
     private static class CommandResponse {
 
         private final int replyCode;
-        private final String message;
+        private final List<String> results;
 
-        public CommandResponse(int replyCode, String message) {
+        public CommandResponse(int replyCode, List<String> results) {
             this.replyCode = replyCode;
-            this.message = message;
+            this.results = results;
         }
     }
 
-    private CommandResponse executeSimpleCommandWithResponse(String command, boolean sensitive) throws IOException, MessagingException {
+    private CommandResponse executeSensitiveCommand(String format, Object... args)
+            throws IOException, MessagingException {
+        return executeCommand(true, format, args);
+    }
+
+    private CommandResponse executeCommand(String format, Object... args) throws IOException, MessagingException {
+        return executeCommand(false, format, args);
+    }
+
+    private CommandResponse executeCommand(boolean sensitive, String format, Object... args)
+            throws IOException, MessagingException {
         List<String> results = new ArrayList<>();
-        if (command != null) {
+        if (format != null) {
+            String command = String.format(Locale.ROOT, format, args);
             writeLine(command, sensitive);
         }
 
@@ -741,25 +692,45 @@ public class SmtpTransport extends Transport {
         }
 
         int replyCode = -1;
-        String message = line;
         if (length >= 3) {
             try {
                 replyCode = Integer.parseInt(line.substring(0, 3));
             } catch (NumberFormatException e) { /* ignore */ }
+        }
 
-            if (length > 4) {
-                message = line.substring(4);
+        char replyCodeCategory = line.charAt(0);
+        boolean isReplyCodeErrorCategory = (replyCodeCategory == '4') || (replyCodeCategory == '5');
+        if (isReplyCodeErrorCategory) {
+            if (mEnhancedStatusCodesProvided) {
+                throw buildEnhancedNegativeSmtpReplyException(replyCode, results);
             } else {
-                message = "";
+                String replyText = TextUtils.join(" ", results);
+                throw new NegativeSmtpReplyException(replyCode, replyText);
             }
         }
 
-        char c = line.charAt(0);
-        if ((c == '4') || (c == '5')) {
-            throw new NegativeSmtpReplyException(replyCode, message);
+        return new CommandResponse(replyCode, results);
+    }
+
+    private MessagingException buildEnhancedNegativeSmtpReplyException(int replyCode, List<String> results) {
+        StatusCodeClass statusCodeClass = null;
+        StatusCodeSubject statusCodeSubject = null;
+        StatusCodeDetail statusCodeDetail = null;
+
+        String message = "";
+        for (String resultLine : results) {
+            message += resultLine.split(" ", 2)[1] + " ";
+        }
+        if (results.size() > 0) {
+            String[] statusCodeParts = results.get(0).split(" ", 2)[0].split("\\.");
+
+            statusCodeClass = StatusCodeClass.parse(statusCodeParts[0]);
+            statusCodeSubject = StatusCodeSubject.parse(statusCodeParts[1]);
+            statusCodeDetail = StatusCodeDetail.parse(statusCodeSubject, statusCodeParts[2]);
         }
 
-        return new CommandResponse(replyCode, message);
+        return new EnhancedNegativeSmtpReplyException(replyCode, statusCodeClass, statusCodeSubject, statusCodeDetail,
+                message.trim());
     }
 
 
@@ -805,9 +776,9 @@ public class SmtpTransport extends Transport {
     private void saslAuthLogin(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
         try {
-            executeSimpleCommand("AUTH LOGIN");
-            executeSimpleCommand(Base64.encode(username), true);
-            executeSimpleCommand(Base64.encode(password), true);
+            executeCommand("AUTH LOGIN");
+            executeSensitiveCommand(Base64.encode(username));
+            executeSensitiveCommand(Base64.encode(password));
         } catch (NegativeSmtpReplyException exception) {
             if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 // Authentication credentials invalid
@@ -823,7 +794,7 @@ public class SmtpTransport extends Transport {
         AuthenticationFailedException, IOException {
         String data = Base64.encode("\000" + username + "\000" + password);
         try {
-            executeSimpleCommand("AUTH PLAIN " + data, true);
+            executeSensitiveCommand("AUTH PLAIN %s", data);
         } catch (NegativeSmtpReplyException exception) {
             if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 // Authentication credentials invalid
@@ -838,7 +809,7 @@ public class SmtpTransport extends Transport {
     private void saslAuthCramMD5(String username, String password) throws MessagingException,
         AuthenticationFailedException, IOException {
 
-        List<String> respList = executeSimpleCommand("AUTH CRAM-MD5");
+        List<String> respList = executeCommand("AUTH CRAM-MD5").results;
         if (respList.size() != 1) {
             throw new MessagingException("Unable to negotiate CRAM-MD5");
         }
@@ -847,7 +818,7 @@ public class SmtpTransport extends Transport {
         String b64CRAMString = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
 
         try {
-            executeSimpleCommand(b64CRAMString, true);
+            executeSensitiveCommand(b64CRAMString);
         } catch (NegativeSmtpReplyException exception) {
             if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 // Authentication credentials invalid
@@ -911,52 +882,23 @@ public class SmtpTransport extends Transport {
     private void attemptXoauth2(String username) throws MessagingException, IOException {
         String token = oauthTokenProvider.getToken(username, OAuth2TokenProvider.OAUTH2_TIMEOUT);
         String authString = Authentication.computeXoauth(username, token);
-        CommandResponse response = executeSimpleCommandWithResponse("AUTH XOAUTH2 " + authString, true);
+        CommandResponse response = executeSensitiveCommand("AUTH XOAUTH2 %s", authString);
 
         if (response.replyCode == SMTP_CONTINUE_REQUEST) {
-            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(response.message, mHost);
+            String replyText = TextUtils.join("", response.results);
+            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(replyText, mHost);
 
             //Per Google spec, respond to challenge with empty response
-            executeSimpleCommandWithResponse("", false);
+            executeCommand("");
         }
     }
 
     private void saslAuthExternal(String username) throws MessagingException, IOException {
-        executeSimpleCommand(
-                String.format("AUTH EXTERNAL %s",
-                        Base64.encode(username)), false);
+        executeCommand("AUTH EXTERNAL %s", Base64.encode(username));
     }
 
     @VisibleForTesting
     protected String getCanonicalHostName(InetAddress localAddress) {
         return localAddress.getCanonicalHostName();
-    }
-
-    /**
-     * Exception that is thrown when the server sends a negative reply (reply codes 4xx or 5xx).
-     */
-    static class NegativeSmtpReplyException extends MessagingException {
-        private static final long serialVersionUID = 8696043577357897135L;
-
-        private final int mReplyCode;
-        private final String mReplyText;
-
-        public NegativeSmtpReplyException(int replyCode, String replyText) {
-            super("Negative SMTP reply: " + replyCode + " " + replyText, isPermanentSmtpError(replyCode));
-            mReplyCode = replyCode;
-            mReplyText = replyText;
-        }
-
-        private static boolean isPermanentSmtpError(int replyCode) {
-            return replyCode >= 500 && replyCode <= 599;
-        }
-
-        public int getReplyCode() {
-            return mReplyCode;
-        }
-
-        public String getReplyText() {
-            return mReplyText;
-        }
     }
 }
