@@ -10,6 +10,8 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Loader;
 import android.graphics.Rect;
@@ -23,6 +25,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import timber.log.Timber;
+
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -32,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
@@ -66,6 +71,9 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private AlternateRecipientAdapter alternatesAdapter;
     private Recipient alternatesPopupRecipient;
     private TokenListener<Recipient> listener;
+
+    private final Handler handler = new Handler();
+    LongPressCopy recipientLongPressed;
 
 
     public RecipientSelectView(Context context) {
@@ -148,6 +156,21 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
     }
 
+    class LongPressCopy implements Runnable {
+        String str;
+
+        LongPressCopy(String s) { str = s; }
+        public void run() {
+            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("Copied text: ", str);
+            clipboard.setPrimaryClip(clip);
+            String toastText = getContext().getString(R.string.email_copied_to_clipboard);
+
+            Toast toast = Toast.makeText(getContext(), toastText, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         int action = event.getActionMasked();
@@ -160,6 +183,17 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 TokenImageSpan[] links = text.getSpans(offset, offset, RecipientTokenSpan.class);
                 if (links.length > 0) {
                     showAlternates(links[0].getToken());
+                    return true;
+                }
+            }
+        }
+        else if(text != null && event.getAction() == MotionEvent.ACTION_DOWN) {
+            int offset = getOffsetForPosition(event.getX(), event.getY());
+            if (offset != -1) {
+                TokenImageSpan[] links = text.getSpans(offset, offset, RecipientTokenSpan.class);
+                if (links.length > 0) {
+                    recipientLongPressed = new LongPressCopy(links[0].getToken().address.getAddress());
+                    handler.postDelayed(recipientLongPressed, 1000);
                     return true;
                 }
             }
