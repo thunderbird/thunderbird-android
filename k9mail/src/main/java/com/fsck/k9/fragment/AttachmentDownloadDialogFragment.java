@@ -15,7 +15,7 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
 
     ProgressDialog dialog;
 
-    static int progress = 0;
+    int progress = 0;
 
     MessagingListener messagingListener;
 
@@ -24,8 +24,6 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
 
     public static AttachmentDownloadDialogFragment newInstance(int size, String message) {
         AttachmentDownloadDialogFragment attachmentDownloadDialogFragment = new AttachmentDownloadDialogFragment();
-
-        progress = 0;
 
         Bundle args = new Bundle();
         args.putInt(ARG_SIZE, size);
@@ -45,6 +43,8 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
         Bundle args = getArguments();
         int size = args.getInt(ARG_SIZE);
         String message = args.getString(ARG_MESSAGE);
+
+        progress = 0;
 
         messagingListener = new SimpleMessagingListener() {
             @Override
