@@ -15,12 +15,13 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
+
 import timber.log.Timber;
 import android.util.Xml;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.ServerSettings;
@@ -32,7 +33,7 @@ import org.xmlpull.v1.XmlSerializer;
 
 
 public class SettingsExporter {
-    private static final String EXPORT_FILENAME = "settings.k9s";
+    public static final String EXPORT_FILENAME = "settings.k9s";
 
     /**
      * File format version number.
@@ -80,7 +81,6 @@ public class SettingsExporter {
             throws SettingsImportExportException {
 
         OutputStream os = null;
-        String filename = null;
         try {
             File dir = new File(Environment.getExternalStorageDirectory() + File.separator + context.getPackageName());
             if (!dir.mkdirs()) {
@@ -88,7 +88,7 @@ public class SettingsExporter {
             }
 
             File file = FileHelper.createUniqueFile(dir, EXPORT_FILENAME);
-            filename = file.getAbsolutePath();
+            String filename = file.getAbsolutePath();
             os = new FileOutputStream(filename);
 
             exportPreferences(context, os, includeGlobals, accountUuids);
@@ -98,13 +98,33 @@ public class SettingsExporter {
         } catch (Exception e) {
             throw new SettingsImportExportException(e);
         } finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException ioe) {
-                    Timber.w("Couldn't close exported settings file: %s", filename);
-                }
-            }
+            closeOrThrow(os);
+        }
+    }
+
+    public static void exportToUri(Context context, boolean includeGlobals, Set<String> accountUuids, Uri uri)
+            throws SettingsImportExportException {
+
+        OutputStream os = null;
+        try {
+            os = context.getContentResolver().openOutputStream(uri);
+            exportPreferences(context, os, includeGlobals, accountUuids);
+        } catch (Exception e) {
+            throw new SettingsImportExportException(e);
+        } finally {
+            closeOrThrow(os);
+        }
+    }
+
+    private static void closeOrThrow(OutputStream outputStream) throws SettingsImportExportException {
+        if (outputStream == null) {
+            return;
+        }
+
+        try {
+            outputStream.close();
+        } catch (IOException e) {
+            throw new SettingsImportExportException(e);
         }
     }
 
