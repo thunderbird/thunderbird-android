@@ -1,14 +1,40 @@
 package com.fsck.k9.mail.store.webdav;
 
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import android.util.Log;
 
-import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
-
-import org.apache.http.*;
+import javax.net.ssl.SSLException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.protocol.ClientContext;
@@ -23,22 +49,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-import javax.net.ssl.SSLException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
-
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_WEBDAV;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
-import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 
 
 /**
@@ -47,6 +60,7 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
  * and email information.
  * </pre>
  */
+@SuppressWarnings("deprecation")
 public class WebDavStore extends RemoteStore {
 
     public static WebDavStoreSettings decodeUri(String uri) {
@@ -58,31 +72,31 @@ public class WebDavStore extends RemoteStore {
     }
 
     private ConnectionSecurity mConnectionSecurity;
-    private String mUsername; /* Stores the username for authentications */
-    private String mAlias; /* Stores the alias for the user's mailbox */
-    private String mPassword; /* Stores the password for authentications */
-    private String mUrl; /* Stores the base URL for the server */
-    private String mHost; /* Stores the host name for the server */
-    private int mPort;
-    private String mPath; /* Stores the path for the server */
-    private String mAuthPath; /* Stores the path off of the server to post data to for form based authentication */
-    private String mMailboxPath; /* Stores the user specified path to the mailbox */
+    private String username;
+    private String alias;
+    private String password;
+    private String baseUrl;
+    private String hostname;
+    private int port;
+    private String path;
+    private String formBasedAuthPath;
+    private String mailboxPath;
 
-    private final WebDavHttpClient.WebDavHttpClientFactory mHttpClientFactory;
-    private WebDavHttpClient mHttpClient = null;
-    private HttpContext mContext = null;
-    private String mAuthString;
-    private CookieStore mAuthCookies = null;
-    private short mAuthentication = WebDavConstants.AUTH_TYPE_NONE;
-    private String mCachedLoginUrl;
+    private final WebDavHttpClient.WebDavHttpClientFactory httpClientFactory;
+    private WebDavHttpClient httpClient = null;
+    private HttpContext httpContext = null;
+    private String authString;
+    private CookieStore authCookies = null;
+    private short authenticationType = WebDavConstants.AUTH_TYPE_NONE;
+    private String cachedLoginUrl;
 
-    private Folder mSendFolder = null;
-    private Map<String, WebDavFolder> mFolderList = new HashMap<String, WebDavFolder>();
+    private Folder sendFolder = null;
+    private Map<String, WebDavFolder> folderList = new HashMap<>();
 
     public WebDavStore(StoreConfig storeConfig, WebDavHttpClient.WebDavHttpClientFactory clientFactory)
             throws MessagingException {
         super(storeConfig, null);
-        mHttpClientFactory = clientFactory;
+        httpClientFactory = clientFactory;
 
         WebDavStoreSettings settings;
         try {
@@ -91,43 +105,43 @@ public class WebDavStore extends RemoteStore {
             throw new MessagingException("Error while decoding store URI", e);
         }
 
-        mHost = settings.host;
-        mPort = settings.port;
+        hostname = settings.host;
+        port = settings.port;
 
         mConnectionSecurity = settings.connectionSecurity;
 
-        mUsername = settings.username;
-        mPassword = settings.password;
-        mAlias = settings.alias;
+        username = settings.username;
+        password = settings.password;
+        alias = settings.alias;
 
-        mPath = settings.path;
-        mAuthPath = settings.authPath;
-        mMailboxPath = settings.mailboxPath;
+        path = settings.path;
+        formBasedAuthPath = settings.authPath;
+        mailboxPath = settings.mailboxPath;
 
 
-        if (mPath == null || mPath.equals("")) {
-            mPath = "/Exchange";
-        } else if (!mPath.startsWith("/")) {
-            mPath = "/" + mPath;
+        if (path == null || path.equals("")) {
+            path = "/Exchange";
+        } else if (!path.startsWith("/")) {
+            path = "/" + path;
         }
 
-        if (mMailboxPath == null || mMailboxPath.equals("")) {
-            mMailboxPath = "/" + mAlias;
-        } else if (!mMailboxPath.startsWith("/")) {
-            mMailboxPath = "/" + mMailboxPath;
+        if (mailboxPath == null || mailboxPath.equals("")) {
+            mailboxPath = "/" + alias;
+        } else if (!mailboxPath.startsWith("/")) {
+            mailboxPath = "/" + mailboxPath;
         }
 
-        if (mAuthPath != null &&
-                !mAuthPath.equals("") &&
-                !mAuthPath.startsWith("/")) {
-            mAuthPath = "/" + mAuthPath;
+        if (formBasedAuthPath != null &&
+                !formBasedAuthPath.equals("") &&
+                !formBasedAuthPath.startsWith("/")) {
+            formBasedAuthPath = "/" + formBasedAuthPath;
         }
 
         // The URL typically looks like the following: "https://mail.domain.com/Exchange/alias".
         // The inbox path would look like: "https://mail.domain.com/Exchange/alias/Inbox".
-        mUrl = getRoot() + mPath + mMailboxPath;
+        baseUrl = getRoot() + path + mailboxPath;
 
-        mAuthString = "Basic " + Base64.encode(mUsername + ":" + mPassword);
+        authString = "Basic " + Base64.encode(username + ":" + password);
     }
 
     private String getRoot() {
@@ -137,16 +151,16 @@ public class WebDavStore extends RemoteStore {
         } else {
             root = "http";
         }
-        root += "://" + mHost + ":" + mPort;
+        root += "://" + hostname + ":" + port;
         return root;
     }
 
-    HttpContext getContext() {
-        return mContext;
+    HttpContext getHttpContext() {
+        return httpContext;
     }
 
     short getAuthentication() {
-        return mAuthentication;
+        return authenticationType;
     }
 
     StoreConfig getStoreConfig() {
@@ -160,20 +174,20 @@ public class WebDavStore extends RemoteStore {
 
     @Override
     public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
-        List<Folder> folderList = new LinkedList<Folder>();
-        /**
+        List<Folder> folderList = new LinkedList<>();
+        /*
          * We have to check authentication here so we have the proper URL stored
          */
         getHttpClient();
 
-        /**
+        /*
          *  Firstly we get the "special" folders list (inbox, outbox, etc)
          *  and setup the account accordingly
          */
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put("Depth", "0");
         headers.put("Brief", "t");
-        DataSet dataset = processRequest(this.mUrl, "PROPFIND", getSpecialFoldersList(), headers);
+        DataSet dataset = processRequest(this.baseUrl, "PROPFIND", getSpecialFoldersList(), headers);
 
         Map<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
         String folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_INBOX_FOLDER));
@@ -183,16 +197,19 @@ public class WebDavStore extends RemoteStore {
         }
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_DRAFTS_FOLDER));
-        if (folderName != null)
+        if (folderName != null) {
             mStoreConfig.setDraftsFolderName(folderName);
+        }
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_TRASH_FOLDER));
-        if (folderName != null)
+        if (folderName != null) {
             mStoreConfig.setTrashFolderName(folderName);
+        }
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SPAM_FOLDER));
-        if (folderName != null)
+        if (folderName != null) {
             mStoreConfig.setSpamFolderName(folderName);
+        }
 
         // K-9 Mail's outbox is a special local folder and different from Exchange/WebDAV's outbox.
         /*
@@ -202,21 +219,23 @@ public class WebDavStore extends RemoteStore {
         */
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SENT_FOLDER));
-        if (folderName != null)
+        if (folderName != null) {
             mStoreConfig.setSentFolderName(folderName);
+        }
 
-        /**
+        /*
          * Next we get all the folders (including "special" ones)
          */
-        headers = new HashMap<String, String>();
+        headers = new HashMap<>();
         headers.put("Brief", "t");
-        dataset = processRequest(this.mUrl, "SEARCH", getFolderListXml(), headers);
+        dataset = processRequest(this.baseUrl, "SEARCH", getFolderListXml(), headers);
         String[] folderUrls = dataset.getHrefs();
 
         for (String tempUrl : folderUrls) {
             WebDavFolder folder = createFolder(tempUrl);
-            if (folder != null)
+            if (folder != null) {
                 folderList.add(folder);
+            }
         }
 
         return folderList;
@@ -227,11 +246,14 @@ public class WebDavStore extends RemoteStore {
      * already created) and adds this to our store folder map.
      *
      * @param folderUrl
-     * @return
+     *         URL
+     *
+     * @return WebDAV remote folder
      */
     private WebDavFolder createFolder(String folderUrl) {
-        if (folderUrl == null)
+        if (folderUrl == null) {
             return null;
+        }
 
         WebDavFolder wdFolder = null;
         String folderName = getFolderName(folderUrl);
@@ -247,8 +269,9 @@ public class WebDavStore extends RemoteStore {
     }
 
     private String getFolderName(String folderUrl) {
-        if (folderUrl == null)
+        if (folderUrl == null) {
             return null;
+        }
 
         // Here we extract the folder name starting from the complete url.
         // folderUrl is in the form http://mail.domain.com/exchange/username/foldername
@@ -256,18 +279,20 @@ public class WebDavStore extends RemoteStore {
         int folderSlash = -1;
         for (int j = 0; j < 5; j++) {
             folderSlash = folderUrl.indexOf('/', folderSlash + 1);
-            if (folderSlash < 0)
+            if (folderSlash < 0) {
                 break;
+            }
         }
 
         if (folderSlash > 0) {
             String fullPathName;
 
             // Removes the final slash if present
-            if (folderUrl.charAt(folderUrl.length() - 1) == '/')
+            if (folderUrl.charAt(folderUrl.length() - 1) == '/') {
                 fullPathName = folderUrl.substring(folderSlash + 1, folderUrl.length() - 1);
-            else
+            } else {
                 fullPathName = folderUrl.substring(folderSlash + 1);
+            }
 
             // Decodes the url-encoded folder name (i.e. "My%20folder" => "My Folder"
 
@@ -279,21 +304,22 @@ public class WebDavStore extends RemoteStore {
 
     @Override
     public WebDavFolder getFolder(String name) {
-        WebDavFolder folder;
+        WebDavFolder folder = this.folderList.get(name);
 
-        if ((folder = this.mFolderList.get(name)) == null) {
+        if (folder == null) {
             folder = new WebDavFolder(this, name);
-            mFolderList.put(name, folder);
+            folderList.put(name, folder);
         }
 
         return folder;
     }
 
-    public Folder getSendSpoolFolder() throws MessagingException {
-        if (mSendFolder == null)
-            mSendFolder = getFolder(WebDavConstants.DAV_MAIL_SEND_FOLDER);
+    private Folder getSendSpoolFolder() throws MessagingException {
+        if (sendFolder == null) {
+            sendFolder = getFolder(WebDavConstants.DAV_MAIL_SEND_FOLDER);
+        }
 
-        return mSendFolder;
+        return sendFolder;
     }
 
     @Override
@@ -307,50 +333,42 @@ public class WebDavStore extends RemoteStore {
     }
 
     private String getSpecialFoldersList() {
-        StringBuilder builder = new StringBuilder(200);
-        builder.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>");
-        builder.append("<propfind xmlns=\"DAV:\">");
-        builder.append("<prop>");
-        builder.append("<").append(WebDavConstants.DAV_MAIL_INBOX_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-        builder.append("<").append(WebDavConstants.DAV_MAIL_DRAFTS_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-        builder.append("<").append(WebDavConstants.DAV_MAIL_OUTBOX_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-        builder.append("<").append(WebDavConstants.DAV_MAIL_SENT_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-        builder.append("<").append(WebDavConstants.DAV_MAIL_TRASH_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-        // This should always be ##DavMailSubmissionURI## for which we already have a constant
-        // buffer.append("<sendmsg xmlns=\"urn:schemas:httpmail:\"/>");
-
-        builder.append("<").append(WebDavConstants.DAV_MAIL_SPAM_FOLDER).append(" xmlns=\"urn:schemas:httpmail:\"/>");
-
-        builder.append("</prop>");
-        builder.append("</propfind>");
-        return builder.toString();
+        return "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>" +
+                "<propfind xmlns=\"DAV:\">" +
+                "<prop>" +
+                "<" + WebDavConstants.DAV_MAIL_INBOX_FOLDER + " xmlns=\"urn:schemas:httpmail:\"/>" +
+                "<" + WebDavConstants.DAV_MAIL_DRAFTS_FOLDER + " xmlns=\"urn:schemas:httpmail:\"/>" +
+                "<" + WebDavConstants.DAV_MAIL_OUTBOX_FOLDER + " xmlns=\"urn:schemas:httpmail:\"/>" +
+                "<" + WebDavConstants.DAV_MAIL_SENT_FOLDER + " xmlns=\"urn:schemas:httpmail:\"/>" +
+                "<" + WebDavConstants.DAV_MAIL_TRASH_FOLDER + " xmlns=\"urn:schemas:httpmail:\"/>" +
+                "<" + WebDavConstants.DAV_MAIL_SPAM_FOLDER + " xmlns=\"urn:schemas:httpmail:\"/>" +
+                // This should always be ##DavMailSubmissionURI## for which we already have a constant
+                // "<sendmsg xmlns=\"urn:schemas:httpmail:\"/>" +
+                "</prop>" +
+                "</propfind>";
     }
 
     /***************************************************************
      * WebDAV XML Request body retrieval functions
      */
     private String getFolderListXml() {
-        StringBuilder builder = new StringBuilder(200);
-        builder.append("<?xml version='1.0' ?>");
-        builder.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-        builder.append("SELECT \"DAV:uid\", \"DAV:ishidden\"\r\n");
-        builder.append(" FROM SCOPE('deep traversal of \"").append(this.mUrl).append("\"')\r\n");
-        builder.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=True\r\n");
-        builder.append("</a:sql></a:searchrequest>\r\n");
-        return builder.toString();
+        return "<?xml version='1.0' ?>" +
+                "<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n" +
+                "SELECT \"DAV:uid\", \"DAV:ishidden\"\r\n" +
+                " FROM SCOPE('deep traversal of \"" + this.baseUrl + "\"')\r\n" +
+                " WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=True\r\n" +
+                "</a:sql></a:searchrequest>\r\n";
     }
 
     String getMessageCountXml(String messageState) {
-        StringBuilder builder = new StringBuilder(200);
-        builder.append("<?xml version='1.0' ?>");
-        builder.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-        builder.append("SELECT \"DAV:visiblecount\"\r\n");
-        builder.append(" FROM \"\"\r\n");
-        builder.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"urn:schemas:httpmail:read\"=")
-                .append(messageState).append("\r\n");
-        builder.append(" GROUP BY \"DAV:ishidden\"\r\n");
-        builder.append("</a:sql></a:searchrequest>\r\n");
-        return builder.toString();
+        return "<?xml version='1.0' ?>" +
+                "<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n" +
+                "SELECT \"DAV:visiblecount\"\r\n" +
+                " FROM \"\"\r\n" +
+                " WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False AND \"urn:schemas:httpmail:read\"=" +
+                messageState + "\r\n" +
+                " GROUP BY \"DAV:ishidden\"\r\n" +
+                "</a:sql></a:searchrequest>\r\n";
     }
 
     String getMessageEnvelopeXml(String[] uids) {
@@ -384,14 +402,12 @@ public class WebDavStore extends RemoteStore {
     }
 
     String getMessagesXml() {
-        StringBuilder builder = new StringBuilder(200);
-        builder.append("<?xml version='1.0' ?>");
-        builder.append("<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n");
-        builder.append("SELECT \"DAV:uid\"\r\n");
-        builder.append(" FROM \"\"\r\n");
-        builder.append(" WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False\r\n");
-        builder.append("</a:sql></a:searchrequest>\r\n");
-        return builder.toString();
+        return "<?xml version='1.0' ?>" +
+                "<a:searchrequest xmlns:a='DAV:'><a:sql>\r\n" +
+                "SELECT \"DAV:uid\"\r\n" +
+                " FROM \"\"\r\n" +
+                " WHERE \"DAV:ishidden\"=False AND \"DAV:isfolder\"=False\r\n" +
+                "</a:sql></a:searchrequest>\r\n";
     }
 
     String getMessageUrlsXml(String[] uids) {
@@ -475,32 +491,23 @@ public class WebDavStore extends RemoteStore {
         return buffer.toString();
     }
 
-    /***************************************************************
-     * Authentication related methods
-     */
-
-    /**
-     * Determines which type of authentication Exchange is using and authenticates appropriately.
-     *
-     * @throws MessagingException
-     */
-    public boolean authenticate()
+    private boolean authenticate()
             throws MessagingException {
         try {
-            if (mAuthentication == WebDavConstants.AUTH_TYPE_NONE) {
+            if (authenticationType == WebDavConstants.AUTH_TYPE_NONE) {
                 ConnectionInfo info = doInitialConnection();
 
                 if (info.requiredAuthType == WebDavConstants.AUTH_TYPE_BASIC) {
-                    HttpGeneric request = new HttpGeneric(mUrl);
+                    HttpGeneric request = new HttpGeneric(baseUrl);
                     request.setMethod("GET");
-                    request.setHeader("Authorization", mAuthString);
+                    request.setHeader("Authorization", authString);
 
                     WebDavHttpClient httpClient = getHttpClient();
-                    HttpResponse response = httpClient.executeOverride(request, mContext);
+                    HttpResponse response = httpClient.executeOverride(request, httpContext);
 
                     int statusCode = response.getStatusLine().getStatusCode();
                     if (statusCode >= 200 && statusCode < 300) {
-                        mAuthentication = WebDavConstants.AUTH_TYPE_BASIC;
+                        authenticationType = WebDavConstants.AUTH_TYPE_BASIC;
                     } else if (statusCode == 401) {
                         throw new MessagingException("Invalid username or password for authentication.");
                     } else {
@@ -508,29 +515,23 @@ public class WebDavStore extends RemoteStore {
                                 " during request processing: " + response.getStatusLine().toString());
                     }
                 } else if (info.requiredAuthType == WebDavConstants.AUTH_TYPE_FORM_BASED) {
-                    doFBA(info);
+                    performFormBasedAuthentication(info);
                 }
-            } else if (mAuthentication == WebDavConstants.AUTH_TYPE_BASIC) {
+            } else if (authenticationType == WebDavConstants.AUTH_TYPE_BASIC) {
                 // Nothing to do, we authenticate with every request when
                 // using basic authentication.
-            } else if (mAuthentication == WebDavConstants.AUTH_TYPE_FORM_BASED) {
+            } else if (authenticationType == WebDavConstants.AUTH_TYPE_FORM_BASED) {
                 // Our cookie expired, re-authenticate.
-                doFBA(null);
+                performFormBasedAuthentication(null);
             }
         } catch (IOException ioe) {
             Log.e(LOG_TAG, "Error during authentication: " + ioe + "\nStack: " + WebDavUtils.processException(ioe));
             throw new MessagingException("Error during authentication", ioe);
         }
 
-        return mAuthentication != WebDavConstants.AUTH_TYPE_NONE;
+        return authenticationType != WebDavConstants.AUTH_TYPE_NONE;
     }
 
-    /**
-     * Makes the initial connection to Exchange for authentication. Determines the type of authentication necessary for
-     * the server.
-     *
-     * @throws MessagingException
-     */
     private ConnectionInfo doInitialConnection()
             throws MessagingException {
         // For our initial connection we are sending an empty GET request to
@@ -547,11 +548,11 @@ public class WebDavStore extends RemoteStore {
 
         WebDavHttpClient httpClient = getHttpClient();
 
-        HttpGeneric request = new HttpGeneric(mUrl);
+        HttpGeneric request = new HttpGeneric(baseUrl);
         request.setMethod("GET");
 
         try {
-            HttpResponse response = httpClient.executeOverride(request, mContext);
+            HttpResponse response = httpClient.executeOverride(request, httpContext);
             info.statusCode = response.getStatusLine().getStatusCode();
 
             if (info.statusCode == 401) {
@@ -568,9 +569,9 @@ public class WebDavStore extends RemoteStore {
                 // authorization URL.
                 info.requiredAuthType = WebDavConstants.AUTH_TYPE_FORM_BASED;
 
-                if (mAuthPath != null && !mAuthPath.equals("")) {
+                if (formBasedAuthPath != null && !formBasedAuthPath.equals("")) {
                     // The user specified their own authentication path, use that.
-                    info.guessedAuthUrl = getRoot() + mAuthPath;
+                    info.guessedAuthUrl = getRoot() + formBasedAuthPath;
                 } else {
                     // Use the default path to the authentication dll.
                     info.guessedAuthUrl = getRoot() + "/exchweb/bin/auth/owaauth.dll";
@@ -595,23 +596,20 @@ public class WebDavStore extends RemoteStore {
         return info;
     }
 
-    /**
-     * Performs form-based authentication.
-     *
-     * @throws MessagingException
-     */
-    public void doFBA(ConnectionInfo info)
+    private void performFormBasedAuthentication(ConnectionInfo info)
             throws IOException, MessagingException {
         // Clear out cookies from any previous authentication.
-        if (mAuthCookies != null) mAuthCookies.clear();
+        if (authCookies != null) {
+            authCookies.clear();
+        }
 
         WebDavHttpClient httpClient = getHttpClient();
 
         String loginUrl;
         if (info != null) {
             loginUrl = info.guessedAuthUrl;
-        } else if (mCachedLoginUrl != null && !mCachedLoginUrl.equals("")) {
-            loginUrl = mCachedLoginUrl;
+        } else if (cachedLoginUrl != null && !cachedLoginUrl.equals("")) {
+            loginUrl = cachedLoginUrl;
         } else {
             throw new MessagingException("No valid login URL available for form-based authentication.");
         }
@@ -620,10 +618,10 @@ public class WebDavStore extends RemoteStore {
         request.setMethod("POST");
 
         // Build the POST data.
-        List<BasicNameValuePair> pairs = new ArrayList<BasicNameValuePair>();
-        pairs.add(new BasicNameValuePair("destination", mUrl));
-        pairs.add(new BasicNameValuePair("username", mUsername));
-        pairs.add(new BasicNameValuePair("password", mPassword));
+        List<BasicNameValuePair> pairs = new ArrayList<>();
+        pairs.add(new BasicNameValuePair("destination", baseUrl));
+        pairs.add(new BasicNameValuePair("username", username));
+        pairs.add(new BasicNameValuePair("password", password));
         pairs.add(new BasicNameValuePair("flags", "0"));
         pairs.add(new BasicNameValuePair("SubmitCreds", "Log+On"));
         pairs.add(new BasicNameValuePair("forcedownlevel", "0"));
@@ -632,7 +630,7 @@ public class WebDavStore extends RemoteStore {
         UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(pairs);
         request.setEntity(formEntity);
 
-        HttpResponse response = httpClient.executeOverride(request, mContext);
+        HttpResponse response = httpClient.executeOverride(request, httpContext);
         boolean authenticated = testAuthenticationResponse(response);
         if (!authenticated) {
             // Check the response from the authentication request above for a form action.
@@ -645,7 +643,7 @@ public class WebDavStore extends RemoteStore {
                     request = new HttpGeneric(loginUrl);
                     request.setMethod("GET");
 
-                    response = httpClient.executeOverride(request, mContext);
+                    response = httpClient.executeOverride(request, httpContext);
                     formAction = findFormAction(WebDavHttpClient.getUngzippedContent(response.getEntity()));
                 }
             }
@@ -687,7 +685,7 @@ public class WebDavStore extends RemoteStore {
                     request.setMethod("POST");
                     request.setEntity(formEntity);
 
-                    response = httpClient.executeOverride(request, mContext);
+                    response = httpClient.executeOverride(request, httpContext);
                     authenticated = testAuthenticationResponse(response);
                 } catch (URISyntaxException e) {
                     Log.e(LOG_TAG, "URISyntaxException caught " + e + "\nTrace: " + WebDavUtils.processException(e));
@@ -699,18 +697,13 @@ public class WebDavStore extends RemoteStore {
         }
 
         if (authenticated) {
-            mAuthentication = WebDavConstants.AUTH_TYPE_FORM_BASED;
-            mCachedLoginUrl = loginUrl;
+            authenticationType = WebDavConstants.AUTH_TYPE_FORM_BASED;
+            cachedLoginUrl = loginUrl;
         } else {
             throw new MessagingException("Invalid credentials provided for authentication.");
         }
     }
 
-    /**
-     * Searches the specified stream for an HTML form and returns the form's action target.
-     *
-     * @throws IOException
-     */
     private String findFormAction(InputStream istream)
             throws IOException {
         String formAction = null;
@@ -718,9 +711,10 @@ public class WebDavStore extends RemoteStore {
         BufferedReader reader = new BufferedReader(new InputStreamReader(istream), 4096);
         String tempText;
 
+        //TODO: Use proper HTML parsing for this
         // Read line by line until we find something like: <form action="owaauth.dll"...>.
-        while ((tempText = reader.readLine()) != null &&
-                formAction == null) {
+        tempText = reader.readLine();
+        while (formAction == null) {
             if (tempText.contains(" action=")) {
                 String[] actionParts = tempText.split(" action=");
                 if (actionParts.length > 1 && actionParts[1].length() > 1) {
@@ -736,6 +730,7 @@ public class WebDavStore extends RemoteStore {
                     }
                 }
             }
+            tempText = reader.readLine();
         }
 
         return formAction;
@@ -747,7 +742,7 @@ public class WebDavStore extends RemoteStore {
         int statusCode = response.getStatusLine().getStatusCode();
         // Exchange 2007 will return a 302 status code no matter what.
         if (((statusCode >= 200 && statusCode < 300) || statusCode == 302) &&
-                mAuthCookies != null && !mAuthCookies.getCookies().isEmpty()) {
+                authCookies != null && !authCookies.getCookies().isEmpty()) {
             // We may be authenticated, we need to send a test request to know for sure.
             // Exchange 2007 adds the same cookies whether the username and password were valid or not.
             ConnectionInfo info = doInitialConnection();
@@ -760,7 +755,7 @@ public class WebDavStore extends RemoteStore {
                 // The redirect is in the form: https://hostname:port/owa/alias.
                 // Do a simple replace and compare the resulting strings.
                 try {
-                    String thisPath = new URI(mUrl).getPath();
+                    String thisPath = new URI(baseUrl).getPath();
                     String redirectPath = new URI(info.redirectUrl).getPath();
 
                     if (!thisPath.endsWith("/")) {
@@ -793,31 +788,31 @@ public class WebDavStore extends RemoteStore {
     }
 
     public CookieStore getAuthCookies() {
-        return mAuthCookies;
+        return authCookies;
     }
 
     public String getAlias() {
-        return mAlias;
+        return alias;
     }
 
     public String getUrl() {
-        return mUrl;
+        return baseUrl;
     }
 
     public WebDavHttpClient getHttpClient() throws MessagingException {
-        if (mHttpClient == null) {
-            mHttpClient = mHttpClientFactory.create();
+        if (httpClient == null) {
+            httpClient = httpClientFactory.create();
             // Disable automatic redirects on the http client.
-            mHttpClient.getParams().setBooleanParameter("http.protocol.handle-redirects", false);
+            httpClient.getParams().setBooleanParameter("http.protocol.handle-redirects", false);
 
             // Setup a cookie store for forms-based authentication.
-            mContext = new BasicHttpContext();
-            mAuthCookies = new BasicCookieStore();
-            mContext.setAttribute(ClientContext.COOKIE_STORE, mAuthCookies);
+            httpContext = new BasicHttpContext();
+            authCookies = new BasicCookieStore();
+            httpContext.setAttribute(ClientContext.COOKIE_STORE, authCookies);
 
-            SchemeRegistry reg = mHttpClient.getConnectionManager().getSchemeRegistry();
+            SchemeRegistry reg = httpClient.getConnectionManager().getSchemeRegistry();
             try {
-                Scheme s = new Scheme("https", new WebDavSocketFactory(mHost, 443), 443);
+                Scheme s = new Scheme("https", new WebDavSocketFactory(hostname, 443), 443);
                 reg.register(s);
             } catch (NoSuchAlgorithmException nsa) {
                 Log.e(LOG_TAG, "NoSuchAlgorithmException in getHttpClient: " + nsa);
@@ -827,11 +822,11 @@ public class WebDavStore extends RemoteStore {
                 throw new MessagingException("KeyManagementException in getHttpClient: " + kme);
             }
         }
-        return mHttpClient;
+        return httpClient;
     }
 
     protected InputStream sendRequest(String url, String method, StringEntity messageBody,
-                                    Map<String, String> headers, boolean tryAuth)
+            Map<String, String> headers, boolean tryAuth)
             throws MessagingException {
         if (url == null || method == null) {
             return null;
@@ -855,16 +850,16 @@ public class WebDavStore extends RemoteStore {
                 }
             }
 
-            if (mAuthentication == WebDavConstants.AUTH_TYPE_NONE) {
+            if (authenticationType == WebDavConstants.AUTH_TYPE_NONE) {
                 if (!tryAuth || !authenticate()) {
                     throw new MessagingException("Unable to authenticate in sendRequest().");
                 }
-            } else if (mAuthentication == WebDavConstants.AUTH_TYPE_BASIC) {
-                httpMethod.setHeader("Authorization", mAuthString);
+            } else if (authenticationType == WebDavConstants.AUTH_TYPE_BASIC) {
+                httpMethod.setHeader("Authorization", authString);
             }
 
             httpMethod.setMethod(method);
-            response = httpClient.executeOverride(httpMethod, mContext);
+            response = httpClient.executeOverride(httpMethod, httpContext);
             statusCode = response.getStatusLine().getStatusCode();
 
             entity = response.getEntity();
@@ -872,9 +867,9 @@ public class WebDavStore extends RemoteStore {
             if (statusCode == 401) {
                 throw new MessagingException("Invalid username or password for Basic authentication.");
             } else if (statusCode == 440) {
-                if (tryAuth && mAuthentication == WebDavConstants.AUTH_TYPE_FORM_BASED) {
+                if (tryAuth && authenticationType == WebDavConstants.AUTH_TYPE_FORM_BASED) {
                     // Our cookie expired, re-authenticate.
-                    doFBA(null);
+                    performFormBasedAuthentication(null);
                     sendRequest(url, method, messageBody, headers, false);
                 } else {
                     throw new MessagingException("Authentication failure in sendRequest().");
@@ -904,7 +899,7 @@ public class WebDavStore extends RemoteStore {
         if (response.getFirstHeader("Location") != null) {
             // TODO: This may indicate lack of authentication or may alternatively be something we should follow
             throw new IOException("Unexpected redirect during request processing. " +
-                    "Expected response from: "+url+" but told to redirect to:" +
+                    "Expected response from: " + url + " but told to redirect to:" +
                     response.getFirstHeader("Location").getValue());
         } else {
             throw new IOException("Unexpected redirect during request processing. " +
@@ -913,11 +908,11 @@ public class WebDavStore extends RemoteStore {
     }
 
     public String getAuthString() {
-        return mAuthString;
+        return authString;
     }
 
     /**
-     * Performs an httprequest to the supplied url using the supplied method. messageBody and headers are optional as
+     * Performs an HttpRequest to the supplied url using the supplied method. messageBody and headers are optional as
      * not all requests will need them. There are two signatures to support calls that don't require parsing of the
      * response.
      */
@@ -927,7 +922,7 @@ public class WebDavStore extends RemoteStore {
     }
 
     DataSet processRequest(String url, String method, String messageBody, Map<String, String> headers,
-                           boolean needsParsing)
+            boolean needsParsing)
             throws MessagingException {
         DataSet dataset = new DataSet();
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_WEBDAV) {
@@ -964,7 +959,8 @@ public class WebDavStore extends RemoteStore {
 
                     dataset = myHandler.getDataSet();
                 } catch (SAXException se) {
-                    Log.e(LOG_TAG, "SAXException in processRequest() " + se + "\nTrace: " + WebDavUtils.processException(se));
+                    Log.e(LOG_TAG,
+                            "SAXException in processRequest() " + se + "\nTrace: " + WebDavUtils.processException(se));
                     throw new MessagingException("SAXException in processRequest() ", se);
                 } catch (ParserConfigurationException pce) {
                     Log.e(LOG_TAG, "ParserConfigurationException in processRequest() " + pce + "\nTrace: "
@@ -992,7 +988,7 @@ public class WebDavStore extends RemoteStore {
 
     @Override
     public void sendMessages(List<? extends Message> messages) throws MessagingException {
-        WebDavFolder tmpFolder = (WebDavFolder) getFolder(mStoreConfig.getDraftsFolderName());
+        WebDavFolder tmpFolder = getFolder(mStoreConfig.getDraftsFolderName());
         try {
             tmpFolder.open(Folder.OPEN_MODE_RW);
             List<? extends Message> retMessages = tmpFolder.appendWebDavMessages(messages);
