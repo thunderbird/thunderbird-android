@@ -1,13 +1,8 @@
 
 package com.fsck.k9.mail;
 
-import android.content.Context;
-
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
-import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
-import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.transport.SmtpTransport;
+import com.fsck.k9.mail.transport.smtp.SmtpTransport;
 import com.fsck.k9.mail.transport.WebDavTransport;
 
 import java.io.UnsupportedEncodingException;
