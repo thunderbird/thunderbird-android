@@ -1242,15 +1242,15 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void equals_returnsFalse_whenCaseDifferent() {
+    public void equals_withDifferentCase_shouldReturnFalse() {
         ImapFolder imapFolder = createFolder("Folder");
         ImapFolder imapFolder2 = createFolder("folder");
-        assertNotEquals(imapFolder.hashCode(), imapFolder2.hashCode());
+
         assertFalse(imapFolder.equals(imapFolder2));
     }
 
     @Test
-    public void equals_returnsTrue_inboxCaseDifferent(){
+    public void equals_withInboxCaseDifferent_shouldReturnTrue() {
         ImapFolder imapFolder = createFolder("Inbox");
         ImapFolder imapFolder2 = createFolder("inbox");
         ImapFolder imapFolder3 = createFolder("INBOX");
@@ -1260,7 +1260,7 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void equals_returnsTrue_inboxCaseSame(){
+    public void equals_withInboxCaseSame_shouldReturnTrue() {
         ImapFolder imapFolder = createFolder("INBOX");
         ImapFolder imapFolder2 = createFolder("INBOX");
 
@@ -1268,10 +1268,10 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void hashCode_returnTrue_inboxCaseDifferent(){
+    public void hashCode_withInboxCaseDifferent_shouldReturnTrue() {
         ImapFolder imapFolder = createFolder("Inbox");
         ImapFolder imapFolder2 = createFolder("inbox");
 
-        assertEquals(imapFolder.hashCode(),imapFolder2.hashCode());
+        assertEquals(imapFolder.hashCode(), imapFolder2.hashCode());
     }
 }
