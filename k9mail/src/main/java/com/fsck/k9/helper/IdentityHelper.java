@@ -6,6 +6,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 
+
 public class IdentityHelper {
 
     /**
@@ -24,7 +25,7 @@ public class IdentityHelper {
     public static Identity getRecipientIdentityFromMessage(Account account, Message message) {
         Identity recipient = null;
 
-        for(Address address:message.getRecipients(Message.RecipientType.X_ORIGINAL_TO)){
+        for (Address address : message.getRecipients(Message.RecipientType.X_ORIGINAL_TO)) {
             Identity identity = account.findIdentity(address);
             if (identity != null) {
                 recipient = identity;
@@ -32,8 +33,8 @@ public class IdentityHelper {
             }
         }
 
-        if(recipient == null) {
-            for(Address address:message.getRecipients(Message.RecipientType.DELIVERED_TO)){
+        if (recipient == null) {
+            for (Address address : message.getRecipients(Message.RecipientType.DELIVERED_TO)) {
                 Identity identity = account.findIdentity(address);
                 if (identity != null) {
                     recipient = identity;
@@ -42,8 +43,8 @@ public class IdentityHelper {
             }
         }
 
-        if(recipient == null) {
-            for(Address address:message.getRecipients(Message.RecipientType.X_ENVELOPE_TO)){
+        if (recipient == null) {
+            for (Address address : message.getRecipients(Message.RecipientType.X_ENVELOPE_TO)) {
                 Identity identity = account.findIdentity(address);
                 if (identity != null) {
                     recipient = identity;
@@ -52,7 +53,7 @@ public class IdentityHelper {
             }
         }
 
-        if(recipient == null) {
+        if (recipient == null) {
             for (Address address : message.getRecipients(Message.RecipientType.TO)) {
                 Identity identity = account.findIdentity(address);
                 if (identity != null) {

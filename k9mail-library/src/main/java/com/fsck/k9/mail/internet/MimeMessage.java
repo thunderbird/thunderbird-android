@@ -219,19 +219,19 @@ public class MimeMessage extends Message {
                 return mBcc;
             }
             case X_ORIGINAL_TO: {
-                if(xOriginalTo == null){
+                if (xOriginalTo == null) {
                     xOriginalTo = Address.parse(MimeUtility.unfold(getFirstHeader("X-Original-To")));
                 }
                 return xOriginalTo;
             }
             case DELIVERED_TO: {
-                if(deliveredTo == null){
+                if (deliveredTo == null) {
                     deliveredTo = Address.parse(MimeUtility.unfold(getFirstHeader("Delivered-To")));
                 }
                 return deliveredTo;
             }
             case X_ENVELOPE_TO: {
-                if(xEnvelopeTo == null) {
+                if (xEnvelopeTo == null) {
                     xEnvelopeTo = Address.parse(MimeUtility.unfold(getFirstHeader("X-Envelope-To")));
                 }
                 return xEnvelopeTo;
@@ -267,7 +267,7 @@ public class MimeMessage extends Message {
                 setHeader("BCC", Address.toEncodedString(addresses));
                 this.mBcc = addresses;
             }
-        } else if (type == RecipientType.X_ORIGINAL_TO){
+        } else if (type == RecipientType.X_ORIGINAL_TO) {
             if (addresses == null || addresses.length == 0) {
                 removeHeader("X-Original-To");
                 this.xOriginalTo = null;
@@ -275,7 +275,7 @@ public class MimeMessage extends Message {
                 setHeader("X-Original-To", Address.toEncodedString(addresses));
                 this.xOriginalTo = addresses;
             }
-        } else if (type == RecipientType.DELIVERED_TO){
+        } else if (type == RecipientType.DELIVERED_TO) {
             if (addresses == null || addresses.length == 0) {
                 removeHeader("Delivered-To");
                 this.deliveredTo = null;
@@ -283,7 +283,7 @@ public class MimeMessage extends Message {
                 setHeader("Delivered-To", Address.toEncodedString(addresses));
                 this.deliveredTo = addresses;
             }
-        } else if (type == RecipientType.X_ENVELOPE_TO){
+        } else if (type == RecipientType.X_ENVELOPE_TO) {
             if (addresses == null || addresses.length == 0) {
                 removeHeader("X-Envelope-To");
                 this.xEnvelopeTo = null;

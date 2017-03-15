@@ -61,7 +61,7 @@ public class IdentityHelperTest {
     }
 
     private void setIdentity() {
-        Identity identity  = new Identity();
+        Identity identity = new Identity();
         identity.setEmail("test@mail.com");
         identity.setName("test");
         Identity identity2 = new Identity();
@@ -81,25 +81,25 @@ public class IdentityHelperTest {
     @Test
     public void testXOriginalTo() throws Exception {
         Address[] addresses = {new Address("test2@mail.com")};
-        msg.setRecipients(Message.RecipientType.X_ORIGINAL_TO,addresses);
+        msg.setRecipients(Message.RecipientType.X_ORIGINAL_TO, addresses);
 
-        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account,msg);
+        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
         assertTrue(identity.getEmail().equalsIgnoreCase("test2@mail.com"));
     }
 
     @Test
     public void testTo_withoutXOriginalTo() throws Exception {
-        Identity eva = IdentityHelper.getRecipientIdentityFromMessage(account,msg);
+        Identity eva = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
         assertTrue(eva.getEmail().equalsIgnoreCase("eva@example.org"));
     }
 
     @Test
     public void testDeliveredTo() throws Exception {
         Address[] addresses = {new Address("test2@mail.com")};
-        msg.setRecipients(Message.RecipientType.DELIVERED_TO,addresses);
+        msg.setRecipients(Message.RecipientType.DELIVERED_TO, addresses);
         msg.removeHeader("X-Original-To");
 
-        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account,msg);
+        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
         assertTrue(identity.getEmail().equalsIgnoreCase("test2@mail.com"));
 
     }
@@ -107,22 +107,22 @@ public class IdentityHelperTest {
     @Test
     public void testXEnvelopeTo() throws Exception {
         Address[] addresses = {new Address("test@mail.com")};
-        msg.setRecipients(Message.RecipientType.X_ENVELOPE_TO,addresses);
+        msg.setRecipients(Message.RecipientType.X_ENVELOPE_TO, addresses);
         msg.removeHeader("X-Original-To");
         msg.removeHeader("Delivered-To");
 
-        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account,msg);
+        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
         assertTrue(identity.getEmail().equalsIgnoreCase("test@mail.com"));
     }
 
     @Test
     public void testXEnvelopeTo_withXOriginalTo() throws Exception {
-        Address[] addresses = {new Address("test@mail.com")} ;
+        Address[] addresses = {new Address("test@mail.com")};
         Address[] xoriginaltoaddresses = {new Address("test2@mail.com")};
-        msg.setRecipients(Message.RecipientType.X_ENVELOPE_TO,addresses);
-        msg.setRecipients(Message.RecipientType.X_ORIGINAL_TO,xoriginaltoaddresses);
+        msg.setRecipients(Message.RecipientType.X_ENVELOPE_TO, addresses);
+        msg.setRecipients(Message.RecipientType.X_ORIGINAL_TO, xoriginaltoaddresses);
 
-        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account,msg);
+        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
         assertTrue(identity.getEmail().equalsIgnoreCase("test2@mail.com"));
     }
 

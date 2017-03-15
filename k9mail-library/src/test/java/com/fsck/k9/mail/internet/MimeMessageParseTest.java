@@ -19,6 +19,7 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.Multipart;
+
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
@@ -279,7 +280,7 @@ public class MimeMessageParseTest {
         MimeMessage msg = parseWithoutRecurse(toStream(
                 "From: <adam@example.org>\r\n" +
                         "To: <eva@example.org>\r\n" +
-                        "X-Original-To: <test@mail.com>\r\n"+
+                        "X-Original-To: <test@mail.com>\r\n" +
                         "Subject: Testmail\r\n" +
                         "MIME-Version: 1.0\r\n" +
                         "Content-type: text/plain\r\n" +
@@ -298,7 +299,7 @@ public class MimeMessageParseTest {
         MimeMessage msg = parseWithoutRecurse(toStream(
                 "From: <adam@example.org>\r\n" +
                         "To: <eva@example.org>\r\n" +
-                        "Delivered-To: <test@mail.com>\r\n"+
+                        "Delivered-To: <test@mail.com>\r\n" +
                         "Subject: Testmail\r\n" +
                         "MIME-Version: 1.0\r\n" +
                         "Content-type: text/plain\r\n" +
@@ -317,7 +318,7 @@ public class MimeMessageParseTest {
         MimeMessage msg = parseWithoutRecurse(toStream(
                 "From: <adam@example.org>\r\n" +
                         "To: <eva@example.org>\r\n" +
-                        "X-Envelope-To: <test@mail.com>\r\n"+
+                        "X-Envelope-To: <test@mail.com>\r\n" +
                         "Subject: Testmail\r\n" +
                         "MIME-Version: 1.0\r\n" +
                         "Content-type: text/plain\r\n" +
