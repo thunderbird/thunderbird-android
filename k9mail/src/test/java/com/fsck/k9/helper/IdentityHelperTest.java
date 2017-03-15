@@ -1,48 +1,40 @@
 package com.fsck.k9.helper;
 
+
 import android.content.Context;
-import android.test.ApplicationTestCase;
-import android.test.RenamingDelegatingContext;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
-import com.fsck.k9.K9;
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mailstore.ReconstructMessageFromDatabaseTest;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by yesalam on 7/3/17.
- */
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class IdentityHelperTest extends ApplicationTestCase<K9> {
+@RunWith(K9RobolectricTestRunner.class)
+public class IdentityHelperTest {
 
-    private Account account ;
-    private MimeMessage msg ;
-
-    public IdentityHelperTest() {
-        super(K9.class);
-    }
+    private Account account;
+    private MimeMessage msg;
 
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        RenamingDelegatingContext context = new RenamingDelegatingContext(getContext(), "db-test-");
-        setContext(context);
-
-        createApplication();
-
+    @Before
+    public void setUp() throws Exception {
+        Context context = RuntimeEnvironment.application;
         createDummyAccount(context);
-
         msg = parseWithoutRecurse(toStream(
                 "From: <adam@example.org>\r\n" +
                         "To: <eva@example.org>\r\n" +
@@ -68,8 +60,8 @@ public class IdentityHelperTest extends ApplicationTestCase<K9> {
         setIdentity();
     }
 
-    private void setIdentity(){
-       Identity identity  = new Identity() ;
+    private void setIdentity() {
+        Identity identity  = new Identity();
         identity.setEmail("test@mail.com");
         identity.setName("test");
         Identity identity2 = new Identity();
@@ -86,23 +78,24 @@ public class IdentityHelperTest extends ApplicationTestCase<K9> {
         account.setIdentities(identityList);
     }
 
-
+    @Test
     public void testXOriginalTo() throws Exception {
-        Address[] addresses = {new Address("test2@mail.com")} ;
+        Address[] addresses = {new Address("test2@mail.com")};
         msg.setRecipients(Message.RecipientType.X_ORIGINAL_TO,addresses);
 
         Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account,msg);
         assertTrue(identity.getEmail().equalsIgnoreCase("test2@mail.com"));
     }
 
+    @Test
     public void testTo_withoutXOriginalTo() throws Exception {
-        Identity eva = IdentityHelper.getRecipientIdentityFromMessage(account,msg) ;
+        Identity eva = IdentityHelper.getRecipientIdentityFromMessage(account,msg);
         assertTrue(eva.getEmail().equalsIgnoreCase("eva@example.org"));
     }
 
+    @Test
     public void testDeliveredTo() throws Exception {
-        Address[] addresses = {new Address("test2@mail.com")} ;
-
+        Address[] addresses = {new Address("test2@mail.com")};
         msg.setRecipients(Message.RecipientType.DELIVERED_TO,addresses);
         msg.removeHeader("X-Original-To");
 
@@ -111,23 +104,25 @@ public class IdentityHelperTest extends ApplicationTestCase<K9> {
 
     }
 
+    @Test
     public void testXEnvelopeTo() throws Exception {
-        Address[] addresses = {new Address("test@mail.com")} ;
+        Address[] addresses = {new Address("test@mail.com")};
         msg.setRecipients(Message.RecipientType.X_ENVELOPE_TO,addresses);
         msg.removeHeader("X-Original-To");
         msg.removeHeader("Delivered-To");
+
         Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account,msg);
         assertTrue(identity.getEmail().equalsIgnoreCase("test@mail.com"));
     }
 
+    @Test
     public void testXEnvelopeTo_withXOriginalTo() throws Exception {
         Address[] addresses = {new Address("test@mail.com")} ;
-        Address[] xoriginaladdress = {new Address("test2@mail.com")} ;
+        Address[] xoriginaltoaddresses = {new Address("test2@mail.com")};
         msg.setRecipients(Message.RecipientType.X_ENVELOPE_TO,addresses);
-        msg.setRecipients(Message.RecipientType.X_ORIGINAL_TO,xoriginaladdress);
+        msg.setRecipients(Message.RecipientType.X_ORIGINAL_TO,xoriginaltoaddresses);
 
         Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account,msg);
-        assertFalse(identity.getEmail().equalsIgnoreCase("test@mail.com"));
         assertTrue(identity.getEmail().equalsIgnoreCase("test2@mail.com"));
     }
 

@@ -275,7 +275,7 @@ public class MimeMessageParseTest {
     }
 
     @Test
-    public void isXOriginalTo() throws Exception {
+    public void getRecipients_withXOriginalTo() throws Exception {
         MimeMessage msg = parseWithoutRecurse(toStream(
                 "From: <adam@example.org>\r\n" +
                         "To: <eva@example.org>\r\n" +
@@ -287,13 +287,14 @@ public class MimeMessageParseTest {
                         "\r\n" +
                         "this is some test text."));
 
-        Address address = new Address("<test@mail.com>");
-        Address[] x_original_address = msg.getRecipients(RecipientType.X_ORIGINAL_TO) ;
-        assertTrue(x_original_address[0].equals(address));
+        Address[] xOriginalAddresses = msg.getRecipients(RecipientType.X_ORIGINAL_TO);
+
+        assertEquals(1, xOriginalAddresses.length);
+        assertEquals(new Address("<test@mail.com>"), xOriginalAddresses[0]);
     }
 
     @Test
-    public void isDeliveredTo() throws Exception {
+    public void getRecipients_withDeliveredTo() throws Exception {
         MimeMessage msg = parseWithoutRecurse(toStream(
                 "From: <adam@example.org>\r\n" +
                         "To: <eva@example.org>\r\n" +
@@ -305,13 +306,14 @@ public class MimeMessageParseTest {
                         "\r\n" +
                         "this is some test text."));
 
-        Address address = new Address("<test@mail.com>");
-        Address[] addresses = msg.getRecipients(RecipientType.DELIVERED_TO) ;
-        assertTrue(addresses[0].equals(address));
+        Address[] deliveredToAddresses = msg.getRecipients(RecipientType.DELIVERED_TO);
+
+        assertEquals(1, deliveredToAddresses.length);
+        assertEquals(new Address("<test@mail.com>"), deliveredToAddresses[0]);
     }
 
     @Test
-    public void isXEnvelopeTo() throws Exception {
+    public void getRecipients_withXEnvelopeTo() throws Exception {
         MimeMessage msg = parseWithoutRecurse(toStream(
                 "From: <adam@example.org>\r\n" +
                         "To: <eva@example.org>\r\n" +
@@ -323,9 +325,10 @@ public class MimeMessageParseTest {
                         "\r\n" +
                         "this is some test text."));
 
-        Address address = new Address("<test@mail.com>");
-        Address[] addresses = msg.getRecipients(RecipientType.X_ENVELOPE_TO) ;
-        assertTrue(addresses[0].equals(address));
+        Address[] xEnvelopeToAddresses = msg.getRecipients(RecipientType.X_ENVELOPE_TO);
+
+        assertEquals(1, xEnvelopeToAddresses.length);
+        assertEquals(new Address("<test@mail.com>"), xEnvelopeToAddresses[0]);
     }
 
 
