@@ -495,7 +495,7 @@ public class Utility {
             out = new FileOutputStream(tempFile);
             resized.compress(Bitmap.CompressFormat.PNG, 100, out);
         } catch (IOException e) {
-            Timber.e("Error while resizing image attachment", e);
+            Timber.e(e, "Error while resizing image attachment");
             return "";
         } finally {
             IOUtils.closeQuietly(out);
@@ -511,7 +511,7 @@ public class Utility {
             try {
                 FileUtils.cleanDirectory(tempAttachmentsDirectory);
             } catch (IOException e) {
-                Timber.e("Error occurred while cleaning temporary directory for resized attachments", e);
+                Timber.e(e, "Error occurred while cleaning temporary directory for resized attachments");
             }
         }
     }
