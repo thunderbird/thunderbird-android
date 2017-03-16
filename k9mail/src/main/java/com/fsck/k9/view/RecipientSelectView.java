@@ -183,6 +183,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 TokenImageSpan[] links = text.getSpans(offset, offset, RecipientTokenSpan.class);
                 if (links.length > 0) {
                     showAlternates(links[0].getToken());
+                    handler.removeCallbacks(recipientLongPressed);
                     return true;
                 }
             }
