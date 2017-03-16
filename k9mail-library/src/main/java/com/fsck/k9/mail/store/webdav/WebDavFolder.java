@@ -27,7 +27,6 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -373,7 +372,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                 if (store.getAuthentication() == WebDavConstants.AUTH_TYPE_BASIC) {
                     httpget.setHeader("Authorization", store.getAuthString());
                 }
-                response = httpclient.executeOverride(httpget, store.getContext());
+                response = httpclient.executeOverride(httpget, store.getHttpContext());
 
                 statusCode = response.getStatusLine().getStatusCode();
 
