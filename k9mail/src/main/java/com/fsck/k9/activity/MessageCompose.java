@@ -772,7 +772,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         @Override
         protected void onPostExecute(ArrayList<Attachment> attachments) {
             progressDialog.dismiss();
-            if(isDraft){
+            if (isDraft) {
                 currentMessageBuilder = createMessageBuilder(true, attachments);
                 if (currentMessageBuilder != null) {
                     setProgressBarIndeterminateVisibility(true);
@@ -1176,10 +1176,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 getString(R.string.account_settings_attachments_resize_factor_entry_one_fourth)};
 
         int selectedChoice = Account.RESIZE_FACTOR_NONE_SELECTED;
-        if(attachment.overrideDefault){
-            if(attachment.resizeFactor == 1.0f){
+        if (attachment.overrideDefault) {
+            if (attachment.resizeFactor == 1.0f) {
                 selectedChoice = Account.RESIZE_FACTOR_ORIGINAL_SIZE_SELECTED;
-            } else if (attachment.resizeFactor == 0.5f){
+            } else if (attachment.resizeFactor == 0.5f) {
                 selectedChoice = Account.RESIZE_FACTOR_HALF_SIZE_SELECTED;
             } else {
                 selectedChoice = Account.RESIZE_FACTOR_ONE_FOURTH_SIZE_SELECTED;
@@ -1776,7 +1776,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             });
 
             View resizeButton = view.findViewById(R.id.attachment_resize);
-            if(!Utility.isImage(MessageCompose.this, attachment.uri)){
+            if (!Utility.isImage(MessageCompose.this, attachment.uri)) {
                 resizeButton.setVisibility(View.GONE);
             }
             resizeButton.setOnClickListener(new OnClickListener() {

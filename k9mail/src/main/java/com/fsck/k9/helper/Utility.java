@@ -479,7 +479,7 @@ public class Utility {
         return null;
     }
 
-    public static String getResizedImageFile(Context context, Uri uri, float multiplier){
+    public static String getResizedImageFile(Context context, Uri uri, float multiplier) {
         File cacheDir = context.getCacheDir();
         File tempAttachmentsDirectory = new File(cacheDir.getPath() + RESIZED_ATTACHMENTS_TEMPORARY_DIRECTORY);
         tempAttachmentsDirectory.mkdirs();
@@ -495,7 +495,7 @@ public class Utility {
             out = new FileOutputStream(tempFile);
             resized.compress(Bitmap.CompressFormat.PNG, 100, out);
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e("Error while resizing image attachment", e);
             return "";
         } finally {
             IOUtils.closeQuietly(out);
@@ -504,20 +504,19 @@ public class Utility {
         return tempFile.getAbsolutePath();
     }
 
-    public static void clearTemporaryAttachmentsCache(Context context){
+    public static void clearTemporaryAttachmentsCache(Context context) {
         File cacheDir = context.getCacheDir();
         File tempAttachmentsDirectory = new File(cacheDir.getPath() + RESIZED_ATTACHMENTS_TEMPORARY_DIRECTORY);
-        if(tempAttachmentsDirectory.exists()){
+        if (tempAttachmentsDirectory.exists()) {
             try {
                 FileUtils.cleanDirectory(tempAttachmentsDirectory);
             } catch (IOException e) {
-                Timber.e("Error occurred while cleaning temporary directory for resized attachments");
-                e.printStackTrace();
+                Timber.e("Error occurred while cleaning temporary directory for resized attachments", e);
             }
         }
     }
 
-    public static boolean isImage(Context context, Uri uri){
+    public static boolean isImage(Context context, Uri uri) {
         return context.getContentResolver().getType(uri).contains("image");
     }
 

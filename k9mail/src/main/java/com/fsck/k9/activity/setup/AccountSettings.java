@@ -528,9 +528,9 @@ public class AccountSettings extends K9PreferenceActivity {
         mResizeEnabled.setChecked(mAccount.getImageResizeEnabled());
 
         int resizeFactor = mAccount.getResizeFactor();
-        if(resizeFactor == Account.RESIZE_FACTOR_ORIGINAL_SIZE_SELECTED){
+        if (resizeFactor == Account.RESIZE_FACTOR_ORIGINAL_SIZE_SELECTED) {
             mResizeFactor.setValueIndex(0);
-        } else if(resizeFactor == Account.RESIZE_FACTOR_HALF_SIZE_SELECTED){
+        } else if (resizeFactor == Account.RESIZE_FACTOR_HALF_SIZE_SELECTED) {
             mResizeFactor.setValueIndex(1);
         } else {
             mResizeFactor.setValueIndex(2);
@@ -861,7 +861,6 @@ public class AccountSettings extends K9PreferenceActivity {
             //mAccount.setRemoteSearchFullText(mRemoteSearchFullText.isChecked());
         }
 
-        // Global preferences for image attachment resizing
         mAccount.setResizeEnabled(mResizeEnabled.isChecked());
 
 
@@ -1048,9 +1047,9 @@ public class AccountSettings extends K9PreferenceActivity {
         }
     }
 
-    private void updateResizeFactor(int factor){
+    private void updateResizeFactor(int factor) {
         mAccount.setResizeFactor(factor);
-        if(factor != 1){
+        if (factor != 1) {
             mResizeFactor.setSummary(String.format(getString(R.string.account_settings_attachment_resize_factor_summary), String.valueOf(factor)));
         } else {
             mResizeFactor.setSummary(getString(R.string.account_settings_attachment_resize_factor_summary_default));

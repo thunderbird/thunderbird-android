@@ -124,22 +124,22 @@ public class AttachmentPresenter {
     public ArrayList<Attachment> createAttachmentList() {
         ArrayList<Attachment> result = new ArrayList<>();
         for (Attachment attachment : attachments.values()) {
-            if(account.getImageResizeEnabled() && !attachment.overrideDefault && Utility.isImage(context, attachment.uri)){
+            if (account.getImageResizeEnabled() && !attachment.overrideDefault && Utility.isImage(context, attachment.uri)) {
                 float factor = 1.0f / account.getResizeFactor();
                 String newFilename = Utility.getResizedImageFile(context, attachment.uri, factor);
                 long size;
-                if(factor != 1.0f && !newFilename.equals("")) {
+                if (factor != 1.0f && !newFilename.equals("")) {
                     size = (new File(newFilename)).length();
                     Attachment newAttachment = attachment.createResizedCopy(newFilename, size);
                     result.add(newAttachment);
                 } else {
                     result.add(attachment);
                 }
-            } else if(attachment.overrideDefault && Utility.isImage(context, attachment.uri)){
+            } else if (attachment.overrideDefault && Utility.isImage(context, attachment.uri)) {
                 float factor = attachment.resizeFactor;
                 String newFilename = Utility.getResizedImageFile(context, attachment.uri, factor);
                 long size;
-                if(factor != 1.0f && !newFilename.equals("")) {
+                if (factor != 1.0f && !newFilename.equals("")) {
                     size = (new File(newFilename)).length();
                     Attachment newAttachment = attachment.createResizedCopy(newFilename, size);
                     result.add(newAttachment);
