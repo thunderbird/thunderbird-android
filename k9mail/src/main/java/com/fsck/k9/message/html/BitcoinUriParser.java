@@ -5,9 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-/**
- * Parses and "linkifies" bitcoin links.
- */
 class BitcoinUriParser implements UriParser {
     private static final Pattern BITCOIN_URI_PATTERN =
             Pattern.compile("bitcoin:[1-9a-km-zA-HJ-NP-Z]{27,34}(\\?[a-zA-Z0-9$\\-_.+!*'(),%:@&=]*)?");
@@ -16,7 +13,6 @@ class BitcoinUriParser implements UriParser {
     public int linkifyUri(String text, int startPos, StringBuffer outputBuffer) {
         Matcher matcher = BITCOIN_URI_PATTERN.matcher(text);
 
-        // Skip not matching uris
         if (!matcher.find(startPos) || matcher.start() != startPos) {
             return startPos;
         }

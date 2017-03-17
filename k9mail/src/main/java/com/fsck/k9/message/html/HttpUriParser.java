@@ -10,8 +10,10 @@ import java.util.regex.Pattern;
 /**
  * Parses and "linkifies" http links.
  * <p>
- * This class is in parts inspired by OkHttp's HttpUrl (https://github.com/square/okhttp/blob/master/okhttp/src/main/java/okhttp3/HttpUrl.java),s
- * but leaving out much of the parsing part.
+ * This class is in parts inspired by OkHttp's
+ * <a href="https://github.com/square/okhttp/blob/master/okhttp/src/main/java/okhttp3/HttpUrl.java">HttpUrl</a>.
+ * But much of the parsing parts have been left out.
+ * </p>
  */
 class HttpUriParser implements UriParser {
     // This string represent character group sub-delim as described in RFC 3986
@@ -19,11 +21,12 @@ class HttpUriParser implements UriParser {
     private static final Pattern IPv4_PATTERN =
             Pattern.compile("(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})(:(\\d{0,5}))?");
 
+
     @Override
     public int linkifyUri(String text, int startPos, StringBuffer outputBuffer) {
         int currentPos = startPos;
 
-        // Test scheme
+        // Scheme
         String shortScheme = text.substring(currentPos, Math.min(currentPos + 7, text.length()));
         String longScheme = text.substring(currentPos, Math.min(currentPos + 8, text.length()));
         if (shortScheme.equalsIgnoreCase("https://")) {
@@ -33,20 +36,17 @@ class HttpUriParser implements UriParser {
         } else if (longScheme.equalsIgnoreCase("rtsp://")) {
             currentPos += "rtsp://".length();
         } else {
-            // Unsupported scheme
             return startPos;
         }
 
-        // Test authority
+        // Authority
         int authorityEnd = text.indexOf('/', currentPos);
         if (authorityEnd == -1) {
             authorityEnd = text.length();
         }
 
-        // Authority: Take a look at user info if available
         currentPos = matchUserInfoIfAvailable(text, currentPos, authorityEnd);
 
-        // Authority: Take a look at host
         if (!tryMatchDomainName(text, currentPos, authorityEnd) &&
                 !tryMatchIpv4Address(text, currentPos, authorityEnd, true) &&
                 !tryMatchIpv6Address(text, currentPos, authorityEnd)) {
@@ -54,24 +54,27 @@ class HttpUriParser implements UriParser {
         }
         currentPos = authorityEnd;
 
-        // Test path
+        // Path
         if (currentPos < text.length() && text.charAt(currentPos) == '/') {
             currentPos = matchUnreservedPCTEncodedSubDelimClassesGreedy(text, currentPos + 1, "/:@");
         }
 
-        // Test for query
+        // Query
         if (currentPos < text.length() && text.charAt(currentPos) == '?') {
             currentPos = matchUnreservedPCTEncodedSubDelimClassesGreedy(text, currentPos + 1, ":@/?");
         }
 
-        // Test for fragment.
+        // Fragment
         if (currentPos < text.length() && text.charAt(currentPos) == '#') {
             currentPos = matchUnreservedPCTEncodedSubDelimClassesGreedy(text, currentPos + 1, ":@/?");
         }
 
-        // Final link generation
-        String linkifiedUri = String.format("<a href=\"%1$s\">%1$s</a>", text.substring(startPos, currentPos));
-        outputBuffer.append(linkifiedUri);
+        String httpUri = text.substring(startPos, currentPos);
+        outputBuffer.append("<a href=\"")
+                .append(httpUri)
+                .append("\">")
+                .append(httpUri)
+                .append("</a>");
 
         return currentPos;
     }
@@ -89,7 +92,7 @@ class HttpUriParser implements UriParser {
     }
 
     private boolean tryMatchDomainName(String text, int startPos, int authorityEnd) {
-        // Partly from OkHttp's HttpUrl (https://github.com/square/okhttp/blob/master/okhttp/src/main/java/okhttp3/HttpUrl.java)
+        // Partly from OkHttp's HttpUrl
         try {
             // Check for port
             int portPos = text.indexOf(':', startPos);
@@ -143,7 +146,6 @@ class HttpUriParser implements UriParser {
             return false;
         }
 
-        // Validate segments
         for (int i = 1; i <= 4; i++) {
             int segment = Integer.parseInt(matcher.group(1));
             if (segment > 255) {
@@ -151,12 +153,10 @@ class HttpUriParser implements UriParser {
             }
         }
 
-        // Make sure port does not exist if missing
         if (!portAllowed && matcher.group(5) != null) {
             return false;
         }
 
-        // Validate optional port
         String portString = matcher.group(6);
         if (portString != null && !portString.isEmpty()) {
             int port = Integer.parseInt(portString);
@@ -169,7 +169,6 @@ class HttpUriParser implements UriParser {
     }
 
     private boolean tryMatchIpv6Address(String text, int startPos, int authorityEnd) {
-        // General validation
         if (text.codePointAt(startPos) != '[') {
             return false;
         }

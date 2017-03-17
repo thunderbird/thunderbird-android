@@ -1,216 +1,155 @@
 package com.fsck.k9.message.html;
 
 
-import com.fsck.k9.K9RobolectricTestRunner;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.annotation.Config;
 
+import static com.fsck.k9.message.html.UriParserTestHelper.assertLinkOnly;
 import static junit.framework.Assert.assertEquals;
 
 
-@RunWith(K9RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
 public class HttpUriParserTest {
-    private HttpUriParser parser;
-    private StringBuffer outputBuffer;
+    private final HttpUriParser parser = new HttpUriParser();
+    private final StringBuffer outputBuffer = new StringBuffer();
 
-    @Before
-    public void setUp() {
-        parser = new HttpUriParser();
-        outputBuffer = new StringBuffer();
+
+    @Test
+    public void simpleDomain() {
+        assertLinkify("http://www.google.com");
     }
 
     @Test
-    public void testSimpleDomain() {
-        String text = "http://www.google.com";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
+    public void domainWithTrailingSlash() {
+        assertLinkify("http://www.google.com/");
     }
 
     @Test
-    public void testDomainWithTrailingSlash() {
-        String text = "http://www.google.com/";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
+    public void domainWithoutWww() {
+        assertLinkify("http://google.com/");
     }
 
     @Test
-    public void testDomainWithoutWWW() {
-        String text = "http://google.com/";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
+    public void query() {
+        assertLinkify("http://google.com/give/me/?q=mode&c=information");
     }
 
     @Test
-    public void testDomainWithTrailingSpace() {
+    public void fragment() {
+        assertLinkify("http://google.com/give/me#only-the-best");
+    }
+
+    @Test
+    public void queryAndFragment() {
+        assertLinkify("http://google.com/give/me/?q=mode&c=information#only-the-best");
+    }
+
+    @Test
+    public void ipv4Address() {
+        assertLinkify("http://127.0.0.1");
+    }
+
+    @Test
+    public void ipv4AddressWithTrailingSlash() {
+        assertLinkify("http://127.0.0.1/");
+    }
+
+    @Test
+    public void ipv4AddressWithEmptyPort() {
+        assertLinkify("http://127.0.0.1:");
+    }
+
+    @Test
+    public void ipv4AddressWithPort() {
+        assertLinkify("http://127.0.0.1:524/");
+    }
+
+    @Test
+    public void ipv6Address() {
+        assertLinkify("http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]");
+    }
+
+    @Test
+    public void ipv6AddressWithPort() {
+        assertLinkify("http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80");
+    }
+
+    @Test
+    public void ipv6AddressWithTrailingSlash() {
+        assertLinkify("http://[1080:0:0:0:8:800:200C:417A]/");
+    }
+
+    @Test
+    public void ipv6AddressWithEndCompression() {
+        assertLinkify("http://[3ffe:2a00:100:7031::1]");
+    }
+
+    @Test
+    public void ipv6AddressWithBeginCompression() {
+        assertLinkify("http://[1080::8:800:200C:417A]/");
+    }
+
+    @Test
+    public void ipv6AddressWithCompressionPort() {
+        assertLinkify("http://[::FFFF:129.144.52.38]:80/");
+    }
+
+    @Test
+    public void ipv6AddressWithPrependedCompression() {
+        assertLinkify("http://[::192.9.5.5]/");
+    }
+
+    @Test
+    public void ipv6AddressWithTrailingIp4AndPort() {
+        assertLinkify("http://[::192.9.5.5]:80/");
+    }
+
+    @Test
+    public void domainWithTrailingSpace() {
         String text = "http://google.com/ ";
+
         int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals("<a href=\"http://google.com/\">http://google.com/</a>", outputBuffer.toString());
+
+        assertLinkOnly("http://google.com/", outputBuffer);
         assertEquals(text.length() - 1, endPos);
     }
 
     @Test
-    public void testDomainWithTrailingSpaceNewline() {
-        String text = "http://google.com/ \n";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals("<a href=\"http://google.com/\">http://google.com/</a>", outputBuffer.toString());
-        assertEquals(text.length() - 2, endPos);
-    }
-
-    @Test
-    public void testDomainWithTrailingNewline() {
+    public void domainWithTrailingNewline() {
         String text = "http://google.com/\n";
+
         int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals("<a href=\"http://google.com/\">http://google.com/</a>", outputBuffer.toString());
+
+        assertLinkOnly("http://google.com/", outputBuffer);
         assertEquals(text.length() - 1, endPos);
     }
 
     @Test
-    public void testDomainsWithQueryAndFragment() {
-        String text = "http://google.com/give/me/?q=mode&c=information#only-the-best";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(
-                "<a href=\"http://google.com/give/me/?q=mode&c=information#only-the-best\">http://google.com/give/me/?q=mode&c=information#only-the-best</a>",
-                outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
+    public void domainWithTrailingAngleBracket() {
+        String text = "<http://google.com/>";
 
-    @Test
-    public void testDomainsWithQuery() {
-        String text = "http://google.com/give/me/?q=mode&c=information";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(
-                "<a href=\"http://google.com/give/me/?q=mode&c=information\">http://google.com/give/me/?q=mode&c=information</a>",
-                outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
+        int endPos = parser.linkifyUri(text, 1, outputBuffer);
 
-    @Test
-    public void testDomainsWithFragment() {
-        String text = "http://google.com/give/me#only-the-best";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(
-                "<a href=\"http://google.com/give/me#only-the-best\">http://google.com/give/me#only-the-best</a>",
-                outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
-
-    @Test
-    public void testDomainsWithQueryAndFragmentWithoutWWWW() {
-        String text = "http://google.com/give/me/?q=mode+c=information#only-the-best\n";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(
-                "<a href=\"http://google.com/give/me/?q=mode+c=information#only-the-best\">http://google.com/give/me/?q=mode+c=information#only-the-best</a>",
-                outputBuffer.toString());
+        assertLinkOnly("http://google.com/", outputBuffer);
         assertEquals(text.length() - 1, endPos);
     }
 
     @Test
-    public void testIpv4Address() {
-        String text = "http://127.0.0.1";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
+    public void uriInMiddleOfInput() throws Exception {
+        String prefix = "prefix ";
+        String uri = "http://google.com/";
+        String text = prefix + uri;
+
+        parser.linkifyUri(text, prefix.length(), outputBuffer);
+
+        assertLinkOnly(uri, outputBuffer);
     }
 
-    @Test
-    public void testIpv4AddressWithTrailingSlash() {
-        String text = "http://127.0.0.1/";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
+
+    int linkify(String uri) {
+        return parser.linkifyUri(uri, 0, outputBuffer);
     }
 
-    @Test
-    public void testIpv4AddressWithEmptyPort() {
-        String text = "http://127.0.0.1:";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
-
-    @Test
-    public void testIpv4AddressWithPort() {
-        String text = "http://127.0.0.1:524/";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
-
-    @Test
-    public void testIpv6Address() {
-        String text = "http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
-
-    @Test
-    public void testIpv6AddressWithPort() {
-        String text = "http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
-
-    @Test
-    public void testIpv6AddressShort() {
-        String text = "http://[1080:0:0:0:8:800:200C:417A]/";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
-
-    @Test
-    public void testIpv6AddressWithEndCompression() {
-        String text = "http://[3ffe:2a00:100:7031::1]";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
-
-    @Test
-    public void testIpv6AddressWithBeginCompression() {
-        String text = "http://[1080::8:800:200C:417A]/";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
-
-    @Test
-    public void testIpv6AddressWithPrependedCompression() {
-        String text = "http://[::192.9.5.5]/";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
-
-    @Test
-    public void testIpv6AddressWithCompressionPort() {
-        String text = "http://[::FFFF:129.144.52.38]:80/";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
-
-    @Test
-    public void testIpv6AddressWithTrailingIp4() {
-        String text = "http://[::192.9.5.5]/";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
-    }
-
-    @Test
-    public void testIpv6AddressWithTrailingIp4AndPort() {
-        String text = "http://[::192.9.5.5]:80/";
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
-        assertEquals(String.format("<a href=\"%1$s\">%1$s</a>", text), outputBuffer.toString());
-        assertEquals(text.length(), endPos);
+    void assertLinkify(String uri) {
+        linkify(uri);
+        assertLinkOnly(uri, outputBuffer);
     }
 }
