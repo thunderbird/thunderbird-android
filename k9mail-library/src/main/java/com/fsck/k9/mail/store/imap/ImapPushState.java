@@ -3,7 +3,7 @@ package com.fsck.k9.mail.store.imap;
 
 import android.util.Log;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import timber.log.Timber;
 
 
 class ImapPushState {
@@ -25,7 +25,7 @@ class ImapPushState {
 
             return new ImapPushState(newUidNext);
         } catch (NumberFormatException e) {
-            Log.e(LOG_TAG, "Unable to part uidNext value " + value, e);
+            Timber.e("Unable to part uidNext value " + value, e);
         }
 
         return createDefaultImapPushState();

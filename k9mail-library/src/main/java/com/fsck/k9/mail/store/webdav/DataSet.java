@@ -1,7 +1,5 @@
 package com.fsck.k9.mail.store.webdav;
 
-import android.util.Log;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,7 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import timber.log.Timber;
 
 /**
  * Maintains WebDAV data
@@ -189,7 +187,7 @@ class DataSet {
                             Date parsedDate = dfInput.parse(date);
                             tempDate = dfOutput.format(parsedDate);
                         } catch (java.text.ParseException pe) {
-                            Log.e(LOG_TAG, "Error parsing date: " + pe + "\nTrace: " + WebDavUtils.processException(pe));
+                            Timber.e(pe, "Error parsing date: %s", date);
                         }
                         envelope.addHeader(header, tempDate);
                     } else {

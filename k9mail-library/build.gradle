@@ -20,6 +20,7 @@ dependencies {
     compile 'com.jcraft:jzlib:1.0.7'
     compile 'com.beetstra.jutf7:jutf7:1.0.0'
     compile "com.android.support:support-annotations:${androidSupportLibraryVersion}"
+    compile "com.jakewharton.timber:timber:${timberVersion}"
 
     androidTestCompile 'com.android.support.test:runner:0.4.1'
     androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'

@@ -22,8 +22,6 @@ import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
-
 
 public class MimeUtility {
     public static final String DEFAULT_ATTACHMENT_MIME_TYPE = "application/octet-stream";

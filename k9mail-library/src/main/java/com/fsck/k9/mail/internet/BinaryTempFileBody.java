@@ -17,6 +17,7 @@ import com.fsck.k9.mail.filter.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
+import timber.log.Timber;
 
 
 /**
@@ -136,7 +137,7 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
             try {
                 super.close();
             } finally {
-                Log.d(K9MailLib.LOG_TAG, "deleting temp file");
+                Timber.d("Deleting temporary binary file");
                 mFile.delete();
             }
         }

@@ -22,8 +22,8 @@ import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.Viewable.Flowed;
 import org.apache.commons.io.input.BoundedInputStream;
+import timber.log.Timber;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.MimeUtility.isFormatFlowed;
@@ -62,9 +62,9 @@ public class MessageExtractor {
                 throw new MessagingException("Provided invalid part");
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Unable to getTextFromPart", e);
+            Timber.e(e, "Unable to getTextFromPart");
         } catch (MessagingException e) {
-            Log.e(LOG_TAG, "Unable to getTextFromPart", e);
+            Timber.e("Unable to getTextFromPart");
         }
         return null;
     }
