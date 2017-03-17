@@ -13,7 +13,8 @@ import android.text.TextUtils;
 public class UriLinkifier {
     private static final Pattern URI_SCHEME;
     private static final Map<String, UriParser> SUPPORTED_URIS;
-    private static final String SCHEME_SEPARATOR = " (";
+    private static final String SCHEME_SEPARATORS = " (";
+    private static final String ALLOWED_SEPARATORS_PATTERN = "(?:^|[" + SCHEME_SEPARATORS + "])";
 
     static {
         SUPPORTED_URIS = new HashMap<>();
@@ -24,7 +25,8 @@ public class UriLinkifier {
         SUPPORTED_URIS.put("rtsp:", httpParser);
 
         String allSchemes = TextUtils.join("|", SUPPORTED_URIS.keySet());
-        URI_SCHEME = Pattern.compile(allSchemes, Pattern.CASE_INSENSITIVE);
+        String pattern = ALLOWED_SEPARATORS_PATTERN + "(" + allSchemes + ")";
+        URI_SCHEME = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
     }
 
 
@@ -33,18 +35,12 @@ public class UriLinkifier {
         Matcher matcher = URI_SCHEME.matcher(text);
 
         while (matcher.find(currentPos)) {
-            int startPos = matcher.start();
+            int startPos = matcher.start(1);
 
             String textBeforeMatch = text.substring(currentPos, startPos);
             outputBuffer.append(textBeforeMatch);
 
-            if (!isPrecededByValidSeparator(textBeforeMatch)) {
-                outputBuffer.append(text.charAt(startPos));
-                currentPos = startPos + 1;
-                continue;
-            }
-
-            String scheme = matcher.group().toLowerCase(Locale.US);
+            String scheme = matcher.group(1).toLowerCase(Locale.US);
             UriParser parser = SUPPORTED_URIS.get(scheme);
             int newPos = parser.linkifyUri(text, startPos, outputBuffer);
 
@@ -63,14 +59,5 @@ public class UriLinkifier {
 
         String textAfterLastMatch = text.substring(currentPos);
         outputBuffer.append(textAfterLastMatch);
-    }
-
-    private static boolean isPrecededByValidSeparator(String textBeforeMatch) {
-        if (textBeforeMatch.isEmpty()) {
-            return true;
-        }
-
-        String characterBeforeMatch = textBeforeMatch.substring(textBeforeMatch.length() - 1);
-        return SCHEME_SEPARATOR.contains(characterBeforeMatch);
     }
 }
