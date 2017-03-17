@@ -115,4 +115,13 @@ public class UriLinkifierTest {
 
         assertEquals("myhttp: <a href=\"http://example.org\">http://example.org</a>", outputBuffer.toString());
     }
+
+    @Test
+    public void schemaMatchWithInvalidUriInMiddleOfTextFollowedVyValidUri() throws Exception {
+        String text = "prefix http:42 http://example.org";
+
+        UriLinkifier.linkifyText(text, outputBuffer);
+
+        assertEquals("prefix http:42 <a href=\"http://example.org\">http://example.org</a>", outputBuffer.toString());
+    }
 }

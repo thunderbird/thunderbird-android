@@ -51,7 +51,7 @@ public class UriLinkifier {
             boolean uriWasNotLinkified = newPos <= startPos;
             if (uriWasNotLinkified) {
                 outputBuffer.append(text.charAt(startPos));
-                currentPos++;
+                currentPos = startPos + 1;
             } else {
                 currentPos = (newPos > currentPos) ? newPos : currentPos + 1;
             }
