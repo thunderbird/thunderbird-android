@@ -6,9 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import android.util.Log;
+import timber.log.Timber;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 public abstract class Folder<T extends Message> {
     private String status = null;
@@ -133,8 +132,7 @@ public abstract class Folder<T extends Message> {
         // This is causing trouble. Disabled for now. See issue 1733
         //throw new RuntimeException("fetchPart() not implemented.");
 
-        if (K9MailLib.isDebug())
-            Log.d(LOG_TAG, "fetchPart() not implemented.");
+        Timber.d("fetchPart() not implemented.");
     }
 
     public abstract void delete(boolean recurse) throws MessagingException;

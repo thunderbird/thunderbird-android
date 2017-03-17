@@ -14,8 +14,6 @@ import com.fsck.k9.mail.store.webdav.WebDavStore;
 
 import java.util.Collections;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
-
 public class WebDavTransport extends Transport {
 
     /**

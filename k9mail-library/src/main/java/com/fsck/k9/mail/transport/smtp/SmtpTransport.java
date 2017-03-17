@@ -24,7 +24,6 @@ import java.util.Map;
 
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthType;
@@ -50,10 +49,10 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import javax.net.ssl.SSLException;
 import org.apache.commons.io.IOUtils;
+import timber.log.Timber;
 
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_SMTP;
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 public class SmtpTransport extends Transport {
     public static final int SMTP_CONTINUE_REQUEST = 334;
@@ -463,7 +462,7 @@ public class SmtpTransport extends Transport {
                     mLargestAcceptableMessage = Integer.parseInt(optionalsizeValue);
                 } catch (NumberFormatException e) {
                     if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP) {
-                        Log.d(LOG_TAG, "Tried to parse " + optionalsizeValue + " and get an int", e);
+                        Timber.d("Tried to parse " + optionalsizeValue + " and get an int", e);
                     }
                 }
             }
@@ -502,13 +501,13 @@ public class SmtpTransport extends Transport {
             }
         } catch (NegativeSmtpReplyException e) {
             if (K9MailLib.isDebug()) {
-                Log.v(LOG_TAG, "Server doesn't support the EHLO command. Trying HELO...");
+                Timber.v("Server doesn't support the EHLO command. Trying HELO...");
             }
 
             try {
                 executeCommand("HELO %s", host);
             } catch (NegativeSmtpReplyException e2) {
-                Log.w(LOG_TAG, "Server doesn't support the HELO command. Continuing anyway.");
+                Timber.w("Server doesn't support the HELO command. Continuing anyway.");
             }
         }
         return extensions;
@@ -552,7 +551,7 @@ public class SmtpTransport extends Transport {
         open();
 
         if (!m8bitEncodingAllowed) {
-            Log.d(LOG_TAG, "Server does not support 8bit transfer encoding");
+            Timber.d("Server does not support 8bit transfer encoding");
         }
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it
@@ -628,7 +627,7 @@ public class SmtpTransport extends Transport {
         }
         String ret = sb.toString();
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP)
-            Log.d(LOG_TAG, "SMTP <<< " + ret);
+            Timber.d("SMTP <<< " + ret);
 
         return ret;
     }
@@ -641,7 +640,7 @@ public class SmtpTransport extends Transport {
             } else {
                 commandToLog = "SMTP >>> " + s;
             }
-            Log.d(LOG_TAG, commandToLog);
+            Timber.d(commandToLog);
         }
 
         byte[] data = s.concat("\r\n").getBytes();
@@ -860,7 +859,7 @@ public class SmtpTransport extends Transport {
         //if a token was invalid before use (e.g. due to expiry). But we don't
         //This is the intended behaviour per AccountManager
 
-        Log.v(LOG_TAG, "Authentication exception, re-trying with new token", negativeResponseFromOldToken);
+        Timber.v("Authentication exception, re-trying with new token", negativeResponseFromOldToken);
         try {
             attemptXoauth2(username);
         } catch (NegativeSmtpReplyException negativeResponseFromNewToken) {
@@ -870,7 +869,7 @@ public class SmtpTransport extends Transport {
 
             //Okay, we failed on a new token.
             //Invalidate the token anyway but assume it's permanent.
-            Log.v(LOG_TAG, "Authentication exception for new token, permanent error assumed",
+            Timber.v("Authentication exception for new token, permanent error assumed",
                     negativeResponseFromNewToken);
 
             oauthTokenProvider.invalidateToken(username);

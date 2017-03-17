@@ -31,8 +31,7 @@ import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
-
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import timber.log.Timber;
 
 
 /**
@@ -183,7 +182,7 @@ public class ImapStore extends RemoteStore {
             try {
                 decodedFolderName = folderNameCodec.decode(listResponse.getName());
             } catch (CharacterCodingException e) {
-                Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
+                Timber.w("Folder name not correctly encoded with the UTF-7 variant " +
                         "as defined by RFC 3501: " + listResponse.getName(), e);
 
                 //TODO: Use the raw name returned by the server for all commands that require
@@ -239,13 +238,13 @@ public class ImapStore extends RemoteStore {
     void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
         if (!connection.hasCapability(Capabilities.SPECIAL_USE)) {
             if (K9MailLib.isDebug()) {
-                Log.d(LOG_TAG, "No detected folder auto-configuration methods.");
+                Timber.d("No detected folder auto-configuration methods.");
             }
             return;
         }
 
         if (K9MailLib.isDebug()) {
-            Log.d(LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
+            Timber.d("Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
         }
 
         String command = String.format("LIST (SPECIAL-USE) \"\" %s", ImapUtility.encodeString(getCombinedPrefix() + "*"));
@@ -258,7 +257,7 @@ public class ImapStore extends RemoteStore {
             try {
                 decodedFolderName = folderNameCodec.decode(listResponse.getName());
             } catch (CharacterCodingException e) {
-                Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
+                Timber.w("Folder name not correctly encoded with the UTF-7 variant " +
                         "as defined by RFC 3501: " + listResponse.getName(), e);
                 // We currently just skip folders with malformed names.
                 continue;
@@ -272,27 +271,27 @@ public class ImapStore extends RemoteStore {
             if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
                 mStoreConfig.setArchiveFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Folder auto-configuration detected Archive folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Archive folder: " + decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Drafts")) {
                 mStoreConfig.setDraftsFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Folder auto-configuration detected Drafts folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Drafts folder: " + decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Sent")) {
                 mStoreConfig.setSentFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Folder auto-configuration detected Sent folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Sent folder: " + decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Junk")) {
                 mStoreConfig.setSpamFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Folder auto-configuration detected Spam folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Spam folder: " + decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Trash")) {
                 mStoreConfig.setTrashFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Folder auto-configuration detected Trash folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Trash folder: " + decodedFolderName);
                 }
             }
         }
