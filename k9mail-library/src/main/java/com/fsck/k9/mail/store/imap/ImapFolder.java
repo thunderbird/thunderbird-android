@@ -161,7 +161,7 @@ class ImapFolder extends Folder<ImapMessage> {
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         } catch (MessagingException me) {
-            Timber.e(me, "Unable to open connection for " + getLogId(), me);
+            Timber.e(me, "Unable to open connection for %s", getLogId());
             throw me;
         }
     }
@@ -901,7 +901,7 @@ class ImapFolder extends Folder<ImapMessage> {
                     parseBodyStructure(bs, message, "TEXT");
                 } catch (MessagingException e) {
                     if (K9MailLib.isDebug()) {
-                        Timber.d(e, "Error handling message for " + getLogId(), e);
+                        Timber.d(e, "Error handling message for %s", getLogId());
                     }
                     message.setBody(null);
                 }
@@ -1322,7 +1322,7 @@ class ImapFolder extends Folder<ImapMessage> {
                 return null;
             }
         } catch (Exception e) {
-            Timber.e(e, "Exception while updated push state for " + getLogId());
+            Timber.e(e, "Exception while updated push state for %s", getLogId());
             return null;
         }
     }
@@ -1354,7 +1354,7 @@ class ImapFolder extends Folder<ImapMessage> {
     }
 
     private MessagingException ioExceptionHandler(ImapConnection connection, IOException ioe) {
-        Timber.e(ioe, "IOException for " + getLogId());
+        Timber.e(ioe, "IOException for %s", getLogId());
 
         if (connection != null) {
             connection.close();

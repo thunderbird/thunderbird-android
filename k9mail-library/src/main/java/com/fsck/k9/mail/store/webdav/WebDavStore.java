@@ -813,10 +813,10 @@ public class WebDavStore extends RemoteStore {
                 Scheme s = new Scheme("https", new WebDavSocketFactory(hostname, 443), 443);
                 reg.register(s);
             } catch (NoSuchAlgorithmException nsa) {
-                Timber.e(nsa, "NoSuchAlgorithmException in getHttpClient: ");
+                Timber.e(nsa, "NoSuchAlgorithmException in getHttpClient");
                 throw new MessagingException("NoSuchAlgorithmException in getHttpClient: ", nsa);
             } catch (KeyManagementException kme) {
-                Timber.e(kme, "KeyManagementException in getHttpClient: " + kme);
+                Timber.e(kme, "KeyManagementException in getHttpClient");
                 throw new MessagingException("KeyManagementException in getHttpClient: ", kme);
             }
         }

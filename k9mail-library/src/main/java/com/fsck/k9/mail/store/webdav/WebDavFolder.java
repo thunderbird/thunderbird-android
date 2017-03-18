@@ -413,7 +413,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                         wdMessage.parse(istream);
 
                     } catch (IOException ioe) {
-                        Timber.e(ioe, "IOException: " + ioe.getMessage());
+                        Timber.e(ioe, "IOException during message parsing");
                         throw new MessagingException("I/O Error", ioe);
                     } finally {
                         IOUtils.closeQuietly(reader);
@@ -430,8 +430,8 @@ class WebDavFolder extends Folder<WebDavMessage> {
                 Timber.e(use, "URISyntaxException caught");
                 throw new MessagingException("URISyntaxException caught", use);
             } catch (IOException ioe) {
-                Timber.e(ioe, "Non-success response code loading message, response code was " + statusCode
-                        + "\nURL: " + wdMessage.getUrl());
+                Timber.e(ioe, "Non-success response code loading message, response code was %d, URL: %s",
+                        statusCode, wdMessage.getUrl());
                 throw new MessagingException("Failure code " + statusCode, ioe);
             }
 
