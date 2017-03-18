@@ -135,7 +135,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
         headers.put("Brief", "t");
         headers.put("If-Match", "*");
         String action = (isMove ? "BMOVE" : "BCOPY");
-        Timber.v("Moving " + messages.size() + " messages to " + destFolder.mFolderUrl);
+        Timber.v("Moving %d messages to %s", messages.size(), destFolder.mFolderUrl);
 
         store.processRequest(mFolderUrl, action, messageBody, headers, false);
     }
@@ -159,7 +159,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
             messageCount = dataset.getMessageCount();
         }
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_WEBDAV) {
-            Timber.v("Counted messages and webdav returned: " + messageCount);
+            Timber.v("Counted messages and webdav returned: %d", messageCount);
         }
 
         return messageCount;
@@ -352,16 +352,14 @@ class WebDavFolder extends Folder<WebDavMessage> {
              */
             if (wdMessage.getUrl().equals("")) {
                 wdMessage.setUrl(getMessageUrls(new String[]{wdMessage.getUid()}).get(wdMessage.getUid()));
-                Timber.i("Fetching messages with UID = '" + wdMessage.getUid() + "', URL = '"
-                        + wdMessage.getUrl() + "'");
+                Timber.i("Fetching messages with UID = '%s', URL = '%s'", wdMessage.getUid(), wdMessage.getUrl());
                 if (wdMessage.getUrl().equals("")) {
                     throw new MessagingException("Unable to get URL for message");
                 }
             }
 
             try {
-                Timber.i("Fetching message with UID = '" + wdMessage.getUid() + "', URL = '"
-                        + wdMessage.getUrl() + "'");
+                Timber.i("Fetching message with UID = '%s', URL = '%s'", wdMessage.getUid(), wdMessage.getUrl());
                 HttpGet httpget = new HttpGet(new URI(wdMessage.getUrl()));
                 HttpResponse response;
                 HttpEntity entity;
@@ -559,7 +557,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                 message.setNewHeaders(envelope);
                 message.setFlagInternal(Flag.SEEN, envelope.getReadStatus());
             } else {
-                Timber.e("Asked to get metadata for a non-existent message: " + message.getUid());
+                Timber.e("Asked to get metadata for a non-existent message: %s", message.getUid());
             }
 
             if (listener != null) {
@@ -673,7 +671,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                 }
                 messageURL += encodeUtf8(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
 
-                Timber.i("Uploading message as " + messageURL);
+                Timber.i("Uploading message as %s", messageURL);
 
                 store.sendRequest(messageURL, "PUT", bodyEntity, null, true);
 

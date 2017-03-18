@@ -75,7 +75,7 @@ public class LocalKeyStore {
              * Keystore.load. Instead, we let it be created anew.
              */
             if (file.exists() && !file.delete()) {
-                Timber.d("Failed to delete empty keystore file: " + file.getAbsolutePath());
+                Timber.d("Failed to delete empty keystore file: %s", file.getAbsolutePath());
             }
         }
 
@@ -178,7 +178,7 @@ public class LocalKeyStore {
             // Blow away version "0" because certificate aliases have changed.
             File versionZeroFile = new File(getKeyStoreFilePath(0));
             if (versionZeroFile.exists() && !versionZeroFile.delete()) {
-                Timber.d("Failed to delete old key-store file: " + versionZeroFile.getAbsolutePath());
+                Timber.d("Failed to delete old key-store file: %s", versionZeroFile.getAbsolutePath());
             }
         }
     }

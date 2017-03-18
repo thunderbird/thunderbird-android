@@ -924,8 +924,7 @@ public class WebDavStore extends RemoteStore {
             throws MessagingException {
         DataSet dataset = new DataSet();
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_WEBDAV) {
-            Timber.v("processRequest url = '" + url + "', method = '" + method + "', messageBody = '"
-                    + messageBody + "'");
+            Timber.v("processRequest url = '%s', method = '%s', messageBody = '%s'", url, method, messageBody);
         }
 
         if (url == null ||

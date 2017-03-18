@@ -20,7 +20,7 @@ public class XOAuth2ChallengeParser {
         String decodedResponse = Base64.decode(response);
 
         if (K9MailLib.isDebug()) {
-            Timber.v("Challenge response: " + decodedResponse);
+            Timber.v("Challenge response: %s", decodedResponse);
         }
 
         try {
@@ -30,7 +30,7 @@ public class XOAuth2ChallengeParser {
                 return false;
             }
         } catch (JSONException jsonException) {
-            Timber.e("Error decoding JSON response from: " + host + ". Response was: " + decodedResponse);
+            Timber.e("Error decoding JSON response from: %s. Response was: %s", host, decodedResponse);
         }
 
         return true;

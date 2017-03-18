@@ -180,8 +180,9 @@ public class ImapStore extends RemoteStore {
             try {
                 decodedFolderName = folderNameCodec.decode(listResponse.getName());
             } catch (CharacterCodingException e) {
-                Timber.w("Folder name not correctly encoded with the UTF-7 variant " +
-                        "as defined by RFC 3501: " + listResponse.getName(), e);
+                Timber.w(e,
+                        "Folder name not correctly encoded with the UTF-7 variant  as defined by RFC 3501: %s",
+                        listResponse.getName());
 
                 //TODO: Use the raw name returned by the server for all commands that require
                 //      a folder name. Use the decoded name only for showing it to the user.
@@ -255,8 +256,8 @@ public class ImapStore extends RemoteStore {
             try {
                 decodedFolderName = folderNameCodec.decode(listResponse.getName());
             } catch (CharacterCodingException e) {
-                Timber.w("Folder name not correctly encoded with the UTF-7 variant " +
-                        "as defined by RFC 3501: " + listResponse.getName(), e);
+                Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s",
+                        listResponse.getName());
                 // We currently just skip folders with malformed names.
                 continue;
             }
@@ -269,27 +270,27 @@ public class ImapStore extends RemoteStore {
             if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
                 mStoreConfig.setArchiveFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Folder auto-configuration detected Archive folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Archive folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Drafts")) {
                 mStoreConfig.setDraftsFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Folder auto-configuration detected Drafts folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Drafts folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Sent")) {
                 mStoreConfig.setSentFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Folder auto-configuration detected Sent folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Sent folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Junk")) {
                 mStoreConfig.setSpamFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Folder auto-configuration detected Spam folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Spam folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Trash")) {
                 mStoreConfig.setTrashFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Folder auto-configuration detected Trash folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Trash folder: %s", decodedFolderName);
                 }
             }
         }
