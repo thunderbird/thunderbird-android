@@ -11,6 +11,7 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.store.webdav.WebDavHttpClient;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
+import timber.log.Timber;
 
 import java.util.Collections;
 
@@ -47,13 +48,13 @@ public class WebDavTransport extends Transport {
         store = new WebDavStore(storeConfig, new WebDavHttpClient.WebDavHttpClientFactory());
 
         if (K9MailLib.isDebug())
-            Log.d(LOG_TAG, ">>> New WebDavTransport creation complete");
+            Timber.d(">>> New WebDavTransport creation complete");
     }
 
     @Override
     public void open() throws MessagingException {
         if (K9MailLib.isDebug())
-            Log.d(LOG_TAG, ">>> open called on WebDavTransport ");
+            Timber.d( ">>> open called on WebDavTransport ");
 
         store.getHttpClient();
     }
