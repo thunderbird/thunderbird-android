@@ -144,6 +144,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                         if (!isFocused()) {
                             performCollapse(false);
                         }
+                        if (!dragEvent.getResult()) {
+                            copyDraggedRecipient(dragEvent);
+                        }
+                        if (dragListener != null) {
+                            dragListener.onDragEnd();
+                        }
                         return false;
                     }
                     default: {
@@ -179,9 +185,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     private void copyDraggedRecipient(DragEvent dragEvent) {
-        CharSequence text = dragEvent.getClipData().getItemAt(0).getText();
-        if (dragEvent.getLocalState() instanceof Recipient) {
-            addObject((Recipient) dragEvent.getLocalState(), text);
+        ClipData data = dragEvent.getClipData();
+        if (data != null) {
+            CharSequence text = data.getItemAt(0).getText();
+            if (dragEvent.getLocalState() instanceof Recipient) {
+                addObject((Recipient) dragEvent.getLocalState(), text);
+            }
         }
     }
 
@@ -305,7 +314,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         DragShadowBuilder dragShadowBuilder = new DragShadowBuilder(view);
 
         if (dragListener != null) {
-            dragListener.onDragStart();
+            dragListener.onDragStart(this.getId(), recipient, clipData.getItemAt(0).getText());
         }
         boolean dragSuccess = startDrag(clipData, dragShadowBuilder, recipient, 0);
         if (dragSuccess) {
@@ -743,6 +752,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     public interface DragListener {
-        void onDragStart();
+        void onDragStart(int riginViewId, Recipient recipient, CharSequence text);
+        void onDragEnd();
     }
 }

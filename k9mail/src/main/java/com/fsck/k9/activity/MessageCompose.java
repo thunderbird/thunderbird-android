@@ -32,6 +32,7 @@ import android.text.TextWatcher;
 import timber.log.Timber;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -178,6 +179,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     private boolean relatedMessageProcessed = false;
 
+    private RecipientMvpView recipientMvpView;
     private RecipientPresenter recipientPresenter;
     private MessageBuilder currentMessageBuilder;
     private boolean finishAfterDraftSaved;
@@ -272,7 +274,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         chooseIdentityButton = (TextView) findViewById(R.id.identity);
         chooseIdentityButton.setOnClickListener(this);
 
-        RecipientMvpView recipientMvpView = new RecipientMvpView(this);
+        recipientMvpView = new RecipientMvpView(this);
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
         recipientPresenter = new RecipientPresenter(getApplicationContext(), getLoaderManager(), recipientMvpView,
                 account, composePgpInlineDecider, new ReplyToParser(), this);
@@ -374,6 +376,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             signatureView.setVisibility(View.GONE);
         }
 
+        addDropListener();
+
         requestReadReceipt = account.isMessageReadReceiptAlways();
 
         updateFrom();
@@ -434,6 +438,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.reattachCallback(this);
         }
+    }
+
+    private void addDropListener() {
+        RecipientDropListener listener = new RecipientDropListener();
+        subjectView.setOnDragListener(listener);
+        messageContentView.setOnDragListener(listener);
+        signatureView.setOnDragListener(listener);
     }
 
     @Override
@@ -874,7 +885,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         switch (v.getId()) {
             case R.id.message_content:
             case R.id.subject:
-                if (hasFocus) {
+                if (hasFocus && !recipientMvpView.isDragTakingPlace()) {
                     recipientPresenter.onNonRecipientFieldFocused();
                 }
                 break;
@@ -1795,6 +1806,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         @StringRes
         public int getTitleResource() {
             return titleResource;
+        }
+    }
+
+    private class RecipientDropListener implements View.OnDragListener {
+        public boolean onDrag(View view, DragEvent dragEvent) {
+            if (dragEvent.getAction() == DragEvent.ACTION_DROP) {
+                recipientMvpView.restoreDroppedToken();
+            }
+            return false;
         }
     }
 }

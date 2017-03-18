@@ -46,7 +46,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
 
-public class RecipientPresenter implements PermissionPingCallback, RecipientSelectView.DragListener {
+public class RecipientPresenter implements PermissionPingCallback {
     private static final String STATE_KEY_CC_SHOWN = "state:ccShown";
     private static final String STATE_KEY_BCC_SHOWN = "state:bccShown";
     private static final String STATE_KEY_LAST_FOCUSED_TYPE = "state:lastFocusedType";
@@ -314,11 +314,6 @@ public class RecipientPresenter implements PermissionPingCallback, RecipientSele
 
     void onClickBccLabel() {
         recipientMvpView.requestFocusOnBccField();
-    }
-
-    @Override
-    public void onDragStart() {
-        onClickRecipientExpander();
     }
 
     void onClickRecipientExpander() {
