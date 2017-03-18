@@ -88,12 +88,12 @@ class ImapFolderPusher extends ImapFolder {
         ImapConnection conn = connection;
         if (conn != null) {
             if (K9MailLib.isDebug()) {
-                Timber.v("Closing connection to stop pushing for " + getLogId());
+                Timber.v("Closing connection to stop pushing for %s", getLogId());
             }
 
             conn.close();
         } else {
-            Timber.w("Attempt to interrupt null connection to stop pushing on folderPusher for " + getLogId());
+            Timber.w("Attempt to interrupt null connection to stop pushing on folderPusher for %s", getLogId());
         }
     }
 
@@ -105,7 +105,7 @@ class ImapFolderPusher extends ImapFolder {
                     equalsIgnoreCase(responseType, "EXISTS")) {
 
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Storing response " + response + " for later processing");
+                    Timber.d("Storing response %s for later processing", response);
                 }
 
                 synchronized (storedUntaggedResponses) {
@@ -132,7 +132,7 @@ class ImapFolderPusher extends ImapFolder {
             wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
 
             if (K9MailLib.isDebug()) {
-                Timber.i("Pusher starting for " + getLogId());
+                Timber.i("Pusher starting for %s", getLogId());
             }
 
             long lastUidNext = -1L;
@@ -177,7 +177,7 @@ class ImapFolderPusher extends ImapFolder {
                         processStoredUntaggedResponses();
 
                         if (K9MailLib.isDebug()) {
-                            Timber.i("About to IDLE for " + getLogId());
+                            Timber.i("About to IDLE for %s", getLogId());
                         }
 
                         prepareForIdle();
@@ -201,10 +201,10 @@ class ImapFolderPusher extends ImapFolder {
                     reacquireWakeLockAndCleanUp();
 
                     if (stop) {
-                        Timber.i("Got exception while idling, but stop is set for " + getLogId());
+                        Timber.i("Got exception while idling, but stop is set for %s", getLogId());
                     } else {
                         pushReceiver.pushError("Push error for " + getName(), e);
-                        Timber.e("Got exception while idling for " + getLogId(), e);
+                        Timber.e("Got exception while idling for %s", getLogId());
 
                         pushReceiver.sleep(wakeLock, delayTime);
 
@@ -215,8 +215,7 @@ class ImapFolderPusher extends ImapFolder {
 
                         idleFailureCount++;
                         if (idleFailureCount > IDLE_FAILURE_COUNT_LIMIT) {
-                            Timber.e("Disabling pusher for " + getLogId() + " after " + idleFailureCount +
-                                    " consecutive errors");
+                            Timber.e("Disabling pusher for %s after %d consecutive errors", getLogId(), idleFailureCount);
                             pushReceiver.pushError("Push disabled for " + getName() + " after " + idleFailureCount +
                                     " consecutive errors", e);
                             stop = true;
@@ -229,12 +228,12 @@ class ImapFolderPusher extends ImapFolder {
 
             try {
                 if (K9MailLib.isDebug()) {
-                    Timber.i("Pusher for " + getLogId() + " is exiting");
+                    Timber.i("Pusher for %s is exiting", getLogId());
                 }
 
                 close();
             } catch (Exception me) {
-                Timber.e("Got exception while closing for " + getLogId(), me);
+                Timber.e(me, "Got exception while closing for %s", getLogId());
             } finally {
                 wakeLock.release();
             }
@@ -250,7 +249,7 @@ class ImapFolderPusher extends ImapFolder {
             try {
                 connection.close();
             } catch (Exception me) {
-                Timber.e("Got exception while closing for exception for " + getLogId(), me);
+                Timber.e(me, "Got exception while closing for exception for %s", getLogId());
             }
 
             connection = null;
@@ -274,7 +273,7 @@ class ImapFolderPusher extends ImapFolder {
             newUidNext = highestUid + 1;
 
             if (K9MailLib.isDebug()) {
-                Timber.d("highest UID = " + highestUid + ", set newUidNext to " + newUidNext);
+                Timber.d("highest UID = %d, set newUidNext to %d", highestUid, newUidNext);
             }
 
             return newUidNext;
@@ -364,12 +363,12 @@ class ImapFolderPusher extends ImapFolder {
         @Override
         public void handleAsyncUntaggedResponse(ImapResponse response) {
             if (K9MailLib.isDebug()) {
-                Timber.v("Got async response: " + response);
+                Timber.v("Got async response: %s", response);
             }
 
             if (stop) {
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Got async untagged response: " + response + ", but stop is set for " + getLogId());
+                    Timber.d("Got async untagged response: %s, but stop is set for %s", response, getLogId());
                 }
 
                 idleStopper.stopIdle();
@@ -383,14 +382,14 @@ class ImapFolderPusher extends ImapFolder {
                             wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
 
                             if (K9MailLib.isDebug()) {
-                                Timber.d("Got useful async untagged response: " + response + " for " + getLogId());
+                                Timber.d("Got useful async untagged response: %s for %s", response, getLogId());
                             }
 
                             idleStopper.stopIdle();
                         }
                     } else if (response.isContinuationRequested()) {
                         if (K9MailLib.isDebug()) {
-                            Timber.d("Idling " + getLogId());
+                            Timber.d("Idling %s", getLogId());
                         }
 
                         idleStopper.startAcceptingDoneContinuation(connection);
@@ -414,8 +413,8 @@ class ImapFolderPusher extends ImapFolder {
                 }
 
                 if (K9MailLib.isDebug()) {
-                    Timber.i("Processing " + untaggedResponses.size() + " untagged responses from previous " +
-                            "commands for " + getLogId());
+                    Timber.i("Processing %d untagged responses from previous commands for %s",
+                            untaggedResponses.size(), getLogId());
                 }
 
                 processUntaggedResponses(untaggedResponses);
@@ -461,7 +460,7 @@ class ImapFolderPusher extends ImapFolder {
             }
 
             if (K9MailLib.isDebug()) {
-                Timber.d("UIDs for messages needing flag sync are " + flagSyncMsgSeqs + "  for " + getLogId());
+                Timber.d("UIDs for messages needing flag sync are %s for %s", flagSyncMsgSeqs, getLogId());
             }
 
             if (!flagSyncMsgSeqs.isEmpty()) {
@@ -487,7 +486,7 @@ class ImapFolderPusher extends ImapFolder {
                         long msgSeq = response.getLong(0);
 
                         if (K9MailLib.isDebug()) {
-                            Timber.d("Got untagged FETCH for msgseq " + msgSeq + " for " + getLogId());
+                            Timber.d("Got untagged FETCH for msgseq %d for %s", msgSeq, getLogId());
                         }
 
                         if (!flagSyncMsgSeqs.contains(msgSeq)) {
@@ -502,7 +501,7 @@ class ImapFolderPusher extends ImapFolder {
                         }
 
                         if (K9MailLib.isDebug()) {
-                            Timber.d("Got untagged EXPUNGE for msgseq " + msgSeq + " for " + getLogId());
+                            Timber.d("Got untagged EXPUNGE for msgseq %d for %s", msgSeq, getLogId());
                         }
 
                         List<Long> newSeqs = new ArrayList<Long>();
