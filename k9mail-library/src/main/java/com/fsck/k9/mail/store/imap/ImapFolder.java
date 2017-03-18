@@ -353,8 +353,8 @@ class ImapFolder extends Folder<ImapMessage> {
             //      operation fails. This will save a roundtrip if the folder already exists.
             if (!exists(escapedDestinationFolderName)) {
                 if (K9MailLib.isDebug()) {
-                    Timber.i("ImapFolder.copyMessages: attempting to create remote folder '" +
-                            escapedDestinationFolderName + "' for " + getLogId());
+                    Timber.i("ImapFolder.copyMessages: attempting to create remote folder '%s' for %s",
+                            escapedDestinationFolderName, getLogId());
                 }
 
                 imapFolder.create(FolderType.HOLDS_MESSAGES);
@@ -406,16 +406,16 @@ class ImapFolder extends Folder<ImapMessage> {
 
             if (!exists(escapedTrashFolderName)) {
                 if (K9MailLib.isDebug()) {
-                    Timber.i("IMAPMessage.delete: attempting to create remote '" + trashFolderName + "' folder " +
-                            "for " + getLogId());
+                    Timber.i("IMAPMessage.delete: attempting to create remote '%s' folder for %s",
+                            trashFolderName, getLogId());
                 }
                 remoteTrashFolder.create(FolderType.HOLDS_MESSAGES);
             }
 
             if (exists(escapedTrashFolderName)) {
                 if (K9MailLib.isDebug()) {
-                    Timber.d("IMAPMessage.delete: copying remote " + messages.size() + " messages to '" +
-                            trashFolderName + "' for " + getLogId());
+                    Timber.d("IMAPMessage.delete: copying remote %d messages to '%s' for %s",
+                            messages.size(), trashFolderName, getLogId());
                 }
 
                 moveMessages(messages, remoteTrashFolder);
@@ -727,18 +727,17 @@ class ImapFolder extends Folder<ImapMessage> {
                             try {
                                 msgSeqUidMap.put(msgSeq, uid);
                                 if (K9MailLib.isDebug()) {
-                                    Timber.v("Stored uid '" + uid + "' for msgSeq " + msgSeq + " into map");
+                                    Timber.v("Stored uid '%s' for msgSeq %d into map", uid, msgSeq);
                                 }
                             } catch (Exception e) {
-                                Timber.e("Unable to store uid '" + uid + "' for msgSeq " + msgSeq);
+                                Timber.e("Unable to store uid '%s' for msgSeq %d", uid, msgSeq);
                             }
                         }
 
                         Message message = messageMap.get(uid);
                         if (message == null) {
                             if (K9MailLib.isDebug()) {
-                                Timber.d("Do not have message in messageMap for UID " + uid + " for " +
-                                        getLogId());
+                                Timber.d("Do not have message in messageMap for UID %s for %s", uid, getLogId());
                             }
 
                             handleUntaggedResponse(response);
@@ -812,7 +811,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
                     if (!message.getUid().equals(uid)) {
                         if (K9MailLib.isDebug()) {
-                            Timber.d("Did not ask for UID " + uid + " for " + getLogId());
+                            Timber.d("Did not ask for UID %s for %s", uid, getLogId());
                         }
 
                         handleUntaggedResponse(response);
@@ -948,7 +947,7 @@ class ImapFolder extends Folder<ImapMessage> {
                         if ("UIDNEXT".equalsIgnoreCase(key)) {
                             uidNext = bracketed.getLong(1);
                             if (K9MailLib.isDebug()) {
-                                Timber.d("Got UidNext = " + uidNext + " for " + getLogId());
+                                Timber.d("Got UidNext = %s for %s", uidNext, getLogId());
                             }
                         }
                     }
@@ -965,7 +964,7 @@ class ImapFolder extends Folder<ImapMessage> {
             if (ImapResponseParser.equalsIgnoreCase(response.get(1), "EXISTS")) {
                 messageCount = response.getNumber(0);
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Got untagged EXISTS with value " + messageCount + " for " + getLogId());
+                    Timber.d("Got untagged EXISTS with value %d for %s", messageCount, getLogId());
                 }
             }
 
@@ -974,7 +973,7 @@ class ImapFolder extends Folder<ImapMessage> {
             if (ImapResponseParser.equalsIgnoreCase(response.get(1), "EXPUNGE") && messageCount > 0) {
                 messageCount--;
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Got untagged EXPUNGE with messageCount " + messageCount + " for " + getLogId());
+                    Timber.d("Got untagged EXPUNGE with messageCount %d for %s", messageCount, getLogId());
                 }
             }
         }
@@ -1203,7 +1202,7 @@ class ImapFolder extends Folder<ImapMessage> {
                  */
                 String newUid = getUidFromMessageId(message);
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Got UID " + newUid + " for message for " + getLogId());
+                    Timber.d("Got UID %s for message for %s", newUid, getLogId());
                 }
 
                 if (!TextUtils.isEmpty(newUid)) {
@@ -1234,14 +1233,14 @@ class ImapFolder extends Folder<ImapMessage> {
 
             if (messageIdHeader.length == 0) {
                 if (K9MailLib.isDebug()) {
-                    Timber.d("Did not get a message-id in order to search for UID  for " + getLogId());
+                    Timber.d("Did not get a message-id in order to search for UID  for %s", getLogId());
                 }
                 return null;
             }
 
             String messageId = messageIdHeader[0];
             if (K9MailLib.isDebug()) {
-                Timber.d("Looking for UID for message with message-id " + messageId + " for " + getLogId());
+                Timber.d("Looking for UID for message with message-id %s for %s", messageId, getLogId());
             }
 
             String command = String.format("UID SEARCH HEADER MESSAGE-ID %s", ImapUtility.encodeString(messageId));

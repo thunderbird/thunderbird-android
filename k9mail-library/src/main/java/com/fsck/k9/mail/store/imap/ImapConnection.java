@@ -555,7 +555,7 @@ class ImapConnection {
         }
 
         if (K9MailLib.isDebug()) {
-            Timber.d("useCompression " + useCompression);
+            Timber.d("useCompression: %b");
         }
 
         return useCompression;
