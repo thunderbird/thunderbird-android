@@ -301,6 +301,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="message_discarded_toast">Message discarded</string>
     <string name="message_saved_toast">Message saved as draft</string>
+    <string name="secure_message_draft_saved_toast">Secure message draft saved locally. It will not be synced with server.</string>
 
     <string name="global_settings_flag_label">Show stars</string>
     <string name="global_settings_flag_summary">Stars indicate flagged messages</string>

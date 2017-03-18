@@ -894,7 +894,9 @@ public class MessagingController {
                 List<String> destroyMessageUids = new ArrayList<>();
                 for (String localMessageUid : localUidMap.keySet()) {
                     if (remoteUidMap.get(localMessageUid) == null) {
-                        destroyMessageUids.add(localMessageUid);
+                        if(!localFolder.getMessage(localMessageUid).isSet(Flag.X_SECURE_MESSAGE_DRAFT)) {
+                            destroyMessageUids.add(localMessageUid);
+                        }
                     }
                 }
 
@@ -3971,6 +3973,8 @@ public class MessagingController {
                 PendingCommand command = PendingAppend.create(localFolder.getName(), localMessage.getUid());
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
+            } else {
+                localMessage.setFlag(Flag.X_SECURE_MESSAGE_DRAFT, true);
             }
 
         } catch (MessagingException e) {
