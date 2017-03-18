@@ -859,7 +859,7 @@ public class SmtpTransport extends Transport {
         //if a token was invalid before use (e.g. due to expiry). But we don't
         //This is the intended behaviour per AccountManager
 
-        Timber.v("Authentication exception, re-trying with new token", negativeResponseFromOldToken);
+        Timber.v(negativeResponseFromOldToken, "Authentication exception, re-trying with new token");
         try {
             attemptXoauth2(username);
         } catch (NegativeSmtpReplyException negativeResponseFromNewToken) {
@@ -869,8 +869,7 @@ public class SmtpTransport extends Transport {
 
             //Okay, we failed on a new token.
             //Invalidate the token anyway but assume it's permanent.
-            Timber.v("Authentication exception for new token, permanent error assumed",
-                    negativeResponseFromNewToken);
+            Timber.v(negativeResponseFromNewToken, "Authentication exception for new token, permanent error assumed");
 
             oauthTokenProvider.invalidateToken(username);
 

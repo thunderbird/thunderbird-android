@@ -92,7 +92,7 @@ public class LocalKeyStore {
             mKeyStore = store;
             mKeyStoreFile = file;
         } catch (Exception e) {
-            Timber.e("Failed to initialize local key store", e);
+            Timber.e(e, "Failed to initialize local key store");
             // Use of the local key store is effectively disabled.
             mKeyStore = null;
             mKeyStoreFile = null;
