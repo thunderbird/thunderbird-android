@@ -1,8 +1,6 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import android.util.Log;
-
 import timber.log.Timber;
 
 

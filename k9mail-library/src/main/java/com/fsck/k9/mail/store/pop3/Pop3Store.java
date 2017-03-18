@@ -2,14 +2,11 @@
 package com.fsck.k9.mail.store.pop3;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;

@@ -14,9 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import android.accounts.AccountManager;
 import android.net.ConnectivityManager;
-import android.util.Log;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;

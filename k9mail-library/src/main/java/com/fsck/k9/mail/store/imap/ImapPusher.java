@@ -4,8 +4,6 @@ package com.fsck.k9.mail.store.imap;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;

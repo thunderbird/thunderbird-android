@@ -9,10 +9,8 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.SignSafeOutputStream;
