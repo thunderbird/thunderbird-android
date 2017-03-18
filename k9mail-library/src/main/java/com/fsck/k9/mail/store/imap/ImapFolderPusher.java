@@ -523,15 +523,14 @@ class ImapFolderPusher extends ImapFolder {
 
                         for (long msgSeqNum : msgSeqs) {
                             if (K9MailLib.isDebug()) {
-                                Timber.v("Comparing EXPUNGEd msgSeq " + msgSeq + " to " + msgSeqNum);
+                                Timber.v("Comparing EXPUNGEd msgSeq %d to %d", msgSeq, msgSeqNum);
                             }
 
                             if (msgSeqNum == msgSeq) {
                                 String uid = msgSeqUidMap.get(msgSeqNum);
 
                                 if (K9MailLib.isDebug()) {
-                                    Timber.d("Scheduling removal of UID " + uid + " because msgSeq " + msgSeqNum +
-                                            " was expunged");
+                                    Timber.d("Scheduling removal of UID %s because msgSeq %d was expunged", uid, msgSeqNum);
                                 }
 
                                 removeMsgUids.add(uid);
@@ -540,8 +539,7 @@ class ImapFolderPusher extends ImapFolder {
                                 String uid = msgSeqUidMap.get(msgSeqNum);
 
                                 if (K9MailLib.isDebug()) {
-                                    Timber.d("Reducing msgSeq for UID " + uid + " from " + msgSeqNum + " to " +
-                                            (msgSeqNum - 1));
+                                    Timber.d("Reducing msgSeq for UID %s from %d to %d", uid, msgSeqNum, (msgSeqNum - 1));
                                 }
 
                                 msgSeqUidMap.remove(msgSeqNum);
@@ -566,7 +564,7 @@ class ImapFolderPusher extends ImapFolder {
                 long newUid = Long.parseLong(messageList.get(0).getUid());
 
                 if (K9MailLib.isDebug()) {
-                    Timber.i("Got newUid " + newUid + " for message " + end + " on " + getLogId());
+                    Timber.i("Got newUid %s for message %d on %s", newUid, end, getLogId());
                 }
 
                 long startUid = oldUidNext;
@@ -580,7 +578,7 @@ class ImapFolderPusher extends ImapFolder {
 
                 if (newUid >= startUid) {
                     if (K9MailLib.isDebug()) {
-                        Timber.i("Needs sync from uid " + startUid + " to " + newUid + " for " + getLogId());
+                        Timber.i("Needs sync from uid %d to %d for %s", startUid, newUid, getLogId());
                     }
 
                     List<Message> messages = new ArrayList<Message>();
@@ -618,7 +616,7 @@ class ImapFolderPusher extends ImapFolder {
                     msgSeqUidMap.clear();
 
                     String existingUid = existingMessage.getUid();
-                    Timber.w("Message with UID " + existingUid + " still exists on server, not expunging");
+                    Timber.w("Message with UID %s still exists on server, not expunging", existingUid);
 
                     removeUids.remove(existingUid);
                 }
@@ -629,7 +627,7 @@ class ImapFolderPusher extends ImapFolder {
                     try {
                         message.setFlagInternal(Flag.DELETED, true);
                     } catch (MessagingException me) {
-                        Timber.e("Unable to set DELETED flag on message " + message.getUid());
+                        Timber.e("Unable to set DELETED flag on message %s", message.getUid());
                     }
 
                     messages.add(message);
@@ -653,7 +651,7 @@ class ImapFolderPusher extends ImapFolder {
 
         private void notifyMessagesArrived(long startUid, long uidNext) {
             if (K9MailLib.isDebug()) {
-                Timber.i("Needs sync from uid " + startUid + " to " + uidNext + " for " + getLogId());
+                Timber.i("Needs sync from uid %d to %d for %s", startUid, uidNext, getLogId());
             }
 
             int count = (int) (uidNext - startUid);
@@ -675,10 +673,10 @@ class ImapFolderPusher extends ImapFolder {
                 oldUidNext = pushState.uidNext;
 
                 if (K9MailLib.isDebug()) {
-                    Timber.i("Got oldUidNext " + oldUidNext + " for " + getLogId());
+                    Timber.i("Got oldUidNext %d for %s", oldUidNext, getLogId());
                 }
             } catch (Exception e) {
-                Timber.e("Unable to get oldUidNext for " + getLogId(), e);
+                Timber.e(e, "Unable to get oldUidNext for %s", getLogId());
             }
 
             return oldUidNext;
