@@ -661,7 +661,7 @@ public class Pop3Store extends RemoteStore {
                         // response = "+OK msgNum msgUid"
                         String[] uidParts = response.split(" +");
                         if (uidParts.length < 3 || !"+OK".equals(uidParts[0])) {
-                            Timber.e("ERR response: " + response);
+                            Timber.e("ERR response: %s", response);
                             return;
                         }
                         String msgUid = uidParts[2];
@@ -720,7 +720,7 @@ public class Pop3Store extends RemoteStore {
             for (String uid : uids) {
                 if (mUidToMsgMap.get(uid) == null) {
                     if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
-                        Timber.d("Need to index UID " + uid);
+                        Timber.d("Need to index UID %s", uid);
                     }
                     unindexedUids.add(uid);
                 }
@@ -746,7 +746,7 @@ public class Pop3Store extends RemoteStore {
                     String msgUid = uidParts[1];
                     if (unindexedUids.contains(msgUid)) {
                         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
-                            Timber.d("Got msgNum " + msgNum + " for UID " + msgUid);
+                            Timber.d("Got msgNum %d for UID %s", msgNum, msgUid);
                         }
 
                         Pop3Message message = mUidToMsgMap.get(msgUid);
@@ -761,7 +761,7 @@ public class Pop3Store extends RemoteStore {
 
         private void indexMessage(int msgNum, Pop3Message message) {
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
-                Timber.d("Adding index for UID " + message.getUid() + " to msgNum " + msgNum);
+                Timber.d("Adding index for UID %s to msgNum %d", message.getUid(), msgNum);
             }
             mMsgNumToMsgMap.put(msgNum, message);
             mUidToMsgMap.put(message.getUid(), message);
@@ -1037,7 +1037,7 @@ public class Pop3Store extends RemoteStore {
             } while ((d = mIn.read()) != -1);
             String ret = sb.toString();
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
-                Timber.d("<<< " + ret);
+                Timber.d("<<< %s", ret);
             }
             return ret;
         }
@@ -1131,10 +1131,9 @@ public class Pop3Store extends RemoteStore {
                 if (command != null) {
                     if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
                         if (sensitive && !K9MailLib.isDebugSensitive()) {
-                            Timber.d(">>> "
-                                  + "[Command Hidden, Enable Sensitive Debug Logging To Show]");
+                            Timber.d(">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
                         } else {
-                            Timber.d(">>> " + command);
+                            Timber.d(">>> %s", command);
                         }
                     }
 

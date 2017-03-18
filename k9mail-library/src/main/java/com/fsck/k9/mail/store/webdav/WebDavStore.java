@@ -924,8 +924,7 @@ public class WebDavStore extends RemoteStore {
             throws MessagingException {
         DataSet dataset = new DataSet();
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_WEBDAV) {
-            Timber.v("processRequest url = '" + url + "', method = '" + method + "', messageBody = '"
-                    + messageBody + "'");
+            Timber.v("processRequest url = '%s', method = '%s', messageBody = '%s'", url, method, messageBody);
         }
 
         if (url == null ||
@@ -957,8 +956,7 @@ public class WebDavStore extends RemoteStore {
 
                     dataset = myHandler.getDataSet();
                 } catch (SAXException se) {
-                    Timber.e(se,
-                            "SAXException in processRequest()");
+                    Timber.e(se, "SAXException in processRequest()");
                     throw new MessagingException("SAXException in processRequest() ", se);
                 } catch (ParserConfigurationException pce) {
                     Timber.e(pce, "ParserConfigurationException in processRequest()");

@@ -462,7 +462,7 @@ public class SmtpTransport extends Transport {
                     mLargestAcceptableMessage = Integer.parseInt(optionalsizeValue);
                 } catch (NumberFormatException e) {
                     if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP) {
-                        Timber.d("Tried to parse " + optionalsizeValue + " and get an int", e);
+                        Timber.d(e, "Tried to parse %s and get an int", optionalsizeValue);
                     }
                 }
             }
@@ -627,7 +627,7 @@ public class SmtpTransport extends Transport {
         }
         String ret = sb.toString();
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP)
-            Timber.d("SMTP <<< " + ret);
+            Timber.d("SMTP <<< %s", ret);
 
         return ret;
     }

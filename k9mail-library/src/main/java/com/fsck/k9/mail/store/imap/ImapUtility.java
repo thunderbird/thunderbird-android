@@ -100,12 +100,12 @@ class ImapUtility {
                             }
                         }
                     } else {
-                        Timber.d("Invalid range: " + range);
+                        Timber.d("Invalid range: %s", range);
                     }
                 }
             }
         } catch (NumberFormatException e) {
-            Timber.d("Invalid range value: " + range, e);
+            Timber.d(e, "Invalid range value: %s", range);
         }
 
         return list;
@@ -121,7 +121,7 @@ class ImapUtility {
             // do nothing
         }
 
-        Timber.d("Invalid UID value: " + number);
+        Timber.d("Invalid UID value: %s", number);
 
         return false;
     }

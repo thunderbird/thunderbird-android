@@ -203,10 +203,10 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
                     return mAlias;
                 }
             }
-            Timber.w("Client certificate " + mAlias + " not issued by any of the requested issuers");
+            Timber.w("Client certificate %s not issued by any of the requested issuers", mAlias);
             return null;
         }
-        Timber.w("Client certificate " + mAlias + " does not match any of the requested key types");
+        Timber.w("Client certificate %s does not match any of the requested key types", mAlias);
         return null;
     }
 }

@@ -481,7 +481,7 @@ class ImapFolderPusher extends ImapFolder {
                 try {
                     Object responseType = response.get(1);
                     if (equalsIgnoreCase(responseType, "FETCH")) {
-                        Timber.i("Got FETCH " + response);
+                        Timber.i("Got FETCH %s", response);
 
                         long msgSeq = response.getLong(0);
 
@@ -548,7 +548,7 @@ class ImapFolderPusher extends ImapFolder {
                         }
                     }
                 } catch (Exception e) {
-                    Timber.e("Could not handle untagged FETCH for " + getLogId(), e);
+                    Timber.e(e, "Could not handle untagged FETCH for %s", getLogId());
                 }
             }
 
