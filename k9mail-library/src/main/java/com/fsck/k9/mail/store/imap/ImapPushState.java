@@ -23,7 +23,7 @@ class ImapPushState {
 
             return new ImapPushState(newUidNext);
         } catch (NumberFormatException e) {
-            Timber.e("Unable to part uidNext value " + value, e);
+            Timber.e(e, "Unable to part uidNext value %s", value);
         }
 
         return createDefaultImapPushState();
