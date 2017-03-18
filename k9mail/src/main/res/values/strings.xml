@@ -554,6 +554,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_show_pictures_only_from_contacts">From contacts</string>
     <string name="account_settings_show_pictures_always">From anyone</string>
 
+    <string name="account_settings_only_show_pictures_via_wifi">Only download images via Wi-Fi</string>
+
     <string name="account_settings_composition">Sending mail</string>
 
     <string name="account_settings_default_quoted_text_shown_label">Quote message when replying</string>

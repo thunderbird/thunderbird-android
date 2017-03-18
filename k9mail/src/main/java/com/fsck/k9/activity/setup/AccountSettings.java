@@ -74,6 +74,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_SHOW_PICTURES = "show_pictures_enum";
+    private static final String PREFERENCE_ONLY_SHOW_PICTURES_VIA_WIFI = "only_show_pictures_via_wifi";
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_NEW_MAIL_MODE = "folder_notify_new_mail_mode";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
@@ -147,6 +148,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference accountNotifySelf;
     private CheckBoxPreference accountNotifyContactsMailOnly;
     private ListPreference accountShowPictures;
+    private CheckBoxPreference accountOnlyShowPicturesViaWiFi;
     private CheckBoxPreference accountNotifySync;
     private CheckBoxPreference accountVibrateEnabled;
     private CheckBoxPreference accountLedEnabled;
@@ -472,10 +474,17 @@ public class AccountSettings extends K9PreferenceActivity {
                 int index = accountShowPictures.findIndexOfValue(summary);
                 accountShowPictures.setSummary(accountShowPictures.getEntries()[index]);
                 accountShowPictures.setValue(summary);
+
+                accountOnlyShowPicturesViaWiFi.setEnabled(ShowPictures.valueOf(summary) != ShowPictures.NEVER);
+
                 return false;
             }
         });
 
+        accountOnlyShowPicturesViaWiFi = (CheckBoxPreference) findPreference(PREFERENCE_ONLY_SHOW_PICTURES_VIA_WIFI);
+        accountOnlyShowPicturesViaWiFi.setChecked(account.isOnlyShowPicturesViaWiFi());
+        accountOnlyShowPicturesViaWiFi
+                .setEnabled(ShowPictures.valueOf(accountShowPictures.getValue()) != ShowPictures.NEVER);
 
         localStorageProvider = (ListPreference) findPreference(PREFERENCE_LOCAL_STORAGE_PROVIDER);
         {
@@ -834,6 +843,8 @@ public class AccountSettings extends K9PreferenceActivity {
         }
 
         account.setShowPictures(ShowPictures.valueOf(accountShowPictures.getValue()));
+
+        account.setOnlyShowPicturesViaWiFi(accountOnlyShowPicturesViaWiFi.isChecked());
 
         //IMAP specific stuff
         if (isPushCapable) {

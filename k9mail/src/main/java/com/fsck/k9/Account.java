@@ -197,6 +197,7 @@ public class Account implements BaseAccount, StoreConfig {
     private SortType sortType;
     private Map<SortType, Boolean> sortAscending = new HashMap<>();
     private ShowPictures showPictures;
+    private boolean onlyShowPicturesViaWiFi;
     private boolean isSignatureBeforeQuotedText;
     private Expunge expungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
     private int maxPushFolders;
@@ -295,6 +296,7 @@ public class Account implements BaseAccount, StoreConfig {
         sortType = DEFAULT_SORT_TYPE;
         sortAscending.put(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING);
         showPictures = ShowPictures.NEVER;
+        onlyShowPicturesViaWiFi = false;
         isSignatureBeforeQuotedText = false;
         expungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
         autoExpandFolderName = INBOX;
@@ -446,7 +448,9 @@ public class Account implements BaseAccount, StoreConfig {
         notificationSetting.setVibrateTimes(storage.getInt(accountUuid + ".vibrateTimes", 5));
         notificationSetting.setRingEnabled(storage.getBoolean(accountUuid + ".ring", true));
         notificationSetting.setRingtone(storage.getString(accountUuid + ".ringtone",
-                                         "content://settings/system/notification_sound"));
+                "content://settings/system/notification_sound"));
+        onlyShowPicturesViaWiFi = storage.getBoolean(accountUuid + ".onlyShowPicturesViaWiFi", false);
+
         notificationSetting.setLed(storage.getBoolean(accountUuid + ".led", true));
         notificationSetting.setLedColor(storage.getInt(accountUuid + ".ledColor", chipColor));
 
@@ -699,6 +703,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putString(accountUuid + ".sortTypeEnum", sortType.name());
         editor.putBoolean(accountUuid + ".sortAscending", sortAscending.get(sortType));
         editor.putString(accountUuid + ".showPicturesEnum", showPictures.name());
+        editor.putBoolean(accountUuid + ".onlyShowPicturesViaWiFi", onlyShowPicturesViaWiFi);
         editor.putString(accountUuid + ".folderDisplayMode", folderDisplayMode.name());
         editor.putString(accountUuid + ".folderSyncMode", folderSyncMode.name());
         editor.putString(accountUuid + ".folderPushMode", folderPushMode.name());
@@ -1212,6 +1217,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public synchronized void setShowPictures(ShowPictures showPictures) {
         this.showPictures = showPictures;
+    }
+
+    public synchronized boolean isOnlyShowPicturesViaWiFi() {
+        return onlyShowPicturesViaWiFi;
+    }
+
+    public synchronized void setOnlyShowPicturesViaWiFi(boolean onlyShowPicturesViaWiFi) {
+        this.onlyShowPicturesViaWiFi = onlyShowPicturesViaWiFi;
     }
 
     public synchronized FolderMode getFolderTargetMode() {

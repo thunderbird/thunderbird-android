@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListener;
 import com.fsck.k9.view.MessageHeader;
@@ -108,8 +110,9 @@ public class MessageTopView extends LinearLayout {
         resetAndPrepareMessageView(messageViewInfo);
 
         ShowPictures showPicturesSetting = account.getShowPictures();
+        boolean onlyShowPicturesViaWiFi = account.isOnlyShowPicturesViaWiFi();
         boolean automaticallyLoadPictures =
-                shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
+                shouldAutomaticallyLoadPictures(showPicturesSetting, onlyShowPicturesViaWiFi, messageViewInfo.message);
 
         MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container,
                 containerView, false);
@@ -282,8 +285,11 @@ public class MessageTopView extends LinearLayout {
         showPicturesButton.setVisibility(View.GONE);
     }
 
-    private boolean shouldAutomaticallyLoadPictures(ShowPictures showPicturesSetting, Message message) {
-        return showPicturesSetting == ShowPictures.ALWAYS || shouldShowPicturesFromSender(showPicturesSetting, message);
+    private boolean shouldAutomaticallyLoadPictures(ShowPictures showPicturesSetting, boolean onlyShowPicturesViaWiFi,
+            Message message) {
+        return (showPicturesSetting == ShowPictures.ALWAYS ||
+                shouldShowPicturesFromSender(showPicturesSetting, message)) &&
+                shouldShowPicturesInCurrentNetwork(onlyShowPicturesViaWiFi);
     }
 
     private boolean shouldShowPicturesFromSender(ShowPictures showPicturesSetting, Message message) {
@@ -298,6 +304,19 @@ public class MessageTopView extends LinearLayout {
 
         Contacts contacts = Contacts.getInstance(getContext());
         return contacts.isInContacts(senderEmailAddress);
+    }
+
+    private boolean shouldShowPicturesInCurrentNetwork(boolean onlyShowViaWiFi) {
+        if (!onlyShowViaWiFi) {
+            return true;
+        }
+
+        final ConnectivityManager connectivityManager =
+                (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkType networkType =
+                NetworkType.fromConnectivityManagerType(connectivityManager.getActiveNetworkInfo().getType());
+
+        return networkType == NetworkType.WIFI;
     }
 
     private String getSenderEmailAddress(Message message) {
