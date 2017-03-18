@@ -12,6 +12,8 @@ import android.util.Log;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
+import timber.log.Timber;
+
 
 public abstract class Message implements Part, Body {
 
@@ -206,9 +208,9 @@ public abstract class Message implements Part, Body {
             eolOut.flush();
             return out.getCount();
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Failed to calculate a message size", e);
+            Timber.e(e, "Failed to calculate a message size");
         } catch (MessagingException e) {
-            Log.e(LOG_TAG, "Failed to calculate a message size", e);
+            Timber.e(e, "Failed to calculate a message size");
         }
         return 0;
     }
