@@ -638,7 +638,7 @@ class ImapFolderPusher extends ImapFolder {
 
                 pushReceiver.messagesRemoved(ImapFolderPusher.this, messages);
             } catch (Exception e) {
-                Timber.e("Cannot remove EXPUNGEd messages", e);
+                Timber.e("Cannot remove EXPUNGEd messages");
             }
         }
 
