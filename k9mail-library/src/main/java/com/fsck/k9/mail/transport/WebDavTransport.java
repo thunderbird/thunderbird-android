@@ -1,8 +1,6 @@
 
 package com.fsck.k9.mail.transport;
 
-import android.util.Log;
-
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;

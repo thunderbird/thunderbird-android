@@ -1,8 +1,6 @@
 package com.fsck.k9.mail.oauth;
 
 
-import android.util.Log;
-
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.Base64;
 import org.json.JSONException;
