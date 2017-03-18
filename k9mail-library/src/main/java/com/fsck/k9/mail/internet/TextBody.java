@@ -67,7 +67,7 @@ public class TextBody implements Body, SizeAware {
             }
             return new ByteArrayInputStream(b);
         } catch (UnsupportedEncodingException uee) {
-            Timber.e(uee, "Unsupported charset: " + charset);
+            Timber.e(uee, "Unsupported charset: %s", charset);
             return null;
         }
     }
