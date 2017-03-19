@@ -114,6 +114,8 @@ public class MessagingControllerTest {
     @Captor
     private ArgumentCaptor<FetchProfile> fetchProfileCaptor;
     @Captor
+    private ArgumentCaptor<List<String>> stringListArgumentCaptor;
+    @Captor
     private ArgumentCaptor<MessageRetrievalListener<LocalMessage>> messageRetrievalListenerCaptor;
 
     private Context appContext;
@@ -725,8 +727,10 @@ public class MessagingControllerTest {
             throws Exception {
         messageCountInRemoteFolder(0);
         LocalMessage localCopyOfRemoteDeletedMessage = mock(LocalMessage.class);
+        when(localCopyOfRemoteDeletedMessage.isSet(Flag.X_SECURE_MESSAGE_DRAFT)).thenReturn(false);
         when(account.syncRemoteDeletions()).thenReturn(true);
         when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
+        when(localFolder.getMessage(any(String.class))).thenReturn(localCopyOfRemoteDeletedMessage);
         when(localFolder.getMessagesByUids(any(List.class)))
                 .thenReturn(Collections.singletonList(localCopyOfRemoteDeletedMessage));
 
@@ -734,6 +738,22 @@ public class MessagingControllerTest {
 
         verify(localFolder).destroyMessages(messageListCaptor.capture());
         assertEquals(localCopyOfRemoteDeletedMessage, messageListCaptor.getValue().get(0));
+    }
+
+    @Test
+    public void synchronizeMailboxSynchronous_withAccountSetToSyncRemoteDeletions_shouldNotDeleteSecureMessageDrafts()
+            throws Exception {
+        messageCountInRemoteFolder(0);
+        LocalMessage localCopyOfRemoteDeletedMessage = mock(LocalMessage.class);
+        when(localCopyOfRemoteDeletedMessage.isSet(Flag.X_SECURE_MESSAGE_DRAFT)).thenReturn(true);
+        when(account.syncRemoteDeletions()).thenReturn(true);
+        when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
+        when(localFolder.getMessage(any(String.class))).thenReturn(localCopyOfRemoteDeletedMessage);
+
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+
+        verify(localFolder).getMessagesByUids(stringListArgumentCaptor.capture());
+        assertEquals(stringListArgumentCaptor.getValue().isEmpty(),true);
     }
 
     @Test
@@ -760,9 +780,11 @@ public class MessagingControllerTest {
         Date dateOfEarliestPoll = new Date();
         when(account.syncRemoteDeletions()).thenReturn(true);
         when(account.getEarliestPollDate()).thenReturn(dateOfEarliestPoll);
+        when(localMessage.isSet(Flag.X_SECURE_MESSAGE_DRAFT)).thenReturn(false);
         when(localMessage.olderThan(dateOfEarliestPoll)).thenReturn(true);
         when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
         when(localFolder.getMessagesByUids(any(List.class))).thenReturn(Collections.singletonList(localMessage));
+        when(localFolder.getMessage(any(String.class))).thenReturn(localMessage);
 
         controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
 
