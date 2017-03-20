@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.SystemClock;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
@@ -65,7 +66,6 @@ import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.service.MailService;
 
 import de.cketti.library.changelog.ChangeLog;
-import android.os.SystemClock;
 
 /**
  * FolderList is the primary user interface for the program. This
