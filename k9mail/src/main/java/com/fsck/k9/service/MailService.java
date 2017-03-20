@@ -88,7 +88,7 @@ public class MailService extends CoreService {
 
     @Override
     public int startService(Intent intent, int startId) {
-        long startTime = System.currentTimeMillis();
+        long startTime = SystemClock.elapsedRealTime()();
         boolean oldIsSyncDisabled = isSyncDisabled();
         boolean doBackground = true;
 
@@ -149,7 +149,7 @@ public class MailService extends CoreService {
             MessagingController.getInstance(getApplication()).systemStatusChanged();
         }
 
-        Timber.i("MailService.onStart took %d ms", currentTimeMillis() - startTime);
+        Timber.i("MailService.onStart took %d ms", SystemClock.elapsedRealTime() - startTime);
 
         return START_NOT_STICKY;
     }
