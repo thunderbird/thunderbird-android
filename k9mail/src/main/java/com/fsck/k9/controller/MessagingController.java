@@ -42,6 +42,7 @@ import android.os.Process;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
+import android.os.SystemClock;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
@@ -2165,7 +2166,7 @@ public class MessagingController {
             message.setFlag(Flag.X_DOWNLOADED_FULL, true);
             message.setSubject(subject);
 
-            long nowTime = System.currentTimeMillis();
+            long nowTime = SystemClock.elapsedRealTime();
             Date nowDate = new Date(nowTime);
             message.setInternalDate(nowDate);
             message.addSentDate(nowDate, K9.hideTimeZone());
