@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import android.content.Context;
 import timber.log.Timber;
+import android.os.SystemClock;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
