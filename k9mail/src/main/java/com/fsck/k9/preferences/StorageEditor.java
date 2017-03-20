@@ -48,7 +48,7 @@ public class StorageEditor {
     }
 
     private void commitChanges() {
-        long startTime = System.currentTimeMillis();
+        long startTime = SystemClock.elapsedRealTime();
         Timber.i("Committing preference changes");
         Runnable committer = new Runnable() {
             public void run() {
@@ -68,7 +68,7 @@ public class StorageEditor {
             }
         };
         storage.doInTransaction(committer);
-        long endTime = System.currentTimeMillis();
+        long endTime =SystemClock.elapsedRealTime();
         Timber.i("Preferences commit took %d ms", endTime - startTime);
 
     }
