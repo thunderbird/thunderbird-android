@@ -1,5 +1,6 @@
 package com.fsck.k9.preferences;
 
+import android.os.SystemClock;
 import timber.log.Timber;
 import com.fsck.k9.K9;
 
