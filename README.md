@@ -41,6 +41,13 @@ Interested in helping to translate K-9 Mail? Contribute here:
 https://www.transifex.com/projects/p/k9mail/
 
 
+## Design
+
+A re-design is underway. You can contribute, view updates and access design files here: 
+
+https://github.com/k9mail/k-9-design
+
+
 ## Contributing
 
 Please fork this repository and contribute back using [pull requests](https://github.com/k9mail/k-9/pulls).
