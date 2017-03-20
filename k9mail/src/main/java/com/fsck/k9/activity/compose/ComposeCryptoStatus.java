@@ -44,6 +44,8 @@ public class ComposeCryptoStatus {
         return signingKeyId;
     }
 
+    public CryptoMode getCryptoMode() { return cryptoMode; }
+
     CryptoStatusDisplayType getCryptoStatusDisplayType() {
         switch (cryptoProviderState) {
             case UNCONFIGURED:

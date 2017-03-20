@@ -204,6 +204,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     public void initFromDraftMessage(Message message) {
         initRecipientsFromDraftMessage(message);
         initPgpInlineFromDraftMessage(message);
+        initCryptoModeFromDraftMessage(message);
     }
 
     private void initRecipientsFromDraftMessage(Message message) {
@@ -218,6 +219,13 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     private void initPgpInlineFromDraftMessage(Message message) {
         cryptoEnablePgpInline = message.isSet(Flag.X_DRAFT_OPENPGP_INLINE);
+    }
+
+    private void initCryptoModeFromDraftMessage(Message message) {
+        if(message.isSet(Flag.X_DRAFT_CRYPTO_DISABLED)) currentCryptoMode = CryptoMode.DISABLE;
+        if(message.isSet(Flag.X_DRAFT_CRYPTO_OPPORTUNISTIC)) currentCryptoMode = CryptoMode.OPPORTUNISTIC;
+        if(message.isSet(Flag.X_DRAFT_CRYPTO_PRIVATE)) currentCryptoMode = CryptoMode.PRIVATE;
+        if(message.isSet(Flag.X_DRAFT_CRYPTO_SIGN_ONLY)) currentCryptoMode = CryptoMode.SIGN_ONLY;
     }
 
     private void addToAddresses(Address... toAddresses) {
