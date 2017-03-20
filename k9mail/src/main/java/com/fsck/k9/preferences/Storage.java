@@ -159,7 +159,7 @@ public class Storage {
     }
 
     private void loadValues() {
-        long startTime = SystemClock.elapsedRealTime();
+        long startTime = SystemClock.elapsedRealtime();
         Timber.i("Loading preferences from DB into Storage");
         Cursor cursor = null;
         SQLiteDatabase mDb = null;
@@ -178,7 +178,7 @@ public class Storage {
             if (mDb != null) {
                 mDb.close();
             }
-            long endTime = SystemClock.elapsedRealTime();
+            long endTime = SystemClock.elapsedRealtime();
             Timber.i("Preferences load took %d ms", endTime - startTime);
         }
     }
