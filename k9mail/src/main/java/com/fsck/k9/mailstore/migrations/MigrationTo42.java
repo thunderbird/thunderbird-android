@@ -3,6 +3,8 @@ package com.fsck.k9.mailstore.migrations;
 
 import java.util.List;
 
+import android.os.SystemClock;
+
 import timber.log.Timber;
 
 import com.fsck.k9.K9;
