@@ -19,7 +19,7 @@ class MigrationTo42 {
             LocalStore localStore = migrationsHelper.getLocalStore();
             Storage storage = migrationsHelper.getStorage();
 
-            long startTime = System.currentTimeMillis();
+            long startTime = SystemClock.elapsedRealTime();
             StorageEditor editor = storage.edit();
 
             List<? extends Folder > folders = localStore.getPersonalNamespaces(true);
@@ -31,7 +31,7 @@ class MigrationTo42 {
             }
 
             editor.commit();
-            long endTime = System.currentTimeMillis();
+            long endTime = SystemClock.elapsedRealTime();
             Timber.i("Putting folder preferences for %d folders back into Preferences took %d ms",
                     folders.size(), endTime - startTime);
         } catch (Exception e) {
