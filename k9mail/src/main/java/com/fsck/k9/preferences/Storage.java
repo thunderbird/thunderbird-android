@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.os.SystemClock;
 import timber.log.Timber;
 
 import com.fsck.k9.K9;
