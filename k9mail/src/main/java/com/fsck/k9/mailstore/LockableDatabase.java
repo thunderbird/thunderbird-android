@@ -280,7 +280,7 @@ public class LockableDatabase {
                 if (doTransaction) {
                     final long begin;
                     if (debug) {
-                        begin = System.currentTimeMillis();
+                        begin = SystemClock.elapsedRealTime();
                     } else {
                         begin = 0L;
                     }
