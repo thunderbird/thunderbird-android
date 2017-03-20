@@ -219,18 +219,35 @@ public class Address implements Serializable {
         }
     }
 
+    /**
+     * Return string in RFC-822 format with 1000 character limit
+     */
     public static String toEncodedString(Address[] addresses) {
         if (addresses == null) {
             return null;
         }
+
+        // Limit of 1000 from https://tools.ietf.org/html/rfc5322#section-2.1.1
+        final int limit = 1000 - 2 /* CRLF */ - 4 /* "To: " */ - 1 /* Off-by-one bugs */ - 1 /* comma */;
+        StringBuilder sb_final = new StringBuilder();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < addresses.length; i++) {
-            sb.append(addresses[i].toEncodedString());
+            String toBeAppended = addresses[i].toEncodedString();
+
+            // Start new Builder if line-length exceeds ~1000, append CRLF and space to new buffer
+            if (sb.length() + toBeAppended.length() >= limit) {
+                sb_final.append(sb.toString());
+                sb = new StringBuilder();
+                sb.append("\r\n ");
+            }
+
+            sb.append(toBeAppended);
             if (i < addresses.length - 1) {
                 sb.append(',');
             }
         }
-        return sb.toString();
+        sb_final.append(sb.toString());
+        return sb_final.toString();
     }
 
 
