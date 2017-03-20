@@ -727,8 +727,10 @@ public class MessagingControllerTest {
             throws Exception {
         messageCountInRemoteFolder(0);
         LocalMessage localCopyOfRemoteDeletedMessage = mock(LocalMessage.class);
+        when(localCopyOfRemoteDeletedMessage.isSet(Flag.X_DRAFT_CRYPTO_DISABLED)).thenReturn(true);
         when(account.syncRemoteDeletions()).thenReturn(true);
         when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
+        when(localFolder.getMessage(any(String.class))).thenReturn(localCopyOfRemoteDeletedMessage);
         when(localFolder.getMessagesByUids(any(List.class)))
                 .thenReturn(Collections.singletonList(localCopyOfRemoteDeletedMessage));
 
