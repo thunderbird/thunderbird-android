@@ -281,7 +281,7 @@ public class LockableDatabase {
                 if (doTransaction) {
                     final long begin;
                     if (debug) {
-                        begin = SystemClock.elapsedRealTime();
+                        begin = SystemClock.elapsedRealtime();
                     } else {
                         begin = 0L;
                     }
@@ -289,7 +289,7 @@ public class LockableDatabase {
                     mDb.endTransaction();
                     if (debug) {
                         Timber.v("LockableDatabase: Transaction ended, took %d ms / %s",
-                                SystemClock.elapsedRealTime() - begin,
+                                SystemClock.elapsedRealtime() - begin,
                                 new Exception().getStackTrace()[1]);
                     }
                 }
