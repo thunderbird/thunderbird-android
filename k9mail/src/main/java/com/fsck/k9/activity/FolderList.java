@@ -65,6 +65,7 @@ import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.service.MailService;
 
 import de.cketti.library.changelog.ChangeLog;
+import android.os.SystemClock;
 
 /**
  * FolderList is the primary user interface for the program. This
