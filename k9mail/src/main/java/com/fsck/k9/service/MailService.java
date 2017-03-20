@@ -150,7 +150,7 @@ public class MailService extends CoreService {
             MessagingController.getInstance(getApplication()).systemStatusChanged();
         }
 
-        Timber.i("MailService.onStart took %d ms", SystemClock.elapsedRealTime() - startTime);
+        Timber.i("MailService.onStart took %d ms", SystemClock.elapsedRealtime() - startTime);
 
         return START_NOT_STICKY;
     }
