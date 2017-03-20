@@ -3723,7 +3723,7 @@ public class MessagingController {
 
         Timber.v("Folder %s was last synced @ %tc", folder.getName(), folder.getLastChecked());
 
-        if (!ignoreLastCheckedTime && folder.getLastChecked() > System.currentTimeMillis() - accountInterval) {
+        if (!ignoreLastCheckedTime && folder.getLastChecked() > SystemClock.elapsedRealTime() - accountInterval) {
             Timber.v("Not syncing folder %s, previously synced @ %tc which would be too recent for the account " +
                     "period", folder.getName(), folder.getLastChecked());
             return;
@@ -3741,7 +3741,7 @@ public class MessagingController {
                             tLocalFolder.open(Folder.OPEN_MODE_RW);
 
                             if (!ignoreLastCheckedTime && tLocalFolder.getLastChecked() >
-                                    (System.currentTimeMillis() - accountInterval)) {
+                                    (SystemClock.elapsedRealTime() - accountInterval)) {
                                 Timber.v("Not running Command for folder %s, previously synced @ %tc which would " +
                                         "be too recent for the account period",
                                         folder.getName(), folder.getLastChecked());
