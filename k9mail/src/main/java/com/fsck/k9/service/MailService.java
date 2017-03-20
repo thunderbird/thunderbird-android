@@ -89,7 +89,7 @@ public class MailService extends CoreService {
 
     @Override
     public int startService(Intent intent, int startId) {
-        long startTime = SystemClock.elapsedRealTime();
+        long startTime = SystemClock.elapsedRealtime();
         boolean oldIsSyncDisabled = isSyncDisabled();
         boolean doBackground = true;
 
