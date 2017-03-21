@@ -38,6 +38,16 @@ public class HttpUriParserTest {
     }
 
     @Test
+    public void domainWithUserInfo() {
+        assertLinkify("http://test@google.com/");
+    }
+
+    @Test
+    public void domainWithFullUserInfo() {
+        assertLinkify("http://test:secret@google.com/");
+    }
+
+    @Test
     public void domainWithoutWww() {
         assertLinkify("http://google.com/");
     }

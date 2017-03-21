@@ -17,7 +17,8 @@ class HttpUriParser implements UriParser {
     // This string represent character group sub-delim as described in RFC 3986
     private static final String SUB_DELIM = "!$&'()*+,;=";
     private static final Pattern DOMAIN_PATTERN =
-            Pattern.compile("\\w([\\w-]*\\w)*(\\.\\w([\\w-]*\\w)*)*(:(\\d{0,5}))?");
+            Pattern.compile("[\\da-z](?:[\\da-z-]*[\\da-z])*(?:\\.[\\da-z](?:[\\da-z-]*[\\da-z])*)*(?::(\\d{0,5}))?",
+                    Pattern.CASE_INSENSITIVE);
     private static final Pattern IPv4_PATTERN =
             Pattern.compile("(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})(:(\\d{0,5}))?");
 
@@ -40,11 +41,7 @@ class HttpUriParser implements UriParser {
         }
 
         // Authority
-        currentPos = matchUserInfoIfAvailable(text, currentPos);
-
-        int matchedAuthorityEnd = Math.max(tryMatchDomainName(text, currentPos),
-                Math.max(tryMatchIpv4Address(text, currentPos, true),
-                        tryMatchIpv6Address(text, currentPos)));
+        int matchedAuthorityEnd = tryMatchAuthority(text, currentPos);
         if (matchedAuthorityEnd == currentPos) {
             return startPos;
         }
@@ -75,9 +72,34 @@ class HttpUriParser implements UriParser {
         return currentPos;
     }
 
-    private int matchUserInfoIfAvailable(String text, int startPos) {
+    private int tryMatchAuthority(String text, int startPos) {
+        int authorityLimit = text.indexOf('/', startPos);
+        if (authorityLimit == -1) {
+            authorityLimit = text.length();
+        }
+        int authorityStart = tryMatchUserInfo(text, startPos, authorityLimit);
+
+        int authorityEnd = tryMatchDomainName(text, authorityStart);
+        if (authorityEnd != authorityStart) {
+            return authorityEnd;
+        }
+
+        authorityEnd = tryMatchIpv4Address(text, authorityStart, true);
+        if (authorityEnd != authorityStart) {
+            return authorityEnd;
+        }
+
+        authorityEnd = tryMatchIpv6Address(text, authorityStart);
+        if (authorityEnd != authorityStart) {
+            return authorityEnd;
+        }
+
+        return startPos;
+    }
+
+    private int tryMatchUserInfo(String text, int startPos, int limit) {
         int userInfoEnd = text.indexOf('@', startPos);
-        if (userInfoEnd != -1) {
+        if (userInfoEnd != -1 && userInfoEnd < limit) {
             if (matchUnreservedPCTEncodedSubDelimClassesGreedy(text, startPos, ":") != userInfoEnd) {
                 // Illegal character in user info
                 return startPos;
@@ -94,7 +116,7 @@ class HttpUriParser implements UriParser {
                 return startPos;
             }
 
-            String portString = matcher.group(matcher.groupCount());
+            String portString = matcher.group(1);
             if (portString != null && !portString.isEmpty()) {
                 int port = Integer.parseInt(portString);
                 if (port > 65535) {
