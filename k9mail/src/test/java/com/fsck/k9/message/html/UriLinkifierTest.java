@@ -117,11 +117,23 @@ public class UriLinkifierTest {
     }
 
     @Test
-    public void schemaMatchWithInvalidUriInMiddleOfTextFollowedVyValidUri() throws Exception {
+    public void schemaMatchWithInvalidUriInMiddleOfTextFollowedByValidUri() {
         String text = "prefix http:42 http://example.org";
 
         UriLinkifier.linkifyText(text, outputBuffer);
 
         assertEquals("prefix http:42 <a href=\"http://example.org\">http://example.org</a>", outputBuffer.toString());
+    }
+
+    @Test
+    public void multipleValidUrisInRow() {
+        String text = "prefix http://uri1.example.org some text http://uri2.example.org/path postfix";
+
+        UriLinkifier.linkifyText(text, outputBuffer);
+
+        assertEquals(
+                "prefix <a href=\"http://uri1.example.org\">http://uri1.example.org</a> some text " +
+                        "<a href=\"http://uri2.example.org/path\">http://uri2.example.org/path</a> postfix",
+                outputBuffer.toString());
     }
 }

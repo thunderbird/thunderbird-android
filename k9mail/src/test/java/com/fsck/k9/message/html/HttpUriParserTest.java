@@ -13,8 +13,23 @@ public class HttpUriParserTest {
 
 
     @Test
+    public void emptyUriIgnored() {
+        assertLinkIgnored("http://");
+    }
+
+    @Test
+    public void emptyAuthorityIgnored() {
+        assertLinkIgnored("http:///");
+    }
+
+    @Test
     public void simpleDomain() {
         assertLinkify("http://www.google.com");
+    }
+
+    @Test
+    public void invalidDomainIgnored() {
+        assertLinkIgnored("http://-www.google.com");
     }
 
     @Test
@@ -103,6 +118,16 @@ public class HttpUriParserTest {
     }
 
     @Test
+    public void ipv6WithoutClosingSquareBracketIgnored() {
+        assertLinkIgnored("http://[1080:0:0:0:8:80:200C:417A/");
+    }
+
+    @Test
+    public void ipv6InvalidClosingSquareBracketIgnored() {
+        assertLinkIgnored("http://[1080:0:0:0:8:800:270C:417A/]");
+    }
+
+    @Test
     public void domainWithTrailingSpace() {
         String text = "http://google.com/ ";
 
@@ -133,10 +158,22 @@ public class HttpUriParserTest {
     }
 
     @Test
-    public void uriInMiddleOfInput() throws Exception {
+    public void uriInMiddleAfterInput() {
         String prefix = "prefix ";
         String uri = "http://google.com/";
         String text = prefix + uri;
+
+        parser.linkifyUri(text, prefix.length(), outputBuffer);
+
+        assertLinkOnly(uri, outputBuffer);
+    }
+
+    @Test
+    public void uriInMiddleOfInput() {
+        String prefix = "prefix ";
+        String uri = "http://google.com/";
+        String postfix = " postfix";
+        String text = prefix + uri + postfix;
 
         parser.linkifyUri(text, prefix.length(), outputBuffer);
 
@@ -151,5 +188,12 @@ public class HttpUriParserTest {
     void assertLinkify(String uri) {
         linkify(uri);
         assertLinkOnly(uri, outputBuffer);
+    }
+
+    void assertLinkIgnored(String uri) {
+        int endPos = linkify(uri);
+
+        assertEquals("", outputBuffer.toString());
+        assertEquals(0, endPos);
     }
 }
