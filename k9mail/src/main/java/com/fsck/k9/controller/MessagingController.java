@@ -42,6 +42,7 @@ import android.os.Process;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
+import android.os.SystemClock;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
@@ -2165,7 +2166,7 @@ public class MessagingController {
             message.setFlag(Flag.X_DOWNLOADED_FULL, true);
             message.setSubject(subject);
 
-            long nowTime = System.currentTimeMillis();
+            long nowTime = SystemClock.elapsedRealtime();
             Date nowDate = new Date(nowTime);
             message.setInternalDate(nowDate);
             message.addSentDate(nowDate, K9.hideTimeZone());
@@ -3723,7 +3724,7 @@ public class MessagingController {
 
         Timber.v("Folder %s was last synced @ %tc", folder.getName(), folder.getLastChecked());
 
-        if (!ignoreLastCheckedTime && folder.getLastChecked() > System.currentTimeMillis() - accountInterval) {
+        if (!ignoreLastCheckedTime && folder.getLastChecked() > SystemClock.elapsedRealtime() - accountInterval) {
             Timber.v("Not syncing folder %s, previously synced @ %tc which would be too recent for the account " +
                     "period", folder.getName(), folder.getLastChecked());
             return;
@@ -3741,7 +3742,7 @@ public class MessagingController {
                             tLocalFolder.open(Folder.OPEN_MODE_RW);
 
                             if (!ignoreLastCheckedTime && tLocalFolder.getLastChecked() >
-                                    (System.currentTimeMillis() - accountInterval)) {
+                                    (SystemClock.elapsedRealtime() - accountInterval)) {
                                 Timber.v("Not running Command for folder %s, previously synced @ %tc which would " +
                                         "be too recent for the account period",
                                         folder.getName(), folder.getLastChecked());

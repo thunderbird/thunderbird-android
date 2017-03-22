@@ -1,5 +1,6 @@
 package com.fsck.k9.preferences;
 
+import android.os.SystemClock;
 import timber.log.Timber;
 import com.fsck.k9.K9;
 
@@ -48,7 +49,7 @@ public class StorageEditor {
     }
 
     private void commitChanges() {
-        long startTime = System.currentTimeMillis();
+        long startTime = SystemClock.elapsedRealtime();
         Timber.i("Committing preference changes");
         Runnable committer = new Runnable() {
             public void run() {
@@ -68,7 +69,7 @@ public class StorageEditor {
             }
         };
         storage.doInTransaction(committer);
-        long endTime = System.currentTimeMillis();
+        long endTime =SystemClock.elapsedRealtime();
         Timber.i("Preferences commit took %d ms", endTime - startTime);
 
     }

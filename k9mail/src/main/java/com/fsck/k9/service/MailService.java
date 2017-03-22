@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.SystemClock;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
@@ -88,7 +89,7 @@ public class MailService extends CoreService {
 
     @Override
     public int startService(Intent intent, int startId) {
-        long startTime = System.currentTimeMillis();
+        long startTime = SystemClock.elapsedRealtime();
         boolean oldIsSyncDisabled = isSyncDisabled();
         boolean doBackground = true;
 
@@ -149,7 +150,7 @@ public class MailService extends CoreService {
             MessagingController.getInstance(getApplication()).systemStatusChanged();
         }
 
-        Timber.i("MailService.onStart took %d ms", currentTimeMillis() - startTime);
+        Timber.i("MailService.onStart took %d ms", SystemClock.elapsedRealtime() - startTime);
 
         return START_NOT_STICKY;
     }
@@ -357,7 +358,7 @@ public class MailService extends CoreService {
 
     private void refreshPushers() {
         try {
-            long nowTime = System.currentTimeMillis();
+            long nowTime = SystemClock.elapsedRealtime();
             Timber.i("Refreshing pushers");
 
             Collection<Pusher> pushers = MessagingController.getInstance(getApplication()).getPushers();

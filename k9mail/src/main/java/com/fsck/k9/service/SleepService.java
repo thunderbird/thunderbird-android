@@ -2,6 +2,7 @@ package com.fsck.k9.service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import timber.log.Timber;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
@@ -37,7 +38,7 @@ public class SleepService extends CoreService {
         Intent i = new Intent(context, SleepService.class);
         i.putExtra(LATCH_ID, id);
         i.setAction(ALARM_FIRED + "." + id);
-        long startTime = System.currentTimeMillis();
+        long startTime = SystemClock.elapsedRealtime();
         long nextTime = startTime + sleepTime;
         BootReceiver.scheduleIntent(context, nextTime, i);
         if (wakeLock != null) {
@@ -73,7 +74,7 @@ public class SleepService extends CoreService {
             reacquireWakeLock(releaseDatum);
         }
 
-        long endTime = System.currentTimeMillis();
+        long endTime = SystemClock.elapsedRealtime();
         long actualSleep = endTime - startTime;
 
         if (actualSleep < sleepTime) {
