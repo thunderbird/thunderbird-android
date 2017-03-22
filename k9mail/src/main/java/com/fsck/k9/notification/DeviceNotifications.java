@@ -145,7 +145,7 @@ class DeviceNotifications extends BaseNotifications {
                 .setSummaryText(summary);
 
         for (NotificationContent content : notificationData.getContentForSummaryNotification()) {
-            style.addLine(content.summary);
+            style.addLine(makeHighPriorityIfRequired(content.summary.toString(), content));
         }
 
         builder.setStyle(style);

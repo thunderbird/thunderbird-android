@@ -200,6 +200,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private Action action;
 
     private boolean requestReadReceipt = false;
+    private boolean isHighPriority = false;
 
     private TextView chooseIdentityButton;
     private EditText subjectView;
@@ -662,6 +663,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             builder = SimpleMessageBuilder.newInstance();
             recipientPresenter.builderSetProperties(builder);
         }
+        builder.setHighPriority(isHighPriority);
 
         builder.setSubject(Utility.stripNewLines(subjectView.getText().toString()))
                 .setSentDate(new Date())
@@ -760,6 +762,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             openAutoExpandFolder();
         } else {
             finish();
+        }
+    }
+
+    private void onHighPriority(MenuItem item) {
+        if (isHighPriority) {
+            item.setTitle(getString(R.string.priority_high));
+            setTitle(getString(R.string.compose_title_compose));
+            this.isHighPriority = false;
+        } else {
+            item.setTitle(getString(R.string.priority_normal));
+            setTitle(getString(R.string.compose_title_compose)+","+getString(R.string.priority_high));
+            this.isHighPriority = true;
         }
     }
 
@@ -989,6 +1003,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 break;
             case R.id.read_receipt:
                 onReadReceipt();
+                break;
+            case R.id.is_high_priority:
+                onHighPriority(item);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

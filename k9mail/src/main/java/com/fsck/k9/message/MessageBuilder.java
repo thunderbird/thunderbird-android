@@ -42,6 +42,7 @@ public abstract class MessageBuilder {
     private final Context context;
     private final MessageIdGenerator messageIdGenerator;
     private final BoundaryGenerator boundaryGenerator;
+    private static final String X_PRIORITY_CONTENT = "priority_high";
 
 
     private String subject;
@@ -69,6 +70,7 @@ public abstract class MessageBuilder {
     private int cursorPosition;
     private MessageReference messageReference;
     private boolean isDraft;
+    private boolean isHighPriority;
     private boolean isPgpInlineEnabled;
 
     protected MessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
@@ -109,6 +111,10 @@ public abstract class MessageBuilder {
 
         if (!K9.hideUserAgent()) {
             message.setHeader("User-Agent", context.getString(R.string.message_header_mua));
+        }
+
+        if (isHighPriority) {
+            message.setHeader(MimeHeader.HEADER_HIGH_PRIORITY, X_PRIORITY_CONTENT);
         }
 
         final String replyTo = identity.getReplyTo();
@@ -600,6 +606,10 @@ public abstract class MessageBuilder {
             }
             asyncCallback = null;
         }
+    }
+
+    public void setHighPriority(boolean isHighPriority) {
+        this.isHighPriority = isHighPriority;
     }
 
     public interface Callback {
