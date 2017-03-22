@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.os.SystemClock;
 import timber.log.Timber;
 
 import com.fsck.k9.K9;
@@ -158,7 +159,7 @@ public class Storage {
     }
 
     private void loadValues() {
-        long startTime = System.currentTimeMillis();
+        long startTime = SystemClock.elapsedRealtime();
         Timber.i("Loading preferences from DB into Storage");
         Cursor cursor = null;
         SQLiteDatabase mDb = null;
@@ -177,7 +178,7 @@ public class Storage {
             if (mDb != null) {
                 mDb.close();
             }
-            long endTime = System.currentTimeMillis();
+            long endTime = SystemClock.elapsedRealtime();
             Timber.i("Preferences load took %d ms", endTime - startTime);
         }
     }

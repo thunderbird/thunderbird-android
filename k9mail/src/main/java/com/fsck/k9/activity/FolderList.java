@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.SystemClock;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
@@ -985,7 +986,7 @@ public class FolderList extends K9ListActivity {
             } else if (folder.status != null) {
                 folderStatus = folder.status;
             } else if (folder.lastChecked != 0) {
-                long now = System.currentTimeMillis();
+                long now = SystemClock.elapsedRealtime();
                 int flags = DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR;
                 CharSequence formattedDate;
 

@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.os.SystemClock;
 import timber.log.Timber;
 
 import com.fsck.k9.BuildConfig;
@@ -74,7 +75,7 @@ public class DecryptedFileProvider extends FileProvider {
     public static boolean deleteOldTemporaryFiles(Context context) {
         File tempDirectory = getDecryptedTempDirectory(context);
         boolean allFilesDeleted = true;
-        long deletionThreshold = System.currentTimeMillis() - FILE_DELETE_THRESHOLD_MILLISECONDS;
+        long deletionThreshold = SystemClock.elapsedRealtime() - FILE_DELETE_THRESHOLD_MILLISECONDS;
         for (File tempFile : tempDirectory.listFiles()) {
             long lastModified = tempFile.lastModified();
             if (lastModified < deletionThreshold) {
