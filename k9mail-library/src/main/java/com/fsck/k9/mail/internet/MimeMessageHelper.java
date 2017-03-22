@@ -26,20 +26,25 @@ public class MimeMessageHelper {
             String mimeType = multipart.getMimeType();
             String contentType = String.format("%s; boundary=\"%s\"", mimeType, multipart.getBoundary());
             part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
-            if ("multipart/signed".equalsIgnoreCase(mimeType)) {
-                setEncoding(part, MimeUtil.ENC_7BIT);
-            } else {
-                setEncoding(part, MimeUtil.ENC_8BIT);
-            }
+            // note: if this is ever changed to 8bit, multipart/signed parts must always be 7bit!
+            setEncoding(part, MimeUtil.ENC_7BIT);
         } else if (body instanceof TextBody) {
-            String contentType = String.format("%s;\r\n charset=utf-8", part.getMimeType());
-            String name = MimeUtility.getHeaderParameter(part.getContentType(), "name");
-            if (name != null) {
-                contentType += String.format(";\r\n name=\"%s\"", name);
+            String contentType;
+            if (MimeUtility.mimeTypeMatches(part.getMimeType(), "text/*")) {
+                contentType = String.format("%s;\r\n charset=utf-8", part.getMimeType());
+                String name = MimeUtility.getHeaderParameter(part.getContentType(), "name");
+                if (name != null) {
+                    contentType += String.format(";\r\n name=\"%s\"", name);
+                }
+            } else {
+                contentType = part.getMimeType();
             }
             part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
 
-            setEncoding(part, MimeUtil.ENC_8BIT);
+            setEncoding(part, MimeUtil.ENC_QUOTED_PRINTABLE);
+        } else if (body instanceof RawDataBody) {
+            String encoding = ((RawDataBody) body).getEncoding();
+            part.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
         }
     }
 

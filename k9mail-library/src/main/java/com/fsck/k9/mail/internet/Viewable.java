@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Empty marker class interface the class hierarchy used by
- * {@link MessageExtractor#getViewables(com.fsck.k9.mail.Part, java.util.List)}
+ * {@link MessageExtractor#findViewablesAndAttachments(com.fsck.k9.mail.Part, java.util.List)}
  *
  * @see Viewable.Text
  * @see Viewable.Html
@@ -37,6 +37,12 @@ public interface Viewable {
      */
     class Text extends Textual {
         public Text(Part part) {
+            super(part);
+        }
+    }
+
+    class Flowed extends Textual {
+        public Flowed(Part part) {
             super(part);
         }
     }

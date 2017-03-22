@@ -19,12 +19,14 @@ package com.fsck.k9.helper;
 
 import java.util.Comparator;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.database.CharArrayBuffer;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 
@@ -211,6 +213,12 @@ public class MergeCursor implements Cursor {
     @Override
     public boolean getWantsAllOnMoveCalls() {
         return mActiveCursor.getWantsAllOnMoveCalls();
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void setExtras(Bundle extras) {
+        mActiveCursor.setExtras(extras);
     }
 
     @Override

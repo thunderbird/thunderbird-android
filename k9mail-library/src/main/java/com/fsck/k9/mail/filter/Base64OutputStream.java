@@ -133,14 +133,14 @@ public class Base64OutputStream extends FilterOutputStream {
 
     /**
      * Flushes this output stream and forces any buffered output bytes
-     * to be written out to the stream.  If propogate is true, the wrapped
+     * to be written out to the stream.  If propagate is true, the wrapped
      * stream will also be flushed.
      *
-     * @param propogate boolean flag to indicate whether the wrapped
+     * @param propagate boolean flag to indicate whether the wrapped
      *                  OutputStream should also be flushed.
      * @throws IOException if an I/O error occurs.
      */
-    private void flush(boolean propogate) throws IOException {
+    private void flush(boolean propagate) throws IOException {
         int avail = base64.avail();
         if (avail > 0) {
             byte[] buf = new byte[avail];
@@ -149,7 +149,7 @@ public class Base64OutputStream extends FilterOutputStream {
                 out.write(buf, 0, c);
             }
         }
-        if (propogate) {
+        if (propagate) {
             out.flush();
         }
     }

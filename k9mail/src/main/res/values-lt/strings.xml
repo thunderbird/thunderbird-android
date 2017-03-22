@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 paštas</string>
-  <string name="beta_app_name">„K-9 Mail“ BETA</string>
   <string name="shortcuts_title">K-9 paskyros</string>
   <string name="unread_widget_label">K-9 neskaityta</string>
   <string name="remote_control_label">„K-9 Mail“ nutolęs valdymas</string>
@@ -15,35 +14,6 @@
   <string name="app_license">Išleista pagal Apache License sąlygas, versija 2.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Sveiki atvykę į „K-9 Mail“</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-„K-9 Mail“ yra galingas ir nemokamas pašto klientas Android įrenginiams.
-</p><p>
-Pagerintos galimybės:
-</p>
-<ul>
-  <li>Siųsti laiškus naudojant IMAP IDLE</li>
-  <li>Geresnė greitaveika</li>
-  <li>Laiškų užpildymas</li>
-  <li>Laiško parašai</li>
-  <li>Bcc-sau</li>
-  <li>Aplankų prenumerata</li>
-  <li>Visų aplankų sinchronizacija
-  <li>Atsakymo adreso konfigūracija</li>
-  <li>Klaviatūros trumpiniai</li>
-  <li>Geresnis IMAP palaikymas</li>
-  <li>Priedų išsaugojimas į SD</li>
-  <li>Šiukšlinės išvalymas</li>
-  <li>Laiškų rikiavimas</li>
-  <li>…ir dar daug daugiau</li>
-</ul>
-<p>
-Pastaba: K-9 nepalaiko daugumos Hotmail paskyrų ir kaip dauguma el. pašto klientų turi keblumų bendraujant su Microsoft Exchange.
-</p><p>
-Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus mūsų tinklapyje
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%s</xliff:g>\" bus pašalinta iš „K-9 Mail“.</string>
@@ -77,7 +47,7 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="status_loading_account_folder_headers">Gaunamos antraštės <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Siunčiama <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Apdorojama <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress"> <xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Sekantis tikrinimas <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Sinchronizavimas išjungtas</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> pasirinkta</string>
@@ -128,7 +98,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="message_view_theme_action_dark">Persijungti į tamsią temą</string>
   <string name="message_view_theme_action_light">Persijungti į šviesią temą</string>
   <string name="mark_as_unread_action">Pažymėti kaip neskaitytą</string>
-  <string name="add_cc_bcc_action">Pridėti Cc/Bcc</string>
   <string name="read_receipt">Skaitymo patvirtinimas</string>
   <string name="read_receipt_enabled">Prašys perskaitymo patvirtinimo</string>
   <string name="read_receipt_disabled">Neprašys perskaitymo patvirtinimo</string>
@@ -158,7 +127,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="recreating_account">Iš naujo kuriama paskyra  \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Naujas laiškas</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Neskaitytų (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> daugiau <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Atsakyti</string>
   <string name="notification_action_mark_as_read">Pažymėti kaip skaitytą</string>
   <string name="notification_action_delete">Šalinti</string>
@@ -189,9 +157,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="debug_enable_sensitive_logging_summary">Žurnaluose gali būti rodomi slaptažodžiai</string>
   <string name="message_list_load_more_messages_action">Įkelti daugiau laiškų</string>
   <string name="message_to_fmt">Kam:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Kam</string>
-  <string name="message_compose_cc_hint">Cc</string>
-  <string name="message_compose_bcc_hint">Slapta kopija</string>
   <string name="message_compose_subject_hint">Tema</string>
   <string name="message_compose_content_hint">Pranešimo tekstas</string>
   <string name="message_compose_signature_hint">Parašas</string>
@@ -207,9 +172,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="error_contact_address_not_found">Nepavyko rasti šio kontakto el. pašto adreso.</string>
   <string name="message_compose_attachments_skipped_toast">Kai kurių priedų negalima persiųsti, nes jie nebuvo parsiųsti.</string>
   <string name="message_compose_show_quoted_text_action">Cituoti laišką</string>
-  <string name="message_compose_description_add_to">Pridėti gavėją (To)</string>
-  <string name="message_compose_description_add_cc">Pridėti gavėją (CC)</string>
-  <string name="message_compose_description_add_bcc">Pridėti gavėją (BCC)</string>
   <string name="message_compose_description_delete_quoted_text">Pašalinti cituojamą tekstą</string>
   <string name="message_compose_description_edit_quoted_text">Redaguoti cituojamą tekstą</string>
   <string name="message_view_from_format">Nuo: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -217,18 +179,12 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_attachment_view_action">Atverti</string>
   <string name="message_view_attachment_download_action">Išsaugoti</string>
-  <string name="message_view_status_attachment_saved">Priedas išsaugotas SD kortelėje kaip <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Išsaugoti priedų SD kortelėje nepavyko.</string>
   <string name="message_view_show_pictures_action">Rodyti paveikslėlius</string>
-  <string name="message_view_show_message_action">Rodyti laišką</string>
-  <string name="message_view_show_attachments_action">Rodyti priedus</string>
   <string name="message_view_show_more_attachments_action">Daugiau…</string>
-  <string name="message_view_fetching_attachment_toast">Gaunamas priedas.</string>
   <string name="message_view_no_viewer">Nepavyko rasto <xliff:g id="mimetype">%s</xliff:g> peržiūros programos.</string>
   <string name="message_view_download_remainder">Parsiųsti visą laišką</string>
-  <string name="message_view_downloading">Atsiunčiama…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Nevisos antraštės buvo parsiųstos ar išsaugotos. Norėdami įgalinti šią parinkty, paskyros gaunamųjų serverio nustatymuose, pasirinkite „Išsaugoti visas antraštes įrenginyje“.</string>
   <string name="message_no_additional_headers_available">Visos antraštės parsiųstos, bet nėra ką rodyti.</string>
   <string name="message_additional_headers_retrieval_failed">Gauti papildomų antraščių iš duomenų bazės ar pašto serverio nepavyko.</string>
   <string name="from_same_sender">Daugiau iš šio siuntėjo</string>
@@ -432,7 +388,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="account_settings_folders">Aplankai</string>
   <string name="account_settings_quote_prefix_label">Redaguojamo teksto priedėlis</string>
   <string name="account_settings_crypto">Šifravimas</string>
-  <string name="account_settings_crypto_app">OpenPGP tiekėjas</string>
   <string name="account_settings_mail_check_frequency_label">Aplanko tikrinimo dažnis</string>
   <string name="account_settings_storage_title">Saugykla</string>
   <string name="account_settings_color_label">Paskyros spalva</string>
@@ -616,11 +571,9 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Laiško peržiūros tema</string>
   <string name="settings_compose_theme_label">Kūrimo tema</string>
-  <string name="settings_language_label">Kalba</string>
   <string name="settings_message_theme_selection_label">Numatyta laiško tema</string>
   <string name="settings_message_theme_selection_summary_off">Peržiūrint laišką, pasirinkti laiško peržiūros temą</string>
   <string name="settings_message_theme_selection_summary_on">Naudoti numatytą laiškų peržiūros temą</string>
-  <string name="setting_language_system">Sistemos numatyta</string>
   <string name="background_ops_label">Sinchronizuoti fone</string>
   <string name="background_ops_never">Niekada</string>
   <string name="background_ops_always">Visada</string>
@@ -655,7 +608,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="search_all_messages_detail">Visi laiškai ieškomųjų aplankuose</string>
   <string name="integrated_inbox_title">Suvestiniai gautieji</string>
   <string name="integrated_inbox_detail">Visi laiškai suvestiniuose aplankuose</string>
-  <string name="tap_hint">Norėdami matyti neskaitytus arba pažymėtus laiškus paspauskite ant voko arba žvaigždės</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Suvesti</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Visi laiškai rodomi suvestiniame gautųjų aplanke</string>
   <string name="account_settings_searchable_label">Aplankai kuriuose ieškoti</string>
@@ -695,18 +647,10 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="font_size_larger">Didesnis</string>
   <string name="miscellaneous_preferences">Kita</string>
   <string name="error_activity_not_found">Šiai programai nerasta tinkamo veiksmo.</string>
-  <string name="btn_crypto_sign">Pasirašyti</string>
-  <string name="btn_encrypt">Šifruoti</string>
-  <string name="unknown_crypto_signature_user_id">&lt;nežinoma&gt;</string>
-  <string name="pgp_mime_unsupported">Kol kas PGP/MIME laiškai nepalaikomi.</string>
-  <string name="attachment_encryption_unsupported">Įspėjimas: priedai NEpasirašyti ar nešifruoti.</string>
-  <string name="send_aborted">Siuntimas nutrauktas.</string>
   <string name="save_or_discard_draft_message_dlg_title">Išsaugoti laišką kaip juodraštį?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Išsaugoti ar nepaisyti šio laiško?</string>
   <string name="confirm_discard_draft_message_title">Nepaisyti laiško?</string>
   <string name="confirm_discard_draft_message">Ar tikrai norite nepaisyti šio pranešimo?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Atsisakyta saugoti kaip juodraštį.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Atsisakyta saugoti juodraštį pažymėtą kaip šifruotą.</string>
   <string name="select_text_now">Pasirinkti tesktą kopijavimui.</string>
   <string name="dialog_confirm_delete_title">Patvirtinti šalinimą</string>
   <string name="dialog_confirm_delete_message">Ar tikrai norite pašalinti laišką?</string>
@@ -724,7 +668,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="debug_logging_enabled">Derinimo žurnalo rašymas įjungtas</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Nepavyko prisijungti.</string>
   <string name="import_export_action">Nustatymų importavimas ir eksportavimas</string>
   <string name="settings_export_account">Eksportuoti paskyros nustatymus</string>
   <string name="settings_export_all">Eksportuoti nustatymus ir paskyras</string>
@@ -802,8 +745,6 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Serverio paieškos limitas</string>
   <string name="account_settings_remote_search_num_summary">Paieška bus nutraukta radus <xliff:g id="num_results">%s</xliff:g> rezultatus.</string>
-  <string name="account_settings_remote_search_full_text">Ieškant serveryje ieškoti ir laiško tekste</string>
-  <string name="account_settings_remote_search_full_text_summary">Paieška visame tekste gali būti lėta.</string>
   <string name="remote_search_sending_query">Užklausiamas serveris</string>
   <string name="remote_search_downloading">Gaunami %d rezultatai</string>
   <string name="remote_search_downloading_limited">Gaunamas %1$d rezultatas iš %2$d</string>
@@ -844,4 +785,5 @@ Praneškite apie klaidas, pridėkite naujų galimybių ir užduokite klausimus m
   <string name="fetching_attachment_dialog_message">Gaunamas priedas…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

@@ -1,6 +1,7 @@
 
 package com.fsck.k9.activity.setup;
 
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,9 +19,11 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
-import android.util.Log;
+import timber.log.Timber;
+import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
@@ -45,10 +48,7 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
-
-import org.openintents.openpgp.util.OpenPgpAppPreference;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
-import org.openintents.openpgp.util.OpenPgpUtils;
 
 
 public class AccountSettings extends K9PreferenceActivity {
@@ -78,6 +78,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_NEW_MAIL_MODE = "folder_notify_new_mail_mode";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
+    private static final String PREFERENCE_NOTIFY_CONTACTS_MAIL_ONLY = "account_notify_contacts_mail_only";
     private static final String PREFERENCE_NOTIFY_SYNC = "account_notify_sync";
     private static final String PREFERENCE_VIBRATE = "account_vibrate";
     private static final String PREFERENCE_VIBRATE_PATTERN = "account_vibrate_pattern";
@@ -111,7 +112,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_STRIP_SIGNATURE = "strip_signature";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO = "crypto";
-    private static final String PREFERENCE_CRYPTO_APP = "crypto_app";
     private static final String PREFERENCE_CRYPTO_KEY = "crypto_key";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
@@ -146,6 +146,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference mAccountNotify;
     private ListPreference mAccountNotifyNewMailMode;
     private CheckBoxPreference mAccountNotifySelf;
+    private CheckBoxPreference mAccountNotifyContactsMailOnly;
     private ListPreference mAccountShowPictures;
     private CheckBoxPreference mAccountNotifySync;
     private CheckBoxPreference mAccountVibrate;
@@ -177,8 +178,8 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mIdleRefreshPeriod;
     private ListPreference mMaxPushFolders;
     private boolean mHasCrypto = false;
-    private OpenPgpAppPreference mCryptoApp;
     private OpenPgpKeyPreference mCryptoKey;
+    private CheckBoxPreference mCryptoSupportSignOnly;
 
     private PreferenceScreen mSearchScreen;
     private CheckBoxPreference mCloudSearchEnabled;
@@ -218,7 +219,7 @@ public class AccountSettings extends K9PreferenceActivity {
             mIsExpungeCapable = store.isExpungeCapable();
             mIsSeenFlagSupported = store.isSeenFlagSupported();
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not get remote store", e);
+            Timber.e(e, "Could not get remote store");
         }
 
         addPreferencesFromResource(R.xml.account_settings_preferences);
@@ -590,6 +591,9 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccountNotifySelf = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_SELF);
         mAccountNotifySelf.setChecked(mAccount.isNotifySelfNewMail());
 
+        mAccountNotifyContactsMailOnly = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_CONTACTS_MAIL_ONLY);
+        mAccountNotifyContactsMailOnly.setChecked(mAccount.isNotifyContactsMailOnly());
+
         mAccountNotifySync = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFY_SYNC);
         mAccountNotifySync.setChecked(mAccount.isShowOngoing());
 
@@ -689,24 +693,13 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        mHasCrypto = OpenPgpUtils.isAvailable(this);
+        mHasCrypto = K9.isOpenPgpProviderConfigured();
+        PreferenceScreen cryptoMenu = (PreferenceScreen) findPreference(PREFERENCE_CRYPTO);
         if (mHasCrypto) {
-            mCryptoApp = (OpenPgpAppPreference) findPreference(PREFERENCE_CRYPTO_APP);
             mCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
 
-            mCryptoApp.setValue(String.valueOf(mAccount.getCryptoApp()));
-            mCryptoApp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    String value = newValue.toString();
-                    mCryptoApp.setValue(value);
-
-                    mCryptoKey.setOpenPgpProvider(value);
-                    return false;
-                }
-            });
-
             mCryptoKey.setValue(mAccount.getCryptoKey());
-            mCryptoKey.setOpenPgpProvider(mCryptoApp.getValue());
+            mCryptoKey.setOpenPgpProvider(K9.getOpenPgpProvider());
             // TODO: other identities?
             mCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(mAccount.getIdentity(0)));
             mCryptoKey.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -716,10 +709,22 @@ public class AccountSettings extends K9PreferenceActivity {
                     return false;
                 }
             });
+
+            cryptoMenu.setOnPreferenceClickListener(null);
         } else {
-            final Preference mCryptoMenu = findPreference(PREFERENCE_CRYPTO);
-            mCryptoMenu.setEnabled(false);
-            mCryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_installed);
+            cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_configured);
+            cryptoMenu.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Dialog dialog = ((PreferenceScreen) preference).getDialog();
+                    if (dialog != null) {
+                        dialog.dismiss();
+                    }
+                    Toast.makeText(AccountSettings.this,
+                            R.string.no_crypto_provider_see_global, Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
         }
     }
 
@@ -753,6 +758,7 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setNotifyNewMail(mAccountNotify.isChecked());
         mAccount.setFolderNotifyNewMailMode(FolderMode.valueOf(mAccountNotifyNewMailMode.getValue()));
         mAccount.setNotifySelfNewMail(mAccountNotifySelf.isChecked());
+        mAccount.setNotifyContactsMailOnly(mAccountNotifyContactsMailOnly.isChecked());
         mAccount.setShowOngoing(mAccountNotifySync.isChecked());
         mAccount.setDisplayCount(Integer.parseInt(mDisplayCount.getValue()));
         mAccount.setMaximumAutoDownloadMessageSize(Integer.parseInt(mMessageSize.getValue()));
@@ -781,8 +787,9 @@ public class AccountSettings extends K9PreferenceActivity {
         mAccount.setStripSignature(mStripSignature.isChecked());
         mAccount.setLocalStorageProviderId(mLocalStorageProvider.getValue());
         if (mHasCrypto) {
-            mAccount.setCryptoApp(mCryptoApp.getValue());
             mAccount.setCryptoKey(mCryptoKey.getValue());
+        } else {
+            mAccount.setCryptoKey(Account.NO_OPENPGP_KEY);
         }
 
         // In webdav account we use the exact folder name also for inbox,

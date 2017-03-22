@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">K-9 Konten</string>
   <string name="unread_widget_label">K-9 Ungelesen</string>
   <string name="remote_control_label">K-9 Mail Fernsteuerung</string>
@@ -18,30 +17,31 @@ Teile \u00a9 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
   <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Mail ist eine quelloffene E-Mail-Anwendung für Android und basiert auf Androids Standard-E-Mail-Programm.
+K-9 Mail ist ein leistungsstarker, freier E-Mail-Client für Android.
 </p><p>
-Verbesserte Funktionen in K-9:
+Seine verbesserten Funktionen beinhalten:
 </p>
 <ul>
-  <li>Benachrichtigung über neue Nachrichten per IMAP IDLE</li>
-  <li>Höhere Performance</li>
+  <li>Push-Mail unter Verwendung von IMAP IDLE</li>
+  <li>Bessere Leistung</li>
+  <li>Nachrichtenneuordnung</li>
   <li>E-Mail-Signaturen</li>
-  <li>Automatische Blindkopie an sich selbst</li>
-  <li>Ordner-Abonnements</li>
+  <li>Bcc-to-self</li>
+  <li>Ordnerabonnements</li>
   <li>Synchronisation aller Ordner</li>
-  <li>Konfiguration einer Antwort-Adresse</li>
-  <li>Tastatur-Shortcuts</li>
-  <li>Verbesserte IMAP-Unterstützung</li>
-  <li>Speichern von Anhängen auf SD-Karte</li>
+  <li>Rücksendeadresskonfiguration</li>
+  <li>Tastaturkürzel</li>
+  <li>Bessere IMAP-Unterstützung</li>
+  <li>Speichern von Anhängen auf SD</li>
   <li>Papierkorb leeren</li>
-  <li>Sortieren der Nachrichten</li>
-  <li>…und viele mehr</li>
+  <li>Nachrichtensortierung</li>
+  <li>…und weitere</li>
 </ul>
 <p>
-Bitte beachten Sie, dass K-9, wie viele andere E-Mail-Anwendungen auch, die meisten kostenlosen Hotmail-Accounts nicht unterstützt. Zudem gibt es einige Probleme mit Microsoft Exchange-Servern.
+Bitte beachten Sie, dass K-9 die meisten kostenlosen Hotmail-Konten nicht unterstützt und, wie viele andere E-Mail-Clients, einige Macken bei der Kommunikation mit Microsoft Exchange hat.
 </p><p>
-Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuchen Sie die Homepage unter
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Fragen an
+<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -78,7 +78,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="status_loading_account_folder_headers">Lade Kopfzeilen in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Sende <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Verarbeite <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Nächster Abruf <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Synchronisation deaktiviert</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> ausgewählt</string>
@@ -89,6 +89,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="cancel_action">Abbrechen</string>
   <string name="send_action">Senden</string>
   <string name="send_again_action">Erneut senden</string>
+  <string name="empty_subject">Betreff ist leer, bitte erneut drücken um trotzdem zu senden</string>
   <string name="select_action">Auswählen</string>
   <string name="deselect_action">Abwählen</string>
   <string name="reply_action">Antworten</string>
@@ -126,10 +127,13 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="select_text_action">Text auswählen</string>
   <string name="show_headers_action">Kopfzeilen anzeigen</string>
   <string name="hide_headers_action">Kopfzeilen verbergen</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Adresse in Zwischenablage kopiert</item>
+    <item quantity="other">Adressen in Zwischenablage kopiert</item>
+  </plurals>
   <string name="message_view_theme_action_dark">Dunkles Theme verwenden</string>
   <string name="message_view_theme_action_light">Helles Theme verwenden</string>
   <string name="mark_as_unread_action">Als ungelesen markieren</string>
-  <string name="add_cc_bcc_action">CC/BCC hinzufügen</string>
   <string name="read_receipt">Empfangsbestätigung</string>
   <string name="read_receipt_enabled">Eine Empfangsbestätigung wird angefordert</string>
   <string name="read_receipt_disabled">Es wird keine Empfangsbestätigung angefordert</string>
@@ -147,6 +151,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="status_loading_more">Nachrichten werden geladen\u2026</string>
   <string name="status_network_error">Verbindungsfehler</string>
   <string name="status_invalid_id_error">Nachricht nicht gefunden</string>
+  <string name="status_loading_error">Nachrichtenladefehler</string>
   <string name="status_loading_more_failed">Laden weiterer Nachrichten erneut starten</string>
   <string name="load_more_messages_fmt">Bis zu <xliff:g id="messages_to_load">%d</xliff:g> weitere abrufen</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -163,14 +168,19 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> neue Nachrichten</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ungelesen (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">und <xliff:g id="additional_messages">%d</xliff:g> weitere (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> weitere auf <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Antworten</string>
   <string name="notification_action_mark_as_read">Gelesen</string>
+  <string name="notification_action_mark_all_as_read">Alle als gelesen markieren</string>
   <string name="notification_action_delete">Löschen</string>
+  <string name="notification_action_delete_all">Alle löschen</string>
+  <string name="notification_action_archive">Archiv</string>
+  <string name="notification_action_archive_all">Alle archivieren</string>
   <string name="notification_action_spam">Spam</string>
-  <string name="notification_action_archive">Archivieren</string>
   <string name="notification_certificate_error_title">Zertifikatsproblem (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_certificate_error_text">Überprüfen Sie Ihre Servereinstellungen</string>
+  <string name="notification_authentication_error_title">Authentifizierung fehlgeschlagen</string>
+  <string name="notification_authentication_error_text">Authentifizierung fehlgeschlagen für <xliff:g id="account">%s</xliff:g>. Überprüfen Sie Ihre Servereinstellungen.</string>
   <string name="notification_bg_sync_ticker">Neue E-Mails in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> werden abgerufen</string>
   <string name="notification_bg_sync_title">E-Mails werden abgerufen</string>
   <string name="notification_bg_send_ticker">E-Mail in <xliff:g id="account">%s</xliff:g> wird gesendet</string>
@@ -196,9 +206,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="debug_enable_sensitive_logging_summary">Anmeldepasswörter bei Verbindungsaufbau protokollieren.</string>
   <string name="message_list_load_more_messages_action">Weitere Nachrichten laden</string>
   <string name="message_to_fmt">An:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">An</string>
-  <string name="message_compose_cc_hint">CC</string>
-  <string name="message_compose_bcc_hint">BCC</string>
   <string name="message_compose_subject_hint">Betreff</string>
   <string name="message_compose_content_hint">Nachrichtentext</string>
   <string name="message_compose_signature_hint">Signatur</string>
@@ -209,14 +216,12 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="message_compose_quote_header_to">An:</string>
   <string name="message_compose_quote_header_cc">CC:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> schrieb:</string>
-  <string name="message_compose_reply_header_fmt_with_date">Am <xliff:g id="sent_date">%1$s</xliff:g>, schrieb <xliff:g id="sender">%2$s</xliff:g>:</string>
+  <string name="message_compose_reply_header_fmt_with_date">Am <xliff:g id="sent_date">%1$s</xliff:g> schrieb <xliff:g id="sender">%2$s</xliff:g>:</string>
   <string name="message_compose_error_no_recipients">Sie müssen mindestens einen Empfänger auswählen.</string>
+  <string name="compose_error_incomplete_recipient">Empfänger-Feld enthält unvollständigen Inhalt!</string>
   <string name="error_contact_address_not_found">Es wurde keine E-Mail-Adresse für diesen Kontakt gefunden.</string>
   <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
   <string name="message_compose_show_quoted_text_action">Ursprüngliche Nachricht zitieren</string>
-  <string name="message_compose_description_add_to">Empfänger hinzufügen (An)</string>
-  <string name="message_compose_description_add_cc">Empfänger hinzufügen (CC)</string>
-  <string name="message_compose_description_add_bcc">Empfänger hinzufügen (BCC)</string>
   <string name="message_compose_description_delete_quoted_text">Zitierten Text entfernen</string>
   <string name="message_compose_description_edit_quoted_text">Zitierten Text bearbeiten</string>
   <string name="message_view_from_format">Von: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -224,18 +229,13 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="message_view_cc_label">CC:</string>
   <string name="message_view_attachment_view_action">Öffnen</string>
   <string name="message_view_attachment_download_action">Speichern</string>
-  <string name="message_view_status_attachment_saved">Anhang wurde unter dem Dateinamen \'<xliff:g id="filename">%s</xliff:g>\' auf die SD-Karte gespeichert.</string>
   <string name="message_view_status_attachment_not_saved">Anhang konnte nicht auf die SD-Karte gespeichert werden.</string>
   <string name="message_view_show_pictures_action">Bilder anzeigen</string>
-  <string name="message_view_show_message_action">Nachricht anzeigen</string>
-  <string name="message_view_show_attachments_action">Anhänge anzeigen</string>
   <string name="message_view_show_more_attachments_action">Mehr…</string>
-  <string name="message_view_fetching_attachment_toast">Anhang wird abgerufen.</string>
   <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
   <string name="message_view_download_remainder">Gesamte Nachricht herunterladen</string>
-  <string name="message_view_downloading">Nachricht wird heruntergeladen…</string>
+  <string name="message_view_toast_unable_to_display_message">Nachricht kann nicht angezeigt werden</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Es wurden nicht alle Kopfzeilen heruntergeladen oder gespeichert. Wählen Sie \'Alle Kopfzeilen lokal speichern\' in den Einstellungen für den Posteingangsserver, um dies zukünftig zu ermöglichen.</string>
   <string name="message_no_additional_headers_available">Alle Kopfzeilen wurden heruntergeladen, es sind allerdings keine neuen Kopfzeilen vorhanden.</string>
   <string name="message_additional_headers_retrieval_failed">Die weiteren Kopfzeilen konnten nicht aus der Datenbank oder vom Mailserver geladen werden.</string>
   <string name="from_same_sender">Mehr von diesem Absender</string>
@@ -270,6 +270,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="global_settings_confirm_action_delete">Löschen</string>
   <string name="global_settings_confirm_action_delete_starred">Sternmarkierte Löschen (nur in Nachrichtenansicht)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
+  <string name="global_settings_confirm_menu_discard">Nachricht verwerfen</string>
   <string name="global_settings_confirm_action_delete_notif">Löschen (aus Benachrichtigung)</string>
   <string name="global_settings_privacy_hide_useragent">K-9 nicht als Mailprogramm in Kopfzeilen eintragen</string>
   <string name="global_settings_privacy_hide_timezone">UTC als Zeitzone in Kopfzeilen verwenden</string>
@@ -290,6 +291,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="global_settings_lock_screen_notification_visibility_everything">Gleiche wie bei entsperrtem Bildschirm</string>
   <string name="quiet_time">Ruhezeit</string>
   <string name="quiet_time_description">Klingeln, Vibrieren und Leuchten in der Nacht deaktivieren</string>
+  <string name="quiet_time_notification">Benachrichtigungen deaktivieren</string>
+  <string name="quiet_time_notification_description">Benachrichtigungen während der Ruhezeit komplett deaktivieren</string>
   <string name="quiet_time_starts">Ruhezeit startet</string>
   <string name="quiet_time_ends">Ruhezeit endet</string>
   <string name="account_setup_basics_title">E-Mail-Konto einrichten</string>
@@ -418,7 +421,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="move_copy_cannot_copy_unsynced_message">Nachrichten, die nicht mit dem Server synchronisiert wurden, können nicht kopiert oder verschoben werden.</string>
   <string name="account_setup_failed_dlg_title">Einrichtung konnte nicht abgeschlossen werden</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Passwort ist falsch.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Der Server verwendet ein ungültiges SSL-Zertifikat. Dies könnte daran liegen das der Server falsch konfiguriert ist. Allerdings könnte es auch daran liegen das jemand versucht Sie oder ihren E-Mail Server anzugreifen. Falls Sie sich nicht sicher sind was der Grund ist klicken Sie abbrechen und kontaktieren Sie die Administratoren des E-Mail Servers. \n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Der Server verwendet ein ungültiges SSL-Zertifikat. Dies könnte daran liegen, dass der Server falsch konfiguriert ist. Allerdings könnte es auch daran liegen, dass jemand versucht Sie oder ihren E-Mail-Server anzugreifen. Falls Sie sich nicht sicher sind was der Grund ist, klicken Sie auf Abbrechen und kontaktieren Sie die Administratoren Ihres E-Mail-Servers. \n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Kann nicht mit dem Server verbinden.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Details bearbeiten</string>
   <string name="account_setup_failed_dlg_continue_action">Weiter</string>
@@ -439,6 +442,8 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_notify_sync_summary">Benachrichtigung in der Statuszeile anzeigen, während nach neuen Nachrichten gesucht wird</string>
   <string name="account_settings_notify_self_label">Bei eigenen Nachrichten</string>
   <string name="account_settings_notify_self_summary">Benachrichtigungen für Nachrichten, die eine Ihrer eigenen E-Mail-Adressen als Absender tragen</string>
+  <string name="account_notify_contacts_mail_only_label">Nur Kontakte</string>
+  <string name="account_notify_contacts_mail_only_summary">Benachrichtigungen nur für Nachrichten von bekannten Kontakten anzeigen</string>
   <string name="account_settings_notification_opens_unread_label">Ungelesene Nachrichten öffnen</string>
   <string name="account_settings_notification_opens_unread_summary">Beim Öffnen einer Benachrichtigung Liste der ungelesenen Nachrichten anzeigen</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Beim Öffnen als gelesen markieren</string>
@@ -470,8 +475,9 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_folders">Ordner</string>
   <string name="account_settings_quote_prefix_label">Zitat-Präfix</string>
   <string name="account_settings_crypto">Kryptographie</string>
-  <string name="account_settings_crypto_app">OpenPGP-Anbieter</string>
-  <string name="account_settings_no_openpgp_provider_installed">Kein OpenPGP-Anbieter installiert</string>
+  <string name="account_settings_crypto_app">OpenPGP App</string>
+  <string name="account_settings_crypto_key">Mein Schlüssel</string>
+  <string name="account_settings_no_openpgp_provider_configured">Keine OpenPGP App installiert</string>
   <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
   <string name="account_settings_storage_title">Speicher</string>
   <string name="account_settings_color_label">Kontofarbe</string>
@@ -662,11 +668,9 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="settings_theme_label">Design</string>
   <string name="settings_message_theme_label">Nachrichten-Design</string>
   <string name="settings_compose_theme_label">Editor-Design</string>
-  <string name="settings_language_label">Sprache</string>
   <string name="settings_message_theme_selection_label">Festes Nachrichten-Design</string>
   <string name="settings_message_theme_selection_summary_off">Nachrichten-Design während des Ansehens der Nachricht auswählen</string>
   <string name="settings_message_theme_selection_summary_on">Immer das ausgewählte Nachrichten-Design verwenden</string>
-  <string name="setting_language_system">Systemvorgabe</string>
   <string name="background_ops_label">Hintergrund-Synchronisierung</string>
   <string name="background_ops_never">Nie</string>
   <string name="background_ops_always">Immer</string>
@@ -701,7 +705,7 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="search_all_messages_detail">Alle Nachrichten in durchsuchbaren Ordnern</string>
   <string name="integrated_inbox_title">Gemeinsamer Posteingang</string>
   <string name="integrated_inbox_detail">Alle Nachrichten aus integrierten Ordnern</string>
-  <string name="tap_hint">Für ungelesene oder wichtige Nachrichten Umschlag oder Stern berühren</string>
+  <string name="tap_hint">Für ungelesene oder favorisierte Nachrichten den Kreis oder Stern berühren</string>
   <string name="folder_settings_include_in_integrated_inbox_label">In gem. Posteingang integrieren</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Nachrichten im gemeinsamen Posteingang anzeigen</string>
   <string name="account_settings_searchable_label">Durchsuchbare Ordner</string>
@@ -743,18 +747,11 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="font_size_larger">Größer</string>
   <string name="miscellaneous_preferences">Verschiedenes</string>
   <string name="error_activity_not_found">Keine geeignete Anwendung für diese Aktion gefunden.</string>
-  <string name="btn_crypto_sign">Signieren</string>
-  <string name="btn_encrypt">Verschlüsseln</string>
-  <string name="unknown_crypto_signature_user_id">&lt;unbekannt&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME-Nachrichten werden noch nicht unterstützt.</string>
-  <string name="attachment_encryption_unsupported">Achtung: Anhänge werden zur Zeit weder signiert noch verschlüsselt.</string>
-  <string name="send_aborted">Senden abgebrochen.</string>
+  <string name="send_failed_reason">Senden fehlgeschlagen: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Entwurf speichern?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Entwurf speichern oder verwerfen?</string>
   <string name="confirm_discard_draft_message_title">Nachricht verwerfen?</string>
   <string name="confirm_discard_draft_message">Sind Sie sicher, dass Sie die Nachricht verwerfen möchten?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Speichern des Entwurfs verweigern</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Die Speicherung von als verschlüsselt markierten Entwürfen verweigern.</string>
   <string name="select_text_now">Text auswählen, um ihn zu kopieren.</string>
   <string name="dialog_confirm_delete_title">Löschen bestätigen</string>
   <string name="dialog_confirm_delete_message">Möchten Sie diese Nachricht löschen?</string>
@@ -764,6 +761,10 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Löschen</string>
   <string name="dialog_confirm_delete_cancel_button">Nicht löschen</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Alle als gelesen markieren bestätigen</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Möchten Sie alle Nachrichten als gelesen markieren?</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Ja</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Nein</string>
   <string name="dialog_confirm_spam_title">Als Spam markieren</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Möchten Sie diese Nachricht in den Spam-Ordner verschieben?</item>
@@ -775,7 +776,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="debug_logging_enabled">Debug-Meldungen werden mit Hilfe des Android-Logging-Systems aufgezeichnet.</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Verbindungsfehler</string>
   <string name="import_export_action">Einstellungen im- &amp; exportieren</string>
   <string name="settings_export_account">Kontoeinstellungen exportieren</string>
   <string name="settings_export_all">Einstellungen und Konten exportieren</string>
@@ -855,8 +855,6 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Maximale Resultat-Anzahl</string>
   <string name="account_settings_remote_search_num_summary">Suche wird nach <xliff:g id="num_results">%s</xliff:g> Resultaten beendet</string>
-  <string name="account_settings_remote_search_full_text">Nachrichtentext durchsuchen</string>
-  <string name="account_settings_remote_search_full_text_summary">Kann den Suchprozess verlangsamen</string>
   <string name="remote_search_sending_query">Sende Anfrage an den Server</string>
   <string name="remote_search_downloading">Lade %d Resultate</string>
   <string name="remote_search_downloading_limited">Lade %1$d von %2$d Resultaten</string>
@@ -895,20 +893,26 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="fetching_attachment_dialog_title_send">Nachricht senden</string>
   <string name="fetching_attachment_dialog_title_save">Entwurf speichern</string>
   <string name="fetching_attachment_dialog_message">Anhang wird heruntergeladen…</string>
-  <string name="auth_external_error">Authentifizierung fehlgeschlagen. Der Server bietet nicht Simple Authentication and Security Layer, kurz SASL, an. Dies könnte durch ein Problem des Client Zertifikats (Zertifikat abgelaufen, unbekannte Zertifizierungsstelle) oder ein Konfigurationsproblem ausgelöst werden.</string>
+  <string name="auth_external_error">Authentifizierung fehlgeschlagen. Der Server bietet nicht Simple Authentication and Security Layer, kurz SASL, an. Dies könnte durch ein Problem des Client-Zertifikats (Zertifikat abgelaufen, unbekannte Zertifizierungsstelle) oder ein Konfigurationsproblem ausgelöst werden.</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Entschlüssle/Verifiziere…</string>
-  <string name="openpgp_successful_decryption">Erfolgreiche Entschlüsselung</string>
-  <string name="openpgp_signature_valid_certified">Gültige Signatur (beglaubigt)</string>
-  <string name="openpgp_signature_valid_uncertified">Gültige, aber unbeglaubigte Signatur</string>
-  <string name="openpgp_signature_unknown">Unbekannter Unterzeichner</string>
-  <string name="openpgp_signature_invalid">Ungültige Signatur</string>
-  <string name="openpgp_signature_unknown_text">Fehlender öffentlicher Schlüssel für diese Signatur</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Erfolgreiche Entschlüsselung und gültige Signatur (beglaubigt)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Erfolgreiche Entschlüsselung und gültige, aber nicht beglaubigte Signatur</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Erfolgreiche Entschlüsselung, aber fehlender öffentlicher Schlüssel</string>
-  <string name="openpgp_get_key">Schlage fehlenden Schlüssel nach</string>
-  <string name="openpgp_user_id">Benutzer-ID</string>
+  <string name="openpgp_decryption_failed">Entschlüsselung fehlgeschlagen: %s</string>
+  <string name="openpgp_unknown_error">Unbekannter OpenPGP Fehler</string>
+  <string name="openpgp_canceled_by_user">Vom Benutzer abgebrochen</string>
+  <string name="openpgp_result_no_signature">Nicht signiert</string>
+  <string name="openpgp_result_invalid_signature">Ungültige Signatur</string>
+  <string name="openpgp_result_signature_uncertified">Signiert von (nicht bestätigt!)</string>
+  <string name="openpgp_result_signature_certified">Signiert von</string>
+  <string name="openpgp_result_signature_expired_key">Schlüssel ist abgelaufen!</string>
+  <string name="openpgp_result_signature_revoked_key">Schlüssel wurde wiederrufen!</string>
+  <string name="openpgp_result_signature_insecure">Unsicher!</string>
+  <string name="openpgp_result_signature_missing_key">Unbekannter öffentlicher Schlüssel</string>
+  <string name="openpgp_result_encrypted">Verschlüsselt</string>
+  <string name="openpgp_result_not_encrypted">Nicht verschlüsselt</string>
+  <string name="openpgp_result_decryption_insecure">Unsicher</string>
+  <string name="openpgp_result_action_show">Anzeigen</string>
+  <string name="openpgp_result_action_lookup">Nachschlagen</string>
+  <string name="openpgp_result_no_name">Kein Name</string>
+  <string name="openpgp_result_no_email">Keine E-Mail</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Client-Zertifikat verwenden</string>
   <string name="client_certificate_spinner_empty">Kein Client-Zertifikat</string>
@@ -916,4 +920,94 @@ Um Fehler zu melden, neue Funktionen vorzuschlagen oder Fragen zu stellen, besuc
   <string name="client_certificate_retrieval_failure">Das Abrufen des Client-Zertifikats für den Pfad \"<xliff:g id="alias">%s</xliff:g>\" ist fehlgeschlagen</string>
   <string name="client_certificate_advanced_options">Erweiterte Optionen</string>
   <string name="client_certificate_expired">Client-Zertifikat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ist abgelaufen oder noch nicht gültig (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Unvollständige Nachricht</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Klicken Sie auf \'Gesamte Nachricht herunterladen\', um die Entschlüsselung zu genehmigen.</string>
+  <string name="preview_encrypted">*Verschlüsselt*</string>
+  <string name="add_from_contacts">Vom Adressbuch hinzufügen</string>
+  <string name="crypto_settings_cancel">Abbrechen</string>
+  <string name="crypto_settings_ok">Fortfahren</string>
+  <string name="recipient_cc">CC</string>
+  <string name="recipient_bcc">BCC</string>
+  <string name="recipient_to">An</string>
+  <string name="recipient_from">Von</string>
+  <string name="unknown_recipient"><![CDATA[<Unbekannter Empfänger>]]></string>
+  <string name="address_type_home">Zuhause</string>
+  <string name="address_type_work">Arbeit</string>
+  <string name="address_type_other">Anderes</string>
+  <string name="address_type_mobile">Mobil</string>
+  <string name="compose_error_no_draft_folder">Kein Ordner für Entwürfe für dieses Konto festgelegt!</string>
+  <string name="compose_not_saving_unencrypted">Entwurf wird NICHT unverschlüsselt gespeichert!</string>
+  <string name="compose_error_pgp_error">Fehler mit der OpenPGP-Applikation. Überprüfen Sie die Einstellungen.</string>
+  <string name="compose_error_no_signing_key">Kein Schlüssel konfiguriert zum Signieren! Überprüfen Sie die Einstellungen.</string>
+  <string name="compose_error_private_missing_keys">Privater Modus ist aktiviert, aber einige Empfänger besitzen keine Schlüssel.</string>
+  <string name="crypto_mode_disabled">Nicht verschlüsseln</string>
+  <string name="crypto_mode_opportunistic">Verschlüsseln, wenn möglich</string>
+  <string name="crypto_mode_private">Verschlüsseln</string>
+  <string name="error_crypto_provider_connect">Verbindung zu Verschlüsselungsdienst fehlgeschlagen. Überprüfen Sie die Einstellungen oder tippen Sie auf das Verschlüsselungs-Symbol um es erneut zu versuchen.</string>
+  <string name="error_crypto_provider_ui_required">Zugang zu Verschlüsselungsdienst verweigert. Tippen Sie auf das Verschlüsselungs-Symbol um es erneut zu versuchen.</string>
+  <string name="error_crypto_inline_attach">PGP/INLINE-Modus unterstützt keine Anhänge!</string>
+  <string name="error_crypto_inline_sign_only">PGP/INLINE-Modus unterstützt keinen Nur-Signieren-Modus!</string>
+  <string name="error_crypto_sign_only_inline">Nur-Signieren-Modus unterstützt kein PGP/INLINE!</string>
+  <string name="enable_inline_pgp">PGP/INLINE aktivieren</string>
+  <string name="disable_inline_pgp">PGP/INLINE deaktivieren</string>
+  <string name="enable_sign_only">PGP Nur-Signieren aktivieren</string>
+  <string name="disable_sign_only">PGP Nur-Signieren deaktivieren</string>
+  <string name="openpgp_inline_title">PGP/INLINE-Modus</string>
+  <string name="openpgp_inline_text">Die E-Mail wurde im PGP/INLINE-Format gesendet.\nDies sollte nur für die Kompatibilität verwendet werden:</string>
+  <string name="openpgp_inline_plus_compat">Manche Clients unterstützen nur dieses Format</string>
+  <string name="openpgp_inline_minus_transit">Signaturen können während dem Versand kaputtgehen</string>
+  <string name="openpgp_inline_minus_attach">Anhänge werden nicht unterstützt</string>
+  <string name="openpgp_inline_ok">Verstanden!</string>
+  <string name="openpgp_inline_disable">Deaktivieren</string>
+  <string name="openpgp_inline_keep_enabled">Aktiviert lassen</string>
+  <string name="openpgp_sign_only_ok">Verstanden!</string>
+  <string name="openpgp_sign_only_disable">Deaktivieren</string>
+  <string name="openpgp_sign_only_keep_enabled">Aktiviert lassen</string>
+  <string name="openpgp_dialog_sign_only_title">PGP Nur-Signieren-Modus</string>
+  <string name="openpgp_dialog_sign_only_text">In diesem Modus wird Ihr PGP-Schlüssel verwendet, um eine kryptografische Signatur einer unverschlüsselten E-Mail zu erstellen.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Dadurch wird die E-Mail nicht verschlüsselt, sondern nachgewiesen, dass sie von Ihrem Schlüssel gesendet wurde.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Signaturen können kaputtgehen, wenn sie an Mailinglisten gesendet werden.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Signaturen können als \'signature.asc\'-Anhänge in einigen Clients angezeigt werden.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Verschlüsselte Nachrichten enthalten immer eine Signatur.</string>
+  <string name="crypto_msg_disabled">Nachricht ist nicht verschlüsselt</string>
+  <string name="crypto_msg_encrypted_error">Nachricht ist verschlüsselt, aber es gab einen Fehler bei der Entschlüsselung.</string>
+  <string name="crypto_msg_signed_error">Nachricht ist signiert, aber die Signatur konnte nicht verifiziert werden.</string>
+  <string name="crypto_msg_unsupported_encrypted">Nachricht ist verschlüsselt, aber in einem nicht unterstützten Format.</string>
+  <string name="crypto_msg_unsupported_signed">Nachricht ist signiert, aber in einem nicht unterstützten Format.</string>
+  <string name="crypto_msg_incomplete_encrypted">Nachricht ist verschlüsselt, aber muss zur Entschlüsselung vollständig heruntergeladen werden.</string>
+  <string name="crypto_msg_cancelled">Nachricht ist verschlüsselt, aber Entschlüsselung wurde abgebrochen.</string>
+  <string name="crypto_msg_signed_unencrypted">Nachricht ist signiert, aber nicht verschlüsselt.</string>
+  <string name="crypto_msg_encrypted_unsigned">Nachricht wurde verschlüsselt, aber nicht signiert.</string>
+  <string name="crypto_msg_sign_unknown">Signatur mit unbekanntem Schlüssel gemacht.</string>
+  <string name="crypto_msg_sign_verified">Signatur mit vertrauenswürdigem Schlüssel gemacht.</string>
+  <string name="crypto_msg_sign_unverified">Signatur mit nicht vertrauenswürdigem Schlüssel gemacht.</string>
+  <string name="crypto_msg_sign_error">Signatur enthielt einen Fehler.</string>
+  <string name="crypto_msg_sign_mismatch">Signatur mit falschem Schlüssel gemacht.</string>
+  <string name="crypto_msg_sign_expired">Signatur mit abgelaufenem Schlüssel gemacht.</string>
+  <string name="crypto_msg_sign_revoked">Signatur mit zurückgezogenem Schlüssel gemacht.</string>
+  <string name="crypto_msg_sign_insecure">Signatur mit unicherem Schlüssel gemacht.</string>
+  <string name="crypto_msg_sign_incomplete">Nachricht muss zum Verfizieren der Signatur vollständig heruntergeladen werden.</string>
+  <string name="crypto_msg_signed_encrypted">Nachricht ist signiert und verschlüsselt.</string>
+  <string name="crypto_msg_unsigned_encrypted">Es gibt keine Signatur, diese Nachricht könnte abgefangen worden sein.</string>
+  <string name="crypto_info_ok">OK</string>
+  <string name="crypto_info_view_key">Signierer anzeigen</string>
+  <string name="locked_attach_unlock">Entsperren</string>
+  <string name="locked_attach_unsigned">Dieser Teil wurde nicht signiert und könnte unsicher sein.</string>
+  <string name="locked_attach_unencrypted">Dieser Teil wurde nicht verschlüsselt und könnte unsicher sein.</string>
+  <string name="locked_attach_title">Ungeschützter Anhang</string>
+  <string name="message_progress_text">Ladevorgang…</string>
+  <string name="messageview_decrypt_cancelled">Entschlüsselung abgebrochen.</string>
+  <string name="messageview_decrypt_retry">Wiederholen</string>
+  <string name="messageview_decrypt_incomplete">Verschlüsselte Nachricht muss für die Entschlüsselung heruntergeladen werden.</string>
+  <string name="messageview_crypto_error_title">Fehler beim Entschlüsseln der E-Mail</string>
+  <string name="messageview_crypto_warning_title">Sicherheitswarnung</string>
+  <string name="messageview_crypto_warning_revoked">Diese Nachricht wurde mit einem <b>zurückgezogenem Schlüssel</b> signiert!</string>
+  <string name="messageview_crypto_warning_expired">Diese Nachricht wurde mit einem <b>abgelaufenem Schlüssel</b> signiert!</string>
+  <string name="messageview_crypto_warning_insecure">Diese Nachricht wurde mit einem <b>unsicherem Schlüssel</b> signiert!</string>
+  <string name="messageview_crypto_warning_error">Es gab einen Fehler in der Signatur dieser Nachricht!</string>
+  <string name="recipient_error_non_ascii">Sonderzeichen werden derzeit nicht unterstützt!</string>
+  <string name="recipient_error_parse_failed">Fehler beim Einlesen der Adresse!</string>
+  <string name="account_settings_crypto_support_sign_only">Signatur von unverschlüsselten Nachrichten unterstützen</string>
+  <string name="error_sign_only_no_encryption">Verschlüsselung ist im Nur-Signieren-Modus nicht verfügbar!</string>
 </resources>

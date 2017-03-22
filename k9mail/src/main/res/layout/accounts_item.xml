@@ -60,7 +60,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="2dip"
                 android:layout_marginRight="4dip"
-                android:background="?attr/compatDividerVertical" />
+                android:background="?android:attr/dividerVertical" />
 
         <ImageButton
                 android:id="@+id/folders"
@@ -68,7 +68,7 @@
                 android:focusable="false"
                 android:layout_marginRight="3dip"
                 android:src="?attr/iconFolder"
-                android:background="?attr/compatSelectableItemBackground"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:padding="8dp"

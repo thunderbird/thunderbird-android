@@ -4,19 +4,20 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
+        classpath 'com.android.tools.build:gradle:2.3.0'
     }
 }
 
-project.ext.preDexLibs = !project.hasProperty('disablePreDex')
-project.ext.testCoverage = project.hasProperty('testCoverage')
+project.ext {
+    testCoverage = project.hasProperty('testCoverage')
+    optimizeForDevelopment = project.hasProperty('optimizeForDevelopment') && optimizeForDevelopment == 'true'
+}
 
 subprojects {
     project.plugins.whenPluginAdded { plugin ->
         if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name) ||
                 "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
-            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+            project.android.dexOptions.preDexLibraries = !rootProject.hasProperty('disablePreDex')
         }
     }
 }

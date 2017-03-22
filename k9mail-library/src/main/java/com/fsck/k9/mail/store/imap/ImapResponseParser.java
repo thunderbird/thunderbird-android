@@ -1,31 +1,29 @@
 package com.fsck.k9.mail.store.imap;
 
-import android.text.TextUtils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import android.util.Log;
 
 import com.fsck.k9.mail.K9MailLib;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
-import static com.fsck.k9.mail.store.imap.ImapCommands.CAPABILITY_CAPABILITY;
+
 
 class ImapResponseParser {
-    private PeekableInputStream mIn;
-    private ImapResponse mResponse;
-    private Exception mException;
+    private PeekableInputStream inputStream;
+    private ImapResponse response;
+    private Exception exception;
+
 
     public ImapResponseParser(PeekableInputStream in) {
-        this.mIn = in;
+        this.inputStream = in;
     }
 
     public ImapResponse readResponse() throws IOException {
@@ -33,117 +31,113 @@ class ImapResponseParser {
     }
 
     /**
-     * Reads the next response available on the stream and returns an
-     * ImapResponse object that represents it.
+     * Reads the next response available on the stream and returns an {@code ImapResponse} object that represents it.
      */
     public ImapResponse readResponse(ImapResponseCallback callback) throws IOException {
         try {
-            int ch = mIn.peek();
-            if (ch == '*') {
-                parseUntaggedResponse();
-                mResponse = new ImapResponse(callback, false, null);
-                readTokens(mResponse);
-            } else if (ch == '+') {
-                mResponse = new ImapResponse(callback, parseCommandContinuationRequest(), null);
-                parseResponseText(mResponse);
+            int peek = inputStream.peek();
+            if (peek == '+') {
+                readContinuationRequest(callback);
+            } else if (peek == '*') {
+                readUntaggedResponse(callback);
             } else {
-                mResponse = new ImapResponse(callback, false, parseTaggedResponse());
-                readTokens(mResponse);
+                readTaggedResponse(callback);
             }
 
-            if (mException != null) {
-                throw new RuntimeException("readResponse(): Exception in callback method", mException);
+            if (exception != null) {
+                throw new ImapResponseParserException("readResponse(): Exception in callback method", exception);
             }
 
-            return mResponse;
+            return response;
         } finally {
-            mResponse = null;
-            mException = null;
+            response = null;
+            exception = null;
         }
     }
 
-    protected List<ImapResponse> readStatusResponse(String tag,
-                                                    String commandToLog,
-                                                    String logId,
-                                                    UntaggedHandler untaggedHandler)
-            throws IOException, MessagingException {
+    private void readContinuationRequest(ImapResponseCallback callback) throws IOException {
+        parseCommandContinuationRequest();
+        response = ImapResponse.newContinuationRequest(callback);
+
+        skipIfSpace();
+        String rest = readStringUntilEndOfLine();
+        response.add(rest);
+    }
+
+    private void readUntaggedResponse(ImapResponseCallback callback) throws IOException {
+        parseUntaggedResponse();
+        response = ImapResponse.newUntaggedResponse(callback);
+
+        readTokens(response);
+    }
+
+    private void readTaggedResponse(ImapResponseCallback callback) throws IOException {
+        String tag = parseTaggedResponse();
+        response = ImapResponse.newTaggedResponse(callback, tag);
+
+        readTokens(response);
+    }
+
+    List<ImapResponse> readStatusResponse(String tag, String commandToLog, String logId,
+            UntaggedHandler untaggedHandler) throws IOException, NegativeImapResponseException {
+
         List<ImapResponse> responses = new ArrayList<ImapResponse>();
+
         ImapResponse response;
         do {
             response = readResponse();
+
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
                 Log.v(LOG_TAG, logId + "<<<" + response);
             }
 
             if (response.getTag() != null && !response.getTag().equalsIgnoreCase(tag)) {
-                Log.w(LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response + " for " + logId);
+                Log.w(LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response +
+                        " for " + logId);
 
-                Iterator<ImapResponse> iter = responses.iterator();
+                Iterator<ImapResponse> responseIterator = responses.iterator();
 
-                while (iter.hasNext()) {
-                    ImapResponse delResponse = iter.next();
-                    if (delResponse.getTag() != null
-                            || delResponse.size() < 2
-                            || (!equalsIgnoreCase(delResponse.get(1), "EXISTS") &&
-                                !equalsIgnoreCase(delResponse.get(1), "EXPUNGE"))) {
-                        iter.remove();
+                while (responseIterator.hasNext()) {
+                    ImapResponse delResponse = responseIterator.next();
+                    if (delResponse.getTag() != null || delResponse.size() < 2 || (
+                            !equalsIgnoreCase(delResponse.get(1), Responses.EXISTS) &&
+                            !equalsIgnoreCase(delResponse.get(1), Responses.EXPUNGE))) {
+                        responseIterator.remove();
                     }
                 }
                 response = null;
                 continue;
             }
-            if (untaggedHandler != null) {
+
+            if (response.getTag() == null && untaggedHandler != null) {
                 untaggedHandler.handleAsyncUntaggedResponse(response);
             }
-            responses.add(response);
 
+            responses.add(response);
         } while (response == null || response.getTag() == null);
 
-        if (response.size() < 1 || !equalsIgnoreCase(response.get(0), "OK")) {
-            throw new ImapException("Command: " + commandToLog + "; response: " + response.toString(), response.getAlertText());
+        if (response.size() < 1 || !equalsIgnoreCase(response.get(0), Responses.OK)) {
+            String message = "Command: " + commandToLog + "; response: " + response.toString();
+            throw new NegativeImapResponseException(message, responses);
         }
 
         return responses;
     }
 
-    protected static Set<String> parseCapabilities(List<ImapResponse> responses) {
-        HashSet<String> capabilities = new HashSet<String>();
-        for (ImapResponse response : responses) {
-            ImapList list = null;
-            if (!response.isEmpty() && equalsIgnoreCase(response.get(0), "OK")) {
-                for (Object thisPart : response) {
-                    if (thisPart instanceof ImapList) {
-                        ImapList thisList = (ImapList)thisPart;
-                        if (equalsIgnoreCase(thisList.get(0), CAPABILITY_CAPABILITY)) {
-                            list = thisList;
-                            break;
-                        }
-                    }
-                }
-            } else if (response.getTag() == null) {
-                list = response;
-            }
-
-            if (list != null && list.size() > 1 &&
-                 equalsIgnoreCase(list.get(0), CAPABILITY_CAPABILITY)) {
-                for (Object capability : list.subList(1, list.size())) {
-                    if (capability instanceof String) {
-                        capabilities.add(((String)capability).toUpperCase(Locale.US));
-                    }
-                }
-            }
-        }
-        return capabilities;
-    }
-
     private void readTokens(ImapResponse response) throws IOException {
         response.clear();
 
-        String firstToken = (String) readToken(response);
-        response.add(firstToken);
+        Object firstToken = readToken(response);
 
-        if (isStatusResponse(firstToken)) {
+        checkTokenIsString(firstToken);
+        String symbol = (String) firstToken;
+
+        response.add(symbol);
+
+        if (isStatusResponse(symbol)) {
             parseResponseText(response);
+        } else if (equalsIgnoreCase(symbol, Responses.LIST) || equalsIgnoreCase(symbol, Responses.LSUB)) {
+            parseListResponse(response);
         } else {
             Object token;
             while ((token = readToken(response)) != null) {
@@ -156,7 +150,6 @@ class ImapResponseParser {
 
     /**
      * Parse {@code resp-text} tokens
-     *
      * <p>
      * Responses "OK", "PREAUTH", "BYE", "NO", "BAD", and continuation request responses can
      * contain {@code resp-text} tokens. We parse the {@code resp-text-code} part as tokens and
@@ -175,30 +168,42 @@ class ImapResponseParser {
      *         The {@link ImapResponse} instance that holds the parsed tokens of the response.
      *
      * @throws IOException
-     *          If there's a network error.
+     *         If there's a network error.
      *
      * @see #isStatusResponse(String)
      */
     private void parseResponseText(ImapResponse parent) throws IOException {
         skipIfSpace();
 
-        int next = mIn.peek();
+        int next = inputStream.peek();
         if (next == '[') {
-            parseSequence(parent);
+            parseList(parent, '[', ']');
             skipIfSpace();
         }
 
-        String rest = readStringUntil('\r');
-        expect('\n');
+        String rest = readStringUntilEndOfLine();
 
-        if (!TextUtils.isEmpty(rest)) {
+        if (rest != null && !rest.isEmpty()) {
             // The rest is free-form text.
             parent.add(rest);
         }
     }
 
+    private void parseListResponse(ImapResponse response) throws IOException {
+        expect(' ');
+        parseList(response, '(', ')');
+        expect(' ');
+        String delimiter = parseQuotedOrNil();
+        response.add(delimiter);
+        expect(' ');
+        String name = parseString();
+        response.add(name);
+        expect('\r');
+        expect('\n');
+    }
+
     private void skipIfSpace() throws IOException {
-        if (mIn.peek() == ' ') {
+        if (inputStream.peek() == ' ') {
             expect(' ');
         }
     }
@@ -210,7 +215,7 @@ class ImapResponseParser {
      * elements including List.
      *
      * @return The next token in the response or null if there are no more
-     *         tokens.
+     * tokens.
      */
     private Object readToken(ImapResponse response) throws IOException {
         while (true) {
@@ -223,11 +228,12 @@ class ImapResponseParser {
 
     private Object parseToken(ImapList parent) throws IOException {
         while (true) {
-            int ch = mIn.peek();
+            int ch = inputStream.peek();
+
             if (ch == '(') {
-                return parseList(parent);
+                return parseList(parent, '(', ')');
             } else if (ch == '[') {
-                return parseSequence(parent);
+                return parseList(parent, '[', ']');
             } else if (ch == ')') {
                 expect(')');
                 return ")";
@@ -250,8 +256,20 @@ class ImapResponseParser {
             } else if (ch == '\t') {
                 expect('\t');
             } else {
-                return parseAtom();
+                return parseBareString(true);
             }
+        }
+    }
+
+    private String parseString() throws IOException {
+        int ch = inputStream.peek();
+
+        if (ch == '"') {
+            return parseQuoted();
+        } else if (ch == '{') {
+            return (String) parseLiteral();
+        } else {
+            return parseBareString(false);
         }
     }
 
@@ -260,88 +278,66 @@ class ImapResponseParser {
         return true;
     }
 
-    // * OK [UIDNEXT 175] Predicted next UID
     private void parseUntaggedResponse() throws IOException {
         expect('*');
         expect(' ');
     }
 
-    // 3 OK [READ-WRITE] Select completed.
     private String parseTaggedResponse() throws IOException {
         return readStringUntil(' ');
     }
 
-    private ImapList parseList(ImapList parent) throws IOException {
-        expect('(');
+    private ImapList parseList(ImapList parent, char start, char end) throws IOException {
+        expect(start);
+
         ImapList list = new ImapList();
         parent.add(list);
+
+        String endString = String.valueOf(end);
+
         Object token;
         while (true) {
             token = parseToken(list);
             if (token == null) {
                 return null;
-            } else if (token.equals(")")) {
+            } else if (token.equals(endString)) {
                 break;
-            } else if (token instanceof ImapList) {
-                // Do nothing
-            } else {
+            } else if (!(token instanceof ImapList)) {
                 list.add(token);
             }
         }
+
         return list;
     }
 
-    private ImapList parseSequence(ImapList parent) throws IOException {
-        expect('[');
-        ImapList list = new ImapList();
-        parent.add(list);
-        Object token;
-        while (true) {
-            token = parseToken(list);
-            if (token == null) {
-                return null;
-            } else if (token.equals("]")) {
-                break;
-            } else if (token instanceof ImapList) {
-                // Do nothing
-            } else {
-                list.add(token);
-            }
-        }
-        return list;
-    }
-
-    private String parseAtom() throws IOException {
+    private String parseBareString(boolean allowBrackets) throws IOException {
         StringBuilder sb = new StringBuilder();
+
         int ch;
         while (true) {
-            ch = mIn.peek();
+            ch = inputStream.peek();
             if (ch == -1) {
-                throw new IOException("parseAtom(): end of stream reached");
-            } else if (ch == '(' || ch == ')' || ch == '{' || ch == ' ' ||
-                       ch == '[' || ch == ']' ||
-                       // docs claim that flags are \ atom but atom isn't supposed to
-                       // contain
-                       // * and some flags contain *
-                       // ch == '%' || ch == '*' ||
-//                    ch == '%' ||
-                       // TODO probably should not allow \ and should recognize
-                       // it as a flag instead
-                       // ch == '"' || ch == '\' ||
-                       ch == '"' || (ch >= 0x00 && ch <= 0x1f) || ch == 0x7f) {
+                throw new IOException("parseBareString(): end of stream reached");
+            }
+
+            if (ch == '(' || ch == ')' || (allowBrackets && (ch == '[' || ch == ']')) ||
+                    ch == '{' || ch == ' ' || ch == '"' ||
+                    (ch >= 0x00 && ch <= 0x1f) || ch == 0x7f) {
+
                 if (sb.length() == 0) {
-                    throw new IOException(String.format("parseAtom(): (%04x %c)", ch, ch));
+                    throw new IOException(String.format("parseBareString(): (%04x %c)", ch, ch));
                 }
+
                 return sb.toString();
             } else {
-                sb.append((char)mIn.read());
+                sb.append((char) inputStream.read());
             }
         }
     }
 
     /**
-     * A "{" has been read. Read the rest of the size string, the space and then
-     * notify the callback with an InputStream.
+     * A "{" has been read. Read the rest of the size string, the space and then notify the callback with an
+     * {@code InputStream}.
      */
     private Object parseLiteral() throws IOException {
         expect('{');
@@ -353,30 +349,35 @@ class ImapResponseParser {
             return "";
         }
 
-        if (mResponse.getCallback() != null) {
-            FixedLengthInputStream fixed = new FixedLengthInputStream(mIn, size);
+        if (response.getCallback() != null) {
+            FixedLengthInputStream fixed = new FixedLengthInputStream(inputStream, size);
 
+            Exception callbackException = null;
             Object result = null;
             try {
-                result = mResponse.getCallback().foundLiteral(mResponse, fixed);
+                result = response.getCallback().foundLiteral(response, fixed);
             } catch (IOException e) {
-                // Pass IOExceptions through
                 throw e;
             } catch (Exception e) {
-                // Catch everything else and save it for later.
-                mException = e;
-                //Log.e(LOG_TAG, "parseLiteral(): Exception in callback method", e);
+                callbackException = e;
             }
 
-            // Check if only some of the literal data was read
-            int available = fixed.available();
-            if ((available > 0) && (available != size)) {
-                // If so, skip the rest
-                while (fixed.available() > 0) {
-                    fixed.skip(fixed.available());
+            boolean someDataWasRead = fixed.available() != size;
+            if (someDataWasRead) {
+                if (result == null && callbackException == null) {
+                    throw new AssertionError("Callback consumed some data but returned no result");
                 }
+
+                fixed.skipRemaining();
             }
 
+            if (callbackException != null) {
+                if (exception == null) {
+                    exception = callbackException;
+                }
+                return "EXCEPTION";
+            }
+            
             if (result != null) {
                 return result;
             }
@@ -385,7 +386,7 @@ class ImapResponseParser {
         byte[] data = new byte[size];
         int read = 0;
         while (read != size) {
-            int count = mIn.read(data, read, size - read);
+            int count = inputStream.read(data, read, size - read);
             if (count == -1) {
                 throw new IOException("parseLiteral(): end of stream reached");
             }
@@ -401,63 +402,85 @@ class ImapResponseParser {
         StringBuilder sb = new StringBuilder();
         int ch;
         boolean escape = false;
-        while ((ch = mIn.read()) != -1) {
-            if (!escape && (ch == '\\')) {
+        while ((ch = inputStream.read()) != -1) {
+            if (!escape && ch == '\\') {
                 // Found the escape character
                 escape = true;
-            } else if (!escape && (ch == '"')) {
+            } else if (!escape && ch == '"') {
                 return sb.toString();
             } else {
-                sb.append((char)ch);
+                sb.append((char) ch);
                 escape = false;
             }
         }
         throw new IOException("parseQuoted(): end of stream reached");
     }
 
+    private String parseQuotedOrNil() throws IOException {
+        int peek = inputStream.peek();
+        if (peek == '"') {
+            return parseQuoted();
+        } else {
+            parseNil();
+            return null;
+        }
+    }
+    
+    private void parseNil() throws IOException {
+        expect('N');
+        expect('I');
+        expect('L');
+    }
+
     private String readStringUntil(char end) throws IOException {
         StringBuilder sb = new StringBuilder();
+
         int ch;
-        while ((ch = mIn.read()) != -1) {
+        while ((ch = inputStream.read()) != -1) {
             if (ch == end) {
                 return sb.toString();
             } else {
-                sb.append((char)ch);
+                sb.append((char) ch);
             }
         }
+
         throw new IOException("readStringUntil(): end of stream reached");
     }
 
-    private int expect(char ch) throws IOException {
-        int d;
-        if ((d = mIn.read()) != ch) {
-            throw new IOException(String.format("Expected %04x (%c) but got %04x (%c)", (int)ch,
-                                                ch, d, (char)d));
-        }
-        return d;
+    private String readStringUntilEndOfLine() throws IOException {
+        String rest = readStringUntil('\r');
+        expect('\n');
+
+        return rest;
     }
 
-    public boolean isStatusResponse(String symbol) {
-        return symbol.equalsIgnoreCase("OK") ||
-               symbol.equalsIgnoreCase("NO") ||
-               symbol.equalsIgnoreCase("BAD") ||
-               symbol.equalsIgnoreCase("PREAUTH") ||
-               symbol.equalsIgnoreCase("BYE");
-    }
-
-    public static boolean equalsIgnoreCase(Object o1, Object o2) {
-        if (o1 != null && o2 != null && o1 instanceof String && o2 instanceof String) {
-            String s1 = (String)o1;
-            String s2 = (String)o2;
-            return s1.equalsIgnoreCase(s2);
-        } else if (o1 != null) {
-            return o1.equals(o2);
-        } else if (o2 != null) {
-            return o2.equals(o1);
-        } else {
-            // Both o1 and o2 are null
-            return true;
+    private void expect(char expected) throws IOException {
+        int readByte = inputStream.read();
+        if (readByte != expected) {
+            throw new IOException(String.format("Expected %04x (%c) but got %04x (%c)",
+                    (int) expected, expected, readByte, (char) readByte));
         }
     }
 
+    private boolean isStatusResponse(String symbol) {
+        return symbol.equalsIgnoreCase(Responses.OK) ||
+                symbol.equalsIgnoreCase(Responses.NO) ||
+                symbol.equalsIgnoreCase(Responses.BAD) ||
+                symbol.equalsIgnoreCase(Responses.PREAUTH) ||
+                symbol.equalsIgnoreCase(Responses.BYE);
+    }
+
+    static boolean equalsIgnoreCase(Object token, String symbol) {
+        if (token == null || !(token instanceof String)) {
+            return false;
+        }
+
+        return symbol.equalsIgnoreCase((String) token);
+    }
+
+    private void checkTokenIsString(Object token) throws IOException {
+        if (!(token instanceof String)) {
+            throw new IOException("Unexpected non-string token: " + token);
+        }
+    }
 }

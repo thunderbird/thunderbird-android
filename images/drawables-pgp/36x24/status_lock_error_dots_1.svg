@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="150"
+   height="100"
+   viewBox="0 0 149.99999 99.999998"
+   id="svg3344"
+   version="1.1">
+  <defs
+     id="defs3346" />
+  <metadata
+     id="metadata3349">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(-17.144857,-22.362199)">
+    <circle
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="circle4219"
+       cx="138.57143"
+       cy="106.8622"
+       r="13" />
+    <g
+       sketch:type="MSPage"
+       id="Page-1"
+       style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:1"
+       transform="translate(18.185849,22.191199)">
+      <g
+         sketch:type="MSArtboardGroup"
+         id="lock-error"
+         style="fill:#000000">
+        <path
+           id="path5450"
+           sketch:type="MSShapeGroup"
+           d="m 80.459,45.474 -1.926,0 0,-15.648 C 78.435,10.633 65.344,0.183 49.433,0.183 33.527,0.183 19.265,11.128 19.761,29.826 l -0.016,15.628 c 0,0 0.24,0.021 -0.961,0.021 -1.27,0 -9.639,1.471 -9.639,8.932 l 0,35.821 c 0,7.959 9.42,9.943 9.639,9.943 l 61.2,0 c 0.219,0 9.154,-0.993 9.154,-9.943 l 0,-35.327 c 10e-4,-8.449 -8.454,-9.427 -8.679,-9.427 l 0,0 z M 33.234,30.033 c 0,-9.949 6.07,-17.902 15.906,-17.902 9.741,0 15.905,6.957 15.905,17.902 l 0.01,15.441 -31.837,0 0.016,-15.441 0,0 z M 59.403377,90.873 48.458282,79.927905 38.229659,90.364449 31.6365,83.756888 42.582495,72.815394 32.343971,62.593972 38.754412,56.107923 49.701306,67.050318 60.123449,56.710084 66.6365,63.224035 55.689605,74.167329 66.009137,84.477861 59.403377,90.873 Z" />
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,35 +1,30 @@
 package com.fsck.k9.preferences;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
-
-import com.fsck.k9.K9;
-import com.fsck.k9.helper.UrlEncodingHelper;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.filter.Base64;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Storage implements SharedPreferences {
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.os.SystemClock;
+
+import com.fsck.k9.helper.UrlEncodingHelper;
+import com.fsck.k9.helper.Utility;
+import com.fsck.k9.mail.filter.Base64;
+import timber.log.Timber;
+
+public class Storage {
     private static ConcurrentMap<Context, Storage> storages =
         new ConcurrentHashMap<Context, Storage>();
 
     private volatile ConcurrentMap<String, String> storage = new ConcurrentHashMap<String, String>();
-
-    private CopyOnWriteArrayList<OnSharedPreferenceChangeListener> listeners =
-        new CopyOnWriteArrayList<OnSharedPreferenceChangeListener>();
 
     private int DB_VERSION = 2;
     private String DB_NAME = "preferences_storage";
@@ -47,7 +42,7 @@ public class Storage implements SharedPreferences {
         SQLiteDatabase mDb = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
 
         if (mDb.getVersion() == 1) {
-            Log.i(K9.LOG_TAG, "Updating preferences to urlencoded username/password");
+            Timber.i("Updating preferences to urlencoded username/password");
 
             String accountUuids = readValue(mDb, "accountUuids");
             if (accountUuids != null && accountUuids.length() != 0) {
@@ -125,7 +120,7 @@ public class Storage implements SharedPreferences {
                             writeValue(mDb, uuid + ".storeUri", newStoreUriStr);
                         }
                     } catch (Exception e) {
-                        Log.e(K9.LOG_TAG, "ooops", e);
+                        Timber.e(e, "ooops");
                     }
                 }
             }
@@ -134,7 +129,7 @@ public class Storage implements SharedPreferences {
         }
 
         if (mDb.getVersion() != DB_VERSION) {
-            Log.i(K9.LOG_TAG, "Creating Storage database");
+            Timber.i("Creating Storage database");
             mDb.execSQL("DROP TABLE IF EXISTS preferences_storage");
             mDb.execSQL("CREATE TABLE preferences_storage " +
                         "(primkey TEXT PRIMARY KEY ON CONFLICT REPLACE, value TEXT)");
@@ -147,33 +142,25 @@ public class Storage implements SharedPreferences {
     public static Storage getStorage(Context context) {
         Storage tmpStorage = storages.get(context);
         if (tmpStorage != null) {
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Returning already existing Storage");
-            }
+            Timber.d("Returning already existing Storage");
             return tmpStorage;
         } else {
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "Creating provisional storage");
-            }
+            Timber.d("Creating provisional storage");
             tmpStorage = new Storage(context);
             Storage oldStorage = storages.putIfAbsent(context, tmpStorage);
             if (oldStorage != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Another thread beat us to creating the Storage, returning that one");
-                }
+                Timber.d("Another thread beat us to creating the Storage, returning that one");
                 return oldStorage;
             } else {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Returning the Storage we created");
-                }
+                Timber.d("Returning the Storage we created");
                 return tmpStorage;
             }
         }
     }
 
     private void loadValues() {
-        long startTime = System.currentTimeMillis();
-        Log.i(K9.LOG_TAG, "Loading preferences from DB into Storage");
+        long startTime = SystemClock.elapsedRealtime();
+        Timber.i("Loading preferences from DB into Storage");
         Cursor cursor = null;
         SQLiteDatabase mDb = null;
         try {
@@ -183,9 +170,7 @@ public class Storage implements SharedPreferences {
             while (cursor.moveToNext()) {
                 String key = cursor.getString(0);
                 String value = cursor.getString(1);
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Loading key '" + key + "', value = '" + value + "'");
-                }
+                Timber.d("Loading key '%s', value = '%s'", key, value);
                 storage.put(key, value);
             }
         } finally {
@@ -193,8 +178,8 @@ public class Storage implements SharedPreferences {
             if (mDb != null) {
                 mDb.close();
             }
-            long endTime = System.currentTimeMillis();
-            Log.i(K9.LOG_TAG, "Preferences load took " + (endTime - startTime) + "ms");
+            long endTime = SystemClock.elapsedRealtime();
+            Timber.i("Preferences load took %d ms", endTime - startTime);
         }
     }
 
@@ -210,13 +195,7 @@ public class Storage implements SharedPreferences {
         }
     }
 
-    protected void put(String key, String value) {
-        ContentValues cv = generateCV(key, value);
-        workingDB.get().insert("preferences_storage", "primkey", cv);
-        liveUpdate(key, value);
-    }
-
-    protected void put(Map<String, String> insertables) {
+    void put(Map<String, String> insertables) {
         String sql = "INSERT INTO preferences_storage (primkey, value) VALUES (?, ?)";
         SQLiteStatement stmt = workingDB.get().compileStatement(sql);
 
@@ -232,35 +211,20 @@ public class Storage implements SharedPreferences {
         stmt.close();
     }
 
-    private ContentValues generateCV(String key, String value) {
-        ContentValues cv = new ContentValues();
-        cv.put("primkey", key);
-        cv.put("value", value);
-        return cv;
-    }
-
     private void liveUpdate(String key, String value) {
         workingStorage.get().put(key, value);
 
         keyChange(key);
     }
 
-    protected void remove(String key) {
+    void remove(String key) {
         workingDB.get().delete("preferences_storage", "primkey = ?", new String[] { key });
         workingStorage.get().remove(key);
 
         keyChange(key);
     }
 
-    protected void removeAll() {
-        for (String key : workingStorage.get().keySet()) {
-            keyChange(key);
-        }
-        workingDB.get().execSQL("DELETE FROM preferences_storage");
-        workingStorage.get().clear();
-    }
-
-    protected void doInTransaction(Runnable dbWork) {
+    void doInTransaction(Runnable dbWork) {
         ConcurrentMap<String, String> newStorage = new ConcurrentHashMap<String, String>();
         newStorage.putAll(storage);
         workingStorage.set(newStorage);
@@ -276,11 +240,6 @@ public class Storage implements SharedPreferences {
             dbWork.run();
             mDb.setTransactionSuccessful();
             storage = newStorage;
-            for (String changedKey : changedKeys) {
-                for (OnSharedPreferenceChangeListener listener : listeners) {
-                    listener.onSharedPreferenceChanged(this, changedKey);
-                }
-            }
         } finally {
             workingDB.remove();
             workingStorage.remove();
@@ -294,7 +253,6 @@ public class Storage implements SharedPreferences {
         return storage.isEmpty();
     }
 
-    //@Override
     public boolean contains(String key) {
         // TODO this used to be ConcurrentHashMap#contains which is
         // actually containsValue. But looking at the usage of this method,
@@ -303,17 +261,14 @@ public class Storage implements SharedPreferences {
         return storage.containsKey(key);
     }
 
-    //@Override
-    public com.fsck.k9.preferences.Editor edit() {
-        return new com.fsck.k9.preferences.Editor(this);
+    public StorageEditor edit() {
+        return new StorageEditor(this);
     }
 
-    //@Override
     public Map<String, String> getAll() {
         return storage;
     }
 
-    //@Override
     public boolean getBoolean(String key, boolean defValue) {
         String val = storage.get(key);
         if (val == null) {
@@ -322,21 +277,6 @@ public class Storage implements SharedPreferences {
         return Boolean.parseBoolean(val);
     }
 
-    //@Override
-    public float getFloat(String key, float defValue) {
-        String val = storage.get(key);
-        if (val == null) {
-            return defValue;
-        }
-        try {
-            return Float.parseFloat(val);
-        } catch (NumberFormatException nfe) {
-            Log.e(K9.LOG_TAG, "Could not parse float", nfe);
-            return defValue;
-        }
-    }
-
-    //@Override
     public int getInt(String key, int defValue) {
         String val = storage.get(key);
         if (val == null) {
@@ -345,12 +285,11 @@ public class Storage implements SharedPreferences {
         try {
             return Integer.parseInt(val);
         } catch (NumberFormatException nfe) {
-            Log.e(K9.LOG_TAG, "Could not parse int", nfe);
+            Timber.e(nfe, "Could not parse int");
             return defValue;
         }
     }
 
-    //@Override
     public long getLong(String key, long defValue) {
         String val = storage.get(key);
         if (val == null) {
@@ -359,30 +298,17 @@ public class Storage implements SharedPreferences {
         try {
             return Long.parseLong(val);
         } catch (NumberFormatException nfe) {
-            Log.e(K9.LOG_TAG, "Could not parse long", nfe);
+            Timber.e(nfe, "Could not parse long");
             return defValue;
         }
     }
 
-    //@Override
     public String getString(String key, String defValue) {
         String val = storage.get(key);
         if (val == null) {
             return defValue;
         }
         return val;
-    }
-
-    //@Override
-    public void registerOnSharedPreferenceChangeListener(
-        OnSharedPreferenceChangeListener listener) {
-        listeners.addIfAbsent(listener);
-    }
-
-    //@Override
-    public void unregisterOnSharedPreferenceChangeListener(
-        OnSharedPreferenceChangeListener listener) {
-        listeners.remove(listener);
     }
 
     private String readValue(SQLiteDatabase mDb, String key) {
@@ -400,9 +326,7 @@ public class Storage implements SharedPreferences {
 
             if (cursor.moveToNext()) {
                 value = cursor.getString(0);
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Loading key '" + key + "', value = '" + value + "'");
-                }
+                Timber.d("Loading key '%s', value = '%s'", key, value);
             }
         } finally {
             Utility.closeQuietly(cursor);
@@ -419,13 +343,7 @@ public class Storage implements SharedPreferences {
         long result = mDb.insert("preferences_storage", "primkey", cv);
 
         if (result == -1) {
-            Log.e(K9.LOG_TAG, "Error writing key '" + key + "', value = '" + value + "'");
+            Timber.e("Error writing key '%s', value = '%s'", key, value);
         }
-    }
-
-
-    @Override
-    public Set<String> getStringSet(String arg0, Set<String> arg1) {
-        throw new RuntimeException("Not implemented");
     }
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="32dp"
+    android:background="?attr/contactTokenBackgroundColor">
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:gravity="center_vertical"
+        android:id="@+id/contact_photo"
+        tools:src="@drawable/ic_contact_picture"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@android:id/text1"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="Name"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/contact_crypto_status_red"
+        android:src="@drawable/status_dots_1"
+        android:tint="?attr/openpgp_red"
+        android:visibility="gone"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/contact_crypto_status_orange"
+        android:src="@drawable/status_dots_2"
+        android:tint="?attr/openpgp_orange"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/contact_crypto_status_green"
+        android:src="@drawable/status_dots_3"
+        android:tint="?attr/openpgp_green"
+        android:visibility="gone"
+        />
+
+</LinearLayout>

@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">Contas K-9</string>
   <string name="remote_control_label">Control remoto K-9 Mail</string>
   <string name="remote_control_desc">Permite a esta aplicación controlar as actividades e Configuración de K-9 Mail</string>
@@ -14,35 +13,6 @@
   <string name="app_license">Licienciado baixo a Licencia Apache, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Benvido/a a K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 é un cliente de correo de código aberto para Android, baseado no Android Mail.
-</p><p>
-K-9 implementa estas características:
-</p>
-<ul>
-  <li>Push mail e IMAP IDLE</li>
-  <li>Mellor rendemento</li>
-  <li>Reclasificación de mensaxes</li>
-  <li>Sinaturas</li>
-  <li>Copia oculta a un mesmo</li>
-  <li>Subscricións a cartafoles</li>
-  <li>Todos os cartafoles sincronizados</li>
-  <li>Correo de retorno</li>
-  <li>Atallos de teclado</li>
-  <li>Mellor soporte para IMAP</li>
-  <li>Almacenamento de anexos na tarxeta SD</li>
-  <li>Baleirado da papeleira</li>
-  <li>Ordenación de mensaxes</li>
-  <li>… e moitas máis.</li>
-</ul>
-<p>
-Repara en que K-9 non admite moitas das contas de Hotmail, coma moitos outros clientes de correo, que teñen certas peculiaridades cando se comunican con Microsoft Exchange.
-</p><p>
-Por favor, envía os erros que detectes, contribúe con novas funcionalidades e pregunta en
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
@@ -75,7 +45,7 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="status_loading_account_folder_headers">Recuperando encabezados <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Enviando <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Próxima comprobación <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Comprobación rematada</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionada</string>
@@ -124,7 +94,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="message_view_theme_action_dark">Tema escuro</string>
   <string name="message_view_theme_action_light">Tema claro</string>
   <string name="mark_as_unread_action">Marcar Non Lido</string>
-  <string name="add_cc_bcc_action">Engadir Cc/Bcc</string>
   <string name="add_attachment_action">Engadir adxunto</string>
   <string name="empty_trash_action">Valeirar Papelera</string>
   <string name="expunge_action">Erradicar</string>
@@ -178,9 +147,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="debug_enable_sensitive_logging_summary">Deben amosarse chaves no log</string>
   <string name="message_list_load_more_messages_action">Cargar máis correos</string>
   <string name="message_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Para</string>
-  <string name="message_compose_cc_hint">Cc</string>
-  <string name="message_compose_bcc_hint">CCo</string>
   <string name="message_compose_subject_hint">Asunto</string>
   <string name="message_compose_content_hint">Texto da Mensaxe</string>
   <string name="message_compose_signature_hint">Sinatura</string>
@@ -199,18 +165,12 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_attachment_view_action">Abrir</string>
   <string name="message_view_attachment_download_action">Gardar</string>
-  <string name="message_view_status_attachment_saved">Adxunto gardado na SD como <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Imposible gardar adxunto na SD</string>
   <string name="message_view_show_pictures_action">Amosar imaxe</string>
-  <string name="message_view_show_message_action">Mostrar mensaxe</string>
-  <string name="message_view_show_attachments_action">Mostrar anexos</string>
   <string name="message_view_show_more_attachments_action">Máis</string>
-  <string name="message_view_fetching_attachment_toast">Obtendo adxuntos.</string>
   <string name="message_view_no_viewer">Imposible atopar visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaxe completa</string>
-  <string name="message_view_downloading">A descargar…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Non todas as cabeceiras foton descargadas ou grabadas. Elixe \"Gardar todas as cabeceiras localmente\" na Configuración da conta para permitir esta acción nun futuro</string>
   <string name="message_no_additional_headers_available">Todas as cabeceiras foron descargadas, pero non hai encabezados adicionáis que amosar</string>
   <string name="message_additional_headers_retrieval_failed">Prodúxose un erro ao descargar os encabezados adicionáis dende a base de datos ou o servidor</string>
   <string name="from_same_sender">Máis deste remitente</string>
@@ -390,7 +350,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="account_settings_folders">Carpetas</string>
   <string name="account_settings_quote_prefix_label">Prefixo de cita</string>
   <string name="account_settings_crypto">Cifrado</string>
-  <string name="account_settings_crypto_app">OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
@@ -563,8 +522,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="messagelist_preferences">Lista de mensaxes</string>
   <string name="messageview_preferences">mensaxes</string>
   <string name="settings_theme_label">Tema</string>
-  <string name="settings_language_label">Idioma</string>
-  <string name="setting_language_system">Configurado no sistema</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>
@@ -598,7 +555,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="search_all_messages_detail">Mensaxes nas carpetas de búsqueda</string>
   <string name="integrated_inbox_title">Entrada unificada</string>
   <string name="integrated_inbox_detail">Mensajes na Entrada unificada</string>
-  <string name="tap_hint">Pulsar para marcar coma lido ou poñer unha estrela</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Todas as mensaxes amosaranse nunha bandexa unificada</string>
   <string name="account_settings_searchable_label">Carpetas para buscar</string>
@@ -636,12 +592,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="font_size_larger">Moi Grande</string>
   <string name="miscellaneous_preferences">Varios</string>
   <string name="error_activity_not_found">Non existe aplicación para executar esta acción</string>
-  <string name="btn_crypto_sign">Asinar</string>
-  <string name="btn_encrypt">Cifrar</string>
-  <string name="unknown_crypto_signature_user_id">&lt;descoñecido&gt;</string>
-  <string name="pgp_mime_unsupported">O formato PGP/MIME non está soportado ainda</string>
-  <string name="attachment_encryption_unsupported">Advertencia: os adxuntos non estan asinados ou cifrados</string>
-  <string name="send_aborted">Envío cancelado.</string>
   <string name="save_or_discard_draft_message_dlg_title">¿Guardar coma borrador?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">¿Gardar ou descartar esta mensaxe?</string>
   <string name="confirm_discard_draft_message_title">Descartar mensaxe?</string>
@@ -666,7 +616,6 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="debug_logging_enabled">Opción de depuración activa</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Imposible conectar.</string>
   <string name="import_export_action">Axustes Importar &amp; Exportar</string>
   <string name="settings_import_dialog_title">Importar</string>
   <string name="settings_export_dialog_title">Exportar</string>
@@ -726,4 +675,5 @@ Por favor, envía os erros que detectes, contribúe con novas funcionalidades e 
   <string name="fetching_attachment_dialog_message">Obtendo anexo…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
@@ -85,7 +85,7 @@ public class StorageManager {
         boolean isSupported(Context context);
 
         /**
-         * Return the {@link File} to the choosen email database file. The
+         * Return the {@link File} to the chosen email database file. The
          * resulting {@link File} doesn't necessarily match an existing file on
          * the filesystem.
          *
@@ -98,7 +98,7 @@ public class StorageManager {
         File getDatabase(Context context, String id);
 
         /**
-         * Return the {@link File} to the choosen attachment directory. The
+         * Return the {@link File} to the chosen attachment directory. The
          * resulting {@link File} doesn't necessarily match an existing
          * directory on the filesystem.
          *
@@ -116,7 +116,7 @@ public class StorageManager {
          * @param context
          *            Never <code>null</code>.
          * @return Whether the underlying storage returned by this provider is
-         *         ready for read/write operations at the time of invokation.
+         *         ready for read/write operations at the time of invocation.
          */
         boolean isReady(Context context);
 
@@ -178,7 +178,7 @@ public class StorageManager {
         private File mRoot;
 
         /**
-         * Choosen base directory
+         * Chosen base directory
          */
         private File mApplicationDir;
 
@@ -204,7 +204,7 @@ public class StorageManager {
                 return isMountPoint(root)
                        && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
             } catch (IOException e) {
-                Log.w(K9.LOG_TAG, "Specified root isn't ready: " + mRoot, e);
+                Timber.w(e, "Specified root isn't ready: %s", mRoot);
                 return false;
             }
         }
@@ -246,7 +246,7 @@ public class StorageManager {
      * <p>
      * This implementation is expected to work on every device since it's based
      * on the regular Android API {@link Context#getDatabasePath(String)} and
-     * uses the resul to retrieve the DB path and the attachment directory path.
+     * uses the result to retrieve the DB path and the attachment directory path.
      * </p>
      *
      * <p>
@@ -306,7 +306,7 @@ public class StorageManager {
      * Strategy for accessing the storage as returned by
      * {@link Environment#getExternalStorageDirectory()}. In order to be
      * compliant with Android recommendation regarding application uninstalling
-     * and to prevent from cluttering the storage root, the choosen directory
+     * and to prevent from cluttering the storage root, the chosen directory
      * will be
      * <code>&lt;STORAGE_ROOT&gt;/Android/data/&lt;APPLICATION_PACKAGE_NAME&gt;/files/</code>
      *
@@ -330,7 +330,7 @@ public class StorageManager {
         private File mRoot;
 
         /**
-         * Choosen base directory.
+         * Chosen base directory.
          */
         private File mApplicationDirectory;
 
@@ -455,7 +455,7 @@ public class StorageManager {
     }
 
     /**
-     * Stores storage provider locking informations
+     * Stores storage provider locking information
      */
     public static class SynchronizationAid {
         /**
@@ -592,7 +592,7 @@ public class StorageManager {
      *            Never <code>null</code>.
      * @param providerId
      *            Never <code>null</code>.
-     * @return The resolved attachement directory for the given provider ID.
+     * @return The resolved attachment directory for the given provider ID.
      */
     public File getAttachmentDirectory(final String dbName, final String providerId) {
         StorageProvider provider = getProvider(providerId);
@@ -608,7 +608,7 @@ public class StorageManager {
     public boolean isReady(final String providerId) {
         StorageProvider provider = getProvider(providerId);
         if (provider == null) {
-            Log.w(K9.LOG_TAG, "Storage-Provider \"" + providerId + "\" does not exist");
+            Timber.w("Storage-Provider \"%s\" does not exist", providerId);
             return false;
         }
         return provider.isReady(context);
@@ -632,7 +632,7 @@ public class StorageManager {
      * @param path
      */
     public void onBeforeUnmount(final String path) {
-        Log.i(K9.LOG_TAG, "storage path \"" + path + "\" unmounting");
+        Timber.i("storage path \"%s\" unmounting", path);
         final StorageProvider provider = resolveProvider(path);
         if (provider == null) {
             return;
@@ -641,7 +641,7 @@ public class StorageManager {
             try {
                 listener.onUnmount(provider.getId());
             } catch (Exception e) {
-                Log.w(K9.LOG_TAG, "Error while notifying StorageListener", e);
+                Timber.w(e, "Error while notifying StorageListener");
             }
         }
         final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
@@ -651,7 +651,7 @@ public class StorageManager {
     }
 
     public void onAfterUnmount(final String path) {
-        Log.i(K9.LOG_TAG, "storage path \"" + path + "\" unmounted");
+        Timber.i("storage path \"%s\" unmounted", path);
         final StorageProvider provider = resolveProvider(path);
         if (provider == null) {
             return;
@@ -669,7 +669,7 @@ public class StorageManager {
      * @param readOnly
      */
     public void onMount(final String path, final boolean readOnly) {
-        Log.i(K9.LOG_TAG, "storage path \"" + path + "\" mounted readOnly=" + readOnly);
+        Timber.i("storage path \"%s\" mounted readOnly=%s", path, readOnly);
         if (readOnly) {
             return;
         }
@@ -682,7 +682,7 @@ public class StorageManager {
             try {
                 listener.onMount(provider.getId());
             } catch (Exception e) {
-                Log.w(K9.LOG_TAG, "Error while notifying StorageListener", e);
+                Timber.w(e, "Error while notifying StorageListener");
             }
         }
 

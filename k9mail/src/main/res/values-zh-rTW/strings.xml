@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail測試版</string>
   <string name="shortcuts_title">K-9帳戶</string>
   <string name="unread_widget_label">K-9 未讀</string>
   <string name="remote_control_label">遠端控制K-9 Mail</string>
@@ -15,7 +14,6 @@
   <string name="app_license">依據 Apache Version 2.0.規範授權</string>
   <!--Welcome message-->
   <string name="welcome_message_title">歡迎使用K-9 Mail</string>
-  <string name="accounts_welcome">&lt;p&gt; K-9 Mail是Android系統的開放原始碼的電子郵件客戶端，原始程式碼來自Android內建的電子郵件程式。 &lt;/p&gt;&lt;p&gt; K-9改良的功能包括： &lt;/p&gt; &lt;ul&gt; &lt;li&gt;利用IMAP IDEL進行Push mail&lt;/li&gt; &lt;li&gt;更好的執行效率&lt;/li&gt; &lt;li&gt;重新發送郵件&lt;/li&gt; &lt;li&gt;郵件簽名&lt;/li&gt; &lt;li&gt;密件副本給自己&lt;/li&gt; &lt;li&gt;信件匣訂閱&lt;/li&gt; &lt;li&gt;同步全部信件匣&lt;/li&gt; &lt;li&gt;可以編輯回信收件人地址&lt;/li&gt; &lt;li&gt;鍵盤捷徑鍵&lt;/li&gt; &lt;li&gt;更完整支援IMAP&lt;/li&gt; &lt;li&gt;儲存附件到記憶卡&lt;/li&gt; &lt;li&gt;清空垃圾桶&lt;/li&gt; &lt;li&gt;郵件排序&lt;/li&gt; &lt;li&gt;以及其他很多功能～&lt;/li&gt; &lt;/ul&gt; &lt;p&gt; 請注意：K-9不支援絕大多數免費Hotmail帳戶。跟其他的電子郵件客戶端一樣，在和Microsoft Exchange伺服器溝通的時候存在一些詭異的問題。 &lt;/p&gt;&lt;p&gt; 請到&lt;a href=http://k9mail.googlecode.com/&gt;http://k9mail.googlecode.com/&lt;/a&gt;提交錯誤報告、建議新功能或提出您的問題。 &lt;/p&gt;</string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」將從K-9 Mail中刪除。</string>
@@ -49,7 +47,7 @@
   <string name="status_loading_account_folder_headers">正在接收郵件訊息<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">正在寄送<xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">正在處理<xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">下次接收時間 @ <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">同步已停用</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已選擇</string>
@@ -99,7 +97,6 @@
   <string name="message_view_theme_action_dark">切換為黑色主題</string>
   <string name="message_view_theme_action_light">切換為白色主題</string>
   <string name="mark_as_unread_action">標記為未讀</string>
-  <string name="add_cc_bcc_action">新增副本/密件副本</string>
   <string name="read_receipt">讀取回條</string>
   <string name="read_receipt_enabled">要求讀取回條</string>
   <string name="read_receipt_disabled">取消讀取回條</string>
@@ -129,11 +126,10 @@
   <string name="recreating_account">正在重建帳戶「<xliff:g id="account">%s</xliff:g>」</string>
   <string name="notification_new_title">您有新郵件</string>
   <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未讀郵件（<xliff:g id="account">%s</xliff:g>）</string>
-  <string name="notification_additional_messages">+ 來自<xliff:g id="account">%2$s</xliff:g>已超過<xliff:g id="additional_messages">%1$d</xliff:g>則訊息 </string>
+  <string name="notification_additional_messages">+ 來自<xliff:g id="account">%2$s</xliff:g>已超過<xliff:g id="additional_messages">%1$d</xliff:g>則訊息</string>
   <string name="notification_action_reply">回覆</string>
   <string name="notification_action_mark_as_read">開啟</string>
   <string name="notification_action_delete">刪除</string>
-  <string name="notification_certificate_error_title">驗證失敗</string>
   <string name="notification_certificate_error_text">檢查你的伺服器設定</string>
   <string name="notification_bg_sync_ticker">正在檢查郵件：<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">正在檢查郵件</string>
@@ -160,9 +156,6 @@
   <string name="debug_enable_sensitive_logging_summary">允許在日誌中顯示密碼。</string>
   <string name="message_list_load_more_messages_action">載入更多郵件</string>
   <string name="message_to_fmt">收件人：<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">收件人</string>
-  <string name="message_compose_cc_hint">副本</string>
-  <string name="message_compose_bcc_hint">密件副本</string>
   <string name="message_compose_subject_hint">主題</string>
   <string name="message_compose_content_hint">郵件內容</string>
   <string name="message_compose_signature_hint">簽名</string>
@@ -177,9 +170,6 @@
   <string name="error_contact_address_not_found">沒有發現電子郵件地址</string>
   <string name="message_compose_attachments_skipped_toast">由於一些附件還沒有被下載，因此無法轉寄這些附件。</string>
   <string name="message_compose_show_quoted_text_action">引用郵件</string>
-  <string name="message_compose_description_add_to">新增收件人 (收件人)</string>
-  <string name="message_compose_description_add_cc">新增收件人 (副本)</string>
-  <string name="message_compose_description_add_bcc">新增收件人 (密件副本)</string>
   <string name="message_compose_description_delete_quoted_text">清除引用文字內容</string>
   <string name="message_compose_description_edit_quoted_text">編輯引用文字內容</string>
   <string name="message_view_from_format">寄件人：<xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -187,18 +177,12 @@
   <string name="message_view_cc_label">副本：</string>
   <string name="message_view_attachment_view_action">開啟</string>
   <string name="message_view_attachment_download_action">儲存</string>
-  <string name="message_view_status_attachment_saved">附件已經儲存到記憶卡：<xliff:g id="filename">%s</xliff:g>。</string>
   <string name="message_view_status_attachment_not_saved">無法將附件儲存到記憶卡。</string>
   <string name="message_view_show_pictures_action">顯示圖片</string>
-  <string name="message_view_show_message_action">顯示訊息</string>
-  <string name="message_view_show_attachments_action">顯示附件</string>
   <string name="message_view_show_more_attachments_action">更多…</string>
-  <string name="message_view_fetching_attachment_toast">正在接收附件。</string>
   <string name="message_view_no_viewer">無法開啟<xliff:g id="mimetype">%s</xliff:g>。找不到可以開啟該附件的程式。</string>
   <string name="message_view_download_remainder">下載完整郵件</string>
-  <string name="message_view_downloading">正在下載…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">目前只下載了部分郵件的訊息。如果需要下載全部郵件的訊息，請在帳戶的內送伺服器設定中選擇「在手機上儲存全部郵件的訊息」。</string>
   <string name="message_no_additional_headers_available">全部郵件的訊息都已經下載，沒有其他的郵件訊息可以顯示。</string>
   <string name="message_additional_headers_retrieval_failed">從資料庫或郵件伺服器存取其他的郵件訊息失敗。</string>
   <string name="from_same_sender">來自這個寄件人的更多郵件</string>
@@ -402,7 +386,6 @@
   <string name="account_settings_folders">信件匣</string>
   <string name="account_settings_quote_prefix_label">引用本文前綴</string>
   <string name="account_settings_crypto">加密</string>
-  <string name="account_settings_crypto_app">OpenPGP提供者</string>
   <string name="account_settings_mail_check_frequency_label">上層信件匣檢查頻率</string>
   <string name="account_settings_storage_title">帳戶儲存</string>
   <string name="account_settings_color_label">帳戶顏色</string>
@@ -586,11 +569,9 @@
   <string name="settings_theme_label">主題</string>
   <string name="settings_message_theme_label">訊息檢視主題</string>
   <string name="settings_compose_theme_label">新郵件主題</string>
-  <string name="settings_language_label">語系</string>
   <string name="settings_message_theme_selection_label">固定訊息主題</string>
   <string name="settings_message_theme_selection_summary_off">讀取訊息內容時顯示訊息檢視主題</string>
   <string name="settings_message_theme_selection_summary_on">使用固定訊息檢視主題</string>
-  <string name="setting_language_system">系統預設值</string>
   <string name="background_ops_label">背景同步</string>
   <string name="background_ops_never">不要</string>
   <string name="background_ops_always">預設</string>
@@ -625,7 +606,6 @@
   <string name="search_all_messages_detail">可搜尋信件匣中的所有郵件</string>
   <string name="integrated_inbox_title">全域收件匣</string>
   <string name="integrated_inbox_detail">將所有郵件集中到全域收件匣</string>
-  <string name="tap_hint">點擊信件或星號來標記郵件為未讀或加上星號</string>
   <string name="folder_settings_include_in_integrated_inbox_label">全域</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">所有郵件都顯示在全域收件匣中</string>
   <string name="account_settings_searchable_label">搜尋的信件匣</string>
@@ -665,18 +645,10 @@
   <string name="font_size_larger">最大</string>
   <string name="miscellaneous_preferences">偏好設定</string>
   <string name="error_activity_not_found">沒有找到可以用於此操作的程式。</string>
-  <string name="btn_crypto_sign">簽名</string>
-  <string name="btn_encrypt">加密</string>
-  <string name="unknown_crypto_signature_user_id">&lt;未知&gt;</string>
-  <string name="pgp_mime_unsupported">暫時還沒有支援PGP/MIME郵件。</string>
-  <string name="attachment_encryption_unsupported">警告：附件還 *沒有* 被簽名或者加密。</string>
-  <string name="send_aborted">寄送操作已經取消。</string>
   <string name="save_or_discard_draft_message_dlg_title">儲存郵件草稿？</string>
   <string name="save_or_discard_draft_message_instructions_fmt">儲存還是忽略這封郵件？</string>
   <string name="confirm_discard_draft_message_title">放棄信件?</string>
   <string name="confirm_discard_draft_message">是否確定放棄儲存目前的郵件？</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">不要儲存為草稿信件</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">被加密的信件不會儲存到草稿信件匣.</string>
   <string name="select_text_now">選擇需要複製的文字內容。</string>
   <string name="dialog_confirm_delete_title">刪除確認</string>
   <string name="dialog_confirm_delete_message">你確定要刪除這封郵件？</string>
@@ -695,7 +667,6 @@
   <string name="debug_logging_enabled">已經啟用將除錯日誌寫入Andorid系統日誌</string>
   <string name="messagelist_sent_to_me_sigil">≫</string>
   <string name="messagelist_sent_cc_me_sigil">≻</string>
-  <string name="error_unable_to_connect">無法連線</string>
   <string name="import_export_action">設定匯入 &amp; 匯出</string>
   <string name="settings_export_account">匯出帳戶設定</string>
   <string name="settings_export_all">匯出設定與所有帳號</string>
@@ -772,8 +743,6 @@
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">伺服器搜尋結果項目上限</string>
   <string name="account_settings_remote_search_num_summary">找到 <xliff:g id="num_results">%s</xliff:g> 個符合項目後，搜尋將自動停止。</string>
-  <string name="account_settings_remote_search_full_text">搜尋伺服器時，包括搜尋文字內容</string>
-  <string name="account_settings_remote_search_full_text_summary">搜尋所有文字內容，需要更多時間</string>
   <string name="remote_search_sending_query">向伺服器發送查詢</string>
   <string name="remote_search_downloading">收到 %d 個符合項目</string>
   <string name="remote_search_downloading_limited">已接收%1$d個項目，共%2$d個符合項目</string>
@@ -806,4 +775,5 @@
   <string name="mark_all_as_read">標記全部為已讀</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

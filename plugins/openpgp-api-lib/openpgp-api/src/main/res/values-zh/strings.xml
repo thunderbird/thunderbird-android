@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="openpgp_no_key_selected">尚未选择密钥</string>
+  <string name="openpgp_key_selected">已经选中密钥</string>
+</resources>

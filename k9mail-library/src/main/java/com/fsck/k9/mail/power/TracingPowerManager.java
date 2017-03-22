@@ -4,12 +4,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.fsck.k9.mail.K9MailLib;
-
 import android.content.Context;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.SystemClock;
 import android.util.Log;
+
+import com.fsck.k9.mail.K9MailLib;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
@@ -67,7 +68,7 @@ public class TracingPowerManager {
             }
             raiseNotification();
             if (startTime == null) {
-                startTime = System.currentTimeMillis();
+                startTime = SystemClock.elapsedRealtime();
             }
             this.timeout = timeout;
         }
@@ -80,7 +81,7 @@ public class TracingPowerManager {
                 Log.w(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": acquired with no timeout.  K-9 Mail should not do this");
             }
             if (startTime == null) {
-                startTime = System.currentTimeMillis();
+                startTime = SystemClock.elapsedRealtime();
             }
             timeout = null;
         }
@@ -91,7 +92,7 @@ public class TracingPowerManager {
         }
         public void release() {
             if (startTime != null) {
-                Long endTime = System.currentTimeMillis();
+                Long endTime = SystemClock.elapsedRealtime();
                 if (K9MailLib.isDebug()) {
                     Log.v(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": releasing after " + (endTime - startTime) + " ms, timeout = " + timeout + " ms");
                 }
@@ -126,7 +127,7 @@ public class TracingPowerManager {
                         @Override
                         public void run() {
                             if (startTime != null) {
-                                Long endTime = System.currentTimeMillis();
+                                Long endTime = SystemClock.elapsedRealtime();
                                 Log.i(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": has been active for "
                                       + (endTime - startTime) + " ms, timeout = " + timeout + " ms");
 

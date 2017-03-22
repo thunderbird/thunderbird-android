@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+    <com.fsck.k9.view.LinearViewAnimator
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:id="@+id/crypto_status_text"
+        custom:upInAnimation="@anim/fade_in_right"
+        custom:upOutAnimation="@anim/fade_out_right"
+        custom:downInAnimation="@anim/fade_in_left"
+        custom:downOutAnimation="@anim/fade_out_left">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="@string/crypto_mode_disabled"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="@string/crypto_mode_opportunistic"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="@string/crypto_mode_private"
+            />
+
+    </com.fsck.k9.view.LinearViewAnimator>
+
+    <com.fsck.k9.view.CryptoModeWithoutSignOnlySelector
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/crypto_status_selector"
+        />
+
+</LinearLayout>

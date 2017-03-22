@@ -1,9 +1,7 @@
 
 package com.fsck.k9.mail;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+
 import java.util.List;
 
 /**
@@ -15,7 +13,7 @@ import java.util.List;
  * making as few network connections as possible.
  */
 public abstract class Store {
-    public abstract Folder getFolder(String name);
+    public abstract Folder<? extends Message> getFolder(String name);
 
     public abstract List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException;
 
@@ -49,21 +47,5 @@ public abstract class Store {
 
     public Pusher getPusher(PushReceiver receiver) {
         return null;
-    }
-
-    protected static String decodeUtf8(String s) {
-        try {
-            return URLDecoder.decode(s, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("UTF-8 not found");
-        }
-    }
-
-    protected static String encodeUtf8(String s) {
-        try {
-            return URLEncoder.encode(s, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("UTF-8 not found");
-        }
     }
 }

@@ -1,5 +1,6 @@
 package com.fsck.k9.mail;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -86,22 +87,8 @@ public abstract class Folder<T extends Message> {
      */
     public abstract List<T> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<T> listener) throws MessagingException;
 
-    /**
-     * Fetches the given list of messages. The specified listener is notified as
-     * each fetch completes. Messages are downloaded as (as) lightweight (as
-     * possible) objects to be filled in with later requests. In most cases this
-     * means that only the UID is downloaded.
-     * @param listener Listener to notify as we download messages.
-     * @return List of messages
-     */
-    public abstract List<T> getMessages(MessageRetrievalListener<T> listener) throws MessagingException;
-
-    public List<T> getMessages(MessageRetrievalListener<T> listener, boolean includeDeleted) throws MessagingException {
-        return getMessages(listener);
-    }
-
-    public abstract List<T> getMessages(String[] uids, MessageRetrievalListener<T> listener)
-    throws MessagingException;
+    public abstract boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate)
+            throws IOException, MessagingException;
 
     public abstract Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException;
 
@@ -153,13 +140,6 @@ public abstract class Folder<T extends Message> {
     public abstract void delete(boolean recurse) throws MessagingException;
 
     public abstract String getName();
-
-
-    /**
-     * Indicated by the server "\*" ( * OK [PERMANENTFLAGS (\Answered .. \*)] Flags permitted). that
-     * new keywords may be created
-     */
-    protected boolean mCanCreateKeywords = false;
 
     /**
      * @param oldPushState

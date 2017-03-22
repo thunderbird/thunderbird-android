@@ -1,6 +1,7 @@
 
 package com.fsck.k9;
 
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,34 +17,36 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.text.format.Time;
-import android.util.Log;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.provider.UnreadWidgetProvider;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
+import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.preferences.Storage;
+import com.fsck.k9.preferences.StorageEditor;
+import com.fsck.k9.provider.UnreadWidgetProvider;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
+import com.fsck.k9.widget.list.MessageListWidgetProvider;
+import timber.log.Timber;
+import timber.log.Timber.DebugTree;
+
 
 public class K9 extends Application {
     /**
@@ -105,7 +108,6 @@ public class K9 extends Application {
         ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
     }
 
-    private static String language = "";
     private static Theme theme = Theme.LIGHT;
     private static Theme messageViewTheme = Theme.USE_GLOBAL;
     private static Theme composerTheme = Theme.USE_GLOBAL;
@@ -135,7 +137,7 @@ public class K9 extends Application {
      * Log.d, including protocol dumps.
      * Controlled by Preferences at run-time
      */
-    public static boolean DEBUG = false;
+    private static boolean DEBUG = false;
 
     /**
      * If this is enabled than logging that normally hides sensitive information
@@ -160,17 +162,14 @@ public class K9 extends Application {
      */
     private static SharedPreferences sDatabaseVersionCache;
 
-    /**
-     * {@code true} if this is a debuggable build.
-     */
-    private static boolean sIsDebuggable;
-
     private static boolean mAnimations = true;
 
     private static boolean mConfirmDelete = false;
+    private static boolean mConfirmDiscardMessage = true;
     private static boolean mConfirmDeleteStarred = false;
     private static boolean mConfirmSpam = false;
     private static boolean mConfirmDeleteFromNotification = true;
+    private static boolean mConfirmMarkAllRead = true;
 
     private static NotificationHideSubject sNotificationHideSubject = NotificationHideSubject.NEVER;
 
@@ -245,6 +244,9 @@ public class K9 extends Application {
     private static boolean mHideUserAgent = false;
     private static boolean mHideTimeZone = false;
 
+    private static String sOpenPgpProvider = "";
+    private static boolean sOpenPgpSupportSignOnly = false;
+
     private static SortType mSortType;
     private static Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
 
@@ -258,6 +260,9 @@ public class K9 extends Application {
     private static boolean sMessageViewMoveActionVisible = false;
     private static boolean sMessageViewCopyActionVisible = false;
     private static boolean sMessageViewSpamActionVisible = false;
+
+    private static int sPgpInlineDialogCounter;
+    private static int sPgpSignOnlyDialogCounter;
 
 
     /**
@@ -311,31 +316,7 @@ public class K9 extends Application {
 
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
 
-    /**
-     * Time the LED is on/off when blinking on new email notification
-     */
-    public static final int NOTIFICATION_LED_ON_TIME = 500;
-    public static final int NOTIFICATION_LED_OFF_TIME = 2000;
-
-    public static final boolean NOTIFICATION_LED_WHILE_SYNCING = false;
-    public static final int NOTIFICATION_LED_FAST_ON_TIME = 100;
-    public static final int NOTIFICATION_LED_FAST_OFF_TIME = 100;
-
-
-    public static final int NOTIFICATION_LED_BLINK_SLOW = 0;
-    public static final int NOTIFICATION_LED_BLINK_FAST = 1;
-
-
-
-    public static final int NOTIFICATION_LED_FAILURE_COLOR = 0xffff0000;
-
-    // Must not conflict with an account number
-    public static final int FETCHING_EMAIL_NOTIFICATION      = -5000;
-    public static final int SEND_FAILED_NOTIFICATION      = -1500;
-    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_INCOMING = -2000;
-    public static final int CERTIFICATE_EXCEPTION_NOTIFICATION_OUTGOING = -2500;
-    public static final int CONNECTIVITY_ID = -3;
-
+    public static final String NO_OPENPGP_PROVIDER = "";
 
     public static class Intents {
 
@@ -416,7 +397,7 @@ public class K9 extends Application {
     }
 
     /**
-     * Register BroadcastReceivers programmaticaly because doing it from manifest
+     * Register BroadcastReceivers programmatically because doing it from manifest
      * would make K-9 auto-start. We don't want auto-start because the initialization
      * sequence isn't safe while some events occur (SD card unmount).
      */
@@ -437,7 +418,7 @@ public class K9 extends Application {
                 try {
                     queue.put(new Handler());
                 } catch (InterruptedException e) {
-                    Log.e(K9.LOG_TAG, "", e);
+                    Timber.e(e);
                 }
                 Looper.loop();
             }
@@ -447,25 +428,16 @@ public class K9 extends Application {
         try {
             final Handler storageGoneHandler = queue.take();
             registerReceiver(receiver, filter, null, storageGoneHandler);
-            Log.i(K9.LOG_TAG, "Registered: unmount receiver");
+            Timber.i("Registered: unmount receiver");
         } catch (InterruptedException e) {
-            Log.e(K9.LOG_TAG, "Unable to register unmount receiver", e);
+            Timber.e(e, "Unable to register unmount receiver");
         }
 
         registerReceiver(new ShutdownReceiver(), new IntentFilter(Intent.ACTION_SHUTDOWN));
-        Log.i(K9.LOG_TAG, "Registered: shutdown receiver");
+        Timber.i("Registered: shutdown receiver");
     }
 
-
-    /**
-     * Save settings from our statics into the app database.
-     * <p/>
-     * If you're adding a preference here, odds are you'll need to add it to
-     * {@link com.fsck.k9.preferences.GlobalSettings}, too.
-     *
-     * @param editor Preferences to save into
-     */
-    public static void save(SharedPreferences.Editor editor) {
+    public static void save(StorageEditor editor) {
         editor.putBoolean("enableDebugLogging", K9.DEBUG);
         editor.putBoolean("enableSensitiveLogging", K9.DEBUG_SENSITIVE);
         editor.putString("backgroundOperations", K9.backgroundOps.name());
@@ -499,16 +471,20 @@ public class K9 extends Application {
         editor.putBoolean("hideUserAgent", mHideUserAgent);
         editor.putBoolean("hideTimeZone", mHideTimeZone);
 
-        editor.putString("language", language);
+        editor.putString("openPgpProvider", sOpenPgpProvider);
+        editor.putBoolean("openPgpSupportSignOnly", sOpenPgpSupportSignOnly);
+
         editor.putInt("theme", theme.ordinal());
         editor.putInt("messageViewTheme", messageViewTheme.ordinal());
         editor.putInt("messageComposeTheme", composerTheme.ordinal());
         editor.putBoolean("fixedMessageViewTheme", useFixedMessageTheme);
 
         editor.putBoolean("confirmDelete", mConfirmDelete);
+        editor.putBoolean("confirmDiscardMessage", mConfirmDiscardMessage);
         editor.putBoolean("confirmDeleteStarred", mConfirmDeleteStarred);
         editor.putBoolean("confirmSpam", mConfirmSpam);
         editor.putBoolean("confirmDeleteFromNotification", mConfirmDeleteFromNotification);
+        editor.putBoolean("confirmMarkAllRead", mConfirmMarkAllRead);
 
         editor.putString("sortTypeEnum", mSortType.name());
         editor.putBoolean("sortAscending", mSortAscending.get(mSortType));
@@ -529,6 +505,9 @@ public class K9 extends Application {
         editor.putBoolean("messageViewCopyActionVisible", sMessageViewCopyActionVisible);
         editor.putBoolean("messageViewSpamActionVisible", sMessageViewSpamActionVisible);
 
+        editor.putInt("pgpInlineDialogCounter", sPgpInlineDialogCounter);
+        editor.putInt("pgpSignOnlyDialogCounter", sPgpSignOnlyDialogCounter);
+
         fontSizes.save(editor);
     }
 
@@ -542,8 +521,8 @@ public class K9 extends Application {
 
         super.onCreate();
         app = this;
+        Globals.setContext(this);
 
-        sIsDebuggable = ((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
         K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {
             @Override public boolean enabled() {
                 return DEBUG;
@@ -574,43 +553,44 @@ public class K9 extends Application {
         setServicesEnabled(this);
         registerReceivers();
 
-        MessagingController.getInstance(this).addListener(new MessagingListener() {
+        MessagingController.getInstance(this).addListener(new SimpleMessagingListener() {
             private void broadcastIntent(String action, Account account, String folder, Message message) {
-                try {
-                    Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
-                    Intent intent = new Intent(action, uri);
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folder);
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_SENT_DATE, message.getSentDate());
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM, Address.toString(message.getFrom()));
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)));
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_CC, Address.toString(message.getRecipients(Message.RecipientType.CC)));
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
-                    intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
-                    K9.this.sendBroadcast(intent);
-                    if (K9.DEBUG)
-                        Log.d(K9.LOG_TAG, "Broadcasted: action=" + action
-                              + " account=" + account.getDescription()
-                              + " folder=" + folder
-                              + " message uid=" + message.getUid()
-                             );
+                Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
+                Intent intent = new Intent(action, uri);
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folder);
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_SENT_DATE, message.getSentDate());
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM, Address.toString(message.getFrom()));
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)));
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_CC, Address.toString(message.getRecipients(Message.RecipientType.CC)));
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
+                K9.this.sendBroadcast(intent);
 
-                } catch (MessagingException e) {
-                    Log.w(K9.LOG_TAG, "Error: action=" + action
-                          + " account=" + account.getDescription()
-                          + " folder=" + folder
-                          + " message uid=" + message.getUid()
-                         );
-                }
+                Timber.d("Broadcasted: action=%s account=%s folder=%s message uid=%s",
+                        action,
+                        account.getDescription(),
+                        folder,
+                        message.getUid());
             }
 
             private void updateUnreadWidget() {
                 try {
                     UnreadWidgetProvider.updateUnreadCount(K9.this);
                 } catch (Exception e) {
-                    if (K9.DEBUG) {
-                        Log.e(LOG_TAG, "Error while updating unread widget(s)", e);
+                    Timber.e(e, "Error while updating unread widget(s)");
+                }
+            }
+
+            private void updateMailListWidget() {
+                try {
+                    MessageListWidgetProvider.triggerMessageListWidgetUpdate(K9.this);
+                } catch (RuntimeException e) {
+                    if (BuildConfig.DEBUG) {
+                        throw e;
+                    } else {
+                        Timber.e(e, "Error while updating message list widget");
                     }
                 }
             }
@@ -619,18 +599,21 @@ public class K9 extends Application {
             public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
                 updateUnreadWidget();
+                updateMailListWidget();
             }
 
             @Override
             public void messageDeleted(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
                 updateUnreadWidget();
+                updateMailListWidget();
             }
 
             @Override
             public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
                 broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folder, message);
                 updateUnreadWidget();
+                updateMailListWidget();
             }
 
             @Override
@@ -638,6 +621,7 @@ public class K9 extends Application {
                     int unreadMessageCount) {
 
                 updateUnreadWidget();
+                updateMailListWidget();
 
                 // let observers know a change occurred
                 Intent intent = new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null);
@@ -654,7 +638,7 @@ public class K9 extends Application {
 
     /**
      * Loads the last known database version of the accounts' databases from a
-     * {@link SharedPreference}.
+     * {@code SharedPreference}.
      *
      * <p>
      * If the stored version matches {@link LocalStore#DB_VERSION} we know that the databases are
@@ -686,111 +670,112 @@ public class K9 extends Application {
      * @param prefs Preferences to load
      */
     public static void loadPrefs(Preferences prefs) {
-        SharedPreferences sprefs = prefs.getPreferences();
-        DEBUG = sprefs.getBoolean("enableDebugLogging", false);
-        if (!DEBUG && sIsDebuggable && Debug.isDebuggerConnected()) {
-            // If the debugger is attached, we're probably (surprise surprise) debugging something.
-            DEBUG = true;
-            Log.i(K9.LOG_TAG, "Debugger attached; enabling debug logging.");
-        }
-        DEBUG_SENSITIVE = sprefs.getBoolean("enableSensitiveLogging", false);
-        mAnimations = sprefs.getBoolean("animations", true);
-        mGesturesEnabled = sprefs.getBoolean("gesturesEnabled", false);
-        mUseVolumeKeysForNavigation = sprefs.getBoolean("useVolumeKeysForNavigation", false);
-        mUseVolumeKeysForListNavigation = sprefs.getBoolean("useVolumeKeysForListNavigation", false);
-        mStartIntegratedInbox = sprefs.getBoolean("startIntegratedInbox", false);
-        mMeasureAccounts = sprefs.getBoolean("measureAccounts", true);
-        mCountSearchMessages = sprefs.getBoolean("countSearchMessages", true);
-        mHideSpecialAccounts = sprefs.getBoolean("hideSpecialAccounts", false);
-        mMessageListSenderAboveSubject = sprefs.getBoolean("messageListSenderAboveSubject", false);
-        mMessageListCheckboxes = sprefs.getBoolean("messageListCheckboxes", false);
-        mMessageListStars = sprefs.getBoolean("messageListStars", true);
-        mMessageListPreviewLines = sprefs.getInt("messageListPreviewLines", 2);
+        Storage storage = prefs.getStorage();
+        setDebug(storage.getBoolean("enableDebugLogging", BuildConfig.DEVELOPER_MODE));
+        DEBUG_SENSITIVE = storage.getBoolean("enableSensitiveLogging", false);
+        mAnimations = storage.getBoolean("animations", true);
+        mGesturesEnabled = storage.getBoolean("gesturesEnabled", false);
+        mUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false);
+        mUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false);
+        mStartIntegratedInbox = storage.getBoolean("startIntegratedInbox", false);
+        mMeasureAccounts = storage.getBoolean("measureAccounts", true);
+        mCountSearchMessages = storage.getBoolean("countSearchMessages", true);
+        mHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false);
+        mMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false);
+        mMessageListCheckboxes = storage.getBoolean("messageListCheckboxes", false);
+        mMessageListStars = storage.getBoolean("messageListStars", true);
+        mMessageListPreviewLines = storage.getInt("messageListPreviewLines", 2);
 
-        mAutofitWidth = sprefs.getBoolean("autofitWidth", true);
+        mAutofitWidth = storage.getBoolean("autofitWidth", true);
 
-        mQuietTimeEnabled = sprefs.getBoolean("quietTimeEnabled", false);
-        mNotificationDuringQuietTimeEnabled = sprefs.getBoolean("notificationDuringQuietTimeEnabled", true);
-        mQuietTimeStarts = sprefs.getString("quietTimeStarts", "21:00");
-        mQuietTimeEnds = sprefs.getString("quietTimeEnds", "7:00");
+        mQuietTimeEnabled = storage.getBoolean("quietTimeEnabled", false);
+        mNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true);
+        mQuietTimeStarts = storage.getString("quietTimeStarts", "21:00");
+        mQuietTimeEnds = storage.getString("quietTimeEnds", "7:00");
 
-        mShowCorrespondentNames = sprefs.getBoolean("showCorrespondentNames", true);
-        mShowContactName = sprefs.getBoolean("showContactName", false);
-        sShowContactPicture = sprefs.getBoolean("showContactPicture", true);
-        mChangeContactNameColor = sprefs.getBoolean("changeRegisteredNameColor", false);
-        mContactNameColor = sprefs.getInt("registeredNameColor", 0xff00008f);
-        mMessageViewFixedWidthFont = sprefs.getBoolean("messageViewFixedWidthFont", false);
-        mMessageViewReturnToList = sprefs.getBoolean("messageViewReturnToList", false);
-        mMessageViewShowNext = sprefs.getBoolean("messageViewShowNext", false);
-        mWrapFolderNames = sprefs.getBoolean("wrapFolderNames", false);
-        mHideUserAgent = sprefs.getBoolean("hideUserAgent", false);
-        mHideTimeZone = sprefs.getBoolean("hideTimeZone", false);
+        mShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true);
+        mShowContactName = storage.getBoolean("showContactName", false);
+        sShowContactPicture = storage.getBoolean("showContactPicture", true);
+        mChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false);
+        mContactNameColor = storage.getInt("registeredNameColor", 0xff00008f);
+        mMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false);
+        mMessageViewReturnToList = storage.getBoolean("messageViewReturnToList", false);
+        mMessageViewShowNext = storage.getBoolean("messageViewShowNext", false);
+        mWrapFolderNames = storage.getBoolean("wrapFolderNames", false);
+        mHideUserAgent = storage.getBoolean("hideUserAgent", false);
+        mHideTimeZone = storage.getBoolean("hideTimeZone", false);
 
-        mConfirmDelete = sprefs.getBoolean("confirmDelete", false);
-        mConfirmDeleteStarred = sprefs.getBoolean("confirmDeleteStarred", false);
-        mConfirmSpam = sprefs.getBoolean("confirmSpam", false);
-        mConfirmDeleteFromNotification = sprefs.getBoolean("confirmDeleteFromNotification", true);
+        sOpenPgpProvider = storage.getString("openPgpProvider", NO_OPENPGP_PROVIDER);
+        sOpenPgpSupportSignOnly = storage.getBoolean("openPgpSupportSignOnly", false);
+
+        mConfirmDelete = storage.getBoolean("confirmDelete", false);
+        mConfirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true);
+        mConfirmDeleteStarred = storage.getBoolean("confirmDeleteStarred", false);
+        mConfirmSpam = storage.getBoolean("confirmSpam", false);
+        mConfirmDeleteFromNotification = storage.getBoolean("confirmDeleteFromNotification", true);
+        mConfirmMarkAllRead = storage.getBoolean("confirmMarkAllRead", true);
 
         try {
-            String value = sprefs.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
+            String value = storage.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
             mSortType = SortType.valueOf(value);
         } catch (Exception e) {
             mSortType = Account.DEFAULT_SORT_TYPE;
         }
 
-        boolean sortAscending = sprefs.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
+        boolean sortAscending = storage.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
         mSortAscending.put(mSortType, sortAscending);
 
-        String notificationHideSubject = sprefs.getString("notificationHideSubject", null);
+        String notificationHideSubject = storage.getString("notificationHideSubject", null);
         if (notificationHideSubject == null) {
             // If the "notificationHideSubject" setting couldn't be found, the app was probably
             // updated. Look for the old "keyguardPrivacy" setting and map it to the new enum.
-            sNotificationHideSubject = (sprefs.getBoolean("keyguardPrivacy", false)) ?
+            sNotificationHideSubject = (storage.getBoolean("keyguardPrivacy", false)) ?
                     NotificationHideSubject.WHEN_LOCKED : NotificationHideSubject.NEVER;
         } else {
             sNotificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
         }
 
-        String notificationQuickDelete = sprefs.getString("notificationQuickDelete", null);
+        String notificationQuickDelete = storage.getString("notificationQuickDelete", null);
         if (notificationQuickDelete != null) {
             sNotificationQuickDelete = NotificationQuickDelete.valueOf(notificationQuickDelete);
         }
 
-        String lockScreenNotificationVisibility = sprefs.getString("lockScreenNotificationVisibility", null);
+        String lockScreenNotificationVisibility = storage.getString("lockScreenNotificationVisibility", null);
         if(lockScreenNotificationVisibility != null) {
             sLockScreenNotificationVisibility = LockScreenNotificationVisibility.valueOf(lockScreenNotificationVisibility);
         }
 
-        String splitViewMode = sprefs.getString("splitViewMode", null);
+        String splitViewMode = storage.getString("splitViewMode", null);
         if (splitViewMode != null) {
             sSplitViewMode = SplitViewMode.valueOf(splitViewMode);
         }
 
-        mAttachmentDefaultPath = sprefs.getString("attachmentdefaultpath",  Environment.getExternalStorageDirectory().toString());
-        sUseBackgroundAsUnreadIndicator = sprefs.getBoolean("useBackgroundAsUnreadIndicator", true);
-        sThreadedViewEnabled = sprefs.getBoolean("threadedView", true);
-        fontSizes.load(sprefs);
+        mAttachmentDefaultPath = storage.getString("attachmentdefaultpath",
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
+        sUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", true);
+        sThreadedViewEnabled = storage.getBoolean("threadedView", true);
+        fontSizes.load(storage);
 
         try {
-            setBackgroundOps(BACKGROUND_OPS.valueOf(sprefs.getString(
+            setBackgroundOps(BACKGROUND_OPS.valueOf(storage.getString(
                     "backgroundOperations",
                     BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC.name())));
         } catch (Exception e) {
             setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC);
         }
 
-        sColorizeMissingContactPictures = sprefs.getBoolean("colorizeMissingContactPictures", true);
+        sColorizeMissingContactPictures = storage.getBoolean("colorizeMissingContactPictures", true);
 
-        sMessageViewArchiveActionVisible = sprefs.getBoolean("messageViewArchiveActionVisible", false);
-        sMessageViewDeleteActionVisible = sprefs.getBoolean("messageViewDeleteActionVisible", true);
-        sMessageViewMoveActionVisible = sprefs.getBoolean("messageViewMoveActionVisible", false);
-        sMessageViewCopyActionVisible = sprefs.getBoolean("messageViewCopyActionVisible", false);
-        sMessageViewSpamActionVisible = sprefs.getBoolean("messageViewSpamActionVisible", false);
+        sMessageViewArchiveActionVisible = storage.getBoolean("messageViewArchiveActionVisible", false);
+        sMessageViewDeleteActionVisible = storage.getBoolean("messageViewDeleteActionVisible", true);
+        sMessageViewMoveActionVisible = storage.getBoolean("messageViewMoveActionVisible", false);
+        sMessageViewCopyActionVisible = storage.getBoolean("messageViewCopyActionVisible", false);
+        sMessageViewSpamActionVisible = storage.getBoolean("messageViewSpamActionVisible", false);
 
+        sPgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0);
+        sPgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0);
 
-        K9.setK9Language(sprefs.getString("language", ""));
-
-        int themeValue = sprefs.getInt("theme", Theme.LIGHT.ordinal());
+        int themeValue = storage.getInt("theme", Theme.LIGHT.ordinal());
         // We used to save the resource ID of the theme. So convert that to the new format if
         // necessary.
         if (themeValue == Theme.DARK.ordinal() || themeValue == android.R.style.Theme) {
@@ -799,11 +784,11 @@ public class K9 extends Application {
             K9.setK9Theme(Theme.LIGHT);
         }
 
-        themeValue = sprefs.getInt("messageViewTheme", Theme.USE_GLOBAL.ordinal());
+        themeValue = storage.getInt("messageViewTheme", Theme.USE_GLOBAL.ordinal());
         K9.setK9MessageViewThemeSetting(Theme.values()[themeValue]);
-        themeValue = sprefs.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal());
+        themeValue = storage.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal());
         K9.setK9ComposerThemeSetting(Theme.values()[themeValue]);
-        K9.setUseFixedMessageViewTheme(sprefs.getBoolean("fixedMessageViewTheme", true));
+        K9.setUseFixedMessageViewTheme(storage.getBoolean("fixedMessageViewTheme", true));
     }
 
     /**
@@ -814,13 +799,12 @@ public class K9 extends Application {
     protected void notifyObservers() {
         synchronized (observers) {
             for (final ApplicationAware aware : observers) {
-                if (K9.DEBUG) {
-                    Log.v(K9.LOG_TAG, "Initializing observer: " + aware);
-                }
+                Timber.v("Initializing observer: %s", aware);
+
                 try {
                     aware.initializeComponent(this);
                 } catch (Exception e) {
-                    Log.w(K9.LOG_TAG, "Failure when notifying " + aware, e);
+                    Timber.w(e, "Failure when notifying %s", aware);
                 }
             }
 
@@ -843,14 +827,6 @@ public class K9 extends Application {
                 observers.add(component);
             }
         }
-    }
-
-    public static String getK9Language() {
-        return language;
-    }
-
-    public static void setK9Language(String nlanguage) {
-        language = nlanguage;
     }
 
     /**
@@ -1040,7 +1016,14 @@ public class K9 extends Application {
         return false;
     }
 
+    public static void setDebug(boolean debug) {
+        K9.DEBUG = debug;
+        updateLoggingStatus();
+    }
 
+    public static boolean isDebug() {
+        return DEBUG;
+    }
 
     public static boolean startIntegratedInbox() {
         return mStartIntegratedInbox;
@@ -1193,8 +1176,16 @@ public class K9 extends Application {
         return mConfirmSpam;
     }
 
+    public static boolean confirmDiscardMessage() {
+        return mConfirmDiscardMessage;
+    }
+
     public static void setConfirmSpam(final boolean confirm) {
         mConfirmSpam = confirm;
+    }
+
+    public static void setConfirmDiscardMessage(final boolean confirm) {
+        mConfirmDiscardMessage = confirm;
     }
 
     public static boolean confirmDeleteFromNotification() {
@@ -1203,6 +1194,14 @@ public class K9 extends Application {
 
     public static void setConfirmDeleteFromNotification(final boolean confirm) {
         mConfirmDeleteFromNotification = confirm;
+    }
+
+    public static boolean confirmMarkAllRead() {
+        return mConfirmMarkAllRead;
+    }
+
+    public static void setConfirmMarkAllRead(final boolean confirm) {
+        mConfirmMarkAllRead = confirm;
     }
 
     public static NotificationHideSubject getNotificationHideSubject() {
@@ -1248,6 +1247,26 @@ public class K9 extends Application {
     }
     public static void setHideTimeZone(final boolean state) {
         mHideTimeZone = state;
+    }
+
+    public static boolean isOpenPgpProviderConfigured() {
+        return !NO_OPENPGP_PROVIDER.equals(sOpenPgpProvider);
+    }
+
+    public static String getOpenPgpProvider() {
+        return sOpenPgpProvider;
+    }
+
+    public static void setOpenPgpProvider(String openPgpProvider) {
+        sOpenPgpProvider = openPgpProvider;
+    }
+
+    public static boolean getOpenPgpSupportSignOnly() {
+        return sOpenPgpSupportSignOnly;
+    }
+
+    public static void setOpenPgpSupportSignOnly(boolean supportSignOnly) {
+        sOpenPgpSupportSignOnly = supportSignOnly;
     }
 
     public static String getAttachmentDefaultPath() {
@@ -1357,6 +1376,22 @@ public class K9 extends Application {
         sMessageViewSpamActionVisible = visible;
     }
 
+    public static int getPgpInlineDialogCounter() {
+        return sPgpInlineDialogCounter;
+    }
+
+    public static void setPgpInlineDialogCounter(int pgpInlineDialogCounter) {
+        K9.sPgpInlineDialogCounter = pgpInlineDialogCounter;
+    }
+
+    public static int getPgpSignOnlyDialogCounter() {
+        return sPgpSignOnlyDialogCounter;
+    }
+
+    public static void setPgpSignOnlyDialogCounter(int pgpSignOnlyDialogCounter) {
+        K9.sPgpSignOnlyDialogCounter = pgpSignOnlyDialogCounter;
+    }
+
     /**
      * Check if we already know whether all databases are using the current database schema.
      *
@@ -1390,4 +1425,13 @@ public class K9 extends Application {
             editor.commit();
         }
     }
+
+    private static void updateLoggingStatus() {
+        Timber.uprootAll();
+        boolean enableDebugLogging = BuildConfig.DEBUG || DEBUG;
+        if (enableDebugLogging) {
+            Timber.plant(new DebugTree());
+        }
+    }
+
 }

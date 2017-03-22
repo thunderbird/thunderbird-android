@@ -5,6 +5,8 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.R;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mailstore.LocalFolder;
+
 
 public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     public String name;
@@ -17,6 +19,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     public boolean lastCheckFailed;
     public Folder folder;
     public boolean pushActive;
+    public boolean moreMessages;
 
     @Override
     public boolean equals(Object o) {
@@ -52,18 +55,18 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     public FolderInfoHolder() {
     }
 
-    public FolderInfoHolder(Context context, Folder folder, Account account) {
+    public FolderInfoHolder(Context context, LocalFolder folder, Account account) {
         if (context == null) {
             throw new IllegalArgumentException("null context given");
         }
         populate(context, folder, account);
     }
 
-    public FolderInfoHolder(Context context, Folder folder, Account account, int unreadCount) {
+    public FolderInfoHolder(Context context, LocalFolder folder, Account account, int unreadCount) {
         populate(context, folder, account, unreadCount);
     }
 
-    public void populate(Context context, Folder folder, Account account, int unreadCount) {
+    public void populate(Context context, LocalFolder folder, Account account, int unreadCount) {
         populate(context, folder, account);
         this.unreadMessageCount = unreadCount;
         folder.close();
@@ -71,7 +74,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     }
 
 
-    public void populate(Context context, Folder folder, Account account) {
+    public void populate(Context context, LocalFolder folder, Account account) {
         this.folder = folder;
         this.name = folder.getName();
         this.lastChecked = folder.getLastUpdate();
@@ -79,6 +82,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         this.status = truncateStatus(folder.getStatus());
 
         this.displayName = getDisplayName(context, account, name);
+        setMoreMessagesFromFolder(folder);
     }
 
     /**
@@ -125,5 +129,9 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         }
 
         return displayName;
+    }
+
+    public void setMoreMessagesFromFolder(LocalFolder folder) {
+        moreMessages = folder.hasMoreMessages();
     }
 }

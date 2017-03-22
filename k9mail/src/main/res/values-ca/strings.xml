@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">Comptes K-9</string>
   <string name="unread_widget_label">K-9 no llegits</string>
   <string name="remote_control_label">Control remot del Correu K-9 Mail</string>
@@ -15,35 +14,6 @@
   <string name="app_license">Llicenciat sota Llicència Apache, Versió 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Us donem la benvinguda a K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-El K-9 és un client de codi obert per Android, originalment basat en l\'estàndard de client de Correu d\'Android.
-</p><p>
-El K-9 inclou les característiques millorades de:
-</p>
-<ul>
-  <li>Push mail utilitzant IMAP IDLE</li>
-  <li>Millor rendiment</li>
-  <li>Reclassificació de missatges</li>
-  <li>Signatura de correu</li>
-  <li>C/o a un mateix</li>
-  <li>Subscripció a carpetes</li>
-  <li>Sincronització a totes les carpetes</li>
-  <li>Configuració de l\'adreça de retorn</li>
-  <li>Dreceres de teclat</li>
-  <li>Millor suport IMAP</li>
-  <li>Desat dels adjunts a la SD</li>
-  <li>Buidat de la paperera</li>
-  <li>Ordenació de missatges</li>
-  <li>…i més</li>
-</ul>
-<p>
-Si us plau, tingueu en compte que el K-9 no funciona amb la majoria de comptes Hotmail gratuïts i, com molts clients de correu, fa coses estranyes quan es comunica amb Microsoft Exchange.
-</p><p>
-Si us plau, envia\'ns els errors, contribueix a millorar-lo a
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" serà esborrat de K-9 Mail.</string>
@@ -77,7 +47,7 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="status_loading_account_folder_headers">Recollint capçaleres <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Enviant <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Propera comprovació <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Comprovació acabada</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionats</string>
@@ -128,7 +98,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="message_view_theme_action_dark">Canvia a la vista fosca</string>
   <string name="message_view_theme_action_light">Canvia a la vista clara</string>
   <string name="mark_as_unread_action">Marca com a no llegit</string>
-  <string name="add_cc_bcc_action">Afegeix Cc/Bcc</string>
   <string name="read_receipt">Llegeix la confirmació de lectura</string>
   <string name="read_receipt_enabled">Es farà una petició per la confirmació de lectura</string>
   <string name="read_receipt_disabled">No es faran més peticions per les confirmacions de lectura</string>
@@ -159,10 +128,12 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="recreating_account">S\'està creant un compte \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nou correu</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> no llegit(s) (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">i <xliff:g id="additional_messages">%d</xliff:g> més a <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_action_reply">Respon</string>
-  <string name="notification_action_mark_as_read">Mostra</string>
+  <string name="notification_action_mark_as_read">Marca Llegit</string>
+  <string name="notification_action_mark_all_as_read">Marca\'ls tots com a llegits</string>
   <string name="notification_action_delete">Elimina</string>
+  <string name="notification_action_archive">Arxiva</string>
+  <string name="notification_action_spam">Correu Brossa</string>
   <string name="notification_certificate_error_title">Error en el certificat de <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Comproveu els paràmetres del servidor.</string>
   <string name="notification_bg_sync_ticker">S\'està comprovant el correu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -190,9 +161,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="debug_enable_sensitive_logging_summary">Pot mostrar les contrasenyes en els registres.</string>
   <string name="message_list_load_more_messages_action">Carrega més missatges</string>
   <string name="message_to_fmt">A: <xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">A</string>
-  <string name="message_compose_cc_hint">A/c</string>
-  <string name="message_compose_bcc_hint">C/o</string>
   <string name="message_compose_subject_hint">Assumpte</string>
   <string name="message_compose_content_hint">Text del missatge</string>
   <string name="message_compose_signature_hint">Firma</string>
@@ -207,9 +175,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="error_contact_address_not_found">No s\'ha trobat cap adreça de correu.</string>
   <string name="message_compose_attachments_skipped_toast">Alguns adjunts no es poden reenviar perquè no s\'han carregat.</string>
   <string name="message_compose_show_quoted_text_action">Cita el missatge</string>
-  <string name="message_compose_description_add_to">Afegeix destinatari (A)</string>
-  <string name="message_compose_description_add_cc">Afegeix destinatari (CC)</string>
-  <string name="message_compose_description_add_bcc">Afegeix destinatari ocult (BCC)</string>
   <string name="message_compose_description_delete_quoted_text">Elimina el text citat</string>
   <string name="message_compose_description_edit_quoted_text">Edita el text citat</string>
   <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -217,18 +182,12 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="message_view_cc_label">A/c:</string>
   <string name="message_view_attachment_view_action">Obre</string>
   <string name="message_view_attachment_download_action">Desa</string>
-  <string name="message_view_status_attachment_saved">Adjunt desat a la SD com a <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">No s\'ha pogut desar l\'adjunt a la SD.</string>
   <string name="message_view_show_pictures_action">Mostra fotos</string>
-  <string name="message_view_show_message_action">Mostra el missatge</string>
-  <string name="message_view_show_attachments_action">Mostra els adjunts</string>
   <string name="message_view_show_more_attachments_action">Més…</string>
-  <string name="message_view_fetching_attachment_toast">Recollint l\'adjunt.</string>
   <string name="message_view_no_viewer">No ha estat capaç de trobar un visualitzador per <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descarrega el missatge complet</string>
-  <string name="message_view_downloading">S\'està descarregant</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">No s\'han descarregat o desat totes les capçaleres. Seleccioneu \"Desa totes les capçaleres localment\" a la configuració del servidor d\'entrada del compte per habilitar-lo en el futur.</string>
   <string name="message_no_additional_headers_available">S\'han descarregat totes les capçaleres, no hi ha capçaleres addicionals per mostrar.</string>
   <string name="message_additional_headers_retrieval_failed">La recuperació de capçaleres addicionals de la base de dades o del servidor de correu ha fallat.</string>
   <string name="from_same_sender">Més d\'aquest remitent</string>
@@ -260,8 +219,10 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="global_settings_messageview_show_next_summary">Mostra, per defecte, el proper missatge després d\'eliminar-ne un.</string>
   <string name="global_settings_confirm_actions_title">Confirma accions</string>
   <string name="global_settings_confirm_actions_summary">Mostra un diàleg cada vegada que executis accions seleccionades</string>
+  <string name="global_settings_confirm_action_delete">Esborra</string>
   <string name="global_settings_confirm_action_delete_starred">Elimina els missatges amb estel (només a la vista de missatges)</string>
   <string name="global_settings_confirm_action_spam">Brossa</string>
+  <string name="global_settings_confirm_menu_discard">Descartar el missatge</string>
   <string name="global_settings_confirm_action_delete_notif">Elimina (des de notificacions)</string>
   <string name="global_settings_notification_hide_subject_title">Amaga l\'assumpte a les notificacions</string>
   <string name="global_settings_notification_hide_subject_never">Mai</string>
@@ -305,6 +266,8 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_setup_incoming_security_label">Tipus de seguretat</string>
   <string name="account_setup_incoming_auth_type_label">Tipus d\'autenticació</string>
   <string name="account_setup_incoming_security_none_label">Cap</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">Quan esborro missatges</string>
   <string name="account_setup_incoming_delete_policy_never_label">No els esborris del servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Esborra\'ls servidor</string>
@@ -432,7 +395,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_settings_folders">Carpetes</string>
   <string name="account_settings_quote_prefix_label">Prefix de cita del text</string>
   <string name="account_settings_crypto">Criptografia</string>
-  <string name="account_settings_crypto_app">Proveïdor d\'OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Freqüència de comprovació de les carpetes</string>
   <string name="account_settings_storage_title">Emmagatzematge</string>
   <string name="account_settings_color_label">Color del compte</string>
@@ -616,11 +578,9 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema de vista de missatge</string>
   <string name="settings_compose_theme_label">Tema de vista del redactor</string>
-  <string name="settings_language_label">Llengua</string>
   <string name="settings_message_theme_selection_label">Tema de missatge fix</string>
   <string name="settings_message_theme_selection_summary_off">Selecciona el tema de la vista de missatge al mostrar-lo.</string>
   <string name="settings_message_theme_selection_summary_on">Utilitza un tema fix per a tots els missatges.</string>
-  <string name="setting_language_system">Per defecte del sistema</string>
   <string name="background_ops_label">Sincronització 2n pla</string>
   <string name="background_ops_never">Mai</string>
   <string name="background_ops_always">Sempre</string>
@@ -655,7 +615,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="search_all_messages_detail">Tots els missatges en carpetes cercables</string>
   <string name="integrated_inbox_title">Bústia unificada</string>
   <string name="integrated_inbox_detail">Tots els missatges en carpetes unificades</string>
-  <string name="tap_hint">Pica al sobre o a l\'estel per missatges no llegits o senyalats</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unifica</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">S\'estan mostrant tots els missatges a la bústia unificada</string>
   <string name="account_settings_searchable_label">Carpetes a cercar</string>
@@ -695,18 +654,10 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="font_size_larger">Més gran</string>
   <string name="miscellaneous_preferences">Miscel·lània</string>
   <string name="error_activity_not_found">No s\'ha trobat cap aplicació idònia per a aquesta acció.</string>
-  <string name="btn_crypto_sign">Inicia</string>
-  <string name="btn_encrypt">Encripta</string>
-  <string name="unknown_crypto_signature_user_id">&lt;desconegut&gt;</string>
-  <string name="pgp_mime_unsupported">Encara no hi ha suport per a missatges PGP/MIME.</string>
-  <string name="attachment_encryption_unsupported">Alerta: els adjunts encara NO estan signats o encriptats.</string>
-  <string name="send_aborted">Tramesa suspesa</string>
   <string name="save_or_discard_draft_message_dlg_title">Desa l\'esborrany?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Desa o descarta aquest missatge?</string>
   <string name="confirm_discard_draft_message_title">Descartar el missatge</string>
   <string name="confirm_discard_draft_message">Esteu segurs de voler descartar aquest missatge?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refusa guardar esborradors de missatges</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refusa desar esborradors de missatges marcats com a encriptats.</string>
   <string name="select_text_now">Seleccioneu el text a copiar.</string>
   <string name="dialog_confirm_delete_title">Confirma esborrar</string>
   <string name="dialog_confirm_delete_message">Voleu esborrar aquest missatge?</string>
@@ -727,7 +678,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="debug_logging_enabled">Activada la depuració del registre al sistema de registre d\'Android</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">No es pot connectar.</string>
   <string name="import_export_action">Importa i exporta la configuració</string>
   <string name="settings_export_account">Exporta els paràmetres del compte</string>
   <string name="settings_export_all">Exporta comptes i paràmetres</string>
@@ -807,8 +757,6 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Límit de resultats de la cerca del servidor</string>
   <string name="account_settings_remote_search_num_summary">La cerca s\'aturarà després d\'haver trobat <xliff:g id="num_results">%s</xliff:g> resultats.</string>
-  <string name="account_settings_remote_search_full_text">Inclou el text del cos a les cerques del servidor</string>
-  <string name="account_settings_remote_search_full_text_summary">Les cerques a tot el text poden ser lentes.</string>
   <string name="remote_search_sending_query">S\'està enviant petició al servidor.</string>
   <string name="remote_search_downloading">S\'està rebent %d resultats</string>
   <string name="remote_search_downloading_limited">S\'està rebent %1$d de %2$d resultats.</string>
@@ -849,4 +797,5 @@ Si us plau, envia\'ns els errors, contribueix a millorar-lo a
   <string name="fetching_attachment_dialog_message">Recuperant adjunt…</string>
   <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
+  <!--Note: This references message_view_download_remainder-->
 </resources>

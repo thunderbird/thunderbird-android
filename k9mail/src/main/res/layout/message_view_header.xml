@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.fsck.k9.view.MessageHeader
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/header_container"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -26,13 +27,15 @@
                 android:id="@+id/subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="3"
                 android:ellipsize="end"
                 android:textStyle="bold"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/general_no_subject"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="(no subject)"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
-                    <QuickContactBadge
+                    <com.fsck.k9.ui.ContactBadge
                         android:id="@+id/contact_badge"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
@@ -94,7 +97,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@+id/flagged"
+                        android:layout_toLeftOf="@+id/status_icon_strip"
+                        android:layout_alignBottom="@+id/status_icon_strip"
                         android:paddingTop="0dp"
                         android:paddingRight="6dip"
                         android:singleLine="true"
@@ -102,7 +106,26 @@
                         android:textColor="?android:attr/textColorPrimary"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textStyle="bold"
-                        android:text="@string/general_no_sender" />
+                        android:text="@string/general_no_sender"
+                        android:gravity="center_vertical"
+                        />
+
+                    <!-- Sender -->
+                    <TextView
+                        android:id="@+id/sender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/status_icon_strip"
+                        android:paddingTop="0dp"
+                        android:layout_below="@+id/from"
+                        android:ellipsize="end"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        android:gravity="center_vertical"
+                        />
                     
                     <!-- To -->
                     <TextView
@@ -123,8 +146,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/to_label"
-                        android:layout_below="@+id/from"
-                        android:layout_toLeftOf="@+id/flagged"
+                        android:layout_below="@+id/sender"
                         android:maxLines="2"
                         android:ellipsize="end"
                         android:paddingTop="2dp"
@@ -152,7 +174,6 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/cc_label"
                         android:layout_below="@+id/to"
-                        android:layout_toLeftOf="@+id/flagged"
                         android:maxLines="2"
                         android:ellipsize="end"
                         android:paddingTop="2dp"
@@ -172,15 +193,27 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="?android:attr/textColorSecondary" />
 
-                    <CheckBox
-                        android:id="@+id/flagged"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignTop="@id/from"
-                        android:focusable="false"
-                        style="?android:attr/starStyle"
-                        android:checked="false" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/status_icon_strip"
+                        >
+
+                        <CheckBox
+                            android:id="@+id/flagged"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            style="?android:attr/starStyle"
+                            android:checked="false" />
+
+                        <include layout="@layout/message_crypto_status_view" />
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 

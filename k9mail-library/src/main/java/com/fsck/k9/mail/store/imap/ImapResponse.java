@@ -8,53 +8,55 @@ package com.fsck.k9.mail.store.imap;
  * object will contain all of the available tokens at the time the response is received.
  * </p>
  */
-public class ImapResponse extends ImapList {
+class ImapResponse extends ImapList {
     private static final long serialVersionUID = 6886458551615975669L;
 
-    private ImapResponseCallback mCallback;
 
-    private final boolean mCommandContinuationRequested;
-    private final String mTag;
+    private ImapResponseCallback callback;
+    private final boolean commandContinuationRequested;
+    private final String tag;
 
 
-    public ImapResponse(ImapResponseCallback callback,
-                        boolean mCommandContinuationRequested, String mTag) {
-        this.mCallback = callback;
-        this.mCommandContinuationRequested = mCommandContinuationRequested;
-        this.mTag = mTag;
+    private ImapResponse(ImapResponseCallback callback, boolean commandContinuationRequested, String tag) {
+        this.callback = callback;
+        this.commandContinuationRequested = commandContinuationRequested;
+        this.tag = tag;
+    }
+
+    public static ImapResponse newContinuationRequest(ImapResponseCallback callback) {
+        return new ImapResponse(callback, true, null);
+    }
+
+    public static ImapResponse newUntaggedResponse(ImapResponseCallback callback) {
+        return new ImapResponse(callback, false, null);
+    }
+
+    public static ImapResponse newTaggedResponse(ImapResponseCallback callback, String tag) {
+        return new ImapResponse(callback, false, tag);
     }
 
     public boolean isContinuationRequested() {
-        return mCommandContinuationRequested;
+        return commandContinuationRequested;
     }
 
     public String getTag() {
-        return mTag;
+        return tag;
+    }
+
+    public boolean isTagged() {
+        return tag != null;
     }
 
     public ImapResponseCallback getCallback() {
-        return mCallback;
+        return callback;
     }
 
-    public void setCallback(ImapResponseCallback mCallback) {
-        this.mCallback = mCallback;
-    }
-
-    public String getAlertText() {
-        if (size() > 1 && ImapResponseParser.equalsIgnoreCase("[ALERT]", get(1))) {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 2, count = size(); i < count; i++) {
-                sb.append(get(i).toString());
-                sb.append(' ');
-            }
-            return sb.toString();
-        } else {
-            return null;
-        }
+    public void setCallback(ImapResponseCallback callback) {
+        this.callback = callback;
     }
 
     @Override
     public String toString() {
-        return "#" + (mCommandContinuationRequested ? "+" : mTag) + "# " + super.toString();
+        return "#" + (commandContinuationRequested ? "+" : tag) + "# " + super.toString();
     }
 }

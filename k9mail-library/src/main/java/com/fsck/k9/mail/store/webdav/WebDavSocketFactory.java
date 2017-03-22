@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.store.webdav;
 
+import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.scheme.LayeredSocketFactory;
 import org.apache.http.params.HttpParams;
@@ -34,7 +35,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
         mSocketFactory = sslContext.getSocketFactory();
         mSchemeSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory();
         mSchemeSocketFactory.setHostnameVerifier(
-                org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+                org.apache.http.conn.ssl.SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
     }
 
     public Socket connectSocket(Socket sock, String host, int port,
@@ -43,6 +44,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
         return mSchemeSocketFactory.connectSocket(sock, host, port, localAddress, localPort, params);
     }
 
+    @Override
     public Socket createSocket() throws IOException {
         return mSocketFactory.createSocket();
     }
@@ -62,6 +64,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
                 port,
                 autoClose
         );
+        DefaultTrustedSocketFactory.setSniHost(mSocketFactory, sslSocket, host);
         //hostnameVerifier.verify(host, sslSocket);
         // verifyHostName() didn't blowup - good!
         return sslSocket;

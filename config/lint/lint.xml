@@ -2,6 +2,7 @@
 <lint>
     <issue id="MissingTranslation" severity="ignore" />
     <issue id="OldTargetApi" severity="ignore" />
+    <issue id="GoogleAppIndexingWarning" severity="ignore" />
 
     <!-- Transifex and Lint disagree on what quantities are necessary -->
     <issue id="UnusedQuantity" severity="warning">

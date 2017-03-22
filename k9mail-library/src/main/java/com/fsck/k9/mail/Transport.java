@@ -1,12 +1,8 @@
 
 package com.fsck.k9.mail;
 
-import android.content.Context;
-
-import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
-import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.transport.SmtpTransport;
+import com.fsck.k9.mail.transport.smtp.SmtpTransport;
 import com.fsck.k9.mail.transport.WebDavTransport;
 
 import java.io.UnsupportedEncodingException;
@@ -14,21 +10,11 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 public abstract class Transport {
+
     protected static final int SOCKET_CONNECT_TIMEOUT = 10000;
 
     // RFC 1047
     protected static final int SOCKET_READ_TIMEOUT = 300000;
-
-    public synchronized static Transport getInstance(Context context, StoreConfig storeConfig) throws MessagingException {
-        String uri = storeConfig.getTransportUri();
-        if (uri.startsWith("smtp")) {
-            return new SmtpTransport(storeConfig, new DefaultTrustedSocketFactory(context));
-        } else if (uri.startsWith("webdav")) {
-            return new WebDavTransport(storeConfig);
-        } else {
-            throw new MessagingException("Unable to locate an applicable Transport for " + uri);
-        }
-    }
 
     /**
      * Decodes the contents of transport-specific URIs and puts them into a {@link ServerSettings}

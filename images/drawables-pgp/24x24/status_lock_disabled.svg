@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg2"
+   version="1.1"
+   viewBox="0 0 100 100"
+   height="100px"
+   width="100px"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="status_lock_disabled.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1280"
+     inkscape:window-height="784"
+     id="namedview11"
+     showgrid="false"
+     inkscape:zoom="2.36"
+     inkscape:cx="-13.983051"
+     inkscape:cy="50"
+     inkscape:window-x="0"
+     inkscape:window-y="16"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="lock-closed" />
+  <metadata
+     id="metadata16">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>lock-closed</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <!-- Generator: Sketch 3.0.4 (8053) - http://www.bohemiancoding.com/sketch -->
+  <title
+     id="title4">lock-closed</title>
+  <desc
+     id="desc6">Created with Sketch.</desc>
+  <defs
+     id="defs8" />
+  <g
+     fill="none"
+     fill-rule="evenodd"
+     stroke="none"
+     stroke-width="1"
+     sketch:type="MSPage"
+     id="Page-1">
+    <g
+       fill="#000000"
+       sketch:type="MSArtboardGroup"
+       id="lock-closed">
+      <path
+         d="M 50.476562 -0.1640625 C 39.10279 -0.1640625 28.584583 5.4442406 23.6875 15.470703 L 34.507812 26.484375 C 35.673202 18.087003 41.432062 11.783203 50.183594 11.783203 C 59.924594 11.783203 66.087891 18.740547 66.087891 29.685547 L 66.097656 45.132812 L 52.826172 45.132812 L 90.181641 83.160156 L 90.181641 54.564453 C 90.182641 46.109453 81.726953 45.132813 81.501953 45.132812 L 79.576172 45.132812 L 79.576172 29.478516 C 79.478172 10.284516 66.387565 -0.1640625 50.476562 -0.1640625 z M 20.800781 27.681641 C 20.786221 28.272513 20.784637 28.871176 20.800781 29.478516 L 20.785156 45.111328 C 20.785156 45.111328 21.024219 45.132812 19.824219 45.132812 C 18.554219 45.132812 10.185547 46.605359 10.185547 54.068359 L 10.185547 89.892578 C 10.185547 97.851578 19.604219 99.835935 19.824219 99.835938 L 81.027344 99.835938 C 81.186913 99.835938 85.917626 99.295803 88.511719 95.59375 L 38.199219 45.132812 L 34.261719 45.132812 L 34.265625 41.1875 L 20.800781 27.681641 z "
+         id="path12" />
+    </g>
+  </g>
+  <path
+     style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 9.9914329,20.473123 4.7937031,-4.407849 79.06095,80.479204 -4.010925,4.009432 z"
+     id="path4284"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="ccccc" />
+</svg>

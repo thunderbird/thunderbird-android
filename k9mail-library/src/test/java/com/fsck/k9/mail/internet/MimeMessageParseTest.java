@@ -16,17 +16,15 @@ import org.junit.Test;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.Multipart;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
+@RunWith(K9LibRobolectricTestRunner.class)
 public class MimeMessageParseTest {
     @Before
     public void setup() {
@@ -50,6 +48,16 @@ public class MimeMessageParseTest {
         assertEquals("Testmail", msg.getSubject());
         assertEquals("text/plain", msg.getContentType());
         assertEquals("this is some test text.", streamToString(MimeUtility.decodeBody(msg.getBody())));
+    }
+
+    @Test
+    public void headerFieldNameWithSpace() throws Exception {
+        MimeMessage msg = parseWithoutRecurse(toStream("" +
+                "From : <adam@example.org>\r\n" +
+                "\r\n" +
+                "Body"));
+
+        assertEquals("<adam@example.org>", msg.getHeader("From")[0]);
     }
 
     @Test
@@ -126,6 +134,23 @@ public class MimeMessageParseTest {
                         "  </body>\n" +
                         "</html>\n" +
                         "");
+    }
+
+    @Test
+    public void decodeBody_withUnknownEncoding_shouldReturnUnmodifiedBodyContents() throws Exception {
+        MimeMessage msg = parseWithoutRecurse(toStream(
+                "From: <adam@example.org>\r\n" +
+                        "To: <eva@example.org>\r\n" +
+                        "Subject: Testmail\r\n" +
+                        "MIME-Version: 1.0\r\n" +
+                        "Content-type: text/plain\r\n" +
+                        "Content-Transfer-Encoding: utf-8\r\n" +
+                        "\r\n" +
+                        "dGhpcyBpcyBzb21lIG1vcmUgdGVzdCB0ZXh0Lg==\r\n"));
+
+        InputStream inputStream = MimeUtility.decodeBody(msg.getBody());
+
+        assertEquals("dGhpcyBpcyBzb21lIG1vcmUgdGVzdCB0ZXh0Lg==\r\n", streamToString(inputStream));
     }
 
     @Test
@@ -210,11 +235,11 @@ public class MimeMessageParseTest {
     }
 
     private static MimeMessage parseWithoutRecurse(InputStream data) throws Exception {
-        return new MimeMessage(data, false);
+        return MimeMessage.parseMimeMessage(data, false);
     }
 
     private static MimeMessage parseWithRecurse(InputStream data) throws Exception {
-        return new MimeMessage(data, true);
+        return MimeMessage.parseMimeMessage(data, true);
     }
 
     private static void checkAddresses(Address[] actual, String... expected) {

@@ -8,30 +8,16 @@ import android.content.Context;
  * Access the system clipboard using the new {@link ClipboardManager} introduced with API 11
  */
 public class ClipboardManager {
-
-    private static ClipboardManager sInstance = null;
-
     public static ClipboardManager getInstance(Context context) {
         Context appContext = context.getApplicationContext();
-
-        if (sInstance == null) {
-            sInstance = new ClipboardManager(appContext);
-        }
-
-        return sInstance;
+        return new ClipboardManager(appContext);
     }
 
 
-    protected Context mContext;
+    private Context context;
 
-    /**
-     * Constructor
-     *
-     * @param context
-     *         A {@link Context} instance.
-     */
-    protected ClipboardManager(Context context) {
-        mContext = context;
+    private ClipboardManager(Context context) {
+        this.context = context;
     }
 
     /**
@@ -44,7 +30,7 @@ public class ClipboardManager {
      */
     public void setText(String label, String text) {
         android.content.ClipboardManager clipboardManager =
-                (android.content.ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(label, text);
         clipboardManager.setPrimaryClip(clip);
     }

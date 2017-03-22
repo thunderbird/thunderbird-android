@@ -1,5 +1,7 @@
 package com.fsck.k9.view;
 
+
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,13 +17,13 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,24 +32,31 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
+import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.ui.messageview.OnCryptoClickListener;
+import com.fsck.k9.ui.ContactBadge;
 
-public class MessageHeader extends LinearLayout implements OnClickListener {
+
+public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private Context mContext;
     private TextView mFromView;
+    private TextView mSenderView;
     private TextView mDateView;
     private TextView mToView;
     private TextView mToLabel;
     private TextView mCcView;
     private TextView mCcLabel;
     private TextView mSubjectView;
+    private MessageCryptoStatusView mCryptoStatusIcon;
 
     private View mChip;
     private CheckBox mFlagged;
@@ -63,9 +72,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
 
     private MessageHelper mMessageHelper;
     private ContactPictureLoader mContactsPictureLoader;
-    private QuickContactBadge mContactBadge;
+    private ContactBadge mContactBadge;
 
     private OnLayoutChangedListener mOnLayoutChangedListener;
+    private OnCryptoClickListener onCryptoClickListener;
 
     /**
      * Pair class is only available since API Level 5, so we need
@@ -89,15 +99,18 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
 
     @Override
     protected void onFinishInflate() {
+        super.onFinishInflate();
+
         mAnsweredIcon = findViewById(R.id.answered);
         mForwardedIcon = findViewById(R.id.forwarded);
         mFromView = (TextView) findViewById(R.id.from);
+        mSenderView = (TextView) findViewById(R.id.sender);
         mToView = (TextView) findViewById(R.id.to);
         mToLabel = (TextView) findViewById(R.id.to_label);
         mCcView = (TextView) findViewById(R.id.cc);
         mCcLabel = (TextView) findViewById(R.id.cc_label);
 
-        mContactBadge = (QuickContactBadge) findViewById(R.id.contact_badge);
+        mContactBadge = (ContactBadge) findViewById(R.id.contact_badge);
 
         mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
@@ -120,9 +133,15 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
 
+        mFromView.setOnLongClickListener(this);
+        mToView.setOnLongClickListener(this);
+        mCcView.setOnLongClickListener(this);
+
+        mCryptoStatusIcon = (MessageCryptoStatusView) findViewById(R.id.crypto_status_icon);
+        mCryptoStatusIcon.setOnClickListener(this);
+
         mMessageHelper = MessageHelper.getInstance(mContext);
 
-        mSubjectView.setVisibility(VISIBLE);
         hideAdditionalHeaders();
     }
 
@@ -137,8 +156,30 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
             case R.id.cc: {
                 expand((TextView)view, ((TextView)view).getEllipsize() != null);
                 layoutChanged();
+                break;
+            }
+            case R.id.crypto_status_icon: {
+                onCryptoClickListener.onCryptoClick();
+                break;
             }
         }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        switch (view.getId()) {
+            case R.id.from:
+                onAddAddressesToClipboard(mMessage.getFrom());
+                break;
+            case R.id.to:
+                onAddRecipientsToClipboard(Message.RecipientType.TO);
+                break;
+            case R.id.cc:
+                onAddRecipientsToClipboard(Message.RecipientType.CC);
+                break;
+        }
+
+        return true;
     }
 
     private void onAddSenderToContacts() {
@@ -147,15 +188,31 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
                 final Address senderEmail = mMessage.getFrom()[0];
                 mContacts.createContact(senderEmail);
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Couldn't create contact", e);
+                Timber.e(e, "Couldn't create contact");
             }
         }
+    }
+
+    public String createMessage(int addressesCount) {
+        return mContext.getResources().getQuantityString(R.plurals.copy_address_to_clipboard, addressesCount);
+    }
+
+    private void onAddAddressesToClipboard(Address[] addresses) {
+        String addressList = Address.toString(addresses);
+
+        ClipboardManager clipboardManager = ClipboardManager.getInstance(mContext);
+        clipboardManager.setText("addresses", addressList);
+
+        Toast.makeText(mContext, createMessage(addresses.length), Toast.LENGTH_LONG).show();
+    }
+
+    private void onAddRecipientsToClipboard(Message.RecipientType recipientType) {
+        onAddAddressesToClipboard(mMessage.getRecipients(recipientType));
     }
 
     public void setOnFlagListener(OnClickListener listener) {
         mFlagged.setOnClickListener(listener);
     }
-
 
     public boolean additionalHeadersVisible() {
         return (mAdditionalHeadersView != null &&
@@ -181,23 +238,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         Integer messageToShow = null;
         try {
             // Retrieve additional headers
-            boolean allHeadersDownloaded = mMessage.isSet(Flag.X_GOT_ALL_HEADERS);
             List<HeaderEntry> additionalHeaders = getAdditionalHeaders(mMessage);
             if (!additionalHeaders.isEmpty()) {
                 // Show the additional headers that we have got.
                 populateAdditionalHeadersView(additionalHeaders);
                 mAdditionalHeadersView.setVisibility(View.VISIBLE);
-            }
-            if (!allHeadersDownloaded) {
-                /*
-                * Tell the user about the "save all headers" setting
-                *
-                * NOTE: This is only a temporary solution... in fact,
-                * the system should download headers on-demand when they
-                * have not been saved in their entirety initially.
-                */
-                messageToShow = R.string.message_additional_headers_not_downloaded;
-            } else if (additionalHeaders.isEmpty()) {
+            } else {
                 // All headers have been downloaded, but there are no additional headers.
                 messageToShow = R.string.message_no_additional_headers_available;
             }
@@ -213,7 +259,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
 
     }
 
-    public void populate(final Message message, final Account account) throws MessagingException {
+    public void populate(final Message message, final Account account) {
         final Contacts contacts = K9.showContactName() ? mContacts : null;
         final CharSequence from = MessageHelper.toFriendly(message.getFrom(), contacts);
         final CharSequence to = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
@@ -235,15 +281,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
             counterpartyAddress = fromAddrs[0];
         }
 
-        /*
-         * Only reset visibility of the subject if populate() was called because a new
-         * message is shown. If it is the same, do not force the subject visible, because
-         * this breaks the MessageTitleView in the action bar, which may hide our subject
-         * if it fits in the action bar but is only called when a new message is shown
-         * or the device is rotated.
-         */
-        if (mMessage == null || mMessage.getId() != message.getId()) {
-            mSubjectView.setVisibility(VISIBLE);
+        /* We hide the subject by default for each new message, and MessageTitleView might show
+         * it later by calling showSubjectLine(). */
+        boolean newMessageShown = mMessage == null || mMessage.getId() != message.getId();
+        if (newMessageShown) {
+            mSubjectView.setVisibility(GONE);
         }
 
         mMessage = message;
@@ -254,6 +296,15 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
             mContactsPictureLoader = ContactPicture.getContactPictureLoader(mContext);
         }  else {
             mContactBadge.setVisibility(View.GONE);
+        }
+
+        if (shouldShowSender(message)) {
+            mSenderView.setVisibility(VISIBLE);
+            String sender = getResources().getString(R.string.message_view_sender_label,
+                    MessageHelper.toFriendly(message.getSender(), contacts));
+            mSenderView.setText(sender);
+        } else {
+            mSenderView.setVisibility(View.GONE);
         }
 
         final String subject = message.getSubject();
@@ -274,7 +325,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
 
         if (K9.showContactPicture()) {
             if (counterpartyAddress != null) {
-                mContactBadge.assignContactFromEmail(counterpartyAddress.getAddress(), true);
+                Utility.setContactForBadge(mContactBadge, counterpartyAddress);
                 mContactsPictureLoader.loadContactPicture(counterpartyAddress, mContactBadge);
             } else {
                 mContactBadge.setImageResource(R.drawable.ic_contact_picture);
@@ -301,6 +352,38 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         } else {
             hideAdditionalHeaders();
         }
+    }
+
+    public static boolean shouldShowSender(Message message) {
+        Address[] from = message.getFrom();
+        Address[] sender = message.getSender();
+
+        if (sender == null || sender.length == 0) {
+            return false;
+        }
+        return !Arrays.equals(from, sender);
+    }
+
+    public void hideCryptoStatus() {
+        mCryptoStatusIcon.setVisibility(View.GONE);
+    }
+
+    public void setCryptoStatusLoading() {
+        mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setEnabled(false);
+        mCryptoStatusIcon.setCryptoDisplayStatus(MessageCryptoDisplayStatus.LOADING);
+    }
+
+    public void setCryptoStatusDisabled() {
+        mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setEnabled(false);
+        mCryptoStatusIcon.setCryptoDisplayStatus(MessageCryptoDisplayStatus.DISABLED);
+    }
+
+    public void setCryptoStatus(MessageCryptoDisplayStatus displayStatus) {
+        mCryptoStatusIcon.setVisibility(View.VISIBLE);
+        mCryptoStatusIcon.setEnabled(true);
+        mCryptoStatusIcon.setCryptoDisplayStatus(displayStatus);
     }
 
     public void onShowAdditionalHeaders() {
@@ -452,7 +535,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener {
         }
     }
 
-    public void hideSubjectLine() {
-        mSubjectView.setVisibility(GONE);
+    public void showSubjectLine() {
+        mSubjectView.setVisibility(VISIBLE);
+    }
+
+    public void setOnCryptoClickListener(OnCryptoClickListener onCryptoClickListener) {
+        this.onCryptoClickListener = onCryptoClickListener;
     }
 }

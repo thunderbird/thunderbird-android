@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="openpgp_list_preference_none">Ezer ez</string>
+  <string name="openpgp_install_openkeychain_via">Ezarri OpenKeychain %s bidez</string>
+  <string name="openpgp_no_key_selected">Ez da giltzarik hautatu</string>
+  <string name="openpgp_key_selected">Giltza hautatu da</string>
+</resources>

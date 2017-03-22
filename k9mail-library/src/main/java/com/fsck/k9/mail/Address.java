@@ -1,6 +1,8 @@
 
 package com.fsck.k9.mail;
 
+import android.support.annotation.VisibleForTesting;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -18,7 +20,7 @@ import android.util.Log;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
-public class Address {
+public class Address implements Serializable {
     private static final Pattern ATOM = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");
 
     /**
@@ -76,13 +78,17 @@ public class Address {
     }
 
     public String getHostname() {
+        if (mAddress == null) {
+            return null;
+        }
+
         int hostIdx = mAddress.lastIndexOf("@");
 
         if (hostIdx == -1) {
             return null;
         }
 
-        return mAddress.substring(hostIdx+1);
+        return mAddress.substring(hostIdx + 1);
     }
 
     public void setAddress(String address) {
@@ -93,7 +99,8 @@ public class Address {
         return mPersonal;
     }
 
-    public void setPersonal(String personal) {
+    public void setPersonal(String newPersonal) {
+        String personal = newPersonal;
         if ("".equals(personal)) {
             personal = null;
         }
@@ -142,7 +149,7 @@ public class Address {
             for (int i = 0, count = parsedList.size(); i < count; i++) {
                 org.apache.james.mime4j.dom.address.Address address = parsedList.get(i);
                 if (address instanceof Mailbox) {
-                    Mailbox mailbox = (Mailbox)address;
+                    Mailbox mailbox = (Mailbox) address;
                     addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName(), false));
                 } else {
                     Log.e(LOG_TAG, "Unknown address type from Mime4J: "
@@ -159,19 +166,29 @@ public class Address {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Address) {
-            Address other = (Address) o;
-            if (mPersonal != null && other.mPersonal != null && !mPersonal.equals(other.mPersonal)) {
-                return false;
-            }
-            return mAddress.equals(other.mAddress);
+        if (this == o) {
+            return true;
         }
-        return super.equals(o);
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Address address = (Address) o;
+
+        if (mAddress != null ? !mAddress.equals(address.mAddress) : address.mAddress != null) {
+            return false;
+        }
+
+        return mPersonal != null ? mPersonal.equals(address.mPersonal) : address.mPersonal == null;
     }
 
     @Override
     public int hashCode() {
-        int hash = mAddress.hashCode();
+        int hash = 0;
+        if (mAddress != null) {
+            hash += mAddress.hashCode();
+        }
         if (mPersonal != null) {
             hash += 3 * mPersonal.hashCode();
         }
@@ -297,20 +314,22 @@ public class Address {
     }
 
     /**
-     * Ensures that the given string starts and ends with the double quote character. The string is not modified in any way except to add the
-     * double quote character to start and end if it's not already there.
+     * Ensures that the given string starts and ends with the double quote character.
+     * The string is not modified in any way except to add the double quote character to start
+     * and end if it's not already there.
      * sample -> "sample"
      * "sample" -> "sample"
-     * ""sample"" -> "sample"
+     * ""sample"" -> ""sample""
      * "sample"" -> "sample"
      * sa"mp"le -> "sa"mp"le"
      * "sa"mp"le" -> "sa"mp"le"
      * (empty string) -> ""
-     * " -> ""
+     * " -> """
      * @param s
      * @return
      */
-    private static String quoteString(String s) {
+    @VisibleForTesting
+    static String quoteString(String s) {
         if (s == null) {
             return null;
         }

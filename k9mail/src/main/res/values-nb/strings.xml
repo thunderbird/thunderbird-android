@@ -4,67 +4,66 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 E-post</string>
-  <string name="beta_app_name">K-9 E-post BETA</string>
   <string name="shortcuts_title">K-9 Konti</string>
   <string name="unread_widget_label">K-9 Ulest</string>
-  <string name="remote_control_label">K-9 Fjernkontroll</string>
-  <string name="remote_control_desc">Tillat denne at denne applikasjonen kontrollerer K-9 Epost aktiviteter og innstillinger.</string>
+  <string name="remote_control_label">K-9 E-post fjernkontroll</string>
+  <string name="remote_control_desc">Tillater denne applikasjonen å kontrollere aktiviteter og innstillinger for K-9 Epost.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Noen deler Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Lisensiert under the Apache License, versjon 2.0.</string>
+  <string name="app_copyright_fmt">Opphavsrett 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Noen deler er opphavsrett 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="app_license">Lisensiert under Apache-lisensen, versjon 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Velkommen til K-9 E-post</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 e-post er en kraftig e-postklient til Android.
+K-9 E-post er en kraftig og fri e-postklient for Android.
 </p><p>
-Dets forbedrede egenskaper inkluderer:
+Dets forbedrede funksjoner inkluderer:
 </p>
 <ul>
-<li>Push mail ved hjelp av IMAP IDLE</li>
-<li>Bedre ytelse</li>
-<li>Omarkivering</li>
-<li>E-post signaturer</li>
-<li>Blindkopi til deg selv</li>
-<li>Mappeabonnement</li>
-<li>Synkronisering av alle mapper</li>
-<li>Konfigurasjon av returadresse</li>
-<li>Tastatursnarveier</li>
-<li>Bedre IMAP-støtte</li>
-<li>Lagre vedlegg til SD</li>
-<li>Søppeltømming</li>
-<li>Meldingssortering</li>
-<li>…og mye mer</li>
+  <li>Push mail ved bruk av IMAP IDLE</li>
+  <li>Bedre ytelse</li>
+  <li>Rearkivering av meldinger</li>
+  <li>E-postsignaturer</li>
+  <li>Blindkopi ti deg selv</li>
+  <li>Mappeabonnement</li>
+  <li>Synkronisering av alle mapper</li>
+  <li>Returadressekonfigurasjon</li>
+  <li>Tastatursnarveier</li>
+  <li>Bedre IMAP-støtte</li>
+  <li>Lagre vedlegg til SD-kort</li>
+  <li>Tøm søppel</li>
+  <li>Meldingssortering</li>
+  <li>…med mer</li>
 </ul>
 <p>
-Vennligst merk deg at K-9 støtter ikke de fleste Hotmail-kontoer og, som mange andre e-postklienter, har
-det noe problemer med å kommunisere med Microsoft Exchange.
+Vennligst noter at K-9 ikke støtter de fleste gratis Hotmail-kontoer, og har, som mange andre
+e-postklienter, noen problemer med å snakke med Microsoft Exchange.
 </p><p>
-Vennligst send feilmeldinger, forbedringer og still spørsmål på
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
+Vennligst send feilmeldinger, bidra med nye funksjoner og still spørsmål her:
+<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
 </p>
-]]></string>
+    ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nSendt fra min Android-enhet med K-9 E-post. Vennligst unnskyld min kortfattethet.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet fra K-9 E-post</string>
-  <string name="account_recreate_dlg_instructions_fmt">Alle lokale data for \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet. Kontoinnstillinger vil bli beholdt.</string>
-  <string name="account_clear_dlg_instructions_fmt">Lokale kopier av meldinger i \"<xliff:g id="account">%s</xliff:g>\" vil bli fjernet. Kontoinnstillinger vil bli beholdt.</string>
+  <string name="account_recreate_dlg_instructions_fmt">Alle lokale data for «<xliff:g id="account">%s</xliff:g>» vil bli fjernet. Kontoinnstillinger vil beholdes.</string>
+  <string name="account_clear_dlg_instructions_fmt">Lokale kopier av meldinger i «<xliff:g id="account">%s</xliff:g>» vil bli fjernet. Kontoinnstillinger vil beholdes.</string>
   <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Du må ha installert en filbehandler for å importere.</string>
+  <string name="import_dialog_error_message">Vennligst installer en filbehandler for å fortsette med denne importen.</string>
   <string name="open_market">Åpne Play Butikk</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Utviklere: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Revisjonsinformasjon: <xliff:g id="app_revision_url">%s</xliff:g></string>
-  <string name="app_libraries">Vi bruker disse tredjepartsbiblioteker: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+  <string name="app_libraries">Vi bruker følgende tredjepartsbiblioteker: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emoji-ikoner: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">les E-postvedlegg</string>
-  <string name="read_attachment_desc">Tillat denne applikasjon å lese dine e-postvedlegg.</string>
+  <string name="read_attachment_label">les e-postvedlegg</string>
+  <string name="read_attachment_desc">Tillater denne applikasjon å lese dine e-postvedlegg.</string>
   <string name="read_messages_label">les e-poster</string>
   <string name="read_messages_desc">Tillater denne applikasjonen å lese dine e-poster.</string>
   <string name="delete_messages_label">Slett e-poster</string>
-  <string name="delete_messages_desc">Tillat denne applikasjon å slette dine e-poster.</string>
+  <string name="delete_messages_desc">Tillater denne applikasjon å slette dine e-poster.</string>
   <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
   <string name="accounts_title">Kontoer</string>
   <string name="folders_title">Mapper</string>
@@ -78,8 +77,8 @@ Vennligst send feilmeldinger, forbedringer og still spørsmål på
   <string name="status_loading_account_folder">Sjekker <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Henter overskrifter <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Sender <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="status_processing_account">Prosesserer <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Neste sjekk <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Synkronisering deaktivert</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valgt</string>
@@ -90,6 +89,7 @@ Vennligst send feilmeldinger, forbedringer og still spørsmål på
   <string name="cancel_action">Avbryt</string>
   <string name="send_action">Send</string>
   <string name="send_again_action">Send igjen</string>
+  <string name="empty_subject">Emnefeltet er tomt, klikk igjen for å sende likevel</string>
   <string name="select_action">Velg</string>
   <string name="deselect_action">Fjern valg</string>
   <string name="reply_action">Svar</string>
@@ -103,7 +103,7 @@ Vennligst send feilmeldinger, forbedringer og still spørsmål på
   <string name="refile_action">Omorganiser …</string>
   <string name="done_action">Ferdig</string>
   <string name="discard_action">Forkast</string>
-  <string name="save_draft_action">Lagre som kladd</string>
+  <string name="save_draft_action">Lagre som utkast</string>
   <string name="check_mail_action">Sjekk e-post</string>
   <string name="send_messages_action">Send meldinger</string>
   <string name="refresh_folders_action">Oppdater mappeliste</string>
@@ -127,13 +127,16 @@ Vennligst send feilmeldinger, forbedringer og still spørsmål på
   <string name="select_text_action">Velg tekst</string>
   <string name="show_headers_action">Vis meldingshode</string>
   <string name="hide_headers_action">Skul meldingshode</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Kopierte adressen til utklippstavlen</item>
+    <item quantity="other">Kopierte adressene til utklippstavlen</item>
+  </plurals>
   <string name="message_view_theme_action_dark">Bytt til mørkt tema</string>
   <string name="message_view_theme_action_light">Bytt til lyst tema</string>
   <string name="mark_as_unread_action">Merk uleste</string>
-  <string name="add_cc_bcc_action">Legg til kopi/blindkopi</string>
   <string name="read_receipt">Lesekvittering</string>
-  <string name="read_receipt_enabled">Kommer til å be om lesekvittering</string>
-  <string name="read_receipt_disabled">Kommer ikke til å be om lesekvittering</string>
+  <string name="read_receipt_enabled">Vil be om lesekvittering</string>
+  <string name="read_receipt_disabled">Vil ikke be om lesekvittering</string>
   <string name="add_attachment_action">Legg til vedlegg</string>
   <string name="empty_trash_action">Tøm søppel</string>
   <string name="expunge_action">Tilintetgjør</string>
@@ -142,12 +145,13 @@ Vennligst send feilmeldinger, forbedringer og still spørsmål på
   <string name="prefs_title">Innstillinger</string>
   <string name="accounts_context_menu_title">Kontoinnstillinger</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
-  <string name="general_no_subject">(intet emne)</string>
+  <string name="general_no_subject">(Ingen emne)</string>
   <string name="general_no_sender">Ingen avsender</string>
   <string name="status_loading">Sjekker</string>
   <string name="status_loading_more">Laster meldinger\u2026</string>
   <string name="status_network_error">Tilkoblingsfeil</string>
   <string name="status_invalid_id_error">Melding ikke funnet</string>
+  <string name="status_loading_error">Lasting av melding feilet</string>
   <string name="status_loading_more_failed">Prøv igjen å laste flere meldinger</string>
   <string name="load_more_messages_fmt">Last opp
 til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
@@ -160,13 +164,24 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="clearing_account">Renser konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Gjenskaper konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ny e-post</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> ny melding</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nye meldinger</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Ulest(e) (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> flere på <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> flere på <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Svar</string>
   <string name="notification_action_mark_as_read">Merk leste</string>
+  <string name="notification_action_mark_all_as_read">Merk alle som lest</string>
   <string name="notification_action_delete">Slett</string>
+  <string name="notification_action_delete_all">Slett alle</string>
+  <string name="notification_action_archive">Arkiver</string>
+  <string name="notification_action_archive_all">Arkiver alle</string>
+  <string name="notification_action_spam">Søppelpost</string>
   <string name="notification_certificate_error_title">Sertifikatfeil for <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Sjekk dine tjenerinnstillinger</string>
+  <string name="notification_authentication_error_title">Autentisering feilet</string>
+  <string name="notification_authentication_error_text">Autentisering feilet for <xliff:g id="account">%s</xliff:g>. Oppdater serverinnstillingene dine.</string>
   <string name="notification_bg_sync_ticker">Sjekker e-post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Sjekker e-post</string>
   <string name="notification_bg_send_ticker">Sender e-post: <xliff:g id="account">%s</xliff:g></string>
@@ -174,12 +189,12 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="special_mailbox_name_inbox">Innboks</string>
   <string name="special_mailbox_name_outbox">Utboks</string>
-  <string name="special_mailbox_name_drafts">Kladd</string>
+  <string name="special_mailbox_name_drafts">Utkast</string>
   <string name="special_mailbox_name_trash">Søppel</string>
   <string name="special_mailbox_name_sent">Sendt</string>
   <string name="special_mailbox_name_archive">Arkiv</string>
   <string name="special_mailbox_name_spam">Søppelpost</string>
-  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Kladder)</string>
+  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Utkast)</string>
   <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Søppel)</string>
   <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Sendt)</string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arkiv)</string>
@@ -192,9 +207,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="debug_enable_sensitive_logging_summary">Passord kan vises i logger.</string>
   <string name="message_list_load_more_messages_action">Last flere meldinger</string>
   <string name="message_to_fmt">Til:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Til</string>
-  <string name="message_compose_cc_hint">Kopi</string>
-  <string name="message_compose_bcc_hint">Blindkopi</string>
   <string name="message_compose_subject_hint">Emne</string>
   <string name="message_compose_content_hint">Meldingstekst</string>
   <string name="message_compose_signature_hint">Signatur</string>
@@ -207,12 +219,10 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:</string>
   <string name="message_compose_reply_header_fmt_with_date">Den <xliff:g id="sent_date">%1$s</xliff:g>, skrev <xliff:g id="sender">%2$s</xliff:g>:</string>
   <string name="message_compose_error_no_recipients">Du må legge til minst en mottaker</string>
+  <string name="compose_error_incomplete_recipient">Mottakerfelt inneholder ukomplett inndata!</string>
   <string name="error_contact_address_not_found">Ingen e-postadresse ble funnet for denne kontakten.</string>
   <string name="message_compose_attachments_skipped_toast">Noen vedlegg kunne ikke bli videresendt fordi de ikke har blitt lastet ned.</string>
   <string name="message_compose_show_quoted_text_action">Siter melding</string>
-  <string name="message_compose_description_add_to">Legg til mottaker (til)</string>
-  <string name="message_compose_description_add_cc">Legg til mottaker (kopi)</string>
-  <string name="message_compose_description_add_bcc">Legg til mottaker (blindkopi)</string>
   <string name="message_compose_description_delete_quoted_text">Fjern sitert tekst</string>
   <string name="message_compose_description_edit_quoted_text">Rediger sitert tekst</string>
   <string name="message_view_from_format">Fra: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -220,67 +230,70 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="message_view_cc_label">Kopi:</string>
   <string name="message_view_attachment_view_action">Åpne</string>
   <string name="message_view_attachment_download_action">Lagre</string>
-  <string name="message_view_status_attachment_saved">Vedlegg lagret til SD-kort som <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Kunne ikke lagre vedlegget til SD-kortet.</string>
   <string name="message_view_show_pictures_action">Vis bilder</string>
-  <string name="message_view_show_message_action">Vis melding</string>
-  <string name="message_view_show_attachments_action">Vis vedlegg</string>
   <string name="message_view_show_more_attachments_action">Mer …</string>
-  <string name="message_view_fetching_attachment_toast">Henter vedlegg.</string>
   <string name="message_view_no_viewer">Finner ikke visningsprogram for <xliff:g id="mimetype">%s</xliff:g>.</string>
-  <string name="message_view_download_remainder">Nedlaster komplett melding</string>
-  <string name="message_view_downloading">Nedlaster…</string>
+  <string name="message_view_download_remainder">Last ned komplett melding</string>
+  <string name="message_view_toast_unable_to_display_message">Kunne ikke vise meldingen</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Ikke alle meldingshoder har blitt nedlastet eller lagret. Velg \"Lagre alle meldingshoder lokalt\" i kontoens innstilling for innkommende tjener for å tillate dette i framtiden.</string>
   <string name="message_no_additional_headers_available">Alle meldingshoder har blitt nedlastet, men det er ingen flere meldingshoder å vise.</string>
-  <string name="message_additional_headers_retrieval_failed">Hentingen av flere meldigshoder fra databasen eller e-posttjener feilet.</string>
+  <string name="message_additional_headers_retrieval_failed">Hentingen av flere meldigshoder fra databasen eller e-posttjeneren feilet.</string>
   <string name="from_same_sender">Mer fra denne avsender</string>
   <string name="message_discarded_toast">Melding forkastet</string>
-  <string name="message_saved_toast">Melding lageret som kladd</string>
+  <string name="message_saved_toast">Melding lagret som utkast</string>
   <string name="global_settings_flag_label">Vis stjerner</string>
   <string name="global_settings_flag_summary">Stjerner indikerer flaggede meldinger</string>
   <string name="global_settings_checkbox_label">Flervalgavkryssingsbokser</string>
   <string name="global_settings_checkbox_summary">Alltid vis flervalgavkryssingsbokser</string>
   <string name="global_settings_preview_lines_label">Forhåndsvis linjer</string>
-  <string name="global_settings_show_correspondent_names_label">Vis korrespondentenes navn</string>
+  <string name="global_settings_show_correspondent_names_label">Vis korrespondentens navn</string>
   <string name="global_settings_show_correspondent_names_summary">Vis korrespondentenes navn heller enn e-postadresser</string>
   <string name="global_settings_sender_above_subject_label">Korrespondent over emne</string>
-  <string name="global_settings_sender_above_subject_summary">Vis korrespondentenes navn over emnelinjen, heller enn under</string>
+  <string name="global_settings_sender_above_subject_summary">Vis korrespondentenes navn over emnelinjen, istedet for under</string>
   <string name="global_settings_show_contact_name_label">Vis kontaktnavn</string>
   <string name="global_settings_show_contact_name_summary">Bruk mottakers navn fra kontaktliste når mulig</string>
   <string name="global_settings_registered_name_color_label">Bruk farger på kontakter</string>
   <string name="global_settings_registered_name_color_default">Ikke bruk farger på navn i kontaktlisten</string>
   <string name="global_settings_registered_name_color_changed">Bruk farger på navn i kontaktlisten</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Linjebryt lange mappe-navn</string>
+  <string name="global_settings_folderlist_wrap_folder_names_label">Linjebryt lange mappenavn</string>
   <string name="global_settings_folderlist_wrap_folder_names_summary">Bruk flere linjer for å vise lange mappenavn</string>
   <string name="global_settings_messageview_fixedwidth_label">Ikke-proporsjonalskrift</string>
-  <string name="global_settings_messageview_fixedwidth_summary">Bruk ikke-proporsjonalskrift ved visning av vanlig-tekstmeldinger.</string>
-  <string name="global_settings_messageview_autofit_width_label">Autotilpass bredden av meldinger</string>
-  <string name="global_settings_messageview_autofit_width_summary">Kryp meldingsbredden til skjermen</string>
+  <string name="global_settings_messageview_fixedwidth_summary">Bruk ikke-proporsjonalskrift ved visning av ren tekst meldinger.</string>
+  <string name="global_settings_messageview_autofit_width_label">Autotilpass meldinger</string>
+  <string name="global_settings_messageview_autofit_width_summary">Krympe meldinger for å passe til skjermen</string>
   <string name="global_settings_messageview_return_to_list_label">Gå tilbake til liste etter sletting</string>
   <string name="global_settings_messageview_return_to_list_summary">Gå tilbake til meldingsliste etter sletting av melding</string>
   <string name="global_settings_messageview_show_next_label">Vis neste melding etter sletting</string>
-  <string name="global_settings_messageview_show_next_summary">
-Vis neste melding som standard etter meldingssletting</string>
-  <string name="global_settings_confirm_actions_title">Bekreft handliger</string>
-  <string name="global_settings_confirm_actions_summary">Vis en dialogboks når du gjennomfører valgte handlinger</string>
+  <string name="global_settings_messageview_show_next_summary">Vis neste melding som standard etter sletting av melding</string>
+  <string name="global_settings_confirm_actions_title">Bekreft handlinger</string>
+  <string name="global_settings_confirm_actions_summary">Vis dialog når du gjennomfører valgte handlinger</string>
   <string name="global_settings_confirm_action_delete">Slett</string>
   <string name="global_settings_confirm_action_delete_starred">Slett stjernemerket (i meldingsvisning)</string>
   <string name="global_settings_confirm_action_spam">Søppelpost</string>
+  <string name="global_settings_confirm_menu_discard">Forkast melding</string>
   <string name="global_settings_confirm_action_delete_notif">Slett (fra varsel)</string>
-  <string name="global_settings_privacy_hide_useragent">Fjern K-9 bruke-ragent fra meldingshode</string>
-  <string name="global_settings_privacy_hide_timezone">Bruk UTC som tidssone i meldingshode</string>
+  <string name="global_settings_privacy_hide_useragent">Fjern K-9 brukeragent fra meldingshode</string>
+  <string name="global_settings_privacy_hide_timezone">Bruk UTC som tidssone i meldingshoder</string>
   <string name="global_settings_notification_hide_subject_title">Skjul emner i varslinger</string>
   <string name="global_settings_notification_hide_subject_never">Aldri</string>
   <string name="global_settings_notification_hide_subject_when_locked">Når enhet er låst</string>
   <string name="global_settings_notification_hide_subject_always">Alltid</string>
-  <string name="global_settings_notification_quick_delete_title">Vis \'Slettknappen\'</string>
+  <string name="global_settings_notification_quick_delete_title">Vis «slett»-knappen</string>
   <string name="global_settings_notification_quick_delete_never">Aldri</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">For enkeltmeldingsvarsel</string>
   <string name="global_settings_notification_quick_delete_always">Alltid</string>
   <string name="global_settings_notification_quick_delete_description">Vis en knapp i varsel som tillater hurtig sletting av melding</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Varslinger på låseskjerm</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Ingen varslinger på låseskjerm</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Programnavn</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Antall uleste meldinger</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Meldingsantall og avsendere</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Samme som når skjermen er ulåst</string>
   <string name="quiet_time">Stilletid</string>
   <string name="quiet_time_description">Deaktiver ringing, vibrasjon og blinking om natten</string>
+  <string name="quiet_time_notification">Skru av varslinger</string>
+  <string name="quiet_time_notification_description">Skru av alle varsler i stille-modus</string>
   <string name="quiet_time_starts">Stilletiden starter</string>
   <string name="quiet_time_ends">Stilletiden opphører</string>
   <string name="account_setup_basics_title">Sett opp en ny konto</string>
@@ -292,12 +305,12 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="account_setup_check_settings_retr_info_msg">Henter kontoinformasjon\u2026</string>
   <string name="account_setup_check_settings_check_incoming_msg">Kontrollerer innkommende tjenerinnstillinger\u2026</string>
   <string name="account_setup_check_settings_check_outgoing_msg">Kontrollerer utgående tjenerinnstillinger\u2026</string>
-  <string name="account_setup_check_settings_authenticate">Autentisering\u2026</string>
+  <string name="account_setup_check_settings_authenticate">Autentiserer\u2026</string>
   <string name="account_setup_check_settings_fetch">Henter kontoinnstillinger\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Avbryter\u2026</string>
   <string name="account_setup_names_title">Du er nesten ferdig!</string>
-  <string name="account_setup_names_account_name_label">Gi denne konto et navn (valgfritt):</string>
-  <string name="account_setup_names_user_name_label">Skriv ditt navn (vises i utgående beskjeder):</string>
+  <string name="account_setup_names_account_name_label">Gi denne kontoen et navn (valgfritt):</string>
+  <string name="account_setup_names_user_name_label">Skriv ditt navn (vises i utgående meldinger):</string>
   <string name="account_setup_account_type_title">Kontotype</string>
   <string name="account_setup_account_type_instructions">Hvilken type konto er dette?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
@@ -331,28 +344,28 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="account_setup_incoming_other_label">Annet</string>
   <string name="local_storage_provider_external_label">Ekstern lagring (SD-kort)</string>
   <string name="local_storage_provider_internal_label">Vanlig intern lagring</string>
-  <string name="local_storage_provider_samsunggalaxy_label">%1$s ytterlig intern lagring</string>
+  <string name="local_storage_provider_samsunggalaxy_label">%1$s ytterligere intern lagring</string>
   <string name="local_storage_provider_label">Lagringsplassering</string>
   <string name="account_setup_expunge_policy_label">Fjern slettede meldinger på tjener</string>
   <string name="account_setup_expunge_policy_immediately">Umiddelbart</string>
   <string name="account_setup_expunge_policy_on_poll">I forbindelse med sjekking av e-post</string>
   <string name="account_setup_expunge_policy_manual">Manuelt</string>
-  <string name="account_setup_incoming_autodetect_namespace_label">Auto-detekter IMAP navnerom </string>
+  <string name="account_setup_incoming_autodetect_namespace_label">Auto-detekter IMAP navnerom</string>
   <string name="account_setup_incoming_imap_path_prefix_label">IMAP sti-prefix</string>
-  <string name="drafts_folder_label">Kladd-mappe</string>
+  <string name="drafts_folder_label">Utkastmappe</string>
   <string name="sent_folder_label">Sent-mappe</string>
   <string name="trash_folder_label">Søppelmappe</string>
   <string name="archive_folder_label">Arkiv-mappe</string>
   <string name="spam_folder_label">Søppelpost-mappe</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Vis kun mapper du abonnerer på</string>
-  <string name="account_setup_auto_expand_folder">Auto-utvid mapper </string>
+  <string name="account_setup_auto_expand_folder">Auto-utvid mappe</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA-sti</string>
   <string name="account_setup_incoming_webdav_path_prefix_hint">Valgfri</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Sti til autentisering</string>
   <string name="account_setup_incoming_webdav_auth_path_hint">Valgfri</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Postkassealias</string>
   <string name="account_setup_incoming_webdav_mailbox_path_hint">Valgfri</string>
-  <string name="account_setup_outgoing_title">Utgående tjener-innstillinger</string>
+  <string name="account_setup_outgoing_title">Innstillinger for utgående tjener</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-tjener</string>
   <string name="account_setup_outgoing_port_label">Port</string>
   <string name="account_setup_outgoing_security_label">Sikkerhet</string>
@@ -382,7 +395,7 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="push_poll_on_connect_label">Hent e-post samtidig som sending</string>
   <string name="account_setup_options_enable_push_label">Velg push e-post for denne konto</string>
   <string name="account_setup_options_enable_push_summary">Hvis tjeneren din støtter det, vil nye meldinger vises umiddelbart. Dette alternativet kan dramatisk forbedre eller skade ytelsen.</string>
-  <string name="idle_refresh_period_label">oppdatere IDLE tilkobling</string>
+  <string name="idle_refresh_period_label">Oppdater IDLE tilkobling</string>
   <string name="idle_refresh_period_1min">Hvert minutt</string>
   <string name="idle_refresh_period_2min">Hvert 2. minutt</string>
   <string name="idle_refresh_period_3min">Hvert 3. minutt</string>
@@ -430,8 +443,10 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="account_settings_notify_sync_summary">Varsel i statuslinjen når det ses etter ny e-post</string>
   <string name="account_settings_notify_self_label">Inkluder utgående e-post</string>
   <string name="account_settings_notify_self_summary">Vis et varsel for meldinger jeg sendte</string>
+  <string name="account_notify_contacts_mail_only_label">Bare kontakter</string>
+  <string name="account_notify_contacts_mail_only_summary">Bare vis varsel for meldinger fra kjente kontakter</string>
   <string name="account_settings_notification_opens_unread_label">Varslinger åpner uleste meldinger</string>
-  <string name="account_settings_notification_opens_unread_summary">Søker for uleste meldinger når Varslinger åpnes</string>
+  <string name="account_settings_notification_opens_unread_summary">Søker for uleste meldinger når Varslinger er åpnet</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Merk som lest når åpnet</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Merk en melding som lest når den åpnes for visning</string>
   <string name="account_settings_show_pictures_label">Alltid vis bilder</string>
@@ -461,14 +476,15 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="account_settings_folders">Mapper</string>
   <string name="account_settings_quote_prefix_label">Prefiks for sitert tekst</string>
   <string name="account_settings_crypto">Kryptografi</string>
-  <string name="account_settings_crypto_app">OpenPGP-leverandør</string>
-  <string name="account_settings_no_openpgp_provider_installed">Ingen OpenPGP leverandør installert</string>
-  <string name="account_settings_mail_check_frequency_label">Oppdateringsfrekvens for mapper</string>
+  <string name="account_settings_crypto_app">OpenPGP app</string>
+  <string name="account_settings_crypto_key">Min nøkkel</string>
+  <string name="account_settings_no_openpgp_provider_configured">Ingen OpenPGP app er installert</string>
+  <string name="account_settings_mail_check_frequency_label">Oppdateringsfrekvens for mappe</string>
   <string name="account_settings_storage_title">Lagring</string>
   <string name="account_settings_color_label">Kontofarge</string>
-  <string name="account_settings_color_summary">Aksentfargen for denne konto brukes i mappe- og kontoliste</string>
-  <string name="account_settings_led_color_label">LED-varselfarge</string>
-  <string name="account_settings_led_color_summary">Fargen som din enhets LED skal blinke for denne enhet.</string>
+  <string name="account_settings_color_summary">Aksentfargen for denne konto brukt i mappe- og kontoliste</string>
+  <string name="account_settings_led_color_label">LED varselfarge</string>
+  <string name="account_settings_led_color_summary">Fargen som din enhets LED skal blinke for denne kontoen</string>
   <string name="account_settings_mail_display_count_label">Lokal mappestørrelse</string>
   <string name="account_settings_autodownload_message_size_label">Hent meldinger opp til</string>
   <string name="account_settings_autodownload_message_size_1">1Kb</string>
@@ -488,7 +504,7 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="account_settings_autodownload_message_size_any">alle størrelser (ingen grense)</string>
   <string name="account_settings_message_age_label">Synkroniser meldinger fra</string>
   <string name="account_settings_message_age_any">når som helst (ingen grense)</string>
-  <string name="account_settings_message_age_0">idag</string>
+  <string name="account_settings_message_age_0">i dag</string>
   <string name="account_settings_message_age_1">de siste 2 dager</string>
   <string name="account_settings_message_age_2">de siste 3 dager</string>
   <string name="account_settings_message_age_7">den siste uken</string>
@@ -653,11 +669,9 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema for meldingsvisning</string>
   <string name="settings_compose_theme_label">Tema for skriving</string>
-  <string name="settings_language_label">Språk</string>
   <string name="settings_message_theme_selection_label">Fast meldingstema</string>
   <string name="settings_message_theme_selection_summary_off">Velg meldingsvisningstema for visning av meldinger.</string>
   <string name="settings_message_theme_selection_summary_on">Bruk fast melding visningstema</string>
-  <string name="setting_language_system">Systemstandard</string>
   <string name="background_ops_label">Bakgrunnssynkronisering</string>
   <string name="background_ops_never">Aldri</string>
   <string name="background_ops_always">Alltid</string>
@@ -692,7 +706,7 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="search_all_messages_detail">Alle meldinger i søkbare mapper</string>
   <string name="integrated_inbox_title">Samlet innboks</string>
   <string name="integrated_inbox_detail">Alle meldinger i samlede mapper</string>
-  <string name="tap_hint">Trykk på konvolutt eller stjerne for uleste eller stjernede meldinger</string>
+  <string name="tap_hint">Trykk sirkel eller stjerne for uleste eller stjernemerkede meldinger</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Samle</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Alle meldinger vises i samlet innboks</string>
   <string name="account_settings_searchable_label">Mapper å søke</string>
@@ -734,19 +748,12 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="font_size_larger">Større</string>
   <string name="miscellaneous_preferences">Diverse</string>
   <string name="error_activity_not_found">Ingen egnede program ble funnet for denne handlingen.</string>
-  <string name="btn_crypto_sign">Signer</string>
-  <string name="btn_encrypt">Krypter</string>
-  <string name="unknown_crypto_signature_user_id">&lt;ukjent&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME-meldinger støttes ikke enda.</string>
-  <string name="attachment_encryption_unsupported">Advarsel: vedlegg er IKKE signert eller kryptert enda.</string>
-  <string name="send_aborted">Sending avbrudt</string>
+  <string name="send_failed_reason">Sending feilet: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Lagre utkast?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Lagre eller Forkast denne meldingen?</string>
   <string name="confirm_discard_draft_message_title">Forkast melding?</string>
   <string name="confirm_discard_draft_message">Er du sikker på at du vil forkaste denne meldingen?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Nekt å lagre utkast.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Nekt å lagre utkast som er merket kryptert.</string>
-  <string name="select_text_now">Velg tekst til å kopiere</string>
+  <string name="select_text_now">Velg teksten du vil kopiere.</string>
   <string name="dialog_confirm_delete_title">Bekreft sletting</string>
   <string name="dialog_confirm_delete_message">Vil du slette denne meldingen?</string>
   <plurals name="dialog_confirm_delete_messages">
@@ -755,6 +762,10 @@ Vis neste melding som standard etter meldingssletting</string>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Ja</string>
   <string name="dialog_confirm_delete_cancel_button">Nei</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Bekreft: merk alle som lest</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Vil du markere alle meldinger som lest?</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Ja</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Nei</string>
   <string name="dialog_confirm_spam_title">Bekreft flytting til søppelpost-mappe</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Ønsker du virkelig å flytte denne meldingen til søppelpost-mappen?</item>
@@ -763,10 +774,9 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="dialog_confirm_spam_confirm_button">Ja</string>
   <string name="dialog_confirm_spam_cancel_button">Nei</string>
   <string name="dialog_attachment_progress_title">Laster ned vedlegg</string>
-  <string name="debug_logging_enabled">Feilsøk-logging aktivert</string>
+  <string name="debug_logging_enabled">Feilsøkingslogging aktivert</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Kan ikke koble til.</string>
   <string name="import_export_action">Importer &amp; Eksporter innstillinger</string>
   <string name="settings_export_account">Eksporter kontoinnstillinger</string>
   <string name="settings_export_all">Eksporter innstillinger og kontoer</string>
@@ -846,8 +856,6 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Begrensning for søk på tjener</string>
   <string name="account_settings_remote_search_num_summary">Søk vil stoppe etter å ha funnet <xliff:g id="num_results">%s</xliff:g> resultater.</string>
-  <string name="account_settings_remote_search_full_text">Inkluder meldingstekst ved søk på tjener</string>
-  <string name="account_settings_remote_search_full_text_summary">Fulltekstsøk kan være tregt.</string>
   <string name="remote_search_sending_query">Sender forespørsel til tjener</string>
   <string name="remote_search_downloading">Henter %d resultater</string>
   <string name="remote_search_downloading_limited">Henter %1$d av %2$d resultater</string>
@@ -888,18 +896,24 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="fetching_attachment_dialog_message">Henter vedlegg …</string>
   <string name="auth_external_error">Ikke mulig å autentisere. Tjeneren annonserer ikke at den har støtte for \"SASL EXTERNAL\". Dette kan være på grunn av et problem med klientsertifikatet (utgått, ukjent sertifiseringsinstans) eller andre konfigurasjonsproblem.</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Dekrypterer/Bekrefter …</string>
-  <string name="openpgp_successful_decryption">Dekryptering vellykket</string>
-  <string name="openpgp_signature_valid_certified">Gyldig signatur (sertifisert)</string>
-  <string name="openpgp_signature_valid_uncertified">Gyldig signatur, men ikke sertifisert</string>
-  <string name="openpgp_signature_unknown">Ukjent signerer</string>
-  <string name="openpgp_signature_invalid">Ugyldig signatur</string>
-  <string name="openpgp_signature_unknown_text">Mangler offentlig nøkkel for denne signaturen</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Vellykket dekryptering og gyldig signatur (sertifisert)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Vellykket dekryptering og gyldig signatur, men ikke sertifisert</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Vellykket dekryptering, men mangler offentlig nøkkel</string>
-  <string name="openpgp_get_key">Se etter manglende nøkkel</string>
-  <string name="openpgp_user_id">BrukerID</string>
+  <string name="openpgp_decryption_failed">Dekryptering mislyktes: %s</string>
+  <string name="openpgp_unknown_error">Ukjent OpenPGP feil</string>
+  <string name="openpgp_canceled_by_user">Avbrutt av bruker</string>
+  <string name="openpgp_result_no_signature">Ikke signert</string>
+  <string name="openpgp_result_invalid_signature">Ugyldig signatur!</string>
+  <string name="openpgp_result_signature_uncertified">Signert av (ikke sertifisert!)</string>
+  <string name="openpgp_result_signature_certified">Signert av</string>
+  <string name="openpgp_result_signature_expired_key">Nøkkel er utløpt!</string>
+  <string name="openpgp_result_signature_revoked_key">Nøkkel har blitt tilbakekalt!</string>
+  <string name="openpgp_result_signature_insecure">Usikker!</string>
+  <string name="openpgp_result_signature_missing_key">Ukjent offentlig nøkkel</string>
+  <string name="openpgp_result_encrypted">Kryptert</string>
+  <string name="openpgp_result_not_encrypted">Ikke kryptert</string>
+  <string name="openpgp_result_decryption_insecure">Usikker</string>
+  <string name="openpgp_result_action_show">Vis</string>
+  <string name="openpgp_result_action_lookup">Oppslag</string>
+  <string name="openpgp_result_no_name">Ingen navn</string>
+  <string name="openpgp_result_no_email">Ingen epost</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Bruk klientsertifikat</string>
   <string name="client_certificate_spinner_empty">Ingen klientsertifikat</string>
@@ -907,4 +921,76 @@ Vis neste melding som standard etter meldingssletting</string>
   <string name="client_certificate_retrieval_failure">Klarte ikke å hente klientsertifikat for alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Avanserte valg</string>
   <string name="client_certificate_expired">Klientsertifikatet, \"<xliff:g id="certificate_alias">%1$s</xliff:g>\", er utgått eller er ikke gyldig ennå (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Ufullstendig melding</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Klikk «Last ned komplett melding» for å tillate dekryptering.</string>
+  <string name="preview_encrypted">*Kryptert*</string>
+  <string name="add_from_contacts">Legg til fra kontakter</string>
+  <string name="crypto_settings_cancel">Avbryt</string>
+  <string name="crypto_settings_ok">Fortsett</string>
+  <string name="recipient_cc">Kopi</string>
+  <string name="recipient_bcc">Blindkopi</string>
+  <string name="recipient_to">Til</string>
+  <string name="recipient_from">Fra</string>
+  <string name="unknown_recipient"><![CDATA[<Ukjent mottaker>]]></string>
+  <string name="address_type_home">Hjemme</string>
+  <string name="address_type_work">Arbeid</string>
+  <string name="address_type_other">Annet</string>
+  <string name="address_type_mobile">Mobil</string>
+  <string name="compose_error_no_draft_folder">Ingen kladd-mappe er oppsatt for denne konto!</string>
+  <string name="compose_not_saving_unencrypted">Kladd er IKKE lageret uten kryptering!</string>
+  <string name="compose_error_pgp_error">Feil med OpenPGP-leverandør. Sjekk innstillingene!</string>
+  <string name="compose_error_no_signing_key">Ingen nøkker er satt opp for signering! Vennligst sjekk innstillingene!</string>
+  <string name="compose_error_private_missing_keys">Privatmodus er aktivert, men noen av mottakerne har ikke nøkler!</string>
+  <string name="error_crypto_provider_connect">Kan koble til krypteringsleverandør, sjekk innstillinger eller klikk krypteringsikonet for å prøve igjen!</string>
+  <string name="error_crypto_provider_ui_required">Krypteringsleverandør nektet tilgang, klikk krypteringsikonet for å prøve igjen!</string>
+  <string name="error_crypto_inline_attach">PGP/INLINE-modus støtter ikke vedlegg!</string>
+  <string name="enable_inline_pgp">Aktiver PGP/INLINE</string>
+  <string name="disable_inline_pgp">Deaktiver PGP/INLINE</string>
+  <string name="openpgp_inline_title">PGP/INLINE-modus</string>
+  <string name="openpgp_inline_text">Denne e-posten er sent i PGP/INLINE-format.\nDette skal bare brukes for kompatibilitet:</string>
+  <string name="openpgp_inline_plus_compat">Noen klienter støtter bare dette formatet</string>
+  <string name="openpgp_inline_minus_transit">Signaturer kan ødelegges i løpet av sending</string>
+  <string name="openpgp_inline_minus_attach">Vedlegg er ikke støttet</string>
+  <string name="openpgp_inline_ok">Har det!</string>
+  <string name="openpgp_inline_disable">Deaktiver</string>
+  <string name="openpgp_inline_keep_enabled">Hold aktivert</string>
+  <string name="crypto_msg_disabled">Melding er ikke kryptert</string>
+  <string name="crypto_msg_encrypted_error">Melding er kryptert, men det var en dekrypteringsfeil.</string>
+  <string name="crypto_msg_signed_error">Melding er signert,, men signaturen kunne ikke verifiseres.</string>
+  <string name="crypto_msg_unsupported_encrypted">Melding er kryptert, med i et ustøttet format.</string>
+  <string name="crypto_msg_unsupported_signed">Melding er signert, men i et ustøttet format.</string>
+  <string name="crypto_msg_incomplete_encrypted">Melding er kryptert, men den må lastes helt ned for dekryptering.</string>
+  <string name="crypto_msg_cancelled">Melding er kryptert, men dekrypteringen ble avbrutt.</string>
+  <string name="crypto_msg_signed_unencrypted">Melding er signert, men er ikke kryptert.</string>
+  <string name="crypto_msg_encrypted_unsigned">Melding er kryptert, men ikke signert.</string>
+  <string name="crypto_msg_sign_unknown">Signatur er laget med ukjent nøkkel.</string>
+  <string name="crypto_msg_sign_verified">Signatur laget av tiltrodd nøkkel.</string>
+  <string name="crypto_msg_sign_unverified">Signatur er laget med utiltrodd nøkkel.</string>
+  <string name="crypto_msg_sign_error">Signaturen inneholdt en feil.</string>
+  <string name="crypto_msg_sign_mismatch">Signatur laget med feil nøkkel.</string>
+  <string name="crypto_msg_sign_expired">Signatur leget med utgått nøkkel.</string>
+  <string name="crypto_msg_sign_revoked">Signatur leget med tilbakekalt nøkkel.</string>
+  <string name="crypto_msg_sign_insecure">Signatur laget med usikker nøkkel.</string>
+  <string name="crypto_msg_sign_incomplete">Melding må bli lastet helt ned for å verifisere signaturen.</string>
+  <string name="crypto_msg_signed_encrypted">Melding er signert og kryptert.</string>
+  <string name="crypto_msg_unsigned_encrypted">Det er ingen signatur, denne medlingen kan ha blitt snappet opp.</string>
+  <string name="crypto_info_ok">OK</string>
+  <string name="crypto_info_view_key">Vis underskriver</string>
+  <string name="locked_attach_unlock">Lås opp</string>
+  <string name="locked_attach_unsigned">Denne delen var ikke signert, og kan derfor være usikker.</string>
+  <string name="locked_attach_unencrypted">Denne delen bar ikke krypter, og kan derfor være usikker.</string>
+  <string name="locked_attach_title">Usikret vedlegg</string>
+  <string name="message_progress_text">Laster...</string>
+  <string name="messageview_decrypt_cancelled">Dekryptering ble avbrutt.</string>
+  <string name="messageview_decrypt_retry">Prøv på nytt</string>
+  <string name="messageview_decrypt_incomplete">Kryptert melding må lastes ned for dekryptering.</string>
+  <string name="messageview_crypto_error_title">Feil ved dekryptering av e-post</string>
+  <string name="messageview_crypto_warning_title">Sikkerhetsadvarsel</string>
+  <string name="messageview_crypto_warning_revoked">Denne melding ble signert av <b>tilbakekalt nøkkel!</b></string>
+  <string name="messageview_crypto_warning_expired">Denne medling ble signert av <b>utgått nøkkel!</b></string>
+  <string name="messageview_crypto_warning_insecure">Denne melding ble signert av <b>usikker nøkkel!</b></string>
+  <string name="messageview_crypto_warning_error">Det var en <b>feil i meldingens signatur!</b></string>
+  <string name="recipient_error_non_ascii">Spesialtegn er for tida ikke støttet!</string>
+  <string name="recipient_error_parse_failed">Feil ved tolking av adresse!</string>
 </resources>

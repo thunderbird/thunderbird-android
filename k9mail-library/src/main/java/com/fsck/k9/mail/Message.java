@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
@@ -14,7 +15,7 @@ import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 
 import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
-public abstract class Message implements Part, CompositeBody {
+public abstract class Message implements Part, Body {
 
     public enum RecipientType {
         TO, CC, BCC,
@@ -76,7 +77,7 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract String getSubject();
 
-    public abstract void setSubject(String subject) throws MessagingException;
+    public abstract void setSubject(String subject);
 
     public Date getInternalDate() {
         return mInternalDate;
@@ -88,14 +89,13 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract Date getSentDate();
 
-    public abstract void setSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException;
+    public abstract void setSentDate(Date sentDate, boolean hideTimeZone);
 
-    public abstract Address[] getRecipients(RecipientType type) throws MessagingException;
+    public abstract Address[] getRecipients(RecipientType type);
 
-    public abstract void setRecipients(RecipientType type, Address[] addresses)
-    throws MessagingException;
+    public abstract void setRecipients(RecipientType type, Address[] addresses);
 
-    public void setRecipient(RecipientType type, Address address) throws MessagingException {
+    public void setRecipient(RecipientType type, Address address) {
         setRecipients(type, new Address[] {
                           address
                       });
@@ -103,49 +103,53 @@ public abstract class Message implements Part, CompositeBody {
 
     public abstract Address[] getFrom();
 
-    public abstract void setFrom(Address from) throws MessagingException;
+    public abstract void setFrom(Address from);
+
+    public abstract Address[] getSender();
+
+    public abstract void setSender(Address sender);
 
     public abstract Address[] getReplyTo();
 
-    public abstract void setReplyTo(Address[] from) throws MessagingException;
+    public abstract void setReplyTo(Address[] from);
 
-    public abstract String getMessageId() throws MessagingException;
+    public abstract String getMessageId();
 
-    public abstract void setInReplyTo(String inReplyTo) throws MessagingException;
+    public abstract void setInReplyTo(String inReplyTo);
 
-    public abstract String[] getReferences() throws MessagingException;
+    public abstract String[] getReferences();
 
-    public abstract void setReferences(String references) throws MessagingException;
+    public abstract void setReferences(String references);
 
     @Override
     public abstract Body getBody();
 
     @Override
-    public abstract void addHeader(String name, String value) throws MessagingException;
+    public abstract void addHeader(String name, String value);
 
     @Override
-    public abstract void addRawHeader(String name, String raw) throws MessagingException;
+    public abstract void addRawHeader(String name, String raw);
 
     @Override
-    public abstract void setHeader(String name, String value) throws MessagingException;
+    public abstract void setHeader(String name, String value);
+
+    @NonNull
+    @Override
+    public abstract String[] getHeader(String name);
+
+    public abstract Set<String> getHeaderNames();
 
     @Override
-    public abstract String[] getHeader(String name) throws MessagingException;
-
-    public abstract Set<String> getHeaderNames() throws MessagingException;
-
-    @Override
-    public abstract void removeHeader(String name) throws MessagingException;
+    public abstract void removeHeader(String name);
 
     @Override
     public abstract void setBody(Body body);
 
     public abstract long getId();
 
-    public abstract String getPreview();
     public abstract boolean hasAttachments();
 
-    public abstract int getSize();
+    public abstract long getSize();
 
     public void delete(String trashFolderName) throws MessagingException {}
 

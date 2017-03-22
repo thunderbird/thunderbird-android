@@ -1,19 +1,17 @@
 package com.fsck.k9.helper;
 
+
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.content.Intent;
 import android.provider.ContactsContract;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Address;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Helper class to access the contacts stored on the device.
@@ -21,7 +19,7 @@ import java.util.List;
 public class Contacts {
     /**
      * The order in which the search results are returned by
-     * {@link #searchContacts(CharSequence)}.
+     * {@link #getContactByAddress(String)}.
      */
     protected static final String SORT_ORDER =
             ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED + " DESC, " +
@@ -30,15 +28,10 @@ public class Contacts {
 
     /**
      * Array of columns to load from the database.
-     *
-     * Important: The _ID field is needed by
-     * {@link com.fsck.k9.EmailAddressAdapter} or more specificly by
-     * {@link android.widget.ResourceCursorAdapter}.
      */
     protected static final String PROJECTION[] = {
             ContactsContract.CommonDataKinds.Email._ID,
             ContactsContract.Contacts.DISPLAY_NAME,
-            ContactsContract.CommonDataKinds.Email.DATA,
             ContactsContract.CommonDataKinds.Email.CONTACT_ID
     };
 
@@ -49,16 +42,10 @@ public class Contacts {
     protected static final int NAME_INDEX = 1;
 
     /**
-     * Index of the email address field in the projection. This must match the
-     * order in {@link #PROJECTION}.
-     */
-    protected static final int EMAIL_INDEX = 2;
-
-    /**
      * Index of the contact id field in the projection. This must match the order in
      * {@link #PROJECTION}.
      */
-    protected static final int CONTACT_ID_INDEX = 3;
+    protected static final int CONTACT_ID_INDEX = 2;
 
 
     /**
@@ -77,7 +64,7 @@ public class Contacts {
 
     protected Context mContext;
     protected ContentResolver mContentResolver;
-    protected Boolean mHasContactPicker;
+
 
     /**
      * Constructor
@@ -155,35 +142,23 @@ public class Contacts {
     }
 
     /**
-     * Filter the contacts matching the given search term.
+     * Check whether one of the provided addresses belongs to one of the contacts.
      *
-     * @param constraint The search term to filter the contacts.
-     * @return A {@link Cursor} instance that can be used to get the
-     *         matching contacts.
+     * @param addresses The addresses to search in contacts
+     * @return <tt>true</tt>, if one address belongs to a contact.
+     *         <tt>false</tt>, otherwise.
      */
-    public Cursor searchContacts(final CharSequence constraint) {
-        final String filter = (constraint == null) ? "" : constraint.toString();
-        final Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_FILTER_URI, Uri.encode(filter));
-        final Cursor c = mContentResolver.query(
-                uri,
-                PROJECTION,
-                null,
-                null,
-                SORT_ORDER);
-
-        if (c != null) {
-            /*
-             * To prevent expensive execution in the UI thread:
-             * Cursors get lazily executed, so if you don't call anything on
-             * the cursor before returning it from the background thread you'll
-             * have a complied program for the cursor, but it won't have been
-             * executed to generate the data yet. Often the execution is more
-             * expensive than the compilation...
-             */
-            c.getCount();
+    public boolean isAnyInContacts(final Address[] addresses) {
+        if (addresses == null) {
+            return false;
         }
 
-        return c;
+        for (Address addr : addresses) {
+            if (isInContacts(addr.getAddress())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -204,35 +179,12 @@ public class Contacts {
         if (c != null) {
             if (c.getCount() > 0) {
                 c.moveToFirst();
-                name = getName(c);
+                name = c.getString(NAME_INDEX);
             }
             c.close();
         }
 
         return name;
-    }
-
-    /**
-     * Extract the name from a {@link Cursor} instance returned by
-     * {@link #searchContacts(CharSequence)}.
-     *
-     * @param cursor The {@link Cursor} instance.
-     * @return The name of the contact in the {@link Cursor}'s current row.
-     */
-    public String getName(Cursor cursor) {
-        return cursor.getString(NAME_INDEX);
-    }
-
-    /**
-     * Extract the email address from a {@link Cursor} instance returned by
-     * {@link #searchContacts(CharSequence)}.
-     *
-     * @param cursor The {@link Cursor} instance.
-     * @return The email address of the contact in the {@link Cursor}'s current
-     *         row.
-     */
-    public String getEmail(Cursor cursor) {
-        return cursor.getString(EMAIL_INDEX);
     }
 
     /**
@@ -263,63 +215,7 @@ public class Contacts {
      * @return The intent necessary to open a contact picker.
      */
     public Intent contactPickerIntent() {
-        return new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-    }
-
-    /**
-     * Given a contact picker intent, returns a {@code ContactItem} instance for that contact.
-     *
-     * @param intent
-     *         The {@link Intent} returned by the contact picker.
-     *
-     * @return A {@link ContactItem} instance describing the picked contact. Or {@code null} if the
-     *         contact doesn't have any email addresses.
-     */
-    public ContactItem extractInfoFromContactPickerIntent(final Intent intent) {
-        Cursor cursor = null;
-        List<String> email = new ArrayList<String>();
-
-        try {
-            Uri result = intent.getData();
-            String displayName = null;
-
-            // Get the contact id from the Uri
-            String id = result.getLastPathSegment();
-
-            cursor = mContentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, PROJECTION,
-                    ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?", new String[] { id }, null);
-
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    String address = cursor.getString(EMAIL_INDEX);
-                    if (address != null) {
-                        email.add(address);
-                    }
-
-                    if (displayName == null) {
-                        displayName = cursor.getString(NAME_INDEX);
-                    }
-                }
-
-                // Return 'null' if no email addresses have been found
-                if (email.isEmpty()) {
-                    return null;
-                }
-
-                // Use the first email address found as display name
-                if (displayName == null) {
-                    displayName = email.get(0);
-                }
-
-                return new ContactItem(displayName, email);
-            }
-        } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Failed to get email data", e);
-        } finally {
-            Utility.closeQuietly(cursor);
-        }
-
-        return null;
+        return new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Email.CONTENT_URI);
     }
 
     /**
@@ -369,24 +265,9 @@ public class Contacts {
             Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
             return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Couldn't fetch photo for contact with email " + address, e);
+            Timber.e(e, "Couldn't fetch photo for contact with email %s", address);
             return null;
         }
-    }
-
-    /**
-     * Does the device actually have a Contacts application suitable for
-     * picking a contact. As hard as it is to believe, some vendors ship
-     * without it.
-     *
-     * @return True, if the device supports picking contacts. False, otherwise.
-     */
-    public boolean hasContactPicker() {
-        if (mHasContactPicker == null) {
-            mHasContactPicker = !(mContext.getPackageManager().
-                                  queryIntentActivities(contactPickerIntent(), 0).isEmpty());
-        }
-        return mHasContactPicker;
     }
 
     /**

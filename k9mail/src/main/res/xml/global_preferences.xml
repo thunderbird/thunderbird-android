@@ -35,14 +35,6 @@
 
             <ListPreference
                 android:persistent="false"
-                android:key="language"
-                android:title="@string/settings_language_label"
-                android:entries="@array/settings_language_entries"
-                android:entryValues="@array/settings_language_values"
-                android:dialogTitle="@string/settings_language_label" />
-
-            <ListPreference
-                android:persistent="false"
                 android:key="theme"
                 android:title="@string/settings_theme_label"
                 android:entries="@array/settings_theme_entries"
@@ -51,14 +43,14 @@
 
             <CheckBoxPreference
                 android:persistent="false"
-                android:key="fixedMessageViewTheme"
+                android:key="fixed_message_view_theme"
                 android:title="@string/settings_message_theme_selection_label"
                 android:summaryOff="@string/settings_message_theme_selection_summary_off"
                 android:summaryOn="@string/settings_message_theme_selection_summary_on" />
 
             <ListPreference
                 android:persistent="false"
-                android:dependency="fixedMessageViewTheme"
+                android:dependency="fixed_message_view_theme"
                 android:key="messageViewTheme"
                 android:title="@string/settings_message_theme_label"
                 android:entries="@array/settings_message_theme_entries"
@@ -67,7 +59,7 @@
 
             <ListPreference
                 android:persistent="false"
-                android:key="messageComposeTheme"
+                android:key="message_compose_theme"
                 android:title="@string/settings_compose_theme_label"
                 android:entries="@array/settings_message_theme_entries"
                 android:entryValues="@array/settings_message_theme_values"
@@ -264,7 +256,7 @@
 
         <com.fsck.k9.preferences.CheckBoxListPreference
             android:persistent="false"
-            android:key="volumeNavigation"
+            android:key="volume_navigation"
             android:title="@string/volume_navigation_title"
             android:dialogTitle="@string/volume_navigation_title"
             android:positiveButtonText="@android:string/ok"
@@ -383,13 +375,14 @@
         <CheckBoxPreference
             android:persistent="false"
             android:key="privacy_hide_useragent"
-            android:title="@string/global_settings_privacy_hide_useragent"/>
+            android:title="@string/global_settings_privacy_hide_useragent"
+            android:summary="@string/global_settings_privacy_hide_useragent_detail"/>
 
         <CheckBoxPreference
             android:persistent="false"
             android:key="privacy_hide_timezone"
-            android:title="@string/global_settings_privacy_hide_timezone"/>
-
+            android:title="@string/global_settings_privacy_hide_timezone"
+            android:summary="@string/global_settings_privacy_hide_timezone_detail"/>
     </PreferenceScreen>
 
     <PreferenceScreen
@@ -409,4 +402,22 @@
             android:summary="@string/debug_enable_sensitive_logging_summary" />
 
     </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="Cryptography"
+        android:key="crypto">
+
+        <org.openintents.openpgp.util.OpenPgpAppPreference
+            android:persistent="false"
+            android:key="openpgp_provider"
+            android:title="@string/account_settings_crypto_app" />
+
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="openpgp_support_sign_only"
+            android:title="@string/account_settings_crypto_support_sign_only"
+            />
+
+    </PreferenceScreen>
+
 </PreferenceScreen>

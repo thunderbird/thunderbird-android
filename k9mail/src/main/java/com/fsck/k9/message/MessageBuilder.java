@@ -5,7 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
@@ -13,11 +18,13 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.misc.Attachment;
-import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BoundaryGenerator;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -26,15 +33,20 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.TempFileBody;
-import com.fsck.k9.mailstore.TempFileMessageBody;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.util.MimeUtil;
 
 
-public class MessageBuilder {
+public abstract class MessageBuilder {
     private final Context context;
+    private final MessageIdGenerator messageIdGenerator;
+    private final BoundaryGenerator boundaryGenerator;
+
 
     private String subject;
+    private Date sentDate;
+    private boolean hideTimeZone;
     private Address[] to;
     private Address[] cc;
     private Address[] bcc;
@@ -44,7 +56,6 @@ public class MessageBuilder {
     private Identity identity;
     private SimpleMessageFormat messageFormat;
     private String text;
-    private PgpData pgpData;
     private List<Attachment> attachments;
     private String signature;
     private QuoteStyle quoteStyle;
@@ -58,17 +69,19 @@ public class MessageBuilder {
     private int cursorPosition;
     private MessageReference messageReference;
     private boolean isDraft;
+    private boolean isPgpInlineEnabled;
 
-
-    public MessageBuilder(Context context) {
+    protected MessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
         this.context = context;
+        this.messageIdGenerator = messageIdGenerator;
+        this.boundaryGenerator = boundaryGenerator;
     }
 
     /**
-     * Build the final message to be sent (or saved). If there is another message quoted in this one, it will be baked
-     * into the final message here.
+     * Build the message to be sent (or saved). If there is another message quoted in this one, it will be baked
+     * into the message here.
      */
-    public MimeMessage build() throws MessagingException {
+    protected MimeMessage build() throws MessagingException {
         //FIXME: check arguments
 
         MimeMessage message = new MimeMessage();
@@ -80,7 +93,7 @@ public class MessageBuilder {
     }
 
     private void buildHeader(MimeMessage message) throws MessagingException {
-        message.addSentDate(new Date(), K9.hideTimeZone());
+        message.addSentDate(sentDate, hideTimeZone);
         Address from = new Address(identity.getEmail(), identity.getName());
         message.setFrom(from);
         message.setRecipients(RecipientType.TO, to);
@@ -111,20 +124,24 @@ public class MessageBuilder {
             message.setReferences(references);
         }
 
-        message.generateMessageId();
+        String messageId = messageIdGenerator.generateMessageId(message);
+        message.setMessageId(messageId);
+
+        if (isDraft && isPgpInlineEnabled) {
+            message.setFlag(Flag.X_DRAFT_OPENPGP_INLINE, true);
+        }
+    }
+    
+    protected MimeMultipart createMimeMultipart() {
+        String boundary = boundaryGenerator.generateBoundary();
+        return new MimeMultipart(boundary);
     }
 
     private void buildBody(MimeMessage message) throws MessagingException {
         // Build the body.
         // TODO FIXME - body can be either an HTML or Text part, depending on whether we're in
         // HTML mode or not.  Should probably fix this so we don't mix up html and text parts.
-        TextBody body;
-        if (pgpData.getEncryptedData() != null) {
-            String text = pgpData.getEncryptedData();
-            body = new TextBody(text);
-        } else {
-            body = buildText(isDraft);
-        }
+        TextBody body = buildText(isDraft);
 
         // text/plain part when messageFormat == MessageFormat.HTML
         TextBody bodyPlain = null;
@@ -135,18 +152,19 @@ public class MessageBuilder {
             // HTML message (with alternative text part)
 
             // This is the compiled MIME part for an HTML message.
-            MimeMultipart composedMimeMessage = new MimeMultipart();
-            composedMimeMessage.setSubType("alternative");   // Let the receiver select either the text or the HTML part.
-            composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
+            MimeMultipart composedMimeMessage = createMimeMultipart();
+            composedMimeMessage.setSubType("alternative");
+            // Let the receiver select either the text or the HTML part.
             bodyPlain = buildText(isDraft, SimpleMessageFormat.TEXT);
             composedMimeMessage.addBodyPart(new MimeBodyPart(bodyPlain, "text/plain"));
+            composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
 
             if (hasAttachments) {
                 // If we're HTML and have attachments, we have a MimeMultipart container to hold the
                 // whole message (mp here), of which one part is a MimeMultipart container
                 // (composedMimeMessage) with the user's composed messages, and subsequent parts for
                 // the attachments.
-                MimeMultipart mp = new MimeMultipart();
+                MimeMultipart mp = createMimeMultipart();
                 mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
                 addAttachmentsToMessage(mp);
                 MimeMessageHelper.setBody(message, mp);
@@ -157,7 +175,7 @@ public class MessageBuilder {
         } else if (messageFormat == SimpleMessageFormat.TEXT) {
             // Text-only message.
             if (hasAttachments) {
-                MimeMultipart mp = new MimeMultipart();
+                MimeMultipart mp = createMimeMultipart();
                 mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
                 addAttachmentsToMessage(mp);
                 MimeMessageHelper.setBody(message, mp);
@@ -172,10 +190,6 @@ public class MessageBuilder {
             // Add the identity to the message.
             message.addHeader(K9.IDENTITY_HEADER, buildIdentityHeader(body, bodyPlain));
         }
-    }
-
-    public TextBody buildText() {
-        return buildText(isDraft, messageFormat);
     }
 
     private String buildIdentityHeader(TextBody body, TextBody bodyPlain) {
@@ -201,7 +215,6 @@ public class MessageBuilder {
      * @throws MessagingException
      */
     private void addAttachmentsToMessage(final MimeMultipart mp) throws MessagingException {
-        Body body;
         for (Attachment attachment : attachments) {
             if (attachment.state != Attachment.LoadingState.COMPLETE) {
                 continue;
@@ -209,10 +222,12 @@ public class MessageBuilder {
 
             String contentType = attachment.contentType;
             if (MimeUtil.isMessage(contentType)) {
-                body = new TempFileMessageBody(attachment.filename);
-            } else {
-                body = new TempFileBody(attachment.filename);
+                contentType = "application/octet-stream";
+                // TODO reencode message body to 7 bit
+                // body = new TempFileMessageBody(attachment.filename);
             }
+
+            Body body = new TempFileBody(attachment.filename);
             MimeBodyPart bp = new MimeBodyPart(body);
 
             /*
@@ -333,18 +348,28 @@ public class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder setTo(Address[] to) {
-        this.to = to;
+    public MessageBuilder setSentDate(Date sentDate) {
+        this.sentDate = sentDate;
         return this;
     }
 
-    public MessageBuilder setCc(Address[] cc) {
-        this.cc = cc;
+    public MessageBuilder setHideTimeZone(boolean hideTimeZone) {
+        this.hideTimeZone = hideTimeZone;
         return this;
     }
 
-    public MessageBuilder setBcc(Address[] bcc) {
-        this.bcc = bcc;
+    public MessageBuilder setTo(List<Address> to) {
+        this.to = to.toArray(new Address[to.size()]);
+        return this;
+    }
+
+    public MessageBuilder setCc(List<Address> cc) {
+        this.cc = cc.toArray(new Address[cc.size()]);
+        return this;
+    }
+
+    public MessageBuilder setBcc(List<Address> bcc) {
+        this.bcc = bcc.toArray(new Address[bcc.size()]);
         return this;
     }
 
@@ -375,11 +400,6 @@ public class MessageBuilder {
 
     public MessageBuilder setText(String text) {
         this.text = text;
-        return this;
-    }
-
-    public MessageBuilder setPgpData(PgpData pgpData) {
-        this.pgpData = pgpData;
         return this;
     }
 
@@ -447,4 +467,146 @@ public class MessageBuilder {
         this.isDraft = isDraft;
         return this;
     }
+
+    public MessageBuilder setIsPgpInlineEnabled(boolean isPgpInlineEnabled) {
+        this.isPgpInlineEnabled = isPgpInlineEnabled;
+        return this;
+    }
+
+    public boolean isDraft() {
+        return isDraft;
+    }
+
+    private Callback asyncCallback;
+    private final Object callbackLock = new Object();
+
+    // Postponed results, to be delivered upon reattachment of callback. There should only ever be one of these!
+    private MimeMessage queuedMimeMessage;
+    private MessagingException queuedException;
+    private PendingIntent queuedPendingIntent;
+    private int queuedRequestCode;
+
+    /** This method builds the message asynchronously, calling *exactly one* of the methods
+     * on the callback on the UI thread after it finishes. The callback may thread-safely
+     * be detached and reattached intermittently. */
+    final public void buildAsync(Callback callback) {
+        synchronized (callbackLock) {
+            asyncCallback = callback;
+            queuedMimeMessage = null;
+            queuedException = null;
+            queuedPendingIntent = null;
+        }
+        new AsyncTask<Void,Void,Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                buildMessageInternal();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                deliverResult();
+            }
+        }.execute();
+    }
+
+    final public void onActivityResult(final int requestCode, int resultCode, final Intent data, Callback callback) {
+        synchronized (callbackLock) {
+            asyncCallback = callback;
+            queuedMimeMessage = null;
+            queuedException = null;
+            queuedPendingIntent = null;
+        }
+        if (resultCode != Activity.RESULT_OK) {
+            asyncCallback.onMessageBuildCancel();
+            return;
+        }
+        new AsyncTask<Void,Void,Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                buildMessageOnActivityResult(requestCode, data);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                deliverResult();
+            }
+        }.execute();
+    }
+
+    /** This method is called in a worker thread, and should build the actual message. To deliver
+     * its computation result, it must call *exactly one* of the queueMessageBuild* methods before
+     * it finishes. */
+    abstract protected void buildMessageInternal();
+
+    abstract protected void buildMessageOnActivityResult(int requestCode, Intent data);
+
+    /** This method may be used to temporarily detach the callback. If a result is delivered
+     * while the callback is detached, it will be delivered upon reattachment. */
+    final public void detachCallback() {
+        synchronized (callbackLock) {
+            asyncCallback = null;
+        }
+    }
+
+    /** This method attaches a new callback, and must only be called after a previous one was
+     * detached. If the computation finished while the callback was detached, it will be
+     * delivered immediately upon reattachment. */
+    final public void reattachCallback(Callback callback) {
+        synchronized (callbackLock) {
+            if (asyncCallback != null) {
+                throw new IllegalStateException("need to detach callback before new one can be attached!");
+            }
+            asyncCallback = callback;
+            deliverResult();
+        }
+    }
+
+    final protected void queueMessageBuildSuccess(MimeMessage message) {
+        synchronized (callbackLock) {
+            queuedMimeMessage = message;
+        }
+    }
+
+    final protected void queueMessageBuildException(MessagingException exception) {
+        synchronized (callbackLock) {
+            queuedException = exception;
+        }
+    }
+
+    final protected void queueMessageBuildPendingIntent(PendingIntent pendingIntent, int requestCode) {
+        synchronized (callbackLock) {
+            queuedPendingIntent = pendingIntent;
+            queuedRequestCode = requestCode;
+        }
+    }
+
+    final protected void deliverResult() {
+        synchronized (callbackLock) {
+            if (asyncCallback == null) {
+                Timber.d("Keeping message builder result in queue for later delivery");
+                return;
+            }
+            if (queuedMimeMessage != null) {
+                asyncCallback.onMessageBuildSuccess(queuedMimeMessage, isDraft);
+                queuedMimeMessage = null;
+            } else if (queuedException != null) {
+                asyncCallback.onMessageBuildException(queuedException);
+                queuedException = null;
+            } else if (queuedPendingIntent != null) {
+                asyncCallback.onMessageBuildReturnPendingIntent(queuedPendingIntent, queuedRequestCode);
+                queuedPendingIntent = null;
+            }
+            asyncCallback = null;
+        }
+    }
+
+    public interface Callback {
+        void onMessageBuildSuccess(MimeMessage message, boolean isDraft);
+        void onMessageBuildCancel();
+        void onMessageBuildException(MessagingException exception);
+        void onMessageBuildReturnPendingIntent(PendingIntent pendingIntent, int requestCode);
+    }
+
 }

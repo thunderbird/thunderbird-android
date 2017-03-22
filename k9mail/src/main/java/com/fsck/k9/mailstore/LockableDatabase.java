@@ -10,11 +10,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Build;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.MessagingException;
+
+import static java.lang.System.currentTimeMillis;
+
 
 public class LockableDatabase {
 
@@ -25,7 +28,7 @@ public class LockableDatabase {
      * @param <T>
      *            Return value type for {@link #doDbWork(SQLiteDatabase)}
      */
-    public static interface DbCallback<T> {
+    public interface DbCallback<T> {
         /**
          * @param db
          *            The locked database on which the work should occur. Never
@@ -38,7 +41,7 @@ public class LockableDatabase {
         T doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException;
     }
 
-    public static interface SchemaDefinition {
+    public interface SchemaDefinition {
         int getVersion();
 
         /**
@@ -72,9 +75,7 @@ public class LockableDatabase {
                 return;
             }
 
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "LockableDatabase: Closing DB " + uUid + " due to unmount event on StorageProvider: " + providerId);
-            }
+            Timber.d("LockableDatabase: Closing DB %s due to unmount event on StorageProvider: %s", uUid, providerId);
 
             try {
                 lockWrite();
@@ -84,7 +85,7 @@ public class LockableDatabase {
                     unlockWrite();
                 }
             } catch (UnavailableStorageException e) {
-                Log.w(K9.LOG_TAG, "Unable to writelock on unmount", e);
+                Timber.w(e, "Unable to writelock on unmount");
             }
         }
 
@@ -94,14 +95,12 @@ public class LockableDatabase {
                 return;
             }
 
-            if (K9.DEBUG) {
-                Log.d(K9.LOG_TAG, "LockableDatabase: Opening DB " + uUid + " due to mount event on StorageProvider: " + providerId);
-            }
+            Timber.d("LockableDatabase: Opening DB %s due to mount event on StorageProvider: %s", uUid, providerId);
 
             try {
                 openOrCreateDataspace();
             } catch (UnavailableStorageException e) {
-                Log.e(K9.LOG_TAG, "Unable to open DB on mount", e);
+                Timber.e(e, "Unable to open DB on mount");
             }
         }
     }
@@ -130,12 +129,12 @@ public class LockableDatabase {
     private Context context;
 
     /**
-     * {@link ThreadLocal} to check whether a DB transaction is occuring in the
+     * {@link ThreadLocal} to check whether a DB transaction is occurring in the
      * current {@link Thread}.
      *
      * @see #execute(boolean, DbCallback)
      */
-    private ThreadLocal<Boolean> inTransaction = new ThreadLocal<Boolean>();
+    private ThreadLocal<Boolean> inTransaction = new ThreadLocal<>();
 
     private SchemaDefinition mSchemaDefinition;
 
@@ -147,7 +146,7 @@ public class LockableDatabase {
      * @param uUid
      *            Never <code>null</code>.
      * @param schemaDefinition
-     *            Never <code>null</code
+     *            Never <code>null</code>.
      */
     public LockableDatabase(final Context context, final String uUid, final SchemaDefinition schemaDefinition) {
         this.context = context;
@@ -183,10 +182,7 @@ public class LockableDatabase {
         mReadLock.lock();
         try {
             getStorageManager().lockProvider(mStorageProviderId);
-        } catch (UnavailableStorageException e) {
-            mReadLock.unlock();
-            throw e;
-        } catch (RuntimeException e) {
+        } catch (UnavailableStorageException | RuntimeException e) {
             mReadLock.unlock();
             throw e;
         }
@@ -232,10 +228,7 @@ public class LockableDatabase {
         mWriteLock.lock();
         try {
             getStorageManager().lockProvider(providerId);
-        } catch (UnavailableStorageException e) {
-            mWriteLock.unlock();
-            throw e;
-        } catch (RuntimeException e) {
+        } catch (UnavailableStorageException | RuntimeException e) {
             mWriteLock.unlock();
             throw e;
         }
@@ -256,7 +249,7 @@ public class LockableDatabase {
      *
      * <p>
      * Can be instructed to start a transaction if none is currently active in
-     * the current thread. Callback will participe in any active transaction (no
+     * the current thread. Callback will participate in any active transaction (no
      * inner transaction created).
      * </p>
      *
@@ -265,8 +258,6 @@ public class LockableDatabase {
      *            transactional context.
      * @param callback
      *            Never <code>null</code>.
-     *
-     * @param <T>
      * @return Whatever {@link DbCallback#doDbWork(SQLiteDatabase)} returns.
      * @throws UnavailableStorageException
      */
@@ -274,7 +265,7 @@ public class LockableDatabase {
         lockRead();
         final boolean doTransaction = transactional && inTransaction.get() == null;
         try {
-            final boolean debug = K9.DEBUG;
+            final boolean debug = K9.isDebug();
             if (doTransaction) {
                 inTransaction.set(Boolean.TRUE);
                 mDb.beginTransaction();
@@ -291,12 +282,14 @@ public class LockableDatabase {
                     if (debug) {
                         begin = System.currentTimeMillis();
                     } else {
-                        begin = 0l;
+                        begin = 0L;
                     }
                     // not doing endTransaction in the same 'finally' block of unlockRead() because endTransaction() may throw an exception
                     mDb.endTransaction();
                     if (debug) {
-                        Log.v(K9.LOG_TAG, "LockableDatabase: Transaction ended, took " + Long.toString(System.currentTimeMillis() - begin) + "ms / " + new Exception().getStackTrace()[1].toString());
+                        Timber.v("LockableDatabase: Transaction ended, took %d ms / %s",
+                                currentTimeMillis() - begin,
+                                new Exception().getStackTrace()[1]);
                     }
                 }
             }
@@ -315,7 +308,7 @@ public class LockableDatabase {
      */
     public void switchProvider(final String newProviderId) throws MessagingException {
         if (newProviderId.equals(mStorageProviderId)) {
-            Log.v(K9.LOG_TAG, "LockableDatabase: Ignoring provider switch request as they are equal: " + newProviderId);
+            Timber.v("LockableDatabase: Ignoring provider switch request as they are equal: %s", newProviderId);
             return;
         }
 
@@ -327,7 +320,7 @@ public class LockableDatabase {
                 try {
                     mDb.close();
                 } catch (Exception e) {
-                    Log.i(K9.LOG_TAG, "Unable to close DB on local store migration", e);
+                    Timber.i(e, "Unable to close DB on local store migration");
                 }
 
                 final StorageManager storageManager = getStorageManager();
@@ -378,9 +371,11 @@ public class LockableDatabase {
             try {
                 doOpenOrCreateDb(databaseFile);
             } catch (SQLiteException e) {
-                // try to gracefully handle DB corruption - see issue 2537
-                Log.w(K9.LOG_TAG, "Unable to open DB " + databaseFile + " - removing file and retrying", e);
-                databaseFile.delete();
+                // TODO handle this error in a better way!
+                Timber.w(e, "Unable to open DB %s - removing file and retrying", databaseFile);
+                if (databaseFile.exists() && !databaseFile.delete()) {
+                    Timber.d("Failed to remove %s that couldn't be opened", databaseFile);
+                }
                 doOpenOrCreateDb(databaseFile);
             }
             if (mDb.getVersion() != mSchemaDefinition.getVersion()) {
@@ -415,6 +410,7 @@ public class LockableDatabase {
         final File databaseParentDir = databaseFile.getParentFile();
         if (databaseParentDir.isFile()) {
             // should be safe to unconditionally delete clashing file: user is not supposed to mess with our directory
+            // noinspection ResultOfMethodCallIgnored
             databaseParentDir.delete();
         }
         if (!databaseParentDir.exists()) {
@@ -428,10 +424,12 @@ public class LockableDatabase {
         final File attachmentDir = storageManager.getAttachmentDirectory(uUid, providerId);
         final File attachmentParentDir = attachmentDir.getParentFile();
         if (!attachmentParentDir.exists()) {
+            // noinspection ResultOfMethodCallIgnored, TODO maybe throw UnavailableStorageException?
             attachmentParentDir.mkdirs();
             FileHelper.touchFile(attachmentParentDir, ".nomedia");
         }
         if (!attachmentDir.exists()) {
+            // noinspection ResultOfMethodCallIgnored, TODO maybe throw UnavailableStorageException?
             attachmentDir.mkdirs();
         }
         return databaseFile;
@@ -461,8 +459,7 @@ public class LockableDatabase {
             try {
                 mDb.close();
             } catch (Exception e) {
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Exception caught in DB close: " + e.getMessage());
+                Timber.d("Exception caught in DB close: %s", e.getMessage());
             }
             final StorageManager storageManager = getStorageManager();
             try {
@@ -470,20 +467,25 @@ public class LockableDatabase {
                 final File[] attachments = attachmentDirectory.listFiles();
                 for (File attachment : attachments) {
                     if (attachment.exists()) {
-                        attachment.delete();
+                        boolean attachmentWasDeleted = attachment.delete();
+                        if (!attachmentWasDeleted) {
+                            Timber.d("Attachment was not deleted!");
+                        }
                     }
                 }
                 if (attachmentDirectory.exists()) {
-                    attachmentDirectory.delete();
+                    boolean attachmentDirectoryWasDeleted = attachmentDirectory.delete();
+                    if (!attachmentDirectoryWasDeleted) {
+                        Timber.d("Attachment directory was not deleted!");
+                    }
                 }
             } catch (Exception e) {
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "Exception caught in clearing attachments: " + e.getMessage());
+                Timber.d("Exception caught in clearing attachments: %s", e.getMessage());
             }
             try {
                 deleteDatabase(storageManager.getDatabase(uUid, mStorageProviderId));
             } catch (Exception e) {
-                Log.i(K9.LOG_TAG, "LockableDatabase: delete(): Unable to delete backing DB file", e);
+                Timber.i(e, "LockableDatabase: delete(): Unable to delete backing DB file");
             }
 
             if (recreate) {
@@ -499,7 +501,7 @@ public class LockableDatabase {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void deleteDatabase(File database) {
-        boolean deleted = false;
+        boolean deleted;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             deleted = SQLiteDatabase.deleteDatabase(database);
         } else {
@@ -507,8 +509,7 @@ public class LockableDatabase {
             deleted |= new File(database.getPath() + "-journal").delete();
         }
         if (!deleted) {
-            Log.i(K9.LOG_TAG,
-                    "LockableDatabase: deleteDatabase(): No files deleted.");
+            Timber.i("LockableDatabase: deleteDatabase(): No files deleted.");
         }
     }
 }

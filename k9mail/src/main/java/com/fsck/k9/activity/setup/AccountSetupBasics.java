@@ -17,7 +17,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -98,7 +98,7 @@ public class AccountSetupBasics extends K9Activity
         mPasswordView.addTextChangedListener(this);
         mClientCertificateCheckBox.setOnCheckedChangeListener(this);
         mClientCertificateSpinner.setOnClientCertificateChangedListener(this);
-        mShowPasswordCheckBox.setOnCheckedChangeListener (new OnCheckedChangeListener() {
+        mShowPasswordCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 showPassword(isChecked);
@@ -198,11 +198,13 @@ public class AccountSetupBasics extends K9Activity
     }
 
     private void showPassword(boolean show) {
+        int cursorPosition = mPasswordView.getSelectionStart();
         if (show) {
             mPasswordView.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         } else {
             mPasswordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         }
+        mPasswordView.setSelection(cursorPosition);
     }
 
     private void validateFields() {
@@ -230,7 +232,7 @@ public class AccountSetupBasics extends K9Activity
         try {
             name = getDefaultAccountName();
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not get default account name", e);
+            Timber.e(e, "Could not get default account name");
         }
 
         if (name == null) {
@@ -383,7 +385,7 @@ public class AccountSetupBasics extends K9Activity
     private void onManualSetup() {
         String email = mEmailView.getText().toString();
         String[] emailParts = splitEmail(email);
-        String user = emailParts[0];
+        String user = email;
         String domain = emailParts[1];
 
         String password = null;
@@ -494,7 +496,7 @@ public class AccountSetupBasics extends K9Activity
                 }
             }
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Error while trying to load provider settings.", e);
+            Timber.e(e, "Error while trying to load provider settings.");
         }
         return null;
     }

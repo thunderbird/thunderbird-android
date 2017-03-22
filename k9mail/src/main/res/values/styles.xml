@@ -39,5 +39,36 @@
         <item name="android:shadowRadius">4.0</item>
     </style>
 
+    <style name="ComposeTextLabel" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#aaa</item>
+    </style>
+    <style name="ComposeEditText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColorHint">#aaa</item>
+    </style>
+    <style name="ComposeEditTextLarge" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColorHint">#aaa</item>
+    </style>
+
+    <style name="ShowcaseTheme" parent="ShowcaseView.Light">
+        <item name="sv_backgroundColor">#99444444</item>
+    </style>
+
+    <style name="PositiveBulletPoint">
+        <item name="android:src">@drawable/bullet_point_positive</item>
+        <item name="android:tint">?attr/tintColorBulletPointPositive</item>
+    </style>
+
+    <style name="NeutralBulletPoint">
+        <item name="android:src">@drawable/bullet_point_neutral</item>
+        <item name="android:tint">?attr/tintColorBulletPointNeutral</item>
+    </style>
+
+    <style name="NegativeBulletPoint">
+        <item name="android:src">@drawable/bullet_point_negative</item>
+        <item name="android:tint">?attr/tintColorBulletPointNegative</item>
+    </style>
+
 </resources>
 

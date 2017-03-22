@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="openpgp_list_preference_none">無し</string>
+  <string name="openpgp_install_openkeychain_via">%s 経由でOpenKeychainをインストール</string>
+  <string name="openpgp_no_key_selected">鍵が選択されていません</string>
+  <string name="openpgp_key_selected">鍵は選択済みです</string>
+</resources>

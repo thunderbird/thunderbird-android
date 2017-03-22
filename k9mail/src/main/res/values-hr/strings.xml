@@ -4,7 +4,6 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="beta_app_name">K-9 Mail BETA</string>
   <string name="shortcuts_title">K-9 Računi</string>
   <string name="unread_widget_label">K-9 Nepročitano</string>
   <string name="remote_control_label">K-9 Mail daljinski upravljač</string>
@@ -15,35 +14,6 @@
   <string name="app_license">Licencirano pod Apache License, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Dobrodošli u K-9 Mail</string>
-  <string name="accounts_welcome"><![CDATA[
-<p>
-K-9 Mail je moćan besplatan klijent e-pošte za Android.
-</p><p>
-Poboljšane značajke uključuju:
-</p>
-<ul>
-  <li>Slanje pošte koristeći IMAP BESPOSLENOST</li>
-  <li>Bolje performanse</li>
-  <li>Ponovno podnošenje poruke</li>
-  <li>Potpise E-Pošte</li>
-  <li>Bcc-sam-sebi</li>
-  <li>Upise mapa</li>
-  <li>Sinhronizacija svih mapa</li>
-  <li>Konfiguraciju porvratne adrese</li>
-  <li>Tipkovničke kratice</li>
-  <li>Bolju IMAP podršku</li>
-  <li>Spremanje privitaka na SD Karticu</li>
-  <li>Pražnjenje Smeća</li>
-  <li>Sortiranje poruka</li>
-  <li>…i više</li>
-</ul>
-<p>
-Molimo vas znajte da K-9 ne podržava većinu besplatnih Hotmail računa i poput drugih klijenata e-pošte ima nekih problema prilikom komunikacije sa Microsoft Exchange.
-</p><p>
-Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i postavljajte pitanja na
-<a href=\"http://k9mail.googlecode.com/\">http://k9mail.googlecode.com/</a>.
-</p>
-    ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nPoslano sa mog Android uređaja sa K-9 Mail. Molim vas oprostite na mojoj sažetosti.</string>
   <!--General strings that include the app name-->
@@ -77,8 +47,8 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="status_loading_account_folder">Provjera <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Dobavljanje zaglavlja <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Šaljem <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="status_processing_account">Obrađujem <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Slijedeća provjera <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Sinhroniziranje je onemogućeno</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> odabrano</string>
@@ -129,7 +99,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="message_view_theme_action_dark">Prebaci na tamnu temu</string>
   <string name="message_view_theme_action_light">Prebaci na svijetlu temu</string>
   <string name="mark_as_unread_action">Označi nepročitanim</string>
-  <string name="add_cc_bcc_action">Dodaj Cc/Bcc</string>
   <string name="read_receipt">Potvrda čitanja</string>
   <string name="read_receipt_enabled">Zahtjeva potvrdu čitanja</string>
   <string name="read_receipt_disabled">Ne zahtjeva potvrdu čitanja</string>
@@ -165,10 +134,12 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novih poruka</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Nepročitano (<xliff:g id="account">%s</xliff:g>)</string>
-  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%d</xliff:g> više na <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> više na <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Odgovori</string>
   <string name="notification_action_mark_as_read">Označi Pročitanim</string>
   <string name="notification_action_delete">Obriši</string>
+  <string name="notification_action_archive">Arhiva</string>
+  <string name="notification_action_spam">Neželjena pošta</string>
   <string name="notification_certificate_error_title">Greška certifikata za <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">provjerite postavke vašeg poslužitelja</string>
   <string name="notification_bg_sync_ticker">Provjeravam poštu: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -196,9 +167,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="debug_enable_sensitive_logging_summary">Mpže prikazati lozinke u zapisnicima.</string>
   <string name="message_list_load_more_messages_action">Učitaj više poruka</string>
   <string name="message_to_fmt">Za:<xliff:g id="counterParty">%s</xliff:g></string>
-  <string name="message_compose_to_hint">Za</string>
-  <string name="message_compose_cc_hint">Cc</string>
-  <string name="message_compose_bcc_hint">Bcc</string>
   <string name="message_compose_subject_hint">Subjekt</string>
   <string name="message_compose_content_hint">Tekst poruke</string>
   <string name="message_compose_signature_hint">Potpis</string>
@@ -214,9 +182,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="error_contact_address_not_found">Nije poronađena adrese e-pošte za ovaj kontakt.</string>
   <string name="message_compose_attachments_skipped_toast">Neki privici ne mogu biti proslijeđeni zato jer nisu preuzeti.</string>
   <string name="message_compose_show_quoted_text_action">Citat poruke</string>
-  <string name="message_compose_description_add_to">Dodaj primatelja (Za)</string>
-  <string name="message_compose_description_add_cc">Dodaj primatelja (CC)</string>
-  <string name="message_compose_description_add_bcc">Dodaj primatelja (BCC)</string>
   <string name="message_compose_description_delete_quoted_text">Maknuti citirani tekst</string>
   <string name="message_compose_description_edit_quoted_text">Urediti citirani tekst</string>
   <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -224,18 +189,12 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_attachment_view_action">Otvori</string>
   <string name="message_view_attachment_download_action">Spremi</string>
-  <string name="message_view_status_attachment_saved">Privitak je spremljen na SD karticu kao <xliff:g id="filename">%s</xliff:g>.</string>
   <string name="message_view_status_attachment_not_saved">Spremanje privitka na SD karticu nije moguće.</string>
   <string name="message_view_show_pictures_action">Prikaži slike</string>
-  <string name="message_view_show_message_action">Prikaži poruke</string>
-  <string name="message_view_show_attachments_action">Prikaži privitke</string>
   <string name="message_view_show_more_attachments_action">Više…</string>
-  <string name="message_view_fetching_attachment_toast">Dohvaćanje privitka.</string>
   <string name="message_view_no_viewer">Ne mogu pronaći preglednik za <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Preuzmi cijelu poruku</string>
-  <string name="message_view_downloading">Preuzimam…</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
-  <string name="message_additional_headers_not_downloaded">Nisu sva zgalavlja preuzeta i sppemljena. Odaberite \"Spremi sva zaglavlja lokalno\" u postavkama dolaznog poslužitelja računa za omogućavanje ove značajke u buduće.</string>
   <string name="message_no_additional_headers_available">Sva zaglavlja su preuzeta, ali nema dodatnih zaglavlja za prikaz.</string>
   <string name="message_additional_headers_retrieval_failed">Dohvat dodatnih zaglavlja iz baze podataka ili poslužitelja pošte nije uspio.</string>
   <string name="from_same_sender">Više od ovog pošiljatelja</string>
@@ -270,6 +229,7 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="global_settings_confirm_action_delete">Obriši</string>
   <string name="global_settings_confirm_action_delete_starred">Obriši Označeno Zvjezdicom (u pregledu poruke)</string>
   <string name="global_settings_confirm_action_spam">Neželjena pošta</string>
+  <string name="global_settings_confirm_menu_discard">Odbaci poruku</string>
   <string name="global_settings_confirm_action_delete_notif">Obriši (iz obavijesti)</string>
   <string name="global_settings_privacy_hide_useragent">Makni K-9 Korisničkog agenta iz zaglavlja pošte</string>
   <string name="global_settings_privacy_hide_timezone">Koristi KSV kao vremensku zonu u zaglavlju pošte</string>
@@ -290,6 +250,8 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="global_settings_lock_screen_notification_visibility_everything">Isto kao kod otključanog zaslona</string>
   <string name="quiet_time">Tiho Vrijeme</string>
   <string name="quiet_time_description">Onemogućava zvonjavu, vibriranje i blicanje noću</string>
+  <string name="quiet_time_notification">Onemogući obavijesti</string>
+  <string name="quiet_time_notification_description">Potpuno onemogući obavijesti tijekom Vremena Tišine</string>
   <string name="quiet_time_starts">Vrijeme Tišine započinje</string>
   <string name="quiet_time_ends">Vrijeme Tišine završava</string>
   <string name="account_setup_basics_title">Postavi novi račun</string>
@@ -470,8 +432,9 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="account_settings_folders">Mape</string>
   <string name="account_settings_quote_prefix_label">Prefiks citiranog teksta</string>
   <string name="account_settings_crypto">Šifriranje</string>
-  <string name="account_settings_crypto_app">OpenPGP Davatelj Usluga</string>
-  <string name="account_settings_no_openpgp_provider_installed">Nema instaliranog Open PGP Pružatelja Usluge</string>
+  <string name="account_settings_crypto_app">Aplikacija OtvorenogPGP-a</string>
+  <string name="account_settings_crypto_key">Moj Ključ</string>
+  <string name="account_settings_no_openpgp_provider_configured">Nema instalirane aplikacije OtvorenogPGP-a</string>
   <string name="account_settings_mail_check_frequency_label">Učestalost provjere mape</string>
   <string name="account_settings_storage_title">Pohrana</string>
   <string name="account_settings_color_label">Boja računa</string>
@@ -662,11 +625,9 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema pregleda poruke</string>
   <string name="settings_compose_theme_label">Tema sastavljanja poruke</string>
-  <string name="settings_language_label">Jezik</string>
   <string name="settings_message_theme_selection_label">Popravljena tema poruke</string>
   <string name="settings_message_theme_selection_summary_off">Pdaberite temu poruke prilikom pregledavanja poruke</string>
   <string name="settings_message_theme_selection_summary_on">Koristi popravljenu temu pregleda poruke</string>
-  <string name="setting_language_system">Sistemski zadano</string>
   <string name="background_ops_label">Pozadinska sinhronizacija</string>
   <string name="background_ops_never">Nikada</string>
   <string name="background_ops_always">Uvijek</string>
@@ -701,7 +662,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="search_all_messages_detail">Sve poruke uključene u mape pretraživanja</string>
   <string name="integrated_inbox_title">Objedinjena Dolazna Pošta</string>
   <string name="integrated_inbox_detail">Sve poruke u objedinjenim mapama</string>
-  <string name="tap_hint">Dodirnite omotnicu ili zvijezdicu za nepročitane ili za poruke sa zvjezdicom </string>
   <string name="folder_settings_include_in_integrated_inbox_label">Objedini</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Sve poruke su prikazane u Objedinjenoj Dolaznoj Pošti</string>
   <string name="account_settings_searchable_label">Mape za pretragu</string>
@@ -743,18 +703,10 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="font_size_larger">Veća</string>
   <string name="miscellaneous_preferences">Razna</string>
   <string name="error_activity_not_found">Nema prikladne aplikacije za ovu radnju.</string>
-  <string name="btn_crypto_sign">Potpis</string>
-  <string name="btn_encrypt">Enkriptiraj</string>
-  <string name="unknown_crypto_signature_user_id">&lt;nepoznato&gt;</string>
-  <string name="pgp_mime_unsupported">PGP/MIME poruke još nisu podržane.</string>
-  <string name="attachment_encryption_unsupported">Upozorenje: privici još NISU potpisani ili enkriptirani</string>
-  <string name="send_aborted">Slanje prekinuto.</string>
   <string name="save_or_discard_draft_message_dlg_title">Spremiti predložak poruke?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Spremiti ili Odbaciti ovu poruku?</string>
   <string name="confirm_discard_draft_message_title">Odbaciti poruku?</string>
   <string name="confirm_discard_draft_message">Jeste li sigurni da želite odbaciti ovu poruku?</string>
-  <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Odbijanje spremanja predloška poruke.</string>
-  <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Odbij spremanje predloška enkriptirane poruke.</string>
   <string name="select_text_now">Odaberi tekst za kopiranje..</string>
   <string name="dialog_confirm_delete_title">Potvrda brisanja</string>
   <string name="dialog_confirm_delete_message">Da li želite obrisati ovu poruku?</string>
@@ -777,7 +729,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="debug_logging_enabled">Opcija ispravljanja grešaka omogućena</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="error_unable_to_connect">Ne mogu se povezati.</string>
   <string name="import_export_action">Podešenja Uvoz &amp; Izvoz</string>
   <string name="settings_export_account">Izvoz postavki računa</string>
   <string name="settings_export_all">Izvoz postavki i računa</string>
@@ -860,8 +811,6 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Granica pretrage poslužitelja</string>
   <string name="account_settings_remote_search_num_summary">Traženje će se zaustaviti nakon pronalaska <xliff:g id="num_results">%s</xliff:g> rezultata.</string>
-  <string name="account_settings_remote_search_full_text">Uključi tekst poruke u pretraživanje poslužitelja</string>
-  <string name="account_settings_remote_search_full_text_summary">Pretraga cijelog teksta može biti spora.</string>
   <string name="remote_search_sending_query">Šaljem upit poslužitelju</string>
   <string name="remote_search_downloading">Zahvaćam %d rezultate</string>
   <string name="remote_search_downloading_limited">Dohvaćam  %1$d of %2$d rezultata</string>
@@ -902,18 +851,23 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="fetching_attachment_dialog_message">Dohvaćanje privitka…</string>
   <string name="auth_external_error">Ne mogu identificirati. Poslužitelj ne oglašava SASL VANJSKU sposobnost. To može biti problem sa certifikatom klijenta (istekao, nepoznat izdavatelj certifikata) ili neki drugi konfiguracijski problem.</string>
   <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decrypting_verifying">Dekriptiranje/Verificiranje…</string>
-  <string name="openpgp_successful_decryption">Dekripcija uspjela</string>
-  <string name="openpgp_signature_valid_certified">Važeći potpis (certificiran)</string>
-  <string name="openpgp_signature_valid_uncertified">Važeći potpis ali ne certificiran</string>
-  <string name="openpgp_signature_unknown">Nepoznati potpisatelj</string>
-  <string name="openpgp_signature_invalid">Nevažeći potpis</string>
-  <string name="openpgp_signature_unknown_text">Nedostaje javni ključ za ovaj potpis</string>
-  <string name="openpgp_successful_decryption_valid_signature_certified">Uspješna dekripcija i važeći potpis (certificiran)</string>
-  <string name="openpgp_successful_decryption_valid_signature_uncertified">Uspješna dekripcija i važeći potpis ali ne certificiran</string>
-  <string name="openpgp_successful_decryption_unknown_signature">Uspješna dekripcija ali nedostaje javni kjuč</string>
-  <string name="openpgp_get_key">Potraži nedostajući ključ</string>
-  <string name="openpgp_user_id">Korisnički ID</string>
+  <string name="openpgp_unknown_error">Nepoznata Greška OvorenogPGP-a</string>
+  <string name="openpgp_canceled_by_user">Otkazano od korisnika</string>
+  <string name="openpgp_result_no_signature">Nije Prijavljen</string>
+  <string name="openpgp_result_invalid_signature">Nevažeći potpis</string>
+  <string name="openpgp_result_signature_uncertified">Potpisno od (nije certificirano)</string>
+  <string name="openpgp_result_signature_certified">Potpisano od</string>
+  <string name="openpgp_result_signature_expired_key">Ključ je istekao!</string>
+  <string name="openpgp_result_signature_revoked_key">Ključ je opozvan</string>
+  <string name="openpgp_result_signature_insecure">Nesigurno!</string>
+  <string name="openpgp_result_signature_missing_key">Nepoznati javni ključ</string>
+  <string name="openpgp_result_encrypted">Enkriptirano</string>
+  <string name="openpgp_result_not_encrypted">Nije enkriptirano</string>
+  <string name="openpgp_result_decryption_insecure">Nesigurno</string>
+  <string name="openpgp_result_action_show">Prikaži</string>
+  <string name="openpgp_result_action_lookup">Potraži</string>
+  <string name="openpgp_result_no_name">Bez naziva</string>
+  <string name="openpgp_result_no_email">Bez e-pošte</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Koristi certifikat klijenta</string>
   <string name="client_certificate_spinner_empty">Nema certifikata klijenta</string>
@@ -921,4 +875,7 @@ Molimo vas pošaljite izvještaj o manama, učestvujte u novim značajkama i pos
   <string name="client_certificate_retrieval_failure">Neuspješno dobivanje certifikata klijenta za alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Napredne Opcije</string>
   <string name="client_certificate_expired">Certifikat klijenta \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" je istekao ili još nije važeći (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <string name="crypto_incomplete_message">Nepotpuna poruka</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_download_complete_message_to_decrypt">Kliknite \'Preuzimanje cijele poruke\' za omogućavanje dekripcije.</string>
 </resources>

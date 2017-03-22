@@ -50,9 +50,16 @@ public enum Flag {
     X_REMOTE_COPY_STARTED,
 
     /**
-     * Indicates that all headers of the message have been stored in the
-     * database. If this is false, additional headers might be retrieved from
-     * the server (if the message is still there).
+     * Messages with this flag have been migrated from database version 50 or earlier.
+     * This earlier database format did not preserve the original mime structure of a
+     * mail, which means messages migrated to the newer database structure may be
+     * incomplete or broken.
+     * TODO Messages with this flag should be redownloaded, if possible.
      */
-    X_GOT_ALL_HEADERS,
+    X_MIGRATED_FROM_V50,
+
+    /**
+     * This flag is used for drafts where the message should be sent as PGP/INLINE.
+     */
+    X_DRAFT_OPENPGP_INLINE,
 }

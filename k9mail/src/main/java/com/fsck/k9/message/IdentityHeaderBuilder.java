@@ -3,13 +3,14 @@ package com.fsck.k9.message;
 
 import android.net.Uri;
 import android.net.Uri.Builder;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.internet.TextBody;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 
 
 public class IdentityHeaderBuilder {
@@ -49,7 +50,7 @@ public class IdentityHeaderBuilder {
             appendValue(IdentityField.OFFSET, body.getComposedMessageOffset());
         } else {
             // If not, calculate it now.
-            appendValue(IdentityField.LENGTH, body.getText().length());
+            appendValue(IdentityField.LENGTH, body.getRawText().length());
             appendValue(IdentityField.OFFSET, 0);
         }
 
@@ -66,7 +67,7 @@ public class IdentityHeaderBuilder {
                 appendValue(IdentityField.PLAIN_OFFSET, composedMessageOffset);
             } else {
                 // If not, calculate it now.
-                appendValue(IdentityField.PLAIN_LENGTH, body.getText().length());
+                appendValue(IdentityField.PLAIN_LENGTH, body.getRawText().length());
                 appendValue(IdentityField.PLAIN_OFFSET, 0);
             }
         }
@@ -96,10 +97,7 @@ public class IdentityHeaderBuilder {
 
         String k9identity = IdentityField.IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
 
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "Generated identity: " + k9identity);
-        }
-
+        Timber.d("Generated identity: %s", k9identity);
         return k9identity;
     }
 

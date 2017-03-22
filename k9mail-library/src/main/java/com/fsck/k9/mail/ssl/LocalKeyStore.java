@@ -76,7 +76,9 @@ public class LocalKeyStore {
              * File.createTempFile). We can't pass an empty file to
              * Keystore.load. Instead, we let it be created anew.
              */
-            file.delete();
+            if (file.exists() && !file.delete()) {
+                Log.d(LOG_TAG, "Failed to delete empty keystore file: " + file.getAbsolutePath());
+            }
         }
 
         FileInputStream fis = null;
@@ -176,7 +178,10 @@ public class LocalKeyStore {
     private void upgradeKeyStoreFile() throws CertificateException {
         if (KEY_STORE_FILE_VERSION > 0) {
             // Blow away version "0" because certificate aliases have changed.
-            new File(getKeyStoreFilePath(0)).delete();
+            File versionZeroFile = new File(getKeyStoreFilePath(0));
+            if (versionZeroFile.exists() && !versionZeroFile.delete()) {
+                Log.d(LOG_TAG, "Failed to delete old key-store file: " + versionZeroFile.getAbsolutePath());
+            }
         }
     }
 

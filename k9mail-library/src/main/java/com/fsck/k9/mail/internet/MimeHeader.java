@@ -8,14 +8,14 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.*;
 
-public class MimeHeader {
-    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+import android.support.annotation.NonNull;
 
+
+public class MimeHeader implements Cloneable {
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
     public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
     public static final String HEADER_CONTENT_ID = "Content-ID";
-
 
     private List<Field> mFields = new ArrayList<Field>();
     private String mCharset = null;
@@ -50,6 +50,7 @@ public class MimeHeader {
         addHeader(name, value);
     }
 
+    @NonNull
     public Set<String> getHeaderNames() {
         Set<String> names = new LinkedHashSet<String>();
         for (Field field : mFields) {
@@ -58,6 +59,7 @@ public class MimeHeader {
         return names;
     }
 
+    @NonNull
     public String[] getHeader(String name) {
         List<String> values = new ArrayList<String>();
         for (Field field : mFields) {
@@ -65,7 +67,7 @@ public class MimeHeader {
                 values.add(field.getValue());
             }
         }
-        return values.toArray(EMPTY_STRING_ARRAY);
+        return values.toArray(new String[values.size()]);
     }
 
     public void removeHeader(String name) {
@@ -76,6 +78,19 @@ public class MimeHeader {
             }
         }
         mFields.removeAll(removeFields);
+    }
+
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        for (Field field : mFields) {
+            if (field.hasRawData()) {
+                builder.append(field.getRaw());
+            } else {
+                writeNameValueField(builder, field);
+            }
+            builder.append('\r').append('\n');
+        }
+        return builder.toString();
     }
 
     public void writeTo(OutputStream out) throws IOException {
@@ -108,6 +123,23 @@ public class MimeHeader {
         writer.write(value);
     }
 
+    private void writeNameValueField(StringBuilder builder, Field field) {
+        String value = field.getValue();
+
+        if (hasToBeEncoded(value)) {
+            Charset charset = null;
+
+            if (mCharset != null) {
+                charset = Charset.forName(mCharset);
+            }
+            value = EncoderUtil.encodeEncodedWord(field.getValue(), charset);
+        }
+
+        builder.append(field.getName());
+        builder.append(": ");
+        builder.append(value);
+    }
+
     // encode non printable characters except LF/CR/TAB codes.
     private boolean hasToBeEncoded(String text) {
         for (int i = 0; i < text.length(); i++) {
@@ -137,10 +169,6 @@ public class MimeHeader {
         public static Field newRawField(String name, String raw) {
             if (raw == null) {
                 throw new NullPointerException("Argument 'raw' cannot be null");
-            }
-            if (name != null && !raw.startsWith(name + ":")) {
-                throw new IllegalArgumentException("The value of 'raw' needs to start with the supplied field name " +
-                        "followed by a colon");
             }
 
             return new Field(name, null, raw);
@@ -193,11 +221,12 @@ public class MimeHeader {
 
     @Override
     public MimeHeader clone() {
-        MimeHeader header = new MimeHeader();
-        header.mCharset = mCharset;
-
-        header.mFields = new ArrayList<Field>(mFields);
-
-        return header;
+        try {
+            MimeHeader header = (MimeHeader) super.clone();
+            header.mFields = new ArrayList<Field>(mFields);
+            return header;
+        } catch(CloneNotSupportedException e) {
+            throw new AssertionError(e);
+        }
     }
 }

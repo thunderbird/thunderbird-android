@@ -6,7 +6,6 @@
 
     <!-- Used in AndroidManifest.xml -->
     <string name="app_name">K-9 Mail</string>
-    <string name="beta_app_name">K-9 Mail BETA</string>
 
     <string name="shortcuts_title">K-9 Accounts</string>
     <string name="unread_widget_label">K-9 Unread</string>
@@ -50,7 +49,7 @@ Please note that K-9 does not support most free Hotmail accounts and, like many 
 some quirks when talking to Microsoft Exchange.
 </p><p>
 Please submit bug reports, contribute new features and ask questions at
-<a href="http://k9mail.googlecode.com/">http://k9mail.googlecode.com/</a>.
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
 
@@ -80,9 +79,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>
     <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
-    <string name="read_attachment_label">read Email attachments</string>
+    <string name="read_attachment_label">Read Email attachments</string>
     <string name="read_attachment_desc">Allows this application to read your Email attachments.</string>
-    <string name="read_messages_label">read Emails</string>
+    <string name="read_messages_label">Read Emails</string>
     <string name="read_messages_desc">Allows this application to read your Emails.</string>
     <string name="delete_messages_label">Delete Emails</string>
     <string name="delete_messages_desc">Allows this application to delete your Emails.</string>
@@ -105,9 +104,13 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="status_loading_account_folder_headers">Fetching headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_sending_account">Sending <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
     <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-    <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+    <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
 
     <string name="status_next_poll">Next poll <xliff:g id="nexttime">%s</xliff:g></string>
+    <string name="status_no_network">Sync disabled - No network</string>
+    <string name="status_no_background">Sync disabled - No background activity</string>
+    <string name="status_poll_and_push_disabled">Polling and pushing disabled</string>
+    <string name="status_syncing_blocked">Syncing blocked</string>
     <string name="status_syncing_off">Syncing disabled</string>
 
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selected</string>
@@ -118,6 +121,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="cancel_action">Cancel</string>
     <string name="send_action">Send</string>
     <string name="send_again_action">Send Again</string>
+    <string name="empty_subject">Subject is empty, click again to send anyway</string>
     <string name="select_action">Select</string>
     <string name="deselect_action">Deselect</string>
     <string name="reply_action">Reply</string>
@@ -157,12 +161,15 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="select_text_action">Select text</string>
     <string name="show_headers_action">Show headers</string>
     <string name="hide_headers_action">Hide headers</string>
+    <plurals name="copy_address_to_clipboard">
+        <item quantity="one">Address copied to clipboard</item>
+        <item quantity="other">Addresses copied to clipboard</item>
+    </plurals>
 
     <string name="message_view_theme_action_dark">Switch to dark theme</string>
     <string name="message_view_theme_action_light">Switch to light theme</string>
 
     <string name="mark_as_unread_action">Mark unread</string>
-    <string name="add_cc_bcc_action">Add Cc/Bcc</string>
     <string name="read_receipt">Read receipt</string>
     <string name="read_receipt_enabled">Will request read receipt</string>
     <string name="read_receipt_disabled">Will not request read receipt</string>
@@ -182,6 +189,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="status_loading_more">Loading messages\u2026</string>
     <string name="status_network_error">Connection error</string>
     <string name="status_invalid_id_error">Message not found</string>
+    <string name="status_loading_error">Message loading error</string>
 
     <string name="status_loading_more_failed">Retry loading more messages</string>
 
@@ -209,11 +217,17 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="notification_action_reply">Reply</string>
     <string name="notification_action_mark_as_read">Mark Read</string>
+    <string name="notification_action_mark_all_as_read">Mark All Read</string>
     <string name="notification_action_delete">Delete</string>
+    <string name="notification_action_delete_all">Delete All</string>
     <string name="notification_action_archive">Archive</string>
+    <string name="notification_action_archive_all">Archive All</string>
     <string name="notification_action_spam">Spam</string>
     <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
+
+    <string name="notification_authentication_error_title">Authentication failed</string>
+    <string name="notification_authentication_error_text">Authentication failed for <xliff:g id="account">%s</xliff:g>. Update your server settings.</string>
 
     <string name="notification_bg_sync_ticker">Checking mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
     <string name="notification_bg_sync_title">Checking mail</string>
@@ -246,9 +260,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_list_load_more_messages_action">Load more messages</string>
     <string name="message_to_fmt">To:<xliff:g id="counterParty">%s</xliff:g></string>
 
-    <string name="message_compose_to_hint">To</string>
-    <string name="message_compose_cc_hint">Cc</string>
-    <string name="message_compose_bcc_hint">Bcc</string>
     <string name="message_compose_subject_hint">Subject</string>
     <string name="message_compose_content_hint">Message text</string>
     <string name="message_compose_signature_hint">Signature</string>
@@ -261,12 +272,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:</string>
     <string name="message_compose_reply_header_fmt_with_date">On <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> wrote:</string>
     <string name="message_compose_error_no_recipients">You must add at least one recipient.</string>
+    <string name="compose_error_incomplete_recipient">Recipient field contains incomplete input!</string>
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="message_compose_show_quoted_text_action">Quote message</string>
-    <string name="message_compose_description_add_to">Add recipient (To)</string>
-    <string name="message_compose_description_add_cc">Add recipient (CC)</string>
-    <string name="message_compose_description_add_bcc">Add recipient (BCC)</string>
     <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
 
@@ -275,23 +284,20 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_attachment_view_action">Open</string>
     <string name="message_view_attachment_download_action">Save</string>
-    <string name="message_view_status_attachment_saved">Attachment saved to SD card as <xliff:g id="filename">%s</xliff:g>.</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment to SD card.</string>
+    <string name="message_view_status_no_space">The attachment could not be saved as there is not enough space.</string>
     <string name="message_view_show_pictures_action">Show pictures</string>
-    <string name="message_view_show_message_action">Show message</string>
-    <string name="message_view_show_attachments_action">Show attachments</string>
-    <string name="message_view_show_more_attachments_action">More…</string>
-    <string name="message_view_fetching_attachment_toast">Fetching attachment.</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download complete message</string>
-    <string name="message_view_downloading">Downloading…</string>
+    <string name="message_view_toast_unable_to_display_message">Unable to display message</string>
+    <string name="message_view_sender_label">via %1$s</string>
 
     <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
-    <string name="message_additional_headers_not_downloaded">Not all headers have been downloaded or saved. Select \"Save all headers locally\" in the account\'s incoming server settings to enable this for the future.</string>
     <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>
     <string name="message_additional_headers_retrieval_failed">The retrieval of additional headers from the database or mail server failed.</string>
 
     <string name="from_same_sender">More from this sender</string>
+    <string name="debug_delete_local_body">Debug / Clear message body</string>
 
     <string name="message_discarded_toast">Message discarded</string>
     <string name="message_saved_toast">Message saved as draft</string>
@@ -329,10 +335,14 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_confirm_action_delete">Delete</string>
     <string name="global_settings_confirm_action_delete_starred">Delete Starred (in message view)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
+    <string name="global_settings_confirm_menu_discard">Discard message</string>
+    <string name="global_settings_confirm_menu_mark_all_read">Mark all messages as read</string>
     <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>
 
-    <string name="global_settings_privacy_hide_useragent">Remove K-9 User-Agent from mail headers</string>
-    <string name="global_settings_privacy_hide_timezone">Use UTC as time zone in mail headers</string>
+    <string name="global_settings_privacy_hide_useragent">Hide mail client</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
+    <string name="global_settings_privacy_hide_timezone">Hide timezone</string>
+    <string name="global_settings_privacy_hide_timezone_detail">Use UTC instead of local timezone in mail headers</string>
     <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>
     <string name="global_settings_notification_hide_subject_never">Never</string>
     <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>
@@ -532,6 +542,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_notify_sync_summary">Notify in status bar while mail is checked</string>
     <string name="account_settings_notify_self_label">Include outgoing mail</string>
     <string name="account_settings_notify_self_summary">Show a notification for messages I sent</string>
+    <string name="account_notify_contacts_mail_only_label">Contacts only</string>
+    <string name="account_notify_contacts_mail_only_summary">Show notifications only for messages from known contacts</string>
     <string name="account_settings_notification_opens_unread_label">Notification opens unread messages</string>
     <string name="account_settings_notification_opens_unread_summary">Searches for unread messages when Notification is opened</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Mark as read when opened</string>
@@ -575,7 +587,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto">Cryptography</string>
     <string name="account_settings_crypto_app">OpenPGP app</string>
     <string name="account_settings_crypto_key">My Key</string>
-    <string name="account_settings_no_openpgp_provider_installed">No OpenPGP app installed</string>
+    <string name="account_settings_no_openpgp_provider_configured">No OpenPGP app configured</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
@@ -808,14 +820,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_theme_label">Theme</string>
     <string name="settings_message_theme_label">Message view theme</string>
     <string name="settings_compose_theme_label">Composer theme</string>
-    <string name="settings_language_label">Language</string>
 
     <string name="settings_message_theme_selection_label">Fixed message theme</string>
     <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>
     <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>
-
-
-    <string name="setting_language_system">System default</string>
 
     <string name="background_ops_label">Background sync</string>
     <string name="background_ops_never">Never</string>
@@ -863,7 +871,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="integrated_inbox_title">Unified Inbox</string>
     <string name="integrated_inbox_detail">All messages in unified folders</string>
 
-    <string name="tap_hint">Tap envelope or star for unread or starred messages</string>
+    <string name="tap_hint">Tap circle or star for unread or starred messages</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">Unify</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">All messages are shown in Unified Inbox</string>
@@ -916,21 +924,13 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="miscellaneous_preferences">Miscellaneous</string>
 
     <string name="error_activity_not_found">No suitable application for this action found.</string>
-    <string name="btn_crypto_sign">Sign</string>
-    <string name="btn_encrypt">Encrypt</string>
-    <string name="unknown_crypto_signature_user_id">&lt;unknown&gt;</string>
-    <string name="pgp_mime_unsupported">PGP/MIME messages are not supported yet.</string>
-    <string name="attachment_encryption_unsupported">Warning: attachments are NOT signed or encrypted yet.</string>
-    <string name="send_aborted">Send aborted.</string>
+    <string name="send_failed_reason">Send failed: %s</string>
 
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>
 
     <string name="confirm_discard_draft_message_title">Discard message?</string>
     <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>
-
-    <string name="refuse_to_save_draft_marked_encrypted_dlg_title">Refuse to save draft message.</string>
-    <string name="refuse_to_save_draft_marked_encrypted_instructions_fmt">Refuse to save draft message marked encrypted.</string>
 
     <string name="select_text_now">Select text to copy.</string>
 
@@ -943,6 +943,12 @@ Please submit bug reports, contribute new features and ask questions at
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Yes</string>
     <string name="dialog_confirm_delete_cancel_button">No</string>
+
+    <string name="dialog_confirm_mark_all_as_read_title">Confirm mark all as read</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Do you want to mark all messages as read?</string>
+
+    <string name="dialog_confirm_mark_all_as_read_confirm_button">Yes</string>
+    <string name="dialog_confirm_mark_all_as_read_cancel_button">No</string>
 
     <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>
     <plurals name="dialog_confirm_spam_message">
@@ -958,7 +964,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
-    <string name="error_unable_to_connect">Unable to connect.</string>
 
     <string name="import_export_action">Settings Import &amp; Export</string>
     <string name="settings_export_account">Export account settings</string>
@@ -972,6 +977,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_importing">Importing settings…</string>
     <string name="settings_import_scanning_file">Scanning file…</string>
     <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_export_success_generic">Settings successfully exported</string>
     <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>
     <plurals name="settings_import_accounts">
@@ -1051,8 +1057,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Server search limit</string>
     <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>
-    <string name="account_settings_remote_search_full_text">Include messages text in server search</string>
-    <string name="account_settings_remote_search_full_text_summary">Full text searches can be slow.</string>
     <string name="remote_search_sending_query">Sending query to server</string>
     <string name="remote_search_downloading">Fetching %d results</string>
     <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>
@@ -1107,36 +1111,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="auth_external_error">Unable to authenticate.  The server does not advertise the SASL EXTERNAL capability.  This could be due to a problem with the client certificate (expired, unknown certificate authority) or some other configuration problem.</string>
     
-    <!-- === OpenPGP specific ================================================================== -->
-    <string name="openpgp_decrypting_verifying">Decrypting/Verifying…</string>
-    <string name="openpgp_successful_decryption">Successful decryption</string>
-    <string name="openpgp_signature_valid_certified">Valid signature (certified)</string>
-    <string name="openpgp_signature_valid_uncertified">Valid signature but uncertified</string>
-    <string name="openpgp_signature_unknown">Unknown signer</string>
-    <string name="openpgp_signature_invalid">Invalid signature</string>
-    <string name="openpgp_signature_unknown_text">Missing public key for this signature</string>
-    <string name="openpgp_successful_decryption_valid_signature_certified">Successful decryption and valid signature (certified)</string>
-    <string name="openpgp_successful_decryption_valid_signature_uncertified">Successful decryption and valid signature but uncertified</string>
-    <string name="openpgp_successful_decryption_unknown_signature">Successful decryption but missing public key</string>
-    <string name="openpgp_get_key">Lookup missing key</string>
-    <string name="openpgp_error">OpenPGP Error: %s</string>
-    <string name="openpgp_unknown_error">Unknown OpenPGP Error</string>
-    <string name="openpgp_user_id">User Id</string>
-    
-    <string name="openpgp_result_no_signature">"Not Signed"</string>
-    <string name="openpgp_result_invalid_signature">"Invalid signature!"</string>
-    <string name="openpgp_result_signature_uncertified">"Signed by (not certified!)"</string>
-    <string name="openpgp_result_signature_certified">"Signed by"</string>
-    <string name="openpgp_result_signature_expired_key">"Key is expired!"</string>
-    <string name="openpgp_result_signature_revoked_key">"Key has been revoked!"</string>
-    <string name="openpgp_result_signature_missing_key">"Unknown public key"</string>
-    <string name="openpgp_result_encrypted">"Encrypted"</string>
-    <string name="openpgp_result_not_encrypted">"Not Encrypted"</string>
-    <string name="openpgp_result_action_show">"Show"</string>
-    <string name="openpgp_result_action_lookup">"Lookup"</string>
-    <string name="openpgp_result_no_name">"No name"</string>
-    <string name="openpgp_result_no_email">"No email"</string>
-
     <!-- === Client certificates specific ================================================================== -->
     <string name="account_setup_basics_client_certificate">Use client certificate</string>
     <string name="client_certificate_spinner_empty">No client certificate</string>
@@ -1145,11 +1119,114 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="client_certificate_advanced_options">Advanced options</string>
     <string name="client_certificate_expired">"Client certificate \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" has expired or is not yet valid (<xliff:g id="exception_message">%2$s</xliff:g>)"</string>
 
-    <string name="preview_inner_message">"Includes message titled \"%s\" containing: "</string>
-    <string name="preview_untitled_inner_message">"Includes untitled message containing: "</string>
-
-    <string name="crypto_incomplete_message">Incomplete message</string>
     <!-- Note: This references message_view_download_remainder -->
-    <string name="crypto_download_complete_message_to_decrypt">Click \'Download complete message\' to allow decryption.</string>
+    <string name="preview_encrypted">*Encrypted*</string>
+    <string name="add_from_contacts">Add from Contacts</string>
+    <string name="crypto_settings_cancel">Cancel</string>
+    <string name="crypto_settings_ok">Proceed</string>
+    <string name="recipient_cc">Cc</string>
+    <string name="recipient_bcc">Bcc</string>
+    <string name="recipient_to">To</string>
+    <string name="recipient_from">From</string>
+    <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
+    <string name="address_type_home">Home</string>
+    <string name="address_type_work">Work</string>
+    <string name="address_type_other">Other</string>
+    <string name="address_type_mobile">Mobile</string>
+    <string name="compose_error_no_draft_folder">No Drafts folder configured for this account!</string>
+    <string name="compose_error_no_signing_key">No key configured for signing! Please check your settings.</string>
+    <string name="compose_error_private_missing_keys">Private mode is enabled, but some recipients do not have keys!</string>
+    <string name="crypto_mode_disabled">Don\'t encrypt</string>
+    <string name="crypto_mode_opportunistic">Encrypt if possible</string>
+    <string name="crypto_mode_private">Encrypt</string>
+    <string name="error_crypto_provider_connect">Cannot connect to crypto provider, check your settings or click crypto icon to retry!</string>
+    <string name="error_crypto_provider_ui_required">Crypto provider access denied, click crypto icon to retry!</string>
+    <string name="error_crypto_inline_attach">PGP/INLINE mode does not support attachments!</string>
+    <string name="enable_inline_pgp">Enable PGP/INLINE</string>
+    <string name="disable_inline_pgp">Disable PGP/INLINE</string>
+    <string name="enable_sign_only">Enable PGP Sign-Only</string>
+    <string name="disable_sign_only">Disable PGP Sign-Only</string>
+    <string name="openpgp_inline_title">PGP/INLINE Mode</string>
+    <string name="openpgp_inline_text">The email is sent in PGP/INLINE format.\nThis should only be used for compatibility:</string>
+    <string name="openpgp_inline_plus_compat">Some clients only support this format</string>
+    <string name="openpgp_inline_minus_transit">Signatures may break during transit</string>
+    <string name="openpgp_inline_minus_attach">Attachments are not supported</string>
+    <string name="openpgp_inline_ok">Got it!</string>
+    <string name="openpgp_inline_disable">Disable</string>
+    <string name="openpgp_inline_keep_enabled">Keep Enabled</string>
+    <string name="openpgp_sign_only_ok">Got it!</string>
+    <string name="openpgp_sign_only_disable">Disable</string>
+    <string name="openpgp_sign_only_keep_enabled">Keep Enabled</string>
+    <string name="openpgp_dialog_sign_only_title">PGP Sign-Only Mode</string>
+    <string name="openpgp_dialog_sign_only_text">In this mode, your PGP key will be used to create a cryptographic signature of an unencrypted email.</string>
+    <string name="openpgp_dialog_sign_only_plus_verified">This does not encrypt the email, but verifies that it was sent from your key.</string>
+    <string name="openpgp_dialog_sign_only_minus_break">Signatures may break when sent to mailing lists.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">Signatures may be displayed as \'signature.asc\' attachments in some clients.</string>
+    <string name="openpgp_dialog_sign_only_neutral_encsigned">Encrypted messages always include a signature.</string>
 
+    <string name="crypto_msg_disabled">Message is not encrypted</string>
+
+    <string name="crypto_msg_encrypted_error">Message is encrypted, but there was a decryption error.</string>
+    <string name="crypto_msg_signed_error">Message is signed, but the signature could not be verified.</string>
+    <string name="crypto_msg_encrypted_no_provider">Message is encrypted, but no crypto app is configured.</string>
+    <string name="crypto_msg_unsupported_encrypted">Message is encrypted, but in an unsupported format.</string>
+    <string name="crypto_msg_unsupported_signed">Message is signed, but in an unsupported format.</string>
+    <string name="crypto_msg_incomplete_encrypted">Message is encrypted, but must be fully downloaded for decryption.</string>
+    <string name="crypto_msg_cancelled">Message is encrypted, but decryption was cancelled.</string>
+
+    <string name="crypto_msg_signed_unencrypted">Message is signed, but not encrypted.</string>
+    <string name="crypto_msg_encrypted_unsigned">Message was encrypted, but not signed.</string>
+
+    <string name="crypto_msg_sign_unknown">Signature made by unknown key.</string>
+    <string name="crypto_msg_sign_verified">Signature made by trusted key.</string>
+    <string name="crypto_msg_sign_unverified">Signature made by untrusted key!</string>
+    <string name="crypto_msg_sign_error">Signature contained an error.</string>
+    <string name="crypto_msg_sign_mismatch">Signature made by wrong key.</string>
+    <string name="crypto_msg_sign_expired">Signature made by expired key.</string>
+    <string name="crypto_msg_sign_revoked">Signature made by revoked key.</string>
+    <string name="crypto_msg_sign_insecure">Signature made by insecure key.</string>
+    <string name="crypto_msg_sign_incomplete">Message must be fully downloaded to verify its signature.</string>
+
+    <string name="crypto_msg_signed_encrypted">Message is signed and encrypted.</string>
+    <string name="crypto_msg_unsigned_encrypted">There is no signature, this message may have been intercepted.</string>
+
+
+    <string name="crypto_info_ok">OK</string>
+    <string name="crypto_info_view_key">View Signer</string>
+    <string name="locked_attach_unlock">Unlock</string>
+    <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
+    <string name="locked_attach_title">Unprotected Attachment</string>
+    <string name="message_progress_text">Loading…</string>
+    <string name="messageview_decrypt_cancelled">Decryption was cancelled.</string>
+    <string name="messageview_decrypt_retry">Retry</string>
+    <string name="messageview_decrypt_incomplete">Encrypted message must be downloaded for decryption.</string>
+    <string name="messageview_crypto_error_title">Error decrypting email</string>
+
+    <string name="messageview_crypto_warning_title">Security Warning</string>
+    <string name="messageview_crypto_warning_revoked">This message was signed by a <b>revoked key!</b></string>
+    <string name="messageview_crypto_warning_expired">This message was signed by an <b>expired key!</b></string>
+    <string name="messageview_crypto_warning_insecure">This message was signed by an <b>insecure key!</b></string>
+    <string name="messageview_crypto_warning_error">There was an <b>error in this message\'s signature!</b></string>
+    <string name="messageview_crypto_warning_unsigned">This message was encrypted, but not signed. It is <b>not end-to-end secure</b>!</string>
+    <string name="messageview_crypto_warning_show_anyway">Show message anyway</string>
+    <string name="recipient_error_non_ascii">Special characters are currently not supported!</string>
+    <string name="recipient_error_parse_failed">Error parsing address!</string>
+    <string name="account_settings_crypto_support_sign_only">Support signing of unencrypted messages</string>
+    <string name="error_sign_only_no_encryption">Encryption unavailable in sign-only mode!</string>
+    <string name="unsigned_text_divider_label">Unsigned Text</string>
+    <string name="apg_deprecated_title">APG Deprecation Warning</string>
+    <string name="apg_deprecated_1">APG is no longer maintained!</string>
+    <string name="apg_deprecated_2">Because of this, support for APG has been removed from K-9 Mail.</string>
+    <string name="apg_deprecated_bullet_1">Development stopped in early 2014</string>
+    <string name="apg_deprecated_bullet_2">Contains unfixed security issues</string>
+    <string name="apg_learn_more">You can <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">click here</a> to learn more.</string>
+    <string name="apg_deprecated_ok">Got it!</string>
+    <string name="apg">APG</string>
+    <string name="no_crypto_provider_see_global">No OpenPGP app configured, see global settings!</string>
+    <string name="crypto_no_provider_title">This email is encrypted</string>
+    <string name="crypto_no_provider_message">This email has been encrypted with OpenPGP.\nTo read it, you need to install and configure a compatible OpenPGP App.</string>
+    <string name="crypto_no_provider_button">Choose OpenPGP App</string>
+
+    <string name="mail_list_widget_text">K-9 Message List</string>
+    <string name="mail_list_widget_loading">Loading messages…</string>
 </resources>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <string name="pull_to_refresh_pull_label">Sleep om te vernieuwen…</string>
-  <string name="pull_to_refresh_release_label">Loslaten om te vernieuwen…</string>
-  <string name="pull_to_refresh_refreshing_label">Laden…</string>
-</resources>

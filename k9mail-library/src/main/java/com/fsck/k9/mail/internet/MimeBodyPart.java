@@ -3,23 +3,23 @@ package com.fsck.k9.mail.internet;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.CompositeBody;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.Locale;
 
-import org.apache.james.mime4j.util.MimeUtil;
+import android.support.annotation.NonNull;
+
 
 /**
  * TODO this is a close approximation of Message, need to update along with
  * Message.
  */
 public class MimeBodyPart extends BodyPart {
-    private final MimeHeader mHeader = new MimeHeader();
+    private final MimeHeader mHeader;
     private Body mBody;
 
     public MimeBodyPart() throws MessagingException {
@@ -31,9 +31,15 @@ public class MimeBodyPart extends BodyPart {
     }
 
     public MimeBodyPart(Body body, String mimeType) throws MessagingException {
+        mHeader = new MimeHeader();
         if (mimeType != null) {
             addHeader(MimeHeader.HEADER_CONTENT_TYPE, mimeType);
         }
+        MimeMessageHelper.setBody(this, body);
+    }
+
+    MimeBodyPart(MimeHeader header, Body body)  throws MessagingException {
+        mHeader = header;
         MimeMessageHelper.setBody(this, body);
     }
 
@@ -42,7 +48,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public void addHeader(String name, String value) throws MessagingException {
+    public void addHeader(String name, String value) {
         mHeader.addHeader(name, value);
     }
 
@@ -56,13 +62,14 @@ public class MimeBodyPart extends BodyPart {
         mHeader.setHeader(name, value);
     }
 
+    @NonNull
     @Override
-    public String[] getHeader(String name) throws MessagingException {
+    public String[] getHeader(String name) {
         return mHeader.getHeader(name);
     }
 
     @Override
-    public void removeHeader(String name) throws MessagingException {
+    public void removeHeader(String name) {
         mHeader.removeHeader(name);
     }
 
@@ -87,11 +94,18 @@ public class MimeBodyPart extends BodyPart {
     @Override
     public String getContentType() {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : contentType;
+        if (contentType != null) {
+            return MimeUtility.unfoldAndDecode(contentType);
+        }
+        Multipart parent = getParent();
+        if (parent != null && "multipart/digest".equals(parent.getMimeType())) {
+            return "message/rfc822";
+        }
+        return "text/plain";
     }
 
     @Override
-    public String getDisposition() throws MessagingException {
+    public String getDisposition() {
         return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
     }
 
@@ -116,7 +130,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     @Override
-    public boolean isMimeType(String mimeType) throws MessagingException {
+    public boolean isMimeType(String mimeType) {
         return getMimeType().equalsIgnoreCase(mimeType);
     }
 
@@ -139,45 +153,4 @@ public class MimeBodyPart extends BodyPart {
         mHeader.writeTo(out);
     }
 
-    @Override
-    public void setUsing7bitTransport() throws MessagingException {
-        String type = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        /*
-         * We don't trust that a multipart/* will properly have an 8bit encoding
-         * header if any of its subparts are 8bit, so we automatically recurse
-         * (as long as its not multipart/signed).
-         */
-        if (mBody instanceof CompositeBody
-                && !"multipart/signed".equalsIgnoreCase(type)) {
-            setEncoding(MimeUtil.ENC_7BIT);
-            // recurse
-            ((CompositeBody) mBody).setUsing7bitTransport();
-        } else if (!MimeUtil.ENC_8BIT
-                .equalsIgnoreCase(getFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING))) {
-            return;
-        } else if (type != null
-                && (type.equalsIgnoreCase("multipart/signed") || type
-                        .toLowerCase(Locale.US).startsWith("message/"))) {
-            /*
-             * This shouldn't happen. In any case, it would be wrong to convert
-             * them to some other encoding for 7bit transport.
-             *
-             * RFC 1847 says multipart/signed must be 7bit. It also says their
-             * bodies must be treated as opaque, so we must not change the
-             * encoding.
-             *
-             * We've dealt with (CompositeBody) type message/rfc822 above. Here
-             * we must deal with all other message/* types. RFC 2045 says
-             * message/* can only be 7bit or 8bit. RFC 2046 says unknown
-             * message/* types must be treated as application/octet-stream,
-             * which means we can't recurse into them. It also says that
-             * existing subtypes message/partial and message/external must only
-             * be 7bit, and that future subtypes "should be" 7bit.
-             */
-            throw new MessagingException(
-                    "Unable to convert 8bit body part to 7bit");
-        } else {
-            setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
-        }
-    }
 }
