@@ -1,14 +1,11 @@
 package com.fsck.k9.mail.oauth;
 
 
-import android.util.Log;
-
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import timber.log.Timber;
 
 
 /**
@@ -23,7 +20,7 @@ public class XOAuth2ChallengeParser {
         String decodedResponse = Base64.decode(response);
 
         if (K9MailLib.isDebug()) {
-            Log.v(LOG_TAG, "Challenge response: " + decodedResponse);
+            Timber.v("Challenge response: %s", decodedResponse);
         }
 
         try {
@@ -33,7 +30,7 @@ public class XOAuth2ChallengeParser {
                 return false;
             }
         } catch (JSONException jsonException) {
-            Log.e(LOG_TAG, "Error decoding JSON response from: " + host + ". Response was: " + decodedResponse);
+            Timber.e("Error decoding JSON response from: %s. Response was: %s", host, decodedResponse);
         }
 
         return true;

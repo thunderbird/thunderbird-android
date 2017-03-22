@@ -13,7 +13,6 @@ import android.content.Context;
 import android.net.SSLCertificateSocketFactory;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.fsck.k9.mail.MessagingException;
 import javax.net.ssl.KeyManager;
@@ -21,8 +20,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
-
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import timber.log.Timber;
 
 
 /**
@@ -113,8 +111,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
              */
             supportedProtocols = sock.getSupportedProtocols();
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Error getting information about available SSL/TLS ciphers and " +
-                    "protocols", e);
+            Timber.e(e, "Error getting information about available SSL/TLS ciphers and protocols");
         }
 
         if (hasWeakSslImplementation()) {
@@ -232,7 +229,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         try {
             socket.getClass().getMethod("setHostname", String.class).invoke(socket, hostname);
         } catch (Throwable e) {
-            Log.e(LOG_TAG, "Could not call SSLSocket#setHostname(String) method ", e);
+            Timber.e(e, "Could not call SSLSocket#setHostname(String) method ");
         }
     }
 }

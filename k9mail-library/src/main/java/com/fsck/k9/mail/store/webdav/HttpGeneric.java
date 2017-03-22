@@ -1,15 +1,13 @@
 package com.fsck.k9.mail.store.webdav;
 
-import android.util.Log;
-
 import com.fsck.k9.mail.K9MailLib;
 
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import timber.log.Timber;
 
 import java.net.URI;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_WEBDAV;
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 
@@ -36,9 +34,7 @@ public class HttpGeneric extends HttpEntityEnclosingRequestBase {
     public HttpGeneric(final String uri) {
         super();
 
-        if (K9MailLib.isDebug()) {
-            Log.v(LOG_TAG, "Starting uri = '" + uri + "'");
-        }
+        Timber.v("Starting uri = '%s'", uri);
 
         String[] urlParts = uri.split("/");
         int length = urlParts.length;
@@ -55,8 +51,7 @@ public class HttpGeneric extends HttpEntityEnclosingRequestBase {
                 end = end.replaceAll("\\+", "%20");
             }
         } catch (IllegalArgumentException iae) {
-            Log.e(LOG_TAG, "IllegalArgumentException caught in HttpGeneric(String uri): " + iae + "\nTrace: "
-                    + WebDavUtils.processException(iae));
+            Timber.e(iae, "IllegalArgumentException caught in HttpGeneric(String uri): %s", end);
         }
 
         for (int i = 0; i < length - 1; i++) {
@@ -67,12 +62,11 @@ public class HttpGeneric extends HttpEntityEnclosingRequestBase {
             }
         }
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_WEBDAV) {
-            Log.v(LOG_TAG, "url = '" + url + "' length = " + url.length()
-                    + ", end = '" + end + "' length = " + end.length());
+            Timber.v("url = '%s' length = %s, end = '%s' length = %s", url, url.length(), end, end.length());
         }
         url = url + "/" + end;
 
-        Log.i(LOG_TAG, "url = " + url);
+        Timber.d("url = %s", url);
         setURI(URI.create(url));
     }
 
