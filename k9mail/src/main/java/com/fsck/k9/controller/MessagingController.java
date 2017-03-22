@@ -42,6 +42,7 @@ import android.os.Process;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
+import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
@@ -1393,6 +1394,7 @@ public class MessagingController {
                             if (shouldNotifyForMessage(account, localFolder, message)) {
                                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                                 notificationController.addNewMailNotification(account, localMessage, unreadBeforeStart);
+
                             }
 
                         } catch (MessagingException me) {

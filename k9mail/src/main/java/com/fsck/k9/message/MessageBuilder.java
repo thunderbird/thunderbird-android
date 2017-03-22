@@ -69,6 +69,7 @@ public abstract class MessageBuilder {
     private int cursorPosition;
     private MessageReference messageReference;
     private boolean isDraft;
+    private boolean isHighPriority;
     private boolean isPgpInlineEnabled;
 
     protected MessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
@@ -109,6 +110,10 @@ public abstract class MessageBuilder {
 
         if (!K9.hideUserAgent()) {
             message.setHeader("User-Agent", context.getString(R.string.message_header_mua));
+        }
+        if(isHighPriority)
+        {
+            message.setHeader("X-Priority", context.getString(R.string.XPriority));
         }
 
         final String replyTo = identity.getReplyTo();
@@ -601,6 +606,14 @@ public abstract class MessageBuilder {
             asyncCallback = null;
         }
     }
+
+    public void setHighPriority(boolean highPriority) {
+        isHighPriority = highPriority;
+    }
+    public boolean getHighPriority() {
+        return isHighPriority;
+    }
+
 
     public interface Callback {
         void onMessageBuildSuccess(MimeMessage message, boolean isDraft);

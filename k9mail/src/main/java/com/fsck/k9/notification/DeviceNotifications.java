@@ -8,9 +8,11 @@ import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat.InboxStyle;
+import android.support.v4.content.ContextCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -20,6 +22,7 @@ import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 
+import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
 import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_SLOW;
 import static com.fsck.k9.notification.NotificationController.platformSupportsExtendedNotifications;
 
@@ -80,6 +83,48 @@ class DeviceNotifications extends BaseNotifications {
                 (notificationSetting.shouldVibrate()) ? notificationSetting.getVibration() : null,
                 (notificationSetting.isLed()) ? notificationSetting.getLedColor() : null,
                 NOTIFICATION_LED_BLINK_SLOW,
+                ringAndVibrate);
+
+        return builder.build();
+    }
+
+    public Notification buildUrgentNotification(Account account, NotificationData notificationData) {
+        int unreadMessageCount = notificationData.getUnreadMessageCount();
+
+        NotificationCompat.Builder builder;
+        if (isPrivacyModeActive() || !platformSupportsExtendedNotifications()) {
+            builder = createSimpleSummaryNotification(account, unreadMessageCount);
+        } else if (notificationData.isSingleMessageNotification()) {
+            NotificationHolder holder = notificationData.getHolderForLatestNotification();
+            builder = createBigTextStyleSummaryNotification(account, holder);
+        } else {
+            builder = createInboxStyleSummaryNotification(account, notificationData, unreadMessageCount);
+        }
+            builder.setColor(ContextCompat.getColor(context, R.color.message_urgent_background));
+        if (notificationData.containsStarredMessages()) {
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        }
+
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
+        PendingIntent deletePendingIntent = actionCreator.createDismissAllMessagesPendingIntent(
+                account, notificationId);
+        builder.setDeleteIntent(deletePendingIntent);
+
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
+
+        boolean ringAndVibrate = true;
+        if (!account.isRingNotified()) {
+            account.setRingNotified(true);
+            ringAndVibrate = true;
+        }
+
+        NotificationSetting notificationSetting = account.getNotificationSetting();
+        controller.configureNotification(
+                builder,
+                 notificationSetting.getRingtone(),
+                 notificationSetting.getVibration(),
+                ContextCompat.getColor(context, R.color.message_urgent_background),
+                NOTIFICATION_LED_BLINK_FAST,
                 ringAndVibrate);
 
         return builder.build();

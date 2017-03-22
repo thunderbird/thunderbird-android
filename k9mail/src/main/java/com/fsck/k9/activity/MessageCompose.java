@@ -30,6 +30,8 @@ import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import timber.log.Timber;
+
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -111,6 +113,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int DIALOG_CONFIRM_DISCARD = 4;
 
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
+
+    private boolean isUrgent=false;
 
     public static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
     public static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
@@ -720,6 +724,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         currentMessageBuilder = createMessageBuilder(true);
         if (currentMessageBuilder != null) {
             setProgressBarIndeterminateVisibility(true);
+
+            currentMessageBuilder.setHighPriority(isUrgent);
+
             currentMessageBuilder.buildAsync(this);
         }
     }
@@ -728,6 +735,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
             changesMadeSinceLastSave = false;
+            currentMessageBuilder.setHighPriority(isUrgent);
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
         }
@@ -965,8 +973,23 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             case R.id.read_receipt:
                 onReadReceipt();
                 break;
+            case R.id.is_urgent:
+                if(isUrgent==false) {
+                    item.setTitle("Normal");
+                    this.isUrgent = true;
+                    setTitle(getTitle() + ":U");
+                }
+                else
+                {
+                    item.setTitle("Urgent");
+                    this.isUrgent = false;
+                    setTitle(getTitle().toString().split(":")[0]);
+                }
+
+                break;
             default:
                 return super.onOptionsItemSelected(item);
+
         }
         return true;
     }

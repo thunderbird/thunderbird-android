@@ -6,11 +6,15 @@ import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.BigTextStyle;
 import android.support.v4.app.NotificationCompat.Builder;
+import android.support.v4.content.ContextCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
+
+import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_SLOW;
 
 
 abstract class BaseNotifications {
@@ -49,6 +53,9 @@ abstract class BaseNotifications {
 
         return builder;
     }
+
+
+
 
     protected NotificationCompat.Builder createAndInitializeNotificationBuilder(Account account) {
         return controller.createNotificationBuilder()

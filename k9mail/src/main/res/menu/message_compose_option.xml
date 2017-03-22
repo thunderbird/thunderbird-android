@@ -20,6 +20,12 @@
         android:title="@string/add_from_contacts"
     />
     <item
+        android:id="@+id/is_urgent"
+        android:alphabeticShortcut="a"
+        android:title="@string/is_urgent"
+        />
+
+    <item
         android:id="@+id/save"
         android:alphabeticShortcut="d"
         android:title="@string/save_draft_action"
@@ -55,6 +61,7 @@
         android:title="@string/enable_sign_only"
         android:showAsAction="never"
         />
+
     <item
         android:id="@+id/openpgp_sign_only_disable"
         android:alphabeticShortcut="g"

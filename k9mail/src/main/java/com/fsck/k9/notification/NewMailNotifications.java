@@ -48,7 +48,7 @@ class NewMailNotifications {
         return new NewMailNotifications(controller, contentCreator, deviceNotifications, wearNotifications);
     }
 
-    public void addNewMailNotification(Account account, LocalMessage message, int unreadMessageCount) {
+    public void addNewMailNotification(Account account, LocalMessage message, int unreadMessageCount ,boolean isUrgent) {
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
         synchronized (lock) {
@@ -60,8 +60,12 @@ class NewMailNotifications {
                 cancelNotification(notificationId);
             }
 
+
+            if(!isUrgent){
             createStackedNotification(account, result.getNotificationHolder());
-            createSummaryNotification(account, notificationData, false);
+            createSummaryNotification(account, notificationData, false);}
+            else
+                createHighPriorityNotification(account,notificationData);
         }
     }
 
@@ -150,6 +154,14 @@ class NewMailNotifications {
 
     private void createSummaryNotification(Account account, NotificationData notificationData, boolean silent) {
         Notification notification = deviceNotifications.buildSummaryNotification(account, notificationData, silent);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
+
+        getNotificationManager().notify(notificationId, notification);
+    }
+
+    private void createHighPriorityNotification(Account account, NotificationData notificationData)
+    {
+        Notification notification = deviceNotifications.buildUrgentNotification(account, notificationData);
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
 
         getNotificationManager().notify(notificationId, notification);

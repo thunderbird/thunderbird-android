@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -102,7 +103,19 @@ public class NotificationController {
     }
 
     public void addNewMailNotification(Account account, LocalMessage message, int previousUnreadMessageCount) {
-        newMailNotifications.addNewMailNotification(account, message, previousUnreadMessageCount);
+
+        boolean hasHighPriority=false;
+        Log.i("priority","mail received");
+        for (String iter:message.getHeader("X-Priority"))
+        {
+
+            if(iter.contains("priority_high"))
+                hasHighPriority=true;
+        }
+
+        newMailNotifications.addNewMailNotification(account, message, previousUnreadMessageCount,hasHighPriority);
+
+
     }
 
     public void removeNewMailNotification(Account account, MessageReference messageReference) {
