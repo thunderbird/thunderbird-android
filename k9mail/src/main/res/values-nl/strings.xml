@@ -663,11 +663,9 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="settings_theme_label">Thema</string>
   <string name="settings_message_theme_label">Thema om berichten te zien</string>
   <string name="settings_compose_theme_label">Thema om berichten te schrijven</string>
-  <string name="settings_language_label">Taal</string>
   <string name="settings_message_theme_selection_label">Vast berichten thema</string>
   <string name="settings_message_theme_selection_summary_off">Kies het thema tijdens het bekijken van het bericht</string>
   <string name="settings_message_theme_selection_summary_on">Gebruik een vast thema om het bericht te bekijken</string>
-  <string name="setting_language_system">Volgens systeem</string>
   <string name="background_ops_label">Achtergrond sync</string>
   <string name="background_ops_never">Nooit</string>
   <string name="background_ops_always">Altijd</string>

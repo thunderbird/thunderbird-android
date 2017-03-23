@@ -633,11 +633,9 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="settings_theme_label">Kolorystyka</string>
   <string name="settings_message_theme_label">Kolorystyka widoku wiadomości</string>
   <string name="settings_compose_theme_label">Kolorystyka widoku tworzenia wiadomości</string>
-  <string name="settings_language_label">Język</string>
   <string name="settings_message_theme_selection_label">Stała kolorystyka widoku wiadomości</string>
   <string name="settings_message_theme_selection_summary_off">Wybierz kolorystykę z poziomu widoku wiadomości</string>
   <string name="settings_message_theme_selection_summary_on">Użyj kolorystyki wskazanej w konfiguracji</string>
-  <string name="setting_language_system">Domyślny systemowy</string>
   <string name="background_ops_label">Synchronizacja w tle</string>
   <string name="background_ops_never">Nigdy</string>
   <string name="background_ops_always">Zawsze</string>

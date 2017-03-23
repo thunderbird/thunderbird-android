@@ -670,11 +670,9 @@
   <string name="settings_theme_label">Тема</string>
   <string name="settings_message_theme_label">Тема приказа порука</string>
   <string name="settings_compose_theme_label">Тема састављача</string>
-  <string name="settings_language_label">Језик</string>
   <string name="settings_message_theme_selection_label">Фиксна тема поруке</string>
   <string name="settings_message_theme_selection_summary_off">Изаберите тему приказа поруке док је гледате</string>
   <string name="settings_message_theme_selection_summary_on">Користи фиксну тему приказа поруке</string>
-  <string name="setting_language_system">Системски подразумеван</string>
   <string name="background_ops_label">Синхронизација у позадини</string>
   <string name="background_ops_never">Никад</string>
   <string name="background_ops_always">Увек</string>

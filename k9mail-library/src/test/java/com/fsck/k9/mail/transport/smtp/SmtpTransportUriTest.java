@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.transport;
+package com.fsck.k9.mail.transport.smtp;
 
 import android.annotation.SuppressLint;
 
@@ -6,6 +6,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 
+import com.fsck.k9.mail.transport.smtp.SmtpTransport;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

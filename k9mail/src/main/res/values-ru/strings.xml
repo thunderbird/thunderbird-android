@@ -671,11 +671,9 @@ K-9 Mail — почтовый клиент для Android.
   <string name="settings_theme_label">Тема приложения</string>
   <string name="settings_message_theme_label">Тема просмотра</string>
   <string name="settings_compose_theme_label">Тема редактора</string>
-  <string name="settings_language_label">Язык</string>
   <string name="settings_message_theme_selection_label">Фиксированный просмотр</string>
   <string name="settings_message_theme_selection_summary_off">Разрешить выбор темы при чтении сообщения</string>
   <string name="settings_message_theme_selection_summary_on">Отключить выбор темы при чтении сообщения</string>
-  <string name="setting_language_system">По умолчанию</string>
   <string name="background_ops_label">Фоновая синхронизация</string>
   <string name="background_ops_never">Никогда</string>
   <string name="background_ops_always">Всегда</string>

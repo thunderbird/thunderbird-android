@@ -12,7 +12,6 @@ import android.app.Application;
 
 import com.fsck.k9.GlobalsHelper;
 import com.fsck.k9.K9RobolectricTestRunner;
-import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.message.html.HtmlSanitizer;
 import com.fsck.k9.message.html.HtmlSanitizerHelper;
 import com.fsck.k9.mail.Address;
@@ -217,7 +216,6 @@ public class MessageViewInfoExtractorTest {
 
     @Test
     public void testTextPlusRfc822Message() throws MessagingException {
-        K9ActivityCommon.setLanguage(context, "en");
         Locale.setDefault(Locale.US);
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+01:00"));
 

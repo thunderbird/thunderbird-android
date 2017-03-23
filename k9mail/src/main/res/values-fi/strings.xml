@@ -667,11 +667,9 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="settings_theme_label">Teema</string>
   <string name="settings_message_theme_label">Viestinäkymän teema</string>
   <string name="settings_compose_theme_label">Viestimuokkaimen teema</string>
-  <string name="settings_language_label">Kieli</string>
   <string name="settings_message_theme_selection_label">Kiinteä viestiteema</string>
   <string name="settings_message_theme_selection_summary_off">Valitse viestinäkymän teema viestiä luettaessa</string>
   <string name="settings_message_theme_selection_summary_on">Käytä kiinteää viestinäkymän teemaa</string>
-  <string name="setting_language_system">Järjestelmän oletus</string>
   <string name="background_ops_label">Synkronointi taustalla</string>
   <string name="background_ops_never">Ei koskaan</string>
   <string name="background_ops_always">Aina</string>

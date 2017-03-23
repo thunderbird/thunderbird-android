@@ -614,11 +614,9 @@
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema de vista de mensaxe</string>
   <string name="settings_compose_theme_label">Tema de redacción</string>
-  <string name="settings_language_label">Idioma</string>
   <string name="settings_message_theme_selection_label">Tema de mensaxe fixo</string>
   <string name="settings_message_theme_selection_summary_off">Seleccionar o tema de vista de mensaxe mentres se mostra a mensaxe</string>
   <string name="settings_message_theme_selection_summary_on">Utilizar un tema de vista de mensaxe fixo</string>
-  <string name="setting_language_system">Sistema predefinido</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>

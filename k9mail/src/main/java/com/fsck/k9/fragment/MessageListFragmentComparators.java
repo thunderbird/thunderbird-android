@@ -2,9 +2,6 @@ package com.fsck.k9.fragment;
 
 import android.database.Cursor;
 
-import com.fsck.k9.fragment.MessageListFragment;
-import com.fsck.k9.mail.Message;
-
 import java.util.Comparator;
 import java.util.List;
 
@@ -82,8 +79,8 @@ public class MessageListFragmentComparators {
 
         @Override
         public int compare(Cursor cursor1, Cursor cursor2) {
-            int o1HasAttachment = (cursor1.getInt(MessageListFragment.ATTACHMENT_COUNT_COLUMN) > 0) ? 0 : 1;
-            int o2HasAttachment = (cursor2.getInt(MessageListFragment.ATTACHMENT_COUNT_COLUMN) > 0) ? 0 : 1;
+            int o1HasAttachment = (cursor1.getInt(MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN) > 0) ? 0 : 1;
+            int o2HasAttachment = (cursor2.getInt(MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN) > 0) ? 0 : 1;
             return o1HasAttachment - o2HasAttachment;
         }
     }
@@ -92,8 +89,8 @@ public class MessageListFragmentComparators {
 
         @Override
         public int compare(Cursor cursor1, Cursor cursor2) {
-            int o1IsFlagged = (cursor1.getInt(MessageListFragment.FLAGGED_COLUMN) == 1) ? 0 : 1;
-            int o2IsFlagged = (cursor2.getInt(MessageListFragment.FLAGGED_COLUMN) == 1) ? 0 : 1;
+            int o1IsFlagged = (cursor1.getInt(MLFProjectionInfo.FLAGGED_COLUMN) == 1) ? 0 : 1;
+            int o2IsFlagged = (cursor2.getInt(MLFProjectionInfo.FLAGGED_COLUMN) == 1) ? 0 : 1;
             return o1IsFlagged - o2IsFlagged;
         }
     }
@@ -102,8 +99,8 @@ public class MessageListFragmentComparators {
 
         @Override
         public int compare(Cursor cursor1, Cursor cursor2) {
-            int o1IsUnread = cursor1.getInt(MessageListFragment.READ_COLUMN);
-            int o2IsUnread = cursor2.getInt(MessageListFragment.READ_COLUMN);
+            int o1IsUnread = cursor1.getInt(MLFProjectionInfo.READ_COLUMN);
+            int o2IsUnread = cursor2.getInt(MLFProjectionInfo.READ_COLUMN);
             return o1IsUnread - o2IsUnread;
         }
     }
@@ -112,8 +109,8 @@ public class MessageListFragmentComparators {
 
         @Override
         public int compare(Cursor cursor1, Cursor cursor2) {
-            long o1Date = cursor1.getLong(MessageListFragment.DATE_COLUMN);
-            long o2Date = cursor2.getLong(MessageListFragment.DATE_COLUMN);
+            long o1Date = cursor1.getLong(MLFProjectionInfo.DATE_COLUMN);
+            long o2Date = cursor2.getLong(MLFProjectionInfo.DATE_COLUMN);
             if (o1Date < o2Date) {
                 return -1;
             } else if (o1Date == o2Date) {
@@ -128,8 +125,8 @@ public class MessageListFragmentComparators {
 
         @Override
         public int compare(Cursor cursor1, Cursor cursor2) {
-            long o1Date = cursor1.getLong(MessageListFragment.INTERNAL_DATE_COLUMN);
-            long o2Date = cursor2.getLong(MessageListFragment.INTERNAL_DATE_COLUMN);
+            long o1Date = cursor1.getLong(MLFProjectionInfo.INTERNAL_DATE_COLUMN);
+            long o2Date = cursor2.getLong(MLFProjectionInfo.INTERNAL_DATE_COLUMN);
             if (o1Date == o2Date) {
                 return 0;
             } else if (o1Date < o2Date) {
@@ -144,8 +141,8 @@ public class MessageListFragmentComparators {
 
         @Override
         public int compare(Cursor cursor1, Cursor cursor2) {
-            String subject1 = cursor1.getString(MessageListFragment.SUBJECT_COLUMN);
-            String subject2 = cursor2.getString(MessageListFragment.SUBJECT_COLUMN);
+            String subject1 = cursor1.getString(MLFProjectionInfo.SUBJECT_COLUMN);
+            String subject2 = cursor2.getString(MLFProjectionInfo.SUBJECT_COLUMN);
 
             if (subject1 == null) {
                 return (subject2 == null) ? 0 : -1;
@@ -161,8 +158,8 @@ public class MessageListFragmentComparators {
 
         @Override
         public int compare(Cursor cursor1, Cursor cursor2) {
-            String sender1 = MessageListFragment.getSenderAddressFromCursor(cursor1);
-            String sender2 = MessageListFragment.getSenderAddressFromCursor(cursor2);
+            String sender1 = MlfUtils.getSenderAddressFromCursor(cursor1);
+            String sender2 = MlfUtils.getSenderAddressFromCursor(cursor2);
 
             if (sender1 == null && sender2 == null) {
                 return 0;

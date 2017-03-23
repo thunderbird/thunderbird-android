@@ -34,7 +34,7 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
@@ -45,7 +45,7 @@ import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -79,7 +79,7 @@ public class MessageProvider extends ContentProvider {
             UnreadColumns.UNREAD
     };
 
-    
+
     private UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private List<QueryHandler> queryHandlers = new ArrayList<QueryHandler>();
     private MessageHelper messageHelper;
@@ -91,7 +91,7 @@ public class MessageProvider extends ContentProvider {
 
     ScheduledExecutorService scheduledPool = Executors.newScheduledThreadPool(1);
 
-    
+
     @Override
     public boolean onCreate() {
         messageHelper = MessageHelper.getInstance(getContext());
@@ -103,9 +103,9 @@ public class MessageProvider extends ContentProvider {
         K9.registerApplicationAware(new K9.ApplicationAware() {
             @Override
             public void initializeComponent(final Application application) {
-                Log.v(K9.LOG_TAG, "Registering content resolver notifier");
+                Timber.v("Registering content resolver notifier");
 
-                MessagingController.getInstance(application).addListener(new MessagingListener() {
+                MessagingController.getInstance(application).addListener(new SimpleMessagingListener() {
                     @Override
                     public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
                         application.getContentResolver().notifyChange(CONTENT_URI, null);
@@ -123,9 +123,7 @@ public class MessageProvider extends ContentProvider {
             return null;
         }
 
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "MessageProvider/getType: " + uri);
-        }
+        Timber.v("MessageProvider/getType: %s", uri);
 
         return null;
     }
@@ -136,9 +134,7 @@ public class MessageProvider extends ContentProvider {
             return null;
         }
 
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "MessageProvider/query: " + uri);
-        }
+        Timber.v("MessageProvider/query: %s", uri);
 
         int code = uriMatcher.match(uri);
         if (code == -1) {
@@ -150,7 +146,7 @@ public class MessageProvider extends ContentProvider {
             QueryHandler handler = queryHandlers.get(code);
             cursor = handler.query(uri, projection, selection, selectionArgs, sortOrder);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Unable to execute query for URI: " + uri, e);
+            Timber.e(e, "Unable to execute query for URI: %s", uri);
             return null;
         }
 
@@ -163,9 +159,7 @@ public class MessageProvider extends ContentProvider {
             return 0;
         }
 
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "MessageProvider/delete: " + uri);
-        }
+        Timber.v("MessageProvider/delete: %s", uri);
 
         // Note: can only delete a message
 
@@ -180,14 +174,14 @@ public class MessageProvider extends ContentProvider {
             if (account.getAccountNumber() == accountId) {
                 myAccount = account;
                 if (!account.isAvailable(getContext())) {
-                    Log.w(K9.LOG_TAG, "not deleting messages because account is unavailable at the moment");
+                    Timber.w("not deleting messages because account is unavailable at the moment");
                     return 0;
                 }
             }
         }
 
         if (myAccount == null) {
-            Log.e(K9.LOG_TAG, "Could not find account with id " + accountId);
+            Timber.e("Could not find account with id %d", accountId);
         }
 
         if (myAccount != null) {
@@ -206,9 +200,7 @@ public class MessageProvider extends ContentProvider {
             return null;
         }
 
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "MessageProvider/insert: " + uri);
-        }
+        Timber.v("MessageProvider/insert: %s", uri);
 
         return null;
     }
@@ -219,9 +211,7 @@ public class MessageProvider extends ContentProvider {
             return 0;
         }
 
-        if (K9.DEBUG) {
-            Log.v(K9.LOG_TAG, "MessageProvider/update: " + uri);
-        }
+        Timber.v("MessageProvider/update: %s", uri);
 
         // TBD
 
@@ -242,7 +232,7 @@ public class MessageProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, handler.getPath(), code);
     }
 
-    
+
     public static class ReverseDateComparator implements Comparator<MessageInfoHolder> {
         @Override
         public int compare(MessageInfoHolder object2, MessageInfoHolder object1) {
@@ -712,7 +702,7 @@ public class MessageProvider extends ContentProvider {
                             values[1] = myAccountStats.unreadMessageCount;
                         }
                     } catch (MessagingException e) {
-                        Log.e(K9.LOG_TAG, e.getMessage());
+                        Timber.e(e.getMessage());
                         values[0] = "Unknown";
                         values[1] = 0;
                     }
@@ -750,7 +740,7 @@ public class MessageProvider extends ContentProvider {
         public void close() {
             if (closed.compareAndSet(false, true)) {
                 cursor.close();
-                Log.d(K9.LOG_TAG, "Cursor closed, null'ing & releasing semaphore");
+                Timber.d("Cursor closed, null'ing & releasing semaphore");
                 cursor = null;
                 semaphore.release();
             }
@@ -1055,7 +1045,7 @@ public class MessageProvider extends ContentProvider {
 
             // Android content resolvers can only process CrossProcessCursor instances
             if (!(cursor instanceof CrossProcessCursor)) {
-                Log.w(K9.LOG_TAG, "Unsupported cursor, returning null: " + cursor);
+                Timber.w("Unsupported cursor, returning null: %s", cursor);
                 semaphore.release();
                 return null;
             }
@@ -1072,11 +1062,11 @@ public class MessageProvider extends ContentProvider {
                 public void run() {
                     MonitoredCursor monitored = weakReference.get();
                     if (monitored != null && !monitored.isClosed()) {
-                        Log.w(K9.LOG_TAG, "Forcibly closing remotely exposed cursor");
+                        Timber.w("Forcibly closing remotely exposed cursor");
                         try {
                             monitored.close();
                         } catch (Exception e) {
-                            Log.w(K9.LOG_TAG, "Exception while forcibly closing cursor", e);
+                            Timber.w(e, "Exception while forcibly closing cursor");
                         }
                     }
                 }
@@ -1089,7 +1079,7 @@ public class MessageProvider extends ContentProvider {
     /**
      * Synchronized listener used to retrieve {@link MessageInfoHolder}s using a given {@link BlockingQueue}.
      */
-    protected class MessageInfoHolderRetrieverListener extends MessagingListener {
+    protected class MessageInfoHolderRetrieverListener extends SimpleMessagingListener {
         private final BlockingQueue<List<MessageInfoHolder>> queue;
         private List<MessageInfoHolder> holders = new ArrayList<MessageInfoHolder>();
 
@@ -1119,7 +1109,7 @@ public class MessageProvider extends ContentProvider {
             try {
                 queue.put(holders);
             } catch (InterruptedException e) {
-                Log.e(K9.LOG_TAG, "Unable to return message list back to caller", e);
+                Timber.e(e, "Unable to return message list back to caller");
             }
         }
     }

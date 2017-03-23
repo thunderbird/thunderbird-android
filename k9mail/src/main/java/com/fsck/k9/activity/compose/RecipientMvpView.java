@@ -24,7 +24,7 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.TokenListener;
 
 
-public class RecipientMvpView implements OnFocusChangeListener, OnClickListener {
+public class RecipientMvpView implements OnFocusChangeListener, OnClickListener, RecipientSelectView.DragListener {
     private static final int VIEW_INDEX_HIDDEN = -1;
     private static final int VIEW_INDEX_CRYPTO_STATUS_DISABLED = 0;
     private static final int VIEW_INDEX_CRYPTO_STATUS_ERROR = 1;
@@ -54,6 +54,10 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private final ViewAnimator recipientExpanderContainer;
     private final ViewAnimator cryptoSpecialModeIndicator;
     private RecipientPresenter presenter;
+    private boolean dragTakingPlace = false;
+    private CharSequence alternateText;
+    private Recipient draggedRecipient;
+    private int originViewId;
 
 
     public RecipientMvpView(MessageCompose activity) {
@@ -97,6 +101,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             return;
         }
 
+        toView.setDragListener(this);
         toView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
@@ -114,6 +119,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             }
         });
 
+        ccView.setDragListener(this);
         ccView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
@@ -131,6 +137,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             }
         });
 
+        bccView.setDragListener(this);
         bccView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
@@ -194,6 +201,37 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
                 break;
             }
         }
+    }
+
+    @Override
+    public void onDragStart(int viewId, Recipient recipient, CharSequence text) {
+        dragTakingPlace = true;
+        originViewId = viewId;
+        draggedRecipient = recipient;
+        alternateText = text;
+        presenter.onClickRecipientExpander();
+    }
+
+    @Override
+    public void onDragEnd() {
+        dragTakingPlace = false;
+        originViewId = -1;
+        draggedRecipient = null;
+        alternateText = null;
+    }
+
+    public void restoreDroppedToken() {
+        if (originViewId == toView.getId()) {
+            toView.addObject(draggedRecipient, alternateText);
+        } else if (originViewId == ccView.getId()) {
+            ccView.addObject(draggedRecipient, alternateText);
+        } else if (originViewId == bccView.getId()) {
+            bccView.addObject(draggedRecipient, alternateText);
+        }
+    }
+
+    public boolean isDragTakingPlace() {
+        return dragTakingPlace;
     }
 
     public void setCcVisibility(boolean visible) {

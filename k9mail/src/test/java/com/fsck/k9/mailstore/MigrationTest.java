@@ -42,7 +42,7 @@ public class MigrationTest {
 
     @Before
     public void setUp() throws Exception {
-        K9.DEBUG = true;
+        K9.setDebug(true);
         ShadowLog.stream = System.out;
         ShadowSQLiteConnection.reset();
 

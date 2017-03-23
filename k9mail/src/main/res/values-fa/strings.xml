@@ -570,11 +570,9 @@
   <string name="settings_theme_label">زمینه</string>
   <string name="settings_message_theme_label">دید موضوعی زمینه</string>
   <string name="settings_compose_theme_label">ساخت زمینه</string>
-  <string name="settings_language_label">زبان</string>
   <string name="settings_message_theme_selection_label">نصب زمینه پیام</string>
   <string name="settings_message_theme_selection_summary_off">با انتخاب پیام زمینه در حین دیدن پیام دیده شود</string>
   <string name="settings_message_theme_selection_summary_on">استفاده از دید زمینه پیام نصب شده</string>
-  <string name="setting_language_system">پیش فرض سیستم</string>
   <string name="background_ops_label">همگام سازی پس زمینه</string>
   <string name="background_ops_never">هیچوقت</string>
   <string name="background_ops_always">همیشه</string>

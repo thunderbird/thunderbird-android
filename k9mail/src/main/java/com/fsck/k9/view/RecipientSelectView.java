@@ -24,9 +24,9 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import timber.log.Timber;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -66,6 +66,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Nullable
     private LoaderManager loaderManager;
 
+    private DragListener dragListener;
     private ListPopupWindow alternatesPopup;
     private AlternateRecipientAdapter alternatesAdapter;
     private Recipient alternatesPopupRecipient;
@@ -108,6 +109,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         addDragAndDropFunctionality(context);
     }
 
+    public void setDragListener(DragListener listener) {
+        dragListener = listener;
+    }
+
     private void addDragAndDropFunctionality(Context context) {
 
         setOnDragListener(new OnDragListener() {
@@ -137,6 +142,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                         allowCollapse(true);
                         if (!isFocused()) {
                             performCollapse(false);
+                        }
+                        if (!dragEvent.getResult()) {
+                            copyDraggedRecipient(dragEvent);
+                        }
+                        if (dragListener != null) {
+                            dragListener.onDragEnd();
                         }
                         return false;
                     }
@@ -173,9 +184,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     private void copyDraggedRecipient(DragEvent dragEvent) {
-        CharSequence text = dragEvent.getClipData().getItemAt(0).getText();
-        if (dragEvent.getLocalState() instanceof Recipient) {
-            addObject((Recipient) dragEvent.getLocalState(), text);
+        ClipData data = dragEvent.getClipData();
+        if (data != null) {
+            CharSequence text = data.getItemAt(0).getText();
+            if (dragEvent.getLocalState() instanceof Recipient) {
+                addObject((Recipient) dragEvent.getLocalState(), text);
+            }
         }
     }
 
@@ -240,7 +254,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             }
         }
 
-        return gestureDetector.onTouchEvent(event);
+        gestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -292,14 +307,19 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    public boolean startDrag(Recipient recipient) {
+    private boolean startDrag(Recipient recipient) {
         ClipData clipData = ClipData.newPlainText(recipient.address.getPersonal(), recipient.address.getAddress());
         View view = getTokenViewForRecipient(recipient);
         DragShadowBuilder dragShadowBuilder = new DragShadowBuilder(view);
 
+        if (dragListener != null) {
+            dragListener.onDragStart(this.getId(), recipient, clipData.getItemAt(0).getText());
+        }
         boolean dragSuccess = startDrag(clipData, dragShadowBuilder, recipient, 0);
-        if (!dragSuccess) {
-            Log.e(K9.LOG_TAG, "Failed to start drag operation for Recipient!");
+        if (dragSuccess) {
+            onRecipientRemove(recipient);
+        } else {
+            Timber.e("Failed to start drag operation for Recipient!");
         }
 
         return dragSuccess;
@@ -497,7 +517,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         List<Recipient> currentRecipients = getObjects();
         int indexOfRecipient = currentRecipients.indexOf(recipientToReplace);
         if (indexOfRecipient == -1) {
-            Log.e(K9.LOG_TAG, "Tried to refresh invalid view token!");
+            Timber.e("Tried to refresh invalid view token!");
             return;
         }
         Recipient currentRecipient = currentRecipients.get(indexOfRecipient);
@@ -508,7 +528,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         View recipientTokenView = getTokenViewForRecipient(currentRecipient);
         if (recipientTokenView == null) {
-            Log.e(K9.LOG_TAG, "Tried to refresh invalid view token!");
+            Timber.e("Tried to refresh invalid view token!");
             return;
         }
 
@@ -728,5 +748,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 photoThumbnailUri = Uri.parse(uriString);
             }
         }
+    }
+
+    public interface DragListener {
+        void onDragStart(int riginViewId, Recipient recipient, CharSequence text);
+        void onDragEnd();
     }
 }

@@ -4,7 +4,7 @@ package com.fsck.k9.activity.setup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -115,7 +115,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
             Store store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Could not get remote store", e);
+            Timber.e(e, "Could not get remote store");
         }
 
 

@@ -3,7 +3,7 @@ package com.fsck.k9.service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 
@@ -24,7 +24,7 @@ public class ShutdownReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, final Intent intent) {
         if (Intent.ACTION_SHUTDOWN.equals(intent.getAction())) {
-            Log.i(K9.LOG_TAG, "System is shutting down, releasing resources");
+            Timber.i("System is shutting down, releasing resources");
 
             // prevent any scheduled intent from waking up K-9
             BootReceiver.purgeSchedule(context);

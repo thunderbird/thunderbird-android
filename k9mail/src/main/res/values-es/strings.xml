@@ -667,11 +667,9 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema de vista de mensaje</string>
   <string name="settings_compose_theme_label">Tema de redacción</string>
-  <string name="settings_language_label">Idioma</string>
   <string name="settings_message_theme_selection_label">Tema de mensaje fijo</string>
   <string name="settings_message_theme_selection_summary_off">Seleccionar el tema de vista de mensaje mientras se muestra el mensaje</string>
   <string name="settings_message_theme_selection_summary_on">Usar un tema de vista de mensaje fijo</string>
-  <string name="setting_language_system">Configurado en el sistema</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Siempre</string>

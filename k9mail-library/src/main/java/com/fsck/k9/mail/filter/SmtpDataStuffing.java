@@ -9,7 +9,7 @@ public class SmtpDataStuffing extends FilterOutputStream {
     private static final int STATE_CR = 1;
     private static final int STATE_CRLF = 2;
 
-    private int state = STATE_NORMAL;
+    private int state = STATE_CRLF;
 
     public SmtpDataStuffing(OutputStream out) {
         super(out);

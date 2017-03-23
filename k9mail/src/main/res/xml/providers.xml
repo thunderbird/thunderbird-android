@@ -138,6 +138,88 @@
     	<outgoing uri="smtp+tls+://fencepost.gnu.org" username="$user" />
     </provider>
 
+    <!-- Mail.com Variants -->
+    <provider id="mail.com" label="Mail.com" domain="mail.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="email.com" label="Mail.com" domain="email.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="techie.com" label="Mail.com" domain="techie.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="email.com" label="Mail.com" domain="email.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="usa.com" label="Mail.com" domain="usa.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="myself.com" label="Mail.com" domain="myself.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="consultant.com" label="Mail.com" domain="consultant.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="post.com" label="Mail.com" domain="post.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="europe.com" label="Mail.com" domain="europe.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="asia.com" label="Mail.com" domain="asia.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="iname.com" label="Mail.com" domain="iname.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="writeme.com" label="Mail.com" domain="writeme.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="dr.com" label="Mail.com" domain="dr.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="engineer.com" label="Mail.com" domain="engineer.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="cheerful.com" label="Mail.com" domain="cheerful.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="accountant.com" label="Mail.com" domain="accountant.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="techie.com" label="Mail.com" domain="techie.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="linuxmail.org" label="Mail.com" domain="linuxmail.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="uymail.com" label="Mail.com" domain="uymail.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+    <provider id="contractor.net" label="Mail.com" domain="contractor.com">
+        <incoming uri="imap+ssl+://imap.mail.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.com" username="$email" />
+    </provider>
+
     <!-- Yahoo! Mail Variants -->
     <provider id="yahoo" label="Yahoo" domain="yahoo.com">
         <incoming uri="imap+ssl+://imap.mail.yahoo.com" username="$email" />

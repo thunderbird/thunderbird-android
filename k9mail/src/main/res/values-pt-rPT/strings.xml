@@ -668,11 +668,9 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema da vista de mensagem</string>
   <string name="settings_compose_theme_label">Tema da composição</string>
-  <string name="settings_language_label">Linguagem</string>
   <string name="settings_message_theme_selection_label">Tema de mensagem fixo</string>
   <string name="settings_message_theme_selection_summary_off">Selecionar o tema da vista de mensagem quando visualizar a mensagem</string>
   <string name="settings_message_theme_selection_summary_on">Usar um tema da vista de mensagem fixo</string>
-  <string name="setting_language_system">Predefinições do sistema</string>
   <string name="background_ops_label">Sincronização em segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>

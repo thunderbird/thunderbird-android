@@ -669,11 +669,9 @@
   <string name="settings_theme_label">Θέμα</string>
   <string name="settings_message_theme_label">Θέμα προβολής μηνύματος</string>
   <string name="settings_compose_theme_label">Θέμα σύνθεσης</string>
-  <string name="settings_language_label">Γλώσσα</string>
   <string name="settings_message_theme_selection_label">Θέμα σταθερού μηνύματος</string>
   <string name="settings_message_theme_selection_summary_off">Επιλογή του θέματος προβολής μηνύματος κατά την προβολή του μηνύματος</string>
   <string name="settings_message_theme_selection_summary_on">Χρήση θέματος σταθερού μηνύματος</string>
-  <string name="setting_language_system">Εξ ορισμού του συστήματος</string>
   <string name="background_ops_label">Συγχρονισμός στο παρασκήνιο</string>
   <string name="background_ops_never">Ποτέ</string>
   <string name="background_ops_always">Πάντοτε</string>

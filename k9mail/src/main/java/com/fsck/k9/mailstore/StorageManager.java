@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
@@ -204,7 +204,7 @@ public class StorageManager {
                 return isMountPoint(root)
                        && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
             } catch (IOException e) {
-                Log.w(K9.LOG_TAG, "Specified root isn't ready: " + mRoot, e);
+                Timber.w(e, "Specified root isn't ready: %s", mRoot);
                 return false;
             }
         }
@@ -608,7 +608,7 @@ public class StorageManager {
     public boolean isReady(final String providerId) {
         StorageProvider provider = getProvider(providerId);
         if (provider == null) {
-            Log.w(K9.LOG_TAG, "Storage-Provider \"" + providerId + "\" does not exist");
+            Timber.w("Storage-Provider \"%s\" does not exist", providerId);
             return false;
         }
         return provider.isReady(context);
@@ -632,7 +632,7 @@ public class StorageManager {
      * @param path
      */
     public void onBeforeUnmount(final String path) {
-        Log.i(K9.LOG_TAG, "storage path \"" + path + "\" unmounting");
+        Timber.i("storage path \"%s\" unmounting", path);
         final StorageProvider provider = resolveProvider(path);
         if (provider == null) {
             return;
@@ -641,7 +641,7 @@ public class StorageManager {
             try {
                 listener.onUnmount(provider.getId());
             } catch (Exception e) {
-                Log.w(K9.LOG_TAG, "Error while notifying StorageListener", e);
+                Timber.w(e, "Error while notifying StorageListener");
             }
         }
         final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
@@ -651,7 +651,7 @@ public class StorageManager {
     }
 
     public void onAfterUnmount(final String path) {
-        Log.i(K9.LOG_TAG, "storage path \"" + path + "\" unmounted");
+        Timber.i("storage path \"%s\" unmounted", path);
         final StorageProvider provider = resolveProvider(path);
         if (provider == null) {
             return;
@@ -669,7 +669,7 @@ public class StorageManager {
      * @param readOnly
      */
     public void onMount(final String path, final boolean readOnly) {
-        Log.i(K9.LOG_TAG, "storage path \"" + path + "\" mounted readOnly=" + readOnly);
+        Timber.i("storage path \"%s\" mounted readOnly=%s", path, readOnly);
         if (readOnly) {
             return;
         }
@@ -682,7 +682,7 @@ public class StorageManager {
             try {
                 listener.onMount(provider.getId());
             } catch (Exception e) {
-                Log.w(K9.LOG_TAG, "Error while notifying StorageListener", e);
+                Timber.w(e, "Error while notifying StorageListener");
             }
         }
 

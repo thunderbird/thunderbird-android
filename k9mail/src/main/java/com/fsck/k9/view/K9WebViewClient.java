@@ -14,7 +14,7 @@ import android.os.Build.VERSION_CODES;
 import android.provider.Browser;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
+import timber.log.Timber;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
@@ -111,7 +111,7 @@ abstract class K9WebViewClient extends WebViewClient {
 
             return new WebResourceResponse(mimeType, null, inputStream);
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Error while intercepting URI: " + uri, e);
+            Timber.e(e, "Error while intercepting URI: %s", uri);
             return RESULT_DUMMY_RESPONSE;
         }
     }

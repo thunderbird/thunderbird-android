@@ -18,7 +18,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
+import timber.log.Timber;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -27,7 +27,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.cache.TemporaryAttachmentStore;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
@@ -97,7 +97,7 @@ public class AttachmentController {
         LocalMessage message = localPart.getMessage();
 
         messageViewFragment.showAttachmentLoadingDialog();
-        controller.loadAttachment(account, message, attachment.part, new MessagingListener() {
+        controller.loadAttachment(account, message, attachment.part, new SimpleMessagingListener() {
             @Override
             public void loadAttachmentFinished(Account account, Message message, Part part) {
                 messageViewFragment.hideAttachmentLoadingDialogOnMainThread();
@@ -119,6 +119,12 @@ public class AttachmentController {
         boolean isExternalStorageMounted = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
         if (!isExternalStorageMounted) {
             String message = context.getString(R.string.message_view_status_attachment_not_saved);
+            displayMessageToUser(message);
+            return;
+        }
+
+        if (attachment.size > directory.getFreeSpace()) {
+            String message = context.getString(R.string.message_view_status_no_space);
             displayMessageToUser(message);
             return;
         }
@@ -175,7 +181,7 @@ public class AttachmentController {
         try {
             intentDataUri = AttachmentTempFileProvider.createTempUriForContentUri(context, attachment.internalUri);
         } catch (IOException e) {
-            Log.e(K9.LOG_TAG, "Error creating temp file for attachment!", e);
+            Timber.e(e, "Error creating temp file for attachment!");
             return null;
         }
 
@@ -205,9 +211,7 @@ public class AttachmentController {
                 writeAttachmentToStorage(tempFile);
                 viewIntent = createViewIntentForFileUri(resolvedIntentInfo.getMimeType(), Uri.fromFile(tempFile));
             } catch (IOException e) {
-                if (K9.DEBUG) {
-                    Log.e(K9.LOG_TAG, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent", e);
-                }
+                Timber.e(e, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent");
                 viewIntent = createViewIntentForAttachmentProviderUri(intentDataUri, MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
             }
         } else {
@@ -326,7 +330,7 @@ public class AttachmentController {
             try {
                 context.startActivity(intent);
             } catch (ActivityNotFoundException e) {
-                Log.e(K9.LOG_TAG, "Could not display attachment of type " + attachment.mimeType, e);
+                Timber.e(e, "Could not display attachment of type %s", attachment.mimeType);
 
                 String message = context.getString(R.string.message_view_no_viewer, attachment.mimeType);
                 displayMessageToUser(message);
@@ -347,9 +351,7 @@ public class AttachmentController {
                 File directory = params[0];
                 return saveAttachmentWithUniqueFileName(directory);
             } catch (IOException e) {
-                if (K9.DEBUG) {
-                    Log.e(K9.LOG_TAG, "Error saving attachment", e);
-                }
+                Timber.e(e, "Error saving attachment");
                 return null;
             }
         }

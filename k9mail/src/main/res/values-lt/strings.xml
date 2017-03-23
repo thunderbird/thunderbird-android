@@ -571,11 +571,9 @@
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Laiško peržiūros tema</string>
   <string name="settings_compose_theme_label">Kūrimo tema</string>
-  <string name="settings_language_label">Kalba</string>
   <string name="settings_message_theme_selection_label">Numatyta laiško tema</string>
   <string name="settings_message_theme_selection_summary_off">Peržiūrint laišką, pasirinkti laiško peržiūros temą</string>
   <string name="settings_message_theme_selection_summary_on">Naudoti numatytą laiškų peržiūros temą</string>
-  <string name="setting_language_system">Sistemos numatyta</string>
   <string name="background_ops_label">Sinchronizuoti fone</string>
   <string name="background_ops_never">Niekada</string>
   <string name="background_ops_always">Visada</string>

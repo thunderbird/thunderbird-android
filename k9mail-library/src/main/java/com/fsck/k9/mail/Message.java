@@ -105,6 +105,10 @@ public abstract class Message implements Part, Body {
 
     public abstract void setFrom(Address from);
 
+    public abstract Address[] getSender();
+
+    public abstract void setSender(Address sender);
+
     public abstract Address[] getReplyTo();
 
     public abstract void setReplyTo(Address[] from);

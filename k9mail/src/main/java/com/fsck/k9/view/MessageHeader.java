@@ -1,6 +1,7 @@
 package com.fsck.k9.view;
 
 
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,14 +17,13 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,11 +43,13 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.ui.messageview.OnCryptoClickListener;
+import com.fsck.k9.ui.ContactBadge;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private Context mContext;
     private TextView mFromView;
+    private TextView mSenderView;
     private TextView mDateView;
     private TextView mToView;
     private TextView mToLabel;
@@ -70,7 +72,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private MessageHelper mMessageHelper;
     private ContactPictureLoader mContactsPictureLoader;
-    private QuickContactBadge mContactBadge;
+    private ContactBadge mContactBadge;
 
     private OnLayoutChangedListener mOnLayoutChangedListener;
     private OnCryptoClickListener onCryptoClickListener;
@@ -102,12 +104,13 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mAnsweredIcon = findViewById(R.id.answered);
         mForwardedIcon = findViewById(R.id.forwarded);
         mFromView = (TextView) findViewById(R.id.from);
+        mSenderView = (TextView) findViewById(R.id.sender);
         mToView = (TextView) findViewById(R.id.to);
         mToLabel = (TextView) findViewById(R.id.to_label);
         mCcView = (TextView) findViewById(R.id.cc);
         mCcLabel = (TextView) findViewById(R.id.cc_label);
 
-        mContactBadge = (QuickContactBadge) findViewById(R.id.contact_badge);
+        mContactBadge = (ContactBadge) findViewById(R.id.contact_badge);
 
         mSubjectView = (TextView) findViewById(R.id.subject);
         mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
@@ -185,7 +188,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 final Address senderEmail = mMessage.getFrom()[0];
                 mContacts.createContact(senderEmail);
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Couldn't create contact", e);
+                Timber.e(e, "Couldn't create contact");
             }
         }
     }
@@ -295,6 +298,15 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             mContactBadge.setVisibility(View.GONE);
         }
 
+        if (shouldShowSender(message)) {
+            mSenderView.setVisibility(VISIBLE);
+            String sender = getResources().getString(R.string.message_view_sender_label,
+                    MessageHelper.toFriendly(message.getSender(), contacts));
+            mSenderView.setText(sender);
+        } else {
+            mSenderView.setVisibility(View.GONE);
+        }
+
         final String subject = message.getSubject();
         if (TextUtils.isEmpty(subject)) {
             mSubjectView.setText(mContext.getText(R.string.general_no_subject));
@@ -340,6 +352,16 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         } else {
             hideAdditionalHeaders();
         }
+    }
+
+    public static boolean shouldShowSender(Message message) {
+        Address[] from = message.getFrom();
+        Address[] sender = message.getSender();
+
+        if (sender == null || sender.length == 0) {
+            return false;
+        }
+        return !Arrays.equals(from, sender);
     }
 
     public void hideCryptoStatus() {

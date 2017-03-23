@@ -9,7 +9,7 @@ import android.content.Context;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import android.util.AttributeSet;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +39,7 @@ public class ClientCertificateSpinner extends LinearLayout {
         if (context instanceof Activity) {
             mActivity = (Activity) context;
         } else {
-            Log.e(K9.LOG_TAG, "ClientCertificateSpinner init failed! Please inflate with Activity!");
+            Timber.e("ClientCertificateSpinner init failed! Please inflate with Activity!");
         }
 
         setOrientation(LinearLayout.HORIZONTAL);
@@ -102,8 +102,7 @@ public class ClientCertificateSpinner extends LinearLayout {
         KeyChain.choosePrivateKeyAlias(mActivity, new KeyChainAliasCallback() {
             @Override
             public void alias(String alias) {
-                if (K9.DEBUG)
-                    Log.d(K9.LOG_TAG, "User has selected client certificate alias: " + alias);
+                Timber.d("User has selected client certificate alias: %s", alias);
 
                 setAlias(alias);
             }

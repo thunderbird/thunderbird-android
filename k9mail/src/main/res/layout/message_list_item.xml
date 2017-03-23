@@ -39,7 +39,7 @@
 
     </LinearLayout>
 
-    <QuickContactBadge
+    <com.fsck.k9.ui.ContactBadge
             android:id="@+id/contact_badge"
             android:layout_marginRight="8dip"
             android:layout_marginTop="4dip"

@@ -19,7 +19,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -72,8 +72,11 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
         OnSwitchCompleteListener {
 
-    // for this activity
-    private static final String EXTRA_SEARCH = "search";
+    @Deprecated
+    //TODO: Remove after 2017-09-11
+    private static final String EXTRA_SEARCH_OLD = "search";
+
+    private static final String EXTRA_SEARCH = "search_bytes";
     private static final String EXTRA_NO_THREADING = "no_threading";
 
     private static final String ACTION_SHORTCUT = "shortcut";
@@ -431,6 +434,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                     mSearch.addAccountUuid(LocalSearch.ALL_ACCOUNTS);
                 }
             }
+        } else if (intent.hasExtra(EXTRA_SEARCH_OLD)) {
+            mSearch = intent.getParcelableExtra(EXTRA_SEARCH_OLD);
+            mNoThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false);
         } else {
             // regular LocalSearch object was passed
             mSearch = intent.hasExtra(EXTRA_SEARCH) ?
@@ -479,7 +485,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderNames().size() == 1);
 
         if (mSingleAccountMode && (mAccount == null || !mAccount.isAvailable(this))) {
-            Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
+            Timber.i("not opening MessageList of unavailable account");
             onAccountUnavailable();
             return false;
         }
@@ -757,8 +763,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         // Swallow these events too to avoid the audible notification of a volume change
         if (K9.useVolumeKeysForListNavigationEnabled()) {
             if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "Swallowed key up.");
+                Timber.v("Swallowed key up.");
                 return true;
             }
         }

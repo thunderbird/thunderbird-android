@@ -598,10 +598,8 @@
   <string name="settings_theme_label">Teema</string>
   <string name="settings_message_theme_label">Sõnumite vaate teema</string>
   <string name="settings_compose_theme_label">Koostaja teema</string>
-  <string name="settings_language_label">Keel</string>
   <string name="settings_message_theme_selection_label">Fikseeritud sõnumi teema</string>
   <string name="settings_message_theme_selection_summary_off">Vali sõnumivaate teema sõnumit vaadates</string>
-  <string name="setting_language_system">Süsteemi vaikeseäte</string>
   <string name="background_ops_label">Taustal sünkimine</string>
   <string name="background_ops_never">Mitte kunagi</string>
   <string name="background_ops_always">Alati</string>
