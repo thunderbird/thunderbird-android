@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 import android.support.annotation.VisibleForTesting;
@@ -219,7 +218,6 @@ public class SmtpTransport extends Transport {
     private int mLargestAcceptableMessage;
     private boolean retryXoauthWithNewToken;
     private boolean pipeliningSupported;
-    private Queue<String> pipelinedCommand;
 
     public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
             OAuth2TokenProvider oauth2TokenProvider) throws MessagingException {
@@ -573,23 +571,21 @@ public class SmtpTransport extends Transport {
         try {
             String fromAddress = from[0].getAddress();
             if (pipeliningSupported) {
-                pipelinedCommand = new LinkedList<>();
+                Queue<String> pipelinedCommands = new LinkedList<>();
                 if (m8bitEncodingAllowed) {
-                    executeCommandPipelined("MAIL FROM:<%s> BODY=8BITMIME", fromAddress);
+                    pipelinedCommands.add(String.format("MAIL FROM:<%s> BODY=8BITMIME", fromAddress));
                 } else {
-                    executeCommandPipelined("MAIL FROM:<%s>", fromAddress);
+                    pipelinedCommands.add(String.format("MAIL FROM:<%s>", fromAddress));
                 }
 
                 for (String address : addresses) {
-                    executeCommandPipelined("RCPT TO:<%s>", address);
+                    pipelinedCommands.add(String.format("RCPT TO:<%s>", address));
                 }
 
-                executeCommandPipelined("DATA");
-                CommandResponse commandResponse = readPipelinedResponse();
-                if (commandResponse.replyCode != 354) {
-                    String replyText = TextUtils.join(" ", commandResponse.results);
-                    throw new NegativeSmtpReplyException(commandResponse.replyCode, replyText);
-                }
+                pipelinedCommands.add("DATA");
+                executePipelinedCommands(pipelinedCommands);
+                readPipelinedResponse(pipelinedCommands);
+
             } else {
                 if (m8bitEncodingAllowed) {
                     executeCommand("MAIL FROM:<%s> BODY=8BITMIME", fromAddress);
@@ -759,20 +755,18 @@ public class SmtpTransport extends Transport {
         return line;
     }
 
-    private void executeCommandPipelined(String format, Object... args) throws IOException {
-        if (format != null) {
-            String command = String.format(Locale.ROOT, format, args);
-            pipelinedCommand.add(command);
+    private void executePipelinedCommands(Queue<String> pipelinedCommands) throws IOException {
+        for (String command : pipelinedCommands) {
             writeLine(command, false);
         }
     }
 
-    private CommandResponse readPipelinedResponse() throws IOException, MessagingException {
+    private void readPipelinedResponse(Queue<String> pipelinedCommands) throws IOException, MessagingException {
+        int noOfPipelinedResponse = pipelinedCommands.size();
         String responseLine = null;
-        List<String> results = null;
-        int noOfPipelinedResponse = pipelinedCommand.size();
+        List<String> results = new ArrayList<>();
         while (noOfPipelinedResponse > 0) {
-            results = new ArrayList<>();
+            results.clear();
             responseLine = readCommandResponseLine(results);
             try {
                 responseLineToCommandResponse(responseLine, results);
@@ -787,7 +781,13 @@ public class SmtpTransport extends Transport {
             }
             noOfPipelinedResponse-- ;
         }
-        return responseLineToCommandResponse(responseLine, results);
+
+        try {
+            responseLineToCommandResponse(responseLine, results);
+        } catch (NegativeSmtpReplyException exception) {
+            throw exception;
+        }
+
     }
 
     private CommandResponse responseLineToCommandResponse(String line, List<String> results) throws MessagingException {
