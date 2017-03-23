@@ -75,7 +75,29 @@ public class ImapConnectionTest {
     }
 
     @Test
-    public void open_withCapabilitiesInInitialResponse_shouldNotIssueCapabilitiesCommand() throws Exception {
+    public void open_withNoCapabilitiesInInitialResponse_shouldIssuePreAuthCapabilitiesCommand() throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        MockImapServer server = new MockImapServer();
+        server.output("* OK example.org server");
+        server.expect("1 CAPABILITY");
+        server.output("* CAPABILITY IMAP4 IMAP4REV1 AUTH=PLAIN");
+        server.output("1 OK CAPABILITY Completed");
+        server.expect("2 AUTHENTICATE PLAIN");
+        server.output("+");
+        server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
+        server.output("2 OK Success");
+        simplePostAuthenticationDialog(server, true, 3);
+
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        imapConnection.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withCapabilitiesInInitialResponse_shouldNotIssuePreAuthCapabilitiesCommand() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         MockImapServer server = new MockImapServer();
         server.output("* OK [CAPABILITY IMAP4 IMAP4REV1 AUTH=PLAIN]");
@@ -83,9 +105,7 @@ public class ImapConnectionTest {
         server.output("+");
         server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
         server.output("1 OK Success");
-        server.expect("2 LIST \"\" \"\"");
-        server.output("* LIST () \"/\" foo/bar");
-        server.output("2 OK");
+        simplePostAuthenticationDialog(server, true, 2);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -103,7 +123,7 @@ public class ImapConnectionTest {
         server.output("+");
         server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
         server.output("2 OK Success");
-        simplePostAuthenticationDialog(server);
+        simplePostAuthenticationDialog(server, true);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -119,7 +139,7 @@ public class ImapConnectionTest {
         preAuthenticationDialog(server);
         server.expect("2 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
         server.output("2 OK LOGIN completed");
-        simplePostAuthenticationDialog(server);
+        simplePostAuthenticationDialog(server, true);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
         imapConnection.open();
         imapConnection.close();
@@ -163,7 +183,7 @@ public class ImapConnectionTest {
         server.output("2 NO Login Failure");
         server.expect("3 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
         server.output("3 OK LOGIN completed");
-        simplePostAuthenticationDialog(server, "4");
+        simplePostAuthenticationDialog(server, true, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -230,7 +250,7 @@ public class ImapConnectionTest {
         preAuthenticationDialog(server);
         server.expect("2 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
         server.output("2 OK LOGIN completed");
-        simplePostAuthenticationDialog(server);
+        simplePostAuthenticationDialog(server, true);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -248,7 +268,7 @@ public class ImapConnectionTest {
         server.output("+ " + ByteString.encodeUtf8("<0000.000000000@example.org>").base64());
         server.expect("dXNlciA2ZjdiOTcyYjk5YTI4NDk4OTRhN2YyMmE3MGRhZDg0OQ==");
         server.output("2 OK Success");
-        simplePostAuthenticationDialog(server);
+        simplePostAuthenticationDialog(server, true);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -306,7 +326,7 @@ public class ImapConnectionTest {
         preAuthenticationDialog(server, "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2");
         server.expect("2 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING);
         server.output("2 OK Success");
-        simplePostAuthenticationDialog(server);
+        simplePostAuthenticationDialog(server, true);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -351,7 +371,7 @@ public class ImapConnectionTest {
         server.output("2 NO SASL authentication failed");
         server.expect("3 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING_RETRY);
         server.output("3 OK Success");
-        simplePostAuthenticationDialog(server, "4");
+        simplePostAuthenticationDialog(server, true, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -377,7 +397,7 @@ public class ImapConnectionTest {
         server.output("2 NO SASL authentication failed");
         server.expect("3 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING_RETRY);
         server.output("3 OK Success");
-        simplePostAuthenticationDialog(server, "4");
+        simplePostAuthenticationDialog(server, true, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -403,7 +423,7 @@ public class ImapConnectionTest {
         server.output("2 NO SASL authentication failed");
         server.expect("3 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING_RETRY);
         server.output("3 OK Success");
-        simplePostAuthenticationDialog(server, "4");
+        simplePostAuthenticationDialog(server, true, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -431,7 +451,7 @@ public class ImapConnectionTest {
         server.output("+ 433ba3a3a");
         server.expect("");
         server.output("3 NO SASL authentication failed");
-        simplePostAuthenticationDialog(server);
+        simplePostAuthenticationDialog(server, true);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         try {
@@ -453,7 +473,7 @@ public class ImapConnectionTest {
         preAuthenticationDialog(server, "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2");
         server.expect("2 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING);
         server.output("2 OK [CAPABILITY IMAP4REV1 IDLE XM-GM-EXT-1]");
-        simplePostAuthenticationDialog(server);
+        simplePostAuthenticationDialog(server, false);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
         imapConnection.open();
         server.verifyConnectionStillOpen();
@@ -468,7 +488,7 @@ public class ImapConnectionTest {
         preAuthenticationDialog(server, "AUTH=EXTERNAL");
         server.expect("2 AUTHENTICATE EXTERNAL " + ByteString.encodeUtf8(USERNAME).base64());
         server.output("2 OK Success");
-        simplePostAuthenticationDialog(server);
+        simplePostAuthenticationDialog(server, true);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -517,9 +537,72 @@ public class ImapConnectionTest {
     }
 
     @Test
+    public void open_withNoPostAuthCapabilityResponse_shouldIssueCapabilityCommand() throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server, "AUTH=PLAIN");
+        server.expect("2 AUTHENTICATE PLAIN");
+        server.output("+");
+        server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
+        server.output("2 OK Success");
+        server.expect("3 CAPABILITY");
+        server.output("* CAPABILITY IDLE");
+        server.output("3 OK CAPABILITY Completed");
+        simplePostAuthenticationDialog(server, false, 4);
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        imapConnection.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+        assertTrue(imapConnection.isIdleCapable());
+    }
+
+    @Test
+    public void open_withUntaggedPostAuthCapabilityResponse_shouldNotIssueCapabilityCommand() throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server, "AUTH=PLAIN");
+        server.expect("2 AUTHENTICATE PLAIN");
+        server.output("+");
+        server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
+        server.output("* CAPABILITY IMAP4rev1 UNSELECT IDLE QUOTA ID XLIST CHILDREN X-GM-EXT-1 UIDPLUS " +
+                "ENABLE MOVE CONDSTORE ESEARCH UTF8=ACCEPT LIST-EXTENDED LIST-STATUS LITERAL- SPECIAL-USE " +
+                "APPENDLIMIT=35651584");
+        server.output("2 OK");
+        simplePostAuthenticationDialog(server, false, 3);
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        imapConnection.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+        assertTrue(imapConnection.isIdleCapable());
+    }
+
+    @Test
+    public void open_withPostAuthCapabilityResponse_shouldNotIssueCapabilityCommand() throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server, "AUTH=PLAIN");
+        server.expect("2 AUTHENTICATE PLAIN");
+        server.output("+");
+        server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
+        server.output("2 OK [CAPABILITY IDLE]");
+        simplePostAuthenticationDialog(server, false, 3);
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        imapConnection.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+        assertTrue(imapConnection.isIdleCapable());
+    }
+
+    @Test
     public void open_withNamespaceCapability_shouldIssueNamespaceCommand() throws Exception {
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "NAMESPACE");
+        simplePreAuthAndLoginDialog(server, "", "NAMESPACE");
         server.expect("3 NAMESPACE");
         server.output("* NAMESPACE ((\"\" \"/\")) NIL NIL");
         server.output("3 OK command completed");
@@ -573,10 +656,10 @@ public class ImapConnectionTest {
         server.output("2 OK [CAPABILITY IMAP4REV1 NAMESPACE]");
         server.startTls();
         server.expect("3 CAPABILITY");
-        server.output("* CAPABILITY IMAP4 IMAP4REV1 NAMESPACE");
+        server.output("* CAPABILITY IMAP4 IMAP4REV1");
         server.output("3 OK");
         server.expect("4 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
-        server.output("4 OK LOGIN completed");
+        server.output("4 OK [CAPABILITY NAMESPACE] LOGIN completed");
         server.expect("5 NAMESPACE");
         server.output("* NAMESPACE ((\"\" \"/\")) NIL NIL");
         server.output("5 OK command completed");
@@ -632,11 +715,11 @@ public class ImapConnectionTest {
     public void open_withCompressDeflateCapability_shouldEnableCompression() throws Exception {
         settings.setUseCompression(true);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "COMPRESS=DEFLATE");
+        simplePreAuthAndLoginDialog(server, "", "COMPRESS=DEFLATE");
         server.expect("3 COMPRESS DEFLATE");
         server.output("3 OK");
         server.enableCompression();
-        simplePostAuthenticationDialog(server, "4");
+        simplePostAuthenticationDialog(server, false, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -650,10 +733,10 @@ public class ImapConnectionTest {
         settings.setAuthType(AuthType.PLAIN);
         settings.setUseCompression(true);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "COMPRESS=DEFLATE");
+        simplePreAuthAndLoginDialog(server, "", "COMPRESS=DEFLATE");
         server.expect("3 COMPRESS DEFLATE");
         server.output("3 NO");
-        simplePostAuthenticationDialog(server, "4");
+        simplePostAuthenticationDialog(server, false, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -667,7 +750,7 @@ public class ImapConnectionTest {
         settings.setAuthType(AuthType.PLAIN);
         settings.setUseCompression(true);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "COMPRESS=DEFLATE");
+        simplePreAuthAndLoginDialog(server, "", "COMPRESS=DEFLATE");
         server.expect("3 COMPRESS DEFLATE");
         server.closeConnection();
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
@@ -687,7 +770,7 @@ public class ImapConnectionTest {
         settings.setAuthType(AuthType.PLAIN);
         settings.setUseCompression(true);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "");
+        simplePreAuthAndLoginDialog(server, "","");
         server.expect("3 LIST \"\" \"\"");
         server.output("* Now what?");
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
@@ -707,7 +790,7 @@ public class ImapConnectionTest {
         settings.setAuthType(AuthType.PLAIN);
         settings.setUseCompression(true);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "");
+        simplePreAuthAndLoginDialog(server, "", "");
         server.expect("3 LIST \"\" \"\"");
         server.output("3 NO");
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
@@ -790,7 +873,7 @@ public class ImapConnectionTest {
     @Test
     public void isIdleCapable_withIdleCapability() throws Exception {
         MockImapServer server = new MockImapServer();
-        ImapConnection imapConnection = simpleOpenWithCapabilities(server, "IDLE");
+        ImapConnection imapConnection = simpleOpenWithCapabilities(server, "", "IDLE");
 
         boolean result = imapConnection.isIdleCapable();
 
@@ -803,7 +886,7 @@ public class ImapConnectionTest {
     public void sendContinuation() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         MockImapServer server = new MockImapServer();
-        simpleOpenDialog(server, "IDLE");
+        simpleOpenDialog(server, "", "IDLE");
         server.expect("4 IDLE");
         server.output("+ idling");
         server.expect("DONE");
@@ -833,11 +916,11 @@ public class ImapConnectionTest {
     }
 
     private ImapConnection simpleOpen(MockImapServer server) throws Exception {
-        return simpleOpenWithCapabilities(server, "");
+        return simpleOpenWithCapabilities(server, "", "");
     }
 
-    private ImapConnection simpleOpenWithCapabilities(MockImapServer server, String capabilities) throws Exception {
-        simpleOpenDialog(server, capabilities);
+    private ImapConnection simpleOpenWithCapabilities(MockImapServer server, String preAuthCapabilities, String postAuthCapabilities) throws Exception {
+        simpleOpenDialog(server, preAuthCapabilities, postAuthCapabilities);
 
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
         imapConnection.open();
@@ -856,27 +939,36 @@ public class ImapConnectionTest {
         server.output("1 OK CAPABILITY");
     }
 
-    private void simplePostAuthenticationDialog(MockImapServer server) {
-        simplePostAuthenticationDialog(server, "3");
+    private void simplePostAuthenticationDialog(MockImapServer server, boolean requestCapabilities) {
+        simplePostAuthenticationDialog(server, requestCapabilities, 3);
     }
 
-    private void simplePostAuthenticationDialog(MockImapServer server, String tag) {
-        server.expect(tag + " LIST \"\" \"\"");
-        server.output("* LIST () \"/\" foo/bar");
-        server.output(tag + " OK");
+    private void simplePostAuthenticationDialog(MockImapServer server, boolean requestCapabilities, int tag) {
+        if (requestCapabilities) {
+            server.expect(tag+" CAPABILITY");
+            server.output("* CAPABILITY IMAP4 IMAP4REV1 ");
+            server.output(tag+" OK CAPABILITY");
+            server.expect((tag+1) + " LIST \"\" \"\"");
+            server.output("* LIST () \"/\" foo/bar");
+            server.output((tag+1) + " OK");
+        } else {
+            server.expect(tag + " LIST \"\" \"\"");
+            server.output("* LIST () \"/\" foo/bar");
+            server.output(tag + " OK");
+        }
     }
 
-    private void simpleOpenDialog(MockImapServer server, String capabilities) {
-        simplePreAuthAndLoginDialog(server, capabilities);
-        simplePostAuthenticationDialog(server);
+    private void simpleOpenDialog(MockImapServer server, String preAuthCapabilities, String postAuthCapabilities) {
+        simplePreAuthAndLoginDialog(server, preAuthCapabilities, postAuthCapabilities);
+        simplePostAuthenticationDialog(server, false);
     }
 
-    private void simplePreAuthAndLoginDialog(MockImapServer server, String capabilities) {
+    private void simplePreAuthAndLoginDialog(MockImapServer server, String preAuthCapabilities, String postAuthCapabilities) {
         settings.setAuthType(AuthType.PLAIN);
 
-        preAuthenticationDialog(server, capabilities);
+        preAuthenticationDialog(server, preAuthCapabilities);
 
         server.expect("2 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
-        server.output("2 OK LOGIN completed");
+        server.output("2 OK [CAPABILITY " + postAuthCapabilities + "] LOGIN completed");
     }
 }
