@@ -22,9 +22,8 @@
     <item
         android:id="@+id/is_urgent"
         android:alphabeticShortcut="a"
-        android:title="@string/is_urgent"
+        android:title="@string/is_high_priority"
         />
-
     <item
         android:id="@+id/save"
         android:alphabeticShortcut="d"
@@ -61,7 +60,6 @@
         android:title="@string/enable_sign_only"
         android:showAsAction="never"
         />
-
     <item
         android:id="@+id/openpgp_sign_only_disable"
         android:alphabeticShortcut="g"

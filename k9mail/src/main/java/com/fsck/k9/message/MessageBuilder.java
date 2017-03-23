@@ -1,16 +1,11 @@
 package com.fsck.k9.message;
 
 
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
@@ -34,8 +29,15 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.TempFileBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
+
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.util.MimeUtil;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import timber.log.Timber;
 
 
 public abstract class MessageBuilder {
@@ -111,9 +113,8 @@ public abstract class MessageBuilder {
         if (!K9.hideUserAgent()) {
             message.setHeader("User-Agent", context.getString(R.string.message_header_mua));
         }
-        if(isHighPriority)
-        {
-            message.setHeader("X-Priority", context.getString(R.string.XPriority));
+        if(isHighPriority) {
+            message.setHeader("X-Priority", context.getString(R.string.x_priority));
         }
 
         final String replyTo = identity.getReplyTo();

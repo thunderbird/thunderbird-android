@@ -1,13 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -29,9 +22,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import timber.log.Timber;
-
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -100,6 +90,15 @@ import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import timber.log.Timber;
+
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
 public class MessageCompose extends K9Activity implements OnClickListener,
@@ -113,8 +112,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int DIALOG_CONFIRM_DISCARD = 4;
 
     private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
-
-    private boolean isUrgent=false;
 
     public static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
     public static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
@@ -162,6 +159,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private QuotedMessagePresenter quotedMessagePresenter;
     private MessageLoaderHelper messageLoaderHelper;
     private AttachmentPresenter attachmentPresenter;
+    private boolean isHighPriority =false;
 
     private Contacts contacts;
 
@@ -724,9 +722,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         currentMessageBuilder = createMessageBuilder(true);
         if (currentMessageBuilder != null) {
             setProgressBarIndeterminateVisibility(true);
-
-            currentMessageBuilder.setHighPriority(isUrgent);
-
+            currentMessageBuilder.setHighPriority(isHighPriority);
             currentMessageBuilder.buildAsync(this);
         }
     }
@@ -735,7 +731,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
             changesMadeSinceLastSave = false;
-            currentMessageBuilder.setHighPriority(isUrgent);
+            currentMessageBuilder.setHighPriority(isHighPriority);
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
         }
@@ -974,22 +970,19 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 onReadReceipt();
                 break;
             case R.id.is_urgent:
-                if(isUrgent==false) {
+                if(!isHighPriority) {
                     item.setTitle("Normal");
-                    this.isUrgent = true;
+                    this.isHighPriority = true;
                     setTitle(getTitle() + ":U");
                 }
-                else
-                {
+                else {
                     item.setTitle("Urgent");
-                    this.isUrgent = false;
+                    this.isHighPriority = false;
                     setTitle(getTitle().toString().split(":")[0]);
                 }
-
                 break;
-            default:
+             default:
                 return super.onOptionsItemSelected(item);
-
         }
         return true;
     }
@@ -1029,7 +1022,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void prepareToFinish(boolean shouldNavigateUp) {
         navigateUp = shouldNavigateUp;
 
-        if (changesMadeSinceLastSave && draftIsNotEmpty()) {
+        if(changesMadeSinceLastSave && draftIsNotEmpty()) {
             if (!account.hasDraftsFolder()) {
                 showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
             } else {

@@ -1,14 +1,10 @@
 package com.fsck.k9.notification;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationCompat.InboxStyle;
@@ -21,6 +17,9 @@ import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
 import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_SLOW;
