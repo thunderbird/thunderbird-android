@@ -10,9 +10,11 @@ import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
+import com.fsck.k9.mail.Address;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertFalse;
@@ -30,6 +32,7 @@ public class BaseNotificationsTest {
     private static final String ACCOUNT_NAME = "AccountName";
     private static final int ACCOUNT_NUMBER = 2;
     private static final String NOTIFICATION_SUMMARY = "Summary";
+    private static final String ADDRESS = "Address";
     private static final String SENDER = "MessageSender";
     private static final String SUBJECT = "Subject";
     private static final String NOTIFICATION_PREVIEW = "Preview";
@@ -102,8 +105,10 @@ public class BaseNotificationsTest {
     }
 
     private NotificationHolder createNotificationHolder(int notificationId) {
-        NotificationContent content = new NotificationContent(null, null, SENDER, SUBJECT, NOTIFICATION_PREVIEW,
-                NOTIFICATION_SUMMARY, false);
+        Address address = createFakeAddress();
+        NotificationContent content =
+                new NotificationContent(null, address, SENDER, SUBJECT, NOTIFICATION_PREVIEW,
+                        NOTIFICATION_SUMMARY, false);
         return new NotificationHolder(notificationId, content);
     }
 
@@ -119,6 +124,7 @@ public class BaseNotificationsTest {
         NotificationController controller = mock(NotificationController.class);
         when(controller.createNotificationBuilder()).thenReturn(builder);
         when(controller.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
+        when(controller.getContext()).thenReturn(RuntimeEnvironment.application);
         return controller;
     }
 
@@ -127,6 +133,12 @@ public class BaseNotificationsTest {
         when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
         when(account.getChipColor()).thenReturn(ACCOUNT_COLOR);
         return account;
+    }
+
+    private Address createFakeAddress() {
+        Address address = mock(Address.class);
+        when(address.getAddress()).thenReturn(ADDRESS);
+        return address;
     }
 
 

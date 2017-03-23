@@ -36,7 +36,7 @@ abstract class BaseNotifications {
     }
 
     protected NotificationCompat.Builder createBigTextStyleNotification(Account account, NotificationHolder holder,
-                                                                        int notificationId) {
+            int notificationId) {
         String accountName = controller.getAccountName(account);
         NotificationContent content = holder.content;
         String groupKey = NotificationGroupKeys.getGroupKey(account);

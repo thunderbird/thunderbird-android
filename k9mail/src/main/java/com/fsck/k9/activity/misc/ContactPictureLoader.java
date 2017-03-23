@@ -1,5 +1,6 @@
 package com.fsck.k9.activity.misc;
 
+
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -29,6 +30,7 @@ import java.util.Locale;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 public class ContactPictureLoader {
     /**
@@ -93,9 +95,11 @@ public class ContactPictureLoader {
     /**
      * Constructor.
      *
-     * @param context                A {@link Context} instance.
-     * @param defaultBackgroundColor The ARGB value to be used as background color for the fallback picture. {@code 0} to
-     *                               use a dynamically calculated background color.
+     * @param context
+     *         A {@link Context} instance.
+     * @param defaultBackgroundColor
+     *         The ARGB value to be used as background color for the fallback picture. {@code 0} to
+     *         use a dynamically calculated background color.
      */
     public ContactPictureLoader(Context context, int defaultBackgroundColor) {
         Context appContext = context.getApplicationContext();
@@ -134,9 +138,12 @@ public class ContactPictureLoader {
      * fallback picture is then stored in the bitmap cache.
      * </p>
      *
-     * @param address   The {@link Address} instance holding the email address that is used to search the
-     *                  contacts database.
-     * @param imageView The {@code ContactBadge} instance to receive the picture.
+     * @param address
+     *         The {@link Address} instance holding the email address that is used to search the
+     *         contacts database.
+     * @param imageView
+     *         The {@code ContactBadge} instance to receive the picture.
+     *
      * @see #mBitmapCache
      * @see #calculateFallbackBitmap(Address)
      */
@@ -165,8 +172,10 @@ public class ContactPictureLoader {
      * Retrieve a contact picture from cache if it exists,
      * otherwise a fallback picture is returned.
      *
-     * @param address   The {@link Address} instance holding the email address that is used to search the
-     *                  contacts image cache.
+     * @param address
+     *         The {@link Address} instance holding the email address that is used to search the
+     *         contacts image cache.
+     *
      * @return a {@link Bitmap}
      */
     public Bitmap getContactPicture(Address address) {
@@ -227,9 +236,12 @@ public class ContactPictureLoader {
      * Checks if a {@code ContactPictureRetrievalTask} was already created to load the contact
      * picture for the supplied {@code Address}.
      *
-     * @param address   The {@link Address} instance holding the email address that is used to search the
-     *                  contacts database.
-     * @param imageView The {@link ImageView} instance that will receive the picture.
+     * @param address
+     *         The {@link Address} instance holding the email address that is used to search the
+     *         contacts database.
+     * @param imageView
+     *         The {@link ImageView} instance that will receive the picture.
+     *
      * @return {@code true}, if the contact picture should be loaded in a background thread.
      * {@code false}, if another {@link ContactPictureRetrievalTask} was already scheduled
      * to load that contact picture.

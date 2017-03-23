@@ -1,8 +1,6 @@
 package com.fsck.k9.notification;
 
 
-import android.graphics.Bitmap;
-
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Address;
 

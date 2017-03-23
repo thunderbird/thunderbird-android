@@ -18,6 +18,7 @@ import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
+import com.fsck.k9.mail.Address;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +45,7 @@ public class DeviceNotificationsTest {
     private static final String SUMMARY = "summary";
     private static final String PREVIEW = "preview";
     private static final String SUBJECT = "subject";
+    private static final String ADDRESS = "address";
     private static final String SENDER = "sender";
     private static final String SUMMARY_2 = "summary2";
     private static final String PREVIEW_2 = "preview2";
@@ -54,6 +56,7 @@ public class DeviceNotificationsTest {
 
 
     private Account account;
+    private Address address;
     private NotificationData notificationData;
     private TestDeviceNotifications notifications;
     private Builder builder;
@@ -64,6 +67,7 @@ public class DeviceNotificationsTest {
     @Before
     public void setUp() throws Exception {
         account = createFakeAccount();
+        address = createFakeAddress();
         notificationData = createFakeNotificationData(account);
 
         builder = createFakeNotificationBuilder();
@@ -193,14 +197,21 @@ public class DeviceNotificationsTest {
         return account;
     }
 
+    private Address createFakeAddress() {
+        Address address = mock(Address.class);
+        when(address.getAddress()).thenReturn(ADDRESS);
+        return address;
+    }
+
     private NotificationData createFakeNotificationData(Account account) {
         NotificationData notificationData = mock(NotificationData.class);
         when(notificationData.getUnreadMessageCount()).thenReturn(UNREAD_MESSAGE_COUNT);
         when(notificationData.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
         when(notificationData.getAccount()).thenReturn(account);
 
-        NotificationContent content = new NotificationContent(null, null, SENDER, SUBJECT, PREVIEW, SUMMARY, false);
-        NotificationContent content2 = new NotificationContent(null, null, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true);
+        NotificationContent content = new NotificationContent(null, address, SENDER, SUBJECT, PREVIEW, SUMMARY, false);
+        NotificationContent content2 =
+                new NotificationContent(null, address, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true);
         List<NotificationContent> contents = Arrays.asList(content, content2);
         when(notificationData.getContentForSummaryNotification()).thenReturn(contents);
 

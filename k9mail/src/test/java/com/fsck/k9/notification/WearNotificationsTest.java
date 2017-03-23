@@ -19,6 +19,7 @@ import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.mail.Address;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,8 +39,10 @@ import static org.mockito.Mockito.when;
 public class WearNotificationsTest {
     private static final int ACCOUNT_NUMBER = 42;
     private static final String ACCOUNT_NAME = "accountName";
+    private static final String ADDRESS = "address";
 
     private Account account;
+    private Address address;
     private Builder builder;
     private NotificationActionCreator actionCreator;
     private TestWearNotifications wearNotifications;
@@ -48,6 +51,7 @@ public class WearNotificationsTest {
     @Before
     public void setUp() throws Exception {
         account = createAccount();
+        address = createAddress();
         notification = createNotification();
         builder = createNotificationBuilder(notification);
         actionCreator = createNotificationActionCreator();
@@ -246,6 +250,12 @@ public class WearNotificationsTest {
         return account;
     }
 
+    private Address createAddress() {
+        Address address = mock(Address.class);
+        when(address.getAddress()).thenReturn(ADDRESS);
+        return address;
+    }
+
     private MessagingController createMessagingController() {
         MessagingController messagingController = mock(MessagingController.class);
         when(messagingController.isMoveCapable(account)).thenReturn(true);
@@ -253,7 +263,7 @@ public class WearNotificationsTest {
     }
 
     private NotificationContent createNotificationContent(MessageReference messageReference) {
-        return new NotificationContent(messageReference, null, null, null, null, null, false);
+        return new NotificationContent(messageReference, address, null, null, null, null, false);
     }
 
     private NotificationHolder createNotificationHolder(int notificationId, NotificationContent content) {
