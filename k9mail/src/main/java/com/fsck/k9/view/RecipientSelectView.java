@@ -24,7 +24,6 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import timber.log.Timber;
@@ -320,7 +319,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         if (dragSuccess) {
             onRecipientRemove(recipient);
         } else {
-            Log.e(K9.LOG_TAG, "Failed to start drag operation for Recipient!");
+            Timber.e("Failed to start drag operation for Recipient!");
         }
 
         return dragSuccess;
