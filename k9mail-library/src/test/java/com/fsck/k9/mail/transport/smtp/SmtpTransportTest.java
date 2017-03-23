@@ -761,6 +761,33 @@ public class SmtpTransportTest {
         server.verifyInteractionCompleted();
     }
 
+    @Test
+    public void sendMessagePipelining_without354ReplyforData_shouldThrow() throws Exception {
+        Message message = getDefaultMessage();
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
+        server.expect("MAIL FROM:<user@localhost>");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.expect("DATA");
+        server.output("250 OK");
+        server.output("550 remote mail to <user2@localhost> not allowed");
+        server.output("554 no valid recipients given");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        try {
+            transport.sendMessage(message);
+            fail("Expected exception");
+        } catch (NegativeSmtpReplyException e) {
+            assertEquals(554, e.getReplyCode());
+            assertEquals("no valid recipients given", e.getReplyText());
+        }
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
     private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server) throws IOException,
             MessagingException {
         return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
