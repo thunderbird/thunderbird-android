@@ -148,4 +148,26 @@ public class MimeUtilityTest {
     public void isFormatFlowed_withTextHtmlFormatFlowed__shouldReturnFalse() throws Exception {
         assertFalse(MimeUtility.isFormatFlowed("text/html; format=flowed"));
     }
+
+    @Test
+    public void isDelSp_withFormatFlowed_shouldReturnTrue() throws Exception {
+        assertTrue(MimeUtility.isDelSp("text/plain; format=flowed; delsp=yes"));
+    }
+
+    @Test
+    public void isDelSp_withTextPlainFormatFlowed_shoulReturnFalse() throws Exception {
+        assertFalse(MimeUtility.isDelSp("text/plain; format=flowed"));
+    }
+
+    @Test
+    public void isDelSp_withoutFormatFlowed_shouldReturnFalse() throws Exception {
+        assertFalse(MimeUtility.isDelSp("text/plain; delsp=yes"));
+    }
+
+    @Test
+    public void idDelSp_withTextHtmlFormatFlowed_shouldReturnFalse() throws Exception {
+        assertFalse(MimeUtility.isDelSp("text/html; format=flowed; delsp=yes"));
+    }
+
+
 }
