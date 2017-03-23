@@ -1,5 +1,7 @@
 package com.fsck.k9.notification;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.KeyguardManager;
 import android.app.Notification;
@@ -18,9 +20,6 @@ import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
 import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_SLOW;
 import static com.fsck.k9.notification.NotificationController.platformSupportsExtendedNotifications;
@@ -32,20 +31,20 @@ class DeviceNotifications extends BaseNotifications {
 
 
     DeviceNotifications(NotificationController controller, NotificationActionCreator actionCreator,
-            LockScreenNotification lockScreenNotification, WearNotifications wearNotifications) {
+                        LockScreenNotification lockScreenNotification, WearNotifications wearNotifications) {
         super(controller, actionCreator);
         this.wearNotifications = wearNotifications;
         this.lockScreenNotification = lockScreenNotification;
     }
 
     public static DeviceNotifications newInstance(NotificationController controller,
-            NotificationActionCreator actionCreator, WearNotifications wearNotifications) {
+                                                  NotificationActionCreator actionCreator, WearNotifications wearNotifications) {
         LockScreenNotification lockScreenNotification = LockScreenNotification.newInstance(controller);
         return new DeviceNotifications(controller, actionCreator, lockScreenNotification, wearNotifications);
     }
 
     public Notification buildSummaryNotification(Account account, NotificationData notificationData,
-            boolean silent) {
+                                                 boolean silent) {
         int unreadMessageCount = notificationData.getUnreadMessageCount();
 
         NotificationCompat.Builder builder;
@@ -99,7 +98,7 @@ class DeviceNotifications extends BaseNotifications {
         } else {
             builder = createInboxStyleSummaryNotification(account, notificationData, unreadMessageCount);
         }
-            builder.setColor(ContextCompat.getColor(context, R.color.message_urgent_background));
+        builder.setColor(ContextCompat.getColor(context, R.color.message_urgent_background));
         if (notificationData.containsStarredMessages()) {
             builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         }
@@ -120,8 +119,8 @@ class DeviceNotifications extends BaseNotifications {
         NotificationSetting notificationSetting = account.getNotificationSetting();
         controller.configureNotification(
                 builder,
-                 notificationSetting.getRingtone(),
-                 notificationSetting.getVibration(),
+                notificationSetting.getRingtone(),
+                notificationSetting.getVibration(),
                 ContextCompat.getColor(context, R.color.message_urgent_background),
                 NOTIFICATION_LED_BLINK_FAST,
                 ringAndVibrate);
@@ -147,7 +146,7 @@ class DeviceNotifications extends BaseNotifications {
     }
 
     private NotificationCompat.Builder createBigTextStyleSummaryNotification(Account account,
-            NotificationHolder holder) {
+                                                                             NotificationHolder holder) {
 
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         Builder builder = createBigTextStyleNotification(account, holder, notificationId)
@@ -162,7 +161,7 @@ class DeviceNotifications extends BaseNotifications {
     }
 
     private NotificationCompat.Builder createInboxStyleSummaryNotification(Account account,
-            NotificationData notificationData, int unreadMessageCount) {
+                                                                           NotificationData notificationData, int unreadMessageCount) {
 
         NotificationHolder latestNotification = notificationData.getHolderForLatestNotification();
 

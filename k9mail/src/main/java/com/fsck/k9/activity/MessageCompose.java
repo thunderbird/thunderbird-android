@@ -1,5 +1,11 @@
 package com.fsck.k9.activity;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -90,13 +96,6 @@ import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import timber.log.Timber;
 
 
@@ -150,7 +149,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     /**
      * Regular expression to remove the first localized "Re:" prefix in subjects.
-     *
+     * <p>
      * Currently:
      * - "Aw:" (german: abbreviation for "Antwort")
      */
@@ -159,7 +158,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private QuotedMessagePresenter quotedMessagePresenter;
     private MessageLoaderHelper messageLoaderHelper;
     private AttachmentPresenter attachmentPresenter;
-    private boolean isHighPriority =false;
+    private boolean isHighPriority = false;
 
     private Contacts contacts;
 
@@ -228,7 +227,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             ContextThemeWrapper themeContext = new ContextThemeWrapper(this,
                     K9.getK9ThemeResourceId(K9.getK9ComposerTheme()));
             @SuppressLint("InflateParams") // this is the top level activity element, it has no root
-            View v = LayoutInflater.from(themeContext).inflate(R.layout.message_compose, null);
+                    View v = LayoutInflater.from(themeContext).inflate(R.layout.message_compose, null);
             TypedValue outValue = new TypedValue();
             // background color needs to be forced
             themeContext.getTheme().resolveAttribute(R.attr.messageViewBackgroundColor, outValue, true);
@@ -449,22 +448,20 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     /**
      * Handle external intents that trigger the message compose activity.
-     *
+     * <p>
      * <p>
      * Supported external intents:
      * <ul>
-     *   <li>{@link Intent#ACTION_VIEW}</li>
-     *   <li>{@link Intent#ACTION_SENDTO}</li>
-     *   <li>{@link Intent#ACTION_SEND}</li>
-     *   <li>{@link Intent#ACTION_SEND_MULTIPLE}</li>
+     * <li>{@link Intent#ACTION_VIEW}</li>
+     * <li>{@link Intent#ACTION_SENDTO}</li>
+     * <li>{@link Intent#ACTION_SEND}</li>
+     * <li>{@link Intent#ACTION_SEND_MULTIPLE}</li>
      * </ul>
      * </p>
      *
-     * @param intent
-     *         The (external) intent that started the activity.
-     *
+     * @param intent The (external) intent that started the activity.
      * @return {@code true}, if this activity was started by an external intent. {@code false},
-     *         otherwise.
+     * otherwise.
      */
     private boolean initFromIntent(final Intent intent) {
         boolean startedByExternalIntent = false;
@@ -899,6 +896,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public void onOpenPgpSignOnlyChange(boolean enabled) {
         recipientPresenter.onCryptoPgpSignOnlyDisabled();
     }
+
     @Override
     public void onAttachmentAdded() {
         changesMadeSinceLastSave = true;
@@ -970,18 +968,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 onReadReceipt();
                 break;
             case R.id.is_urgent:
-                if(!isHighPriority) {
+                if (!isHighPriority) {
                     item.setTitle("Normal");
                     this.isHighPriority = true;
                     setTitle(getTitle() + ":U");
-                }
-                else {
+                } else {
                     item.setTitle("Urgent");
                     this.isHighPriority = false;
                     setTitle(getTitle().toString().split(":")[0]);
                 }
                 break;
-             default:
+            default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
@@ -1022,7 +1019,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void prepareToFinish(boolean shouldNavigateUp) {
         navigateUp = shouldNavigateUp;
 
-        if(changesMadeSinceLastSave && draftIsNotEmpty()) {
+        if (changesMadeSinceLastSave && draftIsNotEmpty()) {
             if (!account.hasDraftsFolder()) {
                 showDialog(DIALOG_CONFIRM_DISCARD_ON_BACK);
             } else {
@@ -1171,8 +1168,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Pull out the parts of the now loaded source message and apply them to the new message
      * depending on the type of message being composed.
      *
-     * @param messageViewInfo
-     *         The source message used to populate the various text fields.
+     * @param messageViewInfo The source message used to populate the various text fields.
      */
     private void processSourceMessage(MessageViewInfo messageViewInfo) {
         try {
@@ -1374,7 +1370,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         final MessageReference messageReference;
 
         SendMessageTask(Context context, Account account, Contacts contacts, Message message,
-                Long draftId, MessageReference messageReference) {
+                        Long draftId, MessageReference messageReference) {
             this.context = context;
             this.account = account;
             this.contacts = contacts;
@@ -1427,8 +1423,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * When we are launched with an intent that includes a mailto: URI, we can actually
      * gather quite a few of our message fields from it.
      *
-     * @param mailTo
-     *         The MailTo object we use to initialize message field
+     * @param mailTo The MailTo object we use to initialize message field
      */
     private void initializeFromMailto(MailTo mailTo) {
         recipientPresenter.initFromMailto(mailTo);
@@ -1596,7 +1591,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         @Override
         public void startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
-                int flagsMask, int flagValues, int extraFlags) {
+                                                            int flagsMask, int flagValues, int extraFlags) {
             try {
                 requestCode |= REQUEST_MASK_LOADER_HELPER;
                 startIntentSenderForResult(si, requestCode, fillIntent, flagsMask, flagValues, extraFlags);

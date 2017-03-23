@@ -10,6 +10,7 @@ import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mailstore.LocalMessage;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,7 +65,7 @@ public class NewMailNotificationsTest {
         addToWearNotifications(holder, wearNotification);
         addToDeviceNotifications(summaryNotification);
 
-        newMailNotifications.addNewMailNotification(account, message, 42,false);
+        newMailNotifications.addNewMailNotification(account, message, 42, false);
 
         int wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
@@ -85,7 +86,7 @@ public class NewMailNotificationsTest {
         addToWearNotifications(holder, wearNotification);
         addToDeviceNotifications(summaryNotification);
 
-        newMailNotifications.addNewMailNotification(account, message, 42,false);
+        newMailNotifications.addNewMailNotification(account, message, 42, false);
 
         int wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
@@ -106,7 +107,7 @@ public class NewMailNotificationsTest {
         Notification wearNotification = createNotification();
         addToDeviceNotifications(wearNotification);
 
-        newMailNotifications.addNewMailNotification(account, message, 42,false);
+        newMailNotifications.addNewMailNotification(account, message, 42, false);
 
         int wearNotificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
         int summaryNotificationId = NotificationIds.getNewMailSummaryNotificationId(account);
@@ -135,8 +136,8 @@ public class NewMailNotificationsTest {
         addToWearNotifications(holderTwo, wearNotificationTwo);
         addToDeviceNotifications(summaryNotification);
 
-        newMailNotifications.addNewMailNotification(account, messageOne, 42,false);
-        newMailNotifications.addNewMailNotification(account, messageTwo, 42,false);
+        newMailNotifications.addNewMailNotification(account, messageOne, 42, false);
+        newMailNotifications.addNewMailNotification(account, messageTwo, 42, false);
 
         int wearNotificationIdOne = NotificationIds.getNewMailStackedNotificationId(account, notificationIndexOne);
         int wearNotificationIdTwo = NotificationIds.getNewMailStackedNotificationId(account, notificationIndexTwo);
@@ -167,7 +168,7 @@ public class NewMailNotificationsTest {
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
         Notification summaryNotification = createNotification();
         addToDeviceNotifications(summaryNotification);
-        newMailNotifications.addNewMailNotification(account, message, 23,false);
+        newMailNotifications.addNewMailNotification(account, message, 23, false);
         whenRemovingContentReturn(messageReference, RemoveNotificationResult.unknownNotification());
 
         newMailNotifications.removeNewMailNotification(account, messageReference);
@@ -188,7 +189,7 @@ public class NewMailNotificationsTest {
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
         Notification summaryNotification = createNotification();
         addToDeviceNotifications(summaryNotification);
-        newMailNotifications.addNewMailNotification(account, message, 23,false);
+        newMailNotifications.addNewMailNotification(account, message, 23, false);
         whenRemovingContentReturn(messageReference, RemoveNotificationResult.cancelNotification(notificationId));
 
         newMailNotifications.removeNewMailNotification(account, messageReference);
@@ -210,7 +211,7 @@ public class NewMailNotificationsTest {
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
         Notification summaryNotification = createNotification();
         addToDeviceNotifications(summaryNotification);
-        newMailNotifications.addNewMailNotification(account, message, 23,false);
+        newMailNotifications.addNewMailNotification(account, message, 23, false);
         whenRemovingContentReturn(messageReference, RemoveNotificationResult.cancelNotification(notificationId));
         when(newMailNotifications.notificationData.getNewMessagesCount()).thenReturn(0);
         setActiveNotificationIds();
@@ -240,7 +241,7 @@ public class NewMailNotificationsTest {
         Notification wearNotificationTwo = createNotification();
         addToWearNotifications(holderOne, wearNotificationOne);
         addToWearNotifications(holderTwo, wearNotificationTwo);
-        newMailNotifications.addNewMailNotification(account, message, 23,false);
+        newMailNotifications.addNewMailNotification(account, message, 23, false);
         whenRemovingContentReturn(messageReference, RemoveNotificationResult.createNotification(holderTwo));
 
         newMailNotifications.removeNewMailNotification(account, messageReference);
@@ -268,7 +269,7 @@ public class NewMailNotificationsTest {
         addToNotificationContentCreator(message, content);
         setActiveNotificationIds(notificationId);
         whenAddingContentReturn(content, AddNotificationResult.newNotification(holder));
-        newMailNotifications.addNewMailNotification(account, message, 3,false);
+        newMailNotifications.addNewMailNotification(account, message, 3, false);
 
         newMailNotifications.clearNewMailNotifications(account);
 
@@ -319,7 +320,7 @@ public class NewMailNotificationsTest {
 
     private void addToDeviceNotifications(Notification notificationToReturn) {
         when(deviceNotifications.buildSummaryNotification(
-                        eq(account), eq(newMailNotifications.notificationData), anyBoolean())
+                eq(account), eq(newMailNotifications.notificationData), anyBoolean())
         ).thenReturn(notificationToReturn);
     }
 
@@ -366,7 +367,7 @@ public class NewMailNotificationsTest {
         public final NotificationData notificationData;
 
         TestNewMailNotifications(NotificationController controller, NotificationContentCreator contentCreator,
-                DeviceNotifications deviceNotifications, WearNotifications wearNotifications) {
+                                 DeviceNotifications deviceNotifications, WearNotifications wearNotifications) {
             super(controller, contentCreator, deviceNotifications, wearNotifications);
             notificationData = mock(NotificationData.class);
         }

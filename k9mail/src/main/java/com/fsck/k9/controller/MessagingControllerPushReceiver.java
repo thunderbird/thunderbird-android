@@ -1,21 +1,21 @@
 package com.fsck.k9.controller;
 
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
 import android.content.Context;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Folder;
-
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.PushReceiver;
+import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.service.SleepService;
 
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import timber.log.Timber;
 
 public class MessagingControllerPushReceiver implements PushReceiver {
     final Account account;
