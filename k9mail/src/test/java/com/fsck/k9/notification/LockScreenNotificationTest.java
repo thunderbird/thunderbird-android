@@ -183,6 +183,6 @@ public class LockScreenNotificationTest {
     }
 
     private NotificationContent createNotificationContent(String sender) {
-        return new NotificationContent(null, null, sender, null, null, null, false);
+        return new NotificationContent(null, sender, null, null, null, false);
     }
 }

@@ -199,8 +199,8 @@ public class DeviceNotificationsTest {
         when(notificationData.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
         when(notificationData.getAccount()).thenReturn(account);
 
-        NotificationContent content = new NotificationContent(null, null, SENDER, SUBJECT, PREVIEW, SUMMARY, false);
-        NotificationContent content2 = new NotificationContent(null, null, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true);
+        NotificationContent content = new NotificationContent(null, SENDER, SUBJECT, PREVIEW, SUMMARY, false);
+        NotificationContent content2 = new NotificationContent(null, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true);
         List<NotificationContent> contents = Arrays.asList(content, content2);
         when(notificationData.getContentForSummaryNotification()).thenReturn(contents);
 

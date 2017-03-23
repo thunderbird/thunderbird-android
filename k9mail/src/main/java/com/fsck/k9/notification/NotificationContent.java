@@ -1,15 +1,11 @@
 package com.fsck.k9.notification;
 
 
-import android.graphics.Bitmap;
-
 import com.fsck.k9.activity.MessageReference;
-import com.fsck.k9.mail.Address;
 
 
 class NotificationContent {
     public final MessageReference messageReference;
-    public final Address from;
     public final String sender;
     public final String subject;
     public final CharSequence preview;
@@ -17,10 +13,9 @@ class NotificationContent {
     public final boolean starred;
 
 
-    public NotificationContent(MessageReference messageReference, Address from, String sender, String subject, CharSequence preview,
-                               CharSequence summary, boolean starred) {
+    public NotificationContent(MessageReference messageReference, String sender, String subject, CharSequence preview,
+            CharSequence summary, boolean starred) {
         this.messageReference = messageReference;
-        this.from = from;
         this.sender = sender;
         this.subject = subject;
         this.preview = preview;
