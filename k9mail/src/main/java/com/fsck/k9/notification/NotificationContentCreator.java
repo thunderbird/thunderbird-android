@@ -2,21 +2,21 @@ package com.fsck.k9.notification;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 
@@ -32,6 +32,7 @@ class NotificationContentCreator {
 
     public NotificationContent createFromMessage(Account account, LocalMessage message) {
         MessageReference messageReference = message.makeMessageReference();
+        Address from = getMessageFrom(account, message);
         String sender = getMessageSender(account, message);
         String displaySender = getMessageSenderForDisplay(sender);
         String subject = getMessageSubject(message);
@@ -39,7 +40,7 @@ class NotificationContentCreator {
         CharSequence summary = buildMessageSummary(sender, subject);
         boolean starred = message.isSet(Flag.FLAGGED);
 
-        return new NotificationContent(messageReference, displaySender, subject, preview, summary, starred);
+        return new NotificationContent(messageReference, from, displaySender, subject, preview, summary, starred);
     }
 
     private CharSequence getMessagePreview(LocalMessage message) {
@@ -103,6 +104,29 @@ class NotificationContentCreator {
         }
 
         return context.getString(R.string.general_no_subject);
+    }
+
+    private Address getMessageFrom(Account account, Message message) {
+        boolean isSelf = false;
+        final Address[] fromAddresses = message.getFrom();
+
+        if (fromAddresses != null) {
+            isSelf = account.isAnIdentity(fromAddresses);
+            if (!isSelf && fromAddresses.length > 0) {
+                return fromAddresses[0];
+            }
+        }
+
+        if (isSelf) {
+            // show recipient if the message was sent from me
+            Address[] recipients = message.getRecipients(Message.RecipientType.TO);
+
+            if (recipients != null && recipients.length > 0) {
+                return recipients[0];
+            }
+        }
+
+        return null;
     }
 
     private String getMessageSender(Account account, Message message) {

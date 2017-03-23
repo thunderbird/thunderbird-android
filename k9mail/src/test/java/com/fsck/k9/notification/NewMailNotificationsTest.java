@@ -13,6 +13,7 @@ import com.fsck.k9.mailstore.LocalMessage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RuntimeEnvironment;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
@@ -287,7 +288,7 @@ public class NewMailNotificationsTest {
     }
 
     private NotificationContent createNotificationContent() {
-        return new NotificationContent(null, null, null, null, null, false);
+        return new NotificationContent(null, null, null, null, null, null, false);
     }
 
     private NotificationHolder createNotificationHolder(NotificationContent content, int index) {
