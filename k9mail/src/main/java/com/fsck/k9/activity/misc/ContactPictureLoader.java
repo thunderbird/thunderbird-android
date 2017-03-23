@@ -2,6 +2,9 @@ package com.fsck.k9.activity.misc;
 
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -122,8 +125,8 @@ public class ContactPictureLoader {
         loadContactPicture(recipient.photoThumbnailUri, recipient.address, imageView);
     }
 
-    private void loadFallbackPicture(Address address, ImageView imageView) {
-        Context context = imageView.getContext();
+    private void loadFallbackPicture(final Address address, final ImageView imageView) {
+        final Context context = imageView.getContext();
 
         Glide.with(context)
                 .using(new FallbackGlideModelLoader(), FallbackGlideParams.class)
@@ -138,7 +141,44 @@ public class ContactPictureLoader {
                 // for some reason, following 2 lines fix loading issues.
                 .dontAnimate()
                 .override(mPictureSizeInPx, mPictureSizeInPx)
+                .listener(new RequestListener<FallbackGlideParams, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, FallbackGlideParams model, Target<GlideDrawable> target,
+                            boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, FallbackGlideParams model,
+                            Target<GlideDrawable> target,
+                            boolean isFromMemoryCache, boolean isFirstResource) {
+
+
+                        return false;
+                    }
+                })
                 .into(imageView);
+
+        Glide.with(context)
+                .load(getGravatarUri(address.getAddress()))
+                .listener(new RequestListener<Uri, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, Uri model, Target<GlideDrawable> target,
+                            boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, Uri model,
+                            Target<GlideDrawable> target,
+                            boolean isFromMemoryCache, boolean isFirstResource) {
+                        Glide.with(context)
+                                .load(getGravatarUri(address.getAddress()))
+                                .into(imageView);
+                        return false;
+                    }
+                })
+                .preload(mPictureSizeInPx, mPictureSizeInPx);
     }
 
     private void loadContactPicture(Uri photoUri, final Address address, final ImageView imageView) {
@@ -271,4 +311,24 @@ public class ContactPictureLoader {
         }
     }
 
+    private Uri getGravatarUri(String email) {
+        return Uri.parse("http://www.gravatar.com/avatar/" + getMD5String(email) + "?d=404");
+    }
+
+    private String getMD5String(String from) {
+        try {
+            final MessageDigest mdEnc = MessageDigest.getInstance("MD5");
+            mdEnc.update(from.getBytes(), 0, from.length());
+            String md5 = new BigInteger(1, mdEnc.digest()).toString(16);
+            while (md5.length() < 32) {
+                md5 = "0" + md5;
+            }
+            return md5;
+
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("Exception while encrypting to md5");
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
