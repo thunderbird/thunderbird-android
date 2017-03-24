@@ -31,20 +31,60 @@ class DeviceNotifications extends BaseNotifications {
 
 
     DeviceNotifications(NotificationController controller, NotificationActionCreator actionCreator,
-                        LockScreenNotification lockScreenNotification, WearNotifications wearNotifications) {
+            LockScreenNotification lockScreenNotification, WearNotifications wearNotifications) {
         super(controller, actionCreator);
         this.wearNotifications = wearNotifications;
         this.lockScreenNotification = lockScreenNotification;
     }
 
     public static DeviceNotifications newInstance(NotificationController controller,
-                                                  NotificationActionCreator actionCreator, WearNotifications wearNotifications) {
+            NotificationActionCreator actionCreator, WearNotifications wearNotifications) {
         LockScreenNotification lockScreenNotification = LockScreenNotification.newInstance(controller);
         return new DeviceNotifications(controller, actionCreator, lockScreenNotification, wearNotifications);
     }
 
+    public Notification buildUrgentNotification(Account account, NotificationData notificationData) {
+        int unreadMessageCount = notificationData.getUnreadMessageCount();
+        NotificationCompat.Builder builder;
+        if (isPrivacyModeActive() || !platformSupportsExtendedNotifications()) {
+            builder = createSimpleSummaryNotification(account, unreadMessageCount);
+        } else if (notificationData.isSingleMessageNotification()) {
+            NotificationHolder holder = notificationData.getHolderForLatestNotification();
+            builder = createBigTextStyleSummaryNotification(account, holder);
+        } else {
+            builder = createInboxStyleSummaryNotification(account, notificationData, unreadMessageCount);
+        }
+        builder.setColor(ContextCompat.getColor(context, R.color.message_urgent_background));
+        if (notificationData.containsStarredMessages()) {
+            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        }
+
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
+        PendingIntent deletePendingIntent = actionCreator.createDismissAllMessagesPendingIntent(
+                account, notificationId);
+        builder.setDeleteIntent(deletePendingIntent);
+
+        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
+        boolean ringAndVibrate = true;
+        if (!account.isRingNotified()) {
+            account.setRingNotified(true);
+            ringAndVibrate = true;
+        }
+
+        NotificationSetting notificationSetting = account.getNotificationSetting();
+        controller.configureNotification(
+                builder,
+                notificationSetting.getRingtone(),
+                notificationSetting.getVibration(),
+                ContextCompat.getColor(context, R.color.message_urgent_background),
+                NOTIFICATION_LED_BLINK_FAST,
+                ringAndVibrate);
+
+        return builder.build();
+    }
+
     public Notification buildSummaryNotification(Account account, NotificationData notificationData,
-                                                 boolean silent) {
+            boolean silent) {
         int unreadMessageCount = notificationData.getUnreadMessageCount();
 
         NotificationCompat.Builder builder;
@@ -86,48 +126,6 @@ class DeviceNotifications extends BaseNotifications {
         return builder.build();
     }
 
-    public Notification buildUrgentNotification(Account account, NotificationData notificationData) {
-        int unreadMessageCount = notificationData.getUnreadMessageCount();
-
-        NotificationCompat.Builder builder;
-        if (isPrivacyModeActive() || !platformSupportsExtendedNotifications()) {
-            builder = createSimpleSummaryNotification(account, unreadMessageCount);
-        } else if (notificationData.isSingleMessageNotification()) {
-            NotificationHolder holder = notificationData.getHolderForLatestNotification();
-            builder = createBigTextStyleSummaryNotification(account, holder);
-        } else {
-            builder = createInboxStyleSummaryNotification(account, notificationData, unreadMessageCount);
-        }
-        builder.setColor(ContextCompat.getColor(context, R.color.message_urgent_background));
-        if (notificationData.containsStarredMessages()) {
-            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        }
-
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
-        PendingIntent deletePendingIntent = actionCreator.createDismissAllMessagesPendingIntent(
-                account, notificationId);
-        builder.setDeleteIntent(deletePendingIntent);
-
-        lockScreenNotification.configureLockScreenNotification(builder, notificationData);
-
-        boolean ringAndVibrate = true;
-        if (!account.isRingNotified()) {
-            account.setRingNotified(true);
-            ringAndVibrate = true;
-        }
-
-        NotificationSetting notificationSetting = account.getNotificationSetting();
-        controller.configureNotification(
-                builder,
-                notificationSetting.getRingtone(),
-                notificationSetting.getVibration(),
-                ContextCompat.getColor(context, R.color.message_urgent_background),
-                NOTIFICATION_LED_BLINK_FAST,
-                ringAndVibrate);
-
-        return builder.build();
-    }
-
     private NotificationCompat.Builder createSimpleSummaryNotification(Account account, int unreadMessageCount) {
         String accountName = controller.getAccountName(account);
         CharSequence newMailText = context.getString(R.string.notification_new_title);
@@ -146,7 +144,7 @@ class DeviceNotifications extends BaseNotifications {
     }
 
     private NotificationCompat.Builder createBigTextStyleSummaryNotification(Account account,
-                                                                             NotificationHolder holder) {
+            NotificationHolder holder) {
 
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         Builder builder = createBigTextStyleNotification(account, holder, notificationId)
@@ -161,7 +159,7 @@ class DeviceNotifications extends BaseNotifications {
     }
 
     private NotificationCompat.Builder createInboxStyleSummaryNotification(Account account,
-                                                                           NotificationData notificationData, int unreadMessageCount) {
+            NotificationData notificationData, int unreadMessageCount) {
 
         NotificationHolder latestNotification = notificationData.getHolderForLatestNotification();
 

@@ -1,5 +1,6 @@
 package com.fsck.k9.message;
 
+
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -9,6 +10,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
@@ -32,11 +34,8 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.TempFileBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
-
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.util.MimeUtil;
-
-import timber.log.Timber;
 
 
 public abstract class MessageBuilder {
@@ -112,13 +111,13 @@ public abstract class MessageBuilder {
         if (!K9.hideUserAgent()) {
             message.setHeader("User-Agent", context.getString(R.string.message_header_mua));
         }
+
         if (isHighPriority) {
             message.setHeader("X-Priority", context.getString(R.string.x_priority));
         }
-
         final String replyTo = identity.getReplyTo();
         if (replyTo != null) {
-            message.setReplyTo(new Address[]{new Address(replyTo)});
+            message.setReplyTo(new Address[] { new Address(replyTo) });
         }
 
         if (inReplyTo != null) {
@@ -136,7 +135,7 @@ public abstract class MessageBuilder {
             message.setFlag(Flag.X_DRAFT_OPENPGP_INLINE, true);
         }
     }
-
+    
     protected MimeMultipart createMimeMultipart() {
         String boundary = boundaryGenerator.generateBoundary();
         return new MimeMultipart(boundary);
@@ -216,7 +215,6 @@ public abstract class MessageBuilder {
 
     /**
      * Add attachments as parts into a MimeMultipart container.
-     *
      * @param mp MimeMultipart container in which to insert parts.
      * @throws MessagingException
      */
@@ -275,7 +273,6 @@ public abstract class MessageBuilder {
      * Build the Body that will contain the text of the message. We'll decide where to
      * include it later. Draft messages are treated somewhat differently in that signatures are not
      * appended and HTML separators between composed text and quoted text are not added.
-     *
      * @param isDraft If we should build a message that will be saved as a draft (as opposed to sent).
      */
     private TextBody buildText(boolean isDraft) {
@@ -284,17 +281,20 @@ public abstract class MessageBuilder {
 
     /**
      * Build the {@link Body} that will contain the text of the message.
-     * <p>
+     *
      * <p>
      * Draft messages are treated somewhat differently in that signatures are not appended and HTML
      * separators between composed text and quoted text are not added.
      * </p>
      *
-     * @param isDraft             If {@code true} we build a message that will be saved as a draft (as opposed to
-     *                            sent).
-     * @param simpleMessageFormat Specifies what type of message to build ({@code text/plain} vs. {@code text/html}).
+     * @param isDraft
+     *         If {@code true} we build a message that will be saved as a draft (as opposed to
+     *         sent).
+     * @param simpleMessageFormat
+     *         Specifies what type of message to build ({@code text/plain} vs. {@code text/html}).
+     *
      * @return {@link TextBody} instance that contains the entered text and possibly the quoted
-     * original message.
+     *         original message.
      */
     private TextBody buildText(boolean isDraft, SimpleMessageFormat simpleMessageFormat) {
         String messageText = text;
@@ -490,11 +490,9 @@ public abstract class MessageBuilder {
     private PendingIntent queuedPendingIntent;
     private int queuedRequestCode;
 
-    /**
-     * This method builds the message asynchronously, calling *exactly one* of the methods
+    /** This method builds the message asynchronously, calling *exactly one* of the methods
      * on the callback on the UI thread after it finishes. The callback may thread-safely
-     * be detached and reattached intermittently.
-     */
+     * be detached and reattached intermittently. */
     final public void buildAsync(Callback callback) {
         synchronized (callbackLock) {
             asyncCallback = callback;
@@ -502,7 +500,7 @@ public abstract class MessageBuilder {
             queuedException = null;
             queuedPendingIntent = null;
         }
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void,Void,Void>() {
             @Override
             protected Void doInBackground(Void... params) {
                 buildMessageInternal();
@@ -527,7 +525,7 @@ public abstract class MessageBuilder {
             asyncCallback.onMessageBuildCancel();
             return;
         }
-        new AsyncTask<Void, Void, Void>() {
+        new AsyncTask<Void,Void,Void>() {
             @Override
             protected Void doInBackground(Void... params) {
                 buildMessageOnActivityResult(requestCode, data);
@@ -541,30 +539,24 @@ public abstract class MessageBuilder {
         }.execute();
     }
 
-    /**
-     * This method is called in a worker thread, and should build the actual message. To deliver
+    /** This method is called in a worker thread, and should build the actual message. To deliver
      * its computation result, it must call *exactly one* of the queueMessageBuild* methods before
-     * it finishes.
-     */
+     * it finishes. */
     abstract protected void buildMessageInternal();
 
     abstract protected void buildMessageOnActivityResult(int requestCode, Intent data);
 
-    /**
-     * This method may be used to temporarily detach the callback. If a result is delivered
-     * while the callback is detached, it will be delivered upon reattachment.
-     */
+    /** This method may be used to temporarily detach the callback. If a result is delivered
+     * while the callback is detached, it will be delivered upon reattachment. */
     final public void detachCallback() {
         synchronized (callbackLock) {
             asyncCallback = null;
         }
     }
 
-    /**
-     * This method attaches a new callback, and must only be called after a previous one was
+    /** This method attaches a new callback, and must only be called after a previous one was
      * detached. If the computation finished while the callback was detached, it will be
-     * delivered immediately upon reattachment.
-     */
+     * delivered immediately upon reattachment. */
     final public void reattachCallback(Callback callback) {
         synchronized (callbackLock) {
             if (asyncCallback != null) {
@@ -617,11 +609,6 @@ public abstract class MessageBuilder {
     public void setHighPriority(boolean highPriority) {
         isHighPriority = highPriority;
     }
-
-    public boolean getHighPriority() {
-        return isHighPriority;
-    }
-
 
     public interface Callback {
         void onMessageBuildSuccess(MimeMessage message, boolean isDraft);

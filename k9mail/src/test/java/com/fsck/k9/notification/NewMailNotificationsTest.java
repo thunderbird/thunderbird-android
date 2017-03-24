@@ -10,7 +10,6 @@ import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mailstore.LocalMessage;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -320,7 +319,7 @@ public class NewMailNotificationsTest {
 
     private void addToDeviceNotifications(Notification notificationToReturn) {
         when(deviceNotifications.buildSummaryNotification(
-                eq(account), eq(newMailNotifications.notificationData), anyBoolean())
+                        eq(account), eq(newMailNotifications.notificationData), anyBoolean())
         ).thenReturn(notificationToReturn);
     }
 
@@ -367,7 +366,7 @@ public class NewMailNotificationsTest {
         public final NotificationData notificationData;
 
         TestNewMailNotifications(NotificationController controller, NotificationContentCreator contentCreator,
-                                 DeviceNotifications deviceNotifications, WearNotifications wearNotifications) {
+                DeviceNotifications deviceNotifications, WearNotifications wearNotifications) {
             super(controller, contentCreator, deviceNotifications, wearNotifications);
             notificationData = mock(NotificationData.class);
         }

@@ -104,14 +104,12 @@ public class NotificationController {
 
     public void addNewMailNotification(Account account, LocalMessage message, int previousUnreadMessageCount) {
         boolean hasHighPriority = false;
+
         for (String iter : message.getHeader("X-Priority")) {
             if (iter.contains(context.getString(R.string.x_priority)))
                 hasHighPriority = true;
         }
-
         newMailNotifications.addNewMailNotification(account, message, previousUnreadMessageCount, hasHighPriority);
-
-
     }
 
     public void removeNewMailNotification(Account account, MessageReference messageReference) {
@@ -123,7 +121,7 @@ public class NotificationController {
     }
 
     void configureNotification(NotificationCompat.Builder builder, String ringtone, long[] vibrationPattern,
-                               Integer ledColor, int ledSpeed, boolean ringAndVibrate) {
+            Integer ledColor, int ledSpeed, boolean ringAndVibrate) {
 
         if (K9.isQuietTime()) {
             return;
