@@ -16,8 +16,10 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9RobolectricTestRunner;
+import com.fsck.k9.mail.Address;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,10 +47,12 @@ public class DeviceNotificationsTest {
     private static final String PREVIEW = "preview";
     private static final String SUBJECT = "subject";
     private static final String SENDER = "sender";
+    private static final Address SENDER_NAME_ADDRESS = new Address("MessageSender <ms@k9.org>");
     private static final String SUMMARY_2 = "summary2";
     private static final String PREVIEW_2 = "preview2";
     private static final String SUBJECT_2 = "subject2";
     private static final String SENDER_2 = "sender2";
+    private static final Address SENDER_NAME_ADDRESS_2 = new Address("MessageSender2 <ms2@k9.org>");
     private static final int NOTIFICATION_ID = 23;
     private static final Notification FAKE_NOTIFICATION = mock(Notification.class);
 
@@ -199,8 +203,8 @@ public class DeviceNotificationsTest {
         when(notificationData.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
         when(notificationData.getAccount()).thenReturn(account);
 
-        NotificationContent content = new NotificationContent(null, SENDER, SUBJECT, PREVIEW, SUMMARY, false);
-        NotificationContent content2 = new NotificationContent(null, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true);
+        NotificationContent content = new NotificationContent(null, SENDER, SENDER_NAME_ADDRESS, SUBJECT, PREVIEW, SUMMARY, false);
+        NotificationContent content2 = new NotificationContent(null, SENDER_2, SENDER_NAME_ADDRESS_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true);
         List<NotificationContent> contents = Arrays.asList(content, content2);
         when(notificationData.getContentForSummaryNotification()).thenReturn(contents);
 

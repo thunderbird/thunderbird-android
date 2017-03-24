@@ -2,15 +2,26 @@ package com.fsck.k9.notification;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
+import android.widget.ImageView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.activity.misc.ContactPictureLoader;
+import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalMessage;
 
@@ -32,6 +43,7 @@ public class NotificationController {
     private final SyncNotifications syncNotifications;
     private final SendFailedNotifications sendFailedNotifications;
     private final NewMailNotifications newMailNotifications;
+    private final ContactPictureLoader contactPictureLoader;
 
 
     public static NotificationController newInstance(Context context) {
@@ -59,6 +71,11 @@ public class NotificationController {
         syncNotifications = new SyncNotifications(this, actionBuilder);
         sendFailedNotifications = new SendFailedNotifications(this, actionBuilder);
         newMailNotifications = NewMailNotifications.newInstance(this, actionBuilder);
+        if (K9.showContactPicture()) {
+            contactPictureLoader = ContactPicture.getContactPictureLoader(context);
+        } else {
+            contactPictureLoader = null;
+        }
     }
 
     public void showCertificateErrorNotification(Account account, boolean incoming) {
@@ -150,6 +167,8 @@ public class NotificationController {
         return TextUtils.isEmpty(accountDescription) ? account.getEmail() : accountDescription;
     }
 
+    ContactPictureLoader getContactPictureLoader() {return contactPictureLoader; }
+
     Context getContext() {
         return context;
     }
@@ -160,5 +179,9 @@ public class NotificationController {
 
     NotificationCompat.Builder createNotificationBuilder() {
         return new NotificationCompat.Builder(context);
+    }
+
+    protected ImageView getNewImageView() {
+        return new ImageView(getContext());
     }
 }

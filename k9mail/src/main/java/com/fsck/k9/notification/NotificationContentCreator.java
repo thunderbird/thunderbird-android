@@ -34,12 +34,14 @@ class NotificationContentCreator {
         MessageReference messageReference = message.makeMessageReference();
         String sender = getMessageSender(account, message);
         String displaySender = getMessageSenderForDisplay(sender);
+        final Address[] fromAddresses = message.getFrom();
+        Address senderNameAddress = fromAddresses[0];
         String subject = getMessageSubject(message);
         CharSequence preview = getMessagePreview(message);
         CharSequence summary = buildMessageSummary(sender, subject);
         boolean starred = message.isSet(Flag.FLAGGED);
 
-        return new NotificationContent(messageReference, displaySender, subject, preview, summary, starred);
+        return new NotificationContent(messageReference, displaySender, senderNameAddress, subject, preview, summary, starred);
     }
 
     private CharSequence getMessagePreview(LocalMessage message) {

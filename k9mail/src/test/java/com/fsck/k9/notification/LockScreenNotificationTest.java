@@ -14,6 +14,8 @@ import com.fsck.k9.K9.LockScreenNotificationVisibility;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
+import com.fsck.k9.mail.Address;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -183,6 +185,6 @@ public class LockScreenNotificationTest {
     }
 
     private NotificationContent createNotificationContent(String sender) {
-        return new NotificationContent(null, sender, null, null, null, false);
+        return new NotificationContent(null, sender, new Address(sender), null, null, null, false);
     }
 }

@@ -1,24 +1,32 @@
 package com.fsck.k9.notification;
 
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.NotificationCompat.BigTextStyle;
 import android.support.v4.app.NotificationCompat.Builder;
+import android.widget.ImageView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9RobolectricTestRunner;
+import com.fsck.k9.activity.misc.ContactPictureLoader;
+import com.fsck.k9.mail.Address;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockingDetails;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,6 +39,7 @@ public class BaseNotificationsTest {
     private static final int ACCOUNT_NUMBER = 2;
     private static final String NOTIFICATION_SUMMARY = "Summary";
     private static final String SENDER = "MessageSender";
+    private static final Address SENDER_NAME_ADDRESS = new Address("MessageSender <ms@k9.org>");
     private static final String SUBJECT = "Subject";
     private static final String NOTIFICATION_PREVIEW = "Preview";
 
@@ -87,6 +96,13 @@ public class BaseNotificationsTest {
         int notificationId = 23;
         NotificationHolder holder = createNotificationHolder(notificationId);
 
+        ImageView imageView = mock(ImageView.class);
+        when(notifications.controller.getNewImageView()).thenReturn(imageView);
+        BitmapDrawable bitmapDrawable = mock(BitmapDrawable.class);
+        when(imageView.getDrawable()).thenReturn(bitmapDrawable);
+        Bitmap bitmap = Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
+        when(bitmapDrawable.getBitmap()).thenReturn(bitmap);
+
         Builder builder = notifications.createBigTextStyleNotification(account, holder, notificationId);
 
         verify(builder).setTicker(NOTIFICATION_SUMMARY);
@@ -94,6 +110,7 @@ public class BaseNotificationsTest {
         verify(builder).setContentTitle(SENDER);
         verify(builder).setContentText(SUBJECT);
         verify(builder).setSubText(ACCOUNT_NAME);
+        verify(builder).setLargeIcon(any(Bitmap.class));
 
         BigTextStyle bigTextStyle = notifications.bigTextStyle;
         verify(bigTextStyle).bigText(NOTIFICATION_PREVIEW);
@@ -102,7 +119,7 @@ public class BaseNotificationsTest {
     }
 
     private NotificationHolder createNotificationHolder(int notificationId) {
-        NotificationContent content = new NotificationContent(null, SENDER, SUBJECT, NOTIFICATION_PREVIEW,
+        NotificationContent content = new NotificationContent(null, SENDER, SENDER_NAME_ADDRESS, SUBJECT, NOTIFICATION_PREVIEW,
                 NOTIFICATION_SUMMARY, false);
         return new NotificationHolder(notificationId, content);
     }
@@ -110,15 +127,17 @@ public class BaseNotificationsTest {
     private TestNotifications createTestNotifications() {
         NotificationController controller = createFakeController();
         NotificationActionCreator actionCreator = mock(NotificationActionCreator.class);
-
         return new TestNotifications(controller, actionCreator);
     }
 
     private NotificationController createFakeController() {
         Builder builder = MockHelper.mockBuilder(Builder.class);
         NotificationController controller = mock(NotificationController.class);
+        ContactPictureLoader contactPictureLoader = mock(ContactPictureLoader.class);
+        when(controller.getContext()).thenReturn(RuntimeEnvironment.application);
         when(controller.createNotificationBuilder()).thenReturn(builder);
         when(controller.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
+        when(controller.getContactPictureLoader()).thenReturn(contactPictureLoader);
         return controller;
     }
 
@@ -137,6 +156,10 @@ public class BaseNotificationsTest {
         protected TestNotifications(NotificationController controller, NotificationActionCreator actionCreator) {
             super(controller, actionCreator);
             bigTextStyle = mock(BigTextStyle.class);
+        }
+
+        protected Bitmap getCircleBitmap(Bitmap bitmap){
+            return bitmap;
         }
 
         @Override
