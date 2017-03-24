@@ -167,6 +167,18 @@
         <item>ALWAYS</item>
     </string-array>
 
+    <string-array name="account_settings_use_gravatar_entries">
+        <item>@string/account_setting_use_gravatar_never</item>
+        <item>@string/account_setting_use_gravatar_on_wifi</item>
+        <item>@string/account_setting_use_gravatar_always</item>
+    </string-array>
+
+    <string-array name="account_settings_use_gravatar_values" translatable="false">
+        <item>NEVER</item>
+        <item>ON_WIFI</item>
+        <item>ALWAYS</item>
+    </string-array>
+
     <string-array name="account_settings_searchable_entries">
         <item>@string/account_settings_searchable_all</item>
         <item>@string/account_settings_searchable_displayable</item>

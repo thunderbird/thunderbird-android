@@ -16,7 +16,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.widget.ImageView;
@@ -37,8 +41,12 @@ import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
 import com.bumptech.glide.load.resource.transcode.BitmapToGlideDrawableTranscoder;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.fsck.k9.Account;
+import com.fsck.k9.Account.UseGravatar;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 
@@ -116,16 +124,16 @@ public class ContactPictureLoader {
 
     }
 
-    public void loadContactPicture(final Address address, final ImageView imageView) {
+    public void loadContactPicture(Account account, final Address address, final ImageView imageView) {
         Uri photoUri = mContactsHelper.getPhotoUri(address.getAddress());
-        loadContactPicture(photoUri, address, imageView);
+        loadContactPicture(account, photoUri, address, imageView);
     }
 
-    public void loadContactPicture(Recipient recipient, ImageView imageView) {
-        loadContactPicture(recipient.photoThumbnailUri, recipient.address, imageView);
+    public void loadContactPicture(Account account, Recipient recipient, ImageView imageView) {
+        loadContactPicture(account, recipient.photoThumbnailUri, recipient.address, imageView);
     }
 
-    private void loadFallbackPicture(final Address address, final ImageView imageView) {
+    private void loadFallbackPicture(Account account, final Address address, final ImageView imageView) {
         final Context context = imageView.getContext();
 
         Glide.with(context)
@@ -152,42 +160,42 @@ public class ContactPictureLoader {
                     public boolean onResourceReady(GlideDrawable resource, FallbackGlideParams model,
                             Target<GlideDrawable> target,
                             boolean isFromMemoryCache, boolean isFirstResource) {
-
-
                         return false;
                     }
                 })
                 .into(imageView);
 
-        Glide.with(context)
-                .load(getGravatarUri(address.getAddress()))
-                .listener(new RequestListener<Uri, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, Uri model, Target<GlideDrawable> target,
-                            boolean isFirstResource) {
-                        return false;
-                    }
+        if (account.getUseGravatar() == UseGravatar.ALWAYS || (account.getUseGravatar() == UseGravatar.ON_WIFI && isOnWiFi(imageView.getContext()))) {
+            Glide.with(context)
+                    .load(getGravatarUri(address.getAddress()))
+                    .listener(new RequestListener<Uri, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, Uri model, Target<GlideDrawable> target,
+                                boolean isFirstResource) {
+                            return false;
+                        }
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, Uri model,
-                            Target<GlideDrawable> target,
-                            boolean isFromMemoryCache, boolean isFirstResource) {
-                        Glide.with(context)
-                                .load(getGravatarUri(address.getAddress()))
-                                .into(imageView);
-                        return false;
-                    }
-                })
-                .preload(mPictureSizeInPx, mPictureSizeInPx);
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, Uri model,
+                                Target<GlideDrawable> target,
+                                boolean isFromMemoryCache, boolean isFirstResource) {
+                            Glide.with(context)
+                                    .load(getGravatarUri(address.getAddress()))
+                                    .into(imageView);
+                            return false;
+                        }
+                    })
+                    .preload(mPictureSizeInPx, mPictureSizeInPx);
+        }
     }
 
-    private void loadContactPicture(Uri photoUri, final Address address, final ImageView imageView) {
+    private void loadContactPicture(final Account account, Uri photoUri, final Address address, final ImageView imageView) {
         if (photoUri != null) {
             RequestListener<Uri, GlideDrawable> noPhotoListener = new RequestListener<Uri, GlideDrawable>() {
                 @Override
                 public boolean onException(Exception e, Uri model, Target<GlideDrawable> target,
                         boolean isFirstResource) {
-                    loadFallbackPicture(address, imageView);
+                    loadFallbackPicture(account, address, imageView);
                     return true;
                 }
 
@@ -208,8 +216,21 @@ public class ContactPictureLoader {
                     .override(mPictureSizeInPx, mPictureSizeInPx)
                     .into(imageView);
         } else {
-            loadFallbackPicture(address, imageView);
+            loadFallbackPicture(account, address, imageView);
         }
+    }
+
+    private boolean isOnWiFi(Context context) {
+        final ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+            return connectivityManager.isActiveNetworkMetered();
+        } else {
+            NetworkType networkType =
+                    NetworkType.fromConnectivityManagerType(connectivityManager.getActiveNetworkInfo().getType());
+            return networkType == NetworkType.WIFI;
+        }
+
     }
 
     private int calcUnknownContactColor(Address address) {

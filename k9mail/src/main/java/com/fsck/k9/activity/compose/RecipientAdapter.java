@@ -20,6 +20,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
@@ -31,6 +32,8 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     private final Context context;
     private List<Recipient> recipients;
     private String highlight;
+
+    private Account account;
 
 
     public RecipientAdapter(Context context) {
@@ -91,7 +94,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         String address = recipient.address.getAddress();
         holder.email.setText(highlightText(address));
 
-        setContactPhotoOrPlaceholder(context, holder.photo, recipient);
+        setContactPhotoOrPlaceholder(context, account, holder.photo, recipient);
 
         Integer cryptoStatusRes = null, cryptoStatusColor = null;
         RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
@@ -124,8 +127,16 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-    public static void setContactPhotoOrPlaceholder(Context context, ImageView imageView, Recipient recipient) {
-        ContactPicture.getContactPictureLoader(context).loadContactPicture(recipient, imageView);
+    public static void setContactPhotoOrPlaceholder(Context context, Account account, ImageView imageView, Recipient recipient) {
+        ContactPicture.getContactPictureLoader(context).loadContactPicture(account, recipient, imageView);
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     @Override

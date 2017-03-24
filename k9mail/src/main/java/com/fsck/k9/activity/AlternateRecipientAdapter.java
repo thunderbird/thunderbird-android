@@ -19,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.RecipientAdapter;
 import com.fsck.k9.ui.ContactBadge;
@@ -128,7 +129,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             holder.headerAddressLabel.setVisibility(View.GONE);
         }
 
-        RecipientAdapter.setContactPhotoOrPlaceholder(context, holder.headerPhoto, recipient);
+        RecipientAdapter.setContactPhotoOrPlaceholder(context, getAccount(), holder.headerPhoto, recipient);
         holder.headerPhoto.assignContactUri(recipient.getContactLookupUri());
 
         holder.headerRemove.setOnClickListener(new OnClickListener() {
@@ -164,6 +165,10 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         });
 
         configureCryptoStatusView(holder, recipient);
+    }
+
+    private Account getAccount() {
+        return ((MessageCompose) context).getAccount();
     }
 
     private void configureCryptoStatusView(RecipientTokenHolder holder, Recipient recipient) {

@@ -32,6 +32,7 @@ import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Account.Searchable;
 import com.fsck.k9.Account.ShowPictures;
+import com.fsck.k9.Account.UseGravatar;
 import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
@@ -74,6 +75,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_DISPLAY_COUNT = "account_display_count";
     private static final String PREFERENCE_DEFAULT = "account_default";
     private static final String PREFERENCE_SHOW_PICTURES = "show_pictures_enum";
+    private static final String PREFERENCE_USE_GRAVATAR = "use_gravatar_enum";
     private static final String PREFERENCE_NOTIFY = "account_notify";
     private static final String PREFERENCE_NOTIFY_NEW_MAIL_MODE = "folder_notify_new_mail_mode";
     private static final String PREFERENCE_NOTIFY_SELF = "account_notify_self";
@@ -147,6 +149,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference accountNotifySelf;
     private CheckBoxPreference accountNotifyContactsMailOnly;
     private ListPreference accountShowPictures;
+    private ListPreference accountUseGravatar;
     private CheckBoxPreference accountNotifySync;
     private CheckBoxPreference accountVibrateEnabled;
     private CheckBoxPreference accountLedEnabled;
@@ -472,6 +475,19 @@ public class AccountSettings extends K9PreferenceActivity {
                 int index = accountShowPictures.findIndexOfValue(summary);
                 accountShowPictures.setSummary(accountShowPictures.getEntries()[index]);
                 accountShowPictures.setValue(summary);
+                return false;
+            }
+        });
+
+        accountUseGravatar = (ListPreference) findPreference(PREFERENCE_USE_GRAVATAR);
+        accountUseGravatar.setValue("" + account.getUseGravatar());
+        accountUseGravatar.setSummary(accountUseGravatar.getEntry());
+        accountUseGravatar.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                final String summary = newValue.toString();
+                int index = accountUseGravatar.findIndexOfValue(summary);
+                accountUseGravatar.setSummary(accountUseGravatar.getEntries()[index]);
+                accountUseGravatar.setValue(summary);
                 return false;
             }
         });
@@ -834,6 +850,8 @@ public class AccountSettings extends K9PreferenceActivity {
         }
 
         account.setShowPictures(ShowPictures.valueOf(accountShowPictures.getValue()));
+
+        account.setUseGravatar(UseGravatar.valueOf(accountUseGravatar.getValue()));
 
         //IMAP specific stuff
         if (isPushCapable) {

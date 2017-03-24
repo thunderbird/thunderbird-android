@@ -1349,6 +1349,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         quotedMessagePresenter.processDraftMessage(messageViewInfo, k9identity);
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
         final Context context;
         final Account account;
