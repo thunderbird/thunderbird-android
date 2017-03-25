@@ -21,6 +21,7 @@ import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.activity.misc.Attachment.LoadingState;
+import com.fsck.k9.activity.misc.AttachmentListener;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
 
@@ -40,6 +41,7 @@ public class AttachmentPresenter {
     private final Context context;
     private final AttachmentMvpView attachmentMvpView;
     private final LoaderManager loaderManager;
+    private final AttachmentListener attachListener;
 
     // persistent state
     private LinkedHashMap<Uri, Attachment> attachments;
@@ -47,11 +49,11 @@ public class AttachmentPresenter {
     private WaitingAction actionToPerformAfterWaiting = WaitingAction.NONE;
 
 
-    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager) {
+    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager, AttachmentListener attachListener) {
         this.context = context;
         this.attachmentMvpView = attachmentMvpView;
         this.loaderManager = loaderManager;
-
+        this.attachListener = attachListener;
         attachments = new LinkedHashMap<>();
     }
 
@@ -178,6 +180,7 @@ public class AttachmentPresenter {
     private void addAttachmentAndStartLoader(Attachment attachment) {
         attachments.put(attachment.uri, attachment);
         attachmentMvpView.addAttachmentView(attachment);
+        attachListener.onAttachmentAdded();
 
         if (attachment.state == LoadingState.URI_ONLY) {
             initAttachmentInfoLoader(attachment);
