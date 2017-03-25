@@ -78,7 +78,6 @@ public class AccountsTest {
                 LocalSearch.CREATOR);
         assertEquals(activity.getString(R.string.integrated_inbox_title),
                 search.getName());
-        //TODO: Decode search for unified inbox
     }
 
     @Test
