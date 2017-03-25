@@ -40,7 +40,7 @@
 
         <ProgressBar
             android:id="@+id/actionbar_progress"
-            style="?android:attr/indeterminateProgressStyle"
+            android:indeterminate="true"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
