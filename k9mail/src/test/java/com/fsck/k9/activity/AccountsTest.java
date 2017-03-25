@@ -128,6 +128,5 @@ public class AccountsTest {
         identities.add(identity);
         account.setIdentities(identities);
         return account.getUuid();
-
     }
 }

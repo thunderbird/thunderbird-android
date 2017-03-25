@@ -3,6 +3,7 @@ package com.fsck.k9.activity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.widget.TextView;
@@ -32,6 +33,11 @@ public class MessageComposeTest {
         Field databasesUpToDate = K9.class.getDeclaredField("sDatabasesUpToDate");
         databasesUpToDate.setAccessible(true);
         databasesUpToDate.set(null, false);
+
+        List<Account> accounts = Preferences.getPreferences(RuntimeEnvironment.application).getAccounts();
+        for (Account account : accounts) {
+            Preferences.getPreferences(RuntimeEnvironment.application).deleteAccount(account);
+        }
     }
 
     @Test

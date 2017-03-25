@@ -105,6 +105,12 @@ android {
     }
 }
 
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+    }
+}
+
 if (project.hasProperty('keyAlias')) {
     android.signingConfigs.release.keyAlias = keyAlias
 }

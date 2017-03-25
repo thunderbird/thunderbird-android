@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -138,7 +139,6 @@ public class MessagingControllerTest {
 
     @Before
     public void setUp() throws MessagingException {
-        ShadowLog.stream = System.out;
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
@@ -150,6 +150,7 @@ public class MessagingControllerTest {
 
     @After
     public void tearDown() throws Exception {
+        removeAccountsInPreferences();
         controller.stop();
     }
 
@@ -947,12 +948,18 @@ public class MessagingControllerTest {
             throws Exception {
         Field accounts = Preferences.class.getDeclaredField("accounts");
         accounts.setAccessible(true);
-        accounts.set(Preferences.getPreferences(appContext), newAccounts);
+        accounts.set(Preferences.getPreferences(appContext), new HashMap<>(newAccounts));
 
         Field accountsInOrder = Preferences.class.getDeclaredField("accountsInOrder");
         accountsInOrder.setAccessible(true);
         ArrayList<Account> newAccountsInOrder = new ArrayList<>();
         newAccountsInOrder.addAll(newAccounts.values());
         accountsInOrder.set(Preferences.getPreferences(appContext), newAccountsInOrder);
+    }
+
+    private void removeAccountsInPreferences() throws Exception {
+        Field accounts = Preferences.class.getDeclaredField("accounts");
+        accounts.setAccessible(true);
+        accounts.set(Preferences.getPreferences(appContext), null);
     }
 }

@@ -32,7 +32,7 @@ public class Preferences {
 
 
     private Storage mStorage;
-    private Map<String, Account> accounts = null;
+    private HashMap<String, Account> accounts = null;
     private List<Account> accountsInOrder = null;
     private Account newAccount;
     private Context mContext;
@@ -111,6 +111,9 @@ public class Preferences {
     }
 
     public synchronized Account newAccount() {
+        if (accounts == null) {
+            loadAccounts();
+        }
         newAccount = new Account(mContext);
         accounts.put(newAccount.getUuid(), newAccount);
         accountsInOrder.add(newAccount);
@@ -150,9 +153,9 @@ public class Preferences {
         Account defaultAccount = getAccount(defaultAccountUuid);
 
         if (defaultAccount == null) {
-            Collection<Account> accounts = getAvailableAccounts();
-            if (!accounts.isEmpty()) {
-                defaultAccount = accounts.iterator().next();
+            Collection<Account> availableAccounts = getAvailableAccounts();
+            if (!availableAccounts.isEmpty()) {
+                defaultAccount = availableAccounts.iterator().next();
                 setDefaultAccount(defaultAccount);
             }
         }
