@@ -11,6 +11,59 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/message_plain_text_container"
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
+
+        <LinearLayout
+            android:id="@+id/message_plain_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            >
+
+            <View
+                android:layout_width="16dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="1dp"
+                android:layout_gravity="center_vertical"
+                android:background="#d55"
+                />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:text="@string/plain_text_divider_label"
+                android:textColor="#d55"
+                />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="4dp"
+                android:layout_marginTop="1dp"
+                android:layout_gravity="center_vertical"
+                android:background="#d55" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/message_plain_text"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:padding="8dp"
+            tools:text="Plain text content"
+            />
+
+    </LinearLayout>
+
     <!-- Unsigned content area -->
     <LinearLayout
         android:layout_width="match_parent"

@@ -64,6 +64,9 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     private View unsignedTextContainer;
     private View unsignedTextDivider;
     private TextView unsignedText;
+    private View plainTextContainer;
+    private View plainTextDivider;
+    private TextView plainText;
     private View mAttachmentsContainer;
 
     private boolean showingPictures;
@@ -97,6 +100,9 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         unsignedTextDivider = findViewById(R.id.message_unsigned_divider);
         unsignedText = (TextView) findViewById(R.id.message_unsigned_text);
 
+        plainTextContainer = findViewById(R.id.message_plain_text_container);
+        plainTextDivider = findViewById(R.id.message_plain_divider);
+        plainText = (TextView)findViewById(R.id.message_plain_text);
         showingPictures = false;
 
         Context context = getContext();
@@ -389,9 +395,12 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
             mSavedState = null;
         }
 
-        String textToDisplay = K9.displayAsPlaintText()
-                ? HtmlConverter.htmlToText(messageViewInfo.text)
-                : messageViewInfo.text;
+        String textToDisplay;
+        boolean isPlainText = K9.displayAsPlaintText();
+        if(!isPlainText)
+            textToDisplay = messageViewInfo.text;
+        else
+            textToDisplay = "";
 
         if (textToDisplay != null && !isShowingPictures()) {
             if (Utility.hasExternalImages(textToDisplay)) {
@@ -416,6 +425,12 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
         displayHtmlContentWithInlineAttachments(
                 textToDisplay, messageViewInfo.attachmentResolver, onPageFinishedListener);
+
+        if(isPlainText) {
+            plainTextContainer.setVisibility(View.VISIBLE);
+            plainTextDivider.setVisibility(View.VISIBLE);
+            plainText.setText(messageViewInfo.plainText);
+        }
 
         if (!TextUtils.isEmpty(messageViewInfo.extraText)) {
             unsignedTextContainer.setVisibility(View.VISIBLE);

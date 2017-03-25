@@ -13,6 +13,7 @@ public class MessageViewInfo {
     public final Part rootPart;
     public final AttachmentResolver attachmentResolver;
     public final String text;
+    public final String plainText;
     public final CryptoResultAnnotation cryptoResultAnnotation;
     public final List<AttachmentViewInfo> attachments;
     public final String extraText;
@@ -21,7 +22,7 @@ public class MessageViewInfo {
 
     public MessageViewInfo(
             Message message, boolean isMessageIncomplete, Part rootPart,
-            String text, List<AttachmentViewInfo> attachments,
+            String text, String plainText, List<AttachmentViewInfo> attachments,
             CryptoResultAnnotation cryptoResultAnnotation,
             AttachmentResolver attachmentResolver,
             String extraText, List<AttachmentViewInfo> extraAttachments) {
@@ -29,6 +30,7 @@ public class MessageViewInfo {
         this.isMessageIncomplete = isMessageIncomplete;
         this.rootPart = rootPart;
         this.text = text;
+        this.plainText = plainText;
         this.cryptoResultAnnotation = cryptoResultAnnotation;
         this.attachmentResolver = attachmentResolver;
         this.attachments = attachments;
@@ -38,14 +40,14 @@ public class MessageViewInfo {
 
     public static MessageViewInfo createWithExtractedContent(
             Message message, boolean isMessageIncomplete, Part rootPart,
-            String text, List<AttachmentViewInfo> attachments,
+            String text, String plainText, List<AttachmentViewInfo> attachments,
             CryptoResultAnnotation cryptoResultAnnotation,
             AttachmentResolver attachmentResolver,
             String extraText, List<AttachmentViewInfo> extraAttachments
     ) {
         return new MessageViewInfo(
                 message, isMessageIncomplete, rootPart,
-                text, attachments,
+                text, plainText, attachments,
                 cryptoResultAnnotation,
                 attachmentResolver,
                 extraText, extraAttachments
@@ -53,7 +55,7 @@ public class MessageViewInfo {
     }
 
     public static MessageViewInfo createWithErrorState(Message message, boolean isMessageIncomplete) {
-        return new MessageViewInfo(message, isMessageIncomplete, null, null, null, null, null, null, null);
+        return new MessageViewInfo(message, isMessageIncomplete, null, null, null, null, null, null, null, null);
     }
 
 }

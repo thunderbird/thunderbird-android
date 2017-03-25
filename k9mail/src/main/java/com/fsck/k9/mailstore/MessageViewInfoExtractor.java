@@ -107,7 +107,8 @@ public class MessageViewInfoExtractor {
                 MessageExtractor.hasMissingParts(message);
 
         return MessageViewInfo.createWithExtractedContent(message, isMessageIncomplete, rootPart, viewable.html,
-                attachmentInfos, cryptoResultAnnotation, attachmentResolver, extraViewableText, extraAttachmentInfos);
+                viewable.text, attachmentInfos, cryptoResultAnnotation, attachmentResolver, extraViewableText,
+                extraAttachmentInfos);
     }
 
     private ViewableExtractedText extractViewableAndAttachments(List<Part> parts,
