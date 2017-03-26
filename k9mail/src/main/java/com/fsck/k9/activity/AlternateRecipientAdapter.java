@@ -18,12 +18,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.RecipientAdapter;
 import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.ThemeUtils;
+
+import static com.fsck.k9.Globals.getContext;
 
 
 public class AlternateRecipientAdapter extends BaseAdapter {
@@ -131,6 +134,19 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         RecipientAdapter.setContactPhotoOrPlaceholder(context, holder.headerPhoto, recipient);
         holder.headerPhoto.assignContactUri(recipient.getContactLookupUri());
 
+        holder.headerName.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String recipentEmail = listener.getRecipentEmail(currentRecipient);
+                copy_to_ClipBoard(getContext(),recipentEmail);
+                Toast toast = Toast.makeText(context, "Address Copied to Clip Board", Toast.LENGTH_LONG);
+                toast.show();
+                listener.setRecipientPopupVisibileFalse(currentRecipient);
+
+            }
+        });
+
         holder.headerRemove.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +154,13 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             }
         });
     }
+
+    public void copy_to_ClipBoard(Context context,String address){
+        com.fsck.k9.helper.ClipboardManager clipboardManager = com.fsck.k9.helper.ClipboardManager.getInstance(context);
+        clipboardManager.setText(address,address);
+
+    }
+
 
     public void bindItemView(View view, final Recipient recipient) {
         RecipientTokenHolder holder = (RecipientTokenHolder) view.getTag();
@@ -239,5 +262,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
     public interface AlternateRecipientListener {
         void onRecipientRemove(Recipient currentRecipient);
         void onRecipientChange(Recipient currentRecipient, Recipient alternateRecipient);
+        String getRecipentEmail(Recipient currentRecipent);
+        void setRecipientPopupVisibileFalse(Recipient currentRecipient);
     }
 }

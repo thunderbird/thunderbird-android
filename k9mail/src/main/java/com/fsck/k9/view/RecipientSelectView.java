@@ -396,6 +396,19 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         return currentCompletionText.startsWith("+") && currentCompletionText.substring(1).matches("[0-9]+");
     }
 
+
+    @Override
+    public String getRecipentEmail(Recipient currenRecipient){
+        String name=currenRecipient.getDisplayNameOrAddress();
+        return name;
+    }
+
+    @Override
+    public void setRecipientPopupVisibileFalse(Recipient curreRecipient){
+        alternatesPopup.dismiss();
+    }
+
+
     @Override
     public void onRecipientRemove(Recipient currentRecipient) {
         alternatesPopup.dismiss();
