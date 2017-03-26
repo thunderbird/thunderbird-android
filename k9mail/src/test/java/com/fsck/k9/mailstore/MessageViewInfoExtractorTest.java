@@ -87,7 +87,9 @@ public class MessageViewInfoExtractorTest {
         ViewableExtractedText viewableExtractedText =
                 messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
 
-        assertSame(value, viewableExtractedText.html);
+        assertEquals("<html><head><meta name=\"viewport\" content=\"width=device-width\"/><style type=\"text/css\"> " +
+                "pre.k9mail {white-space: pre-wrap; word-wrap:break-word; font-family: sans-serif; margin-top: 0px}" +
+                "</style></head><body>"+value+"</body></html>", viewableExtractedText.html);
     }
 
     @Test
