@@ -37,6 +37,7 @@ import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.fragment.ProgressDialogFragment;
@@ -534,7 +535,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             }
             case R.id.dialog_attachment_progress: {
                 String message = getString(R.string.dialog_attachment_progress_title);
-                fragment = ProgressDialogFragment.newInstance(null, message);
+                int size = (int) currentAttachmentViewInfo.size;
+                fragment = AttachmentDownloadDialogFragment.newInstance(size, message);
                 break;
             }
             default: {
@@ -796,7 +798,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     @Override
     public void onViewAttachment(AttachmentViewInfo attachment) {
         //TODO: check if we have to download the attachment first
-
+        currentAttachmentViewInfo = attachment;
         getAttachmentController(attachment).viewAttachment();
     }
 

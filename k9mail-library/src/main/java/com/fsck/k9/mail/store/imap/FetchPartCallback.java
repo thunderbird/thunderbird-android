@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store.imap;
 
 import java.io.IOException;
 
+import com.fsck.k9.mail.AttachmentProgressCallback;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
@@ -12,9 +13,15 @@ import com.fsck.k9.mail.internet.MimeUtility;
 
 class FetchPartCallback implements ImapResponseCallback {
     private Part mPart;
+    private AttachmentProgressCallback attachmentProgressCallback;
 
     FetchPartCallback(Part part) {
         mPart = part;
+    }
+
+    FetchPartCallback(Part part, AttachmentProgressCallback attachmentProgressCallback) {
+        mPart = part;
+        this.attachmentProgressCallback = attachmentProgressCallback;
     }
 
     @Override
@@ -28,7 +35,11 @@ class FetchPartCallback implements ImapResponseCallback {
             String contentType = mPart
                     .getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
 
-            return MimeUtility.createBody(literal, contentTransferEncoding, contentType);
+            if (attachmentProgressCallback != null) {
+                return MimeUtility.createBody(literal, contentTransferEncoding, contentType, attachmentProgressCallback);
+            }
+
+            return MimeUtility.createBody(literal, contentTransferEncoding, contentType, null);
         }
         return null;
     }

@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.fsck.k9.mail.AttachmentProgressCallback;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
@@ -781,7 +782,7 @@ class ImapFolder extends Folder<ImapMessage> {
     }
 
     @Override
-    public void fetchPart(Message message, Part part, MessageRetrievalListener<Message> listener)
+    public void fetchPart(Message message, Part part, MessageRetrievalListener<Message> listener, AttachmentProgressCallback progressCallback)
             throws MessagingException {
         checkOpen();
 
@@ -802,7 +803,7 @@ class ImapFolder extends Folder<ImapMessage> {
             ImapResponse response;
             int messageNumber = 0;
 
-            ImapResponseCallback callback = new FetchPartCallback(part);
+            ImapResponseCallback callback = new FetchPartCallback(part, progressCallback);
 
             do {
                 response = connection.readResponse(callback);
@@ -840,7 +841,7 @@ class ImapFolder extends Folder<ImapMessage> {
                                     part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
                             String contentType = part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
                             MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream, contentTransferEncoding,
-                                    contentType));
+                                    contentType, progressCallback));
                         } else {
                             // This shouldn't happen
                             throw new MessagingException("Got FETCH response with bogus parameters");
