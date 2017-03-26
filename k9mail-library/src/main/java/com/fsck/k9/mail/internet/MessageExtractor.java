@@ -25,7 +25,7 @@ import timber.log.Timber;
 
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
-import static com.fsck.k9.mail.internet.MimeUtility.isFormatFlowed;
+import static com.fsck.k9.mail.internet.FlowedMessageUtils.isFormatFlowed;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
 import static com.fsck.k9.mail.internet.Viewable.Html;
@@ -192,7 +192,8 @@ public class MessageExtractor {
             Viewable viewable;
             if (isSameMimeType(mimeType, "text/plain")) {
                 if (isFormatFlowed(part.getContentType())) {
-                    viewable = new Flowed(part);
+                    boolean delSp = FlowedMessageUtils.isDelSp(part.getContentType());
+                    viewable = new Flowed(part, delSp);
                 } else {
                     viewable = new Text(part);
                 }
