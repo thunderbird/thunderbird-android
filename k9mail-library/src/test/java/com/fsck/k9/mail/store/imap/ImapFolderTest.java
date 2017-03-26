@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
@@ -962,7 +963,7 @@ public class ImapFolderTest {
         Part part = createPlainTextPart("1.1");
         setupSingleFetchResponseToCallback();
 
-        folder.fetchPart(message, part, null, null);
+        folder.fetchPart(message, part, null, new DefaultBodyFactory());
 
         ArgumentCaptor<Body> bodyArgumentCaptor = ArgumentCaptor.forClass(Body.class);
         verify(part).setBody(bodyArgumentCaptor.capture());

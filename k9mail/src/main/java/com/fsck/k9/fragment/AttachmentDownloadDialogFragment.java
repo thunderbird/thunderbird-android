@@ -21,6 +21,7 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
 
     protected static final String ARG_SIZE = "size";
     protected static final String ARG_MESSAGE = "message";
+    private MessagingController messagingController;
 
     public static AttachmentDownloadDialogFragment newInstance(int size, String message) {
         AttachmentDownloadDialogFragment attachmentDownloadDialogFragment = new AttachmentDownloadDialogFragment();
@@ -53,7 +54,8 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
             }
         };
 
-        MessagingController.getInstance(getActivity()).addDownloadProgressListener(messagingListener);
+        messagingController = MessagingController.getInstance(getActivity());
+        messagingController.addListener(messagingListener);
 
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage(message);
@@ -63,6 +65,12 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
         dialog.show();
 
         return dialog;
+    }
+
+    @Override
+    public void onDestroyView() {
+        messagingController.removeListener(messagingListener);
+        super.onDestroyView();
     }
 
     @Override

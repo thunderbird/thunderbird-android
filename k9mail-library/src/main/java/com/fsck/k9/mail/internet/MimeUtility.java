@@ -4,15 +4,11 @@ package com.fsck.k9.mail.internet;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import android.support.annotation.NonNull;
 
-import com.fsck.k9.mail.AttachmentProgressCallback;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -20,8 +16,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.output.CountingOutputStream;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -988,44 +982,6 @@ public class MimeUtility {
 
     public static boolean isDefaultMimeType(String mimeType) {
         return isSameMimeType(mimeType, DEFAULT_ATTACHMENT_MIME_TYPE);
-    }
-
-    public static Body createBody(InputStream in, String contentTransferEncoding, String contentType, final AttachmentProgressCallback progressCallback)
-            throws IOException {
-
-        if (contentTransferEncoding != null) {
-            contentTransferEncoding = MimeUtility.getHeaderParameter(contentTransferEncoding, null);
-        }
-
-        final BinaryTempFileBody tempBody;
-        if (MimeUtil.isMessage(contentType)) {
-            tempBody = new BinaryTempFileMessageBody(contentTransferEncoding);
-        } else {
-            tempBody = new BinaryTempFileBody(contentTransferEncoding);
-        }
-
-        OutputStream out = tempBody.getOutputStream();
-        final CountingOutputStream countingOutputStream = new CountingOutputStream(out);
-        Timer timer = null;
-        try {
-            if (progressCallback != null) {
-                timer = new Timer();
-                timer.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        progressCallback.onUpdate((int) countingOutputStream.getCount());
-                    }
-                }, 0, 50);
-            }
-            IOUtils.copy(in, countingOutputStream);
-        } finally {
-            if (timer != null) {
-                timer.cancel();
-            }
-            out.close();
-        }
-
-        return tempBody;
     }
 
     /**
