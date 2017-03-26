@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import android.util.Log;
-
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
+import timber.log.Timber;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 
 class ImapResponseParser {
@@ -88,12 +86,11 @@ class ImapResponseParser {
             response = readResponse();
 
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-                Log.v(LOG_TAG, logId + "<<<" + response);
+                Timber.v("%s<<<%s", logId, response);
             }
 
             if (response.getTag() != null && !response.getTag().equalsIgnoreCase(tag)) {
-                Log.w(LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response +
-                        " for " + logId);
+                Timber.w("After sending tag %s, got tag response from previous command %s for %s", tag, response, logId);
 
                 Iterator<ImapResponse> responseIterator = responses.iterator();
 

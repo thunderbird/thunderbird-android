@@ -4,12 +4,9 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 
 /**
  * This class is used to store the decoded contents of an WebDavStore URI.
