@@ -387,16 +387,16 @@ class ImapConnection {
             oauthTokenProvider.invalidateToken(settings.getUsername());
 
             if (!retryXoauth2WithNewToken) {
-                return handlePermanentXoauth2Failure(e);
+                throw handlePermanentXoauth2Failure(e);
             } else {
                 return handleTemporaryXoauth2Failure(e);
             }
         }
     }
 
-    private List<ImapResponse> handlePermanentXoauth2Failure(NegativeImapResponseException e) throws AuthenticationFailedException {
-        Timber.v(e, "Permanent failure during XOAUTH2");
-        throw new AuthenticationFailedException(e.getMessage(), e);
+    private AuthenticationFailedException handlePermanentXoauth2Failure(NegativeImapResponseException e) {
+            Timber.v(e, "Permanent failure during XOAUTH2");
+        return new AuthenticationFailedException(e.getMessage(), e);
     }
 
     private List<ImapResponse> handleTemporaryXoauth2Failure(NegativeImapResponseException e) throws IOException, MessagingException {
@@ -413,7 +413,7 @@ class ImapConnection {
             //Invalidate the token anyway but assume it's permanent.
             Timber.v(e, "Authentication exception for new token, permanent error assumed");
             oauthTokenProvider.invalidateToken(settings.getUsername());
-            return handlePermanentXoauth2Failure(e2);
+            throw handlePermanentXoauth2Failure(e2);
         }
     }
 

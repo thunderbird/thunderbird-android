@@ -945,7 +945,7 @@ public class ImapConnectionTest {
 
     private void simplePostAuthenticationDialog(MockImapServer server, boolean requestCapabilities, int tag) {
         if (requestCapabilities) {
-            server.expect(tag+" CAPABILITY");
+            server.expect(tag + " CAPABILITY");
             server.output("* CAPABILITY IMAP4 IMAP4REV1 ");
             server.output(tag+" OK CAPABILITY");
             server.expect((tag+1) + " LIST \"\" \"\"");
