@@ -28,14 +28,13 @@ class QuoteHelper {
             final int dateStyle = DateFormat.LONG;
             final int timeStyle = DateFormat.LONG;
             Date date = message.getSentDate();
+
             DateFormat dateFormat;
-            Locale locale;
             if (K9.hideTimeZone()) {
-                locale=Locale.ROOT;
-                dateFormat = DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale);
+                dateFormat = DateFormat.getDateTimeInstance(dateStyle, timeStyle, Locale.ROOT);
                 dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             } else {
-                locale = resources.getConfiguration().locale;
+                Locale locale = resources.getConfiguration().locale;
                 dateFormat = DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale);
             }
             return dateFormat.format(date);
