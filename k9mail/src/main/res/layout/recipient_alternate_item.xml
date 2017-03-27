@@ -7,21 +7,21 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/alternate_container_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?android:listPreferredItemHeight"
-        android:gravity="center"
-        android:orientation="horizontal"
         android:background="?android:selectableItemBackground"
-        android:id="@+id/alternate_container_header"
+        android:gravity="center"
+        android:minHeight="?android:listPreferredItemHeight"
+        android:orientation="horizontal"
         >
 
         <com.fsck.k9.ui.ContactBadge
+            android:id="@+id/alternate_contact_photo"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            android:id="@+id/alternate_contact_photo"
             tools:src="@drawable/ic_contact_picture"
             />
 
@@ -33,77 +33,85 @@
 
             <TextView
                 android:id="@+id/alternate_header_name"
-                android:textColor="?attr/textColorPrimaryRecipientDropdown"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dip"
                 android:layout_marginStart="6dip"
-                android:singleLine="true"
                 android:ellipsize="end"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="?attr/textColorPrimaryRecipientDropdown"
                 tools:text="Mr. Firstname Lastname"
                 />
 
+            <Button
+                android:id="@+id/copy_button"
+                android:layout_width="82dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dip"
+                android:text="Copy" />
+
+
             <TextView
                 android:id="@+id/alternate_header_label"
-                android:textColor="?attr/textColorPrimaryRecipientDropdown"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dip"
                 android:layout_marginStart="6dip"
-                android:singleLine="true"
                 android:ellipsize="end"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?attr/textColorPrimaryRecipientDropdown"
                 tools:text="Other"
                 />
 
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/alternate_remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
-            android:padding="8dp"
-            android:id="@+id/alternate_remove"
             android:background="?android:selectableItemBackground"
+            android:padding="8dp"
             android:src="?attr/iconActionCancel"
             />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/alternate_container_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?android:listPreferredItemHeight"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
         android:background="?android:selectableItemBackground"
-        android:id="@+id/alternate_container_item"
+        android:gravity="center_vertical"
+        android:minHeight="?android:listPreferredItemHeight"
+        android:orientation="horizontal"
         >
 
         <TextView
             android:id="@+id/alternate_address_label"
-            android:textColor="?attr/textColorSecondaryRecipientDropdown"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:gravity="center_horizontal"
             android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?attr/textColorSecondaryRecipientDropdown"
             tools:text="Home"
             />
 
         <TextView
             android:id="@+id/alternate_address"
-            android:textColor="?attr/textColorSecondaryRecipientDropdown"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:ellipsize="end"
             android:paddingLeft="6dip"
             android:paddingRight="6dip"
             android:singleLine="true"
-            android:ellipsize="end"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?attr/textColorSecondaryRecipientDropdown"
             tools:text="address@example.com"
             />
 
