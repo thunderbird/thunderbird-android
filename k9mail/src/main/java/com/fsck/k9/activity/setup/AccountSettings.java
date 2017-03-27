@@ -602,11 +602,11 @@ public class AccountSettings extends K9PreferenceActivity {
         // XXX: The following two lines act as a workaround for the RingtonePreference
         //      which does not let us set/get the value programmatically
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
-        String currentRingtone = (!mAccount.getNotificationSetting().shouldRing() ? null : mAccount.getNotificationSetting().getRingtone());
+        String currentRingtone = (!mAccount.getNotificationSetting().isRingEnabled() ? null : mAccount.getNotificationSetting().getRingtone());
         prefs.edit().putString(PREFERENCE_RINGTONE, currentRingtone).commit();
 
         mAccountVibrate = (CheckBoxPreference) findPreference(PREFERENCE_VIBRATE);
-        mAccountVibrate.setChecked(mAccount.getNotificationSetting().shouldVibrate());
+        mAccountVibrate.setChecked(mAccount.getNotificationSetting().isVibrateEnabled());
 
         mAccountVibratePattern = (ListPreference) findPreference(PREFERENCE_VIBRATE_PATTERN);
         mAccountVibratePattern.setValue(String.valueOf(mAccount.getNotificationSetting().getVibratePattern()));
@@ -637,7 +637,7 @@ public class AccountSettings extends K9PreferenceActivity {
         });
 
         mAccountLed = (CheckBoxPreference) findPreference(PREFERENCE_NOTIFICATION_LED);
-        mAccountLed.setChecked(mAccount.getNotificationSetting().isLed());
+        mAccountLed.setChecked(mAccount.getNotificationSetting().isLedEnabled());
 
         mNotificationOpensUnread = (CheckBoxPreference)findPreference(PREFERENCE_NOTIFICATION_OPENS_UNREAD);
         mNotificationOpensUnread.setChecked(mAccount.goToUnreadMessageSearch());
@@ -825,10 +825,10 @@ public class AccountSettings extends K9PreferenceActivity {
         SharedPreferences prefs = mAccountRingtone.getPreferenceManager().getSharedPreferences();
         String newRingtone = prefs.getString(PREFERENCE_RINGTONE, null);
         if (newRingtone != null) {
-            mAccount.getNotificationSetting().setRing(true);
+            mAccount.getNotificationSetting().setRingEnabled(true);
             mAccount.getNotificationSetting().setRingtone(newRingtone);
         } else {
-            if (mAccount.getNotificationSetting().shouldRing()) {
+            if (mAccount.getNotificationSetting().isRingEnabled()) {
                 mAccount.getNotificationSetting().setRingtone(null);
             }
         }
