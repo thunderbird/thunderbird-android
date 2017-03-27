@@ -1127,6 +1127,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="recipient_cc">Cc</string>
     <string name="recipient_bcc">Bcc</string>
     <string name="recipient_to">To</string>
+    <string name="address_copied">Address Copied to Clipboard</string>
     <string name="recipient_from">From</string>
     <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
     <string name="address_type_home">Home</string>
