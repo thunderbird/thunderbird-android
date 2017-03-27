@@ -766,26 +766,24 @@ public class SmtpTransport extends Transport {
         String responseLine = null;
         List<String> results = new ArrayList<>();
         while (noOfPipelinedResponse > 0) {
+            noOfPipelinedResponse--;
             results.clear();
             responseLine = readCommandResponseLine(results);
             try {
                 responseLineToCommandResponse(responseLine, results);
 
             } catch (NegativeSmtpReplyException exception) {
+                if (noOfPipelinedResponse == 0) {
+                    throw exception;
+                }
                 //continue reading response till DATA response .
-                Log.d(LOG_TAG, "SMTP <<< " + exception.getReplyCode() + exception.getReplyText());
+                Timber.d("SMTP <<< " + exception.getReplyCode() + exception.getReplyText());
 
             } catch (MessagingException exception) {
                 //continue reading response till DATA response .
 
             }
-            noOfPipelinedResponse-- ;
-        }
 
-        try {
-            responseLineToCommandResponse(responseLine, results);
-        } catch (NegativeSmtpReplyException exception) {
-            throw exception;
         }
 
     }
