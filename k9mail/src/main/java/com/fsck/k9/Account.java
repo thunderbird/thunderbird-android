@@ -554,6 +554,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(accountUuid + ".sortTypeEnum");
         editor.remove(accountUuid + ".sortAscending");
         editor.remove(accountUuid + ".showPicturesEnum");
+        editor.remove(accountUuid + ".onlyShowPicturesViaWiFi");
         editor.remove(accountUuid + ".replyAfterQuote");
         editor.remove(accountUuid + ".stripSignature");
         editor.remove(accountUuid + ".cryptoApp"); // this is no longer set, but cleans up legacy values
