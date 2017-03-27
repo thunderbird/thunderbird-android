@@ -110,7 +110,7 @@
             tools:visibility="visible"
             android:inAnimation="@anim/fade_in"
             android:outAnimation="@anim/fade_out"
-            custom:previewInitialChild="2">
+            custom:previewInitialChild="7">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -245,6 +245,14 @@
                     />
 
             </FrameLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/status_lock_opportunistic"
+                android:tint="?attr/openpgp_grey"
+                />
 
         </com.fsck.k9.view.ToolableViewAnimator>
 

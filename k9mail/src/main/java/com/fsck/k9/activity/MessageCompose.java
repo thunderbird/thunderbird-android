@@ -647,12 +647,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             builder = SimpleMessageBuilder.newInstance();
         }
 
+        recipientPresenter.builderSetProperties(builder);
+
         builder.setSubject(Utility.stripNewLines(subjectView.getText().toString()))
                 .setSentDate(new Date())
                 .setHideTimeZone(K9.hideTimeZone())
-                .setTo(recipientPresenter.getToAddresses())
-                .setCc(recipientPresenter.getCcAddresses())
-                .setBcc(recipientPresenter.getBccAddresses())
                 .setInReplyTo(repliedToMessageId)
                 .setReferences(referencedMessageIds)
                 .setRequestReadReceipt(requestReadReceipt)

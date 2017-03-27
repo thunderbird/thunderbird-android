@@ -256,6 +256,10 @@ public class OpenPgpApi {
     public static final int AUTOCRYPT_STATUS_AVAILABLE = 2;
     public static final int AUTOCRYPT_STATUS_MUTUAL = 3;
 
+    // TODO remove again
+    public static final String EXTRA_DRY_RUN = "dry_run";
+    public static final String RESULT_KEYS_CONFIRMED = "keys_confirmed";
+
     // optional extras:
     public static final String EXTRA_PASSPHRASE = "passphrase";
     public static final String EXTRA_ORIGINAL_FILENAME = "original_filename";
