@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -22,11 +21,11 @@ import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.Viewable.Flowed;
 import org.apache.commons.io.input.BoundedInputStream;
+import timber.log.Timber;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.internet.CharsetSupport.fixupCharset;
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
-import static com.fsck.k9.mail.internet.MimeUtility.isFormatFlowed;
+import static com.fsck.k9.mail.internet.FlowedMessageUtils.isFormatFlowed;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
 import static com.fsck.k9.mail.internet.Viewable.Html;
@@ -62,9 +61,9 @@ public class MessageExtractor {
                 throw new MessagingException("Provided invalid part");
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Unable to getTextFromPart", e);
+            Timber.e(e, "Unable to getTextFromPart");
         } catch (MessagingException e) {
-            Log.e(LOG_TAG, "Unable to getTextFromPart", e);
+            Timber.e("Unable to getTextFromPart");
         }
         return null;
     }
@@ -193,7 +192,8 @@ public class MessageExtractor {
             Viewable viewable;
             if (isSameMimeType(mimeType, "text/plain")) {
                 if (isFormatFlowed(part.getContentType())) {
-                    viewable = new Flowed(part);
+                    boolean delSp = FlowedMessageUtils.isDelSp(part.getContentType());
+                    viewable = new Flowed(part, delSp);
                 } else {
                     viewable = new Text(part);
                 }

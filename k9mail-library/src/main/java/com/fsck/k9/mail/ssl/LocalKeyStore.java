@@ -12,10 +12,8 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import org.apache.commons.io.IOUtils;
+import timber.log.Timber;
 
-import android.util.Log;
-
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 public class LocalKeyStore {
     private static final int KEY_STORE_FILE_VERSION = 1;
@@ -50,7 +48,7 @@ public class LocalKeyStore {
              * error, presuming setKeyStoreFile(File) is called next with a
              * non-null File.
              */
-            Log.w(LOG_TAG, "Local key store has not been initialized");
+            Timber.w("Local key store has not been initialized");
         }
     }
 
@@ -77,7 +75,7 @@ public class LocalKeyStore {
              * Keystore.load. Instead, we let it be created anew.
              */
             if (file.exists() && !file.delete()) {
-                Log.d(LOG_TAG, "Failed to delete empty keystore file: " + file.getAbsolutePath());
+                Timber.d("Failed to delete empty keystore file: %s", file.getAbsolutePath());
             }
         }
 
@@ -94,7 +92,7 @@ public class LocalKeyStore {
             mKeyStore = store;
             mKeyStoreFile = file;
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Failed to initialize local key store", e);
+            Timber.e(e, "Failed to initialize local key store");
             // Use of the local key store is effectively disabled.
             mKeyStore = null;
             mKeyStoreFile = null;
@@ -171,7 +169,7 @@ public class LocalKeyStore {
         } catch (KeyStoreException e) {
             // Ignore: most likely there was no cert. found
         } catch (CertificateException e) {
-            Log.e(LOG_TAG, "Error updating the local key store file", e);
+            Timber.e(e, "Error updating the local key store file");
         }
     }
 
@@ -180,7 +178,7 @@ public class LocalKeyStore {
             // Blow away version "0" because certificate aliases have changed.
             File versionZeroFile = new File(getKeyStoreFilePath(0));
             if (versionZeroFile.exists() && !versionZeroFile.delete()) {
-                Log.d(LOG_TAG, "Failed to delete old key-store file: " + versionZeroFile.getAbsolutePath());
+                Timber.d("Failed to delete old key-store file: %s", versionZeroFile.getAbsolutePath());
             }
         }
     }

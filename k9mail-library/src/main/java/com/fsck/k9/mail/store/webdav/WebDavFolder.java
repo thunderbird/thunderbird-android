@@ -1,7 +1,5 @@
 package com.fsck.k9.mail.store.webdav;
 
-import android.util.Log;
-
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -16,6 +14,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.StringEntity;
+import timber.log.Timber;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -27,7 +26,6 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +34,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_WEBDAV;
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 
 /**
@@ -138,7 +135,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
         headers.put("Brief", "t");
         headers.put("If-Match", "*");
         String action = (isMove ? "BMOVE" : "BCOPY");
-        Log.i(LOG_TAG, "Moving " + messages.size() + " messages to " + destFolder.mFolderUrl);
+        Timber.v("Moving %d messages to %s", messages.size(), destFolder.mFolderUrl);
 
         store.processRequest(mFolderUrl, action, messageBody, headers, false);
     }
@@ -162,7 +159,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
             messageCount = dataset.getMessageCount();
         }
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_WEBDAV) {
-            Log.v(LOG_TAG, "Counted messages and webdav returned: " + messageCount);
+            Timber.v("Counted messages and webdav returned: %d", messageCount);
         }
 
         return messageCount;
@@ -355,16 +352,14 @@ class WebDavFolder extends Folder<WebDavMessage> {
              */
             if (wdMessage.getUrl().equals("")) {
                 wdMessage.setUrl(getMessageUrls(new String[]{wdMessage.getUid()}).get(wdMessage.getUid()));
-                Log.i(LOG_TAG, "Fetching messages with UID = '" + wdMessage.getUid() + "', URL = '"
-                        + wdMessage.getUrl() + "'");
+                Timber.i("Fetching messages with UID = '%s', URL = '%s'", wdMessage.getUid(), wdMessage.getUrl());
                 if (wdMessage.getUrl().equals("")) {
                     throw new MessagingException("Unable to get URL for message");
                 }
             }
 
             try {
-                Log.i(LOG_TAG, "Fetching message with UID = '" + wdMessage.getUid() + "', URL = '"
-                        + wdMessage.getUrl() + "'");
+                Timber.i("Fetching message with UID = '%s', URL = '%s'", wdMessage.getUid(), wdMessage.getUrl());
                 HttpGet httpget = new HttpGet(new URI(wdMessage.getUrl()));
                 HttpResponse response;
                 HttpEntity entity;
@@ -373,7 +368,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                 if (store.getAuthentication() == WebDavConstants.AUTH_TYPE_BASIC) {
                     httpget.setHeader("Authorization", store.getAuthString());
                 }
-                response = httpclient.executeOverride(httpget, store.getContext());
+                response = httpclient.executeOverride(httpget, store.getHttpContext());
 
                 statusCode = response.getStatusLine().getStatusCode();
 
@@ -416,27 +411,25 @@ class WebDavFolder extends Folder<WebDavMessage> {
                         wdMessage.parse(istream);
 
                     } catch (IOException ioe) {
-                        Log.e(LOG_TAG, "IOException: " + ioe.getMessage() + "\nTrace: "
-                                + WebDavUtils.processException(ioe));
+                        Timber.e(ioe, "IOException during message parsing");
                         throw new MessagingException("I/O Error", ioe);
                     } finally {
                         IOUtils.closeQuietly(reader);
                         IOUtils.closeQuietly(istream);
                     }
                 } else {
-                    Log.v(LOG_TAG, "Empty response");
+                    Timber.v("Empty response");
                 }
 
             } catch (IllegalArgumentException iae) {
-                Log.e(LOG_TAG, "IllegalArgumentException caught " + iae + "\nTrace: " + WebDavUtils.processException(iae));
+                Timber.e(iae, "IllegalArgumentException caught");
                 throw new MessagingException("IllegalArgumentException caught", iae);
             } catch (URISyntaxException use) {
-                Log.e(LOG_TAG, "URISyntaxException caught " + use + "\nTrace: " + WebDavUtils.processException(use));
+                Timber.e(use, "URISyntaxException caught");
                 throw new MessagingException("URISyntaxException caught", use);
             } catch (IOException ioe) {
-                Log.e(LOG_TAG, "Non-success response code loading message, response code was " + statusCode
-                        + "\nURL: " + wdMessage.getUrl() + "\nError: " + ioe.getMessage() + "\nTrace: "
-                        + WebDavUtils.processException(ioe));
+                Timber.e(ioe, "Non-success response code loading message, response code was %d, URL: %s",
+                        statusCode, wdMessage.getUrl());
                 throw new MessagingException("Failure code " + statusCode, ioe);
             }
 
@@ -501,7 +494,8 @@ class WebDavFolder extends Folder<WebDavMessage> {
             try {
                 wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
             } catch (NullPointerException e) {
-                Log.v(LOG_TAG, "Under some weird circumstances, setting the read status when syncing from webdav threw an NPE. Skipping.");
+                Timber.v(e, "Under some weird circumstances, " +
+                        "setting the read status when syncing from webdav threw an NPE. Skipping.");
             }
 
         }
@@ -563,7 +557,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                 message.setNewHeaders(envelope);
                 message.setFlagInternal(Flag.SEEN, envelope.getReadStatus());
             } else {
-                Log.e(LOG_TAG, "Asked to get metadata for a non-existent message: " + message.getUid());
+                Timber.e("Asked to get metadata for a non-existent message: %s", message.getUid());
             }
 
             if (listener != null) {
@@ -677,7 +671,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                 }
                 messageURL += encodeUtf8(message.getUid() + ":" + System.currentTimeMillis() + ".eml");
 
-                Log.i(LOG_TAG, "Uploading message as " + messageURL);
+                Timber.i("Uploading message as %s", messageURL);
 
                 store.sendRequest(messageURL, "PUT", bodyEntity, null, true);
 
@@ -702,16 +696,14 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
     @Override
     public String getUidFromMessageId(Message message) throws MessagingException {
-        Log.e(LOG_TAG,
-                "Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "
+        Timber.e("Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "
                         + " being uploaded to the Sent folder");
         return null;
     }
 
     @Override
     public void setFlags(final Set<Flag> flags, boolean value) throws MessagingException {
-        Log.e(LOG_TAG,
-                "Unimplemented method setFlags(Set<Flag>, boolean) breaks markAllMessagesAsRead and EmptyTrash");
+        Timber.e("Unimplemented method setFlags(Set<Flag>, boolean) breaks markAllMessagesAsRead and EmptyTrash");
         // Try to make this efficient by not retrieving all of the messages
     }
 

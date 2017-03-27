@@ -1,17 +1,15 @@
 package com.fsck.k9.mail.store.webdav;
 
-import android.util.Log;
-
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
+import timber.log.Timber;
 
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 
@@ -52,8 +50,7 @@ class WebDavMessage extends MimeMessage {
             end = encodeUtf8(end);
             end = end.replaceAll("\\+", "%20");
         } catch (IllegalArgumentException iae) {
-            Log.e(LOG_TAG, "IllegalArgumentException caught in setUrl: " + iae + "\nTrace: "
-                    + WebDavUtils.processException(iae));
+            Timber.e(iae, "IllegalArgumentException caught in setUrl: ");
         }
 
         for (int i = 0; i < length - 1; i++) {
@@ -101,7 +98,7 @@ class WebDavMessage extends MimeMessage {
     @Override
     public void delete(String trashFolderName) throws MessagingException {
         WebDavFolder wdFolder = (WebDavFolder) getFolder();
-        Log.i(LOG_TAG, "Deleting message by moving to " + trashFolderName);
+        Timber.i("Deleting message by moving to %s", trashFolderName);
         wdFolder.moveMessages(Collections.singletonList(this), wdFolder.getStore().getFolder(trashFolderName));
     }
 

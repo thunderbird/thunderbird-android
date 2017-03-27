@@ -15,6 +15,7 @@ import timber.log.Timber;
 import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.message.html.HtmlSanitizer;
 import com.fsck.k9.mail.Address;
@@ -233,7 +234,8 @@ public class MessageViewInfoExtractor {
             if (t == null) {
                 t = "";
             } else if (viewable instanceof Flowed) {
-                t = FlowedMessageUtils.deflow(t, false);
+                boolean delSp = ((Flowed) viewable).isDelSp();
+                t = FlowedMessageUtils.deflow(t, delSp);
                 t = HtmlConverter.textToHtml(t);
             } else if (viewable instanceof Text) {
                 t = HtmlConverter.textToHtml(t);
@@ -271,7 +273,8 @@ public class MessageViewInfoExtractor {
             } else if (viewable instanceof Html) {
                 t = HtmlConverter.htmlToText(t);
             } else if (viewable instanceof Flowed) {
-                t = FlowedMessageUtils.deflow(t, false);
+                boolean delSp = ((Flowed) viewable).isDelSp();
+                t = FlowedMessageUtils.deflow(t, delSp);
             } else if (!(viewable instanceof Text)) {
                 throw new IllegalStateException("unhandled case!");
             }

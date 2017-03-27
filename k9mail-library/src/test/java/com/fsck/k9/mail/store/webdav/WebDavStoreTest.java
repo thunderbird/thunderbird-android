@@ -44,7 +44,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.mockito.stubbing.OngoingStubbing;
-import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertSame;
 import static org.junit.Assert.assertEquals;

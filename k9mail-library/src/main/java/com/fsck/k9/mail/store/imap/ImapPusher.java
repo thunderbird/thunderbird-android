@@ -4,13 +4,10 @@ package com.fsck.k9.mail.store.imap;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.util.Log;
-
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
-
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import timber.log.Timber;
 
 
 class ImapPusher implements Pusher {
@@ -50,7 +47,7 @@ class ImapPusher implements Pusher {
                 try {
                     folderPusher.refresh();
                 } catch (Exception e) {
-                    Log.e(LOG_TAG, "Got exception while refreshing for " + folderPusher.getName(), e);
+                    Timber.e(e, "Got exception while refreshing for %s", folderPusher.getName());
                 }
             }
         }
@@ -59,19 +56,19 @@ class ImapPusher implements Pusher {
     @Override
     public void stop() {
         if (K9MailLib.isDebug()) {
-            Log.i(LOG_TAG, "Requested stop of IMAP pusher");
+            Timber.i("Requested stop of IMAP pusher");
         }
 
         synchronized (folderPushers) {
             for (ImapFolderPusher folderPusher : folderPushers) {
                 try {
                     if (K9MailLib.isDebug()) {
-                        Log.i(LOG_TAG, "Requesting stop of IMAP folderPusher " + folderPusher.getName());
+                        Timber.i("Requesting stop of IMAP folderPusher %s", folderPusher.getName());
                     }
 
                     folderPusher.stop();
                 } catch (Exception e) {
-                    Log.e(LOG_TAG, "Got exception while stopping " + folderPusher.getName(), e);
+                    Timber.e(e, "Got exception while stopping %s", folderPusher.getName());
                 }
             }
 
