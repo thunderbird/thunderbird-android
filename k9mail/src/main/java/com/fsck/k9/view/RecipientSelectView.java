@@ -1,12 +1,6 @@
 package com.fsck.k9.view;
 
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -22,7 +16,6 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import timber.log.Timber;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -33,7 +26,6 @@ import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.AlternateRecipientAdapter;
 import com.fsck.k9.activity.AlternateRecipientAdapter.AlternateRecipientListener;
@@ -42,7 +34,16 @@ import com.fsck.k9.activity.compose.RecipientLoader;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.tokenautocomplete.TokenCompleteTextView;
+
 import org.apache.james.mime4j.util.CharsetUtil;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.List;
+
+import timber.log.Timber;
 
 
 public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>>,
@@ -81,6 +82,11 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     public RecipientSelectView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initView(context);
+    }
+
+    static private boolean isPlaceholderText(String currentCompletionText) {
+        // TODO string matching here is sort of a hack, but it's somewhat reliable and the info isn't easily available
+        return currentCompletionText.startsWith("+") && currentCompletionText.substring(1).matches("[0-9]+");
     }
 
     private void initView(Context context) {
@@ -391,23 +397,16 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         return !TextUtils.isEmpty(currentCompletionText) && !isPlaceholderText(currentCompletionText);
     }
 
-    static private boolean isPlaceholderText(String currentCompletionText) {
-        // TODO string matching here is sort of a hack, but it's somewhat reliable and the info isn't easily available
-        return currentCompletionText.startsWith("+") && currentCompletionText.substring(1).matches("[0-9]+");
-    }
-
-
     @Override
-    public String getRecipentEmail(Recipient currenRecipient){
-        String name=currenRecipient.getDisplayNameOrAddress();
-        return name;
+    public String getRecipentEmail(Recipient currentRecipient) {
+        final Address address = currentRecipient.address;
+        return address.getAddress();
     }
 
     @Override
     public void setRecipientPopupVisibileFalse(Recipient curreRecipient){
         alternatesPopup.dismiss();
     }
-
 
     @Override
     public void onRecipientRemove(Recipient currentRecipient) {
@@ -504,16 +503,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     public interface TokenListener<T> extends TokenCompleteTextView.TokenListener<T> {
         void onTokenChanged(T token);
-    }
-
-    private class RecipientTokenSpan extends TokenImageSpan {
-        private final View view;
-
-
-        public RecipientTokenSpan(View view, Recipient recipient, int token) {
-            super(view, recipient, token);
-            this.view = view;
-        }
     }
 
     private static class RecipientTokenViewHolder {
@@ -652,6 +641,16 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 String uriString = ois.readUTF();
                 photoThumbnailUri = Uri.parse(uriString);
             }
+        }
+    }
+
+    private class RecipientTokenSpan extends TokenImageSpan {
+        private final View view;
+
+
+        public RecipientTokenSpan(View view, Recipient recipient, int token) {
+            super(view, recipient, token);
+            this.view = view;
         }
     }
 }
