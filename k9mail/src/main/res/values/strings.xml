@@ -1070,8 +1070,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>
     <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>
 
-    <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>
-    <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>
+    <string name="global_settings_background_as_unread_indicator_label">Change shade after reading</string>
+    <string name="global_settings_background_as_unread_indicator_summary">A different background will show that a message has been read</string>
 
     <string name="global_settings_threaded_view_label">Threaded view</string>
     <string name="global_settings_threaded_view_summary">Group messages by conversation</string>
