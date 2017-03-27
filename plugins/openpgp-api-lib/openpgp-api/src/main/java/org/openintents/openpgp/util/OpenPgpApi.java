@@ -230,6 +230,8 @@ public class OpenPgpApi {
     public static final String EXTRA_USER_IDS = "user_ids";
     public static final String EXTRA_KEY_IDS = "key_ids";
     public static final String EXTRA_SIGN_KEY_ID = "sign_key_id";
+    public static final String EXTRA_DRY_RUN = "dry_run";
+    public static final String RESULT_KEYS_CONFIRMED = "keys_confirmed";
     // optional extras:
     public static final String EXTRA_PASSPHRASE = "passphrase";
     public static final String EXTRA_ORIGINAL_FILENAME = "original_filename";
