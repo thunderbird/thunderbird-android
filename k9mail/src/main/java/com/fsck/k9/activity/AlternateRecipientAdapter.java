@@ -1,8 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PorterDuff.Mode;
@@ -16,17 +14,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.RecipientAdapter;
+import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.ThemeUtils;
 
-import static com.fsck.k9.Globals.getContext;
+import java.util.List;
 
 
 public class AlternateRecipientAdapter extends BaseAdapter {
@@ -134,14 +134,13 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         RecipientAdapter.setContactPhotoOrPlaceholder(context, holder.headerPhoto, recipient);
         holder.headerPhoto.assignContactUri(recipient.getContactLookupUri());
 
-        holder.headerName.setOnClickListener(new OnClickListener() {
+        holder.copyButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String recipentEmail = listener.getRecipentEmail(currentRecipient);
-                copy_to_ClipBoard(getContext(),recipentEmail);
-                Toast toast = Toast.makeText(context, "Address Copied to Clip Board", Toast.LENGTH_LONG);
-                toast.show();
+                copy_to_ClipBoard(context, recipentEmail);
+                Toast.makeText(context, R.string.address_copied, Toast.LENGTH_LONG).show();
                 listener.setRecipientPopupVisibileFalse(currentRecipient);
 
             }
@@ -156,7 +155,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
     }
 
     public void copy_to_ClipBoard(Context context,String address){
-        com.fsck.k9.helper.ClipboardManager clipboardManager = com.fsck.k9.helper.ClipboardManager.getInstance(context);
+        ClipboardManager clipboardManager = ClipboardManager.getInstance(context);
         clipboardManager.setText(address,address);
 
     }
@@ -226,9 +225,20 @@ public class AlternateRecipientAdapter extends BaseAdapter {
     }
 
 
+    public interface AlternateRecipientListener {
+        void onRecipientRemove(Recipient currentRecipient);
+
+        void onRecipientChange(Recipient currentRecipient, Recipient alternateRecipient);
+
+        String getRecipentEmail(Recipient currentRecipent);
+
+        void setRecipientPopupVisibileFalse(Recipient currentRecipient);
+    }
+
     private static class RecipientTokenHolder {
         public final View layoutHeader, layoutItem;
         public final TextView headerName;
+        public final Button copyButton;
         public final TextView headerAddressLabel;
         public final ContactBadge headerPhoto;
         public final View headerRemove;
@@ -243,6 +253,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             layoutItem = view.findViewById(R.id.alternate_container_item);
 
             headerName = (TextView) view.findViewById(R.id.alternate_header_name);
+            copyButton = (Button) view.findViewById(R.id.copy_button);
             headerAddressLabel = (TextView) view.findViewById(R.id.alternate_header_label);
             headerPhoto = (ContactBadge) view.findViewById(R.id.alternate_contact_photo);
             headerRemove = view.findViewById(R.id.alternate_remove);
@@ -257,12 +268,5 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             layoutHeader.setVisibility(isHeader ? View.VISIBLE : View.GONE);
             layoutItem.setVisibility(isHeader ? View.GONE : View.VISIBLE);
         }
-    }
-
-    public interface AlternateRecipientListener {
-        void onRecipientRemove(Recipient currentRecipient);
-        void onRecipientChange(Recipient currentRecipient, Recipient alternateRecipient);
-        String getRecipentEmail(Recipient currentRecipent);
-        void setRecipientPopupVisibileFalse(Recipient currentRecipient);
     }
 }
