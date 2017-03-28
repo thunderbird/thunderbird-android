@@ -17,7 +17,7 @@ import timber.log.Timber;
 public abstract class Message implements Part, Body {
 
     public enum RecipientType {
-        TO, CC, BCC,
+        TO, CC, BCC, X_ORIGINAL_TO, DELIVERED_TO, X_ENVELOPE_TO
     }
 
     protected String mUid;
