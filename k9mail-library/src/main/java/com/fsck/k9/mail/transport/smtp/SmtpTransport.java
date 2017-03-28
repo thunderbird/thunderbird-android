@@ -771,18 +771,13 @@ public class SmtpTransport extends Transport {
             try {
                 responseLineToCommandResponse(responseLine, results);
 
-            } catch (NegativeSmtpReplyException exception) {
+            } catch (MessagingException exception) {
                 if (noOfPipelinedResponse == 0) {
                     throw exception;
                 }
+                Timber.d("SMTP <<< " + exception.getMessage());
                 //continue reading response till DATA response .
-                Timber.d("SMTP <<< " + exception.getReplyCode() + exception.getReplyText());
-
-            } catch (MessagingException exception) {
-                //continue reading response till DATA response .
-
             }
-
         }
 
     }
