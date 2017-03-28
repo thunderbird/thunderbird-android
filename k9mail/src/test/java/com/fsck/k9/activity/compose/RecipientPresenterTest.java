@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.ParcelFileDescriptor;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.CryptoDefaultMode;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
@@ -60,17 +61,20 @@ public class RecipientPresenterTest {
     private Account account;
     private RecipientMvpView recipientMvpView;
     private RecipientPresenter.RecipientsChangedListener listener;
+    private Context context;
+    private LoaderManager loaderManager;
 
 
     @Before
     public void setUp() throws Exception {
-        Context context = ShadowApplication.getInstance().getApplicationContext();
+        context = ShadowApplication.getInstance().getApplicationContext();
 
         recipientMvpView = mock(RecipientMvpView.class);
         account = mock(Account.class);
+        when(account.getCryptoDefaultMode()).thenReturn(CryptoDefaultMode.DEFAULT);
         composePgpInlineDecider = mock(ComposePgpInlineDecider.class);
         replyToParser = mock(ReplyToParser.class);
-        LoaderManager loaderManager = mock(LoaderManager.class);
+        loaderManager = mock(LoaderManager.class);
         listener = mock(RecipientPresenter.RecipientsChangedListener.class);
 
         recipientPresenter = new RecipientPresenter(
@@ -131,6 +135,19 @@ public class RecipientPresenterTest {
         assertEquals(CryptoStatusDisplayType.OPPORTUNISTIC_EMPTY, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.shouldUsePgpMessageBuilder());
+    }
+
+    @Test
+    public void getCurrentCryptoStatus_withAccountDefaultDisabled() throws Exception {
+        when(account.getCryptoDefaultMode()).thenReturn(CryptoDefaultMode.DISABLE);
+        recipientPresenter = new RecipientPresenter(
+                context, loaderManager, recipientMvpView, account, composePgpInlineDecider, replyToParser, listener);
+        setupCryptoProvider();
+
+        ComposeCryptoStatus status = recipientPresenter.getCurrentCryptoStatus();
+        assertEquals(CryptoStatusDisplayType.DISABLED, status.getCryptoStatusDisplayType());
+        assertTrue(status.isProviderStateOk());
+        assertFalse(status.shouldUsePgpMessageBuilder());
     }
 
     @Test

@@ -220,6 +220,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean mStripSignature;
     private boolean mSyncRemoteDeletions;
     private long mCryptoKey;
+    private CryptoDefaultMode mCryptoDefaultMode;
     private boolean mMarkMessageAsReadOnView;
     private boolean mAlwaysShowCcBcc;
     private boolean mAllowRemoteSearch;
@@ -239,6 +240,7 @@ public class Account implements BaseAccount, StoreConfig {
      * <p>
      * Right now newly imported accounts are disabled if the settings file didn't contain a
      * password for the incoming and/or outgoing server.
+     *
      * </p>
      */
     private boolean mEnabled;
@@ -269,6 +271,10 @@ public class Account implements BaseAccount, StoreConfig {
 
     public enum QuoteStyle {
         PREFIX, HEADER
+    }
+
+    public enum CryptoDefaultMode {
+        DEFAULT, DISABLE
     }
 
     public enum MessageFormat {
@@ -315,6 +321,7 @@ public class Account implements BaseAccount, StoreConfig {
         mStripSignature = DEFAULT_STRIP_SIGNATURE;
         mSyncRemoteDeletions = true;
         mCryptoKey = NO_OPENPGP_KEY;
+        mCryptoDefaultMode = CryptoDefaultMode.DEFAULT;
         mAllowRemoteSearch = false;
         mRemoteSearchFullText = false;
         mRemoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
@@ -463,6 +470,7 @@ public class Account implements BaseAccount, StoreConfig {
         identities = loadIdentities(storage);
 
         mCryptoKey = storage.getLong(mUuid + ".cryptoKey", NO_OPENPGP_KEY);
+        mCryptoDefaultMode = getEnumStringPref(storage, mUuid + ".cryptoDefaultMode", CryptoDefaultMode.DEFAULT);
         mAllowRemoteSearch = storage.getBoolean(mUuid + ".allowRemoteSearch", false);
         mRemoteSearchFullText = storage.getBoolean(mUuid + ".remoteSearchFullText", false);
         mRemoteSearchNumResults = storage.getInt(mUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
@@ -729,6 +737,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(mUuid + ".replyAfterQuote", mReplyAfterQuote);
         editor.putBoolean(mUuid + ".stripSignature", mStripSignature);
         editor.putLong(mUuid + ".cryptoKey", mCryptoKey);
+        editor.putString(mUuid + ".cryptoDefaultMode", mCryptoDefaultMode.name());
         editor.putBoolean(mUuid + ".allowRemoteSearch", mAllowRemoteSearch);
         editor.putBoolean(mUuid + ".remoteSearchFullText", mRemoteSearchFullText);
         editor.putInt(mUuid + ".remoteSearchNumResults", mRemoteSearchNumResults);
@@ -1597,6 +1606,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setCryptoKey(long keyId) {
         mCryptoKey = keyId;
+    }
+
+    public CryptoDefaultMode getCryptoDefaultMode() {
+        return mCryptoDefaultMode;
+    }
+
+    public void setCryptoDefaultMode(CryptoDefaultMode cryptoDefaultDisabled) {
+        mCryptoDefaultMode = cryptoDefaultDisabled;
     }
 
     public boolean allowRemoteSearch() {
