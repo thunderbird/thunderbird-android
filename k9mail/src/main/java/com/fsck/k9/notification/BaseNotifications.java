@@ -12,6 +12,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.R;
 
+
 abstract class BaseNotifications {
     protected final Context context;
     protected final NotificationController controller;
