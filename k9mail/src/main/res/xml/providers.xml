@@ -281,16 +281,16 @@
         <outgoing uri="smtp+ssl+://smtp.virginmedia.com" username="$email" />
     </provider>
     <provider id="virgin.net" label="Virgin Media" domain="virgin.net">
-        <incoming uri="imap+ssl+://imap4.virgin.net" username="$email" />
-        <outgoing uri="smtp+ssl+://smtp.virgin.net" username="$email" />
+        <incoming uri="imap+ssl+://imap.virginmedia.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.virginmedia.com" username="$email" />
     </provider>
     <provider id="blueyonder.co.uk" label="Virgin Media" domain="blueyonder.co.uk">
-        <incoming uri="imap+ssl+://imap4.blueyonder.co.uk" username="$email" />
-        <outgoing uri="smtp+ssl+://smtp.blueyonder.co.uk" username="$email" />
+        <incoming uri="imap+ssl+://imap.virginmedia.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.virginmedia.com" username="$email" />
     </provider>
     <provider id="ntlworld.com" label="Virgin Media" domain="ntlworld.com">
-        <incoming uri="imap+ssl+://imap.ntlworld.com" username="$email" />
-        <outgoing uri="smtp+ssl+://smtp.ntlworld.com" username="$email" />
+        <incoming uri="imap+ssl+://imap.virginmedia.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.virginmedia.com" username="$email" />
     </provider>
     
     <!-- Germany -->
