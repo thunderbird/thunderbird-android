@@ -1,5 +1,6 @@
 package com.fsck.k9.activity;
 
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import timber.log.Timber;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -95,8 +97,6 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
-
-import timber.log.Timber;
 
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
@@ -721,7 +721,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         currentMessageBuilder = createMessageBuilder(true);
         if (currentMessageBuilder != null) {
             setProgressBarIndeterminateVisibility(true);
-            currentMessageBuilder.setHighPriority(isHighPriority);
             currentMessageBuilder.buildAsync(this);
         }
     }
@@ -747,6 +746,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             openAutoExpandFolder();
         } else {
             finish();
+        }
+    }
+
+    private void onHighPriority(MenuItem item) {
+        if (isHighPriority) {
+            item.setTitle(getString(R.string.priority_urgent));
+            this.isHighPriority = false;
+            setTitle(getTitle().toString().split(",")[0]);
+        } else {
+            item.setTitle(getString(R.string.priority_normal));
+            this.isHighPriority = true;
+            setTitle(getTitle()+","+getString(R.string.priority_urgent));
         }
     }
 
@@ -969,15 +980,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 onReadReceipt();
                 break;
             case R.id.is_urgent:
-                if (!isHighPriority) {
-                    item.setTitle("Normal");
-                    this.isHighPriority = true;
-                    setTitle(getTitle() + ":U");
-                } else {
-                    item.setTitle("Urgent");
-                    this.isHighPriority = false;
-                    setTitle(getTitle().toString().split(":")[0]);
-                }
+                onHighPriority(item);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

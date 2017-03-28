@@ -10,7 +10,6 @@ import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -103,13 +102,7 @@ public class NotificationController {
     }
 
     public void addNewMailNotification(Account account, LocalMessage message, int previousUnreadMessageCount) {
-        boolean hasHighPriority = false;
-
-        for (String iter : message.getHeader("X-Priority")) {
-            if (iter.contains(context.getString(R.string.x_priority)))
-                hasHighPriority = true;
-        }
-        newMailNotifications.addNewMailNotification(account, message, previousUnreadMessageCount, hasHighPriority);
+        newMailNotifications.addNewMailNotification(account, message, previousUnreadMessageCount);
     }
 
     public void removeNewMailNotification(Account account, MessageReference messageReference) {

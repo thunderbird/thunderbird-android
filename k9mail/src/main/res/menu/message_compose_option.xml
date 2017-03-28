@@ -22,7 +22,7 @@
     <item
         android:id="@+id/is_urgent"
         android:alphabeticShortcut="a"
-        android:title="@string/is_high_priority"
+        android:title="@string/priority_urgent"
         />
     <item
         android:id="@+id/save"
