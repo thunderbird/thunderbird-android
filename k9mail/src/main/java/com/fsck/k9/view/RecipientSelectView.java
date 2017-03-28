@@ -398,28 +398,15 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     @Override
-    public String getRecipentEmail(Recipient currentRecipient) {
-        final Address address = currentRecipient.address;
-        return address.getAddress();
-    }
-
-    @Override
-    public void setRecipientPopupVisibileFalse(Recipient curreRecipient){
-        alternatesPopup.dismiss();
-    }
-
-
-    @Override
-    public String getRecipentEmail(Recipient currenRecipient){
-        String name=currenRecipient.getDisplayNameOrAddress();
+    public String getRecipentEmail(Recipient currenRecipient) {
+        String name = currenRecipient.getDisplayNameOrAddress();
         return name;
     }
 
     @Override
-    public void setRecipientPopupVisibileFalse(Recipient curreRecipient){
+    public void setRecipientPopupVisibileFalse(Recipient curreRecipient) {
         alternatesPopup.dismiss();
     }
-
 
     @Override
     public void onRecipientRemove(Recipient currentRecipient) {
