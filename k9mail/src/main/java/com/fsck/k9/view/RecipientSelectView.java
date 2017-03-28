@@ -408,6 +408,19 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         alternatesPopup.dismiss();
     }
 
+
+    @Override
+    public String getRecipentEmail(Recipient currenRecipient){
+        String name=currenRecipient.getDisplayNameOrAddress();
+        return name;
+    }
+
+    @Override
+    public void setRecipientPopupVisibileFalse(Recipient curreRecipient){
+        alternatesPopup.dismiss();
+    }
+
+
     @Override
     public void onRecipientRemove(Recipient currentRecipient) {
         alternatesPopup.dismiss();
