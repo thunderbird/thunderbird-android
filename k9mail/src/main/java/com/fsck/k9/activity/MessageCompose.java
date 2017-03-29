@@ -756,7 +756,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             this.isUrgent = false;
         } else {
             item.setTitle(getString(R.string.priority_normal));
-            setTitle(String.format("%s,%s",getTitle(),getString(R.string.priority_urgent)));
+            setTitle(String.format("%s,%s", getTitle(), getString(R.string.priority_urgent)));
             this.isUrgent = true;
         }
     }
