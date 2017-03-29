@@ -1,5 +1,6 @@
 package com.fsck.k9.notification;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
