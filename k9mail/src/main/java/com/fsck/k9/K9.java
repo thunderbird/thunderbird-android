@@ -100,7 +100,7 @@ public class K9 extends Application {
      * This will be {@code true} once the initialization is complete and {@link #notifyObservers()}
      * was called.
      * Afterwards calls to {@link #registerApplicationAware(com.fsck.k9.K9.ApplicationAware)} will
-     * immediately call {@link com.fsck.k9.K9.ApplicationAware#initializeComponent(K9)} for the
+     * immediately call {@link com.fsck.k9.K9.ApplicationAware#initializeComponent(Application)} for the
      * supplied argument.
      */
     private static boolean sInitialized = false;
