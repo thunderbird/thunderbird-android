@@ -81,6 +81,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     private CryptoMode currentCryptoMode = CryptoMode.OPPORTUNISTIC;
     private boolean cryptoEnablePgpInline = false;
 
+    private Address defaultBccAddress = null;
 
     public RecipientPresenter(Context context, LoaderManager loaderManager, RecipientMvpView recipientMvpView,
             Account account, ComposePgpInlineDecider composePgpInlineDecider, ReplyToParser replyToParser,
@@ -234,14 +235,20 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     public void addBccAddresses(Address... bccRecipients) {
         if (bccRecipients.length > 0) {
-            addRecipientsFromAddresses(RecipientType.BCC, bccRecipients);
             String bccAddress = account.getAlwaysBcc();
 
             // If the auto-bcc is the only entry in the BCC list, don't show the Bcc fields.
             boolean alreadyVisible = recipientMvpView.isBccVisible();
             boolean singleBccRecipientFromAccount =
                     bccRecipients.length == 1 && bccRecipients[0].toString().equals(bccAddress);
-            recipientMvpView.setBccVisibility(alreadyVisible || !singleBccRecipientFromAccount);
+            boolean showBcc = alreadyVisible || !singleBccRecipientFromAccount;
+            if ( showBcc ) {
+                addRecipientsFromAddresses(RecipientType.BCC, bccRecipients);
+            }
+            else {
+                defaultBccAddress = bccRecipients[0];
+            }
+            recipientMvpView.setBccVisibility(showBcc);
             updateRecipientExpanderVisibility();
         }
     }
@@ -318,6 +325,9 @@ public class RecipientPresenter implements PermissionPingCallback {
     void onClickRecipientExpander() {
         recipientMvpView.setCcVisibility(true);
         recipientMvpView.setBccVisibility(true);
+        if ( defaultBccAddress != null ) {
+            addBccAddresses(defaultBccAddress);
+        }
         updateRecipientExpanderVisibility();
     }
 
