@@ -42,7 +42,7 @@ public abstract class MessageBuilder {
     private final Context context;
     private final MessageIdGenerator messageIdGenerator;
     private final BoundaryGenerator boundaryGenerator;
-    private final String priorityHeader = "X-Priority";
+    private final String urgentHeader = "X-Priority";
 
 
     private String subject;
@@ -70,7 +70,7 @@ public abstract class MessageBuilder {
     private int cursorPosition;
     private MessageReference messageReference;
     private boolean isDraft;
-    private boolean isHighPriority;
+    private boolean isUrgent;
     private boolean isPgpInlineEnabled;
 
     protected MessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
@@ -113,8 +113,8 @@ public abstract class MessageBuilder {
             message.setHeader("User-Agent", context.getString(R.string.message_header_mua));
         }
 
-        if (isHighPriority) {
-            message.setHeader(priorityHeader, context.getString(R.string.x_priority));
+        if (isUrgent) {
+            message.setHeader(urgentHeader, context.getString(R.string.x_priority));
         }
         final String replyTo = identity.getReplyTo();
         if (replyTo != null) {
@@ -607,8 +607,8 @@ public abstract class MessageBuilder {
         }
     }
 
-    public void setHighPriority(boolean highPriority) {
-        isHighPriority = highPriority;
+    public void setUrgent(boolean urgent) {
+        isUrgent = urgent;
     }
 
     public interface Callback {

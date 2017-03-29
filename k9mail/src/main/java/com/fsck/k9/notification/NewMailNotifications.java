@@ -59,8 +59,8 @@ class NewMailNotifications {
                 int notificationId = result.getNotificationId();
                 cancelNotification(notificationId);
             }
-            if (message.isHighPriority()) {
-                createHighPriorityNotification(account, notificationData);
+            if (message.isUrgent()) {
+                createUrgentNotification(account, notificationData);
             } else {
                 createStackedNotification(account, result.getNotificationHolder());
                 createSummaryNotification(account, notificationData, false);
@@ -158,7 +158,7 @@ class NewMailNotifications {
         getNotificationManager().notify(notificationId, notification);
     }
 
-    private void createHighPriorityNotification(Account account, NotificationData notificationData) {
+    private void createUrgentNotification(Account account, NotificationData notificationData) {
         Notification notification = deviceNotifications.buildUrgentNotification(account, notificationData);
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         getNotificationManager().notify(notificationId, notification);

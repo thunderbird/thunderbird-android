@@ -194,7 +194,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private Action action;
 
     private boolean requestReadReceipt = false;
-    private boolean isHighPriority = false;
+    private boolean isUrgent = false;
 
     private TextView chooseIdentityButton;
     private EditText subjectView;
@@ -729,7 +729,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
             changesMadeSinceLastSave = false;
-            currentMessageBuilder.setHighPriority(isHighPriority);
+            currentMessageBuilder.setUrgent(isUrgent);
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
         }
@@ -749,15 +749,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private void onHighPriority(MenuItem item) {
-        if (isHighPriority) {
+    private void onUrgent(MenuItem item) {
+        if (isUrgent) {
             item.setTitle(getString(R.string.priority_urgent));
-            this.isHighPriority = false;
-            setTitle(getTitle().toString().split(",")[0]);
+            setTitle(getString(R.string.compose_title_compose));
+            this.isUrgent = false;
         } else {
             item.setTitle(getString(R.string.priority_normal));
-            this.isHighPriority = true;
-            setTitle(getTitle()+","+getString(R.string.priority_urgent));
+            setTitle(String.format("%s,%s",getTitle(),getString(R.string.priority_urgent)));
+            this.isUrgent = true;
         }
     }
 
@@ -980,7 +980,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 onReadReceipt();
                 break;
             case R.id.is_urgent:
-                onHighPriority(item);
+                onUrgent(item);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
