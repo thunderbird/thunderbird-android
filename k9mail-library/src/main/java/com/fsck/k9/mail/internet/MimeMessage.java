@@ -60,8 +60,8 @@ public class MimeMessage extends Message {
     protected int mSize;
     private String serverExtra;
 
-    private static final String highPriorityTag = "X-Priority";
-    private static final String xPriorityContent = "priority_high";
+    private static final String HIGH_PRIORITY_TAG = "X-Priority";
+    private static final String X_PRIORITY_CONTENT = "priority_high";
 
 
     public static MimeMessage parseMimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
@@ -474,10 +474,7 @@ public class MimeMessage extends Message {
     }
 
     public boolean isHighPriority() {
-        if (getFirstHeader(highPriorityTag)!=null && getFirstHeader(highPriorityTag).equals(xPriorityContent)) {
-            return true;
-        }
-        return false;
+        return X_PRIORITY_CONTENT.equals(getFirstHeader(HIGH_PRIORITY_TAG));
     }
 
     private class MimeMessageBuilder implements ContentHandler {

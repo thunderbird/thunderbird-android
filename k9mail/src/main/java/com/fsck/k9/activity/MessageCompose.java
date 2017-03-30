@@ -756,7 +756,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             this.isHighPriority = false;
         } else {
             item.setTitle(getString(R.string.priority_normal));
-            setTitle(String.format("%s,%s", getString(R.string.compose_title_compose), getString(R.string.priority_high)));
+            setTitle(getString(R.string.compose_title_compose)+","+getString(R.string.priority_high));
             this.isHighPriority = true;
         }
     }
