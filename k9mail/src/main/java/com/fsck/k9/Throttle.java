@@ -29,50 +29,31 @@ import timber.log.Timber;
  * This class used to "throttle" a flow of events.
  *
  * When {@link #onEvent()} is called, it calls the callback in a certain timeout later.
- * Initially {@link #mMinTimeout} is used as the timeout, but if it gets multiple {@link #onEvent}
- * calls in a certain amount of time, it extends the timeout, until it reaches {@link #mMaxTimeout}.
+ * Initially {@link #minTimeout} is used as the timeout, but if it gets multiple {@link #onEvent}
+ * calls in a certain amount of time, it extends the timeout, until it reaches {@link #maxTimeout}.
  *
  * This class is primarily used to throttle content changed events.
  */
 public class Throttle {
-    public static final boolean DEBUG = false; // Don't submit with true
-
-    public static final int DEFAULT_MIN_TIMEOUT = 150;
-    public static final int DEFAULT_MAX_TIMEOUT = 2500;
-    /* package */ static final int TIMEOUT_EXTEND_INTERVAL = 500;
+    private static final int TIMEOUT_EXTEND_INTERVAL = 500;
 
     private static Timer TIMER = new Timer();
 
-    private final Clock mClock;
-    private final Timer mTimer;
+    private final Clock clock;
+    private final Timer timer;
 
-    /** Name of the instance.  Only for logging. */
-    private final String mName;
+    private final String name;
+    private final Handler handler;
+    private final Runnable callback;
 
-    /** Handler for UI thread. */
-    private final Handler mHandler;
-
-    /** Callback to be called */
-    private final Runnable mCallback;
-
-    /** Minimum (default) timeout, in milliseconds.  */
-    private final int mMinTimeout;
-
-    /** Max timeout, in milliseconds.  */
-    private final int mMaxTimeout;
-
-    /** Current timeout, in milliseconds. */
-    private int mTimeout;
+    private final int minTimeout;
+    private final int maxTimeout;
+    private int currentTimeout;
 
     /** When {@link #onEvent()} was last called. */
-    private long mLastEventTime;
+    private long lastEventTime;
 
-    private MyTimerTask mRunningTimerTask;
-
-    /** Constructor with default timeout */
-    public Throttle(String name, Runnable callback, Handler handler) {
-        this(name, callback, handler, DEFAULT_MIN_TIMEOUT, DEFAULT_MAX_TIMEOUT);
-    }
+    private MyTimerTask runningTimerTask;
 
     /** Constructor that takes custom timeout */
     public Throttle(String name, Runnable callback, Handler handler,int minTimeout,
@@ -81,64 +62,60 @@ public class Throttle {
     }
 
     /** Constructor for tests */
-    /* package */ Throttle(String name, Runnable callback, Handler handler,int minTimeout,
+    private Throttle(String name, Runnable callback, Handler handler, int minTimeout,
             int maxTimeout, Clock clock, Timer timer) {
         if (maxTimeout < minTimeout) {
             throw new IllegalArgumentException();
         }
-        mName = name;
-        mCallback = callback;
-        mClock = clock;
-        mTimer = timer;
-        mHandler = handler;
-        mMinTimeout = minTimeout;
-        mMaxTimeout = maxTimeout;
-        mTimeout = mMinTimeout;
-    }
-
-    private void debugLog(String message) {
-        Timber.d("Throttle: [%s] %s", mName, message);
+        this.name = name;
+        this.callback = callback;
+        this.clock = clock;
+        this.timer = timer;
+        this.handler = handler;
+        this.minTimeout = minTimeout;
+        this.maxTimeout = maxTimeout;
+        currentTimeout = this.minTimeout;
     }
 
     private boolean isCallbackScheduled() {
-        return mRunningTimerTask != null;
+        return runningTimerTask != null;
     }
 
     public void cancelScheduledCallback() {
-        if (mRunningTimerTask != null) {
-            if (DEBUG) debugLog("Canceling scheduled callback");
-            mRunningTimerTask.cancel();
-            mRunningTimerTask = null;
+        if (runningTimerTask != null) {
+            Timber.d("Throttle: [%s] %s", name, "Canceling scheduled callback");
+            runningTimerTask.cancel();
+            runningTimerTask = null;
         }
     }
 
-    /* package */ void updateTimeout() {
-        final long now = mClock.getTime();
-        if ((now - mLastEventTime) <= TIMEOUT_EXTEND_INTERVAL) {
-            mTimeout *= 2;
-            if (mTimeout >= mMaxTimeout) {
-                mTimeout = mMaxTimeout;
+    private void updateTimeout() {
+        final long now = clock.getTime();
+        if ((now - lastEventTime) <= TIMEOUT_EXTEND_INTERVAL) {
+            currentTimeout *= 2;
+            if (currentTimeout >= maxTimeout) {
+                currentTimeout = maxTimeout;
             }
-            if (DEBUG) debugLog("Timeout extended " + mTimeout);
+            Timber.d("Throttle: [%s] %s", name, "Timeout extended " + currentTimeout);
         } else {
-            mTimeout = mMinTimeout;
-            if (DEBUG) debugLog("Timeout reset to " + mTimeout);
+            currentTimeout = minTimeout;
+            Timber.d("Throttle: [%s] %s", name, "Timeout reset to " + currentTimeout);
         }
 
-        mLastEventTime = now;
+        lastEventTime = now;
     }
 
     public void onEvent() {
-        if (DEBUG) debugLog("onEvent");
+        Timber.d("Throttle: [%s] %s", name, "onEvent");
 
         updateTimeout();
 
         if (isCallbackScheduled()) {
-            if (DEBUG) debugLog("    callback already scheduled");
+            Timber.d("Throttle: [%s] %s", name, "    callback already scheduled");
         } else {
-            if (DEBUG) debugLog("    scheduling callback");
-            mRunningTimerTask = new MyTimerTask();
-            mTimer.schedule(mRunningTimerTask, mTimeout);
+            Timber.d("Throttle: [%s] %s", name, "    scheduling callback");
+            runningTimerTask = new MyTimerTask();
+            timer.schedule(runningTimerTask, currentTimeout);
         }
     }
 
@@ -150,7 +127,7 @@ public class Throttle {
 
         @Override
         public void run() {
-            mHandler.post(new HandlerRunnable());
+            handler.post(new HandlerRunnable());
         }
 
         @Override
@@ -162,20 +139,12 @@ public class Throttle {
         private class HandlerRunnable implements Runnable {
             @Override
             public void run() {
-                mRunningTimerTask = null;
+                runningTimerTask = null;
                 if (!mCanceled) { // This check has to be done on the UI thread.
-                    if (DEBUG) debugLog("Kicking callback");
-                    mCallback.run();
+                    Timber.d("Throttle: [%s] %s", name, "Kicking callback");
+                    callback.run();
                 }
             }
         }
-    }
-
-    /* package */ int getTimeoutForTest() {
-        return mTimeout;
-    }
-
-    /* package */ long getLastEventTimeForTest() {
-        return mLastEventTime;
     }
 }

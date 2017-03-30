@@ -4,97 +4,83 @@ package com.fsck.k9;
  * Describes how a notification should behave.
  */
 public class NotificationSetting {
+    private boolean ringEnabled;
+    private String ringtoneUri;
 
-    /**
-     * Ring notification kill switch. Allow disabling ringtones without losing
-     * ringtone selection.
-     */
-    private boolean mRing;
+    private boolean ledEnabled;
+    private int ledColor;
 
-    private String mRingtoneUri;
+    private boolean vibrateEnabled;
 
-    /**
-     * LED kill switch.
-     */
-    private boolean mLed;
-
-    private int mLedColor;
-
-    /**
-     * Vibration kill switch.
-     */
-    private boolean mVibrate;
-
-    private int mVibratePattern;
-
-    private int mVibrateTimes;
+    private int vibratePattern;
+    private int vibrateTimes;
 
     /**
      * Set the ringtone kill switch. Allow to disable ringtone without losing
      * ringtone selection.
      *
-     * @param ring
+     * @param ringEnabled
      *            <code>true</code> to allow ringtones, <code>false</code>
      *            otherwise.
      */
-    public synchronized void setRing(boolean ring) {
-        mRing = ring;
+    public synchronized void setRingEnabled(boolean ringEnabled) {
+        this.ringEnabled = ringEnabled;
     }
 
     /**
      * @return <code>true</code> if ringtone is allowed to play,
      *         <code>false</code> otherwise.
      */
-    public synchronized boolean shouldRing() {
-        return mRing;
+    public synchronized boolean isRingEnabled() {
+        return ringEnabled;
     }
 
     public synchronized String getRingtone() {
-        return mRingtoneUri;
+        return ringtoneUri;
     }
 
     public synchronized void setRingtone(String ringtoneUri) {
-        mRingtoneUri = ringtoneUri;
+        this.ringtoneUri = ringtoneUri;
     }
 
-    public synchronized boolean isLed() {
-        return mLed;
+    public synchronized boolean isLedEnabled() {
+        return ledEnabled;
     }
 
     public synchronized void setLed(final boolean led) {
-        mLed = led;
+        ledEnabled = led;
     }
 
     public synchronized int getLedColor() {
-        return mLedColor;
+        return ledColor;
     }
 
     public synchronized void setLedColor(int color) {
-        mLedColor = color;
+        ledColor = color;
     }
 
-    public synchronized boolean shouldVibrate() {
-        return mVibrate;
+    public synchronized boolean isVibrateEnabled() {
+        return vibrateEnabled;
     }
 
     public synchronized void setVibrate(boolean vibrate) {
-        mVibrate = vibrate;
+        vibrateEnabled = vibrate;
     }
 
     public synchronized int getVibratePattern() {
-        return mVibratePattern;
+        return vibratePattern;
     }
 
     public synchronized int getVibrateTimes() {
-        return mVibrateTimes;
+        return vibrateTimes;
     }
 
     public synchronized void setVibratePattern(int pattern) {
-        mVibratePattern = pattern;
+        vibratePattern = pattern;
     }
 
     public synchronized void setVibrateTimes(int times) {
-        mVibrateTimes = times;
+        vibrateTimes = times;
     }
 
 
@@ -108,7 +94,7 @@ public class NotificationSetting {
      */
 
     public long[] getVibration() {
-        return getVibration(mVibratePattern, mVibrateTimes);
+        return getVibration(vibratePattern, vibrateTimes);
     }
 
     public static long[] getVibration(int pattern, int times) {
@@ -148,7 +134,5 @@ public class NotificationSetting {
         repeatedPattern[0] = 0;
         return repeatedPattern;
     }
-
-
 
 }

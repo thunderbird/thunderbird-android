@@ -13,9 +13,6 @@ import com.fsck.k9.preferences.StorageEditor;
  * list, message list and in the message view.
  */
 public class FontSizes {
-    /*
-     * Keys for the preference storage.
-     */
     private static final String ACCOUNT_NAME = "fontSizeAccountName";
     private static final String ACCOUNT_DESCRIPTION = "fontSizeAccountDescription";
     private static final String FOLDER_NAME = "fontSizeFolderName";
@@ -34,9 +31,6 @@ public class FontSizes {
     private static final String MESSAGE_VIEW_CONTENT_PERCENT = "fontSizeMessageViewContentPercent";
     private static final String MESSAGE_COMPOSE_INPUT = "fontSizeMessageComposeInput";
 
-    /*
-     * Values for the font sizes in SP (Scale-independent Pixels)
-     */
     public static final int FONT_DEFAULT = -1;   // Don't force-reset the size of this setting
     public static final int FONT_10SP = 10;
     public static final int FONT_12SP = 12;
@@ -47,90 +41,25 @@ public class FontSizes {
     public static final int LARGE = 22;         // ?android:attr/textAppearanceLarge
 
 
-    /**
-     * Font size of account names in the account list activity.
-     */
     private int accountName;
-
-    /**
-     * Font size of account descriptions in the account list activity.
-     */
     private int accountDescription;
-
-    /**
-     * Font size of folder names in the folder list activity.
-     */
     private int folderName;
-
-    /**
-     * Font size of the folder status in the folder list activity.
-     */
     private int folderStatus;
 
-    /**
-     * Font size of message subjects in the message list activity.
-     */
     private int messageListSubject;
-
-    /**
-     * Font size of message senders in the message list activity.
-     */
     private int messageListSender;
-
-    /**
-     * Font size of message dates in the message list activity.
-     */
     private int messageListDate;
-
-    /**
-     * Font size of message preview in the message list activity.
-     */
     private int messageListPreview;
-
-    /**
-     * Font size of the message sender in the message view activity.
-     */
     private int messageViewSender;
-
-    /**
-     * Font size of the message receiver(s) (To) in the message view activity.
-     */
     private int messageViewTo;
-
-    /**
-     * Font size of the message receiver(s) (CC) in the message view activity.
-     */
     private int messageViewCC;
-
-    /**
-     * Font size of additional headers in the message view activity.
-     */
     private int messageViewAdditionalHeaders;
-
-    /**
-     * Font size of the message subject in the message view activity.
-     */
     private int messageViewSubject;
-
-    /**
-     * Font size of the message date and time in the message view activity.
-     */
     private int messageViewDate;
-
-    /**
-     * Font size of the message content in the message view activity, as percent from default size.
-     */
     private int messageViewContentPercent;
-
-    /**
-     * Font size for the input fields in the message compose activity.
-     */
     private int messageComposeInput;
 
 
-    /**
-     * Create a <code>FontSizes</code> object with default values.
-     */
     public FontSizes() {
         accountName = FONT_DEFAULT;
         accountDescription = FONT_DEFAULT;
@@ -154,11 +83,6 @@ public class FontSizes {
         messageComposeInput = MEDIUM;
     }
 
-    /**
-     * Permanently save the font size settings.
-     *
-     * @param editor Used to save the font size settings.
-     */
     public void save(StorageEditor editor) {
         editor.putInt(ACCOUNT_NAME, accountName);
         editor.putInt(ACCOUNT_DESCRIPTION, accountDescription);
@@ -182,11 +106,6 @@ public class FontSizes {
         editor.putInt(MESSAGE_COMPOSE_INPUT, messageComposeInput);
     }
 
-    /**
-     * Load the font size settings from permanent storage.
-     *
-     * @param storage Used to load the font size settings.
-     */
     public void load(Storage storage) {
         accountName = storage.getInt(ACCOUNT_NAME, accountName);
         accountDescription = storage.getInt(ACCOUNT_DESCRIPTION, accountDescription);

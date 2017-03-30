@@ -82,7 +82,7 @@ public class RemoteControlService extends CoreService {
                                     account.setNotifyNewMail(Boolean.parseBoolean(notificationEnabled));
                                 }
                                 if (ringEnabled != null) {
-                                    account.getNotificationSetting().setRing(Boolean.parseBoolean(ringEnabled));
+                                    account.getNotificationSetting().setRingEnabled(Boolean.parseBoolean(ringEnabled));
                                 }
                                 if (vibrateEnabled != null) {
                                     account.getNotificationSetting().setVibrate(Boolean.parseBoolean(vibrateEnabled));
