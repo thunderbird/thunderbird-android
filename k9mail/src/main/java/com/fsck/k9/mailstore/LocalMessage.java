@@ -43,8 +43,6 @@ public class LocalMessage extends MimeMessage {
     private String mimeType;
     private PreviewType previewType;
     private boolean headerNeedsUpdating = false;
-    private final String xPriorityContent = "priority_high";
-    private final String highPriorityTag = "X-Priority";
 
 
     private LocalMessage(LocalStore localStore) {
@@ -175,11 +173,6 @@ public class LocalMessage extends MimeMessage {
         headerNeedsUpdating = true;
     }
 
-    public boolean isHighPriority() {
-        if (getHeader(highPriorityTag).length>0 && getHeader(highPriorityTag)[0].equals(xPriorityContent))
-            return true;
-        return false;
-    }
 
     @Override
     public void setMessageId(String messageId) {

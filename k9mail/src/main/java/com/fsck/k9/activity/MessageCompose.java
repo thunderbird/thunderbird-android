@@ -644,6 +644,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             builder = SimpleMessageBuilder.newInstance();
         }
+        builder.setHighPriority(isHighPriority);
 
         builder.setSubject(Utility.stripNewLines(subjectView.getText().toString()))
                 .setSentDate(new Date())
@@ -729,7 +730,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
             changesMadeSinceLastSave = false;
-            currentMessageBuilder.setHighPriority(isHighPriority);
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
         }
@@ -756,7 +756,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             this.isHighPriority = false;
         } else {
             item.setTitle(getString(R.string.priority_normal));
-            setTitle(String.format("%s,%s", getTitle(), getString(R.string.priority_high)));
+            setTitle(String.format("%s,%s", getString(R.string.compose_title_compose), getString(R.string.priority_high)));
             this.isHighPriority = true;
         }
     }

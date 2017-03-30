@@ -42,7 +42,8 @@ public abstract class MessageBuilder {
     private final Context context;
     private final MessageIdGenerator messageIdGenerator;
     private final BoundaryGenerator boundaryGenerator;
-    private final String highPriorityHeader = "X-Priority";
+    private static final String highPriorityTag = "X-Priority";
+    private static final String xPriorityContent ="priority_high";
 
 
     private String subject;
@@ -114,8 +115,9 @@ public abstract class MessageBuilder {
         }
 
         if (isHighPriority) {
-            message.setHeader(highPriorityHeader, context.getString(R.string.x_priority));
+            message.setHeader(highPriorityTag, xPriorityContent);
         }
+
         final String replyTo = identity.getReplyTo();
         if (replyTo != null) {
             message.setReplyTo(new Address[] { new Address(replyTo) });
