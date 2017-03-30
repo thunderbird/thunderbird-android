@@ -62,7 +62,6 @@ public class MimeMessage extends Message {
 
     private static final String X_PRIORITY_CONTENT = "priority_high";
 
-
     public static MimeMessage parseMimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
         MimeMessage mimeMessage = new MimeMessage();
         mimeMessage.parse(in, recurse);
