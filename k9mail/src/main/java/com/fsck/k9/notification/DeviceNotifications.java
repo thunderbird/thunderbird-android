@@ -44,7 +44,7 @@ class DeviceNotifications extends BaseNotifications {
         return new DeviceNotifications(controller, actionCreator, lockScreenNotification, wearNotifications);
     }
 
-    public Notification buildUrgentNotification(Account account, NotificationData notificationData) {
+    public Notification buildHighPriorityNotification(Account account, NotificationData notificationData) {
         int unreadMessageCount = notificationData.getUnreadMessageCount();
         NotificationCompat.Builder builder;
         if (isPrivacyModeActive() || !platformSupportsExtendedNotifications()) {
@@ -55,7 +55,7 @@ class DeviceNotifications extends BaseNotifications {
         } else {
             builder = createInboxStyleSummaryNotification(account, notificationData, unreadMessageCount);
         }
-        builder.setColor(ContextCompat.getColor(context, R.color.message_urgent_background));
+        builder.setColor(ContextCompat.getColor(context, R.color.message_high_priority_notification_background));
         if (notificationData.containsStarredMessages()) {
             builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         }
@@ -77,7 +77,7 @@ class DeviceNotifications extends BaseNotifications {
                 builder,
                 notificationSetting.getRingtone(),
                 notificationSetting.getVibration(),
-                ContextCompat.getColor(context, R.color.message_urgent_background),
+                ContextCompat.getColor(context, R.color.message_high_priority_notification_background),
                 NOTIFICATION_LED_BLINK_FAST,
                 ringAndVibrate);
 

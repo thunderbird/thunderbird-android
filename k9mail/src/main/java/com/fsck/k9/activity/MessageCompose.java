@@ -194,7 +194,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private Action action;
 
     private boolean requestReadReceipt = false;
-    private boolean isUrgent = false;
+    private boolean isHighPriority = false;
 
     private TextView chooseIdentityButton;
     private EditText subjectView;
@@ -729,7 +729,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
             changesMadeSinceLastSave = false;
-            currentMessageBuilder.setUrgent(isUrgent);
+            currentMessageBuilder.setHighPriority(isHighPriority);
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
         }
@@ -749,15 +749,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private void onUrgent(MenuItem item) {
-        if (isUrgent) {
-            item.setTitle(getString(R.string.priority_urgent));
+    private void onHighPriority(MenuItem item) {
+        if (isHighPriority) {
+            item.setTitle(getString(R.string.priority_high));
             setTitle(getString(R.string.compose_title_compose));
-            this.isUrgent = false;
+            this.isHighPriority = false;
         } else {
             item.setTitle(getString(R.string.priority_normal));
-            setTitle(String.format("%s,%s", getTitle(), getString(R.string.priority_urgent)));
-            this.isUrgent = true;
+            setTitle(String.format("%s,%s", getTitle(), getString(R.string.priority_high)));
+            this.isHighPriority = true;
         }
     }
 
@@ -979,8 +979,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             case R.id.read_receipt:
                 onReadReceipt();
                 break;
-            case R.id.is_urgent:
-                onUrgent(item);
+            case R.id.is_high_priority:
+                onHighPriority(item);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
