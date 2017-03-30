@@ -1,6 +1,7 @@
 package com.fsck.k9.activity;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +21,14 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
@@ -39,8 +43,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -201,6 +210,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private EolConvertingEditText messageContentView;
     private LinearLayout attachmentsView;
 
+    //voice rec
+
+  private static final int REQUEST_CODE = 1234;
+
+    Dialog match_text_dialog;
+    ListView textlist;
+    ArrayList<String> matches_text;
+
     private String referencedMessageIds;
     private String repliedToMessageId;
 
@@ -291,6 +308,26 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         messageContentView = (EolConvertingEditText) findViewById(R.id.message_content);
         messageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
+
+        ImageButton btnSpeak = (ImageButton)findViewById(R.id.btnSpeak);
+        btnSpeak.setOnClickListener(new OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                if(isConnected()){
+                    Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Plese Connect to Internet", Toast.LENGTH_LONG).show();
+                }
+            }
+
+        });
+
 
         attachmentsView = (LinearLayout) findViewById(R.id.attachments);
 
@@ -433,6 +470,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (currentMessageBuilder != null) {
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.reattachCallback(this);
+        }
+    }
+    public  boolean isConnected()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo net = cm.getActiveNetworkInfo();
+        if (net!=null && net.isAvailable() && net.isConnected()) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -770,7 +817,29 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         isInSubActivity = false;
+         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
 
+            match_text_dialog = new Dialog(MessageCompose.this);
+            match_text_dialog.setContentView(R.layout.dialog_matches_frag);
+            match_text_dialog.setTitle("Select Matching Text");
+            textlist = (ListView)match_text_dialog.findViewById(R.id.list);
+            matches_text = data
+                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            ArrayAdapter<String> adapter =    new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, matches_text);
+            textlist.setAdapter(adapter);
+            textlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    messageContentView.setText("You have said " +matches_text.get(position));
+                    match_text_dialog.hide();
+                }
+            });
+            match_text_dialog.show();
+
+       return;
+        }
         if ((requestCode & REQUEST_MASK_MESSAGE_BUILDER) == REQUEST_MASK_MESSAGE_BUILDER) {
             requestCode ^= REQUEST_MASK_MESSAGE_BUILDER;
             if (currentMessageBuilder == null) {
@@ -833,6 +902,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 this.account = account;
             }
 
+
             // Show CC/BCC text input field when switching to an account that always wants them
             // displayed.
             // Please note that we're not hiding the fields if the user switches back to an account
@@ -844,6 +914,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         switchToIdentity(identity);
+
     }
 
     private void switchToIdentity(Identity identity) {
