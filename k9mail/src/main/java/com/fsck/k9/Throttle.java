@@ -83,7 +83,7 @@ public class Throttle {
 
     public void cancelScheduledCallback() {
         if (runningTimerTask != null) {
-            Timber.d("Throttle: [%s] %s", name, "Canceling scheduled callback");
+            Timber.d("Throttle: [%s] Canceling scheduled callback", name);
             runningTimerTask.cancel();
             runningTimerTask = null;
         }
@@ -96,24 +96,24 @@ public class Throttle {
             if (currentTimeout >= maxTimeout) {
                 currentTimeout = maxTimeout;
             }
-            Timber.d("Throttle: [%s] %s", name, "Timeout extended " + currentTimeout);
+            Timber.d("Throttle: [%s] Timeout extended %d", name, currentTimeout);
         } else {
             currentTimeout = minTimeout;
-            Timber.d("Throttle: [%s] %s", name, "Timeout reset to " + currentTimeout);
+            Timber.d("Throttle: [%s] Timeout reset to %d", name, currentTimeout);
         }
 
         lastEventTime = now;
     }
 
     public void onEvent() {
-        Timber.d("Throttle: [%s] %s", name, "onEvent");
+        Timber.d("Throttle: [%s] onEvent", name);
 
         updateTimeout();
 
         if (isCallbackScheduled()) {
-            Timber.d("Throttle: [%s] %s", name, "    callback already scheduled");
+            Timber.d("Throttle: [%s]     callback already scheduled", name);
         } else {
-            Timber.d("Throttle: [%s] %s", name, "    scheduling callback");
+            Timber.d("Throttle: [%s]     scheduling callback", name);
             runningTimerTask = new MyTimerTask();
             timer.schedule(runningTimerTask, currentTimeout);
         }
@@ -141,7 +141,7 @@ public class Throttle {
             public void run() {
                 runningTimerTask = null;
                 if (!mCanceled) { // This check has to be done on the UI thread.
-                    Timber.d("Throttle: [%s] %s", name, "Kicking callback");
+                    Timber.d("Throttle: [%s] Kicking callback", name);
                     callback.run();
                 }
             }
