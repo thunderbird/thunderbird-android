@@ -241,7 +241,7 @@ public class RecipientPresenter implements PermissionPingCallback {
             boolean alreadyVisible = recipientMvpView.isBccVisible();
             boolean singleBccRecipientFromAccount =
                     bccRecipients.length == 1 && bccRecipients[0].toString().equals(bccAddress);
-            recipientMvpView.setBccVisibility(alreadyVisible || singleBccRecipientFromAccount);
+            recipientMvpView.setBccVisibility(alreadyVisible || !singleBccRecipientFromAccount);
             updateRecipientExpanderVisibility();
         }
     }
