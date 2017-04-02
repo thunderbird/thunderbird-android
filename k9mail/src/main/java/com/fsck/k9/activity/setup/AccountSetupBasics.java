@@ -2,9 +2,13 @@
 package com.fsck.k9.activity.setup;
 
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.AlertDialog;
@@ -13,10 +17,33 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.XmlResourceParser;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
+import org.xbill.DNS.DClass;
+import org.xbill.DNS.Lookup;
+import org.xbill.DNS.Record;
+import org.xbill.DNS.Resolver;
+import org.xbill.DNS.SRVRecord;
+import org.xbill.DNS.SimpleResolver;
+import org.xbill.DNS.TextParseException;
+import org.xbill.DNS.Type;
+import timber.log.Timber;
+
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -347,21 +374,10 @@ public class AccountSetupBasics extends K9Activity
         String email = mEmailView.getText().toString();
         String[] emailParts = splitEmail(email);
         String domain = emailParts[1];
-        mProvider = findProviderForDomain(domain);
-        if (mProvider == null) {
-            /*
-             * We don't have default settings for this account, start the manual
-             * setup process.
-             */
-            onManualSetup();
-            return;
-        }
-
-        if (mProvider.note != null) {
-            showDialog(DIALOG_NOTE);
-        } else {
-            finishAutoSetup();
-        }
+        // mProvider = findProviderForDomain(domain);
+        SrvTask srvTask = new SrvTask(domain);
+        srvTask.execute();
+        // findProviderInNetwork(domain);
     }
 
     @Override
@@ -498,7 +514,66 @@ public class AccountSetupBasics extends K9Activity
         } catch (Exception e) {
             Timber.e(e, "Error while trying to load provider settings.");
         }
+
         return null;
+    }
+
+    private void findProviderInNetwork(String domain) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("https://autoconfig.thunderbird.net/v1.1/" + domain)
+                .build();
+        try {
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    onManualSetup();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+
+                    Provider provider = new Provider();
+
+                    Document document = Jsoup.parse(response.body().string(), "", Parser.xmlParser());
+
+                    Elements incomingEles = document.select("incomingServer");
+                    Element incoming = incomingEles.first();
+                    provider.incomingAddr = incoming.select("hostname").first().text();
+                    provider.incomingType = incoming.attr("type").toLowerCase();
+                    provider.incomingSocketType = incoming.select("socketType").first().text().toLowerCase();
+                    provider.incomingUsernameTemplate = "%EMAILADDRESS%".equals(incoming.select("username").first().text()) ?
+                            "$email" : "$user";
+
+                    Element outgoing = document.select("outgoingServer").first();
+                    provider.outgoingAddr = outgoing.select("hostname").first().text();
+                    provider.outgoingType = outgoing.attr("type").toLowerCase();
+                    provider.outgoingSocketType = outgoing.select("socketType").first().text().toLowerCase();
+                    provider.outgoingUsernameTemplate = "%EMAILADDRESS%".equals(outgoing.select("username").first().text()) ?
+                            "$email" : "$user";
+
+                    try {
+                        provider.generateUriTemplate();
+                    } catch (URISyntaxException e) {
+                        onManualSetup();
+                        return;
+                    }
+
+                    Log.d("daquexian", "findProviderForDomain: " + provider.incomingUriTemplate + ", " + provider.outgoingUriTemplate);
+                    mProvider = provider;
+
+                    if (mProvider.note != null) {
+                        showDialog(DIALOG_NOTE);
+                    } else {
+                        finishAutoSetup();
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            onManualSetup();
+        }
     }
 
     private String[] splitEmail(String email) {
@@ -509,7 +584,110 @@ public class AccountSetupBasics extends K9Activity
         return retParts;
     }
 
-    static class Provider implements Serializable {
+    public class SrvTask extends AsyncTask<Void, Void, Boolean> {
+        Provider provider;
+        String domain;
+
+        public SrvTask(String domain) {
+            this.provider = new Provider();
+            this.domain = domain;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                SRVRecord srvRecord = srvLookup("_imaps._tcp." + domain);
+                if (srvRecord != null && !srvRecord.getTarget().toString().equals(".")) {
+                    provider.incomingAddr = srvRecord.getTarget().toString(true);
+                    // TODO: 17-4-2 any better way to detect ssl/tls?
+                    provider.incomingSocketType = srvRecord.getPort() == 993 ? "ssl" : "tls";
+                    provider.incomingType = "imap";
+                } else {
+                    srvRecord = srvLookup("_imap._tcp." + domain);
+
+                    if (srvRecord != null && !srvRecord.getTarget().toString().equals(".")) {
+                        provider.incomingAddr = srvRecord.getTarget().toString(true);
+                        provider.incomingSocketType = "";
+                        provider.incomingType = "imap";
+                    } else {
+                        return false;
+                    }
+                }
+
+                srvRecord = srvLookup("_submission._tcp." + domain);
+                if (srvRecord != null && !srvRecord.getTarget().toString().equals(".")) {
+                    provider.outgoingAddr = srvRecord.getTarget().toString(true);
+                    // TODO: 17-4-2 any better way to detect ssl/tls?
+                    switch (srvRecord.getPort()) {
+                        case 465:
+                            provider.outgoingSocketType = "ssl";
+                            break;
+                        case 587:
+                            provider.outgoingSocketType = "tls";
+                            break;
+                        default:
+                            provider.outgoingSocketType = "";
+                            break;
+                    }
+                    provider.outgoingType = "stmp";
+                } else {
+                    return false;
+                }
+
+            } catch (TextParseException | UnknownHostException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            // FIXME: 17-4-2 how to auto detect it?
+            provider.incomingUsernameTemplate = "$email";
+            try {
+                provider.generateUriTemplate();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean s) {
+            super.onPostExecute(s);
+            Log.d("daquexian", "onPostExecute: " + s);
+
+            if (!s) {
+                findProviderInNetwork(domain);
+            } else {
+                mProvider = provider;
+                finishAutoSetup();
+            }
+        }
+
+        private SRVRecord srvLookup(String serviceName) throws TextParseException, UnknownHostException {
+            Lookup lookup = new Lookup(serviceName, Type.SRV, DClass.IN);
+            Resolver resolver = new SimpleResolver();
+            lookup.setResolver(resolver);
+            lookup.setCache(null);
+            Record[] records = lookup.run();
+
+            List<SRVRecord> res = new ArrayList<>();
+
+            if (lookup.getResult() == Lookup.SUCCESSFUL) {
+                for (Record record : records) {
+                    if (record instanceof SRVRecord) {
+                        res.add((SRVRecord) record);
+                    }
+                }
+            }
+
+            // TODO: 17-4-2 return record with max priority
+            if (res.size() > 0) {
+                return res.get(0);
+            }
+            return null;
+        }
+    }
+    public static class Provider implements Serializable {
         private static final long serialVersionUID = 8511656164616538989L;
 
         public String id;
@@ -526,7 +704,21 @@ public class AccountSetupBasics extends K9Activity
 
         public String outgoingUsernameTemplate;
 
+        public String incomingType;
+        public String incomingSocketType;
+        public String incomingAddr;
+        public String outgoingType;
+        public String outgoingSocketType;
+        public String outgoingAddr;
+
         public String note;
+
+        public void generateUriTemplate() throws URISyntaxException {
+            incomingUriTemplate = new URI(incomingType + "+" +
+                    ("".equals(incomingSocketType) ? "" : (incomingSocketType + "+")) + "://" + incomingAddr);
+            outgoingUriTemplate = new URI(outgoingType + "+" +
+                    ("".equals(incomingSocketType) ? "" : (incomingSocketType + "+")) + "://" + outgoingAddr);
+        }
     }
 
 }
