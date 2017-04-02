@@ -1054,10 +1054,15 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 return null;
             }
 
+            String accountDescription = mSelectedContextAccount.getDescription();
+            if (accountDescription == null || accountDescription.isEmpty() ) {
+                accountDescription = mSelectedContextAccount.getEmail();
+            }
+
             return ConfirmationDialog.create(this, id,
                                              R.string.account_delete_dlg_title,
                                              getString(R.string.account_delete_dlg_instructions_fmt,
-                                                     mSelectedContextAccount.getDescription()),
+                                                     accountDescription),
                                              R.string.okay_action,
                                              R.string.cancel_action,
             new Runnable() {
@@ -1152,20 +1157,26 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     @Override
     public void onPrepareDialog(int id, Dialog d) {
         AlertDialog alert = (AlertDialog) d;
+
+        String accountDescription = mSelectedContextAccount.getDescription();
+        if (accountDescription == null || accountDescription.isEmpty() ) {
+            accountDescription = mSelectedContextAccount.getEmail();
+        }
+
         switch (id) {
         case DIALOG_REMOVE_ACCOUNT: {
             alert.setMessage(getString(R.string.account_delete_dlg_instructions_fmt,
-                                       mSelectedContextAccount.getDescription()));
+                    accountDescription));
             break;
         }
         case DIALOG_CLEAR_ACCOUNT: {
             alert.setMessage(getString(R.string.account_clear_dlg_instructions_fmt,
-                                       mSelectedContextAccount.getDescription()));
+                    accountDescription));
             break;
         }
         case DIALOG_RECREATE_ACCOUNT: {
             alert.setMessage(getString(R.string.account_recreate_dlg_instructions_fmt,
-                                       mSelectedContextAccount.getDescription()));
+                    accountDescription));
             break;
         }
         }
