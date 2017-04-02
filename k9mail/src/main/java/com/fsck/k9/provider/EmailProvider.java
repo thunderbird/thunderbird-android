@@ -620,7 +620,7 @@ public class EmailProvider extends ContentProvider {
     }
 
     /**
-     * This class is needed to make {@link android.support.v4.widget.CursorAdapter} work with our database schema.
+     * This class is needed to make {@link CursorAdapter} work with our database schema.
      *
      * <p>
      * {@code CursorAdapter} requires a column named {@code "_id"} containing a stable id. We use

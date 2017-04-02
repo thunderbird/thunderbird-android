@@ -39,6 +39,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.PeekableInputStream;
+import com.fsck.k9.mail.oauth.OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -148,7 +149,6 @@ class ImapConnection {
 
             retrievePathPrefixIfNecessary();
             retrievePathDelimiterIfNecessary();
-
         } catch (SSLException e) {
             handleSslException(e);
         } catch (ConnectException e) {
@@ -425,12 +425,13 @@ class ImapConnection {
             //Invalidate the token anyway but assume it's permanent.
             Timber.v(e, "Authentication exception for new token, permanent error assumed");
             oauthTokenProvider.invalidateToken(settings.getUsername());
+            oauthTokenProvider.disconnectEmailWithK9(settings.getUsername());
             throw handlePermanentXoauth2Failure(e2);
         }
     }
 
     private List<ImapResponse> attemptXOAuth2() throws MessagingException, IOException {
-        String token = oauthTokenProvider.getToken(settings.getUsername(), OAuth2TokenProvider.OAUTH2_TIMEOUT);
+        String token = oauthTokenProvider.getToken(settings.getUsername(), OAuth2AuthorizationCodeFlowTokenProvider.OAUTH2_TIMEOUT);
         String authString = Authentication.computeXoauth(settings.getUsername(), token);
         String tag = sendSaslIrCommand(Commands.AUTHENTICATE_XOAUTH2, authString, true);
 
@@ -441,6 +442,7 @@ class ImapConnection {
                         handleXOAuthUntaggedResponse(response);
                     }
                 });
+
     }
 
     private void handleXOAuthUntaggedResponse(ImapResponse response) throws IOException {

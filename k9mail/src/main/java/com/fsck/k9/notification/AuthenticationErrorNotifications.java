@@ -10,8 +10,7 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.setup.AccountSetupIncoming;
-import com.fsck.k9.activity.setup.AccountSetupOutgoing;
+import com.fsck.k9.activity.setup.AccountSetupActivity;
 
 import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
 import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_FAILURE_COLOR;
@@ -59,8 +58,8 @@ class AuthenticationErrorNotifications {
 
     PendingIntent createContentIntent(Context context, Account account, boolean incoming) {
         Intent editServerSettingsIntent = incoming ?
-                AccountSetupIncoming.intentActionEditIncomingSettings(context, account) :
-                AccountSetupOutgoing.intentActionEditOutgoingSettings(context, account);
+                AccountSetupActivity.intentActionEditIncomingSettings(context, account) :
+                AccountSetupActivity.intentActionEditOutgoingSettings(context, account);
 
         return PendingIntent.getActivity(context, account.getAccountNumber(), editServerSettingsIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

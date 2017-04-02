@@ -19,18 +19,25 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+
+import com.fsck.k9.activity.AccountConfig;
+import com.fsck.k9.activity.setup.CheckDirection;
+import com.fsck.k9.helper.EmailHelper;
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Transport;
 import timber.log.Timber;
 
-import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.mailstore.LocalStore;
@@ -54,11 +61,11 @@ import static com.fsck.k9.Preferences.getEnumStringPref;
  * Account stores all of the settings for a single account defined by the user. It is able to save
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
-public class Account implements BaseAccount, StoreConfig {
+public class Account implements BaseAccount, AccountConfig {
     /**
      * Default value for the inbox folder (never changes for POP3 and IMAP)
      */
-    private static final String INBOX = "INBOX";
+    public static final String INBOX = "INBOX";
 
     /**
      * This local folder is used to store messages to be sent.
@@ -343,6 +350,31 @@ public class Account implements BaseAccount, StoreConfig {
         cacheChips();
     }
 
+    public void loadConfig(AccountConfig accountConfig) {
+        setName(accountConfig.getName());
+        setEmail(accountConfig.getEmail());
+        setStoreUri(accountConfig.getStoreUri());
+        setTransportUri(accountConfig.getTransportUri());
+        setDescription(accountConfig.getDescription());
+        setInboxFolderName(accountConfig.getInboxFolderName());
+        setDraftsFolderName(accountConfig.getDraftsFolderName());
+        setArchiveFolderName(accountConfig.getArchiveFolderName());
+        setSentFolderName(accountConfig.getSentFolderName());
+        setSpamFolderName(accountConfig.getSpamFolderName());
+        setTrashFolderName(accountConfig.getTrashFolderName());
+        setAutoExpandFolderName(accountConfig.getAutoExpandFolderName());
+        setDisplayCount(accountConfig.getDisplayCount());
+        setAllowRemoteSearch(accountConfig.allowRemoteSearch());
+        setAutomaticCheckIntervalMinutes(accountConfig.getAutomaticCheckIntervalMinutes());
+        setDeletePolicy(accountConfig.getDeletePolicy());
+        setCompression(NetworkType.WIFI, accountConfig.useCompression(NetworkType.WIFI));
+        setCompression(NetworkType.MOBILE, accountConfig.useCompression(NetworkType.MOBILE));
+        setCompression(NetworkType.OTHER, accountConfig.useCompression(NetworkType.OTHER));
+        setFolderPushMode(accountConfig.getFolderPushMode());
+        setNotifyNewMail(accountConfig.isNotifyNewMail());
+        setShowOngoing(accountConfig.isShowOngoing());
+    }
+
     /*
      * Pick a nice Android guidelines color if we haven't used them all yet.
      */
@@ -578,6 +610,9 @@ public class Account implements BaseAccount, StoreConfig {
         // TODO: Remove preference settings that may exist for individual
         // folders in the account.
         editor.commit();
+
+        Globals.getOAuth2TokenProvider().invalidateToken(getEmail());
+        Globals.getOAuth2TokenProvider().disconnectEmailWithK9(getEmail());
     }
 
     private static int findNewAccountNumber(List<Integer> accountNumbers) {
@@ -908,18 +943,22 @@ public class Account implements BaseAccount, StoreConfig {
         return accountUuid;
     }
 
+    @Override
     public synchronized String getStoreUri() {
         return storeUri;
     }
 
+    @Override
     public synchronized void setStoreUri(String storeUri) {
         this.storeUri = storeUri;
     }
 
+    @Override
     public synchronized String getTransportUri() {
         return transportUri;
     }
 
+    @Override
     public synchronized void setTransportUri(String transportUri) {
         this.transportUri = transportUri;
     }
@@ -934,10 +973,12 @@ public class Account implements BaseAccount, StoreConfig {
         this.description = description;
     }
 
+    @Override
     public synchronized String getName() {
         return identities.get(0).getName();
     }
 
+    @Override
     public synchronized void setName(String name) {
         identities.get(0).setName(name);
     }
@@ -1028,6 +1069,7 @@ public class Account implements BaseAccount, StoreConfig {
         return (oldInterval != automaticCheckIntervalMinutes);
     }
 
+    @Override
     public synchronized int getDisplayCount() {
         return displayCount;
     }
@@ -1049,6 +1091,37 @@ public class Account implements BaseAccount, StoreConfig {
         this.latestOldMessageSeenTime = latestOldMessageSeenTime;
     }
 
+    @Override
+    public ConnectionSecurity getIncomingSecurityType() {
+        return RemoteStore.decodeStoreUri(getStoreUri()).connectionSecurity;
+    }
+
+    @Override
+    public AuthType getIncomingAuthType() {
+        return RemoteStore.decodeStoreUri(getStoreUri()).authenticationType;
+    }
+
+    @Override
+    public String getIncomingPort() {
+        return String.valueOf(RemoteStore.decodeStoreUri(getStoreUri()).port);
+    }
+
+    @Override
+    public ConnectionSecurity getOutgoingSecurityType() {
+        return TransportUris.decodeTransportUri(getTransportUri()).connectionSecurity;
+    }
+
+    @Override
+    public AuthType getOutgoingAuthType() {
+        return TransportUris.decodeTransportUri(getTransportUri()).authenticationType;
+    }
+
+    @Override
+    public String getOutgoingPort() {
+        return String.valueOf(TransportUris.decodeTransportUri(getTransportUri()).port);
+    }
+
+    @Override
     public synchronized boolean isNotifyNewMail() {
         return notifyNewMail;
     }
@@ -1069,6 +1142,7 @@ public class Account implements BaseAccount, StoreConfig {
         return deletePolicy;
     }
 
+    @Override
     public synchronized void setDeletePolicy(DeletePolicy deletePolicy) {
         this.deletePolicy = deletePolicy;
     }
@@ -1207,6 +1281,7 @@ public class Account implements BaseAccount, StoreConfig {
         return false;
     }
 
+    @Override
     public synchronized FolderMode getFolderPushMode() {
         return folderPushMode;
     }
@@ -1218,6 +1293,7 @@ public class Account implements BaseAccount, StoreConfig {
         return pushMode != oldPushMode;
     }
 
+    @Override
     public synchronized boolean isShowOngoing() {
         return notifySync;
     }
@@ -1308,7 +1384,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public Store getRemoteStore() throws MessagingException {
-        return RemoteStore.getInstance(K9.app, this);
+        return RemoteStore.getInstance(K9.app, this, Globals.getOAuth2TokenProvider());
     }
 
     // It'd be great if this actually went into the store implementation
@@ -1854,6 +1930,7 @@ public class Account implements BaseAccount, StoreConfig {
      * new host/port, then try and delete any (possibly non-existent) certificate stored for the
      * old host/port.
      */
+    @Override
     public void deleteCertificate(String newHost, int newPort, CheckDirection direction) {
         Uri uri;
         if (direction == CheckDirection.INCOMING) {
@@ -1890,5 +1967,65 @@ public class Account implements BaseAccount, StoreConfig {
             Uri uri = Uri.parse(transportUri);
             localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
         }
+    }
+
+    public void init(String email, String password) {
+        setName(getOwnerName());
+        setEmail(email);
+
+        String[] emailParts = EmailHelper.splitEmail(email);
+        String user = emailParts[0];
+        String domain = emailParts[1];
+
+        // set default uris
+        // NOTE: they will be changed again in AccountSetupAccountType!
+        ServerSettings storeServer = new ServerSettings(ServerSettings.Type.IMAP, "mail." + domain, -1,
+                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, user, password, null);
+        ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
+                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, user, password, null);
+        String storeUri = RemoteStore.createStoreUri(storeServer);
+        String transportUri = TransportUris.createTransportUri(transportServer);
+        setStoreUri(storeUri);
+        setTransportUri(transportUri);
+
+        setupFolderNames(domain);
+    }
+
+    private void setupFolderNames(String domain) {
+        setDraftsFolderName(K9.getK9String(R.string.special_mailbox_name_drafts));
+        setTrashFolderName(K9.getK9String(R.string.special_mailbox_name_trash));
+        setSentFolderName(K9.getK9String(R.string.special_mailbox_name_sent));
+        setArchiveFolderName(K9.getK9String(R.string.special_mailbox_name_archive));
+
+        // Yahoo! has a special folder for Spam, called "Bulk Mail".
+        if (domain.endsWith(".yahoo.com")) {
+            setSpamFolderName("Bulk Mail");
+        } else {
+            setSpamFolderName(K9.getK9String(R.string.special_mailbox_name_spam));
+        }
+    }
+
+
+    private String getOwnerName() {
+        String name = null;
+        try {
+            name = getDefaultAccountName();
+        } catch (Exception e) {
+            Timber.e(e, "Could not get default account name");
+        }
+
+        if (name == null) {
+            name = "";
+        }
+        return name;
+    }
+
+    private String getDefaultAccountName() {
+        String name = null;
+        Account account = Preferences.getPreferences(K9.app).getDefaultAccount();
+        if (account != null) {
+            name = account.getName();
+        }
+        return name;
     }
 }

@@ -45,6 +45,7 @@ import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
 import com.fsck.k9.mail.internet.CharsetSupport;
+import com.fsck.k9.mail.oauth.OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -84,7 +85,7 @@ public class SmtpTransport extends Transport {
 
 
     public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-            OAuth2TokenProvider oauthTokenProvider) throws MessagingException {
+            OAuth2TokenProvider oAuth2TokenProvider) throws MessagingException {
         ServerSettings settings;
         try {
             settings = TransportUris.decodeTransportUri(storeConfig.getTransportUri());
@@ -107,7 +108,7 @@ public class SmtpTransport extends Transport {
         clientCertificateAlias = settings.clientCertificateAlias;
 
         this.trustedSocketFactory = trustedSocketFactory;
-        this.oauthTokenProvider = oauthTokenProvider;
+        this.oauthTokenProvider = oAuth2TokenProvider;
     }
 
     @Override
@@ -807,7 +808,7 @@ public class SmtpTransport extends Transport {
     }
 
     private void attemptXoauth2(String username) throws MessagingException, IOException {
-        String token = oauthTokenProvider.getToken(username, OAuth2TokenProvider.OAUTH2_TIMEOUT);
+        String token = oauthTokenProvider.getToken(username, OAuth2AuthorizationCodeFlowTokenProvider.OAUTH2_TIMEOUT);
         String authString = Authentication.computeXoauth(username, token);
         CommandResponse response = executeSensitiveCommand("AUTH XOAUTH2 %s", authString);
 

@@ -887,11 +887,11 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private void onIncomingSettings() {
-        AccountSetupIncoming.actionEditIncomingSettings(this, account);
+        AccountSetupActivity.actionEditIncomingSettings(this, account);
     }
 
     private void onOutgoingSettings() {
-        AccountSetupOutgoing.actionEditOutgoingSettings(this, account);
+        AccountSetupActivity.actionEditOutgoingSettings(this, account);
     }
 
     public void onChooseChipColor() {
