@@ -4,6 +4,7 @@
 
 K-9 Mail is an open-source email client for Android.
 
+It is my branch to demonstrate my progress on improving account setup. 
 
 ## Download
 
@@ -86,4 +87,3 @@ Aside from discussing changes in [pull requests](https://github.com/k9mail/k-9/p
 CloudBees' [FOSS program](https://www.cloudbees.com/resources/foss) allows us to use their DEV@cloud service for free.
 
 ![built on DEV@cloud](https://www.cloudbees.com/sites/default/files/styles/large/public/Button-Built-on-CB-1.png)
-
