@@ -59,12 +59,9 @@ class NewMailNotifications {
                 int notificationId = result.getNotificationId();
                 cancelNotification(notificationId);
             }
-            if (message.isHighPriority()) {
-                createHighPriorityNotification(account, notificationData);
-            } else {
-                createStackedNotification(account, result.getNotificationHolder());
-                createSummaryNotification(account, notificationData, false);
-            }
+
+            createStackedNotification(account, result.getNotificationHolder());
+            createSummaryNotification(account, notificationData, false);
         }
     }
 
@@ -155,12 +152,6 @@ class NewMailNotifications {
         Notification notification = deviceNotifications.buildSummaryNotification(account, notificationData, silent);
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
 
-        getNotificationManager().notify(notificationId, notification);
-    }
-
-    private void createHighPriorityNotification(Account account, NotificationData notificationData) {
-        Notification notification = deviceNotifications.buildHighPriorityNotification(account, notificationData);
-        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
         getNotificationManager().notify(notificationId, notification);
     }
 

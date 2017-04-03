@@ -6,6 +6,8 @@ import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.BigTextStyle;
 import android.support.v4.app.NotificationCompat.Builder;
+import android.text.Html;
+import android.text.SpannableString;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -35,7 +37,7 @@ abstract class BaseNotifications {
                 .setTicker(content.summary)
                 .setGroup(groupKey)
                 .setContentTitle(content.sender)
-                .setContentText(content.subject)
+                .setContentText(makeHighPriorityIfRequired(content.subject, content))
                 .setSubText(accountName);
 
         NotificationCompat.BigTextStyle style = createBigTextStyle(builder);
@@ -62,6 +64,14 @@ abstract class BaseNotifications {
     protected boolean isDeleteActionEnabled() {
         NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();
         return deleteOption == NotificationQuickDelete.ALWAYS || deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG;
+    }
+
+    protected SpannableString makeHighPriorityIfRequired(String subject, NotificationContent content) {
+        if(content.isHighPriority) {
+            return new SpannableString(Html.fromHtml(subject+"<H1><font color=\"#FF0000\">"+ "!" + "</font></H1>"));
+        }
+       return new SpannableString(subject);
+
     }
 
     protected BigTextStyle createBigTextStyle(Builder builder) {
