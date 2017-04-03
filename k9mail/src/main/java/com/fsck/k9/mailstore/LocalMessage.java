@@ -131,7 +131,7 @@ public class LocalMessage extends MimeMessage {
         } else {
             Timber.d("No headers available for this message!");
         }
-
+        
         headerNeedsUpdating = false;
     }
 
@@ -569,7 +569,7 @@ public class LocalMessage extends MimeMessage {
         if (headerNeedsUpdating) {
             updateHeader();
         }
-
+        
         super.writeTo(out);
     }
 
@@ -587,7 +587,7 @@ public class LocalMessage extends MimeMessage {
         if (mMessageId != null) {
             super.setMessageId(mMessageId);
         }
-
+        
         headerNeedsUpdating = false;
     }
 
