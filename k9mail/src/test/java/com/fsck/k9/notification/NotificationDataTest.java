@@ -309,11 +309,11 @@ public class NotificationDataTest {
     }
 
     private NotificationContent createNotificationContent(MessageReference messageReference) {
-        return new NotificationContent(messageReference, "", "", "", "", false);
+        return new NotificationContent(messageReference, "", "", "", "", false, false);
     }
 
     private NotificationContent createNotificationContentForStarredMessage() {
         MessageReference messageReference = createMessageReference("42");
-        return new NotificationContent(messageReference, "", "", "", "", true);
+        return new NotificationContent(messageReference, "", "", "", "", true, false);
     }
 }
