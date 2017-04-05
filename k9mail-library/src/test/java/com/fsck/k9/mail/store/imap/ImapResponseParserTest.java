@@ -384,6 +384,14 @@ public class ImapResponseParserTest {
         assertEquals("[FolderName]", response.get(3));
     }
 
+    @Test(expected = IOException.class)
+    public void testListResponseContainingFolderNameContainingBracketsThrowsException() throws Exception {
+        ImapResponseParser parser = createParser(
+                "* LIST (\\NoInferiors) \"/\" Root/Folder/Subfolder()\r\n");
+
+        parser.readResponse();
+    }
+
     @Test
     public void readResponseShouldReadWholeListResponseLine() throws Exception {
         ImapResponseParser parser = createParser("* LIST (\\HasNoChildren) \".\" [FolderName]\r\n" +
@@ -417,7 +425,7 @@ public class ImapResponseParserTest {
             parser.readResponse();
             fail("Expected exception");
         } catch (IOException e) {
-            assertEquals("Unexpected non-string token: [1, 2]", e.getMessage());
+            assertEquals("Unexpected non-string token: ImapList - [1, 2]", e.getMessage());
         }
     }
 
