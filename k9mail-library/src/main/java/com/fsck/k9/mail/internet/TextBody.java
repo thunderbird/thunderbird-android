@@ -9,15 +9,15 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.SignSafeOutputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
+import timber.log.Timber;
+
 
 public class TextBody implements Body, SizeAware {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
@@ -67,7 +67,7 @@ public class TextBody implements Body, SizeAware {
             }
             return new ByteArrayInputStream(b);
         } catch (UnsupportedEncodingException uee) {
-            Log.e(K9MailLib.LOG_TAG, "Unsupported charset: " + charset, uee);
+            Timber.e(uee, "Unsupported charset: %s", charset);
             return null;
         }
     }

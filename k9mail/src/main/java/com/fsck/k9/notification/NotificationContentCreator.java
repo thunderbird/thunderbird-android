@@ -4,8 +4,6 @@ package com.fsck.k9.notification;
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.TextAppearanceSpan;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -16,14 +14,12 @@ import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 
 
 class NotificationContentCreator {
     private final Context context;
-    private TextAppearanceSpan emphasizedSpan;
 
 
     public NotificationContentCreator(Context context) {
@@ -60,9 +56,7 @@ class NotificationContentCreator {
             preview.append('\n');
             preview.append(snippet);
         }
-
-        preview.setSpan(getEmphasizedSpan(), 0, displaySubject.length(), 0);
-
+        
         return preview;
     }
 
@@ -90,8 +84,6 @@ class NotificationContentCreator {
         summary.append(sender);
         summary.append(" ");
         summary.append(subject);
-
-        summary.setSpan(getEmphasizedSpan(), 0, sender.length(), 0);
 
         return summary;
     }
@@ -132,13 +124,5 @@ class NotificationContentCreator {
 
     private String getMessageSenderForDisplay(String sender) {
         return (sender != null) ? sender : context.getString(R.string.general_no_sender);
-    }
-
-    private TextAppearanceSpan getEmphasizedSpan() {
-        if (emphasizedSpan == null) {
-            emphasizedSpan = new TextAppearanceSpan(context,
-                    R.style.TextAppearance_StatusBar_EventContent_Emphasized);
-        }
-        return emphasizedSpan;
     }
 }

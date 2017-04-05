@@ -42,8 +42,15 @@ public interface Viewable {
     }
 
     class Flowed extends Textual {
-        public Flowed(Part part) {
+        private boolean delSp;
+
+        public Flowed(Part part, boolean delSp) {
             super(part);
+            this.delSp = delSp;
+        }
+
+        public boolean isDelSp() {
+            return delSp;
         }
     }
 

@@ -302,6 +302,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     private void onCancel() {
         mCanceled = true;
         setMessage(R.string.account_setup_check_settings_canceling_msg);
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
     public void onClick(View v) {

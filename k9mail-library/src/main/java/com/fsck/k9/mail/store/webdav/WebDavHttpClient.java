@@ -1,7 +1,5 @@
 package com.fsck.k9.mail.store.webdav;
 
-import android.util.Log;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
@@ -9,12 +7,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
+import timber.log.Timber;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
-
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 /**
  * HTTP client for WebDAV communication
@@ -41,7 +38,7 @@ public class WebDavHttpClient extends DefaultHttpClient {
     }
 
     public static void modifyRequestToAcceptGzipResponse(HttpRequest request) {
-        Log.i(LOG_TAG, "Requesting gzipped data");
+        Timber.i("Requesting gzipped data");
         request.addHeader("Accept-Encoding", "gzip");
     }
 
@@ -57,7 +54,7 @@ public class WebDavHttpClient extends DefaultHttpClient {
         if (contentEncoding == null)
             return responseStream;
         if (contentEncoding.contains("gzip")) {
-            Log.i(LOG_TAG, "Response is gzipped");
+            Timber.i("Response is gzipped");
             responseStream = new GZIPInputStream(responseStream);
         }
         return responseStream;

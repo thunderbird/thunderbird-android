@@ -18,12 +18,11 @@ import android.content.Context;
 import android.os.Build;
 import android.security.KeyChain;
 import android.security.KeyChainException;
-import android.util.Log;
 
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MessagingException;
+import timber.log.Timber;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.CertificateValidationException.Reason;
 import static com.fsck.k9.mail.CertificateValidationException.Reason.RetrievalFailure;
 
@@ -204,10 +203,10 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
                     return mAlias;
                 }
             }
-            Log.w(LOG_TAG, "Client certificate " + mAlias + " not issued by any of the requested issuers");
+            Timber.w("Client certificate %s not issued by any of the requested issuers", mAlias);
             return null;
         }
-        Log.w(LOG_TAG, "Client certificate " + mAlias + " does not match any of the requested key types");
+        Timber.w("Client certificate %s does not match any of the requested key types", mAlias);
         return null;
     }
 }

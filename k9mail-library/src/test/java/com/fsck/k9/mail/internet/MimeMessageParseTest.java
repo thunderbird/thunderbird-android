@@ -19,9 +19,11 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.Multipart;
+
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(K9LibRobolectricTestRunner.class)
@@ -272,4 +274,63 @@ public class MimeMessageParseTest {
         }
         assertEquals(Arrays.asList(expectedParts), actual);
     }
+
+    @Test
+    public void getRecipients_withXOriginalTo() throws Exception {
+        MimeMessage msg = parseWithoutRecurse(toStream(
+                "From: <adam@example.org>\r\n" +
+                        "To: <eva@example.org>\r\n" +
+                        "X-Original-To: <test@mail.com>\r\n" +
+                        "Subject: Testmail\r\n" +
+                        "MIME-Version: 1.0\r\n" +
+                        "Content-type: text/plain\r\n" +
+                        "Content-Transfer-Encoding: 7bit\r\n" +
+                        "\r\n" +
+                        "this is some test text."));
+
+        Address[] xOriginalAddresses = msg.getRecipients(RecipientType.X_ORIGINAL_TO);
+
+        assertEquals(1, xOriginalAddresses.length);
+        assertEquals(new Address("<test@mail.com>"), xOriginalAddresses[0]);
+    }
+
+    @Test
+    public void getRecipients_withDeliveredTo() throws Exception {
+        MimeMessage msg = parseWithoutRecurse(toStream(
+                "From: <adam@example.org>\r\n" +
+                        "To: <eva@example.org>\r\n" +
+                        "Delivered-To: <test@mail.com>\r\n" +
+                        "Subject: Testmail\r\n" +
+                        "MIME-Version: 1.0\r\n" +
+                        "Content-type: text/plain\r\n" +
+                        "Content-Transfer-Encoding: 7bit\r\n" +
+                        "\r\n" +
+                        "this is some test text."));
+
+        Address[] deliveredToAddresses = msg.getRecipients(RecipientType.DELIVERED_TO);
+
+        assertEquals(1, deliveredToAddresses.length);
+        assertEquals(new Address("<test@mail.com>"), deliveredToAddresses[0]);
+    }
+
+    @Test
+    public void getRecipients_withXEnvelopeTo() throws Exception {
+        MimeMessage msg = parseWithoutRecurse(toStream(
+                "From: <adam@example.org>\r\n" +
+                        "To: <eva@example.org>\r\n" +
+                        "X-Envelope-To: <test@mail.com>\r\n" +
+                        "Subject: Testmail\r\n" +
+                        "MIME-Version: 1.0\r\n" +
+                        "Content-type: text/plain\r\n" +
+                        "Content-Transfer-Encoding: 7bit\r\n" +
+                        "\r\n" +
+                        "this is some test text."));
+
+        Address[] xEnvelopeToAddresses = msg.getRecipients(RecipientType.X_ENVELOPE_TO);
+
+        assertEquals(1, xEnvelopeToAddresses.length);
+        assertEquals(new Address("<test@mail.com>"), xEnvelopeToAddresses[0]);
+    }
+
+
 }
