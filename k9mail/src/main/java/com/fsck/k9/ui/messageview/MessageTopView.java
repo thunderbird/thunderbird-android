@@ -7,6 +7,9 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
+import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -20,9 +23,11 @@ import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.ShowPictures;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.NetworkHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.NetworkType;
@@ -307,16 +312,7 @@ public class MessageTopView extends LinearLayout {
     }
 
     private boolean shouldShowPicturesInCurrentNetwork(boolean onlyShowViaWiFi) {
-        if (!onlyShowViaWiFi) {
-            return true;
-        }
-
-        final ConnectivityManager connectivityManager =
-                (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkType networkType =
-                NetworkType.fromConnectivityManagerType(connectivityManager.getActiveNetworkInfo().getType());
-
-        return networkType == NetworkType.WIFI;
+        return !onlyShowViaWiFi || !NetworkHelper.isActiveNetworkMeteredCompat();
     }
 
     private String getSenderEmailAddress(Message message) {
