@@ -31,26 +31,26 @@ public class Preferences {
     }
 
 
-    private Storage mStorage;
+    private Storage storage;
     private Map<String, Account> accounts = null;
     private List<Account> accountsInOrder = null;
     private Account newAccount;
-    private Context mContext;
+    private Context context;
 
     private Preferences(Context context) {
-        mStorage = Storage.getStorage(context);
-        mContext = context;
-        if (mStorage.isEmpty()) {
+        storage = Storage.getStorage(context);
+        this.context = context;
+        if (storage.isEmpty()) {
             Timber.i("Preferences storage is zero-size, importing from Android-style preferences");
-            StorageEditor editor = mStorage.edit();
+            StorageEditor editor = storage.edit();
             editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));
             editor.commit();
         }
     }
 
     public synchronized void loadAccounts() {
-        accounts = new HashMap<String, Account>();
-        accountsInOrder = new LinkedList<Account>();
+        accounts = new HashMap<>();
+        accountsInOrder = new LinkedList<>();
         String accountUuids = getStorage().getString("accountUuids", null);
         if ((accountUuids != null) && (accountUuids.length() != 0)) {
             String[] uuids = accountUuids.split(",");
@@ -80,7 +80,7 @@ public class Preferences {
             loadAccounts();
         }
 
-        return Collections.unmodifiableList(new ArrayList<Account>(accountsInOrder));
+        return Collections.unmodifiableList(new ArrayList<>(accountsInOrder));
     }
 
     /**
@@ -91,9 +91,9 @@ public class Preferences {
      */
     public synchronized Collection<Account> getAvailableAccounts() {
         List<Account> allAccounts = getAccounts();
-        Collection<Account> retval = new ArrayList<Account>(accounts.size());
+        Collection<Account> retval = new ArrayList<>(accounts.size());
         for (Account account : allAccounts) {
-            if (account.isEnabled() && account.isAvailable(mContext)) {
+            if (account.isEnabled() && account.isAvailable(context)) {
                 retval.add(account);
             }
         }
@@ -105,13 +105,12 @@ public class Preferences {
         if (accounts == null) {
             loadAccounts();
         }
-        Account account = accounts.get(uuid);
 
-        return account;
+        return accounts.get(uuid);
     }
 
     public synchronized Account newAccount() {
-        newAccount = new Account(mContext);
+        newAccount = new Account(context);
         accounts.put(newAccount.getUuid(), newAccount);
         accountsInOrder.add(newAccount);
 
@@ -165,10 +164,10 @@ public class Preferences {
     }
 
     public Storage getStorage() {
-        return mStorage;
+        return storage;
     }
 
-    public static <T extends Enum<T>> T getEnumStringPref(Storage storage, String key, T defaultEnum) {
+    static <T extends Enum<T>> T getEnumStringPref(Storage storage, String key, T defaultEnum) {
         String stringPref = storage.getString(key, null);
 
         if (stringPref == null) {

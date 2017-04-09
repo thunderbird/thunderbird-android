@@ -4,51 +4,52 @@ import java.io.Serializable;
 
 public class Identity implements Serializable {
     private static final long serialVersionUID = -1666669071480985760L;
-    private String mDescription;
-    private String mName;
-    private String mEmail;
-    private String mSignature;
-    private boolean mSignatureUse;
+
+    private String description;
+    private String name;
+    private String email;
+    private String signature;
+    private boolean signatureUse;
     private String replyTo;
 
     public synchronized String getName() {
-        return mName;
+        return name;
     }
 
     public synchronized void setName(String name) {
-        mName = name;
+        this.name = name;
     }
 
     public synchronized String getEmail() {
-        return mEmail;
+        return email;
     }
 
     public synchronized void setEmail(String email) {
-        mEmail = email;
+        this.email = email;
     }
 
     public synchronized boolean getSignatureUse() {
-        return mSignatureUse;
+        return signatureUse;
     }
 
     public synchronized void setSignatureUse(boolean signatureUse) {
-        mSignatureUse = signatureUse;
+        this.signatureUse = signatureUse;
     }
 
     public synchronized String getSignature() {
-        return mSignature;
+        return signature;
     }
 
     public synchronized void setSignature(String signature) {
-        mSignature = signature;
+        this.signature = signature;
     }
 
     public synchronized String getDescription() {
-        return mDescription;
+        return description;
     }
 
     public synchronized void setDescription(String description) {
-        mDescription = description;
+        this.description = description;
     }
 
     public synchronized String getReplyTo() {
@@ -61,6 +62,7 @@ public class Identity implements Serializable {
 
     @Override
     public synchronized String toString() {
-        return "Account.Identity(description=" + mDescription + ", name=" + mName + ", email=" + mEmail + ", replyTo=" + replyTo + ", signature=" + mSignature;
+        return "Account.Identity(description=" + description + ", name=" + name + ", email=" + email + ", replyTo=" + replyTo + ", signature=" +
+                signature;
     }
 }

@@ -76,9 +76,9 @@ class DeviceNotifications extends BaseNotifications {
         NotificationSetting notificationSetting = account.getNotificationSetting();
         controller.configureNotification(
                 builder,
-                (notificationSetting.shouldRing()) ? notificationSetting.getRingtone() : null,
-                (notificationSetting.shouldVibrate()) ? notificationSetting.getVibration() : null,
-                (notificationSetting.isLed()) ? notificationSetting.getLedColor() : null,
+                (notificationSetting.isRingEnabled()) ? notificationSetting.getRingtone() : null,
+                (notificationSetting.isVibrateEnabled()) ? notificationSetting.getVibration() : null,
+                (notificationSetting.isLedEnabled()) ? notificationSetting.getLedColor() : null,
                 NOTIFICATION_LED_BLINK_SLOW,
                 ringAndVibrate);
 
