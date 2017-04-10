@@ -61,7 +61,15 @@ class TestMessage extends MimeMessage {
         bufferedSink.emit();
     }
 
-    private static Address[] toAddressArray(String email) {
-        return email == null ? new Address[0] : new Address[] { new Address(email) };
+    private static Address[] toAddressArray(String[] emails) {
+        return emails == null ? new Address[0] : stringArrayToAddressArray(emails);
+    }
+
+    private static Address[] stringArrayToAddressArray(String[] emails) {
+        Address addresses[] = new Address[emails.length];
+        for (int i = 0; i < emails.length; i++) {
+            addresses[i] = new Address(emails[i]);
+        }
+        return addresses;
     }
 }

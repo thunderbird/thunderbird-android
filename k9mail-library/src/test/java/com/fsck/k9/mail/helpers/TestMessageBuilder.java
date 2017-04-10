@@ -5,18 +5,18 @@ import com.fsck.k9.mail.Message;
 
 
 public class TestMessageBuilder {
-    String from;
-    String to;
+    String[] from;
+    String[] to;
     boolean hasAttachments;
     long messageSize;
 
 
-    public TestMessageBuilder from(String email) {
+    public TestMessageBuilder from(String... email) {
         from = email;
         return this;
     }
 
-    public TestMessageBuilder to(String email) {
+    public TestMessageBuilder to(String... email) {
         to = email;
         return this;
     }
