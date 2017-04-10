@@ -651,22 +651,30 @@ public class SmtpTransport extends Transport {
     }
 
     private void readPipelinedResponse(Queue<String> pipelinedCommands) throws IOException, MessagingException {
-        int noOfPipelinedResponse = pipelinedCommands.size();
         String responseLine = null;
         List<String> results = new ArrayList<>();
-        while (noOfPipelinedResponse > 0) {
-            noOfPipelinedResponse--;
+        NegativeSmtpReplyException negativeRecipient = null;
+        for (String command : pipelinedCommands) {
             results.clear();
             responseLine = readCommandResponseLine(results);
             try {
                 responseLineToCommandResponse(responseLine, results);
 
             } catch (MessagingException exception) {
-                if (noOfPipelinedResponse == 0) {
+                if (command.equals("DATA")) {
                     throw exception;
                 }
-                Timber.d("SMTP <<< " + exception.getMessage());
-                //continue reading response till DATA response .
+                if (command.startsWith("RCPT")) {
+                    negativeRecipient = (NegativeSmtpReplyException) exception;
+                }
+            }
+        }
+
+        if (negativeRecipient != null) {
+            try {
+                executeCommand(".");
+            } catch (NegativeSmtpReplyException e) {
+                throw negativeRecipient;
             }
         }
 
