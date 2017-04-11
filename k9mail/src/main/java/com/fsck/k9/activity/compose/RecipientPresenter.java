@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
-import timber.log.Timber;
 import android.view.Menu;
 
 import com.fsck.k9.Account;
@@ -29,6 +28,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
+import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
@@ -47,6 +47,7 @@ import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.PermissionPingCallback;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
+import timber.log.Timber;
 
 
 public class RecipientPresenter implements PermissionPingCallback {
@@ -392,7 +393,11 @@ public class RecipientPresenter implements PermissionPingCallback {
             @Override
             protected void onPostExecute(ComposeCryptoStatus composeCryptoStatus) {
                 cachedCryptoStatus = composeCryptoStatus;
-                recipientMvpView.showCryptoStatus(composeCryptoStatus.getCryptoStatusDisplayType());
+                CryptoStatusDisplayType cryptoStatusDisplayType = composeCryptoStatus.getCryptoStatusDisplayType();
+                if (cryptoStatusDisplayType == CryptoStatusDisplayType.ERROR) {
+                    recipientMvpView.showErrorOpenPgpRetrieveStatus();
+                }
+                recipientMvpView.showCryptoStatus(cryptoStatusDisplayType);
                 recipientMvpView.showCryptoSpecialMode(composeCryptoStatus.getCryptoSpecialModeDisplayType());
             }
         }.execute();
