@@ -103,7 +103,7 @@ public class BaseNotificationsTest {
 
     private NotificationHolder createNotificationHolder(int notificationId) {
         NotificationContent content = new NotificationContent(null, SENDER, SUBJECT, NOTIFICATION_PREVIEW,
-                NOTIFICATION_SUMMARY, false);
+                NOTIFICATION_SUMMARY, false, false);
         return new NotificationHolder(notificationId, content);
     }
 

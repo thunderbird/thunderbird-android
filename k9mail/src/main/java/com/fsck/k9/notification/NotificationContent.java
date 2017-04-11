@@ -11,15 +11,17 @@ class NotificationContent {
     public final CharSequence preview;
     public final CharSequence summary;
     public final boolean starred;
+    public final boolean isHighPriority;
 
 
     public NotificationContent(MessageReference messageReference, String sender, String subject, CharSequence preview,
-            CharSequence summary, boolean starred) {
+            CharSequence summary, boolean starred, boolean isHighPriority) {
         this.messageReference = messageReference;
         this.sender = sender;
         this.subject = subject;
         this.preview = preview;
         this.summary = summary;
         this.starred = starred;
+        this.isHighPriority = isHighPriority;
     }
 }

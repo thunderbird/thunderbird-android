@@ -34,8 +34,9 @@ class NotificationContentCreator {
         CharSequence preview = getMessagePreview(message);
         CharSequence summary = buildMessageSummary(sender, subject);
         boolean starred = message.isSet(Flag.FLAGGED);
+        boolean isHighPriority = message.isHighPriority();
 
-        return new NotificationContent(messageReference, displaySender, subject, preview, summary, starred);
+        return new NotificationContent(messageReference, displaySender, subject, preview, summary, starred, isHighPriority);
     }
 
     private CharSequence getMessagePreview(LocalMessage message) {

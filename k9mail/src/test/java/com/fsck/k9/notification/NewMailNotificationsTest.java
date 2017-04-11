@@ -287,7 +287,7 @@ public class NewMailNotificationsTest {
     }
 
     private NotificationContent createNotificationContent() {
-        return new NotificationContent(null, null, null, null, null, false);
+        return new NotificationContent(null, null, null, null, null, false, false);
     }
 
     private NotificationHolder createNotificationHolder(NotificationContent content, int index) {

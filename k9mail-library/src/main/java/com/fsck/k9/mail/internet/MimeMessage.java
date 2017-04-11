@@ -63,6 +63,7 @@ public class MimeMessage extends Message {
     protected int mSize;
     private String serverExtra;
 
+    private static final String X_PRIORITY_CONTENT = "priority_high";
 
     public static MimeMessage parseMimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
         MimeMessage mimeMessage = new MimeMessage();
@@ -516,6 +517,10 @@ public class MimeMessage extends Message {
             CharsetSupport.setCharset(charset, this);
             ((TextBody)mBody).setCharset(charset);
         }
+    }
+
+    public boolean isHighPriority() {
+        return X_PRIORITY_CONTENT.equals(getFirstHeader(MimeHeader.HEADER_HIGH_PRIORITY));
     }
 
     private class MimeMessageBuilder implements ContentHandler {
