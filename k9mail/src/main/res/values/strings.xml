@@ -1241,4 +1241,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="mail_list_widget_loading">Loading messages…</string>
     <string name="fetching_folders_failed">Fetching folder list failed</string>
     <string name="messageview_crypto_warning_details">Show Details</string>
+    <string name="error_recipient_crypto_retrieve">Error retrieving recipient status from OpenPGP provider!</string>
 </resources>
