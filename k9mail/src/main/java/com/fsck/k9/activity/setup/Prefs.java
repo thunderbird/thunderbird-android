@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -103,6 +104,10 @@ public class Prefs extends K9PreferenceActivity {
 
     private static final String APG_PROVIDER_PLACEHOLDER = "apg-placeholder";
 
+    private static final String PREFERENCE_SOCKS_PROXY = "socks_proxy";
+    private static final String PREFERENCE_SOCKS_PROXY_HOST = "socks_proxy_host";
+    private static final String PREFERENCE_SOCKS_PROXY_PORT = "socks_proxy_port";
+
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
 
     private static final int DIALOG_APG_DEPRECATION_WARNING = 1;
@@ -163,6 +168,9 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mThreadedView;
     private ListPreference mSplitViewMode;
 
+    private CheckBoxPreference mUseSocksProxy;
+    private EditTextPreference mSocksProxyHost;
+    private EditTextPreference mSocksProxyPort;
 
     public static void actionPrefs(Context context) {
         Intent i = new Intent(context, Prefs.class);
@@ -438,6 +446,11 @@ public class Prefs extends K9PreferenceActivity {
         mSplitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
         initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
                 mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
+
+        CheckBoxPreference useSocksProxy = (CheckBoxPreference) findPreference(PREFERENCE_SOCKS_PROXY);
+        EditTextPreference socksProxyHost = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_HOST);
+        EditTextPreference socksProxyPort = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_PORT);
+
     }
 
     private static String themeIdToName(K9.Theme theme) {

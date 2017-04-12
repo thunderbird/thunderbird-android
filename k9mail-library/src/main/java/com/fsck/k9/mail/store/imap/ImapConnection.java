@@ -219,9 +219,8 @@ class ImapConnection {
             socket = socketFactory.createSocket(null, host, port, clientCertificateAlias);
         } else {
             socket = new Socket();
+            socket.connect(socketAddress,socketConnectTimeout);
         }
-
-        socket.connect(socketAddress, socketConnectTimeout);
 
         return socket;
     }
