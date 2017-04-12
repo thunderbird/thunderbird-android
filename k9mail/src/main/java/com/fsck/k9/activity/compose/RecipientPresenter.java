@@ -756,6 +756,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         int pgpInlineDialogCounter = K9.getPgpInlineDialogCounter();
         if (pgpInlineDialogCounter < PGP_DIALOG_DISPLAY_THRESHOLD) {
             K9.setPgpInlineDialogCounter(pgpInlineDialogCounter + 1);
+            K9.saveSettingsAsync();
             return true;
         }
         return false;
@@ -765,6 +766,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         int pgpSignOnlyDialogCounter = K9.getPgpSignOnlyDialogCounter();
         if (pgpSignOnlyDialogCounter < PGP_DIALOG_DISPLAY_THRESHOLD) {
             K9.setPgpSignOnlyDialogCounter(pgpSignOnlyDialogCounter + 1);
+            K9.saveSettingsAsync();
             return true;
         }
         return false;
