@@ -61,11 +61,11 @@
 
     <application
         android:name="K9"
+        android:allowBackup="false"
         android:allowTaskReparenting="false"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@style/Theme.K9.Startup"
-        android:allowBackup="false">
+        android:theme="@style/Theme.K9.Startup">
 
         <meta-data
             android:name="android.app.default_searchable"
@@ -287,6 +287,11 @@
             android:name=".activity.UpgradeDatabases"
             android:label="@string/upgrade_databases_title"/>
 
+        <activity
+            android:name=".activity.license.OssLicenseListActivity"
+            android:label="@string/oss_license"/>
+        <activity android:name=".activity.license.OssLicenseViewActivity"/>
+
         <receiver
             android:name=".service.BootReceiver"
             android:enabled="true">
@@ -367,17 +372,17 @@
             android:icon="@drawable/message_list_widget_preview"
             android:label="@string/mail_list_widget_text">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/message_list_widget_info" />
+                android:resource="@xml/message_list_widget_info"/>
         </receiver>
 
         <service
             android:name=".widget.list.MessageListWidgetService"
             android:enabled="true"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
         <service
             android:name=".service.MailService"
@@ -415,11 +420,11 @@
             android:grantUriPermissions="true"
             android:multiprocess="true"
             android:readPermission="${applicationId}.permission.READ_ATTACHMENT">
-            
+
             <meta-data
                 android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
-                android:value="true" />
-        
+                android:value="true"/>
+
         </provider>
 
         <provider
@@ -444,7 +449,7 @@
 
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/decrypted_file_provider_paths" />
+                android:resource="@xml/decrypted_file_provider_paths"/>
         </provider>
 
         <provider
@@ -455,7 +460,7 @@
 
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/temp_file_provider_paths" />
+                android:resource="@xml/temp_file_provider_paths"/>
         </provider>
 
     </application>

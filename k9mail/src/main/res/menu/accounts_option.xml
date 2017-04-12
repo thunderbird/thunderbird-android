@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/search"
@@ -27,6 +27,9 @@
         android:id="@+id/about"
         android:icon="?attr/iconActionAbout"
         android:title="@string/about_action"/>
+    <item
+        android:id="@+id/oss_license"
+        android:title="@string/oss_license"/>
     <item
         android:id="@+id/import_export"
         android:icon="?attr/iconActionImportExport"

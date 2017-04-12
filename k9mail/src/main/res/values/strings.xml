@@ -1229,4 +1229,5 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="mail_list_widget_text">K-9 Message List</string>
     <string name="mail_list_widget_loading">Loading messages…</string>
+    <string name="oss_license">Open source license</string>
 </resources>

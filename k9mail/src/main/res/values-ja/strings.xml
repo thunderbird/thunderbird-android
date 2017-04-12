@@ -1004,4 +1004,5 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="recipient_error_parse_failed">アドレスの解析時にエラー!</string>
   <string name="account_settings_crypto_support_sign_only">暗号化されていないメッセージの署名をサポートする</string>
   <string name="error_sign_only_no_encryption">署名専用モードでは暗号化を使用できません!</string>
+  <string name="oss_license">オープンソースライセンス</string>
 </resources>
