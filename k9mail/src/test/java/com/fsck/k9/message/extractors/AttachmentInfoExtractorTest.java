@@ -168,7 +168,7 @@ public class AttachmentInfoExtractorTest {
 
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
 
-        assertFalse(attachmentViewInfo.isContentAvailable);
+        assertFalse(attachmentViewInfo.isContentAvailable());
     }
 
     @Test
@@ -178,7 +178,7 @@ public class AttachmentInfoExtractorTest {
 
         AttachmentViewInfo attachmentViewInfo = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
 
-        assertTrue(attachmentViewInfo.isContentAvailable);
+        assertTrue(attachmentViewInfo.isContentAvailable());
     }
 
     @Test
@@ -206,6 +206,6 @@ public class AttachmentInfoExtractorTest {
         assertEquals(TEST_SIZE, attachmentViewInfo.size);
         assertEquals(TEST_MIME_TYPE, attachmentViewInfo.mimeType);
         assertFalse(attachmentViewInfo.inlineAttachment);
-        assertTrue(attachmentViewInfo.isContentAvailable);
+        assertTrue(attachmentViewInfo.isContentAvailable());
     }
 }
