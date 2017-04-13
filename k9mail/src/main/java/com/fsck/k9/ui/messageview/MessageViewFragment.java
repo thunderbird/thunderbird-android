@@ -805,7 +805,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     @Override
     public void onSaveAttachment(AttachmentViewInfo attachment) {
         //TODO: check if we have to download the attachment first
-
+        currentAttachmentViewInfo = attachment;
         getAttachmentController(attachment).saveAttachment();
     }
 
