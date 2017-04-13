@@ -66,6 +66,7 @@ import com.fsck.k9.activity.compose.RecipientPresenter;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.compose.SaveMessageTask;
 import com.fsck.k9.activity.misc.Attachment;
+import com.fsck.k9.activity.misc.AttachmentListener;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.fragment.ProgressDialogFragment;
@@ -100,7 +101,7 @@ import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 @SuppressWarnings("deprecation")
 public class MessageCompose extends K9Activity implements OnClickListener,
         CancelListener, OnFocusChangeListener, OnCryptoModeChangedListener,
-        OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback {
+        OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback, AttachmentListener {
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
@@ -216,6 +217,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onOpenPgpSignOnlyChange(boolean enabled) {
         recipientPresenter.onCryptoPgpSignOnlyDisabled();
+    }
+
+    @Override
+    public void onAttachmentAdded() {
+        draftNeedsSaving = true;
     }
 
     public enum Action {
@@ -382,7 +388,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
         quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, mAccount);
-        attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView, getLoaderManager());
+        attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView, getLoaderManager(),this);
 
         mMessageContentView = (EolConvertingEditText)findViewById(R.id.message_content);
         mMessageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
