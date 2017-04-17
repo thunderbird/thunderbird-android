@@ -318,6 +318,11 @@
         <incoming uri="imap+tls+://posteo.de" username="$email" />
         <outgoing uri="smtp+tls+://posteo.de" username="$email" />
     </provider>
+    <provider id="systemliorg" label="systemli.org" domain="systemli.org">
+        <incoming uri="imap+ssl+://mail.systemli.org" username="$email" />
+        <outgoing uri="smtp+tls+://mail.systemli.org" username="$email" />
+    </provider>
+
     <!-- GMX variants -->
     <provider id="gmx.net" label="GMX.net" domain="gmx.net">
         <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
