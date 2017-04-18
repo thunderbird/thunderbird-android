@@ -137,6 +137,10 @@
     	<incoming uri="pop3+ssl+://fencepost.gnu.org" username="$user" />
     	<outgoing uri="smtp+tls+://fencepost.gnu.org" username="$user" />
     </provider>
+    <provider id="riseup" label="Riseup Networks" domain="riseup.net">
+    	<incoming uri="imap+ssl+://mail.riseup.net" username="$user" />
+    	<outgoing uri="smtp+tls+://mail.riseup.net" username="$user" />
+    </provider>	
 
     <!-- Mail.com Variants -->
     <provider id="mail.com" label="Mail.com" domain="mail.com">
