@@ -1,0 +1,34 @@
+From: Alice <alice@testsuite.autocrypt.org>
+To: Autocrypt-Bot <bot@autocrypt.org>
+Subject: an INBOME RSA test
+INBOME: to=alice@testsuite.autocrypt.org; key=
+ mQENBFhVF+ABCADu17FBUgA3mCemeKbNaBTyWe3VGxjbu7fUyHgdLK7i3tnd7IRtxQy/AEN2t6Vq
+ 0/xeZEAKYRInsHI/HjvmhqPeWFzipk71jRQ02WUY1pZytFjYNIrTdMk4eLYdC1N0go83PU33V4R8
+ fc2fWHD8N5JPsDH2xOB6WNWkMPxgMbtGIa0QTx7TINhDif4/1/VcrX3wz1gZ6xYI+sujbC54iBZo
+ qbEfu4SFVvp53d+a1plxBzuZ/X6nqJqcysiS7ORMieBvU6W/mVeiAxwN4qcAI5s+rGmRnP8ltONK
+ /P1ScH6lmELgqm8Z/M0wdiYgywme/bdEQOg3s0S/8nCIFmwUchN7ABEBAAG0HWFsaWNlQHRlc3Rz
+ dWl0ZS5hdXRvY3J5cHQub3JniQFOBBMBCAA4FiEEfi47NkGai9tG9hBruvxTPNmTvX8FAlhVF+AC
+ GwMFCwkIBwIGFQgJCgsCBBYCAwECHgECF4AACgkQuvxTPNmTvX/k4wf+JJZ0M0rZeAXbnxdR6HDU
+ ZYL734Z8x/HRpz3vzK4VQQJ4oIbUQPwydZmAlTlglQY48IWWOdJnYvn2pIhlTM/T8q9ZfmOyp6i1
+ jxFCPT+2ma4DjNOqYFhfnULE/MYc6xeVaBcwGj7yvAW7YY7156/wDo6+9TCd/a9mzOFCGS0yQoRa
+ K3uDajA+G/SmbC8t/3X8+5sapvi9Ru0HNkIzaj1jhH+kW6628E7nkf9aN9LodXHfs1UtfuLqM8VG
+ Ysk9474x9QxbsrJ4YvXeFwM9zAs+Pvj4lnpH/0WOU8jJc3uarluGH58kTHM5/5+p0TeMpOHX7OEw
+ JndsBOV9gFc6FMx4hLkBDQRYVRfiAQgA3ad+Aat4UY8xvQQutLYb8e417XZN1zVmKypyReB0l0Zf
+ HA6Qc7uxnJQ7dzIEZAxdnjvTYJaCFrOCBXAyPHpShVMpKqQP+kBBY/WiC3BSUALR3xqp7k5/sjLD
+ +K4dAacXEc7nyXP5o5+oqBXEH8Ls5X440c9A3EdsvVlncvSW5ILLItlFHmQd6f1ynnjK+FQwYJRJ
+ ypDuqJpYkA1vn7+XxeQShpX105rM3C8tJUxRAP3QFimenn4Zm2BDhQpCneuBt239rkXOAXsR0PnJ
+ fV8eNAEsE8IIqnPoSlBme5DZAri69+joYmTeSKGuj4aoxzDlx1AQigwpMISLciTXLnJypwARAQAB
+ iQE2BBgBCAAgFiEEfi47NkGai9tG9hBruvxTPNmTvX8FAlhVF+ICGwwACgkQuvxTPNmTvX8dOwf9
+ H72BGoYJkuuFrbQ6F/mH7gG9z3ytQHRD2Z0ja+3O7YnJBpotHFFjF7yHGj0FtmQR0Q7KnhkJ/3mv
+ fkvuaH3Gcjli/E7VASastuFDFkGANLmGZVGQQ2iTYFG1aejjtGb01vcaPrgE9WDueMB+Pn6/QbDc
+ 5SWCrVWrRFZKrwbAGw35GySoFYpxXyCNsk6q6Db56plllPZjrYj7axF0yN536D1ntEVFDOdKZq8x
+ Tb9P/4Tq9NKRLE4+aO6qCqEOz+V1OeOvYLw58BfnzXY8rXF93D/86YLyilv6p5WGaS/cRhIzr+Xq
+ +qBLD/vW+dh72e8MvcduX3tXV3Vkg0mkGekdOw==
+Date: Sat, 17 Dec 2016 10:07:48 +0100
+Message-ID: <rsa2048-simple-to-bot@testsuite.autocrypt.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+
+This contains a default, minimal INBOME header using an RSA 2048 key.
+
+This should be importable and valid by any agent supporting INBOME level 0.
