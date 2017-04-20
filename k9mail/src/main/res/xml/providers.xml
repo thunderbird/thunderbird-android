@@ -362,6 +362,14 @@
         <incoming uri="imap+ssl+://mail.mycosmos.gr" username="$email" />
         <outgoing uri="smtp+tls+://mail.mycosmos.gr" username="$email" />
     </provider>
+    <provider id="espiv" label="Espiv.net" domain="espiv.net">
+        <incoming uri="imap+ssl+://mail.espiv.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.espiv.net" username="$email" />
+    </provider>
+    <provider id="squat" label="Squat.gr" domain="squat.gr">
+        <incoming uri="imap+ssl+://mail.espiv.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.espiv.net" username="$email" />
+    </provider>
 
    <!-- Italy -->
    <provider id="poste" label="poste" domain="poste.it">
