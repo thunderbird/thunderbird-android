@@ -44,7 +44,7 @@ public class FileHelper {
      * Creates a unique file in the given directory by appending a hyphen
      * and a number to the given filename.
      */
-    public static File createUniqueFile(File directory, String filename) {
+    public synchronized static File createUniqueFile(File directory, String filename) {
         File file = new File(directory, filename);
         if (!file.exists()) {
             return file;
