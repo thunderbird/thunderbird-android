@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,6 +33,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import timber.log.Timber;
@@ -115,7 +118,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private static final int DIALOG_RECREATE_ACCOUNT = 3;
     private static final int DIALOG_NO_FILE_MANAGER = 4;
 
-    /*
+    private static final int PERMISSIONS_REQUEST_READ_EXTERNAL_FILES = 1;
+
+    /**
      * Must be serializable hence implementation class used for declaration.
      */
     private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
@@ -1412,19 +1417,44 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
     }
 
-    private void onImport() {
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_READ_EXTERNAL_FILES: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startImportSettingsActivity();
+                }
+            }
+        }
+    }
+
+    private void startImportSettingsActivity() {
         Intent i = new Intent(Intent.ACTION_GET_CONTENT);
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("*/*");
 
         PackageManager packageManager = getPackageManager();
-        List<ResolveInfo> infos = packageManager.queryIntentActivities(i, 0);
+        List<ResolveInfo> info = packageManager.queryIntentActivities(i, 0);
 
-        if (infos.size() > 0) {
+        if (info.size() > 0) {
             startActivityForResult(Intent.createChooser(i, null),
-                                   ACTIVITY_REQUEST_PICK_SETTINGS_FILE);
+                    ACTIVITY_REQUEST_PICK_SETTINGS_FILE);
         } else {
             showDialog(DIALOG_NO_FILE_MANAGER);
+        }
+    }
+
+    private void onImport() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_READ_EXTERNAL_FILES);
+        } else {
+            startImportSettingsActivity();
         }
     }
 
