@@ -5,6 +5,8 @@ package com.fsck.k9.mail.internet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -932,7 +934,9 @@ public class MimeUtility {
             return null;
         }
         headerValue = headerValue.replaceAll("\r|\n", "");
-        String[] parts = headerValue.split(";");
+
+        String[] parts = splitHeaderParameters(headerValue);
+
         if (parameterName == null && parts.length > 0) {
             return parts[0].trim();
         }
@@ -952,6 +956,45 @@ public class MimeUtility {
             }
         }
         return null;
+    }
+
+    private static String[] splitHeaderParameters(String headerValue) {
+        if(!headerValue.contains("\"")) {
+            return headerValue.split(";");
+        } else {
+            String remainingHeader = headerValue;
+            ArrayList<String> parts = new ArrayList<>();
+            boolean hasFirstQuote = false;
+            int position = 0;
+            while(remainingHeader.indexOf("\"", position) > -1) {
+                if(!hasFirstQuote) {
+                    int semicolonBeforeQuote = remainingHeader.indexOf(";", position);
+                    if(semicolonBeforeQuote > -1 &&
+                            remainingHeader.indexOf("\"", position) > semicolonBeforeQuote) {
+                        parts.add(remainingHeader.substring(0, semicolonBeforeQuote));
+                        remainingHeader = remainingHeader.substring(semicolonBeforeQuote+1);
+                    } else {
+                        hasFirstQuote = true;
+                        position = remainingHeader.indexOf("\"", position) + 1;
+                    }
+                } else {
+                    hasFirstQuote = false;
+                    int secondQuote = remainingHeader.indexOf("\"", position);
+                    int semicolonBetweenQuotes = remainingHeader.indexOf(';', secondQuote);
+                    if(semicolonBetweenQuotes > -1) {
+                        parts.add(remainingHeader.substring(0, semicolonBetweenQuotes));
+                        remainingHeader = remainingHeader.substring(semicolonBetweenQuotes+1);
+                    } else {
+                        parts.add(remainingHeader);
+                        break;
+                    }
+                }
+            }
+            if(remainingHeader.trim().length() > 0) {
+                parts.add(remainingHeader);
+            }
+            return parts.toArray(new String[parts.size()]);
+        }
     }
 
     public static Part findFirstPartByMimeType(Part part, String mimeType) {
