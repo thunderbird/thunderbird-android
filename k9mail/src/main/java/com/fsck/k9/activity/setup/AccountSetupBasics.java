@@ -78,6 +78,10 @@ public class AccountSetupBasics extends K9Activity
         context.startActivity(i);
     }
 
+    /**
+     * Create the activity
+     * With this activity the user can add a mail account into the K9mail App
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +97,10 @@ public class AccountSetupBasics extends K9Activity
         mManualSetupButton.setOnClickListener(this);
     }
 
+    /**
+     * initialize IHM element listener and implement the method called when user click on checkbox for
+     * show password
+     */
     private void initializeViewListeners() {
         mEmailView.addTextChangedListener(this);
         mPasswordView.addTextChangedListener(this);
@@ -107,6 +115,10 @@ public class AccountSetupBasics extends K9Activity
 
     }
 
+    /**
+     * Save the instance state
+     * @param outState
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -118,6 +130,7 @@ public class AccountSetupBasics extends K9Activity
         }
         outState.putBoolean(STATE_KEY_CHECKED_INCOMING, mCheckedIncoming);
     }
+
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -139,6 +152,10 @@ public class AccountSetupBasics extends K9Activity
         showPassword(mShowPasswordCheckBox.isChecked());
     }
 
+    /**
+     * call before the view is created
+     * @param savedInstanceState
+     */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -197,6 +214,10 @@ public class AccountSetupBasics extends K9Activity
         }
     }
 
+    /**
+     * This method was called when user clic on the "show password" button
+     * @param show the boolean value of show
+     */
     private void showPassword(boolean show) {
         int cursorPosition = mPasswordView.getSelectionStart();
         if (show) {
@@ -207,6 +228,9 @@ public class AccountSetupBasics extends K9Activity
         mPasswordView.setSelection(cursorPosition);
     }
 
+    /**
+     *
+     */
     private void validateFields() {
         boolean clientCertificateChecked = mClientCertificateCheckBox.isChecked();
         String clientCertificateAlias = mClientCertificateSpinner.getAlias();
@@ -272,6 +296,10 @@ public class AccountSetupBasics extends K9Activity
         return null;
     }
 
+    /**
+     * This method was called when the user clic on the confirm button when he's adding
+     * a new email account
+     */
     private void finishAutoSetup() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
