@@ -37,6 +37,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.message.PgpMessageBuilder;
+import com.fsck.k9.view.RecipientSelectView;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -45,7 +46,7 @@ import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 
 
-public class RecipientPresenter implements PermissionPingCallback {
+public class RecipientPresenter implements PermissionPingCallback, RecipientSelectView.DragListener {
     private static final String STATE_KEY_CC_SHOWN = "state:ccShown";
     private static final String STATE_KEY_BCC_SHOWN = "state:bccShown";
     private static final String STATE_KEY_LAST_FOCUSED_TYPE = "state:lastFocusedType";
@@ -80,7 +81,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     // TODO initialize cryptoMode to other values under some circumstances, e.g. if we reply to an encrypted e-mail
     private CryptoMode currentCryptoMode = CryptoMode.OPPORTUNISTIC;
     private boolean cryptoEnablePgpInline = false;
-
+    private int dragOriginViewId = -1;
 
     public RecipientPresenter(Context context, LoaderManager loaderManager, RecipientMvpView recipientMvpView,
             Account account, ComposePgpInlineDecider composePgpInlineDecider, ReplyToParser replyToParser,
@@ -260,6 +261,25 @@ public class RecipientPresenter implements PermissionPingCallback {
         if (noContactPickerAvailable) {
             menu.findItem(R.id.add_from_contacts).setVisible(false);
         }
+    }
+
+    @Override
+    public void onDragStart(int viewId) {
+        onClickRecipientExpander();
+        dragOriginViewId = viewId;
+    }
+
+    @Override
+    public void onDragEnd() {
+        dragOriginViewId = -1;
+    }
+
+    public boolean isDragTakingPlace() {
+        return dragOriginViewId != -1;
+    }
+
+    public void restoreDroppedToken() {
+        recipientMvpView.restoreDroppedToken(dragOriginViewId);
     }
 
     public void onSwitchAccount(Account account) {

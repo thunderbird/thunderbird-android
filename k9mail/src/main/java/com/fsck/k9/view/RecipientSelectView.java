@@ -71,7 +71,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private Recipient alternatesPopupRecipient;
     private TokenListener<Recipient> listener;
     private GestureDetectorCompat gestureDetector;
-
+    private DragState previousDragState;
 
     public RecipientSelectView(Context context) {
         super(context);
@@ -191,6 +191,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
     }
 
+    public void restoreDroppedToken() {
+        addObject(previousDragState.getDraggedRecipient(), previousDragState.getAlternateText());
+    }
+
     @Override
     protected View getViewForObject(Recipient recipient) {
         View view = inflateLayout();
@@ -209,7 +213,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         return layoutInflater.inflate(R.layout.recipient_token_item, null, false);
     }
 
-    private void bindObjectView(final Recipient recipient, View view) {
+    private void bindObjectView(Recipient recipient, View view) {
         RecipientTokenViewHolder holder = (RecipientTokenViewHolder) view.getTag();
 
         holder.vName.setText(recipient.getDisplayNameOrAddress());
@@ -310,8 +314,9 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         View view = getTokenViewForRecipient(recipient);
         DragShadowBuilder dragShadowBuilder = new DragShadowBuilder(view);
 
+        previousDragState = new DragState(recipient, clipData.getItemAt(0).getText());
         if (dragListener != null) {
-            dragListener.onDragStart(this.getId(), recipient, clipData.getItemAt(0).getText());
+            dragListener.onDragStart(getId());
         }
         boolean dragSuccess = startDrag(clipData, dragShadowBuilder, recipient, 0);
         if (dragSuccess) {
@@ -748,8 +753,26 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
     }
 
+    private class DragState {
+        private Recipient draggedRecipient;
+        private CharSequence alternateText;
+
+        public DragState(Recipient recipient, CharSequence text) {
+            draggedRecipient = recipient;
+            alternateText = text;
+        }
+
+        public Recipient getDraggedRecipient() {
+            return draggedRecipient;
+        }
+
+        public CharSequence getAlternateText() {
+            return alternateText;
+        }
+    }
+
     public interface DragListener {
-        void onDragStart(int riginViewId, Recipient recipient, CharSequence text);
+        void onDragStart(int originViewId);
         void onDragEnd();
     }
 }

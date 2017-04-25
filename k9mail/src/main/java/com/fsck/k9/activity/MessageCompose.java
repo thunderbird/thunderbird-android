@@ -441,7 +441,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void addDropListener() {
-        RecipientDropListener listener = new RecipientDropListener();
+        EditTextDropListener listener = new EditTextDropListener();
         subjectView.setOnDragListener(listener);
         messageContentView.setOnDragListener(listener);
         signatureView.setOnDragListener(listener);
@@ -885,7 +885,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         switch (v.getId()) {
             case R.id.message_content:
             case R.id.subject:
-                if (hasFocus && !recipientMvpView.isDragTakingPlace()) {
+                if (hasFocus && !recipientPresenter.isDragTakingPlace()) {
                     recipientPresenter.onNonRecipientFieldFocused();
                 }
                 break;
@@ -1809,7 +1809,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private class RecipientDropListener implements View.OnDragListener {
+    private class EditTextDropListener implements View.OnDragListener {
         public boolean onDrag(View view, DragEvent dragEvent) {
             if (dragEvent.getAction() == DragEvent.ACTION_DROP) {
                 recipientMvpView.restoreDroppedToken();
