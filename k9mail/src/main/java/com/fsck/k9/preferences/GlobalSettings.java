@@ -285,10 +285,10 @@ public class GlobalSettings {
         s.put("pgpSignOnlyDialogCounter", Settings.versions(
                 new V(45, new IntegerRangeSetting(0, Integer.MAX_VALUE, 0))
         ));
-        s.put("openpgpProvider", Settings.versions(
+        s.put("openPgpProvider", Settings.versions(
                 new V(46, new StringSetting(K9.NO_OPENPGP_PROVIDER))
         ));
-        s.put("openpgpSupportSignOnly", Settings.versions(
+        s.put("openPgpSupportSignOnly", Settings.versions(
                 new V(47, new BooleanSetting(false))
         ));
 
