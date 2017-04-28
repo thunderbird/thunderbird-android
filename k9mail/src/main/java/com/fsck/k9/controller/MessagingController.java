@@ -63,10 +63,13 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingExpunge;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
+import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
@@ -1482,8 +1485,9 @@ public class MessagingController {
         /*
          * Now download the parts we're interested in storing.
          */
+        BodyFactory bodyFactory = new DefaultBodyFactory();
         for (Part part : viewables) {
-            remoteFolder.fetchPart(message, part, null);
+            remoteFolder.fetchPart(message, part, null, bodyFactory);
         }
         // Store the updated message locally
         localFolder.appendMessages(Collections.singletonList(message));
@@ -2551,8 +2555,17 @@ public class MessagingController {
                     remoteFolder = remoteStore.getFolder(folderName);
                     remoteFolder.open(Folder.OPEN_MODE_RW);
 
+                    ProgressBodyFactory bodyFactory = new ProgressBodyFactory(new ProgressListener() {
+                        @Override
+                        public void updateProgress(int progress) {
+                            for (MessagingListener listener : getListeners()) {
+                                listener.updateProgress(progress);
+                            }
+                        }
+                    });
+
                     Message remoteMessage = remoteFolder.getMessage(message.getUid());
-                    remoteFolder.fetchPart(remoteMessage, part, null);
+                    remoteFolder.fetchPart(remoteMessage, part, null, bodyFactory);
 
                     localFolder.addPartToMessage(message, part);
 

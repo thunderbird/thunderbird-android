@@ -57,7 +57,7 @@ public class AttachmentController {
     }
 
     public void viewAttachment() {
-        if (!attachment.isContentAvailable) {
+        if (!attachment.isContentAvailable()) {
             downloadAndViewAttachment((LocalPart) attachment.part);
         } else {
             viewLocalAttachment();
@@ -100,6 +100,7 @@ public class AttachmentController {
         controller.loadAttachment(account, message, attachment.part, new SimpleMessagingListener() {
             @Override
             public void loadAttachmentFinished(Account account, Message message, Part part) {
+                attachment.setContentAvailable();
                 messageViewFragment.hideAttachmentLoadingDialogOnMainThread();
                 messageViewFragment.runOnMainThread(attachmentDownloadedCallback);
             }
@@ -129,7 +130,7 @@ public class AttachmentController {
             return;
         }
 
-        if (!attachment.isContentAvailable) {
+        if (!attachment.isContentAvailable()) {
             downloadAndSaveAttachmentTo((LocalPart) attachment.part, directory);
         } else {
             saveLocalAttachmentTo(directory);
