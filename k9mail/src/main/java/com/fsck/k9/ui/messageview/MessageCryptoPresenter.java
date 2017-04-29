@@ -24,6 +24,7 @@ import timber.log.Timber;
 
 public class MessageCryptoPresenter implements OnCryptoClickListener {
     public static final int REQUEST_CODE_UNKNOWN_KEY = 123;
+    public static final int REQUEST_CODE_SECURITY_WARNING = 124;
 
 
     // injected state
@@ -161,7 +162,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             return;
         }
         Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext());
-        boolean showDetailButton = cryptoResultAnnotation.getOpenPgpInsecureWarningPendingIntent() != null;
+        boolean showDetailButton = cryptoResultAnnotation.hasOpenPgpInsecureWarningPendingIntent();
         messageView.showMessageCryptoWarning(messageViewInfo, providerIcon, warningStringRes, showDetailButton);
     }
 
@@ -187,19 +188,27 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
 
     @SuppressWarnings("UnusedParameters") // for consistency with Activity.onActivityResult
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode != REQUEST_CODE_UNKNOWN_KEY) {
+        if (requestCode == REQUEST_CODE_UNKNOWN_KEY) {
+            if (resultCode != Activity.RESULT_OK) {
+                return;
+            }
+
+            messageCryptoMvpView.restartMessageCryptoProcessing();
+        } else if (requestCode == REQUEST_CODE_SECURITY_WARNING) {
+            if (overrideCryptoWarning || resultCode != Activity.RESULT_OK) {
+                return;
+            }
+
+            overrideCryptoWarning = true;
+            messageCryptoMvpView.redisplayMessage();
+        } else {
             throw new IllegalStateException("got an activity result that wasn't meant for us. this is a bug!");
         }
-
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-
-        messageCryptoMvpView.restartMessageCryptoProcessing();
     }
 
     private void displayCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus) {
-        messageCryptoMvpView.showCryptoInfoDialog(displayStatus);
+        messageCryptoMvpView.showCryptoInfoDialog(
+                displayStatus, cryptoResultAnnotation.hasOpenPgpInsecureWarningPendingIntent());
     }
 
     private void launchPendingIntent(CryptoResultAnnotation cryptoResultAnnotation) {
@@ -240,7 +249,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpInsecureWarningPendingIntent();
             if (pendingIntent != null) {
                 messageCryptoMvpView.startPendingIntentForCryptoPresenter(
-                        pendingIntent.getIntentSender(), null, null, 0, 0, 0);
+                        pendingIntent.getIntentSender(), REQUEST_CODE_SECURITY_WARNING, null, 0, 0, 0);
             }
         } catch (IntentSender.SendIntentException e) {
             Timber.e(e, "SendIntentException");
@@ -279,7 +288,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
         void startPendingIntentForCryptoPresenter(IntentSender si, Integer requestCode, Intent fillIntent,
                 int flagsMask, int flagValues, int extraFlags) throws IntentSender.SendIntentException;
 
-        void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus);
+        void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus, boolean hasSecurityWarning);
         void showCryptoConfigDialog();
     }
 }

@@ -130,6 +130,10 @@ public final class CryptoResultAnnotation {
         return openPgpPendingIntent;
     }
 
+    public boolean hasOpenPgpInsecureWarningPendingIntent() {
+        return openPgpInsecureWarningPendingIntent != null;
+    }
+
     @Nullable
     public PendingIntent getOpenPgpInsecureWarningPendingIntent() {
         return openPgpInsecureWarningPendingIntent;
@@ -170,7 +174,6 @@ public final class CryptoResultAnnotation {
     public CryptoResultAnnotation getEncapsulatedResult() {
         return encapsulatedResult;
     }
-
 
     public enum CryptoError {
         OPENPGP_OK,
