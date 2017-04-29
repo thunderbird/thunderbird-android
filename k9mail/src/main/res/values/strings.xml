@@ -1167,6 +1167,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_disabled">Message is not encrypted</string>
 
     <string name="crypto_msg_encrypted_error">Message is encrypted, but there was a decryption error.</string>
+    <string name="crypto_msg_encrypted_insecure">Message is encrypted but insecure!</string>
     <string name="crypto_msg_signed_error">Message is signed, but the signature could not be verified.</string>
     <string name="crypto_msg_encrypted_no_provider">Message is encrypted, but no crypto app is configured.</string>
     <string name="crypto_msg_unsupported_encrypted">Message is encrypted, but in an unsupported format.</string>

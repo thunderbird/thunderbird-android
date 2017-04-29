@@ -122,6 +122,7 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             }
 
             case ENCRYPTED_ERROR:
+            case ENCRYPTED_INSECURE:
             case UNSUPPORTED_ENCRYPTED: {
                 Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext());
                 if (messageViewInfo.cryptoResultAnnotation.hasReplacementData()) {
