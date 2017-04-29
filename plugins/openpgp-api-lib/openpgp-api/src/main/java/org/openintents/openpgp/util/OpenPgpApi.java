@@ -263,10 +263,12 @@ public class OpenPgpApi {
     public static final String EXTRA_PROGRESS_MESSENGER = "progress_messenger";
     public static final String EXTRA_DATA_LENGTH = "data_length";
     public static final String EXTRA_SENDER_ADDRESS = "sender_address";
+    public static final String EXTRA_SUPPORT_OVERRIDE_CRYPTO_WARNING = "support_override_crpto_warning";
     public static final String RESULT_SIGNATURE = "signature";
     public static final String RESULT_DECRYPTION = "decryption";
     public static final String RESULT_METADATA = "metadata";
     public static final String RESULT_INSECURE_DETAIL_INTENT = "insecure_detail_intent";
+    public static final String RESULT_OVERRIDE_CRYPTO_WARNING = "override_crypto_warning";
     // This will be the charset which was specified in the headers of ascii armored input, if any
     public static final String RESULT_CHARSET = "charset";
 

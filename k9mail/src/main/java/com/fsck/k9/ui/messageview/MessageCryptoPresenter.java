@@ -72,6 +72,10 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             return false;
         }
 
+        if (cryptoResultAnnotation.isOverrideSecurityWarning()) {
+            overrideCryptoWarning = true;
+        }
+
         messageView.getMessageHeaderView().setCryptoStatus(displayStatus);
 
         switch (displayStatus) {
