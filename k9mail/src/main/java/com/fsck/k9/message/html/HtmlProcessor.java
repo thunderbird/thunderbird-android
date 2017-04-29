@@ -30,7 +30,7 @@ public class HtmlProcessor {
                 HtmlConverter.cssStylePre());
     }
 
-    static String toCompactString(Document document) {
+    public static String toCompactString(Document document) {
         document.outputSettings()
                 .prettyPrint(false)
                 .indentAmount(0);
