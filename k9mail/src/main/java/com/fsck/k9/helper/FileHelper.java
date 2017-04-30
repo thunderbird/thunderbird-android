@@ -4,11 +4,13 @@ package com.fsck.k9.helper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
+import org.apache.commons.io.IOUtils;
 
 
 public class FileHelper {
@@ -49,16 +51,17 @@ public class FileHelper {
         }
         // Get the extension of the file, if any.
         int index = filename.lastIndexOf('.');
-        String format;
+        String name;
+        String extension;
         if (index != -1) {
-            String name = filename.substring(0, index);
-            String extension = filename.substring(index);
-            format = name + "-%d" + extension;
+            name = filename.substring(0, index);
+            extension = filename.substring(index);
         } else {
-            format = filename + "-%d";
+            name = filename;
+            extension = "";
         }
         for (int i = 2; i < Integer.MAX_VALUE; i++) {
-            file = new File(directory, String.format(Locale.US, format, i));
+            file = new File(directory, String.format(Locale.US, "%s-%d%s", name, i, extension));
             if (!file.exists()) {
                 return file;
             }
@@ -70,44 +73,86 @@ public class FileHelper {
         final File file = new File(parentDir, name);
         try {
             if (!file.exists()) {
-                file.createNewFile();
+                if (!file.createNewFile()) {
+                    Timber.d("Unable to create file: %s", file.getAbsolutePath());
+                }
             } else {
-                file.setLastModified(System.currentTimeMillis());
+                if (!file.setLastModified(System.currentTimeMillis())) {
+                    Timber.d("Unable to change last modification date: %s", file.getAbsolutePath());
+                }
             }
         } catch (Exception e) {
-            Log.d(K9.LOG_TAG, "Unable to touch file: " + file.getAbsolutePath(), e);
+            Timber.d(e, "Unable to touch file: %s", file.getAbsolutePath());
         }
+    }
+
+    private static void copyFile(File from, File to) throws IOException {
+        FileInputStream in = new FileInputStream(from);
+        FileOutputStream out = new FileOutputStream(to);
+        try {
+            byte[] buffer = new byte[1024];
+            int count;
+            while ((count = in.read(buffer)) > 0) {
+                out.write(buffer, 0, count);
+            }
+            out.close();
+        } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
+        }
+    }
+
+    public static void renameOrMoveByCopying(File from, File to) throws IOException {
+        deleteFileIfExists(to);
+
+        boolean renameFailed = !from.renameTo(to);
+        if (renameFailed) {
+            copyFile(from, to);
+
+            boolean deleteFromFailed = !from.delete();
+            if (deleteFromFailed) {
+                Timber.e("Unable to delete source file after copying to destination!");
+            }
+        }
+    }
+
+    private static void deleteFileIfExists(File to) throws IOException {
+        boolean fileDoesNotExist = !to.exists();
+        if (fileDoesNotExist) {
+            return;
+        }
+
+        boolean deleteOk = to.delete();
+        if (deleteOk) {
+            return;
+        }
+
+        throw new IOException("Unable to delete file: " + to.getAbsolutePath());
     }
 
     public static boolean move(final File from, final File to) {
         if (to.exists()) {
-            to.delete();
+            if (!to.delete()) {
+                Timber.d("Unable to delete file: %s", to.getAbsolutePath());
+            }
         }
-        to.getParentFile().mkdirs();
+
+        if (!to.getParentFile().mkdirs()) {
+            Timber.d("Unable to make directories: %s", to.getParentFile().getAbsolutePath());
+        }
 
         try {
-            FileInputStream in = new FileInputStream(from);
-            try {
-                FileOutputStream out = new FileOutputStream(to);
-                try {
-                    byte[] buffer = new byte[1024];
-                    int count = -1;
-                    while ((count = in.read(buffer)) > 0) {
-                        out.write(buffer, 0, count);
-                    }
-                } finally {
-                    out.close();
-                }
-            } finally {
-                try { in.close(); } catch (Throwable ignore) {}
+            copyFile(from, to);
+
+            boolean deleteFromFailed = !from.delete();
+            if (deleteFromFailed) {
+                Timber.e("Unable to delete source file after copying to destination!");
             }
-            from.delete();
             return true;
         } catch (Exception e) {
-            Log.w(K9.LOG_TAG, "cannot move " + from.getAbsolutePath() + " to " + to.getAbsolutePath(), e);
+            Timber.w(e, "cannot move %s to %s", from.getAbsolutePath(), to.getAbsolutePath());
             return false;
         }
-
     }
 
     public static void moveRecursive(final File fromDir, final File toDir) {
@@ -117,38 +162,43 @@ public class FileHelper {
         if (!fromDir.isDirectory()) {
             if (toDir.exists()) {
                 if (!toDir.delete()) {
-                    Log.w(K9.LOG_TAG, "cannot delete already existing file/directory " + toDir.getAbsolutePath());
+                    Timber.w("cannot delete already existing file/directory %s", toDir.getAbsolutePath());
                 }
             }
             if (!fromDir.renameTo(toDir)) {
-                Log.w(K9.LOG_TAG, "cannot rename " + fromDir.getAbsolutePath() + " to " + toDir.getAbsolutePath() + " - moving instead");
+                Timber.w("cannot rename %s to %s - moving instead", fromDir.getAbsolutePath(), toDir.getAbsolutePath());
                 move(fromDir, toDir);
             }
             return;
         }
         if (!toDir.exists() || !toDir.isDirectory()) {
             if (toDir.exists()) {
-                toDir.delete();
+                if (!toDir.delete()) {
+                    Timber.d("Unable to delete file: %s", toDir.getAbsolutePath());
+                }
             }
             if (!toDir.mkdirs()) {
-                Log.w(K9.LOG_TAG, "cannot create directory " + toDir.getAbsolutePath());
+                Timber.w("cannot create directory %s", toDir.getAbsolutePath());
             }
         }
         File[] files = fromDir.listFiles();
         for (File file : files) {
             if (file.isDirectory()) {
                 moveRecursive(file, new File(toDir, file.getName()));
-                file.delete();
+                if (!file.delete()) {
+                    Timber.d("Unable to delete file: %s", toDir.getAbsolutePath());
+                }
             } else {
                 File target = new File(toDir, file.getName());
                 if (!file.renameTo(target)) {
-                    Log.w(K9.LOG_TAG, "cannot rename " + file.getAbsolutePath() + " to " + target.getAbsolutePath() + " - moving instead");
+                    Timber.w("cannot rename %s to %s - moving instead",
+                            file.getAbsolutePath(), target.getAbsolutePath());
                     move(file, target);
                 }
             }
         }
         if (!fromDir.delete()) {
-            Log.w(K9.LOG_TAG, "cannot delete " + fromDir.getAbsolutePath());
+            Timber.w("cannot delete %s", fromDir.getAbsolutePath());
         }
     }
 

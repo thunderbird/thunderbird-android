@@ -28,6 +28,7 @@ public class NotificationController {
     private final Context context;
     private final NotificationManagerCompat notificationManager;
     private final CertificateErrorNotifications certificateErrorNotifications;
+    private final AuthenticationErrorNotifications authenticationErrorNotifications;
     private final SyncNotifications syncNotifications;
     private final SendFailedNotifications sendFailedNotifications;
     private final NewMailNotifications newMailNotifications;
@@ -54,6 +55,7 @@ public class NotificationController {
 
         NotificationActionCreator actionBuilder = new NotificationActionCreator(context);
         certificateErrorNotifications = new CertificateErrorNotifications(this);
+        authenticationErrorNotifications = new AuthenticationErrorNotifications(this);
         syncNotifications = new SyncNotifications(this, actionBuilder);
         sendFailedNotifications = new SendFailedNotifications(this, actionBuilder);
         newMailNotifications = NewMailNotifications.newInstance(this, actionBuilder);
@@ -65,6 +67,14 @@ public class NotificationController {
 
     public void clearCertificateErrorNotifications(Account account, boolean incoming) {
         certificateErrorNotifications.clearCertificateErrorNotifications(account, incoming);
+    }
+
+    public void showAuthenticationErrorNotification(Account account, boolean incoming) {
+        authenticationErrorNotifications.showAuthenticationErrorNotification(account, incoming);
+    }
+
+    public void clearAuthenticationErrorNotification(Account account, boolean incoming) {
+        authenticationErrorNotifications.clearAuthenticationErrorNotification(account, incoming);
     }
 
     public void showSendingNotification(Account account) {

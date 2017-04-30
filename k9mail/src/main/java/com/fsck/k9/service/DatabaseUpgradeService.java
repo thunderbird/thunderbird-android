@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -120,10 +120,7 @@ public class DatabaseUpgradeService extends Service {
         boolean success = mRunning.compareAndSet(false, true);
         if (success) {
             // The service wasn't running yet.
-
-            if (K9.DEBUG) {
-                Log.i(K9.LOG_TAG, "DatabaseUpgradeService started");
-            }
+            Timber.i("DatabaseUpgradeService started");
 
             acquireWakelock();
 
@@ -159,10 +156,7 @@ public class DatabaseUpgradeService extends Service {
      */
     private void stopService() {
         stopSelf();
-
-        if (K9.DEBUG) {
-            Log.i(K9.LOG_TAG, "DatabaseUpgradeService stopped");
-        }
+        Timber.i("DatabaseUpgradeService stopped");
 
         releaseWakelock();
         mRunning.set(false);
@@ -200,9 +194,9 @@ public class DatabaseUpgradeService extends Service {
                 // Account.getLocalStore() is blocking and will upgrade the database if necessary
                 account.getLocalStore();
             } catch (UnavailableStorageException e) {
-                Log.e(K9.LOG_TAG, "Database unavailable");
+                Timber.e("Database unavailable");
             } catch (Exception e) {
-                Log.e(K9.LOG_TAG, "Error while upgrading database", e);
+                Timber.e(e, "Error while upgrading database");
             }
 
             mProgress++;

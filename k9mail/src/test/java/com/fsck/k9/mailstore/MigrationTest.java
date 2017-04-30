@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
@@ -28,14 +29,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openintents.openpgp.util.OpenPgpUtils;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 import org.robolectric.shadows.ShadowSQLiteConnection;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
 public class MigrationTest {
 
     Account account;
@@ -44,11 +42,11 @@ public class MigrationTest {
 
     @Before
     public void setUp() throws Exception {
-        K9.DEBUG = true;
+        K9.setDebug(true);
         ShadowLog.stream = System.out;
         ShadowSQLiteConnection.reset();
 
-        account = Preferences.getPreferences(RuntimeEnvironment.application).newAccount();
+        account = getNewAccount();
 
         StorageManager storageManager = StorageManager.getInstance(RuntimeEnvironment.application);
         databaseFile = storageManager.getDatabase(account.getUuid(), account.getLocalStorageProviderId());
@@ -248,11 +246,9 @@ public class MigrationTest {
         LocalBodyPart attachmentPart = (LocalBodyPart) body.getBodyPart(1);
         Assert.assertEquals("image/png", attachmentPart.getMimeType());
         Assert.assertEquals("2", attachmentPart.getServerExtra());
-        Assert.assertEquals("k9small.png", attachmentPart.getDisplayName());
         Assert.assertEquals("attachment", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), null));
         Assert.assertEquals("k9small.png", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), "filename"));
         Assert.assertEquals("2250", MimeUtility.getHeaderParameter(attachmentPart.getDisposition(), "size"));
-        Assert.assertTrue(attachmentPart.isFirstClassAttachment());
 
         FileBackedBody attachmentBody = (FileBackedBody) attachmentPart.getBody();
         Assert.assertEquals(2250, attachmentBody.getSize());
@@ -720,4 +716,12 @@ public class MigrationTest {
         Assert.assertEquals(expectedFilesize, copied);
     }
 
+    private Account getNewAccount() {
+        Preferences preferences = Preferences.getPreferences(RuntimeEnvironment.application);
+
+        //FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
+        preferences.loadAccounts();
+
+        return preferences.newAccount();
+    }
 }

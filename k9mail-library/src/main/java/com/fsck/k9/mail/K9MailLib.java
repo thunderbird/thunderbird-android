@@ -7,7 +7,6 @@ public class K9MailLib {
     private K9MailLib() {
     }
 
-    public static final String LOG_TAG = "k9";
     public static final int PUSH_WAKE_LOCK_TIMEOUT = 60000;
     public static final String IDENTITY_HEADER = "X-K9mail-Identity";
 

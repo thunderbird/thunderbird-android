@@ -2,20 +2,18 @@
 package com.fsck.k9.mail.store.pop3;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
 
 import javax.net.ssl.SSLException;
+import timber.log.Timber;
 
 import java.io.*;
 import java.net.*;
@@ -36,7 +34,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
@@ -70,10 +67,16 @@ public class Pop3Store extends RemoteStore {
      *
      * <p>Possible forms:</p>
      * <pre>
-     * pop3://auth:user:password@server:port ConnectionSecurity.NONE
-     * pop3+tls+://auth:user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
-     * pop3+ssl+://auth:user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
+     * pop3://authType:user:password@server:port
+     *      ConnectionSecurity.NONE
+     * pop3+tls+://authType:user:password@server:port
+     *      ConnectionSecurity.STARTTLS_REQUIRED
+     * pop3+ssl+://authType:user:password@server:port
+     *      ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
+     * 
+     * e.g.
+     * <pre>pop3://PLAIN:admin:pass123@example.org:12345</pre>
      */
     public static ServerSettings decodeUri(String uri) {
         String host;
@@ -256,8 +259,9 @@ public class Pop3Store extends RemoteStore {
     @Override
     public void checkSettings() throws MessagingException {
         Pop3Folder folder = new Pop3Folder(mStoreConfig.getInboxFolderName());
-        folder.open(Folder.OPEN_MODE_RW);
-        if (!mCapabilities.uidl) {
+        try {
+            folder.open(Folder.OPEN_MODE_RW);
+            if (!mCapabilities.uidl) {
             /*
              * Run an additional test to see if UIDL is supported on the server. If it's not we
              * can't service this account.
@@ -267,10 +271,13 @@ public class Pop3Store extends RemoteStore {
              * If the server doesn't support UIDL it will return a - response, which causes
              * executeSimpleCommand to throw a MessagingException, exiting this method.
              */
-            folder.executeSimpleCommand(UIDL_COMMAND);
+                folder.executeSimpleCommand(UIDL_COMMAND);
 
+            }
         }
-        folder.close();
+        finally {
+            folder.close();
+        }
     }
 
     @Override
@@ -449,7 +456,7 @@ public class Pop3Store extends RemoteStore {
                         "MD5 failure during POP3 auth APOP", e);
             }
             byte[] digest = md.digest((timestamp + mPassword).getBytes());
-            String hexDigest = new String(Hex.encodeHex(digest));
+            String hexDigest = Hex.encodeHex(digest);
             try {
                 executeSimpleCommand("APOP " + mUsername + " " + hexDigest, true);
             } catch (Pop3ErrorResponse e) {
@@ -654,7 +661,7 @@ public class Pop3Store extends RemoteStore {
                         // response = "+OK msgNum msgUid"
                         String[] uidParts = response.split(" +");
                         if (uidParts.length < 3 || !"+OK".equals(uidParts[0])) {
-                            Log.e(LOG_TAG, "ERR response: " + response);
+                            Timber.e("ERR response: %s", response);
                             return;
                         }
                         String msgUid = uidParts[2];
@@ -713,7 +720,7 @@ public class Pop3Store extends RemoteStore {
             for (String uid : uids) {
                 if (mUidToMsgMap.get(uid) == null) {
                     if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
-                        Log.d(LOG_TAG, "Need to index UID " + uid);
+                        Timber.d("Need to index UID %s", uid);
                     }
                     unindexedUids.add(uid);
                 }
@@ -739,7 +746,7 @@ public class Pop3Store extends RemoteStore {
                     String msgUid = uidParts[1];
                     if (unindexedUids.contains(msgUid)) {
                         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
-                            Log.d(LOG_TAG, "Got msgNum " + msgNum + " for UID " + msgUid);
+                            Timber.d("Got msgNum %d for UID %s", msgNum, msgUid);
                         }
 
                         Pop3Message message = mUidToMsgMap.get(msgUid);
@@ -754,7 +761,7 @@ public class Pop3Store extends RemoteStore {
 
         private void indexMessage(int msgNum, Pop3Message message) {
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
-                Log.d(LOG_TAG, "Adding index for UID " + message.getUid() + " to msgNum " + msgNum);
+                Timber.d("Adding index for UID %s to msgNum %d", message.getUid(), msgNum);
             }
             mMsgNumToMsgMap.put(msgNum, message);
             mUidToMsgMap.put(message.getUid(), message);
@@ -907,7 +914,7 @@ public class Pop3Store extends RemoteStore {
             if (lines != -1 && (!mTopNotSupported || mCapabilities.top)) {
                 try {
                     if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3 && !mCapabilities.top) {
-                        Log.d(LOG_TAG, "This server doesn't support the CAPA command. " +
+                        Timber.d("This server doesn't support the CAPA command. " +
                               "Checking to see if the TOP command is supported nevertheless.");
                     }
 
@@ -922,7 +929,7 @@ public class Pop3Store extends RemoteStore {
                         throw e;
                     } else {
                         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
-                            Log.d(LOG_TAG, "The server really doesn't support the TOP " +
+                            Timber.d("The server really doesn't support the TOP " +
                                   "command. Using RETR instead.");
                         }
 
@@ -1030,7 +1037,7 @@ public class Pop3Store extends RemoteStore {
             } while ((d = mIn.read()) != -1);
             String ret = sb.toString();
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
-                Log.d(LOG_TAG, "<<< " + ret);
+                Timber.d("<<< %s", ret);
             }
             return ret;
         }
@@ -1124,10 +1131,9 @@ public class Pop3Store extends RemoteStore {
                 if (command != null) {
                     if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
                         if (sensitive && !K9MailLib.isDebugSensitive()) {
-                            Log.d(LOG_TAG, ">>> "
-                                  + "[Command Hidden, Enable Sensitive Debug Logging To Show]");
+                            Timber.d(">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
                         } else {
-                            Log.d(LOG_TAG, ">>> " + command);
+                            Timber.d(">>> %s", command);
                         }
                     }
 
@@ -1174,7 +1180,7 @@ public class Pop3Store extends RemoteStore {
     }//Pop3Folder
 
     static class Pop3Message extends MimeMessage {
-        public Pop3Message(String uid, Pop3Folder folder) {
+        Pop3Message(String uid, Pop3Folder folder) {
             mUid = uid;
             mFolder = folder;
             mSize = -1;

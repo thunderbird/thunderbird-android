@@ -1,15 +1,16 @@
 package com.fsck.k9.preferences;
 
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
@@ -35,15 +36,13 @@ public class Settings {
      *
      * @see SettingsExporter
      */
-    public static final int VERSION = 41;
+    public static final int VERSION = 47;
 
-    public static Map<String, Object> validate(int version, Map<String,
-            TreeMap<Integer, SettingsDescription>> settings,
+    static Map<String, Object> validate(int version, Map<String, TreeMap<Integer, SettingsDescription>> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
 
-        Map<String, Object> validatedSettings = new HashMap<String, Object>();
-        for (Map.Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting :
-                settings.entrySet()) {
+        Map<String, Object> validatedSettings = new HashMap<>();
+        for (Map.Entry<String, TreeMap<Integer, SettingsDescription>> versionedSetting : settings.entrySet()) {
 
             // Get the setting description with the highest version lower than or equal to the
             // supplied content version.
@@ -67,8 +66,10 @@ public class Settings {
 
             boolean useDefaultValue;
             if (!importedSettings.containsKey(key)) {
-                Log.v(K9.LOG_TAG, "Key \"" + key + "\" wasn't found in the imported file." +
-                        ((useDefaultValues) ? " Using default value." : ""));
+                Timber.v("Key \"%s\" wasn't found in the imported file.%s",
+                        key,
+                        (useDefaultValues) ? " Using default value." : "");
+
                 useDefaultValue = useDefaultValues;
             } else {
                 String prettyValue = importedSettings.get(key);
@@ -77,9 +78,11 @@ public class Settings {
                     validatedSettings.put(key, internalValue);
                     useDefaultValue = false;
                 } catch (InvalidSettingValueException e) {
-                    Log.v(K9.LOG_TAG, "Key \"" + key + "\" has invalid value \"" + prettyValue +
-                            "\" in imported file. " +
-                            ((useDefaultValues) ? "Using default value." : "Skipping."));
+                    Timber.v("Key \"%s\" has invalid value \"%s\" in imported file. %s",
+                            key,
+                            prettyValue,
+                            (useDefaultValues) ? "Using default value." : "Skipping.");
+
                     useDefaultValue = useDefaultValues;
                 }
             }
@@ -97,77 +100,84 @@ public class Settings {
      * Upgrade settings using the settings structure and/or special upgrade code.
      *
      * @param version
-     *         The content version of the settings in {@code validatedSettings}.
-     * @param upgraders
+     *         The content version of the settings in {@code validatedSettingsMutable}.
+     * @param customUpgraders
      *         A map of {@link SettingsUpgrader}s for nontrivial settings upgrades.
      * @param settings
      *         The structure describing the different settings, possibly containing multiple
      *         versions.
-     * @param validatedSettings
+     * @param validatedSettingsMutable
      *         The settings as returned by {@link Settings#validate(int, Map, Map, boolean)}.
      *         This map is modified and contains the upgraded settings when this method returns.
      *
      * @return A set of setting names that were removed during the upgrade process or {@code null}
      *         if none were removed.
      */
-    public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> upgraders,
-            Map<String, TreeMap<Integer, SettingsDescription>> settings,
-            Map<String, Object> validatedSettings) {
-
-        Map<String, Object> upgradedSettings = validatedSettings;
+    public static Set<String> upgrade(int version, Map<Integer, SettingsUpgrader> customUpgraders,
+            Map<String, TreeMap<Integer, SettingsDescription>> settings, Map<String, Object> validatedSettingsMutable) {
         Set<String> deletedSettings = null;
 
         for (int toVersion = version + 1; toVersion <= VERSION; toVersion++) {
-
-            // Check if there's an SettingsUpgrader for that version
-            SettingsUpgrader upgrader = upgraders.get(toVersion);
-            if (upgrader != null) {
-                deletedSettings = upgrader.upgrade(upgradedSettings);
+            if (customUpgraders.containsKey(toVersion)) {
+                SettingsUpgrader upgrader = customUpgraders.get(toVersion);
+                deletedSettings = upgrader.upgrade(validatedSettingsMutable);
             }
 
-            // Deal with settings that don't need special upgrade code
-            for (Entry<String, TreeMap<Integer, SettingsDescription>> versions :
-                settings.entrySet()) {
-
-                String settingName = versions.getKey();
-                TreeMap<Integer, SettingsDescription> versionedSettings = versions.getValue();
-
-                // Handle newly added settings
-                if (versionedSettings.firstKey().intValue() == toVersion) {
-
-                    // Check if it was already added to upgradedSettings by the SettingsUpgrader
-                    if (!upgradedSettings.containsKey(settingName)) {
-                        // Insert default value to upgradedSettings
-                        SettingsDescription setting = versionedSettings.get(toVersion);
-                        Object defaultValue = setting.getDefaultValue();
-                        upgradedSettings.put(settingName, defaultValue);
-
-                        if (K9.DEBUG) {
-                            String prettyValue = setting.toPrettyString(defaultValue);
-                            Log.v(K9.LOG_TAG, "Added new setting \"" + settingName +
-                                    "\" with default value \"" + prettyValue + "\"");
-                        }
-                    }
-                }
-
-                // Handle removed settings
-                Integer highestVersion = versionedSettings.lastKey();
-                if (highestVersion.intValue() == toVersion &&
-                        versionedSettings.get(highestVersion) == null) {
-                    upgradedSettings.remove(settingName);
-                    if (deletedSettings == null) {
-                        deletedSettings = new HashSet<String>();
-                    }
-                    deletedSettings.add(settingName);
-
-                    if (K9.DEBUG) {
-                        Log.v(K9.LOG_TAG, "Removed setting \"" + settingName + "\"");
-                    }
-                }
-            }
+            deletedSettings = upgradeSettingsGeneric(settings, validatedSettingsMutable, deletedSettings, toVersion);
         }
 
         return deletedSettings;
+    }
+
+    private static Set<String> upgradeSettingsGeneric(Map<String, TreeMap<Integer, SettingsDescription>> settings,
+            Map<String, Object> validatedSettingsMutable, Set<String> deletedSettingsMutable, int toVersion) {
+        for (Entry<String, TreeMap<Integer, SettingsDescription>> versions : settings.entrySet()) {
+            String settingName = versions.getKey();
+            TreeMap<Integer, SettingsDescription> versionedSettings = versions.getValue();
+
+            boolean isNewlyAddedSetting = versionedSettings.firstKey() == toVersion;
+            if (isNewlyAddedSetting) {
+                boolean wasHandledByCustomUpgrader = validatedSettingsMutable.containsKey(settingName);
+                if (wasHandledByCustomUpgrader) {
+                    continue;
+                }
+
+                SettingsDescription setting = versionedSettings.get(toVersion);
+                if (setting == null) {
+                    throw new AssertionError("First version of a setting must be non-null!");
+                }
+                upgradeSettingInsertDefault(validatedSettingsMutable, settingName, setting);
+            }
+
+            Integer highestVersion = versionedSettings.lastKey();
+            boolean isRemovedSetting = (highestVersion == toVersion && versionedSettings.get(highestVersion) == null);
+            if (isRemovedSetting) {
+                if (deletedSettingsMutable == null) {
+                    deletedSettingsMutable = new HashSet<>();
+                }
+                upgradeSettingRemove(validatedSettingsMutable, deletedSettingsMutable, settingName);
+            }
+        }
+        return deletedSettingsMutable;
+    }
+
+    private static <T> void upgradeSettingInsertDefault(Map<String, Object> validatedSettingsMutable,
+            String settingName, SettingsDescription<T> setting) {
+        T defaultValue = setting.getDefaultValue();
+        validatedSettingsMutable.put(settingName, defaultValue);
+
+        if (K9.isDebug()) {
+            String prettyValue = setting.toPrettyString(defaultValue);
+            Timber.v("Added new setting \"%s\" with default value \"%s\"", settingName, prettyValue);
+        }
+    }
+
+    private static void upgradeSettingRemove(Map<String, Object> validatedSettingsMutable,
+            Set<String> deletedSettingsMutable, String settingName) {
+        validatedSettingsMutable.remove(settingName);
+        deletedSettingsMutable.add(settingName);
+
+        Timber.v("Removed setting \"%s\"", settingName);
     }
 
     /**
@@ -184,15 +194,13 @@ public class Settings {
      */
     public static Map<String, String> convert(Map<String, Object> settings,
             Map<String, TreeMap<Integer, SettingsDescription>> settingDescriptions) {
-
-        Map<String, String> serializedSettings = new HashMap<String, String>();
+        Map<String, String> serializedSettings = new HashMap<>();
 
         for (Entry<String, Object> setting : settings.entrySet()) {
             String settingName = setting.getKey();
             Object internalValue = setting.getValue();
 
-            TreeMap<Integer, SettingsDescription> versionedSetting =
-                settingDescriptions.get(settingName);
+            TreeMap<Integer, SettingsDescription> versionedSetting = settingDescriptions.get(settingName);
             Integer highestVersion = versionedSetting.lastKey();
             SettingsDescription settingDesc = versionedSetting.get(highestVersion);
 
@@ -201,10 +209,7 @@ public class Settings {
 
                 serializedSettings.put(settingName, stringValue);
             } else {
-                if (K9.DEBUG) {
-                    Log.w(K9.LOG_TAG, "Settings.serialize() called with a setting that should " +
-                            "have been removed: " + settingName);
-                }
+                Timber.w("Settings.convert() called with a setting that should have been removed: %s", settingName);
             }
         }
 
@@ -227,9 +232,8 @@ public class Settings {
      * @return A {@code TreeMap} using the version number as key, the {@code SettingsDescription}
      *         as value.
      */
-    public static TreeMap<Integer, SettingsDescription> versions(
-            V... versionDescriptions) {
-        TreeMap<Integer, SettingsDescription> map = new TreeMap<Integer, SettingsDescription>();
+    static TreeMap<Integer, SettingsDescription> versions(V... versionDescriptions) {
+        TreeMap<Integer, SettingsDescription> map = new TreeMap<>();
         for (V v : versionDescriptions) {
             map.put(v.version, v.description);
         }
@@ -237,13 +241,7 @@ public class Settings {
     }
 
 
-    /**
-     * Indicates an invalid setting value.
-     *
-     * @see SettingsDescription#fromString(String)
-     * @see SettingsDescription#fromPrettyString(String)
-     */
-    public static class InvalidSettingValueException extends Exception {
+    static class InvalidSettingValueException extends Exception {
         private static final long serialVersionUID = 1L;
     }
 
@@ -260,7 +258,7 @@ public class Settings {
      *   <li>
      *   The one that is used by the internal preference {@link Storage}. It is usually obtained by
      *   calling {@code toString()} on the internal representation of the setting value (see e.g.
-     *   {@link K9#save(android.content.SharedPreferences.Editor)}).
+     *   {@link K9#save(StorageEditor)}).
      *   </li>
      *   <li>
      *   The "pretty" version that is used by the import/export settings file (e.g. colors are
@@ -274,14 +272,14 @@ public class Settings {
      * negligible.
      * </p>
      */
-    public static abstract class SettingsDescription {
+    abstract static class SettingsDescription<T> {
         /**
          * The setting's default value (internal representation).
          */
-        protected Object mDefaultValue;
+        T defaultValue;
 
-        public SettingsDescription(Object defaultValue) {
-            mDefaultValue = defaultValue;
+        SettingsDescription(T defaultValue) {
+            this.defaultValue = defaultValue;
         }
 
         /**
@@ -289,8 +287,8 @@ public class Settings {
          *
          * @return The internal representation of the default value.
          */
-        public Object getDefaultValue() {
-            return mDefaultValue;
+        public T getDefaultValue() {
+            return defaultValue;
         }
 
         /**
@@ -301,7 +299,7 @@ public class Settings {
          *
          * @return The string representation of {@code value}.
          */
-        public String toString(Object value) {
+        public String toString(T value) {
             return value.toString();
         }
 
@@ -316,7 +314,7 @@ public class Settings {
          * @throws InvalidSettingValueException
          *         If {@code value} contains an invalid value.
          */
-        public abstract Object fromString(String value) throws InvalidSettingValueException;
+        public abstract T fromString(String value) throws InvalidSettingValueException;
 
         /**
          * Convert a setting value to the "pretty" string representation.
@@ -326,7 +324,7 @@ public class Settings {
          *
          * @return A pretty-printed version of the setting's value.
          */
-        public String toPrettyString(Object value) {
+        public String toPrettyString(T value) {
             return toString(value);
         }
 
@@ -342,21 +340,16 @@ public class Settings {
          * @throws InvalidSettingValueException
          *         If {@code value} contains an invalid value.
          */
-        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+        public T fromPrettyString(String value) throws InvalidSettingValueException {
             return fromString(value);
         }
     }
 
-    /**
-     * Container to hold a {@link SettingsDescription} instance and a version number.
-     *
-     * @see Settings#versions(V...)
-     */
     public static class V {
         public final Integer version;
         public final SettingsDescription description;
 
-        public V(Integer version, SettingsDescription description) {
+        V(Integer version, SettingsDescription description) {
             this.version = version;
             this.description = description;
         }
@@ -367,7 +360,7 @@ public class Settings {
      *
      * @see Settings#upgrade(int, Map, Map, Map)
      */
-    public interface SettingsUpgrader {
+    interface SettingsUpgrader {
         /**
          * Upgrade the provided settings.
          *
@@ -378,34 +371,28 @@ public class Settings {
          * @return A set of setting names that were removed during the upgrade process or
          *         {@code null} if none were removed.
          */
-        public Set<String> upgrade(Map<String, Object> settings);
+        Set<String> upgrade(Map<String, Object> settings);
     }
 
 
-    /**
-     * A string setting.
-     */
-    public static class StringSetting extends SettingsDescription {
-        public StringSetting(String defaultValue) {
+    static class StringSetting extends SettingsDescription<String> {
+        StringSetting(String defaultValue) {
             super(defaultValue);
         }
 
         @Override
-        public Object fromString(String value) {
+        public String fromString(String value) {
             return value;
         }
     }
 
-    /**
-     * A boolean setting.
-     */
-    public static class BooleanSetting extends SettingsDescription {
-        public BooleanSetting(boolean defaultValue) {
+    static class BooleanSetting extends SettingsDescription<Boolean> {
+        BooleanSetting(boolean defaultValue) {
             super(defaultValue);
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public Boolean fromString(String value) throws InvalidSettingValueException {
             if (Boolean.TRUE.toString().equals(value)) {
                 return true;
             } else if (Boolean.FALSE.toString().equals(value)) {
@@ -415,16 +402,13 @@ public class Settings {
         }
     }
 
-    /**
-     * A color setting.
-     */
-    public static class ColorSetting extends SettingsDescription {
-        public ColorSetting(int defaultValue) {
+    static class ColorSetting extends SettingsDescription<Integer> {
+        ColorSetting(int defaultValue) {
             super(defaultValue);
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 return Integer.parseInt(value);
             } catch (NumberFormatException e) {
@@ -433,13 +417,13 @@ public class Settings {
         }
 
         @Override
-        public String toPrettyString(Object value) {
-            int color = ((Integer) value) & 0x00FFFFFF;
+        public String toPrettyString(Integer value) {
+            int color = value & 0x00FFFFFF;
             return String.format("#%06x", color);
         }
 
         @Override
-        public Object fromPrettyString(String value) throws InvalidSettingValueException {
+        public Integer fromPrettyString(String value) throws InvalidSettingValueException {
             try {
                 if (value.length() == 7) {
                     return Integer.parseInt(value.substring(1), 16) | 0xFF000000;
@@ -450,25 +434,18 @@ public class Settings {
         }
     }
 
-    /**
-     * An {@code Enum} setting.
-     *
-     * <p>
-     * {@link Enum#toString()} is used to obtain the "pretty" string representation.
-     * </p>
-     */
-    public static class EnumSetting<T extends Enum<T>> extends SettingsDescription {
-        private Class<T> mEnumClass;
+    static class EnumSetting<T extends Enum<T>> extends SettingsDescription<T> {
+        private Class<T> enumClass;
 
-        public EnumSetting(Class<T> enumClass, Object defaultValue) {
+        EnumSetting(Class<T> enumClass, T defaultValue) {
             super(defaultValue);
-            mEnumClass = enumClass;
+            this.enumClass = enumClass;
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public T fromString(String value) throws InvalidSettingValueException {
             try {
-                return Enum.valueOf(mEnumClass, value);
+                return Enum.valueOf(enumClass, value);
             } catch (Exception e) {
                 throw new InvalidSettingValueException();
             }
@@ -478,24 +455,24 @@ public class Settings {
     /**
      * A setting that has multiple valid values but doesn't use an {@link Enum} internally.
      *
-     * @param <A>
+     * @param <T>
      *         The type of the internal representation (e.g. {@code Integer}).
      */
-    public abstract static class PseudoEnumSetting<A> extends SettingsDescription {
-        public PseudoEnumSetting(Object defaultValue) {
+    abstract static class PseudoEnumSetting<T> extends SettingsDescription<T> {
+        PseudoEnumSetting(T defaultValue) {
             super(defaultValue);
         }
 
-        protected abstract Map<A, String> getMapping();
+        protected abstract Map<T, String> getMapping();
 
         @Override
-        public String toPrettyString(Object value) {
+        public String toPrettyString(T value) {
             return getMapping().get(value);
         }
 
         @Override
-        public Object fromPrettyString(String value) throws InvalidSettingValueException {
-            for (Entry<A, String> entry : getMapping().entrySet()) {
+        public T fromPrettyString(String value) throws InvalidSettingValueException {
+            for (Entry<T, String> entry : getMapping().entrySet()) {
                 if (entry.getValue().equals(value)) {
                     return entry.getKey();
                 }
@@ -505,16 +482,13 @@ public class Settings {
         }
     }
 
-    /**
-     * A font size setting.
-     */
-    public static class FontSizeSetting extends PseudoEnumSetting<Integer> {
-        private final Map<Integer, String> mMapping;
+    static class FontSizeSetting extends PseudoEnumSetting<Integer> {
+        private final Map<Integer, String> mapping;
 
-        public FontSizeSetting(int defaultValue) {
+        FontSizeSetting(int defaultValue) {
             super(defaultValue);
 
-            Map<Integer, String> mapping = new HashMap<Integer, String>();
+            Map<Integer, String> mapping = new HashMap<>();
             mapping.put(FontSizes.FONT_10SP, "tiniest");
             mapping.put(FontSizes.FONT_12SP, "tiny");
             mapping.put(FontSizes.SMALL, "smaller");
@@ -522,19 +496,19 @@ public class Settings {
             mapping.put(FontSizes.MEDIUM, "medium");
             mapping.put(FontSizes.FONT_20SP, "large");
             mapping.put(FontSizes.LARGE, "larger");
-            mMapping = Collections.unmodifiableMap(mapping);
+            this.mapping = Collections.unmodifiableMap(mapping);
         }
 
         @Override
         protected Map<Integer, String> getMapping() {
-            return mMapping;
+            return mapping;
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer fontSize = Integer.parseInt(value);
-                if (mMapping.containsKey(fontSize)) {
+                if (mapping.containsKey(fontSize)) {
                     return fontSize;
                 }
             } catch (NumberFormatException e) { /* do nothing */ }
@@ -543,34 +517,31 @@ public class Settings {
         }
     }
 
-    /**
-     * A {@link android.webkit.WebView} font size setting.
-     */
-    public static class WebFontSizeSetting extends PseudoEnumSetting<Integer> {
-        private final Map<Integer, String> mMapping;
+    static class WebFontSizeSetting extends PseudoEnumSetting<Integer> {
+        private final Map<Integer, String> mapping;
 
-        public WebFontSizeSetting(int defaultValue) {
+        WebFontSizeSetting(int defaultValue) {
             super(defaultValue);
 
-            Map<Integer, String> mapping = new HashMap<Integer, String>();
+            Map<Integer, String> mapping = new HashMap<>();
             mapping.put(1, "smallest");
             mapping.put(2, "smaller");
             mapping.put(3, "normal");
             mapping.put(4, "larger");
             mapping.put(5, "largest");
-            mMapping = Collections.unmodifiableMap(mapping);
+            this.mapping = Collections.unmodifiableMap(mapping);
         }
 
         @Override
         protected Map<Integer, String> getMapping() {
-            return mMapping;
+            return mapping;
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 Integer fontSize = Integer.parseInt(value);
-                if (mMapping.containsKey(fontSize)) {
+                if (mapping.containsKey(fontSize)) {
                     return fontSize;
                 }
             } catch (NumberFormatException e) { /* do nothing */ }
@@ -579,24 +550,21 @@ public class Settings {
         }
     }
 
-    /**
-     * An integer settings whose values a limited to a certain range.
-     */
-    public static class IntegerRangeSetting extends SettingsDescription {
-        private int mStart;
-        private int mEnd;
+    static class IntegerRangeSetting extends SettingsDescription<Integer> {
+        private int start;
+        private int end;
 
-        public IntegerRangeSetting(int start, int end, int defaultValue) {
+        IntegerRangeSetting(int start, int end, int defaultValue) {
             super(defaultValue);
-            mStart = start;
-            mEnd = end;
+            this.start = start;
+            this.end = end;
         }
 
         @Override
-        public Object fromString(String value) throws InvalidSettingValueException {
+        public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 int intValue = Integer.parseInt(value);
-                if (mStart <= intValue && intValue <= mEnd) {
+                if (start <= intValue && intValue <= end) {
                     return intValue;
                 }
             } catch (NumberFormatException e) { /* do nothing */ }

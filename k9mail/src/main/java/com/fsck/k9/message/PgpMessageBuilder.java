@@ -2,27 +2,36 @@ package com.fsck.k9.message;
 
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.annotation.VisibleForTesting;
+import timber.log.Timber;
 
+import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.BinaryMemoryBody;
+import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -30,87 +39,89 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 
 
 public class PgpMessageBuilder extends MessageBuilder {
+    private static final int REQUEST_USER_INTERACTION = 1;
 
-    public static final int REQUEST_SIGN_INTERACTION = 1;
-    public static final int REQUEST_ENCRYPT_INTERACTION = 2;
-
-    private final OpenPgpApi openPgpApi;
+    private OpenPgpApi openPgpApi;
 
     private MimeMessage currentProcessedMimeMessage;
     private ComposeCryptoStatus cryptoStatus;
 
-    public PgpMessageBuilder(Context context, OpenPgpApi openPgpApi) {
-        super(context);
+
+    public static PgpMessageBuilder newInstance() {
+        Context context = Globals.getContext();
+        MessageIdGenerator messageIdGenerator = MessageIdGenerator.getInstance();
+        BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();
+        return new PgpMessageBuilder(context, messageIdGenerator, boundaryGenerator);
+    }
+
+    @VisibleForTesting
+    PgpMessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
+        super(context, messageIdGenerator, boundaryGenerator);
+    }
+
+
+    public void setOpenPgpApi(OpenPgpApi openPgpApi) {
         this.openPgpApi = openPgpApi;
     }
 
-    /** This class keeps track of its internal state explicitly. */
-    private enum State {
-        IDLE, START, FAILURE,
-        OPENPGP_SIGN, OPENPGP_SIGN_UI, OPENPGP_SIGN_OK,
-        OPENPGP_ENCRYPT, OPENPGP_ENCRYPT_UI, OPENPGP_ENCRYPT_OK;
-
-        public boolean isBreakState() {
-            return this == OPENPGP_SIGN_UI || this == OPENPGP_ENCRYPT_UI || this == FAILURE;
-        }
-
-        public boolean isReentrantState() {
-            return this == OPENPGP_SIGN || this == OPENPGP_ENCRYPT;
-        }
-
-        public boolean isSignOk() {
-            return this == OPENPGP_SIGN_OK || this == OPENPGP_ENCRYPT
-                    || this == OPENPGP_ENCRYPT_UI || this == OPENPGP_ENCRYPT_OK;
-        }
-    }
-
-    State currentState = State.IDLE;
-
     @Override
     protected void buildMessageInternal() {
-        if (currentState != State.IDLE) {
-            throw new IllegalStateException("internal error, a PgpMessageBuilder can only be built once!");
+        if (currentProcessedMimeMessage != null) {
+            throw new IllegalStateException("message can only be built once!");
+        }
+        if (cryptoStatus == null) {
+            throw new IllegalStateException("PgpMessageBuilder must have cryptoStatus set before building!");
+        }
+        if (cryptoStatus.isCryptoDisabled()) {
+            throw new AssertionError("PgpMessageBuilder must not be used if crypto is disabled!");
         }
 
         try {
+            if (!cryptoStatus.isProviderStateOk()) {
+                throw new MessagingException("OpenPGP Provider is not ready!");
+            }
+
             currentProcessedMimeMessage = build();
         } catch (MessagingException me) {
             queueMessageBuildException(me);
             return;
         }
 
-        currentState = State.START;
         startOrContinueBuildMessage(null);
     }
 
     @Override
-    public void buildMessageOnActivityResult(int requestCode, Intent userInteractionResult) {
-        if (requestCode == REQUEST_SIGN_INTERACTION && currentState == State.OPENPGP_SIGN_UI) {
-            currentState = State.OPENPGP_SIGN;
-            startOrContinueBuildMessage(userInteractionResult);
-        } else if (requestCode == REQUEST_ENCRYPT_INTERACTION && currentState == State.OPENPGP_ENCRYPT_UI) {
-            currentState = State.OPENPGP_ENCRYPT;
-            startOrContinueBuildMessage(userInteractionResult);
-        } else {
-            throw new IllegalStateException("illegal state!");
+    public void buildMessageOnActivityResult(int requestCode, @NonNull Intent userInteractionResult) {
+        if (currentProcessedMimeMessage == null) {
+            throw new AssertionError("build message from activity result must not be called individually");
         }
+        startOrContinueBuildMessage(userInteractionResult);
     }
 
-    private void startOrContinueBuildMessage(@Nullable Intent userInteractionResult) {
-        if (currentState != State.START && !currentState.isReentrantState()) {
-            throw new IllegalStateException("bad state!");
-        }
-
+    private void startOrContinueBuildMessage(@Nullable Intent pgpApiIntent) {
         try {
-            startOrContinueSigningIfRequested(userInteractionResult);
+            boolean shouldSign = cryptoStatus.isSigningEnabled();
+            boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled();
+            boolean isPgpInlineMode = cryptoStatus.isPgpInlineModeEnabled();
 
-            if (currentState.isBreakState()) {
+            if (!shouldSign && !shouldEncrypt) {
                 return;
             }
 
-            startOrContinueEncryptionIfRequested(userInteractionResult);
+            boolean isSimpleTextMessage =
+                    MimeUtility.isSameMimeType("text/plain", currentProcessedMimeMessage.getMimeType());
+            if (isPgpInlineMode && !isSimpleTextMessage) {
+                throw new MessagingException("Attachments are not supported in PGP/INLINE format!");
+            }
 
-            if (currentState.isBreakState()) {
+            if (pgpApiIntent == null) {
+                pgpApiIntent = buildOpenPgpApiIntent(shouldSign, shouldEncrypt, isPgpInlineMode);
+            }
+
+            PendingIntent returnedPendingIntent = launchOpenPgpApiIntent(
+                    pgpApiIntent, shouldEncrypt || isPgpInlineMode, shouldEncrypt || !isPgpInlineMode, isPgpInlineMode);
+            if (returnedPendingIntent != null) {
+                queueMessageBuildPendingIntent(returnedPendingIntent, REQUEST_USER_INTERACTION);
                 return;
             }
 
@@ -120,97 +131,65 @@ public class PgpMessageBuilder extends MessageBuilder {
         }
     }
 
-    private void startOrContinueEncryptionIfRequested(Intent userInteractionResult) throws MessagingException {
-        boolean reenterOperation = currentState == State.OPENPGP_ENCRYPT;
-        if (reenterOperation) {
-            mimeIntentLaunch(userInteractionResult);
-            return;
-        }
-
-        if (!cryptoStatus.isEncryptionEnabled()) {
-            return;
-        }
-
-        Intent encryptIntent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
-        encryptIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-
-        long[] encryptKeyIds = cryptoStatus.getEncryptKeyIds();
-        if (encryptKeyIds != null) {
-            encryptIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, encryptKeyIds);
-        }
-
-        if(!isDraft()) {
-            String[] encryptRecipientAddresses = cryptoStatus.getRecipientAddresses();
-            boolean hasRecipientAddresses = encryptRecipientAddresses != null && encryptRecipientAddresses.length > 0;
-            if (!hasRecipientAddresses) {
-                // TODO safeguard here once this is better handled by the caller?
-                // throw new MessagingException("Encryption is enabled, but no encryption key specified!");
-                return;
+    @NonNull
+    private Intent buildOpenPgpApiIntent(boolean shouldSign, boolean shouldEncrypt, boolean isPgpInlineMode)
+            throws MessagingException {
+        Intent pgpApiIntent;
+        if (shouldEncrypt) {
+            if (!shouldSign) {
+                throw new IllegalStateException("encrypt-only is not supported at this point and should never happen!");
             }
-            encryptIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, encryptRecipientAddresses);
-            encryptIntent.putExtra(OpenPgpApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
+            // pgpApiIntent = new Intent(shouldSign ? OpenPgpApi.ACTION_SIGN_AND_ENCRYPT : OpenPgpApi.ACTION_ENCRYPT);
+            pgpApiIntent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
+
+            long[] encryptKeyIds = cryptoStatus.getEncryptKeyIds();
+            if (encryptKeyIds != null) {
+                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, encryptKeyIds);
+            }
+
+            if(!isDraft()) {
+                String[] encryptRecipientAddresses = cryptoStatus.getRecipientAddresses();
+                boolean hasRecipientAddresses = encryptRecipientAddresses != null && encryptRecipientAddresses.length > 0;
+                if (!hasRecipientAddresses) {
+                    throw new MessagingException("encryption is enabled, but no recipient specified!");
+                }
+                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, encryptRecipientAddresses);
+                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
+            }
+        } else {
+            pgpApiIntent = new Intent(isPgpInlineMode ? OpenPgpApi.ACTION_SIGN : OpenPgpApi.ACTION_DETACHED_SIGN);
         }
 
-        currentState = State.OPENPGP_ENCRYPT;
-        mimeIntentLaunch(encryptIntent);
+        if (shouldSign) {
+            pgpApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, cryptoStatus.getSigningKeyId());
+        }
+
+        pgpApiIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
+        return pgpApiIntent;
     }
 
-    private void startOrContinueSigningIfRequested(Intent userInteractionResult) throws MessagingException {
-        boolean reenterOperation = currentState == State.OPENPGP_SIGN;
-        if (reenterOperation) {
-            mimeIntentLaunch(userInteractionResult);
-            return;
-        }
-
-        boolean signingDisabled = !cryptoStatus.isSigningEnabled();
-        boolean alreadySigned = currentState.isSignOk();
-        boolean isDraft = isDraft();
-        if (signingDisabled || alreadySigned || isDraft) {
-            return;
-        }
-
-        Intent signIntent = new Intent(OpenPgpApi.ACTION_DETACHED_SIGN);
-        signIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, cryptoStatus.getSigningKeyId());
-
-        currentState = State.OPENPGP_SIGN;
-        mimeIntentLaunch(signIntent);
-    }
-
-    /** This method executes the given Intent with the OpenPGP Api. It will pass the
-     * entire current message as input. On success, either mimeBuildSignedMessage() or
-     * mimeBuildEncryptedMessage() will be called with their appropriate inputs. If an
-     * error or PendingInput is returned, this will be passed as a result to the
-     * operation.
-     */
-    private void mimeIntentLaunch(Intent openPgpIntent) throws MessagingException {
+    private PendingIntent launchOpenPgpApiIntent(@NonNull Intent openPgpIntent,
+            boolean captureOutputPart, boolean capturedOutputPartIs7Bit, boolean writeBodyContentOnly) throws MessagingException {
         final MimeBodyPart bodyPart = currentProcessedMimeMessage.toBodyPart();
-
         String[] contentType = currentProcessedMimeMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
         if (contentType.length > 0) {
             bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
         }
-        bodyPart.setUsing7bitTransport();
 
-        // This data will be read in a worker thread
-        OpenPgpDataSource dataSource = new OpenPgpDataSource() {
-            @Override
-            public void writeTo(OutputStream os) throws IOException {
-                try {
-                    bodyPart.writeTo(os);
-                } catch (MessagingException e) {
-                    throw new IOException(e);
-                }
-            }
-        };
+        OpenPgpDataSource dataSource = createOpenPgpDataSourceFromBodyPart(bodyPart, writeBodyContentOnly);
 
-        BinaryTempFileBody encryptedTempBody = null;
+        BinaryTempFileBody pgpResultTempBody = null;
         OutputStream outputStream = null;
-        if (currentState == State.OPENPGP_ENCRYPT) {
+        if (captureOutputPart) {
             try {
-                encryptedTempBody = new BinaryTempFileBody(MimeUtil.ENC_7BIT);
-                outputStream = encryptedTempBody.getOutputStream();
+                pgpResultTempBody = new BinaryTempFileBody(
+                        capturedOutputPartIs7Bit ? MimeUtil.ENC_7BIT : MimeUtil.ENC_8BIT);
+                outputStream = pgpResultTempBody.getOutputStream();
+                // OpenKeychain/BouncyCastle at this point use the system newline for formatting, which is LF on android.
+                // we need this to be CRLF, so we convert the data after receiving.
+                outputStream = new EOLConvertingOutputStream(outputStream);
             } catch (IOException e) {
-                throw new MessagingException("Could not allocate temp file for storage!", e);
+                throw new MessagingException("could not allocate temp file for storage!", e);
             }
         }
 
@@ -218,56 +197,95 @@ public class PgpMessageBuilder extends MessageBuilder {
 
         switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
             case OpenPgpApi.RESULT_CODE_SUCCESS:
-                if (currentState == State.OPENPGP_SIGN) {
-                    mimeBuildSignedMessage(bodyPart, result);
-                } else if (currentState == State.OPENPGP_ENCRYPT) {
-                    mimeBuildEncryptedMessage(encryptedTempBody, result);
-                } else {
-                    throw new IllegalStateException("state error!");
-                }
-                return;
+                mimeBuildMessage(result, bodyPart, pgpResultTempBody);
+                return null;
 
             case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                launchUserInteraction(result);
-                return;
+                PendingIntent returnedPendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                if (returnedPendingIntent == null) {
+                    throw new MessagingException("openpgp api needs user interaction, but returned no pendingintent!");
+                }
+                return returnedPendingIntent;
 
             case OpenPgpApi.RESULT_CODE_ERROR:
                 OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
+                if (error == null) {
+                    throw new MessagingException("internal openpgp api error");
+                }
                 boolean isOpportunisticError = error.getErrorId() == OpenPgpError.OPPORTUNISTIC_MISSING_KEYS;
                 if (isOpportunisticError) {
-                    skipEncryptingMessage();
-                    return;
+                    if (!cryptoStatus.isEncryptionOpportunistic()) {
+                        throw new IllegalStateException(
+                                "Got opportunistic error, but encryption wasn't supposed to be opportunistic!");
+                    }
+                    Timber.d("Skipping encryption due to opportunistic mode");
+                    return null;
                 }
                 throw new MessagingException(error.getMessage());
-
-            default:
-                throw new IllegalStateException("unreachable code segment reached - this is a bug");
         }
+
+        throw new IllegalStateException("unreachable code segment reached");
     }
 
-    private void launchUserInteraction(Intent result) {
-        PendingIntent pendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
-
-        if (currentState == State.OPENPGP_ENCRYPT) {
-            currentState = State.OPENPGP_ENCRYPT_UI;
-            queueMessageBuildPendingIntent(pendingIntent, REQUEST_ENCRYPT_INTERACTION);
-        } else if (currentState == State.OPENPGP_SIGN) {
-            currentState = State.OPENPGP_SIGN_UI;
-            queueMessageBuildPendingIntent(pendingIntent, REQUEST_SIGN_INTERACTION);
-        } else {
-            throw new IllegalStateException("illegal state!");
-        }
+    @NonNull
+    private OpenPgpDataSource createOpenPgpDataSourceFromBodyPart(final MimeBodyPart bodyPart,
+            final boolean writeBodyContentOnly)
+            throws MessagingException {
+        return new OpenPgpDataSource() {
+            @Override
+            public void writeTo(OutputStream os) throws IOException {
+                try {
+                    if (writeBodyContentOnly) {
+                        Body body = bodyPart.getBody();
+                        InputStream inputStream = body.getInputStream();
+                        IOUtils.copy(inputStream, os);
+                    } else {
+                        bodyPart.writeTo(os);
+                    }
+                } catch (MessagingException e) {
+                    throw new IOException(e);
+                }
+            }
+        };
     }
 
-    private void mimeBuildSignedMessage(BodyPart signedBodyPart, Intent result) throws MessagingException {
+    private void mimeBuildMessage(
+            @NonNull Intent result, @NonNull MimeBodyPart bodyPart, @Nullable BinaryTempFileBody pgpResultTempBody)
+            throws MessagingException {
+        if (pgpResultTempBody == null) {
+            boolean shouldHaveResultPart = cryptoStatus.isPgpInlineModeEnabled() || cryptoStatus.isEncryptionEnabled();
+            if (shouldHaveResultPart) {
+                throw new AssertionError("encryption or pgp/inline is enabled, but no output part!");
+            }
+
+            mimeBuildSignedMessage(bodyPart, result);
+            return;
+        }
+
+        if (cryptoStatus.isPgpInlineModeEnabled()) {
+            mimeBuildInlineMessage(pgpResultTempBody);
+            return;
+        }
+
+        mimeBuildEncryptedMessage(pgpResultTempBody);
+    }
+
+    private void mimeBuildSignedMessage(@NonNull BodyPart signedBodyPart, Intent result) throws MessagingException {
+        if (!cryptoStatus.isSigningEnabled()) {
+            throw new IllegalStateException("call to mimeBuildSignedMessage while signing isn't enabled!");
+        }
+
         byte[] signedData = result.getByteArrayExtra(OpenPgpApi.RESULT_DETACHED_SIGNATURE);
+        if (signedData == null) {
+            throw new MessagingException("didn't find expected RESULT_DETACHED_SIGNATURE in api call result");
+        }
 
-        MimeMultipart multipartSigned = new MimeMultipart();
+        MimeMultipart multipartSigned = createMimeMultipart();
         multipartSigned.setSubType("signed");
         multipartSigned.addBodyPart(signedBodyPart);
         multipartSigned.addBodyPart(
-                new MimeBodyPart(new BinaryMemoryBody(signedData, MimeUtil.ENC_7BIT), "application/pgp-signature"));
-
+                new MimeBodyPart(new BinaryMemoryBody(signedData, MimeUtil.ENC_7BIT),
+                        "application/pgp-signature; name=\"signature.asc\""));
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartSigned);
 
         String contentType = String.format(
@@ -277,116 +295,43 @@ public class PgpMessageBuilder extends MessageBuilder {
             String micAlgParameter = result.getStringExtra(OpenPgpApi.RESULT_SIGNATURE_MICALG);
             contentType += String.format("; micalg=\"%s\"", micAlgParameter);
         } else {
-            Log.e(K9.LOG_TAG, "missing micalg parameter for pgp multipart/signed!");
+            Timber.e("missing micalg parameter for pgp multipart/signed!");
         }
         currentProcessedMimeMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
-
-        currentState = State.OPENPGP_SIGN_OK;
     }
 
-    @SuppressWarnings("UnusedParameters")
-    private void mimeBuildEncryptedMessage(Body encryptedBodyPart, Intent result) throws MessagingException {
-        MimeMultipart multipartEncrypted = new MimeMultipart();
-        multipartEncrypted.setSubType("encrypted");
+    private void mimeBuildEncryptedMessage(@NonNull Body encryptedBodyPart) throws MessagingException {
+        if (!cryptoStatus.isEncryptionEnabled()) {
+            throw new IllegalStateException("call to mimeBuildEncryptedMessage while encryption isn't enabled!");
+        }
 
+        MimeMultipart multipartEncrypted = createMimeMultipart();
+        multipartEncrypted.setSubType("encrypted");
         multipartEncrypted.addBodyPart(new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted"));
-        multipartEncrypted.addBodyPart(new MimeBodyPart(encryptedBodyPart, "application/octet-stream"));
+        MimeBodyPart encryptedPart = new MimeBodyPart(encryptedBodyPart, "application/octet-stream; name=\"encrypted.asc\"");
+        encryptedPart.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, "inline; filename=\"encrypted.asc\"");
+        multipartEncrypted.addBodyPart(encryptedPart);
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartEncrypted);
+
         String contentType = String.format(
                 "multipart/encrypted; boundary=\"%s\";\r\n  protocol=\"application/pgp-encrypted\"",
                 multipartEncrypted.getBoundary());
         currentProcessedMimeMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
-
-        currentState = State.OPENPGP_ENCRYPT_OK;
     }
 
-    private void skipEncryptingMessage() throws MessagingException {
-        if (!cryptoStatus.isEncryptionOpportunistic()) {
-            throw new AssertionError("Got opportunistic error, but encryption wasn't supposed to be opportunistic!");
+    private void mimeBuildInlineMessage(@NonNull Body inlineBodyPart) throws MessagingException {
+        if (!cryptoStatus.isPgpInlineModeEnabled()) {
+            throw new IllegalStateException("call to mimeBuildInlineMessage while pgp/inline isn't enabled!");
         }
-        currentState = State.OPENPGP_ENCRYPT_OK;
+
+        boolean isCleartextSignature = !cryptoStatus.isEncryptionEnabled();
+        if (isCleartextSignature) {
+            inlineBodyPart.setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
+        }
+        MimeMessageHelper.setBody(currentProcessedMimeMessage, inlineBodyPart);
     }
 
     public void setCryptoStatus(ComposeCryptoStatus cryptoStatus) {
         this.cryptoStatus = cryptoStatus;
     }
-
-    /* TODO re-add PGP/INLINE
-    if (isCryptoProviderEnabled() && ! mAccount.isUsePgpMime()) {
-        // OpenPGP Provider API
-
-        // If not already encrypted but user wants to encrypt...
-        if (mPgpData.getEncryptedData() == null &&
-                (mEncryptCheckbox.isChecked() || mCryptoSignatureCheckbox.isChecked())) {
-
-            String[] emailsArray = null;
-            if (mEncryptCheckbox.isChecked()) {
-                // get emails as array
-                List<String> emails = new ArrayList<String>();
-
-                for (Address address : recipientPresenter.getAllRecipientAddresses()) {
-                    emails.add(address.getAddress());
-                }
-                emailsArray = emails.toArray(new String[emails.size()]);
-            }
-            if (mEncryptCheckbox.isChecked() && mCryptoSignatureCheckbox.isChecked()) {
-                Intent intent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
-                intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
-                intent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, mAccount.getCryptoKey());
-                executeOpenPgpMethod(intent);
-            } else if (mCryptoSignatureCheckbox.isChecked()) {
-                Intent intent = new Intent(OpenPgpApi.ACTION_SIGN);
-                intent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, mAccount.getCryptoKey());
-                executeOpenPgpMethod(intent);
-            } else if (mEncryptCheckbox.isChecked()) {
-                Intent intent = new Intent(OpenPgpApi.ACTION_ENCRYPT);
-                intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, emailsArray);
-                executeOpenPgpMethod(intent);
-            }
-
-            // onSend() is called again in SignEncryptCallback and with
-            // encryptedData set in pgpData!
-            return;
-        }
-    }
-    */
-
-    /* TODO re-add attach public key
-    private Attachment attachedPublicKey() throws OpenPgpApiException {
-        try {
-            Attachment publicKey = new Attachment();
-            publicKey.contentType = "application/pgp-keys";
-
-            String keyName = "0x" +  Long.toString(mAccount.getCryptoKey(), 16).substring(8);
-            publicKey.name = keyName + ".asc";
-            Intent intent = new Intent(OpenPgpApi.ACTION_GET_KEY);
-            intent.putExtra(OpenPgpApi.EXTRA_KEY_ID, mAccount.getCryptoKey());
-            intent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-            OpenPgpApi api = new OpenPgpApi(this, mOpenPgpServiceConnection.getService());
-            File keyTempFile = File.createTempFile("key", ".asc", getCacheDir());
-            keyTempFile.deleteOnExit();
-            try {
-                CountingOutputStream keyFileStream = new CountingOutputStream(new BufferedOutputStream(
-                        new FileOutputStream(keyTempFile)));
-                Intent res = api.executeApi(intent, null, new EOLConvertingOutputStream(keyFileStream));
-                if (res.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR) != OpenPgpApi.RESULT_CODE_SUCCESS
-                        || keyFileStream.getByteCount() == 0) {
-                    keyTempFile.delete();
-                    throw new OpenPgpApiException(String.format(getString(R.string.openpgp_no_public_key_returned),
-                            getString(R.string.btn_attach_key)));
-                }
-                publicKey.filename = keyTempFile.getAbsolutePath();
-                publicKey.state = Attachment.LoadingState.COMPLETE;
-                publicKey.size = keyFileStream.getByteCount();
-                return publicKey;
-            } catch(RuntimeException e){
-                keyTempFile.delete();
-                throw e;
-            }
-        } catch(IOException e){
-            throw new RuntimeException(getString(R.string.error_cant_create_temporary_file), e);
-        }
-    }
-     */
-
 }

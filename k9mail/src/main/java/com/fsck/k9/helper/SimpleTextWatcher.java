@@ -4,8 +4,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 
 /**
- * all methods empty - but this way we can have TextWatchers with less boilder-plate where
- * we just override the methods we want and not always al 3
+ * all methods empty - but this way we can have TextWatchers with less boiler-plate where
+ * we just override the methods we want and not always all 3
  */
 public class SimpleTextWatcher implements TextWatcher {
     @Override

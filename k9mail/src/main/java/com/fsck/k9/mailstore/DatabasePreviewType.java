@@ -1,13 +1,14 @@
 package com.fsck.k9.mailstore;
 
 
-import com.fsck.k9.message.preview.PreviewResult.PreviewType;
+import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 
 
 public enum DatabasePreviewType {
     NONE("none", PreviewType.NONE),
     TEXT("text", PreviewType.TEXT),
-    ENCRYPTED("encrypted", PreviewType.ENCRYPTED);
+    ENCRYPTED("encrypted", PreviewType.ENCRYPTED),
+    ERROR("error", PreviewType.ERROR);
 
 
     private final String databaseValue;

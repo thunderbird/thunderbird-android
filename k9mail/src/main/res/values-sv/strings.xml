@@ -3,20 +3,20 @@
   <!--=== App-specific strings =============================================================-->
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
-  <string name="app_name">K-9 E-post</string>
-  <string name="shortcuts_title">K-9-konton</string>
+  <string name="app_name">K-9 Mail</string>
+  <string name="shortcuts_title">K-9 Konton</string>
   <string name="unread_widget_label">K-9 Olästa</string>
-  <string name="remote_control_label">K-9 E-post fjärrkontroll</string>
-  <string name="remote_control_desc">Tillåter denna applikation att styra aktiviteter och göra inställningar i K-9 E-post.</string>
+  <string name="remote_control_label">K-9 Mail fjärrkontroll</string>
+  <string name="remote_control_desc">Tillåter denna applikation att kontrollera K-9 Mail aktiviteter och inställningar.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Vissa delar Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Vissa delar Copyright 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
   <string name="app_license">Licensierat under Apache-licensen, version 2.0.</string>
   <!--Welcome message-->
-  <string name="welcome_message_title">Välkommen till K-9 E-post</string>
+  <string name="welcome_message_title">Välkommen till K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Epost är en kraftfull fri epostklient för Android.
+K-9 Mail är en kraftfull fri epostklient för Android.
 </p><p>
 Några av funktionerna som förbättrats är:
 </p>
@@ -44,14 +44,14 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nSkickat från min Android-enhet med K-9 E-post. Ursäkta min fåordighet.</string>
+  <string name="default_signature">-- \nSkickat från min Android-enhet med K-9 Mail. Ursäkta min fåordighet.</string>
   <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas från K-9 E-post.</string>
+  <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att tas bort från K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alla lokala data för \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas. Kontoinställningar behålls.</string>
   <string name="account_clear_dlg_instructions_fmt">Alla lokalt lagrade meddelanden i \"<xliff:g id="account">%s</xliff:g>\" kommer att raderas. Kontoinställningar behålls.</string>
   <!--=== App Store-specific strings =======================================================-->
   <string name="import_dialog_error_message">Installera en filhanterare för att fortsätta med denna import.</string>
-  <string name="open_market">Öppna Play-butiken</string>
+  <string name="open_market">Öppna Play butik</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Upphovsmän: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Revisionsinformation: <xliff:g id="app_revision_url">%s</xliff:g></string>
@@ -77,9 +77,9 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="status_loading_account_folder_headers">Hämtar brevhuvud <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Skickar <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Behandlar <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Nästa kontroll <xliff:g id="nexttime">%s</xliff:g></string>
-  <string name="status_syncing_off">Synk inaktiverat</string>
+  <string name="status_syncing_off">Synkronisering inaktiverad</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valda</string>
   <string name="next_action">Nästa</string>
   <string name="previous_action">Föregående</string>
@@ -88,6 +88,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="cancel_action">Avbryt</string>
   <string name="send_action">Skicka</string>
   <string name="send_again_action">Skicka igen</string>
+  <string name="empty_subject">Ämne är tomt, klicka igen för att skicka ändå</string>
   <string name="select_action">Markera</string>
   <string name="deselect_action">Avmarkera</string>
   <string name="reply_action">Svara</string>
@@ -117,7 +118,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="remove_account_action">Ta bort konto</string>
   <string name="clear_pending_action">Rensa köade åtgärder (varning!)</string>
   <string name="mark_as_read_action">Markera som läst</string>
-  <string name="send_alternate_action">Dela ut</string>
+  <string name="send_alternate_action">Dela</string>
   <string name="send_alternate_chooser_title">Välj avsändare</string>
   <string name="flag_action">Lägg till stjärna</string>
   <string name="unflag_action">Ta bort stjärna</string>
@@ -125,6 +126,10 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="select_text_action">Markera text</string>
   <string name="show_headers_action">Visa brevhuvud</string>
   <string name="hide_headers_action">Dölj brevhuvud</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Adress kopierad till urklipp</item>
+    <item quantity="other">Adresser kopierade till urklipp</item>
+  </plurals>
   <string name="message_view_theme_action_dark">Växla till mörkt tema</string>
   <string name="message_view_theme_action_light">Växla till ljust tema</string>
   <string name="mark_as_unread_action">Markera som oläst</string>
@@ -145,6 +150,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="status_loading_more">Hämtar meddelanden\u2026</string>
   <string name="status_network_error">Anslutningsfel</string>
   <string name="status_invalid_id_error">Kan inte hitta meddelande</string>
+  <string name="status_loading_error">Meddelande laddnings fel</string>
   <string name="status_loading_more_failed">Försök hämta fler meddelanden igen</string>
   <string name="load_more_messages_fmt">Hämta ytterligare upp
     till <xliff:g id="messages_to_load">%d</xliff:g></string>
@@ -167,12 +173,14 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="notification_action_mark_as_read">Markera som läst</string>
   <string name="notification_action_mark_all_as_read">Markera alla som lästa</string>
   <string name="notification_action_delete">Ta bort</string>
-  <string name="notification_action_delete_all">Radera alla</string>
-  <string name="notification_action_archive">Arkiv</string>
+  <string name="notification_action_delete_all">Ta bort alla</string>
+  <string name="notification_action_archive">Arkivera</string>
   <string name="notification_action_archive_all">Arkivera alla</string>
   <string name="notification_action_spam">Skräppost</string>
   <string name="notification_certificate_error_title">Certifikatsfel för <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Kontrollera dina serverinställningar</string>
+  <string name="notification_authentication_error_title">Autentisering misslyckades</string>
+  <string name="notification_authentication_error_text">Autentisering misslyckades för <xliff:g id="account">%s</xliff:g>. Uppdatera dina serverinställningar.</string>
   <string name="notification_bg_sync_ticker">Kontrollerar e-post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrollerar e-post</string>
   <string name="notification_bg_send_ticker">Skickar e-post: <xliff:g id="account">%s</xliff:g></string>
@@ -210,6 +218,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:</string>
   <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sender">%2$s</xliff:g> skrev: (<xliff:g id="sent_date">%1$s</xliff:g>)</string>
   <string name="message_compose_error_no_recipients">Du måste ange minst en mottagare.</string>
+  <string name="compose_error_incomplete_recipient">Mottagarfältet är inte komplett!</string>
   <string name="error_contact_address_not_found">Hittar ingen e-postadress för denna kontakt.</string>
   <string name="message_compose_attachments_skipped_toast">Vissa bilagor kan inte vidarebefordras eftersom de inte har laddats ned.</string>
   <string name="message_compose_show_quoted_text_action">Citera meddelande</string>
@@ -225,6 +234,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="message_view_show_more_attachments_action">Mer…</string>
   <string name="message_view_no_viewer">Kan inte hitta visare för <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Ladda ned hela brevet</string>
+  <string name="message_view_toast_unable_to_display_message">Det går inte att visa meddelande</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Hela brevhuvudet har hämtats, men det det finns inga ytterligare delar att visa.</string>
   <string name="message_additional_headers_retrieval_failed">Hämtningen av ytterligare brevhuvuden från databasen eller e-postservern misslyckades.</string>
@@ -249,11 +259,11 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="global_settings_folderlist_wrap_folder_names_summary">Använd flera rader för att visa långa mappnamn</string>
   <string name="global_settings_messageview_fixedwidth_label">Teckensnitt med fast bredd</string>
   <string name="global_settings_messageview_fixedwidth_summary">Använd ett teckensnitt med fast bredd för att visa brev med enbart text</string>
-  <string name="global_settings_messageview_autofit_width_label">Auto-passa meddelanden</string>
+  <string name="global_settings_messageview_autofit_width_label">Anpassa automatiskt meddelanden</string>
   <string name="global_settings_messageview_autofit_width_summary">Krymp meddelanden så att de får plats på skärmen</string>
   <string name="global_settings_messageview_return_to_list_label">Återvänd till listan efter borttagning</string>
   <string name="global_settings_messageview_return_to_list_summary">Återvänd till meddelandelistan efter att brev tagits bort</string>
-  <string name="global_settings_messageview_show_next_label">Visa nästa meddelande efter att brev tagits bort</string>
+  <string name="global_settings_messageview_show_next_label">Visa nästa meddelande efter ta bort</string>
   <string name="global_settings_messageview_show_next_summary">Visa nästa meddelande som standard efter att brev tagits bort</string>
   <string name="global_settings_confirm_actions_title">Bekräfta åtgärder</string>
   <string name="global_settings_confirm_actions_summary">Visa en dialogruta när du genomför valda åtgärder</string>
@@ -262,7 +272,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="global_settings_confirm_action_spam">Skräp</string>
   <string name="global_settings_confirm_menu_discard">Kasta meddelande?</string>
   <string name="global_settings_confirm_action_delete_notif">Ta bort (från avisering)</string>
-  <string name="global_settings_privacy_hide_useragent">Ta bort K-9 User-Agent från brevhuvudet</string>
+  <string name="global_settings_privacy_hide_useragent">Ta bort K-9 User-Agent från brevrubriker</string>
   <string name="global_settings_privacy_hide_timezone">Använd UTC som tidszon i brevhuvud</string>
   <string name="global_settings_notification_hide_subject_title">Dölj ämne i aviseringar</string>
   <string name="global_settings_notification_hide_subject_never">Aldrig</string>
@@ -297,7 +307,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="account_setup_check_settings_authenticate">Autentiserar\u2026</string>
   <string name="account_setup_check_settings_fetch">Hämtar kontoinställningar\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Avbryter\u2026</string>
-  <string name="account_setup_names_title">Nästan färdig!</string>
+  <string name="account_setup_names_title">Du är nästan färdig!</string>
   <string name="account_setup_names_account_name_label">Ge kontot ett namn (valfritt):</string>
   <string name="account_setup_names_user_name_label">Ange ditt namn (visas på utgående e-post):</string>
   <string name="account_setup_account_type_title">Kontotyp</string>
@@ -432,6 +442,8 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="account_settings_notify_sync_summary">Visa avisering i statusraden vid kontroll efter ny e-post</string>
   <string name="account_settings_notify_self_label">Inkludera meddelande som skickas</string>
   <string name="account_settings_notify_self_summary">Visa avisering även för e-post som jag själv skickat</string>
+  <string name="account_notify_contacts_mail_only_label">Endast kontakter</string>
+  <string name="account_notify_contacts_mail_only_summary">Visa aviseringar endast för meddelanden från kända kontakter</string>
   <string name="account_settings_notification_opens_unread_label">Aviseringen öppnar oläst e-post</string>
   <string name="account_settings_notification_opens_unread_summary">Letar efter oläst e-post när aviseringen öppnas</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markera som läst vid visning</string>
@@ -465,7 +477,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="account_settings_crypto">Kryptering</string>
   <string name="account_settings_crypto_app">OpenPGP-app</string>
   <string name="account_settings_crypto_key">Min nyckel</string>
-  <string name="account_settings_no_openpgp_provider_installed">Ingen OpenPGP-app installerad</string>
+  <string name="account_settings_no_openpgp_provider_configured">Ingen OpenPGP-app installerad</string>
   <string name="account_settings_mail_check_frequency_label">Frekvens för att kontrollera mappar</string>
   <string name="account_settings_storage_title">Lagring</string>
   <string name="account_settings_color_label">Kontofärg</string>
@@ -531,22 +543,22 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="folder_settings_in_top_group_summary">Visa nära toppen av mapplistan</string>
   <string name="folder_settings_folder_display_mode_label">Visningsklass för mapp</string>
   <string name="folder_settings_folder_display_mode_normal">Ingen</string>
-  <string name="folder_settings_folder_display_mode_first_class">1:a klassen</string>
-  <string name="folder_settings_folder_display_mode_second_class">2:a klassen</string>
+  <string name="folder_settings_folder_display_mode_first_class">1:a klass</string>
+  <string name="folder_settings_folder_display_mode_second_class">2:a klass</string>
   <string name="folder_settings_folder_sync_mode_label">Synkroniseringsklass för mapp</string>
   <string name="folder_settings_folder_sync_mode_normal">Ingen</string>
-  <string name="folder_settings_folder_sync_mode_first_class">1:a klassen</string>
-  <string name="folder_settings_folder_sync_mode_second_class">2:a klassen</string>
+  <string name="folder_settings_folder_sync_mode_first_class">1:a klass</string>
+  <string name="folder_settings_folder_sync_mode_second_class">2:a klass</string>
   <string name="folder_settings_folder_sync_mode_inherited">Samma som visningsklass</string>
   <string name="folder_settings_folder_push_mode_label">Push-klass för mapp</string>
   <string name="folder_settings_folder_push_mode_normal">Ingen</string>
-  <string name="folder_settings_folder_push_mode_first_class">1:a klassen</string>
-  <string name="folder_settings_folder_push_mode_second_class">2:a klassen</string>
+  <string name="folder_settings_folder_push_mode_first_class">1:a klass</string>
+  <string name="folder_settings_folder_push_mode_second_class">2:a klass</string>
   <string name="folder_settings_folder_push_mode_inherited">Samma som synkroniseringsklass</string>
   <string name="folder_settings_folder_notify_mode_label">Aviseringsklass för mapp</string>
   <string name="folder_settings_folder_notify_mode_normal">Inga</string>
-  <string name="folder_settings_folder_notify_mode_first_class">Första klass</string>
-  <string name="folder_settings_folder_notify_mode_second_class">Andra klass</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1:a klass</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2:a klass</string>
   <string name="folder_settings_folder_notify_mode_inherited">Samma som push-klass</string>
   <string name="account_settings_incoming_label">Inkommande server</string>
   <string name="account_settings_incoming_summary">Konfigurera servern för inkommande e-post</string>
@@ -656,11 +668,9 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema för meddelandelista</string>
   <string name="settings_compose_theme_label">Tema för skriv-vy</string>
-  <string name="settings_language_label">Språk</string>
   <string name="settings_message_theme_selection_label">Fast meddelandetema</string>
   <string name="settings_message_theme_selection_summary_off">Välj tema för meddelandevyn medan meddelandet visas</string>
   <string name="settings_message_theme_selection_summary_on">Använd ett fast tema för meddelandevyn</string>
-  <string name="setting_language_system">Systemstandard</string>
   <string name="background_ops_label">Bakgrundssynkronisering</string>
   <string name="background_ops_never">Aldrig</string>
   <string name="background_ops_always">Alltid</string>
@@ -695,7 +705,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="search_all_messages_detail">Alla meddelanden i sökbara mappar</string>
   <string name="integrated_inbox_title">Integrerad inkorg</string>
   <string name="integrated_inbox_detail">Alla meddelanden i integrerade mappar</string>
-  <string name="tap_hint">Tryck på kuvertet eller stjärnan för olästa eller stjärnmärkta brev</string>
+  <string name="tap_hint">Tryck på cirkel eller stjärna för olästa eller stjärnmärkta meddelanden</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Integrera</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Alla brev visas i den integrerade inkorgen</string>
   <string name="account_settings_searchable_label">Mappar att söka i</string>
@@ -737,7 +747,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="font_size_larger">Störst</string>
   <string name="miscellaneous_preferences">Diverse</string>
   <string name="error_activity_not_found">Hittade ingen passande applikation för denna åtgärd.</string>
-  <string name="send_aborted">Sändningen avbruten.</string>
+  <string name="send_failed_reason">Skicka misslyckades: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Spara utkast?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Spara eller kasta detta brev?</string>
   <string name="confirm_discard_draft_message_title">Kasta meddelande?</string>
@@ -751,6 +761,10 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Ja</string>
   <string name="dialog_confirm_delete_cancel_button">Nej</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Bekräfta markera alla som lästa</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Vill du markera alla meddelanden som lästa?</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Ja</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Nej</string>
   <string name="dialog_confirm_spam_title">Bekräfta flytt till skräpmapp</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Vill du verkligen flytta detta meddelande till skräpmappen?</item>
@@ -911,6 +925,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="crypto_download_complete_message_to_decrypt">Klicka på \'Ladda ner hela brevet\' för att tillåta kryptering.</string>
   <string name="preview_encrypted">*Krypterad*</string>
   <string name="add_from_contacts">Lägg till från kontakter</string>
+  <string name="crypto_settings_cancel">Avbryt</string>
   <string name="crypto_settings_ok">Fortsätt</string>
   <string name="recipient_cc">Cc</string>
   <string name="recipient_bcc">Bcc</string>
@@ -921,4 +936,78 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="address_type_work">Arbete</string>
   <string name="address_type_other">Annat</string>
   <string name="address_type_mobile">Mobil</string>
+  <string name="compose_error_no_draft_folder">Ingen Utkast mapp konfigurerad för detta konto!</string>
+  <string name="compose_not_saving_unencrypted">Utkast INTE sparat utan kryptering!</string>
+  <string name="compose_error_pgp_error">Fel för OpenPGP leverantör. Granska dina inställningar!</string>
+  <string name="compose_error_no_signing_key">Ingen nyckel är konfigurerad för signering! Var god granska dina inställningar.</string>
+  <string name="compose_error_private_missing_keys">Privat läge är aktivt, men några mottagare har inte nycklar!</string>
+  <string name="crypto_mode_disabled">Kryptera inte</string>
+  <string name="crypto_mode_opportunistic">Kryptera om möjligt</string>
+  <string name="crypto_mode_private">Kryptera</string>
+  <string name="error_crypto_provider_connect">Kan inte ansluta till crypto leverantör, granska dina inställningar eller klicka på crypto ikonen för nytt försök.</string>
+  <string name="error_crypto_provider_ui_required">Crypto leverantör tillträde nekad, klicka på crypto ikonen för nytt försök.</string>
+  <string name="error_crypto_inline_attach">PGP/INLINE läge stöder inte bilagor!</string>
+  <string name="error_crypto_inline_sign_only">PGP/INLINE läge stöder inte signera-endast läge!</string>
+  <string name="error_crypto_sign_only_inline">Signera-endast läge stöder inte PGP/INLINE!</string>
+  <string name="enable_inline_pgp">Aktivera PGP/INLINE</string>
+  <string name="disable_inline_pgp">Avaktivera PGP/INLINE</string>
+  <string name="enable_sign_only">Aktivera PGP signera-endast</string>
+  <string name="disable_sign_only">Avaktivera PGP signera-endast</string>
+  <string name="openpgp_inline_title">PGP/INLINE läge</string>
+  <string name="openpgp_inline_text">Denna e-post sänds i PGP/INLINE format.\nDetta bör endast användas för kompatibilitet:</string>
+  <string name="openpgp_inline_plus_compat">Vissa klienter stöder endast detta format</string>
+  <string name="openpgp_inline_minus_transit">Signaturer kan brytas under transport</string>
+  <string name="openpgp_inline_minus_attach">Bilagor stöds inte</string>
+  <string name="openpgp_inline_ok">Uppfattat!</string>
+  <string name="openpgp_inline_disable">Avaktivera</string>
+  <string name="openpgp_inline_keep_enabled">Förbli aktiverad</string>
+  <string name="openpgp_sign_only_ok">Uppfattat!</string>
+  <string name="openpgp_sign_only_disable">Avaktivera</string>
+  <string name="openpgp_sign_only_keep_enabled">Bevara aktiverad</string>
+  <string name="openpgp_dialog_sign_only_title">PGP signera-endast läge</string>
+  <string name="openpgp_dialog_sign_only_text">I det här läget kommer din PGP-nyckel användas för att skapa en kryptografisk signatur av en okrypterad e-post.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Detta krypterar inte e-postmeddelandet, men bekräftar att det skickades från din nyckel.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Signaturer kan brytas när de skickas till e-postlistor.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Signaturer kan visas som \'signature.asc\' bilagor i vissa klienter.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Krypterade meddelanden inkluderar alltid en signatur.</string>
+  <string name="crypto_msg_disabled">Meddelandet är inte krypterat</string>
+  <string name="crypto_msg_encrypted_error">Meddelandet är krypterat, med det finns ett dekrypterings fel</string>
+  <string name="crypto_msg_signed_error">Meddelandet är signerat, men signaturen kunde inte verifieras.</string>
+  <string name="crypto_msg_unsupported_encrypted">Meddelandet är krypterat, men är i ett format som inte stöds.</string>
+  <string name="crypto_msg_unsupported_signed">Meddelandet är signerat, men är i format som inte stöds.</string>
+  <string name="crypto_msg_incomplete_encrypted">Meddelandet är krypterat, men måste hämtas helt och hållet för dekryptering.</string>
+  <string name="crypto_msg_cancelled">Meddelandet är krypterat, men dekrypteringen avbröts.</string>
+  <string name="crypto_msg_signed_unencrypted">Meddelandet är signerat, men inte krypterat.</string>
+  <string name="crypto_msg_encrypted_unsigned">Meddelandet var krypterat, men inte signerat.</string>
+  <string name="crypto_msg_sign_unknown">Signatur gjord av okänd nyckel.</string>
+  <string name="crypto_msg_sign_verified">Signatur gjord av tillförlitlig nyckel.</string>
+  <string name="crypto_msg_sign_unverified">Signatur gjord av opålitlig nyckeln!</string>
+  <string name="crypto_msg_sign_error">Signatur innehöll ett fel.</string>
+  <string name="crypto_msg_sign_mismatch">Signatur gjord av fel nyckel.</string>
+  <string name="crypto_msg_sign_expired">Signatur gjord av förfallen nyckel.</string>
+  <string name="crypto_msg_sign_revoked">Signatur gjord av återkallad nyckel.</string>
+  <string name="crypto_msg_sign_insecure">Signatur gjord av osäker nyckel.</string>
+  <string name="crypto_msg_sign_incomplete">Meddelande måste hämtas helt och hållet för att verifiera dess signatur.</string>
+  <string name="crypto_msg_signed_encrypted">Meddelandet är signerat och krypterat.</string>
+  <string name="crypto_msg_unsigned_encrypted">Det finns ingen signatur, detta meddelande kan ha avlyssnats.</string>
+  <string name="crypto_info_ok">OK</string>
+  <string name="crypto_info_view_key">Visa signerare</string>
+  <string name="locked_attach_unlock">Lås upp</string>
+  <string name="locked_attach_unsigned">Denna del signerades inte, och kan vara osäker.</string>
+  <string name="locked_attach_unencrypted">Denna del var inte krypterad och kan vara osäker.</string>
+  <string name="locked_attach_title">Oskyddad bilaga</string>
+  <string name="message_progress_text">Laddar...</string>
+  <string name="messageview_decrypt_cancelled">Dekryptering avbröts.</string>
+  <string name="messageview_decrypt_retry">Försök igen</string>
+  <string name="messageview_decrypt_incomplete">Krypterat meddelande måste laddas ner för dekryptering.</string>
+  <string name="messageview_crypto_error_title">Fel vid dekryptering av e-post</string>
+  <string name="messageview_crypto_warning_title">Säkerhetsvarning</string>
+  <string name="messageview_crypto_warning_revoked">Detta meddelande signerades av en <b>återkallad nyckel!</b></string>
+  <string name="messageview_crypto_warning_expired">Detta meddelande signerades av en <b>förfallen nyckel!</b></string>
+  <string name="messageview_crypto_warning_insecure">Detta meddelande signerades av en <b>osäker nyckel!</b></string>
+  <string name="messageview_crypto_warning_error">Det fanns ett <b>fel i det här meddelandets signatur!</b></string>
+  <string name="recipient_error_non_ascii">Symboler stöds för närvarande inte.</string>
+  <string name="recipient_error_parse_failed">Kan inte tolka adressen!</string>
+  <string name="account_settings_crypto_support_sign_only">Stöd signering av okrypterade meddelanden</string>
+  <string name="error_sign_only_no_encryption">Kryptering otillgänglig i signera-endast läge!</string>
 </resources>

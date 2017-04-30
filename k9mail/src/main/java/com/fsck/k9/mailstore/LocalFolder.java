@@ -25,15 +25,19 @@ import java.util.UUID;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import android.support.annotation.NonNull;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.Search;
+import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -53,9 +57,12 @@ import com.fsck.k9.mail.internet.SizeAware;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
-import com.fsck.k9.message.preview.MessagePreviewCreator;
-import com.fsck.k9.message.preview.PreviewResult;
-import com.fsck.k9.message.preview.PreviewResult.PreviewType;
+import com.fsck.k9.message.extractors.AttachmentCounter;
+import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
+import com.fsck.k9.message.extractors.MessageFulltextCreator;
+import com.fsck.k9.message.extractors.MessagePreviewCreator;
+import com.fsck.k9.message.extractors.PreviewResult;
+import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import org.apache.commons.io.IOUtils;
@@ -69,6 +76,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     static final long INVALID_MESSAGE_PART_ID = -1;
 
     private final LocalStore localStore;
+    private final AttachmentInfoExtractor attachmentInfoExtractor;
 
     private String mName = null;
     private long mFolderId = -1;
@@ -90,6 +98,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         super();
         this.localStore = localStore;
         this.mName = name;
+        attachmentInfoExtractor = localStore.attachmentInfoExtractor;
 
         if (getAccount().getInboxFolderName().equals(getName())) {
             mSyncClass =  FolderClass.FIRST_CLASS;
@@ -102,6 +111,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         super();
         this.localStore = localStore;
         this.mFolderId = id;
+        attachmentInfoExtractor = localStore.attachmentInfoExtractor;
     }
 
     public long getId() {
@@ -156,7 +166,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                 open(cursor);
                             }
                         } else {
-                            Log.w(K9.LOG_TAG, "Creating folder " + getName() + " with existing id " + getId());
+                            Timber.w("Creating folder %s with existing id %d", getName(), getId());
                             create(FolderType.HOLDS_MESSAGES);
                             open(mode);
                         }
@@ -602,7 +612,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             prefHolder.displayClass = FolderClass.valueOf(storage.getString(id + ".displayMode",
                                       prefHolder.displayClass.name()));
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Unable to load displayMode for " + getName(), e);
+            Timber.e(e, "Unable to load displayMode for %s", getName());
         }
         if (prefHolder.displayClass == FolderClass.NONE) {
             prefHolder.displayClass = FolderClass.NO_CLASS;
@@ -612,7 +622,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             prefHolder.syncClass = FolderClass.valueOf(storage.getString(id  + ".syncMode",
                                    prefHolder.syncClass.name()));
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Unable to load syncMode for " + getName(), e);
+            Timber.e(e, "Unable to load syncMode for %s", getName());
 
         }
         if (prefHolder.syncClass == FolderClass.NONE) {
@@ -623,7 +633,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             prefHolder.notifyClass = FolderClass.valueOf(storage.getString(id  + ".notifyMode",
                                    prefHolder.notifyClass.name()));
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Unable to load notifyMode for " + getName(), e);
+            Timber.e(e, "Unable to load notifyMode for %s", getName());
         }
         if (prefHolder.notifyClass == FolderClass.NONE) {
             prefHolder.notifyClass = FolderClass.INHERITED;
@@ -633,7 +643,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             prefHolder.pushClass = FolderClass.valueOf(storage.getString(id  + ".pushMode",
                                    prefHolder.pushClass.name()));
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Unable to load pushMode for " + getName(), e);
+            Timber.e(e, "Unable to load pushMode for %s", getName());
         }
         if (prefHolder.pushClass == FolderClass.NONE) {
             prefHolder.pushClass = FolderClass.INHERITED;
@@ -656,7 +666,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                 LocalMessage localMessage = (LocalMessage) message;
 
                                 loadMessageParts(db, localMessage);
-                                localMessage.loadHeadersIfNecessary();
                             }
                         }
                     } catch (MessagingException e) {
@@ -706,15 +715,17 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             throws MessagingException {
 
         long id = cursor.getLong(0);
-        int type = cursor.getInt(1);
         long parentId = cursor.getLong(2);
         String mimeType = cursor.getString(3);
         long size = cursor.getLong(4);
-        String displayName = cursor.getString(5);
         byte[] header = cursor.getBlob(6);
         int dataLocation = cursor.getInt(9);
         String serverExtra = cursor.getString(15);
-        boolean firstClassAttachment = (type != MessagePartType.HIDDEN_ATTACHMENT);
+        // TODO we don't currently cache much of the part data which is computed with AttachmentInfoExtractor,
+        // TODO might want to do that at a later point?
+        // String displayName = cursor.getString(5);
+        // int type = cursor.getInt(1);
+        // boolean inlineAttachment = (type == MessagePartType.HIDDEN_ATTACHMENT);
 
         final Part part;
         if (id == message.getMessagePartId()) {
@@ -727,12 +738,11 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
             String parentMimeType = parentPart.getMimeType();
             if (MimeUtility.isMultipart(parentMimeType)) {
-                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, displayName, size,
-                        firstClassAttachment);
+                BodyPart bodyPart = new LocalBodyPart(getAccountUuid(), message, id, size);
                 ((Multipart) parentPart.getBody()).addBodyPart(bodyPart);
                 part = bodyPart;
             } else if (MimeUtility.isMessage(parentMimeType)) {
-                Message innerMessage = new MimeMessage();
+                Message innerMessage = new LocalMimeMessage(getAccountUuid(), message, id);
                 parentPart.setBody(innerMessage);
                 part = innerMessage;
             } else {
@@ -763,8 +773,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             String encoding = cursor.getString(7);
 
             File file = localStore.getAttachmentFile(Long.toString(id));
-            Body body = new FileBackedBody(file, encoding);
-            part.setBody(body);
+            if (file.exists()) {
+                Body body = new FileBackedBody(file, encoding);
+                part.setBody(body);
+            }
         }
     }
 
@@ -784,25 +796,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate)
             throws IOException, MessagingException {
         throw new IllegalStateException("Not implemented");
-    }
-
-    void populateHeaders(final LocalMessage message) throws MessagingException {
-        this.localStore.database.execute(false, new DbCallback<Void>() {
-            @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException, MessagingException {
-                Cursor cursor = db.query("message_parts", new String[] { "header" }, "id = ?",
-                        new String[] { Long.toString(message.getMessagePartId()) }, null, null, null);
-                try {
-                    if (cursor.moveToFirst()) {
-                        byte[] header = cursor.getBlob(0);
-                        parseHeaderBytes(message, header);
-                    }
-                } finally {
-                    Utility.closeQuietly(cursor);
-                }
-                return null;
-            }
-        });
     }
 
     public String getMessageUidById(final long id) throws MessagingException {
@@ -851,6 +844,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                     "SELECT " +
                                     LocalStore.GET_MESSAGES_COLS +
                                     "FROM messages " +
+                                    "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
                                     "LEFT JOIN threads ON (threads.message_id = messages.id) " +
                                     "WHERE uid = ? AND folder_id = ?",
                                     new String[] { message.getUid(), Long.toString(mFolderId) });
@@ -873,6 +867,43 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
+    public Map<String,Long> getAllMessagesAndEffectiveDates() throws MessagingException {
+        try {
+            return  localStore.database.execute(false, new DbCallback<Map<String, Long>>() {
+                @Override
+                public Map<String, Long> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    Cursor cursor = null;
+                    HashMap<String, Long> result = new HashMap<>();
+
+                    try {
+                        open(OPEN_MODE_RO);
+
+                        cursor = db.rawQuery(
+                                "SELECT uid, date " +
+                                        "FROM messages " +
+                                        "WHERE empty = 0 AND deleted = 0 AND " +
+                                        "folder_id = ? ORDER BY date DESC",
+                                new String[] { Long.toString(mFolderId) });
+
+                        while (cursor.moveToNext()) {
+                            String uid = cursor.getString(0);
+                            Long date = cursor.isNull(1) ? null : cursor.getLong(1);
+                            result.put(uid, date);
+                        }
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+
+                    return result;
+                }
+            });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
+        }
+    }
+
     public List<LocalMessage> getMessages(MessageRetrievalListener<LocalMessage> listener) throws MessagingException {
         return getMessages(listener, true);
     }
@@ -888,6 +919,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         return LocalFolder.this.localStore.getMessages(listener, LocalFolder.this,
                                 "SELECT " + LocalStore.GET_MESSAGES_COLS +
                                 "FROM messages " +
+                                "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
                                 "LEFT JOIN threads ON (threads.message_id = messages.id) " +
                                 "WHERE empty = 0 AND " +
                                 (includeDeleted ? "" : "deleted = 0 AND ") +
@@ -903,15 +935,71 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
-    public List<LocalMessage> getMessages(String[] uids, MessageRetrievalListener<LocalMessage> listener)
-            throws MessagingException {
-        open(OPEN_MODE_RW);
-        if (uids == null) {
-            return getMessages(listener);
+    public List<String> getAllMessageUids() throws MessagingException {
+        try {
+            return  localStore.database.execute(false, new DbCallback<List<String>>() {
+                @Override
+                public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    Cursor cursor = null;
+                    ArrayList<String> result = new ArrayList<>();
+
+                    try {
+                        open(OPEN_MODE_RO);
+
+                        cursor = db.rawQuery(
+                                "SELECT uid " +
+                                    "FROM messages " +
+                                        "WHERE empty = 0 AND deleted = 0 AND " +
+                                        "folder_id = ? ORDER BY date DESC",
+                                new String[] { Long.toString(mFolderId) });
+
+                        while (cursor.moveToNext()) {
+                            String uid = cursor.getString(0);
+                            result.add(uid);
+                        }
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+
+                    return result;
+                }
+            });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
         }
+    }
+
+    public List<LocalMessage> getMessagesByUids(@NonNull List<String> uids) throws MessagingException {
+        open(OPEN_MODE_RW);
         List<LocalMessage> messages = new ArrayList<>();
         for (String uid : uids) {
             LocalMessage message = getMessage(uid);
+            if (message != null) {
+                messages.add(message);
+            }
+        }
+        return messages;
+    }
+
+    public List<LocalMessage> getMessagesByReference(@NonNull List<MessageReference> messageReferences)
+            throws MessagingException {
+        open(OPEN_MODE_RW);
+
+        String accountUuid = getAccountUuid();
+        String folderName = getName();
+
+        List<LocalMessage> messages = new ArrayList<>();
+        for (MessageReference messageReference : messageReferences) {
+            if (!accountUuid.equals(messageReference.getAccountUuid())) {
+                throw new IllegalArgumentException("all message references must belong to this Account!");
+            }
+            if (!folderName.equals(messageReference.getFolderName())) {
+                throw new IllegalArgumentException("all message references must belong to this LocalFolder!");
+            }
+
+            LocalMessage message = getMessage(messageReference.getUid());
             if (message != null) {
                 messages.add(message);
             }
@@ -948,10 +1036,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
                             String oldUID = message.getUid();
 
-                            if (K9.DEBUG) {
-                                Log.d(K9.LOG_TAG, "Updating folder_id to " + lDestFolder.getId() + " for message with UID "
-                                      + message.getUid() + ", id " + lMessage.getId() + " currently in folder " + getName());
-                            }
+                            Timber.d("Updating folder_id to %s for message with UID %s, " +
+                                    "id %d currently in folder %s",
+                                    lDestFolder.getId(),
+                                    message.getUid(),
+                                    lMessage.getId(),
+                                    getName());
 
                             String newUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
                             message.setUid(newUid);
@@ -1223,6 +1313,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         long rootId = -1;
         long parentId = -1;
+        long msgId;
 
         if (oldMessageId == -1) {
             // This is a new message. Do the message threading.
@@ -1237,6 +1328,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             PreviewResult previewResult = previewCreator.createPreview(message);
             PreviewType previewType = previewResult.getPreviewType();
             DatabasePreviewType databasePreviewType = DatabasePreviewType.fromPreviewType(previewType);
+
+            MessageFulltextCreator fulltextCreator = localStore.getMessageFulltextCreator();
+            String fulltext = fulltextCreator.createFulltext(message);
 
             AttachmentCounter attachmentCounter = localStore.getAttachmentCounter();
             int attachmentCount = attachmentCounter.getAttachmentCount(message);
@@ -1280,7 +1374,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             }
 
             if (oldMessageId == -1) {
-                long msgId = db.insert("messages", "uid", cv);
+                msgId = db.insert("messages", "uid", cv);
 
                 // Create entry in 'threads' table
                 cv.clear();
@@ -1295,7 +1389,15 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
                 db.insert("threads", null, cv);
             } else {
+                msgId = oldMessageId;
                 db.update("messages", cv, "id = ?", new String[] { Long.toString(oldMessageId) });
+            }
+
+            if (fulltext != null) {
+                cv.clear();
+                cv.put("docid", msgId);
+                cv.put("fulltext", fulltext);
+                db.replace("messages_fulltext", null, cv);
             }
         } catch (Exception e) {
             throw new MessagingException("Error appending message: " + message.getSubject(), e);
@@ -1336,12 +1438,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         return updateOrInsertMessagePart(db, cv, part, INVALID_MESSAGE_PART_ID);
     }
 
-    private void renameTemporaryFile(File file, String messagePartId) {
-        File destination = localStore.getAttachmentFile(messagePartId);
-        if (!file.renameTo(destination)) {
-            Log.w(K9.LOG_TAG, "Couldn't rename temporary file " + file.getAbsolutePath() +
-                    " to " + destination.getAbsolutePath());
-        }
+    private void moveTemporaryFile(File tempFile, String messagePartId) throws IOException {
+        File destinationFile = localStore.getAttachmentFile(messagePartId);
+        FileHelper.renameOrMoveByCopying(tempFile, destinationFile);
     }
 
     private long updateOrInsertMessagePart(SQLiteDatabase db, ContentValues cv, Part part, long existingMessagePartId)
@@ -1373,24 +1472,28 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
 
         if (file != null) {
-            renameTemporaryFile(file, Long.toString(messagePartId));
+            moveTemporaryFile(file, Long.toString(messagePartId));
         }
 
         return messagePartId;
     }
 
     private void multipartToContentValues(ContentValues cv, Multipart multipart) {
-        cv.put("data_location", DataLocation.IN_DATABASE);
+        cv.put("data_location", DataLocation.CHILD_PART_CONTAINS_DATA);
         cv.put("preamble", multipart.getPreamble());
         cv.put("epilogue", multipart.getEpilogue());
         cv.put("boundary", multipart.getBoundary());
     }
 
     private void missingPartToContentValues(ContentValues cv, Part part) throws MessagingException {
-        AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part);
+        AttachmentViewInfo attachment = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
         cv.put("display_name", attachment.displayName);
         cv.put("data_location", DataLocation.MISSING);
         cv.put("decoded_body_size", attachment.size);
+
+        if (MimeUtility.isMultipart(part.getMimeType())) {
+            cv.put("boundary", BoundaryGenerator.getInstance().generateBoundary());
+        }
     }
 
     private void messageMarkerToContentValues(ContentValues cv) throws MessagingException {
@@ -1399,7 +1502,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private File leafPartToContentValues(ContentValues cv, Part part, Body body)
             throws MessagingException, IOException {
-        AttachmentViewInfo attachment = LocalMessageExtractor.extractAttachmentInfo(part);
+        AttachmentViewInfo attachment = attachmentInfoExtractor.extractAttachmentInfoForDatabase(part);
         cv.put("display_name", attachment.displayName);
 
         String encoding = getTransferEncoding(part);
@@ -1502,7 +1605,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         return output.toByteArray();
     }
 
-    private String getTransferEncoding(Part part) throws MessagingException {
+    private String getTransferEncoding(Part part) {
         String[] contentTransferEncoding = part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING);
         if (contentTransferEncoding.length > 0) {
             return contentTransferEncoding[0].toLowerCase(Locale.US);
@@ -1559,7 +1662,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 try {
                     updateOrInsertMessagePart(db, new ContentValues(), part, messagePartId);
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Error writing message part", e);
+                    Timber.e(e, "Error writing message part");
                 }
 
                 return null;
@@ -1607,7 +1710,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         try {
                             message.setFlags(flags, value);
                         } catch (MessagingException e) {
-                            Log.e(K9.LOG_TAG, "Something went wrong while setting flag", e);
+                            Timber.e(e, "Something went wrong while setting flag");
                         }
                     }
 
@@ -1639,6 +1742,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         List<? extends Message> messages  = this.localStore.getMessages(null, this,
                 "SELECT " + LocalStore.GET_MESSAGES_COLS +
                 "FROM messages " +
+                "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
                 "LEFT JOIN threads ON (threads.message_id = messages.id) " +
                 "WHERE empty = 0 AND (folder_id = ? and date < ?)",
                 new String[] { Long.toString(mFolderId), Long.toString(cutoff) });
@@ -1769,8 +1873,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                 String messagePartId = cursor.getString(0);
                 File file = localStore.getAttachmentFile(messagePartId);
                 if (file.exists()) {
-                    if (!file.delete() && K9.DEBUG) {
-                        Log.d(K9.LOG_TAG, "Couldn't delete message part file: " + file.getAbsolutePath());
+                    if (!file.delete() && K9.isDebug()) {
+                        Timber.d("Couldn't delete message part file: %s", file.getAbsolutePath());
                     }
                 }
             }
@@ -1822,15 +1926,15 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         return cursor.getInt(0);
                     }
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Unable to updateLastUid: ", e);
+                    Timber.e(e, "Unable to updateLastUid: ");
                 } finally {
                     Utility.closeQuietly(cursor);
                 }
                 return null;
             }
         });
-        if (K9.DEBUG)
-            Log.d(K9.LOG_TAG, "Updated last UID for folder " + mName + " to " + lastUid);
+
+        Timber.d("Updated last UID for folder %s to %s", mName, lastUid);
         mLastUid = lastUid;
     }
 
@@ -1847,7 +1951,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         return cursor.getLong(0);
                     }
                 } catch (Exception e) {
-                    Log.e(K9.LOG_TAG, "Unable to fetch oldest message date: ", e);
+                    Timber.e(e, "Unable to fetch oldest message date: ");
                 } finally {
                     Utility.closeQuietly(cursor);
                 }
@@ -2036,6 +2140,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     // Note: The contents of the 'message_parts' table depend on these values.
+    // TODO currently unused, might be for caching at a later point
     static class MessagePartType {
         static final int UNKNOWN = 0;
         static final int ALTERNATIVE_PLAIN = 1;

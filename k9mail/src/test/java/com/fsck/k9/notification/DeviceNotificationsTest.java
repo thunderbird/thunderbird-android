@@ -15,6 +15,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
 import org.junit.Before;
@@ -22,9 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import static com.fsck.k9.MockHelper.mockBuilder;
 import static org.junit.Assert.assertEquals;
@@ -35,8 +34,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
 public class DeviceNotificationsTest {
     private static final int UNREAD_MESSAGE_COUNT = 42;
     private static final int NEW_MESSAGE_COUNT = 2;
@@ -128,7 +126,7 @@ public class DeviceNotificationsTest {
         verify(builder).setTicker(SUMMARY);
         verify(builder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
         verify(builder).setSubText(ACCOUNT_NAME);
-        verify(builder).setGroup("newMailNotifications");
+        verify(builder).setGroup("newMailNotifications-" + ACCOUNT_NUMBER);
         verify(builder).setGroupSummary(true);
         verify(builder).setPriority(NotificationCompat.PRIORITY_HIGH);
         verify(builder).setStyle(notifications.inboxStyle);
@@ -147,8 +145,8 @@ public class DeviceNotificationsTest {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
         K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
         when(notificationData.isSingleMessageNotification()).thenReturn(false);
-        when(notificationData.hasAdditionalMessages()).thenReturn(true);
-        when(notificationData.getAdditionalMessagesCount()).thenReturn(23);
+        when(notificationData.hasSummaryOverflowMessages()).thenReturn(true);
+        when(notificationData.getSummaryOverflowMessagesCount()).thenReturn(23);
 
         notifications.buildSummaryNotification(account, notificationData, false);
 

@@ -4,6 +4,7 @@ package com.fsck.k9.activity.compose;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
@@ -25,6 +26,7 @@ public class ComposeCryptoStatus {
     private Long signingKeyId;
     private Long selfEncryptKeyId;
     private String[] recipientAddresses;
+    private boolean enablePgpInline;
 
 
     public long[] getEncryptKeyIds() {
@@ -42,7 +44,7 @@ public class ComposeCryptoStatus {
         return signingKeyId;
     }
 
-    public CryptoStatusDisplayType getCryptoStatusDisplayType() {
+    CryptoStatusDisplayType getCryptoStatusDisplayType() {
         switch (cryptoProviderState) {
             case UNCONFIGURED:
                 return CryptoStatusDisplayType.UNCONFIGURED;
@@ -55,7 +57,7 @@ public class ComposeCryptoStatus {
                 // provider status is ok -> return value is based on cryptoMode
                 break;
             default:
-                throw new AssertionError("all CryptoProviderStates must be handled, this is a bug!");
+                throw new AssertionError("all CryptoProviderStates must be handled!");
         }
 
         switch (cryptoMode) {
@@ -82,8 +84,28 @@ public class ComposeCryptoStatus {
             case DISABLE:
                 return CryptoStatusDisplayType.DISABLED;
             default:
-                throw new AssertionError("all CryptoModes must be handled, this is a bug!");
+                throw new AssertionError("all CryptoModes must be handled!");
         }
+    }
+
+    CryptoSpecialModeDisplayType getCryptoSpecialModeDisplayType() {
+        if (cryptoProviderState != CryptoProviderState.OK) {
+            return CryptoSpecialModeDisplayType.NONE;
+        }
+
+        if (isSignOnly() && isPgpInlineModeEnabled()) {
+            return CryptoSpecialModeDisplayType.SIGN_ONLY_PGP_INLINE;
+        }
+
+        if (isSignOnly()) {
+            return CryptoSpecialModeDisplayType.SIGN_ONLY;
+        }
+
+        if (isPgpInlineModeEnabled()) {
+            return CryptoSpecialModeDisplayType.PGP_INLINE;
+        }
+
+        return CryptoSpecialModeDisplayType.NONE;
     }
 
     public boolean shouldUsePgpMessageBuilder() {
@@ -98,10 +120,25 @@ public class ComposeCryptoStatus {
         return cryptoMode == CryptoMode.OPPORTUNISTIC;
     }
 
+    public boolean isSignOnly() {
+        return cryptoMode == CryptoMode.SIGN_ONLY;
+    }
+
     public boolean isSigningEnabled() {
         return cryptoMode != CryptoMode.DISABLE && signingKeyId != null;
     }
 
+    public boolean isPgpInlineModeEnabled() {
+        return enablePgpInline;
+    }
+
+    public boolean isCryptoDisabled() {
+        return cryptoMode == CryptoMode.DISABLE;
+    }
+
+    public boolean isProviderStateOk() {
+        return cryptoProviderState == CryptoProviderState.OK;
+    }
 
     public static class ComposeCryptoStatusBuilder {
 
@@ -110,6 +147,7 @@ public class ComposeCryptoStatus {
         private Long signingKeyId;
         private Long selfEncryptKeyId;
         private List<Recipient> recipients;
+        private Boolean enablePgpInline;
 
         public ComposeCryptoStatusBuilder setCryptoProviderState(CryptoProviderState cryptoProviderState) {
             this.cryptoProviderState = cryptoProviderState;
@@ -136,15 +174,23 @@ public class ComposeCryptoStatus {
             return this;
         }
 
+        public ComposeCryptoStatusBuilder setEnablePgpInline(boolean cryptoEnableCompat) {
+            this.enablePgpInline = cryptoEnableCompat;
+            return this;
+        }
+
         public ComposeCryptoStatus build() {
             if (cryptoProviderState == null) {
-                throw new AssertionError("cryptoProviderState must be set. this is a bug!");
+                throw new AssertionError("cryptoProviderState must be set!");
             }
             if (cryptoMode == null) {
-                throw new AssertionError("crypto mode must be set. this is a bug!");
+                throw new AssertionError("crypto mode must be set!");
             }
             if (recipients == null) {
-                throw new AssertionError("recipients must be set. this is a bug!");
+                throw new AssertionError("recipients must be set!");
+            }
+            if (enablePgpInline == null) {
+                throw new AssertionError("enablePgpInline must be set!");
             }
 
             ArrayList<String> recipientAddresses = new ArrayList<>();
@@ -172,6 +218,7 @@ public class ComposeCryptoStatus {
             result.hasRecipients = hasRecipients;
             result.signingKeyId = signingKeyId;
             result.selfEncryptKeyId = selfEncryptKeyId;
+            result.enablePgpInline = enablePgpInline;
             return result;
         }
     }
@@ -192,6 +239,22 @@ public class ComposeCryptoStatus {
         boolean isPrivateModeAndNotAllKeysAvailable = cryptoMode == CryptoMode.PRIVATE && !allKeysAvailable;
         if (isPrivateModeAndNotAllKeysAvailable) {
             return SendErrorState.PRIVATE_BUT_MISSING_KEYS;
+        }
+
+        return null;
+    }
+
+    enum AttachErrorState {
+        IS_INLINE
+    }
+
+    AttachErrorState getAttachErrorStateOrNull() {
+        if (cryptoProviderState == CryptoProviderState.UNCONFIGURED) {
+            return null;
+        }
+
+        if (enablePgpInline) {
+            return AttachErrorState.IS_INLINE;
         }
 
         return null;

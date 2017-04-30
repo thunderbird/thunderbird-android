@@ -5,64 +5,119 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="4dp"
     android:orientation="vertical"
     tools:showIn="@layout/message_compose">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginLeft="12dip"
         android:layout_marginStart="12dip"
         android:layout_marginRight="10dip"
         android:layout_marginEnd="10dip"
-        android:minHeight="50dp">
+        android:minHeight="50dp"
+        android:animateLayoutChanges="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/from_label"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:id="@+id/from_label"
             android:minWidth="50dp"
             android:text="@string/recipient_from"
-            style="@style/ComposeTextLabel" />
+            style="@style/ComposeTextLabel"
+            />
 
         <TextView
-            android:id="@+id/identity"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/from_label"
-            android:layout_toEndOf="@id/from_label"
-            android:layout_marginRight="36dp"
-            android:layout_marginEnd="36dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/identity"
             android:singleLine="true"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            android:ellipsize="end"
             tools:text="Address"
             style="@style/ComposeEditText"
             />
 
-        <ViewAnimator
-            android:layout_width="36dp"
-            android:layout_height="32dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:id="@+id/crypto_status"
+        <com.fsck.k9.view.ToolableViewAnimator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/crypto_special_mode"
             android:visibility="gone"
+            tools:visibility="visible"
             android:inAnimation="@anim/fade_in"
             android:outAnimation="@anim/fade_out"
-            tools:visibility="visible">
+            custom:previewInitialChild="2">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:src="@drawable/compatibility"
+                android:tint="@color/light_black"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:src="@drawable/status_signature_verified_cutout"
+                android:tint="?attr/openpgp_blue"
+                />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/status_signature_verified_cutout"
+                    android:tint="?attr/openpgp_blue"
+                    />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="right|bottom"
+                    android:src="@drawable/compatibility"
+                    android:tint="@color/light_black"
+                    />
+            </FrameLayout>
+
+        </com.fsck.k9.view.ToolableViewAnimator>
+
+
+        <com.fsck.k9.view.ToolableViewAnimator
+            android:layout_width="36dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/crypto_status"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:inAnimation="@anim/fade_in"
+            android:outAnimation="@anim/fade_out"
+            custom:previewInitialChild="2">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/status_lock_disabled"
-                android:tint="@color/openpgp_grey"
+                android:tint="?attr/openpgp_dark_grey"
                 />
 
             <ImageView
@@ -70,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/status_lock_error"
-                android:tint="@color/openpgp_red"
+                android:tint="?attr/openpgp_red"
                 />
 
             <FrameLayout
@@ -82,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_dots"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="?attr/openpgp_grey"
                     />
 
                 <ImageView
@@ -90,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="?attr/openpgp_grey"
                     />
 
             </FrameLayout>
@@ -104,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_dots"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="?attr/openpgp_grey"
                     />
 
                 <ImageView
@@ -112,7 +167,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock_error_dots_1"
-                    android:tint="@color/openpgp_red"
+                    android:tint="?attr/openpgp_red"
                     />
 
             </FrameLayout>
@@ -126,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_dots"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="?attr/openpgp_grey"
                     />
 
                 <ImageView
@@ -134,7 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock_none_dots_1"
-                    android:tint="@color/openpgp_red"
+                    android:tint="?attr/openpgp_red"
                     />
 
                 <ImageView
@@ -142,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock_disabled"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="?attr/openpgp_grey"
                     />
 
             </FrameLayout>
@@ -156,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_dots"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="?attr/openpgp_grey"
                     />
 
                 <ImageView
@@ -164,7 +219,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock_dots_2"
-                    android:tint="@color/openpgp_orange"
+                    android:tint="?attr/openpgp_orange"
                     />
 
             </FrameLayout>
@@ -178,7 +233,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_dots"
-                    android:tint="@color/openpgp_grey"
+                    android:tint="?attr/openpgp_grey"
                     />
 
                 <ImageView
@@ -186,22 +241,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:src="@drawable/status_lock_dots_3"
-                    android:tint="@color/openpgp_green"
+                    android:tint="?attr/openpgp_green"
                     />
 
             </FrameLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/status_signature_verified_cutout"
-                android:tint="@color/openpgp_blue"
-                />
+        </com.fsck.k9.view.ToolableViewAnimator>
 
-        </ViewAnimator>
-
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -265,7 +312,7 @@
                 android:layout_height="match_parent"
                 android:padding="6dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_action_expand_light"
+                android:src="?attr/iconActionExpand"
                 android:id="@+id/recipient_expander"
                 />
 

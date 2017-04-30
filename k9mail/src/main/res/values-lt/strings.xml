@@ -47,7 +47,7 @@
   <string name="status_loading_account_folder_headers">Gaunamos antraštės <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Siunčiama <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Apdorojama <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress"> <xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Sekantis tikrinimas <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Sinchronizavimas išjungtas</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> pasirinkta</string>
@@ -571,11 +571,9 @@
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Laiško peržiūros tema</string>
   <string name="settings_compose_theme_label">Kūrimo tema</string>
-  <string name="settings_language_label">Kalba</string>
   <string name="settings_message_theme_selection_label">Numatyta laiško tema</string>
   <string name="settings_message_theme_selection_summary_off">Peržiūrint laišką, pasirinkti laiško peržiūros temą</string>
   <string name="settings_message_theme_selection_summary_on">Naudoti numatytą laiškų peržiūros temą</string>
-  <string name="setting_language_system">Sistemos numatyta</string>
   <string name="background_ops_label">Sinchronizuoti fone</string>
   <string name="background_ops_never">Niekada</string>
   <string name="background_ops_always">Visada</string>
@@ -610,7 +608,6 @@
   <string name="search_all_messages_detail">Visi laiškai ieškomųjų aplankuose</string>
   <string name="integrated_inbox_title">Suvestiniai gautieji</string>
   <string name="integrated_inbox_detail">Visi laiškai suvestiniuose aplankuose</string>
-  <string name="tap_hint">Norėdami matyti neskaitytus arba pažymėtus laiškus paspauskite ant voko arba žvaigždės</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Suvesti</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Visi laiškai rodomi suvestiniame gautųjų aplanke</string>
   <string name="account_settings_searchable_label">Aplankai kuriuose ieškoti</string>
@@ -650,7 +647,6 @@
   <string name="font_size_larger">Didesnis</string>
   <string name="miscellaneous_preferences">Kita</string>
   <string name="error_activity_not_found">Šiai programai nerasta tinkamo veiksmo.</string>
-  <string name="send_aborted">Siuntimas nutrauktas.</string>
   <string name="save_or_discard_draft_message_dlg_title">Išsaugoti laišką kaip juodraštį?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Išsaugoti ar nepaisyti šio laiško?</string>
   <string name="confirm_discard_draft_message_title">Nepaisyti laiško?</string>

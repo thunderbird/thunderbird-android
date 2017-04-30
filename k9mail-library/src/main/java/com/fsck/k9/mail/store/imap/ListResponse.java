@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.support.annotation.Nullable;
+
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 class ListResponse {
@@ -52,9 +54,8 @@ class ListResponse {
             return null;
         }
 
-        //TODO: Add support for NIL. Needs modifications in ImapResponseParser
         String hierarchyDelimiter = response.getString(2);
-        if (hierarchyDelimiter.length() != 1) {
+        if (hierarchyDelimiter != null && hierarchyDelimiter.length() != 1) {
             return null;
         }
 
@@ -93,6 +94,7 @@ class ListResponse {
         return false;
     }
 
+    @Nullable
     public String getHierarchyDelimiter() {
         return hierarchyDelimiter;
     }

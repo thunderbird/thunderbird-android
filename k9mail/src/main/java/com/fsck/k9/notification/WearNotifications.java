@@ -94,6 +94,57 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addActions(Builder builder, Account account, NotificationHolder holder) {
+        addDeviceActions(builder, holder);
+        addWearActions(builder, account, holder);
+    }
+
+    private void addDeviceActions(Builder builder, NotificationHolder holder) {
+        addDeviceReplyAction(builder, holder);
+        addDeviceMarkAsReadAction(builder, holder);
+        addDeviceDeleteAction(builder, holder);
+    }
+
+    private void addDeviceReplyAction(Builder builder, NotificationHolder holder) {
+        int icon = R.drawable.notification_action_mark_as_read;
+        String title = context.getString(R.string.notification_action_reply);
+
+        NotificationContent content = holder.content;
+        MessageReference messageReference = content.messageReference;
+        PendingIntent replyToMessagePendingIntent =
+                actionCreator.createReplyPendingIntent(messageReference, holder.notificationId);
+
+        builder.addAction(icon, title, replyToMessagePendingIntent);
+    }
+
+    private void addDeviceMarkAsReadAction(Builder builder, NotificationHolder holder) {
+        int icon = R.drawable.notification_action_mark_as_read;
+        String title = context.getString(R.string.notification_action_mark_as_read);
+
+        NotificationContent content = holder.content;
+        int notificationId = holder.notificationId;
+        MessageReference messageReference = content.messageReference;
+        PendingIntent action = actionCreator.createMarkMessageAsReadPendingIntent(messageReference, notificationId);
+
+        builder.addAction(icon, title, action);
+    }
+
+    private void addDeviceDeleteAction(Builder builder, NotificationHolder holder) {
+        if (!isDeleteActionEnabled()) {
+            return;
+        }
+
+        int icon = R.drawable.notification_action_delete;
+        String title = context.getString(R.string.notification_action_delete);
+
+        NotificationContent content = holder.content;
+        int notificationId = holder.notificationId;
+        MessageReference messageReference = content.messageReference;
+        PendingIntent action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId);
+
+        builder.addAction(icon, title, action);
+    }
+
+    private void addWearActions(Builder builder, Account account, NotificationHolder holder) {
         NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
 
         addReplyAction(wearableExtender, holder);

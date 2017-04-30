@@ -48,7 +48,7 @@
   <string name="status_loading_account_folder_headers">Dobavljanje zaglavlja <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Šaljem <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Obrađujem <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Slijedeća provjera <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Sinhroniziranje je onemogućeno</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> odabrano</string>
@@ -434,7 +434,7 @@
   <string name="account_settings_crypto">Šifriranje</string>
   <string name="account_settings_crypto_app">Aplikacija OtvorenogPGP-a</string>
   <string name="account_settings_crypto_key">Moj Ključ</string>
-  <string name="account_settings_no_openpgp_provider_installed">Nema instalirane aplikacije OtvorenogPGP-a</string>
+  <string name="account_settings_no_openpgp_provider_configured">Nema instalirane aplikacije OtvorenogPGP-a</string>
   <string name="account_settings_mail_check_frequency_label">Učestalost provjere mape</string>
   <string name="account_settings_storage_title">Pohrana</string>
   <string name="account_settings_color_label">Boja računa</string>
@@ -625,11 +625,9 @@
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema pregleda poruke</string>
   <string name="settings_compose_theme_label">Tema sastavljanja poruke</string>
-  <string name="settings_language_label">Jezik</string>
   <string name="settings_message_theme_selection_label">Popravljena tema poruke</string>
   <string name="settings_message_theme_selection_summary_off">Pdaberite temu poruke prilikom pregledavanja poruke</string>
   <string name="settings_message_theme_selection_summary_on">Koristi popravljenu temu pregleda poruke</string>
-  <string name="setting_language_system">Sistemski zadano</string>
   <string name="background_ops_label">Pozadinska sinhronizacija</string>
   <string name="background_ops_never">Nikada</string>
   <string name="background_ops_always">Uvijek</string>
@@ -664,7 +662,6 @@
   <string name="search_all_messages_detail">Sve poruke uključene u mape pretraživanja</string>
   <string name="integrated_inbox_title">Objedinjena Dolazna Pošta</string>
   <string name="integrated_inbox_detail">Sve poruke u objedinjenim mapama</string>
-  <string name="tap_hint">Dodirnite omotnicu ili zvijezdicu za nepročitane ili za poruke sa zvjezdicom </string>
   <string name="folder_settings_include_in_integrated_inbox_label">Objedini</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Sve poruke su prikazane u Objedinjenoj Dolaznoj Pošti</string>
   <string name="account_settings_searchable_label">Mape za pretragu</string>
@@ -706,7 +703,6 @@
   <string name="font_size_larger">Veća</string>
   <string name="miscellaneous_preferences">Razna</string>
   <string name="error_activity_not_found">Nema prikladne aplikacije za ovu radnju.</string>
-  <string name="send_aborted">Slanje prekinuto.</string>
   <string name="save_or_discard_draft_message_dlg_title">Spremiti predložak poruke?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Spremiti ili Odbaciti ovu poruku?</string>
   <string name="confirm_discard_draft_message_title">Odbaciti poruku?</string>

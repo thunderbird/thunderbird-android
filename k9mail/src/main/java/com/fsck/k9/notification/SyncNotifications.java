@@ -83,7 +83,8 @@ class SyncNotifications {
                 .setContentTitle(title)
                 .setContentText(text)
                 .setContentIntent(showMessageListPendingIntent)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE);
 
         if (NOTIFICATION_LED_WHILE_SYNCING) {
             controller.configureNotification(builder, null, null,

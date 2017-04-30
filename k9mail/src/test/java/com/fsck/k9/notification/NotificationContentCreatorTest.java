@@ -4,18 +4,17 @@ package com.fsck.k9.notification;
 import android.content.Context;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.message.preview.PreviewResult.PreviewType;
+import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -23,8 +22,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
 public class NotificationContentCreatorTest {
     private static final String ACCOUNT_UUID = "1-2-3";
     private static final String FOLDER_NAME = "INBOX";
@@ -78,6 +76,17 @@ public class NotificationContentCreatorTest {
     @Test
     public void createFromMessage_withoutPreview() throws Exception {
         when(message.getPreviewType()).thenReturn(PreviewType.NONE);
+        when(message.getPreview()).thenReturn(null);
+
+        NotificationContent content = contentCreator.createFromMessage(account, message);
+
+        assertEquals(SUBJECT, content.subject);
+        assertEquals(SUBJECT, content.preview.toString());
+    }
+
+    @Test
+    public void createFromMessage_withErrorPreview() throws Exception {
+        when(message.getPreviewType()).thenReturn(PreviewType.ERROR);
         when(message.getPreview()).thenReturn(null);
 
         NotificationContent content = contentCreator.createFromMessage(account, message);

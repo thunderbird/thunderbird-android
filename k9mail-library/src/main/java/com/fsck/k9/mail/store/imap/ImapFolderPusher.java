@@ -11,8 +11,8 @@ import java.util.List;
 
 import android.content.Context;
 import android.os.PowerManager;
-import android.util.Log;
 
+import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
@@ -21,8 +21,8 @@ import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.store.RemoteStore;
+import timber.log.Timber;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.K9MailLib.PUSH_WAKE_LOCK_TIMEOUT;
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
@@ -88,12 +88,12 @@ class ImapFolderPusher extends ImapFolder {
         ImapConnection conn = connection;
         if (conn != null) {
             if (K9MailLib.isDebug()) {
-                Log.v(LOG_TAG, "Closing connection to stop pushing for " + getLogId());
+                Timber.v("Closing connection to stop pushing for %s", getLogId());
             }
 
             conn.close();
         } else {
-            Log.w(LOG_TAG, "Attempt to interrupt null connection to stop pushing on folderPusher for " + getLogId());
+            Timber.w("Attempt to interrupt null connection to stop pushing on folderPusher for %s", getLogId());
         }
     }
 
@@ -105,7 +105,7 @@ class ImapFolderPusher extends ImapFolder {
                     equalsIgnoreCase(responseType, "EXISTS")) {
 
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Storing response " + response + " for later processing");
+                    Timber.d("Storing response %s for later processing", response);
                 }
 
                 synchronized (storedUntaggedResponses) {
@@ -132,7 +132,7 @@ class ImapFolderPusher extends ImapFolder {
             wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
 
             if (K9MailLib.isDebug()) {
-                Log.i(LOG_TAG, "Pusher starting for " + getLogId());
+                Timber.i("Pusher starting for %s", getLogId());
             }
 
             long lastUidNext = -1L;
@@ -177,7 +177,7 @@ class ImapFolderPusher extends ImapFolder {
                         processStoredUntaggedResponses();
 
                         if (K9MailLib.isDebug()) {
-                            Log.i(LOG_TAG, "About to IDLE for " + getLogId());
+                            Timber.i("About to IDLE for %s", getLogId());
                         }
 
                         prepareForIdle();
@@ -188,24 +188,23 @@ class ImapFolderPusher extends ImapFolder {
 
                         returnFromIdle();
                     }
-                } catch (Exception e) {
-                    wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
+                } catch (AuthenticationFailedException e) {
+                    reacquireWakeLockAndCleanUp();
 
-                    clearStoredUntaggedResponses();
-                    idling = false;
-                    pushReceiver.setPushActive(getName(), false);
-
-                    try {
-                        connection.close();
-                    } catch (Exception me) {
-                        Log.e(LOG_TAG, "Got exception while closing for exception for " + getLogId(), me);
+                    if (K9MailLib.isDebug()) {
+                        Timber.e(e, "Authentication failed. Stopping ImapFolderPusher.");
                     }
 
+                    pushReceiver.authenticationFailed();
+                    stop = true;
+                } catch (Exception e) {
+                    reacquireWakeLockAndCleanUp();
+
                     if (stop) {
-                        Log.i(LOG_TAG, "Got exception while idling, but stop is set for " + getLogId());
+                        Timber.i("Got exception while idling, but stop is set for %s", getLogId());
                     } else {
                         pushReceiver.pushError("Push error for " + getName(), e);
-                        Log.e(LOG_TAG, "Got exception while idling for " + getLogId(), e);
+                        Timber.e("Got exception while idling for %s", getLogId());
 
                         pushReceiver.sleep(wakeLock, delayTime);
 
@@ -216,8 +215,7 @@ class ImapFolderPusher extends ImapFolder {
 
                         idleFailureCount++;
                         if (idleFailureCount > IDLE_FAILURE_COUNT_LIMIT) {
-                            Log.e(LOG_TAG, "Disabling pusher for " + getLogId() + " after " + idleFailureCount +
-                                    " consecutive errors");
+                            Timber.e("Disabling pusher for %s after %d consecutive errors", getLogId(), idleFailureCount);
                             pushReceiver.pushError("Push disabled for " + getName() + " after " + idleFailureCount +
                                     " consecutive errors", e);
                             stop = true;
@@ -230,15 +228,31 @@ class ImapFolderPusher extends ImapFolder {
 
             try {
                 if (K9MailLib.isDebug()) {
-                    Log.i(LOG_TAG, "Pusher for " + getLogId() + " is exiting");
+                    Timber.i("Pusher for %s is exiting", getLogId());
                 }
 
                 close();
             } catch (Exception me) {
-                Log.e(LOG_TAG, "Got exception while closing for " + getLogId(), me);
+                Timber.e(me, "Got exception while closing for %s", getLogId());
             } finally {
                 wakeLock.release();
             }
+        }
+
+        private void reacquireWakeLockAndCleanUp() {
+            wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
+
+            clearStoredUntaggedResponses();
+            idling = false;
+            pushReceiver.setPushActive(getName(), false);
+
+            try {
+                connection.close();
+            } catch (Exception me) {
+                Timber.e(me, "Got exception while closing for exception for %s", getLogId());
+            }
+
+            connection = null;
         }
 
         private long getNewUidNext() throws MessagingException {
@@ -248,7 +262,7 @@ class ImapFolderPusher extends ImapFolder {
             }
 
             if (K9MailLib.isDebug()) {
-                Log.d(LOG_TAG, "uidNext is -1, using search to find highest UID");
+                Timber.d("uidNext is -1, using search to find highest UID");
             }
 
             long highestUid = getHighestUid();
@@ -259,7 +273,7 @@ class ImapFolderPusher extends ImapFolder {
             newUidNext = highestUid + 1;
 
             if (K9MailLib.isDebug()) {
-                Log.d(LOG_TAG, "highest UID = " + highestUid + ", set newUidNext to " + newUidNext);
+                Timber.d("highest UID = %d, set newUidNext to %d", highestUid, newUidNext);
             }
 
             return newUidNext;
@@ -349,12 +363,12 @@ class ImapFolderPusher extends ImapFolder {
         @Override
         public void handleAsyncUntaggedResponse(ImapResponse response) {
             if (K9MailLib.isDebug()) {
-                Log.v(LOG_TAG, "Got async response: " + response);
+                Timber.v("Got async response: %s", response);
             }
 
             if (stop) {
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Got async untagged response: " + response + ", but stop is set for " + getLogId());
+                    Timber.d("Got async untagged response: %s, but stop is set for %s", response, getLogId());
                 }
 
                 idleStopper.stopIdle();
@@ -368,14 +382,14 @@ class ImapFolderPusher extends ImapFolder {
                             wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
 
                             if (K9MailLib.isDebug()) {
-                                Log.d(LOG_TAG, "Got useful async untagged response: " + response + " for " + getLogId());
+                                Timber.d("Got useful async untagged response: %s for %s", response, getLogId());
                             }
 
                             idleStopper.stopIdle();
                         }
                     } else if (response.isContinuationRequested()) {
                         if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Idling " + getLogId());
+                            Timber.d("Idling %s", getLogId());
                         }
 
                         idleStopper.startAcceptingDoneContinuation(connection);
@@ -399,8 +413,8 @@ class ImapFolderPusher extends ImapFolder {
                 }
 
                 if (K9MailLib.isDebug()) {
-                    Log.i(LOG_TAG, "Processing " + untaggedResponses.size() + " untagged responses from previous " +
-                            "commands for " + getLogId());
+                    Timber.i("Processing %d untagged responses from previous commands for %s",
+                            untaggedResponses.size(), getLogId());
                 }
 
                 processUntaggedResponses(untaggedResponses);
@@ -446,7 +460,7 @@ class ImapFolderPusher extends ImapFolder {
             }
 
             if (K9MailLib.isDebug()) {
-                Log.d(LOG_TAG, "UIDs for messages needing flag sync are " + flagSyncMsgSeqs + "  for " + getLogId());
+                Timber.d("UIDs for messages needing flag sync are %s for %s", flagSyncMsgSeqs, getLogId());
             }
 
             if (!flagSyncMsgSeqs.isEmpty()) {
@@ -467,12 +481,12 @@ class ImapFolderPusher extends ImapFolder {
                 try {
                     Object responseType = response.get(1);
                     if (equalsIgnoreCase(responseType, "FETCH")) {
-                        Log.i(LOG_TAG, "Got FETCH " + response);
+                        Timber.i("Got FETCH %s", response);
 
                         long msgSeq = response.getLong(0);
 
                         if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Got untagged FETCH for msgseq " + msgSeq + " for " + getLogId());
+                            Timber.d("Got untagged FETCH for msgseq %d for %s", msgSeq, getLogId());
                         }
 
                         if (!flagSyncMsgSeqs.contains(msgSeq)) {
@@ -487,7 +501,7 @@ class ImapFolderPusher extends ImapFolder {
                         }
 
                         if (K9MailLib.isDebug()) {
-                            Log.d(LOG_TAG, "Got untagged EXPUNGE for msgseq " + msgSeq + " for " + getLogId());
+                            Timber.d("Got untagged EXPUNGE for msgseq %d for %s", msgSeq, getLogId());
                         }
 
                         List<Long> newSeqs = new ArrayList<Long>();
@@ -509,15 +523,14 @@ class ImapFolderPusher extends ImapFolder {
 
                         for (long msgSeqNum : msgSeqs) {
                             if (K9MailLib.isDebug()) {
-                                Log.v(LOG_TAG, "Comparing EXPUNGEd msgSeq " + msgSeq + " to " + msgSeqNum);
+                                Timber.v("Comparing EXPUNGEd msgSeq %d to %d", msgSeq, msgSeqNum);
                             }
 
                             if (msgSeqNum == msgSeq) {
                                 String uid = msgSeqUidMap.get(msgSeqNum);
 
                                 if (K9MailLib.isDebug()) {
-                                    Log.d(LOG_TAG, "Scheduling removal of UID " + uid + " because msgSeq " + msgSeqNum +
-                                            " was expunged");
+                                    Timber.d("Scheduling removal of UID %s because msgSeq %d was expunged", uid, msgSeqNum);
                                 }
 
                                 removeMsgUids.add(uid);
@@ -526,8 +539,7 @@ class ImapFolderPusher extends ImapFolder {
                                 String uid = msgSeqUidMap.get(msgSeqNum);
 
                                 if (K9MailLib.isDebug()) {
-                                    Log.d(LOG_TAG, "Reducing msgSeq for UID " + uid + " from " + msgSeqNum + " to " +
-                                            (msgSeqNum - 1));
+                                    Timber.d("Reducing msgSeq for UID %s from %d to %d", uid, msgSeqNum, (msgSeqNum - 1));
                                 }
 
                                 msgSeqUidMap.remove(msgSeqNum);
@@ -536,7 +548,7 @@ class ImapFolderPusher extends ImapFolder {
                         }
                     }
                 } catch (Exception e) {
-                    Log.e(LOG_TAG, "Could not handle untagged FETCH for " + getLogId(), e);
+                    Timber.e(e, "Could not handle untagged FETCH for %s", getLogId());
                 }
             }
 
@@ -552,7 +564,7 @@ class ImapFolderPusher extends ImapFolder {
                 long newUid = Long.parseLong(messageList.get(0).getUid());
 
                 if (K9MailLib.isDebug()) {
-                    Log.i(LOG_TAG, "Got newUid " + newUid + " for message " + end + " on " + getLogId());
+                    Timber.i("Got newUid %s for message %d on %s", newUid, end, getLogId());
                 }
 
                 long startUid = oldUidNext;
@@ -566,7 +578,7 @@ class ImapFolderPusher extends ImapFolder {
 
                 if (newUid >= startUid) {
                     if (K9MailLib.isDebug()) {
-                        Log.i(LOG_TAG, "Needs sync from uid " + startUid + " to " + newUid + " for " + getLogId());
+                        Timber.i("Needs sync from uid %d to %d for %s", startUid, newUid, getLogId());
                     }
 
                     List<Message> messages = new ArrayList<Message>();
@@ -604,7 +616,7 @@ class ImapFolderPusher extends ImapFolder {
                     msgSeqUidMap.clear();
 
                     String existingUid = existingMessage.getUid();
-                    Log.w(LOG_TAG, "Message with UID " + existingUid + " still exists on server, not expunging");
+                    Timber.w("Message with UID %s still exists on server, not expunging", existingUid);
 
                     removeUids.remove(existingUid);
                 }
@@ -615,7 +627,7 @@ class ImapFolderPusher extends ImapFolder {
                     try {
                         message.setFlagInternal(Flag.DELETED, true);
                     } catch (MessagingException me) {
-                        Log.e(LOG_TAG, "Unable to set DELETED flag on message " + message.getUid());
+                        Timber.e("Unable to set DELETED flag on message %s", message.getUid());
                     }
 
                     messages.add(message);
@@ -623,7 +635,7 @@ class ImapFolderPusher extends ImapFolder {
 
                 pushReceiver.messagesRemoved(ImapFolderPusher.this, messages);
             } catch (Exception e) {
-                Log.e(LOG_TAG, "Cannot remove EXPUNGEd messages", e);
+                Timber.e("Cannot remove EXPUNGEd messages");
             }
         }
 
@@ -639,7 +651,7 @@ class ImapFolderPusher extends ImapFolder {
 
         private void notifyMessagesArrived(long startUid, long uidNext) {
             if (K9MailLib.isDebug()) {
-                Log.i(LOG_TAG, "Needs sync from uid " + startUid + " to " + uidNext + " for " + getLogId());
+                Timber.i("Needs sync from uid %d to %d for %s", startUid, uidNext, getLogId());
             }
 
             int count = (int) (uidNext - startUid);
@@ -661,10 +673,10 @@ class ImapFolderPusher extends ImapFolder {
                 oldUidNext = pushState.uidNext;
 
                 if (K9MailLib.isDebug()) {
-                    Log.i(LOG_TAG, "Got oldUidNext " + oldUidNext + " for " + getLogId());
+                    Timber.i("Got oldUidNext %d for %s", oldUidNext, getLogId());
                 }
             } catch (Exception e) {
-                Log.e(LOG_TAG, "Unable to get oldUidNext for " + getLogId(), e);
+                Timber.e(e, "Unable to get oldUidNext for %s", getLogId());
             }
 
             return oldUidNext;

@@ -22,17 +22,23 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpError;
+import org.openintents.openpgp.util.ParcelFileDescriptorUtil.DataSinkTransferThread;
+import org.openintents.openpgp.util.ParcelFileDescriptorUtil.DataSourceTransferThread;
 
+
+@SuppressWarnings("unused")
 public class OpenPgpApi {
 
     public static final String TAG = "OpenPgp API";
@@ -113,7 +119,7 @@ public class OpenPgpApi {
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
      * char[]        EXTRA_PASSPHRASE            (key passphrase)
      * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
-     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
+     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default is true)
      */
     public static final String ACTION_ENCRYPT = "org.openintents.openpgp.action.ENCRYPT";
 
@@ -130,7 +136,7 @@ public class OpenPgpApi {
      * boolean       EXTRA_REQUEST_ASCII_ARMOR   (request ascii armor for output)
      * char[]        EXTRA_PASSPHRASE            (key passphrase)
      * String        EXTRA_ORIGINAL_FILENAME     (original filename to be encrypted as metadata)
-     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default ist true)
+     * boolean       EXTRA_ENABLE_COMPRESSION    (enable ZLIB compression, default is true)
      */
     public static final String ACTION_SIGN_AND_ENCRYPT = "org.openintents.openpgp.action.SIGN_AND_ENCRYPT";
 
@@ -252,7 +258,11 @@ public class OpenPgpApi {
     public static final String RESULT_INTENT = "intent";
 
     // DECRYPT_VERIFY
+    public static final String EXTRA_DECRYPTION_RESULT = "decryption_result";
     public static final String EXTRA_DETACHED_SIGNATURE = "detached_signature";
+    public static final String EXTRA_PROGRESS_MESSENGER = "progress_messenger";
+    public static final String EXTRA_DATA_LENGTH = "data_length";
+    public static final String EXTRA_SENDER_ADDRESS = "sender_address";
     public static final String RESULT_SIGNATURE = "signature";
     public static final String RESULT_DECRYPTION = "decryption";
     public static final String RESULT_METADATA = "metadata";
@@ -276,7 +286,49 @@ public class OpenPgpApi {
         void onReturn(final Intent result);
     }
 
-    private class OpenPgpAsyncTask extends AsyncTask<Void, Integer, Intent> {
+    public interface IOpenPgpSinkResultCallback<T> {
+        void onProgress(int current, int max);
+        void onReturn(final Intent result, T sinkResult);
+    }
+
+    public interface CancelableBackgroundOperation {
+        void cancelOperation();
+    }
+
+    private class OpenPgpSourceSinkAsyncTask<T> extends AsyncTask<Void, Integer, OpenPgpDataResult<T>>
+            implements CancelableBackgroundOperation {
+        Intent data;
+        OpenPgpDataSource dataSource;
+        OpenPgpDataSink<T> dataSink;
+        IOpenPgpSinkResultCallback<T> callback;
+
+        private OpenPgpSourceSinkAsyncTask(Intent data, OpenPgpDataSource dataSource,
+                OpenPgpDataSink<T> dataSink, IOpenPgpSinkResultCallback<T> callback) {
+            this.data = data;
+            this.dataSource = dataSource;
+            this.dataSink = dataSink;
+            this.callback = callback;
+        }
+
+        @Override
+        protected OpenPgpDataResult<T> doInBackground(Void... unused) {
+            return executeApi(data, dataSource, dataSink);
+        }
+
+        protected void onPostExecute(OpenPgpDataResult<T> result) {
+            callback.onReturn(result.apiResult, result.sinkResult);
+        }
+
+        @Override
+        public void cancelOperation() {
+            cancel(true);
+            if (dataSource != null) {
+                dataSource.cancel();
+            }
+        }
+    }
+
+    class OpenPgpAsyncTask extends AsyncTask<Void, Integer, Intent> {
         Intent data;
         InputStream is;
         OutputStream os;
@@ -297,10 +349,46 @@ public class OpenPgpApi {
         protected void onPostExecute(Intent result) {
             callback.onReturn(result);
         }
-
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public <T> CancelableBackgroundOperation executeApiAsync(Intent data, OpenPgpDataSource dataSource,
+            OpenPgpDataSink<T> dataSink, final IOpenPgpSinkResultCallback<T> callback) {
+        Messenger messenger = new Messenger(new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                callback.onProgress(message.arg1, message.arg2);
+                return true;
+            }
+        }));
+        data.putExtra(EXTRA_PROGRESS_MESSENGER, messenger);
+
+        OpenPgpSourceSinkAsyncTask<T> task = new OpenPgpSourceSinkAsyncTask<>(data, dataSource, dataSink, callback);
+
+        // don't serialize async tasks!
+        // http://commonsware.com/blog/2012/04/20/asynctask-threading-regression-confirmed.html
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+        } else {
+            task.execute((Void[]) null);
+        }
+
+        return task;
+    }
+
+    public AsyncTask executeApiAsync(Intent data, OpenPgpDataSource dataSource, IOpenPgpSinkResultCallback<Void> callback) {
+        OpenPgpSourceSinkAsyncTask<Void> task = new OpenPgpSourceSinkAsyncTask<>(data, dataSource, null, callback);
+
+        // don't serialize async tasks!
+        // http://commonsware.com/blog/2012/04/20/asynctask-threading-regression-confirmed.html
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
+        } else {
+            task.execute((Void[]) null);
+        }
+
+        return task;
+    }
+
     public void executeApiAsync(Intent data, InputStream is, OutputStream os, IOpenPgpCallback callback) {
         OpenPgpAsyncTask task = new OpenPgpAsyncTask(data, is, os, callback);
 
@@ -313,64 +401,69 @@ public class OpenPgpApi {
         }
     }
 
-    /**
-     * InputStream and OutputStreams are always closed after operating on them!
-     */
+    public static class OpenPgpDataResult<T> {
+        Intent apiResult;
+        T sinkResult;
+
+        public OpenPgpDataResult(Intent apiResult, T sinkResult) {
+            this.apiResult = apiResult;
+            this.sinkResult = sinkResult;
+        }
+    }
+
+    public <T> OpenPgpDataResult<T> executeApi(Intent data, OpenPgpDataSource dataSource, OpenPgpDataSink<T> dataSink) {
+        ParcelFileDescriptor input = null;
+        ParcelFileDescriptor output = null;
+        try {
+            if (dataSource != null) {
+                Long expectedSize = dataSource.getSizeForProgress();
+                if (expectedSize != null) {
+                    data.putExtra(EXTRA_DATA_LENGTH, (long) expectedSize);
+                } else {
+                    data.removeExtra(EXTRA_PROGRESS_MESSENGER);
+                }
+                input = dataSource.startPumpThread();
+            }
+
+            DataSinkTransferThread<T> pumpThread = null;
+            int outputPipeId = 0;
+
+            if (dataSink != null) {
+                outputPipeId = mPipeIdGen.incrementAndGet();
+                output = mService.createOutputPipe(outputPipeId);
+                pumpThread = ParcelFileDescriptorUtil.asyncPipeToDataSink(dataSink, output);
+            }
+
+            Intent result = executeApi(data, input, outputPipeId);
+
+            if (pumpThread == null) {
+                return new OpenPgpDataResult<>(result, null);
+            }
+
+            // wait for ALL data being pumped from remote side
+            pumpThread.join();
+            return new OpenPgpDataResult<>(result, pumpThread.getResult());
+        } catch (Exception e) {
+            Log.e(OpenPgpApi.TAG, "Exception in executeApi call", e);
+            Intent result = new Intent();
+            result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
+            result.putExtra(RESULT_ERROR,
+                    new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
+            return new OpenPgpDataResult<>(result, null);
+        } finally {
+            closeLoudly(output);
+        }
+    }
+
     public Intent executeApi(Intent data, InputStream is, OutputStream os) {
         ParcelFileDescriptor input = null;
+        ParcelFileDescriptor output = null;
         try {
             if (is != null) {
                 input = ParcelFileDescriptorUtil.pipeFrom(is);
             }
 
-            return executeApi(data, input, os);
-        } catch (Exception e) {
-            Log.e(OpenPgpApi.TAG, "Exception in executeApi call", e);
-            Intent result = new Intent();
-            result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
-            result.putExtra(RESULT_ERROR,
-                    new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
-            return result;
-        }
-    }
-
-    public interface OpenPgpDataSource {
-        void writeTo(OutputStream os) throws IOException;
-    }
-
-    /**
-     * InputStream and OutputStreams are always closed after operating on them!
-     */
-    public Intent executeApi(Intent data, OpenPgpDataSource dataSource, OutputStream os) {
-        ParcelFileDescriptor input = null;
-        try {
-            if (dataSource != null) {
-                input = ParcelFileDescriptorUtil.asyncPipeFromDataSource(dataSource);
-            }
-
-            return executeApi(data, input, os);
-        } catch (Exception e) {
-            Log.e(OpenPgpApi.TAG, "Exception in executeApi call", e);
-            Intent result = new Intent();
-            result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
-            result.putExtra(RESULT_ERROR,
-                    new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
-            return result;
-        }
-    }
-
-    /**
-     * InputStream and OutputStreams are always closed after operating on them!
-     */
-    private Intent executeApi(Intent data, ParcelFileDescriptor input, OutputStream os) {
-        ParcelFileDescriptor output = null;
-        try {
-            // always send version from client
-            data.putExtra(EXTRA_API_VERSION, OpenPgpApi.API_VERSION);
-
-            Intent result;
-
-            Thread pumpThread =null;
+            Thread pumpThread = null;
             int outputPipeId = 0;
 
             if (os != null) {
@@ -379,15 +472,9 @@ public class OpenPgpApi {
                 pumpThread = ParcelFileDescriptorUtil.pipeTo(os, output);
             }
 
-            // blocks until result is ready
-            result = mService.execute(data, input, outputPipeId);
+            Intent result = executeApi(data, input, outputPipeId);
 
-            // set class loader to current context to allow unparcelling
-            // of OpenPgpError and OpenPgpSignatureResult
-            // http://stackoverflow.com/a/3806769
-            result.setExtrasClassLoader(mContext.getClassLoader());
-
-            //wait for ALL data being pumped from remote side
+            // wait for ALL data being pumped from remote side
             if (pumpThread != null) {
                 pumpThread.join();
             }
@@ -401,24 +488,134 @@ public class OpenPgpApi {
                     new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
             return result;
         } finally {
-            // close() is required to halt the TransferThread
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    Log.e(OpenPgpApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
-                }
+            closeLoudly(output);
+        }
+    }
+
+    public static abstract class OpenPgpDataSource {
+        private boolean isCancelled;
+        private ParcelFileDescriptor writeSidePfd;
+
+
+        public abstract void writeTo(OutputStream os) throws IOException;
+
+        public Long getSizeForProgress() {
+            return null;
+        }
+
+        public boolean isCancelled() {
+            return isCancelled;
+        }
+
+        public ParcelFileDescriptor startPumpThread() throws IOException {
+            if (writeSidePfd != null) {
+                throw new IllegalStateException("startPumpThread() must only be called once!");
             }
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    Log.e(OpenPgpApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
-                }
+            ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
+            ParcelFileDescriptor readSidePfd = pipe[0];
+            writeSidePfd = pipe[1];
+
+            new DataSourceTransferThread(this, new ParcelFileDescriptor.AutoCloseOutputStream(writeSidePfd)).start();
+
+            return readSidePfd;
+        }
+
+        private void cancel() {
+            isCancelled = true;
+            try {
+                writeSidePfd.close();
+            } catch (IOException e) {
+                // this is fine
             }
         }
     }
 
+    public interface OpenPgpDataSink<T> {
+        T processData(InputStream is) throws IOException;
+    }
+
+    public Intent executeApi(Intent data, OpenPgpDataSource dataSource, OutputStream os) {
+        ParcelFileDescriptor input = null;
+        ParcelFileDescriptor output;
+        try {
+            if (dataSource != null) {
+                Long expectedSize = dataSource.getSizeForProgress();
+                if (expectedSize != null) {
+                    data.putExtra(EXTRA_DATA_LENGTH, (long) expectedSize);
+                } else {
+                    data.removeExtra(EXTRA_PROGRESS_MESSENGER);
+                }
+                input = dataSource.startPumpThread();
+            }
+
+            Thread pumpThread = null;
+            int outputPipeId = 0;
+
+            if (os != null) {
+                outputPipeId = mPipeIdGen.incrementAndGet();
+                output = mService.createOutputPipe(outputPipeId);
+                pumpThread = ParcelFileDescriptorUtil.pipeTo(os, output);
+            }
+
+            Intent result = executeApi(data, input, outputPipeId);
+
+            // wait for ALL data being pumped from remote side
+            if (pumpThread != null) {
+                pumpThread.join();
+            }
+
+            return result;
+        } catch (Exception e) {
+            Log.e(OpenPgpApi.TAG, "Exception in executeApi call", e);
+            Intent result = new Intent();
+            result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
+            result.putExtra(RESULT_ERROR,
+                    new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
+            return result;
+        }
+    }
+
+    /**
+     * InputStream and OutputStreams are always closed after operating on them!
+     */
+    private Intent executeApi(Intent data, ParcelFileDescriptor input, int outputPipeId) {
+        try {
+            // always send version from client
+            data.putExtra(EXTRA_API_VERSION, OpenPgpApi.API_VERSION);
+
+            Intent result;
+
+            // blocks until result is ready
+            result = mService.execute(data, input, outputPipeId);
+
+            // set class loader to current context to allow unparcelling
+            // of OpenPgpError and OpenPgpSignatureResult
+            // http://stackoverflow.com/a/3806769
+            result.setExtrasClassLoader(mContext.getClassLoader());
+
+            return result;
+        } catch (Exception e) {
+            Log.e(OpenPgpApi.TAG, "Exception in executeApi call", e);
+            Intent result = new Intent();
+            result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
+            result.putExtra(RESULT_ERROR,
+                    new OpenPgpError(OpenPgpError.CLIENT_SIDE_ERROR, e.getMessage()));
+            return result;
+        } finally {
+            // close() is required to halt the TransferThread
+            closeLoudly(input);
+        }
+    }
+
+    private static void closeLoudly(ParcelFileDescriptor input) {
+        if (input != null) {
+            try {
+                input.close();
+            } catch (IOException e) {
+                Log.e(OpenPgpApi.TAG, "IOException when closing ParcelFileDescriptor!", e);
+            }
+        }
+    }
 
     public interface PermissionPingCallback {
         void onPgpPermissionCheckResult(Intent result);

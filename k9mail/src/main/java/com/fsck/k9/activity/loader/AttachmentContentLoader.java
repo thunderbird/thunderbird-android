@@ -7,11 +7,14 @@ import java.io.InputStream;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.Attachment;
 
+import com.fsck.k9.activity.misc.Attachment.LoadingState;
+import de.cketti.safecontentresolver.SafeContentResolver;
+import de.cketti.safecontentresolver.SafeContentResolverCompat;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -22,20 +25,27 @@ import org.apache.commons.io.IOUtils;
 public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
     private static final String FILENAME_PREFIX = "attachment";
 
-    private final Attachment mAttachment;
+
+    private final Attachment sourceAttachment;
+    private Attachment cachedResultAttachment;
+
 
     public AttachmentContentLoader(Context context, Attachment attachment) {
         super(context);
-        mAttachment = attachment;
+        if (attachment.state != LoadingState.METADATA) {
+            throw new IllegalArgumentException("Attachment provided to content loader must be in METADATA state");
+        }
+
+        sourceAttachment = attachment;
     }
 
     @Override
     protected void onStartLoading() {
-        if (mAttachment.state == Attachment.LoadingState.COMPLETE) {
-            deliverResult(mAttachment);
+        if (cachedResultAttachment != null) {
+            deliverResult(sourceAttachment);
         }
 
-        if (takeContentChanged() || mAttachment.state == Attachment.LoadingState.METADATA) {
+        if (takeContentChanged() || cachedResultAttachment == null) {
             forceLoad();
         }
     }
@@ -48,11 +58,10 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
             File file = File.createTempFile(FILENAME_PREFIX, null, context.getCacheDir());
             file.deleteOnExit();
 
-            if (K9.DEBUG) {
-                Log.v(K9.LOG_TAG, "Saving attachment to " + file.getAbsolutePath());
-            }
+            Timber.v("Saving attachment to %s", file.getAbsolutePath());
 
-            InputStream in = context.getContentResolver().openInputStream(mAttachment.uri);
+            SafeContentResolver safeContentResolver = SafeContentResolverCompat.newInstance(context);
+            InputStream in = safeContentResolver.openInputStream(sourceAttachment.uri);
             try {
                 FileOutputStream out = new FileOutputStream(file);
                 try {
@@ -64,17 +73,13 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
                 in.close();
             }
 
-            mAttachment.filename = file.getAbsolutePath();
-            mAttachment.state = Attachment.LoadingState.COMPLETE;
-
-            return mAttachment;
+            cachedResultAttachment = sourceAttachment.deriveWithLoadComplete(file.getAbsolutePath());
+            return cachedResultAttachment;
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e, "Error saving attachment!");
         }
 
-        mAttachment.filename = null;
-        mAttachment.state = Attachment.LoadingState.CANCELLED;
-
-        return mAttachment;
+        cachedResultAttachment = sourceAttachment.deriveWithLoadCancelled();
+        return cachedResultAttachment;
     }
 }

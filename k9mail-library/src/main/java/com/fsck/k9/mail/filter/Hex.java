@@ -36,9 +36,9 @@ public class Hex {
      *
      * @param data
      *                  a byte[] to convert to Hex characters
-     * @return A char[] containing lower-case hexadecimal characters
+     * @return A String containing lower-case hexadecimal characters
      */
-    public static char[] encodeHex(byte[] data) {
+    public static String encodeHex(byte[] data) {
 
         int l = data.length;
 
@@ -50,7 +50,7 @@ public class Hex {
             out[j++] = DIGITS[ 0x0F & data[i] ];
         }
 
-        return out;
+        return new String(out);
     }
 
 }

@@ -8,11 +8,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,7 +22,8 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
+import timber.log.Timber;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,6 +42,7 @@ import com.fsck.k9.activity.compose.RecipientLoader;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.tokenautocomplete.TokenCompleteTextView;
+import org.apache.james.mime4j.util.CharsetUtil;
 
 
 public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>>,
@@ -55,13 +57,14 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
 
     private RecipientAdapter adapter;
+    @Nullable
     private String cryptoProvider;
+    @Nullable
     private LoaderManager loaderManager;
 
     private ListPopupWindow alternatesPopup;
     private AlternateRecipientAdapter alternatesAdapter;
     private Recipient alternatesPopupRecipient;
-    private boolean attachedToWindow = true;
     private TokenListener<Recipient> listener;
 
 
@@ -96,6 +99,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         adapter = new RecipientAdapter(context);
         setAdapter(adapter);
+
+        setLongClickable(true);
     }
 
     @Override
@@ -166,7 +171,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Override
     protected Recipient defaultObject(String completionText) {
         Address[] parsedAddresses = Address.parse(completionText);
+        if (!CharsetUtil.isASCII(completionText)) {
+            setError(getContext().getString(R.string.recipient_error_non_ascii));
+            return null;
+        }
         if (parsedAddresses.length == 0 || parsedAddresses[0].getAddress() == null) {
+            setError(getContext().getString(R.string.recipient_error_parse_failed));
             return null;
         }
 
@@ -177,22 +187,34 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         return getObjects().isEmpty();
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
-        attachedToWindow = true;
-
-        if (getContext() instanceof Activity) {
-            Activity activity = (Activity) getContext();
-            loaderManager = activity.getLoaderManager();
-        }
+    public void setLoaderManager(@Nullable LoaderManager loaderManager) {
+        this.loaderManager = loaderManager;
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        attachedToWindow = false;
+        if (loaderManager != null) {
+            loaderManager.destroyLoader(LOADER_ID_ALTERNATES);
+            loaderManager.destroyLoader(LOADER_ID_FILTERING);
+            loaderManager = null;
+        }
+    }
+
+    @Override
+    public void onFocusChanged(boolean hasFocus, int direction, Rect previous) {
+        super.onFocusChanged(hasFocus, direction, previous);
+        if (hasFocus) {
+            displayKeyboard();
+        }
+    }
+
+    private void displayKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) {
+            return;
+        }
+        imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
     }
 
     @Override
@@ -208,14 +230,9 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Override
     public void performCompletion() {
         if (getListSelection() == ListView.INVALID_POSITION && enoughToFilter()) {
-            Object bestGuess;
-            if (getAdapter().getCount() > 0) {
-                bestGuess = getAdapter().getItem(0);
-            } else {
-                bestGuess = defaultObject(currentCompletionText());
-            }
-            if (bestGuess != null) {
-                replaceText(convertSelectionToString(bestGuess));
+            Object recipientText = defaultObject(currentCompletionText());
+            if (recipientText != null) {
+                replaceText(convertSelectionToString(recipientText));
             }
         } else {
             super.performCompletion();
@@ -224,8 +241,11 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     protected void performFiltering(@NonNull CharSequence text, int start, int end, int keyCode) {
-        String query = text.subSequence(start, end).toString();
+        if (loaderManager == null) {
+            return;
+        }
 
+        String query = text.subSequence(start, end).toString();
         if (TextUtils.isEmpty(query) || query.length() < MINIMUM_LENGTH_FOR_FILTERING) {
             loaderManager.destroyLoader(LOADER_ID_FILTERING);
             return;
@@ -236,7 +256,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         loaderManager.restartLoader(LOADER_ID_FILTERING, args, this);
     }
 
-    public void setCryptoProvider(String cryptoProvider) {
+    public void setCryptoProvider(@Nullable String cryptoProvider) {
         this.cryptoProvider = cryptoProvider;
     }
 
@@ -257,7 +277,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     private void showAlternates(Recipient recipient) {
-        if (!attachedToWindow) {
+        if (loaderManager == null) {
             return;
         }
 
@@ -279,7 +299,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     public void showAlternatesPopup(List<Recipient> data) {
-        if (!attachedToWindow) {
+        if (loaderManager == null) {
             return;
         }
 
@@ -298,6 +318,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+        alternatesPopup.dismiss();
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     public Loader<List<Recipient>> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case LOADER_ID_FILTERING: {
@@ -310,8 +336,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 if (contactLookupUri != null) {
                     return new RecipientLoader(getContext(), cryptoProvider, contactLookupUri, true);
                 } else {
-                    String address = alternatesPopupRecipient.address.getAddress();
-                    return new RecipientLoader(getContext(), cryptoProvider, address);
+                    return new RecipientLoader(getContext(), cryptoProvider, alternatesPopupRecipient.address);
                 }
             }
         }
@@ -321,6 +346,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     public void onLoadFinished(Loader<List<Recipient>> loader, List<Recipient> data) {
+        if (loaderManager == null) {
+            return;
+        }
+
         switch (loader.getId()) {
             case LOADER_ID_FILTERING: {
                 adapter.setRecipients(data);
@@ -342,8 +371,29 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
     }
 
+    public boolean tryPerformCompletion() {
+        if (!hasUncompletedText()) {
+            return false;
+        }
+        int previousNumRecipients = getTokenCount();
+        performCompletion();
+        int numRecipients = getTokenCount();
+
+        return previousNumRecipients != numRecipients;
+    }
+
+    private int getTokenCount() {
+        return getObjects().size();
+    }
+
     public boolean hasUncompletedText() {
-        return !TextUtils.isEmpty(currentCompletionText());
+        String currentCompletionText = currentCompletionText();
+        return !TextUtils.isEmpty(currentCompletionText) && !isPlaceholderText(currentCompletionText);
+    }
+
+    static private boolean isPlaceholderText(String currentCompletionText) {
+        // TODO string matching here is sort of a hack, but it's somewhat reliable and the info isn't easily available
+        return currentCompletionText.startsWith("+") && currentCompletionText.substring(1).matches("[0-9]+");
     }
 
     @Override
@@ -353,8 +403,16 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     @Override
-    public void onRecipientChange(Recipient currentRecipient, Recipient alternateAddress) {
+    public void onRecipientChange(Recipient recipientToReplace, Recipient alternateAddress) {
         alternatesPopup.dismiss();
+
+        List<Recipient> currentRecipients = getObjects();
+        int indexOfRecipient = currentRecipients.indexOf(recipientToReplace);
+        if (indexOfRecipient == -1) {
+            Timber.e("Tried to refresh invalid view token!");
+            return;
+        }
+        Recipient currentRecipient = currentRecipients.get(indexOfRecipient);
 
         currentRecipient.address = alternateAddress.address;
         currentRecipient.addressLabel = alternateAddress.addressLabel;
@@ -362,7 +420,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         View recipientTokenView = getTokenViewForRecipient(currentRecipient);
         if (recipientTokenView == null) {
-            Log.e(K9.LOG_TAG, "Tried to refresh invalid view token!");
+            Timber.e("Tried to refresh invalid view token!");
             return;
         }
 
@@ -402,7 +460,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         RecipientTokenSpan[] recipientSpans = text.getSpans(0, text.length(), RecipientTokenSpan.class);
         for (RecipientTokenSpan recipientSpan : recipientSpans) {
-            if (recipientSpan.getToken() == currentRecipient) {
+            if (recipientSpan.getToken().equals(currentRecipient)) {
                 return recipientSpan.view;
             }
         }
@@ -500,6 +558,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             }
 
             return address.getAddress();
+        }
+
+        public boolean isValidEmailAddress() {
+            return (address.getAddress() != null);
         }
 
         public String getDisplayNameOrUnknown(Context context) {

@@ -83,13 +83,6 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:mimeType="application/x-k9settings"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-            </intent-filter>
         </activity>
 
         <activity
@@ -103,6 +96,12 @@
             android:name=".activity.setup.WelcomeMessage"
             android:configChanges="locale"
             android:label="@string/welcome_message_title"/>
+
+        <activity
+            android:name=".activity.setup.OpenPgpAppSelectDialog"
+            android:configChanges="locale"
+            android:theme="@style/Theme.K9.Transparent"
+            />
 
         <activity
             android:name=".activity.setup.FontSizeSettings"
@@ -363,6 +362,23 @@
                 android:resource="@xml/unread_widget_info"/>
         </receiver>
 
+        <receiver
+            android:name=".widget.list.MessageListWidgetProvider"
+            android:icon="@drawable/message_list_widget_preview"
+            android:label="@string/mail_list_widget_text">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/message_list_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".widget.list.MessageListWidgetService"
+            android:enabled="true"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
         <service
             android:name=".service.MailService"
             android:enabled="true"/>
@@ -398,7 +414,13 @@
             android:exported="true"
             android:grantUriPermissions="true"
             android:multiprocess="true"
-            android:readPermission="${applicationId}.permission.READ_ATTACHMENT"/>
+            android:readPermission="${applicationId}.permission.READ_ATTACHMENT">
+            
+            <meta-data
+                android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
+                android:value="true" />
+        
+        </provider>
 
         <provider
             android:name=".provider.MessageProvider"
@@ -415,15 +437,25 @@
             android:exported="false"/>
 
         <provider
-            android:name=".provider.K9FileProvider"
-            android:authorities="${applicationId}.fileprovider"
+            android:name=".provider.DecryptedFileProvider"
+            android:authorities="${applicationId}.decryptedfileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
 
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/allowed_file_provider_paths" />
+                android:resource="@xml/decrypted_file_provider_paths" />
+        </provider>
 
+        <provider
+            android:name=".provider.AttachmentTempFileProvider"
+            android:authorities="${applicationId}.tempfileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/temp_file_provider_paths" />
         </provider>
 
     </application>

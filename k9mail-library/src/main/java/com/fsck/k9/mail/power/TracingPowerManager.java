@@ -1,17 +1,17 @@
 package com.fsck.k9.mail.power;
 
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.fsck.k9.mail.K9MailLib;
-
 import android.content.Context;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.util.Log;
+import android.os.SystemClock;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import com.fsck.k9.mail.K9MailLib;
+import timber.log.Timber;
 
 
 public class TracingPowerManager {
@@ -25,7 +25,7 @@ public class TracingPowerManager {
         Context appContext = context.getApplicationContext();
         if (tracingPowerManager == null) {
             if (K9MailLib.isDebug()) {
-                Log.v(LOG_TAG, "Creating TracingPowerManager");
+                Timber.v("Creating TracingPowerManager");
             }
             tracingPowerManager = new TracingPowerManager(appContext);
         }
@@ -55,7 +55,7 @@ public class TracingPowerManager {
             wakeLock = pm.newWakeLock(flags, tag);
             id = wakeLockId.getAndIncrement();
             if (K9MailLib.isDebug()) {
-                Log.v(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": Create");
+                Timber.v("TracingWakeLock for tag %s / id %d: Create", tag, id);
             }
         }
         public void acquire(long timeout) {
@@ -63,11 +63,11 @@ public class TracingPowerManager {
                 wakeLock.acquire(timeout);
             }
             if (K9MailLib.isDebug()) {
-                Log.v(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + " for " + timeout + " ms: acquired");
+                Timber.v("TracingWakeLock for tag %s / id %d for %d ms: acquired", tag, id, timeout);
             }
             raiseNotification();
             if (startTime == null) {
-                startTime = System.currentTimeMillis();
+                startTime = SystemClock.elapsedRealtime();
             }
             this.timeout = timeout;
         }
@@ -77,10 +77,11 @@ public class TracingPowerManager {
             }
             raiseNotification();
             if (K9MailLib.isDebug()) {
-                Log.w(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": acquired with no timeout.  K-9 Mail should not do this");
+                Timber.w("TracingWakeLock for tag %s / id %d: acquired with no timeout.  K-9 Mail should not do this",
+                        tag, id);
             }
             if (startTime == null) {
-                startTime = System.currentTimeMillis();
+                startTime = SystemClock.elapsedRealtime();
             }
             timeout = null;
         }
@@ -91,13 +92,14 @@ public class TracingPowerManager {
         }
         public void release() {
             if (startTime != null) {
-                Long endTime = System.currentTimeMillis();
+                Long endTime = SystemClock.elapsedRealtime();
                 if (K9MailLib.isDebug()) {
-                    Log.v(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": releasing after " + (endTime - startTime) + " ms, timeout = " + timeout + " ms");
+                    Timber.v("TracingWakeLock for tag %s / id %d: releasing after %d ms, timeout = %d ms",
+                            tag, id, endTime - startTime, timeout);
                 }
             } else {
                 if (K9MailLib.isDebug()) {
-                    Log.v(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ", timeout = " + timeout + " ms: releasing");
+                    Timber.v("TracingWakeLock for tag %s / id %d, timeout = %d ms: releasing", tag, id, timeout);
                 }
             }
             cancelNotification();
@@ -126,12 +128,13 @@ public class TracingPowerManager {
                         @Override
                         public void run() {
                             if (startTime != null) {
-                                Long endTime = System.currentTimeMillis();
-                                Log.i(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": has been active for "
-                                      + (endTime - startTime) + " ms, timeout = " + timeout + " ms");
+                                Long endTime = SystemClock.elapsedRealtime();
+                                Timber.i("TracingWakeLock for tag %s / id %d: has been active for %d ms, timeout = %d ms",
+                                        tag, id, endTime - startTime, timeout);
 
                             } else {
-                                Log.i(LOG_TAG, "TracingWakeLock for tag " + tag + " / id " + id + ": still active, timeout = " + timeout + " ms");
+                                Timber.i("TracingWakeLock for tag %s / id %d: still active, timeout = %d ms",
+                                        tag, id, timeout);
                             }
                         }
 

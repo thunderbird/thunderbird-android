@@ -1,5 +1,4 @@
 include ':k9mail'
 include ':k9mail-library'
-include ':plugins:Android-PullToRefresh:library'
 include ':plugins:HoloColorPicker'
 include ':plugins:openpgp-api-lib:openpgp-api'

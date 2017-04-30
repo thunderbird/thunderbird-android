@@ -2,17 +2,18 @@ package com.fsck.k9.notification;
 
 
 import com.fsck.k9.Account;
+import com.fsck.k9.K9RobolectricTestRunner;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9RobolectricTestRunner.class)
+@Config(manifest = Config.NONE)
 public class NotificationIdsTest {
     private static final boolean INCOMING = true;
     private static final boolean OUTGOING = false;
@@ -23,7 +24,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
 
-        assertEquals(4, notificationId);
+        assertEquals(6, notificationId);
     }
 
     @Test
@@ -33,7 +34,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
 
-        assertEquals(5, notificationId);
+        assertEquals(7, notificationId);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
@@ -56,7 +57,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
 
-        assertEquals(17, notificationId);
+        assertEquals(21, notificationId);
     }
 
     @Test
@@ -66,7 +67,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getNewMailStackedNotificationId(account, notificationIndex);
 
-        assertEquals(25, notificationId);
+        assertEquals(29, notificationId);
     }
 
     @Test
@@ -75,7 +76,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
 
-        assertEquals(3, notificationId);
+        assertEquals(5, notificationId);
     }
 
     @Test
@@ -84,7 +85,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
 
-        assertEquals(16, notificationId);
+        assertEquals(20, notificationId);
     }
 
     @Test
@@ -102,7 +103,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getSendFailedNotificationId(account);
 
-        assertEquals(13, notificationId);
+        assertEquals(15, notificationId);
     }
 
     @Test
@@ -120,7 +121,7 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, INCOMING);
 
-        assertEquals(14, notificationId);
+        assertEquals(16, notificationId);
     }
 
     @Test
@@ -138,7 +139,43 @@ public class NotificationIdsTest {
 
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, OUTGOING);
 
-        assertEquals(15, notificationId);
+        assertEquals(17, notificationId);
+    }
+
+    @Test
+    public void getAuthenticationErrorNotificationId_forIncomingServerWithDefaultAccount() throws Exception {
+        Account account = createMockAccountWithAccountNumber(0);
+
+        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING);
+
+        assertEquals(3, notificationId);
+    }
+
+    @Test
+    public void getAuthenticationErrorNotificationId_forIncomingServerWithSecondAccount() throws Exception {
+        Account account = createMockAccountWithAccountNumber(1);
+
+        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, INCOMING);
+
+        assertEquals(18, notificationId);
+    }
+
+    @Test
+    public void getAuthenticationErrorNotificationId_forOutgoingServerWithDefaultAccount() throws Exception {
+        Account account = createMockAccountWithAccountNumber(0);
+
+        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING);
+
+        assertEquals(4, notificationId);
+    }
+
+    @Test
+    public void getAuthenticationErrorNotificationId_forOutgoingServerWithSecondAccount() throws Exception {
+        Account account = createMockAccountWithAccountNumber(1);
+
+        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, OUTGOING);
+
+        assertEquals(19, notificationId);
     }
 
     private Account createMockAccountWithAccountNumber(int accountNumber) {

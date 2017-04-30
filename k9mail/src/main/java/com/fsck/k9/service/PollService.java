@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.util.Log;
+import timber.log.Timber;
 import com.fsck.k9.*;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 
@@ -45,27 +45,23 @@ public class PollService extends CoreService {
     @Override
     public int startService(Intent intent, int startId) {
         if (START_SERVICE.equals(intent.getAction())) {
-            if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "PollService started with startId = " + startId);
+            Timber.i("PollService started with startId = %d", startId);
 
             MessagingController controller = MessagingController.getInstance(getApplication());
             Listener listener = (Listener)controller.getCheckMailListener();
             if (listener == null) {
-                if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "***** PollService *****: starting new check");
+                Timber.i("***** PollService *****: starting new check");
                 mListener.setStartId(startId);
                 mListener.wakeLockAcquire();
                 controller.setCheckMailListener(mListener);
                 controller.checkMail(this, null, false, false, mListener);
             } else {
-                if (K9.DEBUG)
-                    Log.i(K9.LOG_TAG, "***** PollService *****: renewing WakeLock");
+                Timber.i("***** PollService *****: renewing WakeLock");
                 listener.setStartId(startId);
                 listener.wakeLockAcquire();
             }
         } else if (STOP_SERVICE.equals(intent.getAction())) {
-            if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "PollService stopping");
+            Timber.i("PollService stopping");
             stopSelf();
         }
 
@@ -77,7 +73,7 @@ public class PollService extends CoreService {
         return null;
     }
 
-    class Listener extends MessagingListener {
+    class Listener extends SimpleMessagingListener {
         Map<String, Integer> accountsChecked = new HashMap<String, Integer>();
         private TracingWakeLock wakeLock = null;
         private int startId = -1;
@@ -109,11 +105,6 @@ public class PollService extends CoreService {
         }
 
         @Override
-        public void checkMailFailed(Context context, Account account, String reason) {
-            release();
-        }
-
-        @Override
         public void synchronizeMailboxFinished(
             Account account,
             String folder,
@@ -136,17 +127,14 @@ public class PollService extends CoreService {
 
             MailService.actionReschedulePoll(PollService.this, null);
             wakeLockRelease();
-            if (K9.DEBUG)
-                Log.i(K9.LOG_TAG, "PollService stopping with startId = " + startId);
 
+            Timber.i("PollService stopping with startId = %d", startId);
             stopSelf(startId);
         }
 
         @Override
         public void checkMailFinished(Context context, Account account) {
-
-            if (K9.DEBUG)
-                Log.v(K9.LOG_TAG, "***** PollService *****: checkMailFinished");
+            Timber.v("***** PollService *****: checkMailFinished");
             release();
         }
         public int getStartId() {

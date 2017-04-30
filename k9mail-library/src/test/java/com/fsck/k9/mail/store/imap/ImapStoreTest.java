@@ -14,6 +14,7 @@ import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import org.junit.Before;
@@ -44,8 +45,9 @@ public class ImapStoreTest {
         storeConfig = createStoreConfig();
         TrustedSocketFactory trustedSocketFactory = mock(TrustedSocketFactory.class);
         ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
+        OAuth2TokenProvider oauth2TokenProvider = mock(OAuth2TokenProvider.class);
 
-        imapStore = new TestImapStore(storeConfig, trustedSocketFactory, connectivityManager);
+        imapStore = new TestImapStore(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
     }
 
     @Test
@@ -249,7 +251,7 @@ public class ImapStoreTest {
     @Test
     public void getConnection_calledAfterRelease_shouldReturnCachedImapConnection() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
-        when(imapConnection.isOpen()).thenReturn(true);
+        when(imapConnection.isConnected()).thenReturn(true);
         imapStore.enqueueImapConnection(imapConnection);
         ImapConnection connection = imapStore.getConnection();
         imapStore.releaseConnection(connection);
@@ -267,7 +269,7 @@ public class ImapStoreTest {
         imapStore.enqueueImapConnection(imapConnectionOne);
         imapStore.enqueueImapConnection(imapConnectionTwo);
         imapStore.getConnection();
-        when(imapConnectionOne.isOpen()).thenReturn(false);
+        when(imapConnectionOne.isConnected()).thenReturn(false);
         imapStore.releaseConnection(imapConnectionOne);
 
         ImapConnection result = imapStore.getConnection();
@@ -282,7 +284,7 @@ public class ImapStoreTest {
         imapStore.enqueueImapConnection(imapConnectionOne);
         imapStore.enqueueImapConnection(imapConnectionTwo);
         imapStore.getConnection();
-        when(imapConnectionOne.isOpen()).thenReturn(true);
+        when(imapConnectionOne.isConnected()).thenReturn(true);
         doThrow(IOException.class).when(imapConnectionOne).executeSimpleCommand(Commands.NOOP);
         imapStore.releaseConnection(imapConnectionOne);
 
@@ -313,8 +315,8 @@ public class ImapStoreTest {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();
 
         public TestImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-                ConnectivityManager connectivityManager) throws MessagingException {
-            super(storeConfig, trustedSocketFactory, connectivityManager);
+                ConnectivityManager connectivityManager, OAuth2TokenProvider oauth2TokenProvider) throws MessagingException {
+            super(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
         }
 
         @Override

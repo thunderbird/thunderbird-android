@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.K9.Light" parent="Theme.K9.Light.Common">
+        <item name="android:contextPopupMenuStyle">@style/ContextPopupMenuStyleLight</item>
+    </style>
+
+    <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Common">
+        <item name="android:contextPopupMenuStyle">@style/ContextPopupMenuStyleDark</item>
+    </style>
+
+</resources>

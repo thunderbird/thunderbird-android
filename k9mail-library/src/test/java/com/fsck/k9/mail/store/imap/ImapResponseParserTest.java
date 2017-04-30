@@ -6,12 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -20,9 +19,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9LibRobolectricTestRunner.class)
 public class ImapResponseParserTest {
+    private PeekableInputStream peekableInputStream;
+
 
     @Test
     public void testSimpleOkResponse() throws IOException {
@@ -84,13 +84,27 @@ public class ImapResponseParserTest {
 
     @Test
     public void testReadStatusResponseWithOKResponse() throws Exception {
-        ImapResponseParser parser = createParser("* COMMAND BAR\tBAZ\r\nTAG OK COMMAND completed\r\n");
+        ImapResponseParser parser = createParser("* COMMAND BAR\tBAZ\r\n" +
+                "TAG OK COMMAND completed\r\n");
 
         List<ImapResponse> responses = parser.readStatusResponse("TAG", null, null, null);
 
         assertEquals(2, responses.size());
         assertEquals(asList("COMMAND", "BAR", "BAZ"), responses.get(0));
         assertEquals(asList("OK", "COMMAND completed"), responses.get(1));
+    }
+
+    @Test
+    public void testReadStatusResponseUntaggedHandlerGetsUntaggedOnly() throws Exception {
+        ImapResponseParser parser = createParser(
+                "* UNTAGGED\r\n" +
+                "A2 OK COMMAND completed\r\n");
+        TestUntaggedHandler untaggedHandler = new TestUntaggedHandler();
+
+        parser.readStatusResponse("A2", null, null, untaggedHandler);
+
+        assertEquals(1, untaggedHandler.responses.size());
+        assertEquals(asList("UNTAGGED"), untaggedHandler.responses.get(0));
     }
 
     @Test
@@ -111,6 +125,23 @@ public class ImapResponseParserTest {
         assertEquals(asList("UNTAGGED"), untaggedHandler.responses.get(0));
         assertEquals(responses.get(0), untaggedHandler.responses.get(1));
         assertEquals(responses.get(1), untaggedHandler.responses.get(2));
+    }
+
+    @Test
+    public void testReadStatusResponseUntaggedHandlerStillCalledOnNegativeReply() throws Exception {
+        ImapResponseParser parser = createParser(
+                "+ text\r\n" +
+                "A2 NO Bad response\r\n");
+        TestUntaggedHandler untaggedHandler = new TestUntaggedHandler();
+
+        try {
+            List<ImapResponse> responses = parser.readStatusResponse("A2", null, null, untaggedHandler);
+        } catch (NegativeImapResponseException e) {
+        }
+
+        assertEquals(1, untaggedHandler.responses.size());
+        assertEquals(asList("text"), untaggedHandler.responses.get(0));
+
     }
 
     @Test(expected = NegativeImapResponseException.class)
@@ -200,7 +231,7 @@ public class ImapResponseParserTest {
     @Test
     public void testParseLiteralWithConsumingCallbackReturningNull() throws Exception {
         ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
-        TestImapResponseCallback callback = new TestImapResponseCallback(4, "cheeseburger");
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndReturn(4, "cheeseburger");
 
         ImapResponse response = parser.readResponse(callback);
 
@@ -211,37 +242,88 @@ public class ImapResponseParserTest {
     @Test
     public void testParseLiteralWithNonConsumingCallbackReturningNull() throws Exception {
         ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
-        TestImapResponseCallback callback = new TestImapResponseCallback(0, null);
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndReturn(0, null);
 
         ImapResponse response = parser.readResponse(callback);
 
         assertEquals(1, response.size());
         assertEquals("test", response.getString(0));
         assertTrue(callback.foundLiteralCalled);
+        assertAllInputConsumed();
+    }
+
+    @Test
+    public void readResponse_withPartlyConsumingCallbackReturningNull_shouldThrow() throws Exception {
+        ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndReturn(2, null);
+
+        try {
+            parser.readResponse(callback);
+            fail();
+        } catch (AssertionError e) {
+            assertEquals("Callback consumed some data but returned no result", e.getMessage());
+        }
+    }
+
+    @Test
+    public void readResponse_withPartlyConsumingCallbackThatThrows_shouldReadAllDataAndThrow() throws Exception {
+        ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndThrow(2);
+
+        try {
+            parser.readResponse(callback);
+            fail();
+        } catch (ImapResponseParserException e) {
+            assertEquals("readResponse(): Exception in callback method", e.getMessage());
+            assertEquals(ImapResponseParserTestException.class, e.getCause().getClass());
+        }
+
+        assertAllInputConsumed();
+    }
+
+    @Test
+    public void readResponse_withCallbackThatThrowsRepeatedly_shouldConsumeAllInputAndThrowFirstException()
+            throws Exception {
+        ImapResponseParser parser = createParser("* {3}\r\none {3}\r\ntwo\r\n");
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndThrow(3);
+
+        try {
+            parser.readResponse(callback);
+            fail();
+        } catch (ImapResponseParserException e) {
+            assertEquals("readResponse(): Exception in callback method", e.getMessage());
+            assertEquals(ImapResponseParserTestException.class, e.getCause().getClass());
+            assertEquals(0, ((ImapResponseParserTestException) e.getCause()).instanceNumber);
+        }
+
+        assertAllInputConsumed();
     }
 
     @Test
     public void testParseLiteralWithIncompleteConsumingCallbackReturningString() throws Exception {
         ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
-        TestImapResponseCallback callback = new TestImapResponseCallback(2, "ninja");
+        TestImapResponseCallback callback = TestImapResponseCallback.readBytesAndReturn(2, "ninja");
 
         ImapResponse response = parser.readResponse(callback);
 
         assertEquals(1, response.size());
         assertEquals("ninja", response.getString(0));
+        assertAllInputConsumed();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testParseLiteralWithThrowingCallback() throws Exception {
         ImapResponseParser parser = createParser("* {4}\r\ntest\r\n");
-        ImapResponseCallback callback = new ImapResponseCallback() {
-            @Override
-            public Object foundLiteral(ImapResponse response, FixedLengthInputStream literal) throws Exception {
-                throw new RuntimeException();
-            }
-        };
+        ImapResponseCallback callback = TestImapResponseCallback.readBytesAndThrow(0);
 
-        parser.readResponse(callback);
+        try {
+            parser.readResponse(callback);
+            fail();
+        } catch (ImapResponseParserException e) {
+            assertEquals("readResponse(): Exception in callback method", e.getMessage());
+        }
+        
+        assertAllInputConsumed();
     }
 
     @Test(expected = IOException.class)
@@ -302,6 +384,14 @@ public class ImapResponseParserTest {
         assertEquals("[FolderName]", response.get(3));
     }
 
+    @Test(expected = IOException.class)
+    public void testListResponseContainingFolderNameContainingBracketsThrowsException() throws Exception {
+        ImapResponseParser parser = createParser(
+                "* LIST (\\NoInferiors) \"/\" Root/Folder/Subfolder()\r\n");
+
+        parser.readResponse();
+    }
+
     @Test
     public void readResponseShouldReadWholeListResponseLine() throws Exception {
         ImapResponseParser parser = createParser("* LIST (\\HasNoChildren) \".\" [FolderName]\r\n" +
@@ -314,6 +404,20 @@ public class ImapResponseParserTest {
     }
 
     @Test
+    public void readResponse_withListResponseContainingNil() throws Exception {
+        ImapResponseParser parser = createParser("* LIST (\\NoInferiors) NIL INBOX\r\n");
+
+        ImapResponse response = parser.readResponse();
+
+        assertEquals(4, response.size());
+        assertEquals("LIST", response.get(0));
+        assertEquals(1, response.getList(1).size());
+        assertEquals("\\NoInferiors", response.getList(1).getString(0));
+        assertEquals(null, response.get(2));
+        assertEquals("INBOX", response.get(3));
+    }
+
+    @Test
     public void readResponse_withListAsFirstToken_shouldThrow() throws Exception {
         ImapResponseParser parser = createParser("* [1 2] 3\r\n");
 
@@ -321,7 +425,7 @@ public class ImapResponseParserTest {
             parser.readResponse();
             fail("Expected exception");
         } catch (IOException e) {
-            assertEquals("Unexpected non-string token: [1, 2]", e.getMessage());
+            assertEquals("Unexpected non-string token: ImapList - [1, 2]", e.getMessage());
         }
     }
 
@@ -358,21 +462,60 @@ public class ImapResponseParserTest {
         assertEquals("\\Seen", response.getList(2).getList(10).getString(0));
     }
 
+    @Test
+    public void readStatusResponse_withNoResponse_shouldThrow() throws Exception {
+        ImapResponseParser parser = createParser("1 NO\r\n");
+
+        try {
+            parser.readStatusResponse("1", "COMMAND", "[logId]", null);
+            fail("Expected exception");
+        } catch (NegativeImapResponseException e) {
+            assertEquals("Command: COMMAND; response: #1# [NO]", e.getMessage());
+        }
+    }
+
+    @Test
+    public void readStatusResponse_withNoResponseAndAlertText_shouldThrowWithAlertText() throws Exception {
+        ImapResponseParser parser = createParser("1 NO [ALERT] Access denied\r\n");
+
+        try {
+            parser.readStatusResponse("1", "COMMAND", "[logId]", null);
+            fail("Expected exception");
+        } catch (NegativeImapResponseException e) {
+            assertEquals("Access denied", e.getAlertText());
+        }
+    }
+
     private ImapResponseParser createParser(String response) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.getBytes());
-        PeekableInputStream peekableInputStream = new PeekableInputStream(byteArrayInputStream);
+        peekableInputStream = new PeekableInputStream(byteArrayInputStream);
         return new ImapResponseParser(peekableInputStream);
     }
 
+    private void assertAllInputConsumed() throws IOException {
+        assertEquals(0, peekableInputStream.available());
+    }
 
-    private class TestImapResponseCallback implements ImapResponseCallback {
+
+    static class TestImapResponseCallback implements ImapResponseCallback {
         private final int readNumberOfBytes;
         private final Object returnValue;
+        private final boolean throwException;
+        private int exceptionCount = 0;
         public boolean foundLiteralCalled = false;
 
-        TestImapResponseCallback(int readNumberOfBytes, Object returnValue) {
+        public static TestImapResponseCallback readBytesAndReturn(int readNumberOfBytes, Object returnValue) {
+            return new TestImapResponseCallback(readNumberOfBytes, returnValue, false);
+        }
+
+        public static TestImapResponseCallback readBytesAndThrow(int readNumberOfBytes) {
+            return new TestImapResponseCallback(readNumberOfBytes, null, true);
+        }
+
+        private TestImapResponseCallback(int readNumberOfBytes, Object returnValue, boolean throwException) {
             this.readNumberOfBytes = readNumberOfBytes;
             this.returnValue = returnValue;
+            this.throwException = throwException;
         }
 
         @Override
@@ -380,17 +523,28 @@ public class ImapResponseParserTest {
             foundLiteralCalled = true;
 
             int skipBytes = readNumberOfBytes;
-            long skippedBytes;
-            do {
-                skippedBytes = literal.skip(skipBytes);
+            while (skipBytes > 0) {
+                long skippedBytes = literal.skip(skipBytes);
                 skipBytes -= skippedBytes;
-            } while (skippedBytes > 0);
+            }
+            
+            if (throwException) {
+                throw new ImapResponseParserTestException(exceptionCount++);
+            }
 
             return returnValue;
         }
     }
 
-    private class TestUntaggedHandler implements UntaggedHandler {
+    static class ImapResponseParserTestException extends RuntimeException {
+        public final int instanceNumber;
+
+        public ImapResponseParserTestException(int instanceNumber) {
+            this.instanceNumber = instanceNumber;
+        }
+    } 
+    
+    static class TestUntaggedHandler implements UntaggedHandler {
         public final List<ImapResponse> responses = new ArrayList<ImapResponse>();
 
         @Override

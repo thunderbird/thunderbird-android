@@ -45,7 +45,7 @@
   <string name="status_loading_account_folder_headers">Recuperando encabezados <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Enviando <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Próxima comprobación <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Comprobación rematada</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionada</string>
@@ -522,8 +522,6 @@
   <string name="messagelist_preferences">Lista de mensaxes</string>
   <string name="messageview_preferences">mensaxes</string>
   <string name="settings_theme_label">Tema</string>
-  <string name="settings_language_label">Idioma</string>
-  <string name="setting_language_system">Configurado no sistema</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>
@@ -557,7 +555,6 @@
   <string name="search_all_messages_detail">Mensaxes nas carpetas de búsqueda</string>
   <string name="integrated_inbox_title">Entrada unificada</string>
   <string name="integrated_inbox_detail">Mensajes na Entrada unificada</string>
-  <string name="tap_hint">Pulsar para marcar coma lido ou poñer unha estrela</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Todas as mensaxes amosaranse nunha bandexa unificada</string>
   <string name="account_settings_searchable_label">Carpetas para buscar</string>
@@ -595,7 +592,6 @@
   <string name="font_size_larger">Moi Grande</string>
   <string name="miscellaneous_preferences">Varios</string>
   <string name="error_activity_not_found">Non existe aplicación para executar esta acción</string>
-  <string name="send_aborted">Envío cancelado.</string>
   <string name="save_or_discard_draft_message_dlg_title">¿Guardar coma borrador?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">¿Gardar ou descartar esta mensaxe?</string>
   <string name="confirm_discard_draft_message_title">Descartar mensaxe?</string>

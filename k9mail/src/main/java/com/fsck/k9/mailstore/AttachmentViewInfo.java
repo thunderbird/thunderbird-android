@@ -17,20 +17,28 @@ public class AttachmentViewInfo {
      * A content provider URI that can be used to retrieve the decoded attachment.
      * <p/>
      * Note: All content providers must support an alternative MIME type appended as last URI segment.
-     *
-     * @see com.fsck.k9.ui.messageview.AttachmentController#getAttachmentUriForMimeType(AttachmentViewInfo, String)
      */
-    public final Uri uri;
-    public final boolean firstClassAttachment;
+    public final Uri internalUri;
+    public final boolean inlineAttachment;
     public final Part part;
+    private boolean contentAvailable;
 
-    public AttachmentViewInfo(String mimeType, String displayName, long size, Uri uri, boolean firstClassAttachment,
-            Part part) {
+    public AttachmentViewInfo(String mimeType, String displayName, long size, Uri internalUri, boolean inlineAttachment,
+            Part part, boolean contentAvailable) {
         this.mimeType = mimeType;
         this.displayName = displayName;
         this.size = size;
-        this.uri = uri;
-        this.firstClassAttachment = firstClassAttachment;
+        this.internalUri = internalUri;
+        this.inlineAttachment = inlineAttachment;
         this.part = part;
+        this.contentAvailable = contentAvailable;
+    }
+
+    public boolean isContentAvailable() {
+        return contentAvailable;
+    }
+
+    public void setContentAvailable() {
+        this.contentAvailable = true;
     }
 }

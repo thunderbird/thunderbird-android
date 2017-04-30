@@ -48,11 +48,7 @@ public class MessageHeaderParser {
         public void field(Field rawField) throws MimeException {
             String name = rawField.getName();
             String raw = rawField.getRaw().toString();
-            try {
-                part.addRawHeader(name, raw);
-            } catch (MessagingException e) {
-                throw new RuntimeException(e);
-            }
+            part.addRawHeader(name, raw);
         }
 
         @Override

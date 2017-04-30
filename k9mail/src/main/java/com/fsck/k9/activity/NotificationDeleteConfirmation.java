@@ -1,7 +1,8 @@
 package com.fsck.k9.activity;
 
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,6 +19,9 @@ import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.notification.NotificationActionService;
 
+import static com.fsck.k9.activity.MessageReferenceHelper.toMessageReferenceList;
+import static com.fsck.k9.activity.MessageReferenceHelper.toMessageReferenceStringList;
+
 
 public class NotificationDeleteConfirmation extends Activity {
     private final static String EXTRA_ACCOUNT_UUID = "accountUuid";
@@ -26,23 +30,20 @@ public class NotificationDeleteConfirmation extends Activity {
     private final static int DIALOG_CONFIRM = 1;
 
     private Account account;
-    private ArrayList<MessageReference> messagesToDelete;
+    private List<MessageReference> messagesToDelete;
 
 
     public static Intent getIntent(Context context, MessageReference messageReference) {
-        ArrayList<MessageReference> messageReferences = new ArrayList<MessageReference>(1);
-        messageReferences.add(messageReference);
-
-        return getIntent(context, messageReferences);
+        return getIntent(context, Collections.singletonList(messageReference));
     }
 
-    public static Intent getIntent(Context context, ArrayList<MessageReference> messageReferences) {
+    public static Intent getIntent(Context context, List<MessageReference> messageReferences) {
         String accountUuid = messageReferences.get(0).getAccountUuid();
 
         Intent intent = new Intent(context, NotificationDeleteConfirmation.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(EXTRA_ACCOUNT_UUID, accountUuid);
-        intent.putExtra(EXTRA_MESSAGE_REFERENCES, messageReferences);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCES, toMessageReferenceStringList(messageReferences));
 
         return intent;
     }
@@ -62,7 +63,8 @@ public class NotificationDeleteConfirmation extends Activity {
     private void extractExtras() {
         Intent intent = getIntent();
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID);
-        ArrayList<MessageReference> messagesToDelete = intent.getParcelableArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
+        List<MessageReference> messagesToDelete = toMessageReferenceList(messageReferenceStrings);
 
         if (accountUuid == null) {
             throw new IllegalArgumentException(EXTRA_ACCOUNT_UUID + " can't be null");

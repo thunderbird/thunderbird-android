@@ -17,7 +17,8 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.util.Log;
+import android.support.annotation.WorkerThread;
+import timber.log.Timber;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -26,7 +27,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.cache.TemporaryAttachmentStore;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
@@ -34,6 +35,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalPart;
+import com.fsck.k9.provider.AttachmentTempFileProvider;
 import org.apache.commons.io.IOUtils;
 
 
@@ -55,7 +57,7 @@ public class AttachmentController {
     }
 
     public void viewAttachment() {
-        if (needsDownloading()) {
+        if (!attachment.isContentAvailable()) {
             downloadAndViewAttachment((LocalPart) attachment.part);
         } else {
             viewLocalAttachment();
@@ -68,18 +70,6 @@ public class AttachmentController {
 
     public void saveAttachmentTo(String directory) {
         saveAttachmentTo(new File(directory));
-    }
-
-    private boolean needsDownloading() {
-        return isPartMissing() && isLocalPart();
-    }
-
-    private boolean isPartMissing() {
-        return attachment.part.getBody() == null;
-    }
-
-    private boolean isLocalPart() {
-        return attachment.part instanceof LocalPart;
     }
 
     private void downloadAndViewAttachment(LocalPart localPart) {
@@ -96,7 +86,7 @@ public class AttachmentController {
             @Override
             public void run() {
                 messageViewFragment.refreshAttachmentThumbnail(attachment);
-                saveAttachmentTo(directory);
+                saveLocalAttachmentTo(directory);
             }
         });
     }
@@ -107,9 +97,10 @@ public class AttachmentController {
         LocalMessage message = localPart.getMessage();
 
         messageViewFragment.showAttachmentLoadingDialog();
-        controller.loadAttachment(account, message, attachment.part, new MessagingListener() {
+        controller.loadAttachment(account, message, attachment.part, new SimpleMessagingListener() {
             @Override
             public void loadAttachmentFinished(Account account, Message message, Part part) {
+                attachment.setContentAvailable();
                 messageViewFragment.hideAttachmentLoadingDialogOnMainThread();
                 messageViewFragment.runOnMainThread(attachmentDownloadedCallback);
             }
@@ -133,7 +124,13 @@ public class AttachmentController {
             return;
         }
 
-        if (needsDownloading()) {
+        if (attachment.size > directory.getFreeSpace()) {
+            String message = context.getString(R.string.message_view_status_no_space);
+            displayMessageToUser(message);
+            return;
+        }
+
+        if (!attachment.isContentAvailable()) {
             downloadAndSaveAttachmentTo((LocalPart) attachment.part, directory);
         } else {
             saveLocalAttachmentTo(directory);
@@ -156,7 +153,7 @@ public class AttachmentController {
     }
 
     private void writeAttachmentToStorage(File file) throws IOException {
-        InputStream in = context.getContentResolver().openInputStream(attachment.uri);
+        InputStream in = context.getContentResolver().openInputStream(attachment.internalUri);
         try {
             OutputStream out = new FileOutputStream(file);
             try {
@@ -179,23 +176,33 @@ public class AttachmentController {
         downloadManager.addCompletedDownload(fileName, fileName, true, mimeType, path, fileLength, true);
     }
 
-    private Intent getBestViewIntentAndSaveFileIfNecessary() {
+    @WorkerThread
+    private Intent getBestViewIntentAndSaveFile() {
+        Uri intentDataUri;
+        try {
+            intentDataUri = AttachmentTempFileProvider.createTempUriForContentUri(context, attachment.internalUri);
+        } catch (IOException e) {
+            Timber.e(e, "Error creating temp file for attachment!");
+            return null;
+        }
+
         String displayName = attachment.displayName;
         String inferredMimeType = MimeUtility.getMimeTypeByExtension(displayName);
 
         IntentAndResolvedActivitiesCount resolvedIntentInfo;
         String mimeType = attachment.mimeType;
         if (MimeUtility.isDefaultMimeType(mimeType)) {
-            resolvedIntentInfo = getBestViewIntentForMimeType(inferredMimeType);
+            resolvedIntentInfo = getBestViewIntentForMimeType(intentDataUri, inferredMimeType);
         } else {
-            resolvedIntentInfo = getBestViewIntentForMimeType(mimeType);
+            resolvedIntentInfo = getBestViewIntentForMimeType(intentDataUri, mimeType);
             if (!resolvedIntentInfo.hasResolvedActivities() && !inferredMimeType.equals(mimeType)) {
-                resolvedIntentInfo = getBestViewIntentForMimeType(inferredMimeType);
+                resolvedIntentInfo = getBestViewIntentForMimeType(intentDataUri, inferredMimeType);
             }
         }
 
         if (!resolvedIntentInfo.hasResolvedActivities()) {
-            resolvedIntentInfo = getBestViewIntentForMimeType(MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
+            resolvedIntentInfo = getBestViewIntentForMimeType(
+                    intentDataUri, MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
         }
 
         Intent viewIntent;
@@ -205,10 +212,8 @@ public class AttachmentController {
                 writeAttachmentToStorage(tempFile);
                 viewIntent = createViewIntentForFileUri(resolvedIntentInfo.getMimeType(), Uri.fromFile(tempFile));
             } catch (IOException e) {
-                if (K9.DEBUG) {
-                    Log.e(K9.LOG_TAG, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent", e);
-                }
-                viewIntent = createViewIntentForAttachmentProviderUri(MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
+                Timber.e(e, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent");
+                viewIntent = createViewIntentForAttachmentProviderUri(intentDataUri, MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE);
             }
         } else {
             viewIntent = resolvedIntentInfo.getIntent();
@@ -217,8 +222,8 @@ public class AttachmentController {
         return viewIntent;
     }
 
-    private IntentAndResolvedActivitiesCount getBestViewIntentForMimeType(String mimeType) {
-        Intent contentUriIntent = createViewIntentForAttachmentProviderUri(mimeType);
+    private IntentAndResolvedActivitiesCount getBestViewIntentForMimeType(Uri contentUri, String mimeType) {
+        Intent contentUriIntent = createViewIntentForAttachmentProviderUri(contentUri, mimeType);
         int contentUriActivitiesCount = getResolvedIntentActivitiesCount(contentUriIntent);
 
         if (contentUriActivitiesCount > 0) {
@@ -237,8 +242,8 @@ public class AttachmentController {
         return new IntentAndResolvedActivitiesCount(contentUriIntent, contentUriActivitiesCount);
     }
 
-    private Intent createViewIntentForAttachmentProviderUri(String mimeType) {
-        Uri uri = getAttachmentUriForMimeType(attachment, mimeType);
+    private Intent createViewIntentForAttachmentProviderUri(Uri contentUri, String mimeType) {
+        Uri uri = AttachmentTempFileProvider.getMimeTypeUri(contentUri, mimeType);
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, mimeType);
@@ -246,16 +251,6 @@ public class AttachmentController {
         addUiIntentFlags(intent);
 
         return intent;
-    }
-
-    private Uri getAttachmentUriForMimeType(AttachmentViewInfo attachment, String mimeType) {
-        if (attachment.mimeType.equals(mimeType)) {
-            return attachment.uri;
-        }
-
-        return attachment.uri.buildUpon()
-                .appendPath(mimeType)
-                .build();
     }
 
     private Intent createViewIntentForFileUri(String mimeType, Uri uri) {
@@ -323,7 +318,7 @@ public class AttachmentController {
 
         @Override
         protected Intent doInBackground(Void... params) {
-            return getBestViewIntentAndSaveFileIfNecessary();
+            return getBestViewIntentAndSaveFile();
         }
 
         @Override
@@ -336,7 +331,7 @@ public class AttachmentController {
             try {
                 context.startActivity(intent);
             } catch (ActivityNotFoundException e) {
-                Log.e(K9.LOG_TAG, "Could not display attachment of type " + attachment.mimeType, e);
+                Timber.e(e, "Could not display attachment of type %s", attachment.mimeType);
 
                 String message = context.getString(R.string.message_view_no_viewer, attachment.mimeType);
                 displayMessageToUser(message);
@@ -357,9 +352,7 @@ public class AttachmentController {
                 File directory = params[0];
                 return saveAttachmentWithUniqueFileName(directory);
             } catch (IOException e) {
-                if (K9.DEBUG) {
-                    Log.e(K9.LOG_TAG, "Error saving attachment", e);
-                }
+                Timber.e(e, "Error saving attachment");
                 return null;
             }
         }

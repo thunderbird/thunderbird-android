@@ -12,10 +12,8 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 import org.apache.commons.io.IOUtils;
+import timber.log.Timber;
 
-import android.util.Log;
-
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 public class LocalKeyStore {
     private static final int KEY_STORE_FILE_VERSION = 1;
@@ -50,7 +48,7 @@ public class LocalKeyStore {
              * error, presuming setKeyStoreFile(File) is called next with a
              * non-null File.
              */
-            Log.w(LOG_TAG, "Local key store has not been initialized");
+            Timber.w("Local key store has not been initialized");
         }
     }
 
@@ -76,7 +74,9 @@ public class LocalKeyStore {
              * File.createTempFile). We can't pass an empty file to
              * Keystore.load. Instead, we let it be created anew.
              */
-            file.delete();
+            if (file.exists() && !file.delete()) {
+                Timber.d("Failed to delete empty keystore file: %s", file.getAbsolutePath());
+            }
         }
 
         FileInputStream fis = null;
@@ -92,7 +92,7 @@ public class LocalKeyStore {
             mKeyStore = store;
             mKeyStoreFile = file;
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Failed to initialize local key store", e);
+            Timber.e(e, "Failed to initialize local key store");
             // Use of the local key store is effectively disabled.
             mKeyStore = null;
             mKeyStoreFile = null;
@@ -169,14 +169,17 @@ public class LocalKeyStore {
         } catch (KeyStoreException e) {
             // Ignore: most likely there was no cert. found
         } catch (CertificateException e) {
-            Log.e(LOG_TAG, "Error updating the local key store file", e);
+            Timber.e(e, "Error updating the local key store file");
         }
     }
 
     private void upgradeKeyStoreFile() throws CertificateException {
         if (KEY_STORE_FILE_VERSION > 0) {
             // Blow away version "0" because certificate aliases have changed.
-            new File(getKeyStoreFilePath(0)).delete();
+            File versionZeroFile = new File(getKeyStoreFilePath(0));
+            if (versionZeroFile.exists() && !versionZeroFile.delete()) {
+                Timber.d("Failed to delete old key-store file: %s", versionZeroFile.getAbsolutePath());
+            }
         }
     }
 

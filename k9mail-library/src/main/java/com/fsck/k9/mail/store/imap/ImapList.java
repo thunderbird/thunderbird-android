@@ -58,7 +58,7 @@ class ImapList extends ArrayList<Object> {
 
     private Date getDate(String value) throws MessagingException {
         try {
-            if (value == null) {
+            if (value == null || "NIL".equals(value)) {
                 return null;
             }
             return parseDate(value);

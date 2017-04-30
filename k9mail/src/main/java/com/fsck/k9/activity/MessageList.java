@@ -1,21 +1,25 @@
 package com.fsck.k9.activity;
 
+
 import java.util.Collection;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.FragmentManager;
+import android.app.FragmentManager.OnBackStackChangedListener;
+import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.IntentSender.SendIntentException;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.app.FragmentManager;
-import android.app.FragmentManager.OnBackStackChangedListener;
-import android.app.FragmentTransaction;
-import android.util.Log;
+import android.os.Parcelable;
+import timber.log.Timber;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,29 +38,28 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
-import com.fsck.k9.crypto.PgpData;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
-import com.fsck.k9.preferences.StorageEditor;
-import com.fsck.k9.ui.messageview.MessageViewFragment;
-import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
+import com.fsck.k9.helper.ParcelableUtil;
 import com.fsck.k9.mailstore.StorageManager;
-import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
+import com.fsck.k9.ui.messageview.MessageViewFragment;
+import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
-
 import de.cketti.library.changelog.ChangeLog;
 
 
@@ -69,8 +72,11 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
         OnSwitchCompleteListener {
 
-    // for this activity
-    private static final String EXTRA_SEARCH = "search";
+    @Deprecated
+    //TODO: Remove after 2017-09-11
+    private static final String EXTRA_SEARCH_OLD = "search";
+
+    private static final String EXTRA_SEARCH = "search_bytes";
     private static final String EXTRA_NO_THREADING = "no_threading";
 
     private static final String ACTION_SHORTCUT = "shortcut";
@@ -84,11 +90,13 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     private static final String STATE_DISPLAY_MODE = "displayMode";
     private static final String STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed";
+    private static final String STATE_FIRST_BACK_STACK_ID = "firstBackstackId";
 
     // Used for navigating to next/previous message
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
 
+    public static final int REQUEST_MASK_PENDING_INTENT = 1 << 16;
 
     public static void actionDisplaySearch(Context context, SearchSpecification search,
             boolean noThreading, boolean newTask) {
@@ -104,7 +112,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public static Intent intentDisplaySearch(Context context, SearchSpecification search,
             boolean noThreading, boolean newTask, boolean clearTop) {
         Intent intent = new Intent(context, MessageList.class);
-        intent.putExtra(EXTRA_SEARCH, search);
+        intent.putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search));
         intent.putExtra(EXTRA_NO_THREADING, noThreading);
 
         if (clearTop) {
@@ -131,7 +139,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             MessageReference messageReference) {
         Intent intent = new Intent(context, MessageList.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference);
+        intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString());
         return intent;
     }
 
@@ -236,6 +244,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
+        if (isFinishing()) {
+            return;
+        }
 
         setIntent(intent);
 
@@ -409,9 +421,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
                 mSearch.or(new SearchCondition(SearchField.SENDER, Attribute.CONTAINS, query));
                 mSearch.or(new SearchCondition(SearchField.SUBJECT, Attribute.CONTAINS, query));
-                // TODO re-enable search in message contents
-                // mSearch.or(new SearchCondition(SearchField.MESSAGE_CONTENTS, Attribute.CONTAINS, query));
-                Toast.makeText(this, R.string.warn_search_disabled, Toast.LENGTH_LONG).show();
+                mSearch.or(new SearchCondition(SearchField.MESSAGE_CONTENTS, Attribute.CONTAINS, query));
 
                 Bundle appData = intent.getBundleExtra(SearchManager.APP_DATA);
                 if (appData != null) {
@@ -424,14 +434,19 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                     mSearch.addAccountUuid(LocalSearch.ALL_ACCOUNTS);
                 }
             }
+        } else if (intent.hasExtra(EXTRA_SEARCH_OLD)) {
+            mSearch = intent.getParcelableExtra(EXTRA_SEARCH_OLD);
+            mNoThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false);
         } else {
             // regular LocalSearch object was passed
-            mSearch = intent.getParcelableExtra(EXTRA_SEARCH);
+            mSearch = intent.hasExtra(EXTRA_SEARCH) ?
+                    ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR) : null;
             mNoThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false);
         }
 
         if (mMessageReference == null) {
-            mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE_REFERENCE);
+            String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
+            mMessageReference = MessageReference.parse(messageReferenceString);
         }
 
         if (mMessageReference != null) {
@@ -470,7 +485,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderNames().size() == 1);
 
         if (mSingleAccountMode && (mAccount == null || !mAccount.isAvailable(this))) {
-            Log.i(K9.LOG_TAG, "not opening MessageList of unavailable account");
+            Timber.i("not opening MessageList of unavailable account");
             onAccountUnavailable();
             return false;
         }
@@ -515,11 +530,13 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         outState.putSerializable(STATE_DISPLAY_MODE, mDisplayMode);
         outState.putBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED, mMessageListWasDisplayed);
+        outState.putInt(STATE_FIRST_BACK_STACK_ID, mFirstBackStackId);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         mMessageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED);
+        mFirstBackStackId = savedInstanceState.getInt(STATE_FIRST_BACK_STACK_ID);
     }
 
     private void initializeActionBar() {
@@ -723,6 +740,18 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 toast.show();
                 return true;
             }
+            case KeyEvent.KEYCODE_DPAD_LEFT: {
+                if (mMessageViewFragment != null && mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+                    return showPreviousMessage();
+                }
+                return false;
+            }
+            case KeyEvent.KEYCODE_DPAD_RIGHT: {
+                if (mMessageViewFragment != null && mDisplayMode == DisplayMode.MESSAGE_VIEW) {
+                    return showNextMessage();
+                }
+                return false;
+            }
 
         }
 
@@ -734,8 +763,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         // Swallow these events too to avoid the audible notification of a volume change
         if (K9.useVolumeKeysForListNavigationEnabled()) {
             if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
-                if (K9.DEBUG)
-                    Log.v(K9.LOG_TAG, "Swallowed key up.");
+                Timber.v("Swallowed key up.");
                 return true;
             }
         }
@@ -835,7 +863,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 return true;
             }
             case R.id.mark_all_as_read: {
-                mMessageListFragment.markAllAsRead();
+                mMessageListFragment.confirmMarkAllAsRead();
                 return true;
             }
             case R.id.show_folder_list: {
@@ -944,6 +972,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         configureMenu(menu);
         return true;
     }
@@ -1150,7 +1179,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             mActionBarUnread.setVisibility(View.GONE);
         } else {
             mActionBarUnread.setVisibility(View.VISIBLE);
-            mActionBarUnread.setText(Integer.toString(unread));
+            mActionBarUnread.setText(String.format("%d", unread));
         }
     }
 
@@ -1181,7 +1210,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         String folderName = messageReference.getFolderName();
 
         if (folderName.equals(account.getDraftsFolderName())) {
-            MessageCompose.actionEditDraft(this, messageReference);
+            MessageActions.actionEditDraft(this, messageReference);
         } else {
             mMessageViewContainer.removeView(mMessageViewPlaceHolder);
 
@@ -1202,28 +1231,43 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     @Override
-    public void onResendMessage(LocalMessage message) {
-        MessageCompose.actionEditDraft(this, message.makeMessageReference());
+    public void onResendMessage(MessageReference messageReference) {
+        MessageActions.actionEditDraft(this, messageReference);
     }
 
     @Override
-    public void onForward(LocalMessage message) {
-        MessageCompose.actionForward(this, message, null);
+    public void onForward(MessageReference messageReference) {
+        onForward(messageReference, null);
     }
 
     @Override
-    public void onReply(LocalMessage message) {
-        MessageCompose.actionReply(this, message, false, null);
+    public void onForward(MessageReference messageReference, Parcelable decryptionResultForReply) {
+        MessageActions.actionForward(this, messageReference, decryptionResultForReply);
     }
 
     @Override
-    public void onReplyAll(LocalMessage message) {
-        MessageCompose.actionReply(this, message, true, null);
+    public void onReply(MessageReference messageReference) {
+        onReply(messageReference, null);
+    }
+
+    @Override
+    public void onReply(MessageReference messageReference, Parcelable decryptionResultForReply) {
+        MessageActions.actionReply(this, messageReference, false, decryptionResultForReply);
+    }
+
+    @Override
+    public void onReplyAll(MessageReference messageReference) {
+        onReplyAll(messageReference, null);
+    }
+
+    @Override
+    public void onReplyAll(MessageReference messageReference, Parcelable decryptionResultForReply) {
+        MessageActions.actionReply(this, messageReference, true, decryptionResultForReply);
     }
 
     @Override
     public void onCompose(Account account) {
-        MessageCompose.actionCompose(this, account);
+        MessageActions.actionCompose(this, account);
     }
 
     @Override
@@ -1404,22 +1448,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public void displayMessageSubject(String subject) {
         if (mDisplayMode == DisplayMode.MESSAGE_VIEW) {
             mActionBarSubject.setText(subject);
+        } else {
+            mActionBarSubject.showSubjectInMessageHeader();
         }
-    }
-
-    @Override
-    public void onReply(LocalMessage message, PgpData pgpData) {
-        MessageCompose.actionReply(this, message, false, pgpData.getDecryptedData());
-    }
-
-    @Override
-    public void onReplyAll(LocalMessage message, PgpData pgpData) {
-        MessageCompose.actionReply(this, message, true, pgpData.getDecryptedData());
-    }
-
-    @Override
-    public void onForward(LocalMessage mMessage, PgpData mPgpData) {
-        MessageCompose.actionForward(this, mMessage, mPgpData.getDecryptedData());
     }
 
     @Override
@@ -1568,11 +1599,21 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     @Override
+    public void startIntentSenderForResult(IntentSender intent, int requestCode, Intent fillInIntent,
+            int flagsMask, int flagsValues, int extraFlags) throws SendIntentException {
+        requestCode |= REQUEST_MASK_PENDING_INTENT;
+        super.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (mMessageViewFragment != null) {
-            mMessageViewFragment.handleCryptoResult(requestCode, resultCode, data);
+        if ((requestCode & REQUEST_MASK_PENDING_INTENT) == REQUEST_MASK_PENDING_INTENT) {
+            requestCode ^= REQUEST_MASK_PENDING_INTENT;
+            if (mMessageViewFragment != null) {
+                mMessageViewFragment.onPendingIntentResult(requestCode, resultCode, data);
+            }
         }
     }
 }

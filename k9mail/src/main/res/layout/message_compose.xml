@@ -33,7 +33,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/message_compose_subject_hint"
-                    android:inputType="textEmailSubject|textAutoCorrect|textCapSentences|textImeMultiLine"
+                    android:inputType="textEmailSubject|textAutoCorrect|textCapSentences"
                     android:imeOptions="actionNext"
                     android:singleLine="true"
                     android:background="@android:color/transparent"
