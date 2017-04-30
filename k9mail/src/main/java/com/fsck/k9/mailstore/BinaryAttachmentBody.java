@@ -20,7 +20,7 @@ abstract class BinaryAttachmentBody implements Body {
     protected String mEncoding;
 
     @Override
-    public abstract InputStream getInputStream() throws MessagingException;
+    public abstract InputStream getInputStream();
 
     @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {

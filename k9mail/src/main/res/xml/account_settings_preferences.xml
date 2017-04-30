@@ -360,6 +360,14 @@
             android:defaultValue="true"
             android:summary="@string/account_settings_notify_self_summary" />
 
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="account_notify_contacts_mail_only"
+            android:dependency="account_notify"
+            android:title="@string/account_notify_contacts_mail_only_label"
+            android:defaultValue="false"
+            android:summary="@string/account_notify_contacts_mail_only_summary" />
+
         <!--
           We can't disable persisting the ringtone value to SharedPreferences
           because it's needed to actually access the value.
@@ -465,11 +473,6 @@
     <PreferenceScreen
         android:title="@string/account_settings_crypto"
         android:key="crypto">
-
-        <org.openintents.openpgp.util.OpenPgpAppPreference
-            android:persistent="false"
-            android:key="crypto_app"
-            android:title="@string/account_settings_crypto_app" />
 
         <org.openintents.openpgp.util.OpenPgpKeyPreference
             android:persistent="false"

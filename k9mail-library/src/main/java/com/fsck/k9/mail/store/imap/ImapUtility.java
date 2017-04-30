@@ -17,12 +17,11 @@
 
 package com.fsck.k9.mail.store.imap;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import timber.log.Timber;
+
 
 /**
  * Utility methods for use with IMAP.
@@ -101,12 +100,12 @@ class ImapUtility {
                             }
                         }
                     } else {
-                        Log.d(LOG_TAG, "Invalid range: " + range);
+                        Timber.d("Invalid range: %s", range);
                     }
                 }
             }
         } catch (NumberFormatException e) {
-            Log.d(LOG_TAG, "Invalid range value: " + range, e);
+            Timber.d(e, "Invalid range value: %s", range);
         }
 
         return list;
@@ -122,7 +121,7 @@ class ImapUtility {
             // do nothing
         }
 
-        Log.d(LOG_TAG, "Invalid UID value: " + number);
+        Timber.d("Invalid UID value: %s", number);
 
         return false;
     }

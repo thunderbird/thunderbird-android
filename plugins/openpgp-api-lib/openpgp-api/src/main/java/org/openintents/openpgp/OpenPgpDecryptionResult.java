@@ -25,7 +25,7 @@ public class OpenPgpDecryptionResult implements Parcelable {
      * old versions of the protocol (and thus old versions of this class), we need a versioning
      * system for the parcels sent between the clients and the providers.
      */
-    public static final int PARCELABLE_VERSION = 1;
+    public static final int PARCELABLE_VERSION = 2;
 
     // content not encrypted
     public static final int RESULT_NOT_ENCRYPTED = -1;
@@ -34,26 +34,33 @@ public class OpenPgpDecryptionResult implements Parcelable {
     // encrypted
     public static final int RESULT_ENCRYPTED = 1;
 
-    int result;
+    public final int result;
+    public final byte[] sessionKey;
+    public final byte[] decryptedSessionKey;
 
     public int getResult() {
         return result;
     }
 
-    public void setResult(int result) {
-        this.result = result;
-    }
-
-    public OpenPgpDecryptionResult() {
-
-    }
-
     public OpenPgpDecryptionResult(int result) {
         this.result = result;
+        this.sessionKey = null;
+        this.decryptedSessionKey = null;
+    }
+
+    public OpenPgpDecryptionResult(int result, byte[] sessionKey, byte[] decryptedSessionKey) {
+        this.result = result;
+        if ((sessionKey == null) != (decryptedSessionKey == null)) {
+            throw new AssertionError("sessionkey must be null iff decryptedSessionKey is null");
+        }
+        this.sessionKey = sessionKey;
+        this.decryptedSessionKey = decryptedSessionKey;
     }
 
     public OpenPgpDecryptionResult(OpenPgpDecryptionResult b) {
         this.result = b.result;
+        this.sessionKey = b.sessionKey;
+        this.decryptedSessionKey = b.decryptedSessionKey;
     }
 
     public int describeContents() {
@@ -73,6 +80,9 @@ public class OpenPgpDecryptionResult implements Parcelable {
         int startPosition = dest.dataPosition();
         // version 1
         dest.writeInt(result);
+        // version 2
+        dest.writeByteArray(sessionKey);
+        dest.writeByteArray(decryptedSessionKey);
         // Go back and write the size
         int parcelableSize = dest.dataPosition() - startPosition;
         dest.setDataPosition(sizePosition);
@@ -82,12 +92,15 @@ public class OpenPgpDecryptionResult implements Parcelable {
 
     public static final Creator<OpenPgpDecryptionResult> CREATOR = new Creator<OpenPgpDecryptionResult>() {
         public OpenPgpDecryptionResult createFromParcel(final Parcel source) {
-            source.readInt(); // parcelableVersion
+            int version = source.readInt(); // parcelableVersion
             int parcelableSize = source.readInt();
             int startPosition = source.dataPosition();
 
-            OpenPgpDecryptionResult vr = new OpenPgpDecryptionResult();
-            vr.result = source.readInt();
+            int result = source.readInt();
+            byte[] sessionKey = version > 1 ? source.createByteArray() : null;
+            byte[] decryptedSessionKey = version > 1 ? source.createByteArray() : null;
+
+            OpenPgpDecryptionResult vr = new OpenPgpDecryptionResult(result, sessionKey, decryptedSessionKey);
 
             // skip over all fields added in future versions of this parcel
             source.setDataPosition(startPosition + parcelableSize);

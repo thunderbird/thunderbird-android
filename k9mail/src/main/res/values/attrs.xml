@@ -53,6 +53,18 @@
         <attr name="messageComposeAddContactImage" format="reference"/>
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
+        <attr name="contactTokenBackgroundColor" format="reference|color"/>
+        <attr name="tintColorBulletPointPositive" format="reference|color"/>
+        <attr name="tintColorBulletPointNeutral" format="reference|color"/>
+        <attr name="tintColorBulletPointNegative" format="reference|color"/>
+
+        <attr name="openpgp_black" format="reference|color" />
+        <attr name="openpgp_orange" format="reference|color" />
+        <attr name="openpgp_red" format="reference|color" />
+        <attr name="openpgp_green" format="reference|color" />
+        <attr name="openpgp_blue" format="reference|color" />
+        <attr name="openpgp_grey" format="reference|color" />
+        <attr name="openpgp_dark_grey" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="SliderPreference">
@@ -70,5 +82,10 @@
         <attr name="upInAnimation" format="reference" />
         <attr name="upOutAnimation" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="ToolableViewAnimator">
+        <attr name="previewInitialChild" format="integer" />
+    </declare-styleable>
+
 
 </resources>

@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 
 import android.net.ConnectivityManager;
-import android.util.Log;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -26,11 +25,11 @@ import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
-
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import timber.log.Timber;
 
 
 /**
@@ -42,6 +41,7 @@ import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 public class ImapStore extends RemoteStore {
     private Set<Flag> permanentFlagsIndex = EnumSet.noneOf(Flag.class);
     private ConnectivityManager connectivityManager;
+    private OAuth2TokenProvider oauthTokenProvider;
 
     private String host;
     private int port;
@@ -74,7 +74,7 @@ public class ImapStore extends RemoteStore {
     }
 
     public ImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-            ConnectivityManager connectivityManager) throws MessagingException {
+            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) throws MessagingException {
         super(storeConfig, trustedSocketFactory);
 
         ImapStoreSettings settings;
@@ -89,6 +89,7 @@ public class ImapStore extends RemoteStore {
 
         connectionSecurity = settings.connectionSecurity;
         this.connectivityManager = connectivityManager;
+        this.oauthTokenProvider = oauthTokenProvider;
 
         authType = settings.authenticationType;
         username = settings.username;
@@ -179,8 +180,9 @@ public class ImapStore extends RemoteStore {
             try {
                 decodedFolderName = folderNameCodec.decode(listResponse.getName());
             } catch (CharacterCodingException e) {
-                Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
-                        "as defined by RFC 3501: " + listResponse.getName(), e);
+                Timber.w(e,
+                        "Folder name not correctly encoded with the UTF-7 variant  as defined by RFC 3501: %s",
+                        listResponse.getName());
 
                 //TODO: Use the raw name returned by the server for all commands that require
                 //      a folder name. Use the decoded name only for showing it to the user.
@@ -235,13 +237,13 @@ public class ImapStore extends RemoteStore {
     void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
         if (!connection.hasCapability(Capabilities.SPECIAL_USE)) {
             if (K9MailLib.isDebug()) {
-                Log.d(LOG_TAG, "No detected folder auto-configuration methods.");
+                Timber.d("No detected folder auto-configuration methods.");
             }
             return;
         }
 
         if (K9MailLib.isDebug()) {
-            Log.d(LOG_TAG, "Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
+            Timber.d("Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
         }
 
         String command = String.format("LIST (SPECIAL-USE) \"\" %s", ImapUtility.encodeString(getCombinedPrefix() + "*"));
@@ -254,8 +256,8 @@ public class ImapStore extends RemoteStore {
             try {
                 decodedFolderName = folderNameCodec.decode(listResponse.getName());
             } catch (CharacterCodingException e) {
-                Log.w(LOG_TAG, "Folder name not correctly encoded with the UTF-7 variant " +
-                        "as defined by RFC 3501: " + listResponse.getName(), e);
+                Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s",
+                        listResponse.getName());
                 // We currently just skip folders with malformed names.
                 continue;
             }
@@ -268,27 +270,27 @@ public class ImapStore extends RemoteStore {
             if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
                 mStoreConfig.setArchiveFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Folder auto-configuration detected Archive folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Archive folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Drafts")) {
                 mStoreConfig.setDraftsFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Folder auto-configuration detected Drafts folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Drafts folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Sent")) {
                 mStoreConfig.setSentFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Folder auto-configuration detected Sent folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Sent folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Junk")) {
                 mStoreConfig.setSpamFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Folder auto-configuration detected Spam folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Spam folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Trash")) {
                 mStoreConfig.setTrashFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
-                    Log.d(LOG_TAG, "Folder auto-configuration detected Trash folder: " + decodedFolderName);
+                    Timber.d("Folder auto-configuration detected Trash folder: %s", decodedFolderName);
                 }
             }
         }
@@ -332,7 +334,7 @@ public class ImapStore extends RemoteStore {
     }
 
     void releaseConnection(ImapConnection connection) {
-        if (connection != null && connection.isOpen()) {
+        if (connection != null && connection.isConnected()) {
             synchronized (connections) {
                 connections.offer(connection);
             }
@@ -340,7 +342,11 @@ public class ImapStore extends RemoteStore {
     }
 
     ImapConnection createImapConnection() {
-        return new ImapConnection(new StoreImapSettings(), mTrustedSocketFactory, connectivityManager);
+        return new ImapConnection(
+                new StoreImapSettings(),
+                mTrustedSocketFactory,
+                connectivityManager,
+                oauthTokenProvider);
     }
 
     FolderNameCodec getFolderNameCodec() {

@@ -2,8 +2,8 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:initialLayout="@layout/unread_widget_layout"
     android:previewImage="@drawable/preview_unread_widget"
-    android:minHeight="60dp"
-    android:minWidth="60dp"
+    android:minHeight="40dp"
+    android:minWidth="40dp"
     android:configure="com.fsck.k9.activity.UnreadWidgetConfiguration"
     android:updatePeriodMillis="0">
 </appwidget-provider>

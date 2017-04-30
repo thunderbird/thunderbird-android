@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ContextPopupMenuStyleLight" parent="@android:style/Widget.Holo.Light.PopupMenu">
+        <item name="android:overlapAnchor">true</item>
+    </style>
+
+    <style name="ContextPopupMenuStyleDark" parent="@android:style/Widget.Holo.PopupMenu">
+        <item name="android:overlapAnchor">true</item>
+    </style>
+
+</resources>

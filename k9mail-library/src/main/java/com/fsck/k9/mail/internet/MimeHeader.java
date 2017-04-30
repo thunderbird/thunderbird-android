@@ -8,6 +8,9 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.*;
 
+import android.support.annotation.NonNull;
+
+
 public class MimeHeader implements Cloneable {
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
@@ -47,6 +50,7 @@ public class MimeHeader implements Cloneable {
         addHeader(name, value);
     }
 
+    @NonNull
     public Set<String> getHeaderNames() {
         Set<String> names = new LinkedHashSet<String>();
         for (Field field : mFields) {
@@ -55,6 +59,7 @@ public class MimeHeader implements Cloneable {
         return names;
     }
 
+    @NonNull
     public String[] getHeader(String name) {
         List<String> values = new ArrayList<String>();
         for (Field field : mFields) {
@@ -164,10 +169,6 @@ public class MimeHeader implements Cloneable {
         public static Field newRawField(String name, String raw) {
             if (raw == null) {
                 throw new NullPointerException("Argument 'raw' cannot be null");
-            }
-            if (name != null && !raw.startsWith(name + ":")) {
-                throw new IllegalArgumentException("The value of 'raw' needs to start with the supplied field name " +
-                        "followed by a colon");
             }
 
             return new Field(name, null, raw);

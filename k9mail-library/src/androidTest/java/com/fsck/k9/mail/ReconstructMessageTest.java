@@ -8,7 +8,6 @@ import java.io.InputStream;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.AndroidTestCase;
 
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -58,7 +57,7 @@ public class ReconstructMessageTest {
         InputStream messageInputStream = new ByteArrayInputStream(messageSource.getBytes());
         MimeMessage message;
         try {
-            message = new MimeMessage(messageInputStream, true);
+            message = MimeMessage.parseMimeMessage(messageInputStream, true);
         } finally {
             messageInputStream.close();
         }

@@ -1,11 +1,5 @@
 package com.fsck.k9.activity;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
-import com.fsck.k9.mail.Store;
-import com.fsck.k9.service.DatabaseUpgradeService;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -16,6 +10,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.widget.TextView;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.service.DatabaseUpgradeService;
 
 
 /**
@@ -49,7 +51,7 @@ import android.widget.TextView;
  * Currently we make no attempts to stop the background code (e.g. {@link MessagingController}) from
  * opening the accounts' databases. If this happens the upgrade is performed in one of the
  * background threads and not by {@link DatabaseUpgradeService}. But this is not a problem. Due to
- * the locking in {@link Store#getLocalInstance(Account, Context)} the upgrade
+ * the locking in {@link LocalStore#getInstance(Account, Context)} the upgrade
  * service will block in the {@link Account#getLocalStore()} call and from the outside (especially
  * for this activity) it will appear as if {@link DatabaseUpgradeService} is performing the upgrade.
  * </p>
@@ -104,6 +106,8 @@ public class UpgradeDatabases extends K9Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        decodeExtras();
+
         // If the databases have already been upgraded there's no point in displaying this activity.
         if (K9.areDatabasesUpToDate()) {
             launchOriginalActivity();
@@ -113,8 +117,6 @@ public class UpgradeDatabases extends K9Activity {
         mPreferences = Preferences.getPreferences(getApplicationContext());
 
         initializeLayout();
-
-        decodeExtras();
 
         setupBroadcastReceiver();
     }
@@ -180,9 +182,7 @@ public class UpgradeDatabases extends K9Activity {
      */
     private void launchOriginalActivity() {
         finish();
-        if (mStartIntent != null) {
-            startActivity(mStartIntent);
-        }
+        startActivity(mStartIntent);
     }
 
     /**

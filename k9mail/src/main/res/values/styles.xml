@@ -18,10 +18,6 @@
         <item name="android:textColor">@android:color/primary_text_light</item>
     </style>
 
-    <style name="TextAppearance.StatusBar.EventContent.Emphasized" parent="@android:style/TextAppearance.StatusBar.EventContent">
-        <item name="android:textColor">#cccccc</item>
-    </style>
-
     <style name="UnreadWidgetContainer">
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingLeft">0dp</item>
@@ -49,6 +45,25 @@
     </style>
     <style name="ComposeEditTextLarge" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColorHint">#aaa</item>
+    </style>
+
+    <style name="ShowcaseTheme" parent="ShowcaseView.Light">
+        <item name="sv_backgroundColor">#99444444</item>
+    </style>
+
+    <style name="PositiveBulletPoint">
+        <item name="android:src">@drawable/bullet_point_positive</item>
+        <item name="android:tint">?attr/tintColorBulletPointPositive</item>
+    </style>
+
+    <style name="NeutralBulletPoint">
+        <item name="android:src">@drawable/bullet_point_neutral</item>
+        <item name="android:tint">?attr/tintColorBulletPointNeutral</item>
+    </style>
+
+    <style name="NegativeBulletPoint">
+        <item name="android:src">@drawable/bullet_point_negative</item>
+        <item name="android:tint">?attr/tintColorBulletPointNegative</item>
     </style>
 
 </resources>

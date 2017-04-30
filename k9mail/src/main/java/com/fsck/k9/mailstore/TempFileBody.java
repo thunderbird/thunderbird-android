@@ -21,7 +21,7 @@ public class TempFileBody extends BinaryAttachmentBody implements SizeAware {
     }
 
     @Override
-    public InputStream getInputStream() throws MessagingException {
+    public InputStream getInputStream() {
         try {
             return new FileInputStream(mFile);
         } catch (FileNotFoundException e) {

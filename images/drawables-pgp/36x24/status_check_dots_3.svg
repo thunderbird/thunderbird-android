@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="150"
+   height="100"
+   viewBox="0 0 149.99999 99.999998"
+   id="svg3344"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="status_check_dots_3.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1056"
+     id="namedview12"
+     showgrid="false"
+     inkscape:zoom="2.18"
+     inkscape:cx="75"
+     inkscape:cy="50"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Page-1-3" />
+  <defs
+     id="defs3346" />
+  <metadata
+     id="metadata3349">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(-17.144857,-22.362199)">
+    <circle
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="circle4219"
+       cx="138.57143"
+       cy="106.8622"
+       r="13"
+       d="m 151.57143,106.8622 c 0,7.1797 -5.8203,13 -13,13 -7.17971,0 -13,-5.8203 -13,-13 0,-7.179704 5.82029,-13.000002 13,-13.000002 7.1797,0 13,5.820298 13,13.000002 z" />
+    <circle
+       r="13"
+       cy="72.362198"
+       cx="138.57143"
+       id="circle4741"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 151.57143,72.362198 c 0,7.179702 -5.8203,13 -13,13 -7.17971,0 -13,-5.820298 -13,-13 0,-7.179702 5.82029,-13 13,-13 7.1797,0 13,5.820298 13,13 z" />
+    <circle
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="circle4743"
+       cx="138.57143"
+       cy="37.862198"
+       r="13"
+       d="m 151.57143,37.862198 c 0,7.179702 -5.8203,13 -13,13 -7.17971,0 -13,-5.820298 -13,-13 0,-7.179702 5.82029,-13 13,-13 7.1797,0 13,5.820298 13,13 z" />
+  </g>
+  <g
+     transform="translate(-13.412913,81.651374)"
+     style="fill:none;stroke:none"
+     id="Page-1-3"
+     sketch:type="MSPage">
+    <g
+       style="fill:#000000"
+       id="signature-verified-cutout"
+       sketch:type="MSArtboardGroup"
+       transform="translate(10.412909,-78.651376)">
+      <path
+         inkscape:connector-curvature="0"
+         d="M 50,97 C 75.957383,97 97,75.957383 97,50 97,24.042617 75.957383,3 50,3 24.042617,3 3,24.042617 3,50 3,75.957383 24.042617,97 50,97 z M 46.273291,77.5085 20,57.830916 27.91844,47.63497 43.309686,59.515226 70.31112,23 80.867825,30.778219 46.273291,77.5085 z"
+         sketch:type="MSShapeGroup"
+         id="path12-3" />
+    </g>
+  </g>
+</svg>

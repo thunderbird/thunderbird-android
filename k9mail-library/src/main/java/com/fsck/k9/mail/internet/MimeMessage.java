@@ -1,6 +1,7 @@
 
 package com.fsck.k9.mail.internet;
 
+
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,12 +10,22 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Set;
-import java.util.UUID;
+import java.util.TimeZone;
 
+import android.support.annotation.NonNull;
+
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyFactory;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.DefaultBodyFactory;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+import com.fsck.k9.mail.Part;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.dom.field.DateTimeField;
@@ -25,16 +36,7 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
-import org.apache.james.mime4j.util.MimeUtil;
 
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.CompositeBody;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Multipart;
-import com.fsck.k9.mail.Part;
 
 /**
  * An implementation of Message that stores all of it's metadata in RFC 822 and
@@ -43,10 +45,14 @@ import com.fsck.k9.mail.Part;
 public class MimeMessage extends Message {
     private MimeHeader mHeader = new MimeHeader();
     protected Address[] mFrom;
+    protected Address[] mSender;
     protected Address[] mTo;
     protected Address[] mCc;
     protected Address[] mBcc;
     protected Address[] mReplyTo;
+    protected Address[] xOriginalTo;
+    protected Address[] deliveredTo;
+    protected Address[] xEnvelopeTo;
 
     protected String mMessageId;
     private String[] mReferences;
@@ -59,20 +65,14 @@ public class MimeMessage extends Message {
     protected int mSize;
     private String serverExtra;
 
-    public MimeMessage() {
+
+    public static MimeMessage parseMimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
+        MimeMessage mimeMessage = new MimeMessage();
+        mimeMessage.parse(in, recurse);
+        return mimeMessage;
     }
 
-
-    /**
-     * Parse the given InputStream using Apache Mime4J to build a MimeMessage.
-     *
-     * @param in
-     * @param recurse A boolean indicating to recurse through all nested MimeMessage subparts.
-     * @throws IOException
-     * @throws MessagingException
-     */
-    public MimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
-        parse(in, recurse);
+    public MimeMessage() {
     }
 
     /**
@@ -90,6 +90,9 @@ public class MimeMessage extends Message {
         mCc = null;
         mBcc = null;
         mReplyTo = null;
+        xOriginalTo = null;
+        deliveredTo = null;
+        xEnvelopeTo = null;
 
         mMessageId = null;
         mReferences = null;
@@ -105,15 +108,14 @@ public class MimeMessage extends Message {
         // REALLY long References: headers
         parserConfig.setMaxHeaderCount(-1); // Disable the check for header count.
         MimeStreamParser parser = new MimeStreamParser(parserConfig);
-        parser.setContentHandler(new MimeMessageBuilder());
+        parser.setContentHandler(new MimeMessageBuilder(new DefaultBodyFactory()));
         if (recurse) {
             parser.setRecurse();
         }
         try {
             parser.parse(new EOLConvertingInputStream(in));
         } catch (MimeException me) {
-            //TODO wouldn't a MessagingException be better?
-            throw new Error(me);
+            throw new MessagingException(me.getMessage(), me);
         }
     }
 
@@ -139,7 +141,7 @@ public class MimeMessage extends Message {
      * @param sentDate
      * @throws com.fsck.k9.mail.MessagingException
      */
-    public void addSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException {
+    public void addSentDate(Date sentDate, boolean hideTimeZone) {
         if (mDateFormat == null) {
             mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
         }
@@ -153,7 +155,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setSentDate(Date sentDate, boolean hideTimeZone) throws MessagingException {
+    public void setSentDate(Date sentDate, boolean hideTimeZone) {
         removeHeader("Date");
         addSentDate(sentDate, hideTimeZone);
     }
@@ -165,12 +167,12 @@ public class MimeMessage extends Message {
     @Override
     public String getContentType() {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : contentType;
+        return (contentType == null) ? "text/plain" : MimeUtility.unfoldAndDecode(contentType);
     }
 
     @Override
-    public String getDisposition() throws MessagingException {
-        return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
+    public String getDisposition() {
+        return MimeUtility.unfoldAndDecode(getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION));
     }
 
     @Override
@@ -184,12 +186,12 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public boolean isMimeType(String mimeType) throws MessagingException {
+    public boolean isMimeType(String mimeType) {
         return getMimeType().equalsIgnoreCase(mimeType);
     }
 
     @Override
-    public int getSize() {
+    public long getSize() {
         return mSize;
     }
 
@@ -198,29 +200,51 @@ public class MimeMessage extends Message {
      * found the method returns an empty array.
      */
     @Override
-    public Address[] getRecipients(RecipientType type) throws MessagingException {
-        if (type == RecipientType.TO) {
-            if (mTo == null) {
-                mTo = Address.parse(MimeUtility.unfold(getFirstHeader("To")));
+    public Address[] getRecipients(RecipientType type) {
+        switch (type) {
+            case TO: {
+                if (mTo == null) {
+                    mTo = Address.parse(MimeUtility.unfold(getFirstHeader("To")));
+                }
+                return mTo;
             }
-            return mTo;
-        } else if (type == RecipientType.CC) {
-            if (mCc == null) {
-                mCc = Address.parse(MimeUtility.unfold(getFirstHeader("CC")));
+            case CC: {
+                if (mCc == null) {
+                    mCc = Address.parse(MimeUtility.unfold(getFirstHeader("CC")));
+                }
+                return mCc;
             }
-            return mCc;
-        } else if (type == RecipientType.BCC) {
-            if (mBcc == null) {
-                mBcc = Address.parse(MimeUtility.unfold(getFirstHeader("BCC")));
+            case BCC: {
+                if (mBcc == null) {
+                    mBcc = Address.parse(MimeUtility.unfold(getFirstHeader("BCC")));
+                }
+                return mBcc;
             }
-            return mBcc;
-        } else {
-            throw new MessagingException("Unrecognized recipient type.");
+            case X_ORIGINAL_TO: {
+                if (xOriginalTo == null) {
+                    xOriginalTo = Address.parse(MimeUtility.unfold(getFirstHeader("X-Original-To")));
+                }
+                return xOriginalTo;
+            }
+            case DELIVERED_TO: {
+                if (deliveredTo == null) {
+                    deliveredTo = Address.parse(MimeUtility.unfold(getFirstHeader("Delivered-To")));
+                }
+                return deliveredTo;
+            }
+            case X_ENVELOPE_TO: {
+                if (xEnvelopeTo == null) {
+                    xEnvelopeTo = Address.parse(MimeUtility.unfold(getFirstHeader("X-Envelope-To")));
+                }
+                return xEnvelopeTo;
+            }
         }
+
+        throw new IllegalArgumentException("Unrecognized recipient type.");
     }
 
     @Override
-    public void setRecipients(RecipientType type, Address[] addresses) throws MessagingException {
+    public void setRecipients(RecipientType type, Address[] addresses) {
         if (type == RecipientType.TO) {
             if (addresses == null || addresses.length == 0) {
                 removeHeader("To");
@@ -245,8 +269,32 @@ public class MimeMessage extends Message {
                 setHeader("BCC", Address.toEncodedString(addresses));
                 this.mBcc = addresses;
             }
+        } else if (type == RecipientType.X_ORIGINAL_TO) {
+            if (addresses == null || addresses.length == 0) {
+                removeHeader("X-Original-To");
+                this.xOriginalTo = null;
+            } else {
+                setHeader("X-Original-To", Address.toEncodedString(addresses));
+                this.xOriginalTo = addresses;
+            }
+        } else if (type == RecipientType.DELIVERED_TO) {
+            if (addresses == null || addresses.length == 0) {
+                removeHeader("Delivered-To");
+                this.deliveredTo = null;
+            } else {
+                setHeader("Delivered-To", Address.toEncodedString(addresses));
+                this.deliveredTo = addresses;
+            }
+        } else if (type == RecipientType.X_ENVELOPE_TO) {
+            if (addresses == null || addresses.length == 0) {
+                removeHeader("X-Envelope-To");
+                this.xEnvelopeTo = null;
+            } else {
+                setHeader("X-Envelope-To", Address.toEncodedString(addresses));
+                this.xEnvelopeTo = addresses;
+            }
         } else {
-            throw new MessagingException("Unrecognized recipient type.");
+            throw new IllegalStateException("Unrecognized recipient type.");
         }
     }
 
@@ -259,7 +307,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setSubject(String subject) throws MessagingException {
+    public void setSubject(String subject) {
         setHeader("Subject", subject);
     }
 
@@ -276,7 +324,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setFrom(Address from) throws MessagingException {
+    public void setFrom(Address from) {
         if (from != null) {
             setHeader("From", from.toEncodedString());
             this.mFrom = new Address[] {
@@ -284,6 +332,23 @@ public class MimeMessage extends Message {
             };
         } else {
             this.mFrom = null;
+        }
+    }
+
+    @Override
+    public Address[] getSender() {
+        return Address.parse(MimeUtility.unfold(getFirstHeader("Sender")));
+    }
+
+    @Override
+    public void setSender(Address sender) {
+        if (sender != null) {
+            setHeader("Sender", sender.toEncodedString());
+            this.mSender = new Address[] {
+                    sender
+            };
+        } else {
+            this.mSender = null;
         }
     }
 
@@ -296,7 +361,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setReplyTo(Address[] replyTo) throws MessagingException {
+    public void setReplyTo(Address[] replyTo) {
         if (replyTo == null || replyTo.length == 0) {
             removeHeader("Reply-to");
             mReplyTo = null;
@@ -307,46 +372,25 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public String getMessageId() throws MessagingException {
+    public String getMessageId() {
         if (mMessageId == null) {
             mMessageId = getFirstHeader("Message-ID");
         }
         return mMessageId;
     }
 
-    public void generateMessageId() throws MessagingException {
-        String hostname = null;
-
-        if (mFrom != null && mFrom.length >= 1) {
-            hostname = mFrom[0].getHostname();
-        }
-
-        if (hostname == null && mReplyTo != null && mReplyTo.length >= 1) {
-            hostname = mReplyTo[0].getHostname();
-        }
-
-        if (hostname == null) {
-            hostname = "email.android.com";
-        }
-
-        /* We use upper case here to match Apple Mail Message-ID format (for privacy) */
-        String messageId = "<" + UUID.randomUUID().toString().toUpperCase(Locale.US) + "@" + hostname + ">";
-
-        setMessageId(messageId);
-    }
-
-    public void setMessageId(String messageId) throws MessagingException {
+    public void setMessageId(String messageId) {
         setHeader("Message-ID", messageId);
         mMessageId = messageId;
     }
 
     @Override
-    public void setInReplyTo(String inReplyTo) throws MessagingException {
+    public void setInReplyTo(String inReplyTo) {
         setHeader("In-Reply-To", inReplyTo);
     }
 
     @Override
-    public String[] getReferences() throws MessagingException {
+    public String[] getReferences() {
         if (mReferences == null) {
             mReferences = getHeader("References");
         }
@@ -354,7 +398,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setReferences(String references) throws MessagingException {
+    public void setReferences(String references) {
         /*
          * Make sure the References header doesn't exceed the maximum header
          * line length and won't get (Q-)encoded later. Otherwise some clients
@@ -405,7 +449,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void addHeader(String name, String value) throws MessagingException {
+    public void addHeader(String name, String value) {
         mHeader.addHeader(name, value);
     }
 
@@ -415,22 +459,23 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public void setHeader(String name, String value) throws MessagingException {
+    public void setHeader(String name, String value) {
         mHeader.setHeader(name, value);
     }
 
+    @NonNull
     @Override
-    public String[] getHeader(String name) throws MessagingException {
+    public String[] getHeader(String name) {
         return mHeader.getHeader(name);
     }
 
     @Override
-    public void removeHeader(String name) throws MessagingException {
+    public void removeHeader(String name) {
         mHeader.removeHeader(name);
     }
 
     @Override
-    public Set<String> getHeaderNames() throws MessagingException {
+    public Set<String> getHeaderNames() {
         return mHeader.getHeaderNames();
     }
 
@@ -453,7 +498,7 @@ public class MimeMessage extends Message {
 
     @Override
     public InputStream getInputStream() throws MessagingException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -476,9 +521,11 @@ public class MimeMessage extends Message {
     }
 
     private class MimeMessageBuilder implements ContentHandler {
-        private final LinkedList<Object> stack = new LinkedList<Object>();
+        private final LinkedList<Object> stack = new LinkedList<>();
+        private final BodyFactory bodyFactory;
 
-        public MimeMessageBuilder() {
+        public MimeMessageBuilder(BodyFactory bodyFactory) {
+            this.bodyFactory = bodyFactory;
         }
 
         private void expect(Class<?> c) {
@@ -519,31 +566,22 @@ public class MimeMessage extends Message {
         }
 
         @Override
-        public void startMultipart(BodyDescriptor bd) {
+        public void startMultipart(BodyDescriptor bd) throws MimeException {
             expect(Part.class);
 
             Part e = (Part)stack.peek();
-            try {
-                String contentType = e.getContentType();
-                String mimeType = MimeUtility.getHeaderParameter(contentType, null);
-                String boundary = MimeUtility.getHeaderParameter(contentType, "boundary");
-                MimeMultipart multiPart = new MimeMultipart(mimeType, boundary);
-                e.setBody(multiPart);
-                stack.addFirst(multiPart);
-            } catch (MessagingException me) {
-                throw new Error(me);
-            }
+            String mimeType = bd.getMimeType();
+            String boundary = bd.getBoundary();
+            MimeMultipart multiPart = new MimeMultipart(mimeType, boundary);
+            e.setBody(multiPart);
+            stack.addFirst(multiPart);
         }
 
         @Override
-        public void body(BodyDescriptor bd, InputStream in) throws IOException {
+        public void body(BodyDescriptor bd, InputStream in) throws IOException, MimeException {
             expect(Part.class);
-            try {
-                Body body = MimeUtility.createBody(in, bd.getTransferEncoding(), bd.getMimeType());
-                ((Part)stack.peek()).setBody(body);
-            } catch (MessagingException me) {
-                throw new Error(me);
-            }
+            Body body = bodyFactory.createBody(bd.getTransferEncoding(), bd.getMimeType(), in);
+            ((Part)stack.peek()).setBody(body);
         }
 
         @Override
@@ -566,7 +604,7 @@ public class MimeMessage extends Message {
         }
 
         @Override
-        public void startBodyPart() {
+        public void startBodyPart() throws MimeException {
             expect(MimeMultipart.class);
 
             try {
@@ -574,7 +612,7 @@ public class MimeMessage extends Message {
                 ((MimeMultipart)stack.peek()).addBodyPart(bodyPart);
                 stack.addFirst(bodyPart);
             } catch (MessagingException me) {
-                throw new Error(me);
+                throw new MimeException(me);
             }
         }
 
@@ -608,13 +646,9 @@ public class MimeMessage extends Message {
         @Override
         public void field(Field parsedField) throws MimeException {
             expect(Part.class);
-            try {
-                String name = parsedField.getName();
-                String raw = parsedField.getRaw().toString();
-                ((Part) stack.peek()).addRawHeader(name, raw);
-            } catch (MessagingException me) {
-                throw new Error(me);
-            }
+            String name = parsedField.getName();
+            String raw = parsedField.getRaw().toString();
+            ((Part) stack.peek()).addRawHeader(name, raw);
         }
     }
 
@@ -642,6 +676,9 @@ public class MimeMessage extends Message {
         destination.mReplyTo = mReplyTo;
         destination.mReferences = mReferences;
         destination.mInReplyTo = mInReplyTo;
+        destination.xOriginalTo = xOriginalTo;
+        destination.deliveredTo = deliveredTo;
+        destination.xEnvelopeTo = xEnvelopeTo;
     }
 
     @Override
@@ -659,47 +696,6 @@ public class MimeMessage extends Message {
     @Override
     public boolean hasAttachments() {
         return false;
-    }
-
-
-    @Override
-    public void setUsing7bitTransport() throws MessagingException {
-        String type = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        /*
-         * We don't trust that a multipart/* will properly have an 8bit encoding
-         * header if any of its subparts are 8bit, so we automatically recurse
-         * (as long as its not multipart/signed).
-         */
-        if (mBody instanceof CompositeBody && !MimeUtility.isSameMimeType(type, "multipart/signed")) {
-            setEncoding(MimeUtil.ENC_7BIT);
-            // recurse
-            ((CompositeBody) mBody).setUsing7bitTransport();
-        } else if (!MimeUtil.ENC_8BIT
-                .equalsIgnoreCase(getFirstHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING))) {
-            return;
-        } else if (type != null &&
-                (MimeUtility.isSameMimeType(type, "multipart/signed") || MimeUtility.isMessage(type))) {
-            /*
-             * This shouldn't happen. In any case, it would be wrong to convert
-             * them to some other encoding for 7bit transport.
-             *
-             * RFC 1847 says multipart/signed must be 7bit. It also says their
-             * bodies must be treated as opaque, so we must not change the
-             * encoding.
-             *
-             * We've dealt with (CompositeBody) type message/rfc822 above. Here
-             * we must deal with all other message/* types. RFC 2045 says
-             * message/* can only be 7bit or 8bit. RFC 2046 says unknown
-             * message/* types must be treated as application/octet-stream,
-             * which means we can't recurse into them. It also says that
-             * existing subtypes message/partial and message/external must only
-             * be 7bit, and that future subtypes "should be" 7bit.
-             */
-            throw new MessagingException(
-                    "Unable to convert 8bit body part to 7bit");
-        } else {
-            setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
-        }
     }
 
     @Override

@@ -1,13 +1,15 @@
 package com.fsck.k9.preferences;
 
-import android.util.Log;
-import com.fsck.k9.K9;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import android.os.SystemClock;
+
+import timber.log.Timber;
 
 
 public class StorageEditor {
@@ -29,14 +31,10 @@ public class StorageEditor {
             String key = entry.getKey();
             Object value = entry.getValue();
             if (key != null && value != null) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Copying key '" + key + "', value '" + value + "'");
-                }
+                Timber.d("Copying key '%s', value '%s'", key, value);
                 changes.put(key, "" + value);
             } else {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "Skipping copying key '" + key + "', value '" + value + "'");
-                }
+                Timber.d("Skipping copying key '%s', value '%s'", key, value);
             }
         }
     }
@@ -46,14 +44,14 @@ public class StorageEditor {
             commitChanges();
             return true;
         } catch (Exception e) {
-            Log.e(K9.LOG_TAG, "Failed to save preferences", e);
+            Timber.e(e, "Failed to save preferences");
             return false;
         }
     }
 
     private void commitChanges() {
-        long startTime = System.currentTimeMillis();
-        Log.i(K9.LOG_TAG, "Committing preference changes");
+        long startTime = SystemClock.elapsedRealtime();
+        Timber.i("Committing preference changes");
         Runnable committer = new Runnable() {
             public void run() {
                 for (String removeKey : removals) {
@@ -72,8 +70,8 @@ public class StorageEditor {
             }
         };
         storage.doInTransaction(committer);
-        long endTime = System.currentTimeMillis();
-        Log.i(K9.LOG_TAG, "Preferences commit took " + (endTime - startTime) + "ms");
+        long endTime = SystemClock.elapsedRealtime();
+        Timber.i("Preferences commit took %d ms", endTime - startTime);
 
     }
 

@@ -5,15 +5,21 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
+import timber.log.Timber;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.ui.ContactBadge;
+import com.fsck.k9.mail.Address;
+
 import org.apache.james.mime4j.util.MimeUtil;
 
 import java.nio.charset.Charset;
@@ -120,40 +126,6 @@ public class Utility {
             }
         }
         return false;
-    }
-
-    /**
-     * A fast version of  URLDecoder.decode() that works only with UTF-8 and does only two
-     * allocations. This version is around 3x as fast as the standard one and I'm using it
-     * hundreds of times in places that slow down the UI, so it helps.
-     */
-    public static String fastUrlDecode(String s) {
-
-            byte[] bytes = s.getBytes(Charset.forName("UTF-8"));
-            byte ch;
-            int length = 0;
-            for (int i = 0, count = bytes.length; i < count; i++) {
-                ch = bytes[i];
-                if (ch == '%') {
-                    int h = (bytes[i + 1] - '0');
-                    int l = (bytes[i + 2] - '0');
-                    if (h > 9) {
-                        h -= 7;
-                    }
-                    if (l > 9) {
-                        l -= 7;
-                    }
-                    bytes[length] = (byte)((h << 4) | l);
-                    i += 2;
-                } else if (ch == '+') {
-                    bytes[length] = ' ';
-                } else {
-                    bytes[length] = bytes[i];
-                }
-                length++;
-            }
-            return new String(bytes, 0, length, Charset.forName("UTF-8"));
-
     }
 
     /*
@@ -391,6 +363,10 @@ public class Utility {
         }
     }
 
+    public static String stripNewLines(String multiLineString) {
+        return multiLineString.replaceAll("[\\r\\n]", "");
+    }
+
 
     private static final String IMG_SRC_REGEX = "(?is:<img[^>]+src\\s*=\\s*['\"]?([a-z]+)\\:)";
     private static final Pattern IMG_PATTERN = Pattern.compile(IMG_SRC_REGEX);
@@ -405,15 +381,12 @@ public class Utility {
         while (imgMatches.find()) {
             String uriScheme = imgMatches.group(1);
             if (uriScheme.equals("http") || uriScheme.equals("https")) {
-                if (K9.DEBUG) {
-                    Log.d(K9.LOG_TAG, "External images found");
-                }
+                Timber.d("External images found");
                 return true;
             }
         }
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "No external images.");
-        }
+
+        Timber.d("No external images.");
         return false;
     }
 
@@ -496,6 +469,26 @@ public class Utility {
             sMainThreadHandler = new Handler(Looper.getMainLooper());
         }
         return sMainThreadHandler;
+    }
+
+    /**
+     * Assign the contact to the badge.
+     *
+     * On 4.3, we pass the address name as extra info so that if the contact doesn't exist
+     * the name is auto-populated.
+     *
+     * @param contactBadge the badge to the set the contact for
+     * @param address the address to look for a contact for.
+     */
+    public static void setContactForBadge(ContactBadge contactBadge,
+                                          Address address) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            Bundle extraContactInfo = new Bundle();
+            extraContactInfo.putString(ContactsContract.Intents.Insert.NAME, address.getPersonal());
+            contactBadge.assignContactFromEmail(address.getAddress(), true, extraContactInfo);
+        } else {
+            contactBadge.assignContactFromEmail(address.getAddress(), true);
+        }
     }
 
 }

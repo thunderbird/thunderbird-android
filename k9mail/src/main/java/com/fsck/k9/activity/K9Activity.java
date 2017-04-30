@@ -8,7 +8,7 @@ import com.fsck.k9.activity.K9ActivityCommon.K9ActivityMagic;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 
 
-public class K9Activity extends Activity implements K9ActivityMagic {
+public abstract class K9Activity extends Activity implements K9ActivityMagic {
 
     private K9ActivityCommon mBase;
 

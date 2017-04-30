@@ -2,8 +2,10 @@ package com.fsck.k9.mail.ssl;
 
 
 import java.io.IOException;
-import java.net.Proxy.Type;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.Proxy;
+import java.net.Proxy.Type;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -12,25 +14,28 @@ import java.util.List;
 
 import android.content.Context;
 import android.net.SSLCertificateSocketFactory;
+import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ProxySettings;
+
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
+import timber.log.Timber;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import com.fsck.k9.mail.ProxySettings;
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 import static com.fsck.k9.mail.store.RemoteStore.SOCKET_CONNECT_TIMEOUT;
 
 
 /**
- * Filter and reorder list of cipher suites and TLS versions.
+ * Prior to API 21 (and notably from API 10 - 2.3.4) Android weakened it's cipher list
+ * by ordering them badly such that RC4-MD5 was preferred. To work around this we 
+ * remove the insecure ciphers and reorder them so the latest more secure ciphers are at the top.
+ *
+ * On more modern versions of Android we keep the system configuration.
  */
 public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     protected static final String[] ENABLED_CIPHERS;
@@ -80,6 +85,11 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_ECDH_ECDSA_WITH_RC4_128_SHA",
             "SSL_RSA_WITH_RC4_128_SHA",
             "SSL_RSA_WITH_RC4_128_MD5",
+            "TLS_ECDH_RSA_WITH_NULL_SHA",
+            "TLS_ECDH_anon_WITH_3DES_EDE_CBC_SHA",
+            "TLS_ECDH_anon_WITH_NULL_SHA",
+            "TLS_ECDH_anon_WITH_RC4_128_SHA",
+            "TLS_RSA_WITH_NULL_SHA256"
     };
 
     protected static final String[] ORDERED_KNOWN_PROTOCOLS = {
@@ -108,25 +118,34 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
              */
             supportedProtocols = sock.getSupportedProtocols();
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Error getting information about available SSL/TLS ciphers and " +
-                    "protocols", e);
+            Timber.e(e, "Error getting information about available SSL/TLS ciphers and protocols");
         }
 
-        ENABLED_CIPHERS = (enabledCiphers == null) ? null :
-                reorder(enabledCiphers, ORDERED_KNOWN_CIPHERS, BLACKLISTED_CIPHERS);
+        if (hasWeakSslImplementation()) {
+            ENABLED_CIPHERS = (enabledCiphers == null) ? null :
+                    reorder(enabledCiphers, ORDERED_KNOWN_CIPHERS, BLACKLISTED_CIPHERS);
+            ENABLED_PROTOCOLS = (supportedProtocols == null) ? null :
+                    reorder(supportedProtocols, ORDERED_KNOWN_PROTOCOLS, BLACKLISTED_PROTOCOLS);
+        } else {
+            ENABLED_CIPHERS = (enabledCiphers == null) ? null :
+                    remove(enabledCiphers, BLACKLISTED_CIPHERS);
+            ENABLED_PROTOCOLS = (supportedProtocols == null) ? null :
+                    remove(supportedProtocols, BLACKLISTED_PROTOCOLS);
+        }
 
-        ENABLED_PROTOCOLS = (supportedProtocols == null) ? null :
-                reorder(supportedProtocols, ORDERED_KNOWN_PROTOCOLS, BLACKLISTED_PROTOCOLS);
     }
 
 
     private Context context;
     private ProxySettings proxySettings;
 
-
     public DefaultTrustedSocketFactory(Context context, ProxySettings proxySettings) {
         this.context = context;
         this.proxySettings = proxySettings;
+    }
+
+    private static boolean hasWeakSslImplementation() {
+        return android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
     }
 
     protected static String[] reorder(String[] enabled, String[] known, String[] blacklisted) {
@@ -155,6 +174,21 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         return result.toArray(new String[result.size()]);
     }
 
+
+    protected static String[] remove(String[] enabled, String[] blacklisted) {
+        List<String> items = new ArrayList<String>();
+        Collections.addAll(items, enabled);
+
+        // Remove blacklisted items
+        if (blacklisted != null) {
+            for (String item : blacklisted) {
+                items.remove(item);
+            }
+        }
+
+        return items.toArray(new String[items.size()]);
+    }
+
     public Socket createSocket(Socket socket, String host, int port, String clientCertificateAlias)
             throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException {
 
@@ -169,15 +203,13 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         SSLSocketFactory socketFactory = sslContext.getSocketFactory();
         Socket trustedSocket;
         if (socket == null) {
-            if (proxySettings.enabled) {
-                InetSocketAddress proxyAddress = new InetSocketAddress(proxySettings.host, proxySettings.port);
-                Proxy proxy = new Proxy(Type.SOCKS, proxyAddress);
-
+            if(proxySettings.enabled) {
+                InetSocketAddress proxyAddress = new InetSocketAddress(proxySettings.host,proxySettings.port);
+                Proxy proxy = new Proxy(Type.SOCKS,proxyAddress);
                 Socket underlying = new Socket(proxy);
-                InetSocketAddress serverAddress = new InetSocketAddress(host, port);
-                underlying.connect(serverAddress, SOCKET_CONNECT_TIMEOUT);
-
-                trustedSocket = socketFactory.createSocket(underlying, proxySettings.host, proxySettings.port, true);
+                InetSocketAddress serverAddress = new InetSocketAddress(host,port);
+                underlying.connect(serverAddress,SOCKET_CONNECT_TIMEOUT);
+                trustedSocket = socketFactory.createSocket(underlying,proxySettings.host,proxySettings.port,true);
             } else {
                 trustedSocket = socketFactory.createSocket();
             }
@@ -186,7 +218,9 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         }
 
         SSLSocket sslSocket = (SSLSocket) trustedSocket;
+
         hardenSocket(sslSocket);
+
         setSniHost(socketFactory, sslSocket, host);
 
         if (!proxySettings.enabled && socket == null) {
@@ -220,7 +254,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         try {
             socket.getClass().getMethod("setHostname", String.class).invoke(socket, hostname);
         } catch (Throwable e) {
-            Log.e(LOG_TAG, "Could not call SSLSocket#setHostname(String) method ", e);
+            Timber.e(e, "Could not call SSLSocket#setHostname(String) method ");
         }
     }
 }

@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import android.util.Log;
-
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
+import timber.log.Timber;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
 
 
 class ImapResponseParser {
@@ -45,7 +43,7 @@ class ImapResponseParser {
             }
 
             if (exception != null) {
-                throw new RuntimeException("readResponse(): Exception in callback method", exception);
+                throw new ImapResponseParserException("readResponse(): Exception in callback method", exception);
             }
 
             return response;
@@ -88,12 +86,11 @@ class ImapResponseParser {
             response = readResponse();
 
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-                Log.v(LOG_TAG, logId + "<<<" + response);
+                Timber.v("%s<<<%s", logId, response);
             }
 
             if (response.getTag() != null && !response.getTag().equalsIgnoreCase(tag)) {
-                Log.w(LOG_TAG, "After sending tag " + tag + ", got tag response from previous command " + response +
-                        " for " + logId);
+                Timber.w("After sending tag %s, got tag response from previous command %s for %s", tag, response, logId);
 
                 Iterator<ImapResponse> responseIterator = responses.iterator();
 
@@ -109,7 +106,7 @@ class ImapResponseParser {
                 continue;
             }
 
-            if (untaggedHandler != null) {
+            if (response.getTag() == null && untaggedHandler != null) {
                 untaggedHandler.handleAsyncUntaggedResponse(response);
             }
 
@@ -117,8 +114,8 @@ class ImapResponseParser {
         } while (response == null || response.getTag() == null);
 
         if (response.size() < 1 || !equalsIgnoreCase(response.get(0), Responses.OK)) {
-            throw new NegativeImapResponseException("Command: " + commandToLog + "; response: " + response.toString(),
-                    response.getAlertText());
+            String message = "Command: " + commandToLog + "; response: " + response.toString();
+            throw new NegativeImapResponseException(message, responses);
         }
 
         return responses;
@@ -193,8 +190,7 @@ class ImapResponseParser {
         expect(' ');
         parseList(response, '(', ')');
         expect(' ');
-        //TODO: Add support for NIL
-        String delimiter = parseQuoted();
+        String delimiter = parseQuotedOrNil();
         response.add(delimiter);
         expect(' ');
         String name = parseString();
@@ -353,26 +349,32 @@ class ImapResponseParser {
         if (response.getCallback() != null) {
             FixedLengthInputStream fixed = new FixedLengthInputStream(inputStream, size);
 
+            Exception callbackException = null;
             Object result = null;
             try {
                 result = response.getCallback().foundLiteral(response, fixed);
             } catch (IOException e) {
-                // Pass IOExceptions through
                 throw e;
             } catch (Exception e) {
-                // Catch everything else and save it for later.
-                exception = e;
+                callbackException = e;
             }
 
-            // Check if only some of the literal data was read
-            int available = fixed.available();
-            if (available > 0 && available != size) {
-                // If so, skip the rest
-                while (fixed.available() > 0) {
-                    fixed.skip(fixed.available());
+            boolean someDataWasRead = fixed.available() != size;
+            if (someDataWasRead) {
+                if (result == null && callbackException == null) {
+                    throw new AssertionError("Callback consumed some data but returned no result");
                 }
+
+                fixed.skipRemaining();
             }
 
+            if (callbackException != null) {
+                if (exception == null) {
+                    exception = callbackException;
+                }
+                return "EXCEPTION";
+            }
+            
             if (result != null) {
                 return result;
             }
@@ -409,6 +411,22 @@ class ImapResponseParser {
             }
         }
         throw new IOException("parseQuoted(): end of stream reached");
+    }
+
+    private String parseQuotedOrNil() throws IOException {
+        int peek = inputStream.peek();
+        if (peek == '"') {
+            return parseQuoted();
+        } else {
+            parseNil();
+            return null;
+        }
+    }
+    
+    private void parseNil() throws IOException {
+        expect('N');
+        expect('I');
+        expect('L');
     }
 
     private String readStringUntil(char end) throws IOException {
@@ -459,7 +477,7 @@ class ImapResponseParser {
 
     private void checkTokenIsString(Object token) throws IOException {
         if (!(token instanceof String)) {
-            throw new IOException("Unexpected non-string token: " + token);
+            throw new IOException("Unexpected non-string token: " + token.getClass().getSimpleName() + " - " + token);
         }
     }
 }

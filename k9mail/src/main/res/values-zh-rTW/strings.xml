@@ -47,7 +47,7 @@
   <string name="status_loading_account_folder_headers">正在接收郵件訊息<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">正在寄送<xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">正在處理<xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">下次接收時間 @ <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">同步已停用</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已選擇</string>
@@ -130,7 +130,6 @@
   <string name="notification_action_reply">回覆</string>
   <string name="notification_action_mark_as_read">開啟</string>
   <string name="notification_action_delete">刪除</string>
-  <string name="notification_certificate_error_title">驗證失敗</string>
   <string name="notification_certificate_error_text">檢查你的伺服器設定</string>
   <string name="notification_bg_sync_ticker">正在檢查郵件：<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">正在檢查郵件</string>
@@ -570,11 +569,9 @@
   <string name="settings_theme_label">主題</string>
   <string name="settings_message_theme_label">訊息檢視主題</string>
   <string name="settings_compose_theme_label">新郵件主題</string>
-  <string name="settings_language_label">語系</string>
   <string name="settings_message_theme_selection_label">固定訊息主題</string>
   <string name="settings_message_theme_selection_summary_off">讀取訊息內容時顯示訊息檢視主題</string>
   <string name="settings_message_theme_selection_summary_on">使用固定訊息檢視主題</string>
-  <string name="setting_language_system">系統預設值</string>
   <string name="background_ops_label">背景同步</string>
   <string name="background_ops_never">不要</string>
   <string name="background_ops_always">預設</string>
@@ -609,7 +606,6 @@
   <string name="search_all_messages_detail">可搜尋信件匣中的所有郵件</string>
   <string name="integrated_inbox_title">全域收件匣</string>
   <string name="integrated_inbox_detail">將所有郵件集中到全域收件匣</string>
-  <string name="tap_hint">點擊信件或星號來標記郵件為未讀或加上星號</string>
   <string name="folder_settings_include_in_integrated_inbox_label">全域</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">所有郵件都顯示在全域收件匣中</string>
   <string name="account_settings_searchable_label">搜尋的信件匣</string>
@@ -649,7 +645,6 @@
   <string name="font_size_larger">最大</string>
   <string name="miscellaneous_preferences">偏好設定</string>
   <string name="error_activity_not_found">沒有找到可以用於此操作的程式。</string>
-  <string name="send_aborted">寄送操作已經取消。</string>
   <string name="save_or_discard_draft_message_dlg_title">儲存郵件草稿？</string>
   <string name="save_or_discard_draft_message_instructions_fmt">儲存還是忽略這封郵件？</string>
   <string name="confirm_discard_draft_message_title">放棄信件?</string>

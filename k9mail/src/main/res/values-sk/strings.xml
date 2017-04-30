@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Autorské práva 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licencované pod licenciou Apache 2.0.</string>
+  <string name="app_license">Licenciované pod licenciou Apache 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Vitajte v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -78,7 +78,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="status_loading_account_folder_headers">Načítavanie hlavičiek <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Odosielanie <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Spracovávanie <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Ďalšia synchronizácia <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Synchronizovanie vypnuté</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> vybraných</string>
@@ -89,6 +89,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="cancel_action">Zrušiť</string>
   <string name="send_action">Odoslať</string>
   <string name="send_again_action">Odoslať znovu</string>
+  <string name="empty_subject">Predmet správy je prázdny, kliknite ešte raz pre odoslanie s prázdnym predmetom.</string>
   <string name="select_action">Vybrať</string>
   <string name="deselect_action">Zrušiť výber</string>
   <string name="reply_action">Odpovedať</string>
@@ -126,6 +127,11 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="select_text_action">Vybrať text</string>
   <string name="show_headers_action">Zobraziť hlavičky</string>
   <string name="hide_headers_action">Skryť hlavičky</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Adresa bola skopírovaná do schránky.</item>
+    <item quantity="few">Adresy boli skopírované do schránky.</item>
+    <item quantity="other">Adresy boli skopírované do schránky.</item>
+  </plurals>
   <string name="message_view_theme_action_dark">Prepnúť na tmavú tému</string>
   <string name="message_view_theme_action_light">Prepnúť na svetlú tému</string>
   <string name="mark_as_unread_action">Označiť ako neprečítané</string>
@@ -146,6 +152,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="status_loading_more">Načítavanie správ\u2026</string>
   <string name="status_network_error">Chyba pripojenia</string>
   <string name="status_invalid_id_error">Správa nebola nájdená</string>
+  <string name="status_loading_error">Chyba otvárania správy</string>
   <string name="status_loading_more_failed">Skúsiť znovu načítať viac správ</string>
   <string name="load_more_messages_fmt">Načítať ďalších <xliff:g id="messages_to_load">%d</xliff:g> správ</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -174,6 +181,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="notification_action_spam">Nevyžiadaná pošta</string>
   <string name="notification_certificate_error_title">Chyba certifikátu pre <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Skontrolujte nastavenia servera</string>
+  <string name="notification_authentication_error_title">Overenie zlyhalo</string>
+  <string name="notification_authentication_error_text">Overenie pre <xliff:g id="account">%s</xliff:g> zlyhalo. Aktualizujte nastavenia servera.</string>
   <string name="notification_bg_sync_ticker">Kontrolovanie pošty: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Kontrolovanie pošty</string>
   <string name="notification_bg_send_ticker">Odosielanie pošty: <xliff:g id="account">%s</xliff:g></string>
@@ -227,6 +236,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="message_view_show_more_attachments_action">Ďalšie…</string>
   <string name="message_view_no_viewer">Nemožno nájsť prehliadač pre <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Stiahnuť kompletnú správu</string>
+  <string name="message_view_toast_unable_to_display_message">Správu nie je možné zobraziť</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Všetky hlavičky boli stiahnuté, ale nie sú žiadne ďalšie hlavičky na zobrazenie.</string>
   <string name="message_additional_headers_retrieval_failed">Načítanie prídavných hlavičiek z databázy alebo poštového servera zlyhalo.</string>
@@ -434,6 +444,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_notify_sync_summary">Oznamovať v stavovej lište, keď je pošta kontrolovaná</string>
   <string name="account_settings_notify_self_label">Zahrnúť odchádzajúcu poštu</string>
   <string name="account_settings_notify_self_summary">Zobraziť oznámenie pre odoslané správy</string>
+  <string name="account_notify_contacts_mail_only_label">Iba kontakty</string>
+  <string name="account_notify_contacts_mail_only_summary">Zobraziť upozornenia len pre správy od známych kontaktov</string>
   <string name="account_settings_notification_opens_unread_label">Oznámenie otvorí neprečítané správy</string>
   <string name="account_settings_notification_opens_unread_summary">Po otvorení oznámenia zobraziť neprečítané správy</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Po otvorení označiť ako prečítané</string>
@@ -467,7 +479,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_crypto">Šifrovanie</string>
   <string name="account_settings_crypto_app">Aplikácia OpenPGP</string>
   <string name="account_settings_crypto_key">Môj kľúč</string>
-  <string name="account_settings_no_openpgp_provider_installed">Žiadna nainštalovaná aplikácia OpenPGP</string>
+  <string name="account_settings_no_openpgp_provider_configured">Žiadna nainštalovaná aplikácia OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>
   <string name="account_settings_storage_title">Ukladací priestor</string>
   <string name="account_settings_color_label">Farba účtu</string>
@@ -658,11 +670,9 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="settings_theme_label">Téma</string>
   <string name="settings_message_theme_label">Téma zobrazenia správy</string>
   <string name="settings_compose_theme_label">Téma pri písaní správy</string>
-  <string name="settings_language_label">Jazyk</string>
   <string name="settings_message_theme_selection_label">Pevná téma správ</string>
   <string name="settings_message_theme_selection_summary_off">Vybrať tému pri prehliadaní správ</string>
   <string name="settings_message_theme_selection_summary_on">Použiť pevnú tému pri prehliadaní správ</string>
-  <string name="setting_language_system">Predvolený systémom</string>
   <string name="background_ops_label">Synchronizácia na pozadí</string>
   <string name="background_ops_never">Nikdy</string>
   <string name="background_ops_always">Vždy</string>
@@ -697,7 +707,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="search_all_messages_detail">Všetky správy v prehľadávaných priečinkoch</string>
   <string name="integrated_inbox_title">Zjednotená doručená pošta</string>
   <string name="integrated_inbox_detail">Všetky správy v zjednotených priečinkoch</string>
-  <string name="tap_hint">Správy s hviezdičkou alebo neprečítané správy vyberte kliknutím na obálku alebo hviezdičku</string>
+  <string name="tap_hint">Správy s hviezdičkou alebo neprečítané správy vyberte ťapnutím na kruh alebo hviezdičku</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Zjednotiť</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Všetky správy budú zobrazené v zjednotenej doručenej pošte</string>
   <string name="account_settings_searchable_label">Prehľadávané priečinky</string>
@@ -739,7 +749,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="font_size_larger">Väčšie</string>
   <string name="miscellaneous_preferences">Rôzne</string>
   <string name="error_activity_not_found">Nebola nájdená žiadna vhodná aplikácia pre túto akciu.</string>
-  <string name="send_aborted">Odosielanie prerušené.</string>
+  <string name="send_failed_reason">Odoslanie zlyhalo: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Uložiť koncept správy?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Uložiť alebo zahodiť túto správu?</string>
   <string name="confirm_discard_draft_message_title">Zahodiť správu?</string>
@@ -754,6 +764,10 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Áno</string>
   <string name="dialog_confirm_delete_cancel_button">Nie</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Potvrdiť označenie</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Chcete všetky správy označiť ako prečítané?</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Áno</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Nie</string>
   <string name="dialog_confirm_spam_title">Potvrdiť presun do priečinka Nevyžiadaná</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Presunúť túto správu do priečinka Nevyžiadaná?</item>
@@ -918,6 +932,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="crypto_download_complete_message_to_decrypt">Kliknite na \'Stiahnuť kompletnú správu\' pre povolenie dešifrovania.</string>
   <string name="preview_encrypted">*Šifrované*</string>
   <string name="add_from_contacts">Pridať z kontaktov</string>
+  <string name="crypto_settings_cancel">Zrušiť</string>
   <string name="crypto_settings_ok">Pokračovať</string>
   <string name="recipient_cc">Kópia</string>
   <string name="recipient_bcc">Skrytá kópia</string>
@@ -928,12 +943,78 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="address_type_work">Práca</string>
   <string name="address_type_other">Iná</string>
   <string name="address_type_mobile">Mobilná</string>
-  <string name="warn_search_disabled">Vyhľadávanie v telách správ je v tejto vývojovej verzii deaktivované!</string>
   <string name="compose_error_no_draft_folder">Pre tento účet nie je zadefinovaný priečinok pre koncepty správ.</string>
-  <string name="compose_error_no_signing_key">Pre podpísanie správy je potrebné vybrať kľúč!</string>
-  <string name="compose_error_private_missing_keys">Je aktivovaný Súkromný režim, nie je však možné správu šifrovať pre všetkých príjemcov!</string>
-  <string name="crypto_mode_disabled">Nepodpisovať a nešifrovať.</string>
-  <string name="crypto_mode_sign_only">Vždy podpísať, nešifrovať.</string>
-  <string name="crypto_mode_opportunistic">Vždy podpísať, šifrovať ak je to možné.</string>
-  <string name="crypto_mode_private">Vždy podpísať, vždy šifrovať.</string>
+  <string name="compose_not_saving_unencrypted">Koncept NEBOL uložený bez zašifrovania!</string>
+  <string name="compose_error_pgp_error">Chyba poskytovateľa služby pre OpenPGP. Skontroľujte si nastavenia!</string>
+  <string name="compose_error_no_signing_key">Nie je nastavený kľúč pre podpis! Prosím, skontroľujte si nastavenia.</string>
+  <string name="compose_error_private_missing_keys">Je aktivovaný Súkromný režim, niektorí príjemcovia nemajú kľúče!</string>
+  <string name="crypto_mode_disabled">Nešifrovať</string>
+  <string name="crypto_mode_opportunistic">Ak je možné, šifrovať</string>
+  <string name="crypto_mode_private">Šifrovať</string>
+  <string name="error_crypto_provider_connect">Nie je možné pripojenie ku poskytovateľovi šifrovania, skontrolujte svoje nastavenia alebo kliknite na ikonu šifrovania pre ďalší pokus.</string>
+  <string name="error_crypto_provider_ui_required">Bol odopretý prístup ku poskytovateľovi šifrovania, kliknite na ikonu šifrovania pre ďalší pokus.</string>
+  <string name="error_crypto_inline_attach">V režine PGP/INLINE nie sú prílohy podporované.</string>
+  <string name="error_crypto_inline_sign_only">Pri použití PGP/INLINE nie je možné len podpisovať.</string>
+  <string name="error_crypto_sign_only_inline">Pri použití PGP/INLINE nie je možné len podpisovať.</string>
+  <string name="enable_inline_pgp">Povoliť PGP/INLINE</string>
+  <string name="disable_inline_pgp">Zakázať PGP/INLINE</string>
+  <string name="enable_sign_only">Povoliť PGP \"len podpis\"</string>
+  <string name="disable_sign_only">Zakázať PGP \"len podpis\"</string>
+  <string name="openpgp_inline_title">Režim PGP/INLINE</string>
+  <string name="openpgp_inline_text">Odosielate správu vo formáte PGP/INLINE.\nTento formát použite len pre kompatibilitu:</string>
+  <string name="openpgp_inline_plus_compat">Niektoré klienty podporujú iba tento formát</string>
+  <string name="openpgp_inline_minus_transit">Počas prenosu môže dôjsť k poškodeniu podpisov</string>
+  <string name="openpgp_inline_minus_attach">Prílohy nie sú podporované</string>
+  <string name="openpgp_inline_ok">Rozumiem!</string>
+  <string name="openpgp_inline_disable">Zakázať</string>
+  <string name="openpgp_inline_keep_enabled">Zachovať povolené</string>
+  <string name="openpgp_sign_only_ok">Rozumiem!</string>
+  <string name="openpgp_sign_only_disable">Zakázať</string>
+  <string name="openpgp_sign_only_keep_enabled">Zachovať povolené</string>
+  <string name="openpgp_dialog_sign_only_title">PGP režim \"len podpis\"</string>
+  <string name="openpgp_dialog_sign_only_text">V tomto režime bude pomocou vášho PGP kľúča vytvorený kryptografický podpis pre nešifrovanú správu.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">E-mail nie je šifrovaný, je však možné overiť, že bola správa podpísaná vaším kľúčom.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Podpisy môžu byť pri odoslaní do diskusných skupín poškodené.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Niektoré e-mailové klienty zobrazujú podpis ako prílohu s názvom \'signature.asc\'</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Šifrované správy vždy obsahujú podpis.</string>
+  <string name="crypto_msg_disabled">Správa nie je šifrovaná</string>
+  <string name="crypto_msg_encrypted_error">Správa je šifrovaná, chyba dešifrovania správy.</string>
+  <string name="crypto_msg_signed_error">Správa je podpísané, nie je možné overiť podpis.</string>
+  <string name="crypto_msg_unsupported_encrypted">Formát šifrovanej správy nie je podporovaný.</string>
+  <string name="crypto_msg_unsupported_signed">Formát podpisu správy nie je podporovaný.</string>
+  <string name="crypto_msg_incomplete_encrypted">Správa je šifrovaná, pre dešifrovanie je potrebné ju celú stiahnuť.</string>
+  <string name="crypto_msg_cancelled">Správa je šifrovaná, dešifrovanie bolo zrušené.</string>
+  <string name="crypto_msg_signed_unencrypted">Správa je podpísané, nie je šifrovaná.</string>
+  <string name="crypto_msg_encrypted_unsigned">Správa je šifrovaná, nie je podpísaná.</string>
+  <string name="crypto_msg_sign_unknown">Podpis vytvorený neznámym kľúčom.</string>
+  <string name="crypto_msg_sign_verified">Podpis vytvorený dôveryhodným kľúčom.</string>
+  <string name="crypto_msg_sign_unverified">Podpis vytvorený nedôveryhodným kľúčom.</string>
+  <string name="crypto_msg_sign_error">Podpis je chybný.</string>
+  <string name="crypto_msg_sign_mismatch">Podpis vytvorený nesprávnym kľúčom.</string>
+  <string name="crypto_msg_sign_expired">Podpis vytvorený neplatným kľúčom.</string>
+  <string name="crypto_msg_sign_revoked">Podpis vytvorený zrušeným kľúčom.</string>
+  <string name="crypto_msg_sign_insecure">Podpis vytvorený nezabezpečeným kľúčom.</string>
+  <string name="crypto_msg_sign_incomplete">Pre overenie podpisu je potrebné stiahnuť celú správu.</string>
+  <string name="crypto_msg_signed_encrypted">Správa je podpísaná a šifrovaná.</string>
+  <string name="crypto_msg_unsigned_encrypted">Chýbajúci podpis, správa mohla byť odchytená</string>
+  <string name="crypto_info_ok">OK</string>
+  <string name="crypto_info_view_key">Zobraziť podpisovateľa</string>
+  <string name="locked_attach_unlock">Odomknúť</string>
+  <string name="locked_attach_unsigned">Táto časť nebola podpísaná a nemusí byť bezpečná.</string>
+  <string name="locked_attach_unencrypted">Táto časť nebola zašifrovaná a nemusí byť bezpečná.</string>
+  <string name="locked_attach_title">Nechránená príloha</string>
+  <string name="message_progress_text">Načítavam...</string>
+  <string name="messageview_decrypt_cancelled">Dešifrovanie bolo zrušené.</string>
+  <string name="messageview_decrypt_retry">Skúsiť znova</string>
+  <string name="messageview_decrypt_incomplete">Šifrovaná správa musí byť stiahnutá pre dešifrovanie.</string>
+  <string name="messageview_crypto_error_title">Chyba pri dešifrovaní správy</string>
+  <string name="messageview_crypto_warning_title">Bezpečnostná výstraha</string>
+  <string name="messageview_crypto_warning_revoked">Táto správa bola podpísaná <b>zrušeným kľúčom!</b></string>
+  <string name="messageview_crypto_warning_expired">Táto správa bola podpísaná <b>neplatným kľúčom!</b></string>
+  <string name="messageview_crypto_warning_insecure">Táto správa bola podpísaná <b>nezabezpečeným kľúčom!</b></string>
+  <string name="messageview_crypto_warning_error">Vyskytla sa <b>chyba v podpise správy!</b></string>
+  <string name="recipient_error_non_ascii">Špeciálne znaky nie sú v súčasnosti podporované!</string>
+  <string name="recipient_error_parse_failed">Chyba pri spracovaní adresy!</string>
+  <string name="account_settings_crypto_support_sign_only">Umožniť podpisovanie nešifrovaných správ</string>
+  <string name="error_sign_only_no_encryption">V režime \"len podpis\" nie je možné šifrovať.</string>
 </resources>

@@ -7,8 +7,10 @@ import java.io.OutputStream;
 public class EOLConvertingOutputStream extends FilterOutputStream {
     private static final int CR = '\r';
     private static final int LF = '\n';
-    private int lastChar;
-    private static final int IGNORE_LF = Integer.MIN_VALUE;
+
+
+    private int lastByte;
+    private boolean ignoreLf = false;
 
 
     public EOLConvertingOutputStream(OutputStream out) {
@@ -17,28 +19,46 @@ public class EOLConvertingOutputStream extends FilterOutputStream {
 
     @Override
     public void write(int oneByte) throws IOException {
-        if (oneByte == LF && lastChar == IGNORE_LF) {
-            lastChar = LF;
+        if (oneByte == LF && ignoreLf) {
+            ignoreLf = false;
             return;
         }
-        if (oneByte == LF && lastChar != CR) {
-            super.write(CR);
-        } else if (oneByte != LF && lastChar == CR) {
-            super.write(LF);
+        if (oneByte == LF && lastByte != CR) {
+            writeByte(CR);
+        } else if (oneByte != LF && lastByte == CR) {
+            writeByte(LF);
         }
-        super.write(oneByte);
-        lastChar = oneByte;
+        writeByte(oneByte);
+        ignoreLf = false;
     }
 
     @Override
     public void flush() throws IOException {
-        if (lastChar == CR) {
-            super.write(LF);
+        completeCrLf();
+        super.flush();
+    }
+
+    public void endWithCrLfAndFlush() throws IOException {
+        completeCrLf();
+        if (lastByte != LF) {
+            writeByte(CR);
+            writeByte(LF);
+        }
+        super.flush();
+    }
+
+    private void completeCrLf() throws IOException {
+        if (lastByte == CR) {
+            writeByte(LF);
             // We have to ignore the next character if it is <LF>. Otherwise it
             // will be expanded to an additional <CR><LF> sequence although it
             // belongs to the one just completed.
-            lastChar = IGNORE_LF;
+            ignoreLf = true;
         }
-        super.flush();
+    }
+
+    private void writeByte(int oneByte) throws IOException {
+        super.write(oneByte);
+        lastByte = oneByte;
     }
 }

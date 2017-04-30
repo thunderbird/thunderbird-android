@@ -15,6 +15,7 @@
   <!--Welcome message-->
   <string name="welcome_message_title">Benvido/a a K-9 Mail</string>
   <!--Default signature-->
+  <string name="default_signature">-- \nEnviado desde o meu Android con K-9 Mail. Disculpa a brevidade.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada do K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Todos os datos locais de \"<xliff:g id="account">%s</xliff:g>\" serán eliminados. Os axustes da conta manteranse.</string>
@@ -47,7 +48,7 @@
   <string name="status_loading_account_folder_headers">Obtendo cabeceiras <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Enviando <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Procesando <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Próxima comprobación ás <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Sincronización deshabilitada</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionada</string>
@@ -127,9 +128,15 @@
   <string name="recreating_account">Volvendo crear a conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Correo novo</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> sen ler (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> máis en <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Marcar como lida</string>
+  <string name="notification_action_mark_all_as_read">Marcar todo como Lido</string>
   <string name="notification_action_delete">Eliminar</string>
+  <string name="notification_action_delete_all">Eliminar todo</string>
+  <string name="notification_action_archive">Arquivar</string>
+  <string name="notification_action_archive_all">Arquivar todo</string>
+  <string name="notification_action_spam">Lixo</string>
   <string name="notification_certificate_error_title">Erro de certificado para <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Comproba a configuración do servidor</string>
   <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -219,6 +226,10 @@
   <string name="global_settings_confirm_action_delete">Eliminar</string>
   <string name="global_settings_confirm_action_delete_starred">Eliminar destacada (na vista de mensaxe)</string>
   <string name="global_settings_confirm_action_spam">Lixo</string>
+  <string name="global_settings_confirm_menu_discard">Desbotar mensaxe</string>
+  <string name="global_settings_confirm_action_delete_notif">Eliminar (das notificacións)</string>
+  <string name="global_settings_privacy_hide_useragent">Quitar o User-Agent K-9 das cabeceiras do correo</string>
+  <string name="global_settings_privacy_hide_timezone">Utilizar UTC como zona horaria nas cabeceiras das mensaxes</string>
   <string name="global_settings_notification_hide_subject_title">Agochar asunto nas notificacións</string>
   <string name="global_settings_notification_hide_subject_never">Nunca</string>
   <string name="global_settings_notification_hide_subject_when_locked">Cando o dispositivo está bloqueado</string>
@@ -228,13 +239,22 @@
   <string name="global_settings_notification_quick_delete_when_single_msg">Para notificacións dunha mensaxe</string>
   <string name="global_settings_notification_quick_delete_always">Sempre</string>
   <string name="global_settings_notification_quick_delete_description">Mostrar un botón nas notificacións que permite borrar rapidamente as mensaxes</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Notificacións da pantalla de bloqueo</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Sen notificacións na pantalla de bloqueo</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Nome do aplicativo</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Total de mensaxes non lidas</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Total de mensaxes e remitentes</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Igual que cando a pantalla non está bloqueada</string>
   <string name="quiet_time">Tempo de silencio</string>
   <string name="quiet_time_description">Desactivar sons, alertas e luces pola noite</string>
+  <string name="quiet_time_notification">Deshabilitar notificacións</string>
+  <string name="quiet_time_notification_description">Deshabilitar totalmente as notificacións durante o Período Tranquilo</string>
   <string name="quiet_time_starts">O silencio comeza</string>
   <string name="quiet_time_ends">O silencio remata</string>
   <string name="account_setup_basics_title">Configurar unha nova conta</string>
   <string name="account_setup_basics_email_hint">Enderezo electrónico</string>
   <string name="account_setup_basics_password_hint">Contrasinal</string>
+  <string name="account_setup_basics_show_password">Mostrar contrasinal</string>
   <string name="account_setup_basics_manual_setup_action">Configuración manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Recuperando información da conta\u2026</string>
@@ -254,9 +274,11 @@
   <string name="account_setup_auth_type_normal_password">Contrasinal normal</string>
   <string name="account_setup_auth_type_insecure_password">Contrasinal, transmitido dun xeito non seguro</string>
   <string name="account_setup_auth_type_encrypted_password">Contrasinal cifrado</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Certificado do cliente</string>
   <string name="account_setup_incoming_title">Axustes do servidor de entrada</string>
   <string name="account_setup_incoming_username_label">Nome de usuario</string>
   <string name="account_setup_incoming_password_label">Contrasinal</string>
+  <string name="account_setup_incoming_client_certificate_label">Certificado do cliente</string>
   <string name="account_setup_incoming_pop_server_label">Servidor POP3</string>
   <string name="account_setup_incoming_imap_server_label">Servidor IMAP</string>
   <string name="account_setup_incoming_webdav_server_label">Servidor Exchange</string>
@@ -323,6 +345,7 @@
   <string name="account_setup_options_mail_check_frequency_6hour">Cada 6 horas</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Cada 12 horas</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Cada 24 horas</string>
+  <string name="account_setup_options_enable_push_label">Habilitar o correo push para esta conta</string>
   <string name="account_setup_options_enable_push_summary">Se o teu servidor o admite, as mensaxes aparecerán ao instante. Esta opción pode provocar un enlentecemento do sistema.</string>
   <string name="idle_refresh_period_label">Recargar conexión IDLE</string>
   <string name="idle_refresh_period_1min">Cada minuto</string>
@@ -350,6 +373,8 @@
   <string name="account_setup_options_mail_display_count_all">todas as mensaxes</string>
   <string name="move_copy_cannot_copy_unsynced_message">Non se pode mover ou copiar unha mensaxe se non está sincronizada co servidor</string>
   <string name="account_setup_failed_dlg_title">Non se puido rematar a configuración</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Usuario ou contrasinal non válidos.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Non se conectou ao servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalles</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avanzado</string>
@@ -357,12 +382,20 @@
   <string name="account_settings_default_label">Conta predefinida</string>
   <string name="account_settings_default_summary">Establecer esta conta como predefinida para enviar correo</string>
   <string name="account_settings_notify_label">Notificacións de correo novo</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Notificacións dos cartafoles</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Todo</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">So cartafoles de 1ª clase</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Cartafoles 1ª e 2ª clase</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Todo menos cartafoles de 2ª clase</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Ningún</string>
   <string name="account_settings_notify_sync_label">Sincronizar notificacións</string>
   <string name="account_settings_email_label">O teu enderezo electrónico</string>
   <string name="account_settings_notify_summary">Avisarme na barra de estado cando chegue unha mensaxe</string>
   <string name="account_settings_notify_sync_summary">Avisarme na barra de estado cando se comprobe o correo</string>
   <string name="account_settings_notify_self_label">Incluír correo saínte</string>
   <string name="account_settings_notify_self_summary">Mostrar unha notificación para as mensaxes que envío</string>
+  <string name="account_settings_notification_opens_unread_label">A notificación abre as mensaxes non lidas</string>
+  <string name="account_settings_notification_opens_unread_summary">Cando se abre a Notificación busca as mensaxes non lidas</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca como lida ao abrir</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar a mensaxe como lida ao abrila para vela</string>
   <string name="account_settings_show_pictures_label">Mostrar sempre as imaxes</string>
@@ -392,9 +425,13 @@
   <string name="account_settings_folders">Cartafoles</string>
   <string name="account_settings_quote_prefix_label">Prefixo da cita</string>
   <string name="account_settings_crypto">Cifraxe</string>
+  <string name="account_settings_crypto_app">App OpenPGP</string>
+  <string name="account_settings_crypto_key">A miña chave</string>
+  <string name="account_settings_no_openpgp_provider_configured">Sen app OpenPGP instalada</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
+  <string name="account_settings_color_summary">A cor identificativa para esta conta para os cartafoles e lista de contas</string>
   <string name="account_settings_led_color_label">Cor do aviso LED</string>
   <string name="account_settings_led_color_summary">Selecciona a cor LED para os avisos desta conta</string>
   <string name="account_settings_mail_display_count_label">Tamaño do cartafol local</string>
@@ -465,6 +502,10 @@
   <string name="folder_settings_folder_push_mode_normal">Ningún</string>
   <string name="folder_settings_folder_push_mode_first_class">1.ª clase</string>
   <string name="folder_settings_folder_push_mode_second_class">2.ª clase</string>
+  <string name="folder_settings_folder_notify_mode_label">Clase para o cartafol de notificación</string>
+  <string name="folder_settings_folder_notify_mode_normal">Ningún</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1ª Clase</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2ª Clase</string>
   <string name="account_settings_incoming_label">Servidor de entrada</string>
   <string name="account_settings_incoming_summary">Configurar o servidor de correo entrante</string>
   <string name="account_settings_outgoing_label">Servidor de saída</string>
@@ -494,6 +535,7 @@
   <string name="manage_identities_context_menu_title">Administrar identidade</string>
   <string name="edit_identity_title">Editar identidade</string>
   <string name="new_identity_action">Nova identidade</string>
+  <string name="account_settings_always_bcc_label">Bcc todas as mensaxes a</string>
   <string name="manage_identities_edit_action">Editar</string>
   <string name="manage_identities_move_up_action">Subir</string>
   <string name="manage_identities_move_down_action">Baixar</string>
@@ -545,6 +587,8 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado non recoñecido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar chave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rexeitar chave</string>
+  <string name="message_list_help_key">Del (or D) - Eliminar\nR - Respostar\nA - Respostar a todos\nC - Escribir\nF - Reenviar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar (Non)lido\nG - Estrela\nO - Ordenar\nI - Ordenar por\nQ - Voltar a cartafoles\nS - Selecionar/deselecionar\nJ or P - Mensaxe anterior\nK or N - Seguinte mensaxe</string>
+  <string name="folder_list_help_key">1 - Mostrar so cartafoles de 1ª clase\n2 - Mostrar cartafoles de 1ª e 2ª clase\n3 - Mostrar todo menos cartafoles de 2ª clase\n4 - Mostrar todos os cartafoles\nQ - Voltar a contas\nS - Editar preferencias da conta</string>
   <string name="folder_list_filter_hint">o nome do cartafol contén</string>
   <string name="folder_list_display_mode_label">Mostrar cartafoles…</string>
   <string name="folder_list_display_mode_all">Todos os cartafoles</string>
@@ -557,6 +601,7 @@
   <string name="setting_theme_global">Utilizar o tema do aplicativo</string>
   <string name="setting_theme_dark">Escuro</string>
   <string name="setting_theme_light">Claro</string>
+  <string name="display_preferences">Mostar</string>
   <string name="global_preferences">Global</string>
   <string name="debug_preferences">Depuración</string>
   <string name="privacy_preferences">Privacidade</string>
@@ -569,16 +614,15 @@
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema de vista de mensaxe</string>
   <string name="settings_compose_theme_label">Tema de redacción</string>
-  <string name="settings_language_label">Idioma</string>
   <string name="settings_message_theme_selection_label">Tema de mensaxe fixo</string>
   <string name="settings_message_theme_selection_summary_off">Seleccionar o tema de vista de mensaxe mentres se mostra a mensaxe</string>
   <string name="settings_message_theme_selection_summary_on">Utilizar un tema de vista de mensaxe fixo</string>
-  <string name="setting_language_system">Sistema predefinido</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>
   <string name="background_ops_auto_sync_only">Cando está activa a sincronización automática</string>
   <string name="batch_select_all">Seleccionar todo</string>
+  <string name="account_setup_push_limit_label">Máximo de cartafoles a comprobar no push</string>
   <string name="account_setup_push_limit_10">10 cartafoles</string>
   <string name="account_setup_push_limit_25">25 cartafoles</string>
   <string name="account_setup_push_limit_50">50 cartafoles</string>
@@ -593,6 +637,7 @@
   <string name="volume_navigation_title">Navegación coas teclas de volume</string>
   <string name="volume_navigation_message">Na vista de mensaxes</string>
   <string name="volume_navigation_list">Nas listaxes</string>
+  <string name="start_integrated_inbox_title">Estrela na caixa de entrada unificada</string>
   <string name="measure_accounts_title">Mostrar tamaño da conta</string>
   <string name="measure_accounts_summary">Desactivar para mellorar o rendemento</string>
   <string name="count_search_title">Contador de resultados das procuras</string>
@@ -605,9 +650,13 @@
   <string name="search_all_messages_title">Todas as mensaxes</string>
   <string name="search_all_messages_detail">Todas as mensaxes nos cartafoles en que se poden facer procuras</string>
   <string name="integrated_inbox_title">Caixa de entrada unificada</string>
+  <string name="integrated_inbox_detail">Todas as mensaxes en cartafoles unificados</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Todas as mensaxes mostraranse nunha caixa de entrada unificada</string>
   <string name="account_settings_searchable_label">Cartafoles para procurar</string>
+  <string name="account_settings_searchable_all">Todo</string>
+  <string name="account_settings_searchable_displayable">Mostrable</string>
+  <string name="account_settings_searchable_none">Ningún</string>
   <string name="font_size_settings_title">Tamaño da fonte</string>
   <string name="font_size_settings_description">Configurar o tamaño da fonte</string>
   <string name="font_size_account_list">Listaxe de contas</string>
@@ -634,6 +683,8 @@
   <string name="font_size_message_compose">Edición da mensaxe</string>
   <string name="font_size_message_compose_input">Campos de entrada de texto</string>
   <string name="font_size_default">Predefinido</string>
+  <string name="font_size_tiniest">O máis pequeno</string>
+  <string name="font_size_tiny">Pequeno</string>
   <string name="font_size_smaller">Moi pequena</string>
   <string name="font_size_small">Pequena</string>
   <string name="font_size_medium">Mediana</string>
@@ -641,7 +692,6 @@
   <string name="font_size_larger">Moi grande</string>
   <string name="miscellaneous_preferences">Miscelánea</string>
   <string name="error_activity_not_found">Non hai un aplicativo para executar esta acción.</string>
-  <string name="send_aborted">Envío cancelado.</string>
   <string name="save_or_discard_draft_message_dlg_title">Gardar mensaxe como borrador?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Gardar ou descartar esta mensaxe?</string>
   <string name="confirm_discard_draft_message_title">Descartar mensaxe?</string>
@@ -745,6 +795,7 @@
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Limitar resultados nas procuras no servidor</string>
   <string name="account_settings_remote_search_num_summary">A procura deterase cando se alcancen os <xliff:g id="num_results">%s</xliff:g> resultados.</string>
+  <string name="remote_search_sending_query">Enviando consulta ao servidor</string>
   <string name="remote_search_downloading">Obtendo %d resultados</string>
   <string name="remote_search_downloading_limited">Obtendo %1$d de %2$d resultados</string>
   <string name="remote_search_error">Erro na procura en remoto</string>
@@ -752,12 +803,18 @@
   <string name="account_settings_remote_search_enabled">Habilitar procuras no servidor</string>
   <string name="account_settings_remote_search_enabled_summary">Procurar mensaxes no servidor ademais de no teu dispositivo</string>
   <string name="action_remote_search">Procurar mensaxes no servidor</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Toca para buscar servidor...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Liberar para buscar servidor...</string>
   <string name="remote_search_unavailable_no_network">Requírese unha conexión á rede para procurar no servidor.</string>
+  <string name="global_settings_background_as_unread_indicator_label">Oscurece mensaxes despois de ler</string>
+  <string name="global_settings_background_as_unread_indicator_summary">O fondo gris mostrará que unha mensaxe foi lida</string>
+  <string name="global_settings_threaded_view_label">Vistar en conversación</string>
   <string name="global_settings_threaded_view_summary">Mensaxes agrupadas por conversa</string>
   <string name="upgrade_databases_title">Actualizando as bases de datos</string>
   <string name="upgrade_databases_unspecified">Actualizando as bases de datos…</string>
   <string name="upgrade_database_format">Actualizando a base de datos da conta  \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="message_list_loading">A cargar…</string>
+  <string name="global_settings_splitview_mode_label">Mostrar pantalla dividida</string>
   <string name="global_settings_splitview_always">Sempre</string>
   <string name="global_settings_splitview_never">Nunca</string>
   <string name="message_view_empty">Por favor, selecciona unha mensaxe na esquerda</string>

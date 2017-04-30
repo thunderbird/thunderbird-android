@@ -17,7 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -73,7 +73,7 @@ class MigrationTo51 {
                 new String[] { "id", "flags", "html_content", "text_content", "mime_type", "attachment_count" },
                 null, null, null, null, null);
         try {
-            Log.d(K9.LOG_TAG, "migrating " + msgCursor.getCount() + " messages");
+            Timber.d("migrating %d messages", msgCursor.getCount());
             ContentValues cv = new ContentValues();
             while (msgCursor.moveToNext()) {
                 long messageId = msgCursor.getLong(0);
@@ -124,7 +124,7 @@ class MigrationTo51 {
                     cv.put("attachment_count", attachmentCount);
                     db.update("messages", cv, "id = ?", new String[] { Long.toString(messageId) });
                 } catch (IOException e) {
-                    Log.e(K9.LOG_TAG, "error inserting into database", e);
+                    Timber.e(e, "error inserting into database");
                 }
             }
 
@@ -144,30 +144,39 @@ class MigrationTo51 {
         boolean moveOk = attachmentDirNew.renameTo(attachmentDirOld);
         if (!moveOk) {
             // TODO escalate?
-            Log.e(K9.LOG_TAG, "Error moving attachment dir! All attachments might be lost!");
+            Timber.e("Error moving attachment dir! All attachments might be lost!");
         }
         boolean mkdirOk = attachmentDirNew.mkdir();
         if (!mkdirOk) {
             // TODO escalate?
-            Log.e(K9.LOG_TAG, "Error creating new attachment dir!");
+            Timber.e("Error creating new attachment dir!");
         }
         return attachmentDirOld;
     }
 
     private static void dropOldMessagesTable(SQLiteDatabase db) {
-        Log.d(K9.LOG_TAG, "Migration succeeded, dropping old tables.");
+        Timber.d("Migration succeeded, dropping old tables.");
         db.execSQL("DROP TABLE messages_old");
         db.execSQL("DROP TABLE attachments");
         db.execSQL("DROP TABLE headers");
     }
 
     private static void cleanUpOldAttachmentDirectory(File attachmentDirOld) {
-        for (File file : attachmentDirOld.listFiles()) {
-            Log.d(K9.LOG_TAG, "deleting stale attachment file: " + file.getName());
-            file.delete();
+        if (!attachmentDirOld.exists()) {
+            Timber.d("Old attachment directory doesn't exist: %s", attachmentDirOld.getAbsolutePath());
+            return;
         }
-        Log.d(K9.LOG_TAG, "deleting old attachment directory");
-        attachmentDirOld.delete();
+        for (File file : attachmentDirOld.listFiles()) {
+            Timber.d("deleting stale attachment file: %s", file.getName());
+            if (file.exists() && !file.delete()) {
+                Timber.d("Failed to delete stale attachement file: %s", file.getAbsolutePath());
+            }
+        }
+
+        Timber.d("deleting old attachment directory");
+        if (attachmentDirOld.exists() && !attachmentDirOld.delete()) {
+            Timber.d("Failed to delete old attachement directory: %s", attachmentDirOld.getAbsolutePath());
+        }
     }
 
     private static void copyMessageMetadataToNewTable(SQLiteDatabase db) {
@@ -246,7 +255,7 @@ class MigrationTo51 {
     private static MimeStructureState migratePgpMimeEncryptedContent(SQLiteDatabase db, long messageId,
             File attachmentDirOld, File attachmentDirNew, MimeHeader mimeHeader, MimeStructureState structureState) {
 
-        Log.d(K9.LOG_TAG, "Attempting to migrate multipart/encrypted as pgp/mime");
+        Timber.d("Attempting to migrate multipart/encrypted as pgp/mime");
 
         // we only handle attachment count == 2 here, so simply sorting application/pgp-encrypted
         // to the front (and application/octet-stream second) should suffice.
@@ -260,7 +269,7 @@ class MigrationTo51 {
 
         try {
             if (cursor.getCount() != 2) {
-                Log.e(K9.LOG_TAG, "Found multipart/encrypted but bad number of attachments, handling as regular mail");
+                Timber.e("Found multipart/encrypted but bad number of attachments, handling as regular mail");
                 return null;
             }
 
@@ -274,8 +283,8 @@ class MigrationTo51 {
             String firstPartContentUriString = cursor.getString(5);
 
             if (!MimeUtil.isSameMimeType(firstPartMimeType, "application/pgp-encrypted")) {
-                Log.e(K9.LOG_TAG,
-                        "First part in multipart/encrypted wasn't application/pgp-encrypted, not handling as pgp/mime");
+                Timber.e("First part in multipart/encrypted wasn't application/pgp-encrypted, " +
+                        "not handling as pgp/mime");
                 return null;
             }
 
@@ -289,8 +298,7 @@ class MigrationTo51 {
             String secondPartContentUriString = cursor.getString(5);
 
             if (!MimeUtil.isSameMimeType(secondPartMimeType, "application/octet-stream")) {
-                Log.e(K9.LOG_TAG,
-                        "First part in multipart/encrypted wasn't application/octet-stream, not handling as pgp/mime");
+                Timber.e("First part in multipart/encrypted wasn't application/octet-stream, not handling as pgp/mime");
                 return null;
             }
 
@@ -333,7 +341,7 @@ class MigrationTo51 {
     private static MimeStructureState migrateComplexMailContent(SQLiteDatabase db,
             File attachmentDirOld, File attachmentDirNew, long messageId, String htmlContent, String textContent,
             MimeHeader mimeHeader, MimeStructureState structureState) throws IOException {
-        Log.d(K9.LOG_TAG, "Processing mail with complex data structure as multipart/mixed");
+        Timber.d("Processing mail with complex data structure as multipart/mixed");
 
         String boundary = MimeUtility.getHeaderParameter(
                 mimeHeader.getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
@@ -394,7 +402,7 @@ class MigrationTo51 {
     private static MimeStructureState migrateSimpleMailContent(SQLiteDatabase db, String htmlContent,
             String textContent, String mimeType, MimeHeader mimeHeader, MimeStructureState structureState)
             throws IOException {
-        Log.d(K9.LOG_TAG, "Processing mail with simple structure");
+        Timber.d("Processing mail with simple structure");
 
         if (MimeUtil.isSameMimeType(mimeType, "text/plain")) {
             return insertTextualPartIntoDatabase(db, structureState, mimeHeader, textContent, false);
@@ -442,10 +450,13 @@ class MigrationTo51 {
     private static MimeStructureState insertMimeAttachmentPart(SQLiteDatabase db, File attachmentDirOld,
             File attachmentDirNew, MimeStructureState structureState, long id, int size, String name, String mimeType,
             String storeData, String contentUriString, String contentId, String contentDisposition) {
-        if (K9.DEBUG) {
-            Log.d(K9.LOG_TAG, "processing attachment " + id + ", " + name + ", "
-                    + mimeType + ", " + storeData + ", " + contentUriString);
-        }
+
+        Timber.d("processing attachment %d, %s, %s, %s, %s",
+                id,
+                name,
+                mimeType,
+                storeData,
+                contentUriString);
 
         if (contentDisposition == null) {
             contentDisposition = "attachment";
@@ -474,10 +485,10 @@ class MigrationTo51 {
                 boolean isExistingAttachmentFile = attachmentFile.exists();
 
                 if (!isMatchingAttachmentId) {
-                    Log.e(K9.LOG_TAG, "mismatched attachment id. mark as missing");
+                    Timber.e("mismatched attachment id. mark as missing");
                     attachmentFileToMove = null;
                 } else if (!isExistingAttachmentFile) {
-                    Log.e(K9.LOG_TAG, "attached file doesn't exist. mark as missing");
+                    Timber.e("attached file doesn't exist. mark as missing");
                     attachmentFileToMove = null;
                 } else {
                     attachmentFileToMove = attachmentFile;
@@ -489,8 +500,8 @@ class MigrationTo51 {
         } else {
             attachmentFileToMove = null;
         }
-        if (K9.DEBUG && attachmentFileToMove == null) {
-            Log.d(K9.LOG_TAG, "matching attachment is in local cache");
+        if (attachmentFileToMove == null) {
+            Timber.d("matching attachment is in local cache");
         }
 
         boolean hasContentTypeAndIsInline = !TextUtils.isEmpty(contentId) && "inline".equalsIgnoreCase(contentDisposition);
@@ -515,7 +526,7 @@ class MigrationTo51 {
         if (attachmentFileToMove != null) {
             boolean moveOk = attachmentFileToMove.renameTo(new File(attachmentDirNew, Long.toString(partId)));
             if (!moveOk) {
-                Log.e(K9.LOG_TAG, "Moving attachment to new dir failed!");
+                Timber.e("Moving attachment to new dir failed!");
             }
         }
         return structureState;
@@ -556,9 +567,12 @@ class MigrationTo51 {
         mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                 String.format("multipart/alternative; boundary=\"%s\";", boundary));
 
+        int dataLocation = textContent != null || htmlContent != null
+                ? DATA_LOCATION__IN_DATABASE : DATA_LOCATION__MISSING;
+
         ContentValues cv = new ContentValues();
         cv.put("type", MESSAGE_PART_TYPE__UNKNOWN);
-        cv.put("data_location", DATA_LOCATION__IN_DATABASE);
+        cv.put("data_location", dataLocation);
         cv.put("mime_type", "multipart/alternative");
         cv.put("header", mimeHeader.toString());
         cv.put("boundary", boundary);
@@ -567,11 +581,11 @@ class MigrationTo51 {
         long multipartAlternativePartId = db.insertOrThrow("message_parts", null, cv);
         structureState = structureState.nextMultipartChild(multipartAlternativePartId);
 
-        if (!TextUtils.isEmpty(textContent)) {
+        if (textContent != null) {
             structureState = insertTextualPartIntoDatabase(db, structureState, null, textContent, false);
         }
 
-        if (!TextUtils.isEmpty(htmlContent)) {
+        if (htmlContent != null) {
             structureState = insertTextualPartIntoDatabase(db, structureState, null, htmlContent, true);
         }
 
@@ -587,20 +601,32 @@ class MigrationTo51 {
                 isHtml ? "text/html; charset=\"utf-8\"" : "text/plain; charset=\"utf-8\"");
         mimeHeader.setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, MimeUtil.ENC_QUOTED_PRINTABLE);
 
-        ByteArrayOutputStream contentOutputStream = new ByteArrayOutputStream();
-        QuotedPrintableOutputStream quotedPrintableOutputStream =
-                new QuotedPrintableOutputStream(contentOutputStream, false);
-        quotedPrintableOutputStream.write(content.getBytes());
-        quotedPrintableOutputStream.flush();
-        byte[] contentBytes = contentOutputStream.toByteArray();
+        byte[] contentBytes;
+        int decodedBodySize;
+        int dataLocation;
+        if (content != null) {
+            ByteArrayOutputStream contentOutputStream = new ByteArrayOutputStream();
+            QuotedPrintableOutputStream quotedPrintableOutputStream =
+                    new QuotedPrintableOutputStream(contentOutputStream, false);
+            quotedPrintableOutputStream.write(content.getBytes());
+            quotedPrintableOutputStream.flush();
+
+            dataLocation = DATA_LOCATION__IN_DATABASE;
+            contentBytes = contentOutputStream.toByteArray();
+            decodedBodySize = content.length();
+        } else {
+            dataLocation = DATA_LOCATION__MISSING;
+            contentBytes = null;
+            decodedBodySize = 0;
+        }
 
         ContentValues cv = new ContentValues();
         cv.put("type", MESSAGE_PART_TYPE__UNKNOWN);
-        cv.put("data_location", DATA_LOCATION__IN_DATABASE);
+        cv.put("data_location", dataLocation);
         cv.put("mime_type", isHtml ? "text/html" : "text/plain");
         cv.put("header", mimeHeader.toString());
         cv.put("data", contentBytes);
-        cv.put("decoded_body_size", content.length());
+        cv.put("decoded_body_size", decodedBodySize);
         cv.put("encoding", MimeUtil.ENC_QUOTED_PRINTABLE);
         cv.put("charset", "utf-8");
         structureState.applyValues(cv);

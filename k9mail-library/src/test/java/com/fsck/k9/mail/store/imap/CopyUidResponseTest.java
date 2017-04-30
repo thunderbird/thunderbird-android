@@ -1,13 +1,13 @@
 package com.fsck.k9.mail.store.imap;
 
 
+import com.fsck.k9.mail.K9LibRobolectricTestRunner;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
 import static org.junit.Assert.assertEquals;
@@ -15,8 +15,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
+@RunWith(K9LibRobolectricTestRunner.class)
 public class CopyUidResponseTest {
     @Test
     public void parse_withCopyUidResponse_shouldCreateUidMapping() throws Exception {

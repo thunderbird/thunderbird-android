@@ -47,7 +47,7 @@
   <string name="status_loading_account_folder_headers">Recollint capçaleres <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Enviant <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Propera comprovació <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Comprovació acabada</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionats</string>
@@ -578,11 +578,9 @@
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema de vista de missatge</string>
   <string name="settings_compose_theme_label">Tema de vista del redactor</string>
-  <string name="settings_language_label">Llengua</string>
   <string name="settings_message_theme_selection_label">Tema de missatge fix</string>
   <string name="settings_message_theme_selection_summary_off">Selecciona el tema de la vista de missatge al mostrar-lo.</string>
   <string name="settings_message_theme_selection_summary_on">Utilitza un tema fix per a tots els missatges.</string>
-  <string name="setting_language_system">Per defecte del sistema</string>
   <string name="background_ops_label">Sincronització 2n pla</string>
   <string name="background_ops_never">Mai</string>
   <string name="background_ops_always">Sempre</string>
@@ -617,7 +615,6 @@
   <string name="search_all_messages_detail">Tots els missatges en carpetes cercables</string>
   <string name="integrated_inbox_title">Bústia unificada</string>
   <string name="integrated_inbox_detail">Tots els missatges en carpetes unificades</string>
-  <string name="tap_hint">Pica al sobre o a l\'estel per missatges no llegits o senyalats</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unifica</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">S\'estan mostrant tots els missatges a la bústia unificada</string>
   <string name="account_settings_searchable_label">Carpetes a cercar</string>
@@ -657,7 +654,6 @@
   <string name="font_size_larger">Més gran</string>
   <string name="miscellaneous_preferences">Miscel·lània</string>
   <string name="error_activity_not_found">No s\'ha trobat cap aplicació idònia per a aquesta acció.</string>
-  <string name="send_aborted">Tramesa suspesa</string>
   <string name="save_or_discard_draft_message_dlg_title">Desa l\'esborrany?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Desa o descarta aquest missatge?</string>
   <string name="confirm_discard_draft_message_title">Descartar el missatge</string>

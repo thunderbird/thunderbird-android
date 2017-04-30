@@ -16,6 +16,7 @@
 
 package org.openintents.openpgp.util;
 
+
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -31,6 +32,9 @@ public class OpenPgpUtils {
     public static final Pattern PGP_MESSAGE = Pattern.compile(
             "(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
             Pattern.DOTALL);
+
+    public static final String PGP_MARKER_CLEARSIGN_BEGIN_MESSAGE = "-----BEGIN PGP SIGNED MESSAGE-----";
+    public static final String PGP_MARKER_CLEARSIGN_BEGIN_SIGNATURE = "-----BEGIN PGP SIGNATURE-----";
 
     public static final Pattern PGP_SIGNED_MESSAGE = Pattern.compile(
             "(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
@@ -75,6 +79,21 @@ public class OpenPgpUtils {
         return hexString;
     }
 
+    public static String extractClearsignedMessage(String text) {
+        if (!text.startsWith(PGP_MARKER_CLEARSIGN_BEGIN_MESSAGE)) {
+            return null;
+        }
+        int endOfHeader = text.indexOf("\r\n\r\n") +4;
+        if (endOfHeader < 0) {
+            return null;
+        }
+        int endOfCleartext = text.indexOf(PGP_MARKER_CLEARSIGN_BEGIN_SIGNATURE);
+        if (endOfCleartext < 0) {
+            endOfCleartext = text.length();
+        }
+
+        return text.substring(endOfHeader, endOfCleartext);
+    }
 
     private static final Pattern USER_ID_PATTERN = Pattern.compile("^(.*?)(?: \\((.*)\\))?(?: <(.*)>)?$");
 

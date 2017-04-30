@@ -1,7 +1,6 @@
 
 package com.fsck.k9.mail.internet;
 
-import android.util.Log;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import java.io.ByteArrayInputStream;
@@ -11,8 +10,7 @@ import java.nio.charset.Charset;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.CharsetUtil;
-
-import static com.fsck.k9.mail.K9MailLib.LOG_TAG;
+import timber.log.Timber;
 
 
 /**
@@ -91,7 +89,7 @@ class DecoderUtil {
 
         // ANDROID:  Most strings will not include "=?" so a quick test can prevent unneeded
         // object creation.  This could also be handled via lazy creation of the StringBuilder.
-        if (body.indexOf("=?") == -1) {
+        if (!body.contains("=?")) {
             return body;
         }
 
@@ -169,7 +167,7 @@ class DecoderUtil {
         }
 
         if (encodedText.isEmpty()) {
-            Log.w(LOG_TAG, "Missing encoded text in encoded word: '" + body.substring(begin, end) + "'");
+            Timber.w("Missing encoded text in encoded word: '%s'", body.substring(begin, end));
             return null;
         }
 
@@ -178,7 +176,7 @@ class DecoderUtil {
         } else if (encoding.equalsIgnoreCase("B")) {
             return DecoderUtil.decodeB(encodedText, charset);
         } else {
-            Log.w(LOG_TAG, "Warning: Unknown encoding in encoded word '" + body.substring(begin, end) + "'");
+            Timber.w("Warning: Unknown encoding in encoded word '%s'", body.substring(begin, end));
             return null;
         }
     }

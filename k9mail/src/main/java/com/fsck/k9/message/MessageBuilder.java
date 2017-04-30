@@ -10,7 +10,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
+import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
@@ -20,8 +20,11 @@ import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BoundaryGenerator;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -30,15 +33,20 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.TempFileBody;
-import com.fsck.k9.mailstore.TempFileMessageBody;
+import com.fsck.k9.message.quote.InsertableHtmlContent;
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.util.MimeUtil;
 
 
 public abstract class MessageBuilder {
     private final Context context;
+    private final MessageIdGenerator messageIdGenerator;
+    private final BoundaryGenerator boundaryGenerator;
+
 
     private String subject;
+    private Date sentDate;
+    private boolean hideTimeZone;
     private Address[] to;
     private Address[] cc;
     private Address[] bcc;
@@ -61,16 +69,19 @@ public abstract class MessageBuilder {
     private int cursorPosition;
     private MessageReference messageReference;
     private boolean isDraft;
+    private boolean isPgpInlineEnabled;
 
-    public MessageBuilder(Context context) {
+    protected MessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
         this.context = context;
+        this.messageIdGenerator = messageIdGenerator;
+        this.boundaryGenerator = boundaryGenerator;
     }
 
     /**
      * Build the message to be sent (or saved). If there is another message quoted in this one, it will be baked
      * into the message here.
      */
-    public MimeMessage build() throws MessagingException {
+    protected MimeMessage build() throws MessagingException {
         //FIXME: check arguments
 
         MimeMessage message = new MimeMessage();
@@ -82,7 +93,7 @@ public abstract class MessageBuilder {
     }
 
     private void buildHeader(MimeMessage message) throws MessagingException {
-        message.addSentDate(new Date(), K9.hideTimeZone());
+        message.addSentDate(sentDate, hideTimeZone);
         Address from = new Address(identity.getEmail(), identity.getName());
         message.setFrom(from);
         message.setRecipients(RecipientType.TO, to);
@@ -113,7 +124,17 @@ public abstract class MessageBuilder {
             message.setReferences(references);
         }
 
-        message.generateMessageId();
+        String messageId = messageIdGenerator.generateMessageId(message);
+        message.setMessageId(messageId);
+
+        if (isDraft && isPgpInlineEnabled) {
+            message.setFlag(Flag.X_DRAFT_OPENPGP_INLINE, true);
+        }
+    }
+    
+    protected MimeMultipart createMimeMultipart() {
+        String boundary = boundaryGenerator.generateBoundary();
+        return new MimeMultipart(boundary);
     }
 
     private void buildBody(MimeMessage message) throws MessagingException {
@@ -131,18 +152,19 @@ public abstract class MessageBuilder {
             // HTML message (with alternative text part)
 
             // This is the compiled MIME part for an HTML message.
-            MimeMultipart composedMimeMessage = new MimeMultipart();
-            composedMimeMessage.setSubType("alternative");   // Let the receiver select either the text or the HTML part.
-            composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
+            MimeMultipart composedMimeMessage = createMimeMultipart();
+            composedMimeMessage.setSubType("alternative");
+            // Let the receiver select either the text or the HTML part.
             bodyPlain = buildText(isDraft, SimpleMessageFormat.TEXT);
             composedMimeMessage.addBodyPart(new MimeBodyPart(bodyPlain, "text/plain"));
+            composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
 
             if (hasAttachments) {
                 // If we're HTML and have attachments, we have a MimeMultipart container to hold the
                 // whole message (mp here), of which one part is a MimeMultipart container
                 // (composedMimeMessage) with the user's composed messages, and subsequent parts for
                 // the attachments.
-                MimeMultipart mp = new MimeMultipart();
+                MimeMultipart mp = createMimeMultipart();
                 mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
                 addAttachmentsToMessage(mp);
                 MimeMessageHelper.setBody(message, mp);
@@ -153,7 +175,7 @@ public abstract class MessageBuilder {
         } else if (messageFormat == SimpleMessageFormat.TEXT) {
             // Text-only message.
             if (hasAttachments) {
-                MimeMultipart mp = new MimeMultipart();
+                MimeMultipart mp = createMimeMultipart();
                 mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
                 addAttachmentsToMessage(mp);
                 MimeMessageHelper.setBody(message, mp);
@@ -193,7 +215,6 @@ public abstract class MessageBuilder {
      * @throws MessagingException
      */
     private void addAttachmentsToMessage(final MimeMultipart mp) throws MessagingException {
-        Body body;
         for (Attachment attachment : attachments) {
             if (attachment.state != Attachment.LoadingState.COMPLETE) {
                 continue;
@@ -201,10 +222,12 @@ public abstract class MessageBuilder {
 
             String contentType = attachment.contentType;
             if (MimeUtil.isMessage(contentType)) {
-                body = new TempFileMessageBody(attachment.filename);
-            } else {
-                body = new TempFileBody(attachment.filename);
+                contentType = "application/octet-stream";
+                // TODO reencode message body to 7 bit
+                // body = new TempFileMessageBody(attachment.filename);
             }
+
+            Body body = new TempFileBody(attachment.filename);
             MimeBodyPart bp = new MimeBodyPart(body);
 
             /*
@@ -325,6 +348,16 @@ public abstract class MessageBuilder {
         return this;
     }
 
+    public MessageBuilder setSentDate(Date sentDate) {
+        this.sentDate = sentDate;
+        return this;
+    }
+
+    public MessageBuilder setHideTimeZone(boolean hideTimeZone) {
+        this.hideTimeZone = hideTimeZone;
+        return this;
+    }
+
     public MessageBuilder setTo(List<Address> to) {
         this.to = to.toArray(new Address[to.size()]);
         return this;
@@ -435,6 +468,11 @@ public abstract class MessageBuilder {
         return this;
     }
 
+    public MessageBuilder setIsPgpInlineEnabled(boolean isPgpInlineEnabled) {
+        this.isPgpInlineEnabled = isPgpInlineEnabled;
+        return this;
+    }
+
     public boolean isDraft() {
         return isDraft;
     }
@@ -472,7 +510,7 @@ public abstract class MessageBuilder {
         }.execute();
     }
 
-    final public void onActivityResult(Callback callback, final int requestCode, int resultCode, final Intent data) {
+    final public void onActivityResult(final int requestCode, int resultCode, final Intent data, Callback callback) {
         synchronized (callbackLock) {
             asyncCallback = callback;
             queuedMimeMessage = null;
@@ -547,7 +585,7 @@ public abstract class MessageBuilder {
     final protected void deliverResult() {
         synchronized (callbackLock) {
             if (asyncCallback == null) {
-                Log.d(K9.LOG_TAG, "Keeping message builder result in queue for later delivery");
+                Timber.d("Keeping message builder result in queue for later delivery");
                 return;
             }
             if (queuedMimeMessage != null) {

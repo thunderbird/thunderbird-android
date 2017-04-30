@@ -19,7 +19,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import timber.log.Timber;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -99,9 +99,7 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
                 unreadCount = stats.unreadMessageCount;
             }
         } catch (Exception e) {
-            if (K9.DEBUG) {
-                Log.e(K9.LOG_TAG, "Error getting widget configuration", e);
-            }
+            Timber.e(e, "Error getting widget configuration");
         }
 
         if (unreadCount <= 0) {

@@ -4,8 +4,7 @@ package com.fsck.k9.activity.compose;
 import java.util.Arrays;
 import java.util.List;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+import android.app.LoaderManager;
 import android.app.PendingIntent;
 import android.text.TextWatcher;
 import android.view.View;
@@ -34,7 +33,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private static final int VIEW_INDEX_CRYPTO_STATUS_DISABLED_NO_KEY = 4;
     private static final int VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED = 5;
     private static final int VIEW_INDEX_CRYPTO_STATUS_TRUSTED = 6;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY = 7;
+    private static final int VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY = 0;
+
+    private static final int VIEW_INDEX_CRYPTO_SPECIAL_PGP_INLINE = 0;
+    private static final int VIEW_INDEX_CRYPTO_SPECIAL_SIGN_ONLY = 1;
+    private static final int VIEW_INDEX_CRYPTO_SPECIAL_SIGN_ONLY_PGP_INLINE = 2;
 
     private static final int VIEW_INDEX_BCC_EXPANDER_VISIBLE = 0;
     private static final int VIEW_INDEX_BCC_EXPANDER_HIDDEN = 1;
@@ -49,6 +52,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private final RecipientSelectView bccView;
     private final ViewAnimator cryptoStatusView;
     private final ViewAnimator recipientExpanderContainer;
+    private final ViewAnimator cryptoSpecialModeIndicator;
     private RecipientPresenter presenter;
 
 
@@ -65,6 +69,8 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         recipientExpanderContainer = (ViewAnimator) activity.findViewById(R.id.recipient_expander_container);
         cryptoStatusView = (ViewAnimator) activity.findViewById(R.id.crypto_status);
         cryptoStatusView.setOnClickListener(this);
+        cryptoSpecialModeIndicator = (ViewAnimator) activity.findViewById(R.id.crypto_special_mode);
+        cryptoSpecialModeIndicator.setOnClickListener(this);
 
         toView.setOnFocusChangeListener(this);
         ccView.setOnFocusChangeListener(this);
@@ -94,51 +100,51 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         toView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
-                presenter.onToTokenAdded(recipient);
+                presenter.onToTokenAdded();
             }
 
             @Override
             public void onTokenRemoved(Recipient recipient) {
-                presenter.onToTokenRemoved(recipient);
+                presenter.onToTokenRemoved();
             }
 
             @Override
             public void onTokenChanged(Recipient recipient) {
-                presenter.onToTokenChanged(recipient);
+                presenter.onToTokenChanged();
             }
         });
 
         ccView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
-                presenter.onCcTokenAdded(recipient);
+                presenter.onCcTokenAdded();
             }
 
             @Override
             public void onTokenRemoved(Recipient recipient) {
-                presenter.onCcTokenRemoved(recipient);
+                presenter.onCcTokenRemoved();
             }
 
             @Override
             public void onTokenChanged(Recipient recipient) {
-                presenter.onCcTokenChanged(recipient);
+                presenter.onCcTokenChanged();
             }
         });
 
         bccView.setTokenListener(new TokenListener<Recipient>() {
             @Override
             public void onTokenAdded(Recipient recipient) {
-                presenter.onBccTokenAdded(recipient);
+                presenter.onBccTokenAdded();
             }
 
             @Override
             public void onTokenRemoved(Recipient recipient) {
-                presenter.onBccTokenRemoved(recipient);
+                presenter.onBccTokenRemoved();
             }
 
             @Override
             public void onTokenChanged(Recipient recipient) {
-                presenter.onBccTokenChanged(recipient);
+                presenter.onBccTokenChanged();
             }
         });
     }
@@ -255,6 +261,18 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         return bccView.hasUncompletedText();
     }
 
+    public boolean recipientToTryPerformCompletion() {
+        return toView.tryPerformCompletion();
+    }
+
+    public boolean recipientCcTryPerformCompletion() {
+        return ccView.tryPerformCompletion();
+    }
+
+    public boolean recipientBccTryPerformCompletion() {
+        return bccView.tryPerformCompletion();
+    }
+
     public void showToUncompletedError() {
         toView.setError(toView.getContext().getString(R.string.compose_error_incomplete_recipient));
     }
@@ -267,53 +285,35 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         bccView.setError(bccView.getContext().getString(R.string.compose_error_incomplete_recipient));
     }
 
-    public void showCryptoStatus(final CryptoStatusDisplayType cryptoStatusDisplayType) {
+    public void showCryptoSpecialMode(CryptoSpecialModeDisplayType cryptoSpecialModeDisplayType) {
+        boolean shouldBeHidden = cryptoSpecialModeDisplayType.childToDisplay == VIEW_INDEX_HIDDEN;
+        if (shouldBeHidden) {
+            cryptoSpecialModeIndicator.setVisibility(View.GONE);
+            return;
+        }
+
+        cryptoSpecialModeIndicator.setVisibility(View.VISIBLE);
+        cryptoSpecialModeIndicator.setDisplayedChild(cryptoSpecialModeDisplayType.childToDisplay);
+        activity.invalidateOptionsMenu();
+    }
+
+    public void showCryptoStatus(CryptoStatusDisplayType cryptoStatusDisplayType) {
         boolean shouldBeHidden = cryptoStatusDisplayType.childToDisplay == VIEW_INDEX_HIDDEN;
         if (shouldBeHidden) {
-            hideCryptoStatus();
+            cryptoStatusView.setVisibility(View.GONE);
             return;
         }
 
-        boolean alreadyVisible = cryptoStatusView.getVisibility() == View.VISIBLE;
-        if (alreadyVisible) {
-            switchCryptoStatus(cryptoStatusDisplayType);
-            return;
-        }
-
-        cryptoStatusView.setTranslationX(100);
         cryptoStatusView.setVisibility(View.VISIBLE);
-        cryptoStatusView.animate().translationX(0).setDuration(300).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                switchCryptoStatus(cryptoStatusDisplayType);
-            }
-        }).start();
-    }
-
-
-    private void hideCryptoStatus() {
-        if (cryptoStatusView.getVisibility() == View.GONE) {
-            return;
-        }
-
-        cryptoStatusView.animate().translationX(100).setDuration(300).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                cryptoStatusView.setVisibility(View.GONE);
-            }
-        }).start();
-    }
-
-    private void switchCryptoStatus(CryptoStatusDisplayType cryptoStatus) {
-        int childToDisplay = cryptoStatus.childToDisplay;
-        if (cryptoStatusView.getDisplayedChild() != childToDisplay) {
-            cryptoStatusView.setDisplayedChild(childToDisplay);
-        }
+        cryptoStatusView.setDisplayedChild(cryptoStatusDisplayType.childToDisplay);
     }
 
     public void showContactPicker(int requestCode) {
         activity.showContactPicker(requestCode);
+    }
+
+    public void showErrorIsSignOnly() {
+        Toast.makeText(activity, R.string.error_sign_only_no_encryption, Toast.LENGTH_LONG).show();
     }
 
     public void showErrorContactNoAddress() {
@@ -334,6 +334,10 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
 
     public void showErrorPrivateButMissingKeys() {
         Toast.makeText(activity, R.string.compose_error_private_missing_keys, Toast.LENGTH_LONG).show();
+    }
+
+    public void showErrorInlineAttach() {
+        Toast.makeText(activity, R.string.error_crypto_inline_attach, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -381,6 +385,9 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
                 presenter.onClickCryptoStatus();
                 break;
             }
+            case R.id.crypto_special_mode: {
+                presenter.onClickCryptoSpecialModeIndicator();
+            }
         }
     }
 
@@ -389,8 +396,24 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         dialog.show(activity.getFragmentManager(), "crypto_settings");
     }
 
+    public void showOpenPgpInlineDialog(boolean firstTime) {
+        PgpInlineDialog dialog = PgpInlineDialog.newInstance(firstTime, R.id.crypto_special_mode);
+        dialog.show(activity.getFragmentManager(), "openpgp_inline");
+    }
+
+    public void showOpenPgpSignOnlyDialog(boolean firstTime) {
+        PgpSignOnlyDialog dialog = PgpSignOnlyDialog.newInstance(firstTime, R.id.crypto_special_mode);
+        dialog.show(activity.getFragmentManager(), "openpgp_signonly");
+    }
+
     public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {
         activity.launchUserInteractionPendingIntent(pendingIntent, requestCode);
+    }
+
+    public void setLoaderManager(LoaderManager loaderManager) {
+        toView.setLoaderManager(loaderManager);
+        ccView.setLoaderManager(loaderManager);
+        bccView.setLoaderManager(loaderManager);
     }
 
     public enum CryptoStatusDisplayType {
@@ -412,6 +435,20 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         final int childToDisplay;
 
         CryptoStatusDisplayType(int childToDisplay) {
+            this.childToDisplay = childToDisplay;
+        }
+    }
+
+    public enum CryptoSpecialModeDisplayType {
+        NONE(VIEW_INDEX_HIDDEN),
+        PGP_INLINE(VIEW_INDEX_CRYPTO_SPECIAL_PGP_INLINE),
+        SIGN_ONLY(VIEW_INDEX_CRYPTO_SPECIAL_SIGN_ONLY),
+        SIGN_ONLY_PGP_INLINE(VIEW_INDEX_CRYPTO_SPECIAL_SIGN_ONLY_PGP_INLINE);
+
+
+        final int childToDisplay;
+
+        CryptoSpecialModeDisplayType(int childToDisplay) {
             this.childToDisplay = childToDisplay;
         }
     }

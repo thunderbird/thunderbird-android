@@ -78,7 +78,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="status_loading_account_folder_headers">Letöltés <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Küldés <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Feldolgozás <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="folder_progress">\u0020<xliff:g id="completed">%s</xliff:g>/<xliff:g id="total">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Frissítés <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_syncing_off">Szinkronizálás letiltva</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> kiválasztva</string>
@@ -465,7 +465,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="account_settings_crypto">Titkosítás</string>
   <string name="account_settings_crypto_app">OpenPGP alkalmazás</string>
   <string name="account_settings_crypto_key">Kulcsom</string>
-  <string name="account_settings_no_openpgp_provider_installed">Nincs OpenPGP alkalmazás telepítve</string>
+  <string name="account_settings_no_openpgp_provider_configured">Nincs OpenPGP alkalmazás telepítve</string>
   <string name="account_settings_mail_check_frequency_label">Frissítés gyakorisága</string>
   <string name="account_settings_storage_title">Tárolás</string>
   <string name="account_settings_color_label">Fiók színe</string>
@@ -656,11 +656,9 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="settings_theme_label">Téma</string>
   <string name="settings_message_theme_label">Üzenetmegjelenítés témája</string>
   <string name="settings_compose_theme_label">Író témája</string>
-  <string name="settings_language_label">Nyelv</string>
   <string name="settings_message_theme_selection_label">Rögzített üzenet téma</string>
   <string name="settings_message_theme_selection_summary_off">Válassza az üzenetmegtekintési témát amikor az üzenetet nézi</string>
   <string name="settings_message_theme_selection_summary_on">Rögzített üzenetmegtekintési téma használata</string>
-  <string name="setting_language_system">Alapértelmezett</string>
   <string name="background_ops_label">Háttérszinkronizálás</string>
   <string name="background_ops_never">Soha</string>
   <string name="background_ops_always">Mindig</string>
@@ -695,7 +693,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="search_all_messages_detail">Az összes levél egy helyen</string>
   <string name="integrated_inbox_title">Összes beérkezett levél</string>
   <string name="integrated_inbox_detail">Minden üzenet egy helyen</string>
-  <string name="tap_hint">Érintse meg a borítékot vagy a csillagot a kijelölésekhez</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Egyesítés</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Minden üzenetet az Összes beérkezett mappába</string>
   <string name="account_settings_searchable_label">Keresés ezekben mappákban</string>
@@ -737,7 +734,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="font_size_larger">Nagyobb</string>
   <string name="miscellaneous_preferences">Egyéb</string>
   <string name="error_activity_not_found">Nincs megfelelő alkalmazás ehhez a művelethez.</string>
-  <string name="send_aborted">Küldés megszakítva.</string>
   <string name="save_or_discard_draft_message_dlg_title">Menti piszkozatként?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Menti vagy mégsem az üzenetet?</string>
   <string name="confirm_discard_draft_message_title">Üzenet elvetése?</string>

@@ -13,7 +13,7 @@ import java.util.List;
  * making as few network connections as possible.
  */
 public abstract class Store {
-    public abstract Folder getFolder(String name);
+    public abstract Folder<? extends Message> getFolder(String name);
 
     public abstract List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException;
 

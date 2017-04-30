@@ -47,7 +47,7 @@ public class FetchProfile extends ArrayList<FetchProfile.Item> {
 
         /**
          * A sane portion of the entire message, cut off at a provider determined limit.
-         * This should generaly be around 50kB.
+         * This should generally be around 50kB.
          */
         BODY_SANE,
 

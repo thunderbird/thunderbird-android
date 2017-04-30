@@ -27,6 +27,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
 
@@ -82,7 +83,10 @@ public class ChooseFolder extends K9ListActivity {
         Intent intent = getIntent();
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-        mMessageReference = intent.getParcelableExtra(EXTRA_MESSAGE);
+        if (intent.hasExtra(EXTRA_MESSAGE)) {
+            String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE);
+            mMessageReference = MessageReference.parse(messageReferenceString);
+        }
         mFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
         mSelectFolder = intent.getStringExtra(EXTRA_SEL_FOLDER);
         if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null) {
@@ -125,7 +129,9 @@ public class ChooseFolder extends K9ListActivity {
                     destFolderName = mHeldInbox;
                 }
                 result.putExtra(EXTRA_NEW_FOLDER, destFolderName);
-                result.putExtra(EXTRA_MESSAGE, mMessageReference);
+                if (mMessageReference != null) {
+                    result.putExtra(EXTRA_MESSAGE, mMessageReference.toIdentityString());
+                }
                 setResult(RESULT_OK, result);
                 finish();
             }
@@ -236,7 +242,7 @@ public class ChooseFolder extends K9ListActivity {
         MessagingController.getInstance(getApplication()).listFolders(mAccount, false, mListener);
     }
 
-    private MessagingListener mListener = new MessagingListener() {
+    private MessagingListener mListener = new SimpleMessagingListener() {
         @Override
         public void listFoldersStarted(Account account) {
             if (!account.equals(mAccount)) {

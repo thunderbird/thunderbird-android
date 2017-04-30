@@ -1,33 +1,43 @@
 package com.fsck.k9.activity.misc;
 
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
 import java.util.Locale;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.app.ActivityManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.support.v4.util.LruCache;
+import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.ResourceDecoder;
+import com.bumptech.glide.load.data.DataFetcher;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.Resource;
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.bumptech.glide.load.model.ModelLoader;
+import com.bumptech.glide.load.resource.bitmap.BitmapEncoder;
+import com.bumptech.glide.load.resource.bitmap.BitmapResource;
+import com.bumptech.glide.load.resource.bitmap.StreamBitmapDecoder;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
+import com.bumptech.glide.load.resource.transcode.BitmapToGlideDrawableTranscoder;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.view.RecipientSelectView.Recipient;
+
 
 public class ContactPictureLoader {
     /**
@@ -38,7 +48,7 @@ public class ContactPictureLoader {
     /**
      * Pattern to extract the letter to be displayed as fallback image.
      */
-    private static final Pattern EXTRACT_LETTER_PATTERN = Pattern.compile("[a-zA-Z]");
+    private static final Pattern EXTRACT_LETTER_PATTERN = Pattern.compile("\\p{L}\\p{M}*");
 
     /**
      * Letter to use when {@link #EXTRACT_LETTER_PATTERN} couldn't find a match.
@@ -46,17 +56,11 @@ public class ContactPictureLoader {
     private static final String FALLBACK_CONTACT_LETTER = "?";
 
 
-    private ContentResolver mContentResolver;
     private Resources mResources;
     private Contacts mContactsHelper;
     private int mPictureSizeInPx;
 
     private int mDefaultBackgroundColor;
-
-    /**
-     * LRU cache of contact pictures.
-     */
-    private final LruCache<Address, Bitmap> mBitmapCache;
 
     /**
      * @see <a href="http://developer.android.com/design/style/color.html">Color palette used</a>
@@ -74,6 +78,20 @@ public class ContactPictureLoader {
         0xffCC0000
     };
 
+    @VisibleForTesting
+    protected static String calcUnknownContactLetter(Address address) {
+        String letter = null;
+        String personal = address.getPersonal();
+        String str = (personal != null) ? personal : address.getAddress();
+        Matcher m = EXTRACT_LETTER_PATTERN.matcher(str);
+        if (m.find()) {
+            letter = m.group(0).toUpperCase(Locale.US);
+        }
+
+        return (TextUtils.isEmpty(letter)) ?
+                FALLBACK_CONTACT_LETTER : letter;
+    }
+
     /**
      * Constructor.
      *
@@ -85,7 +103,6 @@ public class ContactPictureLoader {
      */
     public ContactPictureLoader(Context context, int defaultBackgroundColor) {
         Context appContext = context.getApplicationContext();
-        mContentResolver = appContext.getContentResolver();
         mResources = appContext.getResources();
         mContactsHelper = Contacts.getInstance(appContext);
 
@@ -94,59 +111,64 @@ public class ContactPictureLoader {
 
         mDefaultBackgroundColor = defaultBackgroundColor;
 
-        ActivityManager activityManager =
-                (ActivityManager) appContext.getSystemService(Context.ACTIVITY_SERVICE);
-        int memClass = activityManager.getMemoryClass();
-
-        // Use 1/16th of the available memory for this memory cache.
-        final int cacheSize = 1024 * 1024 * memClass / 16;
-
-        mBitmapCache = new LruCache<Address, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(Address key, Bitmap bitmap) {
-                // The cache size will be measured in bytes rather than number of items.
-                return bitmap.getByteCount();
-            }
-        };
     }
 
-    /**
-     * Load a contact picture and display it using the supplied {@link ImageView} instance.
-     *
-     * <p>
-     * If a picture is found in the cache, it is displayed in the {@code QuickContactBadge}
-     * immediately. Otherwise a {@link ContactPictureRetrievalTask} is started to try to load the
-     * contact picture in a background thread. Depending on the result the contact picture or a
-     * fallback picture is then stored in the bitmap cache.
-     * </p>
-     *
-     * @param address
-     *         The {@link Address} instance holding the email address that is used to search the
-     *         contacts database.
-     * @param imageView
-     *         The {@code QuickContactBadge} instance to receive the picture.
-     *
-     * @see #mBitmapCache
-     * @see #calculateFallbackBitmap(Address)
-     */
-    public void loadContactPicture(Address address, ImageView imageView) {
-        Bitmap bitmap = getBitmapFromCache(address);
-        if (bitmap != null) {
-            // The picture was found in the bitmap cache
-            imageView.setImageBitmap(bitmap);
-        } else if (cancelPotentialWork(address, imageView)) {
-            // Query the contacts database in a background thread and try to load the contact
-            // picture, if there is one.
-            ContactPictureRetrievalTask task = new ContactPictureRetrievalTask(imageView, address);
-            AsyncDrawable asyncDrawable = new AsyncDrawable(mResources,
-                    calculateFallbackBitmap(address), task);
-            imageView.setImageDrawable(asyncDrawable);
-            try {
-                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } catch (RejectedExecutionException e) {
-                // We flooded the thread pool queue... use a fallback picture
-                imageView.setImageBitmap(calculateFallbackBitmap(address));
-            }
+    public void loadContactPicture(final Address address, final ImageView imageView) {
+        Uri photoUri = mContactsHelper.getPhotoUri(address.getAddress());
+        loadContactPicture(photoUri, address, imageView);
+    }
+
+    public void loadContactPicture(Recipient recipient, ImageView imageView) {
+        loadContactPicture(recipient.photoThumbnailUri, recipient.address, imageView);
+    }
+
+    private void loadFallbackPicture(Address address, ImageView imageView) {
+        Context context = imageView.getContext();
+
+        Glide.with(context)
+                .using(new FallbackGlideModelLoader(), FallbackGlideParams.class)
+                .from(FallbackGlideParams.class)
+                .as(Bitmap.class)
+                .transcode(new BitmapToGlideDrawableTranscoder(context), GlideDrawable.class)
+                .decoder(new FallbackGlideBitmapDecoder(context))
+                .encoder(new BitmapEncoder(Bitmap.CompressFormat.PNG, 0))
+                .cacheDecoder(new FileToStreamDecoder<>(new StreamBitmapDecoder(context)))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .load(new FallbackGlideParams(address))
+                // for some reason, following 2 lines fix loading issues.
+                .dontAnimate()
+                .override(mPictureSizeInPx, mPictureSizeInPx)
+                .into(imageView);
+    }
+
+    private void loadContactPicture(Uri photoUri, final Address address, final ImageView imageView) {
+        if (photoUri != null) {
+            RequestListener<Uri, GlideDrawable> noPhotoListener = new RequestListener<Uri, GlideDrawable>() {
+                @Override
+                public boolean onException(Exception e, Uri model, Target<GlideDrawable> target,
+                        boolean isFirstResource) {
+                    loadFallbackPicture(address, imageView);
+                    return true;
+                }
+
+                @Override
+                public boolean onResourceReady(GlideDrawable resource, Uri model,
+                        Target<GlideDrawable> target,
+                        boolean isFromMemoryCache, boolean isFirstResource) {
+                    return false;
+                }
+            };
+
+            Glide.with(imageView.getContext())
+                    .load(photoUri)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .listener(noPhotoListener)
+                    // for some reason, following 2 lines fix loading issues.
+                    .dontAnimate()
+                    .override(mPictureSizeInPx, mPictureSizeInPx)
+                    .into(imageView);
+        } else {
+            loadFallbackPicture(address, imageView);
         }
     }
 
@@ -160,37 +182,17 @@ public class ContactPictureLoader {
         return CONTACT_DUMMY_COLORS_ARGB[colorIndex];
     }
 
-    private String calcUnknownContactLetter(Address address) {
-        String letter = null;
-        String personal = address.getPersonal();
-        String str = (personal != null) ? personal : address.getAddress();
+    private Bitmap drawTextAndBgColorOnBitmap(Bitmap bitmap, FallbackGlideParams params) {
+        Canvas canvas = new Canvas(bitmap);
 
-        Matcher m = EXTRACT_LETTER_PATTERN.matcher(str);
-        if (m.find()) {
-            letter = m.group(0).toUpperCase(Locale.US);
-        }
+        int rgb = calcUnknownContactColor(params.address);
+        bitmap.eraseColor(rgb);
 
-        return (TextUtils.isEmpty(letter)) ?
-                FALLBACK_CONTACT_LETTER : letter.substring(0, 1);
-    }
-
-    /**
-     * Calculates a bitmap with a color and a capital letter for contacts without picture.
-     */
-    private Bitmap calculateFallbackBitmap(Address address) {
-        Bitmap result = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx,
-                Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(result);
-
-        int rgb = calcUnknownContactColor(address);
-        result.eraseColor(rgb);
-
-        String letter = calcUnknownContactLetter(address);
+        String letter = calcUnknownContactLetter(params.address);
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
+        paint.setStyle(Style.FILL);
         paint.setARGB(255, 255, 255, 255);
         paint.setTextSize(mPictureSizeInPx * 3 / 4); // just scale this down a bit
         Rect rect = new Rect();
@@ -200,146 +202,73 @@ public class ContactPictureLoader {
                 (mPictureSizeInPx / 2f) - (width / 2f),
                 (mPictureSizeInPx / 2f) + (rect.height() / 2f), paint);
 
-        return result;
+        return bitmap;
     }
 
-    private void addBitmapToCache(Address key, Bitmap bitmap) {
-        if (getBitmapFromCache(key) == null) {
-            mBitmapCache.put(key, bitmap);
-        }
-    }
+    private class FallbackGlideBitmapDecoder implements ResourceDecoder<FallbackGlideParams, Bitmap> {
+        private final Context context;
 
-    private Bitmap getBitmapFromCache(Address key) {
-        return mBitmapCache.get(key);
-    }
-
-    /**
-     * Checks if a {@code ContactPictureRetrievalTask} was already created to load the contact
-     * picture for the supplied {@code Address}.
-     *
-     * @param address
-     *         The {@link Address} instance holding the email address that is used to search the
-     *         contacts database.
-     * @param imageView
-     *         The {@link ImageView} instance that will receive the picture.
-     *
-     * @return {@code true}, if the contact picture should be loaded in a background thread.
-     *         {@code false}, if another {@link ContactPictureRetrievalTask} was already scheduled
-     *         to load that contact picture.
-     */
-    private boolean cancelPotentialWork(Address address, ImageView imageView) {
-        final ContactPictureRetrievalTask task = getContactPictureRetrievalTask(imageView);
-
-        if (task != null && address != null) {
-            if (!address.equals(task.getAddress())) {
-                // Cancel previous task
-                task.cancel(true);
-            } else {
-                // The same work is already in progress
-                return false;
-            }
-        }
-
-        // No task associated with the QuickContactBadge, or an existing task was cancelled
-        return true;
-    }
-
-    private ContactPictureRetrievalTask getContactPictureRetrievalTask(ImageView imageView) {
-        if (imageView != null) {
-           Drawable drawable = imageView.getDrawable();
-           if (drawable instanceof AsyncDrawable) {
-               AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-               return asyncDrawable.getContactPictureRetrievalTask();
-           }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Load a contact picture in a background thread.
-     */
-    class ContactPictureRetrievalTask extends AsyncTask<Void, Void, Bitmap> {
-        private final WeakReference<ImageView> mImageViewReference;
-        private final Address mAddress;
-
-        ContactPictureRetrievalTask(ImageView imageView, Address address) {
-            mImageViewReference = new WeakReference<ImageView>(imageView);
-            mAddress = new Address(address);
-        }
-
-        public Address getAddress() {
-            return mAddress;
+        FallbackGlideBitmapDecoder(Context context) {
+            this.context = context;
         }
 
         @Override
-        protected Bitmap doInBackground(Void... args) {
-            final String email = mAddress.getAddress();
-            final Uri photoUri = mContactsHelper.getPhotoUri(email);
-            Bitmap bitmap = null;
-            if (photoUri != null) {
-                try {
-                    InputStream stream = mContentResolver.openInputStream(photoUri);
-                    if (stream != null) {
-                        try {
-                            Bitmap tempBitmap = BitmapFactory.decodeStream(stream);
-                            if (tempBitmap != null) {
-                                bitmap = Bitmap.createScaledBitmap(tempBitmap, mPictureSizeInPx,
-                                        mPictureSizeInPx, true);
-                                if (tempBitmap != bitmap) {
-                                    tempBitmap.recycle();
-                                }
-                            }
-                        } finally {
-                            try { stream.close(); } catch (IOException e) { /* ignore */ }
-                        }
-                    }
-                } catch (FileNotFoundException e) {
-                    /* ignore */
+        public Resource<Bitmap> decode(FallbackGlideParams source, int width, int height) throws IOException {
+            BitmapPool pool = Glide.get(context).getBitmapPool();
+            Bitmap bitmap = pool.getDirty(mPictureSizeInPx, mPictureSizeInPx, Bitmap.Config.ARGB_8888);
+            if (bitmap == null) {
+                bitmap = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx, Bitmap.Config.ARGB_8888);
+            }
+            drawTextAndBgColorOnBitmap(bitmap, source);
+            return BitmapResource.obtain(bitmap, pool);
+        }
+
+        @Override
+        public String getId() {
+            return "fallback-photo";
+        }
+    }
+
+    private class FallbackGlideParams {
+        final Address address;
+
+        FallbackGlideParams(Address address) {
+            this.address = address;
+        }
+
+        public String getId() {
+            return String.format(Locale.ROOT, "%s-%s", address.getAddress(), address.getPersonal());
+        }
+    }
+
+    private class FallbackGlideModelLoader implements ModelLoader<FallbackGlideParams, FallbackGlideParams> {
+        @Override
+        public DataFetcher<FallbackGlideParams> getResourceFetcher(final FallbackGlideParams model, int width,
+                int height) {
+
+            return new DataFetcher<FallbackGlideParams>() {
+
+                @Override
+                public FallbackGlideParams loadData(Priority priority) throws Exception {
+                    return model;
                 }
 
-            }
+                @Override
+                public void cleanup() {
 
-            if (bitmap == null) {
-                bitmap = calculateFallbackBitmap(mAddress);
-            }
+                }
 
-            // Save the picture of the contact with that email address in the bitmap cache
-            addBitmapToCache(mAddress, bitmap);
+                @Override
+                public String getId() {
+                    return model.getId();
+                }
 
-            return bitmap;
-        }
+                @Override
+                public void cancel() {
 
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            ImageView imageView = mImageViewReference.get();
-            if (imageView != null && getContactPictureRetrievalTask(imageView) == this) {
-                imageView.setImageBitmap(bitmap);
-            }
+                }
+            };
         }
     }
 
-    /**
-     * {@code Drawable} subclass that stores a reference to the {@link ContactPictureRetrievalTask}
-     * that is trying to load the contact picture.
-     *
-     * <p>
-     * The reference is used by {@link ContactPictureLoader#cancelPotentialWork(Address,
-     * ImageView)} to find out if the contact picture is already being loaded by a
-     * {@code ContactPictureRetrievalTask}.
-     * </p>
-     */
-    static class AsyncDrawable extends BitmapDrawable {
-        private final WeakReference<ContactPictureRetrievalTask> mAsyncTaskReference;
-
-        public AsyncDrawable(Resources res, Bitmap bitmap, ContactPictureRetrievalTask task) {
-            super(res, bitmap);
-            mAsyncTaskReference = new WeakReference<ContactPictureRetrievalTask>(task);
-        }
-
-        public ContactPictureRetrievalTask getContactPictureRetrievalTask() {
-            return mAsyncTaskReference.get();
-        }
-    }
 }

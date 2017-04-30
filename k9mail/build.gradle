@@ -1,53 +1,59 @@
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
-apply from: '../gradle/plugins/checkstyle-android.gradle'
-apply from: '../gradle/plugins/findbugs-android.gradle'
-apply plugin: 'jacoco'
+
+if (!rootProject.optimizeForDevelopment) {
+    apply from: '../gradle/plugins/checkstyle-android.gradle'
+    apply from: '../gradle/plugins/findbugs-android.gradle'
+}
+
+if (rootProject.testCoverage) {
+    apply plugin: 'jacoco'
+}
 
 repositories {
     jcenter()
 }
 
-ext {
-    supportLibraryVersion = '23.1.1'
-}
-
 //noinspection GroovyAssignabilityCheck
 configurations.all {
     resolutionStrategy {
-        force "com.android.support:support-annotations:${project.supportLibraryVersion}"
+        force "com.android.support:support-annotations:${androidSupportLibraryVersion}"
     }
 }
 
 dependencies {
     compile project(':k9mail-library')
-    compile project(':plugins:Android-PullToRefresh:library')
     compile project(':plugins:HoloColorPicker')
     compile project(':plugins:openpgp-api-lib:openpgp-api')
+    compile "com.squareup.okio:okio:${okioVersion}"
     compile 'commons-io:commons-io:2.4'
-    compile "com.android.support:support-v4:${project.supportLibraryVersion}"
-    compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.16'
+    compile "com.android.support:support-v4:${androidSupportLibraryVersion}"
+    compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.18'
     compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
-    compile 'com.splitwise:tokenautocomplete:2.0.2'
+    compile 'com.splitwise:tokenautocomplete:2.0.7'
+    compile 'de.cketti.safecontentresolver:safe-content-resolver-v14:0.9.0'
+    compile 'com.github.amlcurran.showcaseview:library:5.4.1'
+    compile 'com.squareup.moshi:moshi:1.2.0'
+    compile "com.jakewharton.timber:timber:${timberVersion}"
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
 
-    testCompile 'org.robolectric:robolectric:3.0'
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile "org.robolectric:robolectric:${robolectricVersion}"
+    testCompile "junit:junit:${junitVersion}"
+    testCompile "org.mockito:mockito-core:${mockitoVersion}"
+    testCompile 'org.jsoup:jsoup:1.10.2'
 }
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
+    compileSdkVersion androidCompileSdkVersion.toInteger()
+    buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
         applicationId "com.fsck.k9"
         testApplicationId "com.fsck.k9.tests"
 
-        versionCode 23060
-        versionName '5.106'
+        versionCode 23500
+        versionName '5.300-SNAPSHOT'
 
         minSdkVersion 15
         targetSdkVersion 22

@@ -85,6 +85,10 @@ class NotificationData {
         notificationIdsInUse.put(notificationId, true);
     }
 
+    private void markNotificationIdAsFree(int notificationId) {
+        notificationIdsInUse.delete(notificationId);
+    }
+
     NotificationHolder createNotificationHolder(int notificationId, NotificationContent content) {
         return new NotificationHolder(notificationId, content);
     }
@@ -105,11 +109,15 @@ class NotificationData {
         return false;
     }
 
-    public boolean hasAdditionalMessages() {
+    public boolean hasSummaryOverflowMessages() {
         return activeNotifications.size() > MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION;
     }
 
-    public int getAdditionalMessagesCount() {
+    public int getSummaryOverflowMessagesCount() {
+        int activeOverflowCount = activeNotifications.size() - MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION;
+        if (activeOverflowCount > 0) {
+            return activeOverflowCount + additionalNotifications.size();
+        }
         return additionalNotifications.size();
     }
 
@@ -165,6 +173,8 @@ class NotificationData {
         activeNotifications.remove(holder);
 
         int notificationId = holder.notificationId;
+        markNotificationIdAsFree(notificationId);
+
         if (!additionalNotifications.isEmpty()) {
             NotificationContent newContent = additionalNotifications.removeFirst();
             NotificationHolder replacement = createNotificationHolder(notificationId, newContent);
