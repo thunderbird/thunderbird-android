@@ -19,6 +19,7 @@ import android.preference.PreferenceScreen;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.fsck.k9.Features;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
@@ -450,7 +451,39 @@ public class Prefs extends K9PreferenceActivity {
         CheckBoxPreference useSocksProxy = (CheckBoxPreference) findPreference(PREFERENCE_SOCKS_PROXY);
         EditTextPreference socksProxyHost = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_HOST);
         EditTextPreference socksProxyPort = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_PORT);
+        if (Features.isSocksProxySupportEnabled()) {
+            //TODO: Add input validation for hostname and port
 
+            mUseSocksProxy = useSocksProxy;
+            mSocksProxyHost = socksProxyHost;
+            mSocksProxyPort = socksProxyPort;
+
+            useSocksProxy.setChecked(K9.isSocksProxyEnabled());
+
+            String currentSockProxyHost = K9.getSocksProxyHost();
+            socksProxyHost.setText(currentSockProxyHost);
+            socksProxyHost.setSummary(currentSockProxyHost);
+
+            String currentSocksProxyPort = Integer.toString(K9.getSocksProxyPort());
+            socksProxyPort.setText(currentSocksProxyPort);
+            socksProxyPort.setSummary(currentSocksProxyPort);
+
+            Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    preference.setSummary(newValue.toString());
+                    return true;
+                }
+            };
+
+            socksProxyHost.setOnPreferenceChangeListener(changeListener);
+            socksProxyPort.setOnPreferenceChangeListener(changeListener);
+        } else {
+            PreferenceScreen networkPreferences = (PreferenceScreen) findPreference("network_preferences");
+            networkPreferences.removePreference(useSocksProxy);
+            networkPreferences.removePreference(socksProxyHost);
+            networkPreferences.removePreference(socksProxyPort);
+        }
     }
 
     private static String themeIdToName(K9.Theme theme) {
@@ -549,6 +582,12 @@ public class Prefs extends K9PreferenceActivity {
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         K9.setHideUserAgent(mHideUserAgent.isChecked());
         K9.setHideTimeZone(mHideTimeZone.isChecked());
+
+        if (Features.isSocksProxySupportEnabled()) {
+            K9.setUseSocksProxy(mUseSocksProxy.isChecked());
+            K9.setSocksProxyHost(mSocksProxyHost.getText());
+            K9.setSocksProxyPort(Integer.parseInt(mSocksProxyPort.getText()));
+        }
 
         K9.setOpenPgpProvider(mOpenPgpProvider.getValue());
         K9.setOpenPgpSupportSignOnly(mOpenPgpSupportSignOnly.isChecked());

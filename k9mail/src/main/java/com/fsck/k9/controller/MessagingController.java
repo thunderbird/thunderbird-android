@@ -2723,7 +2723,7 @@ public class MessagingController {
             Timber.i("Scanning folder '%s' (%d) for messages to send",
                     account.getOutboxFolderName(), localFolder.getId());
 
-            Transport transport = transportProvider.getTransport(K9.app, account);
+            Transport transport = transportProvider.getTransport(K9.app, account, account.getProxySettings());
 
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {

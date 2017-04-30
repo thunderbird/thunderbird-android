@@ -291,6 +291,15 @@ public class GlobalSettings {
         s.put("openpgpSupportSignOnly", Settings.versions(
                 new V(47, new BooleanSetting(false))
         ));
+        s.put("useSocksProxy", Settings.versions(
+                new V(48, new BooleanSetting(true))
+        ));
+        s.put("socksProxyHost", Settings.versions(
+                new V(48, new StringSetting("127.0.0.1"))
+        ));
+        s.put("socksProxyPort", Settings.versions(
+                new V(48, new IntegerRangeSetting(0,65535,12345))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
