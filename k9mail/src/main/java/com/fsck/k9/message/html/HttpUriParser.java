@@ -30,11 +30,11 @@ class HttpUriParser implements UriParser {
         // Scheme
         String shortScheme = text.substring(currentPos, Math.min(currentPos + 7, text.length()));
         String longScheme = text.substring(currentPos, Math.min(currentPos + 8, text.length()));
-        if (shortScheme.equalsIgnoreCase("https://")) {
+        if (longScheme.equalsIgnoreCase("https://")) {
             currentPos += "https://".length();
         } else if (shortScheme.equalsIgnoreCase("http://")) {
             currentPos += "http://".length();
-        } else if (longScheme.equalsIgnoreCase("rtsp://")) {
+        } else if (shortScheme.equalsIgnoreCase("rtsp://")) {
             currentPos += "rtsp://".length();
         } else {
             return startPos;
