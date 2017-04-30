@@ -25,6 +25,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ProxySettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
@@ -84,6 +85,8 @@ public class MessagingControllerTest {
     @Mock
     private Account account;
     @Mock
+    private ProxySettings proxy;
+    @Mock
     private AccountStats accountStats;
     @Mock
     private SimpleMessagingListener listener;
@@ -140,6 +143,9 @@ public class MessagingControllerTest {
     public void setUp() throws MessagingException {
         ShadowLog.stream = System.out;
         MockitoAnnotations.initMocks(this);
+
+        proxy=new ProxySettings(false,"127.0.0.1",12345);
+
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
         controller = new MessagingController(appContext, notificationController, contacts, transportProvider);
@@ -858,7 +864,7 @@ public class MessagingControllerTest {
         when(localStore.getFolder(SENT_FOLDER_NAME)).thenReturn(sentFolder);
         when(sentFolder.getId()).thenReturn(1L);
         when(localFolder.exists()).thenReturn(true);
-        when(transportProvider.getTransport(appContext, account)).thenReturn(transport);
+        when(transportProvider.getTransport(appContext, account,proxy)).thenReturn(transport);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessageToSend1));
         when(localMessageToSend1.getUid()).thenReturn("localMessageToSend1");
         when(localMessageToSend1.getHeader(K9.IDENTITY_HEADER)).thenReturn(new String[]{});

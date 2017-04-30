@@ -135,6 +135,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
 
     }
 
+
     private Context context;
     private ProxySettings proxySettings;
 
@@ -172,6 +173,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
 
         return result.toArray(new String[result.size()]);
     }
+
 
     protected static String[] remove(String[] enabled, String[] blacklisted) {
         List<String> items = new ArrayList<String>();
@@ -222,7 +224,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         setSniHost(socketFactory, sslSocket, host);
 
         if (!proxySettings.enabled && socket == null) {
-            InetSocketAddress serverAddress = new InetSocketAddress(host,port);
+            InetSocketAddress serverAddress = new InetSocketAddress(host, port);
             trustedSocket.connect(serverAddress, SOCKET_CONNECT_TIMEOUT);
         }
 

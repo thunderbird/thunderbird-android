@@ -321,7 +321,7 @@ public class Pop3Store extends RemoteStore {
                     mSocket = mTrustedSocketFactory.createSocket(null, mHost, mPort, mClientCertificateAlias);
                 } else {
                     mSocket = new Socket();
-                    mSocket.connect(socketAddress,SOCKET_CONNECT_TIMEOUT);
+                    mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                 }
 
                 mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);

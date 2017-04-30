@@ -1410,7 +1410,7 @@ public class K9 extends Application {
     }
 
     public static void setUseSocksProxy(boolean useSocksProxy) {
-        sUseSocksProxy=useSocksProxy;
+        sUseSocksProxy = useSocksProxy;
     }
 
     public static String getSocksProxyHost() {
@@ -1428,7 +1428,6 @@ public class K9 extends Application {
     public static void setSocksProxyPort(int socksProxyPort) {
         sSocksProxyPort = socksProxyPort;
     }
-
 
     /**
      * Check if we already know whether all databases are using the current database schema.

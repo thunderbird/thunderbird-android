@@ -1271,7 +1271,7 @@ public class Account implements BaseAccount, StoreConfig {
 
     public Store getRemoteStore() throws MessagingException {
         ProxySettings proxySettings = getProxySettings();
-        return RemoteStore.getInstance(K9.app,this,proxySettings);
+        return RemoteStore.getInstance(K9.app, this, proxySettings);
     }
 
     public ProxySettings getProxySettings() {

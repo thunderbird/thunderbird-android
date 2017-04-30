@@ -14,6 +14,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
@@ -451,6 +452,7 @@ public class Prefs extends K9PreferenceActivity {
         CheckBoxPreference useSocksProxy = (CheckBoxPreference) findPreference(PREFERENCE_SOCKS_PROXY);
         EditTextPreference socksProxyHost = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_HOST);
         EditTextPreference socksProxyPort = (EditTextPreference) findPreference(PREFERENCE_SOCKS_PROXY_PORT);
+
         if (Features.isSocksProxySupportEnabled()) {
             //TODO: Add input validation for hostname and port
 
@@ -469,6 +471,7 @@ public class Prefs extends K9PreferenceActivity {
             socksProxyPort.setSummary(currentSocksProxyPort);
 
             Preference.OnPreferenceChangeListener changeListener = new Preference.OnPreferenceChangeListener() {
+
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     preference.setSummary(newValue.toString());
