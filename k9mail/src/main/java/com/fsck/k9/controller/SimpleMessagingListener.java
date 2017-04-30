@@ -181,4 +181,9 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     @Override
     public void enableProgressIndicator(boolean enable) {
     }
+
+    @Override
+    public void updateProgress(int progress) {
+
+    }
 }

@@ -73,4 +73,6 @@ public interface MessagingListener {
     void remoteSearchFailed(String folder, String err);
 
     void enableProgressIndicator(boolean enable);
+
+    void updateProgress(int progress);
 }

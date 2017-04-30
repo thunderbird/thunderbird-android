@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -1469,6 +1470,20 @@ public class K9 extends Application {
         if (enableDebugLogging) {
             Timber.plant(new DebugTree());
         }
+    }
+
+    public static void saveSettingsAsync() {
+        new AsyncTask<Void,Void,Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Preferences prefs = Preferences.getPreferences(app);
+                StorageEditor editor = prefs.getStorage().edit();
+                save(editor);
+                editor.commit();
+
+                return null;
+            }
+        }.execute();
     }
 
 }

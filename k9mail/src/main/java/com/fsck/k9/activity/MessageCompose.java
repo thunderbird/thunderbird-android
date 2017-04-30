@@ -69,8 +69,11 @@ import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
+import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.fragment.ProgressDialogFragment.CancelListener;
+import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
+import com.fsck.k9.fragment.AttachmentDownloadDialogFragment.AttachmentDownloadCancelListener;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.helper.MailTo;
@@ -101,7 +104,7 @@ import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
 public class MessageCompose extends K9Activity implements OnClickListener,
-        CancelListener, OnFocusChangeListener, OnCryptoModeChangedListener,
+        CancelListener, AttachmentDownloadCancelListener, OnFocusChangeListener, OnCryptoModeChangedListener,
         OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback,
         AttachmentPresenter.AttachmentsChangedListener, RecipientPresenter.RecipientsChangedListener {
 
@@ -1053,6 +1056,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return false;
     }
 
+    @Override
+    public void onProgressCancel(AttachmentDownloadDialogFragment fragment) {
+        attachmentPresenter.attachmentProgressDialogCancelled();
+    }
 
     public void onProgressCancel(ProgressDialogFragment fragment) {
         attachmentPresenter.attachmentProgressDialogCancelled();

@@ -127,8 +127,8 @@ public abstract class Folder<T extends Message> {
     public abstract void fetch(List<T> messages, FetchProfile fp,
                                MessageRetrievalListener<T> listener) throws MessagingException;
 
-    public void fetchPart(Message message, Part part,
-                          MessageRetrievalListener<Message> listener) throws MessagingException {
+    public void fetchPart(Message message, Part part, MessageRetrievalListener<Message> listener,
+            BodyFactory bodyFactory) throws MessagingException {
         // This is causing trouble. Disabled for now. See issue 1733
         //throw new RuntimeException("fetchPart() not implemented.");
 
