@@ -689,8 +689,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
 
         @Override
-        public void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus) {
-            CryptoInfoDialog dialog = CryptoInfoDialog.newInstance(displayStatus);
+        public void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus, boolean hasSecurityWarning) {
+            CryptoInfoDialog dialog = CryptoInfoDialog.newInstance(displayStatus, hasSecurityWarning);
             dialog.setTargetFragment(MessageViewFragment.this, 0);
             dialog.show(getFragmentManager(), "crypto_info_dialog");
         }
@@ -706,6 +706,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             startOpenPgpChooserActivity();
         }
     };
+
+    @Override
+    public void onClickShowSecurityWarning() {
+        messageCryptoPresenter.onClickShowCryptoWarningDetails();
+    }
 
     @Override
     public void onClickShowCryptoKey() {

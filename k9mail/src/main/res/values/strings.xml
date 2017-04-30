@@ -1167,6 +1167,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_disabled">Message is not encrypted</string>
 
     <string name="crypto_msg_encrypted_error">Message is encrypted, but there was a decryption error.</string>
+    <string name="crypto_msg_encrypted_insecure">Message is encrypted but insecure!</string>
     <string name="crypto_msg_signed_error">Message is signed, but the signature could not be verified.</string>
     <string name="crypto_msg_encrypted_no_provider">Message is encrypted, but no crypto app is configured.</string>
     <string name="crypto_msg_unsupported_encrypted">Message is encrypted, but in an unsupported format.</string>
@@ -1193,6 +1194,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="crypto_info_ok">OK</string>
     <string name="crypto_info_view_key">View Signer</string>
+    <string name="crypto_info_view_security_warning">Details</string>
     <string name="locked_attach_unlock">Unlock</string>
     <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
     <string name="locked_attach_title">Unprotected Attachment</string>
@@ -1230,4 +1232,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="mail_list_widget_text">K-9 Message List</string>
     <string name="mail_list_widget_loading">Loading messages…</string>
     <string name="fetching_folders_failed">Fetching folder list failed</string>
+    <string name="messageview_crypto_warning_details">Show Details</string>
 </resources>
