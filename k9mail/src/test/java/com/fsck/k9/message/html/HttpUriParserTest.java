@@ -28,6 +28,16 @@ public class HttpUriParserTest {
     }
 
     @Test
+    public void simpleDomainWithHttps() {
+        assertLinkify("https://www.google.com");
+    }
+
+    @Test
+    public void simpleRtspUri() {
+        assertLinkify("rtsp://example.com/media.mp4");
+    }
+
+    @Test
     public void invalidDomainIgnored() {
         assertLinkIgnored("http://-www.google.com");
     }
