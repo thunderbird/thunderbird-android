@@ -20,20 +20,24 @@ class NegativeImapResponseException extends MessagingException {
 
     public String getAlertText() {
         if (alertText == null) {
-            ImapResponse lastResponse = responses.get(responses.size() - 1);
+            ImapResponse lastResponse = getLastResponse();
             alertText = AlertResponse.getAlertText(lastResponse);
         }
         
         return alertText;
     }
-    
+
     public boolean wasByeResponseReceived() {
         for (ImapResponse response : responses) {
             if (response.getTag() == null && response.size() >= 1 && equalsIgnoreCase(response.get(0), Responses.BYE)) {
                 return true;
             }
         }
-        
+
         return false;
+    }
+
+    public ImapResponse getLastResponse() {
+        return responses.get(responses.size() - 1);
     }
 }

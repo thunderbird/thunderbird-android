@@ -198,6 +198,30 @@ public class ImapConnectionTest {
     }
 
     @Test
+    public void open_authPlainFailureAndDisconnect_shouldThrow() throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server, "AUTH=PLAIN");
+        server.expect("2 AUTHENTICATE PLAIN");
+        server.output("+");
+        server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
+        server.output("2 NO [UNAVAILABLE] Maximum number of connections from user+IP exceeded");
+        server.closeConnection();
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        try {
+            imapConnection.open();
+            fail("Expected exception");
+        } catch (NegativeImapResponseException e) {
+            assertThat(e.getMessage(), containsString("Maximum number of connections from user+IP exceeded"));
+        }
+
+        assertFalse(imapConnection.isConnected());
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
     public void open_authPlainWithByeResponseAndConnectionClose_shouldThrowAuthenticationFailedException()
             throws Exception {
         settings.setAuthType(AuthType.PLAIN);
