@@ -199,8 +199,7 @@ public class MessageViewInfoExtractor {
                 }
             }
 
-            String content = HtmlConverter.wrapMessageContent(html);
-            String sanitizedHtml = htmlSanitizer.sanitize(content);
+            String sanitizedHtml = HtmlConverter.wrapMessageContent(htmlSanitizer.sanitize(html.toString()));
 
             return new ViewableExtractedText(text.toString(), sanitizedHtml);
         } catch (Exception e) {

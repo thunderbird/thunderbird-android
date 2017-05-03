@@ -48,7 +48,8 @@ public class HtmlSanitizerTest {
 
         String result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body>Message</body></html>", result);
+        assertEquals(
+                "<html><head></head><body>Message</body></html>", result);
     }
 
     @Test
@@ -124,7 +125,7 @@ public class HtmlSanitizerTest {
         String result = htmlSanitizer.sanitize(html);
 
 
-        assertEquals("<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" /></head>" +
+        assertEquals("<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"></head>" +
                 "<body>Message</body></html>", result);
     }
 
@@ -135,7 +136,7 @@ public class HtmlSanitizerTest {
 
         String result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body></body></html>", result);
+        assertEquals("<!--?xml version=\"1.0\" encoding=\"UTF-8\"?--><html><head></head><body></body></html>", result);
     }
 
     @Test
@@ -144,9 +145,14 @@ public class HtmlSanitizerTest {
 
         String result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body><table><tbody>" +
-                "<tr><td></td><td></td></tr>" +
-                "</tbody></table></body></html>", result);
+        assertEquals("<html><head></head><body><table>\n" +
+                " <tbody>\n" +
+                "  <tr>\n" +
+                "   <td></td>\n" +
+                "   <td></td>\n" +
+                "  </tr>\n" +
+                " </tbody>\n" +
+                "</table></body></html>", result);
     }
 
     @Test
@@ -157,8 +163,22 @@ public class HtmlSanitizerTest {
 
         String result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body><table><tbody>" +
-                "<tr><td>&lt;!==&gt;&lt;!==&gt;Hmailserver service shutdown:</td><td>&lt;!==&gt;&lt;!==&gt;Ok</td></tr>" +
-                "</tbody></table></body></html>", result);
+        assertEquals("<html><head></head><body><table>\n" +
+                " <tbody>\n" +
+                "  <tr>\n" +
+                "   <td>Hmailserver service shutdown:</td>\n" +
+                "   <td>Ok</td>\n" +
+                "  </tr>\n" +
+                " </tbody>\n" +
+                "</table></body></html>", result);
+    }
+
+    @Test
+    public void shouldAllowBodyStyle() {
+        String html = "<html><head></head><body><style>background: #E8E8E8 none;</style></body></html>";
+
+        String result = htmlSanitizer.sanitize(html);
+
+        assertEquals("<html><head></head><body><style>background: #E8E8E8 none;</style></body></html>", result);
     }
 }
