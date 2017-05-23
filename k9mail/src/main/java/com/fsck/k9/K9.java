@@ -38,6 +38,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.power.DeviceIdleManager;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.provider.UnreadWidgetProvider;
@@ -353,10 +354,22 @@ public class K9 extends Application {
      * whether any accounts are configured.
      */
     public static void setServicesEnabled(Context context) {
-        int acctLength = Preferences.getPreferences(context).getAvailableAccounts().size();
+        Context appContext = context.getApplicationContext();
+        int acctLength = Preferences.getPreferences(appContext).getAvailableAccounts().size();
+        boolean enable = acctLength > 0;
 
-        setServicesEnabled(context, acctLength > 0, null);
+        setServicesEnabled(appContext, enable, null);
 
+        updateDeviceIdleReceiver(appContext, enable);
+    }
+
+    private static void updateDeviceIdleReceiver(Context context, boolean enable) {
+        DeviceIdleManager deviceIdleManager = DeviceIdleManager.getInstance(context);
+        if (enable) {
+            deviceIdleManager.registerReceiver();
+        } else {
+            deviceIdleManager.unregisterReceiver();
+        }
     }
 
     private static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId) {
