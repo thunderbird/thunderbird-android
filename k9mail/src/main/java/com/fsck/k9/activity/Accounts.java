@@ -1273,15 +1273,21 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     private static String[][] USED_LIBRARIES = new String[][] {
-        new String[] {"jutf7", "http://jutf7.sourceforge.net/"},
-        new String[] {"JZlib", "http://www.jcraft.com/jzlib/"},
-        new String[] {"Commons IO", "http://commons.apache.org/io/"},
-        new String[] {"Mime4j", "http://james.apache.org/mime4j/"},
-        new String[] {"HtmlCleaner", "http://htmlcleaner.sourceforge.net/"},
-        new String[] {"ckChangeLog", "https://github.com/cketti/ckChangeLog"},
-        new String[] {"HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker"},
-        new String[] {"Glide", "https://github.com/bumptech/glide"},
-        new String[] {"TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/"},
+            new String[] {"Android Support Library", "https://developer.android.com/topic/libraries/support-library/index.html"},
+            new String[] {"ckChangeLog", "https://github.com/cketti/ckChangeLog"},
+            new String[] {"Commons IO", "http://commons.apache.org/io/"},
+            new String[] {"Glide", "https://github.com/bumptech/glide"},
+            new String[] {"HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker"},
+            new String[] {"jsoup", "https://jsoup.org/"},
+            new String[] {"jutf7", "http://jutf7.sourceforge.net/"},
+            new String[] {"JZlib", "http://www.jcraft.com/jzlib/"},
+            new String[] {"Mime4j", "http://james.apache.org/mime4j/"},
+            new String[] {"Moshi", "https://github.com/square/moshi"},
+            new String[] {"Okio", "https://github.com/square/okio"},
+            new String[] {"SafeContentResolver", "https://github.com/cketti/SafeContentResolver"},
+            new String[] {"ShowcaseView", "https://github.com/amlcurran/ShowcaseView"},
+            new String[] {"Timber", "https://github.com/JakeWharton/timber"},
+            new String[] {"TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/"},
     };
 
     private void onAbout() {
@@ -1326,8 +1332,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                               "<div>TypePad \u7d75\u6587\u5b57\u30a2\u30a4\u30b3\u30f3\u753b\u50cf " +
                               "(<a href=\"http://typepad.jp/\">Six Apart Ltd</a>) / " +
                               "<a href=\"http://creativecommons.org/licenses/by/2.1/jp/\">CC BY 2.1</a></div>"))
-        .append("</p><hr/><p>")
-        .append(getString(R.string.app_htmlcleaner_license));
+        .append("</p>");
 
 
         wv.loadDataWithBaseURL("file:///android_res/drawable/", html.toString(), "text/html", "utf-8", null);

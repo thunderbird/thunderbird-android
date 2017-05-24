@@ -3,7 +3,6 @@ package com.fsck.k9.message.signature;
 
 import com.fsck.k9.K9RobolectricTestRunner;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
@@ -27,7 +26,6 @@ public class HtmlSignatureRemoverTest {
         assertEquals("This is the body text", extractText(withoutSignature));
     }
 
-    @Ignore
     @Test
     public void shouldStripSignatureFromThunderbirdStyleHtml() throws Exception {
         String html = "<html>\r\n" +
@@ -88,8 +86,8 @@ public class HtmlSignatureRemoverTest {
         assertEquals("<html><head></head><body>" +
                         "<blockquote>" +
                         "This is some quoted text" +
-                        "<br />" +
-                        "-- <br />" +
+                        "<br>" +
+                        "-- <br>" +
                         "Inner signature" +
                         "</blockquote>" +
                         "<div>This is the body text</div>" +
@@ -141,7 +139,7 @@ public class HtmlSignatureRemoverTest {
         String withoutSignature = HtmlSignatureRemover.stripSignature(html);
 
         assertEquals("<html><head></head><body>" +
-                        "This is the body text<br />" +
+                        "This is the body text<br>" +
                         "<blockquote>Some quote</blockquote>" +
                         "</body></html>",
                 withoutSignature);

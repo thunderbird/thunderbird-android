@@ -1260,7 +1260,7 @@ public class HtmlConverter {
                 "</body></html>";
     }
 
-    private static String cssStyleTheme() {
+    static String cssStyleTheme() {
         if (K9.getK9MessageViewTheme() == K9.Theme.DARK)  {
             return "<style type=\"text/css\">" +
                     "* { background: black ! important; color: #F3F3F3 !important }" +
@@ -1283,7 +1283,7 @@ public class HtmlConverter {
      *      A {@code <style>} element that can be dynamically included in the HTML
      *      {@code <head>} element when messages are displayed.
      */
-    private static String cssStylePre() {
+    static String cssStylePre() {
         final String font = K9.messageViewFixedWidthFont()
                 ? "monospace"
                 : "sans-serif";
