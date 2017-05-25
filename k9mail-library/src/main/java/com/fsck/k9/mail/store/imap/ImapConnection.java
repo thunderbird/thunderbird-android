@@ -124,8 +124,10 @@ class ImapConnection {
 
             upgradeToTlsIfNecessary();
 
-            authenticate();
+            List<ImapResponse> responses = authenticate();
             authSuccess = true;
+
+            extractOrRequestCapabilities(responses);
 
             enableCompressionIfRequested();
 
@@ -242,25 +244,34 @@ class ImapConnection {
 
     private void readInitialResponse() throws IOException {
         ImapResponse initialResponse = responseParser.readResponse();
-
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
             Timber.v("%s <<< %s", getLogId(), initialResponse);
         }
-
         extractCapabilities(Collections.singletonList(initialResponse));
     }
 
     private List<ImapResponse> extractCapabilities(List<ImapResponse> responses) {
         CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
-
         if (capabilityResponse != null) {
             Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
-
             if (K9MailLib.isDebug()) {
                 Timber.d("Saving %s capabilities for %s", receivedCapabilities, getLogId());
             }
-
             capabilities = receivedCapabilities;
+        }
+        return responses;
+    }
+
+    private List<ImapResponse> extractOrRequestCapabilities(List<ImapResponse> responses)
+            throws IOException, MessagingException {
+        CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
+        if (capabilityResponse != null) {
+            Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
+            Timber.d("Saving %s capabilities for %s", receivedCapabilities, getLogId());
+            capabilities = receivedCapabilities;
+        } else {
+            Timber.i("Did not get capabilities in post-auth banner, requesting CAPABILITY for %s", getLogId());
+            requestCapabilities();
         }
 
         return responses;
@@ -270,11 +281,9 @@ class ImapConnection {
         if (!capabilities.isEmpty()) {
             return;
         }
-
         if (K9MailLib.isDebug()) {
             Timber.i("Did not get capabilities in banner, requesting CAPABILITY for %s", getLogId());
         }
-
         requestCapabilities();
     }
 
@@ -325,45 +334,40 @@ class ImapConnection {
         requestCapabilities();
     }
 
-    @SuppressWarnings("EnumSwitchStatementWhichMissesCases")
-    private void authenticate() throws MessagingException, IOException {
+    private List<ImapResponse> authenticate() throws MessagingException, IOException {
         switch (settings.getAuthType()) {
             case XOAUTH2:
                 if (oauthTokenProvider == null) {
                     throw new MessagingException("No OAuthToken Provider available.");
                 } else if (hasCapability(Capabilities.AUTH_XOAUTH2) && hasCapability(Capabilities.SASL_IR)) {
-                    authXoauth2withSASLIR();
+                    return authXoauth2withSASLIR();
                 } else {
                     throw new MessagingException("Server doesn't support SASL XOAUTH2.");
                 }
-                break;
             case CRAM_MD5: {
                 if (hasCapability(Capabilities.AUTH_CRAM_MD5)) {
-                    authCramMD5();
+                    return authCramMD5();
                 } else {
                     throw new MessagingException("Server doesn't support encrypted passwords using CRAM-MD5.");
                 }
-                break;
             }
             case PLAIN: {
                 if (hasCapability(Capabilities.AUTH_PLAIN)) {
-                    saslAuthPlainWithLoginFallback();
+                    return saslAuthPlainWithLoginFallback();
                 } else if (!hasCapability(Capabilities.LOGINDISABLED)) {
-                    login();
+                    return login();
                 } else {
                     throw new MessagingException("Server doesn't support unencrypted passwords using AUTH=PLAIN " +
                             "and LOGIN is disabled.");
                 }
-                break;
             }
             case EXTERNAL: {
                 if (hasCapability(Capabilities.AUTH_EXTERNAL)) {
-                    saslAuthExternal();
+                    return saslAuthExternal();
                 } else {
                     // Provide notification to user of a problem authenticating using client certificates
                     throw new CertificateValidationException(CertificateValidationException.Reason.MissingCapability);
                 }
-                break;
             }
             default: {
                 throw new MessagingException("Unhandled authentication method found in the server settings (bug).");
@@ -371,28 +375,28 @@ class ImapConnection {
         }
     }
 
-    private void authXoauth2withSASLIR() throws IOException, MessagingException {
+    private List<ImapResponse> authXoauth2withSASLIR() throws IOException, MessagingException {
         retryXoauth2WithNewToken = true;
         try {
-            attemptXOAuth2();
+            return attemptXOAuth2();
         } catch (NegativeImapResponseException e) {
             //TODO: Check response code so we don't needlessly invalidate the token.
             oauthTokenProvider.invalidateToken(settings.getUsername());
 
             if (!retryXoauth2WithNewToken) {
-                handlePermanentXoauth2Failure(e);
+                throw handlePermanentXoauth2Failure(e);
             } else {
-                handleTemporaryXoauth2Failure(e);
+                return handleTemporaryXoauth2Failure(e);
             }
         }
     }
 
-    private void handlePermanentXoauth2Failure(NegativeImapResponseException e) throws AuthenticationFailedException {
+    private AuthenticationFailedException handlePermanentXoauth2Failure(NegativeImapResponseException e) {
         Timber.v(e, "Permanent failure during XOAUTH2");
-        throw new AuthenticationFailedException(e.getMessage(), e);
+        return new AuthenticationFailedException(e.getMessage(), e);
     }
 
-    private void handleTemporaryXoauth2Failure(NegativeImapResponseException e) throws IOException, MessagingException {
+    private List<ImapResponse> handleTemporaryXoauth2Failure(NegativeImapResponseException e) throws IOException, MessagingException {
         //We got a response indicating a retry might suceed after token refresh
         //We could avoid this if we had a reasonable chance of knowing
         //if a token was invalid before use (e.g. due to expiry). But we don't
@@ -400,30 +404,28 @@ class ImapConnection {
 
         Timber.v(e, "Temporary failure - retrying with new token");
         try {
-            attemptXOAuth2();
+            return attemptXOAuth2();
         } catch (NegativeImapResponseException e2) {
             //Okay, we failed on a new token.
             //Invalidate the token anyway but assume it's permanent.
             Timber.v(e, "Authentication exception for new token, permanent error assumed");
             oauthTokenProvider.invalidateToken(settings.getUsername());
-            handlePermanentXoauth2Failure(e2);
+            throw handlePermanentXoauth2Failure(e2);
         }
     }
 
-    private void attemptXOAuth2() throws MessagingException, IOException {
+    private List<ImapResponse> attemptXOAuth2() throws MessagingException, IOException {
         String token = oauthTokenProvider.getToken(settings.getUsername(), OAuth2TokenProvider.OAUTH2_TIMEOUT);
         String authString = Authentication.computeXoauth(settings.getUsername(), token);
         String tag = sendSaslIrCommand(Commands.AUTHENTICATE_XOAUTH2, authString, true);
 
-        List<ImapResponse> responses = responseParser.readStatusResponse(tag, Commands.AUTHENTICATE_XOAUTH2, getLogId(),
+        return responseParser.readStatusResponse(tag, Commands.AUTHENTICATE_XOAUTH2, getLogId(),
                 new UntaggedHandler() {
                     @Override
                     public void handleAsyncUntaggedResponse(ImapResponse response) throws IOException {
                         handleXOAuthUntaggedResponse(response);
                     }
                 });
-        
-        extractCapabilities(responses);
     }
 
     private void handleXOAuthUntaggedResponse(ImapResponse response) throws IOException {
@@ -437,7 +439,7 @@ class ImapConnection {
         }
     }
 
-    private void authCramMD5() throws MessagingException, IOException {
+    private List<ImapResponse> authCramMD5() throws MessagingException, IOException {
         String command = Commands.AUTHENTICATE_CRAM_MD5;
         String tag = sendCommand(command, false);
 
@@ -455,25 +457,25 @@ class ImapConnection {
         outputStream.flush();
 
         try {
-            extractCapabilities(responseParser.readStatusResponse(tag, command, getLogId(), null));
+            return responseParser.readStatusResponse(tag, command, getLogId(), null);
         } catch (NegativeImapResponseException e) {
-            handleAuthenticationFailure(e);
+            throw handleAuthenticationFailure(e);
         }
     }
 
-    private void saslAuthPlainWithLoginFallback() throws IOException, MessagingException {
+    private List<ImapResponse> saslAuthPlainWithLoginFallback() throws IOException, MessagingException {
         try {
-            saslAuthPlain();
+            return saslAuthPlain();
         } catch (AuthenticationFailedException e) {
             if (!isConnected()) {
                 throw e;
             }
             
-            login();
+            return login();
         }
     }
 
-    private void saslAuthPlain() throws IOException, MessagingException {
+    private List<ImapResponse> saslAuthPlain() throws IOException, MessagingException {
         String command = Commands.AUTHENTICATE_PLAIN;
         String tag = sendCommand(command, false);
 
@@ -488,13 +490,13 @@ class ImapConnection {
         outputStream.flush();
 
         try {
-            extractCapabilities(responseParser.readStatusResponse(tag, command, getLogId(), null));
+            return responseParser.readStatusResponse(tag, command, getLogId(), null);
         } catch (NegativeImapResponseException e) {
-            handleAuthenticationFailure(e);
+            throw handleAuthenticationFailure(e);
         }
     }
 
-    private void login() throws IOException, MessagingException {
+    private List<ImapResponse> login() throws IOException, MessagingException {
         /*
          * Use quoted strings which permit spaces and quotes. (Using IMAP
          * string literals would be better, but some servers are broken
@@ -509,16 +511,16 @@ class ImapConnection {
 
         try {
             String command = String.format(Commands.LOGIN + " \"%s\" \"%s\"", username, password);
-            extractCapabilities(executeSimpleCommand(command, true));
+            return executeSimpleCommand(command, true);
         } catch (NegativeImapResponseException e) {
-            handleAuthenticationFailure(e);
+            throw handleAuthenticationFailure(e);
         }
     }
 
-    private void saslAuthExternal() throws IOException, MessagingException {
+    private List<ImapResponse> saslAuthExternal() throws IOException, MessagingException {
         try {
             String command = Commands.AUTHENTICATE_EXTERNAL + " " + Base64.encode(settings.getUsername());
-            extractCapabilities(executeSimpleCommand(command, false));
+            return executeSimpleCommand(command, false);
         } catch (NegativeImapResponseException e) {
             /*
              * Provide notification to the user of a problem authenticating
@@ -531,7 +533,7 @@ class ImapConnection {
         }
     }
 
-    private void handleAuthenticationFailure(NegativeImapResponseException e) throws MessagingException {
+    private MessagingException handleAuthenticationFailure(NegativeImapResponseException e) {
         ImapResponse lastResponse = e.getLastResponse();
         String responseCode = ResponseCodeExtractor.getResponseCode(lastResponse);
 
@@ -541,10 +543,10 @@ class ImapConnection {
                 close();
             }
 
-            throw new AuthenticationFailedException(e.getMessage());
+            return new AuthenticationFailedException(e.getMessage());
         } else {
             close();
-            throw e;
+            return e;
         }
     }
 
