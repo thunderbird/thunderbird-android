@@ -3,7 +3,9 @@ package com.fsck.k9.mail.store.imap;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.List;
 
+import android.app.Activity;
 import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.AuthType;
@@ -23,7 +25,6 @@ import okio.ByteString;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.robolectric.shadows.ShadowLog;
 
 import static org.hamcrest.core.StringContains.containsString;
@@ -32,9 +33,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(K9LibRobolectricTestRunner.class)
@@ -45,10 +44,12 @@ public class ImapConnectionTest {
     private static final String PASSWORD = "123456";
     private static final int SOCKET_CONNECT_TIMEOUT = 10000;
     private static final int SOCKET_READ_TIMEOUT = 10000;
+    private static final String XOAUTH_TOKEN = "token";
+    private static final String XOAUTH_ANOTHER_TOKEN = "token2";
     private static final String XOAUTH_STRING = ByteString.encodeUtf8(
-            "user=" + USERNAME + "\001auth=Bearer token\001\001").base64();
+            "user=" + USERNAME + "\001auth=Bearer " + XOAUTH_TOKEN + "\001\001").base64();
     private static final String XOAUTH_STRING_RETRY = ByteString.encodeUtf8(
-            "user=" + USERNAME + "\001auth=Bearer token2\001\001").base64();
+            "user=" + USERNAME + "\001auth=Bearer " + XOAUTH_ANOTHER_TOKEN + "\001\001").base64();
 
 
     private TrustedSocketFactory socketFactory;
@@ -60,7 +61,7 @@ public class ImapConnectionTest {
     @Before
     public void setUp() throws Exception {
         connectivityManager = mock(ConnectivityManager.class);
-        oAuth2TokenProvider = mock(OAuth2TokenProvider.class);
+        oAuth2TokenProvider = createOAuth2TokenProvider();
         socketFactory = new TestTrustedSocketFactory();
 
         settings = new SimpleImapSettings();
@@ -86,8 +87,7 @@ public class ImapConnectionTest {
         server.output("+");
         server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
         server.output("2 OK Success");
-        simplePostAuthenticationDialog(server, true, 3);
-
+        postAuthenticationDialogRequestingCapabilities(server);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -105,7 +105,7 @@ public class ImapConnectionTest {
         server.output("+");
         server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
         server.output("1 OK Success");
-        simplePostAuthenticationDialog(server, true, 2);
+        postAuthenticationDialogRequestingCapabilities(server, 2);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -123,7 +123,7 @@ public class ImapConnectionTest {
         server.output("+");
         server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
         server.output("2 OK Success");
-        simplePostAuthenticationDialog(server, true);
+        postAuthenticationDialogRequestingCapabilities(server);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -139,7 +139,7 @@ public class ImapConnectionTest {
         preAuthenticationDialog(server);
         server.expect("2 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
         server.output("2 OK LOGIN completed");
-        simplePostAuthenticationDialog(server, true);
+        postAuthenticationDialogRequestingCapabilities(server);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
         imapConnection.open();
         imapConnection.close();
@@ -183,7 +183,7 @@ public class ImapConnectionTest {
         server.output("2 NO Login Failure");
         server.expect("3 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
         server.output("3 OK LOGIN completed");
-        simplePostAuthenticationDialog(server, true, 4);
+        postAuthenticationDialogRequestingCapabilities(server, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -250,7 +250,7 @@ public class ImapConnectionTest {
         preAuthenticationDialog(server);
         server.expect("2 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
         server.output("2 OK LOGIN completed");
-        simplePostAuthenticationDialog(server, true);
+        postAuthenticationDialogRequestingCapabilities(server);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -268,7 +268,7 @@ public class ImapConnectionTest {
         server.output("+ " + ByteString.encodeUtf8("<0000.000000000@example.org>").base64());
         server.expect("dXNlciA2ZjdiOTcyYjk5YTI4NDk4OTRhN2YyMmE3MGRhZDg0OQ==");
         server.output("2 OK Success");
-        simplePostAuthenticationDialog(server, true);
+        postAuthenticationDialogRequestingCapabilities(server);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -321,12 +321,11 @@ public class ImapConnectionTest {
     @Test
     public void open_authXoauthWithSaslIr() throws Exception {
         settings.setAuthType(AuthType.XOAUTH2);
-        when(oAuth2TokenProvider.getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT)).thenReturn("token");
         MockImapServer server = new MockImapServer();
         preAuthenticationDialog(server, "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2");
         server.expect("2 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING);
         server.output("2 OK Success");
-        simplePostAuthenticationDialog(server, true);
+        postAuthenticationDialogRequestingCapabilities(server);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -338,8 +337,6 @@ public class ImapConnectionTest {
     @Test
     public void open_authXoauthWithSaslIrThrowsExeptionOn401Response() throws Exception {
         settings.setAuthType(AuthType.XOAUTH2);
-        when(oAuth2TokenProvider.getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT))
-                .thenReturn("token").thenReturn("token2");
         MockImapServer server = new MockImapServer();
         preAuthenticationDialog(server, "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2");
         server.expect("2 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING);
@@ -352,8 +349,7 @@ public class ImapConnectionTest {
             imapConnection.open();
             fail();
         } catch (AuthenticationFailedException e) {
-            assertEquals(
-                    "Command: AUTHENTICATE XOAUTH2; response: #2# [NO, SASL authentication failed]",
+            assertEquals("Command: AUTHENTICATE XOAUTH2; response: #2# [NO, SASL authentication failed]",
                     e.getMessage());
         }
     }
@@ -361,8 +357,6 @@ public class ImapConnectionTest {
     @Test
     public void open_authXoauthWithSaslIrInvalidatesAndRetriesNewTokenOn400Response() throws Exception {
         settings.setAuthType(AuthType.XOAUTH2);
-        when(oAuth2TokenProvider.getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT))
-                .thenReturn("token").thenReturn("token2");
         MockImapServer server = new MockImapServer();
         preAuthenticationDialog(server, "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2");
         server.expect("2 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING);
@@ -371,24 +365,18 @@ public class ImapConnectionTest {
         server.output("2 NO SASL authentication failed");
         server.expect("3 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING_RETRY);
         server.output("3 OK Success");
-        simplePostAuthenticationDialog(server, true, 4);
+        postAuthenticationDialogRequestingCapabilities(server, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
 
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
-        InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT);
-        inOrder.verify(oAuth2TokenProvider).invalidateToken("user");
-        inOrder.verify(oAuth2TokenProvider).getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT);
     }
 
     @Test
     public void open_authXoauthWithSaslIrInvalidatesAndRetriesNewTokenOnInvalidJsonResponse() throws Exception {
         settings.setAuthType(AuthType.XOAUTH2);
-        when(oAuth2TokenProvider.getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT))
-                .thenReturn("token").thenReturn("token2");
         MockImapServer server = new MockImapServer();
         preAuthenticationDialog(server, "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2");
         server.expect("2 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING);
@@ -397,24 +385,19 @@ public class ImapConnectionTest {
         server.output("2 NO SASL authentication failed");
         server.expect("3 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING_RETRY);
         server.output("3 OK Success");
-        simplePostAuthenticationDialog(server, true, 4);
+        requestCapabilities(server, 4);
+        simplePostAuthenticationDialog(server, 5);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
 
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
-        InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT);
-        inOrder.verify(oAuth2TokenProvider).invalidateToken("user");
-        inOrder.verify(oAuth2TokenProvider).getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT);
     }
 
     @Test
     public void open_authXoauthWithSaslIrInvalidatesAndRetriesNewTokenOnMissingStatusJsonResponse() throws Exception {
         settings.setAuthType(AuthType.XOAUTH2);
-        when(oAuth2TokenProvider.getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT))
-                .thenReturn("token").thenReturn("token2");
         MockImapServer server = new MockImapServer();
         preAuthenticationDialog(server, "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2");
         server.expect("2 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING);
@@ -423,24 +406,19 @@ public class ImapConnectionTest {
         server.output("2 NO SASL authentication failed");
         server.expect("3 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING_RETRY);
         server.output("3 OK Success");
-        simplePostAuthenticationDialog(server, true, 4);
+        requestCapabilities(server, 4);
+        simplePostAuthenticationDialog(server, 5);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
 
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
-        InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT);
-        inOrder.verify(oAuth2TokenProvider).invalidateToken("user");
-        inOrder.verify(oAuth2TokenProvider).getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT);
     }
 
     @Test
     public void open_authXoauthWithSaslIrWithOldTokenThrowsExceptionIfRetryFails() throws Exception {
         settings.setAuthType(AuthType.XOAUTH2);
-        when(oAuth2TokenProvider.getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT))
-                .thenReturn("token").thenReturn("token2");
         MockImapServer server = new MockImapServer();
         preAuthenticationDialog(server, "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2");
         server.expect("2 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING);
@@ -451,15 +429,14 @@ public class ImapConnectionTest {
         server.output("+ 433ba3a3a");
         server.expect("");
         server.output("3 NO SASL authentication failed");
-        simplePostAuthenticationDialog(server, true);
+        postAuthenticationDialogRequestingCapabilities(server);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         try {
             imapConnection.open();
             fail();
         } catch (AuthenticationFailedException e) {
-            assertEquals(
-                    "Command: AUTHENTICATE XOAUTH2; response: #3# [NO, SASL authentication failed]",
+            assertEquals("Command: AUTHENTICATE XOAUTH2; response: #3# [NO, SASL authentication failed]",
                     e.getMessage());
         }
     }
@@ -467,15 +444,15 @@ public class ImapConnectionTest {
     @Test
     public void open_authXoauthWithSaslIrParsesCapabilities() throws Exception {
         settings.setAuthType(AuthType.XOAUTH2);
-        when(oAuth2TokenProvider.getToken("user", OAuth2TokenProvider.OAUTH2_TIMEOUT))
-                .thenReturn("token");
         MockImapServer server = new MockImapServer();
         preAuthenticationDialog(server, "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2");
         server.expect("2 AUTHENTICATE XOAUTH2 " + XOAUTH_STRING);
         server.output("2 OK [CAPABILITY IMAP4REV1 IDLE XM-GM-EXT-1]");
-        simplePostAuthenticationDialog(server, false);
+        simplePostAuthenticationDialog(server, 3);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
         imapConnection.open();
+
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
         assertTrue(imapConnection.hasCapability("XM-GM-EXT-1"));
@@ -488,7 +465,7 @@ public class ImapConnectionTest {
         preAuthenticationDialog(server, "AUTH=EXTERNAL");
         server.expect("2 AUTHENTICATE EXTERNAL " + ByteString.encodeUtf8(USERNAME).base64());
         server.output("2 OK Success");
-        simplePostAuthenticationDialog(server, true);
+        postAuthenticationDialogRequestingCapabilities(server);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -548,7 +525,7 @@ public class ImapConnectionTest {
         server.expect("3 CAPABILITY");
         server.output("* CAPABILITY IDLE");
         server.output("3 OK CAPABILITY Completed");
-        simplePostAuthenticationDialog(server, false, 4);
+        simplePostAuthenticationDialog(server, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -570,7 +547,7 @@ public class ImapConnectionTest {
                 "ENABLE MOVE CONDSTORE ESEARCH UTF8=ACCEPT LIST-EXTENDED LIST-STATUS LITERAL- SPECIAL-USE " +
                 "APPENDLIMIT=35651584");
         server.output("2 OK");
-        simplePostAuthenticationDialog(server, false, 3);
+        simplePostAuthenticationDialog(server, 3);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -589,7 +566,7 @@ public class ImapConnectionTest {
         server.output("+");
         server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
         server.output("2 OK [CAPABILITY IDLE]");
-        simplePostAuthenticationDialog(server, false, 3);
+        simplePostAuthenticationDialog(server, 3);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -602,7 +579,7 @@ public class ImapConnectionTest {
     @Test
     public void open_withNamespaceCapability_shouldIssueNamespaceCommand() throws Exception {
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "", "NAMESPACE");
+        simplePreAuthAndLoginDialog(server, "NAMESPACE");
         server.expect("3 NAMESPACE");
         server.output("* NAMESPACE ((\"\" \"/\")) NIL NIL");
         server.output("3 OK command completed");
@@ -715,11 +692,11 @@ public class ImapConnectionTest {
     public void open_withCompressDeflateCapability_shouldEnableCompression() throws Exception {
         settings.setUseCompression(true);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "", "COMPRESS=DEFLATE");
+        simplePreAuthAndLoginDialog(server, "COMPRESS=DEFLATE");
         server.expect("3 COMPRESS DEFLATE");
         server.output("3 OK");
         server.enableCompression();
-        simplePostAuthenticationDialog(server, false, 4);
+        simplePostAuthenticationDialog(server, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -733,10 +710,10 @@ public class ImapConnectionTest {
         settings.setAuthType(AuthType.PLAIN);
         settings.setUseCompression(true);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "", "COMPRESS=DEFLATE");
+        simplePreAuthAndLoginDialog(server, "COMPRESS=DEFLATE");
         server.expect("3 COMPRESS DEFLATE");
         server.output("3 NO");
-        simplePostAuthenticationDialog(server, false, 4);
+        simplePostAuthenticationDialog(server, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -750,7 +727,7 @@ public class ImapConnectionTest {
         settings.setAuthType(AuthType.PLAIN);
         settings.setUseCompression(true);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "", "COMPRESS=DEFLATE");
+        simplePreAuthAndLoginDialog(server, "COMPRESS=DEFLATE");
         server.expect("3 COMPRESS DEFLATE");
         server.closeConnection();
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
@@ -768,9 +745,8 @@ public class ImapConnectionTest {
     @Test
     public void open_withIoExceptionDuringListCommand_shouldThrow() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
-        settings.setUseCompression(true);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "","");
+        simplePreAuthAndLoginDialog(server, "");
         server.expect("3 LIST \"\" \"\"");
         server.output("* Now what?");
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
@@ -788,9 +764,8 @@ public class ImapConnectionTest {
     @Test
     public void open_withNegativeResponseToListCommand() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
-        settings.setUseCompression(true);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "", "");
+        simplePreAuthAndLoginDialog(server, "");
         server.expect("3 LIST \"\" \"\"");
         server.output("3 NO");
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
@@ -873,7 +848,7 @@ public class ImapConnectionTest {
     @Test
     public void isIdleCapable_withIdleCapability() throws Exception {
         MockImapServer server = new MockImapServer();
-        ImapConnection imapConnection = simpleOpenWithCapabilities(server, "", "IDLE");
+        ImapConnection imapConnection = simpleOpenWithCapabilities(server, "IDLE");
 
         boolean result = imapConnection.isIdleCapable();
 
@@ -886,7 +861,7 @@ public class ImapConnectionTest {
     public void sendContinuation() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         MockImapServer server = new MockImapServer();
-        simpleOpenDialog(server, "", "IDLE");
+        simpleOpenDialog(server, "IDLE");
         server.expect("4 IDLE");
         server.output("+ idling");
         server.expect("DONE");
@@ -902,6 +877,7 @@ public class ImapConnectionTest {
         server.verifyInteractionCompleted();
     }
 
+
     private ImapConnection createImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
             ConnectivityManager connectivityManager, OAuth2TokenProvider oAuth2TokenProvider) {
         return new ImapConnection(settings, socketFactory, connectivityManager, oAuth2TokenProvider,
@@ -916,11 +892,12 @@ public class ImapConnectionTest {
     }
 
     private ImapConnection simpleOpen(MockImapServer server) throws Exception {
-        return simpleOpenWithCapabilities(server, "", "");
+        return simpleOpenWithCapabilities(server, "");
     }
 
-    private ImapConnection simpleOpenWithCapabilities(MockImapServer server, String preAuthCapabilities, String postAuthCapabilities) throws Exception {
-        simpleOpenDialog(server, preAuthCapabilities, postAuthCapabilities);
+    private ImapConnection simpleOpenWithCapabilities(MockImapServer server, String postAuthCapabilities)
+            throws Exception {
+        simpleOpenDialog(server, postAuthCapabilities);
 
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
         imapConnection.open();
@@ -939,36 +916,78 @@ public class ImapConnectionTest {
         server.output("1 OK CAPABILITY");
     }
 
-    private void simplePostAuthenticationDialog(MockImapServer server, boolean requestCapabilities) {
-        simplePostAuthenticationDialog(server, requestCapabilities, 3);
+    private void postAuthenticationDialogRequestingCapabilities(MockImapServer server) {
+        postAuthenticationDialogRequestingCapabilities(server, 3);
     }
 
-    private void simplePostAuthenticationDialog(MockImapServer server, boolean requestCapabilities, int tag) {
-        if (requestCapabilities) {
-            server.expect(tag + " CAPABILITY");
-            server.output("* CAPABILITY IMAP4 IMAP4REV1 ");
-            server.output(tag+" OK CAPABILITY");
-            server.expect((tag+1) + " LIST \"\" \"\"");
-            server.output("* LIST () \"/\" foo/bar");
-            server.output((tag+1) + " OK");
-        } else {
-            server.expect(tag + " LIST \"\" \"\"");
-            server.output("* LIST () \"/\" foo/bar");
-            server.output(tag + " OK");
-        }
+    private void postAuthenticationDialogRequestingCapabilities(MockImapServer server, int tag) {
+        requestCapabilities(server, tag);
+        simplePostAuthenticationDialog(server, tag + 1);
     }
 
-    private void simpleOpenDialog(MockImapServer server, String preAuthCapabilities, String postAuthCapabilities) {
-        simplePreAuthAndLoginDialog(server, preAuthCapabilities, postAuthCapabilities);
-        simplePostAuthenticationDialog(server, false);
+    private void requestCapabilities(MockImapServer server, int tag) {
+        server.expect(tag + " CAPABILITY");
+        server.output("* CAPABILITY IMAP4 IMAP4REV1 ");
+        server.output(tag + " OK CAPABILITY");
     }
 
-    private void simplePreAuthAndLoginDialog(MockImapServer server, String preAuthCapabilities, String postAuthCapabilities) {
+    private void simplePostAuthenticationDialog(MockImapServer server, int tag) {
+        server.expect(tag + " LIST \"\" \"\"");
+        server.output("* LIST () \"/\" foo/bar");
+        server.output(tag + " OK");
+    }
+
+    private void simpleOpenDialog(MockImapServer server, String postAuthCapabilities) {
+        simplePreAuthAndLoginDialog(server, postAuthCapabilities);
+        simplePostAuthenticationDialog(server, 3);
+    }
+
+    private void simplePreAuthAndLoginDialog(MockImapServer server, String postAuthCapabilities) {
         settings.setAuthType(AuthType.PLAIN);
 
-        preAuthenticationDialog(server, preAuthCapabilities);
+        preAuthenticationDialog(server);
 
         server.expect("2 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
         server.output("2 OK [CAPABILITY " + postAuthCapabilities + "] LOGIN completed");
+    }
+
+    private OAuth2TokenProvider createOAuth2TokenProvider() throws AuthenticationFailedException {
+        return new OAuth2TokenProvider() {
+            private int invalidationCount = 0;
+
+            @Override
+            public String getToken(String username, long timeoutMillis) throws AuthenticationFailedException {
+                assertEquals(USERNAME, username);
+                assertEquals(OAUTH2_TIMEOUT, timeoutMillis);
+
+                switch (invalidationCount) {
+                    case 0: {
+                        return XOAUTH_TOKEN;
+                    }
+                    case 1: {
+                        return XOAUTH_ANOTHER_TOKEN;
+                    }
+                    default: {
+                        throw new AssertionError("Ran out of auth tokens. invalidateToken() called too often?");
+                    }
+                }
+            }
+
+            @Override
+            public void invalidateToken(String username) {
+                assertEquals(USERNAME, username);
+                invalidationCount++;
+            }
+
+            @Override
+            public List<String> getAccounts() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void authorizeApi(String username, Activity activity, OAuth2TokenProviderAuthCallback callback) {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
 }

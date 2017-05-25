@@ -391,7 +391,7 @@ class ImapConnection {
     }
 
     private AuthenticationFailedException handlePermanentXoauth2Failure(NegativeImapResponseException e) {
-            Timber.v(e, "Permanent failure during XOAUTH2");
+        Timber.v(e, "Permanent failure during XOAUTH2");
         return new AuthenticationFailedException(e.getMessage(), e);
     }
 
