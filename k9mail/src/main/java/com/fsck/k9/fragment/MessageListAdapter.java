@@ -74,7 +74,7 @@ public class MessageListAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = fragment.getLayoutInflater().inflate(R.layout.message_list_item, parent, false);
+        View view = fragment.getK9LayoutInflater().inflate(R.layout.message_list_item, parent, false);
 
         MessageViewHolder holder = new MessageViewHolder(fragment);
         holder.date = (TextView) view.findViewById(R.id.date);

@@ -2913,7 +2913,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         return (isRemoteSearchAllowed() || isCheckMailAllowed());
     }
 
-    LayoutInflater getLayoutInflater() {
+    LayoutInflater getK9LayoutInflater() {
         return layoutInflater;
     }
 }
