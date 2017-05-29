@@ -18,6 +18,7 @@ public class UriLinkifier {
 
     static {
         SUPPORTED_URIS = new HashMap<>();
+        SUPPORTED_URIS.put("ethereum:", new EthereumUriParser());
         SUPPORTED_URIS.put("bitcoin:", new BitcoinUriParser());
         UriParser httpParser = new HttpUriParser();
         SUPPORTED_URIS.put("http:", httpParser);
