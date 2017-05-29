@@ -579,7 +579,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         outState.putSerializable(STATE_IDENTITY, identity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, identityChanged);
         outState.putString(STATE_IN_REPLY_TO, repliedToMessageId);
-        outState.putString(STATE_REFERENCES, referencedMessageIds);
+        outState.putString(STATE_REFERENCES, referencedMessageIds); //the refenece ids are being saved
         outState.putBoolean(STATE_KEY_READ_RECEIPT, requestReadReceipt);
         outState.putBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE, changesMadeSinceLastSave);
         outState.putBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT, alreadyNotifiedUserOfEmptySubject);
