@@ -74,6 +74,15 @@
                 style="@style/ComposeEditTextLarge"
                 />
 
+            <ImageButton
+                android:id="@+id/btnSpeak"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                android:background="@null"
+                android:src="@drawable/voice_image" />
+
+
+
             <view
                 class="com.fsck.k9.ui.EolConvertingEditText"
                 android:id="@+id/upper_signature"
