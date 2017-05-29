@@ -197,6 +197,7 @@ public class Account implements BaseAccount, StoreConfig {
     private SortType sortType;
     private Map<SortType, Boolean> sortAscending = new HashMap<>();
     private ShowPictures showPictures;
+    private UseGravatar useGravatar;
     private boolean isSignatureBeforeQuotedText;
     private Expunge expungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
     private int maxPushFolders;
@@ -263,6 +264,10 @@ public class Account implements BaseAccount, StoreConfig {
         NEVER, ALWAYS, ONLY_FROM_CONTACTS
     }
 
+    public enum UseGravatar {
+        NEVER, ALWAYS, ON_WIFI
+    }
+
     public enum Searchable {
         ALL, DISPLAYABLE, NONE
     }
@@ -295,6 +300,7 @@ public class Account implements BaseAccount, StoreConfig {
         sortType = DEFAULT_SORT_TYPE;
         sortAscending.put(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING);
         showPictures = ShowPictures.NEVER;
+        useGravatar = UseGravatar.NEVER;
         isSignatureBeforeQuotedText = false;
         expungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
         autoExpandFolderName = INBOX;
@@ -447,6 +453,8 @@ public class Account implements BaseAccount, StoreConfig {
         notificationSetting.setRingEnabled(storage.getBoolean(accountUuid + ".ring", true));
         notificationSetting.setRingtone(storage.getString(accountUuid + ".ringtone",
                                          "content://settings/system/notification_sound"));
+        useGravatar = getEnumStringPref(storage, accountUuid + ".useGravatar", UseGravatar.NEVER);
+
         notificationSetting.setLed(storage.getBoolean(accountUuid + ".led", true));
         notificationSetting.setLedColor(storage.getInt(accountUuid + ".ledColor", chipColor));
 
@@ -550,6 +558,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(accountUuid + ".sortTypeEnum");
         editor.remove(accountUuid + ".sortAscending");
         editor.remove(accountUuid + ".showPicturesEnum");
+        editor.remove(accountUuid + ".useGravatar");
         editor.remove(accountUuid + ".replyAfterQuote");
         editor.remove(accountUuid + ".stripSignature");
         editor.remove(accountUuid + ".cryptoApp"); // this is no longer set, but cleans up legacy values
@@ -699,6 +708,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putString(accountUuid + ".sortTypeEnum", sortType.name());
         editor.putBoolean(accountUuid + ".sortAscending", sortAscending.get(sortType));
         editor.putString(accountUuid + ".showPicturesEnum", showPictures.name());
+        editor.putString(accountUuid + ".useGravatar", useGravatar.name());
         editor.putString(accountUuid + ".folderDisplayMode", folderDisplayMode.name());
         editor.putString(accountUuid + ".folderSyncMode", folderSyncMode.name());
         editor.putString(accountUuid + ".folderPushMode", folderPushMode.name());
@@ -1212,6 +1222,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public synchronized void setShowPictures(ShowPictures showPictures) {
         this.showPictures = showPictures;
+    }
+
+    public synchronized UseGravatar getUseGravatar() {
+        return useGravatar;
+    }
+
+    public synchronized void setUseGravatar(UseGravatar useGravatar) {
+        this.useGravatar = useGravatar;
     }
 
     public synchronized FolderMode getFolderTargetMode() {

@@ -186,7 +186,7 @@ public class MessageListAdapter extends CursorAdapter {
         }
         holder.position = cursor.getPosition();
         if (holder.contactBadge != null) {
-            updateContactBadge(holder, counterpartyAddress);
+            updateContactBadge(account, holder, counterpartyAddress);
         }
         setBackgroundColor(view, selected, read);
         if (fragment.activeMessage != null) {
@@ -271,7 +271,7 @@ public class MessageListAdapter extends CursorAdapter {
         return null;
     }
 
-    private void updateContactBadge(MessageViewHolder holder, Address counterpartyAddress) {
+    private void updateContactBadge(Account account, MessageViewHolder holder, Address counterpartyAddress) {
         if (counterpartyAddress != null) {
             Utility.setContactForBadge(holder.contactBadge, counterpartyAddress);
                     /*
@@ -280,7 +280,7 @@ public class MessageListAdapter extends CursorAdapter {
                      * doesn't reset the padding, so we do it ourselves.
                      */
             holder.contactBadge.setPadding(0, 0, 0, 0);
-            fragment.contactsPictureLoader.loadContactPicture(counterpartyAddress, holder.contactBadge);
+            fragment.contactsPictureLoader.loadContactPicture(account, counterpartyAddress, holder.contactBadge);
         } else {
             holder.contactBadge.assignContactUri(null);
             holder.contactBadge.setImageResource(R.drawable.ic_contact_picture);

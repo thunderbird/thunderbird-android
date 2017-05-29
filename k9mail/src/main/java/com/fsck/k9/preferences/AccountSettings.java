@@ -17,6 +17,7 @@ import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Account.Searchable;
 import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.Account.SortType;
+import com.fsck.k9.Account.UseGravatar;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.mailstore.StorageManager;
@@ -174,6 +175,9 @@ public class AccountSettings {
         ));
         s.put("showPicturesEnum", Settings.versions(
                 new V(1, new EnumSetting<>(ShowPictures.class, ShowPictures.NEVER))
+        ));
+        s.put("useGravatarEnum", Settings.versions(
+                new V(1, new EnumSetting<>(UseGravatar.class, UseGravatar.NEVER))
         ));
         s.put("signatureBeforeQuotedText", Settings.versions(
                 new V(1, new BooleanSetting(false))

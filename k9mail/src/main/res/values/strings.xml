@@ -554,6 +554,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_show_pictures_only_from_contacts">From contacts</string>
     <string name="account_settings_show_pictures_always">From anyone</string>
 
+    <string name="account_setting_use_gravatar_label">Use Gravatar as fallback</string>
+    <string name="account_setting_use_gravatar_summary">Try to use Gravatar when a contact has no avatar</string>
+    <string name="account_setting_use_gravatar_never">No</string>
+    <string name="account_setting_use_gravatar_always">Always</string>
+    <string name="account_setting_use_gravatar_on_wifi">Only on Wi-Fi</string>
+
     <string name="account_settings_composition">Sending mail</string>
 
     <string name="account_settings_default_quoted_text_shown_label">Quote message when replying</string>

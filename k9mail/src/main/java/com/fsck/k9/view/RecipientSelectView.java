@@ -22,6 +22,9 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.activity.MessageCompose;
 import timber.log.Timber;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -66,7 +69,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private AlternateRecipientAdapter alternatesAdapter;
     private Recipient alternatesPopupRecipient;
     private TokenListener<Recipient> listener;
-
 
     public RecipientSelectView(Context context) {
         super(context);
@@ -126,7 +128,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         holder.vName.setText(recipient.getDisplayNameOrAddress());
 
-        RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
+        RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), getAccount(), holder.vContactPhoto, recipient);
 
         boolean hasCryptoProvider = cryptoProvider != null;
         if (!hasCryptoProvider) {
@@ -264,6 +266,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         for (Recipient recipient : recipients) {
             addObject(recipient);
         }
+    }
+
+    public Account getAccount() {
+        return ((MessageCompose) getContext()).getAccount();
     }
 
     public Address[] getAddresses() {
