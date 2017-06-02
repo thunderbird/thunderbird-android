@@ -1,6 +1,7 @@
 package com.fsck.k9.activity;
 
 import android.content.Context;
+import android.util.TypedValue;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.R;
@@ -10,6 +11,7 @@ import com.fsck.k9.mailstore.LocalFolder;
 
 public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     public String name;
+    public int icon;
     public String displayName;
     public long lastChecked;
     public int unreadMessageCount = -1;
@@ -81,6 +83,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
 
         this.status = truncateStatus(folder.getStatus());
 
+        this.icon = getFolderIcon(context, account, name);
         this.displayName = getDisplayName(context, account, name);
         setMoreMessagesFromFolder(folder);
     }
@@ -104,22 +107,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
      */
     public static String getDisplayName(Context context, Account account, String name) {
         final String displayName;
-        if (name.equals(account.getSpamFolderName())) {
-            displayName = String.format(
-                    context.getString(R.string.special_mailbox_name_spam_fmt), name);
-        } else if (name.equals(account.getArchiveFolderName())) {
-            displayName = String.format(
-                    context.getString(R.string.special_mailbox_name_archive_fmt), name);
-        } else if (name.equals(account.getSentFolderName())) {
-            displayName = String.format(
-                    context.getString(R.string.special_mailbox_name_sent_fmt), name);
-        } else if (name.equals(account.getTrashFolderName())) {
-            displayName = String.format(
-                    context.getString(R.string.special_mailbox_name_trash_fmt), name);
-        } else if (name.equals(account.getDraftsFolderName())) {
-            displayName = String.format(
-                    context.getString(R.string.special_mailbox_name_drafts_fmt), name);
-        } else if (name.equals(account.getOutboxFolderName())) {
+        if (name.equals(account.getOutboxFolderName())) {
             displayName = context.getString(R.string.special_mailbox_name_outbox);
         // FIXME: We really shouldn't do a case-insensitive comparison here
         } else if (name.equalsIgnoreCase(account.getInboxFolderName())) {
@@ -129,6 +117,30 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         }
 
         return displayName;
+    }
+
+    public static int getFolderIcon(Context context, Account account, String name) {
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.iconSpecialFolder, outValue, true);
+
+        if (name.equals(account.getSpamFolderName())) {
+            return outValue.resourceId;
+        } else if (name.equals(account.getArchiveFolderName())) {
+            return outValue.resourceId;
+        } else if (name.equals(account.getSentFolderName())) {
+            return outValue.resourceId;
+        } else if (name.equals(account.getTrashFolderName())) {
+            return outValue.resourceId;
+        } else if (name.equals(account.getDraftsFolderName())) {
+            return outValue.resourceId;
+        } else if (name.equals(account.getOutboxFolderName())) {
+            return outValue.resourceId;
+        } else if (name.equalsIgnoreCase(account.getInboxFolderName())) {
+            return outValue.resourceId;
+        } else {
+            context.getTheme().resolveAttribute(R.attr.iconFolder, outValue, true);
+            return outValue.resourceId;
+        }
     }
 
     public void setMoreMessagesFromFolder(LocalFolder folder) {
