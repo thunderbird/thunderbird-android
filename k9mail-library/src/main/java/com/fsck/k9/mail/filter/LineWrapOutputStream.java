@@ -4,6 +4,14 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Performs buffering / line wrapping in case of a message going
+ * over a certain number of <em>bytes</em>, provided to the constructor,
+ * {@link #LineWrapOutputStream(OutputStream, int)}.
+ * <br/>Where a line is split it does so on the last space in the line.
+ * At this point the underlying stream is updated, or when flush is called.
+ * If no space occurs, the line overruns.
+ */
 public class LineWrapOutputStream extends FilterOutputStream {
     private static final byte[] CRLF = new byte[] {'\r', '\n'};
 
@@ -13,6 +21,10 @@ public class LineWrapOutputStream extends FilterOutputStream {
     private int endOfLastWord = 0;
 
 
+    /**
+     * @param out underlying stream we wrap to.
+     * @param maxLineLength max number of bytes per line.
+     */
     public LineWrapOutputStream(OutputStream out, int maxLineLength) {
         super(out);
         buffer = new byte[maxLineLength - 2];
