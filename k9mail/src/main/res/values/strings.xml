@@ -203,6 +203,8 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" shrunk from <xliff:g id="oldSize">%s</xliff:g> to <xliff:g id="newSize">%s</xliff:g></string>
 
+    <string name="email_copied_to_clipboard">Copied to clipboard</string>
+
     <string name="compacting_account">Compacting account \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="clearing_account">Clearing account \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="recreating_account">Recreating account \"<xliff:g id="account">%s</xliff:g>\"</string>
