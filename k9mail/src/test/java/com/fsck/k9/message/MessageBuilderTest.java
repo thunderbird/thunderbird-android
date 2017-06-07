@@ -256,6 +256,14 @@ public class MessageBuilderTest {
         verifyNoMoreInteractions(anotherCallback);
     }
 
+    @Test(expected = MessagingException.class)
+    public void buildWithNullMessageFormat_shouldThrow() throws MessagingException {
+        MessageBuilder messageBuilder = createSimpleMessageBuilder();
+        messageBuilder.setMessageFormat(null);
+
+        messageBuilder.build();
+    }
+
     private MimeMessage getMessageFromCallback() {
         ArgumentCaptor<MimeMessage> mimeMessageCaptor = ArgumentCaptor.forClass(MimeMessage.class);
         verify(callback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(false));
