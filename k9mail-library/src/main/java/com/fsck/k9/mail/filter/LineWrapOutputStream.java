@@ -6,48 +6,57 @@ import java.io.OutputStream;
 
 public class LineWrapOutputStream extends FilterOutputStream {
     private static final byte[] CRLF = new byte[] {'\r', '\n'};
+    private static final byte[] canIgnore = new byte[] {' ', '\r', '\n'};
+    private static final int extraStore = canIgnore.length;
 
     private byte[] buffer;
     private int bufferStart = 0;
     private int lineLength = 0;
-    private int endOfLastWord = 0;
+    private int maxLength;
 
+
+    private int findSplitLocation(){
+        if (buffer[maxLength] == ' ' || buffer[maxLength] == '\r')
+            return maxLength;
+        // Find last space
+        int location = maxLength;
+        for (int i = maxLength - 1; i >= 0 ; i--) {
+            if (buffer[i] == ' '){
+                location = i;
+                break;
+            }
+        }
+        return location;
+    }
 
     public LineWrapOutputStream(OutputStream out, int maxLineLength) {
         super(out);
-        buffer = new byte[maxLineLength - 2];
+        maxLength = maxLineLength -2;
+        buffer = new byte[maxLength + extraStore];
+
     }
 
     @Override
     public void write(int oneByte) throws IOException {
         // Buffer full?
         if (lineLength == buffer.length) {
-            // Usable word-boundary found earlier?
-            if (endOfLastWord > 0) {
-                // Yes, so output everything up to that word-boundary
-                out.write(buffer, bufferStart, endOfLastWord - bufferStart);
-                out.write(CRLF);
-
-                bufferStart = 0;
-
-                // Skip the <SPACE> in the buffer
-                endOfLastWord++;
-                lineLength = buffer.length - endOfLastWord;
-                if (lineLength > 0) {
-                    // Copy rest of the buffer to the front
-                    System.arraycopy(buffer, endOfLastWord + 0, buffer, 0, lineLength);
-                }
-                endOfLastWord = 0;
-            } else {
-                // No word-boundary found, so output whole buffer
-                out.write(buffer, bufferStart, buffer.length - bufferStart);
-                out.write(CRLF);
-                lineLength = 0;
-                bufferStart = 0;
+            int splitLocation = findSplitLocation();
+            out.write(buffer, bufferStart, splitLocation);
+            out.write(CRLF);
+            int newStart = splitLocation;
+            for (int i = splitLocation; i < buffer.length; i++) {
+                if (buffer[i] == ' ' || buffer[i] == '\r' || buffer[i] == '\n')
+                    newStart++;
+                else
+                    break;
             }
+            int newLine = buffer.length - newStart;
+            System.arraycopy(buffer,newStart,buffer,0,newLine);
+            bufferStart = 0;
+            lineLength = newLine;
         }
 
-        if ((oneByte == '\n') || (oneByte == '\r')) {
+        if (((oneByte == '\n') || (oneByte == '\r')) && lineLength <= maxLength) {
             // <CR> or <LF> character found, so output buffer ...
             if (lineLength - bufferStart > 0) {
                 out.write(buffer, bufferStart, lineLength - bufferStart);
@@ -56,13 +65,7 @@ public class LineWrapOutputStream extends FilterOutputStream {
             out.write(oneByte);
             lineLength = 0;
             bufferStart = 0;
-            endOfLastWord = 0;
         } else {
-            // Remember this position as last word-boundary if <SPACE> found
-            if (oneByte == ' ') {
-                endOfLastWord = lineLength;
-            }
-
             // Write character to the buffer
             buffer[lineLength] = (byte)oneByte;
             lineLength++;
@@ -78,7 +81,6 @@ public class LineWrapOutputStream extends FilterOutputStream {
 
             // Mark current position as new start of the buffer
             bufferStart = (lineLength == buffer.length) ? 0 : lineLength;
-            endOfLastWord = 0;
         }
         out.flush();
     }
