@@ -2,6 +2,7 @@ package com.fsck.k9.activity.compose;
 
 
 import java.util.List;
+import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +32,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     private final Context context;
     private List<Recipient> recipients;
     private String highlight;
+    private WeakHashMap<Integer, View> positionToViewMap = new WeakHashMap<>();
 
 
     public RecipientAdapter(Context context) {
@@ -64,13 +66,13 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        if (view == null) {
+        if ((view = positionToViewMap.get(position)) == null) {
             view = newView(parent);
+            positionToViewMap.put(position, view);
         }
 
         Recipient recipient = getItem(position);
         bindView(view, recipient);
-
         return view;
     }
 
