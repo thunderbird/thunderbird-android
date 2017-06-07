@@ -1369,7 +1369,10 @@ class ImapFolder extends Folder<ImapMessage> {
     public boolean equals(Object other) {
         if (other instanceof ImapFolder) {
             ImapFolder otherFolder = (ImapFolder) other;
-            return otherFolder.getName().equalsIgnoreCase(getName());
+            if (otherFolder.getName().equalsIgnoreCase("INBOX")) {
+                return otherFolder.getName().equalsIgnoreCase(getName());
+            }
+            return otherFolder.getName().equals(getName());
         }
 
         return super.equals(other);
@@ -1377,6 +1380,10 @@ class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public int hashCode() {
+        if (getName().equalsIgnoreCase("INBOX")) {
+
+            return "INBOX".hashCode();
+        }
         return getName().hashCode();
     }
 
