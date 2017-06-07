@@ -16,16 +16,20 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
+import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.notification.NotificationController;
@@ -176,6 +180,7 @@ public class Prefs extends K9PreferenceActivity {
         addPreferencesFromResource(R.xml.global_preferences);
 
         mTheme = setupListPreference(PREFERENCE_THEME, themeIdToName(K9.getK9Theme()));
+
         mFixedMessageTheme = (CheckBoxPreference) findPreference(PREFERENCE_FIXED_MESSAGE_THEME);
         mFixedMessageTheme.setChecked(K9.useFixedMessageViewTheme());
         mMessageTheme = setupListPreference(PREFERENCE_MESSAGE_VIEW_THEME,
@@ -571,6 +576,7 @@ public class Prefs extends K9PreferenceActivity {
     @Override
     protected Dialog onCreateDialog(int id) {
         Dialog dialog = null;
+
         switch (id) {
             case DIALOG_APG_DEPRECATION_WARNING: {
                 dialog = new ApgDeprecationWarningDialog(this);
@@ -585,6 +591,16 @@ public class Prefs extends K9PreferenceActivity {
 
         }
         return dialog;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent=new Intent(Prefs.this, MessageList.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+
     }
 
     @Override
