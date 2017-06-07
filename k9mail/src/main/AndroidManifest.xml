@@ -63,6 +63,7 @@
         android:name="K9"
         android:allowTaskReparenting="false"
         android:icon="@drawable/icon"
+        android:roundIcon="@mipmap/icon_round"
         android:label="@string/app_name"
         android:theme="@style/Theme.K9.Startup"
         android:allowBackup="false">
