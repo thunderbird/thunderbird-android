@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import timber.log.Timber;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.mailstore.util.FlowedMessageUtils;
 import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.internet.TextBody;
@@ -170,7 +171,8 @@ class TextBodyBuilder {
                 text += getSignature();
             }
         }
-
+        // Change text to format flowed, this is for plain text
+        text = FlowedMessageUtils.flow(text,false);
         TextBody body = new TextBody(text);
         body.setComposedMessageLength(composedMessageLength);
         body.setComposedMessageOffset(composedMessageOffset);

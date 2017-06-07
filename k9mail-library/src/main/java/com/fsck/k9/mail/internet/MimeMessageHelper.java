@@ -31,7 +31,11 @@ public class MimeMessageHelper {
         } else if (body instanceof TextBody) {
             String contentType;
             if (MimeUtility.mimeTypeMatches(part.getMimeType(), "text/*")) {
-                contentType = String.format("%s;\r\n charset=utf-8", part.getMimeType());
+                // if plain text then it will be in flowed format
+                if (MimeUtility.mimeTypeMatches(part.getMimeType(),"*/plain"))
+                    contentType = String.format("%s;\r\n charset=utf-8;\r\n  format=flowed", part.getMimeType());
+                else
+                    contentType = String.format("%s;\r\n charset=utf-8", part.getMimeType());
                 String name = MimeUtility.getHeaderParameter(part.getContentType(), "name");
                 if (name != null) {
                     contentType += String.format(";\r\n name=\"%s\"", name);
