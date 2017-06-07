@@ -27,6 +27,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import timber.log.Timber;
@@ -217,6 +218,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (UpgradeDatabases.actionUpgradeDatabases(this, getIntent())) {
             finish();
@@ -967,6 +970,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 break;
             case R.id.read_receipt:
                 onReadReceipt();
+                break;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
