@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import com.fsck.k9.*;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.K9Activity;
@@ -28,6 +29,10 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
 
     private Button mDoneButton;
 
+    private TextView mDescriptionComment;
+
+    private TextView mNameComment;
+
     public static void actionSetNames(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupNames.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
@@ -39,7 +44,11 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_names);
         mDescription = (EditText)findViewById(R.id.account_description);
+        mDescriptionComment = (TextView)findViewById(R.id.account_description_comment);
+        editTextInstructionHandler(mDescription,mDescriptionComment,getString(R.string.account_setup_names_account_name_label));
         mName = (EditText)findViewById(R.id.account_name);
+        mNameComment = (TextView)findViewById(R.id.account_name_comment);
+        editTextInstructionHandler(mName,mNameComment,getString(R.string.account_setup_names_user_name_label));
         mDoneButton = (Button)findViewById(R.id.done);
         mDoneButton.setOnClickListener(this);
 
@@ -73,6 +82,16 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         if (!Utility.requiredFieldValid(mName)) {
             mDoneButton.setEnabled(false);
         }
+    }
+
+    private void editTextInstructionHandler(EditText editText, TextView textView, String string){
+        int indexOfBracketsStart = string.indexOf("(");
+        int indexOfBracketsEnd = string.indexOf(")");
+        String description = string.substring(0,indexOfBracketsStart);
+        String commentInBrackets = string.substring(indexOfBracketsStart,indexOfBracketsEnd)+")";
+        editText.setHint(description);
+        editText.setContentDescription(description);
+        textView.setText(commentInBrackets);
     }
 
     private void validateFields() {

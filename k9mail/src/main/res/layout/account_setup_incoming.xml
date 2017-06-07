@@ -30,7 +30,8 @@
             android:singleLine="true"
             android:inputType="textUri"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:focusable="false"/>
         <TextView
             android:text="@string/account_setup_incoming_security_label"
             android:layout_height="wrap_content"
@@ -54,7 +55,8 @@
             android:inputType="number"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:contentDescription="@string/account_setup_incoming_port_label" />
+            android:contentDescription="@string/account_setup_incoming_port_label"
+            android:focusable="false"/>
         <TextView
             android:text="@string/account_setup_incoming_username_label"
             android:layout_height="wrap_content"
@@ -67,7 +69,8 @@
             android:inputType="textEmailAddress"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:contentDescription="@string/account_setup_incoming_username_label" />
+            android:contentDescription="@string/account_setup_incoming_username_label"
+            android:focusable="false"/>
         <TextView
             android:id="@+id/account_auth_type_label"
             android:text="@string/account_setup_incoming_auth_type_label"
@@ -92,7 +95,8 @@
             android:inputType="textPassword"
             android:singleLine="true"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:focusable="false"/>
         <TextView
             android:id="@+id/account_client_certificate_label"
             android:text="@string/account_setup_incoming_client_certificate_label"
@@ -170,7 +174,8 @@
                 android:singleLine="true"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:contentDescription="@string/account_setup_incoming_webdav_mailbox_path_label" />
+                android:contentDescription="@string/account_setup_incoming_webdav_mailbox_path_label"
+                android:focusable="false"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/webdav_owa_path_section"
@@ -189,7 +194,8 @@
                 android:singleLine="true"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:contentDescription="@string/account_setup_incoming_webdav_path_prefix_label" />
+                android:contentDescription="@string/account_setup_incoming_webdav_path_prefix_label"
+                android:focusable="false"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/webdav_auth_path_section"
@@ -208,7 +214,8 @@
                 android:singleLine="true"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:contentDescription="@string/account_setup_incoming_webdav_auth_path_label" />
+                android:contentDescription="@string/account_setup_incoming_webdav_auth_path_label"
+                android:focusable="false"/>
         </LinearLayout>
         <TextView
             android:id="@+id/compression_label"

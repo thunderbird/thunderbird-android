@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.view.MotionEvent;
 import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -155,6 +156,40 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
         boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
 
+
+        mServerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
+        mPortView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
+        mUsernameView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
+        mPasswordView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
+
         try {
             ServerSettings settings = RemoteStore.decodeStoreUri(mAccount.getStoreUri());
 
@@ -223,6 +258,31 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
 
                 WebDavStoreSettings webDavSettings = (WebDavStoreSettings) settings;
+
+                mWebdavPathPrefixView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.setFocusable(true);
+                        v.setFocusableInTouchMode(true);
+                        return false;
+                    }
+                });
+                mWebdavMailboxPathView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.setFocusable(true);
+                        v.setFocusableInTouchMode(true);
+                        return false;
+                    }
+                });
+                mWebdavAuthPathView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.setFocusable(true);
+                        v.setFocusableInTouchMode(true);
+                        return false;
+                    }
+                });
 
                 if (webDavSettings.path != null) {
                     mWebdavPathPrefixView.setText(webDavSettings.path);
