@@ -41,12 +41,10 @@ public class WelcomeMessage extends K9Activity implements OnClickListener{
         switch (view.getId()) {
             case R.id.next: {
                 AccountSetupBasics.actionNewAccount(this);
-                finish();
                 break;
             }
             case R.id.import_settings: {
                 Accounts.importSettings(this);
-                finish();
                 break;
             }
         }
