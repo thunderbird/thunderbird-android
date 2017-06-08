@@ -911,9 +911,31 @@ public class MimeUtility {
         return decode(unfold(s), message);
     }
 
-    // TODO implement proper foldAndEncode
     public static String foldAndEncode(String s) {
-        return s;
+        StringBuilder sb = new StringBuilder();
+        StringBuilder line = new StringBuilder();
+
+        for (String part: s.split("[ \t]")) {
+            if (part.length() > 78) {
+                Timber.w("part '%s' too long (%d)", part, part.length());
+            }
+
+            if (line.length() + part.length() > 78) {
+                sb.append(line.toString());
+                sb.append("\r\n ");
+                line.setLength(0);
+            }
+
+            if (line.length() > 0) {
+                line.append(" ");
+            }
+
+            line.append(part);
+        }
+
+        sb.append(line.toString());
+
+        return sb.toString();
     }
 
     /**
