@@ -22,7 +22,6 @@ dependencies {
     compile "com.android.support:support-annotations:${androidSupportLibraryVersion}"
     compile "com.jakewharton.timber:timber:${timberVersion}"
 
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'dnsjava:dnsjava:2.1.7'
     compile 'org.jsoup:jsoup:1.10.2'
 

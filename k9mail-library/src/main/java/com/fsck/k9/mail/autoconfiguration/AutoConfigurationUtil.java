@@ -2,19 +2,11 @@ package com.fsck.k9.mail.autoconfiguration;
 
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import android.util.Log;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 import org.xbill.DNS.DClass;
 import org.xbill.DNS.Lookup;
@@ -44,30 +36,26 @@ public class AutoConfigurationUtil {
             MXRecord mxRecord = mxLookup(domain);
             if (mxRecord != null) {
                 final String target = mxRecord.getTarget().toString(true);
-                final String[] strings = target.split("\\.");
-                String newDomain = strings[strings.length - 2] + "." + strings[strings.length - 1];
+                final String[] targetParts = target.split("\\.");
+
+                String newDomain = targetParts[targetParts.length - 2] + "." + targetParts[targetParts.length - 1];
 
                 if (!newDomain.equals(domain)) {
                     providerInfo = findProviderInISPDB(newDomain);
                 }
             }
-        } catch (TextParseException | UnknownHostException e) {
+        } catch (Exception e) {
 
         }
 
         return providerInfo;
     }
+
     private static ProviderInfo findProviderInISPDB(String domain) {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url("https://autoconfig.thunderbird.net/v1.1/" + domain)
-                .build();
         try {
-            // Response response = client.newCall(request).execute();
             ProviderInfo providerInfo = new ProviderInfo();
 
             Document document = Jsoup.connect("https://autoconfig.thunderbird.net/v1.1/" + domain).get();
-            // Document document = Jsoup.parse(response.body().string(), "", Parser.xmlParser());
 
             Elements incomingEles = document.select("incomingServer");
             Element incoming = incomingEles.first();
@@ -152,8 +140,8 @@ public class AutoConfigurationUtil {
             return null;
         }
 
-        // TODO: 17-4-2 how to auto detect it?
         providerInfo.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_UNKNOWN;
+        providerInfo.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_UNKNOWN;
         return providerInfo;
     }
 
@@ -182,17 +170,9 @@ public class AutoConfigurationUtil {
         Resolver resolver = new SimpleResolver();
         lookup.setResolver(resolver);
         lookup.setCache(null);
-        SRVRecord[] srvRecords = (SRVRecord[]) lookup.run();
 
-        /* List<SRVRecord> srvRecords = new ArrayList<>();
-
-        if (lookup.getResult() == Lookup.SUCCESSFUL) {
-            for (Record record : records) {
-                if (record instanceof SRVRecord) {
-                    srvRecords.add((SRVRecord) record);
-                }
-            }
-        } */
+        Record[] records = lookup.run();
+        SRVRecord[] srvRecords = Arrays.copyOf(records, records.length, SRVRecord[].class);
 
         SRVRecord res = null;
 
