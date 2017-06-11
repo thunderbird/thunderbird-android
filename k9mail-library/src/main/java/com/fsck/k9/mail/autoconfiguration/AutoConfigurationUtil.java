@@ -2,19 +2,15 @@ package com.fsck.k9.mail.autoconfiguration;
 
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 import org.xbill.DNS.DClass;
 import org.xbill.DNS.Lookup;
+import org.xbill.DNS.MXRecord;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.Resolver;
 import org.xbill.DNS.SRVRecord;
@@ -29,16 +25,37 @@ import org.xbill.DNS.Type;
  */
 
 public class AutoConfigurationUtil {
-    public static ProviderInfo findProviderInISPDB(String domain) {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url("https://autoconfig.thunderbird.net/v1.1/" + domain)
-                .build();
+    public static ProviderInfo findProviderMozilla(String domain) {
+        ProviderInfo providerInfo = findProviderInISPDB(domain);
+
+        if (providerInfo != null) {
+            return providerInfo;
+        }
+
         try {
-            Response response = client.newCall(request).execute();
+            MXRecord mxRecord = mxLookup(domain);
+            if (mxRecord != null) {
+                final String target = mxRecord.getTarget().toString(true);
+                final String[] targetParts = target.split("\\.");
+
+                String newDomain = targetParts[targetParts.length - 2] + "." + targetParts[targetParts.length - 1];
+
+                if (!newDomain.equals(domain)) {
+                    providerInfo = findProviderInISPDB(newDomain);
+                }
+            }
+        } catch (Exception e) {
+
+        }
+
+        return providerInfo;
+    }
+
+    private static ProviderInfo findProviderInISPDB(String domain) {
+        try {
             ProviderInfo providerInfo = new ProviderInfo();
 
-            Document document = Jsoup.parse(response.body().string(), "", Parser.xmlParser());
+            Document document = Jsoup.connect("https://autoconfig.thunderbird.net/v1.1/" + domain).get();
 
             Elements incomingEles = document.select("incomingServer");
             Element incoming = incomingEles.first();
@@ -123,9 +140,29 @@ public class AutoConfigurationUtil {
             return null;
         }
 
-        // TODO: 17-4-2 how to auto detect it?
         providerInfo.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_UNKNOWN;
+        providerInfo.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_UNKNOWN;
         return providerInfo;
+    }
+
+    private static MXRecord mxLookup(String domain) throws TextParseException, UnknownHostException {
+        Lookup lookup = new Lookup(domain, Type.MX, DClass.IN);
+        Resolver resolver = new SimpleResolver();
+        lookup.setResolver(resolver);
+        lookup.setCache(null);
+        Record[] records = lookup.run();
+        MXRecord[] mxRecords = Arrays.copyOf(records, records.length, MXRecord[].class);
+
+        MXRecord res = null;
+        if (lookup.getResult() == Lookup.SUCCESSFUL) {
+            for (MXRecord record : mxRecords) {
+                if (res == null || record.getPriority() < res.getPriority()) {
+                    res = record;
+                }
+            }
+        }
+
+        return res;
     }
 
     private static SRVRecord srvLookup(String serviceName) throws TextParseException, UnknownHostException {
@@ -133,23 +170,21 @@ public class AutoConfigurationUtil {
         Resolver resolver = new SimpleResolver();
         lookup.setResolver(resolver);
         lookup.setCache(null);
-        Record[] records = lookup.run();
 
-        List<SRVRecord> res = new ArrayList<>();
+        Record[] records = lookup.run();
+        SRVRecord[] srvRecords = Arrays.copyOf(records, records.length, SRVRecord[].class);
+
+        SRVRecord res = null;
 
         if (lookup.getResult() == Lookup.SUCCESSFUL) {
-            for (Record record : records) {
-                if (record instanceof SRVRecord) {
-                    res.add((SRVRecord) record);
+            for (SRVRecord record : srvRecords) {
+                if (res == null || record.getPriority() < res.getPriority() ||
+                        (record.getPriority() == res.getPriority() && record.getWeight() > res.getWeight())) {
+                    res = record;
                 }
             }
         }
-
-        // TODO: 17-4-2 return record with max priority
-        if (res.size() > 0) {
-            return res.get(0);
-        }
-        return null;
+        return res;
     }
 
     public static class ProviderInfo {

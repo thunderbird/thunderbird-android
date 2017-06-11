@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -511,7 +512,7 @@ public class AccountSetupBasics extends K9Activity
 
                 if (mProvider != null) return null;
 
-                providerInfo = AutoConfigurationUtil.findProviderInISPDB(domain);
+                providerInfo = AutoConfigurationUtil.findProviderMozilla(domain);
                 if (providerInfo == null) {
                     providerInfo = AutoConfigurationUtil.findProviderBySrv(domain);
                 }
@@ -574,35 +575,12 @@ public class AccountSetupBasics extends K9Activity
 
         public String outgoingUsernameTemplate;
 
-        public String incomingType;
-
-        public String incomingSocketType;
-
-        public String incomingAddr;
-
-        public String outgoingType;
-
-        public String outgoingSocketType;
-
-        public String outgoingAddr;
-
         public String note;
 
-        public void generateUriTemplate() throws URISyntaxException {
-            incomingUriTemplate = new URI(incomingType + "+" +
-                    ("".equals(incomingSocketType) ? "" : (incomingSocketType + "+")) + "://" + incomingAddr);
-            outgoingUriTemplate = new URI(outgoingType + "+" +
-                    ("".equals(incomingSocketType) ? "" : (incomingSocketType + "+")) + "://" + outgoingAddr);
-        }
+        public static Provider newInstanceFromProviderInfo(@Nullable ProviderInfo providerInfo) throws URISyntaxException {
+            if (providerInfo == null) return null;
 
-        public static Provider newInstanceFromProviderInfo(ProviderInfo providerInfo) throws URISyntaxException {
             Provider provider = new Provider();
-            provider.incomingType = providerInfo.incomingType;
-            provider.incomingAddr = providerInfo.incomingAddr;
-            provider.incomingSocketType = providerInfo.incomingSocketType;
-            provider.outgoingType = providerInfo.outgoingType;
-            provider.outgoingAddr = providerInfo.outgoingAddr;
-            provider.outgoingSocketType = providerInfo.outgoingSocketType;
 
             if (providerInfo.incomingUsernameTemplate.equals(ProviderInfo.USERNAME_TEMPLATE_EMAIL)) {
                 provider.incomingUsernameTemplate = USERNAME_TEMPLATE_EMAIL;
@@ -620,7 +598,12 @@ public class AccountSetupBasics extends K9Activity
                 provider.outgoingUsernameTemplate = USERNAME_TEMPLATE_UNKNOWN;
             }
 
-            provider.generateUriTemplate();
+            provider.incomingUriTemplate = new URI(providerInfo.incomingType + "+"
+                    + ("".equals(providerInfo.incomingSocketType) ? "" : (providerInfo.incomingSocketType + "+"))
+                    + "://" + providerInfo.incomingAddr);
+            provider.outgoingUriTemplate = new URI(providerInfo.outgoingType + "+"
+                    + ("".equals(providerInfo.outgoingSocketType) ? "" : (providerInfo.outgoingSocketType + "+"))
+                    + "://" + providerInfo.outgoingAddr);
 
             return provider;
         }
