@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -512,7 +513,7 @@ public class AccountSetupBasics extends K9Activity
 
                 if (mProvider != null) return null;
 
-                providerInfo = AutoConfigurationUtil.findProviderInISPDB(domain);
+                providerInfo = AutoConfigurationUtil.findProviderMozilla(domain);
                 if (providerInfo == null) {
                     providerInfo = AutoConfigurationUtil.findProviderBySrv(domain);
                 }
@@ -596,7 +597,9 @@ public class AccountSetupBasics extends K9Activity
                     ("".equals(incomingSocketType) ? "" : (incomingSocketType + "+")) + "://" + outgoingAddr);
         }
 
-        public static Provider newInstanceFromProviderInfo(ProviderInfo providerInfo) throws URISyntaxException {
+        public static Provider newInstanceFromProviderInfo(@Nullable ProviderInfo providerInfo) throws URISyntaxException {
+            if (providerInfo == null) return null;
+
             Provider provider = new Provider();
             provider.incomingType = providerInfo.incomingType;
             provider.incomingAddr = providerInfo.incomingAddr;
