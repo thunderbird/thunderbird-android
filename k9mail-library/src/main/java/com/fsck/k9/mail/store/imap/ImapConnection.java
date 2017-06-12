@@ -17,6 +17,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -683,6 +684,10 @@ class ImapConnection {
         return capabilities.contains(capability.toUpperCase(Locale.US));
     }
 
+    public boolean isCondstoreCapable() throws IOException, MessagingException  {
+        return hasCapability(Capabilities.CONDSTORE);
+    }
+
     protected boolean isIdleCapable() {
         if (K9MailLib.isDebug()) {
             Timber.v("Connection %s has %d capabilities", getLogId(), capabilities.size());
@@ -732,6 +737,18 @@ class ImapConnection {
             close();
             throw e;
         }
+    }
+
+    <R extends SelectedStateResponse> R executeSelectedStateCommand(FolderSelectedStateCommand<R> command)
+            throws IOException, MessagingException {
+
+        List<String> splitCommands = command.optimizeAndSplit(isCondstoreCapable());
+        List<List<ImapResponse>> responses = new ArrayList<>(splitCommands.size());
+        for (String splitCommand : splitCommands) {
+            responses.add(executeSimpleCommand(splitCommand));
+        }
+
+        return command.parseResponses(responses);
     }
 
     public List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
