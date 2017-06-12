@@ -1,5 +1,9 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap.response;
 
+
+import com.fsck.k9.mail.store.imap.ImapList;
+import com.fsck.k9.mail.store.imap.ImapResponse;
+import com.fsck.k9.mail.store.imap.Responses;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -10,7 +14,7 @@ import java.util.Set;
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 
-class CapabilityResponse {
+public class CapabilityResponse {
     private final Set<String> capabilities;
 
 
@@ -38,7 +42,7 @@ class CapabilityResponse {
         return null;
     }
 
-    static CapabilityResponse parse(ImapList capabilityList) {
+    public static CapabilityResponse parse(ImapList capabilityList) {
         if (capabilityList.isEmpty() || !equalsIgnoreCase(capabilityList.get(0), Responses.CAPABILITY)) {
             return null;
         }

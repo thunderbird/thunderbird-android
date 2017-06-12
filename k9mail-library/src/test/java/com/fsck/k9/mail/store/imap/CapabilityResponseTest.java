@@ -1,6 +1,8 @@
 package com.fsck.k9.mail.store.imap;
 
 
+import com.fsck.k9.mail.store.imap.response.CapabilityResponse;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;

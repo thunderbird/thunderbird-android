@@ -26,7 +26,7 @@ import timber.log.Timber;
 /**
  * Utility methods for use with IMAP.
  */
-class ImapUtility {
+public class ImapUtility {
     /**
      * Gets all of the values in a sequence set per RFC 3501.
      *
