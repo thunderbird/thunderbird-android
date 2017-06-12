@@ -39,7 +39,7 @@ import timber.log.Timber;
 import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
-class ImapFolder extends Folder<ImapMessage> {
+public class ImapFolder extends Folder<ImapMessage> {
     private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -163,6 +163,19 @@ class ImapFolder extends Folder<ImapMessage> {
             throw ioExceptionHandler(connection, ioe);
         } catch (MessagingException me) {
             Timber.e(me, "Unable to open connection for %s", getLogId());
+            throw me;
+        }
+    }
+
+    public long getCurrentUidValidity() throws MessagingException {
+        if (isOpen()) {
+            close();
+        }
+        try {
+            List<ImapResponse> responses = internalOpen(OPEN_MODE_RO);
+            return SelectOrExamineResponse.extractUidValidity(responses);
+        } catch (MessagingException me) {
+            Log.e(LOG_TAG, "Unable to open connection for " + getLogId(), me);
             throw me;
         }
     }

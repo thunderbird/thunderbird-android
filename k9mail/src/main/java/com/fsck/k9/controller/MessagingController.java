@@ -92,6 +92,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
@@ -822,6 +823,10 @@ public class MessagingController {
 
             }
 
+            if (account.getStoreUri().startsWith("imap")) {
+                handleImapUidValidity(account, tLocalFolder, (ImapFolder) remoteFolder, folder, listener);
+            }
+
             notificationController.clearAuthenticationErrorNotification(account, true);
 
             /*
@@ -996,6 +1001,32 @@ public class MessagingController {
             closeFolder(tLocalFolder);
         }
 
+    }
+
+    private void handleImapUidValidity(Account account, LocalFolder localFolder,
+                                       ImapFolder remoteImapFolder, String folder,
+                                       MessagingListener listener) throws MessagingException {
+        long previousUidValidity = localFolder.getLastUidValidity(account.getUuid(), remoteImapFolder.getName());
+        long currentUidValidity = remoteImapFolder.getCurrentUidValidity();
+
+        if (previousUidValidity != -1L && currentUidValidity != -1L && currentUidValidity != previousUidValidity) {
+
+            //Delete all messages in the local folder
+            Set<String> localMessageUidSet = localFolder.getAllMessagesAndEffectiveDates().keySet();
+            List<String> localMessageUidList = new ArrayList<>();
+            localMessageUidList.addAll(localMessageUidSet);
+            List<LocalMessage> destroyMessages = localFolder.getMessagesByUids(localMessageUidList);
+            localFolder.destroyMessages(destroyMessages);
+            for (Message destroyMessage : destroyMessages) {
+                for (MessagingListener l : getListeners(listener)) {
+                    l.synchronizeMailboxRemovedMessage(account, folder, destroyMessage);
+                }
+            }
+        }
+
+        if (currentUidValidity != -1L) {
+            localFolder.saveUidValidity(currentUidValidity, account.getUuid(), remoteImapFolder.getName());
+        }
     }
 
     void handleAuthenticationFailure(Account account, boolean incoming) {

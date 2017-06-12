@@ -3,6 +3,9 @@ package com.fsck.k9.mail.store.imap;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
@@ -13,6 +16,9 @@ import static org.junit.Assert.fail;
 
 
 public class SelectOrExamineResponseTest {
+
+    private static long UID_VALIDITY = 200L;
+
     @Test
     public void parse_withSelectResponse_shouldReturnOpenModeReadWrite() throws Exception {
         ImapResponse imapResponse = createImapResponse("x OK [READ-WRITE] Select completed.");
@@ -94,5 +100,17 @@ public class SelectOrExamineResponseTest {
         SelectOrExamineResponse result = SelectOrExamineResponse.parse(imapResponse);
 
         assertNull(result);
+    }
+
+    @Test
+    public void extractUidValidity_withSelectResponse_shouldReturnUidValidity() throws Exception {
+        List<String> stringResponse = new ArrayList<>();
+        stringResponse.add("* OK [UIDVALIDITY " + UID_VALIDITY + "] UIDs valid");
+        stringResponse.add("x OK [READ-WRITE] Select completed.");
+        List<ImapResponse> imapResponses = createImapResponse(stringResponse);
+
+        long uidValidity = SelectOrExamineResponse.extractUidValidity(imapResponses);
+
+        assertEquals(uidValidity, UID_VALIDITY);
     }
 }
