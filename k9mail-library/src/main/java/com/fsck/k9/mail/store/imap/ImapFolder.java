@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -34,12 +35,16 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
+import com.fsck.k9.mail.store.imap.command.ImapCommandFactory;
+import com.fsck.k9.mail.store.imap.command.UidSearchCommand;
+import com.fsck.k9.mail.store.imap.response.BaseResponse;
+import com.fsck.k9.mail.store.imap.response.SearchResponse;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
-class ImapFolder extends Folder<ImapMessage> {
+public class ImapFolder extends Folder<ImapMessage> {
     private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -54,6 +59,7 @@ class ImapFolder extends Folder<ImapMessage> {
     protected volatile long uidNext = -1L;
     protected volatile ImapConnection connection;
     protected ImapStore store = null;
+    private ImapCommandFactory commandFactory;
     protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
     private final FolderNameCodec folderNameCodec;
     private final String name;
@@ -133,6 +139,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
         synchronized (this) {
             connection = store.getConnection();
+            commandFactory = ImapCommandFactory.create(connection, getLogId());
         }
 
         try {
@@ -469,7 +476,7 @@ class ImapFolder extends Folder<ImapMessage> {
             String command = "UID SEARCH *:*";
             List<ImapResponse> responses = executeSimpleCommand(command);
 
-            SearchResponse searchResponse = SearchResponse.parse(responses);
+            SearchResponse searchResponse = SearchResponse.parse(commandFactory, responses);
 
             return extractHighestUid(searchResponse);
         } catch (NegativeImapResponseException e) {
@@ -518,19 +525,19 @@ class ImapFolder extends Folder<ImapMessage> {
             throw new MessagingException(String.format(Locale.US, "Invalid message set %d %d", start, end));
         }
 
-        final String dateSearchString = getDateSearchString(earliestDate);
+        Set<Flag> forbiddenFlags = null;
+        if (!includeDeleted) {
+            forbiddenFlags = new HashSet<>();
+            forbiddenFlags.add(Flag.DELETED);
+        }
 
-        ImapSearcher searcher = new ImapSearcher() {
-            @Override
-            public List<ImapResponse> search() throws IOException, MessagingException {
-                String command = String.format(Locale.US, "UID SEARCH %d:%d%s%s", start, end, dateSearchString,
-                        includeDeleted ? "" : " NOT DELETED");
+        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, listener)
+                .addSequenceRange(String.valueOf(start), String.valueOf(end))
+                .since(earliestDate)
+                .forbiddenFlags(forbiddenFlags)
+                .build();
 
-                return executeSimpleCommand(command);
-            }
-        };
-
-        return search(searcher, listener);
+        return getMessages(searchCommand.execute(), listener);
     }
 
     private String getDateSearchString(Date earliestDate) {
@@ -586,64 +593,63 @@ class ImapFolder extends Folder<ImapMessage> {
 
     protected List<ImapMessage> getMessages(final List<Long> mesgSeqs, final boolean includeDeleted,
             final MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
-        ImapSearcher searcher = new ImapSearcher() {
-            @Override
-            public List<ImapResponse> search() throws IOException, MessagingException {
-                String command = String.format("UID SEARCH %s%s", combine(mesgSeqs.toArray(), ','),
-                        includeDeleted ? "" : " NOT DELETED");
 
-                return executeSimpleCommand(command);
-            }
-        };
+        Set<Flag> forbiddenFlags = null;
+        if (!includeDeleted) {
+            forbiddenFlags = new HashSet<>();
+            forbiddenFlags.add(Flag.DELETED);
+        }
 
-        return search(searcher, listener);
+        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, listener)
+                .sequenceSet(mesgSeqs)
+                .forbiddenFlags(forbiddenFlags)
+                .build();
+
+        return getMessages(searchCommand.execute(), listener);
+
     }
 
     protected List<ImapMessage> getMessagesFromUids(final List<String> mesgUids) throws MessagingException {
-        ImapSearcher searcher = new ImapSearcher() {
-            @Override
-            public List<ImapResponse> search() throws IOException, MessagingException {
-                String command = String.format("UID SEARCH UID %s", combine(mesgUids.toArray(), ','));
 
-                return executeSimpleCommand(command);
-            }
-        };
+        Set<Long> uidSet = new HashSet<>();
+        for (String uid : mesgUids) {
+            uidSet.add(Long.parseLong(uid));
+        }
 
-        return search(searcher, null);
+        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, null)
+                .uidSet(uidSet)
+                .build();
+
+        return getMessages(searchCommand.execute(), null);
+
     }
 
-    private List<ImapMessage> search(ImapSearcher searcher, MessageRetrievalListener<ImapMessage> listener)
+    private List<ImapMessage> getMessages(SearchResponse searchResponse, MessageRetrievalListener<ImapMessage> listener)
             throws MessagingException {
+        handleUntaggedResponses(searchResponse);
         checkOpen();
 
         List<ImapMessage> messages = new ArrayList<>();
-        try {
-            List<ImapResponse> responses = searcher.search();
+        List<Long> uids = searchResponse.getNumbers();
 
-            SearchResponse searchResponse = SearchResponse.parse(responses);
-            List<Long> uids = searchResponse.getNumbers();
+        // Sort the uids in numerically decreasing order
+        // By doing it in decreasing order, we ensure newest messages are dealt with first
+        // This makes the most sense when a limit is imposed, and also prevents UI from going
+        // crazy adding stuff at the top.
+        Collections.sort(uids, Collections.reverseOrder());
 
-            // Sort the uids in numerically decreasing order
-            // By doing it in decreasing order, we ensure newest messages are dealt with first
-            // This makes the most sense when a limit is imposed, and also prevents UI from going
-            // crazy adding stuff at the top.
-            Collections.sort(uids, Collections.reverseOrder());
-
-            for (int i = 0, count = uids.size(); i < count; i++) {
-                String uid = uids.get(i).toString();
-                if (listener != null) {
-                    listener.messageStarted(uid, i, count);
-                }
-
-                ImapMessage message = new ImapMessage(uid, this);
-                messages.add(message);
-
-                if (listener != null) {
-                    listener.messageFinished(message, i, count);
-                }
+        for (int i = 0, count = uids.size(); i < count; i++) {
+            String uid = uids.get(i).toString();
+            if (listener != null) {
+                listener.messageStarted(uid, i, count);
             }
-        } catch (IOException ioe) {
-            throw ioExceptionHandler(connection, ioe);
+
+            ImapMessage message = new ImapMessage(uid, this);
+            messages.add(message);
+
+            if (listener != null) {
+                listener.messageFinished(message, i, count);
+            }
         }
 
         return messages;
@@ -977,6 +983,25 @@ class ImapFolder extends Folder<ImapMessage> {
                     Timber.d("Got untagged EXPUNGE with messageCount %d for %s", messageCount, getLogId());
                 }
             }
+        }
+    }
+
+    public void handleUntaggedResponses(BaseResponse response) {
+        int newMessageCount = response.getMessageCount();
+        if (newMessageCount != -1) {
+            messageCount = newMessageCount;
+        }
+
+        int expungedCount = response.getExpungedCount();
+        if (messageCount > expungedCount) {
+            messageCount -= expungedCount;
+        } else {
+            messageCount = 0;
+        }
+
+        long newUidNext = response.getUidNext();
+        if (newUidNext != -1L) {
+            uidNext = newUidNext;
         }
     }
 
@@ -1353,7 +1378,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    private MessagingException ioExceptionHandler(ImapConnection connection, IOException ioe) {
+    public MessagingException ioExceptionHandler(ImapConnection connection, IOException ioe) {
         Timber.e(ioe, "IOException for %s", getLogId());
 
         if (connection != null) {
@@ -1409,97 +1434,21 @@ class ImapFolder extends Folder<ImapMessage> {
             throw new MessagingException("Your settings do not allow remote searching of this account");
         }
 
-        // Setup the searcher
-        final ImapSearcher searcher = new ImapSearcher() {
-            @Override
-            public List<ImapResponse> search() throws IOException, MessagingException {
-                String imapQuery = "UID SEARCH ";
-                if (requiredFlags != null) {
-                    for (Flag flag : requiredFlags) {
-                        switch (flag) {
-                            case DELETED: {
-                                imapQuery += "DELETED ";
-                                break;
-                            }
-                            case SEEN: {
-                                imapQuery += "SEEN ";
-                                break;
-                            }
-                            case ANSWERED: {
-                                imapQuery += "ANSWERED ";
-                                break;
-                            }
-                            case FLAGGED: {
-                                imapQuery += "FLAGGED ";
-                                break;
-                            }
-                            case DRAFT: {
-                                imapQuery += "DRAFT ";
-                                break;
-                            }
-                            case RECENT: {
-                                imapQuery += "RECENT ";
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (forbiddenFlags != null) {
-                    for (Flag flag : forbiddenFlags) {
-                        switch (flag) {
-                            case DELETED: {
-                                imapQuery += "UNDELETED ";
-                                break;
-                            }
-                            case SEEN: {
-                                imapQuery += "UNSEEN ";
-                                break;
-                            }
-                            case ANSWERED: {
-                                imapQuery += "UNANSWERED ";
-                                break;
-                            }
-                            case FLAGGED: {
-                                imapQuery += "UNFLAGGED ";
-                                break;
-                            }
-                            case DRAFT: {
-                                imapQuery += "UNDRAFT ";
-                                break;
-                            }
-                            case RECENT: {
-                                imapQuery += "UNRECENT ";
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                String encodedQuery = ImapUtility.encodeString(queryString);
-                if (store.getStoreConfig().isRemoteSearchFullText()) {
-                    imapQuery += "TEXT " + encodedQuery;
-                } else {
-                    imapQuery += "OR SUBJECT " + encodedQuery + " FROM " + encodedQuery;
-                }
-
-                return executeSimpleCommand(imapQuery);
-            }
-        };
-
         try {
             open(OPEN_MODE_RO);
             checkOpen();
 
             inSearch = true;
 
-            return search(searcher, null);
+            UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, null)
+                    .queryString(queryString)
+                    .performFullTextSearch(store.getStoreConfig().isRemoteSearchFullText())
+                    .requiredFlags(requiredFlags)
+                    .forbiddenFlags(forbiddenFlags)
+                    .build();
+
+            return getMessages(searchCommand.execute(), null);
+
         } finally {
             inSearch = false;
         }

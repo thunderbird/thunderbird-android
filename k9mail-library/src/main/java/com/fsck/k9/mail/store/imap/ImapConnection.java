@@ -41,12 +41,16 @@ import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.store.imap.command.CapabilityCommand;
+import com.fsck.k9.mail.store.imap.command.ImapCommandFactory;
+import com.fsck.k9.mail.store.imap.response.CapabilityResponse;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 import javax.net.ssl.SSLException;
 import org.apache.commons.io.IOUtils;
 import timber.log.Timber;
 
+import static android.R.attr.tag;
 import static com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
 import static com.fsck.k9.mail.store.RemoteStore.SOCKET_CONNECT_TIMEOUT;
@@ -57,7 +61,7 @@ import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 /**
  * A cacheable class that stores the details for a single IMAP connection.
  */
-class ImapConnection {
+public class ImapConnection {
     private static final int BUFFER_SIZE = 1024;
 
 
@@ -70,6 +74,7 @@ class ImapConnection {
     private Socket socket;
     private PeekableInputStream inputStream;
     private OutputStream outputStream;
+    private ImapCommandFactory commandFactory;
     private ImapResponseParser responseParser;
     private int nextCommandTag;
     private Set<String> capabilities = new HashSet<String>();
@@ -110,6 +115,7 @@ class ImapConnection {
 
         open = true;
         boolean authSuccess = false;
+        commandFactory = ImapCommandFactory.create(this, getLogId());
         nextCommandTag = 1;
 
         adjustDNSCacheTTL();
@@ -288,7 +294,8 @@ class ImapConnection {
     }
 
     private void requestCapabilities() throws IOException, MessagingException {
-        List<ImapResponse> responses = extractCapabilities(executeSimpleCommand(Commands.CAPABILITY));
+        CapabilityCommand command = commandFactory.createCapabilityCommand();
+        List<ImapResponse> responses = extractCapabilities(command.execute());
         if (responses.size() != 2) {
             throw new MessagingException("Invalid CAPABILITY response received");
         }
@@ -683,6 +690,10 @@ class ImapConnection {
         return capabilities.contains(capability.toUpperCase(Locale.US));
     }
 
+    public boolean isCondstoreCapable() throws IOException, MessagingException  {
+        return hasCapability(Capabilities.CONDSTORE);
+    }
+
     protected boolean isIdleCapable() {
         if (K9MailLib.isDebug()) {
             Timber.v("Connection %s has %d capabilities", getLogId(), capabilities.size());
@@ -725,6 +736,24 @@ class ImapConnection {
         }
 
         String tag = sendCommand(command, sensitive);
+
+        try {
+            return responseParser.readStatusResponse(tag, commandToLog, getLogId(), null);
+        } catch (IOException e) {
+            close();
+            throw e;
+        }
+    }
+
+    public List<ImapResponse> executeSimpleCommandNew(String command, boolean sensitive) throws IOException,
+            MessagingException {
+        String commandToLog = command;
+
+        if (sensitive && !K9MailLib.isDebugSensitive()) {
+            commandToLog = "*sensitive*";
+        }
+
+        String tag = sendCommandNew(command, sensitive);
 
         try {
             return responseParser.readStatusResponse(tag, commandToLog, getLogId(), null);
@@ -782,6 +811,29 @@ class ImapConnection {
             }
 
             return tag;
+        } catch (IOException | MessagingException e) {
+            close();
+            throw e;
+        }
+    }
+
+    public String sendCommandNew(String command, boolean sensitive) throws MessagingException, IOException {
+        try {
+            open();
+
+            String commandToSend = command + "\r\n";
+            outputStream.write(commandToSend.getBytes());
+            outputStream.flush();
+
+            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+                if (sensitive && !K9MailLib.isDebugSensitive()) {
+                    Timber.v("%s>>> [Command Hidden, Enable Sensitive Debug Logging To Show]", getLogId());
+                } else {
+                    Timber.v("%s>>> %s %s", getLogId(), tag, command);
+                }
+            }
+
+            return command.split(" ")[0];
         } catch (IOException | MessagingException e) {
             close();
             throw e;

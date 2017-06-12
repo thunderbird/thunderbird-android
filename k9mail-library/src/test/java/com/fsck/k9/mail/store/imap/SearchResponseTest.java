@@ -4,6 +4,7 @@ package com.fsck.k9.mail.store.imap;
 import java.util.Collections;
 import java.util.List;
 
+import com.fsck.k9.mail.store.imap.response.SearchResponse;
 import org.junit.Test;
 
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
@@ -20,7 +21,7 @@ public class SearchResponseTest {
                 createImapResponse("* 23 EXISTS"),
                 createImapResponse("* SEARCH 4"));
 
-        SearchResponse result = SearchResponse.parse(responses);
+        SearchResponse result = SearchResponse.parse(null, responses);
 
         assertNotNull(result);
         assertEquals(asList(1L, 2L, 3L, 4L), result.getNumbers());
@@ -30,7 +31,7 @@ public class SearchResponseTest {
     public void parse_withTaggedSearchResponse_shouldReturnEmptyList() throws Exception {
         List<ImapResponse> responses = singletonList(createImapResponse("x SEARCH 1 2 3"));
 
-        SearchResponse result = SearchResponse.parse(responses);
+        SearchResponse result = SearchResponse.parse(null, responses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());
@@ -40,7 +41,7 @@ public class SearchResponseTest {
     public void parse_withTooShortResponse_shouldReturnEmptyList() throws Exception {
         List<ImapResponse> responses = singletonList(createImapResponse("* SEARCH"));
 
-        SearchResponse result = SearchResponse.parse(responses);
+        SearchResponse result = SearchResponse.parse(null, responses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());
@@ -50,7 +51,7 @@ public class SearchResponseTest {
     public void parse_withoutSearchResponse_shouldReturnEmptyList() throws Exception {
         List<ImapResponse> responses = singletonList(createImapResponse("* 23 EXPUNGE"));
 
-        SearchResponse result = SearchResponse.parse(responses);
+        SearchResponse result = SearchResponse.parse(null, responses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());
@@ -60,7 +61,7 @@ public class SearchResponseTest {
     public void parse_withSearchResponseContainingInvalidNumber_shouldReturnEmptyList() throws Exception {
         List<ImapResponse> responses = singletonList(createImapResponse("* SEARCH A"));
 
-        SearchResponse result = SearchResponse.parse(responses);
+        SearchResponse result = SearchResponse.parse(null, responses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());

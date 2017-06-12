@@ -1,16 +1,16 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import java.util.Collections;
-
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 
+import java.util.Collections;
 
-class ImapMessage extends MimeMessage {
-    ImapMessage(String uid, Folder folder) {
+
+public class ImapMessage extends MimeMessage {
+    public ImapMessage(String uid, Folder folder) {
         this.mUid = uid;
         this.mFolder = folder;
     }

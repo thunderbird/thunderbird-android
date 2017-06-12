@@ -1,7 +1,7 @@
 package com.fsck.k9.mail.store.imap;
 
 
-class Responses {
+public class Responses {
     public static final String CAPABILITY = "CAPABILITY";
     public static final String NAMESPACE = "NAMESPACE";
     public static final String LIST = "LIST";
