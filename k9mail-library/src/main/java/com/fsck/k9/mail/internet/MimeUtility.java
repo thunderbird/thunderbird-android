@@ -916,23 +916,31 @@ public class MimeUtility {
         StringBuilder line = new StringBuilder();
 
         for (String part: s.split("[ \t]")) {
-            if (part.length() > 78) {
+            if (part.length() > 998) {
                 Timber.w("part '%s' too long (%d)", part, part.length());
             }
 
+            // fold the current line if needed, ie when it will exceed 78 characters with
+            // the next part added
             if (line.length() + part.length() > 78) {
-                sb.append(line.toString());
-                sb.append("\r\n ");
-                line.setLength(0);
+                // line will exceed 78 characters, but it can still grow to 998 in case there is
+                // only one part in it
+                if (line.length() > 0 || part.length() > 998) {
+                    sb.append(line.toString());
+                    sb.append("\r\n ");
+                    line.setLength(0);
+                }
             }
 
             if (line.length() > 0) {
+                // append part separator (space)
                 line.append(" ");
             }
 
             line.append(part);
         }
 
+        // append the last line
         sb.append(line.toString());
 
         return sb.toString();

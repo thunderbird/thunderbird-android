@@ -133,4 +133,59 @@ public class MimeUtilityTest {
     public void isSameMimeType_withSecondArgumentBeingNull_shouldReturnFalse() throws Exception {
         assertFalse(MimeUtility.isSameMimeType("text/html", null));
     }
+
+    @Test
+    public void foldAndEncode_shortHeader_shouldBeEqual() throws Exception {
+        assertEquals(MimeUtility.foldAndEncode("short header"), "short header");
+    }
+
+    @Test
+    public void foldAndEncode_headerLongerThan78CharactersWithSpaces_shouldBeFolded() throws Exception {
+        // build test data
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i < 2000; i++) {
+            if (i%10 == 0)
+                sb.append(" ");
+            else
+                sb.append("a");
+        }
+        String[] lines = MimeUtility.foldAndEncode(sb.toString()).split("\n");
+        sb.setLength(0);
+        for (int i = 0; i < 80; i++) {
+            if (i%10 == 0)
+                sb.append(" ");
+            else
+                sb.append("a");
+        }
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
+            if (i == 0) {
+                // first line is folded without prepending a space
+                assertEquals(line, sb.toString().trim() + "\r");
+            } else if (i == lines.length - 1) {
+                // last line is folded without terminating linefeed
+                assertEquals(line, " " + sb.toString().trim());
+            } else {
+                assertEquals(line, " " + sb.toString().trim() + "\r");
+            }
+        }
+    }
+
+    @Test
+    public void foldAndEncode_headerLongerThan78CharactersButShorterThan998WithoutSpaces_shouldBeKept() throws Exception {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 500; i++) {
+            sb.append("a");
+        }
+        assertEquals(MimeUtility.foldAndEncode(sb.toString()), sb.toString());
+    }
+
+    @Test
+    public void foldAndEncode_headerLongerThan998CharactersWithoutSpaces_shouldBeFoldedOnce() throws Exception {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 2000; i++) {
+             sb.append("a");
+        }
+        assertEquals(MimeUtility.foldAndEncode(sb.toString()), "\r\n " + sb.toString());
+    }
 }
