@@ -1,35 +1,36 @@
 package com.fsck.k9.mail.store.imap.response;
 
 
-import com.fsck.k9.mail.store.imap.ImapList;
-import com.fsck.k9.mail.store.imap.ImapResponse;
-import com.fsck.k9.mail.store.imap.Responses;
-
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import com.fsck.k9.mail.store.imap.ImapList;
+import com.fsck.k9.mail.store.imap.ImapResponse;
+import com.fsck.k9.mail.store.imap.Responses;
+import com.fsck.k9.mail.store.imap.command.ImapCommandFactory;
+
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 
-public class CapabilityResponse {
+public class CapabilityResponse extends BaseResponse {
+
     private final Set<String> capabilities;
 
-
-    private CapabilityResponse(Set<String> capabilities) {
-        this.capabilities = Collections.unmodifiableSet(capabilities);
+    private CapabilityResponse(ImapCommandFactory commandFactory, List<ImapResponse> imapResponses, Set<String> capabilities) {
+        super(commandFactory, imapResponses);
+        this.capabilities = capabilities;
     }
 
-    public static CapabilityResponse parse(List<ImapResponse> responses) {
+    public static CapabilityResponse parse(ImapCommandFactory commandFactory, List<ImapResponse> responses) {
         for (ImapResponse response : responses) {
             CapabilityResponse result;
             if (!response.isEmpty() && equalsIgnoreCase(response.get(0), Responses.OK) && response.isList(1)) {
                 ImapList capabilityList = response.getList(1);
-                result = parse(capabilityList);
+                result = parse(commandFactory, capabilityList);
             } else if (response.getTag() == null) {
-                result = parse(response);
+                result = parse(commandFactory, response);
             } else {
                 result = null;
             }
@@ -42,7 +43,7 @@ public class CapabilityResponse {
         return null;
     }
 
-    public static CapabilityResponse parse(ImapList capabilityList) {
+    private static CapabilityResponse parse(ImapCommandFactory commandFactory, ImapList capabilityList) {
         if (capabilityList.isEmpty() || !equalsIgnoreCase(capabilityList.get(0), Responses.CAPABILITY)) {
             return null;
         }
@@ -59,7 +60,23 @@ public class CapabilityResponse {
             capabilities.add(uppercaseCapability);
         }
 
-        return new CapabilityResponse(capabilities);
+        return new CapabilityResponse(commandFactory, null, capabilities);
+    }
+
+    @Override
+    public void parseResponse(List<ImapResponse> imapResponses) {
+        //This is never called
+    }
+
+    @Override
+    public void combine(BaseResponse baseResponse) {
+        super.combine(baseResponse);
+        //This is never called
+    }
+
+    @Override
+    void handleUntaggedResponses(List<ImapResponse> responses) {
+        super.handleUntaggedResponses(responses);
     }
 
     public Set<String> getCapabilities() {

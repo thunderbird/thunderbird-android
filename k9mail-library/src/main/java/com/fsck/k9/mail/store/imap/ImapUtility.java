@@ -144,6 +144,7 @@ public class ImapUtility {
      *
      * @return The string encoded as quoted (IMAP) string.
      */
+    //TODO use a literal string
     public static String encodeString(String str) {
         return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
     }

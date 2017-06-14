@@ -1,14 +1,14 @@
 package com.fsck.k9.mail.store.imap.response;
 
+import java.util.List;
+
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.store.imap.ImapList;
 import com.fsck.k9.mail.store.imap.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapResponseParser;
 import com.fsck.k9.mail.store.imap.command.ImapCommandFactory;
-
-import java.util.List;
-
 import timber.log.Timber;
+
 
 public abstract class BaseResponse {
 
@@ -17,11 +17,21 @@ public abstract class BaseResponse {
     private long uidNext;
     private ImapCommandFactory commandFactory;
 
-    public BaseResponse(ImapCommandFactory commandFactory) {
+    public BaseResponse(ImapCommandFactory commandFactory, List<ImapResponse> imapResponses) {
         this.commandFactory = commandFactory;
         messageCount = -1;
         expungedCount = 0;
         uidNext = -1L;
+        handleUntaggedResponses(imapResponses);
+        parseResponse(imapResponses);
+    }
+
+    public abstract void parseResponse(List<ImapResponse> imapResponses);
+
+    public void combine(BaseResponse baseResponse) {
+        this.messageCount = baseResponse.messageCount;
+        this.expungedCount += baseResponse.messageCount;
+        this.uidNext = baseResponse.uidNext;
     }
 
     public int getMessageCount(){
@@ -40,13 +50,15 @@ public abstract class BaseResponse {
         return commandFactory.getLogId();
     }
 
-    void extractExtras(List<ImapResponse> responses) {
-        for (ImapResponse response : responses) {
-            handleUntaggedResponse(response);
+    void handleUntaggedResponses(List<ImapResponse> responses) {
+        if (responses != null) {
+            for (ImapResponse response : responses) {
+                handleUntaggedResponses(response);
+            }
         }
     }
 
-    private void handleUntaggedResponse(ImapResponse response) {
+    private void handleUntaggedResponses(ImapResponse response) {
         if (response.getTag() == null && response.size() > 1) {
             if (ImapResponseParser.equalsIgnoreCase(response.get(1), "EXISTS")) {
                 messageCount = response.getNumber(0);

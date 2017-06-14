@@ -257,7 +257,7 @@ public class ImapConnection {
     }
 
     private List<ImapResponse> extractCapabilities(List<ImapResponse> responses) {
-        CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
+        CapabilityResponse capabilityResponse = CapabilityResponse.parse(commandFactory, responses);
         if (capabilityResponse != null) {
             Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
             if (K9MailLib.isDebug()) {
@@ -270,7 +270,7 @@ public class ImapConnection {
 
     private List<ImapResponse> extractOrRequestCapabilities(List<ImapResponse> responses)
             throws IOException, MessagingException {
-        CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
+        CapabilityResponse capabilityResponse = CapabilityResponse.parse(commandFactory, responses);
         if (capabilityResponse != null) {
             Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
             Timber.d("Saving %s capabilities for %s", receivedCapabilities, getLogId());
@@ -295,7 +295,7 @@ public class ImapConnection {
 
     private void requestCapabilities() throws IOException, MessagingException {
         CapabilityCommand command = commandFactory.createCapabilityCommand();
-        List<ImapResponse> responses = extractCapabilities(command.execute());
+        List<ImapResponse> responses = extractCapabilities(command.executeInternal());
         if (responses.size() != 2) {
             throw new MessagingException("Invalid CAPABILITY response received");
         }
