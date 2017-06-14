@@ -8,11 +8,13 @@ import java.util.List;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapConnection;
 import com.fsck.k9.mail.store.imap.ImapResponse;
+import com.fsck.k9.mail.store.imap.response.BaseResponse;
+
 
 abstract class BaseCommand {
 
-    private static final int LENGTH_LIMIT_WITHOUT_CONDSTORE = 1000;
-    private static final int LENGTH_LIMIT_WITH_CONDSTORE = 8192;
+    private static final int LENGTH_LIMIT_WITHOUT_CONDSTORE = 990;
+    private static final int LENGTH_LIMIT_WITH_CONDSTORE = 8182;
 
     int tag;
     ImapCommandFactory commandFactory;
@@ -30,7 +32,7 @@ abstract class BaseCommand {
 
         List<BaseCommand> commands;
         String commandString = createCommandString();
-        if (commandString.getBytes().length > getCommandLengthLimit()) {
+        if (commandString.length() > getCommandLengthLimit()) {
             commands = Collections.unmodifiableList(splitCommand(getCommandLengthLimit()));
         } else {
             commands = Collections.singletonList(this);
@@ -43,6 +45,8 @@ abstract class BaseCommand {
         }
         return responses;
     }
+
+    public abstract BaseResponse execute() throws MessagingException;
 
     private int getCommandLengthLimit() throws IOException, MessagingException  {
         boolean condstoreSupported = commandFactory.getConnection().isCondstoreCapable();

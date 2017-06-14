@@ -13,37 +13,42 @@ import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 public class SearchResponse extends BaseResponse {
 
-    private final List<Long> numbers;
+    private List<Long> numbers;
 
-    private SearchResponse(ImapCommandFactory commandFactory, List<Long> numbers) {
-        super(commandFactory);
-        this.numbers = numbers;
+    private SearchResponse(ImapCommandFactory commandFactory, List<ImapResponse> imapResponse) {
+        super(commandFactory, imapResponse);
     }
 
-    public static SearchResponse parseMultiple(ImapCommandFactory commandFactory, List<List<ImapResponse>> responsesList) {
+    public static SearchResponse parse(ImapCommandFactory commandFactory, List<List<ImapResponse>> imapResponses) {
 
-        List<Long> numbers = new ArrayList<>();
-
-        //Currently searching is done only on the basis of either uids or sequence numbers
-        //So it is ok to take the union of all the responses
-        for (List<ImapResponse> responseList : responsesList) {
-            for (ImapResponse response : responseList) {
-                parseSingleLine(response, numbers);
+        SearchResponse combinedResponse = null;
+        for (List<ImapResponse> imapResponse : imapResponses) {
+            SearchResponse searchResponse = new SearchResponse(commandFactory, imapResponse);
+            if (combinedResponse == null) {
+                combinedResponse = searchResponse;
+            } else {
+                combinedResponse.combine(searchResponse);
             }
         }
 
-        return new SearchResponse(commandFactory, numbers);
+        return combinedResponse;
     }
 
-    public static SearchResponse parse(ImapCommandFactory commandFactory, List<ImapResponse> responses) {
+    @Override
+    public void parseResponse(List<ImapResponse> imapResponses) {
 
-        List<Long> numbers = new ArrayList<>();
+        numbers = new ArrayList<>();
 
-        for (ImapResponse response : responses) {
+        for (ImapResponse response : imapResponses) {
             parseSingleLine(response, numbers);
         }
+    }
 
-        return new SearchResponse(commandFactory, numbers);
+    @Override
+    public void combine(BaseResponse baseResponse) {
+        super.combine(baseResponse);
+        SearchResponse searchResponse = (SearchResponse) baseResponse;
+        this.numbers.addAll(searchResponse.getNumbers());
     }
 
     private static void parseSingleLine(ImapResponse response, List<Long> numbers) {
@@ -68,4 +73,5 @@ public class SearchResponse extends BaseResponse {
     public List<Long> getNumbers() {
         return numbers;
     }
+
 }

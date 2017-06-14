@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapResponse;
+import com.fsck.k9.mail.store.imap.response.CapabilityResponse;
 
 
 public class CapabilityCommand extends BaseCommand {
@@ -26,7 +27,13 @@ public class CapabilityCommand extends BaseCommand {
         return Collections.singletonList(this);
     }
 
-    public List<ImapResponse> execute() throws IOException, MessagingException {
+    @Override
+    public CapabilityResponse execute() throws MessagingException {
+        //This is never used
+        return null;
+    }
+
+    public List<ImapResponse> executeInternal() throws IOException, MessagingException {
         return executeInternal(false).get(0);
     }
 
