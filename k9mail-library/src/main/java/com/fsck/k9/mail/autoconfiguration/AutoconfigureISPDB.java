@@ -15,17 +15,25 @@ import timber.log.Timber;
  */
 
 public class AutoconfigureISPDB implements AutoConfigure {
+    private static final String ISPDB_URL = "https://autoconfig.thunderbird.net/v1.1/%s";
+
     @Override
-    public ProviderInfo findProviderInfo(String domain) {
+    public ProviderInfo findProviderInfo(String email) {
+        String[] parts = email.split("@");
+        if (parts.length < 2) return null;
+        String domain = parts[1];
+
         try {
             ProviderInfo providerInfo = new ProviderInfo();
 
-            Document document = Jsoup.connect("https://autoconfig.thunderbird.net/v1.1/" + domain).get();
+            String url = String.format(ISPDB_URL, domain);
+            Document document = Jsoup.connect(url).get();
 
             Elements incomingEles = document.select("incomingServer");
             Element incoming = incomingEles.first();
 
-            // FIXME: 6/14/17 Can incoming be null?
+            if (incoming == null) return null;
+
             providerInfo.incomingAddr = incoming.select("hostname").first().text();
             providerInfo.incomingType = incoming.attr("type").toLowerCase();
             providerInfo.incomingSocketType = incoming.select("socketType").first().text().toLowerCase();

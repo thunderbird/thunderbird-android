@@ -21,10 +21,13 @@ import android.text.InputType;
 import android.text.TextWatcher;
 
 import com.fsck.k9.mail.autoconfiguration.AutoConfigure;
+import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
+import com.fsck.k9.mail.autoconfiguration.AutoConfigureAutodiscover;
 import com.fsck.k9.mail.autoconfiguration.AutoconfigureMozilla;
 import com.fsck.k9.mail.autoconfiguration.AutoconfigureSrv;
 import timber.log.Timber;
 
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -290,7 +293,7 @@ public class AccountSetupBasics extends K9Activity
             String userEnc = UrlEncodingHelper.encodeUtf8(user);
             String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
             String incomingUsername;
-            if (mProvider.incomingUsernameTemplate.equals(Provider.USERNAME_TEMPLATE_UNKNOWN)) {
+            if (mProvider.incomingUsernameTemplate.equals(ProviderInfo.USERNAME_TEMPLATE_SRV)) {
                 incomingUsername = email;
             } else {
                 incomingUsername = mProvider.incomingUsernameTemplate;
@@ -310,7 +313,7 @@ public class AccountSetupBasics extends K9Activity
 
             URI outgoingUri;
             if (outgoingUsername != null) {
-                if (mProvider.outgoingUsernameTemplate.equals(Provider.USERNAME_TEMPLATE_UNKNOWN)) {
+                if (mProvider.outgoingUsernameTemplate.equals(ProviderInfo.USERNAME_TEMPLATE_SRV)) {
                     outgoingUsername = email;
                 } else {
                     outgoingUsername = outgoingUsername.replaceAll("\\$email", email);
@@ -362,10 +365,10 @@ public class AccountSetupBasics extends K9Activity
         }
 
         String email = mEmailView.getText().toString();
-        String[] emailParts = splitEmail(email);
-        String domain = emailParts[1];
+        // String[] emailParts = splitEmail(email);
+        // String domain = emailParts[1];
 
-        findProvider(domain);
+        findProvider(email);
     }
 
     @Override
@@ -505,33 +508,44 @@ public class AccountSetupBasics extends K9Activity
         return null;
     }
 
-    private void findProvider(final String domain) {
-        new AsyncTask<Void, Void, Void>() {
+    private void findProvider(final String email) {
+        new AsyncTask<Void, Void, ProviderInfo>() {
             @Override
-            protected Void doInBackground(Void... params) {
-                AutoConfigure.ProviderInfo providerInfo;
+            protected ProviderInfo doInBackground(Void... params) {
+                String[] emailParts = splitEmail(email);
+                final String domain = emailParts[1];
+
+                ProviderInfo providerInfo;
                 AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
                 AutoconfigureSrv autoconfigureSrv = new AutoconfigureSrv();
+                AutoConfigureAutodiscover autodiscover = new AutoConfigureAutodiscover();
+
                 mProvider = findProviderForDomain(domain);
 
                 if (mProvider != null) return null;
 
-                providerInfo = autoconfigureMozilla.findProviderInfo(domain);
-                if (providerInfo == null) {
-                    providerInfo = autoconfigureSrv.findProviderInfo(domain);
-                }
+                providerInfo = autoconfigureMozilla.findProviderInfo(email);
+                if (providerInfo != null) return providerInfo;
 
-                try {
-                    mProvider = Provider.newInstanceFromProviderInfo(providerInfo);
-                } catch (URISyntaxException e) {
-                }
+                providerInfo = autoconfigureSrv.findProviderInfo(email);
+                if (providerInfo != null) return providerInfo;
 
-                return null;
+                providerInfo = autodiscover.findProviderInfo(email);
+
+                return providerInfo;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            protected void onPostExecute(ProviderInfo providerInfo) {
+                super.onPostExecute(providerInfo);
+
+                if (providerInfo != null) {
+                    try {
+                        mProvider = Provider.newInstanceFromProviderInfo(providerInfo);
+                    } catch (URISyntaxException e) {
+                        Timber.e(e, "Error while converting providerInfo to provider");
+                    }
+                }
 
                 if (mProvider == null) {
                     /*
@@ -561,9 +575,6 @@ public class AccountSetupBasics extends K9Activity
 
     static class Provider implements Serializable {
         private static final long serialVersionUID = 8511656164616538989L;
-        public final static String USERNAME_TEMPLATE_EMAIL = "$email";
-        public final static String USERNAME_TEMPLATE_USER = "$user";
-        public final static String USERNAME_TEMPLATE_UNKNOWN = "$unknown";
 
         public String id;
 
@@ -586,21 +597,8 @@ public class AccountSetupBasics extends K9Activity
 
             Provider provider = new Provider();
 
-            if (providerInfo.incomingUsernameTemplate.equals(AutoConfigure.ProviderInfo.USERNAME_TEMPLATE_EMAIL)) {
-                provider.incomingUsernameTemplate = USERNAME_TEMPLATE_EMAIL;
-            } else if (providerInfo.incomingUsernameTemplate.equals(AutoConfigure.ProviderInfo.USERNAME_TEMPLATE_USER)) {
-                provider.incomingUsernameTemplate = USERNAME_TEMPLATE_USER;
-            } else {
-                provider.incomingUsernameTemplate = USERNAME_TEMPLATE_UNKNOWN;
-            }
-
-            if (providerInfo.outgoingUsernameTemplate.equals(AutoConfigure.ProviderInfo.USERNAME_TEMPLATE_EMAIL)) {
-                provider.outgoingUsernameTemplate = USERNAME_TEMPLATE_EMAIL;
-            } else if (providerInfo.outgoingUsernameTemplate.equals(AutoConfigure.ProviderInfo.USERNAME_TEMPLATE_USER)) {
-                provider.outgoingUsernameTemplate = USERNAME_TEMPLATE_USER;
-            } else {
-                provider.outgoingUsernameTemplate = USERNAME_TEMPLATE_UNKNOWN;
-            }
+            provider.incomingUsernameTemplate = providerInfo.incomingUsernameTemplate;
+            provider.outgoingUsernameTemplate = providerInfo.outgoingUsernameTemplate;
 
             provider.incomingUriTemplate = new URI(providerInfo.incomingType + "+"
                     + ("".equals(providerInfo.incomingSocketType) ? "" : (providerInfo.incomingSocketType + "+")),
@@ -614,12 +612,6 @@ public class AccountSetupBasics extends K9Activity
                     providerInfo.outgoingAddr,
                     providerInfo.outgoingPort,
                     null, null, null);
-            /* provider.incomingUriTemplate = new URI(providerInfo.incomingType + "+"
-                    + ("".equals(providerInfo.incomingSocketType) ? "" : (providerInfo.incomingSocketType + "+"))
-                    + "://" + providerInfo.incomingAddr);
-            provider.outgoingUriTemplate = new URI(providerInfo.outgoingType + "+"
-                    + ("".equals(providerInfo.outgoingSocketType) ? "" : (providerInfo.outgoingSocketType + "+"))
-                    + "://" + providerInfo.outgoingAddr);*/
 
             return provider;
         }

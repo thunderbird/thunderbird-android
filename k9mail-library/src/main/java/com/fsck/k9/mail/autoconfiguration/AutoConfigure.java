@@ -6,7 +6,7 @@ package com.fsck.k9.mail.autoconfiguration;
  */
 
 public interface AutoConfigure {
-    ProviderInfo findProviderInfo(String domain);
+    ProviderInfo findProviderInfo(String email);
 
     public static class ProviderInfo {
         public String incomingUsernameTemplate;
@@ -25,7 +25,7 @@ public interface AutoConfigure {
         public static String USERNAME_TEMPLATE_EMAIL = "$email";
         public static String USERNAME_TEMPLATE_USER = "$user";
         public static String USERNAME_TEMPLATE_DOMAIN = "$domain";
-        public static String USERNAME_TEMPLATE_UNKNOWN = "unknown";
+        public static String USERNAME_TEMPLATE_SRV = "$srv";
 
         public static String INCOMING_TYPE_IMAP = "imap";
         public static String INCOMING_TYPE_POP3 = "pop3";

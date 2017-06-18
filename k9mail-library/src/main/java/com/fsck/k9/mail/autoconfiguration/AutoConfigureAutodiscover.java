@@ -24,29 +24,44 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
     private final static String AUTODISCOVER_URL3 = "http://autodiscover.%s/autodiscover/autodiscover.xml";
     private final static String AUTODISCOVER_SRV = "_autodiscover._tcp.%s";
 
+    private final static String AUTODISCOVER_POST_BODY = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" +
+            "<Autodiscover xmlns=\"http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006\">\n" +
+            "<Request>\n" +
+            "<AcceptableResponseSchema>http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a</AcceptableResponseSchema>\n" +
+            "\n" +
+            "<EMailAddress>%s</EMailAddress>\n" +
+            "</Request>\n" +
+            "</Autodiscover>";
+
     @Override
-    public ProviderInfo findProviderInfo(String domain) {
-        ProviderInfo providerInfo = null;
+    public ProviderInfo findProviderInfo(String email) {
+        String[] parts = email.split("@");
+        if (parts.length < 2) return null;
+        String domain = parts[1];
+
+        ProviderInfo providerInfo;
 
         String url = String.format(AUTODISCOVER_URL1, domain);
-        providerInfo = findProviderInfoByUrl(url);
+        providerInfo = findProviderInfoByUrl(url, email);
 
         if (providerInfo != null) return providerInfo;
 
         url = String.format(AUTODISCOVER_URL2, domain);
-        providerInfo = findProviderInfoByUrl(url);
+        providerInfo = findProviderInfoByUrl(url, email);
 
         if (providerInfo != null) return providerInfo;
 
         url = String.format(AUTODISCOVER_URL3, domain);
-        providerInfo = findProviderInfoByUrl(url, true);
+        providerInfo = findProviderInfoByUrl(url, email, true);
 
         url = String.format(AUTODISCOVER_SRV, domain);
         DNSOperation dnsOperation = new DNSOperation();
         try {
             SRVRecord srvRecord = dnsOperation.srvLookup(url);
-            url = srvRecord.getTarget().toString(true);
-            providerInfo = findProviderInfoByUrl(url);
+            if (srvRecord != null) {
+                url = srvRecord.getTarget().toString(true);
+                providerInfo = findProviderInfoByUrl(url, email);
+            }
         } catch (TextParseException e) {
             Timber.e(e, "Error while trying to do SRV lookup");
         } catch (UnknownHostException e) {
@@ -56,14 +71,15 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
         return providerInfo;
     }
 
-    private ProviderInfo findProviderInfoByUrl(String url) {
-        return findProviderInfoByUrl(url, false);
+    private ProviderInfo findProviderInfoByUrl(String url, String email) {
+        return findProviderInfoByUrl(url, email, false);
     }
 
-    private ProviderInfo findProviderInfoByUrl(String url, boolean followRedirects) {
+    private ProviderInfo findProviderInfoByUrl(String url, String email, boolean followRedirects) {
         ProviderInfo providerInfo = null;
         try {
-            Document document = Jsoup.connect(url).followRedirects(followRedirects).get();
+            Document document = Jsoup.connect(url).requestBody(String.format(AUTODISCOVER_POST_BODY, email))
+                    .followRedirects(followRedirects).post();
             Element account = document.select("Account").first();
             if (account == null) {
                 return null;
@@ -78,7 +94,7 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
             } else if (account.text().equalsIgnoreCase("redirectUrl")) {
                 Element redirectUrl = account.select("RedirectUrl").first();
                 if (redirectUrl != null) {
-                    providerInfo = findProviderInfoByUrl(redirectUrl.text());
+                    providerInfo = findProviderInfoByUrl(redirectUrl.text(), email);
                 }
             }
 

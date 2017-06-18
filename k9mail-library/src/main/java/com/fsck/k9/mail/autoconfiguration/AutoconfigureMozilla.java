@@ -10,11 +10,15 @@ import timber.log.Timber;
 
 public class AutoconfigureMozilla implements AutoConfigure {
     @Override
-    public ProviderInfo findProviderInfo(String domain) {
+    public ProviderInfo findProviderInfo(String email) {
+        String[] parts = email.split("@");
+        if (parts.length < 2) return null;
+        String domain = parts[1];
+
         DNSOperation dnsOperation = new DNSOperation();
 
         AutoconfigureISPDB autoconfigureISPDB = new AutoconfigureISPDB();
-        ProviderInfo providerInfo = autoconfigureISPDB.findProviderInfo(domain);
+        ProviderInfo providerInfo = autoconfigureISPDB.findProviderInfo(email);
 
         if (providerInfo != null) {
             return providerInfo;

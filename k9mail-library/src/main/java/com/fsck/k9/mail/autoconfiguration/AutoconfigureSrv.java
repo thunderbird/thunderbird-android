@@ -14,7 +14,11 @@ import timber.log.Timber;
 
 public class AutoconfigureSrv implements AutoConfigure {
     @Override
-    public ProviderInfo findProviderInfo(String domain) {
+    public ProviderInfo findProviderInfo(String email) {
+        String[] parts = email.split("@");
+        if (parts.length < 2) return null;
+        String domain = parts[1];
+
         DNSOperation dnsOperation = new DNSOperation();
 
         ProviderInfo providerInfo = new ProviderInfo();
@@ -57,13 +61,16 @@ public class AutoconfigureSrv implements AutoConfigure {
                 return null;
             }
 
-        } catch (TextParseException | UnknownHostException e) {
+        } catch (TextParseException e) {
             Timber.e(e, "Error while trying to do SRV lookup");
+            return null;
+        } catch (UnknownHostException e) {
+            Timber.w(e, "No valid SRV record for " + domain);
             return null;
         }
 
-        providerInfo.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_UNKNOWN;
-        providerInfo.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_UNKNOWN;
+        providerInfo.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
+        providerInfo.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         return providerInfo;
     }
 }
