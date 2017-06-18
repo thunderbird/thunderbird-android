@@ -20,8 +20,9 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 
-import com.fsck.k9.mail.autoconfiguration.AutoConfigurationUtil;
-import com.fsck.k9.mail.autoconfiguration.AutoConfigurationUtil.ProviderInfo;
+import com.fsck.k9.mail.autoconfiguration.AutoConfigure;
+import com.fsck.k9.mail.autoconfiguration.AutoconfigureMozilla;
+import com.fsck.k9.mail.autoconfiguration.AutoconfigureSrv;
 import timber.log.Timber;
 
 import android.view.View;
@@ -507,14 +508,16 @@ public class AccountSetupBasics extends K9Activity
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                ProviderInfo providerInfo;
+                AutoConfigure.ProviderInfo providerInfo;
+                AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
+                AutoconfigureSrv autoconfigureSrv = new AutoconfigureSrv();
                 mProvider = findProviderForDomain(domain);
 
                 if (mProvider != null) return null;
 
-                providerInfo = AutoConfigurationUtil.findProviderMozilla(domain);
+                providerInfo = autoconfigureMozilla.findProviderInfo(domain);
                 if (providerInfo == null) {
-                    providerInfo = AutoConfigurationUtil.findProviderBySrv(domain);
+                    providerInfo = autoconfigureSrv.findProviderInfo(domain);
                 }
 
                 try {
@@ -577,33 +580,45 @@ public class AccountSetupBasics extends K9Activity
 
         public String note;
 
-        public static Provider newInstanceFromProviderInfo(@Nullable ProviderInfo providerInfo) throws URISyntaxException {
+        public static Provider newInstanceFromProviderInfo(@Nullable AutoConfigure.ProviderInfo providerInfo) throws URISyntaxException {
             if (providerInfo == null) return null;
 
             Provider provider = new Provider();
 
-            if (providerInfo.incomingUsernameTemplate.equals(ProviderInfo.USERNAME_TEMPLATE_EMAIL)) {
+            if (providerInfo.incomingUsernameTemplate.equals(AutoConfigure.ProviderInfo.USERNAME_TEMPLATE_EMAIL)) {
                 provider.incomingUsernameTemplate = USERNAME_TEMPLATE_EMAIL;
-            } else if (providerInfo.incomingUsernameTemplate.equals(ProviderInfo.USERNAME_TEMPLATE_USER)) {
+            } else if (providerInfo.incomingUsernameTemplate.equals(AutoConfigure.ProviderInfo.USERNAME_TEMPLATE_USER)) {
                 provider.incomingUsernameTemplate = USERNAME_TEMPLATE_USER;
             } else {
                 provider.incomingUsernameTemplate = USERNAME_TEMPLATE_UNKNOWN;
             }
 
-            if (providerInfo.outgoingUsernameTemplate.equals(ProviderInfo.USERNAME_TEMPLATE_EMAIL)) {
+            if (providerInfo.outgoingUsernameTemplate.equals(AutoConfigure.ProviderInfo.USERNAME_TEMPLATE_EMAIL)) {
                 provider.outgoingUsernameTemplate = USERNAME_TEMPLATE_EMAIL;
-            } else if (providerInfo.outgoingUsernameTemplate.equals(ProviderInfo.USERNAME_TEMPLATE_USER)) {
+            } else if (providerInfo.outgoingUsernameTemplate.equals(AutoConfigure.ProviderInfo.USERNAME_TEMPLATE_USER)) {
                 provider.outgoingUsernameTemplate = USERNAME_TEMPLATE_USER;
             } else {
                 provider.outgoingUsernameTemplate = USERNAME_TEMPLATE_UNKNOWN;
             }
 
             provider.incomingUriTemplate = new URI(providerInfo.incomingType + "+"
+                    + ("".equals(providerInfo.incomingSocketType) ? "" : (providerInfo.incomingSocketType + "+")),
+                    null,
+                    providerInfo.incomingAddr,
+                    providerInfo.incomingPort,
+                    null, null, null);
+            provider.outgoingUriTemplate = new URI(providerInfo.outgoingType + "+"
+                    + ("".equals(providerInfo.outgoingSocketType) ? "" : (providerInfo.outgoingSocketType + "+")),
+                    null,
+                    providerInfo.outgoingAddr,
+                    providerInfo.outgoingPort,
+                    null, null, null);
+            /* provider.incomingUriTemplate = new URI(providerInfo.incomingType + "+"
                     + ("".equals(providerInfo.incomingSocketType) ? "" : (providerInfo.incomingSocketType + "+"))
                     + "://" + providerInfo.incomingAddr);
             provider.outgoingUriTemplate = new URI(providerInfo.outgoingType + "+"
                     + ("".equals(providerInfo.outgoingSocketType) ? "" : (providerInfo.outgoingSocketType + "+"))
-                    + "://" + providerInfo.outgoingAddr);
+                    + "://" + providerInfo.outgoingAddr);*/
 
             return provider;
         }
