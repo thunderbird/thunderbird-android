@@ -2,6 +2,8 @@ package com.fsck.k9.mail.autoconfiguration;
 
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.xbill.DNS.SRVRecord;
 import org.xbill.DNS.TextParseException;
@@ -23,40 +25,46 @@ public class AutoconfigureSrv implements AutoConfigure {
 
         ProviderInfo providerInfo = new ProviderInfo();
         try {
-            SRVRecord srvRecord = dnsOperation.srvLookup("_imaps._tcp." + domain);
-            if (srvRecord != null && !srvRecord.getTarget().toString().equals(".")) {
-                providerInfo.incomingAddr = srvRecord.getTarget().toString(true);
-                // TODO: 17-4-2 any better way to detect ssl/tls?
-                providerInfo.incomingSocketType = srvRecord.getPort() == 993 ? "ssl" : "tls";
-                providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
-            } else {
-                srvRecord = dnsOperation.srvLookup("_imap._tcp." + domain);
+            SRVRecord incomingRecord;
 
-                if (srvRecord != null && !srvRecord.getTarget().toString().equals(".")) {
-                    providerInfo.incomingAddr = srvRecord.getTarget().toString(true);
-                    providerInfo.incomingSocketType = "";
-                    providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
-                } else {
-                    return null;
-                }
+            List<SRVRecord> imapRecords = new ArrayList<>();
+            imapRecords.addAll(dnsOperation.srvLookup("_imaps._tcp." + domain));
+            imapRecords.addAll(dnsOperation.srvLookup("_imap._tcp." + domain));
+
+            incomingRecord = dnsOperation.choose(imapRecords);
+
+            if (incomingRecord == null) {
+                List<SRVRecord> pop3Records = new ArrayList<>();
+                pop3Records.addAll(dnsOperation.srvLookup("_pop3s._tcp." + domain));
+                pop3Records.addAll(dnsOperation.srvLookup("_pop3._tcp." + domain));
+
+                incomingRecord = dnsOperation.choose(pop3Records);
             }
 
-            srvRecord = dnsOperation.srvLookup("_submission._tcp." + domain);
-            if (srvRecord != null && !srvRecord.getTarget().toString().equals(".")) {
-                providerInfo.outgoingAddr = srvRecord.getTarget().toString(true);
-                // TODO: 17-4-2 any better way to detect ssl/tls?
-                switch (srvRecord.getPort()) {
-                    case 465:
-                        providerInfo.outgoingSocketType = "ssl";
-                        break;
-                    case 587:
-                        providerInfo.outgoingSocketType = "tls";
-                        break;
-                    default:
-                        providerInfo.outgoingSocketType = "";
-                        break;
+            if (incomingRecord != null) {
+                providerInfo.incomingAddr = incomingRecord.getTarget().toString(true);
+                if (incomingRecord.getName().toString().startsWith("_imaps")) {
+                    providerInfo.incomingSocketType = "ssl";
+                    providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
+                } else if (incomingRecord.getName().toString().startsWith("_imap")) {
+                    providerInfo.incomingSocketType = "tls";
+                    providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
+                } else if (incomingRecord.getName().toString().startsWith("_pop3s")) {
+                    providerInfo.incomingSocketType = "ssl";
+                    providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
+                } else if (incomingRecord.getName().toString().startsWith("_pop3")) {
+                    providerInfo.incomingSocketType = "tls";
+                    providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
                 }
-                providerInfo.outgoingType = "stmp";
+            } else {
+                return null;
+            }
+
+            SRVRecord outgoingRecord = dnsOperation.choose(dnsOperation.srvLookup("_submission._tcp." + domain));
+            if (outgoingRecord != null) {
+                providerInfo.outgoingAddr = outgoingRecord.getTarget().toString(true);
+                providerInfo.outgoingSocketType = "tls";
+                providerInfo.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
             } else {
                 return null;
             }

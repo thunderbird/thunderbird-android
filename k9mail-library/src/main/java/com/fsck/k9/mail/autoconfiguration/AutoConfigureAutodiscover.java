@@ -57,7 +57,7 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
         url = String.format(AUTODISCOVER_SRV, domain);
         DNSOperation dnsOperation = new DNSOperation();
         try {
-            SRVRecord srvRecord = dnsOperation.srvLookup(url);
+            SRVRecord srvRecord = dnsOperation.choose(dnsOperation.srvLookup(url));
             if (srvRecord != null) {
                 url = srvRecord.getTarget().toString(true);
                 providerInfo = findProviderInfoByUrl(url, email);

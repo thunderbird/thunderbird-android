@@ -31,5 +31,20 @@ public interface AutoConfigure {
         public static String INCOMING_TYPE_POP3 = "pop3";
         public static String OUTGOING_TYPE_SMTP = "smtp";
 
+        @Override
+        public String toString() {
+            return "ProviderInfo{" +
+                    "incomingUsernameTemplate='" + incomingUsernameTemplate + '\'' +
+                    ", outgoingUsernameTemplate='" + outgoingUsernameTemplate + '\'' +
+                    ", incomingType='" + incomingType + '\'' +
+                    ", incomingSocketType='" + incomingSocketType + '\'' +
+                    ", incomingAddr='" + incomingAddr + '\'' +
+                    ", incomingPort=" + incomingPort +
+                    ", outgoingType='" + outgoingType + '\'' +
+                    ", outgoingSocketType='" + outgoingSocketType + '\'' +
+                    ", outgoingAddr='" + outgoingAddr + '\'' +
+                    ", outgoingPort=" + outgoingPort +
+                    '}';
+        }
     }
 }
