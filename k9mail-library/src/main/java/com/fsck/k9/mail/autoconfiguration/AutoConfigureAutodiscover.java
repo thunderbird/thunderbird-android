@@ -14,7 +14,7 @@ import timber.log.Timber;
 
 
 /**
- * Microsoft Exchange's autodiscover
+ * "Autodiscover" is Microsoft Exchange's autoconfiguration mechanism
  * Not support redirectAddr
  */
 
@@ -104,7 +104,7 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
         return providerInfo;
     }
 
-    private ProviderInfo parse(Element account) {
+    public ProviderInfo parse(Element account) {
         ProviderInfo providerInfo = new ProviderInfo();
         Elements protocols = account.select("Protocol");
         for (Element protocol : protocols) {
@@ -113,16 +113,18 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
             if ((type.text().equalsIgnoreCase("POP3") ||
                     type.text().equalsIgnoreCase("IMAP"))) {
 
+                Element server = protocol.select("Server").first();
+                if (server == null) {
+                    continue;
+                }
+
                 if (type.text().equalsIgnoreCase("POP3")) {
                     providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
                 } else {
                     providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
                 }
 
-                Element server = protocol.select("Server").first();
-                if (server == null) {
-                    continue;
-                }
+
                 providerInfo.incomingAddr = server.text();
 
                 Element port = protocol.select("Port").first();
@@ -153,18 +155,16 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
 
                 Element SSL = protocol.select("SSL").first();
                 if (SSL != null && SSL.text().equalsIgnoreCase("on")) {
-                    providerInfo.incomingSocketType = "ssl";
+                    providerInfo.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
+                } else {
+                    providerInfo.incomingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
                 }
 
                 Element TLS = protocol.select("TLS").first();
                 if (TLS != null && TLS.text().equalsIgnoreCase("on")) {
-                    providerInfo.incomingSocketType = "tls";
+                    providerInfo.incomingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
                 }
 
-                Element encryption = protocol.select("Encryption").first();
-                if (encryption != null) {
-                    providerInfo.incomingSocketType = encryption.text();
-                }
                 break;
             }
         }
@@ -183,10 +183,17 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
                 }
 
                 Element server = protocol.select("Server").first();
-                if (server == null) {
+                if (server == null && providerInfo.outgoingAddr.equals("")) {
+                    providerInfo.outgoingUsernameTemplate = "";
+                    providerInfo.outgoingAddr = "";
+                    providerInfo.outgoingSocketType = "";
+                    providerInfo.outgoingPort = -1;
+
                     continue;
                 }
-                providerInfo.outgoingAddr = server.text();
+                if (server != null) {
+                    providerInfo.outgoingAddr = server.text();
+                }
 
                 Element port = protocol.select("Port").first();
                 if (port != null) {
@@ -231,6 +238,10 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
                     providerInfo.outgoingSocketType = encryption.text();
                 }
             }
+        }
+
+        if (providerInfo.incomingAddr.equals("") || providerInfo.outgoingAddr.equals("")) {
+            return null;
         }
 
         return providerInfo;
