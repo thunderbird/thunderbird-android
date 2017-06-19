@@ -224,13 +224,13 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
                 Element SSL = protocol.select("SSL").first();
                 if (SSL != null && SSL.text().equalsIgnoreCase("on") &&
                         providerInfo.outgoingSocketType.isEmpty()) {
-                    providerInfo.outgoingSocketType = "ssl";
+                    providerInfo.outgoingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
                 }
 
                 Element TLS = protocol.select("TLS").first();
                 if (TLS != null && TLS.text().equalsIgnoreCase("on") &&
                         providerInfo.outgoingSocketType.isEmpty()) {
-                    providerInfo.outgoingSocketType = "tls";
+                    providerInfo.outgoingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
                 }
 
                 Element encryption = protocol.select("Encryption").first();

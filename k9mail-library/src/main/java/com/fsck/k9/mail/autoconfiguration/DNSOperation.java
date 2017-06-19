@@ -92,6 +92,7 @@ class DNSOperation {
             return recordsWithLowestPriority.get(0);
         }
 
+        // weight selection algorithm is from rfc2782
         int randomNum = (int) Math.round(totalWeights * Math.random());
         for (SRVRecord record : recordsWithLowestPriority) {
             randomNum -= record.getWeight();

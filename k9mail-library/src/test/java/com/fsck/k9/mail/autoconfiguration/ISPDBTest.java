@@ -8,13 +8,9 @@ import org.jsoup.nodes.Document;
 import org.junit.Test;
 
 
-/**
- * Created by daquexian on 6/19/17.
- */
-
 public class ISPDBTest {
     @Test
-    public void test1() {
+    public void testImap() {
         String xml = "<clientConfig version=\"1.1\">\n" +
                 "  <emailProvider id=\"a1.net\">\n" +
                 "    <domain>a1.net</domain>\n" +
@@ -57,7 +53,7 @@ public class ISPDBTest {
         Assert.assertEquals(expected, actual);
     }
     @Test
-    public void test2() {
+    public void testPop3() {
         String xml = "<clientConfig version=\"1.1\">\n" +
                 "  <emailProvider id=\"elpasotel.net\">\n" +
                 "    <domain>elpasotel.net</domain>\n" +

@@ -12,13 +12,9 @@ import org.xbill.DNS.SRVRecord;
 import org.xbill.DNS.TextParseException;
 
 
-/**
- * Created by daquexian on 6/19/17.
- */
-
 public class SRVTest {
     @Test
-    public void test1() throws TextParseException {
+    public void test() throws TextParseException {
         List<SRVRecord> imapRecords = new ArrayList<>();
         List<SRVRecord> pop3Records = new ArrayList<>();
         List<SRVRecord> submissionRecords = new ArrayList<>();
@@ -50,7 +46,7 @@ public class SRVTest {
         Assert.assertEquals(expected, actual);
     }
     @Test
-    public void test2() throws TextParseException {
+    public void testPriority() throws TextParseException {
         List<SRVRecord> imapRecords = new ArrayList<>();
         List<SRVRecord> pop3Records = new ArrayList<>();
         List<SRVRecord> submissionRecords = new ArrayList<>();
@@ -90,7 +86,7 @@ public class SRVTest {
         Assert.assertEquals(expected, actual);
     }
     @Test
-    public void test3() throws TextParseException {
+    public void testPop3() throws TextParseException {
         List<SRVRecord> imapRecords = new ArrayList<>();
         List<SRVRecord> pop3Records = new ArrayList<>();
         List<SRVRecord> submissionRecords = new ArrayList<>();
@@ -130,7 +126,7 @@ public class SRVTest {
         Assert.assertEquals(expected, actual);
     }
     @Test
-    public void test4() throws TextParseException {
+    public void testTLS() throws TextParseException {
         List<SRVRecord> imapRecords = new ArrayList<>();
         List<SRVRecord> pop3Records = new ArrayList<>();
         List<SRVRecord> submissionRecords = new ArrayList<>();

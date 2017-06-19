@@ -39,23 +39,23 @@ public class AutoconfigureSrv implements AutoConfigure {
 
         providerInfo.incomingAddr = incomingRecord.getTarget().toString(true);
         if (incomingRecord.getName().toString().startsWith("_imaps")) {
-            providerInfo.incomingSocketType = "ssl";
+            providerInfo.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
             providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         } else if (incomingRecord.getName().toString().startsWith("_imap")) {
-            providerInfo.incomingSocketType = "tls";
+            providerInfo.incomingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
             providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         } else if (incomingRecord.getName().toString().startsWith("_pop3s")) {
-            providerInfo.incomingSocketType = "ssl";
+            providerInfo.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
             providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         } else if (incomingRecord.getName().toString().startsWith("_pop3")) {
-            providerInfo.incomingSocketType = "tls";
+            providerInfo.incomingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
             providerInfo.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         }
 
         SRVRecord outgoingRecord = dnsOperation.choose(submissionRecords);
         if (outgoingRecord != null) {
             providerInfo.outgoingAddr = outgoingRecord.getTarget().toString(true);
-            providerInfo.outgoingSocketType = "tls";
+            providerInfo.outgoingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
             providerInfo.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
             providerInfo.outgoingPort = outgoingRecord.getPort();
         } else {
