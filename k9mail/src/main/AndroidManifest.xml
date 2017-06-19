@@ -65,6 +65,8 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/Theme.K9.Startup"
+        android:resizeableActivity="true"
+        android:supportsPictureInPicture="true"
         android:allowBackup="false">
 
         <meta-data
