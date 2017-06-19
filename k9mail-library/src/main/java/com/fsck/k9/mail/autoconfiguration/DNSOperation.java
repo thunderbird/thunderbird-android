@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.xbill.DNS.DClass;
 import org.xbill.DNS.Lookup;
@@ -67,6 +68,7 @@ class DNSOperation {
         return res;
     }
 
+    @Nullable
     SRVRecord choose(@NonNull List<SRVRecord> srvRecords) {
         ArrayList<SRVRecord> recordsWithLowestPriority = new ArrayList<>();
         int lowestPriority = -1;
