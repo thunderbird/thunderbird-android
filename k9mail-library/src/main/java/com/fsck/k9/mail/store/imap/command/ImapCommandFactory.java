@@ -8,13 +8,11 @@ import com.fsck.k9.mail.store.imap.ImapMessage;
 public class ImapCommandFactory {
 
     private ImapConnection connection;
-    private int nextCommandTag;
     private String logId;
 
     private ImapCommandFactory(ImapConnection connection, String logId) {
         this.connection = connection;
         this.logId = logId;
-        nextCommandTag = 1;
     }
 
     public static ImapCommandFactory create(ImapConnection connection, String logId) {
@@ -26,16 +24,12 @@ public class ImapCommandFactory {
     }
 
     public CapabilityCommand createCapabilityCommand() {
-        return new CapabilityCommand(getNextCommandTag(), this);
+        return new CapabilityCommand(this);
     }
 
     public UidSearchCommand.Builder createUidSearchCommandBuilder(ImapFolder folder,
                                                                   MessageRetrievalListener<ImapMessage> listener) {
-        return new UidSearchCommand.Builder(getNextCommandTag(), this, folder, listener);
-    }
-
-    int getNextCommandTag() {
-        return nextCommandTag++;
+        return new UidSearchCommand.Builder(this, folder, listener);
     }
 
     ImapConnection getConnection() {

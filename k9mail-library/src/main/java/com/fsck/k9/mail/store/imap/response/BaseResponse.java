@@ -17,7 +17,7 @@ public abstract class BaseResponse {
     private long uidNext;
     private ImapCommandFactory commandFactory;
 
-    public BaseResponse(ImapCommandFactory commandFactory, List<ImapResponse> imapResponses) {
+    BaseResponse(ImapCommandFactory commandFactory, List<ImapResponse> imapResponses) {
         this.commandFactory = commandFactory;
         messageCount = -1;
         expungedCount = 0;
@@ -26,12 +26,16 @@ public abstract class BaseResponse {
         parseResponse(imapResponses);
     }
 
-    public abstract void parseResponse(List<ImapResponse> imapResponses);
+    abstract void parseResponse(List<ImapResponse> imapResponses);
 
-    public void combine(BaseResponse baseResponse) {
-        this.messageCount = baseResponse.messageCount;
-        this.expungedCount += baseResponse.messageCount;
-        this.uidNext = baseResponse.uidNext;
+    void combine(BaseResponse baseResponse) {
+        if (baseResponse.messageCount != -1) {
+            this.messageCount = baseResponse.messageCount;
+        }
+        this.expungedCount += baseResponse.expungedCount;
+        if (baseResponse.uidNext != -1L) {
+            this.uidNext = baseResponse.uidNext;
+        }
     }
 
     public int getMessageCount(){
@@ -46,11 +50,11 @@ public abstract class BaseResponse {
         return uidNext;
     }
 
-    String getLogId() {
+    private String getLogId() {
         return commandFactory.getLogId();
     }
 
-    void handleUntaggedResponses(List<ImapResponse> responses) {
+    private void handleUntaggedResponses(List<ImapResponse> responses) {
         if (responses != null) {
             for (ImapResponse response : responses) {
                 handleUntaggedResponses(response);

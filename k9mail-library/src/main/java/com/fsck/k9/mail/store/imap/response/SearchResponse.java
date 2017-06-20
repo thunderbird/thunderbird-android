@@ -35,7 +35,7 @@ public class SearchResponse extends BaseResponse {
     }
 
     @Override
-    public void parseResponse(List<ImapResponse> imapResponses) {
+    void parseResponse(List<ImapResponse> imapResponses) {
 
         numbers = new ArrayList<>();
 
@@ -45,7 +45,7 @@ public class SearchResponse extends BaseResponse {
     }
 
     @Override
-    public void combine(BaseResponse baseResponse) {
+    void combine(BaseResponse baseResponse) {
         super.combine(baseResponse);
         SearchResponse searchResponse = (SearchResponse) baseResponse;
         this.numbers.addAll(searchResponse.getNumbers());
