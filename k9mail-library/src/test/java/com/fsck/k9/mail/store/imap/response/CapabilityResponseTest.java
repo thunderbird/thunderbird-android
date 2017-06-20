@@ -1,13 +1,11 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap.response;
 
 
-import com.fsck.k9.mail.store.imap.response.CapabilityResponse;
-
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.fsck.k9.mail.store.imap.ImapResponse;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
 
@@ -21,7 +19,9 @@ public class CapabilityResponseTest {
 
     @Test
     public void parse_withProperResponseContainingCapabilityCode() throws Exception {
-        CapabilityResponse result = parse("* OK [CAPABILITY IMAP4rev1 IDLE] Welcome");
+        ImapResponse response = createImapResponse("* OK [CAPABILITY IMAP4rev1 IDLE] Welcome");
+
+        CapabilityResponse result = CapabilityResponse.parse(null, Collections.singletonList(response));
 
         assertNotNull(result);
         assertEquals(Sets.newSet("IMAP4REV1", "IDLE"), result.getCapabilities());
@@ -29,30 +29,36 @@ public class CapabilityResponseTest {
 
     @Test
     public void parse_withTaggedResponse_shouldReturnNull() throws Exception {
-        CapabilityResponse result = parse("1 OK");
+        ImapResponse response = createImapResponse("1 OK");
+
+        CapabilityResponse result = CapabilityResponse.parse(null, Collections.singletonList(response));
 
         assertNull(result);
     }
 
     @Test
     public void parse_withoutOkResponse_shouldReturnNull() throws Exception {
-        CapabilityResponse result = parse("* BAD Go Away");
+        ImapResponse response = createImapResponse("* BAD Go Away");
+
+        CapabilityResponse result = CapabilityResponse.parse(null, Collections.singletonList(response));
 
         assertNull(result);
     }
 
     @Test
     public void parse_withOkResponseWithoutList_shouldReturnNull() throws Exception {
-        CapabilityResponse result = parse("* OK Welcome");
+        ImapResponse response = createImapResponse("* OK Welcome");
+
+        CapabilityResponse result = CapabilityResponse.parse(null, Collections.singletonList(response));
 
         assertNull(result);
     }
 
     @Test
     public void parse_withProperCapabilityResponse() throws Exception {
-        ImapList list = createImapResponse("* CAPABILITY IMAP4rev1 STARTTLS AUTH=GSSAPI XPIG-LATIN");
+        ImapResponse response = createImapResponse("* CAPABILITY IMAP4rev1 STARTTLS AUTH=GSSAPI XPIG-LATIN");
 
-        CapabilityResponse result = CapabilityResponse.parse(list);
+        CapabilityResponse result = CapabilityResponse.parse(null, Collections.singletonList(response));
 
         assertNotNull(result);
         assertEquals(Sets.newSet("IMAP4REV1", "STARTTLS", "AUTH=GSSAPI", "XPIG-LATIN"), result.getCapabilities());
@@ -60,18 +66,18 @@ public class CapabilityResponseTest {
 
     @Test
     public void parse_withListInCapabilityResponse_shouldReturnNull() throws Exception {
-        ImapList list = createImapResponse("* CAPABILITY IMAP4rev1 []");
+        ImapResponse response = createImapResponse("* CAPABILITY IMAP4rev1 []");
 
-        CapabilityResponse result = CapabilityResponse.parse(list);
+        CapabilityResponse result = CapabilityResponse.parse(null, Collections.singletonList(response));
 
         assertNull(result);
     }
 
     @Test
     public void parse_withoutCapabilityResponse_shouldReturnNull() throws Exception {
-        ImapList list = createImapResponse("* EXISTS 1");
+        ImapResponse response = createImapResponse("* EXISTS 1");
 
-        CapabilityResponse result = CapabilityResponse.parse(list);
+        CapabilityResponse result = CapabilityResponse.parse(null, Collections.singletonList(response));
 
         assertNull(result);
     }
@@ -80,7 +86,7 @@ public class CapabilityResponseTest {
     public void parse_withEmptyResponseList_shouldReturnNull() throws Exception {
         List<ImapResponse> responses = Collections.emptyList();
 
-        CapabilityResponse result = CapabilityResponse.parse(responses);
+        CapabilityResponse result = CapabilityResponse.parse(null, responses);
 
         assertNull(result);
     }
@@ -89,7 +95,7 @@ public class CapabilityResponseTest {
     public void parse_withoutCapabilityResponseInResponseList_shouldReturnNull() throws Exception {
         List<ImapResponse> responses = Collections.singletonList(createImapResponse("* EXISTS 42"));
 
-        CapabilityResponse result = CapabilityResponse.parse(responses);
+        CapabilityResponse result = CapabilityResponse.parse(null, responses);
 
         assertNull(result);
     }
@@ -99,7 +105,7 @@ public class CapabilityResponseTest {
         ImapResponse response = createImapResponse("* CAPABILITY IMAP4rev1 LOGINDISABLED STARTTLS");
         List<ImapResponse> responses = Collections.singletonList(response);
 
-        CapabilityResponse result = CapabilityResponse.parse(responses);
+        CapabilityResponse result = CapabilityResponse.parse(null, responses);
 
         assertNotNull(result);
         assertEquals(Sets.newSet("IMAP4REV1", "STARTTLS", "LOGINDISABLED"), result.getCapabilities());
@@ -111,16 +117,10 @@ public class CapabilityResponseTest {
         ImapResponse responseTwo = createImapResponse("* CAPABILITY IMAP4rev1 IDLE");
         List<ImapResponse> responses = Arrays.asList(responseOne, responseTwo);
 
-        CapabilityResponse result = CapabilityResponse.parse(responses);
+        CapabilityResponse result = CapabilityResponse.parse(null, responses);
 
         assertNotNull(result);
         assertEquals(Sets.newSet("IMAP4REV1", "IDLE"), result.getCapabilities());
     }
 
-    private CapabilityResponse parse(String responseText) throws IOException {
-        ImapResponse response = createImapResponse(responseText);
-        List<ImapResponse> responses = Collections.singletonList(response);
-
-        return CapabilityResponse.parse(responses);
-    }
 }

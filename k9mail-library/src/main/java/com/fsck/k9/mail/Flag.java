@@ -5,13 +5,13 @@ package com.fsck.k9.mail;
  * Flags that can be applied to Messages.
  */
 public enum Flag {
-    DELETED("DELETED", "UNDELETED"),
-    SEEN("SEEN", "UNSEEN"),
-    ANSWERED("ANSWERED", "UNANSWERED"),
-    FLAGGED("FLAGGED", "UNFLAGGED"),
-    DRAFT("DRAFT", "UNDRAFT"),
-    RECENT("RECENT", "UNRECENT"),
-    FORWARDED(null, null),
+    DELETED("DELETED"),
+    SEEN("SEEN"),
+    ANSWERED("ANSWERED"),
+    FLAGGED("FLAGGED"),
+    DRAFT("DRAFT"),
+    RECENT("RECENT"),
+    FORWARDED(null),
 
     /*
      * The following flags are for internal library use only.
@@ -19,35 +19,35 @@ public enum Flag {
     /**
      * Delete and remove from the LocalStore immediately.
      */
-    X_DESTROYED(null, null),
+    X_DESTROYED(null),
 
     /**
      * Sending of an unsent message failed. It will be retried. Used to show status.
      */
-    X_SEND_FAILED(null, null),
+    X_SEND_FAILED(null),
 
     /**
      * Sending of an unsent message is in progress.
      */
-    X_SEND_IN_PROGRESS(null, null),
+    X_SEND_IN_PROGRESS(null),
 
     /**
      * Indicates that a message is fully downloaded from the server and can be viewed normally.
      * This does not include attachments, which are never downloaded fully.
      */
-    X_DOWNLOADED_FULL(null, null),
+    X_DOWNLOADED_FULL(null),
 
     /**
      * Indicates that a message is partially downloaded from the server and can be viewed but
      * more content is available on the server.
      * This does not include attachments, which are never downloaded fully.
      */
-    X_DOWNLOADED_PARTIAL(null, null),
+    X_DOWNLOADED_PARTIAL(null),
 
     /**
      * Indicates that the copy of a message to the Sent folder has started.
      */
-    X_REMOTE_COPY_STARTED(null, null),
+    X_REMOTE_COPY_STARTED(null),
 
     /**
      * Messages with this flag have been migrated from database version 50 or earlier.
@@ -56,27 +56,21 @@ public enum Flag {
      * incomplete or broken.
      * TODO Messages with this flag should be redownloaded, if possible.
      */
-    X_MIGRATED_FROM_V50(null, null),
+    X_MIGRATED_FROM_V50(null),
 
     /**
      * This flag is used for drafts where the message should be sent as PGP/INLINE.
      */
-    X_DRAFT_OPENPGP_INLINE(null, null);
+    X_DRAFT_OPENPGP_INLINE(null);
 
-    private String requiredImapString;
-    private String forbiddenImapString;
+    private String imapString;
 
-    Flag(String requiredImapString, String forbiddenImapString) {
-        this.requiredImapString = requiredImapString;
-        this.forbiddenImapString = forbiddenImapString;
+    Flag(String imapString) {
+        this.imapString = imapString;
     }
 
-    public String getRequiredImapString() {
-        return requiredImapString;
-    }
-
-    public String getForbiddenImapString() {
-        return forbiddenImapString;
+    public String getImapString() {
+        return imapString;
     }
 
 }

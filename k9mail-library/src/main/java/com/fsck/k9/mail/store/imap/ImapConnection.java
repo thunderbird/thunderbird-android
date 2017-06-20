@@ -50,7 +50,6 @@ import javax.net.ssl.SSLException;
 import org.apache.commons.io.IOUtils;
 import timber.log.Timber;
 
-import static android.R.attr.tag;
 import static com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
 import static com.fsck.k9.mail.store.RemoteStore.SOCKET_CONNECT_TIMEOUT;
@@ -723,7 +722,7 @@ public class ImapConnection {
         return "conn" + hashCode();
     }
 
-    public List<ImapResponse> executeSimpleCommand(String command) throws IOException, MessagingException {
+    List<ImapResponse> executeSimpleCommand(String command) throws IOException, MessagingException {
         return executeSimpleCommand(command, false);
     }
 
@@ -745,30 +744,12 @@ public class ImapConnection {
         }
     }
 
-    public List<ImapResponse> executeSimpleCommandNew(String command, boolean sensitive) throws IOException,
-            MessagingException {
-        String commandToLog = command;
-
-        if (sensitive && !K9MailLib.isDebugSensitive()) {
-            commandToLog = "*sensitive*";
-        }
-
-        String tag = sendCommandNew(command, sensitive);
-
-        try {
-            return responseParser.readStatusResponse(tag, commandToLog, getLogId(), null);
-        } catch (IOException e) {
-            close();
-            throw e;
-        }
-    }
-
-    public List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
+    List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
             throws IOException, NegativeImapResponseException {
         return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
     }
 
-    public String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
+    String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
             throws IOException, MessagingException {
         try {
             open();
@@ -793,7 +774,7 @@ public class ImapConnection {
         }
     }
 
-    public String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {
+    String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {
         try {
             open();
 
@@ -811,29 +792,6 @@ public class ImapConnection {
             }
 
             return tag;
-        } catch (IOException | MessagingException e) {
-            close();
-            throw e;
-        }
-    }
-
-    public String sendCommandNew(String command, boolean sensitive) throws MessagingException, IOException {
-        try {
-            open();
-
-            String commandToSend = command + "\r\n";
-            outputStream.write(commandToSend.getBytes());
-            outputStream.flush();
-
-            if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-                if (sensitive && !K9MailLib.isDebugSensitive()) {
-                    Timber.v("%s>>> [Command Hidden, Enable Sensitive Debug Logging To Show]", getLogId());
-                } else {
-                    Timber.v("%s>>> %s %s", getLogId(), tag, command);
-                }
-            }
-
-            return command.split(" ")[0];
         } catch (IOException | MessagingException e) {
             close();
             throw e;

@@ -64,19 +64,14 @@ public class CapabilityResponse extends BaseResponse {
     }
 
     @Override
-    public void parseResponse(List<ImapResponse> imapResponses) {
+    void parseResponse(List<ImapResponse> imapResponses) {
         //This is never called
     }
 
     @Override
-    public void combine(BaseResponse baseResponse) {
+    void combine(BaseResponse baseResponse) {
         super.combine(baseResponse);
         //This is never called
-    }
-
-    @Override
-    void handleUntaggedResponses(List<ImapResponse> responses) {
-        super.handleUntaggedResponses(responses);
     }
 
     public Set<String> getCapabilities() {

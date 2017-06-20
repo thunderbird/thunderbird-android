@@ -521,6 +521,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             throw new MessagingException(String.format(Locale.US, "Invalid message set %d %d", start, end));
         }
 
+        checkOpen();
         UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, listener)
                 .useUids(false)
                 .addIdRange((long) start, (long) end)
@@ -573,6 +574,7 @@ public class ImapFolder extends Folder<ImapMessage> {
     protected List<ImapMessage> getMessages(final List<Long> mesgSeqs, final boolean includeDeleted,
             final MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
 
+        checkOpen();
         UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, listener)
                 .useUids(false)
                 .idSet(mesgSeqs)
@@ -585,6 +587,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     protected List<ImapMessage> getMessagesFromUids(final List<String> mesgUids) throws MessagingException {
 
+        checkOpen();
         Set<Long> uidSet = new HashSet<>();
         for (String uid : mesgUids) {
             uidSet.add(Long.parseLong(uid));

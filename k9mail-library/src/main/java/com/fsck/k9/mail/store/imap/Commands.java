@@ -1,7 +1,7 @@
 package com.fsck.k9.mail.store.imap;
 
 
-class Commands {
+public class Commands {
     public static final String IDLE = "IDLE";
     public static final String NAMESPACE = "NAMESPACE";
     public static final String CAPABILITY = "CAPABILITY";
@@ -14,4 +14,5 @@ class Commands {
     public static final String LOGIN = "LOGIN";
     public static final String LIST = "LIST";
     public static final String NOOP = "NOOP";
+    public static final String UID_SEARCH = "UID SEARCH";
 }
