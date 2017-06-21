@@ -371,7 +371,7 @@ public class ImapFolderTest {
 
         sourceFolder.moveMessages(messages, destinationFolder);
 
-        verify(imapConnection).executeSimpleCommand("UID STORE 1 +FLAGS.SILENT (\\Deleted)");
+        verify(imapConnection).executeSimpleCommand("UID STORE 1 +FLAGS.SILENT (\\Deleted)", false);
     }
 
     @Test
@@ -404,7 +404,7 @@ public class ImapFolderTest {
 
         folder.delete(messages, "Folder");
 
-        verify(imapConnection).executeSimpleCommand("UID STORE 23 +FLAGS.SILENT (\\Deleted)");
+        verify(imapConnection).executeSimpleCommand("UID STORE 23 +FLAGS.SILENT (\\Deleted)", false);
     }
 
     @Test
@@ -422,7 +422,7 @@ public class ImapFolderTest {
 
         folder.delete(messages, "Trash");
 
-        verify(imapConnection).executeSimpleCommand("UID STORE 2 +FLAGS.SILENT (\\Deleted)");
+        verify(imapConnection).executeSimpleCommand("UID STORE 2 +FLAGS.SILENT (\\Deleted)", false);
     }
 
     @Test
@@ -1042,7 +1042,7 @@ public class ImapFolderTest {
 
         folder.setFlags(newSet(Flag.SEEN), true);
 
-        verify(imapConnection).executeSimpleCommand("UID STORE 1:* +FLAGS.SILENT (\\Seen)");
+        verify(imapConnection).executeSimpleCommand("UID STORE 1:* +FLAGS.SILENT (\\Seen)", false);
     }
 
     @Test

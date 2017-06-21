@@ -15,4 +15,5 @@ public class Commands {
     public static final String LIST = "LIST";
     public static final String NOOP = "NOOP";
     public static final String UID_SEARCH = "UID SEARCH";
+    public static final String UID_STORE = "UID STORE";
 }
