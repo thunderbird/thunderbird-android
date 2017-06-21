@@ -774,7 +774,7 @@ public class ImapConnection {
         }
     }
 
-    String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {
+    public String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {
         try {
             open();
 

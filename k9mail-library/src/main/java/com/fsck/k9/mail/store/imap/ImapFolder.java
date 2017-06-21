@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -36,6 +35,7 @@ import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.imap.command.ImapCommandFactory;
+import com.fsck.k9.mail.store.imap.command.UidFetchCommand;
 import com.fsck.k9.mail.store.imap.command.UidSearchCommand;
 import com.fsck.k9.mail.store.imap.command.UidStoreCommand;
 import com.fsck.k9.mail.store.imap.response.BaseResponse;
@@ -651,59 +651,27 @@ public class ImapFolder extends Folder<ImapMessage> {
             messageMap.put(uid, message);
         }
 
-        Set<String> fetchFields = new LinkedHashSet<>();
-        fetchFields.add("UID");
-
-        if (fetchProfile.contains(FetchProfile.Item.FLAGS)) {
-            fetchFields.add("FLAGS");
-        }
-
-        if (fetchProfile.contains(FetchProfile.Item.ENVELOPE)) {
-            fetchFields.add("INTERNALDATE");
-            fetchFields.add("RFC822.SIZE");
-            fetchFields.add("BODY.PEEK[HEADER.FIELDS (date subject from content-type to cc " +
-                    "reply-to message-id references in-reply-to " + K9MailLib.IDENTITY_HEADER + ")]");
-        }
-
-        if (fetchProfile.contains(FetchProfile.Item.STRUCTURE)) {
-            fetchFields.add("BODYSTRUCTURE");
-        }
-
-        if (fetchProfile.contains(FetchProfile.Item.BODY_SANE)) {
-            int maximumAutoDownloadMessageSize = store.getStoreConfig().getMaximumAutoDownloadMessageSize();
-            if (maximumAutoDownloadMessageSize > 0) {
-                fetchFields.add(String.format(Locale.US, "BODY.PEEK[]<0.%d>", maximumAutoDownloadMessageSize));
-            } else {
-                fetchFields.add("BODY.PEEK[]");
-            }
-        }
-
-        if (fetchProfile.contains(FetchProfile.Item.BODY)) {
-            fetchFields.add("BODY.PEEK[]");
-        }
-
-        String spaceSeparatedFetchFields = combine(fetchFields.toArray(new String[fetchFields.size()]), ' ');
-
         for (int windowStart = 0; windowStart < messages.size(); windowStart += (FETCH_WINDOW_SIZE)) {
             int windowEnd = Math.min(windowStart + FETCH_WINDOW_SIZE, messages.size());
-            List<String> uidWindow = uids.subList(windowStart, windowEnd);
+            List<Long> uidWindow = new ArrayList<>(windowEnd - windowStart);
+            for (String uid : uids.subList(windowStart, windowEnd)) {
+                uidWindow.add(Long.parseLong(uid));
+            }
 
             try {
-                String commaSeparatedUids = combine(uidWindow.toArray(new String[uidWindow.size()]), ',');
-                String command = String.format("UID FETCH %s (%s)", commaSeparatedUids, spaceSeparatedFetchFields);
-                connection.sendCommand(command, false);
 
+                UidFetchCommand command = commandFactory.createUidFetchCommandBuilder(this,
+                        store.getStoreConfig().getMaximumAutoDownloadMessageSize())
+                        .idSet(uidWindow)
+                        .messageParams(fetchProfile, messageMap)
+                        .build();
+                command.send();
                 ImapResponse response;
                 int messageNumber = 0;
 
-                ImapResponseCallback callback = null;
-                if (fetchProfile.contains(FetchProfile.Item.BODY) ||
-                        fetchProfile.contains(FetchProfile.Item.BODY_SANE)) {
-                    callback = new FetchBodyCallback(messageMap);
-                }
-
                 do {
-                    response = connection.readResponse(callback);
+
+                    response = command.readResponse();
 
                     if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
                         ImapList fetchList = (ImapList) response.getKeyedValue("FETCH");
@@ -769,27 +737,19 @@ public class ImapFolder extends Folder<ImapMessage> {
             BodyFactory bodyFactory) throws MessagingException {
         checkOpen();
 
-        String partId = part.getServerExtra();
-
-        String fetch;
-        if ("TEXT".equalsIgnoreCase(partId)) {
-            int maximumAutoDownloadMessageSize = store.getStoreConfig().getMaximumAutoDownloadMessageSize();
-            fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>", maximumAutoDownloadMessageSize);
-        } else {
-            fetch = String.format("BODY.PEEK[%s]", partId);
-        }
-
         try {
-            String command = String.format("UID FETCH %s (UID %s)", message.getUid(), fetch);
-            connection.sendCommand(command, false);
+            UidFetchCommand command = commandFactory.createUidFetchCommandBuilder(this,
+                    store.getStoreConfig().getMaximumAutoDownloadMessageSize())
+                    .idSet(Collections.singleton(Long.parseLong(message.getUid())))
+                    .partParams(part, bodyFactory)
+                    .build();
+            command.send();
 
             ImapResponse response;
             int messageNumber = 0;
 
-            ImapResponseCallback callback = new FetchPartCallback(part, bodyFactory);
-
             do {
-                response = connection.readResponse(callback);
+                response = command.readResponse();
 
                 if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
                     ImapList fetchList = (ImapList) response.getKeyedValue("FETCH");
