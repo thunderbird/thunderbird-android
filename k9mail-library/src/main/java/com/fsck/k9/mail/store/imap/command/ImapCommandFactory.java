@@ -32,6 +32,10 @@ public class ImapCommandFactory {
         return new UidSearchCommand.Builder(this, folder, listener);
     }
 
+    public UidStoreCommand.Builder createUidStoreCommandBuilder(ImapFolder folder) {
+        return new UidStoreCommand.Builder(this, folder);
+    }
+
     ImapConnection getConnection() {
         return connection;
     }

@@ -37,6 +37,7 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.imap.command.ImapCommandFactory;
 import com.fsck.k9.mail.store.imap.command.UidSearchCommand;
+import com.fsck.k9.mail.store.imap.command.UidStoreCommand;
 import com.fsck.k9.mail.store.imap.response.BaseResponse;
 import com.fsck.k9.mail.store.imap.response.SearchResponse;
 import timber.log.Timber;
@@ -1295,12 +1296,13 @@ public class ImapFolder extends Folder<ImapMessage> {
         open(OPEN_MODE_RW);
         checkOpen();
 
-        try {
-            String command = String.format("UID STORE 1:* %sFLAGS.SILENT (%s)", value ? "+" : "-", combineFlags(flags));
-            executeSimpleCommand(command);
-        } catch (IOException ioe) {
-            throw ioExceptionHandler(connection, ioe);
-        }
+        UidStoreCommand command = commandFactory.createUidStoreCommandBuilder(this)
+                .allIds(true)
+                .value(value)
+                .flagSet(flags)
+                .canCreateKeywords(canCreateKeywords || store.getPermanentFlagsIndex().contains(Flag.FORWARDED))
+                .build();
+        command.execute();
     }
 
     @Override
@@ -1331,18 +1333,18 @@ public class ImapFolder extends Folder<ImapMessage> {
         open(OPEN_MODE_RW);
         checkOpen();
 
-        String[] uids = new String[messages.size()];
-        for (int i = 0, count = messages.size(); i < count; i++) {
-            uids[i] = messages.get(i).getUid();
+        Set<Long> uids = new HashSet<>(messages.size());
+        for (Message message : messages) {
+            uids.add(Long.parseLong(message.getUid()));
         }
 
-        try {
-            String command = String.format("UID STORE %s %sFLAGS.SILENT (%s)", combine(uids, ','), value ? "+" : "-",
-                    combineFlags(flags));
-            executeSimpleCommand(command);
-        } catch (IOException ioe) {
-            throw ioExceptionHandler(connection, ioe);
-        }
+        UidStoreCommand command = commandFactory.createUidStoreCommandBuilder(this)
+                .idSet(uids)
+                .value(value)
+                .flagSet(flags)
+                .canCreateKeywords(canCreateKeywords || store.getPermanentFlagsIndex().contains(Flag.FORWARDED))
+                .build();
+        command.execute();
     }
 
     private void checkOpen() throws MessagingException {

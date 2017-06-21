@@ -9,9 +9,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import android.text.TextUtils;
-
 import com.fsck.k9.mail.store.imap.ImapFolder;
+import com.fsck.k9.mail.store.imap.ImapUtility;
 
 
 //This is the base class for a command that takes sequence numbers/uids as an argument
@@ -95,13 +94,13 @@ abstract class SelectByIdCommand extends BaseCommand {
             optimizeGroupings();
 
             if (idSet != null) {
-                builder.append(TextUtils.join(",", idSet));
+                builder.append(ImapUtility.join(",", idSet));
             }
             if (idRanges != null) {
                 if (idSet != null) {
                     builder.append(",");
                 }
-                builder.append(TextUtils.join(",", idRanges));
+                builder.append(ImapUtility.join(",", idRanges));
             }
             builder.append(" ");
         }

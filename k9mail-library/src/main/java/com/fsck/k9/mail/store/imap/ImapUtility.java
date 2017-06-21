@@ -18,6 +18,7 @@
 package com.fsck.k9.mail.store.imap;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import timber.log.Timber;
@@ -153,5 +154,19 @@ public class ImapUtility {
         int lastIndex = responses.size() - 1;
 
         return responses.get(lastIndex);
+    }
+
+    public static String join(String delimiter, Collection<? extends Object> tokens) {
+        StringBuilder sb = new StringBuilder();
+        boolean firstTime = true;
+        for (Object token: tokens) {
+            if (firstTime) {
+                firstTime = false;
+            } else {
+                sb.append(delimiter);
+            }
+            sb.append(token);
+        }
+        return sb.toString();
     }
 }
