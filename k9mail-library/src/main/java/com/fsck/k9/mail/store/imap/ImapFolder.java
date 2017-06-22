@@ -35,10 +35,12 @@ import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.imap.command.ImapCommandFactory;
+import com.fsck.k9.mail.store.imap.command.UidCopyCommand;
 import com.fsck.k9.mail.store.imap.command.UidFetchCommand;
 import com.fsck.k9.mail.store.imap.command.UidSearchCommand;
 import com.fsck.k9.mail.store.imap.command.UidStoreCommand;
 import com.fsck.k9.mail.store.imap.response.BaseResponse;
+import com.fsck.k9.mail.store.imap.response.CopyUidResponse;
 import com.fsck.k9.mail.store.imap.response.SearchResponse;
 import timber.log.Timber;
 
@@ -349,42 +351,36 @@ public class ImapFolder extends Folder<ImapMessage> {
         ImapFolder imapFolder = (ImapFolder) folder;
         checkOpen(); //only need READ access
 
-        String[] uids = new String[messages.size()];
+        List<Long> uids = new ArrayList<>(messages.size());
         for (int i = 0, count = messages.size(); i < count; i++) {
-            uids[i] = messages.get(i).getUid();
+            uids.add(Long.parseLong(messages.get(i).getUid()));
         }
 
-        try {
-            String encodedDestinationFolderName = folderNameCodec.encode(imapFolder.getPrefixedName());
-            String escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName);
+        String encodedDestinationFolderName = folderNameCodec.encode(imapFolder.getPrefixedName());
+        String escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName);
 
-            //TODO: Try to copy/move the messages first and only create the folder if the
-            //      operation fails. This will save a roundtrip if the folder already exists.
-            if (!exists(escapedDestinationFolderName)) {
-                if (K9MailLib.isDebug()) {
-                    Timber.i("ImapFolder.copyMessages: attempting to create remote folder '%s' for %s",
-                            escapedDestinationFolderName, getLogId());
-                }
-
-                imapFolder.create(FolderType.HOLDS_MESSAGES);
+        //TODO: Try to copy/move the messages first and only create the folder if the
+        //      operation fails. This will save a roundtrip if the folder already exists.
+        if (!exists(escapedDestinationFolderName)) {
+            if (K9MailLib.isDebug()) {
+                Timber.i("ImapFolder.copyMessages: attempting to create remote folder '%s' for %s",
+                        escapedDestinationFolderName, getLogId());
             }
 
-            //TODO: Split this into multiple commands if the command exceeds a certain length.
-            List<ImapResponse> responses = executeSimpleCommand(String.format("UID COPY %s %s",
-                    combine(uids, ','), escapedDestinationFolderName));
-
-            // Get the tagged response for the UID COPY command
-            ImapResponse response = getLastResponse(responses);
-
-            CopyUidResponse copyUidResponse = CopyUidResponse.parse(response);
-            if (copyUidResponse == null) {
-                return null;
-            }
-
-            return copyUidResponse.getUidMapping();
-        } catch (IOException ioe) {
-            throw ioExceptionHandler(connection, ioe);
+            imapFolder.create(FolderType.HOLDS_MESSAGES);
         }
+
+        UidCopyCommand command = commandFactory.createUidCopyCommandBuilder(this)
+                .idSet(uids)
+                .destinationFolderName(escapedDestinationFolderName)
+                .build();
+
+        CopyUidResponse copyUidResponse = command.execute();
+        if (copyUidResponse == null) {
+            return null;
+        }
+
+        return copyUidResponse.getUidMapping();
     }
 
     @Override
