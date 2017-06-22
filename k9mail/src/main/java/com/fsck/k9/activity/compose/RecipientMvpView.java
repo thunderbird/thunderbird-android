@@ -397,6 +397,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         dialog.show(activity.getFragmentManager(), "openpgp_signonly");
     }
 
+    public void showOpenPgpEncryptExplanationDialog() {
+        PgpEncryptDescriptionDialog dialog = PgpEncryptDescriptionDialog.newInstance(R.id.crypto_status);
+        dialog.show(activity.getFragmentManager(), "openpgp_description");
+    }
+
     public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {
         activity.launchUserInteractionPendingIntent(pendingIntent, requestCode);
     }

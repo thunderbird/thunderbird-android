@@ -822,10 +822,23 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void onMenuSetEnableEncryption(boolean enableEncryption) {
+        if (cachedCryptoStatus == null) {
+            Timber.e("Received crypto button press while status wasn't initialized?");
+            return;
+        }
         if (enableEncryption) {
-            onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
+            if (cachedCryptoStatus.canEncryptAndIsMutual()) {
+                onCryptoModeChanged(CryptoMode.NO_CHOICE);
+            } else {
+                recipientMvpView.showOpenPgpEncryptExplanationDialog();
+                onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
+            }
         } else {
-            onCryptoModeChanged(CryptoMode.NO_CHOICE);
+            if (cachedCryptoStatus.canEncryptAndIsMutual()) {
+                onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
+            } else {
+                onCryptoModeChanged(CryptoMode.NO_CHOICE);
+            }
         }
     }
 

@@ -40,13 +40,13 @@
     <item
         android:id="@+id/openpgp_encrypt_enable"
         android:alphabeticShortcut="c"
-        android:title="Enable Encryption"
+        android:title="@string/enable_encryption"
         android:showAsAction="never"
         />
     <item
         android:id="@+id/openpgp_encrypt_disable"
         android:alphabeticShortcut="c"
-        android:title="Disable Encryption"
+        android:title="@string/disable_encryption"
         android:showAsAction="never"
         />
     <item
