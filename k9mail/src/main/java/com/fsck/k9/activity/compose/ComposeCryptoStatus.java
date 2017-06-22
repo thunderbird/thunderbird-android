@@ -8,7 +8,7 @@ import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayTyp
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
-import com.fsck.k9.message.PgpMessageBuilder.CryptoProviderDryRunStatus;
+import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 /** This is an immutable object which contains all relevant metadata entered
@@ -24,11 +24,11 @@ public class ComposeCryptoStatus {
     private String[] recipientAddresses;
     private boolean enablePgpInline;
     private CryptoMode cryptoMode;
-    private CryptoProviderDryRunStatus cryptoProviderDryRunStatus;
+    private RecipientAutocryptStatus recipientAutocryptStatus;
 
 
     boolean isCryptoStatusRecipientDependent() {
-        return cryptoProviderState == CryptoProviderState.OK && cryptoMode != CryptoMode.DISABLE;
+        return cryptoProviderState == CryptoProviderState.OK;
     }
 
     public Long getSigningKeyId() {
@@ -51,34 +51,30 @@ public class ComposeCryptoStatus {
                 throw new AssertionError("all CryptoProviderStates must be handled!");
         }
 
-        if (cryptoMode == CryptoMode.DISABLE) {
-            return CryptoStatusDisplayType.DISABLED;
-        }
-
-        if (cryptoProviderDryRunStatus == null) {
+        if (recipientAutocryptStatus == null) {
             throw new IllegalStateException("Display type must be obtained from provider!");
         }
 
-        if (cryptoProviderDryRunStatus == CryptoProviderDryRunStatus.ERROR) {
+        if (recipientAutocryptStatus == RecipientAutocryptStatus.ERROR) {
             return CryptoStatusDisplayType.ERROR;
         }
 
         switch (cryptoMode) {
             case PRIVATE:
-                if (cryptoProviderDryRunStatus == CryptoProviderDryRunStatus.NO_RECIPIENTS) {
+                if (recipientAutocryptStatus == RecipientAutocryptStatus.NO_RECIPIENTS) {
                     return CryptoStatusDisplayType.PRIVATE_EMPTY;
-                } else if (cryptoProviderDryRunStatus == CryptoProviderDryRunStatus.OK_KEYS_CONFIRMED) {
+                } else if (recipientAutocryptStatus == RecipientAutocryptStatus.RECOMMENDED_UNCONFIRMED) {
                     return CryptoStatusDisplayType.PRIVATE_TRUSTED;
-                } else if (cryptoProviderDryRunStatus == CryptoProviderDryRunStatus.OK_KEYS_UNCONFIRMED) {
+                } else if (recipientAutocryptStatus == RecipientAutocryptStatus.AVAILABLE_UNCONFIRMED) {
                     return CryptoStatusDisplayType.PRIVATE_UNTRUSTED;
                 }
                 return CryptoStatusDisplayType.PRIVATE_NOKEY;
             case OPPORTUNISTIC:
-                if (cryptoProviderDryRunStatus == CryptoProviderDryRunStatus.NO_RECIPIENTS) {
+                if (recipientAutocryptStatus == RecipientAutocryptStatus.NO_RECIPIENTS) {
                     return CryptoStatusDisplayType.OPPORTUNISTIC_EMPTY;
-                } else if (cryptoProviderDryRunStatus == CryptoProviderDryRunStatus.OK_KEYS_CONFIRMED) {
+                } else if (recipientAutocryptStatus == RecipientAutocryptStatus.RECOMMENDED_UNCONFIRMED) {
                     return CryptoStatusDisplayType.OPPORTUNISTIC_TRUSTED;
-                } else if (cryptoProviderDryRunStatus == CryptoProviderDryRunStatus.OK_KEYS_UNCONFIRMED) {
+                } else if (recipientAutocryptStatus == RecipientAutocryptStatus.AVAILABLE_UNCONFIRMED) {
                     return CryptoStatusDisplayType.OPPORTUNISTIC_UNTRUSTED;
                 }
                 return CryptoStatusDisplayType.OPPORTUNISTIC_NOKEY;
@@ -220,7 +216,7 @@ public class ComposeCryptoStatus {
         }
     }
 
-    ComposeCryptoStatus withCryptoProviderRecipientStatus(CryptoProviderDryRunStatus cryptoProviderDryRunStatus) {
+    ComposeCryptoStatus withRecipientAutocryptStatus(RecipientAutocryptStatus recipientAutocryptStatus) {
         ComposeCryptoStatus result = new ComposeCryptoStatus();
         result.cryptoProviderState = cryptoProviderState;
         result.cryptoMode = cryptoMode;
@@ -228,7 +224,7 @@ public class ComposeCryptoStatus {
         result.signingKeyId = signingKeyId;
         result.selfEncryptKeyId = selfEncryptKeyId;
         result.enablePgpInline = enablePgpInline;
-        result.cryptoProviderDryRunStatus = cryptoProviderDryRunStatus;
+        result.recipientAutocryptStatus = recipientAutocryptStatus;
         return result;
     }
 

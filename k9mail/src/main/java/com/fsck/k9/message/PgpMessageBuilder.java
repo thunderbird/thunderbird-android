@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.support.annotation.WorkerThread;
 
 import com.fsck.k9.Globals;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
@@ -326,49 +325,5 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     public void setCryptoStatus(ComposeCryptoStatus cryptoStatus) {
         this.cryptoStatus = cryptoStatus;
-    }
-
-    @WorkerThread
-    public CryptoProviderDryRunStatus retrieveCryptoProviderRecipientStatus() {
-        boolean shouldSign = cryptoStatus.isSigningEnabled();
-        boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled();
-        boolean isPgpInlineMode = cryptoStatus.isPgpInlineModeEnabled();
-
-        Intent apiIntent = buildOpenPgpApiIntent(shouldSign, shouldEncrypt, isPgpInlineMode);
-        apiIntent.putExtra(OpenPgpApi.EXTRA_DRY_RUN, true);
-
-        Intent result = openPgpApi.executeApi(apiIntent, (InputStream) null, null);
-        switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
-            case OpenPgpApi.RESULT_CODE_SUCCESS:
-                if (result.getBooleanExtra(OpenPgpApi.RESULT_KEYS_CONFIRMED, false)) {
-                    return CryptoProviderDryRunStatus.OK_KEYS_CONFIRMED;
-                } else {
-                    return CryptoProviderDryRunStatus.OK_KEYS_UNCONFIRMED;
-                }
-            case OpenPgpApi.RESULT_CODE_ERROR:
-                OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
-                if (error == null) {
-                    return CryptoProviderDryRunStatus.ERROR;
-                }
-                switch (error.getErrorId()) {
-                    case OpenPgpError.NO_USER_IDS:
-                        return CryptoProviderDryRunStatus.NO_RECIPIENTS;
-                    case OpenPgpError.OPPORTUNISTIC_MISSING_KEYS:
-                        return CryptoProviderDryRunStatus.OK_KEYS_MISSING;
-                }
-
-            case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                // should never happen, so treat as error!
-            default:
-                return CryptoProviderDryRunStatus.ERROR;
-        }
-    }
-
-    public enum CryptoProviderDryRunStatus {
-        NO_RECIPIENTS,
-        OK_KEYS_MISSING,
-        OK_KEYS_UNCONFIRMED,
-        OK_KEYS_CONFIRMED,
-        ERROR
     }
 }

@@ -62,8 +62,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private static final int INDEX_NICKNAME = 1;
 
     private static final String[] PROJECTION_CRYPTO_STATUS = {
-            "email_address",
-            "email_status"
+            "address",
+            "uid_key_status"
     };
 
     private static final int CRYPTO_PROVIDER_STATUS_UNTRUSTED = 1;
@@ -341,7 +341,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         String[] recipientAddresses = recipientList.toArray(new String[recipientList.size()]);
 
         Cursor cursor;
-        Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/email_status");
+        Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/autocrypt_status");
         try {
             cursor = getContext().getContentResolver().query(queryUri, PROJECTION_CRYPTO_STATUS, null,
                     recipientAddresses, null);

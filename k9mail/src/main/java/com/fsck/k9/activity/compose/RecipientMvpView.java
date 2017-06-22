@@ -16,7 +16,6 @@ import android.widget.ViewAnimator;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose;
-import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.view.RecipientSelectView;
@@ -393,11 +392,6 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
                 presenter.onClickCryptoSpecialModeIndicator();
             }
         }
-    }
-
-    public void showCryptoDialog(CryptoMode currentCryptoMode) {
-        CryptoSettingsDialog dialog = CryptoSettingsDialog.newInstance(currentCryptoMode);
-        dialog.show(activity.getFragmentManager(), "crypto_settings");
     }
 
     public void showOpenPgpInlineDialog(boolean firstTime) {

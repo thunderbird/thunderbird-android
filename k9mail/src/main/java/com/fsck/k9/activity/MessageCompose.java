@@ -55,24 +55,21 @@ import com.fsck.k9.activity.compose.AttachmentPresenter.AttachmentMvpView;
 import com.fsck.k9.activity.compose.AttachmentPresenter.WaitingAction;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
-import com.fsck.k9.activity.compose.CryptoSettingsDialog.OnCryptoModeChangedListener;
 import com.fsck.k9.activity.compose.IdentityAdapter;
 import com.fsck.k9.activity.compose.IdentityAdapter.IdentityContainer;
 import com.fsck.k9.activity.compose.PgpInlineDialog.OnOpenPgpInlineChangeListener;
 import com.fsck.k9.activity.compose.PgpSignOnlyDialog.OnOpenPgpSignOnlyChangeListener;
 import com.fsck.k9.activity.compose.RecipientMvpView;
 import com.fsck.k9.activity.compose.RecipientPresenter;
-import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.compose.SaveMessageTask;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
+import com.fsck.k9.fragment.AttachmentDownloadDialogFragment.AttachmentDownloadCancelListener;
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.fragment.ProgressDialogFragment.CancelListener;
-import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
-import com.fsck.k9.fragment.AttachmentDownloadDialogFragment.AttachmentDownloadCancelListener;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.helper.MailTo;
@@ -105,7 +102,7 @@ import timber.log.Timber;
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
 public class MessageCompose extends K9Activity implements OnClickListener,
-        CancelListener, AttachmentDownloadCancelListener, OnFocusChangeListener, OnCryptoModeChangedListener,
+        CancelListener, AttachmentDownloadCancelListener, OnFocusChangeListener,
         OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback,
         AttachmentPresenter.AttachmentsChangedListener, RecipientPresenter.RecipientsChangedListener {
 
@@ -892,11 +889,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
                 break;
         }
-    }
-
-    @Override
-    public void onCryptoModeChanged(CryptoMode cryptoMode) {
-        recipientPresenter.onCryptoModeChanged(cryptoMode);
     }
 
     @Override

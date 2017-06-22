@@ -37,10 +37,11 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.message.AutocryptStatusInteractor;
+import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus;
 import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.PgpMessageBuilder;
-import com.fsck.k9.message.PgpMessageBuilder.CryptoProviderDryRunStatus;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -381,15 +382,12 @@ public class RecipientPresenter implements PermissionPingCallback {
                         .build();
 
                 if (composeCryptoStatus.isCryptoStatusRecipientDependent()) {
-                    PgpMessageBuilder pgpMessageBuilder = PgpMessageBuilder.newInstance();
-                    builderSetProperties(pgpMessageBuilder, composeCryptoStatus);
+                    AutocryptStatusInteractor autocryptStatusInteractor = AutocryptStatusInteractor.getInstance();
+                    RecipientAutocryptStatus recipientAutocryptStatus =
+                            autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(
+                                    getOpenPgpApi(), composeCryptoStatus.getRecipientAddresses());
 
-                    // this calls out to the crypto provider, hence the need to do this in a background thread
-                    CryptoProviderDryRunStatus cryptoProviderDryRunStatus =
-                            pgpMessageBuilder.retrieveCryptoProviderRecipientStatus();
-
-                    composeCryptoStatus = composeCryptoStatus.withCryptoProviderRecipientStatus(
-                            cryptoProviderDryRunStatus);
+                    composeCryptoStatus = composeCryptoStatus.withRecipientAutocryptStatus(recipientAutocryptStatus);
                 }
 
                 return composeCryptoStatus;
@@ -584,8 +582,10 @@ public class RecipientPresenter implements PermissionPingCallback {
             case OK:
                 if (currentCryptoMode == CryptoMode.SIGN_ONLY) {
                     recipientMvpView.showErrorIsSignOnly();
+                } else if (currentCryptoMode == CryptoMode.OPPORTUNISTIC) {
+                    onCryptoModeChanged(CryptoMode.OPPORTUNISTIC);
                 } else {
-                    recipientMvpView.showCryptoDialog(currentCryptoMode);
+                    onCryptoModeChanged(CryptoMode.OPPORTUNISTIC);
                 }
                 return;
 
