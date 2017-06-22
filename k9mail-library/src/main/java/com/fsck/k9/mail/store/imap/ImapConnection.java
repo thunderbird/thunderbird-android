@@ -41,9 +41,6 @@ import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.imap.command.CapabilityCommand;
-import com.fsck.k9.mail.store.imap.command.ImapCommandFactory;
-import com.fsck.k9.mail.store.imap.response.CapabilityResponse;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 import javax.net.ssl.SSLException;
@@ -73,7 +70,6 @@ public class ImapConnection {
     private Socket socket;
     private PeekableInputStream inputStream;
     private OutputStream outputStream;
-    private ImapCommandFactory commandFactory;
     private ImapResponseParser responseParser;
     private int nextCommandTag;
     private Set<String> capabilities = new HashSet<String>();
@@ -114,7 +110,6 @@ public class ImapConnection {
 
         open = true;
         boolean authSuccess = false;
-        commandFactory = ImapCommandFactory.create(this, getLogId());
         nextCommandTag = 1;
 
         adjustDNSCacheTTL();
@@ -256,7 +251,7 @@ public class ImapConnection {
     }
 
     private List<ImapResponse> extractCapabilities(List<ImapResponse> responses) {
-        CapabilityResponse capabilityResponse = CapabilityResponse.parse(commandFactory, responses);
+        CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
         if (capabilityResponse != null) {
             Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
             if (K9MailLib.isDebug()) {
@@ -269,7 +264,7 @@ public class ImapConnection {
 
     private List<ImapResponse> extractOrRequestCapabilities(List<ImapResponse> responses)
             throws IOException, MessagingException {
-        CapabilityResponse capabilityResponse = CapabilityResponse.parse(commandFactory, responses);
+        CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
         if (capabilityResponse != null) {
             Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
             Timber.d("Saving %s capabilities for %s", receivedCapabilities, getLogId());
@@ -293,8 +288,7 @@ public class ImapConnection {
     }
 
     private void requestCapabilities() throws IOException, MessagingException {
-        CapabilityCommand command = commandFactory.createCapabilityCommand();
-        List<ImapResponse> responses = extractCapabilities(command.executeInternal());
+        List<ImapResponse> responses = extractCapabilities(executeSimpleCommand(Commands.CAPABILITY));
         if (responses.size() != 2) {
             throw new MessagingException("Invalid CAPABILITY response received");
         }
@@ -722,7 +716,7 @@ public class ImapConnection {
         return "conn" + hashCode();
     }
 
-    List<ImapResponse> executeSimpleCommand(String command) throws IOException, MessagingException {
+    public List<ImapResponse> executeSimpleCommand(String command) throws IOException, MessagingException {
         return executeSimpleCommand(command, false);
     }
 
@@ -744,12 +738,12 @@ public class ImapConnection {
         }
     }
 
-    List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
+    public List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
             throws IOException, NegativeImapResponseException {
         return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
     }
 
-    String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
+    public String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
             throws IOException, MessagingException {
         try {
             open();

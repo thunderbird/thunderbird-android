@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.imap.response;
+package com.fsck.k9.mail.store.imap.selectedstate.response;
 
 
 import java.util.ArrayList;
@@ -6,24 +6,23 @@ import java.util.List;
 
 import com.fsck.k9.mail.store.imap.ImapResponse;
 import com.fsck.k9.mail.store.imap.Responses;
-import com.fsck.k9.mail.store.imap.command.ImapCommandFactory;
 
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 
-public class SearchResponse extends BaseResponse {
+public class UidSearchResponse extends SelectedStateResponse {
 
     private List<Long> numbers;
 
-    private SearchResponse(ImapCommandFactory commandFactory, List<ImapResponse> imapResponse) {
-        super(commandFactory, imapResponse);
+    private UidSearchResponse(List<ImapResponse> imapResponse) {
+        super(imapResponse);
     }
 
-    public static SearchResponse parse(ImapCommandFactory commandFactory, List<List<ImapResponse>> imapResponses) {
+    public static UidSearchResponse parse(List<List<ImapResponse>> imapResponses) {
 
-        SearchResponse combinedResponse = null;
+        UidSearchResponse combinedResponse = null;
         for (List<ImapResponse> imapResponse : imapResponses) {
-            SearchResponse searchResponse = new SearchResponse(commandFactory, imapResponse);
+            UidSearchResponse searchResponse = new UidSearchResponse(imapResponse);
             if (combinedResponse == null) {
                 combinedResponse = searchResponse;
             } else {
@@ -45,9 +44,8 @@ public class SearchResponse extends BaseResponse {
     }
 
     @Override
-    void combine(BaseResponse baseResponse) {
-        super.combine(baseResponse);
-        SearchResponse searchResponse = (SearchResponse) baseResponse;
+    void combine(SelectedStateResponse selectedStateResponse) {
+        UidSearchResponse searchResponse = (UidSearchResponse) selectedStateResponse;
         this.numbers.addAll(searchResponse.getNumbers());
     }
 

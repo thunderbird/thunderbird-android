@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.imap.command;
+package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
 import java.io.IOException;
@@ -16,14 +16,14 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.store.imap.Commands;
 import com.fsck.k9.mail.store.imap.FetchBodyCallback;
 import com.fsck.k9.mail.store.imap.FetchPartCallback;
+import com.fsck.k9.mail.store.imap.ImapConnection;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapResponseCallback;
 import com.fsck.k9.mail.store.imap.ImapUtility;
-import com.fsck.k9.mail.store.imap.response.BaseResponse;
 
 
-public class UidFetchCommand extends SelectByIdCommand {
+public class UidFetchCommand extends SelectedStateCommand {
 
     private int maximumAutoDownloadMessageSize;
     private FetchProfile fetchProfile;
@@ -31,8 +31,8 @@ public class UidFetchCommand extends SelectByIdCommand {
     private Part part;
     private BodyFactory bodyFactory;
 
-    public UidFetchCommand(ImapCommandFactory commandFactory) {
-        super(commandFactory);
+    private UidFetchCommand(ImapConnection connection, ImapFolder folder) {
+        super(connection, folder);
     }
 
     @Override
@@ -43,13 +43,8 @@ public class UidFetchCommand extends SelectByIdCommand {
         return builder.toString();
     }
 
-    @Override
-    public BaseResponse execute() throws MessagingException {
-        throw new RuntimeException("Do not use");
-    }
-
     public void send() throws IOException, MessagingException {
-        commandFactory.getConnection().sendCommand(createCommandString(), false);
+        connection.sendCommand(createCommandString(), false);
     }
 
     public ImapResponse readResponse() throws IOException {
@@ -62,11 +57,11 @@ public class UidFetchCommand extends SelectByIdCommand {
                 callback = new FetchBodyCallback(messageMap);
             }
 
-        } else if (part != null && bodyFactory != null) {
+        } else if (part != null) {
             callback = new FetchPartCallback(part, bodyFactory);
         }
 
-        return commandFactory.getConnection().readResponse(callback);
+        return connection.readResponse(callback);
     }
 
     private void addDataItems(StringBuilder builder) {
@@ -106,7 +101,7 @@ public class UidFetchCommand extends SelectByIdCommand {
             String spaceSeparatedFetchFields = ImapUtility.join(" ", fetchFields);
             builder.append("(").append(spaceSeparatedFetchFields).append(")");
 
-        } else if (part != null && bodyFactory != null) {
+        } else if (part != null) {
 
             String partId = part.getServerExtra();
 
@@ -124,19 +119,21 @@ public class UidFetchCommand extends SelectByIdCommand {
 
     @Override
     Builder newBuilder() {
-        return new Builder(commandFactory, folder, maximumAutoDownloadMessageSize)
-                .useUids(useUids)
-                .idSet(idSet)
-                .idRanges(idRanges)
+        return new Builder(connection, folder)
+                .maximumAutoDownloadMessageSize(maximumAutoDownloadMessageSize)
                 .messageParams(fetchProfile, messageMap)
                 .partParams(part, bodyFactory);
     }
 
-    public static class Builder extends SelectByIdCommand.Builder<UidFetchCommand, Builder> {
+    public static class Builder extends SelectedStateCommand.Builder<UidFetchCommand, Builder> {
 
-        public Builder(ImapCommandFactory commandFactory, ImapFolder folder, int maximumAutoDownloadMessageSize) {
-            super(commandFactory, folder);
+        public Builder(ImapConnection connection, ImapFolder folder) {
+            super(connection, folder);
+        }
+
+        public Builder maximumAutoDownloadMessageSize(int maximumAutoDownloadMessageSize) {
             command.maximumAutoDownloadMessageSize = maximumAutoDownloadMessageSize;
+            return builder;
         }
 
         public Builder messageParams(FetchProfile fetchProfile, HashMap<String, Message> messageMap) {
@@ -152,8 +149,8 @@ public class UidFetchCommand extends SelectByIdCommand {
         }
 
         @Override
-        UidFetchCommand createCommand() {
-            return new UidFetchCommand(null);
+        UidFetchCommand createCommand(ImapConnection connection, ImapFolder folder) {
+            return new UidFetchCommand(connection, folder);
         }
 
         @Override

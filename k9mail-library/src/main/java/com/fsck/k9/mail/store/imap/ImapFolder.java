@@ -34,14 +34,13 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.imap.command.ImapCommandFactory;
-import com.fsck.k9.mail.store.imap.command.UidCopyCommand;
-import com.fsck.k9.mail.store.imap.command.UidFetchCommand;
-import com.fsck.k9.mail.store.imap.command.UidSearchCommand;
-import com.fsck.k9.mail.store.imap.command.UidStoreCommand;
-import com.fsck.k9.mail.store.imap.response.BaseResponse;
-import com.fsck.k9.mail.store.imap.response.CopyUidResponse;
-import com.fsck.k9.mail.store.imap.response.SearchResponse;
+import com.fsck.k9.mail.store.imap.selectedstate.command.SelectedStateCommandFactory;
+import com.fsck.k9.mail.store.imap.selectedstate.command.UidCopyCommand;
+import com.fsck.k9.mail.store.imap.selectedstate.command.UidFetchCommand;
+import com.fsck.k9.mail.store.imap.selectedstate.command.UidSearchCommand;
+import com.fsck.k9.mail.store.imap.selectedstate.command.UidStoreCommand;
+import com.fsck.k9.mail.store.imap.selectedstate.response.UidCopyResponse;
+import com.fsck.k9.mail.store.imap.selectedstate.response.UidSearchResponse;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
@@ -62,7 +61,7 @@ public class ImapFolder extends Folder<ImapMessage> {
     protected volatile long uidNext = -1L;
     protected volatile ImapConnection connection;
     protected ImapStore store = null;
-    private ImapCommandFactory commandFactory;
+    private SelectedStateCommandFactory commandFactory;
     protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
     private final FolderNameCodec folderNameCodec;
     private final String name;
@@ -114,7 +113,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         return prefixedName;
     }
 
-    private List<ImapResponse> executeSimpleCommand(String command) throws MessagingException, IOException {
+    public List<ImapResponse> executeSimpleCommand(String command) throws MessagingException, IOException {
         return handleUntaggedResponses(connection.executeSimpleCommand(command));
     }
 
@@ -142,7 +141,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
         synchronized (this) {
             connection = store.getConnection();
-            commandFactory = ImapCommandFactory.create(connection, getLogId());
+            commandFactory = SelectedStateCommandFactory.create(connection, this);
         }
 
         try {
@@ -370,12 +369,12 @@ public class ImapFolder extends Folder<ImapMessage> {
             imapFolder.create(FolderType.HOLDS_MESSAGES);
         }
 
-        UidCopyCommand command = commandFactory.createUidCopyCommandBuilder(this)
+        UidCopyCommand command = commandFactory.createUidCopyCommandBuilder()
                 .idSet(uids)
                 .destinationFolderName(escapedDestinationFolderName)
                 .build();
 
-        CopyUidResponse copyUidResponse = command.execute();
+        UidCopyResponse copyUidResponse = command.execute();
         if (copyUidResponse == null) {
             return null;
         }
@@ -439,13 +438,13 @@ public class ImapFolder extends Folder<ImapMessage> {
     private int getRemoteMessageCount(Set<Flag> requiredFlags, Set<Flag> forbiddenFlags) throws MessagingException {
         checkOpen();
 
-        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, null)
+        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder()
                 .allIds(true)
                 .requiredFlags(requiredFlags)
                 .forbiddenFlags(forbiddenFlags)
                 .build();
 
-        SearchResponse searchResponse = searchCommand.execute();
+        UidSearchResponse searchResponse = searchCommand.execute();
         return searchResponse.getNumbers().size();
 
     }
@@ -467,11 +466,11 @@ public class ImapFolder extends Folder<ImapMessage> {
     protected long getHighestUid() throws MessagingException {
         try {
 
-            UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, null)
+            UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder()
                     .onlyHighestId(true)
                     .build();
 
-            SearchResponse searchResponse = searchCommand.execute();
+            UidSearchResponse searchResponse = searchCommand.execute();
 
             return extractHighestUid(searchResponse);
         } catch (NegativeImapResponseException e) {
@@ -479,7 +478,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    private long extractHighestUid(SearchResponse searchResponse) {
+    private long extractHighestUid(UidSearchResponse searchResponse) {
         List<Long> uids = searchResponse.getNumbers();
         if (uids.isEmpty()) {
             return -1L;
@@ -519,11 +518,12 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
 
         checkOpen();
-        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, listener)
+        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder()
                 .useUids(false)
                 .addIdRange((long) start, (long) end)
                 .since(earliestDate)
                 .forbiddenFlags(includeDeleted ? null : Collections.singleton(Flag.DELETED))
+                .listener(listener)
                 .build();
 
         return getMessages(searchCommand.execute(), listener);
@@ -557,14 +557,14 @@ public class ImapFolder extends Folder<ImapMessage> {
     private boolean existsNonDeletedMessageInRange(int startIndex, int endIndex, Date earliestDate)
             throws MessagingException, IOException {
 
-        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, null)
+        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder()
                 .useUids(false)
                 .addIdRange((long) startIndex, (long) endIndex)
                 .since(earliestDate)
                 .forbiddenFlags(Collections.singleton(Flag.DELETED))
                 .build();
 
-        SearchResponse response = searchCommand.execute();
+        UidSearchResponse response = searchCommand.execute();
         return response.getNumbers().size() > 0;
     }
 
@@ -572,10 +572,11 @@ public class ImapFolder extends Folder<ImapMessage> {
             final MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
 
         checkOpen();
-        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, listener)
+        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder()
                 .useUids(false)
                 .idSet(mesgSeqs)
                 .forbiddenFlags(includeDeleted ? null : Collections.singleton(Flag.DELETED))
+                .listener(listener)
                 .build();
 
         return getMessages(searchCommand.execute(), listener);
@@ -590,7 +591,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             uidSet.add(Long.parseLong(uid));
         }
 
-        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, null)
+        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder()
                 .useUids(true)
                 .idSet(uidSet)
                 .build();
@@ -599,7 +600,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     }
 
-    private List<ImapMessage> getMessages(SearchResponse searchResponse, MessageRetrievalListener<ImapMessage> listener)
+    private List<ImapMessage> getMessages(UidSearchResponse searchResponse, MessageRetrievalListener<ImapMessage> listener)
             throws MessagingException {
 
         checkOpen();
@@ -656,8 +657,8 @@ public class ImapFolder extends Folder<ImapMessage> {
 
             try {
 
-                UidFetchCommand command = commandFactory.createUidFetchCommandBuilder(this,
-                        store.getStoreConfig().getMaximumAutoDownloadMessageSize())
+                UidFetchCommand command = commandFactory.createUidFetchCommandBuilder()
+                        .maximumAutoDownloadMessageSize(store.getStoreConfig().getMaximumAutoDownloadMessageSize())
                         .idSet(uidWindow)
                         .messageParams(fetchProfile, messageMap)
                         .build();
@@ -734,8 +735,8 @@ public class ImapFolder extends Folder<ImapMessage> {
         checkOpen();
 
         try {
-            UidFetchCommand command = commandFactory.createUidFetchCommandBuilder(this,
-                    store.getStoreConfig().getMaximumAutoDownloadMessageSize())
+            UidFetchCommand command = commandFactory.createUidFetchCommandBuilder()
+                    .maximumAutoDownloadMessageSize(store.getStoreConfig().getMaximumAutoDownloadMessageSize())
                     .idSet(Collections.singleton(Long.parseLong(message.getUid())))
                     .partParams(part, bodyFactory)
                     .build();
@@ -918,25 +919,6 @@ public class ImapFolder extends Folder<ImapMessage> {
                     Timber.d("Got untagged EXPUNGE with messageCount %d for %s", messageCount, getLogId());
                 }
             }
-        }
-    }
-
-    public void handleUntaggedResponses(BaseResponse response) {
-        int newMessageCount = response.getMessageCount();
-        if (newMessageCount != -1) {
-            messageCount = newMessageCount;
-        }
-
-        int expungedCount = response.getExpungedCount();
-        if (messageCount > expungedCount) {
-            messageCount -= expungedCount;
-        } else {
-            messageCount = 0;
-        }
-
-        long newUidNext = response.getUidNext();
-        if (newUidNext != -1L) {
-            uidNext = newUidNext;
         }
     }
 
@@ -1203,7 +1185,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             Timber.d("Looking for UID for message with message-id %s for %s", messageId, getLogId());
         }
 
-        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, null)
+        UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder()
                 .messageId(messageId)
                 .build();
 
@@ -1227,7 +1209,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    private String combineFlags(Iterable<Flag> flags) {
+    public String combineFlags(Iterable<Flag> flags) {
         List<String> flagNames = new ArrayList<String>();
         for (Flag flag : flags) {
             if (flag == Flag.SEEN) {
@@ -1244,7 +1226,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             }
         }
 
-        return combine(flagNames.toArray(new String[flagNames.size()]), ' ');
+        return ImapUtility.join(" ", flagNames);
     }
 
     @Override
@@ -1252,11 +1234,10 @@ public class ImapFolder extends Folder<ImapMessage> {
         open(OPEN_MODE_RW);
         checkOpen();
 
-        UidStoreCommand command = commandFactory.createUidStoreCommandBuilder(this)
+        UidStoreCommand command = commandFactory.createUidStoreCommandBuilder()
                 .allIds(true)
                 .value(value)
                 .flagSet(flags)
-                .canCreateKeywords(canCreateKeywords || store.getPermanentFlagsIndex().contains(Flag.FORWARDED))
                 .build();
         command.execute();
     }
@@ -1294,11 +1275,10 @@ public class ImapFolder extends Folder<ImapMessage> {
             uids.add(Long.parseLong(message.getUid()));
         }
 
-        UidStoreCommand command = commandFactory.createUidStoreCommandBuilder(this)
+        UidStoreCommand command = commandFactory.createUidStoreCommandBuilder()
                 .idSet(uids)
                 .value(value)
                 .flagSet(flags)
-                .canCreateKeywords(canCreateKeywords || store.getPermanentFlagsIndex().contains(Flag.FORWARDED))
                 .build();
         command.execute();
     }
@@ -1371,7 +1351,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
             inSearch = true;
 
-            UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder(this, null)
+            UidSearchCommand searchCommand = commandFactory.createUidSearchCommandBuilder()
                     .queryString(queryString)
                     .performFullTextSearch(store.getStoreConfig().isRemoteSearchFullText())
                     .requiredFlags(requiredFlags)
@@ -1383,13 +1363,5 @@ public class ImapFolder extends Folder<ImapMessage> {
         } finally {
             inSearch = false;
         }
-    }
-
-    private static String combine(Object[] parts, char separator) {
-        if (parts == null) {
-            return null;
-        }
-
-        return TextUtils.join(String.valueOf(separator), parts);
     }
 }
