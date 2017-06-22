@@ -1,42 +1,50 @@
-package com.fsck.k9.mail.store.imap.command;
+package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.store.imap.ImapConnection;
 import com.fsck.k9.mail.store.imap.ImapFolder;
+import com.fsck.k9.mail.store.imap.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapUtility;
+import com.fsck.k9.mail.store.imap.selectedstate.response.SelectedStateResponse;
 
 
-//This is the base class for a command that takes sequence numbers/uids as an argument
-abstract class SelectByIdCommand extends BaseCommand {
+//This is the base class for a command that is used in the "selected state" i.e when a mailbox is selected
+abstract class SelectedStateCommand {
 
+    /*These limits are 20 octets less than the recommended limits, in order to compensate for the length of the command
+    tag, the space after the tag and the CRLF at the end of the command (these are not taken into account when
+    calculating the length of the command)
+     */
+    private static final int LENGTH_LIMIT_WITHOUT_CONDSTORE = 980;
+    private static final int LENGTH_LIMIT_WITH_CONDSTORE = 8172;
+
+    ImapConnection connection;
     ImapFolder folder;
 
-    boolean useUids;
     Set<Long> idSet;
     List<Range> idRanges;
 
-    SelectByIdCommand(ImapCommandFactory commandFactory) {
-        super(commandFactory);
+    SelectedStateCommand(ImapConnection connection, ImapFolder folder) {
+        this.connection = connection;
+        this.folder = folder;
     }
 
-    @Override
-    String createCommandString() {
-        return null;
-    }
+    abstract String createCommandString();
 
     abstract Builder newBuilder();
 
-    @Override
-    public List<SelectByIdCommand> splitCommand(int lengthLimit) {
+    private List<SelectedStateCommand> splitCommand(int lengthLimit) {
 
-        List<SelectByIdCommand> commands = new ArrayList<>();
+        List<SelectedStateCommand> commands = new ArrayList<>();
 
         if (idSet != null || idRanges != null) {
 
@@ -70,6 +78,8 @@ abstract class SelectByIdCommand extends BaseCommand {
                         } else {
                             break;
                         }
+                    } else {
+                        break;
                     }
                 }
                 commands.add(builder.build());
@@ -87,9 +97,6 @@ abstract class SelectByIdCommand extends BaseCommand {
     void addIds(StringBuilder builder) {
 
         if (idSet != null || idRanges != null) {
-            if (useUids) {
-                builder.append("UID ");
-            }
 
             optimizeGroupings();
 
@@ -104,6 +111,27 @@ abstract class SelectByIdCommand extends BaseCommand {
             }
             builder.append(" ");
         }
+    }
+
+    public SelectedStateResponse execute() throws MessagingException {
+        return null;
+    }
+
+    List<List<ImapResponse>> executeInternal() throws IOException, MessagingException {
+
+        List<SelectedStateCommand> commands;
+        String commandString = createCommandString();
+        if (commandString.length() > getCommandLengthLimit()) {
+            commands = Collections.unmodifiableList(splitCommand(getCommandLengthLimit()));
+        } else {
+            commands = Collections.singletonList(this);
+        }
+
+        List<List<ImapResponse>> responses = new ArrayList<>();
+        for (SelectedStateCommand command : commands) {
+            responses.add(folder.executeSimpleCommand(command.createCommandString()));
+        }
+        return responses;
     }
 
     private void optimizeGroupings() {
@@ -138,7 +166,7 @@ abstract class SelectByIdCommand extends BaseCommand {
         }
         checkAndAddIds(builder, idList, start, idList.size() - 1);
 
-        SelectByIdCommand newCommand = builder.build();
+        SelectedStateCommand newCommand = builder.build();
         this.idSet = newCommand.idSet;
         this.idRanges = newCommand.idRanges;
     }
@@ -151,44 +179,46 @@ abstract class SelectByIdCommand extends BaseCommand {
         }
     }
 
-    static abstract class Builder<C extends SelectByIdCommand, B extends Builder<C, B>> {
+    private int getCommandLengthLimit() throws IOException, MessagingException  {
+        boolean condstoreSupported = connection.isCondstoreCapable();
+        if (condstoreSupported) {
+            return LENGTH_LIMIT_WITH_CONDSTORE;
+        } else {
+            return LENGTH_LIMIT_WITHOUT_CONDSTORE;
+        }
+    }
+
+    static abstract class Builder<C extends SelectedStateCommand, B extends Builder<C, B>> {
 
         C command;
         B builder;
 
-        abstract C createCommand();
+        abstract C createCommand(ImapConnection connection, ImapFolder folder);
         abstract B createBuilder();
 
-        public Builder(ImapCommandFactory commandFactory, ImapFolder folder) {
-            command = createCommand();
+        public Builder(ImapConnection connection, ImapFolder folder) {
+            command = createCommand(connection, folder);
             builder = createBuilder();
-            command.commandFactory = commandFactory;
-            command.folder = folder;
-        }
-
-        public B useUids(boolean useUids) {
-            command.useUids = useUids;
-            return builder;
         }
 
         public B idSet(Collection<Long> idSet) {
             if (idSet != null) {
-                command.idSet = new HashSet<>(idSet);
+                command.idSet = new TreeSet<>(idSet);
             } else {
                 command.idSet = null;
             }
             return builder;
         }
 
-        public B addId(Long id) {
+        B addId(Long id) {
             if (command.idSet == null) {
-                command.idSet = new HashSet<>();
+                command.idSet = new TreeSet<>();
             }
             command.idSet.add(id);
             return builder;
         }
 
-        public B idRanges(List<Range> idRanges) {
+        B idRanges(List<Range> idRanges) {
             command.idRanges = idRanges;
             return builder;
         }

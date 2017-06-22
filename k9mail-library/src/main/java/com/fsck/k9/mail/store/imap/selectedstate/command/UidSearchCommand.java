@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.imap.command;
+package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -11,49 +11,52 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.Commands;
+import com.fsck.k9.mail.store.imap.ImapConnection;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapMessage;
 import com.fsck.k9.mail.store.imap.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapUtility;
-import com.fsck.k9.mail.store.imap.response.SearchResponse;
+import com.fsck.k9.mail.store.imap.selectedstate.response.UidSearchResponse;
 
 
-public class UidSearchCommand extends SelectByIdCommand {
+public class UidSearchCommand extends SelectedStateCommand {
 
-    private MessageRetrievalListener<ImapMessage> listener;
-
+    private boolean useUids;
     private String queryString;
     private String messageId;
     private boolean performFullTextSearch;
     private Date since;
     private Set<Flag> requiredFlags;
     private Set<Flag> forbiddenFlags;
+    private MessageRetrievalListener<ImapMessage> listener;
 
-    private UidSearchCommand(ImapCommandFactory commandFactory) {
-        super(commandFactory);
+    private UidSearchCommand(ImapConnection connection, ImapFolder folder) {
+        super(connection, folder);
     }
 
     @Override
     public String createCommandString() {
         StringBuilder builder = new StringBuilder(Commands.UID_SEARCH).append(" ");
+        if (useUids) {
+            builder.append("UID ");
+        }
         super.addIds(builder);
         addQueryString(builder);
         addMessageId(builder);
         addSince(builder);
-        addFlags(builder);
+        addFlags(builder, requiredFlags, false);
+        addFlags(builder, forbiddenFlags, true);
         return builder.toString().trim();
     }
 
     @Override
-    public SearchResponse execute() throws MessagingException {
+    public UidSearchResponse execute() throws MessagingException {
 
         try {
-            List<List<ImapResponse>> responses = executeInternal(false);
-            SearchResponse response = SearchResponse.parse(commandFactory, responses);
-            folder.handleUntaggedResponses(response);
-            return response;
+            List<List<ImapResponse>> responses = executeInternal();
+            return UidSearchResponse.parse(responses);
         } catch (IOException ioe) {
-            throw folder.ioExceptionHandler(commandFactory.getConnection(), ioe);
+            throw folder.ioExceptionHandler(connection, ioe);
         }
 
     }
@@ -84,17 +87,43 @@ public class UidSearchCommand extends SelectByIdCommand {
         }
     }
 
-    private void addFlags(StringBuilder builder) {
+    private void addFlags(StringBuilder builder, Set<Flag> flagSet, boolean addNot) {
 
-        if (requiredFlags != null) {
-            for (Flag flag : requiredFlags) {
-                builder.append(flag.getImapString()).append(" ");
-            }
-        }
+        if (flagSet != null) {
+            for (Flag flag : flagSet) {
+                if (addNot) {
+                    builder.append("NOT ");
+                }
 
-        if (forbiddenFlags != null) {
-            for (Flag flag : forbiddenFlags) {
-                builder.append("NOT ").append(flag.getImapString()).append(" ");
+                switch (flag) {
+                    case DELETED: {
+                        builder.append("DELETED ");
+                        break;
+                    }
+                    case SEEN: {
+                        builder.append("SEEN ");
+                        break;
+                    }
+                    case ANSWERED: {
+                        builder.append("ANSWERED ");
+                        break;
+                    }
+                    case FLAGGED: {
+                        builder.append("FLAGGED ");
+                        break;
+                    }
+                    case DRAFT: {
+                        builder.append("DRAFT ");
+                        break;
+                    }
+                    case RECENT: {
+                        builder.append("RECENT ");
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
             }
         }
 
@@ -102,24 +131,26 @@ public class UidSearchCommand extends SelectByIdCommand {
 
     @Override
     Builder newBuilder() {
-        return new Builder(commandFactory, folder, listener)
+        return new Builder(connection, folder)
                 .useUids(useUids)
-                .idSet(idSet)
-                .idRanges(idRanges)
                 .queryString(queryString)
                 .messageId(messageId)
                 .performFullTextSearch(performFullTextSearch)
                 .since(since)
                 .requiredFlags(requiredFlags)
-                .forbiddenFlags(forbiddenFlags);
+                .forbiddenFlags(forbiddenFlags)
+                .listener(listener);
     }
 
-    public static class Builder extends SelectByIdCommand.Builder<UidSearchCommand, Builder> {
+    public static class Builder extends SelectedStateCommand.Builder<UidSearchCommand, Builder> {
 
-        public Builder(ImapCommandFactory commandFactory, ImapFolder folder,
-                MessageRetrievalListener<ImapMessage> listener) {
-            super(commandFactory, folder);
-            command.listener = listener;
+        public Builder(ImapConnection connection, ImapFolder folder) {
+            super(connection, folder);
+        }
+
+        public Builder useUids(boolean useUids) {
+            command.useUids = useUids;
+            return builder;
         }
 
         public Builder queryString(String queryString) {
@@ -152,9 +183,14 @@ public class UidSearchCommand extends SelectByIdCommand {
             return builder;
         }
 
+        public Builder listener(MessageRetrievalListener<ImapMessage> listener) {
+            command.listener = listener;
+            return builder;
+        }
+
         @Override
-        UidSearchCommand createCommand() {
-            return new UidSearchCommand(null);
+        UidSearchCommand createCommand(ImapConnection connection, ImapFolder folder) {
+            return new UidSearchCommand(connection, folder);
         }
 
         @Override
@@ -163,5 +199,4 @@ public class UidSearchCommand extends SelectByIdCommand {
         }
 
     }
-
 }

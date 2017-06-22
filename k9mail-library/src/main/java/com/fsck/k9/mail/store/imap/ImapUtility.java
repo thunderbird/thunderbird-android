@@ -17,6 +17,7 @@
 
 package com.fsck.k9.mail.store.imap;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -157,6 +158,9 @@ public class ImapUtility {
     }
 
     public static String join(String delimiter, Collection<? extends Object> tokens) {
+        if (tokens == null) {
+            return null;
+        }
         StringBuilder sb = new StringBuilder();
         boolean firstTime = true;
         for (Object token: tokens) {

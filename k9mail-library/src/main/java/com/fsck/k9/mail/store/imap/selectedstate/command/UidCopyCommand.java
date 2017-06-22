@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.imap.command;
+package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
 import java.io.IOException;
@@ -6,17 +6,18 @@ import java.util.List;
 
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.Commands;
+import com.fsck.k9.mail.store.imap.ImapConnection;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapResponse;
-import com.fsck.k9.mail.store.imap.response.CopyUidResponse;
+import com.fsck.k9.mail.store.imap.selectedstate.response.UidCopyResponse;
 
 
-public class UidCopyCommand extends SelectByIdCommand {
+public class UidCopyCommand extends SelectedStateCommand {
 
     private String destinationFolderName;
 
-    private UidCopyCommand(ImapCommandFactory commandFactory) {
-        super(commandFactory);
+    private UidCopyCommand(ImapConnection connection, ImapFolder folder) {
+        super(connection, folder);
     }
 
     @Override
@@ -28,15 +29,13 @@ public class UidCopyCommand extends SelectByIdCommand {
     }
 
     @Override
-    public CopyUidResponse execute() throws MessagingException {
+    public UidCopyResponse execute() throws MessagingException {
 
         try {
-            List<List<ImapResponse>> responses = executeInternal(false);
-            CopyUidResponse response = CopyUidResponse.parse(commandFactory, responses);
-            folder.handleUntaggedResponses(response);
-            return response;
+            List<List<ImapResponse>> responses = executeInternal();
+            return UidCopyResponse.parse(responses);
         } catch (IOException ioe) {
-            throw folder.ioExceptionHandler(commandFactory.getConnection(), ioe);
+            throw folder.ioExceptionHandler(connection, ioe);
         }
 
     }
@@ -47,17 +46,14 @@ public class UidCopyCommand extends SelectByIdCommand {
 
     @Override
     Builder newBuilder() {
-        return new Builder(commandFactory, folder)
-                .useUids(useUids)
-                .idSet(idSet)
-                .idRanges(idRanges)
+        return new Builder(connection, folder)
                 .destinationFolderName(destinationFolderName);
     }
 
-    public static class Builder extends SelectByIdCommand.Builder<UidCopyCommand, Builder> {
+    public static class Builder extends SelectedStateCommand.Builder<UidCopyCommand, Builder> {
 
-        public Builder(ImapCommandFactory commandFactory, ImapFolder folder) {
-            super(commandFactory, folder);
+        public Builder(ImapConnection connection, ImapFolder folder) {
+            super(connection, folder);
         }
 
         public Builder destinationFolderName(String destinationFolderName) {
@@ -66,8 +62,8 @@ public class UidCopyCommand extends SelectByIdCommand {
         }
 
         @Override
-        UidCopyCommand createCommand() {
-            return new UidCopyCommand(null);
+        UidCopyCommand createCommand(ImapConnection connection, ImapFolder folder) {
+            return new UidCopyCommand(connection, folder);
         }
 
         @Override
