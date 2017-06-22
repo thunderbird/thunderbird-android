@@ -27,10 +27,6 @@ public class ComposeCryptoStatus {
     private RecipientAutocryptStatus recipientAutocryptStatus;
 
 
-    boolean isCryptoStatusRecipientDependent() {
-        return cryptoProviderState == CryptoProviderState.OK;
-    }
-
     public Long getSigningKeyId() {
         return signingKeyId;
     }
@@ -60,28 +56,22 @@ public class ComposeCryptoStatus {
         }
 
         switch (cryptoMode) {
-            case PRIVATE:
-                if (recipientAutocryptStatus == RecipientAutocryptStatus.NO_RECIPIENTS) {
-                    return CryptoStatusDisplayType.PRIVATE_EMPTY;
-                } else if (recipientAutocryptStatus == RecipientAutocryptStatus.RECOMMENDED_UNCONFIRMED) {
-                    return CryptoStatusDisplayType.PRIVATE_TRUSTED;
-                } else if (recipientAutocryptStatus == RecipientAutocryptStatus.AVAILABLE_UNCONFIRMED) {
-                    return CryptoStatusDisplayType.PRIVATE_UNTRUSTED;
+            case CHOICE_ENABLED:
+                if (recipientAutocryptStatus.canEncrypt() && recipientAutocryptStatus.isConfirmed()) {
+                    return CryptoStatusDisplayType.CHOICE_ENABLED_TRUSTED;
+                } else if (recipientAutocryptStatus.canEncrypt()) {
+                    return CryptoStatusDisplayType.CHOICE_ENABLED_UNTRUSTED;
                 }
-                return CryptoStatusDisplayType.PRIVATE_NOKEY;
-            case OPPORTUNISTIC:
+                throw new IllegalStateException("crypto enabled while unavailable!");
+            case NO_CHOICE:
                 if (recipientAutocryptStatus == RecipientAutocryptStatus.NO_RECIPIENTS) {
-                    return CryptoStatusDisplayType.OPPORTUNISTIC_EMPTY;
-                } else if (recipientAutocryptStatus == RecipientAutocryptStatus.RECOMMENDED_UNCONFIRMED) {
-                    return CryptoStatusDisplayType.OPPORTUNISTIC_TRUSTED;
-                } else if (recipientAutocryptStatus == RecipientAutocryptStatus.AVAILABLE_UNCONFIRMED) {
-                    return CryptoStatusDisplayType.OPPORTUNISTIC_UNTRUSTED;
+                    return CryptoStatusDisplayType.NO_CHOICE_EMPTY;
+                } else if (recipientAutocryptStatus.canEncrypt()) {
+                    return CryptoStatusDisplayType.NO_CHOICE_AVAILABLE;
                 }
-                return CryptoStatusDisplayType.OPPORTUNISTIC_NOKEY;
+                return CryptoStatusDisplayType.NO_CHOICE_UNAVAILABLE;
             case SIGN_ONLY:
                 return CryptoStatusDisplayType.SIGN_ONLY;
-            case DISABLE:
-                return CryptoStatusDisplayType.DISABLED;
             default:
                 throw new AssertionError("all CryptoModes must be handled!");
         }
@@ -108,15 +98,15 @@ public class ComposeCryptoStatus {
     }
 
     public boolean shouldUsePgpMessageBuilder() {
-        return cryptoProviderState != CryptoProviderState.UNCONFIGURED && cryptoMode != CryptoMode.DISABLE;
+        return cryptoProviderState != CryptoProviderState.UNCONFIGURED;
     }
 
     public boolean isEncryptionEnabled() {
-        return cryptoMode == CryptoMode.PRIVATE || cryptoMode == CryptoMode.OPPORTUNISTIC;
+        return cryptoMode == CryptoMode.CHOICE_ENABLED;
     }
 
     public boolean isEncryptionOpportunistic() {
-        return cryptoMode == CryptoMode.OPPORTUNISTIC;
+        return cryptoMode == CryptoMode.NO_CHOICE;
     }
 
     boolean isSignOnly() {
@@ -124,19 +114,19 @@ public class ComposeCryptoStatus {
     }
 
     public boolean isSigningEnabled() {
-        return cryptoMode != CryptoMode.DISABLE;
+        return cryptoMode == CryptoMode.SIGN_ONLY || cryptoMode == CryptoMode.CHOICE_ENABLED;
     }
 
     public boolean isPgpInlineModeEnabled() {
         return enablePgpInline;
     }
 
-    public boolean isCryptoDisabled() {
-        return cryptoMode == CryptoMode.DISABLE;
-    }
-
     public boolean isProviderStateOk() {
         return cryptoProviderState == CryptoProviderState.OK;
+    }
+
+    public boolean canEncrypt() {
+        return recipientAutocryptStatus != null && recipientAutocryptStatus.canEncrypt();
     }
 
     public String[] getRecipientAddresses() {

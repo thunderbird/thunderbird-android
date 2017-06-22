@@ -72,13 +72,6 @@ public class PgpMessageBuilderTest {
     private PgpMessageBuilder pgpMessageBuilder = createDefaultPgpMessageBuilder(openPgpApi);
 
 
-    @Test(expected = AssertionError.class)
-    public void build__withDisabledCrypto__shouldError() throws MessagingException {
-        pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.setCryptoMode(CryptoMode.DISABLE).build());
-
-        pgpMessageBuilder.buildAsync(mock(Callback.class));
-    }
-
     @Test
     public void build__withCryptoProviderNotOk__shouldThrow() throws MessagingException {
         cryptoStatusBuilder.setCryptoMode(CryptoMode.SIGN_ONLY);
@@ -238,7 +231,7 @@ public class PgpMessageBuilderTest {
     @Test
     public void buildEncrypt__withoutRecipients__shouldThrow() throws MessagingException {
         cryptoStatusBuilder
-                .setCryptoMode(CryptoMode.OPPORTUNISTIC)
+                .setCryptoMode(CryptoMode.NO_CHOICE)
                 .setRecipients(new ArrayList<Recipient>());
         pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
 
@@ -257,7 +250,7 @@ public class PgpMessageBuilderTest {
     @Test
     public void buildEncrypt__shouldSucceed() throws MessagingException {
         ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
-                .setCryptoMode(CryptoMode.PRIVATE)
+                .setCryptoMode(CryptoMode.CHOICE_ENABLED)
                 .setRecipients(Collections.singletonList(new Recipient("test", "test@example.org", "labru", -1, "key")))
                 .build();
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
@@ -308,7 +301,7 @@ public class PgpMessageBuilderTest {
     @Test
     public void buildEncrypt__withInlineEnabled__shouldSucceed() throws MessagingException {
         ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
-                .setCryptoMode(CryptoMode.PRIVATE)
+                .setCryptoMode(CryptoMode.CHOICE_ENABLED)
                 .setRecipients(Collections.singletonList(new Recipient("test", "test@example.org", "labru", -1, "key")))
                 .setEnablePgpInline(true)
                 .build();
@@ -395,7 +388,7 @@ public class PgpMessageBuilderTest {
     @Test
     public void buildEncryptWithAttach__withInlineEnabled__shouldThrow() throws MessagingException {
         ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
-                .setCryptoMode(CryptoMode.OPPORTUNISTIC)
+                .setCryptoMode(CryptoMode.NO_CHOICE)
                 .setEnablePgpInline(true)
                 .build();
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
@@ -413,7 +406,7 @@ public class PgpMessageBuilderTest {
     public void buildOpportunisticEncrypt__withNoKeysAndNoSignOnly__shouldNotBeSigned() throws MessagingException {
         ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
                 .setRecipients(Collections.singletonList(new Recipient("test", "test@example.org", "labru", -1, "key")))
-                .setCryptoMode(CryptoMode.OPPORTUNISTIC)
+                .setCryptoMode(CryptoMode.NO_CHOICE)
                 .build();
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
 

@@ -21,18 +21,11 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.view.RecipientSelectView;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.TokenListener;
+import com.fsck.k9.view.ToolableViewAnimator;
 
 
 public class RecipientMvpView implements OnFocusChangeListener, OnClickListener {
     private static final int VIEW_INDEX_HIDDEN = -1;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_DISABLED = 0;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_ERROR = 1;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_NO_RECIPIENTS = 2;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_ERROR_NO_KEY = 3;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_DISABLED_NO_KEY = 4;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED = 5;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_TRUSTED = 6;
-    private static final int VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY = 0;
 
     private static final int VIEW_INDEX_CRYPTO_SPECIAL_PGP_INLINE = 0;
     private static final int VIEW_INDEX_CRYPTO_SPECIAL_SIGN_ONLY = 1;
@@ -49,7 +42,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private final RecipientSelectView toView;
     private final RecipientSelectView ccView;
     private final RecipientSelectView bccView;
-    private final ViewAnimator cryptoStatusView;
+    private final ToolableViewAnimator cryptoStatusView;
     private final ViewAnimator recipientExpanderContainer;
     private final ViewAnimator cryptoSpecialModeIndicator;
     private RecipientPresenter presenter;
@@ -66,7 +59,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         bccWrapper = activity.findViewById(R.id.bcc_wrapper);
         bccDivider = activity.findViewById(R.id.bcc_divider);
         recipientExpanderContainer = (ViewAnimator) activity.findViewById(R.id.recipient_expander_container);
-        cryptoStatusView = (ViewAnimator) activity.findViewById(R.id.crypto_status);
+        cryptoStatusView = (ToolableViewAnimator) activity.findViewById(R.id.crypto_status);
         cryptoStatusView.setOnClickListener(this);
         cryptoSpecialModeIndicator = (ViewAnimator) activity.findViewById(R.id.crypto_special_mode);
         cryptoSpecialModeIndicator.setOnClickListener(this);
@@ -297,14 +290,14 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     }
 
     public void showCryptoStatus(CryptoStatusDisplayType cryptoStatusDisplayType) {
-        boolean shouldBeHidden = cryptoStatusDisplayType.childToDisplay == VIEW_INDEX_HIDDEN;
+        boolean shouldBeHidden = cryptoStatusDisplayType.childIdToDisplay == VIEW_INDEX_HIDDEN;
         if (shouldBeHidden) {
             cryptoStatusView.setVisibility(View.GONE);
             return;
         }
 
         cryptoStatusView.setVisibility(View.VISIBLE);
-        cryptoStatusView.setDisplayedChild(cryptoStatusDisplayType.childToDisplay);
+        cryptoStatusView.setDisplayedChildId(cryptoStatusDisplayType.childIdToDisplay);
     }
 
     public void showContactPicker(int requestCode) {
@@ -417,23 +410,20 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     public enum CryptoStatusDisplayType {
         UNCONFIGURED(VIEW_INDEX_HIDDEN),
         UNINITIALIZED(VIEW_INDEX_HIDDEN),
-        DISABLED(VIEW_INDEX_CRYPTO_STATUS_DISABLED),
-        SIGN_ONLY(VIEW_INDEX_CRYPTO_STATUS_SIGN_ONLY),
-        OPPORTUNISTIC_EMPTY(VIEW_INDEX_CRYPTO_STATUS_NO_RECIPIENTS),
-        OPPORTUNISTIC_NOKEY(VIEW_INDEX_CRYPTO_STATUS_DISABLED_NO_KEY),
-        OPPORTUNISTIC_UNTRUSTED(VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED),
-        OPPORTUNISTIC_TRUSTED(VIEW_INDEX_CRYPTO_STATUS_TRUSTED),
-        PRIVATE_EMPTY(VIEW_INDEX_CRYPTO_STATUS_NO_RECIPIENTS),
-        PRIVATE_NOKEY(VIEW_INDEX_CRYPTO_STATUS_ERROR_NO_KEY),
-        PRIVATE_UNTRUSTED(VIEW_INDEX_CRYPTO_STATUS_UNTRUSTED),
-        PRIVATE_TRUSTED(VIEW_INDEX_CRYPTO_STATUS_TRUSTED),
-        ERROR(VIEW_INDEX_CRYPTO_STATUS_ERROR);
+        SIGN_ONLY(R.id.crypto_status_disabled),
+        NO_CHOICE_EMPTY(R.id.crypto_status_unknown),
+        NO_CHOICE_UNAVAILABLE(R.id.crypto_status_unknown),
+        NO_CHOICE_AVAILABLE(R.id.crypto_status_disabled),
+        NO_CHOICE_AVAILABLE_TRUSTED(R.id.crypto_status_trusted),
+        CHOICE_ENABLED_UNTRUSTED(R.id.crypto_status_enabled),
+        CHOICE_ENABLED_TRUSTED(R.id.crypto_status_trusted),
+        ERROR(R.id.crypto_status_error);
 
 
-        final int childToDisplay;
+        final int childIdToDisplay;
 
-        CryptoStatusDisplayType(int childToDisplay) {
-            this.childToDisplay = childToDisplay;
+        CryptoStatusDisplayType(int childIdToDisplay) {
+            this.childIdToDisplay = childIdToDisplay;
         }
     }
 

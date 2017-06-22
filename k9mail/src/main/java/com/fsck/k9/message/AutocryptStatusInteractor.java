@@ -71,14 +71,30 @@ public class AutocryptStatusInteractor {
     }
 
     public enum RecipientAutocryptStatus {
-        NO_RECIPIENTS,
-        UNAVAILABLE,
-        DISCOURAGE_UNCONFIRMED,
-        DISCOURAGE_CONFIRMED,
-        AVAILABLE_UNCONFIRMED,
-        AVAILABLE_CONFIRMED,
-        RECOMMENDED_UNCONFIRMED,
-        RECOMMENDED_CONFIRMED,
-        ERROR
+        NO_RECIPIENTS (false, false),
+        UNAVAILABLE (false, false),
+        DISCOURAGE_UNCONFIRMED (true, false),
+        DISCOURAGE_CONFIRMED (true, true),
+        AVAILABLE_UNCONFIRMED (true, false),
+        AVAILABLE_CONFIRMED (true, true),
+        RECOMMENDED_UNCONFIRMED (true, true),
+        RECOMMENDED_CONFIRMED (true, false),
+        ERROR (false, false);
+
+        private final boolean canEncrypt;
+        private final boolean isConfirmed;
+
+        RecipientAutocryptStatus(boolean canEncrypt, boolean isConfirmed) {
+            this.canEncrypt = canEncrypt;
+            this.isConfirmed = isConfirmed;
+        }
+
+        public boolean canEncrypt() {
+            return canEncrypt;
+        }
+
+        public boolean isConfirmed() {
+            return isConfirmed;
+        }
     }
 }
