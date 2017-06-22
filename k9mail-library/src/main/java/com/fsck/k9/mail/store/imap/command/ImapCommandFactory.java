@@ -40,6 +40,10 @@ public class ImapCommandFactory {
         return new UidFetchCommand.Builder(this, folder, maximumAutoDownloadMessageSize);
     }
 
+    public UidCopyCommand.Builder createUidCopyCommandBuilder(ImapFolder folder) {
+        return new UidCopyCommand.Builder(this, folder);
+    }
+
     ImapConnection getConnection() {
         return connection;
     }
