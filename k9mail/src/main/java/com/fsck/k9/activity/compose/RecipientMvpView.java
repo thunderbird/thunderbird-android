@@ -414,9 +414,13 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         NO_CHOICE_EMPTY(R.id.crypto_status_unknown),
         NO_CHOICE_UNAVAILABLE(R.id.crypto_status_unknown),
         NO_CHOICE_AVAILABLE(R.id.crypto_status_disabled),
-        NO_CHOICE_AVAILABLE_TRUSTED(R.id.crypto_status_trusted),
+        NO_CHOICE_AVAILABLE_TRUSTED(R.id.crypto_status_disabled),
+        NO_CHOICE_MUTUAL(R.id.crypto_status_enabled),
+        NO_CHOICE_MUTUAL_TRUSTED(R.id.crypto_status_trusted),
         CHOICE_ENABLED_UNTRUSTED(R.id.crypto_status_enabled),
         CHOICE_ENABLED_TRUSTED(R.id.crypto_status_trusted),
+        CHOICE_DISABLED_UNTRUSTED(R.id.crypto_status_disabled),
+        CHOICE_DISABLED_TRUSTED(R.id.crypto_status_disabled),
         ERROR(R.id.crypto_status_error);
 
 

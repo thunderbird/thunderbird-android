@@ -57,15 +57,32 @@ public class ComposeCryptoStatus {
 
         switch (cryptoMode) {
             case CHOICE_ENABLED:
-                if (recipientAutocryptStatus.canEncrypt() && recipientAutocryptStatus.isConfirmed()) {
-                    return CryptoStatusDisplayType.CHOICE_ENABLED_TRUSTED;
-                } else if (recipientAutocryptStatus.canEncrypt()) {
-                    return CryptoStatusDisplayType.CHOICE_ENABLED_UNTRUSTED;
+                if (recipientAutocryptStatus.canEncrypt()) {
+                    if (recipientAutocryptStatus.isConfirmed()) {
+                        return CryptoStatusDisplayType.CHOICE_ENABLED_TRUSTED;
+                    } else {
+                        return CryptoStatusDisplayType.CHOICE_ENABLED_UNTRUSTED;
+                    }
                 }
                 throw new IllegalStateException("crypto enabled while unavailable!");
+            case CHOICE_DISABLED:
+                if (!recipientAutocryptStatus.isMutual()) {
+                    throw new IllegalStateException("crypto disabled while not mutual!");
+                }
+                if (recipientAutocryptStatus.isConfirmed()) {
+                    return CryptoStatusDisplayType.CHOICE_DISABLED_TRUSTED;
+                } else {
+                    return CryptoStatusDisplayType.CHOICE_DISABLED_UNTRUSTED;
+                }
             case NO_CHOICE:
                 if (recipientAutocryptStatus == RecipientAutocryptStatus.NO_RECIPIENTS) {
                     return CryptoStatusDisplayType.NO_CHOICE_EMPTY;
+                } else if (recipientAutocryptStatus.canEncrypt() && recipientAutocryptStatus.isMutual()) { // TODO check own "mutual" status
+                    if (recipientAutocryptStatus.isConfirmed()) {
+                        return CryptoStatusDisplayType.NO_CHOICE_MUTUAL_TRUSTED;
+                    } else {
+                        return CryptoStatusDisplayType.NO_CHOICE_MUTUAL;
+                    }
                 } else if (recipientAutocryptStatus.canEncrypt()) {
                     return CryptoStatusDisplayType.NO_CHOICE_AVAILABLE;
                 }
@@ -98,15 +115,12 @@ public class ComposeCryptoStatus {
     }
 
     public boolean shouldUsePgpMessageBuilder() {
-        return cryptoProviderState != CryptoProviderState.UNCONFIGURED;
+        return cryptoProviderState != CryptoProviderState.UNCONFIGURED && (isEncryptionEnabled() || isSignOnly());
     }
 
     public boolean isEncryptionEnabled() {
-        return cryptoMode == CryptoMode.CHOICE_ENABLED;
-    }
-
-    public boolean isEncryptionOpportunistic() {
-        return cryptoMode == CryptoMode.NO_CHOICE;
+        return cryptoMode == CryptoMode.CHOICE_ENABLED ||
+                canEncryptAndIsMutual() && cryptoMode != CryptoMode.CHOICE_DISABLED;
     }
 
     boolean isSignOnly() {
@@ -114,7 +128,7 @@ public class ComposeCryptoStatus {
     }
 
     public boolean isSigningEnabled() {
-        return cryptoMode == CryptoMode.SIGN_ONLY || cryptoMode == CryptoMode.CHOICE_ENABLED;
+        return cryptoMode == CryptoMode.SIGN_ONLY || isEncryptionEnabled();
     }
 
     public boolean isPgpInlineModeEnabled() {
@@ -135,6 +149,10 @@ public class ComposeCryptoStatus {
 
     public boolean hasRecipients() {
         return recipientAddresses.length > 0;
+    }
+
+    public boolean canEncryptAndIsMutual() {
+        return canEncrypt() && recipientAutocryptStatus.isMutual();
     }
 
     public static class ComposeCryptoStatusBuilder {

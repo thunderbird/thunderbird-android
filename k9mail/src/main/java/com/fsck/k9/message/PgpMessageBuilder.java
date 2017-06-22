@@ -101,6 +101,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             boolean isPgpInlineMode = cryptoStatus.isPgpInlineModeEnabled();
 
             if (!shouldSign && !shouldEncrypt) {
+                queueMessageBuildSuccess(currentProcessedMimeMessage);
                 return;
             }
 

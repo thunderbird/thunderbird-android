@@ -48,7 +48,7 @@ public class AutocryptStatusInteractor {
                         } else {
                             return RecipientAutocryptStatus.AVAILABLE_UNCONFIRMED;
                         }
-                    case OpenPgpApi.AUTOCRYPT_STATUS_RECOMMEND:
+                    case OpenPgpApi.AUTOCRYPT_STATUS_MUTUAL:
                         if (allKeysConfirmed) {
                             return RecipientAutocryptStatus.RECOMMENDED_CONFIRMED;
                         } else {
@@ -71,22 +71,24 @@ public class AutocryptStatusInteractor {
     }
 
     public enum RecipientAutocryptStatus {
-        NO_RECIPIENTS (false, false),
-        UNAVAILABLE (false, false),
-        DISCOURAGE_UNCONFIRMED (true, false),
-        DISCOURAGE_CONFIRMED (true, true),
-        AVAILABLE_UNCONFIRMED (true, false),
-        AVAILABLE_CONFIRMED (true, true),
-        RECOMMENDED_UNCONFIRMED (true, true),
-        RECOMMENDED_CONFIRMED (true, false),
-        ERROR (false, false);
+        NO_RECIPIENTS (false, false, false),
+        UNAVAILABLE (false, false, false),
+        DISCOURAGE_UNCONFIRMED (true, false, false),
+        DISCOURAGE_CONFIRMED (true, true, false),
+        AVAILABLE_UNCONFIRMED (true, false, false),
+        AVAILABLE_CONFIRMED (true, true, false),
+        RECOMMENDED_UNCONFIRMED (true, false, true),
+        RECOMMENDED_CONFIRMED (true, true, true),
+        ERROR (false, false, false);
 
         private final boolean canEncrypt;
         private final boolean isConfirmed;
+        private final boolean isMutual;
 
-        RecipientAutocryptStatus(boolean canEncrypt, boolean isConfirmed) {
+        RecipientAutocryptStatus(boolean canEncrypt, boolean isConfirmed, boolean isMutual) {
             this.canEncrypt = canEncrypt;
             this.isConfirmed = isConfirmed;
+            this.isMutual = isMutual;
         }
 
         public boolean canEncrypt() {
@@ -95,6 +97,10 @@ public class AutocryptStatusInteractor {
 
         public boolean isConfirmed() {
             return isConfirmed;
+        }
+
+        public boolean isMutual() {
+            return isMutual;
         }
     }
 }

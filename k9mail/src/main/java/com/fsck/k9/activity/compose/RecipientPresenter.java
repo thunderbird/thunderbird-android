@@ -263,6 +263,10 @@ public class RecipientPresenter implements PermissionPingCallback {
         menu.findItem(R.id.openpgp_inline_enable).setVisible(isCryptoConfigured && !cryptoEnablePgpInline);
         menu.findItem(R.id.openpgp_inline_disable).setVisible(isCryptoConfigured && cryptoEnablePgpInline);
 
+        boolean isEncrypting = currentCryptoMode == CryptoMode.CHOICE_ENABLED; // TODO mutual
+        menu.findItem(R.id.openpgp_encrypt_enable).setVisible(isCryptoConfigured && !isEncrypting);
+        menu.findItem(R.id.openpgp_encrypt_disable).setVisible(isCryptoConfigured && isEncrypting);
+
         boolean showSignOnly = isCryptoConfigured && K9.getOpenPgpSupportSignOnly();
         boolean isSignOnly = currentCryptoMode == CryptoMode.SIGN_ONLY;
         menu.findItem(R.id.openpgp_sign_only).setVisible(showSignOnly && !isSignOnly);
@@ -383,6 +387,10 @@ public class RecipientPresenter implements PermissionPingCallback {
         new AsyncTask<Void,Void,RecipientAutocryptStatus>() {
             @Override
             protected RecipientAutocryptStatus doInBackground(Void... voids) {
+                if (cryptoProviderState != CryptoProviderState.OK) {
+                    return null;
+                }
+
                 AutocryptStatusInteractor autocryptStatusInteractor = AutocryptStatusInteractor.getInstance();
                 return autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(
                                 getOpenPgpApi(), recipientAddresses);
@@ -594,10 +602,24 @@ public class RecipientPresenter implements PermissionPingCallback {
                 Timber.e("click on crypto status while unconfigured - this should not really happen?!");
                 return;
             case OK:
+                if (cachedCryptoStatus == null) {
+                    Timber.e("click on crypto status while crypto status not available - should not really happen?!");
+                    return;
+                }
+
+                if (currentCryptoStatus.isEncryptionEnabled() && !currentCryptoStatus.canEncrypt()) {
+                    recipientMvpView.showOpenPgpEnabledErrorDialog();
+                    return;
+                }
+
                 if (currentCryptoMode == CryptoMode.SIGN_ONLY) {
                     recipientMvpView.showErrorIsSignOnly();
                 } else if (currentCryptoMode == CryptoMode.NO_CHOICE) {
-                    onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
+                    if (cachedCryptoStatus.canEncryptAndIsMutual()) {
+                        onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
+                    } else {
+                        onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
+                    }
                 } else {
                     onCryptoModeChanged(CryptoMode.NO_CHOICE);
                 }
@@ -794,6 +816,14 @@ public class RecipientPresenter implements PermissionPingCallback {
             if (shouldShowPgpSignOnlyDialog) {
                 recipientMvpView.showOpenPgpSignOnlyDialog(true);
             }
+        } else {
+            onCryptoModeChanged(CryptoMode.NO_CHOICE);
+        }
+    }
+
+    public void onMenuSetEnableEncryption(boolean enableEncryption) {
+        if (enableEncryption) {
+            onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
         } else {
             onCryptoModeChanged(CryptoMode.NO_CHOICE);
         }

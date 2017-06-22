@@ -950,6 +950,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             case R.id.add_from_contacts:
                 recipientPresenter.onMenuAddFromContacts();
                 break;
+            case R.id.openpgp_encrypt_disable:
+                recipientPresenter.onMenuSetEnableEncryption(false);
+                updateMessageFormat();
+                break;
+            case R.id.openpgp_encrypt_enable:
+                recipientPresenter.onMenuSetEnableEncryption(true);
+                updateMessageFormat();
+                break;
             case R.id.openpgp_inline_enable:
                 recipientPresenter.onMenuSetPgpInline(true);
                 updateMessageFormat();
