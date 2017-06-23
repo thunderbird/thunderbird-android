@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.imap.response;
+package com.fsck.k9.mail.store.imap.selectedstate.response;
 
 
 import java.util.Collections;
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-public class SearchResponseTest {
+public class UidSearchResponseTest {
 
     private static final List<String> SEARCH_RESPONSE_1 = asList("* SEARCH 1 2 3",
             "* 23 EXISTS",
@@ -37,7 +37,7 @@ public class SearchResponseTest {
     public void parse_withSingleSearchResponse_shouldExtractNumbers() throws Exception {
         List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1);
 
-        SearchResponse result = SearchResponse.parse(null, responses);
+        UidSearchResponse result = UidSearchResponse.parse(responses);
 
         assertNotNull(result);
         assertEquals(SEARCH_RESPONSE_1_NUMBERS, result.getNumbers());
@@ -47,7 +47,7 @@ public class SearchResponseTest {
     public void parse_withMultipleSearchResponses_shouldExtractNumbers() throws Exception {
         List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2, SEARCH_RESPONSE_3);
 
-        SearchResponse result = SearchResponse.parse(null, responses);
+        UidSearchResponse result = UidSearchResponse.parse(responses);
 
         assertNotNull(result);
         assertEquals(SEARCH_RESPONSE_123_NUMBERS, result.getNumbers());
@@ -57,7 +57,7 @@ public class SearchResponseTest {
     public void parse_withSingleTaggedSearchResponse_shouldReturnEmptyList() throws Exception {
         List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_TAGGED);
 
-        SearchResponse result = SearchResponse.parse(null, responses);
+        UidSearchResponse result = UidSearchResponse.parse(responses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());
@@ -67,7 +67,7 @@ public class SearchResponseTest {
     public void parse_withMultipleSearchResponsesAndSingleTaggedSearchResponse_shouldExtractNumbers() throws Exception {
         List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2, SEARCH_RESPONSE_TAGGED);
 
-        SearchResponse result = SearchResponse.parse(null, responses);
+        UidSearchResponse result = UidSearchResponse.parse(responses);
 
         assertNotNull(result);
         assertEquals(SEARCH_RESPONSE_12_NUMBERS, result.getNumbers());
@@ -77,7 +77,7 @@ public class SearchResponseTest {
     public void parse_withSingleTooShortResponse_shouldReturnEmptyList() throws Exception {
         List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_SHORT);
 
-        SearchResponse result = SearchResponse.parse(null, responses);
+        UidSearchResponse result = UidSearchResponse.parse(responses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());
@@ -87,7 +87,7 @@ public class SearchResponseTest {
     public void parse_withMultipleSearchResponsesAndSingleTooShortResponse_shouldExtractNumbers() throws Exception {
         List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2, SEARCH_RESPONSE_SHORT);
 
-        SearchResponse result = SearchResponse.parse(null, responses);
+        UidSearchResponse result = UidSearchResponse.parse(responses);
 
         assertNotNull(result);
         assertEquals(SEARCH_RESPONSE_12_NUMBERS, result.getNumbers());
@@ -97,7 +97,7 @@ public class SearchResponseTest {
     public void parse_withSingleNoSearchResponse_shouldReturnEmptyList() throws Exception {
         List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_NONE);
 
-        SearchResponse result = SearchResponse.parse(null, responses);
+        UidSearchResponse result = UidSearchResponse.parse(responses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());
@@ -107,7 +107,7 @@ public class SearchResponseTest {
     public void parse_withMultipleSearchResponsesAndSingleNoSearchResponse_shouldExtractNumbers() throws Exception {
         List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2, SEARCH_RESPONSE_NONE);
 
-        SearchResponse result = SearchResponse.parse(null, responses);
+        UidSearchResponse result = UidSearchResponse.parse(responses);
 
         assertNotNull(result);
         assertEquals(SEARCH_RESPONSE_12_NUMBERS, result.getNumbers());
@@ -117,7 +117,7 @@ public class SearchResponseTest {
     public void parse_withSingleSearchResponseContainingInvalidNumber_shouldReturnEmptyList() throws Exception {
         List<List<ImapResponse>> responses = singletonList(singletonList(createImapResponse("* SEARCH A")));
 
-        SearchResponse result = SearchResponse.parse(null, responses);
+        UidSearchResponse result = UidSearchResponse.parse(responses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());
@@ -127,7 +127,7 @@ public class SearchResponseTest {
     public void parse_withMultipleSearchResponsesAndSingleSearchResponseContainingInvalidNumber_shouldExtractNumbers() throws Exception {
         List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2, SEARCH_RESPONSE_INVALID);
 
-        SearchResponse result = SearchResponse.parse(null, responses);
+        UidSearchResponse result = UidSearchResponse.parse(responses);
 
         assertNotNull(result);
         assertEquals(SEARCH_RESPONSE_12_NUMBERS, result.getNumbers());

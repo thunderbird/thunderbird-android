@@ -371,7 +371,7 @@ public class ImapFolderTest {
 
         sourceFolder.moveMessages(messages, destinationFolder);
 
-        verify(imapConnection).executeSimpleCommand("UID STORE 1 +FLAGS.SILENT (\\Deleted)", false);
+        verify(imapConnection).executeSimpleCommand("UID STORE 1 +FLAGS.SILENT (\\Deleted)");
     }
 
     @Test
@@ -404,7 +404,7 @@ public class ImapFolderTest {
 
         folder.delete(messages, "Folder");
 
-        verify(imapConnection).executeSimpleCommand("UID STORE 23 +FLAGS.SILENT (\\Deleted)", false);
+        verify(imapConnection).executeSimpleCommand("UID STORE 23 +FLAGS.SILENT (\\Deleted)");
     }
 
     @Test
@@ -422,7 +422,7 @@ public class ImapFolderTest {
 
         folder.delete(messages, "Trash");
 
-        verify(imapConnection).executeSimpleCommand("UID STORE 2 +FLAGS.SILENT (\\Deleted)", false);
+        verify(imapConnection).executeSimpleCommand("UID STORE 2 +FLAGS.SILENT (\\Deleted)");
     }
 
     @Test
@@ -462,7 +462,7 @@ public class ImapFolderTest {
     public void getUnreadMessageCount_connectionThrowsIOException_shouldThrowMessagingException() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT DELETED NOT SEEN", false)).thenThrow(new IOException());
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT SEEN NOT DELETED")).thenThrow(new IOException());
         folder.open(OPEN_MODE_RW);
 
         try {
@@ -478,7 +478,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 1 2 3"));
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT DELETED NOT SEEN", false)).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT SEEN NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         int unreadMessageCount = folder.getUnreadMessageCount();
@@ -507,7 +507,7 @@ public class ImapFolderTest {
                 createImapResponse("* SEARCH 1 2"),
                 createImapResponse("* SEARCH 23 42")
         );
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* FLAGGED NOT DELETED", false)).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* FLAGGED NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         int flaggedMessageCount = folder.getFlaggedMessageCount();
@@ -520,7 +520,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 42"));
-        when(imapConnection.executeSimpleCommand("UID SEARCH *:*", false)).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH *:*")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         long highestUid = folder.getHighestUid();
@@ -544,7 +544,7 @@ public class ImapFolderTest {
     public void getHighestUid_imapConnectionThrowsIOException_shouldThrowMessagingException() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        doThrow(IOException.class).when(imapConnection).executeSimpleCommand("UID SEARCH *:*", false);
+        doThrow(IOException.class).when(imapConnection).executeSimpleCommand("UID SEARCH *:*");
         folder.open(OPEN_MODE_RW);
 
         try {
@@ -564,7 +564,7 @@ public class ImapFolderTest {
                 createImapResponse("* SEARCH 5"),
                 createImapResponse("* SEARCH 6")
         );
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:10 NOT DELETED", false)).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:10 NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         List<ImapMessage> messages = folder.getMessages(1, 10, null, null);
@@ -582,7 +582,7 @@ public class ImapFolderTest {
                 createImapResponse("* SEARCH 47"),
                 createImapResponse("* SEARCH 18")
         );
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:10 SINCE 06-Feb-2016 NOT DELETED", false))
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:10 SINCE 06-Feb-2016 NOT DELETED"))
                 .thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
@@ -597,7 +597,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 99"));
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:10 NOT DELETED", false)).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:10 NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
         MessageRetrievalListener<ImapMessage> listener = createMessageRetrievalListener();
 
@@ -680,7 +680,7 @@ public class ImapFolderTest {
                 createImapResponse("* SEARCH 18"),
                 createImapResponse("* SEARCH 49")
         );
-        when(imapConnection.executeSimpleCommand("UID SEARCH 5,1:2 NOT DELETED", false)).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 5,1:2 NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         List<ImapMessage> messages = folder.getMessages(asList(1L, 2L, 5L), false, null);
@@ -694,7 +694,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 99"));
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1", false)).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
         MessageRetrievalListener<ImapMessage> listener = createMessageRetrievalListener();
 
@@ -728,7 +728,7 @@ public class ImapFolderTest {
                 createImapResponse("* SEARCH 22"),
                 createImapResponse("* SEARCH 25")
         );
-        when(imapConnection.executeSimpleCommand("UID SEARCH UID 22,25,11", false)).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH UID 11,22,25")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         List<ImapMessage> messages = folder.getMessagesFromUids(asList("11", "22", "25"));
@@ -755,7 +755,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 42"));
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:9 NOT DELETED", false)).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:9 NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         boolean areMoreMessagesAvailable = folder.areMoreMessagesAvailable(10, null);
@@ -796,8 +796,8 @@ public class ImapFolderTest {
 
         folder.areMoreMessagesAvailable(600, null);
 
-        verify(imapConnection).executeSimpleCommand("UID SEARCH 100:599 NOT DELETED", false);
-        verify(imapConnection).executeSimpleCommand("UID SEARCH 1:99 NOT DELETED", false);
+        verify(imapConnection).executeSimpleCommand("UID SEARCH 100:599 NOT DELETED");
+        verify(imapConnection).executeSimpleCommand("UID SEARCH 1:99 NOT DELETED");
     }
 
     @Test
@@ -1007,7 +1007,7 @@ public class ImapFolderTest {
 
         folder.getUidFromMessageId(message);
 
-        verify(imapConnection).executeSimpleCommand("UID SEARCH HEADER MESSAGE-ID \"<00000000.0000000@example.org>\"", false);
+        verify(imapConnection).executeSimpleCommand("UID SEARCH HEADER MESSAGE-ID \"<00000000.0000000@example.org>\"");
     }
 
     @Test
@@ -1017,7 +1017,7 @@ public class ImapFolderTest {
         folder.open(OPEN_MODE_RW);
         ImapMessage message = createImapMessage("2");
         when(message.getHeader("Message-ID")).thenReturn(new String[] { "<00000000.0000000@example.org>" });
-        when(imapConnection.executeSimpleCommand("UID SEARCH HEADER MESSAGE-ID \"<00000000.0000000@example.org>\"", false))
+        when(imapConnection.executeSimpleCommand("UID SEARCH HEADER MESSAGE-ID \"<00000000.0000000@example.org>\""))
                 .thenReturn(singletonList(createImapResponse("* SEARCH 23")));
 
         String uid = folder.getUidFromMessageId(message);
@@ -1042,7 +1042,7 @@ public class ImapFolderTest {
 
         folder.setFlags(newSet(Flag.SEEN), true);
 
-        verify(imapConnection).executeSimpleCommand("UID STORE 1:* +FLAGS.SILENT (\\Seen)", false);
+        verify(imapConnection).executeSimpleCommand("UID STORE 1:* +FLAGS.SILENT (\\Seen)");
     }
 
     @Test
@@ -1076,7 +1076,7 @@ public class ImapFolderTest {
 
         folder.search("query", newSet(Flag.SEEN), Collections.<Flag>emptySet());
 
-        verify(imapConnection).executeSimpleCommand("UID SEARCH TEXT \"query\" SEEN", false);
+        verify(imapConnection).executeSimpleCommand("UID SEARCH TEXT \"query\" SEEN");
     }
 
     @Test
@@ -1088,7 +1088,7 @@ public class ImapFolderTest {
 
         folder.search("query", Collections.<Flag>emptySet(), Collections.<Flag>emptySet());
 
-        verify(imapConnection).executeSimpleCommand("UID SEARCH OR SUBJECT \"query\" FROM \"query\"", false);
+        verify(imapConnection).executeSimpleCommand("UID SEARCH OR SUBJECT \"query\" FROM \"query\"");
     }
 
     @Test
