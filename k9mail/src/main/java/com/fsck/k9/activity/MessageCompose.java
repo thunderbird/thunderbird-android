@@ -57,6 +57,7 @@ import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.IdentityAdapter;
 import com.fsck.k9.activity.compose.IdentityAdapter.IdentityContainer;
+import com.fsck.k9.activity.compose.PgpEnabledErrorDialog.OnOpenPgpDisableListener;
 import com.fsck.k9.activity.compose.PgpInlineDialog.OnOpenPgpInlineChangeListener;
 import com.fsck.k9.activity.compose.PgpSignOnlyDialog.OnOpenPgpSignOnlyChangeListener;
 import com.fsck.k9.activity.compose.RecipientMvpView;
@@ -104,7 +105,8 @@ import timber.log.Timber;
 public class MessageCompose extends K9Activity implements OnClickListener,
         CancelListener, AttachmentDownloadCancelListener, OnFocusChangeListener,
         OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback,
-        AttachmentPresenter.AttachmentsChangedListener, RecipientPresenter.RecipientsChangedListener {
+        AttachmentPresenter.AttachmentsChangedListener, RecipientPresenter.RecipientsChangedListener,
+        OnOpenPgpDisableListener {
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
@@ -900,6 +902,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public void onOpenPgpSignOnlyChange(boolean enabled) {
         recipientPresenter.onCryptoPgpSignOnlyDisabled();
     }
+
+    @Override
+    public void onOpenPgpClickDisable() {
+        recipientPresenter.onCryptoPgpClickDisable();
+    }
+
     @Override
     public void onAttachmentAdded() {
         changesMadeSinceLastSave = true;

@@ -63,16 +63,18 @@ public class ComposeCryptoStatus {
                     } else {
                         return CryptoStatusDisplayType.CHOICE_ENABLED_UNTRUSTED;
                     }
-                }
-                throw new IllegalStateException("crypto enabled while unavailable!");
-            case CHOICE_DISABLED:
-                if (!recipientAutocryptStatus.isMutual()) {
-                    throw new IllegalStateException("crypto disabled while not mutual!");
-                }
-                if (recipientAutocryptStatus.isConfirmed()) {
-                    return CryptoStatusDisplayType.CHOICE_DISABLED_TRUSTED;
                 } else {
-                    return CryptoStatusDisplayType.CHOICE_DISABLED_UNTRUSTED;
+                    return CryptoStatusDisplayType.CHOICE_ENABLED_ERROR;
+                }
+            case CHOICE_DISABLED:
+                if (recipientAutocryptStatus.canEncrypt()) {
+                    if (recipientAutocryptStatus.isConfirmed()) {
+                        return CryptoStatusDisplayType.CHOICE_DISABLED_TRUSTED;
+                    } else {
+                        return CryptoStatusDisplayType.CHOICE_DISABLED_UNTRUSTED;
+                    }
+                } else {
+                    return CryptoStatusDisplayType.CHOICE_DISABLED_UNAVAILABLE;
                 }
             case NO_CHOICE:
                 if (recipientAutocryptStatus == RecipientAutocryptStatus.NO_RECIPIENTS) {
@@ -139,7 +141,7 @@ public class ComposeCryptoStatus {
         return cryptoProviderState == CryptoProviderState.OK;
     }
 
-    public boolean canEncrypt() {
+    boolean canEncrypt() {
         return recipientAutocryptStatus != null && recipientAutocryptStatus.canEncrypt();
     }
 
@@ -151,8 +153,12 @@ public class ComposeCryptoStatus {
         return recipientAddresses.length > 0;
     }
 
-    public boolean canEncryptAndIsMutual() {
+    boolean canEncryptAndIsMutual() {
         return canEncrypt() && recipientAutocryptStatus.isMutual();
+    }
+
+    boolean isEncryptionEnabledError() {
+        return isEncryptionEnabled() && !canEncrypt();
     }
 
     public static class ComposeCryptoStatusBuilder {
@@ -237,13 +243,18 @@ public class ComposeCryptoStatus {
     }
 
     public enum SendErrorState {
-        PROVIDER_ERROR
+        PROVIDER_ERROR,
+        ENABLED_ERROR
     }
 
     public SendErrorState getSendErrorStateOrNull() {
         if (cryptoProviderState != CryptoProviderState.OK) {
             // TODO: be more specific about this error
             return SendErrorState.PROVIDER_ERROR;
+        }
+
+        if (isEncryptionEnabledError()) {
+            return SendErrorState.ENABLED_ERROR;
         }
 
         return null;

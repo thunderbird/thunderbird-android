@@ -347,10 +347,6 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         Toast.makeText(activity, R.string.compose_error_no_signing_key, Toast.LENGTH_LONG).show();
     }
 
-    public void showErrorPrivateButMissingKeys() {
-        Toast.makeText(activity, R.string.compose_error_private_missing_keys, Toast.LENGTH_LONG).show();
-    }
-
     public void showErrorInlineAttach() {
         Toast.makeText(activity, R.string.error_crypto_inline_attach, Toast.LENGTH_LONG).show();
     }
@@ -416,6 +412,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         dialog.show(activity.getFragmentManager(), "openpgp_signonly");
     }
 
+    public void showOpenPgpEnabledErrorDialog() {
+        PgpEnabledErrorDialog dialog = PgpEnabledErrorDialog.newInstance(R.id.crypto_status);
+        dialog.show(activity.getFragmentManager(), "openpgp_error");
+    }
+
     public void showOpenPgpEncryptExplanationDialog() {
         PgpEncryptDescriptionDialog dialog = PgpEncryptDescriptionDialog.newInstance(R.id.crypto_status);
         dialog.show(activity.getFragmentManager(), "openpgp_description");
@@ -443,8 +444,10 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         NO_CHOICE_MUTUAL_TRUSTED(R.id.crypto_status_trusted),
         CHOICE_ENABLED_UNTRUSTED(R.id.crypto_status_enabled),
         CHOICE_ENABLED_TRUSTED(R.id.crypto_status_trusted),
+        CHOICE_ENABLED_ERROR(R.id.crypto_status_error),
         CHOICE_DISABLED_UNTRUSTED(R.id.crypto_status_disabled),
         CHOICE_DISABLED_TRUSTED(R.id.crypto_status_disabled),
+        CHOICE_DISABLED_UNAVAILABLE(VIEW_INDEX_HIDDEN),
         ERROR(R.id.crypto_status_error);
 
 

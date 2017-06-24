@@ -1143,7 +1143,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="address_type_mobile">Mobile</string>
     <string name="compose_error_no_draft_folder">No Drafts folder configured for this account!</string>
     <string name="compose_error_no_signing_key">No key configured for signing! Please check your settings.</string>
-    <string name="compose_error_private_missing_keys">Private mode is enabled, but some recipients do not have keys!</string>
     <string name="crypto_mode_disabled">Don\'t encrypt</string>
     <string name="crypto_mode_opportunistic">Encrypt if possible</string>
     <string name="crypto_mode_private">Encrypt</string>
@@ -1243,6 +1242,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="messageview_crypto_warning_details">Show Details</string>
     <string name="error_recipient_crypto_retrieve">Error retrieving recipient status from OpenPGP provider!</string>
 
+    <string name="openpgp_enabled_error_title">Encryption not possible</string>
+    <string name="openpgp_enabled_error_msg">Some of the selected recipients don\'t support this feature!</string>
     <string name="enable_encryption">Enable Encryption</string>
     <string name="disable_encryption">Disable Encryption</string>
     <string name="openpgp_description_text1">Encrypting messages ensures they can be read by the recipient, and nobody else.</string>
