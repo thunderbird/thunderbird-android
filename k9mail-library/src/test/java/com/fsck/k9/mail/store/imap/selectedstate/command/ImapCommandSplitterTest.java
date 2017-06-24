@@ -3,39 +3,24 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
-import com.fsck.k9.mail.store.imap.ImapConnection;
-import com.fsck.k9.mail.store.imap.ImapFolder;
-import com.fsck.k9.mail.store.imap.ImapUtility;
-import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static junit.framework.Assert.assertEquals;
 
 
-public class SelectedStateCommandTest {
-
-    private ImapConnection connection;
-    private ImapFolder folder;
-
-    @Before
-    public void setUp() throws Exception {
-        connection = mock(ImapConnection.class);
-        when(connection.isCondstoreCapable()).thenReturn(false);
-        folder = mock(ImapFolder.class);
-    }
+public class ImapCommandSplitterTest {
 
     @Test
     public void executeInternal_withManyNonContiguousIds_shouldSplitCommand() throws Exception {
         List<Long> ids = createNonContiguousIdSet(10000, 10500, 2);
         TestCommand command = createTestCommand(ids);
 
-        command.executeInternal(connection, folder);
+        List<SelectedStateCommand> commands = ImapCommandSplitter.splitCommand(command, 980);
 
-        verify(folder).executeSimpleCommand(ImapUtility.join(",", createNonContiguousIdSet(10000, 10324, 2)));
-        verify(folder).executeSimpleCommand(ImapUtility.join(",", createNonContiguousIdSet(10326, 10500, 2)));
+        assertEquals(commands.get(0).getIdSet(), new TreeSet<>(createNonContiguousIdSet(10000, 10324, 2)));
+        assertEquals(commands.get(1).getIdSet(), new TreeSet<>(createNonContiguousIdSet(10326, 10500, 2)));
     }
 
     @Test
@@ -49,35 +34,14 @@ public class SelectedStateCommandTest {
         idSet.addAll(thirdIdSet);
         TestCommand command = createTestCommand(idSet);
 
-        command.executeInternal(connection, folder);
+        List<SelectedStateCommand> commands = ImapCommandSplitter.splitCommand(command, 980);
 
-        String firstCommand = ImapUtility.join(",", createNonContiguousIdSet(10000, 10298, 2)) + "," +
-                ImapUtility.join(",", createNonContiguousIdSet(10402, 10426, 2));
-        String secondCommand = ImapUtility.join(",", createNonContiguousIdSet(10428, 10500, 2)) + ",10300:10400";
-        verify(folder).executeSimpleCommand(firstCommand);
-        verify(folder).executeSimpleCommand(secondCommand);
-    }
-
-    @Test
-    public void executeInternal_withAllIds_shouldCreateProperCommand() throws Exception {
-        TestCommand command = new TestCommand.Builder()
-                .allIds(true)
-                .build();
-
-        command.executeInternal(connection, folder);
-
-        verify(folder).executeSimpleCommand("1:*");
-    }
-
-    @Test
-    public void executeInternal_withOnlyHighestId_shouldCreateProperCommand() throws Exception {
-        TestCommand command = new TestCommand.Builder()
-                .onlyHighestId(true)
-                .build();
-
-        command.executeInternal(connection, folder);
-
-        verify(folder).executeSimpleCommand("*:*");
+        List<Long> firstCommandIds = createNonContiguousIdSet(10000, 10298, 2);
+        firstCommandIds.addAll(createNonContiguousIdSet(10402, 10426, 2));
+        assertEquals(commands.get(0).getIdSet(), new TreeSet<>(firstCommandIds));
+        assertEquals(commands.get(1).getIdSet(), new TreeSet<>(createNonContiguousIdSet(10428, 10500, 2)));
+        assertEquals(commands.get(1).getIdGroups().get(0).getStart().longValue(), 10300L);
+        assertEquals(commands.get(1).getIdGroups().get(0).getEnd().longValue(), 10400L);
     }
 
     private List<Long> createNonContiguousIdSet(long start, long end, int interval) {
