@@ -27,102 +27,43 @@ abstract class SelectedStateCommand {
     private static final int LENGTH_LIMIT_WITHOUT_CONDSTORE = 980;
     private static final int LENGTH_LIMIT_WITH_CONDSTORE = 8172;
 
-    ImapConnection connection;
-    ImapFolder folder;
-
     Set<Long> idSet;
-    List<Range> idRanges;
-
-    SelectedStateCommand(ImapConnection connection, ImapFolder folder) {
-        this.connection = connection;
-        this.folder = folder;
-    }
+    List<ContiguousIdGroup> idGroups;
 
     abstract String createCommandString();
 
     abstract Builder newBuilder();
 
-    private List<SelectedStateCommand> splitCommand(int lengthLimit) {
+    String createCombinedIdString() {
+        if (idSet != null || idGroups != null) {
 
-        List<SelectedStateCommand> commands = new ArrayList<>();
-
-        if (idSet != null || idRanges != null) {
-
-            while ((idSet != null && !idSet.isEmpty()) || (idRanges != null && !idRanges.isEmpty())) {
-
-                Builder builder = this.newBuilder()
-                        .idSet(null)
-                        .idRanges(null);
-
-                int length = builder.build().createCommandString().length();
-                while (length < lengthLimit) {
-
-                    if (idSet != null && !idSet.isEmpty()) {
-
-                        Long first = idSet.iterator().next();
-                        length += (String.valueOf(first).length() + 1);
-                        if (length < lengthLimit) {
-                            builder.addId(first);
-                            idSet.remove(first);
-                        } else {
-                            break;
-                        }
-
-                    } else if (idRanges != null && !idRanges.isEmpty()) {
-
-                        Range first = idRanges.iterator().next();
-                        length += (first.toString().length() + 1);
-                        if (length < lengthLimit) {
-                            builder.addIdRange(first.getStart(), first.getEnd());
-                            idRanges.remove(first);
-                        } else {
-                            break;
-                        }
-                    } else {
-                        break;
-                    }
-                }
-                commands.add(builder.build());
-            }
-
-        } else {
-            //This should never happen
-            commands = Collections.singletonList(this);
-        }
-
-        return commands;
-
-    }
-
-    void addIds(StringBuilder builder) {
-
-        if (idSet != null || idRanges != null) {
-
-            optimizeGroupings();
+            StringBuilder builder = new StringBuilder();
 
             if (idSet != null) {
                 builder.append(ImapUtility.join(",", idSet));
             }
-            if (idRanges != null) {
+            if (idGroups != null) {
                 if (idSet != null) {
                     builder.append(",");
                 }
-                builder.append(ImapUtility.join(",", idRanges));
+                builder.append(ImapUtility.join(",", idGroups));
             }
             builder.append(" ");
+            return builder.toString();
         }
+        return "";
     }
 
-    public SelectedStateResponse execute() throws MessagingException {
+    public SelectedStateResponse execute(ImapConnection connection, ImapFolder folder) throws MessagingException {
         return null;
     }
 
-    List<List<ImapResponse>> executeInternal() throws IOException, MessagingException {
-
+    List<List<ImapResponse>> executeInternal(ImapConnection connection, ImapFolder folder)
+            throws IOException, MessagingException {
         List<SelectedStateCommand> commands;
         String commandString = createCommandString();
-        if (commandString.length() > getCommandLengthLimit()) {
-            commands = Collections.unmodifiableList(splitCommand(getCommandLengthLimit()));
+        if (commandString.length() > getCommandLengthLimit(connection)) {
+            commands = ImapCommandSplitter.splitCommand(this, getCommandLengthLimit(connection));
         } else {
             commands = Collections.singletonList(this);
         }
@@ -134,52 +75,23 @@ abstract class SelectedStateCommand {
         return responses;
     }
 
-    private void optimizeGroupings() {
-
-        if (idRanges != null && idRanges.get(0).end == Range.LAST_ID) {
-            return;
-        }
-
-        TreeSet<Long> fullIdSet = new TreeSet<>();
-        if (idSet != null) {
-            fullIdSet.addAll(idSet);
-        }
-        if (idRanges != null) {
-            for (Range numberRange : idRanges) {
-                for (long i = numberRange.getStart();i <= numberRange.getEnd();i++) {
-                    fullIdSet.add(i);
-                }
-            }
-        }
-
-        Builder builder = this.newBuilder()
-                .idSet(null)
-                .idRanges(null);
-        List<Long> idList = new ArrayList<>(fullIdSet);
-        int start = 0;
-
-        for (int i = 1; i < idList.size();i++) {
-            if (idList.get(i - 1) + 1 != idList.get(i)) {
-                checkAndAddIds(builder, idList, start, i - 1);
-                start = i;
-            }
-        }
-        checkAndAddIds(builder, idList, start, idList.size() - 1);
-
-        SelectedStateCommand newCommand = builder.build();
-        this.idSet = newCommand.idSet;
-        this.idRanges = newCommand.idRanges;
+    Set<Long> getIdSet() {
+        return idSet;
     }
 
-    private void checkAndAddIds(Builder builder, List<Long> idList, int start, int end) {
-        if (start == end) {
-            builder.addId(idList.get(start));
-        } else {
-            builder.addIdRange(idList.get(start), idList.get(end));
-        }
+    void setIdSet(Set<Long> idSet) {
+        this.idSet = idSet;
     }
 
-    private int getCommandLengthLimit() throws IOException, MessagingException  {
+    List<ContiguousIdGroup> getIdGroups() {
+        return idGroups;
+    }
+
+    void setIdGroups(List<ContiguousIdGroup> idGroups) {
+        this.idGroups = idGroups;
+    }
+
+    private int getCommandLengthLimit(ImapConnection connection) throws IOException, MessagingException  {
         boolean condstoreSupported = connection.isCondstoreCapable();
         if (condstoreSupported) {
             return LENGTH_LIMIT_WITH_CONDSTORE;
@@ -189,15 +101,14 @@ abstract class SelectedStateCommand {
     }
 
     static abstract class Builder<C extends SelectedStateCommand, B extends Builder<C, B>> {
-
         C command;
         B builder;
 
-        abstract C createCommand(ImapConnection connection, ImapFolder folder);
+        abstract C createCommand();
         abstract B createBuilder();
 
-        public Builder(ImapConnection connection, ImapFolder folder) {
-            command = createCommand(connection, folder);
+        public Builder() {
+            command = createCommand();
             builder = createBuilder();
         }
 
@@ -218,23 +129,24 @@ abstract class SelectedStateCommand {
             return builder;
         }
 
-        B idRanges(List<Range> idRanges) {
-            command.idRanges = idRanges;
+        B idRanges(List<ContiguousIdGroup> idGroups) {
+            command.idGroups = idGroups;
             return builder;
         }
 
-        public B addIdRange(Long start, Long end) {
-            if (command.idRanges == null) {
-                command.idRanges = new ArrayList<>();
+        public B addIdGroup(Long start, Long end) {
+            if (command.idGroups == null) {
+                command.idGroups = new ArrayList<>();
             }
-            command.idRanges.add(new Range(start, end));
+            command.idGroups.add(new ContiguousIdGroup(start, end));
             return builder;
         }
 
         public B allIds(boolean allIds) {
             if (allIds) {
                 command.idSet = null;
-                command.idRanges = Collections.singletonList(new Range(Range.FIRST_ID, Range.LAST_ID));
+                command.idGroups = Collections.singletonList(new ContiguousIdGroup(ContiguousIdGroup.FIRST_ID,
+                        ContiguousIdGroup.LAST_ID));
             }
             return builder;
         }
@@ -242,7 +154,8 @@ abstract class SelectedStateCommand {
         public B onlyHighestId(boolean onlyHighestId) {
             if (onlyHighestId) {
                 command.idSet = null;
-                command.idRanges = Collections.singletonList(new Range(Range.LAST_ID, Range.LAST_ID));
+                command.idGroups = Collections.singletonList(new ContiguousIdGroup(ContiguousIdGroup.LAST_ID,
+                        ContiguousIdGroup.LAST_ID));
             }
             return builder;
         }
@@ -250,18 +163,16 @@ abstract class SelectedStateCommand {
         public C build() {
             return command;
         }
-
     }
 
-    private static class Range {
-
-        private static final long FIRST_ID = 1L;
-        private static final long LAST_ID = Long.MAX_VALUE;
+    static class ContiguousIdGroup {
+        static final long FIRST_ID = 1L;
+        static final long LAST_ID = Long.MAX_VALUE;
 
         private Long start;
         private Long end;
 
-        Range(Long start, Long end) {
+        ContiguousIdGroup(Long start, Long end) {
             if (start <= end) {
                 this.start = start;
                 this.end = end;
@@ -284,13 +195,10 @@ abstract class SelectedStateCommand {
             if (start == LAST_ID && end == LAST_ID) {
                 return "*:*";
             }
-
             if (start != LAST_ID && end == LAST_ID) {
                 return start + ":" + "*";
             }
-
             return start + ":" + end;
         }
-
     }
 }

@@ -15,7 +15,6 @@ import static com.fsck.k9.mail.store.imap.ImapUtility.getImapSequenceValues;
 
 
 public class UidCopyResponse extends SelectedStateResponse {
-
     private Map<String, String> uidMapping;
 
     private UidCopyResponse(List<ImapResponse> imapResponse) {
@@ -23,7 +22,6 @@ public class UidCopyResponse extends SelectedStateResponse {
     }
 
     public static UidCopyResponse parse(List<List<ImapResponse>> imapResponses) {
-
         UidCopyResponse combinedResponse = null;
         for (List<ImapResponse> imapResponse : imapResponses) {
             UidCopyResponse copyUidResponse = new UidCopyResponse(imapResponse);
@@ -36,13 +34,11 @@ public class UidCopyResponse extends SelectedStateResponse {
                 combinedResponse.combine(copyUidResponse);
             }
         }
-
         return combinedResponse;
     }
 
     @Override
     void parseResponse(List<ImapResponse> imapResponses) {
-
         ImapResponse response = ImapUtility.getLastResponse(imapResponses);
 
         if (!response.isTagged() || response.size() < 2 || !equalsIgnoreCase(response.get(0), Responses.OK) ||

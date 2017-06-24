@@ -9,32 +9,28 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.Commands;
 import com.fsck.k9.mail.store.imap.ImapConnection;
 import com.fsck.k9.mail.store.imap.ImapFolder;
+import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.store.imap.selectedstate.response.SelectedStateResponse;
 
 
 public class UidStoreCommand extends SelectedStateCommand {
-
     private boolean value;
     private Set<Flag> flagSet;
+    private boolean canCreateForwardedFlag;
 
-    private UidStoreCommand(ImapConnection connection, ImapFolder folder) {
-        super(connection, folder);
+    private UidStoreCommand() {
     }
 
     @Override
     public String createCommandString() {
-        StringBuilder builder = new StringBuilder(Commands.UID_STORE).append(" ");
-        super.addIds(builder);
-        addValue(builder);
-        addFlagSet(builder);
-        return builder.toString().trim();
+        return String.format("%s %s%sFLAGS.SILENT (%s)", Commands.UID_STORE, createCombinedIdString(),
+                value ? "+" : "-", ImapUtility.combineFlags(flagSet, canCreateForwardedFlag));
     }
 
     @Override
-    public SelectedStateResponse execute() throws MessagingException {
-
+    public SelectedStateResponse execute(ImapConnection connection, ImapFolder folder) throws MessagingException {
         try {
-            executeInternal();
+            executeInternal(connection, folder);
             //These results are not important, because of the FLAGS.SILENT option
             return null;
         } catch (IOException ioe) {
@@ -43,26 +39,15 @@ public class UidStoreCommand extends SelectedStateCommand {
 
     }
 
-    private void addValue(StringBuilder builder) {
-        builder.append(value  ? "+" : "-");
-    }
-
-    private void addFlagSet(StringBuilder builder) {
-        builder.append("FLAGS.SILENT (").append(folder.combineFlags(flagSet)).append(")");
-    }
-
     @Override
     Builder newBuilder() {
-        return new Builder(connection, folder)
+        return new Builder()
                 .value(value)
-                .flagSet(flagSet);
+                .flagSet(flagSet)
+                .canCreateForwardedFlag(canCreateForwardedFlag);
     }
 
     public static class Builder extends SelectedStateCommand.Builder<UidStoreCommand, Builder> {
-
-        public Builder(ImapConnection connection, ImapFolder folder) {
-            super(connection, folder);
-        }
 
         public Builder value(boolean value) {
             command.value = value;
@@ -74,9 +59,14 @@ public class UidStoreCommand extends SelectedStateCommand {
             return builder;
         }
 
+        public Builder canCreateForwardedFlag(boolean canCreateForwardedFlag) {
+            command.canCreateForwardedFlag = canCreateForwardedFlag;
+            return builder;
+        }
+
         @Override
-        UidStoreCommand createCommand(ImapConnection connection, ImapFolder folder) {
-            return new UidStoreCommand(connection, folder);
+        UidStoreCommand createCommand() {
+            return new UidStoreCommand();
         }
 
         @Override

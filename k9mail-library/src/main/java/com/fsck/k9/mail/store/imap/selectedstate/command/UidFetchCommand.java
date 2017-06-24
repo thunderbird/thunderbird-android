@@ -17,46 +17,40 @@ import com.fsck.k9.mail.store.imap.Commands;
 import com.fsck.k9.mail.store.imap.FetchBodyCallback;
 import com.fsck.k9.mail.store.imap.FetchPartCallback;
 import com.fsck.k9.mail.store.imap.ImapConnection;
-import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapResponseCallback;
 import com.fsck.k9.mail.store.imap.ImapUtility;
 
 
 public class UidFetchCommand extends SelectedStateCommand {
-
     private int maximumAutoDownloadMessageSize;
     private FetchProfile fetchProfile;
     private HashMap<String, Message> messageMap;
     private Part part;
     private BodyFactory bodyFactory;
 
-    private UidFetchCommand(ImapConnection connection, ImapFolder folder) {
-        super(connection, folder);
+    private UidFetchCommand() {
     }
 
     @Override
     String createCommandString() {
         StringBuilder builder = new StringBuilder(Commands.UID_FETCH).append(" ");
-        super.addIds(builder);
+        builder.append(createCombinedIdString());
         addDataItems(builder);
-        return builder.toString();
+        return builder.toString().trim();
     }
 
-    public void send() throws IOException, MessagingException {
+    public void send(ImapConnection connection) throws IOException, MessagingException {
         connection.sendCommand(createCommandString(), false);
     }
 
-    public ImapResponse readResponse() throws IOException {
-
+    public ImapResponse readResponse(ImapConnection connection) throws IOException {
         ImapResponseCallback callback = null;
 
         if (fetchProfile != null && messageMap != null) {
-
             if (fetchProfile.contains(FetchProfile.Item.BODY) || fetchProfile.contains(FetchProfile.Item.BODY_SANE)) {
                 callback = new FetchBodyCallback(messageMap);
             }
-
         } else if (part != null) {
             callback = new FetchPartCallback(part, bodyFactory);
         }
@@ -65,7 +59,6 @@ public class UidFetchCommand extends SelectedStateCommand {
     }
 
     private void addDataItems(StringBuilder builder) {
-
         if (fetchProfile != null && messageMap != null) {
 
             Set<String> fetchFields = new LinkedHashSet<>();
@@ -100,9 +93,7 @@ public class UidFetchCommand extends SelectedStateCommand {
 
             String spaceSeparatedFetchFields = ImapUtility.join(" ", fetchFields);
             builder.append("(").append(spaceSeparatedFetchFields).append(")");
-
         } else if (part != null) {
-
             String partId = part.getServerExtra();
 
             String fetch;
@@ -114,22 +105,17 @@ public class UidFetchCommand extends SelectedStateCommand {
 
             builder.append("(UID ").append(fetch).append(")");
         }
-
     }
 
     @Override
     Builder newBuilder() {
-        return new Builder(connection, folder)
+        return new Builder()
                 .maximumAutoDownloadMessageSize(maximumAutoDownloadMessageSize)
                 .messageParams(fetchProfile, messageMap)
                 .partParams(part, bodyFactory);
     }
 
     public static class Builder extends SelectedStateCommand.Builder<UidFetchCommand, Builder> {
-
-        public Builder(ImapConnection connection, ImapFolder folder) {
-            super(connection, folder);
-        }
 
         public Builder maximumAutoDownloadMessageSize(int maximumAutoDownloadMessageSize) {
             command.maximumAutoDownloadMessageSize = maximumAutoDownloadMessageSize;
@@ -149,14 +135,13 @@ public class UidFetchCommand extends SelectedStateCommand {
         }
 
         @Override
-        UidFetchCommand createCommand(ImapConnection connection, ImapFolder folder) {
-            return new UidFetchCommand(connection, folder);
+        UidFetchCommand createCommand() {
+            return new UidFetchCommand();
         }
 
         @Override
         Builder createBuilder() {
             return this;
         }
-
     }
 }
