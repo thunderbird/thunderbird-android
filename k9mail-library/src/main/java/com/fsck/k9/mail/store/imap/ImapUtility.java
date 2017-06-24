@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.fsck.k9.mail.Flag;
 import timber.log.Timber;
 
 
@@ -155,6 +156,25 @@ public class ImapUtility {
         int lastIndex = responses.size() - 1;
 
         return responses.get(lastIndex);
+    }
+
+    public static String combineFlags(Iterable<Flag> flags, boolean canCreateForwardedFlag) {
+        List<String> flagNames = new ArrayList<String>();
+        for (Flag flag : flags) {
+            if (flag == Flag.SEEN) {
+                flagNames.add("\\Seen");
+            } else if (flag == Flag.DELETED) {
+                flagNames.add("\\Deleted");
+            } else if (flag == Flag.ANSWERED) {
+                flagNames.add("\\Answered");
+            } else if (flag == Flag.FLAGGED) {
+                flagNames.add("\\Flagged");
+            } else if (flag == Flag.FORWARDED && canCreateForwardedFlag) {
+                flagNames.add("$Forwarded");
+            }
+        }
+
+        return ImapUtility.join(" ", flagNames);
     }
 
     public static String join(String delimiter, Collection<? extends Object> tokens) {

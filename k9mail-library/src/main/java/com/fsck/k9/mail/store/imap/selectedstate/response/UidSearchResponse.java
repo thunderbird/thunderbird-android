@@ -11,7 +11,6 @@ import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 
 public class UidSearchResponse extends SelectedStateResponse {
-
     private List<Long> numbers;
 
     private UidSearchResponse(List<ImapResponse> imapResponse) {
@@ -19,7 +18,6 @@ public class UidSearchResponse extends SelectedStateResponse {
     }
 
     public static UidSearchResponse parse(List<List<ImapResponse>> imapResponses) {
-
         UidSearchResponse combinedResponse = null;
         for (List<ImapResponse> imapResponse : imapResponses) {
             UidSearchResponse searchResponse = new UidSearchResponse(imapResponse);
@@ -29,15 +27,12 @@ public class UidSearchResponse extends SelectedStateResponse {
                 combinedResponse.combine(searchResponse);
             }
         }
-
         return combinedResponse;
     }
 
     @Override
     void parseResponse(List<ImapResponse> imapResponses) {
-
         numbers = new ArrayList<>();
-
         for (ImapResponse response : imapResponses) {
             parseSingleLine(response, numbers);
         }
@@ -53,7 +48,6 @@ public class UidSearchResponse extends SelectedStateResponse {
         if (response.isTagged() || response.size() < 2 || !equalsIgnoreCase(response.get(0), Responses.SEARCH)) {
             return;
         }
-
         int end = response.size();
         for (int i = 1; i < end; i++) {
             try {
@@ -71,5 +65,4 @@ public class UidSearchResponse extends SelectedStateResponse {
     public List<Long> getNumbers() {
         return numbers;
     }
-
 }

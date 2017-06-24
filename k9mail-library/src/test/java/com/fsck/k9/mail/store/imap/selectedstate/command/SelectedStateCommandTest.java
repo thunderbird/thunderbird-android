@@ -2,7 +2,6 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.fsck.k9.mail.store.imap.ImapConnection;
@@ -33,50 +32,50 @@ public class SelectedStateCommandTest {
         List<Long> ids = createNonContiguousIdSet(10000, 10500, 2);
         TestCommand command = createTestCommand(ids);
 
-        command.executeInternal();
+        command.executeInternal(connection, folder);
 
         verify(folder).executeSimpleCommand(ImapUtility.join(",", createNonContiguousIdSet(10000, 10324, 2)));
         verify(folder).executeSimpleCommand(ImapUtility.join(",", createNonContiguousIdSet(10326, 10500, 2)));
     }
 
     @Test
-    public void executeInternal_withContiguousIds_shouldGroupIds() throws Exception {
-        List<Long> ids = createNonContiguousIdSet(10000, 10500, 1);
-        TestCommand command = createTestCommand(ids);
+    public void executeInternal_withContiguousAndNonContiguousIds_shouldGroupIdsAndSplitCommand() throws Exception {
+        List<Long> firstIdSet = createNonContiguousIdSet(10000, 10300, 2);
+        List<Long> secondIdSet = createNonContiguousIdSet(10301, 10399, 1);
+        List<Long> thirdIdSet = createNonContiguousIdSet(10400, 10500, 2);
+        List<Long> idSet = new ArrayList<>(firstIdSet.size() + secondIdSet.size() + thirdIdSet.size());
+        idSet.addAll(firstIdSet);
+        idSet.addAll(secondIdSet);
+        idSet.addAll(thirdIdSet);
+        TestCommand command = createTestCommand(idSet);
 
-        command.executeInternal();
+        command.executeInternal(connection, folder);
 
-        verify(folder).executeSimpleCommand("10000:10500");
-    }
-
-    @Test
-    public void executeInternal_withContiguousAndNonContiguousIds_shouldGroupIds() throws Exception {
-        List<Long> ids = Arrays.asList(1L, 3L, 5L, 6L, 7L, 8L, 12L, 15L);
-        TestCommand command = createTestCommand(ids);
-
-        command.executeInternal();
-
-        verify(folder).executeSimpleCommand("1,3,12,15,5:8");
+        String firstCommand = ImapUtility.join(",", createNonContiguousIdSet(10000, 10298, 2)) + "," +
+                ImapUtility.join(",", createNonContiguousIdSet(10402, 10426, 2));
+        String secondCommand = ImapUtility.join(",", createNonContiguousIdSet(10428, 10500, 2)) + ",10300:10400";
+        verify(folder).executeSimpleCommand(firstCommand);
+        verify(folder).executeSimpleCommand(secondCommand);
     }
 
     @Test
     public void executeInternal_withAllIds_shouldCreateProperCommand() throws Exception {
-        TestCommand command = new TestCommand.Builder(connection, folder)
+        TestCommand command = new TestCommand.Builder()
                 .allIds(true)
                 .build();
 
-        command.executeInternal();
+        command.executeInternal(connection, folder);
 
         verify(folder).executeSimpleCommand("1:*");
     }
 
     @Test
     public void executeInternal_withOnlyHighestId_shouldCreateProperCommand() throws Exception {
-        TestCommand command = new TestCommand.Builder(connection, folder)
+        TestCommand command = new TestCommand.Builder()
                 .onlyHighestId(true)
                 .build();
 
-        command.executeInternal();
+        command.executeInternal(connection, folder);
 
         verify(folder).executeSimpleCommand("*:*");
     }
@@ -90,7 +89,7 @@ public class SelectedStateCommandTest {
     }
 
     private TestCommand createTestCommand(List<Long> ids) {
-        TestCommand.Builder builder = new TestCommand.Builder(connection, folder);
+        TestCommand.Builder builder = new TestCommand.Builder();
         if (ids != null) {
             builder.idSet(ids);
         }
@@ -99,31 +98,24 @@ public class SelectedStateCommandTest {
 
     private static class TestCommand extends SelectedStateCommand {
 
-        private TestCommand(ImapConnection connection, ImapFolder folder) {
-            super(connection, folder);
+        private TestCommand() {
         }
 
         @Override
         String createCommandString() {
-            StringBuilder builder = new StringBuilder();
-            super.addIds(builder);
-            return builder.toString().trim();
+            return createCombinedIdString().trim();
         }
 
         @Override
         Builder newBuilder() {
-            return new Builder(connection, folder);
+            return new Builder();
         }
 
         static class Builder extends SelectedStateCommand.Builder<TestCommand, Builder> {
 
-            public Builder(ImapConnection connection, ImapFolder folder) {
-                super(connection, folder);
-            }
-
             @Override
-            TestCommand createCommand(ImapConnection connection, ImapFolder folder) {
-                return new TestCommand(connection, folder);
+            TestCommand createCommand() {
+                return new TestCommand();
             }
 
             @Override

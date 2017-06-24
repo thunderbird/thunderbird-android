@@ -680,7 +680,7 @@ public class ImapFolderTest {
                 createImapResponse("* SEARCH 18"),
                 createImapResponse("* SEARCH 49")
         );
-        when(imapConnection.executeSimpleCommand("UID SEARCH 5,1:2 NOT DELETED")).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1,2,5 NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         List<ImapMessage> messages = folder.getMessages(asList(1L, 2L, 5L), false, null);

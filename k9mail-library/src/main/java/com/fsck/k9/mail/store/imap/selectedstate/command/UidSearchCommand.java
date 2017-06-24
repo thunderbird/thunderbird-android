@@ -20,7 +20,6 @@ import com.fsck.k9.mail.store.imap.selectedstate.response.UidSearchResponse;
 
 
 public class UidSearchCommand extends SelectedStateCommand {
-
     private boolean useUids;
     private String queryString;
     private String messageId;
@@ -30,8 +29,7 @@ public class UidSearchCommand extends SelectedStateCommand {
     private Set<Flag> forbiddenFlags;
     private MessageRetrievalListener<ImapMessage> listener;
 
-    private UidSearchCommand(ImapConnection connection, ImapFolder folder) {
-        super(connection, folder);
+    private UidSearchCommand() {
     }
 
     @Override
@@ -40,7 +38,7 @@ public class UidSearchCommand extends SelectedStateCommand {
         if (useUids) {
             builder.append("UID ");
         }
-        super.addIds(builder);
+        builder.append(createCombinedIdString());
         addQueryString(builder);
         addMessageId(builder);
         addSince(builder);
@@ -50,15 +48,13 @@ public class UidSearchCommand extends SelectedStateCommand {
     }
 
     @Override
-    public UidSearchResponse execute() throws MessagingException {
-
+    public UidSearchResponse execute(ImapConnection connection, ImapFolder folder) throws MessagingException {
         try {
-            List<List<ImapResponse>> responses = executeInternal();
+            List<List<ImapResponse>> responses = executeInternal(connection, folder);
             return UidSearchResponse.parse(responses);
         } catch (IOException ioe) {
             throw folder.ioExceptionHandler(connection, ioe);
         }
-
     }
 
     private void addQueryString(StringBuilder builder) {
@@ -88,7 +84,6 @@ public class UidSearchCommand extends SelectedStateCommand {
     }
 
     private void addFlags(StringBuilder builder, Set<Flag> flagSet, boolean addNot) {
-
         if (flagSet != null) {
             for (Flag flag : flagSet) {
                 if (addNot) {
@@ -126,12 +121,11 @@ public class UidSearchCommand extends SelectedStateCommand {
                 }
             }
         }
-
     }
 
     @Override
     Builder newBuilder() {
-        return new Builder(connection, folder)
+        return new Builder()
                 .useUids(useUids)
                 .queryString(queryString)
                 .messageId(messageId)
@@ -143,10 +137,6 @@ public class UidSearchCommand extends SelectedStateCommand {
     }
 
     public static class Builder extends SelectedStateCommand.Builder<UidSearchCommand, Builder> {
-
-        public Builder(ImapConnection connection, ImapFolder folder) {
-            super(connection, folder);
-        }
 
         public Builder useUids(boolean useUids) {
             command.useUids = useUids;
@@ -189,14 +179,13 @@ public class UidSearchCommand extends SelectedStateCommand {
         }
 
         @Override
-        UidSearchCommand createCommand(ImapConnection connection, ImapFolder folder) {
-            return new UidSearchCommand(connection, folder);
+        UidSearchCommand createCommand() {
+            return new UidSearchCommand();
         }
 
         @Override
         Builder createBuilder() {
             return this;
         }
-
     }
 }
