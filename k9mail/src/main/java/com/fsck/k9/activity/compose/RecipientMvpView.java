@@ -6,6 +6,8 @@ import java.util.List;
 
 import android.app.LoaderManager;
 import android.app.PendingIntent;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +35,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
 
     private static final int VIEW_INDEX_BCC_EXPANDER_VISIBLE = 0;
     private static final int VIEW_INDEX_BCC_EXPANDER_HIDDEN = 1;
+
+    private static final FastOutLinearInInterpolator CRYPTO_ICON_OUT_ANIMATOR = new FastOutLinearInInterpolator();
+    private static final int CRYPTO_ICON_OUT_DURATION = 195;
+    private static final LinearOutSlowInInterpolator CRYPTO_ICON_IN_ANIMATOR = new LinearOutSlowInInterpolator();
+    private static final int CRYPTO_ICON_IN_DURATION = 225;
 
     private final MessageCompose activity;
     private final View ccWrapper;
@@ -293,12 +300,23 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     public void showCryptoStatus(CryptoStatusDisplayType cryptoStatusDisplayType) {
         boolean shouldBeHidden = cryptoStatusDisplayType.childIdToDisplay == VIEW_INDEX_HIDDEN;
         if (shouldBeHidden) {
-            cryptoStatusView.setVisibility(View.GONE);
+            cryptoStatusView.animate()
+                    .translationXBy(100.0f)
+                    .alpha(0.0f)
+                    .setDuration(CRYPTO_ICON_OUT_DURATION)
+                    .setInterpolator(CRYPTO_ICON_OUT_ANIMATOR)
+                    .start();
             return;
         }
 
         cryptoStatusView.setVisibility(View.VISIBLE);
         cryptoStatusView.setDisplayedChildId(cryptoStatusDisplayType.childIdToDisplay);
+        cryptoStatusView.animate()
+                .translationX(0.0f)
+                .alpha(1.0f)
+                .setDuration(CRYPTO_ICON_IN_DURATION)
+                .setInterpolator(CRYPTO_ICON_IN_ANIMATOR)
+                .start();
     }
 
     public void showContactPicker(int requestCode) {
@@ -417,8 +435,8 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         UNCONFIGURED(VIEW_INDEX_HIDDEN),
         UNINITIALIZED(VIEW_INDEX_HIDDEN),
         SIGN_ONLY(R.id.crypto_status_disabled),
-        NO_CHOICE_EMPTY(R.id.crypto_status_unknown),
-        NO_CHOICE_UNAVAILABLE(R.id.crypto_status_unknown),
+        NO_CHOICE_EMPTY(VIEW_INDEX_HIDDEN),
+        NO_CHOICE_UNAVAILABLE(VIEW_INDEX_HIDDEN),
         NO_CHOICE_AVAILABLE(R.id.crypto_status_disabled),
         NO_CHOICE_AVAILABLE_TRUSTED(R.id.crypto_status_disabled),
         NO_CHOICE_MUTUAL(R.id.crypto_status_enabled),

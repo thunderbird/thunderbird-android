@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,8 +15,6 @@
         android:orientation="horizontal"
         android:layout_marginLeft="12dip"
         android:layout_marginStart="12dip"
-        android:layout_marginRight="10dip"
-        android:layout_marginEnd="10dip"
         android:minHeight="50dp"
         android:animateLayoutChanges="true">
 
@@ -100,10 +97,11 @@
 
         </com.fsck.k9.view.ToolableViewAnimator>
 
-
         <com.fsck.k9.view.ToolableViewAnimator
             android:layout_width="36dp"
             android:layout_height="32dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_gravity="center_vertical"
             android:id="@+id/crypto_status"
             android:visibility="gone"
@@ -111,15 +109,6 @@
             android:inAnimation="@anim/fade_in"
             android:outAnimation="@anim/fade_out"
             custom:previewInitialChild="0">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/crypto_status_unknown"
-                android:src="@drawable/status_lock_error"
-                android:tint="?attr/openpgp_grey"
-                />
 
             <ImageView
                 android:layout_width="wrap_content"

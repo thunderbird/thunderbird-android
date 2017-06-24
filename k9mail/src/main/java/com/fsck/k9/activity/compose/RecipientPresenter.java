@@ -259,18 +259,29 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     public void onPrepareOptionsMenu(Menu menu) {
-        boolean isCryptoConfigured = cryptoProviderState != CryptoProviderState.UNCONFIGURED;
-        menu.findItem(R.id.openpgp_inline_enable).setVisible(isCryptoConfigured && !cryptoEnablePgpInline);
-        menu.findItem(R.id.openpgp_inline_disable).setVisible(isCryptoConfigured && cryptoEnablePgpInline);
+        ComposeCryptoStatus currentCryptoStatus = getCurrentCachedCryptoStatus();
+        boolean isCryptoConfigured = currentCryptoStatus != null && currentCryptoStatus.isProviderStateOk();
+        if (isCryptoConfigured) {
+            boolean pgpInlineModeEnabled = currentCryptoStatus.isPgpInlineModeEnabled();
+            menu.findItem(R.id.openpgp_inline_enable).setVisible(!pgpInlineModeEnabled);
+            menu.findItem(R.id.openpgp_inline_disable).setVisible(pgpInlineModeEnabled);
 
-        boolean isEncrypting = currentCryptoMode == CryptoMode.CHOICE_ENABLED; // TODO mutual
-        menu.findItem(R.id.openpgp_encrypt_enable).setVisible(isCryptoConfigured && !isEncrypting);
-        menu.findItem(R.id.openpgp_encrypt_disable).setVisible(isCryptoConfigured && isEncrypting);
+            boolean isEncrypting = currentCryptoStatus.isEncryptionEnabled();
+            menu.findItem(R.id.openpgp_encrypt_enable).setVisible(!isEncrypting);
+            menu.findItem(R.id.openpgp_encrypt_disable).setVisible(isEncrypting);
 
-        boolean showSignOnly = isCryptoConfigured && K9.getOpenPgpSupportSignOnly();
-        boolean isSignOnly = currentCryptoMode == CryptoMode.SIGN_ONLY;
-        menu.findItem(R.id.openpgp_sign_only).setVisible(showSignOnly && !isSignOnly);
-        menu.findItem(R.id.openpgp_sign_only_disable).setVisible(showSignOnly && isSignOnly);
+            boolean showSignOnly = K9.getOpenPgpSupportSignOnly();
+            boolean isSignOnly = currentCryptoStatus.isSignOnly();
+            menu.findItem(R.id.openpgp_sign_only).setVisible(showSignOnly && !isSignOnly);
+            menu.findItem(R.id.openpgp_sign_only_disable).setVisible(showSignOnly && isSignOnly);
+        } else {
+            menu.findItem(R.id.openpgp_inline_enable).setVisible(false);
+            menu.findItem(R.id.openpgp_inline_disable).setVisible(false);
+            menu.findItem(R.id.openpgp_encrypt_enable).setVisible(false);
+            menu.findItem(R.id.openpgp_encrypt_disable).setVisible(false);
+            menu.findItem(R.id.openpgp_sign_only).setVisible(false);
+            menu.findItem(R.id.openpgp_sign_only_disable).setVisible(false);
+        }
 
         boolean noContactPickerAvailable = !hasContactPicker();
         if (noContactPickerAvailable) {
