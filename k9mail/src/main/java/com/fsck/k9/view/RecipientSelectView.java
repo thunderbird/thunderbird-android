@@ -22,7 +22,6 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import timber.log.Timber;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -33,7 +32,6 @@ import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.AlternateRecipientAdapter;
 import com.fsck.k9.activity.AlternateRecipientAdapter.AlternateRecipientListener;
@@ -43,6 +41,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.tokenautocomplete.TokenCompleteTextView;
 import org.apache.james.mime4j.util.CharsetUtil;
+import timber.log.Timber;
 
 
 public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>>,
@@ -59,6 +58,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private RecipientAdapter adapter;
     @Nullable
     private String cryptoProvider;
+    private boolean showAdvancedInfo;
     @Nullable
     private LoaderManager loaderManager;
 
@@ -129,7 +129,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
 
         boolean hasCryptoProvider = cryptoProvider != null;
-        if (!hasCryptoProvider) {
+        if (!showAdvancedInfo || !hasCryptoProvider) {
             holder.cryptoStatusRed.setVisibility(View.GONE);
             holder.cryptoStatusOrange.setVisibility(View.GONE);
             holder.cryptoStatusGreen.setVisibility(View.GONE);
@@ -256,8 +256,11 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         loaderManager.restartLoader(LOADER_ID_FILTERING, args, this);
     }
 
-    public void setCryptoProvider(@Nullable String cryptoProvider) {
+    public void setCryptoProvider(@Nullable String cryptoProvider, boolean showAdvancedInfo) {
         this.cryptoProvider = cryptoProvider;
+        this.showAdvancedInfo = showAdvancedInfo;
+        adapter.setShowAdvancedInfo(showAdvancedInfo);
+        alternatesAdapter.setShowAdvancedInfo(showAdvancedInfo);
     }
 
     public void addRecipients(Recipient... recipients) {
@@ -483,10 +486,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         UNAVAILABLE,
         AVAILABLE_UNTRUSTED,
         AVAILABLE_TRUSTED;
-
-        public boolean isAvailable() {
-            return this == AVAILABLE_TRUSTED || this == AVAILABLE_UNTRUSTED;
-        }
     }
 
     public interface TokenListener<T> extends TokenCompleteTextView.TokenListener<T> {
