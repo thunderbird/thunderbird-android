@@ -14,6 +14,7 @@ import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ProxySettings;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
@@ -47,7 +48,7 @@ public class ImapStoreTest {
         ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
         OAuth2TokenProvider oauth2TokenProvider = mock(OAuth2TokenProvider.class);
 
-        imapStore = new TestImapStore(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
+        imapStore = new TestImapStore(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider, new ProxySettings(false, "127.0.0.1", 12345));
     }
 
     @Test
@@ -315,8 +316,8 @@ public class ImapStoreTest {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();
 
         public TestImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-                ConnectivityManager connectivityManager, OAuth2TokenProvider oauth2TokenProvider) throws MessagingException {
-            super(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
+                             ConnectivityManager connectivityManager, OAuth2TokenProvider oauth2TokenProvider, ProxySettings proxySettings) throws MessagingException {
+            super(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider, proxySettings);
         }
 
         @Override

@@ -59,7 +59,7 @@ public abstract class RemoteStore extends Store {
                         storeConfig,
                         new DefaultTrustedSocketFactory(context, proxySettings),
                         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE),
-                        oAuth2TokenProvider);
+                        oAuth2TokenProvider, proxySettings);
             } else if (uri.startsWith("pop3")) {
                 store = new Pop3Store(storeConfig, new DefaultTrustedSocketFactory(context, proxySettings));
             } else if (uri.startsWith("webdav")) {

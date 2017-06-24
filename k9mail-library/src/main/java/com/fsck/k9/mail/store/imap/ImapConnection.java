@@ -36,6 +36,7 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
+import com.fsck.k9.mail.ProxySettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
@@ -74,14 +75,16 @@ class ImapConnection {
     private int nextCommandTag;
     private Set<String> capabilities = new HashSet<String>();
     private ImapSettings settings;
+    private ProxySettings proxySettings;
     private Exception stacktraceForClose;
     private boolean open = false;
     private boolean retryXoauth2WithNewToken = true;
 
 
-    public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) {
+    public ImapConnection(ImapSettings settings, ProxySettings proxySettings, TrustedSocketFactory socketFactory,
+                          ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) {
         this.settings = settings;
+        this.proxySettings = proxySettings;
         this.socketFactory = socketFactory;
         this.connectivityManager = connectivityManager;
         this.oauthTokenProvider = oauthTokenProvider;
@@ -89,10 +92,11 @@ class ImapConnection {
         this.socketReadTimeout = SOCKET_READ_TIMEOUT;
     }
 
-    ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
+    ImapConnection(ImapSettings settings, ProxySettings proxySettings, TrustedSocketFactory socketFactory,
             ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider,
             int socketConnectTimeout, int socketReadTimeout) {
         this.settings = settings;
+        this.proxySettings = proxySettings;
         this.socketFactory = socketFactory;
         this.connectivityManager = connectivityManager;
         this.oauthTokenProvider = oauthTokenProvider;
