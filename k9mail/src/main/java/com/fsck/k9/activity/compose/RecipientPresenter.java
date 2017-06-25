@@ -72,6 +72,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     private final Context context;
     private final RecipientMvpView recipientMvpView;
     private final ComposePgpInlineDecider composePgpInlineDecider;
+    private final AutocryptStatusInteractor autocryptStatusInteractor;
     private final RecipientsChangedListener listener;
     private ReplyToParser replyToParser;
     private Account account;
@@ -91,11 +92,13 @@ public class RecipientPresenter implements PermissionPingCallback {
     private boolean cryptoEnablePgpInline = false;
 
 
-    public RecipientPresenter(Context context, LoaderManager loaderManager, RecipientMvpView recipientMvpView,
-            Account account, ComposePgpInlineDecider composePgpInlineDecider, ReplyToParser replyToParser,
-            RecipientsChangedListener recipientsChangedListener) {
+    public RecipientPresenter(Context context, LoaderManager loaderManager,
+            RecipientMvpView recipientMvpView, Account account, ComposePgpInlineDecider composePgpInlineDecider,
+            AutocryptStatusInteractor autocryptStatusInteractor,
+            ReplyToParser replyToParser, RecipientsChangedListener recipientsChangedListener) {
         this.recipientMvpView = recipientMvpView;
         this.context = context;
+        this.autocryptStatusInteractor = autocryptStatusInteractor;
         this.composePgpInlineDecider = composePgpInlineDecider;
         this.replyToParser = replyToParser;
         this.listener = recipientsChangedListener;
@@ -404,7 +407,6 @@ public class RecipientPresenter implements PermissionPingCallback {
                     return null;
                 }
 
-                AutocryptStatusInteractor autocryptStatusInteractor = AutocryptStatusInteractor.getInstance();
                 return autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(
                                 getOpenPgpApi(), recipientAddresses);
             }

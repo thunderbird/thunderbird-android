@@ -91,7 +91,11 @@ public class ComposeCryptoStatus {
                         return CryptoStatusDisplayType.NO_CHOICE_MUTUAL;
                     }
                 } else if (recipientAutocryptStatusType.canEncrypt()) {
-                    return CryptoStatusDisplayType.NO_CHOICE_AVAILABLE;
+                    if (recipientAutocryptStatusType.isConfirmed()) {
+                        return CryptoStatusDisplayType.NO_CHOICE_AVAILABLE_TRUSTED;
+                    } else {
+                        return CryptoStatusDisplayType.NO_CHOICE_AVAILABLE;
+                    }
                 }
                 return CryptoStatusDisplayType.NO_CHOICE_UNAVAILABLE;
             case SIGN_ONLY:

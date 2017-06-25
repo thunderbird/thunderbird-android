@@ -20,13 +20,16 @@ import com.fsck.k9.helper.ReplyToParser.ReplyToAddresses;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.message.AutocryptStatusInteractor;
+import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus;
+import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatusType;
+import com.fsck.k9.message.ComposePgpEnableByDefaultDecider;
 import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openintents.openpgp.IOpenPgpService2;
-import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.ShadowOpenPgpAsyncTask;
@@ -59,31 +62,34 @@ public class RecipientPresenterTest {
     private RecipientPresenter recipientPresenter;
     private ReplyToParser replyToParser;
     private ComposePgpInlineDecider composePgpInlineDecider;
+    private ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider;
     private Account account;
     private RecipientMvpView recipientMvpView;
     private RecipientPresenter.RecipientsChangedListener listener;
-    private Intent noUserIdsResultIntent;
+    private AutocryptStatusInteractor autocryptStatusInteractor;
+    private RecipientAutocryptStatus noRecipientsAutocryptResult;
 
 
     @Before
     public void setUp() throws Exception {
         Context context = ShadowApplication.getInstance().getApplicationContext();
+        Robolectric.getBackgroundThreadScheduler().pause();
 
         recipientMvpView = mock(RecipientMvpView.class);
         account = mock(Account.class);
         composePgpInlineDecider = mock(ComposePgpInlineDecider.class);
+        composePgpEnableByDefaultDecider = mock(ComposePgpEnableByDefaultDecider.class);
+        autocryptStatusInteractor = mock(AutocryptStatusInteractor.class);
         replyToParser = mock(ReplyToParser.class);
         LoaderManager loaderManager = mock(LoaderManager.class);
         listener = mock(RecipientPresenter.RecipientsChangedListener.class);
 
         recipientPresenter = new RecipientPresenter(
-                context, loaderManager, recipientMvpView, account, composePgpInlineDecider, replyToParser, listener);
-        recipientPresenter.asyncUpdateCryptoStatus();
+                context, loaderManager, recipientMvpView, account, composePgpInlineDecider,
+                composePgpEnableByDefaultDecider, autocryptStatusInteractor, replyToParser, listener);
+        runBackgroundTask();
 
-        noUserIdsResultIntent = new Intent();
-        noUserIdsResultIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR);
-        noUserIdsResultIntent.putExtra(
-                OpenPgpApi.RESULT_ERROR, new OpenPgpError(OpenPgpError.NO_USER_IDS, "dummy error msg"));
+        noRecipientsAutocryptResult = new RecipientAutocryptStatus(RecipientAutocryptStatusType.NO_RECIPIENTS, null);
     }
 
     @Test
@@ -92,6 +98,7 @@ public class RecipientPresenterTest {
         when(replyToParser.getRecipientsToReplyTo(message, account)).thenReturn(TO_ADDRESSES);
 
         recipientPresenter.initFromReplyToMessage(message, false);
+        runBackgroundTask();
 
         verify(recipientMvpView).addRecipients(eq(RecipientType.TO), any(Recipient[].class));
     }
@@ -104,6 +111,9 @@ public class RecipientPresenterTest {
         when(replyToParser.getRecipientsToReplyAllTo(message, account)).thenReturn(replyToAddresses);
 
         recipientPresenter.initFromReplyToMessage(message, true);
+        // one for To, one for Cc
+        runBackgroundTask();
+        runBackgroundTask();
 
         verify(recipientMvpView).addRecipients(eq(RecipientType.TO), any(Recipient.class));
         verify(recipientMvpView).addRecipients(eq(RecipientType.CC), any(Recipient.class));
@@ -132,127 +142,105 @@ public class RecipientPresenterTest {
 
     @Test
     public void getCurrentCryptoStatus_withCryptoProvider() throws Exception {
-        setupCryptoProvider(noUserIdsResultIntent);
+        setupCryptoProvider(noRecipientsAutocryptResult);
 
-        Robolectric.getBackgroundThreadScheduler().runOneTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
         assertEquals(CryptoStatusDisplayType.NO_CHOICE_EMPTY, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
-    }
-
-    @Test
-    public void getCurrentCryptoStatus_withOpportunisticEmpty() throws Exception {
-        setupCryptoProvider(noUserIdsResultIntent);
-
-        recipientPresenter.onCryptoModeChanged(CryptoMode.NO_CHOICE);
-        Robolectric.getBackgroundThreadScheduler().runOneTask();
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
-
-        assertEquals(CryptoStatusDisplayType.NO_CHOICE_EMPTY, status.getCryptoStatusDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
+        assertFalse(status.shouldUsePgpMessageBuilder());
     }
 
     @Test
     public void getCurrentCryptoStatus_withOpportunistic() throws Exception {
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
-        resultIntent.putExtra(OpenPgpApi.RESULT_KEYS_CONFIRMED, false);
-        setupCryptoProvider(resultIntent);
+        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
+                RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null);
+        setupCryptoProvider(recipientAutocryptStatus);
 
-        recipientPresenter.onCryptoModeChanged(CryptoMode.NO_CHOICE);
-        Robolectric.getBackgroundThreadScheduler().runOneTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
         assertEquals(CryptoStatusDisplayType.NO_CHOICE_AVAILABLE, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
-    }
-
-    @Test
-    public void getCurrentCryptoStatus_withOpportunistic__missingKeys() throws Exception {
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR);
-        resultIntent.putExtra(OpenPgpApi.RESULT_ERROR, new OpenPgpError(OpenPgpError.OPPORTUNISTIC_MISSING_KEYS,
-                "dummy error msg"));
-        setupCryptoProvider(resultIntent);
-
-        recipientPresenter.onCryptoModeChanged(CryptoMode.NO_CHOICE);
-        Robolectric.getBackgroundThreadScheduler().runOneTask();
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
-
-        assertEquals(CryptoStatusDisplayType.NO_CHOICE_UNAVAILABLE, status.getCryptoStatusDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
-    }
-
-    @Test
-    public void getCurrentCryptoStatus_withOpportunistic__privateMissingKeys() throws Exception {
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR);
-        resultIntent.putExtra(OpenPgpApi.RESULT_ERROR, new OpenPgpError(OpenPgpError.OPPORTUNISTIC_MISSING_KEYS,
-                "dummy error msg"));
-        setupCryptoProvider(resultIntent);
-
-        recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
-        Robolectric.getBackgroundThreadScheduler().runOneTask();
-        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
-
-        assertEquals(CryptoStatusDisplayType.CHOICE_ENABLED_UNAVAILABLE, status.getCryptoStatusDisplayType());
-        assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
+        assertFalse(status.shouldUsePgpMessageBuilder());
     }
 
     @Test
     public void getCurrentCryptoStatus_withOpportunistic__confirmed() throws Exception {
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
-        resultIntent.putExtra(OpenPgpApi.RESULT_KEYS_CONFIRMED, true);
-        setupCryptoProvider(resultIntent);
+        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
+                RecipientAutocryptStatusType.AVAILABLE_CONFIRMED, null);
+        setupCryptoProvider(recipientAutocryptStatus);
 
-        recipientPresenter.onCryptoModeChanged(CryptoMode.NO_CHOICE);
-        Robolectric.getBackgroundThreadScheduler().runOneTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
         assertEquals(CryptoStatusDisplayType.NO_CHOICE_AVAILABLE_TRUSTED, status.getCryptoStatusDisplayType());
+        assertTrue(status.isProviderStateOk());
+        assertFalse(status.shouldUsePgpMessageBuilder());
+    }
+
+    @Test
+    public void getCurrentCryptoStatus_withOpportunistic__missingKeys() throws Exception {
+        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
+                RecipientAutocryptStatusType.UNAVAILABLE, null);
+        setupCryptoProvider(recipientAutocryptStatus);
+
+        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
+
+        assertEquals(CryptoStatusDisplayType.NO_CHOICE_UNAVAILABLE, status.getCryptoStatusDisplayType());
+        assertTrue(status.isProviderStateOk());
+        assertFalse(status.shouldUsePgpMessageBuilder());
+    }
+
+    @Test
+    public void getCurrentCryptoStatus_withOpportunistic__privateMissingKeys() throws Exception {
+        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
+                RecipientAutocryptStatusType.UNAVAILABLE, null);
+        setupCryptoProvider(recipientAutocryptStatus);
+
+        recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
+        runBackgroundTask();
+        ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
+
+        assertEquals(CryptoStatusDisplayType.CHOICE_ENABLED_ERROR, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.shouldUsePgpMessageBuilder());
     }
 
     @Test
     public void getCurrentCryptoStatus_withModeDisabled() throws Exception {
-        setupCryptoProvider(noUserIdsResultIntent);
+        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
+                RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null);
+        setupCryptoProvider(recipientAutocryptStatus);
 
-        recipientPresenter.onCryptoModeChanged(CryptoMode.DISABLE);
-        Robolectric.getBackgroundThreadScheduler().runOneTask();
+        recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
+        runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.DISABLED, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.CHOICE_DISABLED_UNTRUSTED, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertFalse(status.shouldUsePgpMessageBuilder());
     }
 
     @Test
     public void getCurrentCryptoStatus_withModePrivate() throws Exception {
-        setupCryptoProvider(noUserIdsResultIntent);
+        RecipientAutocryptStatus recipientAutocryptStatus = new RecipientAutocryptStatus(
+                RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED, null);
+        setupCryptoProvider(recipientAutocryptStatus);
 
         recipientPresenter.onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
-        Robolectric.getBackgroundThreadScheduler().runOneTask();
+        runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.CHOICE_ENABLED_EMPTY, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.CHOICE_ENABLED_UNTRUSTED, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.shouldUsePgpMessageBuilder());
     }
 
     @Test
     public void getCurrentCryptoStatus_withModeSignOnly() throws Exception {
-        setupCryptoProvider(noUserIdsResultIntent);
+        setupCryptoProvider(noRecipientsAutocryptResult);
 
         recipientPresenter.onMenuSetSignOnly(true);
-        Robolectric.getBackgroundThreadScheduler().runOneTask();
+        runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
         assertEquals(CryptoStatusDisplayType.SIGN_ONLY, status.getCryptoStatusDisplayType());
@@ -263,10 +251,10 @@ public class RecipientPresenterTest {
 
     @Test
     public void getCurrentCryptoStatus_withModeInline() throws Exception {
-        setupCryptoProvider(noUserIdsResultIntent);
+        setupCryptoProvider(noRecipientsAutocryptResult);
 
         recipientPresenter.onMenuSetPgpInline(true);
-        Robolectric.getBackgroundThreadScheduler().runOneTask();
+        runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
         assertEquals(CryptoStatusDisplayType.NO_CHOICE_EMPTY, status.getCryptoStatusDisplayType());
@@ -328,11 +316,19 @@ public class RecipientPresenterTest {
         verify(listener).onRecipientsChanged();
     }
 
-    private void setupCryptoProvider(Intent returnedIntent) throws android.os.RemoteException {
+    private void runBackgroundTask() {
+        boolean taskRun = Robolectric.getBackgroundThreadScheduler().runOneTask();
+        assertTrue(taskRun);
+    }
+
+    private void setupCryptoProvider(RecipientAutocryptStatus autocryptStatusResult) throws android.os.RemoteException {
         Account account = mock(Account.class);
         OpenPgpServiceConnection openPgpServiceConnection = mock(OpenPgpServiceConnection.class);
         IOpenPgpService2 openPgpService2 = mock(IOpenPgpService2.class);
         Intent permissionPingIntent = new Intent();
+
+        when(autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(
+                any(OpenPgpApi.class), any(String[].class))).thenReturn(autocryptStatusResult);
 
         K9.setOpenPgpProvider(CRYPTO_PROVIDER);
         permissionPingIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
@@ -340,12 +336,12 @@ public class RecipientPresenterTest {
         when(openPgpServiceConnection.isBound()).thenReturn(true);
         when(openPgpServiceConnection.getService()).thenReturn(openPgpService2);
         when(openPgpService2.execute(any(Intent.class), any(ParcelFileDescriptor.class), any(Integer.class)))
-                .thenReturn(permissionPingIntent, returnedIntent);
+                .thenReturn(permissionPingIntent);
 
-        Robolectric.getBackgroundThreadScheduler().pause();
         recipientPresenter.setOpenPgpServiceConnection(openPgpServiceConnection, CRYPTO_PROVIDER);
         recipientPresenter.onSwitchAccount(account);
-        recipientPresenter.asyncUpdateCryptoStatus();
-        Robolectric.getBackgroundThreadScheduler().runOneTask();
+        // one for the permission ping, one for the async status update
+        runBackgroundTask();
+        runBackgroundTask();
     }
 }

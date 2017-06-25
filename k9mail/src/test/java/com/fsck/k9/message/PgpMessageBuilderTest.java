@@ -231,7 +231,7 @@ public class PgpMessageBuilderTest {
     @Test
     public void buildEncrypt__withoutRecipients__shouldThrow() throws MessagingException {
         cryptoStatusBuilder
-                .setCryptoMode(CryptoMode.NO_CHOICE)
+                .setCryptoMode(CryptoMode.CHOICE_ENABLED)
                 .setRecipients(new ArrayList<Recipient>());
         pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
 
@@ -269,7 +269,6 @@ public class PgpMessageBuilderTest {
         Intent expectedApiIntent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, TEST_SIGN_KEY_ID);
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-        expectedApiIntent.putExtra(OpenPgpApi.EXTRA_OPPORTUNISTIC_ENCRYPTION, false);
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.getRecipientAddresses());
         assertIntentEqualsActionAndExtras(expectedApiIntent, capturedApiIntent.getValue());
 
@@ -321,7 +320,6 @@ public class PgpMessageBuilderTest {
         Intent expectedApiIntent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, TEST_SIGN_KEY_ID);
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-        expectedApiIntent.putExtra(OpenPgpApi.EXTRA_OPPORTUNISTIC_ENCRYPTION, false);
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.getRecipientAddresses());
         assertIntentEqualsActionAndExtras(expectedApiIntent, capturedApiIntent.getValue());
 
@@ -388,7 +386,7 @@ public class PgpMessageBuilderTest {
     @Test
     public void buildEncryptWithAttach__withInlineEnabled__shouldThrow() throws MessagingException {
         ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
-                .setCryptoMode(CryptoMode.NO_CHOICE)
+                .setCryptoMode(CryptoMode.CHOICE_ENABLED)
                 .setEnablePgpInline(true)
                 .build();
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);

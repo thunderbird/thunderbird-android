@@ -85,6 +85,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.message.AutocryptStatusInteractor;
 import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.message.IdentityField;
 import com.fsck.k9.message.IdentityHeaderParser;
@@ -278,8 +279,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
-        recipientPresenter = new RecipientPresenter(getApplicationContext(), getLoaderManager(), recipientMvpView,
-                account, composePgpInlineDecider, new ReplyToParser(), this);
+        recipientPresenter = new RecipientPresenter(getApplicationContext(), getLoaderManager(),
+                recipientMvpView, account, composePgpInlineDecider, AutocryptStatusInteractor.getInstance(),
+                new ReplyToParser(), this);
         recipientPresenter.asyncUpdateCryptoStatus();
 
 

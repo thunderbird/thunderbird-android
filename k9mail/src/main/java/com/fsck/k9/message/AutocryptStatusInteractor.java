@@ -6,6 +6,7 @@ import java.io.InputStream;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
 
 import org.openintents.openpgp.OpenPgpError;
@@ -86,7 +87,8 @@ public class AutocryptStatusInteractor {
         public final RecipientAutocryptStatusType type;
         public final PendingIntent intent;
 
-        private RecipientAutocryptStatus(RecipientAutocryptStatusType type, PendingIntent intent) {
+        @VisibleForTesting
+        public RecipientAutocryptStatus(RecipientAutocryptStatusType type, PendingIntent intent) {
             this.type = type;
             this.intent = intent;
         }
