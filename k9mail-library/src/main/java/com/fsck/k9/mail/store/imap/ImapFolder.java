@@ -38,10 +38,11 @@ import com.fsck.k9.mail.store.imap.selectedstate.command.UidCopyCommand;
 import com.fsck.k9.mail.store.imap.selectedstate.command.UidFetchCommand;
 import com.fsck.k9.mail.store.imap.selectedstate.command.UidSearchCommand;
 import com.fsck.k9.mail.store.imap.selectedstate.command.UidStoreCommand;
-import com.fsck.k9.mail.store.imap.selectedstate.response.UidCopyResponse;
 import com.fsck.k9.mail.store.imap.selectedstate.response.UidSearchResponse;
+import com.fsck.k9.mail.store.imap.selectedstate.response.UidCopyResponse;
 import timber.log.Timber;
 
+import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
@@ -58,6 +59,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     protected volatile int messageCount = -1;
     protected volatile long uidNext = -1L;
+    private long highestModSeq = -1L;
     protected volatile ImapConnection connection;
     protected ImapStore store = null;
     protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
@@ -142,27 +144,13 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
 
         try {
-            msgSeqUidMap.clear();
-
-            String openCommand = mode == OPEN_MODE_RW ? "SELECT" : "EXAMINE";
-            String encodedFolderName = folderNameCodec.encode(getPrefixedName());
-            String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
-            String command = String.format("%s %s", openCommand, escapedFolderName);
-            List<ImapResponse> responses = executeSimpleCommand(command);
+            List<ImapResponse> responses = sendAndHandleSelectOrExamineCommand();
 
             /*
              * If the command succeeds we expect the folder has been opened read-write unless we
              * are notified otherwise in the responses.
              */
             this.mode = mode;
-
-            for (ImapResponse response : responses) {
-                handlePermanentFlags(response);
-            }
-
-            handleSelectOrExamineOkResponse(getLastResponse(responses));
-
-            exists = true;
 
             return responses;
         } catch (IOException ioe) {
@@ -171,6 +159,29 @@ public class ImapFolder extends Folder<ImapMessage> {
             Timber.e(me, "Unable to open connection for %s", getLogId());
             throw me;
         }
+    }
+
+    private List<ImapResponse> sendAndHandleSelectOrExamineCommand() throws IOException, MessagingException {
+
+        msgSeqUidMap.clear();
+
+        String openCommand = mode == OPEN_MODE_RW ? "SELECT" : "EXAMINE";
+        String encodedFolderName = folderNameCodec.encode(getPrefixedName());
+        String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
+        String condstoreParameter = connection.isCondstoreCapable() ? " (CONDSTORE)" : "";
+        String command = String.format("%s %s%s", openCommand, escapedFolderName, condstoreParameter);
+        List<ImapResponse> responses = executeSimpleCommand(command);
+
+        for (ImapResponse response : responses) {
+            handlePermanentFlags(response);
+            handleHighestModSeq(response);
+        }
+
+        handleSelectOrExamineOkResponse(getLastResponse(responses));
+
+        exists = true;
+
+        return responses;
     }
 
     private void handlePermanentFlags(ImapResponse response) {
@@ -184,6 +195,25 @@ public class ImapFolder extends Folder<ImapMessage> {
         canCreateKeywords = permanentFlagsResponse.canCreateKeywords();
     }
 
+    private void handleHighestModSeq(ImapResponse response) throws IOException, MessagingException{
+        if (connection.isCondstoreCapable()) {
+            if (response.isTagged() || !equalsIgnoreCase(response.get(0), Responses.OK) || !response.isList(1)) {
+                return;
+            }
+
+            ImapList responseTextList = response.getList(1);
+            if (responseTextList.size() < 2 || !(equalsIgnoreCase(responseTextList.get(0), Responses.HIGHESTMODSEQ)
+                    || equalsIgnoreCase(responseTextList.get(1), Responses.NOMODSEQ)) ||
+                    !responseTextList.isString(1)) {
+                return;
+            }
+
+            if (equalsIgnoreCase(responseTextList.get(0), Responses.HIGHESTMODSEQ)) {
+                highestModSeq = Long.parseLong(responseTextList.getString(1));
+            }
+        }
+    }
+
     private void handleSelectOrExamineOkResponse(ImapResponse response) {
         SelectOrExamineResponse selectOrExamineResponse = SelectOrExamineResponse.parse(response);
         if (selectOrExamineResponse == null) {
@@ -194,6 +224,10 @@ public class ImapFolder extends Folder<ImapMessage> {
         if (selectOrExamineResponse.hasOpenMode()) {
             mode = selectOrExamineResponse.getOpenMode();
         }
+    }
+
+    public void updateHighestModSeq() throws IOException, MessagingException {
+        sendAndHandleSelectOrExamineCommand();
     }
 
     @Override
@@ -431,6 +465,14 @@ public class ImapFolder extends Folder<ImapMessage> {
         return messageCount;
     }
 
+    public boolean supportsModSeq() throws MessagingException {
+        return !(highestModSeq == -1);
+    }
+
+    public long getHighestModSeq() {
+        return highestModSeq;
+    }
+
     private int getRemoteMessageCount(Set<Flag> requiredFlags, Set<Flag> forbiddenFlags) throws MessagingException {
         checkOpen();
 
@@ -503,6 +545,24 @@ public class ImapFolder extends Folder<ImapMessage> {
     public List<ImapMessage> getMessages(int start, int end, Date earliestDate,
             MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
         return getMessages(start, end, earliestDate, false, listener);
+    }
+
+    public List<ImapMessage> getChangedMessagesUsingCondstore(long modseq) throws MessagingException {
+        checkOpen();
+        if (!supportsModSeq()) {
+            throw new MessagingException(String.format(Locale.US, "Folder %s does not support modification " +
+                    "sequences", name));
+        }
+
+        if (modseq == highestModSeq) {
+            return Collections.emptyList();
+        }
+
+        UidSearchCommand searchCommand = new UidSearchCommand.Builder()
+                .forbiddenFlags(Collections.singleton(Flag.DELETED))
+                .modSeq(modseq)
+                .build();
+        return getMessages(searchCommand.execute(connection, this), null);
     }
 
     protected List<ImapMessage> getMessages(final int start, final int end, Date earliestDate,
@@ -661,7 +721,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
                     response = command.readResponse(connection);
 
-                    if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
+                    if (response.getTag() == null && equalsIgnoreCase(response.get(1), "FETCH")) {
                         ImapList fetchList = (ImapList) response.getKeyedValue("FETCH");
                         String uid = fetchList.getKeyedString("UID");
                         long msgSeq = response.getLong(0);
@@ -739,7 +799,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             do {
                 response = command.readResponse(connection);
 
-                if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
+                if (response.getTag() == null && equalsIgnoreCase(response.get(1), "FETCH")) {
                     ImapList fetchList = (ImapList) response.getKeyedValue("FETCH");
                     String uid = fetchList.getKeyedString("UID");
 
@@ -869,7 +929,7 @@ public class ImapFolder extends Folder<ImapMessage> {
     }
 
     protected void handlePossibleUidNext(ImapResponse response) {
-        if (ImapResponseParser.equalsIgnoreCase(response.get(0), "OK") && response.size() > 1) {
+        if (equalsIgnoreCase(response.get(0), "OK") && response.size() > 1) {
             Object bracketedObj = response.get(1);
             if (bracketedObj instanceof ImapList) {
                 ImapList bracketed = (ImapList) bracketedObj;
@@ -895,7 +955,7 @@ public class ImapFolder extends Folder<ImapMessage> {
      */
     protected void handleUntaggedResponse(ImapResponse response) {
         if (response.getTag() == null && response.size() > 1) {
-            if (ImapResponseParser.equalsIgnoreCase(response.get(1), "EXISTS")) {
+            if (equalsIgnoreCase(response.get(1), "EXISTS")) {
                 messageCount = response.getNumber(0);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Got untagged EXISTS with value %d for %s", messageCount, getLogId());
@@ -904,7 +964,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
             handlePossibleUidNext(response);
 
-            if (ImapResponseParser.equalsIgnoreCase(response.get(1), "EXPUNGE") && messageCount > 0) {
+            if (equalsIgnoreCase(response.get(1), "EXPUNGE") && messageCount > 0) {
                 messageCount--;
                 if (K9MailLib.isDebug()) {
                     Timber.d("Got untagged EXPUNGE with messageCount %d for %s", messageCount, getLogId());

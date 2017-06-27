@@ -92,6 +92,8 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.mail.store.imap.ImapFolder;
+import com.fsck.k9.mail.store.imap.ImapMessage;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
@@ -921,16 +923,25 @@ public class MessagingController {
                 updateMoreMessages(remoteFolder, localFolder, earliestDate, remoteStart);
             }
 
+            boolean useCondstore = shouldUseCondstoreForSync(remoteFolder, localFolder);
+
             /*
              * Now we download the actual content of messages.
              */
-            int newMessages = downloadMessages(account, remoteFolder, localFolder, remoteMessages, false, true);
+            int newMessages = downloadMessages(account, remoteFolder, localFolder, remoteMessages, false, true, !useCondstore);
+            if (useCondstore) {
+                List<? extends Message> changedRemoteMessages = findChangedRemoteMessagesUsingCondstore(remoteFolder, localFolder);
+                remoteMessages.clear();
+                remoteMessages.addAll(changedRemoteMessages);
+                newMessages += downloadMessages(account, remoteFolder, localFolder, remoteMessages, false, true, true);
+            }
 
             int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : getListeners()) {
                 l.folderStatusChanged(account, folder, unreadMessageCount);
             }
 
+            updateHighestModSeqIfNecessary(localFolder, remoteFolder);
             /* Notify listeners that we're finally done. */
 
             localFolder.setLastChecked(System.currentTimeMillis());
@@ -1047,6 +1058,32 @@ public class MessagingController {
         return true;
     }
 
+    private boolean shouldUseCondstoreForSync(final Folder remoteFolder, final LocalFolder localFolder)
+            throws MessagingException{
+        if (remoteFolder instanceof ImapFolder) {
+            ImapFolder imapFolder = (ImapFolder) remoteFolder;
+            if (!imapFolder.supportsModSeq()) {
+                return false;
+            }
+            long cachedHighestModSeq = localFolder.getHighestModSeq();
+            if (cachedHighestModSeq == 0) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private List<ImapMessage> findChangedRemoteMessagesUsingCondstore(final Folder remoteFolder, final LocalFolder localFolder)
+            throws MessagingException {
+        ImapFolder imapFolder = (ImapFolder) remoteFolder;
+        long cachedHighestModSeq = localFolder.getHighestModSeq();
+        String folderName = remoteFolder.getName();
+        Timber.v("SYNC: About to get messages having modseq greater that %d for folder %s",
+                cachedHighestModSeq, folderName);
+        return imapFolder.getChangedMessagesUsingCondstore(cachedHighestModSeq);
+    }
+
     /**
      * Fetches the messages described by inputMessages from the remote store and writes them to
      * local storage.
@@ -1070,7 +1107,7 @@ public class MessagingController {
      */
     private int downloadMessages(final Account account, final Folder remoteFolder,
             final LocalFolder localFolder, List<Message> inputMessages,
-            boolean flagSyncOnly, boolean purgeToVisibleLimit) throws MessagingException {
+            boolean flagSyncOnly, boolean purgeToVisibleLimit, boolean syncFlagsForLocalMessages) throws MessagingException {
 
         final Date earliestDate = account.getEarliestPollDate();
         Date downloadStarted = new Date(); // now
@@ -1097,7 +1134,7 @@ public class MessagingController {
 
         for (Message message : messages) {
             evaluateMessageForDownload(message, folder, localFolder, remoteFolder, account, unsyncedMessages,
-                    syncFlagMessages, flagSyncOnly);
+                    syncFlagMessages, flagSyncOnly, syncFlagsForLocalMessages);
         }
 
         final AtomicInteger progress = new AtomicInteger(0);
@@ -1221,7 +1258,8 @@ public class MessagingController {
             final Account account,
             final List<Message> unsyncedMessages,
             final List<Message> syncFlagMessages,
-            boolean flagSyncOnly) throws MessagingException {
+            boolean flagSyncOnly,
+            boolean syncFlagsForLocalMessages) throws MessagingException {
         if (message.isSet(Flag.DELETED)) {
             Timber.v("Message with uid %s is marked as deleted", message.getUid());
 
@@ -1262,7 +1300,7 @@ public class MessagingController {
                 Timber.v("Message with uid %s is not downloaded, even partially; trying again", message.getUid());
 
                 unsyncedMessages.add(message);
-            } else {
+            } else if (syncFlagsForLocalMessages){
                 String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
                 if (newPushState != null) {
                     localFolder.setPushState(newPushState);
@@ -1618,6 +1656,16 @@ public class MessagingController {
         return messageChanged;
     }
 
+    private void updateHighestModSeqIfNecessary(LocalFolder localFolder, Folder remoteFolder) throws MessagingException {
+        if (remoteFolder instanceof ImapFolder) {
+            ImapFolder imapFolder = (ImapFolder) remoteFolder;
+            if (!imapFolder.supportsModSeq()) {
+                return;
+            }
+            localFolder.setHighestModSeq(imapFolder.getHighestModSeq());
+        }
+    }
+
     private String getRootCauseMessage(Throwable t) {
         Throwable rootCause = t;
         Throwable nextCause;
@@ -1788,7 +1836,7 @@ public class MessagingController {
                     String rUid = remoteFolder.getUidFromMessageId(localMessage);
                     if (rUid != null) {
                         Timber.w("Local message has flag %s already set, and there is a remote message with uid %s, " +
-                                "assuming message was already copied and aborting this copy",
+                                        "assuming message was already copied and aborting this copy",
                                 X_REMOTE_COPY_STARTED, rUid);
 
                         String oldUid = localMessage.getUid();
@@ -2466,7 +2514,7 @@ public class MessagingController {
 
                 if (loadPartialFromSearch) {
                     downloadMessages(account, remoteFolder, localFolder,
-                            Collections.singletonList(remoteMessage), false, false);
+                            Collections.singletonList(remoteMessage), false, false, true);
                 } else {
                     FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);
@@ -3756,7 +3804,7 @@ public class MessagingController {
                             if (!ignoreLastCheckedTime && tLocalFolder.getLastChecked() >
                                     (System.currentTimeMillis() - accountInterval)) {
                                 Timber.v("Not running Command for folder %s, previously synced @ %tc which would " +
-                                        "be too recent for the account period",
+                                                "be too recent for the account period",
                                         folder.getName(), folder.getLastChecked());
                                 return;
                             }
@@ -4189,10 +4237,15 @@ public class MessagingController {
                     localFolder.open(Folder.OPEN_MODE_RW);
 
                     account.setRingNotified(false);
-                    int newCount = downloadMessages(account, remoteFolder, localFolder, messages, flagSyncOnly, true);
+                    int newCount = downloadMessages(account, remoteFolder, localFolder, messages, flagSyncOnly, true, true);
 
                     int unreadMessageCount = localFolder.getUnreadMessageCount();
 
+                    if (remoteFolder instanceof ImapFolder && ((ImapFolder) remoteFolder).supportsModSeq()) {
+                        ((ImapFolder) remoteFolder).updateHighestModSeq();
+                    }
+
+                    updateHighestModSeqIfNecessary(localFolder, remoteFolder);
                     localFolder.setLastPush(System.currentTimeMillis());
                     localFolder.setStatus(null);
 
