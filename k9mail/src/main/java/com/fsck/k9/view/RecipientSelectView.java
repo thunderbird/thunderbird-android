@@ -129,11 +129,30 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
 
         boolean hasCryptoProvider = cryptoProvider != null;
-        if (!showAdvancedInfo || !hasCryptoProvider) {
+        if (!hasCryptoProvider) {
+            holder.cryptoStatusSimple.setVisibility(View.GONE);
             holder.cryptoStatusRed.setVisibility(View.GONE);
             holder.cryptoStatusOrange.setVisibility(View.GONE);
             holder.cryptoStatusGreen.setVisibility(View.GONE);
-        } else if (recipient.cryptoStatus == RecipientCryptoStatus.UNAVAILABLE) {
+            return;
+        }
+
+        if (!showAdvancedInfo) {
+            holder.cryptoStatusRed.setVisibility(View.GONE);
+            holder.cryptoStatusOrange.setVisibility(View.GONE);
+            holder.cryptoStatusGreen.setVisibility(View.GONE);
+
+            if (recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_TRUSTED ||
+                    recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED) {
+                holder.cryptoStatusSimple.setVisibility(View.VISIBLE);
+            } else {
+                holder.cryptoStatusSimple.setVisibility(View.GONE);
+            }
+
+            return;
+        }
+
+        if (recipient.cryptoStatus == RecipientCryptoStatus.UNAVAILABLE) {
             holder.cryptoStatusRed.setVisibility(View.VISIBLE);
             holder.cryptoStatusOrange.setVisibility(View.GONE);
             holder.cryptoStatusGreen.setVisibility(View.GONE);
@@ -503,11 +522,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     private static class RecipientTokenViewHolder {
-        public final TextView vName;
-        public final ImageView vContactPhoto;
-        public final View cryptoStatusRed;
-        public final View cryptoStatusOrange;
-        public final View cryptoStatusGreen;
+        final TextView vName;
+        final ImageView vContactPhoto;
+        final View cryptoStatusRed;
+        final View cryptoStatusOrange;
+        final View cryptoStatusGreen;
+        final View cryptoStatusSimple;
 
 
         RecipientTokenViewHolder(View view) {
@@ -516,6 +536,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             cryptoStatusRed = view.findViewById(R.id.contact_crypto_status_red);
             cryptoStatusOrange = view.findViewById(R.id.contact_crypto_status_orange);
             cryptoStatusGreen = view.findViewById(R.id.contact_crypto_status_green);
+            cryptoStatusSimple = view.findViewById(R.id.contact_crypto_status_icon_simple);
         }
     }
 
