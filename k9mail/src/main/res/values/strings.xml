@@ -1146,6 +1146,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_mode_disabled">Don\'t encrypt</string>
     <string name="crypto_mode_opportunistic">Encrypt if possible</string>
     <string name="crypto_mode_private">Encrypt</string>
+    <string name="error_crypto_provider_incompatible">Crypto provider uses incompatible version. Please check your settings!</string>
     <string name="error_crypto_provider_connect">Cannot connect to crypto provider, check your settings or click crypto icon to retry!</string>
     <string name="error_crypto_provider_ui_required">Crypto provider access denied, click crypto icon to retry!</string>
     <string name="error_crypto_inline_attach">PGP/INLINE mode does not support attachments!</string>
