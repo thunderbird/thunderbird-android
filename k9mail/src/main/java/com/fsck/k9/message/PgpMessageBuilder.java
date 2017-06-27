@@ -144,7 +144,7 @@ public class PgpMessageBuilder extends MessageBuilder {
 
             if(!isDraft()) {
                 pgpApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.getRecipientAddresses());
-                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_OPPORTUNISTIC_ENCRYPTION, cryptoStatus.isEncryptionOpportunistic());
+//                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
             }
         } else {
             pgpApiIntent = new Intent(isPgpInlineMode ? OpenPgpApi.ACTION_SIGN : OpenPgpApi.ACTION_DETACHED_SIGN);
@@ -202,6 +202,7 @@ public class PgpMessageBuilder extends MessageBuilder {
                 if (error == null) {
                     throw new MessagingException("internal openpgp api error");
                 }
+                /*
                 boolean isOpportunisticError = error.getErrorId() == OpenPgpError.OPPORTUNISTIC_MISSING_KEYS;
                 if (isOpportunisticError) {
                     if (!cryptoStatus.isEncryptionOpportunistic()) {
@@ -211,6 +212,7 @@ public class PgpMessageBuilder extends MessageBuilder {
                     Timber.d("Skipping encryption due to opportunistic mode");
                     return null;
                 }
+                */
                 throw new MessagingException(error.getMessage());
         }
 
