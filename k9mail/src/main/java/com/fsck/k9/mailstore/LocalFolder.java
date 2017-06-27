@@ -82,6 +82,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     private long mFolderId = -1;
     private int mVisibleLimit = -1;
     private String prefId = null;
+    private long highestModSeq = -1;
     private FolderClass mDisplayClass = FolderClass.NO_CLASS;
     private FolderClass mSyncClass = FolderClass.INHERITED;
     private FolderClass mPushClass = FolderClass.SECOND_CLASS;
@@ -187,6 +188,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         mFolderId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
         mName = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
         mVisibleLimit = cursor.getInt(LocalStore.FOLDER_VISIBLE_LIMIT_INDEX);
+        highestModSeq = cursor.getInt(LocalStore.FOLDER_HIGHEST_MOD_SEQ_INDEX);
         mPushState = cursor.getString(LocalStore.FOLDER_PUSH_STATE_INDEX);
         super.setStatus(cursor.getString(LocalStore.FOLDER_STATUS_INDEX));
         // Only want to set the local variable stored in the super class.  This class
@@ -291,7 +293,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                     try {
                         cursor = db.rawQuery(
                                 "SELECT COUNT(id) FROM messages " +
-                                "WHERE empty = 0 AND deleted = 0 and folder_id = ?",
+                                        "WHERE empty = 0 AND deleted = 0 and folder_id = ?",
                                 new String[] { Long.toString(mFolderId) });
                         cursor.moveToFirst();
                         return cursor.getInt(0);   //messagecount
@@ -436,6 +438,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         updateFolderColumn("status", status);
     }
 
+    public void setHighestModSeq(final long highestModSeq) throws MessagingException{
+        updateFolderColumn("highest_mod_seq", highestModSeq);
+    }
+
     public void setPushState(final String pushState) throws MessagingException {
         mPushState = pushState;
         updateFolderColumn("push_state", pushState);
@@ -458,6 +464,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
+    }
+
+    public long getHighestModSeq() {
+        return highestModSeq;
     }
 
     public String getPushState() {
@@ -610,7 +620,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         try {
             prefHolder.displayClass = FolderClass.valueOf(storage.getString(id + ".displayMode",
-                                      prefHolder.displayClass.name()));
+                    prefHolder.displayClass.name()));
         } catch (Exception e) {
             Timber.e(e, "Unable to load displayMode for %s", getName());
         }
@@ -620,7 +630,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         try {
             prefHolder.syncClass = FolderClass.valueOf(storage.getString(id  + ".syncMode",
-                                   prefHolder.syncClass.name()));
+                    prefHolder.syncClass.name()));
         } catch (Exception e) {
             Timber.e(e, "Unable to load syncMode for %s", getName());
 
@@ -631,7 +641,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         try {
             prefHolder.notifyClass = FolderClass.valueOf(storage.getString(id  + ".notifyMode",
-                                   prefHolder.notifyClass.name()));
+                    prefHolder.notifyClass.name()));
         } catch (Exception e) {
             Timber.e(e, "Unable to load notifyMode for %s", getName());
         }
@@ -641,7 +651,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         try {
             prefHolder.pushClass = FolderClass.valueOf(storage.getString(id  + ".pushMode",
-                                   prefHolder.pushClass.name()));
+                    prefHolder.pushClass.name()));
         } catch (Exception e) {
             Timber.e(e, "Unable to load pushMode for %s", getName());
         }
@@ -654,7 +664,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     @Override
     public void fetch(final List<LocalMessage> messages, final FetchProfile fp, final MessageRetrievalListener<LocalMessage> listener)
-    throws MessagingException {
+            throws MessagingException {
         try {
             this.localStore.database.execute(false, new DbCallback<Void>() {
                 @Override
@@ -786,10 +796,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     @Override
     public List<LocalMessage> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<LocalMessage> listener)
-    throws MessagingException {
+            throws MessagingException {
         open(OPEN_MODE_RW);
         throw new MessagingException(
-            "LocalStore.getMessages(int, int, MessageRetrievalListener) not yet implemented");
+                "LocalStore.getMessages(int, int, MessageRetrievalListener) not yet implemented");
     }
 
     @Override
@@ -842,11 +852,11 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         try {
                             cursor = db.rawQuery(
                                     "SELECT " +
-                                    LocalStore.GET_MESSAGES_COLS +
-                                    "FROM messages " +
-                                    "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
-                                    "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                                    "WHERE uid = ? AND folder_id = ?",
+                                            LocalStore.GET_MESSAGES_COLS +
+                                            "FROM messages " +
+                                            "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
+                                            "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                                            "WHERE uid = ? AND folder_id = ?",
                                     new String[] { message.getUid(), Long.toString(mFolderId) });
 
                             if (!cursor.moveToNext()) {
@@ -918,12 +928,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         open(OPEN_MODE_RW);
                         return LocalFolder.this.localStore.getMessages(listener, LocalFolder.this,
                                 "SELECT " + LocalStore.GET_MESSAGES_COLS +
-                                "FROM messages " +
-                                "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
-                                "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                                "WHERE empty = 0 AND " +
-                                (includeDeleted ? "" : "deleted = 0 AND ") +
-                                "folder_id = ? ORDER BY date DESC",
+                                        "FROM messages " +
+                                        "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
+                                        "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                                        "WHERE empty = 0 AND " +
+                                        (includeDeleted ? "" : "deleted = 0 AND ") +
+                                        "folder_id = ? ORDER BY date DESC",
                                 new String[] { Long.toString(mFolderId) });
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
@@ -948,7 +958,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
                         cursor = db.rawQuery(
                                 "SELECT uid " +
-                                    "FROM messages " +
+                                        "FROM messages " +
                                         "WHERE empty = 0 AND deleted = 0 AND " +
                                         "folder_id = ? ORDER BY date DESC",
                                 new String[] { Long.toString(mFolderId) });
@@ -1037,7 +1047,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                             String oldUID = message.getUid();
 
                             Timber.d("Updating folder_id to %s for message with UID %s, " +
-                                    "id %d currently in folder %s",
+                                            "id %d currently in folder %s",
                                     lDestFolder.getId(),
                                     message.getUid(),
                                     lMessage.getId(),
@@ -1696,7 +1706,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     @Override
     public void setFlags(final List<? extends Message> messages, final Set<Flag> flags, final boolean value)
-    throws MessagingException {
+            throws MessagingException {
         open(OPEN_MODE_RW);
 
         // Use one transaction to set all flags
@@ -1724,7 +1734,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     @Override
     public void setFlags(final Set<Flag> flags, boolean value)
-    throws MessagingException {
+            throws MessagingException {
         open(OPEN_MODE_RW);
         for (Message message : getMessages(null)) {
             message.setFlags(flags, value);
@@ -1741,10 +1751,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         List<? extends Message> messages  = this.localStore.getMessages(null, this,
                 "SELECT " + LocalStore.GET_MESSAGES_COLS +
-                "FROM messages " +
-                "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
-                "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                "WHERE empty = 0 AND (folder_id = ? and date < ?)",
+                        "FROM messages " +
+                        "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
+                        "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                        "WHERE empty = 0 AND (folder_id = ? and date < ?)",
                 new String[] { Long.toString(mFolderId), Long.toString(cutoff) });
 
         for (Message message : messages) {
@@ -1817,7 +1827,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                         throw new WrappedException(e);
                     }
                     db.execSQL("DELETE FROM folders WHERE id = ?", new Object[]
-                               { Long.toString(mFolderId), });
+                            { Long.toString(mFolderId), });
                     return null;
                 }
             });
