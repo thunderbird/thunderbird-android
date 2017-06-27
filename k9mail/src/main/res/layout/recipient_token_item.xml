@@ -15,9 +15,8 @@
         />
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:id="@android:id/text1"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="8dp"
@@ -25,6 +24,36 @@
         android:maxLines="1"
         android:ellipsize="end"
         tools:text="Name"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contact_crypto_status_icon_simple"
+        android:src="@drawable/ic_status_corner"
+        android:visibility="gone"
+        android:tint="?openpgp_black"
+        tools:visibility="visible"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contact_crypto_status_icon_simple_enabled"
+        android:src="@drawable/ic_status_corner"
+        android:visibility="gone"
+        android:tint="?openpgp_green"
+        tools:visibility="visible"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contact_crypto_status_icon_simple_error"
+        android:src="@drawable/ic_status_corner"
+        android:visibility="gone"
+        android:tint="?openpgp_red"
+        tools:visibility="visible"
         />
 
     <ImageView
@@ -49,7 +78,6 @@
         android:src="@drawable/status_dots_2"
         android:tint="?attr/openpgp_orange"
         android:visibility="gone"
-        tools:visibility="visible"
         />
 
     <ImageView
