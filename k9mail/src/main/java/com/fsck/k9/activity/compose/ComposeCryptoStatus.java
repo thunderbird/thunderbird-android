@@ -4,11 +4,14 @@ package com.fsck.k9.activity.compose;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.PendingIntent;
+
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
 import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus;
+import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatusType;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 /** This is an immutable object which contains all relevant metadata entered
@@ -51,14 +54,16 @@ public class ComposeCryptoStatus {
             throw new IllegalStateException("Display type must be obtained from provider!");
         }
 
-        if (recipientAutocryptStatus == RecipientAutocryptStatus.ERROR) {
+        RecipientAutocryptStatusType recipientAutocryptStatusType = recipientAutocryptStatus.type;
+
+        if (recipientAutocryptStatusType == RecipientAutocryptStatusType.ERROR) {
             return CryptoStatusDisplayType.ERROR;
         }
 
         switch (cryptoMode) {
             case CHOICE_ENABLED:
-                if (recipientAutocryptStatus.canEncrypt()) {
-                    if (recipientAutocryptStatus.isConfirmed()) {
+                if (recipientAutocryptStatusType.canEncrypt()) {
+                    if (recipientAutocryptStatusType.isConfirmed()) {
                         return CryptoStatusDisplayType.CHOICE_ENABLED_TRUSTED;
                     } else {
                         return CryptoStatusDisplayType.CHOICE_ENABLED_UNTRUSTED;
@@ -67,8 +72,8 @@ public class ComposeCryptoStatus {
                     return CryptoStatusDisplayType.CHOICE_ENABLED_ERROR;
                 }
             case CHOICE_DISABLED:
-                if (recipientAutocryptStatus.canEncrypt()) {
-                    if (recipientAutocryptStatus.isConfirmed()) {
+                if (recipientAutocryptStatusType.canEncrypt()) {
+                    if (recipientAutocryptStatusType.isConfirmed()) {
                         return CryptoStatusDisplayType.CHOICE_DISABLED_TRUSTED;
                     } else {
                         return CryptoStatusDisplayType.CHOICE_DISABLED_UNTRUSTED;
@@ -77,15 +82,15 @@ public class ComposeCryptoStatus {
                     return CryptoStatusDisplayType.CHOICE_DISABLED_UNAVAILABLE;
                 }
             case NO_CHOICE:
-                if (recipientAutocryptStatus == RecipientAutocryptStatus.NO_RECIPIENTS) {
+                if (recipientAutocryptStatusType == RecipientAutocryptStatusType.NO_RECIPIENTS) {
                     return CryptoStatusDisplayType.NO_CHOICE_EMPTY;
-                } else if (recipientAutocryptStatus.canEncrypt() && recipientAutocryptStatus.isMutual()) { // TODO check own "mutual" status
-                    if (recipientAutocryptStatus.isConfirmed()) {
+                } else if (recipientAutocryptStatusType.canEncrypt() && recipientAutocryptStatusType.isMutual()) { // TODO check own "mutual" status
+                    if (recipientAutocryptStatusType.isConfirmed()) {
                         return CryptoStatusDisplayType.NO_CHOICE_MUTUAL_TRUSTED;
                     } else {
                         return CryptoStatusDisplayType.NO_CHOICE_MUTUAL;
                     }
-                } else if (recipientAutocryptStatus.canEncrypt()) {
+                } else if (recipientAutocryptStatusType.canEncrypt()) {
                     return CryptoStatusDisplayType.NO_CHOICE_AVAILABLE;
                 }
                 return CryptoStatusDisplayType.NO_CHOICE_UNAVAILABLE;
@@ -142,7 +147,7 @@ public class ComposeCryptoStatus {
     }
 
     boolean canEncrypt() {
-        return recipientAutocryptStatus != null && recipientAutocryptStatus.canEncrypt();
+        return recipientAutocryptStatus != null && recipientAutocryptStatus.type.canEncrypt();
     }
 
     public String[] getRecipientAddresses() {
@@ -154,11 +159,19 @@ public class ComposeCryptoStatus {
     }
 
     boolean canEncryptAndIsMutual() {
-        return canEncrypt() && recipientAutocryptStatus.isMutual();
+        return canEncrypt() && recipientAutocryptStatus.type.isMutual();
     }
 
     boolean isEncryptionEnabledError() {
         return isEncryptionEnabled() && !canEncrypt();
+    }
+
+    boolean hasAutocryptPendingIntent() {
+        return recipientAutocryptStatus.hasPendingIntent();
+    }
+
+    PendingIntent getAutocryptPendingIntent() {
+        return recipientAutocryptStatus.intent;
     }
 
     public static class ComposeCryptoStatusBuilder {
@@ -230,7 +243,7 @@ public class ComposeCryptoStatus {
         }
     }
 
-    ComposeCryptoStatus withRecipientAutocryptStatus(RecipientAutocryptStatus recipientAutocryptStatus) {
+    ComposeCryptoStatus withRecipientAutocryptStatus(RecipientAutocryptStatus recipientAutocryptStatusType) {
         ComposeCryptoStatus result = new ComposeCryptoStatus();
         result.cryptoProviderState = cryptoProviderState;
         result.cryptoMode = cryptoMode;
@@ -238,7 +251,7 @@ public class ComposeCryptoStatus {
         result.signingKeyId = signingKeyId;
         result.selfEncryptKeyId = selfEncryptKeyId;
         result.enablePgpInline = enablePgpInline;
-        result.recipientAutocryptStatus = recipientAutocryptStatus;
+        result.recipientAutocryptStatus = recipientAutocryptStatusType;
         return result;
     }
 

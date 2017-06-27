@@ -62,6 +62,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     private static final int CONTACT_PICKER_CC = 2;
     private static final int CONTACT_PICKER_BCC = 3;
     private static final int OPENPGP_USER_INTERACTION = 4;
+    private static final int REQUEST_CODE_AUTOCRYPT = 5;
 
     private static final int PGP_DIALOG_DISPLAY_THRESHOLD = 2;
 
@@ -560,6 +561,9 @@ public class RecipientPresenter implements PermissionPingCallback {
             case OPENPGP_USER_INTERACTION:
                 cryptoProviderBindOrCheckPermission();
                 break;
+            case REQUEST_CODE_AUTOCRYPT:
+                asyncUpdateCryptoStatus();
+                break;
         }
     }
 
@@ -620,18 +624,27 @@ public class RecipientPresenter implements PermissionPingCallback {
 
                 if (currentCryptoMode == CryptoMode.SIGN_ONLY) {
                     recipientMvpView.showErrorIsSignOnly();
-                } else if (currentCryptoMode == CryptoMode.NO_CHOICE) {
-                    if (currentCryptoStatus.canEncryptAndIsMutual()) {
+                    return;
+                }
+
+                if (currentCryptoMode == CryptoMode.NO_CHOICE) {
+                    if (currentCryptoStatus.hasAutocryptPendingIntent()) {
+                        recipientMvpView.launchUserInteractionPendingIntent(
+                                currentCryptoStatus.getAutocryptPendingIntent(), REQUEST_CODE_AUTOCRYPT);
+                    } else if (currentCryptoStatus.canEncryptAndIsMutual()) {
                         onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
                     } else {
                         onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
                     }
-                } else if (currentCryptoMode == CryptoMode.CHOICE_DISABLED &&
-                        !currentCryptoStatus.canEncryptAndIsMutual()) {
-                    onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
-                } else {
-                    onCryptoModeChanged(CryptoMode.NO_CHOICE);
+                    return;
                 }
+
+                if (currentCryptoMode == CryptoMode.CHOICE_DISABLED && !currentCryptoStatus.canEncryptAndIsMutual()) {
+                    onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
+                    return;
+                }
+
+                onCryptoModeChanged(CryptoMode.NO_CHOICE);
                 return;
 
             case LOST_CONNECTION:
@@ -839,7 +852,9 @@ public class RecipientPresenter implements PermissionPingCallback {
             return;
         }
         if (enableEncryption) {
-            if (cachedCryptoStatus.canEncryptAndIsMutual()) {
+            if (!cachedCryptoStatus.canEncrypt()) {
+                recipientMvpView.showOpenPgpEnabledErrorDialog();
+            } else if (cachedCryptoStatus.canEncryptAndIsMutual()) {
                 onCryptoModeChanged(CryptoMode.NO_CHOICE);
             } else {
                 recipientMvpView.showOpenPgpEncryptExplanationDialog();
