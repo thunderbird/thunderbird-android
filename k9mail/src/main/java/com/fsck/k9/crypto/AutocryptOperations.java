@@ -44,7 +44,7 @@ public class AutocryptOperations {
         }
 
         String messageFromAddress = currentMessage.getFrom()[0].getAddress();
-        if (!autocryptHeader.to.equalsIgnoreCase(messageFromAddress)) {
+        if (!autocryptHeader.addr.equalsIgnoreCase(messageFromAddress)) {
             return false;
         }
 
@@ -146,13 +146,13 @@ public class AutocryptOperations {
     @VisibleForTesting
     class AutocryptHeader {
         final byte[] keyData;
-        final String to;
+        final String addr;
         final Map<String,String> parameters;
         final boolean isPreferEncryptMutual;
 
-        private AutocryptHeader(Map<String, String> parameters, String to, byte[] keyData, boolean isPreferEncryptMutual) {
+        private AutocryptHeader(Map<String, String> parameters, String addr, byte[] keyData, boolean isPreferEncryptMutual) {
             this.parameters = parameters;
-            this.to = to;
+            this.addr = addr;
             this.keyData = keyData;
             this.isPreferEncryptMutual = isPreferEncryptMutual;
         }

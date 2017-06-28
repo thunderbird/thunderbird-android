@@ -59,7 +59,7 @@ public class AutocryptOperationsTest {
         AutocryptHeader autocryptHeader = autocryptOperations.getValidAutocryptHeader(message);
 
         assertNotNull(autocryptHeader);
-        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.to);
+        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.addr);
         assertEquals(0, autocryptHeader.parameters.size());
         assertEquals(1225, autocryptHeader.keyData.length);
     }
@@ -71,7 +71,7 @@ public class AutocryptOperationsTest {
         AutocryptHeader autocryptHeader = autocryptOperations.getValidAutocryptHeader(message);
 
         assertNotNull(autocryptHeader);
-        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.to);
+        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.addr);
         assertEquals(0, autocryptHeader.parameters.size());
     }
 
@@ -100,7 +100,7 @@ public class AutocryptOperationsTest {
         AutocryptHeader autocryptHeader = autocryptOperations.getValidAutocryptHeader(message);
 
         assertNotNull(autocryptHeader);
-        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.to);
+        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.addr);
         assertEquals(1, autocryptHeader.parameters.size());
         assertEquals("ignore", autocryptHeader.parameters.get("_monkey"));
     }

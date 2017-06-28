@@ -1,7 +1,7 @@
 From: Alice <alice@testsuite.autocrypt.org>
 To: Bob <bob@testsuite.autocrypt.org>
 Subject: inbome rsa2048 with correct type
-INBOME: to=alice@testsuite.autocrypt.org; type=p; key=
+Autocrypt: addr=alice@testsuite.autocrypt.org; type=1; key=
  mQENBFhVF+ABCADu17FBUgA3mCemeKbNaBTyWe3VGxjbu7fUyHgdLK7i3tnd7IRtxQy/AEN2t6Vq
  0/xeZEAKYRInsHI/HjvmhqPeWFzipk71jRQ02WUY1pZytFjYNIrTdMk4eLYdC1N0go83PU33V4R8
  fc2fWHD8N5JPsDH2xOB6WNWkMPxgMbtGIa0QTx7TINhDif4/1/VcrX3wz1gZ6xYI+sujbC54iBZo
