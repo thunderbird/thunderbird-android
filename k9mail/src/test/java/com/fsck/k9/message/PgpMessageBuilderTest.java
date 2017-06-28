@@ -23,6 +23,8 @@ import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuild
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
 import com.fsck.k9.activity.misc.Attachment;
+import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor;
+import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
@@ -36,11 +38,11 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
-
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -64,12 +66,20 @@ import static org.mockito.Mockito.when;
 public class PgpMessageBuilderTest {
     private static final long TEST_KEY_ID = 123L;
     private static final String TEST_MESSAGE_TEXT = "message text with a ☭ CCCP symbol";
+    private static final byte[] AUTOCRYPT_KEY_MATERIAL = { 1, 2, 3 };
+    private static final String SENDER_EMAIL = "test@example.org";
 
 
     private ComposeCryptoStatusBuilder cryptoStatusBuilder = createDefaultComposeCryptoStatusBuilder();
     private OpenPgpApi openPgpApi = mock(OpenPgpApi.class);
-    private PgpMessageBuilder pgpMessageBuilder = createDefaultPgpMessageBuilder(openPgpApi);
+    private AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor = mock(AutocryptOpenPgpApiInteractor.class);
+    private PgpMessageBuilder pgpMessageBuilder = createDefaultPgpMessageBuilder(openPgpApi, autocryptOpenPgpApiInteractor);
 
+    @Before
+    public void setUp() throws Exception {
+        when(autocryptOpenPgpApiInteractor.getKeyMaterialFromApi(openPgpApi, TEST_KEY_ID, SENDER_EMAIL))
+                .thenReturn(AUTOCRYPT_KEY_MATERIAL);
+    }
 
     @Test
     public void build__withCryptoProviderNotOk__shouldThrow() throws MessagingException {
@@ -461,9 +471,11 @@ public class PgpMessageBuilderTest {
                 .setCryptoProviderState(CryptoProviderState.OK);
     }
 
-    private static PgpMessageBuilder createDefaultPgpMessageBuilder(OpenPgpApi openPgpApi) {
+    private static PgpMessageBuilder createDefaultPgpMessageBuilder(OpenPgpApi openPgpApi,
+            AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor) {
         PgpMessageBuilder builder = new PgpMessageBuilder(
-                RuntimeEnvironment.application, MessageIdGenerator.getInstance(), BoundaryGenerator.getInstance());
+                RuntimeEnvironment.application, MessageIdGenerator.getInstance(), BoundaryGenerator.getInstance(),
+                AutocryptOperations.getInstance(), autocryptOpenPgpApiInteractor);
         builder.setOpenPgpApi(openPgpApi);
 
         Identity identity = new Identity();

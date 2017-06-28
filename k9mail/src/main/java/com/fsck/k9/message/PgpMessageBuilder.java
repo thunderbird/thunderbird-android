@@ -14,6 +14,9 @@ import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.Globals;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
+import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor;
+import com.fsck.k9.autocrypt.AutocryptOperations;
+import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
@@ -40,6 +43,11 @@ import timber.log.Timber;
 public class PgpMessageBuilder extends MessageBuilder {
     private static final int REQUEST_USER_INTERACTION = 1;
 
+
+    private final AutocryptOperations autocryptOperations;
+    private final AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor;
+
+
     private OpenPgpApi openPgpApi;
 
     private MimeMessage currentProcessedMimeMessage;
@@ -50,12 +58,19 @@ public class PgpMessageBuilder extends MessageBuilder {
         Context context = Globals.getContext();
         MessageIdGenerator messageIdGenerator = MessageIdGenerator.getInstance();
         BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();
-        return new PgpMessageBuilder(context, messageIdGenerator, boundaryGenerator);
+        AutocryptOperations autocryptOperations = AutocryptOperations.getInstance();
+        AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor = AutocryptOpenPgpApiInteractor.getInstance();
+        return new PgpMessageBuilder(context, messageIdGenerator, boundaryGenerator, autocryptOperations,
+                autocryptOpenPgpApiInteractor);
     }
 
     @VisibleForTesting
-    PgpMessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
+    PgpMessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator,
+            AutocryptOperations autocryptOperations, AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor) {
         super(context, messageIdGenerator, boundaryGenerator);
+
+        this.autocryptOperations = autocryptOperations;
+        this.autocryptOpenPgpApiInteractor = autocryptOpenPgpApiInteractor;
     }
 
 
@@ -81,6 +96,19 @@ public class PgpMessageBuilder extends MessageBuilder {
         } catch (MessagingException me) {
             queueMessageBuildException(me);
             return;
+        }
+
+        Long openPgpKeyId = cryptoStatus.getOpenPgpKeyId();
+        if (openPgpKeyId == null) {
+            throw new IllegalArgumentException("PgpMessageBuilder requires a configured key id!");
+        }
+
+        Address address = currentProcessedMimeMessage.getFrom()[0];
+        byte[] keyData = autocryptOpenPgpApiInteractor.getKeyMaterialFromApi(
+                openPgpApi, openPgpKeyId, address.getAddress());
+        if (keyData != null) {
+            autocryptOperations.addAutocryptHeaderToMessage(
+                    currentProcessedMimeMessage, keyData, address.getAddress(), false);
         }
 
         startOrContinueBuildMessage(null);
@@ -144,10 +172,8 @@ public class PgpMessageBuilder extends MessageBuilder {
             // pgpApiIntent = new Intent(shouldSign ? OpenPgpApi.ACTION_SIGN_AND_ENCRYPT : OpenPgpApi.ACTION_ENCRYPT);
             pgpApiIntent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
 
-            if (openPgpKeyId != null) {
-                long[] selfEncryptIds = { openPgpKeyId };
-                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, selfEncryptIds);
-            }
+            long[] selfEncryptIds = { openPgpKeyId };
+            pgpApiIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, selfEncryptIds);
 
             if(!isDraft()) {
                 pgpApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.getRecipientAddresses());

@@ -148,7 +148,7 @@ public class RecipientPresenterTest {
 
         assertEquals(CryptoStatusDisplayType.NO_CHOICE_EMPTY, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertFalse(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.shouldUsePgpMessageBuilder());
     }
 
     @Test
@@ -161,7 +161,7 @@ public class RecipientPresenterTest {
 
         assertEquals(CryptoStatusDisplayType.NO_CHOICE_AVAILABLE, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertFalse(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.shouldUsePgpMessageBuilder());
     }
 
     @Test
@@ -174,7 +174,7 @@ public class RecipientPresenterTest {
 
         assertEquals(CryptoStatusDisplayType.NO_CHOICE_AVAILABLE_TRUSTED, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertFalse(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.shouldUsePgpMessageBuilder());
     }
 
     @Test
@@ -187,7 +187,7 @@ public class RecipientPresenterTest {
 
         assertEquals(CryptoStatusDisplayType.NO_CHOICE_UNAVAILABLE, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertFalse(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.shouldUsePgpMessageBuilder());
     }
 
     @Test
@@ -217,7 +217,7 @@ public class RecipientPresenterTest {
 
         assertEquals(CryptoStatusDisplayType.CHOICE_DISABLED_UNTRUSTED, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertFalse(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.shouldUsePgpMessageBuilder());
     }
 
     @Test
