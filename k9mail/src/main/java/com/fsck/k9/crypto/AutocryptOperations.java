@@ -21,10 +21,16 @@ import timber.log.Timber;
 
 
 public class AutocryptOperations {
-    private static final String AUTOCRYPT_PARAM_KEY_DATA = "key";
-    private static final String AUTOCRYPT_PARAM_TO = "to";
     private static final String AUTOCRYPT_HEADER = "Autocrypt";
+
+    private static final String AUTOCRYPT_PARAM_TO = "addr";
+    private static final String AUTOCRYPT_PARAM_KEY_DATA = "key";
+
     private static final String AUTOCRYPT_PARAM_TYPE = "type";
+    private static final String AUTOCRYPT_TYPE_1 = "1";
+
+    private static final String AUTOCRYPT_PARAM_PREFER_ENCRYPT = "prefer-encrypt";
+    private static final String AUTOCRYPT_PREFER_ENCRYPT_MUTUAL = "mutual";
 
 
     public AutocryptOperations() {
@@ -46,7 +52,8 @@ public class AutocryptOperations {
         Date internalDate = currentMessage.getInternalDate();
         Date effectiveDate = messageDate.before(internalDate) ? messageDate : internalDate;
 
-        AutocryptPeerUpdate data = AutocryptPeerUpdate.createAutocryptPeerUpdate(autocryptHeader.keyData, effectiveDate);
+        AutocryptPeerUpdate data = AutocryptPeerUpdate.createAutocryptPeerUpdate(
+                autocryptHeader.keyData, effectiveDate, autocryptHeader.isPreferEncryptMutual);
         intent.putExtra(OpenPgpApi.EXTRA_AUTOCRYPT_PEER_ID, messageFromAddress);
         intent.putExtra(OpenPgpApi.EXTRA_AUTOCRYPT_PEER_UPDATE, data);
         return true;
@@ -87,7 +94,7 @@ public class AutocryptOperations {
         Map<String,String> parameters = MimeUtility.getAllHeaderParameters(headerValue);
 
         String type = parameters.remove(AUTOCRYPT_PARAM_TYPE);
-        if (type != null && !type.equals("p")) {
+        if (type != null && !type.equals(AUTOCRYPT_TYPE_1)) {
             Timber.e("autocrypt: unsupported type parameter %s", type);
             return null;
         }
@@ -110,12 +117,17 @@ public class AutocryptOperations {
             return null;
         }
 
+        boolean isPreferEncryptMutual = false;
+        String preferEncrypt = parameters.remove(AUTOCRYPT_PARAM_PREFER_ENCRYPT);
+        if (AUTOCRYPT_PREFER_ENCRYPT_MUTUAL.equalsIgnoreCase(preferEncrypt)) {
+            isPreferEncryptMutual = true;
+        }
 
         if (hasCriticalParameters(parameters)) {
             return null;
         }
 
-        return new AutocryptHeader(parameters, to, byteString.toByteArray());
+        return new AutocryptHeader(parameters, to, byteString.toByteArray(), isPreferEncryptMutual);
     }
 
     private boolean hasCriticalParameters(Map<String, String> parameters) {
@@ -136,11 +148,13 @@ public class AutocryptOperations {
         final byte[] keyData;
         final String to;
         final Map<String,String> parameters;
+        final boolean isPreferEncryptMutual;
 
-        private AutocryptHeader(Map<String, String> parameters, String to, byte[] keyData) {
+        private AutocryptHeader(Map<String, String> parameters, String to, byte[] keyData, boolean isPreferEncryptMutual) {
             this.parameters = parameters;
             this.to = to;
             this.keyData = keyData;
+            this.isPreferEncryptMutual = isPreferEncryptMutual;
         }
     }
 }
