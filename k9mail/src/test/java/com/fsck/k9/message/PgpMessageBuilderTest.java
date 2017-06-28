@@ -51,6 +51,9 @@ import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.robolectric.RuntimeEnvironment;
 
+import static com.fsck.k9.autocrypt.AutocryptOperationsHelper.assertMessageHasAutocryptHeader;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
@@ -99,6 +102,32 @@ public class PgpMessageBuilderTest {
             verify(mockCallback).onMessageBuildException(any(MessagingException.class));
             verifyNoMoreInteractions(mockCallback);
         }
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void buildCleartext__withNoSigningKey__shouldThrow() {
+        cryptoStatusBuilder.setCryptoMode(CryptoMode.NO_CHOICE);
+        cryptoStatusBuilder.setOpenPgpKeyId(null);
+        pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
+
+        Callback mockCallback = mock(Callback.class);
+        pgpMessageBuilder.buildAsync(mockCallback);
+    }
+
+    @Test
+    public void buildCleartext__shouldSucceed() {
+        cryptoStatusBuilder.setCryptoMode(CryptoMode.NO_CHOICE);
+        pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
+
+        Callback mockCallback = mock(Callback.class);
+        pgpMessageBuilder.buildAsync(mockCallback);
+
+        ArgumentCaptor<MimeMessage> captor = ArgumentCaptor.forClass(MimeMessage.class);
+        verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false));
+        verifyNoMoreInteractions(mockCallback);
+
+        MimeMessage message = captor.getValue();
+        assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL);
     }
 
     @Test
@@ -152,7 +181,7 @@ public class PgpMessageBuilderTest {
         BodyPart contentBodyPart = multipart.getBodyPart(0);
         Assert.assertEquals("first part must have content type text/plain",
                 "text/plain", MimeUtility.getHeaderParameter(contentBodyPart.getContentType(), null));
-        Assert.assertTrue("signed message body must be TextBody", contentBodyPart.getBody() instanceof TextBody);
+        assertTrue("signed message body must be TextBody", contentBodyPart.getBody() instanceof TextBody);
         Assert.assertEquals(MimeUtil.ENC_QUOTED_PRINTABLE, ((TextBody) contentBodyPart.getBody()).getEncoding());
         assertContentOfBodyPartEquals("content must match the message text", contentBodyPart, TEST_MESSAGE_TEXT);
 
@@ -164,6 +193,8 @@ public class PgpMessageBuilderTest {
                 MimeUtility.getHeaderParameter(contentType, "name"));
         assertContentOfBodyPartEquals("content must match the supplied detached signature",
                 signatureBodyPart, new byte[] { 1, 2, 3 });
+
+        assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL);
     }
 
     @Test
@@ -302,9 +333,11 @@ public class PgpMessageBuilderTest {
         BodyPart encryptedBodyPart = multipart.getBodyPart(1);
         Assert.assertEquals("second part must be octet-stream of encrypted data",
                 "application/octet-stream; name=\"encrypted.asc\"", encryptedBodyPart.getContentType());
-        Assert.assertTrue("message body must be BinaryTempFileBody",
+        assertTrue("message body must be BinaryTempFileBody",
                 encryptedBodyPart.getBody() instanceof BinaryTempFileBody);
         Assert.assertEquals(MimeUtil.ENC_7BIT, ((BinaryTempFileBody) encryptedBodyPart.getBody()).getEncoding());
+
+        assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL);
     }
 
     @Test
@@ -340,8 +373,10 @@ public class PgpMessageBuilderTest {
 
         MimeMessage message = captor.getValue();
         Assert.assertEquals("text/plain", message.getMimeType());
-        Assert.assertTrue("message body must be BinaryTempFileBody", message.getBody() instanceof BinaryTempFileBody);
+        assertTrue("message body must be BinaryTempFileBody", message.getBody() instanceof BinaryTempFileBody);
         Assert.assertEquals(MimeUtil.ENC_7BIT, ((BinaryTempFileBody) message.getBody()).getEncoding());
+
+        assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL);
     }
 
     @Test
@@ -375,6 +410,8 @@ public class PgpMessageBuilderTest {
 
         MimeMessage message = captor.getValue();
         Assert.assertEquals("message must be text/plain", "text/plain", message.getMimeType());
+
+        assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL);
     }
 
     @Test
@@ -480,7 +517,7 @@ public class PgpMessageBuilderTest {
 
         Identity identity = new Identity();
         identity.setName("tester");
-        identity.setEmail("test@example.org");
+        identity.setEmail(SENDER_EMAIL);
         identity.setDescription("test identity");
         identity.setSignatureUse(false);
 
