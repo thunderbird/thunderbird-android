@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import okio.ByteString;
@@ -30,7 +31,7 @@ public class AutocryptOperations {
     }
 
 
-    private boolean addAutocryptPeerUpdateToIntentIfPresent(MimeMessage currentMessage, Intent intent) {
+    public boolean addAutocryptPeerUpdateToIntentIfPresent(Message currentMessage, Intent intent) {
         AutocryptHeader autocryptHeader = getValidAutocryptHeader(currentMessage);
         if (autocryptHeader == null) {
             return false;
@@ -51,7 +52,7 @@ public class AutocryptOperations {
         return true;
     }
 
-    public void processCleartextMessage(OpenPgpApi openPgpApi, MimeMessage currentMessage) {
+    public void processCleartextMessage(OpenPgpApi openPgpApi, Message currentMessage) {
         Intent intent = new Intent(OpenPgpApi.ACTION_UPDATE_AUTOCRYPT_PEER);
         boolean hasInlineKeyData = addAutocryptPeerUpdateToIntentIfPresent(currentMessage, intent);
         if (hasInlineKeyData) {
@@ -61,7 +62,7 @@ public class AutocryptOperations {
 
     @Nullable
     @VisibleForTesting
-    AutocryptHeader getValidAutocryptHeader(MimeMessage currentMessage) {
+    AutocryptHeader getValidAutocryptHeader(Message currentMessage) {
         String[] headers = currentMessage.getHeader(AUTOCRYPT_HEADER);
         ArrayList<AutocryptHeader> autocryptHeaders = parseAllAutocryptHeaders(headers);
 
@@ -126,7 +127,7 @@ public class AutocryptOperations {
         return false;
     }
 
-    public boolean hasAutocryptHeader(MimeMessage currentMessage) {
+    public boolean hasAutocryptHeader(Message currentMessage) {
         return currentMessage.getHeader(AUTOCRYPT_HEADER).length > 0;
     }
 
