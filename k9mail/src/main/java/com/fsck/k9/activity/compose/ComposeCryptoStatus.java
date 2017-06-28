@@ -114,7 +114,7 @@ public class ComposeCryptoStatus {
             return CryptoSpecialModeDisplayType.SIGN_ONLY;
         }
 
-        if (isEncryptionEnabled() && isPgpInlineModeEnabled()) {
+        if (canEncrypt() && isPgpInlineModeEnabled()) {
             return CryptoSpecialModeDisplayType.PGP_INLINE;
         }
 

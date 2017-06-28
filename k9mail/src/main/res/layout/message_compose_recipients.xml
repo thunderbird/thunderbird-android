@@ -50,16 +50,17 @@
             android:layout_gravity="center_vertical"
             android:id="@+id/crypto_special_mode"
             android:visibility="gone"
-            tools:visibility="gone"
+            tools:visibility="visible"
             android:inAnimation="@anim/fade_in"
             android:outAnimation="@anim/fade_out"
-            custom:previewInitialChild="2">
+            custom:previewInitialChild="1">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
+                android:id="@+id/crypto_special_inline"
                 android:src="@drawable/compatibility"
                 android:tint="@color/light_black"
                 />
@@ -69,13 +70,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
+                android:id="@+id/crypto_special_sign_only"
                 android:src="@drawable/status_signature_verified_cutout"
                 android:tint="?attr/openpgp_blue"
                 />
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/crypto_special_sign_only_inline"
+                >
 
                 <ImageView
                     android:layout_width="wrap_content"
