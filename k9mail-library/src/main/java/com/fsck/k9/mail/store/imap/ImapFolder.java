@@ -38,8 +38,8 @@ import com.fsck.k9.mail.store.imap.selectedstate.command.UidCopyCommand;
 import com.fsck.k9.mail.store.imap.selectedstate.command.UidFetchCommand;
 import com.fsck.k9.mail.store.imap.selectedstate.command.UidSearchCommand;
 import com.fsck.k9.mail.store.imap.selectedstate.command.UidStoreCommand;
-import com.fsck.k9.mail.store.imap.selectedstate.response.UidSearchResponse;
 import com.fsck.k9.mail.store.imap.selectedstate.response.UidCopyResponse;
+import com.fsck.k9.mail.store.imap.selectedstate.response.UidSearchResponse;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
@@ -144,13 +144,29 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
 
         try {
-            List<ImapResponse> responses = sendAndHandleSelectOrExamineCommand();
+            msgSeqUidMap.clear();
+
+            String openCommand = mode == OPEN_MODE_RW ? "SELECT" : "EXAMINE";
+            String encodedFolderName = folderNameCodec.encode(getPrefixedName());
+            String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
+            String condstoreParameter = connection.isCondstoreCapable() ? " (CONDSTORE)" : "";
+            String command = String.format("%s %s%s", openCommand, escapedFolderName, condstoreParameter);
+            List<ImapResponse> responses = executeSimpleCommand(command);
 
             /*
              * If the command succeeds we expect the folder has been opened read-write unless we
              * are notified otherwise in the responses.
              */
             this.mode = mode;
+
+            for (ImapResponse response : responses) {
+                handlePermanentFlags(response);
+                handleHighestModSeq(response);
+            }
+
+            handleSelectOrExamineOkResponse(getLastResponse(responses));
+
+            exists = true;
 
             return responses;
         } catch (IOException ioe) {
@@ -159,29 +175,6 @@ public class ImapFolder extends Folder<ImapMessage> {
             Timber.e(me, "Unable to open connection for %s", getLogId());
             throw me;
         }
-    }
-
-    private List<ImapResponse> sendAndHandleSelectOrExamineCommand() throws IOException, MessagingException {
-
-        msgSeqUidMap.clear();
-
-        String openCommand = mode == OPEN_MODE_RW ? "SELECT" : "EXAMINE";
-        String encodedFolderName = folderNameCodec.encode(getPrefixedName());
-        String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
-        String condstoreParameter = connection.isCondstoreCapable() ? " (CONDSTORE)" : "";
-        String command = String.format("%s %s%s", openCommand, escapedFolderName, condstoreParameter);
-        List<ImapResponse> responses = executeSimpleCommand(command);
-
-        for (ImapResponse response : responses) {
-            handlePermanentFlags(response);
-            handleHighestModSeq(response);
-        }
-
-        handleSelectOrExamineOkResponse(getLastResponse(responses));
-
-        exists = true;
-
-        return responses;
     }
 
     private void handlePermanentFlags(ImapResponse response) {
@@ -226,8 +219,25 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    public void updateHighestModSeq() throws IOException, MessagingException {
-        sendAndHandleSelectOrExamineCommand();
+    void updateHighestModSeq(List<ImapMessage> changedMessages) throws IOException, MessagingException {
+        if (!supportsModSeq()) {
+            return;
+        }
+
+        FetchProfile fp = new FetchProfile();
+        fp.add(FetchProfile.Item.MODSEQ);
+        fetch(changedMessages, fp, null);
+
+        long newHighestModSeq = 0;
+        for (ImapMessage message : changedMessages) {
+            long modSeq = message.getModSeq();
+            if (modSeq > newHighestModSeq) {
+                newHighestModSeq = modSeq;
+            }
+        }
+        if (newHighestModSeq != 0) {
+            highestModSeq = newHighestModSeq;
+        }
     }
 
     @Override
@@ -855,6 +865,10 @@ public class ImapFolder extends Folder<ImapMessage> {
     // Returns value of body field
     private Object handleFetchResponse(ImapMessage message, ImapList fetchList) throws MessagingException {
         Object result = null;
+        if (fetchList.containsKey("MODSEQ")) {
+            long modSeq = fetchList.getKeyedList("MODSEQ").getLong(0);
+            message.setModSeq(modSeq);
+        }
         if (fetchList.containsKey("FLAGS")) {
             ImapList flags = fetchList.getKeyedList("FLAGS");
             if (flags != null) {

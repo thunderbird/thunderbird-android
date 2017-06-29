@@ -405,7 +405,7 @@ class ImapFolderPusher extends ImapFolder {
             }
         }
 
-        private void processStoredUntaggedResponses() throws MessagingException {
+        private void processStoredUntaggedResponses() throws IOException, MessagingException {
             while (true) {
                 List<ImapResponse> untaggedResponses = getAndClearStoredUntaggedResponses();
                 if (untaggedResponses.isEmpty()) {
@@ -434,7 +434,7 @@ class ImapFolderPusher extends ImapFolder {
             }
         }
 
-        private void processUntaggedResponses(List<ImapResponse> responses) throws MessagingException {
+        private void processUntaggedResponses(List<ImapResponse> responses) throws IOException, MessagingException {
             boolean skipSync = false;
 
             int oldMessageCount = messageCount;
@@ -555,7 +555,7 @@ class ImapFolderPusher extends ImapFolder {
             return messageCountDelta;
         }
 
-        private void syncMessages(int end) throws MessagingException {
+        private void syncMessages(int end) throws IOException, MessagingException {
             long oldUidNext = getOldUidNext();
 
             List<ImapMessage> messageList = getMessages(end, end, null, true, null);
@@ -582,12 +582,14 @@ class ImapFolderPusher extends ImapFolder {
                     }
 
                     List<Message> messages = new ArrayList<Message>();
+                    List<ImapMessage> imapMessages = new ArrayList<>();
                     for (long uid = startUid; uid <= newUid; uid++) {
                         ImapMessage message = new ImapMessage(Long.toString(uid), ImapFolderPusher.this);
-                        messages.add(message);
+                        imapMessages.add(message);
                     }
-
+                    messages.addAll(imapMessages);
                     if (!messages.isEmpty()) {
+                        updateHighestModSeq(imapMessages);
                         pushReceiver.messagesArrived(ImapFolderPusher.this, messages);
                     }
                 }
@@ -596,10 +598,11 @@ class ImapFolderPusher extends ImapFolder {
 
         private void syncMessages(List<Long> flagSyncMsgSeqs) {
             try {
-                List<? extends Message> messageList = getMessages(flagSyncMsgSeqs, true, null);
+                List<ImapMessage> messageList = getMessages(flagSyncMsgSeqs, true, null);
 
                 List<Message> messages = new ArrayList<Message>();
                 messages.addAll(messageList);
+                updateHighestModSeq(messageList);
                 pushReceiver.messagesFlagsChanged(ImapFolderPusher.this, messages);
             } catch (Exception e) {
                 pushReceiver.pushError("Exception while processing Push untagged responses", e);
@@ -608,6 +611,7 @@ class ImapFolderPusher extends ImapFolder {
 
         private void removeMessages(List<String> removeUids) {
             List<Message> messages = new ArrayList<Message>(removeUids.size());
+            List<ImapMessage> imapMessages = new ArrayList<>(removeUids.size());
 
             try {
                 List<ImapMessage> existingMessages = getMessagesFromUids(removeUids);
@@ -630,16 +634,17 @@ class ImapFolderPusher extends ImapFolder {
                         Timber.e("Unable to set DELETED flag on message %s", message.getUid());
                     }
 
-                    messages.add(message);
+                    imapMessages.add(message);
                 }
-
+                updateHighestModSeq(imapMessages);
+                messages.addAll(imapMessages);
                 pushReceiver.messagesRemoved(ImapFolderPusher.this, messages);
             } catch (Exception e) {
                 Timber.e("Cannot remove EXPUNGEd messages");
             }
         }
 
-        private void syncFolderOnConnect() throws MessagingException {
+        private void syncFolderOnConnect() throws IOException, MessagingException {
             processStoredUntaggedResponses();
 
             if (messageCount == -1) {
@@ -649,19 +654,20 @@ class ImapFolderPusher extends ImapFolder {
             pushReceiver.syncFolder(ImapFolderPusher.this);
         }
 
-        private void notifyMessagesArrived(long startUid, long uidNext) {
+        private void notifyMessagesArrived(long startUid, long uidNext) throws IOException, MessagingException {
             if (K9MailLib.isDebug()) {
                 Timber.i("Needs sync from uid %d to %d for %s", startUid, uidNext, getLogId());
             }
 
             int count = (int) (uidNext - startUid);
             List<Message> messages = new ArrayList<Message>(count);
-
+            List<ImapMessage> imapMessages = new ArrayList<>(count);
             for (long uid = startUid; uid < uidNext; uid++) {
                 ImapMessage message = new ImapMessage(Long.toString(uid), ImapFolderPusher.this);
-                messages.add(message);
+                imapMessages.add(message);
             }
-
+            updateHighestModSeq(imapMessages);
+            messages.addAll(imapMessages);
             pushReceiver.messagesArrived(ImapFolderPusher.this, messages);
         }
 
