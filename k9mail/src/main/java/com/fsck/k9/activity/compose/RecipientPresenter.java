@@ -621,7 +621,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                 }
 
                 if (currentCryptoStatus.isEncryptionEnabledError()) {
-                    recipientMvpView.showOpenPgpEnabledErrorDialog();
+                    recipientMvpView.showOpenPgpEnabledErrorDialog(false);
                     return;
                 }
 
@@ -679,7 +679,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     public void showPgpSendError(SendErrorState sendErrorState) {
         switch (sendErrorState) {
             case ENABLED_ERROR:
-                recipientMvpView.showOpenPgpEnabledErrorDialog();
+                recipientMvpView.showOpenPgpEnabledErrorDialog(false);
                 break;
             case PROVIDER_ERROR:
                 recipientMvpView.showErrorOpenPgpConnection();
@@ -891,7 +891,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
         if (enableEncryption) {
             if (!cachedCryptoStatus.canEncrypt()) {
-                recipientMvpView.showOpenPgpEnabledErrorDialog();
+                recipientMvpView.showOpenPgpEnabledErrorDialog(true);
             } else if (cachedCryptoStatus.canEncryptAndIsMutual()) {
                 onCryptoModeChanged(CryptoMode.NO_CHOICE);
             } else {
