@@ -6,59 +6,58 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.fsck.k9.mail.store.imap.selectedstate.command.SelectedStateCommand.Builder;
-import com.fsck.k9.mail.store.imap.selectedstate.command.SelectedStateCommand.ContiguousIdGroup;
+import com.fsck.k9.mail.store.imap.selectedstate.command.FolderSelectedStateCommand.Builder;
+import com.fsck.k9.mail.store.imap.selectedstate.command.FolderSelectedStateCommand.ContiguousIdGroup;
 
 
 class ImapCommandSplitter {
 
-    static List<SelectedStateCommand> splitCommand(SelectedStateCommand command, int lengthLimit) {
-        List<SelectedStateCommand> commands = new ArrayList<>();
+    static List<FolderSelectedStateCommand> splitCommand(FolderSelectedStateCommand command, int lengthLimit) {
+        if (command.getIdSet() == null && command.getIdGroups() == null) {
+            throw new IllegalStateException("The constructed command is too long but does not contain ids");
+        }
 
-        if (command.getIdSet() != null || command.getIdGroups() != null) {
-            command = optimizeGroupings(command);
-            Set<Long> idSet = command.getIdSet();
-            List<ContiguousIdGroup> idGroups = command.getIdGroups();
+        List<FolderSelectedStateCommand> commands = new ArrayList<>();
+        command = optimizeGroupings(command);
+        Set<Long> idSet = command.getIdSet();
+        List<ContiguousIdGroup> idGroups = command.getIdGroups();
 
-            while ((idSet != null && !idSet.isEmpty()) || (idGroups != null && !idGroups.isEmpty())) {
-                Builder builder = command.newBuilder()
-                        .idSet(null)
-                        .idRanges(null);
+        while ((idSet != null && !idSet.isEmpty()) || (idGroups != null && !idGroups.isEmpty())) {
+            Builder builder = command.newBuilder()
+                    .idSet(null)
+                    .idRanges(null);
 
-                int length = builder.build().createCommandString().length();
-                while (length < lengthLimit) {
-                    if (idSet != null && !idSet.isEmpty()) {
-                        Long first = idSet.iterator().next();
-                        length += (String.valueOf(first).length() + 1);
-                        if (length < lengthLimit) {
-                            builder.addId(first);
-                            idSet.remove(first);
-                        } else {
-                            break;
-                        }
-
-                    } else if (idGroups != null && !idGroups.isEmpty()) {
-                        ContiguousIdGroup first = command.idGroups.iterator().next();
-                        length += (first.toString().length() + 1);
-                        if (length < lengthLimit) {
-                            builder.addIdGroup(first.getStart(), first.getEnd());
-                            idGroups.remove(first);
-                        } else {
-                            break;
-                        }
+            int length = builder.build().createCommandString().length();
+            while (length < lengthLimit) {
+                if (idSet != null && !idSet.isEmpty()) {
+                    Long first = idSet.iterator().next();
+                    length += (String.valueOf(first).length() + 1);
+                    if (length < lengthLimit) {
+                        builder.addId(first);
+                        idSet.remove(first);
                     } else {
                         break;
                     }
+
+                } else if (idGroups != null && !idGroups.isEmpty()) {
+                    ContiguousIdGroup first = command.idGroups.iterator().next();
+                    length += (first.toString().length() + 1);
+                    if (length < lengthLimit) {
+                        builder.addIdGroup(first.getStart(), first.getEnd());
+                        idGroups.remove(first);
+                    } else {
+                        break;
+                    }
+                } else {
+                    break;
                 }
-                commands.add(builder.build());
             }
-        } else {
-            throw new IllegalStateException("The constructed command is too long but does not contain ids");
+            commands.add(builder.build());
         }
         return commands;
     }
 
-    private static SelectedStateCommand optimizeGroupings(SelectedStateCommand command) {
+    static FolderSelectedStateCommand optimizeGroupings(FolderSelectedStateCommand command) {
         Set<Long> idSet = command.getIdSet();
         List<ContiguousIdGroup> idGroups = command.getIdGroups();
         if (idGroups != null && idGroups.get(0).getEnd() == ContiguousIdGroup.LAST_ID) {
@@ -90,7 +89,7 @@ class ImapCommandSplitter {
             }
         }
         checkAndAddIds(builder, idList, start, idList.size() - 1);
-        SelectedStateCommand tempCommand = builder.build();
+        FolderSelectedStateCommand tempCommand = builder.build();
         command.setIdSet(tempCommand.getIdSet());
         command.setIdGroups(tempCommand.getIdGroups());
         return command;

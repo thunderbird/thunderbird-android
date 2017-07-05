@@ -12,14 +12,14 @@ import com.fsck.k9.mail.store.imap.ImapResponse;
 import com.fsck.k9.mail.store.imap.selectedstate.response.UidCopyResponse;
 
 
-public class UidCopyCommand extends SelectedStateCommand {
+public class UidCopyCommand extends FolderSelectedStateCommand {
     private String destinationFolderName;
 
     private UidCopyCommand() {
     }
 
     @Override
-    public String createCommandString() {
+    String createCommandString() {
         return String.format("%s %s%s", Commands.UID_COPY, createCombinedIdString(), destinationFolderName);
     }
 
@@ -38,7 +38,7 @@ public class UidCopyCommand extends SelectedStateCommand {
         return new Builder().destinationFolderName(destinationFolderName);
     }
 
-    public static class Builder extends SelectedStateCommand.Builder<UidCopyCommand, Builder> {
+    public static class Builder extends FolderSelectedStateCommand.Builder<UidCopyCommand, Builder> {
 
         public Builder destinationFolderName(String destinationFolderName) {
             command.destinationFolderName = destinationFolderName;

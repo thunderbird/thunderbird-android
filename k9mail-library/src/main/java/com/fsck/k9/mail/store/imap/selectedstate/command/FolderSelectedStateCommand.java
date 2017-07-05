@@ -17,12 +17,15 @@ import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.store.imap.selectedstate.response.SelectedStateResponse;
 
 
-//This is the base class for a command that is used in the "selected state" i.e when a mailbox is selected
-abstract class SelectedStateCommand {
+abstract class FolderSelectedStateCommand {
 
-    /*These limits are 20 octets less than the recommended limits, in order to compensate for the length of the command
-    tag, the space after the tag and the CRLF at the end of the command (these are not taken into account when
-    calculating the length of the command)
+    /* The below limits are 20 octets less than the recommended limits, in order to compensate for the length of the
+    command tag, the space after the tag and the CRLF at the end of the command (these are not taken into account when
+    calculating the length of the command). For more information, refer to section 4 of RFC 7162.
+
+    The length limit for servers supporting the CONDSTORE extension is large in order to support the QRESYNC parameter
+    to the SELECT/EXAMINE commands, which accept a list of known message sequence numbers as well as their corresponding
+    UIDs.
      */
     private static final int LENGTH_LIMIT_WITHOUT_CONDSTORE = 980;
     private static final int LENGTH_LIMIT_WITH_CONDSTORE = 8172;
@@ -60,7 +63,7 @@ abstract class SelectedStateCommand {
 
     List<List<ImapResponse>> executeInternal(ImapConnection connection, ImapFolder folder)
             throws IOException, MessagingException {
-        List<SelectedStateCommand> commands;
+        List<FolderSelectedStateCommand> commands;
         String commandString = createCommandString();
         if (commandString.length() > getCommandLengthLimit(connection)) {
             commands = ImapCommandSplitter.splitCommand(this, getCommandLengthLimit(connection));
@@ -69,7 +72,7 @@ abstract class SelectedStateCommand {
         }
 
         List<List<ImapResponse>> responses = new ArrayList<>();
-        for (SelectedStateCommand command : commands) {
+        for (FolderSelectedStateCommand command : commands) {
             responses.add(folder.executeSimpleCommand(command.createCommandString()));
         }
         return responses;
@@ -100,17 +103,18 @@ abstract class SelectedStateCommand {
         }
     }
 
-    static abstract class Builder<C extends SelectedStateCommand, B extends Builder<C, B>> {
+    static abstract class Builder<C extends FolderSelectedStateCommand, B extends Builder<C, B>> {
         C command;
         B builder;
-
-        abstract C createCommand();
-        abstract B createBuilder();
 
         public Builder() {
             command = createCommand();
             builder = createBuilder();
         }
+
+        abstract C createCommand();
+
+        abstract B createBuilder();
 
         public B idSet(Collection<Long> idSet) {
             if (idSet != null) {
@@ -192,6 +196,7 @@ abstract class SelectedStateCommand {
 
         @Override
         public String toString() {
+            //The highest UID is queried as *:*, see the note in RFC 3501, page 60
             if (start == LAST_ID && end == LAST_ID) {
                 return "*:*";
             }

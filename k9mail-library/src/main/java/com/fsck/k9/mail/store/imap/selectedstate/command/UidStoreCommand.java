@@ -13,7 +13,7 @@ import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.store.imap.selectedstate.response.SelectedStateResponse;
 
 
-public class UidStoreCommand extends SelectedStateCommand {
+public class UidStoreCommand extends FolderSelectedStateCommand {
     private boolean value;
     private Set<Flag> flagSet;
     private boolean canCreateForwardedFlag;
@@ -22,7 +22,7 @@ public class UidStoreCommand extends SelectedStateCommand {
     }
 
     @Override
-    public String createCommandString() {
+    String createCommandString() {
         return String.format("%s %s%sFLAGS.SILENT (%s)", Commands.UID_STORE, createCombinedIdString(),
                 value ? "+" : "-", ImapUtility.combineFlags(flagSet, canCreateForwardedFlag));
     }
@@ -47,7 +47,7 @@ public class UidStoreCommand extends SelectedStateCommand {
                 .canCreateForwardedFlag(canCreateForwardedFlag);
     }
 
-    public static class Builder extends SelectedStateCommand.Builder<UidStoreCommand, Builder> {
+    public static class Builder extends FolderSelectedStateCommand.Builder<UidStoreCommand, Builder> {
 
         public Builder value(boolean value) {
             command.value = value;

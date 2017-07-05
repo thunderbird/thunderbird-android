@@ -1,16 +1,6 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TimeZone;
-
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.FetchProfile;
@@ -26,7 +16,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.store.StoreConfig;
-import okio.Buffer;
+
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +25,18 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
+
+import okio.Buffer;
 
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
@@ -462,7 +464,7 @@ public class ImapFolderTest {
     public void getUnreadMessageCount_connectionThrowsIOException_shouldThrowMessagingException() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT DELETED NOT SEEN")).thenThrow(new IOException());
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT SEEN NOT DELETED")).thenThrow(new IOException());
         folder.open(OPEN_MODE_RW);
 
         try {
@@ -478,7 +480,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 1 2 3"));
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT DELETED NOT SEEN")).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT SEEN NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         int unreadMessageCount = folder.getUnreadMessageCount();
