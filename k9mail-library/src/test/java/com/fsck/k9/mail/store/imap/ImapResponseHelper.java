@@ -15,12 +15,12 @@ public class ImapResponseHelper {
     public static List<List<ImapResponse>> createMultipleImapResponses(List<String>... responses) throws IOException {
         List<List<ImapResponse>> imapResponses = new ArrayList<>();
         for (List<String> response : responses) {
-            imapResponses.add(createImapResponse(response));
+            imapResponses.add(createImapResponseList(response));
         }
         return imapResponses;
     }
 
-    public static List<ImapResponse> createImapResponse(List<String> responses) throws IOException {
+    private static List<ImapResponse> createImapResponseList(List<String> responses) throws IOException {
         List<ImapResponse> imapResponses = new ArrayList<>();
         for (String response : responses) {
             imapResponses.add(createImapResponse(response));
@@ -36,4 +36,11 @@ public class ImapResponseHelper {
         return parser.readResponse();
     }
 
+    public static List<Long> createNonContiguousIdSet(long start, long end, int interval) {
+        List<Long> ids = new ArrayList<>();
+        for (long i = start;i <= end;i += interval) {
+            ids.add(i);
+        }
+        return ids;
+    }
 }

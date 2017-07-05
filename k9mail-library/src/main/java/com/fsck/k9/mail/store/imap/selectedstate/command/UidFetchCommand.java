@@ -2,9 +2,9 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import com.fsck.k9.mail.BodyFactory;
@@ -22,10 +22,10 @@ import com.fsck.k9.mail.store.imap.ImapResponseCallback;
 import com.fsck.k9.mail.store.imap.ImapUtility;
 
 
-public class UidFetchCommand extends SelectedStateCommand {
+public class UidFetchCommand extends FolderSelectedStateCommand {
     private int maximumAutoDownloadMessageSize;
     private FetchProfile fetchProfile;
-    private HashMap<String, Message> messageMap;
+    private Map<String, Message> messageMap;
     private Part part;
     private BodyFactory bodyFactory;
 
@@ -115,14 +115,14 @@ public class UidFetchCommand extends SelectedStateCommand {
                 .partParams(part, bodyFactory);
     }
 
-    public static class Builder extends SelectedStateCommand.Builder<UidFetchCommand, Builder> {
+    public static class Builder extends FolderSelectedStateCommand.Builder<UidFetchCommand, Builder> {
 
         public Builder maximumAutoDownloadMessageSize(int maximumAutoDownloadMessageSize) {
             command.maximumAutoDownloadMessageSize = maximumAutoDownloadMessageSize;
             return builder;
         }
 
-        public Builder messageParams(FetchProfile fetchProfile, HashMap<String, Message> messageMap) {
+        public Builder messageParams(FetchProfile fetchProfile, Map<String, Message> messageMap) {
             command.fetchProfile = fetchProfile;
             command.messageMap = messageMap;
             return builder;

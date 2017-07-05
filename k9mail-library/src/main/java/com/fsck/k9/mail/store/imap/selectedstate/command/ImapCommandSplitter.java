@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.fsck.k9.mail.store.imap.selectedstate.command.SelectedStateCommand.Builder;
-import com.fsck.k9.mail.store.imap.selectedstate.command.SelectedStateCommand.ContiguousIdGroup;
+import com.fsck.k9.mail.store.imap.selectedstate.command.FolderSelectedStateCommand.Builder;
+import com.fsck.k9.mail.store.imap.selectedstate.command.FolderSelectedStateCommand.ContiguousIdGroup;
 
 
 class ImapCommandSplitter {
 
-    static List<SelectedStateCommand> splitCommand(SelectedStateCommand command, int lengthLimit) {
-        List<SelectedStateCommand> commands = new ArrayList<>();
+    static List<FolderSelectedStateCommand> splitCommand(FolderSelectedStateCommand command, int lengthLimit) {
+        List<FolderSelectedStateCommand> commands = new ArrayList<>();
 
         if (command.getIdSet() != null || command.getIdGroups() != null) {
             command = optimizeGroupings(command);
@@ -58,7 +58,7 @@ class ImapCommandSplitter {
         return commands;
     }
 
-    private static SelectedStateCommand optimizeGroupings(SelectedStateCommand command) {
+    private static FolderSelectedStateCommand optimizeGroupings(FolderSelectedStateCommand command) {
         Set<Long> idSet = command.getIdSet();
         List<ContiguousIdGroup> idGroups = command.getIdGroups();
         if (idGroups != null && idGroups.get(0).getEnd() == ContiguousIdGroup.LAST_ID) {
@@ -90,7 +90,7 @@ class ImapCommandSplitter {
             }
         }
         checkAndAddIds(builder, idList, start, idList.size() - 1);
-        SelectedStateCommand tempCommand = builder.build();
+        FolderSelectedStateCommand tempCommand = builder.build();
         command.setIdSet(tempCommand.getIdSet());
         command.setIdGroups(tempCommand.getIdGroups());
         return command;
