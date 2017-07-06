@@ -293,7 +293,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                     try {
                         cursor = db.rawQuery(
                                 "SELECT COUNT(id) FROM messages " +
-                                        "WHERE empty = 0 AND deleted = 0 and folder_id = ?",
+                                "WHERE empty = 0 AND deleted = 0 and folder_id = ?",
                                 new String[] { Long.toString(mFolderId) });
                         cursor.moveToFirst();
                         return cursor.getInt(0);   //messagecount
@@ -620,7 +620,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         try {
             prefHolder.displayClass = FolderClass.valueOf(storage.getString(id + ".displayMode",
-                    prefHolder.displayClass.name()));
+                                      prefHolder.displayClass.name()));
         } catch (Exception e) {
             Timber.e(e, "Unable to load displayMode for %s", getName());
         }
@@ -630,7 +630,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         try {
             prefHolder.syncClass = FolderClass.valueOf(storage.getString(id  + ".syncMode",
-                    prefHolder.syncClass.name()));
+                                   prefHolder.syncClass.name()));
         } catch (Exception e) {
             Timber.e(e, "Unable to load syncMode for %s", getName());
 
@@ -641,7 +641,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         try {
             prefHolder.notifyClass = FolderClass.valueOf(storage.getString(id  + ".notifyMode",
-                    prefHolder.notifyClass.name()));
+                                   prefHolder.notifyClass.name()));
         } catch (Exception e) {
             Timber.e(e, "Unable to load notifyMode for %s", getName());
         }
@@ -651,7 +651,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         try {
             prefHolder.pushClass = FolderClass.valueOf(storage.getString(id  + ".pushMode",
-                    prefHolder.pushClass.name()));
+                                   prefHolder.pushClass.name()));
         } catch (Exception e) {
             Timber.e(e, "Unable to load pushMode for %s", getName());
         }

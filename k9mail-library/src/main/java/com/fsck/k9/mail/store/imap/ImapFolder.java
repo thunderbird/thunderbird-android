@@ -560,8 +560,8 @@ public class ImapFolder extends Folder<ImapMessage> {
     public List<ImapMessage> getChangedMessagesUsingCondstore(long modseq) throws MessagingException {
         checkOpen();
         if (!supportsModSeq()) {
-            throw new MessagingException(String.format(Locale.US, "Folder %s does not support modification " +
-                    "sequences", name));
+            String errorMessage = "Folder %s does not support modification sequences";
+            throw new MessagingException(String.format(Locale.US, errorMessage, name));
         }
 
         if (modseq == highestModSeq) {

@@ -508,8 +508,6 @@ class MessageDownloader {
 
         Message localMessage = localFolder.getMessage(message.getUid());
 
-        // Set a flag indicating this message has been fully downloaded and can be
-        // viewed.
         localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, true);
     }
 

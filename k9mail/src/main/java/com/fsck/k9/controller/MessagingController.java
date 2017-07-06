@@ -1093,7 +1093,7 @@ public class MessagingController {
                     String rUid = remoteFolder.getUidFromMessageId(localMessage);
                     if (rUid != null) {
                         Timber.w("Local message has flag %s already set, and there is a remote message with uid %s, " +
-                                        "assuming message was already copied and aborting this copy",
+                                "assuming message was already copied and aborting this copy",
                                 X_REMOTE_COPY_STARTED, rUid);
 
                         String oldUid = localMessage.getUid();

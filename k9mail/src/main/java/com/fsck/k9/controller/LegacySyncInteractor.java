@@ -98,7 +98,6 @@ class LegacySyncInteractor {
             l.synchronizeMailboxHeadersStarted(account, folderName);
         }
 
-
         List<? extends Message> remoteMessageArray =
                 remoteFolder.getMessages(remoteStart, remoteMessageCount, earliestDate, null);
 
@@ -123,8 +122,8 @@ class LegacySyncInteractor {
         }
     }
 
-    private static MoreMessages syncRemoteDeletions(Account account, LocalFolder localFolder, Map<String, Long> localUidMap,
-            Map<String, Message> remoteUidMap, MessagingListener listener,
+    private static MoreMessages syncRemoteDeletions(Account account, LocalFolder localFolder,
+            Map<String, Long> localUidMap, Map<String, Message> remoteUidMap, MessagingListener listener,
             MessagingController controller) throws MessagingException {
 
         String folderName = localFolder.getName();
