@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
@@ -36,8 +35,8 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
     private final ServerNameSuggester serverNameSuggester = new ServerNameSuggester();
-    private Account mAccount;
-    private boolean mMakeDefault;
+    private Account account;
+    private boolean makeDefault;
 
     public static void actionSelectAccountType(Context context, Account account, boolean makeDefault) {
         Intent i = new Intent(context, AccountSetupAccountType.class);
@@ -55,28 +54,28 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         findViewById(R.id.webdav).setOnClickListener(this);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-        mMakeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
+        account = Preferences.getPreferences(this).getAccount(accountUuid);
+        makeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
     }
 
     private void setupStoreAndSmtpTransport(Type serverType, String schemePrefix) throws URISyntaxException {
-        String domainPart = EmailHelper.getDomainFromEmailAddress(mAccount.getEmail());
+        String domainPart = EmailHelper.getDomainFromEmailAddress(account.getEmail());
 
         String suggestedStoreServerName = serverNameSuggester.suggestServerName(serverType, domainPart);
-        URI storeUriForDecode = new URI(mAccount.getStoreUri());
+        URI storeUriForDecode = new URI(account.getStoreUri());
         URI storeUri = new URI(schemePrefix, storeUriForDecode.getUserInfo(), suggestedStoreServerName,
                 storeUriForDecode.getPort(), null, null, null);
-        mAccount.setStoreUri(storeUri.toString());
+        account.setStoreUri(storeUri.toString());
 
         String suggestedTransportServerName = serverNameSuggester.suggestServerName(SMTP, domainPart);
-        URI transportUriForDecode = new URI(mAccount.getTransportUri());
+        URI transportUriForDecode = new URI(account.getTransportUri());
         URI transportUri = new URI("smtp+tls+", transportUriForDecode.getUserInfo(), suggestedTransportServerName,
                 transportUriForDecode.getPort(), null, null, null);
-        mAccount.setTransportUri(transportUri.toString());
+        account.setTransportUri(transportUri.toString());
     }
 
     private void setupDav() throws URISyntaxException {
-        URI uriForDecode = new URI(mAccount.getStoreUri());
+        URI uriForDecode = new URI(account.getStoreUri());
 
         /*
          * The user info we have been given from
@@ -94,10 +93,10 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
             userPass = userPass + ":" + userInfo[2];
         }
 
-        String domainPart = EmailHelper.getDomainFromEmailAddress(mAccount.getEmail());
+        String domainPart = EmailHelper.getDomainFromEmailAddress(account.getEmail());
         String suggestedServerName = serverNameSuggester.suggestServerName(WebDAV, domainPart);
         URI uri = new URI("webdav+ssl+", userPass, suggestedServerName, uriForDecode.getPort(), null, null, null);
-        mAccount.setStoreUri(uri.toString());
+        account.setStoreUri(uri.toString());
     }
 
     public void onClick(View v) {
@@ -120,7 +119,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
             failure(ex);
         }
 
-        AccountSetupIncoming.actionIncomingSettings(this, mAccount, mMakeDefault);
+        AccountSetupIncoming.actionIncomingSettings(this, account, makeDefault);
         finish();
     }
 
