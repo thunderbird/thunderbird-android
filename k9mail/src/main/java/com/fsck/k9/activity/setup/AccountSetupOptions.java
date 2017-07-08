@@ -19,16 +19,16 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
-    private Spinner mCheckFrequencyView;
+    private Spinner checkFrequencyView;
 
-    private Spinner mDisplayCountView;
+    private Spinner displayCountView;
 
 
-    private CheckBox mNotifyView;
-    private CheckBox mNotifySyncView;
-    private CheckBox mPushEnable;
+    private CheckBox notifyView;
+    private CheckBox notifySyncView;
+    private CheckBox pushEnable;
 
-    private Account mAccount;
+    private Account account;
 
     public static void actionOptions(Context context, Account account, boolean makeDefault) {
         Intent i = new Intent(context, AccountSetupOptions.class);
@@ -42,11 +42,11 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_options);
 
-        mCheckFrequencyView = (Spinner)findViewById(R.id.account_check_frequency);
-        mDisplayCountView = (Spinner)findViewById(R.id.account_display_count);
-        mNotifyView = (CheckBox)findViewById(R.id.account_notify);
-        mNotifySyncView = (CheckBox)findViewById(R.id.account_notify_sync);
-        mPushEnable = (CheckBox)findViewById(R.id.account_enable_push);
+        checkFrequencyView = (Spinner)findViewById(R.id.account_check_frequency);
+        displayCountView = (Spinner)findViewById(R.id.account_display_count);
+        notifyView = (CheckBox)findViewById(R.id.account_notify);
+        notifySyncView = (CheckBox)findViewById(R.id.account_notify_sync);
+        pushEnable = (CheckBox)findViewById(R.id.account_enable_push);
 
         findViewById(R.id.next).setOnClickListener(this);
 
@@ -82,7 +82,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
                 android.R.layout.simple_spinner_item, checkFrequencies);
         checkFrequenciesAdapter
         .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCheckFrequencyView.setAdapter(checkFrequenciesAdapter);
+        checkFrequencyView.setAdapter(checkFrequenciesAdapter);
 
         SpinnerOption displayCounts[] = {
             new SpinnerOption(10, getString(R.string.account_setup_options_mail_display_count_10)),
@@ -97,22 +97,22 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<SpinnerOption>(this,
                 android.R.layout.simple_spinner_item, displayCounts);
         displayCountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mDisplayCountView.setAdapter(displayCountsAdapter);
+        displayCountView.setAdapter(displayCountsAdapter);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        account = Preferences.getPreferences(this).getAccount(accountUuid);
 
-        mNotifyView.setChecked(mAccount.isNotifyNewMail());
-        mNotifySyncView.setChecked(mAccount.isShowOngoing());
-        SpinnerOption.setSpinnerOptionValue(mCheckFrequencyView, mAccount
+        notifyView.setChecked(account.isNotifyNewMail());
+        notifySyncView.setChecked(account.isShowOngoing());
+        SpinnerOption.setSpinnerOptionValue(checkFrequencyView, account
                                             .getAutomaticCheckIntervalMinutes());
-        SpinnerOption.setSpinnerOptionValue(mDisplayCountView, mAccount
+        SpinnerOption.setSpinnerOptionValue(displayCountView, account
                                             .getDisplayCount());
 
 
         boolean isPushCapable = false;
         try {
-            Store store = mAccount.getRemoteStore();
+            Store store = account.getRemoteStore();
             isPushCapable = store.isPushCapable();
         } catch (Exception e) {
             Timber.e(e, "Could not get remote store");
@@ -120,36 +120,36 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
 
         if (!isPushCapable) {
-            mPushEnable.setVisibility(View.GONE);
+            pushEnable.setVisibility(View.GONE);
         } else {
-            mPushEnable.setChecked(true);
+            pushEnable.setChecked(true);
         }
 
 
     }
 
     private void onDone() {
-        mAccount.setDescription(mAccount.getEmail());
-        mAccount.setNotifyNewMail(mNotifyView.isChecked());
-        mAccount.setShowOngoing(mNotifySyncView.isChecked());
-        mAccount.setAutomaticCheckIntervalMinutes((Integer)((SpinnerOption)mCheckFrequencyView
+        account.setDescription(account.getEmail());
+        account.setNotifyNewMail(notifyView.isChecked());
+        account.setShowOngoing(notifySyncView.isChecked());
+        account.setAutomaticCheckIntervalMinutes((Integer)((SpinnerOption) checkFrequencyView
                 .getSelectedItem()).value);
-        mAccount.setDisplayCount((Integer)((SpinnerOption)mDisplayCountView
+        account.setDisplayCount((Integer)((SpinnerOption) displayCountView
                                            .getSelectedItem()).value);
 
-        if (mPushEnable.isChecked()) {
-            mAccount.setFolderPushMode(Account.FolderMode.FIRST_CLASS);
+        if (pushEnable.isChecked()) {
+            account.setFolderPushMode(Account.FolderMode.FIRST_CLASS);
         } else {
-            mAccount.setFolderPushMode(Account.FolderMode.NONE);
+            account.setFolderPushMode(Account.FolderMode.NONE);
         }
 
-        mAccount.save(Preferences.getPreferences(this));
-        if (mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()) ||
+        account.save(Preferences.getPreferences(this));
+        if (account.equals(Preferences.getPreferences(this).getDefaultAccount()) ||
                 getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false)) {
-            Preferences.getPreferences(this).setDefaultAccount(mAccount);
+            Preferences.getPreferences(this).setDefaultAccount(account);
         }
         K9.setServicesEnabled(this);
-        AccountSetupNames.actionSetNames(this, mAccount);
+        AccountSetupNames.actionSetNames(this, account);
         finish();
     }
 

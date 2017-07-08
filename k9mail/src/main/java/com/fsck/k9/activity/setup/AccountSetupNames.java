@@ -20,13 +20,13 @@ import com.fsck.k9.helper.Utility;
 public class AccountSetupNames extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
 
-    private EditText mDescription;
+    private EditText description;
 
-    private EditText mName;
+    private EditText name;
 
-    private Account mAccount;
+    private Account account;
 
-    private Button mDoneButton;
+    private Button doneButton;
 
     public static void actionSetNames(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupNames.class);
@@ -38,10 +38,10 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_names);
-        mDescription = (EditText)findViewById(R.id.account_description);
-        mName = (EditText)findViewById(R.id.account_name);
-        mDoneButton = (Button)findViewById(R.id.done);
-        mDoneButton.setOnClickListener(this);
+        description = (EditText)findViewById(R.id.account_description);
+        name = (EditText)findViewById(R.id.account_name);
+        doneButton = (Button)findViewById(R.id.done);
+        doneButton.setOnClickListener(this);
 
         TextWatcher validationTextWatcher = new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -54,38 +54,38 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         };
-        mName.addTextChangedListener(validationTextWatcher);
+        name.addTextChangedListener(validationTextWatcher);
 
-        mName.setKeyListener(TextKeyListener.getInstance(false, Capitalize.WORDS));
+        name.setKeyListener(TextKeyListener.getInstance(false, Capitalize.WORDS));
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        account = Preferences.getPreferences(this).getAccount(accountUuid);
 
         /*
          * Since this field is considered optional, we don't set this here. If
          * the user fills in a value we'll reset the current value, otherwise we
          * just leave the saved value alone.
          */
-        // mDescription.setText(mAccount.getDescription());
-        if (mAccount.getName() != null) {
-            mName.setText(mAccount.getName());
+        // description.setText(account.getDescription());
+        if (account.getName() != null) {
+            name.setText(account.getName());
         }
-        if (!Utility.requiredFieldValid(mName)) {
-            mDoneButton.setEnabled(false);
+        if (!Utility.requiredFieldValid(name)) {
+            doneButton.setEnabled(false);
         }
     }
 
     private void validateFields() {
-        mDoneButton.setEnabled(Utility.requiredFieldValid(mName));
-        Utility.setCompoundDrawablesAlpha(mDoneButton, mDoneButton.isEnabled() ? 255 : 128);
+        doneButton.setEnabled(Utility.requiredFieldValid(name));
+        Utility.setCompoundDrawablesAlpha(doneButton, doneButton.isEnabled() ? 255 : 128);
     }
 
     protected void onNext() {
-        if (Utility.requiredFieldValid(mDescription)) {
-            mAccount.setDescription(mDescription.getText().toString());
+        if (Utility.requiredFieldValid(description)) {
+            account.setDescription(description.getText().toString());
         }
-        mAccount.setName(mName.getText().toString());
-        mAccount.save(Preferences.getPreferences(this));
+        account.setName(name.getText().toString());
+        account.save(Preferences.getPreferences(this));
         Accounts.listAccounts(this);
         finish();
     }

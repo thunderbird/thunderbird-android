@@ -60,19 +60,19 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         OUTGOING
     }
 
-    private Handler mHandler = new Handler();
+    private Handler handler = new Handler();
 
-    private ProgressBar mProgressBar;
+    private ProgressBar progressBar;
 
-    private TextView mMessageView;
+    private TextView messageView;
 
-    private Account mAccount;
+    private Account account;
 
-    private CheckDirection mDirection;
+    private CheckDirection direction;
 
-    private boolean mCanceled;
+    private boolean canceled;
 
-    private boolean mDestroyed;
+    private boolean destroyed;
 
     public static void actionCheckSettings(Activity context, Account account,
             CheckDirection direction) {
@@ -86,18 +86,18 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_check_settings);
-        mMessageView = (TextView)findViewById(R.id.message);
-        mProgressBar = (ProgressBar)findViewById(R.id.progress);
+        messageView = (TextView)findViewById(R.id.message);
+        progressBar = (ProgressBar)findViewById(R.id.progress);
         findViewById(R.id.cancel).setOnClickListener(this);
 
         setMessage(R.string.account_setup_check_settings_retr_info_msg);
-        mProgressBar.setIndeterminate(true);
+        progressBar.setIndeterminate(true);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
-        mDirection = (CheckDirection) getIntent().getSerializableExtra(EXTRA_CHECK_DIRECTION);
+        account = Preferences.getPreferences(this).getAccount(accountUuid);
+        direction = (CheckDirection) getIntent().getSerializableExtra(EXTRA_CHECK_DIRECTION);
 
-        new CheckAccountTask(mAccount).execute(mDirection);
+        new CheckAccountTask(account).execute(direction);
     }
 
     private void handleCertificateValidationException(CertificateValidationException cve) {
@@ -120,18 +120,18 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDestroyed = true;
-        mCanceled = true;
+        destroyed = true;
+        canceled = true;
     }
 
     private void setMessage(final int resId) {
-        mMessageView.setText(getString(resId));
+        messageView.setText(getString(resId));
     }
 
     private void acceptKeyDialog(final int msgResId, final CertificateValidationException ex) {
-        mHandler.post(new Runnable() {
+        handler.post(new Runnable() {
             public void run() {
-                if (mDestroyed) {
+                if (destroyed) {
                     return;
                 }
                 String exMessage = "Unknown Error";
@@ -149,7 +149,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     }
                 }
 
-                mProgressBar.setIndeterminate(false);
+                progressBar.setIndeterminate(false);
                 StringBuilder chainInfo = new StringBuilder(100);
                 MessageDigest sha1 = null;
                 try {
@@ -179,8 +179,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             altNamesText.append("Subject has ").append(subjectAlternativeNames.size()).append(" alternative names\n");
 
                             // we need these for matching
-                            String storeURIHost = (Uri.parse(mAccount.getStoreUri())).getHost();
-                            String transportURIHost = (Uri.parse(mAccount.getTransportUri())).getHost();
+                            String storeURIHost = (Uri.parse(account.getStoreUri())).getHost();
+                            String transportURIHost = (Uri.parse(account.getTransportUri())).getHost();
 
                             for (List<?> subjectAlternativeName : subjectAlternativeNames) {
                                 Integer type = (Integer)subjectAlternativeName.get(0);
@@ -283,14 +283,14 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
      */
     private void acceptCertificate(X509Certificate certificate) {
         try {
-            mAccount.addCertificate(mDirection, certificate);
+            account.addCertificate(direction, certificate);
         } catch (CertificateException e) {
             showErrorDialog(
                     R.string.account_setup_failed_dlg_certificate_message_fmt,
                     e.getMessage() == null ? "" : e.getMessage());
         }
-        AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, mAccount,
-                mDirection);
+        AccountSetupCheckSettings.actionCheckSettings(AccountSetupCheckSettings.this, account,
+                direction);
     }
 
     @Override
@@ -300,7 +300,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     }
 
     private void onCancel() {
-        mCanceled = true;
+        canceled = true;
         setMessage(R.string.account_setup_check_settings_canceling_msg);
         setResult(RESULT_CANCELED);
         finish();
@@ -315,7 +315,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     }
 
     private void showErrorDialog(final int msgResId, final Object... args) {
-        mHandler.post(new Runnable() {
+        handler.post(new Runnable() {
             public void run() {
                 showDialogFragment(R.id.dialog_account_setup_error, getString(msgResId, args));
             }
@@ -323,10 +323,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     }
 
     private void showDialogFragment(int dialogId, String customMessage) {
-        if (mDestroyed) {
+        if (destroyed) {
             return;
         }
-        mProgressBar.setIndeterminate(false);
+        progressBar.setIndeterminate(false);
 
         DialogFragment fragment;
         switch (dialogId) {
@@ -371,7 +371,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     public void doNegativeClick(int dialogId) {
         switch (dialogId) {
             case R.id.dialog_account_setup_error: {
-                mCanceled = false;
+                canceled = false;
                 setResult(RESULT_OK);
                 finish();
                 break;
@@ -451,10 +451,10 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         }
 
         private boolean cancelled() {
-            if (mDestroyed) {
+            if (destroyed) {
                 return true;
             }
-            if (mCanceled) {
+            if (canceled) {
                 finish();
                 return true;
             }

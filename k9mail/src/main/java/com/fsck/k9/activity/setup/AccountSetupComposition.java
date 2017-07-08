@@ -18,16 +18,16 @@ public class AccountSetupComposition extends K9Activity {
 
     private static final String EXTRA_ACCOUNT = "account";
 
-    private Account mAccount;
+    private Account account;
 
-    private EditText mAccountSignature;
-    private EditText mAccountEmail;
-    private EditText mAccountAlwaysBcc;
-    private EditText mAccountName;
-    private CheckBox mAccountSignatureUse;
-    private RadioButton mAccountSignatureBeforeLocation;
-    private RadioButton mAccountSignatureAfterLocation;
-    private LinearLayout mAccountSignatureLayout;
+    private EditText accountSignature;
+    private EditText accountEmail;
+    private EditText accountAlwaysBcc;
+    private EditText accountName;
+    private CheckBox accountSignatureUse;
+    private RadioButton accountSignatureBeforeLocation;
+    private RadioButton accountSignatureAfterLocation;
+    private LinearLayout accountSignatureLayout;
 
     public static void actionEditCompositionSettings(Activity context, Account account) {
         Intent i = new Intent(context, AccountSetupComposition.class);
@@ -42,7 +42,7 @@ public class AccountSetupComposition extends K9Activity {
         super.onCreate(savedInstanceState);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        account = Preferences.getPreferences(this).getAccount(accountUuid);
 
         setContentView(R.layout.account_setup_composition);
 
@@ -52,65 +52,65 @@ public class AccountSetupComposition extends K9Activity {
          */
         if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
-            mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+            account = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
-        mAccountName = (EditText)findViewById(R.id.account_name);
-        mAccountName.setText(mAccount.getName());
+        accountName = (EditText)findViewById(R.id.account_name);
+        accountName.setText(account.getName());
 
-        mAccountEmail = (EditText)findViewById(R.id.account_email);
-        mAccountEmail.setText(mAccount.getEmail());
+        accountEmail = (EditText)findViewById(R.id.account_email);
+        accountEmail.setText(account.getEmail());
 
-        mAccountAlwaysBcc = (EditText)findViewById(R.id.account_always_bcc);
-        mAccountAlwaysBcc.setText(mAccount.getAlwaysBcc());
+        accountAlwaysBcc = (EditText)findViewById(R.id.account_always_bcc);
+        accountAlwaysBcc.setText(account.getAlwaysBcc());
 
-        mAccountSignatureLayout = (LinearLayout)findViewById(R.id.account_signature_layout);
+        accountSignatureLayout = (LinearLayout)findViewById(R.id.account_signature_layout);
 
-        mAccountSignatureUse = (CheckBox)findViewById(R.id.account_signature_use);
-        boolean useSignature = mAccount.getSignatureUse();
-        mAccountSignatureUse.setChecked(useSignature);
-        mAccountSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        accountSignatureUse = (CheckBox)findViewById(R.id.account_signature_use);
+        boolean useSignature = account.getSignatureUse();
+        accountSignatureUse.setChecked(useSignature);
+        accountSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    mAccountSignatureLayout.setVisibility(View.VISIBLE);
-                    mAccountSignature.setText(mAccount.getSignature());
-                    boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
-                    mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
-                    mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
+                    accountSignatureLayout.setVisibility(View.VISIBLE);
+                    accountSignature.setText(account.getSignature());
+                    boolean isSignatureBeforeQuotedText = account.isSignatureBeforeQuotedText();
+                    accountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
+                    accountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
                 } else {
-                    mAccountSignatureLayout.setVisibility(View.GONE);
+                    accountSignatureLayout.setVisibility(View.GONE);
                 }
             }
         });
 
-        mAccountSignature = (EditText)findViewById(R.id.account_signature);
+        accountSignature = (EditText)findViewById(R.id.account_signature);
 
-        mAccountSignatureBeforeLocation = (RadioButton)findViewById(R.id.account_signature_location_before_quoted_text);
-        mAccountSignatureAfterLocation = (RadioButton)findViewById(R.id.account_signature_location_after_quoted_text);
+        accountSignatureBeforeLocation = (RadioButton)findViewById(R.id.account_signature_location_before_quoted_text);
+        accountSignatureAfterLocation = (RadioButton)findViewById(R.id.account_signature_location_after_quoted_text);
 
         if (useSignature) {
-            mAccountSignature.setText(mAccount.getSignature());
+            accountSignature.setText(account.getSignature());
 
-            boolean isSignatureBeforeQuotedText = mAccount.isSignatureBeforeQuotedText();
-            mAccountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
-            mAccountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
+            boolean isSignatureBeforeQuotedText = account.isSignatureBeforeQuotedText();
+            accountSignatureBeforeLocation.setChecked(isSignatureBeforeQuotedText);
+            accountSignatureAfterLocation.setChecked(!isSignatureBeforeQuotedText);
         } else {
-            mAccountSignatureLayout.setVisibility(View.GONE);
+            accountSignatureLayout.setVisibility(View.GONE);
         }
     }
 
     private void saveSettings() {
-        mAccount.setEmail(mAccountEmail.getText().toString());
-        mAccount.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
-        mAccount.setName(mAccountName.getText().toString());
-        mAccount.setSignatureUse(mAccountSignatureUse.isChecked());
-        if (mAccountSignatureUse.isChecked()) {
-            mAccount.setSignature(mAccountSignature.getText().toString());
-            boolean isSignatureBeforeQuotedText = mAccountSignatureBeforeLocation.isChecked();
-            mAccount.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
+        account.setEmail(accountEmail.getText().toString());
+        account.setAlwaysBcc(accountAlwaysBcc.getText().toString());
+        account.setName(accountName.getText().toString());
+        account.setSignatureUse(accountSignatureUse.isChecked());
+        if (accountSignatureUse.isChecked()) {
+            account.setSignature(accountSignature.getText().toString());
+            boolean isSignatureBeforeQuotedText = accountSignatureBeforeLocation.isChecked();
+            account.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
         }
 
-        mAccount.save(Preferences.getPreferences(this));
+        account.save(Preferences.getPreferences(this));
     }
 
     @Override
@@ -122,12 +122,12 @@ public class AccountSetupComposition extends K9Activity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(EXTRA_ACCOUNT, mAccount.getUuid());
+        outState.putSerializable(EXTRA_ACCOUNT, account.getUuid());
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mAccount.save(Preferences.getPreferences(this));
+        account.save(Preferences.getPreferences(this));
         finish();
     }
 }
