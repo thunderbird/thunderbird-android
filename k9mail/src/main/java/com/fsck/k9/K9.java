@@ -26,6 +26,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
+import android.support.annotation.StringRes;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
@@ -857,6 +858,14 @@ public class K9 extends Application {
         USE_GLOBAL
     }
 
+    public static int getK9MaterialThemeResourceId(Theme themeId) {
+        return (themeId == Theme.LIGHT) ? R.style.Theme_K9_Material_Light : R.style.Theme_K9_Material_Dark;
+    }
+
+    public static int getK9MaterialThemeResourceId() {
+        return getK9MaterialThemeResourceId(theme);
+    }
+
     public static int getK9ThemeResourceId(Theme themeId) {
         return (themeId == Theme.LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
     }
@@ -1463,4 +1472,11 @@ public class K9 extends Application {
         }.execute();
     }
 
+    public static String getK9String(@StringRes int resId) {
+        return app.getString(resId);
+    }
+
+    public static String getK9String(@StringRes int resId, Object... args) {
+        return app.getString(resId, args);
+    }
 }
