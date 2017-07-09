@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import com.fsck.k9.R;
 import com.fsck.k9.mail.ConnectionSecurity;
 
-class ConnectionSecurityHolder {
+public class ConnectionSecurityHolder {
     final ConnectionSecurity connectionSecurity;
     private final Resources resources;
 
@@ -30,5 +30,9 @@ class ConnectionSecurityHolder {
             case SSL_TLS_REQUIRED:  return R.string.account_setup_incoming_security_ssl_label;
             default: return 0;
         }
+    }
+
+    public ConnectionSecurity getConnectionSecurity() {
+        return connectionSecurity;
     }
 }

@@ -10,8 +10,8 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.setup.AccountSetupIncoming;
-import com.fsck.k9.activity.setup.AccountSetupOutgoing;
+import com.fsck.k9.activity.setup.incoming.AccountSetupIncoming;
+import com.fsck.k9.activity.setup.outgoing.AccountSetupOutgoing;
 
 import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
 import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_FAILURE_COLOR;

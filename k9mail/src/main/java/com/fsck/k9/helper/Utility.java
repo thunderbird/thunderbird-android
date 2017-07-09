@@ -111,21 +111,22 @@ public class Utility {
 
 
     public static boolean requiredFieldValid(Editable s) {
+        return s != null && requiredFieldValid(s.toString());
+    }
+
+    public static boolean requiredFieldValid(String s) {
         return s != null && s.length() > 0;
     }
 
     public static boolean domainFieldValid(EditText view) {
-        if (view.getText() != null) {
-            String s = view.getText().toString();
-            if (s.matches("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)*[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?$") &&
-                s.length() <= 253) {
-                return true;
-            }
-            if (s.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")) {
-                return true;
-            }
-        }
-        return false;
+        return view != null && view.getText() != null && domainFieldValid(view.getText().toString());
+    }
+
+    public static boolean domainFieldValid(String s) {
+        return s.matches(
+                "^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)*[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?$") &&
+                s.length() <= 253 || s.matches(
+                "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
     }
 
     /*
