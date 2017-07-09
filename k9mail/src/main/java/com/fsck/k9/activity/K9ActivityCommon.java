@@ -31,6 +31,10 @@ public class K9ActivityCommon {
         return new K9ActivityCommon(activity);
     }
 
+    public static K9ActivityCommon newMaterialInstance(Activity activity) {
+        return new K9ActivityCommon(activity, true);
+    }
+
 
     /**
      * Base activities need to implement this interface.
@@ -48,8 +52,16 @@ public class K9ActivityCommon {
 
 
     private K9ActivityCommon(Activity activity) {
+        this(activity, false);
+    }
+
+    private K9ActivityCommon(Activity activity, boolean isMaterial) {
         mActivity = activity;
-        mActivity.setTheme(K9.getK9ThemeResourceId());
+        if (isMaterial) {
+            mActivity.setTheme(K9.getK9MaterialThemeResourceId());
+        } else {
+            mActivity.setTheme(K9.getK9ThemeResourceId());
+        }
     }
 
     /**
