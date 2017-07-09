@@ -1,75 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent" >
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="6dip"
-        android:fadingEdge="none"
-        android:scrollbarStyle="outsideInset" >
+        android:layout_height="wrap_content"
+        android:text="Add email"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:textSize="32sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="32dp" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:orientation="vertical" >
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/email_input_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/title"
+        android:layout_marginTop="100dp"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        android:layout_marginRight="24dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="24dp">
 
-            <EditText
-                android:id="@+id/account_email"
-                android:hint="@string/account_setup_basics_email_hint"
-                android:singleLine="true"
-                android:inputType="textEmailAddress"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/account_email"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textEmailAddress"
+            android:hint="email address" />
+    </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/account_password"
-                android:inputType="textPassword"
-                android:hint="@string/account_setup_basics_password_hint"
-                android:singleLine="true"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:nextFocusDown="@+id/next" />
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/password_input_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/title"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/email_input_layout"
+        android:layout_marginRight="24dp"
+        app:passwordToggleEnabled="true"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="24dp">
 
-            <CheckBox
-                android:id="@+id/show_password"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:text="@string/account_setup_basics_show_password" />
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/account_password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPassword"
+            android:hint="password" />
+    </android.support.design.widget.TextInputLayout>
 
-            <com.fsck.k9.view.ClientCertificateSpinner
-                android:id="@+id/account_client_certificate_spinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+    <LinearLayout
+        android:id="@+id/button_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
 
-            <com.fsck.k9.view.FoldableLinearLayout
-                android:id="@+id/foldable_advanced_options"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                custom:foldedLabel="@string/client_certificate_advanced_options"
-                custom:unFoldedLabel="@string/client_certificate_advanced_options" >
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
 
-                <CheckBox
-                    android:id="@+id/account_client_certificate"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/account_setup_basics_client_certificate" />
-            </com.fsck.k9.view.FoldableLinearLayout>
+        <Button
+            android:id="@+id/basics_next"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selectable_item_background"
+            android:text="@string/next_action" />
+    </LinearLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1" />
-        </LinearLayout>
-    </ScrollView>
+    <View
+        app:layout_constraintBottom_toTopOf="@+id/button_bar"
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/dividerHorizontal"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
 
-    <include layout="@layout/wizard_setup" />
-
-</LinearLayout>
+    <Button
+        android:id="@+id/manual_setup"
+        android:textColor="@android:color/holo_blue_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:text="Manual Setup"
+        app:layout_constraintLeft_toLeftOf="@+id/password_input_layout"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/password_input_layout" />
+</android.support.constraint.ConstraintLayout>

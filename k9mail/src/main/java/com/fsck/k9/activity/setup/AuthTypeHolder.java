@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import com.fsck.k9.R;
 import com.fsck.k9.mail.AuthType;
 
-class AuthTypeHolder {
+public class AuthTypeHolder {
     final AuthType authType;
     private final Resources resources;
     private boolean insecure;
@@ -47,5 +47,9 @@ class AuthTypeHolder {
             default:
                 return 0;
         }
+    }
+
+    public AuthType getAuthType() {
+        return authType;
     }
 }
