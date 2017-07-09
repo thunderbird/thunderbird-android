@@ -59,6 +59,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     protected volatile int messageCount = -1;
     protected volatile long uidNext = -1L;
+    private long uidValidity = -1L;
     private long highestModSeq = -1L;
     protected volatile ImapConnection connection;
     protected ImapStore store = null;
@@ -160,8 +161,9 @@ public class ImapFolder extends Folder<ImapMessage> {
             this.mode = mode;
 
             for (ImapResponse response : responses) {
-                handlePermanentFlags(response);
+                handleUidValidity(response);
                 handleHighestModSeq(response);
+                handlePermanentFlags(response);
             }
 
             handleSelectOrExamineOkResponse(getLastResponse(responses));
@@ -177,15 +179,16 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    private void handlePermanentFlags(ImapResponse response) {
-        PermanentFlagsResponse permanentFlagsResponse = PermanentFlagsResponse.parse(response);
-        if (permanentFlagsResponse == null) {
+    private void handleUidValidity(ImapResponse response) {
+        if (response.isTagged() || !equalsIgnoreCase(response.get(0), Responses.OK) || !response.isList(1)) {
             return;
         }
 
-        Set<Flag> permanentFlags = store.getPermanentFlagsIndex();
-        permanentFlags.addAll(permanentFlagsResponse.getFlags());
-        canCreateKeywords = permanentFlagsResponse.canCreateKeywords();
+        ImapList responseTextList = response.getList(1);
+        if (responseTextList.size() < 2 || !(equalsIgnoreCase(responseTextList.get(0), Responses.UIDVALIDITY))) {
+            return;
+        }
+        uidValidity = Long.parseLong(responseTextList.getString(1));
     }
 
     private void handleHighestModSeq(ImapResponse response) throws IOException, MessagingException{
@@ -205,6 +208,17 @@ public class ImapFolder extends Folder<ImapMessage> {
                 highestModSeq = Long.parseLong(responseTextList.getString(1));
             }
         }
+    }
+
+    private void handlePermanentFlags(ImapResponse response) {
+        PermanentFlagsResponse permanentFlagsResponse = PermanentFlagsResponse.parse(response);
+        if (permanentFlagsResponse == null) {
+            return;
+        }
+
+        Set<Flag> permanentFlags = store.getPermanentFlagsIndex();
+        permanentFlags.addAll(permanentFlagsResponse.getFlags());
+        canCreateKeywords = permanentFlagsResponse.canCreateKeywords();
     }
 
     private void handleSelectOrExamineOkResponse(ImapResponse response) {
@@ -477,6 +491,10 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     public boolean supportsModSeq() throws MessagingException {
         return !(highestModSeq == -1);
+    }
+
+    public long getUidValidity() {
+        return uidValidity;
     }
 
     public long getHighestModSeq() {

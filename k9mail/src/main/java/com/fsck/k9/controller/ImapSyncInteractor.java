@@ -27,6 +27,7 @@ class ImapSyncInteractor {
     static int performSync(Account account, MessagingListener listener, LocalFolder localFolder, ImapFolder imapFolder,
             MessagingController controller, MessageDownloader messageDownloader) throws  Exception {
 
+        handleUidValidity(account, listener, localFolder, imapFolder, controller);
         Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
         String folderName = localFolder.getName();
         /*
@@ -86,7 +87,7 @@ class ImapSyncInteractor {
          */
         boolean useCondstore = false;
         long cachedHighestModSeq = localFolder.getHighestModSeq();
-        if (cachedHighestModSeq !=0 && imapFolder.supportsModSeq()) {
+        if (cachedHighestModSeq != 0 && imapFolder.supportsModSeq()) {
             useCondstore = true;
         }
         int newMessages = messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false,
@@ -98,8 +99,29 @@ class ImapSyncInteractor {
             newMessages += messageDownloader.downloadMessages(account, imapFolder, localFolder, syncFlagMessages,
                     false, true, true);
         }
+        localFolder.setUidValidity(imapFolder.getUidValidity());
         updateHighestModSeqIfNecessary(localFolder, imapFolder);
         return newMessages;
+    }
+
+    private static void handleUidValidity(Account account, MessagingListener listener, LocalFolder localFolder,
+            ImapFolder imapFolder, MessagingController controller) throws MessagingException {
+        long cachedUidValidity = localFolder.getUidValidity();
+        long currentUidValidity = imapFolder.getUidValidity();
+
+        if (cachedUidValidity != 0L && cachedUidValidity != currentUidValidity) {
+
+            List<String> localMessageUidList = new ArrayList<>(localFolder.getAllMessagesAndEffectiveDates().keySet());
+            List<LocalMessage> destroyedMessages = localFolder.getMessagesByUids(localMessageUidList);
+
+            localFolder.destroyMessages(localFolder.getMessagesByUids(localMessageUidList));
+            for (Message destroyMessage : destroyedMessages) {
+                for (MessagingListener l : controller.getListeners(listener)) {
+                    l.synchronizeMailboxRemovedMessage(account, imapFolder.getName(), destroyMessage);
+                }
+            }
+            localFolder.setHighestModSeq(0);
+        }
     }
 
     static void updateHighestModSeqIfNecessary(final LocalFolder localFolder, final Folder remoteFolder)

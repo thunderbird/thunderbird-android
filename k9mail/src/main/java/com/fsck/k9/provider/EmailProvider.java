@@ -99,6 +99,7 @@ public class EmailProvider extends ContentProvider {
             FolderColumns.UNREAD_COUNT,
             FolderColumns.VISIBLE_LIMIT,
             FolderColumns.STATUS,
+            FolderColumns.UID_VALIDITY,
             FolderColumns.HIGHEST_MOD_SEQ,
             FolderColumns.PUSH_STATE,
             FolderColumns.LAST_PUSHED,
@@ -167,6 +168,7 @@ public class EmailProvider extends ContentProvider {
         String UNREAD_COUNT = "unread_count";
         String VISIBLE_LIMIT = "visible_limit";
         String STATUS = "status";
+        String UID_VALIDITY = "uid_validity";
         String HIGHEST_MOD_SEQ = "highest_mod_seq";
         String PUSH_STATE = "push_state";
         String LAST_PUSHED = "last_pushed";

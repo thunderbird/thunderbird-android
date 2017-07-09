@@ -82,6 +82,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     private long mFolderId = -1;
     private int mVisibleLimit = -1;
     private String prefId = null;
+    private long uidValidity = -1;
     private long highestModSeq = -1;
     private FolderClass mDisplayClass = FolderClass.NO_CLASS;
     private FolderClass mSyncClass = FolderClass.INHERITED;
@@ -188,6 +189,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         mFolderId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
         mName = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
         mVisibleLimit = cursor.getInt(LocalStore.FOLDER_VISIBLE_LIMIT_INDEX);
+        uidValidity = cursor.getInt(LocalStore.FOLDER_UID_VALIDITY_INDEX);
         highestModSeq = cursor.getInt(LocalStore.FOLDER_HIGHEST_MOD_SEQ_INDEX);
         mPushState = cursor.getString(LocalStore.FOLDER_PUSH_STATE_INDEX);
         super.setStatus(cursor.getString(LocalStore.FOLDER_STATUS_INDEX));
@@ -438,7 +440,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         updateFolderColumn("status", status);
     }
 
-    public void setHighestModSeq(final long highestModSeq) throws MessagingException{
+    public void setUidValidity(final long uidValidity) throws MessagingException {
+        updateFolderColumn("uid_validity", uidValidity);
+    }
+
+    public void setHighestModSeq(final long highestModSeq) throws MessagingException {
+        this.highestModSeq = highestModSeq;
         updateFolderColumn("highest_mod_seq", highestModSeq);
     }
 
@@ -464,6 +471,10 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
+    }
+
+    public long getUidValidity() {
+        return uidValidity;
     }
 
     public long getHighestModSeq() {

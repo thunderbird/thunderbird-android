@@ -6,6 +6,16 @@ import android.database.sqlite.SQLiteException;
 
 
 class MigrationTo61 {
+    public static void foldersAddUidValidityColumn(SQLiteDatabase db) {
+        try {
+            db.execSQL("ALTER TABLE folders ADD uid_validity INTEGER default 0");
+        } catch (SQLiteException e) {
+            if (!e.getMessage().startsWith("duplicate column name:")) {
+                throw e;
+            }
+        }
+    }
+
     public static void foldersAddHighestModSeqColumn(SQLiteDatabase db) {
         try {
             db.execSQL("ALTER TABLE folders ADD highest_mod_seq INTEGER default 0");

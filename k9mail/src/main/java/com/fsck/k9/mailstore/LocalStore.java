@@ -104,24 +104,25 @@ public class LocalStore extends Store implements Serializable {
                     "forwarded, message_part_id, messages.mime_type, preview_type, header ";
 
     static final String GET_FOLDER_COLS =
-            "folders.id, name, visible_limit, last_updated, status, highest_mod_seq, push_state, last_pushed, " +
-                    "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages";
+            "folders.id, name, visible_limit, last_updated, status, uid_validity, highest_mod_seq, push_state, " +
+                    "last_pushed, integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages";
 
     static final int FOLDER_ID_INDEX = 0;
     static final int FOLDER_NAME_INDEX = 1;
     static final int FOLDER_VISIBLE_LIMIT_INDEX = 2;
     static final int FOLDER_LAST_CHECKED_INDEX = 3;
     static final int FOLDER_STATUS_INDEX = 4;
-    static final int FOLDER_HIGHEST_MOD_SEQ_INDEX = 5;
-    static final int FOLDER_PUSH_STATE_INDEX = 6;
-    static final int FOLDER_LAST_PUSHED_INDEX = 7;
-    static final int FOLDER_INTEGRATE_INDEX = 8;
-    static final int FOLDER_TOP_GROUP_INDEX = 9;
-    static final int FOLDER_SYNC_CLASS_INDEX = 10;
-    static final int FOLDER_PUSH_CLASS_INDEX = 11;
-    static final int FOLDER_DISPLAY_CLASS_INDEX = 12;
-    static final int FOLDER_NOTIFY_CLASS_INDEX = 13;
-    static final int MORE_MESSAGES_INDEX = 14;
+    static final int FOLDER_UID_VALIDITY_INDEX = 5;
+    static final int FOLDER_HIGHEST_MOD_SEQ_INDEX = 6;
+    static final int FOLDER_PUSH_STATE_INDEX = 7;
+    static final int FOLDER_LAST_PUSHED_INDEX = 8;
+    static final int FOLDER_INTEGRATE_INDEX = 9;
+    static final int FOLDER_TOP_GROUP_INDEX = 10;
+    static final int FOLDER_SYNC_CLASS_INDEX = 11;
+    static final int FOLDER_PUSH_CLASS_INDEX = 12;
+    static final int FOLDER_DISPLAY_CLASS_INDEX = 13;
+    static final int FOLDER_NOTIFY_CLASS_INDEX = 14;
+    static final int MORE_MESSAGES_INDEX = 15;
 
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 
