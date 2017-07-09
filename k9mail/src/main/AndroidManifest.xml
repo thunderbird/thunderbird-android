@@ -110,7 +110,7 @@
             android:label="@string/font_size_settings_title"/>
 
         <activity
-            android:name=".activity.setup.AccountSetupBasics"
+            android:name=".activity.setup.basics.AccountSetupBasics"
             android:configChanges="locale"
             android:label="@string/account_setup_basics_title"/>
 
