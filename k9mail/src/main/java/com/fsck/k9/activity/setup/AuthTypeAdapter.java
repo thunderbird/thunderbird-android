@@ -6,7 +6,7 @@ import android.widget.ArrayAdapter;
 import com.fsck.k9.mail.AuthType;
 
 
-class AuthTypeAdapter extends ArrayAdapter<AuthTypeHolder> {
+public class AuthTypeAdapter extends ArrayAdapter<AuthTypeHolder> {
     public AuthTypeAdapter(Context context, int resource, AuthTypeHolder[] holders) {
         super(context, resource, holders);
     }

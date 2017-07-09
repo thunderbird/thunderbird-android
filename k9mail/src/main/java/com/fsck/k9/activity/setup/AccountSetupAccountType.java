@@ -4,6 +4,8 @@ package com.fsck.k9.activity.setup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.fsck.k9.activity.setup.incoming.AccountSetupIncoming;
 import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;

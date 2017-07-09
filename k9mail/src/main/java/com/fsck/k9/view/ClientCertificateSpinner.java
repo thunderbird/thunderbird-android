@@ -6,10 +6,13 @@ import com.fsck.k9.R;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import android.util.AttributeSet;
 import timber.log.Timber;
+
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +41,8 @@ public class ClientCertificateSpinner extends LinearLayout {
 
         if (context instanceof Activity) {
             mActivity = (Activity) context;
+        } else if (context instanceof ContextThemeWrapper) {
+            mActivity = getActivity();
         } else {
             Timber.e("ClientCertificateSpinner init failed! Please inflate with Activity!");
         }
@@ -62,6 +67,17 @@ public class ClientCertificateSpinner extends LinearLayout {
                 onDelete();
             }
         });
+    }
+
+    public Activity getActivity() {
+        Context context = getContext();
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity)context;
+            }
+            context = ((ContextWrapper)context).getBaseContext();
+        }
+        return null;
     }
 
     public void setAlias(String alias) {
