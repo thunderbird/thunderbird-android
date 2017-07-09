@@ -114,6 +114,9 @@
             android:configChanges="locale"
             android:label="@string/account_setup_basics_title"/>
 
+        <activity android:name=".activity.setup.checksettings.AccountSetupCheckSettings"
+            android:configChanges="locale"/>
+
         <activity
             android:name=".activity.setup.AccountSetupAccountType"
             android:configChanges="locale"

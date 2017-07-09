@@ -39,6 +39,7 @@ dependencies {
     compile 'de.cketti.safecontentresolver:safe-content-resolver-v14:0.9.0'
     compile 'com.github.amlcurran.showcaseview:library:5.4.1'
     compile 'com.squareup.moshi:moshi:1.2.0'
+    compile 'me.zhanghai.android.materialprogressbar:library:1.4.1'
     compile "com.jakewharton.timber:timber:${timberVersion}"
 
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
