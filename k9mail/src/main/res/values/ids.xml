@@ -7,4 +7,7 @@
     <item type="id" name="dialog_attachment_progress"/>
     <item type="id" name="dialog_account_setup_error"/>
 
+    <!-- https://stackoverflow.com/questions/41303347/couldnt-resolve-resource-id-visible-when-using-textinputlayout -->
+    <item name="visible" type="id"/>
+    <item name="masked" type="id"/>
 </resources>

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.activity.setup.basics.AccountSetupBasics;
 import com.fsck.k9.message.html.HtmlConverter;
 
 /**
