@@ -21,7 +21,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import timber.log.Timber;
 
-import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
+import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;

@@ -736,4 +736,10 @@
         <incoming uri="imap+ssl+://imap.bestpractical.com"  username="$user" />
         <outgoing uri="smtp+tls+://smtp.bestpractical.com:2525" />
     </provider>
+
+
+    <provider id="qq.com" label="QQ" domain="qq.com" >
+        <incoming uri="imap+ssl+://imap.qq.com:993"  username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.qq.com:465" username="$email"/>
+    </provider>
 </providers>
