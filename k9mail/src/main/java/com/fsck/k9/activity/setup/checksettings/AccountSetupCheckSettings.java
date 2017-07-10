@@ -78,9 +78,9 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
         }
     }
 
-    public static void startChecking(Activity activity, Account account, CheckDirection checkDirection) {
+    public static void startChecking(Activity activity, String accountUuid, CheckDirection checkDirection) {
         Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_ACCOUNT, account.getUuid());
+        bundle.putString(EXTRA_ACCOUNT, accountUuid);
         bundle.putSerializable(EXTRA_CHECK_DIRECTION, checkDirection);
 
         Intent intent = new Intent(activity, AccountSetupCheckSettings.class);
@@ -237,7 +237,6 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
         switch (dialogId) {
             case R.id.dialog_account_setup_error: {
                 presenter.skip();
-                presenter.autoConfiguration(email, password);
                 break;
             }
         }
