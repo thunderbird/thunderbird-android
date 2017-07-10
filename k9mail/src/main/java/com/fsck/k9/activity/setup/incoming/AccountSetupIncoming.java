@@ -477,7 +477,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener,
                     webdavPathPrefix, webdavAuthPath, webdavMailboxPath, host, port, connectionSecurity, authType,
                     compressMobile, compressWifi, compressOther, subscribeFoldersOnly);
 
-            AccountSetupCheckSettings.startChecking(this, presenter.getAccount(), CheckDirection.INCOMING);
+            AccountSetupCheckSettings.startChecking(this, presenter.getAccount().getUuid(), CheckDirection.INCOMING);
         } catch (Exception e) {
             failure(e);
         }
