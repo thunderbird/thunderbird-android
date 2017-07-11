@@ -254,7 +254,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         onInputChanged();
     }
 
-    private void failure(Exception use) {
+    @Override
+    public void onAccountLoadFailure(Exception use) {
         Timber.e(use, "Failure");
         String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
 
