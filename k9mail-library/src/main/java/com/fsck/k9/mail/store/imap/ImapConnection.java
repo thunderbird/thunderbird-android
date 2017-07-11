@@ -130,6 +130,7 @@ public class ImapConnection {
             extractOrRequestCapabilities(responses);
 
             enableCompressionIfRequested();
+            enableExtensionsIfAvailable();
 
             retrievePathPrefixIfNecessary();
             retrievePathDelimiterIfNecessary();
@@ -601,6 +602,17 @@ public class ImapConnection {
         }
     }
 
+    private void enableExtensionsIfAvailable() throws IOException, MessagingException {
+        if (hasCapability(Capabilities.ENABLE)) {
+            if (hasCapability(Capabilities.CONDSTORE)) {
+                executeSimpleCommand(String.format("%s %s", Capabilities.ENABLE, Capabilities.CONDSTORE));
+            }
+            if (hasCapability(Capabilities.QRESYNC)) {
+                executeSimpleCommand(String.format("%s %s", Capabilities.ENABLE, Capabilities.QRESYNC));
+            }
+        }
+    }
+
     private void retrievePathPrefixIfNecessary() throws IOException, MessagingException {
         if (settings.getPathPrefix() != null) {
             return;
@@ -679,12 +691,16 @@ public class ImapConnection {
         return isListResponse && hierarchyDelimiterValid;
     }
 
-    protected boolean hasCapability(String capability) {
+    boolean hasCapability(String capability) {
         return capabilities.contains(capability.toUpperCase(Locale.US));
     }
 
-    public boolean isCondstoreCapable() throws IOException, MessagingException  {
+    public boolean isCondstoreCapable() throws IOException, MessagingException {
         return hasCapability(Capabilities.CONDSTORE);
+    }
+
+    boolean isQresyncCapable() throws IOException, MessagingException {
+        return hasCapability(Capabilities.QRESYNC);
     }
 
     protected boolean isIdleCapable() {
