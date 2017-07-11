@@ -43,7 +43,6 @@ import com.fsck.k9.mail.store.imap.selectedstate.response.UidSearchResponse;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
-import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
 public class ImapFolder extends Folder<ImapMessage> {
@@ -120,7 +119,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public void open(int mode) throws MessagingException {
-        internalOpen(mode, 0, 0, null);
+        internalOpen(mode, 0, 0, null, true);
 
         if (messageCount == -1) {
             throw new MessagingException("Did not find message count during open");
@@ -129,20 +128,20 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     public void open(int mode, long cachedUidValidity, long cachedHighestModSeq, List<Long> cachedUids)
             throws MessagingException {
-        internalOpen(mode, cachedUidValidity, cachedHighestModSeq, cachedUids);
+        internalOpen(mode, cachedUidValidity, cachedHighestModSeq, cachedUids, false);
 
         if (messageCount == -1) {
             throw new MessagingException("Did not find message count during open");
         }
     }
 
-    List<ImapResponse> internalOpen(int mode, long cachedUidValidity, long cachedHighestModSeq, List<Long> cachedUids)
-            throws MessagingException {
-        if (isOpen() && this.mode == mode) {
+    SelectOrExamineResponse internalOpen(int mode, long cachedUidValidity, long cachedHighestModSeq,
+            List<Long> cachedUids, boolean reuseConnection) throws MessagingException {
+        if (reuseConnection && isOpen() && this.mode == mode) {
             // Make sure the connection is valid. If it's not we'll close it down and continue
             // on to get a new one.
             try {
-                return executeSimpleCommand(Commands.NOOP);
+                return SelectOrExamineResponse.parse(executeSimpleCommand(Commands.NOOP), store.getPermanentFlagsIndex());
             } catch (IOException ioe) {
                 /* don't throw */ ioExceptionHandler(connection, ioe);
             }
@@ -168,84 +167,33 @@ public class ImapFolder extends Folder<ImapMessage> {
             } else {
                 command = SelectOrExamineCommand.createNormal(mode, escapedFolderName);
             }
-            List<ImapResponse> responses = executeSimpleCommand(command.createCommandString());
+
+            SelectOrExamineResponse response = SelectOrExamineResponse.parse(
+                    executeSimpleCommand(command.createCommandString()),
+                    store.getPermanentFlagsIndex());
 
             /*
              * If the command succeeds we expect the folder has been opened read-write unless we
              * are notified otherwise in the responses.
              */
             this.mode = mode;
-
-            for (ImapResponse response : responses) {
-                handleUidValidity(response);
-                handleHighestModSeq(response);
-                handlePermanentFlags(response);
+            if (response == null) {
+                // This shouldn't happen
+                return null;
             }
-
-            handleSelectOrExamineOkResponse(getLastResponse(responses));
-
+            if (response.hasOpenMode()) {
+                this.mode = response.getOpenMode();
+            }
             exists = true;
-
-            return responses;
+            uidValidity = response.getUidValidity();
+            highestModSeq = response.getHighestModSeq();
+            canCreateKeywords = response.canCreateKeywords();
+            return response;
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         } catch (MessagingException me) {
             Timber.e(me, "Unable to open connection for %s", getLogId());
             throw me;
-        }
-    }
-
-    private void handleUidValidity(ImapResponse response) {
-        if (response.isTagged() || !equalsIgnoreCase(response.get(0), Responses.OK) || !response.isList(1)) {
-            return;
-        }
-
-        ImapList responseTextList = response.getList(1);
-        if (responseTextList.size() < 2 || !(equalsIgnoreCase(responseTextList.get(0), Responses.UIDVALIDITY))) {
-            return;
-        }
-        uidValidity = Long.parseLong(responseTextList.getString(1));
-    }
-
-    private void handleHighestModSeq(ImapResponse response) throws IOException, MessagingException{
-        if (connection.isCondstoreCapable()) {
-            if (response.isTagged() || !equalsIgnoreCase(response.get(0), Responses.OK) || !response.isList(1)) {
-                return;
-            }
-
-            ImapList responseTextList = response.getList(1);
-            if (responseTextList.size() < 2 || !(equalsIgnoreCase(responseTextList.get(0), Responses.HIGHESTMODSEQ)
-                    || equalsIgnoreCase(responseTextList.get(1), Responses.NOMODSEQ)) ||
-                    !responseTextList.isString(1)) {
-                return;
-            }
-
-            if (equalsIgnoreCase(responseTextList.get(0), Responses.HIGHESTMODSEQ)) {
-                highestModSeq = Long.parseLong(responseTextList.getString(1));
-            }
-        }
-    }
-
-    private void handlePermanentFlags(ImapResponse response) {
-        PermanentFlagsResponse permanentFlagsResponse = PermanentFlagsResponse.parse(response);
-        if (permanentFlagsResponse == null) {
-            return;
-        }
-
-        Set<Flag> permanentFlags = store.getPermanentFlagsIndex();
-        permanentFlags.addAll(permanentFlagsResponse.getFlags());
-        canCreateKeywords = permanentFlagsResponse.canCreateKeywords();
-    }
-
-    private void handleSelectOrExamineOkResponse(ImapResponse response) {
-        SelectOrExamineResponse selectOrExamineResponse = SelectOrExamineResponse.parse(response);
-        if (selectOrExamineResponse == null) {
-            // This shouldn't happen
-            return;
-        }
-
-        if (selectOrExamineResponse.hasOpenMode()) {
-            mode = selectOrExamineResponse.getOpenMode();
         }
     }
 
