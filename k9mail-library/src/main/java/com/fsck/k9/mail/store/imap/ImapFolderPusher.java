@@ -325,7 +325,7 @@ class ImapFolderPusher extends ImapFolder {
 
         private boolean openConnectionIfNecessary() throws MessagingException {
             ImapConnection oldConnection = connection;
-            internalOpen(OPEN_MODE_RO);
+            internalOpen(OPEN_MODE_RO, 0, 0, null);
 
             ImapConnection conn = connection;
 

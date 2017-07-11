@@ -120,14 +120,24 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public void open(int mode) throws MessagingException {
-        internalOpen(mode);
+        internalOpen(mode, 0, 0, null);
 
         if (messageCount == -1) {
             throw new MessagingException("Did not find message count during open");
         }
     }
 
-    protected List<ImapResponse> internalOpen(int mode) throws MessagingException {
+    public void open(int mode, long cachedUidValidity, long cachedHighestModSeq, List<Long> cachedUids)
+            throws MessagingException {
+        internalOpen(mode, cachedUidValidity, cachedHighestModSeq, cachedUids);
+
+        if (messageCount == -1) {
+            throw new MessagingException("Did not find message count during open");
+        }
+    }
+
+    List<ImapResponse> internalOpen(int mode, long cachedUidValidity, long cachedHighestModSeq, List<Long> cachedUids)
+            throws MessagingException {
         if (isOpen() && this.mode == mode) {
             // Make sure the connection is valid. If it's not we'll close it down and continue
             // on to get a new one.
@@ -147,12 +157,18 @@ public class ImapFolder extends Folder<ImapMessage> {
         try {
             msgSeqUidMap.clear();
 
-            String openCommand = mode == OPEN_MODE_RW ? "SELECT" : "EXAMINE";
             String encodedFolderName = folderNameCodec.encode(getPrefixedName());
             String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
-            String condstoreParameter = connection.isCondstoreCapable() ? " (CONDSTORE)" : "";
-            String command = String.format("%s %s%s", openCommand, escapedFolderName, condstoreParameter);
-            List<ImapResponse> responses = executeSimpleCommand(command);
+            SelectOrExamineCommand command;
+            if (connection.isQresyncCapable()) {
+                command = SelectOrExamineCommand.createWithQresyncParameter(mode, escapedFolderName, cachedUidValidity,
+                        cachedHighestModSeq, cachedUids);
+            } else if (connection.isCondstoreCapable()) {
+                command = SelectOrExamineCommand.createWithCondstoreParameter(mode, escapedFolderName);
+            } else {
+                command = SelectOrExamineCommand.createNormal(mode, escapedFolderName);
+            }
+            List<ImapResponse> responses = executeSimpleCommand(command.createCommandString());
 
             /*
              * If the command succeeds we expect the folder has been opened read-write unless we
@@ -491,6 +507,10 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     public boolean supportsModSeq() throws MessagingException {
         return !(highestModSeq == -1);
+    }
+
+    public boolean supportsQresync() throws IOException, MessagingException {
+        return supportsModSeq() && connection.isQresyncCapable();
     }
 
     public long getUidValidity() {
