@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -992,7 +993,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
-    public List<LocalMessage> getMessagesByUids(@NonNull List<String> uids) throws MessagingException {
+    public List<LocalMessage> getMessagesByUids(@NonNull Collection<String> uids) throws MessagingException {
         open(OPEN_MODE_RW);
         List<LocalMessage> messages = new ArrayList<>();
         for (String uid : uids) {

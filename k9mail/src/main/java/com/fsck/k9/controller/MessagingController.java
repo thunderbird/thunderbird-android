@@ -88,7 +88,6 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
-import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -711,219 +710,64 @@ public class MessagingController {
     /**
      * Start foreground synchronization of the specified folder. This is generally only called
      * by synchronizeMailbox.
-     * <p>
-     * TODO Break this method up into smaller chunks.
      */
     @VisibleForTesting
-    void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener,
+    void synchronizeMailboxSynchronous(final Account account, final String folderName, final MessagingListener listener,
             Folder providedRemoteFolder) {
-        Folder remoteFolder = null;
-        LocalFolder tLocalFolder = null;
 
-        Timber.i("Synchronizing folder %s:%s", account.getDescription(), folder);
+        /*
+         * Synchronization process:
+         *
+        Open the folder
+        Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
+        Get the message count
+        Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
+        getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
+        See if we have each message locally, if not fetch it's flags and envelope
+        Get and update the unread count for the folder
+        Update the remote flags of any messages we have locally with an internal date newer than the remote message.
+        Get the current flags for any messages we have locally but did not just download
+        Update local flags
+        For any message we have locally but not remotely, delete the local message to keep cache clean.
+        Download larger parts of any new messages.
+        (Optional) Download small attachments in the background.
+         */
+
+        Timber.i("Synchronizing folder %s:%s", account.getDescription(), folderName);
 
         for (MessagingListener l : getListeners(listener)) {
-            l.synchronizeMailboxStarted(account, folder);
+            l.synchronizeMailboxStarted(account, folderName);
         }
+
         /*
          * We don't ever sync the Outbox or errors folder
          */
-        if (folder.equals(account.getOutboxFolderName()) || folder.equals(account.getErrorFolderName())) {
+        if (folderName.equals(account.getOutboxFolderName()) || folderName.equals(account.getErrorFolderName())) {
             for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxFinished(account, folder, 0, 0);
+                l.synchronizeMailboxFinished(account, folderName, 0, 0);
             }
-
             return;
         }
 
-        Exception commandException = null;
-        try {
-            Timber.d("SYNC: About to process pending commands for account %s", account.getDescription());
-
-            try {
-                processPendingCommandsSynchronous(account);
-            } catch (Exception e) {
-                addErrorMessage(account, null, e);
-
-                Timber.e(e, "Failure processing command, but allow message sync attempt");
-                commandException = e;
-            }
-
-            /*
-             * Get the message list from the local store and create an index of
-             * the uids within the list.
-             */
-            Timber.v("SYNC: About to get local folder %s", folder);
-
-            final LocalStore localStore = account.getLocalStore();
-            tLocalFolder = localStore.getFolder(folder);
-            final LocalFolder localFolder = tLocalFolder;
-            localFolder.open(Folder.OPEN_MODE_RW);
-            localFolder.updateLastUid();
-
-            if (providedRemoteFolder != null) {
-                Timber.v("SYNC: using providedRemoteFolder %s", folder);
-                remoteFolder = providedRemoteFolder;
-            } else {
-                Store remoteStore = account.getRemoteStore();
-
-                Timber.v("SYNC: About to get remote folder %s", folder);
-                remoteFolder = remoteStore.getFolder(folder);
-
-                if (!verifyOrCreateRemoteSpecialFolder(account, folder, remoteFolder, listener)) {
-                    return;
-                }
-
-
-                /*
-                 * Synchronization process:
-                 *
-                Open the folder
-                Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
-                Get the message count
-                Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
-                getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
-                See if we have each message locally, if not fetch it's flags and envelope
-                Get and update the unread count for the folder
-                Update the remote flags of any messages we have locally with an internal date newer than the remote message.
-                Get the current flags for any messages we have locally but did not just download
-                Update local flags
-                For any message we have locally but not remotely, delete the local message to keep cache clean.
-                Download larger parts of any new messages.
-                (Optional) Download small attachments in the background.
-                 */
-
-                /*
-                 * Open the remote folder. This pre-loads certain metadata like message count.
-                 */
-                Timber.v("SYNC: About to open remote folder %s", folder);
-
-                remoteFolder.open(Folder.OPEN_MODE_RW);
-                if (Expunge.EXPUNGE_ON_POLL == account.getExpungePolicy()) {
-                    Timber.d("SYNC: Expunging folder %s:%s", account.getDescription(), folder);
-                    remoteFolder.expunge();
-                }
-
-            }
-
-            int newMessages;
-
-            if (remoteFolder instanceof ImapFolder) {
-                newMessages = ImapSyncInteractor.performSync(account, listener, localFolder,
-                        (ImapFolder) remoteFolder, this, messageDownloader);
-            } else {
-                newMessages = LegacySyncInteractor.performSync(account, listener, localFolder, remoteFolder, this,
-                        messageDownloader);
-            }
-
-            int unreadMessageCount = localFolder.getUnreadMessageCount();
-            for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folder, unreadMessageCount);
-            }
-            /* Notify listeners that we're finally done. */
-
-            localFolder.setLastChecked(System.currentTimeMillis());
-            localFolder.setStatus(null);
-
-            Timber.d("Done synchronizing folder %s:%s @ %tc with %d new messages",
-                    account.getDescription(),
-                    folder,
-                    System.currentTimeMillis(),
-                    newMessages);
-
-            for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxFinished(account, folder, remoteFolder.getMessageCount(), newMessages);
-            }
-
-
-            if (commandException != null) {
-                String rootMessage = getRootCauseMessage(commandException);
-                Timber.e("Root cause failure in %s:%s was '%s'",
-                        account.getDescription(), tLocalFolder.getName(), rootMessage);
-                localFolder.setStatus(rootMessage);
-                for (MessagingListener l : getListeners(listener)) {
-                    l.synchronizeMailboxFailed(account, folder, rootMessage);
-                }
-            }
-
-            Timber.i("Done synchronizing folder %s:%s", account.getDescription(), folder);
-
-        } catch (AuthenticationFailedException e) {
-            handleAuthenticationFailure(account, true);
-
-            for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxFailed(account, folder, "Authentication failure");
-            }
-        } catch (Exception e) {
-            Timber.e(e, "synchronizeMailbox");
-            // If we don't set the last checked, it can try too often during
-            // failure conditions
-            String rootMessage = getRootCauseMessage(e);
-            if (tLocalFolder != null) {
-                try {
-                    tLocalFolder.setStatus(rootMessage);
-                    tLocalFolder.setLastChecked(System.currentTimeMillis());
-                } catch (MessagingException me) {
-                    Timber.e(e, "Could not set last checked on folder %s:%s",
-                            account.getDescription(), tLocalFolder.getName());
-                }
-            }
-
-            for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxFailed(account, folder, rootMessage);
-            }
-            notifyUserIfCertificateProblem(account, e, true);
-            addErrorMessage(account, null, e);
-            Timber.e("Failed synchronizing folder %s:%s @ %tc", account.getDescription(), folder,
-                    System.currentTimeMillis());
-
-        } finally {
-            if (providedRemoteFolder == null) {
-                closeFolder(remoteFolder);
-            }
-
-            closeFolder(tLocalFolder);
+        String storeUri = account.getStoreUri();
+        if (storeUri.startsWith("imap")) {
+            ImapSyncInteractor.performSync(account, folderName, listener, this, messageDownloader);
+        } else {
+            LegacySyncInteractor.performSync(account, folderName, listener, this, messageDownloader);
         }
-
     }
 
     void handleAuthenticationFailure(Account account, boolean incoming) {
         notificationController.showAuthenticationErrorNotification(account, incoming);
     }
 
-    private static void closeFolder(Folder f) {
+    static void closeFolder(Folder f) {
         if (f != null) {
             f.close();
         }
     }
 
-    /*
-     * If the folder is a "special" folder we need to see if it exists
-     * on the remote server. It if does not exist we'll try to create it. If we
-     * can't create we'll abort. This will happen on every single Pop3 folder as
-     * designed and on Imap folders during error conditions. This allows us
-     * to treat Pop3 and Imap the same in this code.
-     */
-    private boolean verifyOrCreateRemoteSpecialFolder(Account account, String folder, Folder remoteFolder,
-            MessagingListener listener) throws MessagingException {
-        if (folder.equals(account.getTrashFolderName()) ||
-                folder.equals(account.getSentFolderName()) ||
-                folder.equals(account.getDraftsFolderName())) {
-            if (!remoteFolder.exists()) {
-                if (!remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.synchronizeMailboxFinished(account, folder, 0, 0);
-                    }
-
-                    Timber.i("Done synchronizing folder %s", folder);
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private String getRootCauseMessage(Throwable t) {
+    static String getRootCauseMessage(Throwable t) {
         Throwable rootCause = t;
         Throwable nextCause;
         do {
@@ -978,7 +822,7 @@ public class MessagingController {
         });
     }
 
-    private void processPendingCommandsSynchronous(Account account) throws MessagingException {
+    void processPendingCommandsSynchronous(Account account) throws MessagingException {
         LocalStore localStore = account.getLocalStore();
         List<PendingCommand> commands = localStore.getPendingCommands();
 
@@ -3468,7 +3312,7 @@ public class MessagingController {
         notificationController.clearCertificateErrorNotifications(account, incoming);
     }
 
-    public void notifyUserIfCertificateProblem(Account account, Exception exception, boolean incoming) {
+    void notifyUserIfCertificateProblem(Account account, Exception exception, boolean incoming) {
         if (!(exception instanceof CertificateValidationException)) {
             return;
         }
