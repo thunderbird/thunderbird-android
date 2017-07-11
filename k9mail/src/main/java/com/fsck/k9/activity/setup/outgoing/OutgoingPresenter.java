@@ -17,8 +17,6 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Transport;
 
-import timber.log.Timber;
-
 
 class OutgoingPresenter implements OutgoingContract.Presenter {
     private View view;
@@ -57,37 +55,40 @@ class OutgoingPresenter implements OutgoingContract.Presenter {
                 return;
             }
         } catch (URISyntaxException e) {
-            Timber.e(e, "Account retrieved from intent doesn't have valid store URI");
-            return;
+            view.onAccountLoadFailure(e);
         }
 
-        settings = Transport.decodeTransportUri(account.getTransportUri());
+        try {
+            settings = Transport.decodeTransportUri(account.getTransportUri());
 
-        currentAuthType = settings.authenticationType;
-        setAuthType(currentAuthType);
+            currentAuthType = settings.authenticationType;
+            setAuthType(currentAuthType);
 
-        currentSecurityType = settings.connectionSecurity;
-        setSecurityType(currentSecurityType);
+            currentSecurityType = settings.connectionSecurity;
+            setSecurityType(currentSecurityType);
 
-        if (settings.username != null && !settings.username.isEmpty()) {
-            view.setUsername(settings.username);
-        }
+            if (settings.username != null && !settings.username.isEmpty()) {
+                view.setUsername(settings.username);
+            }
 
-        if (settings.password != null) {
-            view.setPassword(settings.password);
-        }
+            if (settings.password != null) {
+                view.setPassword(settings.password);
+            }
 
-        if (settings.clientCertificateAlias != null) {
-            view.setCertificateAlias(settings.clientCertificateAlias);
-        }
+            if (settings.clientCertificateAlias != null) {
+                view.setCertificateAlias(settings.clientCertificateAlias);
+            }
 
-        if (settings.host != null) {
-            view.setServer(settings.host);
-        }
+            if (settings.host != null) {
+                view.setServer(settings.host);
+            }
 
-        if (settings.port != -1) {
-            currentPort = String.valueOf(settings.port);
-            view.setPort(currentPort);
+            if (settings.port != -1) {
+                currentPort = String.valueOf(settings.port);
+                view.setPort(currentPort);
+            }
+        } catch (Exception e) {
+            view.onAccountLoadFailure(e);
         }
     }
 
@@ -123,7 +124,8 @@ class OutgoingPresenter implements OutgoingContract.Presenter {
 
     @Override
     public void onNext(String username, String password, String clientCertificateAlias,
-                       String host, int port, ConnectionSecurity connectionSecurity, AuthType authType, boolean requireLogin) {
+                       String host, int port, ConnectionSecurity connectionSecurity,
+                       AuthType authType, boolean requireLogin) {
 
         if (!requireLogin) {
             username = null;

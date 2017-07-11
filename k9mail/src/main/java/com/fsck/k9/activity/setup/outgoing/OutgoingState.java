@@ -1,15 +1,14 @@
 package com.fsck.k9.activity.setup.outgoing;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
+import com.fsck.k9.BaseState;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 
-class OutgoingState implements Parcelable {
+class OutgoingState implements BaseState {
     AuthType authType;
     ConnectionSecurity connectionSecurity;
-
 
     @Override
     public int describeContents() {

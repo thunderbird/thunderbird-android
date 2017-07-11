@@ -31,6 +31,8 @@ interface OutgoingContract {
 
         void onAuthTypeIsNotExternal();
         void onAuthTypeIsExternal();
+
+        void onAccountLoadFailure(Exception use);
     }
 
     interface Presenter extends BasePresenter {
