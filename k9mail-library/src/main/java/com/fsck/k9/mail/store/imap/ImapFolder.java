@@ -126,22 +126,28 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    public void open(int mode, long cachedUidValidity, long cachedHighestModSeq, List<Long> cachedUids)
-            throws MessagingException {
-        internalOpen(mode, cachedUidValidity, cachedHighestModSeq, cachedUids, false);
+    public QresyncResponse openUsingQresync(int mode, long cachedUidValidity, long cachedHighestModSeq)
+        throws MessagingException {
+        return openUsingQresync(mode, cachedUidValidity, cachedHighestModSeq, 0);
+    }
+
+    public QresyncResponse openUsingQresync(int mode, long cachedUidValidity, long cachedHighestModSeq,
+            long smallestUid) throws MessagingException {
+        SelectOrExamineResponse response = internalOpen(mode, cachedUidValidity, cachedHighestModSeq, smallestUid, false);
 
         if (messageCount == -1) {
             throw new MessagingException("Did not find message count during open");
         }
+        return response.getQresyncResponse();
     }
 
     SelectOrExamineResponse internalOpen(int mode, long cachedUidValidity, long cachedHighestModSeq,
-            List<Long> cachedUids, boolean reuseConnection) throws MessagingException {
+            Long smallestUid, boolean reuseConnection) throws MessagingException {
         if (reuseConnection && isOpen() && this.mode == mode) {
             // Make sure the connection is valid. If it's not we'll close it down and continue
             // on to get a new one.
             try {
-                return SelectOrExamineResponse.parse(executeSimpleCommand(Commands.NOOP), store.getPermanentFlagsIndex());
+                return SelectOrExamineResponse.parse(executeSimpleCommand(Commands.NOOP), this);
             } catch (IOException ioe) {
                 /* don't throw */ ioExceptionHandler(connection, ioe);
             }
@@ -161,7 +167,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             SelectOrExamineCommand command;
             if (connection.isQresyncCapable()) {
                 command = SelectOrExamineCommand.createWithQresyncParameter(mode, escapedFolderName, cachedUidValidity,
-                        cachedHighestModSeq, cachedUids);
+                        cachedHighestModSeq, smallestUid);
             } else if (connection.isCondstoreCapable()) {
                 command = SelectOrExamineCommand.createWithCondstoreParameter(mode, escapedFolderName);
             } else {
@@ -169,8 +175,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             }
 
             SelectOrExamineResponse response = SelectOrExamineResponse.parse(
-                    executeSimpleCommand(command.createCommandString()),
-                    store.getPermanentFlagsIndex());
+                    executeSimpleCommand(command.createCommandString()), this);
 
             /*
              * If the command succeeds we expect the folder has been opened read-write unless we
@@ -856,25 +861,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             message.setModSeq(modSeq);
         }
         if (fetchList.containsKey("FLAGS")) {
-            ImapList flags = fetchList.getKeyedList("FLAGS");
-            if (flags != null) {
-                for (int i = 0, count = flags.size(); i < count; i++) {
-                    String flag = flags.getString(i);
-                    if (flag.equalsIgnoreCase("\\Deleted")) {
-                        message.setFlagInternal(Flag.DELETED, true);
-                    } else if (flag.equalsIgnoreCase("\\Answered")) {
-                        message.setFlagInternal(Flag.ANSWERED, true);
-                    } else if (flag.equalsIgnoreCase("\\Seen")) {
-                        message.setFlagInternal(Flag.SEEN, true);
-                    } else if (flag.equalsIgnoreCase("\\Flagged")) {
-                        message.setFlagInternal(Flag.FLAGGED, true);
-                    } else if (flag.equalsIgnoreCase("$Forwarded")) {
-                        message.setFlagInternal(Flag.FORWARDED, true);
-                        /* a message contains FORWARDED FLAG -> so we can also create them */
-                        store.getPermanentFlagsIndex().add(Flag.FORWARDED);
-                    }
-                }
-            }
+            ImapUtility.setMessageFlags(fetchList, message, store);
         }
 
         if (fetchList.containsKey("INTERNALDATE")) {

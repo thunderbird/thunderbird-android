@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.MessagingException;
 import timber.log.Timber;
 
 
@@ -192,5 +193,29 @@ public class ImapUtility {
             sb.append(token);
         }
         return sb.toString();
+    }
+
+
+    public static void setMessageFlags(ImapList fetchList, ImapMessage message, ImapStore store)
+            throws MessagingException {
+        ImapList flags = fetchList.getKeyedList("FLAGS");
+        if (flags != null) {
+            for (int i = 0, count = flags.size(); i < count; i++) {
+                String flag = flags.getString(i);
+                if (flag.equalsIgnoreCase("\\Deleted")) {
+                    message.setFlagInternal(Flag.DELETED, true);
+                } else if (flag.equalsIgnoreCase("\\Answered")) {
+                    message.setFlagInternal(Flag.ANSWERED, true);
+                } else if (flag.equalsIgnoreCase("\\Seen")) {
+                    message.setFlagInternal(Flag.SEEN, true);
+                } else if (flag.equalsIgnoreCase("\\Flagged")) {
+                    message.setFlagInternal(Flag.FLAGGED, true);
+                } else if (flag.equalsIgnoreCase("$Forwarded")) {
+                    message.setFlagInternal(Flag.FORWARDED, true);
+                    /* a message contains FORWARDED FLAG -> so we can also create them */
+                    store.getPermanentFlagsIndex().add(Flag.FORWARDED);
+                }
+            }
+        }
     }
 }

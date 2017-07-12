@@ -20,6 +20,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapMessage;
+import com.fsck.k9.mail.store.imap.QresyncResponse;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -71,14 +72,18 @@ class ImapSyncInteractor {
              * Open the remote folder. This pre-loads certain metadata like message count.
              */
             if (shouldUseQresync(localFolder)) {
-                Set<String> localUidSet = localUidMap.keySet();
-                List<Long> localUids = new ArrayList<>(localUidSet.size());
-                for (String localMessageUid : localUidSet) {
-                    localUids.add(Long.parseLong(localMessageUid));
-                }
                 Timber.v("SYNC: About to open remote IMAP folder %s using QRESYNC parameter", folderName);
-                imapFolder.open(Folder.OPEN_MODE_RW, localFolder.getUidValidity(), localFolder.getHighestModSeq(),
-                        localUids);
+                QresyncResponse qresyncResponse;
+
+                List<String> uids = localFolder.getAllMessageUids();
+                if (uids.size() == 0) {
+                    qresyncResponse = imapFolder.openUsingQresync(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
+                            localFolder.getHighestModSeq());
+                } else {
+                    long smallestUid = Long.parseLong(uids.get(uids.size() - 1));
+                    qresyncResponse = imapFolder.openUsingQresync(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
+                            localFolder.getHighestModSeq(), smallestUid);
+                }
             } else {
                 Timber.v("SYNC: About to open remote IMAP folder %s", folderName);
                 imapFolder.open(Folder.OPEN_MODE_RW);

@@ -17,13 +17,14 @@ class SelectOrExamineResponse {
     private long uidValidity;
     private long highestModSeq = -1L;
     private boolean canCreateKeywords;
+    private QresyncResponse qresyncResponse;
     private Boolean readWriteMode;
 
     private SelectOrExamineResponse() {
     }
 
-    public static SelectOrExamineResponse parse(List<ImapResponse> imapResponses, Set<Flag> permanentFlags)
-            throws IOException, MessagingException {
+    public static SelectOrExamineResponse parse(List<ImapResponse> imapResponses, ImapFolder folder) throws IOException,
+            MessagingException {
         SelectOrExamineResponse selectOrExamineResponse = new SelectOrExamineResponse();
         for (ImapResponse imapResponse : imapResponses) {
             if (imapResponse.isTagged() || !equalsIgnoreCase(imapResponse.get(0), Responses.OK)
@@ -32,9 +33,10 @@ class SelectOrExamineResponse {
             }
             handleUidValidity(imapResponse, selectOrExamineResponse);
             handleHighestModSeq(imapResponse, selectOrExamineResponse);
-            handlePermanentFlags(imapResponse, selectOrExamineResponse, permanentFlags);
+            handlePermanentFlags(imapResponse, selectOrExamineResponse, folder.store.getPermanentFlagsIndex());
         }
         selectOrExamineResponse.readWriteMode = isModeReadWrite(ImapUtility.getLastResponse(imapResponses));
+        selectOrExamineResponse.qresyncResponse = QresyncResponse.parse(imapResponses, folder);
         return selectOrExamineResponse;
     }
 
@@ -105,6 +107,10 @@ class SelectOrExamineResponse {
 
     boolean canCreateKeywords() {
         return canCreateKeywords;
+    }
+
+    QresyncResponse getQresyncResponse() {
+        return qresyncResponse;
     }
 
     boolean hasOpenMode() {
