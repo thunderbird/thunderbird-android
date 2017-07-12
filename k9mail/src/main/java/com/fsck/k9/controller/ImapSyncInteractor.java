@@ -3,6 +3,7 @@ package com.fsck.k9.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -83,88 +84,26 @@ class ImapSyncInteractor {
                         localFolder.getHighestModSeq(), smallestUid);
             }
 
-            if (qresyncResponse == null) {
-
-            } else {
-
-            }
-
             if (Expunge.EXPUNGE_ON_POLL == account.getExpungePolicy()) {
                 Timber.d("SYNC: Expunging folder %s:%s", account.getDescription(), folderName);
                 imapFolder.expunge();
             }
 
-            Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
-
-            handleUidValidity(account, listener, localFolder, imapFolder, localUidMap.keySet(), controller);
-            /*
-             * Get the remote message count.
-             */
             int remoteMessageCount = imapFolder.getMessageCount();
-
-            int visibleLimit = localFolder.getVisibleLimit();
-            if (visibleLimit < 0) {
-                visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
+            if (remoteMessageCount < 0) {
+                throw new IllegalStateException("Message count " + remoteMessageCount + " for folder " + folderName);
+            } else {
+                Timber.v("SYNC: Remote message count for folder %s is %d", folderName, remoteMessageCount);
             }
 
-            final List<Message> remoteMessages = new ArrayList<>();
-            Map<String, Message> remoteUidMap = new HashMap<>();
-
-            Timber.v("SYNC: Remote message count for folder %s is %d", folderName, remoteMessageCount);
-
-            final Date earliestDate = account.getEarliestPollDate();
-
-            int remoteStart = 1;
-            if (remoteMessageCount > 0) {
-                /* Message numbers start at 1.  */
-                if (visibleLimit > 0) {
-                    remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
-                } else {
-                    remoteStart = 1;
-                }
-
-                Timber.v("SYNC: About to get messages %d through %d for folder %s",
-                        remoteStart, remoteMessageCount, folderName);
-
-                findRemoteMessagesToDownload(account, imapFolder, localUidMap, remoteMessages, remoteUidMap,
-                        remoteStart, listener, controller);
-
-            } else if (remoteMessageCount < 0) {
-                throw new Exception("Message count " + remoteMessageCount + " for folder " + folderName);
-            }
-
-            /*
-             * Remove any messages that are in the local store but no longer on the remote store or are too old
-             */
-            MoreMessages moreMessages = null;
-            if (account.syncRemoteDeletions()) {
-                moreMessages = syncRemoteDeletions(account, localFolder, localUidMap, remoteUidMap, listener,
-                        controller);
-            }
-
-            // noinspection UnusedAssignment, free memory early? (better break up the method!)
-            localUidMap = null;
-
-            if (moreMessages != null && moreMessages == MoreMessages.UNKNOWN) {
-                updateMoreMessages(imapFolder, localFolder, earliestDate, remoteStart);
-            }
-
-            /*
-             * Now we download the actual content of messages.
-             */
-            boolean useCondstore = false;
-            long cachedHighestModSeq = localFolder.getHighestModSeq();
-            if (cachedHighestModSeq != 0 && imapFolder.supportsModSeq()) {
-                useCondstore = true;
-            }
-            int newMessages = messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false,
-                    true, !useCondstore);
-            if (useCondstore) {
-                Timber.v("SYNC: About to get messages having modseq greater that %d for IMAP folder %s",
-                        cachedHighestModSeq, folderName);
-                List<ImapMessage> syncFlagMessages = imapFolder.getChangedMessagesUsingCondstore(cachedHighestModSeq);
-                newMessages += messageDownloader.downloadMessages(account, imapFolder, localFolder, syncFlagMessages,
-                        false, true, true);
+            handleUidValidity(account, listener, localFolder, imapFolder, controller);
+            int newMessages;
+            if (qresyncResponse == null) {
+                newMessages = performSyncWithoutQresyncResult(account, localFolder, imapFolder, listener, controller,
+                        messageDownloader);
+            } else {
+                newMessages = performSyncUsingQresyncResult(account, localFolder, imapFolder, listener, controller,
+                        qresyncResponse, messageDownloader);
             }
 
             localFolder.setUidValidity(imapFolder.getUidValidity());
@@ -236,13 +175,14 @@ class ImapSyncInteractor {
     }
 
     private static void handleUidValidity(Account account, MessagingListener listener, LocalFolder localFolder,
-            ImapFolder imapFolder, Set<String> localUids, MessagingController controller) throws MessagingException {
+            ImapFolder imapFolder, MessagingController controller) throws MessagingException {
         long cachedUidValidity = localFolder.getUidValidity();
         long currentUidValidity = imapFolder.getUidValidity();
 
         if (cachedUidValidity != 0L && cachedUidValidity != currentUidValidity) {
 
             Timber.v("SYNC: Deleting all local messages in folder %s:%s due to UIDVALIDITY change", account, localFolder);
+            Set<String> localUids = localFolder.getAllMessagesAndEffectiveDates().keySet();
             List<LocalMessage> destroyedMessages = localFolder.getMessagesByUids(localUids);
 
             localFolder.destroyMessages(localFolder.getMessagesByUids(localUids));
@@ -253,6 +193,113 @@ class ImapSyncInteractor {
             }
             localFolder.setHighestModSeq(0);
         }
+    }
+
+    private static int performSyncWithoutQresyncResult(Account account, LocalFolder localFolder,
+            ImapFolder imapFolder, MessagingListener listener, MessagingController controller,
+            MessageDownloader messageDownloader) throws MessagingException, IOException {
+        Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
+        String folderName = localFolder.getName();
+        final List<ImapMessage> remoteMessages = new ArrayList<>();
+        Map<String, ImapMessage> remoteUidMap = new HashMap<>();
+
+        int remoteMessageCount = imapFolder.getMessageCount();
+        final Date earliestDate = account.getEarliestPollDate();
+        int remoteStart = getRemoteStart(localFolder, imapFolder);
+
+        Timber.v("SYNC: About to get messages %d through %d for folder %s",
+                remoteStart, remoteMessageCount, folderName);
+
+        findRemoteMessagesToDownload(account, imapFolder, localUidMap, remoteMessages, remoteUidMap,
+                remoteStart, listener, controller);
+
+        /*
+         * Remove any messages that are in the local store but no longer on the remote store or are too old
+         */
+        MoreMessages moreMessages = null;
+        if (account.syncRemoteDeletions()) {
+            moreMessages = syncRemoteDeletions(account, localFolder,
+                    findDeletedMessageUidsWithoutQresync(localUidMap, remoteUidMap), listener, controller);
+        }
+
+        // noinspection UnusedAssignment, free memory early?
+        localUidMap = null;
+
+        if (moreMessages != null && moreMessages == MoreMessages.UNKNOWN) {
+            updateMoreMessages(imapFolder, localFolder, earliestDate, remoteStart);
+        }
+
+        /*
+         * Now we download the actual content of messages.
+         */
+        boolean useCondstore = false;
+        long cachedHighestModSeq = localFolder.getHighestModSeq();
+        if (cachedHighestModSeq != 0 && imapFolder.supportsModSeq()) {
+            useCondstore = true;
+        }
+        int newMessages = messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false,
+                true, !useCondstore);
+        if (useCondstore) {
+            Timber.v("SYNC: About to get messages having modseq greater that %d for IMAP folder %s",
+                    cachedHighestModSeq, folderName);
+            List<ImapMessage> syncFlagMessages = imapFolder.getChangedMessagesUsingCondstore(cachedHighestModSeq);
+            newMessages += messageDownloader.downloadMessages(account, imapFolder, localFolder, syncFlagMessages,
+                    false, true, true);
+        }
+        return newMessages;
+    }
+
+    private static int getRemoteStart(LocalFolder localFolder, ImapFolder imapFolder) throws MessagingException {
+        int remoteMessageCount = imapFolder.getMessageCount();
+
+        int visibleLimit = localFolder.getVisibleLimit();
+        if (visibleLimit < 0) {
+            visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
+        }
+
+        int remoteStart = 1;
+        /* Message numbers start at 1.  */
+        if (visibleLimit > 0) {
+            remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
+        } else {
+            remoteStart = 1;
+        }
+        return remoteStart;
+    }
+
+    private static int performSyncUsingQresyncResult(Account account, LocalFolder localFolder,
+            ImapFolder imapFolder, MessagingListener listener, MessagingController controller,
+            QresyncResponse qresyncResponse, MessageDownloader messageDownloader) throws MessagingException, IOException {
+        String folderName = localFolder.getName();
+        final List<ImapMessage> remoteMessages = new ArrayList<>();
+
+        for (ImapMessage imapMessage : qresyncResponse.getModifiedMessages()) {
+            Message localMessage = localFolder.getMessage(imapMessage.getUid());
+            if (localMessage == null) {
+                remoteMessages.add(imapMessage);
+            } else {
+                localMessage.setFlags(imapMessage.getFlags(), true);
+                localFolder.appendMessages(Collections.singletonList(localMessage));
+            }
+        }
+
+        /*
+         * Remove any messages that are in the local store but no longer on the remote store or are too old
+         */
+        MoreMessages moreMessages = null;
+        if (account.syncRemoteDeletions()) {
+            moreMessages = syncRemoteDeletions(account, localFolder, qresyncResponse.getExpungedUids(),
+                    listener, controller);
+        }
+
+        if (moreMessages != null && moreMessages == MoreMessages.UNKNOWN) {
+            final Date earliestDate = account.getEarliestPollDate();
+            int remoteStart = getRemoteStart(localFolder, imapFolder);
+            updateMoreMessages(imapFolder, localFolder, earliestDate, remoteStart);
+        }
+
+        //TODO fetch historical messages till mailbox is filled to capacity and rewrite download mechanism
+        return remoteMessages.size();
     }
 
     static void updateHighestModSeqIfNecessary(final LocalFolder localFolder, final Folder remoteFolder)
@@ -268,7 +315,7 @@ class ImapSyncInteractor {
     }
 
     private static void findRemoteMessagesToDownload(Account account, ImapFolder imapFolder,
-            Map<String, Long> localUidMap, List<Message> remoteMessages, Map<String, Message> remoteUidMap,
+            Map<String, Long> localUidMap, List<ImapMessage> remoteMessages, Map<String, ImapMessage> remoteUidMap,
             int remoteStart, MessagingListener listener, MessagingController controller)
             throws MessagingException {
 
@@ -282,13 +329,11 @@ class ImapSyncInteractor {
             l.synchronizeMailboxHeadersStarted(account, folderName);
         }
 
-
-        List<? extends Message> remoteMessageArray =
-                imapFolder.getMessages(remoteStart, remoteMessageCount, earliestDate, null);
+        List<ImapMessage> remoteMessageArray = imapFolder.getMessages(remoteStart, remoteMessageCount, earliestDate, null);
 
         int messageCount = remoteMessageArray.size();
 
-        for (Message thisMess : remoteMessageArray) {
+        for (ImapMessage thisMess : remoteMessageArray) {
             headerProgress.incrementAndGet();
             for (MessagingListener l : controller.getListeners(listener)) {
                 l.synchronizeMailboxHeadersProgress(account, folderName, headerProgress.get(), messageCount);
@@ -307,23 +352,26 @@ class ImapSyncInteractor {
         }
     }
 
-    private static MoreMessages syncRemoteDeletions(Account account, LocalFolder localFolder,
-            Map<String, Long> localUidMap, Map<String, Message> remoteUidMap, MessagingListener listener,
-            MessagingController controller) throws MessagingException {
-
-        String folderName = localFolder.getName();
-        MoreMessages moreMessages = localFolder.getMoreMessages();
-        List<String> destroyMessageUids = new ArrayList<>();
+    private static List<String> findDeletedMessageUidsWithoutQresync(Map<String, Long> localUidMap,
+            Map<String, ImapMessage> remoteUidMap) {
+        List<String> deletedMessageUids = new ArrayList<>();
         for (String localMessageUid : localUidMap.keySet()) {
             if (remoteUidMap.get(localMessageUid) == null) {
-                destroyMessageUids.add(localMessageUid);
+                deletedMessageUids.add(localMessageUid);
             }
         }
+        return deletedMessageUids;
+    }
 
-        List<LocalMessage> destroyMessages = localFolder.getMessagesByUids(destroyMessageUids);
-        if (!destroyMessageUids.isEmpty()) {
+    private static MoreMessages syncRemoteDeletions(Account account, LocalFolder localFolder,
+            List<String> deletedMessageUids, MessagingListener listener, MessagingController controller)
+            throws MessagingException {
+        String folderName = localFolder.getName();
+        MoreMessages moreMessages = localFolder.getMoreMessages();
+
+        if (!deletedMessageUids.isEmpty()) {
             moreMessages = MoreMessages.UNKNOWN;
-
+            List<LocalMessage> destroyMessages = localFolder.getMessagesByUids(deletedMessageUids);
             localFolder.destroyMessages(destroyMessages);
 
             for (Message destroyMessage : destroyMessages) {
