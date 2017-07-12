@@ -67,26 +67,26 @@ class ImapSyncInteractor {
                 return;
             }
 
-            Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
             /*
              * Open the remote folder. This pre-loads certain metadata like message count.
              */
-            if (shouldUseQresync(localFolder)) {
-                Timber.v("SYNC: About to open remote IMAP folder %s using QRESYNC parameter", folderName);
-                QresyncResponse qresyncResponse;
+            Timber.v("SYNC: About to open remote IMAP folder %s", folderName);
+            QresyncResponse qresyncResponse;
 
-                List<String> uids = localFolder.getAllMessageUids();
-                if (uids.size() == 0) {
-                    qresyncResponse = imapFolder.openUsingQresync(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
-                            localFolder.getHighestModSeq());
-                } else {
-                    long smallestUid = Long.parseLong(uids.get(uids.size() - 1));
-                    qresyncResponse = imapFolder.openUsingQresync(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
-                            localFolder.getHighestModSeq(), smallestUid);
-                }
+            List<String> uids = localFolder.getAllMessageUids();
+            if (uids.size() == 0) {
+                qresyncResponse = imapFolder.open(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
+                        localFolder.getHighestModSeq());
             } else {
-                Timber.v("SYNC: About to open remote IMAP folder %s", folderName);
-                imapFolder.open(Folder.OPEN_MODE_RW);
+                long smallestUid = Long.parseLong(uids.get(uids.size() - 1));
+                qresyncResponse = imapFolder.open(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
+                        localFolder.getHighestModSeq(), smallestUid);
+            }
+
+            if (qresyncResponse == null) {
+
+            } else {
+
             }
 
             if (Expunge.EXPUNGE_ON_POLL == account.getExpungePolicy()) {
@@ -94,8 +94,9 @@ class ImapSyncInteractor {
                 imapFolder.expunge();
             }
 
-            handleUidValidity(account, listener, localFolder, imapFolder, localUidMap.keySet(), controller);
+            Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
 
+            handleUidValidity(account, listener, localFolder, imapFolder, localUidMap.keySet(), controller);
             /*
              * Get the remote message count.
              */
@@ -232,10 +233,6 @@ class ImapSyncInteractor {
             MessagingController.closeFolder(imapFolder);
             MessagingController.closeFolder(localFolder);
         }
-    }
-
-    private static boolean shouldUseQresync(LocalFolder localFolder) throws IOException, MessagingException {
-        return localFolder.getUidValidity() != 0 && localFolder.getHighestModSeq() != 0;
     }
 
     private static void handleUidValidity(Account account, MessagingListener listener, LocalFolder localFolder,

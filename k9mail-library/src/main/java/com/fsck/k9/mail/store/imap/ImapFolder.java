@@ -126,12 +126,12 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    public QresyncResponse openUsingQresync(int mode, long cachedUidValidity, long cachedHighestModSeq)
+    public QresyncResponse open(int mode, long cachedUidValidity, long cachedHighestModSeq)
         throws MessagingException {
-        return openUsingQresync(mode, cachedUidValidity, cachedHighestModSeq, 0);
+        return open(mode, cachedUidValidity, cachedHighestModSeq, 0);
     }
 
-    public QresyncResponse openUsingQresync(int mode, long cachedUidValidity, long cachedHighestModSeq,
+    public QresyncResponse open(int mode, long cachedUidValidity, long cachedHighestModSeq,
             long smallestUid) throws MessagingException {
         SelectOrExamineResponse response = internalOpen(mode, cachedUidValidity, cachedHighestModSeq, smallestUid, false);
 

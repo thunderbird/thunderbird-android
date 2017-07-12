@@ -36,7 +36,11 @@ class SelectOrExamineResponse {
             handlePermanentFlags(imapResponse, selectOrExamineResponse, folder.store.getPermanentFlagsIndex());
         }
         selectOrExamineResponse.readWriteMode = isModeReadWrite(ImapUtility.getLastResponse(imapResponses));
-        selectOrExamineResponse.qresyncResponse = QresyncResponse.parse(imapResponses, folder);
+        if (folder.supportsQresync()) {
+            selectOrExamineResponse.qresyncResponse = QresyncResponse.parse(imapResponses, folder);
+        } else {
+            selectOrExamineResponse.qresyncResponse = null;
+        }
         return selectOrExamineResponse;
     }
 
