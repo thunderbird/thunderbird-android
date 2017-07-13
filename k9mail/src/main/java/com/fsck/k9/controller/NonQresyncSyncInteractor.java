@@ -19,29 +19,42 @@ import timber.log.Timber;
 
 class NonQresyncSyncInteractor {
 
-    static int performSync(Account account, LocalFolder localFolder, ImapFolder imapFolder, MessagingListener listener,
-            MessagingController controller, MessageDownloader messageDownloader) throws MessagingException, IOException {
+    private final  Account account;
+    private final  LocalFolder localFolder;
+    private final  ImapFolder imapFolder;
+    private final  MessagingListener listener;
+    private final  MessagingController controller;
+    private final  ImapSyncInteractor imapSyncInteractor;
+
+    NonQresyncSyncInteractor(Account account, LocalFolder localFolder, ImapFolder imapFolder,
+            MessagingListener listener, MessagingController controller, ImapSyncInteractor imapSyncInteractor) {
+        this.account = account;
+        this.localFolder = localFolder;
+        this.imapFolder = imapFolder;
+        this.listener = listener;
+        this.controller = controller;
+        this.imapSyncInteractor = imapSyncInteractor;
+    }
+
+    int performSync(MessageDownloader messageDownloader) throws MessagingException, IOException {
         Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
         String folderName = localFolder.getName();
         final List<ImapMessage> remoteMessages = new ArrayList<>();
         Map<String, ImapMessage> remoteUidMap = new HashMap<>();
 
         int remoteMessageCount = imapFolder.getMessageCount();
-        final Date earliestDate = account.getEarliestPollDate();
         int remoteStart = ImapSyncInteractor.getRemoteStart(localFolder, imapFolder);
 
         Timber.v("SYNC: About to get messages %d through %d for folder %s",
                 remoteStart, remoteMessageCount, folderName);
 
-        findRemoteMessagesToDownload(account, imapFolder, localUidMap, remoteMessages, remoteUidMap, remoteStart,
-                listener, controller);
+        findRemoteMessagesToDownload(localUidMap, remoteMessages, remoteUidMap, remoteStart);
 
         /*
          * Remove any messages that are in the local store but no longer on the remote store or are too old
          */
         if (account.syncRemoteDeletions()) {
-            ImapSyncInteractor.syncRemoteDeletions(account, localFolder, imapFolder,
-                    findDeletedMessageUids(localUidMap, remoteUidMap), listener, controller);
+            imapSyncInteractor.syncRemoteDeletions(findDeletedMessageUids(localUidMap, remoteUidMap));
         }
 
         // noinspection UnusedAssignment, free memory early?
@@ -60,6 +73,7 @@ class NonQresyncSyncInteractor {
         if (useCondstore) {
             Timber.v("SYNC: About to get messages having modseq greater that %d for IMAP folder %s",
                     cachedHighestModSeq, folderName);
+            // TODO use a UID FETCH here to get the changed flags
             List<ImapMessage> syncFlagMessages = imapFolder.getChangedMessagesUsingCondstore(cachedHighestModSeq);
             newMessages += messageDownloader.downloadMessages(account, imapFolder, localFolder, syncFlagMessages,
                     false, true, true);
@@ -67,11 +81,8 @@ class NonQresyncSyncInteractor {
         return newMessages;
     }
 
-    private static void findRemoteMessagesToDownload(Account account, ImapFolder imapFolder,
-            Map<String, Long> localUidMap, List<ImapMessage> remoteMessages, Map<String, ImapMessage> remoteUidMap,
-            int remoteStart, MessagingListener listener, MessagingController controller)
-            throws MessagingException {
-
+    private void findRemoteMessagesToDownload(Map<String, Long> localUidMap, List<ImapMessage> remoteMessages,
+            Map<String, ImapMessage> remoteUidMap, int remoteStart) throws MessagingException {
         String folderName = imapFolder.getName();
         final Date earliestDate = account.getEarliestPollDate();
         long earliestTimestamp = earliestDate != null ? earliestDate.getTime() : 0L;
@@ -105,8 +116,7 @@ class NonQresyncSyncInteractor {
         }
     }
 
-    private static List<String> findDeletedMessageUids(Map<String, Long> localUidMap,
-            Map<String, ImapMessage> remoteUidMap) {
+    private List<String> findDeletedMessageUids(Map<String, Long> localUidMap, Map<String, ImapMessage> remoteUidMap) {
         List<String> deletedMessageUids = new ArrayList<>();
         for (String localMessageUid : localUidMap.keySet()) {
             if (remoteUidMap.get(localMessageUid) == null) {

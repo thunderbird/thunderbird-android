@@ -24,12 +24,22 @@ import timber.log.Timber;
 
 class ImapSyncInteractor {
 
-    static void performSync(Account account, String folderName, MessagingListener listener,
-            MessagingController controller, MessageDownloader messageDownloader) {
+    private final Account account;
+    private final String folderName;
+    private LocalFolder localFolder;
+    private ImapFolder imapFolder;
+    private final  MessagingListener listener;
+    private final  MessagingController controller;
 
+    ImapSyncInteractor(Account account, String folderName, MessagingListener listener, MessagingController controller) {
+        this.account = account;
+        this.folderName = folderName;
+        this.listener = listener;
+        this.controller = controller;
+    }
+
+    void performSync(MessageDownloader messageDownloader) {
         Exception commandException = null;
-        LocalFolder localFolder = null;
-        ImapFolder imapFolder = null;
 
         try {
             Timber.d("SYNC: About to process pending commands for account %s", account.getDescription());
@@ -90,14 +100,16 @@ class ImapSyncInteractor {
                 Timber.v("SYNC: Remote message count for folder %s is %d", folderName, remoteMessageCount);
             }
 
-            handleUidValidity(account, listener, localFolder, imapFolder, controller);
+            handleUidValidity();
             int newMessages;
             if (qresyncResponse == null) {
-                newMessages = NonQresyncSyncInteractor.performSync(account, localFolder, imapFolder, listener, controller,
-                        messageDownloader);
+                NonQresyncSyncInteractor syncInteractor = new NonQresyncSyncInteractor(account, localFolder, imapFolder,
+                        listener, controller, this);
+                newMessages = syncInteractor.performSync(messageDownloader);
             } else {
-                newMessages = QresyncSyncInteractor.performSync(account, localFolder, imapFolder, listener, controller,
-                        qresyncResponse, messageDownloader);
+                QresyncSyncInteractor syncInteractor = new QresyncSyncInteractor(account, localFolder, imapFolder,
+                        listener, controller, this);
+                newMessages = syncInteractor.performSync(qresyncResponse, messageDownloader);
             }
 
             localFolder.setUidValidity(imapFolder.getUidValidity());
@@ -168,8 +180,7 @@ class ImapSyncInteractor {
         }
     }
 
-    private static void handleUidValidity(Account account, MessagingListener listener, LocalFolder localFolder,
-            ImapFolder imapFolder, MessagingController controller) throws MessagingException {
+    private void handleUidValidity() throws MessagingException {
         long cachedUidValidity = localFolder.getUidValidity();
         long currentUidValidity = imapFolder.getUidValidity();
 
@@ -219,9 +230,7 @@ class ImapSyncInteractor {
         }
     }
 
-    static void syncRemoteDeletions(Account account, LocalFolder localFolder, ImapFolder imapFolder,
-            List<String> deletedMessageUids, MessagingListener listener, MessagingController controller)
-            throws IOException, MessagingException {
+    void syncRemoteDeletions(List<String> deletedMessageUids) throws IOException, MessagingException {
         String folderName = localFolder.getName();
         MoreMessages moreMessages = localFolder.getMoreMessages();
 
@@ -240,16 +249,15 @@ class ImapSyncInteractor {
         if (moreMessages != null && moreMessages == MoreMessages.UNKNOWN) {
             final Date earliestDate = account.getEarliestPollDate();
             int remoteStart = getRemoteStart(localFolder, imapFolder);
-            updateMoreMessages(imapFolder, localFolder, earliestDate, remoteStart);
+            updateMoreMessages(earliestDate, remoteStart);
         }
     }
 
-    private static void updateMoreMessages(ImapFolder remoteFolder, LocalFolder localFolder, Date earliestDate,
-            int remoteStart) throws MessagingException, IOException {
+    private void updateMoreMessages(Date earliestDate, int remoteStart) throws MessagingException, IOException {
         if (remoteStart == 1) {
             localFolder.setMoreMessages(MoreMessages.FALSE);
         } else {
-            boolean moreMessagesAvailable = remoteFolder.areMoreMessagesAvailable(remoteStart, earliestDate);
+            boolean moreMessagesAvailable = imapFolder.areMoreMessagesAvailable(remoteStart, earliestDate);
 
             MoreMessages newMoreMessages = (moreMessagesAvailable) ? MoreMessages.TRUE : MoreMessages.FALSE;
             localFolder.setMoreMessages(newMoreMessages);

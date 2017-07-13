@@ -22,33 +22,46 @@ import static com.fsck.k9.controller.ImapSyncInteractor.getRemoteStart;
 
 class QresyncSyncInteractor {
 
-    static int performSync(Account account, LocalFolder localFolder, ImapFolder imapFolder, MessagingListener listener,
-            MessagingController controller, QresyncResponse qresyncResponse, MessageDownloader messageDownloader)
-            throws MessagingException, IOException {
+    private final Account account;
+    private final  LocalFolder localFolder;
+    private final  ImapFolder imapFolder;
+    private final  MessagingListener listener;
+    private final  MessagingController controller;
+    private final  ImapSyncInteractor imapSyncInteractor;
+
+    QresyncSyncInteractor(Account account, LocalFolder localFolder, ImapFolder imapFolder, MessagingListener listener,
+            MessagingController controller, ImapSyncInteractor imapSyncInteractor) {
+        this.account = account;
+        this.localFolder = localFolder;
+        this.imapFolder = imapFolder;
+        this.listener = listener;
+        this.controller = controller;
+        this.imapSyncInteractor = imapSyncInteractor;
+    }
+
+    int performSync(QresyncResponse qresyncResponse, MessageDownloader messageDownloader) throws MessagingException,
+            IOException {
         String folderName = localFolder.getName();
         final List<ImapMessage> remoteMessages = new ArrayList<>();
 
-        findRemoteMessagesToDownload(account, localFolder, imapFolder, remoteMessages, listener, controller,
-                qresyncResponse);
+        findRemoteMessagesToDownload(remoteMessages, qresyncResponse);
 
         /*
          * Remove any messages that are in the local store but no longer on the remote store or are too old
          */
         if (account.syncRemoteDeletions()) {
-            ImapSyncInteractor.syncRemoteDeletions(account, localFolder, imapFolder, qresyncResponse.getExpungedUids(),
-                    listener, controller);
+            imapSyncInteractor.syncRemoteDeletions(qresyncResponse.getExpungedUids());
         }
 
+        //TODO no need to download flags here
         return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false, true, false);
     }
 
-    private static void findRemoteMessagesToDownload(Account account, LocalFolder localFolder,
-            ImapFolder imapFolder, List<ImapMessage> remoteMessages, MessagingListener listener,
-            MessagingController controller, QresyncResponse qresyncResponse) throws MessagingException {
+    private void findRemoteMessagesToDownload(List<ImapMessage> remoteMessages, QresyncResponse qresyncResponse)
+            throws MessagingException {
 
         String folderName = imapFolder.getName();
         final AtomicInteger headerProgress = new AtomicInteger(0);
-        int remoteMessageCount = imapFolder.getMessageCount();
 
         for (MessagingListener l : controller.getListeners(listener)) {
             l.synchronizeMailboxHeadersStarted(account, folderName);
