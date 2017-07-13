@@ -25,6 +25,7 @@ import com.fsck.k9.mail.store.imap.ImapUtility;
 public class UidFetchCommand extends SelectedStateCommand {
     private int maximumAutoDownloadMessageSize;
     private FetchProfile fetchProfile;
+    private Long changedSince;
     private HashMap<String, Message> messageMap;
     private Part part;
     private BodyFactory bodyFactory;
@@ -37,6 +38,9 @@ public class UidFetchCommand extends SelectedStateCommand {
         StringBuilder builder = new StringBuilder(Commands.UID_FETCH).append(" ");
         builder.append(createCombinedIdString());
         addDataItems(builder);
+        if (changedSince != null) {
+            builder.append(String.format("(CHANGEDSINCE %s) ", String.valueOf(changedSince)));
+        }
         return builder.toString().trim();
     }
 
@@ -96,7 +100,7 @@ public class UidFetchCommand extends SelectedStateCommand {
             }
 
             String spaceSeparatedFetchFields = ImapUtility.join(" ", fetchFields);
-            builder.append("(").append(spaceSeparatedFetchFields).append(")");
+            builder.append("(").append(spaceSeparatedFetchFields).append(") ");
         } else if (part != null) {
             String partId = part.getServerExtra();
 
@@ -107,7 +111,7 @@ public class UidFetchCommand extends SelectedStateCommand {
                 fetch = String.format("BODY.PEEK[%s]", partId);
             }
 
-            builder.append("(UID ").append(fetch).append(")");
+            builder.append("(UID ").append(fetch).append(") ");
         }
     }
 
@@ -115,6 +119,7 @@ public class UidFetchCommand extends SelectedStateCommand {
     Builder newBuilder() {
         return new Builder()
                 .maximumAutoDownloadMessageSize(maximumAutoDownloadMessageSize)
+                .changedSince(changedSince)
                 .messageParams(fetchProfile, messageMap)
                 .partParams(part, bodyFactory);
     }
@@ -123,6 +128,13 @@ public class UidFetchCommand extends SelectedStateCommand {
 
         public Builder maximumAutoDownloadMessageSize(int maximumAutoDownloadMessageSize) {
             command.maximumAutoDownloadMessageSize = maximumAutoDownloadMessageSize;
+            return builder;
+        }
+
+        public Builder changedSince(Long changedSince) {
+            if (changedSince != null) {
+                command.changedSince = changedSince;
+            }
             return builder;
         }
 

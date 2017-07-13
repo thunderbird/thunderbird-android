@@ -83,8 +83,8 @@ class MessageDownloader {
      * @throws MessagingException
      */
     int downloadMessages(final Account account, final Folder remoteFolder, final LocalFolder localFolder,
-            List<? extends Message> inputMessages, boolean flagSyncOnly, boolean purgeToVisibleLimit,
-            boolean syncFlagsForLocalMessages) throws MessagingException {
+            List<? extends Message> inputMessages, boolean flagSyncOnly, boolean purgeToVisibleLimit)
+            throws MessagingException {
 
         final Date earliestDate = account.getEarliestPollDate();
         Date downloadStarted = new Date(); // now
@@ -111,7 +111,7 @@ class MessageDownloader {
 
         for (Message message : messages) {
             evaluateMessageForDownload(message, folder, localFolder, remoteFolder, account, unsyncedMessages,
-                    syncFlagMessages, flagSyncOnly, syncFlagsForLocalMessages);
+                    syncFlagMessages, flagSyncOnly);
         }
 
         final AtomicInteger progress = new AtomicInteger(0);
@@ -234,8 +234,7 @@ class MessageDownloader {
             final Account account,
             final List<Message> unsyncedMessages,
             final List<Message> syncFlagMessages,
-            boolean flagSyncOnly,
-            boolean syncFlagsForLocalMessages) throws MessagingException {
+            boolean flagSyncOnly) throws MessagingException {
         if (message.isSet(Flag.DELETED)) {
             Timber.v("Message with uid %s is marked as deleted", message.getUid());
 
@@ -276,7 +275,7 @@ class MessageDownloader {
                 Timber.v("Message with uid %s is not downloaded, even partially; trying again", message.getUid());
 
                 unsyncedMessages.add(message);
-            } else if (syncFlagsForLocalMessages){
+            } else {
                 String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
                 if (newPushState != null) {
                     localFolder.setPushState(newPushState);

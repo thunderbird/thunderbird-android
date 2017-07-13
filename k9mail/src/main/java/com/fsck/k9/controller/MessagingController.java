@@ -1616,7 +1616,7 @@ public class MessagingController {
 
                 if (loadPartialFromSearch) {
                     messageDownloader.downloadMessages(account, remoteFolder, localFolder,
-                            Collections.singletonList(remoteMessage), false, false, true);
+                            Collections.singletonList(remoteMessage), false, false);
                 } else {
                     FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);
@@ -3249,7 +3249,7 @@ public class MessagingController {
 
                     account.setRingNotified(false);
                     int newCount = messageDownloader.downloadMessages(account, remoteFolder, localFolder, messages,
-                            flagSyncOnly, true, true);
+                            flagSyncOnly, true);
 
                     int unreadMessageCount = localFolder.getUnreadMessageCount();
                     ImapSyncInteractor.updateHighestModSeqIfNecessary(localFolder, remoteFolder);

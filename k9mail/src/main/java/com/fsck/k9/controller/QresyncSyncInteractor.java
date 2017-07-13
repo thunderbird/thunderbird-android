@@ -54,7 +54,7 @@ class QresyncSyncInteractor {
         }
 
         //TODO no need to download flags here
-        return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false, true, false);
+        return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false, true);
     }
 
     private void findRemoteMessagesToDownload(List<ImapMessage> remoteMessages, QresyncResponse qresyncResponse)

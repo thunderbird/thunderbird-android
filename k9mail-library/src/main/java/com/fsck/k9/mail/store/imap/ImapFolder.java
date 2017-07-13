@@ -548,22 +548,37 @@ public class ImapFolder extends Folder<ImapMessage> {
         return getMessages(start, end, earliestDate, false, listener);
     }
 
-    public List<ImapMessage> getChangedMessagesUsingCondstore(long modseq) throws MessagingException {
+    public void fetchChangedMessageFlagsUsingCondstore(List<Long> uids, long modseq,
+            MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
         checkOpen();
-        if (!supportsModSeq()) {
-            String errorMessage = "Folder %s does not support modification sequences";
-            throw new MessagingException(String.format(Locale.US, errorMessage, name));
+
+        HashMap<String, Message> messageMap = new HashMap<>();
+        for (Long uid : uids) {
+            ImapMessage imapMessage = new ImapMessage(String.valueOf(uid), this);
+            messageMap.put(String.valueOf(uid), imapMessage);
         }
 
-        if (modseq == highestModSeq) {
-            return Collections.emptyList();
-        }
+        FetchProfile fp = new FetchProfile();
+        fp.add(FetchProfile.Item.FLAGS);
 
-        UidSearchCommand searchCommand = new UidSearchCommand.Builder()
-                .forbiddenFlags(Collections.singleton(Flag.DELETED))
-                .modSeq(modseq)
-                .build();
-        return getMessages(searchCommand.execute(connection, this), null);
+        for (int windowStart = 0; windowStart < messageMap.size(); windowStart += (FETCH_WINDOW_SIZE)) {
+            int windowEnd = Math.min(windowStart + FETCH_WINDOW_SIZE, messageMap.size());
+            List<Long> uidWindow = uids.subList(windowStart, windowEnd);
+
+            try {
+
+                UidFetchCommand command = new UidFetchCommand.Builder()
+                        .maximumAutoDownloadMessageSize(store.getStoreConfig().getMaximumAutoDownloadMessageSize())
+                        .idSet(uidWindow)
+                        .changedSince(modseq)
+                        .messageParams(fp, messageMap)
+                        .build();
+
+                sendAndProcessUidFetchCommand(command, messageMap, listener);
+            } catch (IOException ioe) {
+                throw ioExceptionHandler(connection, ioe);
+            }
+        }
     }
 
     protected List<ImapMessage> getMessages(final int start, final int end, Date earliestDate,
@@ -713,72 +728,78 @@ public class ImapFolder extends Folder<ImapMessage> {
                         .idSet(uidWindow)
                         .messageParams(fetchProfile, messageMap)
                         .build();
-                command.send(connection);
 
-                ImapResponse response;
-                int messageNumber = 0;
-
-                do {
-
-                    response = command.readResponse(connection);
-
-                    if (response.getTag() == null && equalsIgnoreCase(response.get(1), "FETCH")) {
-                        ImapList fetchList = (ImapList) response.getKeyedValue("FETCH");
-                        String uid = fetchList.getKeyedString("UID");
-                        long msgSeq = response.getLong(0);
-                        if (uid != null) {
-                            try {
-                                msgSeqUidMap.put(msgSeq, uid);
-                                if (K9MailLib.isDebug()) {
-                                    Timber.v("Stored uid '%s' for msgSeq %d into map", uid, msgSeq);
-                                }
-                            } catch (Exception e) {
-                                Timber.e("Unable to store uid '%s' for msgSeq %d", uid, msgSeq);
-                            }
-                        }
-
-                        Message message = messageMap.get(uid);
-                        if (message == null) {
-                            if (K9MailLib.isDebug()) {
-                                Timber.d("Do not have message in messageMap for UID %s for %s", uid, getLogId());
-                            }
-
-                            handleUntaggedResponse(response);
-                            continue;
-                        }
-
-                        if (listener != null) {
-                            listener.messageStarted(uid, messageNumber++, messageMap.size());
-                        }
-
-                        ImapMessage imapMessage = (ImapMessage) message;
-                        Object literal = handleFetchResponse(imapMessage, fetchList);
-
-                        if (literal != null) {
-                            if (literal instanceof String) {
-                                String bodyString = (String) literal;
-                                InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
-                                imapMessage.parse(bodyStream);
-                            } else if (literal instanceof Integer) {
-                                // All the work was done in FetchBodyCallback.foundLiteral()
-                            } else {
-                                // This shouldn't happen
-                                throw new MessagingException("Got FETCH response with bogus parameters");
-                            }
-                        }
-
-                        if (listener != null) {
-                            listener.messageFinished(imapMessage, messageNumber, messageMap.size());
-                        }
-                    } else {
-                        handleUntaggedResponse(response);
-                    }
-
-                } while (response.getTag() == null);
+                sendAndProcessUidFetchCommand(command, messageMap, listener);
             } catch (IOException ioe) {
                 throw ioExceptionHandler(connection, ioe);
             }
         }
+    }
+
+    private void sendAndProcessUidFetchCommand(UidFetchCommand command, HashMap<String, Message> messageMap,
+            MessageRetrievalListener<ImapMessage> listener) throws MessagingException, IOException {
+        command.send(connection);
+
+        ImapResponse response;
+        int messageNumber = 0;
+
+        do {
+
+            response = command.readResponse(connection);
+
+            if (response.getTag() == null && equalsIgnoreCase(response.get(1), "FETCH")) {
+                ImapList fetchList = (ImapList) response.getKeyedValue("FETCH");
+                String uid = fetchList.getKeyedString("UID");
+                long msgSeq = response.getLong(0);
+                if (uid != null) {
+                    try {
+                        msgSeqUidMap.put(msgSeq, uid);
+                        if (K9MailLib.isDebug()) {
+                            Timber.v("Stored uid '%s' for msgSeq %d into map", uid, msgSeq);
+                        }
+                    } catch (Exception e) {
+                        Timber.e("Unable to store uid '%s' for msgSeq %d", uid, msgSeq);
+                    }
+                }
+
+                Message message = messageMap.get(uid);
+                if (message == null) {
+                    if (K9MailLib.isDebug()) {
+                        Timber.d("Do not have message in messageMap for UID %s for %s", uid, getLogId());
+                    }
+
+                    handleUntaggedResponse(response);
+                    continue;
+                }
+
+                if (listener != null) {
+                    listener.messageStarted(uid, messageNumber++, messageMap.size());
+                }
+
+                ImapMessage imapMessage = (ImapMessage) message;
+                Object literal = handleFetchResponse(imapMessage, fetchList);
+
+                if (literal != null) {
+                    if (literal instanceof String) {
+                        String bodyString = (String) literal;
+                        InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
+                        imapMessage.parse(bodyStream);
+                    } else if (literal instanceof Integer) {
+                        // All the work was done in FetchBodyCallback.foundLiteral()
+                    } else {
+                        // This shouldn't happen
+                        throw new MessagingException("Got FETCH response with bogus parameters");
+                    }
+                }
+
+                if (listener != null) {
+                    listener.messageFinished(imapMessage, messageNumber, messageMap.size());
+                }
+            } else {
+                handleUntaggedResponse(response);
+            }
+
+        } while (response.getTag() == null);
     }
 
     @Override
