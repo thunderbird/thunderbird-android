@@ -53,8 +53,7 @@ class QresyncSyncInteractor {
             imapSyncInteractor.syncRemoteDeletions(qresyncResponse.getExpungedUids());
         }
 
-        //TODO no need to download flags here
-        return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false, true);
+        return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false, true, false);
     }
 
     private void findRemoteMessagesToDownload(List<ImapMessage> remoteMessages, QresyncResponse qresyncResponse)

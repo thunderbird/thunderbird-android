@@ -72,7 +72,7 @@ class NonQresyncSyncInteractor {
             downloadChangedMessageFlags(remoteMessages);
         }
 
-        return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false, true);
+        return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false, true, true);
     }
 
     private void findRemoteMessagesToDownload(Map<String, Long> localUidMap, List<ImapMessage> remoteMessages,

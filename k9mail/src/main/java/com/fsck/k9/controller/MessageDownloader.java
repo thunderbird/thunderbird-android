@@ -83,8 +83,8 @@ class MessageDownloader {
      * @throws MessagingException
      */
     int downloadMessages(final Account account, final Folder remoteFolder, final LocalFolder localFolder,
-            List<? extends Message> inputMessages, boolean flagSyncOnly, boolean purgeToVisibleLimit)
-            throws MessagingException {
+            List<? extends Message> inputMessages, boolean flagSyncOnly, boolean purgeToVisibleLimit,
+            boolean downloadFlags) throws MessagingException {
 
         final Date earliestDate = account.getEarliestPollDate();
         Date downloadStarted = new Date(); // now
@@ -140,7 +140,7 @@ class MessageDownloader {
             }
 
             FetchProfile fp = new FetchProfile();
-            if (remoteFolder.supportsFetchingFlags()) {
+            if (downloadFlags && remoteFolder.supportsFetchingFlags()) {
                 fp.add(FetchProfile.Item.FLAGS);
             }
             fp.add(FetchProfile.Item.ENVELOPE);
