@@ -3,12 +3,12 @@ package com.fsck.k9.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
@@ -16,8 +16,6 @@ import com.fsck.k9.mail.store.imap.ImapMessage;
 import com.fsck.k9.mail.store.imap.QresyncResponse;
 import com.fsck.k9.mailstore.LocalFolder;
 import timber.log.Timber;
-
-import static com.fsck.k9.controller.ImapSyncInteractor.getRemoteStart;
 
 
 class QresyncSyncInteractor {
@@ -41,23 +39,23 @@ class QresyncSyncInteractor {
 
     int performSync(QresyncResponse qresyncResponse, MessageDownloader messageDownloader) throws MessagingException,
             IOException {
-        String folderName = localFolder.getName();
         final List<ImapMessage> remoteMessages = new ArrayList<>();
 
-        findRemoteMessagesToDownload(remoteMessages, qresyncResponse);
-
-        /*
-         * Remove any messages that are in the local store but no longer on the remote store or are too old
-         */
         if (account.syncRemoteDeletions()) {
             imapSyncInteractor.syncRemoteDeletions(qresyncResponse.getExpungedUids());
+        }
+
+        findNewRemoteMessagesToDownload(remoteMessages, qresyncResponse, messageDownloader);
+        if (imapFolder.getMessageCount() > localFolder.getVisibleLimit() && imapFolder.getMessageCount() >
+                (remoteMessages.size() + localFolder.getMessageCount())) {
+            findOldRemoteMessagesToDownload(remoteMessages);
         }
 
         return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false, true, false);
     }
 
-    private void findRemoteMessagesToDownload(List<ImapMessage> remoteMessages, QresyncResponse qresyncResponse)
-            throws MessagingException {
+    private void findNewRemoteMessagesToDownload(List<ImapMessage> remoteMessages, QresyncResponse qresyncResponse,
+            MessageDownloader messageDownloader) throws MessagingException {
 
         String folderName = imapFolder.getName();
         final AtomicInteger headerProgress = new AtomicInteger(0);
@@ -66,34 +64,48 @@ class QresyncSyncInteractor {
             l.synchronizeMailboxHeadersStarted(account, folderName);
         }
 
-        for (ImapMessage imapMessage : qresyncResponse.getModifiedMessages()) {
+        List<ImapMessage> modifiedMessages = qresyncResponse.getModifiedMessages();
+        Timber.v("SYNC: Received %d FETCH responses in QRESYNC response", modifiedMessages.size());
+
+        for (ImapMessage imapMessage : modifiedMessages) {
             Message localMessage = localFolder.getMessage(imapMessage.getUid());
-            if (localMessage == null) {
+            if (localMessage == null || (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
+                    !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))) {
                 remoteMessages.add(imapMessage);
             } else {
-                localMessage.setFlags(imapMessage.getFlags(), true);
-                localFolder.appendMessages(Collections.singletonList(localMessage));
+                messageDownloader.processDownloadedFlags(account, localFolder, imapMessage, headerProgress,
+                        modifiedMessages.size());
             }
         }
 
+        Timber.v("SYNC: Received %d new message UIDs in QRESYNC response", remoteMessages.size());
+    }
+
+    private void findOldRemoteMessagesToDownload(List<ImapMessage> remoteMessages) throws MessagingException {
+        /*At ths point, UIDs and flags for new messages and existing changed messages have been fetched, so all N
+          messages in the local store should correspond to the most recent N messages in the remote store. We still need
+          to download historical messages (messages older than the oldest message in the inbox) if necessary till we
+          reach the mailbox capacity.*/
+
+        String folderName = imapFolder.getName();
         Date earliestDate = account.getEarliestPollDate();
-        int oldMessagesStart = getRemoteStart(localFolder, imapFolder);
-        int oldMessagesEnd = imapFolder.getMessageCount() - localFolder.getMessageCount();
+        final AtomicInteger headerProgress = new AtomicInteger(0);
+
+        int oldMessagesStart = imapSyncInteractor.getRemoteStart(localFolder, imapFolder);
+        int oldMessagesEnd = oldMessagesStart - 1 + localFolder.getVisibleLimit() - remoteMessages.size() -
+                localFolder.getMessageCount();
 
         if (oldMessagesEnd > oldMessagesStart) {
-            remoteMessages.addAll(imapFolder.getMessages(oldMessagesStart, oldMessagesEnd, earliestDate, null));
-        }
-
-        int messageCount = remoteMessages.size();
-
-        for (ImapMessage thisMess : remoteMessages) {
-            headerProgress.incrementAndGet();
-            for (MessagingListener l : controller.getListeners(listener)) {
-                l.synchronizeMailboxHeadersProgress(account, folderName, headerProgress.get(), messageCount);
+            List<ImapMessage> oldMessages = imapFolder.getMessages(oldMessagesStart, oldMessagesEnd, earliestDate, null);
+            Timber.v("SYNC: Fetched %d old message UIDs for folder %s", oldMessages.size(), folderName);
+            for (ImapMessage oldMessage : oldMessages) {
+                headerProgress.incrementAndGet();
+                for (MessagingListener l : controller.getListeners(listener)) {
+                    l.synchronizeMailboxHeadersProgress(account, folderName, headerProgress.get(), oldMessages.size());
+                }
+                remoteMessages.add(oldMessage);
             }
         }
-
-        Timber.v("SYNC: Got %d messages for folder %s", remoteMessages.size(), folderName);
 
         for (MessagingListener l : controller.getListeners(listener)) {
             l.synchronizeMailboxHeadersFinished(account, folderName, headerProgress.get(), remoteMessages.size());

@@ -130,7 +130,7 @@ public class ImapConnection {
             extractOrRequestCapabilities(responses);
 
             enableCompressionIfRequested();
-            enableExtensionsIfAvailable();
+            enableQresyncIfAvailable();
 
             retrievePathPrefixIfNecessary();
             retrievePathDelimiterIfNecessary();
@@ -602,14 +602,10 @@ public class ImapConnection {
         }
     }
 
-    private void enableExtensionsIfAvailable() throws IOException, MessagingException {
-        if (hasCapability(Capabilities.ENABLE)) {
-            if (hasCapability(Capabilities.CONDSTORE)) {
-                executeSimpleCommand(String.format("%s %s", Capabilities.ENABLE, Capabilities.CONDSTORE));
-            }
-            if (hasCapability(Capabilities.QRESYNC)) {
-                executeSimpleCommand(String.format("%s %s", Capabilities.ENABLE, Capabilities.QRESYNC));
-            }
+    private void enableQresyncIfAvailable() throws IOException, MessagingException {
+        if (hasCapability(Capabilities.ENABLE) && hasCapability(Capabilities.QRESYNC)) {
+            executeSimpleCommand(String.format("%s %s %s", Capabilities.ENABLE, Capabilities.CONDSTORE,
+                    Capabilities.QRESYNC));
         }
     }
 

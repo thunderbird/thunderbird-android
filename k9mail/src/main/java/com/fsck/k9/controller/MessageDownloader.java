@@ -228,6 +228,7 @@ class MessageDownloader {
         }
         return newMessages.get();
     }
+
     private void evaluateMessageForDownload(final Message message, final String folder,
             final LocalFolder localFolder,
             final Folder remoteFolder,
@@ -580,31 +581,37 @@ class MessageDownloader {
 
             remoteFolder.fetch(undeletedMessages, fp, null);
             for (Message remoteMessage : syncFlagMessages) {
-                LocalMessage localMessage = localFolder.getMessage(remoteMessage.getUid());
-                boolean messageChanged = syncFlags(localMessage, remoteMessage);
-                if (messageChanged) {
-                    boolean shouldBeNotifiedOf = false;
-                    if (localMessage.isSet(Flag.DELETED) || SyncUtils.isMessageSuppressed(localMessage, context)) {
-                        for (MessagingListener l : controller.getListeners()) {
-                            l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
-                        }
-                    } else {
-                        if (shouldNotifyForMessage(account, localFolder, localMessage)) {
-                            shouldBeNotifiedOf = true;
-                        }
-                    }
+                processDownloadedFlags(account, localFolder, remoteMessage, progress, todo);
+            }
+        }
+    }
 
-                    // we're only interested in messages that need removing
-                    if (!shouldBeNotifiedOf) {
-                        MessageReference messageReference = localMessage.makeMessageReference();
-                        notificationController.removeNewMailNotification(account, messageReference);
-                    }
-                }
-                progress.incrementAndGet();
+    void processDownloadedFlags(Account account, LocalFolder localFolder, Message remoteMessage,
+            final AtomicInteger progress, final int todo) throws MessagingException {
+        String folderName = localFolder.getName();
+        LocalMessage localMessage = localFolder.getMessage(remoteMessage.getUid());
+        boolean messageChanged = syncFlags(localMessage, remoteMessage);
+        if (messageChanged) {
+            boolean shouldBeNotifiedOf = false;
+            if (localMessage.isSet(Flag.DELETED) || SyncUtils.isMessageSuppressed(localMessage, context)) {
                 for (MessagingListener l : controller.getListeners()) {
-                    l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
+                    l.synchronizeMailboxRemovedMessage(account, folderName, localMessage);
+                }
+            } else {
+                if (shouldNotifyForMessage(account, localFolder, localMessage)) {
+                    shouldBeNotifiedOf = true;
                 }
             }
+
+            // we're only interested in messages that need removing
+            if (!shouldBeNotifiedOf) {
+                MessageReference messageReference = localMessage.makeMessageReference();
+                notificationController.removeNewMailNotification(account, messageReference);
+            }
+        }
+        progress.incrementAndGet();
+        for (MessagingListener l : controller.getListeners()) {
+            l.synchronizeMailboxProgress(account, folderName, progress.get(), todo);
         }
     }
 

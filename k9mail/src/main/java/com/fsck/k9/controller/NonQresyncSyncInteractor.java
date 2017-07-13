@@ -3,7 +3,6 @@ package com.fsck.k9.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,7 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapMessage;
@@ -50,14 +48,11 @@ class NonQresyncSyncInteractor {
         int remoteMessageCount = imapFolder.getMessageCount();
         int remoteStart = ImapSyncInteractor.getRemoteStart(localFolder, imapFolder);
 
-        Timber.v("SYNC: About to get messages %d through %d for folder %s",
+        Timber.v("SYNC: About to fetch UIDs for messages %d through %d in folder %s",
                 remoteStart, remoteMessageCount, folderName);
 
         findRemoteMessagesToDownload(localUidMap, remoteMessages, remoteUidMap, remoteStart);
 
-        /*
-         * Remove any messages that are in the local store but no longer on the remote store or are too old
-         */
         if (account.syncRemoteDeletions()) {
             imapSyncInteractor.syncRemoteDeletions(findDeletedMessageUids(localUidMap, remoteUidMap));
         }
@@ -65,11 +60,8 @@ class NonQresyncSyncInteractor {
         // noinspection UnusedAssignment, free memory early?
         localUidMap = null;
 
-        /*
-         * Now we download the actual content of messages.
-         */
         if (localFolder.getHighestModSeq() != 0 && imapFolder.supportsModSeq()) {
-            downloadChangedMessageFlags(remoteMessages);
+            downloadChangedMessageFlags(remoteMessages, messageDownloader);
         }
 
         return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false, true, true);
@@ -103,7 +95,7 @@ class NonQresyncSyncInteractor {
             }
         }
 
-        Timber.v("SYNC: Got %d messages for folder %s", remoteUidMap.size(), folderName);
+        Timber.v("SYNC: Fetched %d message UIDs for folder %s", remoteUidMap.size(), folderName);
 
         for (MessagingListener l : controller.getListeners(listener)) {
             l.synchronizeMailboxHeadersFinished(account, folderName, headerProgress.get(), remoteUidMap.size());
@@ -120,46 +112,31 @@ class NonQresyncSyncInteractor {
         return deletedMessageUids;
     }
 
-    private void downloadChangedMessageFlags(List<ImapMessage> messages) throws MessagingException {
+    private void downloadChangedMessageFlags(List<ImapMessage> messages, MessageDownloader messageDownloader)
+            throws MessagingException {
         final Map<Long, Message> knownMessageMap = new HashMap<>();
         Iterator<ImapMessage> iterator = messages.iterator();
         while (iterator.hasNext()) {
             String uid = iterator.next().getUid();
             Message localMessage = localFolder.getMessage(uid);
             if (localMessage != null && (localMessage.isSet(Flag.X_DOWNLOADED_FULL) ||
-                    localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))) {
+                    localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) && !localMessage.isSet(Flag.DELETED)) {
                 knownMessageMap.put(Long.parseLong(uid), localMessage);
                 iterator.remove();
             }
         }
 
         if (knownMessageMap.size() != 0) {
+            Timber.v("SYNC: Fetching and syncing flags for %d local messages using CONDSTORE", knownMessageMap.size());
             long cachedHighestModSeq = localFolder.getHighestModSeq();
-            imapFolder.fetchChangedMessageFlagsUsingCondstore(new ArrayList<Long>(knownMessageMap.keySet()),
-                    cachedHighestModSeq,
-                    new MessageRetrievalListener<ImapMessage>() {
-                        @Override
-                        public void messageStarted(String uid, int number, int ofTotal) {
+            imapFolder.fetchChangedMessageFlagsUsingCondstore(new ArrayList<>(knownMessageMap.keySet()),
+                    cachedHighestModSeq, null);
 
-                        }
-
-                        @Override
-                        public void messageFinished(ImapMessage message, int number, int ofTotal) {
-                            Message localMessage = knownMessageMap.get(Long.parseLong(message.getUid()));
-                            try {
-                                localMessage.setFlags(message.getFlags(), true);
-                                localFolder.appendMessages(Collections.singletonList(localMessage));
-                            } catch (MessagingException me) {
-                                controller.addErrorMessage(account, null, me);
-                                Timber.e(me, "SYNC: Fetching flags for local message using CONDSTORE");
-                            }
-                        }
-
-                        @Override
-                        public void messagesFinished(int total) {
-
-                        }
-                    });
+            final AtomicInteger flagSyncProgress = new AtomicInteger(0);
+            for (Message imapMessage : knownMessageMap.values()) {
+                messageDownloader.processDownloadedFlags(account, localFolder, imapMessage, flagSyncProgress,
+                        knownMessageMap.size());
+            }
         }
     }
 }

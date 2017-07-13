@@ -52,11 +52,7 @@ class ImapSyncInteractor {
                 commandException = e;
             }
 
-            /*
-             * Get the message list from the local store and create an index of
-             * the uids within the list.
-             */
-            Timber.v("SYNC: About to get local folder %s", folderName);
+            Timber.v("SYNC: About to get local folder %s and open it", folderName);
             localFolder = SyncUtils.getOpenedLocalFolder(account, folderName);
             localFolder.updateLastUid();
 
@@ -64,7 +60,7 @@ class ImapSyncInteractor {
             Timber.v("SYNC: About to get remote folder %s", folderName);
             Folder remoteFolder = remoteStore.getFolder(folderName);
             if (!(remoteFolder instanceof ImapFolder)) {
-                throw new MessagingException("A non-IMAP account was provided");
+                throw new MessagingException("A non-IMAP account was provided to ImapSyncInteractor");
             }
             imapFolder = (ImapFolder) remoteFolder;
 
@@ -72,12 +68,8 @@ class ImapSyncInteractor {
                 return;
             }
 
-            /*
-             * Open the remote folder. This pre-loads certain metadata like message count.
-             */
-            Timber.v("SYNC: About to open remote IMAP folder %s", folderName);
             QresyncResponse qresyncResponse;
-
+            Timber.v("SYNC: About to open remote IMAP folder %s", folderName);
             List<String> uids = localFolder.getAllMessageUids();
             if (uids.size() == 0) {
                 qresyncResponse = imapFolder.open(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
@@ -107,6 +99,7 @@ class ImapSyncInteractor {
                         listener, controller, this);
                 newMessages = syncInteractor.performSync(messageDownloader);
             } else {
+                Timber.v("SYNC: QRESYNC extension found and enabled for folder %s", folderName);
                 QresyncSyncInteractor syncInteractor = new QresyncSyncInteractor(account, localFolder, imapFolder,
                         listener, controller, this);
                 newMessages = syncInteractor.performSync(qresyncResponse, messageDownloader);
@@ -186,7 +179,7 @@ class ImapSyncInteractor {
 
         if (cachedUidValidity != 0L && cachedUidValidity != currentUidValidity) {
 
-            Timber.v("SYNC: Deleting all local messages in folder %s:%s due to UIDVALIDITY change", account, localFolder);
+            Timber.v("SYNC: Deleting all local messages in folder %s due to UIDVALIDITY change", localFolder);
             Set<String> localUids = localFolder.getAllMessagesAndEffectiveDates().keySet();
             List<LocalMessage> destroyedMessages = localFolder.getMessagesByUids(localUids);
 
@@ -234,6 +227,8 @@ class ImapSyncInteractor {
         String folderName = localFolder.getName();
         MoreMessages moreMessages = localFolder.getMoreMessages();
 
+        Timber.v("SYNC: Deleting %d messages in the local store that are not present in the remote mailbox",
+                deletedMessageUids.size());
         if (!deletedMessageUids.isEmpty()) {
             moreMessages = MoreMessages.UNKNOWN;
             List<LocalMessage> destroyMessages = localFolder.getMessagesByUids(deletedMessageUids);
