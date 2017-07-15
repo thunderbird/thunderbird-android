@@ -29,17 +29,17 @@ public class MessagingControllerPushReceiver implements PushReceiver {
 
     @Override
     public void messagesFlagsChanged(Folder folder, List<Message> messages) {
-        controller.messagesArrived(account, folder, messages, true);
+        controller.synchronizeMailbox(account, folder.getName(), null, null);
     }
 
     @Override
     public void messagesArrived(Folder folder, List<Message> messages) {
-        controller.messagesArrived(account, folder, messages, false);
+        controller.synchronizeMailbox(account, folder.getName(), null, null);
     }
 
     @Override
     public void messagesRemoved(Folder folder, List<Message> messages) {
-        controller.messagesArrived(account, folder, messages, true);
+        controller.synchronizeMailbox(account, folder.getName(), null, null);
     }
 
     @Override

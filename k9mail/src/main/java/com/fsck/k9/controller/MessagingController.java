@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -3229,69 +3228,6 @@ public class MessagingController {
             iter.remove();
             pusher.stop();
         }
-    }
-
-    public void messagesArrived(final Account account, final Folder remoteFolder, final List<Message> messages,
-            final boolean flagSyncOnly) {
-        Timber.i("Got new pushed email messages for account %s, folder %s",
-                account.getDescription(), remoteFolder.getName());
-
-        final CountDownLatch latch = new CountDownLatch(1);
-        putBackground("Push messageArrived of account " + account.getDescription()
-                + ", folder " + remoteFolder.getName(), null, new Runnable() {
-            @Override
-            public void run() {
-                LocalFolder localFolder = null;
-                try {
-                    LocalStore localStore = account.getLocalStore();
-                    localFolder = localStore.getFolder(remoteFolder.getName());
-                    localFolder.open(Folder.OPEN_MODE_RW);
-
-                    account.setRingNotified(false);
-                    int newCount = messageDownloader.downloadMessages(account, remoteFolder, localFolder, messages,
-                            flagSyncOnly, true, true);
-
-                    int unreadMessageCount = localFolder.getUnreadMessageCount();
-                    ImapSyncInteractor.updateHighestModSeqIfNecessary(localFolder, remoteFolder);
-                    localFolder.setLastPush(System.currentTimeMillis());
-                    localFolder.setStatus(null);
-
-                    Timber.i("messagesArrived newCount = %d, unread count = %d", newCount, unreadMessageCount);
-
-                    if (unreadMessageCount == 0) {
-                        notificationController.clearNewMailNotifications(account);
-                    }
-
-                    for (MessagingListener l : getListeners()) {
-                        l.folderStatusChanged(account, remoteFolder.getName(), unreadMessageCount);
-                    }
-
-                } catch (Exception e) {
-                    String rootMessage = getRootCauseMessage(e);
-                    String errorMessage = "Push failed: " + rootMessage;
-                    try {
-                        localFolder.setStatus(errorMessage);
-                    } catch (Exception se) {
-                        Timber.e(se, "Unable to set failed status on localFolder");
-                    }
-                    for (MessagingListener l : getListeners()) {
-                        l.synchronizeMailboxFailed(account, remoteFolder.getName(), errorMessage);
-                    }
-                    addErrorMessage(account, null, e);
-                } finally {
-                    closeFolder(localFolder);
-                    latch.countDown();
-                }
-
-            }
-        });
-        try {
-            latch.await();
-        } catch (Exception e) {
-            Timber.e(e, "Interrupted while awaiting latch release");
-        }
-
-        Timber.i("MessagingController.messagesArrivedLatch released");
     }
 
     public void systemStatusChanged() {

@@ -202,27 +202,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    void updateHighestModSeq(List<ImapMessage> changedMessages) throws IOException, MessagingException {
-        if (!supportsModSeq()) {
-            return;
-        }
-
-        FetchProfile fp = new FetchProfile();
-        fp.add(FetchProfile.Item.MODSEQ);
-        fetch(changedMessages, fp, null);
-
-        long newHighestModSeq = 0;
-        for (ImapMessage message : changedMessages) {
-            long modSeq = message.getModSeq();
-            if (modSeq > newHighestModSeq) {
-                newHighestModSeq = modSeq;
-            }
-        }
-        if (newHighestModSeq != 0) {
-            highestModSeq = newHighestModSeq;
-        }
-    }
-
     @Override
     public boolean isOpen() {
         return connection != null;

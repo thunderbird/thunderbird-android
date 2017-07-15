@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapMessage;
@@ -112,7 +113,7 @@ class NonQresyncSyncInteractor {
         return deletedMessageUids;
     }
 
-    private void downloadChangedMessageFlags(List<ImapMessage> messages, MessageDownloader messageDownloader)
+    private void downloadChangedMessageFlags(List<ImapMessage> messages, final MessageDownloader messageDownloader)
             throws MessagingException {
         final Map<Long, Message> knownMessageMap = new HashMap<>();
         Iterator<ImapMessage> iterator = messages.iterator();
@@ -129,14 +130,32 @@ class NonQresyncSyncInteractor {
         if (knownMessageMap.size() != 0) {
             Timber.v("SYNC: Fetching and syncing flags for %d local messages using CONDSTORE", knownMessageMap.size());
             long cachedHighestModSeq = localFolder.getHighestModSeq();
-            imapFolder.fetchChangedMessageFlagsUsingCondstore(new ArrayList<>(knownMessageMap.keySet()),
-                    cachedHighestModSeq, null);
-
             final AtomicInteger flagSyncProgress = new AtomicInteger(0);
-            for (Message imapMessage : knownMessageMap.values()) {
-                messageDownloader.processDownloadedFlags(account, localFolder, imapMessage, flagSyncProgress,
-                        knownMessageMap.size());
-            }
+            imapFolder.fetchChangedMessageFlagsUsingCondstore(new ArrayList<>(knownMessageMap.keySet()),
+                    cachedHighestModSeq, new MessageRetrievalListener<ImapMessage>() {
+                        @Override
+                        public void messageStarted(String uid, int number, int ofTotal) {
+
+                        }
+
+                        @Override
+                        public void messageFinished(ImapMessage message, int number, int ofTotal) {
+                            flagSyncProgress.incrementAndGet();
+                            try {
+                                messageDownloader.processDownloadedFlags(account, localFolder, message, flagSyncProgress,
+                                        ofTotal);
+                            } catch (MessagingException e) {
+                                Timber.e(e, "Error while synchronizing flags using CONDSTORE.");
+                                controller.addErrorMessage(account, null, e);
+                            }
+
+                        }
+
+                        @Override
+                        public void messagesFinished(int total) {
+
+                        }
+                    });
         }
     }
 }
