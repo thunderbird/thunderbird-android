@@ -2,9 +2,12 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
+import com.fsck.k9.mail.store.imap.selectedstate.command.FolderSelectedStateCommand.ContiguousIdGroup;
 import org.junit.Test;
 
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createNonContiguousIdSet;
@@ -45,11 +48,47 @@ public class ImapCommandSplitterTest {
         assertEquals(commands.get(1).getIdGroups().get(0).getEnd().longValue(), 10400L);
     }
 
+    @Test
+    public void optimizeGroupings_withContiguousIds_shouldGroupIdsCorrectly() {
+        TestCommand command = new TestCommand.Builder()
+                .idSet(createNonContiguousIdSet(1, 100, 1))
+                .build();
+
+        ImapCommandSplitter.optimizeGroupings(command);
+
+        verifyIdGroup(command, 1, 100);
+    }
+
+    @Test
+    public void optimizeGroupings_withContiguousAndNonContiguousIds_shouldGroupIdsCorrectly() {
+        List<Long> idSet = createNonContiguousIdSet(1, 100, 1);
+        Set<Long> finalIdSet = new HashSet<>(createNonContiguousIdSet(300, 400, 2));
+        idSet.addAll(finalIdSet);
+        TestCommand command = new TestCommand.Builder()
+                .idSet(idSet)
+                .addIdGroup(101L, 115L)
+                .build();
+
+        ImapCommandSplitter.optimizeGroupings(command);
+
+        assertEquals(command.getIdSet(), finalIdSet);
+        verifyIdGroup(command, 1, 115);
+    }
+
     private TestCommand createTestCommand(List<Long> ids) {
         TestCommand.Builder builder = new TestCommand.Builder();
         if (ids != null) {
             builder.idSet(ids);
         }
         return builder.build();
+    }
+
+    private void verifyIdGroup(TestCommand command, long start, long end) {
+        List<ContiguousIdGroup> idGroups = command.getIdGroups();
+        assertEquals(idGroups.size(), 1);
+
+        ContiguousIdGroup idGroup = idGroups.get(0);
+        assertEquals(idGroup.getStart(), Long.valueOf(start));
+        assertEquals(idGroup.getEnd(), Long.valueOf(end));
     }
 }
