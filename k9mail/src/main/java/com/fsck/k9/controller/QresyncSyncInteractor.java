@@ -37,12 +37,14 @@ class QresyncSyncInteractor {
         this.imapSyncInteractor = imapSyncInteractor;
     }
 
-    int performSync(QresyncResponse qresyncResponse, MessageDownloader messageDownloader) throws MessagingException,
-            IOException {
+    int performSync(QresyncResponse qresyncResponse, List<String> expungedUids, MessageDownloader messageDownloader)
+            throws MessagingException, IOException {
         final List<ImapMessage> remoteMessages = new ArrayList<>();
 
         if (account.syncRemoteDeletions()) {
-            imapSyncInteractor.syncRemoteDeletions(qresyncResponse.getExpungedUids());
+            List<String> deletedUids = new ArrayList<>(expungedUids);
+            deletedUids.addAll(qresyncResponse.getExpungedUids());
+            imapSyncInteractor.syncRemoteDeletions(deletedUids);
         }
 
         findNewRemoteMessagesToDownload(remoteMessages, qresyncResponse, messageDownloader);

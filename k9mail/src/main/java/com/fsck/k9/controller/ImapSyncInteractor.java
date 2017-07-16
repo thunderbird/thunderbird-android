@@ -2,6 +2,7 @@ package com.fsck.k9.controller;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -80,9 +81,15 @@ class ImapSyncInteractor {
                         localFolder.getHighestModSeq(), smallestUid);
             }
 
+            boolean qresyncEnabled = qresyncResponse != null;
+            List<String> expungedUids = new ArrayList<>();
             if (Expunge.EXPUNGE_ON_POLL == account.getExpungePolicy()) {
                 Timber.d("SYNC: Expunging folder %s:%s", account.getDescription(), folderName);
-                imapFolder.expunge();
+                if (qresyncEnabled) {
+                    expungedUids = imapFolder.expungeUsingQresync();
+                } else {
+                    imapFolder.expunge();
+                }
             }
 
             int remoteMessageCount = imapFolder.getMessageCount();
@@ -94,7 +101,7 @@ class ImapSyncInteractor {
 
             handleUidValidity();
             int newMessages;
-            if (qresyncResponse == null) {
+            if (!qresyncEnabled) {
                 NonQresyncSyncInteractor syncInteractor = new NonQresyncSyncInteractor(account, localFolder, imapFolder,
                         listener, controller, this);
                 newMessages = syncInteractor.performSync(messageDownloader);
@@ -102,7 +109,7 @@ class ImapSyncInteractor {
                 Timber.v("SYNC: QRESYNC extension found and enabled for folder %s", folderName);
                 QresyncSyncInteractor syncInteractor = new QresyncSyncInteractor(account, localFolder, imapFolder,
                         listener, controller, this);
-                newMessages = syncInteractor.performSync(qresyncResponse, messageDownloader);
+                newMessages = syncInteractor.performSync(qresyncResponse, expungedUids, messageDownloader);
             }
 
             localFolder.setUidValidity(imapFolder.getUidValidity());

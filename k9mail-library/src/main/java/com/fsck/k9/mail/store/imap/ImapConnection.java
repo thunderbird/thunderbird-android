@@ -687,7 +687,8 @@ public class ImapConnection {
         return isListResponse && hierarchyDelimiterValid;
     }
 
-    boolean hasCapability(String capability) {
+    boolean hasCapability(String capability) throws IOException, MessagingException {
+        requestCapabilitiesIfNecessary();
         return capabilities.contains(capability.toUpperCase(Locale.US));
     }
 

@@ -1249,6 +1249,33 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
+    public List<String> expungeUsingQresync() throws MessagingException {
+        open(OPEN_MODE_RW);
+        checkOpen();
+
+        try {
+            List<ImapResponse> expungeResponses = executeSimpleCommand("EXPUNGE");
+            return handleExpungeResponses(expungeResponses);
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
+    }
+
+    private List<String> handleExpungeResponses(List<ImapResponse> imapResponses) {
+        List<String> expungedUids = new ArrayList<>();
+        for (ImapResponse imapResponse : imapResponses) {
+            if (imapResponse.getTag() == null && ImapResponseParser.equalsIgnoreCase(imapResponse.get(0), "VANISHED")) {
+                expungedUids = ImapUtility.getImapSequenceValues(imapResponse.getString(1));
+            } else {
+                Long highestModSeq = ImapUtility.extractHighestModSeq(imapResponse);
+                if (highestModSeq != null) {
+                    this.highestModSeq = highestModSeq;
+                }
+            }
+        }
+        return expungedUids;
+    }
+
     @Override
     public void setFlags(Set<Flag> flags, boolean value) throws MessagingException {
         open(OPEN_MODE_RW);

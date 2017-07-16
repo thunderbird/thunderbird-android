@@ -54,15 +54,9 @@ class SelectOrExamineResponse {
 
     private static void handleHighestModSeq(ImapResponse imapResponse, SelectOrExamineResponse selectOrExamineResponse)
             throws IOException, MessagingException {
-        ImapList responseTextList = imapResponse.getList(1);
-        if (responseTextList.size() < 2 || !(equalsIgnoreCase(responseTextList.get(0), Responses.HIGHESTMODSEQ)
-                || equalsIgnoreCase(responseTextList.get(1), Responses.NOMODSEQ)) ||
-                !responseTextList.isString(1)) {
-            return;
-        }
-
-        if (equalsIgnoreCase(responseTextList.get(0), Responses.HIGHESTMODSEQ)) {
-            selectOrExamineResponse.highestModSeq = Long.parseLong(responseTextList.getString(1));
+        Long highestModSeq = ImapUtility.extractHighestModSeq(imapResponse);
+        if (highestModSeq != null) {
+            selectOrExamineResponse.highestModSeq = highestModSeq;
         }
     }
 
