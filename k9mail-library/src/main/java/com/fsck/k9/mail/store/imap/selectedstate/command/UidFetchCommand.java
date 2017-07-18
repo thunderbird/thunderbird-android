@@ -68,10 +68,6 @@ public class UidFetchCommand extends SelectedStateCommand {
             Set<String> fetchFields = new LinkedHashSet<>();
             fetchFields.add("UID");
 
-            if (fetchProfile.contains(FetchProfile.Item.MODSEQ)) {
-                fetchFields.add("MODSEQ");
-            }
-
             if (fetchProfile.contains(FetchProfile.Item.FLAGS)) {
                 fetchFields.add("FLAGS");
             }

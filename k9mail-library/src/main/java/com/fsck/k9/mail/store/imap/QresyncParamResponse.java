@@ -7,40 +7,43 @@ import java.util.List;
 import com.fsck.k9.mail.MessagingException;
 
 
-public class QresyncResponse {
+public class QresyncParamResponse {
 
     private List<String> expungedUids;
     private List<ImapMessage> modifiedMessages;
 
-    private QresyncResponse() {
+    private QresyncParamResponse(List<ImapResponse> imapResponses, ImapFolder folder) throws MessagingException {
         expungedUids = new ArrayList<>();
         modifiedMessages = new ArrayList<>();
+        parse(imapResponses, folder);
     }
 
-    public static QresyncResponse parse(List<ImapResponse> imapResponses, ImapFolder folder) throws MessagingException {
-        QresyncResponse qresyncResponse = new QresyncResponse();
+    public static QresyncParamResponse newInstance(List<ImapResponse> imapResponses, ImapFolder folder)
+            throws MessagingException {
+        return new QresyncParamResponse(imapResponses, folder);
+    }
+
+    private void parse(List<ImapResponse> imapResponses, ImapFolder folder) throws MessagingException {
         for (ImapResponse imapResponse : imapResponses) {
-            handleExpungedUids(imapResponse, qresyncResponse);
-            handleModifiedMessages(imapResponse, qresyncResponse, folder);
+            parseExpungedUids(imapResponse);
+            parseModifiedMessages(imapResponse, folder);
         }
-        return qresyncResponse;
     }
 
-    private static void handleExpungedUids(ImapResponse imapResponse, QresyncResponse qresyncResponse) {
+    private void parseExpungedUids(ImapResponse imapResponse) {
         if (imapResponse.getTag() == null && ImapResponseParser.equalsIgnoreCase(imapResponse.get(0), "VANISHED") &&
                 imapResponse.isString(2)) {
-            qresyncResponse.expungedUids.addAll(ImapUtility.getImapSequenceValues(imapResponse.getString(2)));
+            this.expungedUids.addAll(ImapUtility.getImapSequenceValues(imapResponse.getString(2)));
         }
     }
 
-    private static void handleModifiedMessages(ImapResponse imapResponse, QresyncResponse qresyncResponse,
-            ImapFolder folder) throws MessagingException {
+    private void parseModifiedMessages(ImapResponse imapResponse, ImapFolder folder) throws MessagingException {
         if (imapResponse.getTag() == null && ImapResponseParser.equalsIgnoreCase(imapResponse.get(1), "FETCH")) {
             ImapList fetchList = (ImapList) imapResponse.getKeyedValue("FETCH");
             String uid = fetchList.getKeyedString("UID");
             ImapMessage message = new ImapMessage(uid, folder);
             ImapUtility.setMessageFlags(fetchList, message, folder.store);
-            qresyncResponse.modifiedMessages.add(message);
+            this.modifiedMessages.add(message);
         }
     }
 

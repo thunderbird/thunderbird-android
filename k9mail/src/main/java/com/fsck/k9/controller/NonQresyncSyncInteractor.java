@@ -80,7 +80,10 @@ class NonQresyncSyncInteractor {
             l.synchronizeMailboxHeadersStarted(account, folderName);
         }
 
-        List<ImapMessage> remoteMessageArray = imapFolder.getMessages(remoteStart, remoteMessageCount, earliestDate, null);
+        List<ImapMessage> remoteMessageArray = new ArrayList<>();
+        if (remoteMessageCount > 0) {
+            remoteMessageArray = imapFolder.getMessages(remoteStart, remoteMessageCount, earliestDate, null);
+        }
 
         int messageCount = remoteMessageArray.size();
 

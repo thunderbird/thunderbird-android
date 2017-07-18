@@ -22,7 +22,10 @@ import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
 import timber.log.Timber;
 
-
+/* This class contains code that used to be present directly in the MessagingController. It used to represent a common
+synchronization mechanism for all types of accounts. Currently, it is used for synchronization of POP3 and WebDAV
+accounts only
+ */
 class LegacySyncInteractor {
 
     static void performSync(Account account, String folderName, MessagingListener listener,

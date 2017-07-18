@@ -13,7 +13,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapMessage;
-import com.fsck.k9.mail.store.imap.QresyncResponse;
+import com.fsck.k9.mail.store.imap.QresyncParamResponse;
 import com.fsck.k9.mailstore.LocalFolder;
 import timber.log.Timber;
 
@@ -21,11 +21,11 @@ import timber.log.Timber;
 class QresyncSyncInteractor {
 
     private final Account account;
-    private final  LocalFolder localFolder;
-    private final  ImapFolder imapFolder;
-    private final  MessagingListener listener;
-    private final  MessagingController controller;
-    private final  ImapSyncInteractor imapSyncInteractor;
+    private final LocalFolder localFolder;
+    private final ImapFolder imapFolder;
+    private final MessagingListener listener;
+    private final MessagingController controller;
+    private final ImapSyncInteractor imapSyncInteractor;
 
     QresyncSyncInteractor(Account account, LocalFolder localFolder, ImapFolder imapFolder, MessagingListener listener,
             MessagingController controller, ImapSyncInteractor imapSyncInteractor) {
@@ -37,18 +37,18 @@ class QresyncSyncInteractor {
         this.imapSyncInteractor = imapSyncInteractor;
     }
 
-    int performSync(QresyncResponse qresyncResponse, List<String> expungedUids, MessageDownloader messageDownloader)
+    int performSync(QresyncParamResponse qresyncParamResponse, List<String> expungedUids, MessageDownloader messageDownloader)
             throws MessagingException, IOException {
         final List<ImapMessage> remoteMessages = new ArrayList<>();
 
         if (account.syncRemoteDeletions()) {
             List<String> deletedUids = new ArrayList<>(expungedUids);
-            deletedUids.addAll(qresyncResponse.getExpungedUids());
+            deletedUids.addAll(qresyncParamResponse.getExpungedUids());
             imapSyncInteractor.syncRemoteDeletions(deletedUids);
         }
 
-        findNewRemoteMessagesToDownload(remoteMessages, qresyncResponse, messageDownloader);
-        if (imapFolder.getMessageCount() > localFolder.getVisibleLimit() && imapFolder.getMessageCount() >
+        findNewRemoteMessagesToDownload(remoteMessages, qresyncParamResponse, messageDownloader);
+        if (imapFolder.getMessageCount() >= localFolder.getVisibleLimit() && imapFolder.getMessageCount() >=
                 (remoteMessages.size() + localFolder.getMessageCount())) {
             findOldRemoteMessagesToDownload(remoteMessages);
         }
@@ -56,7 +56,7 @@ class QresyncSyncInteractor {
         return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false, true, false);
     }
 
-    private void findNewRemoteMessagesToDownload(List<ImapMessage> remoteMessages, QresyncResponse qresyncResponse,
+    private void findNewRemoteMessagesToDownload(List<ImapMessage> remoteMessages, QresyncParamResponse qresyncParamResponse,
             MessageDownloader messageDownloader) throws MessagingException {
 
         String folderName = imapFolder.getName();
@@ -66,11 +66,23 @@ class QresyncSyncInteractor {
             l.synchronizeMailboxHeadersStarted(account, folderName);
         }
 
-        List<ImapMessage> modifiedMessages = qresyncResponse.getModifiedMessages();
+        List<ImapMessage> modifiedMessages = qresyncParamResponse.getModifiedMessages();
         Timber.v("SYNC: Received %d FETCH responses in QRESYNC response", modifiedMessages.size());
 
+        String uid = localFolder.getSmallestMessageUid();
+        long smallestLocalUid = 1;
+        if (uid != null) {
+            smallestLocalUid = Long.parseLong(uid);
+        }
+
         for (ImapMessage imapMessage : modifiedMessages) {
+            long remoteMessageUid = Long.parseLong(imapMessage.getUid());
             Message localMessage = localFolder.getMessage(imapMessage.getUid());
+
+            if (remoteMessageUid < smallestLocalUid) {
+                continue;
+            }
+
             if (localMessage == null || (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
                     !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))) {
                 remoteMessages.add(imapMessage);
@@ -93,7 +105,7 @@ class QresyncSyncInteractor {
         Date earliestDate = account.getEarliestPollDate();
         final AtomicInteger headerProgress = new AtomicInteger(0);
 
-        int oldMessagesStart = imapSyncInteractor.getRemoteStart(localFolder, imapFolder);
+        int oldMessagesStart = ImapSyncInteractor.getRemoteStart(localFolder, imapFolder);
         int oldMessagesEnd = oldMessagesStart - 1 + localFolder.getVisibleLimit() - remoteMessages.size() -
                 localFolder.getMessageCount();
 

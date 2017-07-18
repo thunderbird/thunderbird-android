@@ -54,12 +54,14 @@ public class ImapFolder extends Folder<ImapMessage> {
     };
     private static final int MORE_MESSAGES_WINDOW_SIZE = 500;
     private static final int FETCH_WINDOW_SIZE = 100;
+    static final int INVALID_UID_VALIDITY = -1;
+    static final int INVALID_HIGHEST_MOD_SEQ = -1;
 
 
     protected volatile int messageCount = -1;
     protected volatile long uidNext = -1L;
-    private long uidValidity = -1L;
-    private long highestModSeq = -1L;
+    private long uidValidity = INVALID_UID_VALIDITY;
+    private long highestModSeq = INVALID_HIGHEST_MOD_SEQ;
     protected volatile ImapConnection connection;
     protected ImapStore store = null;
     protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
@@ -119,35 +121,30 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public void open(int mode) throws MessagingException {
-        internalOpen(mode, 0, 0, null, true);
+        internalOpen(mode, INVALID_UID_VALIDITY, INVALID_HIGHEST_MOD_SEQ, true);
 
         if (messageCount == -1) {
             throw new MessagingException("Did not find message count during open");
         }
     }
 
-    public QresyncResponse open(int mode, long cachedUidValidity, long cachedHighestModSeq)
-        throws MessagingException {
-        return open(mode, cachedUidValidity, cachedHighestModSeq, 0);
-    }
-
-    public QresyncResponse open(int mode, long cachedUidValidity, long cachedHighestModSeq,
-            long smallestUid) throws MessagingException {
-        SelectOrExamineResponse response = internalOpen(mode, cachedUidValidity, cachedHighestModSeq, smallestUid, false);
+    public QresyncParamResponse open(int mode, long cachedUidValidity, long cachedHighestModSeq)
+            throws MessagingException {
+        SelectOrExamineResponse response = internalOpen(mode, cachedUidValidity, cachedHighestModSeq, false);
 
         if (messageCount == -1) {
             throw new MessagingException("Did not find message count during open");
         }
-        return response.getQresyncResponse();
+        return response.getQresyncParamResponse();
     }
 
     SelectOrExamineResponse internalOpen(int mode, long cachedUidValidity, long cachedHighestModSeq,
-            Long smallestUid, boolean reuseConnection) throws MessagingException {
+            boolean reuseConnection) throws MessagingException {
         if (reuseConnection && isOpen() && this.mode == mode) {
             // Make sure the connection is valid. If it's not we'll close it down and continue
             // on to get a new one.
             try {
-                return SelectOrExamineResponse.parse(executeSimpleCommand(Commands.NOOP), this);
+                return SelectOrExamineResponse.newInstance(executeSimpleCommand(Commands.NOOP), this);
             } catch (IOException ioe) {
                 /* don't throw */ ioExceptionHandler(connection, ioe);
             }
@@ -167,14 +164,14 @@ public class ImapFolder extends Folder<ImapMessage> {
             SelectOrExamineCommand command;
             if (connection.isQresyncCapable()) {
                 command = SelectOrExamineCommand.createWithQresyncParameter(mode, escapedFolderName, cachedUidValidity,
-                        cachedHighestModSeq, smallestUid);
+                        cachedHighestModSeq);
             } else if (connection.isCondstoreCapable()) {
                 command = SelectOrExamineCommand.createWithCondstoreParameter(mode, escapedFolderName);
             } else {
-                command = SelectOrExamineCommand.createNormal(mode, escapedFolderName);
+                command = SelectOrExamineCommand.create(mode, escapedFolderName);
             }
 
-            SelectOrExamineResponse response = SelectOrExamineResponse.parse(
+            SelectOrExamineResponse response = SelectOrExamineResponse.newInstance(
                     executeSimpleCommand(command.createCommandString()), this);
 
             /*
@@ -182,10 +179,6 @@ public class ImapFolder extends Folder<ImapMessage> {
              * are notified otherwise in the responses.
              */
             this.mode = mode;
-            if (response == null) {
-                // This shouldn't happen
-                return null;
-            }
             if (response.hasOpenMode()) {
                 this.mode = response.getOpenMode();
             }
@@ -438,7 +431,7 @@ public class ImapFolder extends Folder<ImapMessage> {
     }
 
     public boolean supportsModSeq() throws MessagingException {
-        return !(highestModSeq == -1);
+        return !(highestModSeq == INVALID_HIGHEST_MOD_SEQ);
     }
 
     public boolean supportsQresync() throws IOException, MessagingException {
@@ -856,10 +849,7 @@ public class ImapFolder extends Folder<ImapMessage> {
     // Returns value of body field
     private Object handleFetchResponse(ImapMessage message, ImapList fetchList) throws MessagingException {
         Object result = null;
-        if (fetchList.containsKey("MODSEQ")) {
-            long modSeq = fetchList.getKeyedList("MODSEQ").getLong(0);
-            message.setModSeq(modSeq);
-        }
+
         if (fetchList.containsKey("FLAGS")) {
             ImapUtility.setMessageFlags(fetchList, message, store);
         }

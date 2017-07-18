@@ -11,8 +11,6 @@ import com.fsck.k9.mail.internet.MimeMessage;
 
 public class ImapMessage extends MimeMessage {
 
-    private long modSeq;
-
     public ImapMessage(String uid, Folder folder) {
         this.mUid = uid;
         this.mFolder = folder;
@@ -37,11 +35,4 @@ public class ImapMessage extends MimeMessage {
         getFolder().delete(Collections.singletonList(this), trashFolderName);
     }
 
-    long getModSeq() {
-        return modSeq;
-    }
-
-    void setModSeq(long modSeq) {
-        this.modSeq = modSeq;
-    }
 }

@@ -25,10 +25,6 @@ public class FetchProfile extends ArrayList<FetchProfile.Item> {
      */
     public enum Item {
         /**
-         * Download the modification sequence of the message (for CONDSTORE-enabled IMAP accounts only).
-         */
-        MODSEQ,
-        /**
          * Download the flags of the message.
          */
         FLAGS,

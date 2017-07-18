@@ -17,61 +17,63 @@ class SelectOrExamineResponse {
     private long uidValidity;
     private long highestModSeq = -1L;
     private boolean canCreateKeywords;
-    private QresyncResponse qresyncResponse;
+    private QresyncParamResponse qresyncParamResponse;
     private Boolean readWriteMode;
 
-    private SelectOrExamineResponse() {
+    private SelectOrExamineResponse(List<ImapResponse> imapResponses, ImapFolder folder) throws IOException,
+            MessagingException {
+        parse(imapResponses, folder);
     }
 
-    public static SelectOrExamineResponse parse(List<ImapResponse> imapResponses, ImapFolder folder) throws IOException,
-            MessagingException {
-        SelectOrExamineResponse selectOrExamineResponse = new SelectOrExamineResponse();
+    public static SelectOrExamineResponse newInstance(List<ImapResponse> imapResponses, ImapFolder folder) throws
+            IOException, MessagingException {
+        return new SelectOrExamineResponse(imapResponses, folder);
+    }
+
+    private void parse(List<ImapResponse> imapResponses, ImapFolder folder) throws IOException, MessagingException {
         for (ImapResponse imapResponse : imapResponses) {
             if (imapResponse.isTagged() || !equalsIgnoreCase(imapResponse.get(0), Responses.OK)
                     || !imapResponse.isList(1)) {
                 continue;
             }
-            handleUidValidity(imapResponse, selectOrExamineResponse);
-            handleHighestModSeq(imapResponse, selectOrExamineResponse);
-            handlePermanentFlags(imapResponse, selectOrExamineResponse, folder.store.getPermanentFlagsIndex());
+            parseUidValidity(imapResponse);
+            parseHighestModSeq(imapResponse);
+            parsePermanentFlags(imapResponse, folder.store.getPermanentFlagsIndex());
         }
-        selectOrExamineResponse.readWriteMode = isModeReadWrite(ImapUtility.getLastResponse(imapResponses));
+        this.readWriteMode = isModeReadWriteIfAvailable(ImapUtility.getLastResponse(imapResponses));
         if (folder.supportsQresync()) {
-            selectOrExamineResponse.qresyncResponse = QresyncResponse.parse(imapResponses, folder);
+            this.qresyncParamResponse = QresyncParamResponse.newInstance(imapResponses, folder);
         } else {
-            selectOrExamineResponse.qresyncResponse = null;
+            this.qresyncParamResponse = null;
         }
-        return selectOrExamineResponse;
     }
 
-    private static void handleUidValidity(ImapResponse imapResponse, SelectOrExamineResponse selectOrExamineResponse) {
+    private void parseUidValidity(ImapResponse imapResponse) {
         ImapList responseTextList = imapResponse.getList(1);
         if (responseTextList.size() < 2 || !(equalsIgnoreCase(responseTextList.get(0), Responses.UIDVALIDITY))) {
             return;
         }
-        selectOrExamineResponse.uidValidity = Long.parseLong(responseTextList.getString(1));
+        this.uidValidity = Long.parseLong(responseTextList.getString(1));
     }
 
-    private static void handleHighestModSeq(ImapResponse imapResponse, SelectOrExamineResponse selectOrExamineResponse)
-            throws IOException, MessagingException {
+    private void parseHighestModSeq(ImapResponse imapResponse) throws IOException, MessagingException {
         Long highestModSeq = ImapUtility.extractHighestModSeq(imapResponse);
         if (highestModSeq != null) {
-            selectOrExamineResponse.highestModSeq = highestModSeq;
+            this.highestModSeq = highestModSeq;
         }
     }
 
-    private static void handlePermanentFlags(ImapResponse imapResponse, SelectOrExamineResponse selectOrExamineResponse,
-            Set<Flag> permanentFlags) {
+    private void parsePermanentFlags(ImapResponse imapResponse, Set<Flag> permanentFlags) {
         PermanentFlagsResponse permanentFlagsResponse = PermanentFlagsResponse.parse(imapResponse);
         if (permanentFlagsResponse == null) {
             return;
         }
 
         permanentFlags.addAll(permanentFlagsResponse.getFlags());
-        selectOrExamineResponse.canCreateKeywords = permanentFlagsResponse.canCreateKeywords();
+        this.canCreateKeywords = permanentFlagsResponse.canCreateKeywords();
     }
 
-    private static Boolean isModeReadWrite(ImapResponse imapResponse) {
+    private static Boolean isModeReadWriteIfAvailable(ImapResponse imapResponse) {
         if (!imapResponse.isTagged() || !equalsIgnoreCase(imapResponse.get(0), Responses.OK)) {
             return null;
         }
@@ -107,8 +109,8 @@ class SelectOrExamineResponse {
         return canCreateKeywords;
     }
 
-    QresyncResponse getQresyncResponse() {
-        return qresyncResponse;
+    QresyncParamResponse getQresyncParamResponse() {
+        return qresyncParamResponse;
     }
 
     boolean hasOpenMode() {

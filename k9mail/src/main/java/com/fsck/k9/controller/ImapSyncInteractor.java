@@ -16,7 +16,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.imap.ImapFolder;
-import com.fsck.k9.mail.store.imap.QresyncResponse;
+import com.fsck.k9.mail.store.imap.QresyncParamResponse;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -61,7 +61,7 @@ class ImapSyncInteractor {
             Timber.v("SYNC: About to get remote folder %s", folderName);
             Folder remoteFolder = remoteStore.getFolder(folderName);
             if (!(remoteFolder instanceof ImapFolder)) {
-                throw new MessagingException("A non-IMAP account was provided to ImapSyncInteractor");
+                throw new IllegalArgumentException("A non-IMAP account was provided to ImapSyncInteractor");
             }
             imapFolder = (ImapFolder) remoteFolder;
 
@@ -69,19 +69,12 @@ class ImapSyncInteractor {
                 return;
             }
 
-            QresyncResponse qresyncResponse;
+            QresyncParamResponse qresyncParamResponse;
             Timber.v("SYNC: About to open remote IMAP folder %s", folderName);
-            List<String> uids = localFolder.getAllMessageUids();
-            if (uids.size() == 0) {
-                qresyncResponse = imapFolder.open(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
-                        localFolder.getHighestModSeq());
-            } else {
-                long smallestUid = Long.parseLong(uids.get(uids.size() - 1));
-                qresyncResponse = imapFolder.open(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
-                        localFolder.getHighestModSeq(), smallestUid);
-            }
+            qresyncParamResponse = imapFolder.open(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
+                    localFolder.getHighestModSeq());
 
-            boolean qresyncEnabled = qresyncResponse != null;
+            boolean qresyncEnabled = qresyncParamResponse != null;
             List<String> expungedUids = new ArrayList<>();
             if (Expunge.EXPUNGE_ON_POLL == account.getExpungePolicy()) {
                 Timber.d("SYNC: Expunging folder %s:%s", account.getDescription(), folderName);
@@ -109,7 +102,7 @@ class ImapSyncInteractor {
                 Timber.v("SYNC: QRESYNC extension found and enabled for folder %s", folderName);
                 QresyncSyncInteractor syncInteractor = new QresyncSyncInteractor(account, localFolder, imapFolder,
                         listener, controller, this);
-                newMessages = syncInteractor.performSync(qresyncResponse, expungedUids, messageDownloader);
+                newMessages = syncInteractor.performSync(qresyncParamResponse, expungedUids, messageDownloader);
             }
 
             localFolder.setUidValidity(imapFolder.getUidValidity());
@@ -120,7 +113,6 @@ class ImapSyncInteractor {
                 l.folderStatusChanged(account, folderName, unreadMessageCount);
             }
 
-            /* Notify listeners that we're finally done. */
             localFolder.setLastChecked(System.currentTimeMillis());
             localFolder.setStatus(null);
 

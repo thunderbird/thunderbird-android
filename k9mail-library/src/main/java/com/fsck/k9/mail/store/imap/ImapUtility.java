@@ -225,7 +225,7 @@ public class ImapUtility {
             if (token instanceof ImapList) {
                 ImapList list = (ImapList) token;
                 if (list.size() < 2 || !(equalsIgnoreCase(list.get(0), Responses.HIGHESTMODSEQ)
-                        || equalsIgnoreCase(list.get(1), Responses.NOMODSEQ)) ||
+                        || equalsIgnoreCase(list.get(0), Responses.NOMODSEQ)) ||
                         !list.isString(1)) {
                     continue;
                 }

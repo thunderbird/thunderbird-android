@@ -75,6 +75,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     private static final long serialVersionUID = -1973296520918624767L;
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
     static final long INVALID_MESSAGE_PART_ID = -1;
+    private static final int INVALID_UID_VALIDITY = -1;
+    private static final int INVALID_HIGHEST_MOD_SEQ = -1;
 
     private final LocalStore localStore;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
@@ -83,8 +85,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     private long mFolderId = -1;
     private int mVisibleLimit = -1;
     private String prefId = null;
-    private long uidValidity = -1;
-    private long highestModSeq = -1;
+    private long uidValidity = INVALID_UID_VALIDITY;
+    private long highestModSeq = INVALID_HIGHEST_MOD_SEQ;
     private FolderClass mDisplayClass = FolderClass.NO_CLASS;
     private FolderClass mSyncClass = FolderClass.INHERITED;
     private FolderClass mPushClass = FolderClass.SECOND_CLASS;
@@ -442,6 +444,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     public void setUidValidity(final long uidValidity) throws MessagingException {
+        this.uidValidity = uidValidity;
         updateFolderColumn("uid_validity", uidValidity);
     }
 
@@ -988,6 +991,41 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                     return result;
                 }
             });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
+        }
+    }
+
+    public String getSmallestMessageUid() throws MessagingException {
+        try {
+            return  localStore.database.execute(false, new DbCallback<List<String>>() {
+                @Override
+                public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    Cursor cursor = null;
+                    ArrayList<String> result = new ArrayList<>();
+                    try {
+                        open(OPEN_MODE_RO);
+
+                        cursor = db.rawQuery(
+                                "SELECT min(uid) " +
+                                        "FROM messages " +
+                                        "WHERE empty = 0 AND deleted = 0 AND " +
+                                        "folder_id = ? ORDER BY date DESC",
+                                new String[] { Long.toString(mFolderId) });
+
+                        while (cursor.moveToNext()) {
+                            String uid = cursor.getString(0);
+                            result.add(uid);
+                        }
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+
+                    return result;
+                }
+            }).get(0);
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
