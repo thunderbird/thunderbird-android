@@ -462,7 +462,7 @@ public class ImapFolderTest {
     public void getUnreadMessageCount_connectionThrowsIOException_shouldThrowMessagingException() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT SEEN NOT DELETED")).thenThrow(new IOException());
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT DELETED NOT SEEN")).thenThrow(new IOException());
         folder.open(OPEN_MODE_RW);
 
         try {
@@ -478,7 +478,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 1 2 3"));
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT SEEN NOT DELETED")).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT DELETED NOT SEEN")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         int unreadMessageCount = folder.getUnreadMessageCount();
@@ -1234,6 +1234,8 @@ public class ImapFolderTest {
         } else {
             when(imapConnection.executeSimpleCommand("EXAMINE \"Folder\"")).thenReturn(imapResponses);
         }
+        when(imapConnection.executeSimpleCommand("NOOP")).thenReturn(
+                createImapResponse(Collections.singletonList("3 OK")));
     }
 
     private void assertCheckOpenErrorMessage(String folderName, MessagingException e) {

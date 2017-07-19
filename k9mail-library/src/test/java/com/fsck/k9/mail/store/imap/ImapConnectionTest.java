@@ -770,7 +770,7 @@ public class ImapConnectionTest {
     public void open_withIoExceptionDuringListCommand_shouldThrow() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "");
+        simplePreAuthAndLoginDialog(server, "IMAP4 IMAP4REV1");
         server.expect("3 LIST \"\" \"\"");
         server.output("* Now what?");
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
@@ -789,7 +789,7 @@ public class ImapConnectionTest {
     public void open_withNegativeResponseToListCommand() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "");
+        simplePreAuthAndLoginDialog(server, "IMAP4 IMAP4REV1");
         server.expect("3 LIST \"\" \"\"");
         server.output("3 NO");
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
@@ -916,7 +916,7 @@ public class ImapConnectionTest {
     }
 
     private ImapConnection simpleOpen(MockImapServer server) throws Exception {
-        return simpleOpenWithCapabilities(server, "");
+        return simpleOpenWithCapabilities(server, "IMAP4 IMAP4REV1");
     }
 
     private ImapConnection simpleOpenWithCapabilities(MockImapServer server, String postAuthCapabilities)

@@ -22,6 +22,10 @@ class PermanentFlagsResponse {
     }
 
     public static PermanentFlagsResponse parse(ImapResponse response) {
+        if (response.isTagged() || !equalsIgnoreCase(response.get(0), Responses.OK) || !response.isList(1)) {
+            return null;
+        }
+
         ImapList responseTextList = response.getList(1);
         if (responseTextList.size() < 2 || !equalsIgnoreCase(responseTextList.get(0), Responses.PERMANENTFLAGS) ||
                 !responseTextList.isList(1)) {

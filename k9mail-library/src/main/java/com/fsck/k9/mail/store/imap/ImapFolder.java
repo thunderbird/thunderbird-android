@@ -182,6 +182,10 @@ public class ImapFolder extends Folder<ImapMessage> {
             if (response.hasOpenMode()) {
                 this.mode = response.getOpenMode();
             }
+            if (response == null) {
+                // This shouldn't happen
+                return null;
+            }
             exists = true;
             uidValidity = response.getUidValidity();
             highestModSeq = response.getHighestModSeq();
@@ -434,7 +438,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         return !(highestModSeq == INVALID_HIGHEST_MOD_SEQ);
     }
 
-    public boolean supportsQresync() throws IOException, MessagingException {
+    boolean supportsQresync() throws IOException, MessagingException {
         return supportsModSeq() && connection.isQresyncCapable();
     }
 
@@ -1355,7 +1359,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         return getName().hashCode();
     }
 
-    private ImapStore getStore() {
+    ImapStore getStore() {
         return store;
     }
 

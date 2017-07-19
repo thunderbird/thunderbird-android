@@ -27,6 +27,9 @@ class SelectOrExamineResponse {
 
     public static SelectOrExamineResponse newInstance(List<ImapResponse> imapResponses, ImapFolder folder) throws
             IOException, MessagingException {
+        if (!isResponseValid(imapResponses)) {
+            return null;
+        }
         return new SelectOrExamineResponse(imapResponses, folder);
     }
 
@@ -38,7 +41,7 @@ class SelectOrExamineResponse {
             }
             parseUidValidity(imapResponse);
             parseHighestModSeq(imapResponse);
-            parsePermanentFlags(imapResponse, folder.store.getPermanentFlagsIndex());
+            parsePermanentFlags(imapResponse, folder.getStore().getPermanentFlagsIndex());
         }
         this.readWriteMode = isModeReadWriteIfAvailable(ImapUtility.getLastResponse(imapResponses));
         if (folder.supportsQresync()) {
@@ -74,10 +77,6 @@ class SelectOrExamineResponse {
     }
 
     private static Boolean isModeReadWriteIfAvailable(ImapResponse imapResponse) {
-        if (!imapResponse.isTagged() || !equalsIgnoreCase(imapResponse.get(0), Responses.OK)) {
-            return null;
-        }
-
         if (!imapResponse.isList(1)) {
             return null;
         }
@@ -95,6 +94,14 @@ class SelectOrExamineResponse {
         }
 
         return null;
+    }
+
+    private static boolean isResponseValid(List<ImapResponse> imapResponses) {
+        ImapResponse lastResponse = ImapUtility.getLastResponse(imapResponses);
+        if (!lastResponse.isTagged() || !equalsIgnoreCase(lastResponse.get(0), Responses.OK)) {
+            return false;
+        }
+        return true;
     }
 
     long getUidValidity() {
