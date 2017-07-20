@@ -81,8 +81,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 "unread_count INTEGER, " +
                 "visible_limit INTEGER, " +
                 "status TEXT, " +
-                "uid_validity INTEGER default 0," +
-                "highest_mod_seq INTEGER default 0," +
+                "uid_validity INTEGER default null," +
+                "highest_mod_seq INTEGER default null," +
                 "push_state TEXT, " +
                 "last_pushed INTEGER, " +
                 "flagged_count INTEGER default 0, " +

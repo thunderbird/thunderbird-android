@@ -69,11 +69,8 @@ class QresyncSyncInteractor {
         List<ImapMessage> modifiedMessages = qresyncParamResponse.getModifiedMessages();
         Timber.v("SYNC: Received %d FETCH responses in QRESYNC response", modifiedMessages.size());
 
-        String uid = localFolder.getSmallestMessageUid();
-        long smallestLocalUid = 1;
-        if (uid != null) {
-            smallestLocalUid = Long.parseLong(uid);
-        }
+        Long cachedSmallestUid = localFolder.getSmallestMessageUid();
+        long smallestLocalUid = cachedSmallestUid == null ? 1 : cachedSmallestUid;
 
         for (ImapMessage imapMessage : modifiedMessages) {
             long remoteMessageUid = Long.parseLong(imapMessage.getUid());

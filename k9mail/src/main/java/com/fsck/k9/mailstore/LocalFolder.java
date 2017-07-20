@@ -192,8 +192,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         mFolderId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
         mName = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
         mVisibleLimit = cursor.getInt(LocalStore.FOLDER_VISIBLE_LIMIT_INDEX);
-        uidValidity = cursor.getInt(LocalStore.FOLDER_UID_VALIDITY_INDEX);
-        highestModSeq = cursor.getInt(LocalStore.FOLDER_HIGHEST_MOD_SEQ_INDEX);
+        if (!cursor.isNull(LocalStore.FOLDER_UID_VALIDITY_INDEX)) {
+            uidValidity = cursor.getLong(LocalStore.FOLDER_UID_VALIDITY_INDEX);
+        }
+        if (!cursor.isNull(LocalStore.FOLDER_HIGHEST_MOD_SEQ_INDEX)) {
+            highestModSeq = cursor.getInt(LocalStore.FOLDER_HIGHEST_MOD_SEQ_INDEX);
+        }
         mPushState = cursor.getString(LocalStore.FOLDER_PUSH_STATE_INDEX);
         super.setStatus(cursor.getString(LocalStore.FOLDER_STATUS_INDEX));
         // Only want to set the local variable stored in the super class.  This class
@@ -996,13 +1000,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
-    public String getSmallestMessageUid() throws MessagingException {
+    public Long getSmallestMessageUid() throws MessagingException {
         try {
-            return  localStore.database.execute(false, new DbCallback<List<String>>() {
+            return localStore.database.execute(false, new DbCallback<Long>() {
                 @Override
-                public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                public Long doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     Cursor cursor = null;
-                    ArrayList<String> result = new ArrayList<>();
                     try {
                         open(OPEN_MODE_RO);
 
@@ -1013,19 +1016,18 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                         "folder_id = ? ORDER BY date DESC",
                                 new String[] { Long.toString(mFolderId) });
 
-                        while (cursor.moveToNext()) {
-                            String uid = cursor.getString(0);
-                            result.add(uid);
+                        if (cursor.getCount() != 1) {
+                            return null;
                         }
+                        cursor.moveToFirst();
+                        return cursor.getLong(0);
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     } finally {
                         Utility.closeQuietly(cursor);
                     }
-
-                    return result;
                 }
-            }).get(0);
+            });
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
