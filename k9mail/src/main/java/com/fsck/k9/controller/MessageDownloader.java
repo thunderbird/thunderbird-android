@@ -34,8 +34,6 @@ import com.fsck.k9.mailstore.MessageRemovalListener;
 import com.fsck.k9.notification.NotificationController;
 import timber.log.Timber;
 
-import static com.fsck.k9.controller.SyncUtils.modeMismatch;
-
 
 class MessageDownloader {
 
@@ -565,9 +563,9 @@ class MessageDownloader {
             final int todo
     ) throws MessagingException {
 
-        final String folder = remoteFolder.getName();
+        final String folderName = remoteFolder.getName();
         if (remoteFolder.supportsFetchingFlags()) {
-            Timber.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size(), folder);
+            Timber.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size(), folderName);
 
             FetchProfile fp = new FetchProfile();
             fp.add(FetchProfile.Item.FLAGS);
@@ -581,13 +579,17 @@ class MessageDownloader {
 
             remoteFolder.fetch(undeletedMessages, fp, null);
             for (Message remoteMessage : syncFlagMessages) {
-                processDownloadedFlags(account, localFolder, remoteMessage, progress, todo);
+                processDownloadedFlags(account, localFolder, remoteMessage);
+                progress.incrementAndGet();
+                for (MessagingListener l : controller.getListeners()) {
+                    l.synchronizeMailboxProgress(account, folderName, progress.get(), todo);
+                }
             }
         }
     }
 
-    void processDownloadedFlags(Account account, LocalFolder localFolder, Message remoteMessage,
-            final AtomicInteger progress, final int todo) throws MessagingException {
+    void processDownloadedFlags(Account account, LocalFolder localFolder, Message remoteMessage)
+            throws MessagingException {
         String folderName = localFolder.getName();
         LocalMessage localMessage = localFolder.getMessage(remoteMessage.getUid());
         boolean messageChanged = syncFlags(localMessage, remoteMessage);
@@ -608,10 +610,6 @@ class MessageDownloader {
                 MessageReference messageReference = localMessage.makeMessageReference();
                 notificationController.removeNewMailNotification(account, messageReference);
             }
-        }
-        progress.incrementAndGet();
-        for (MessagingListener l : controller.getListeners()) {
-            l.synchronizeMailboxProgress(account, folderName, progress.get(), todo);
         }
     }
 
@@ -654,7 +652,7 @@ class MessageDownloader {
         Folder.FolderClass fDisplayClass = localFolder.getDisplayClass();
         Folder.FolderClass fNotifyClass = localFolder.getNotifyClass();
 
-        if (modeMismatch(aDisplayMode, fDisplayClass)) {
+        if (SyncUtils.modeMismatch(aDisplayMode, fDisplayClass)) {
             // Never notify a folder that isn't displayed
             return false;
         }

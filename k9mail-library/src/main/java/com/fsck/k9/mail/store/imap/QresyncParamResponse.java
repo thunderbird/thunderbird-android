@@ -18,7 +18,7 @@ public class QresyncParamResponse {
         parse(imapResponses, folder);
     }
 
-    public static QresyncParamResponse newInstance(List<ImapResponse> imapResponses, ImapFolder folder)
+    static QresyncParamResponse fromSelectOrExamineResponse(List<ImapResponse> imapResponses, ImapFolder folder)
             throws MessagingException {
         return new QresyncParamResponse(imapResponses, folder);
     }

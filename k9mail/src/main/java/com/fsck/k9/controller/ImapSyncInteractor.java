@@ -88,21 +88,21 @@ class ImapSyncInteractor {
             int remoteMessageCount = imapFolder.getMessageCount();
             if (remoteMessageCount < 0) {
                 throw new IllegalStateException("Message count " + remoteMessageCount + " for folder " + folderName);
-            } else {
-                Timber.v("SYNC: Remote message count for folder %s is %d", folderName, remoteMessageCount);
             }
+
+            Timber.v("SYNC: Remote message count for folder %s is %d", folderName, remoteMessageCount);
 
             handleUidValidity();
             int newMessages;
             if (!qresyncEnabled) {
-                NonQresyncSyncInteractor syncInteractor = new NonQresyncSyncInteractor(account, localFolder, imapFolder,
+                NonQresyncExtensionHandler handler = new NonQresyncExtensionHandler(account, localFolder, imapFolder,
                         listener, controller, this);
-                newMessages = syncInteractor.performSync(messageDownloader);
+                newMessages = handler.continueSync(messageDownloader);
             } else {
                 Timber.v("SYNC: QRESYNC extension found and enabled for folder %s", folderName);
-                QresyncSyncInteractor syncInteractor = new QresyncSyncInteractor(account, localFolder, imapFolder,
+                QresyncExtensionHandler handler = new QresyncExtensionHandler(account, localFolder, imapFolder,
                         listener, controller, this);
-                newMessages = syncInteractor.performSync(qresyncParamResponse, expungedUids, messageDownloader);
+                newMessages = handler.continueSync(qresyncParamResponse, expungedUids, messageDownloader);
             }
 
             localFolder.setUidValidity(imapFolder.getUidValidity());

@@ -87,6 +87,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.mail.store.imap.ImapStore;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -749,7 +750,7 @@ public class MessagingController {
         }
 
         String storeUri = account.getStoreUri();
-        if (storeUri.startsWith("imap")) {
+        if (ImapStore.isStoreUriImap(storeUri)) {
             ImapSyncInteractor syncInteractor = new ImapSyncInteractor(account, folderName, listener, this);
             syncInteractor.performSync(messageDownloader);
         } else {

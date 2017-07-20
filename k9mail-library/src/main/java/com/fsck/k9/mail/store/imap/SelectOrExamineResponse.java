@@ -45,7 +45,7 @@ class SelectOrExamineResponse {
         }
         this.readWriteMode = isModeReadWriteIfAvailable(ImapUtility.getLastResponse(imapResponses));
         if (folder.supportsQresync()) {
-            this.qresyncParamResponse = QresyncParamResponse.newInstance(imapResponses, folder);
+            this.qresyncParamResponse = QresyncParamResponse.fromSelectOrExamineResponse(imapResponses, folder);
         } else {
             this.qresyncParamResponse = null;
         }

@@ -21,7 +21,7 @@ import com.fsck.k9.mailstore.LocalFolder;
 import timber.log.Timber;
 
 
-class NonQresyncSyncInteractor {
+class NonQresyncExtensionHandler {
 
     private final Account account;
     private final LocalFolder localFolder;
@@ -30,7 +30,7 @@ class NonQresyncSyncInteractor {
     private final MessagingController controller;
     private final ImapSyncInteractor imapSyncInteractor;
 
-    NonQresyncSyncInteractor(Account account, LocalFolder localFolder, ImapFolder imapFolder,
+    NonQresyncExtensionHandler(Account account, LocalFolder localFolder, ImapFolder imapFolder,
             MessagingListener listener, MessagingController controller, ImapSyncInteractor imapSyncInteractor) {
         this.account = account;
         this.localFolder = localFolder;
@@ -40,7 +40,7 @@ class NonQresyncSyncInteractor {
         this.imapSyncInteractor = imapSyncInteractor;
     }
 
-    int performSync(MessageDownloader messageDownloader) throws MessagingException, IOException {
+    int continueSync(MessageDownloader messageDownloader) throws MessagingException, IOException {
         Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
         String folderName = localFolder.getName();
         final List<ImapMessage> remoteMessages = new ArrayList<>();
@@ -118,6 +118,7 @@ class NonQresyncSyncInteractor {
 
     private void downloadChangedMessageFlags(List<ImapMessage> messages, final MessageDownloader messageDownloader)
             throws MessagingException {
+        final String folderName = imapFolder.getName();
         final Map<Long, Message> knownMessageMap = new HashMap<>();
         Iterator<ImapMessage> iterator = messages.iterator();
         while (iterator.hasNext()) {
@@ -143,10 +144,8 @@ class NonQresyncSyncInteractor {
 
                         @Override
                         public void messageFinished(ImapMessage message, int number, int ofTotal) {
-                            flagSyncProgress.incrementAndGet();
                             try {
-                                messageDownloader.processDownloadedFlags(account, localFolder, message, flagSyncProgress,
-                                        ofTotal);
+                                messageDownloader.processDownloadedFlags(account, localFolder, message);
                             } catch (MessagingException e) {
                                 Timber.e(e, "Error while synchronizing flags using CONDSTORE.");
                                 controller.addErrorMessage(account, null, e);
