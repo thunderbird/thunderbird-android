@@ -121,7 +121,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public void open(int mode) throws MessagingException {
-        internalOpen(mode, INVALID_UID_VALIDITY, INVALID_HIGHEST_MOD_SEQ, true);
+        internalOpen(mode, INVALID_UID_VALIDITY, INVALID_HIGHEST_MOD_SEQ);
 
         if (messageCount == -1) {
             throw new MessagingException("Did not find message count during open");
@@ -130,7 +130,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     public QresyncParamResponse open(int mode, long cachedUidValidity, long cachedHighestModSeq)
             throws MessagingException {
-        SelectOrExamineResponse response = internalOpen(mode, cachedUidValidity, cachedHighestModSeq, false);
+        SelectOrExamineResponse response = internalOpen(mode, cachedUidValidity, cachedHighestModSeq);
 
         if (messageCount == -1) {
             throw new MessagingException("Did not find message count during open");
@@ -138,9 +138,9 @@ public class ImapFolder extends Folder<ImapMessage> {
         return response.getQresyncParamResponse();
     }
 
-    SelectOrExamineResponse internalOpen(int mode, long cachedUidValidity, long cachedHighestModSeq,
-            boolean reuseConnection) throws MessagingException {
-        if (reuseConnection && isOpen() && this.mode == mode) {
+    SelectOrExamineResponse internalOpen(int mode, long cachedUidValidity, long cachedHighestModSeq)
+            throws MessagingException {
+        if (isOpen() && this.mode == mode) {
             // Make sure the connection is valid. If it's not we'll close it down and continue
             // on to get a new one.
             try {
@@ -163,6 +163,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
             SelectOrExamineCommand command;
             if (connection.isQresyncCapable() && K9MailLib.shouldUseQresync()) {
+                connection.enableQresync();
                 command = SelectOrExamineCommand.createWithQresyncParameter(mode, escapedFolderName, cachedUidValidity,
                         cachedHighestModSeq);
             } else if (connection.isCondstoreCapable() && K9MailLib.shouldUseCondstore()) {

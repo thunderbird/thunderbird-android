@@ -77,6 +77,7 @@ public class ImapConnection {
     private Exception stacktraceForClose;
     private boolean open = false;
     private boolean retryXoauth2WithNewToken = true;
+    private boolean qresyncEnabled = false;
 
 
     public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
@@ -130,7 +131,7 @@ public class ImapConnection {
             extractOrRequestCapabilities(responses);
 
             enableCompressionIfRequested();
-            enableQresyncIfAvailable();
+            enableQresync();
 
             retrievePathPrefixIfNecessary();
             retrievePathDelimiterIfNecessary();
@@ -602,10 +603,12 @@ public class ImapConnection {
         }
     }
 
-    private void enableQresyncIfAvailable() throws IOException, MessagingException {
-        if (hasCapability(Capabilities.ENABLE) && hasCapability(Capabilities.QRESYNC) && K9MailLib.shouldUseQresync()) {
+    void enableQresync() throws IOException, MessagingException {
+        if (!qresyncEnabled && hasCapability(Capabilities.ENABLE) && hasCapability(Capabilities.QRESYNC)
+                && K9MailLib.shouldUseQresync()) {
             executeSimpleCommand(String.format("%s %s %s", Capabilities.ENABLE, Capabilities.CONDSTORE,
                     Capabilities.QRESYNC));
+            qresyncEnabled = true;
         }
     }
 
