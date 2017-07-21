@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
@@ -44,7 +45,7 @@ class SelectOrExamineResponse {
             parsePermanentFlags(imapResponse, folder.getStore().getPermanentFlagsIndex());
         }
         this.readWriteMode = isModeReadWriteIfAvailable(ImapUtility.getLastResponse(imapResponses));
-        if (folder.supportsQresync()) {
+        if (folder.supportsQresync() && K9MailLib.shouldUseQresync()) {
             this.qresyncParamResponse = QresyncParamResponse.fromSelectOrExamineResponse(imapResponses, folder);
         } else {
             this.qresyncParamResponse = null;

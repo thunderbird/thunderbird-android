@@ -1,6 +1,8 @@
 package com.fsck.k9.mail.store.imap;
 
 
+import com.fsck.k9.mail.K9MailLib;
+
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
 
 
@@ -40,9 +42,9 @@ class SelectOrExamineCommand {
         StringBuilder builder = new StringBuilder();
         String openCommand = mode == OPEN_MODE_RW ? "SELECT" : "EXAMINE";
         builder.append(String.format("%s %s", openCommand, escapedFolderName));
-        if (useQresync()) {
+        if (useQresync() && K9MailLib.shouldUseQresync()) {
             builder.append(String.format(" (%s (%s %s))", Capabilities.QRESYNC, cachedUidValidity, cachedHighestModSeq));
-        } else if (useCondstore) {
+        } else if (useCondstore && K9MailLib.shouldUseCondstore()) {
             builder.append(String.format(" (%s)", Capabilities.CONDSTORE));
         }
         return builder.toString();

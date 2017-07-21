@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -61,7 +62,7 @@ class NonQresyncExtensionHandler {
         // noinspection UnusedAssignment, free memory early?
         localUidMap = null;
 
-        if (localFolder.getHighestModSeq() != 0 && imapFolder.supportsModSeq()) {
+        if (localFolder.getHighestModSeq() != 0 && imapFolder.supportsModSeq() && K9.shouldUseCondstore()) {
             downloadChangedMessageFlagsUsingCondstore(remoteMessages, messageDownloader);
         }
 

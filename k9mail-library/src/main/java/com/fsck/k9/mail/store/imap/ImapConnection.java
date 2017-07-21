@@ -603,7 +603,7 @@ public class ImapConnection {
     }
 
     private void enableQresyncIfAvailable() throws IOException, MessagingException {
-        if (hasCapability(Capabilities.ENABLE) && hasCapability(Capabilities.QRESYNC)) {
+        if (hasCapability(Capabilities.ENABLE) && hasCapability(Capabilities.QRESYNC) && K9MailLib.shouldUseQresync()) {
             executeSimpleCommand(String.format("%s %s %s", Capabilities.ENABLE, Capabilities.CONDSTORE,
                     Capabilities.QRESYNC));
         }
