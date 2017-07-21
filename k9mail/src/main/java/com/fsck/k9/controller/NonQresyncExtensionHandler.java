@@ -62,7 +62,7 @@ class NonQresyncExtensionHandler {
         localUidMap = null;
 
         if (localFolder.getHighestModSeq() != 0 && imapFolder.supportsModSeq()) {
-            downloadChangedMessageFlags(remoteMessages, messageDownloader);
+            downloadChangedMessageFlagsUsingCondstore(remoteMessages, messageDownloader);
         }
 
         return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessages, false, true, true);
@@ -116,9 +116,8 @@ class NonQresyncExtensionHandler {
         return deletedMessageUids;
     }
 
-    private void downloadChangedMessageFlags(List<ImapMessage> messages, final MessageDownloader messageDownloader)
-            throws MessagingException {
-        final String folderName = imapFolder.getName();
+    private void downloadChangedMessageFlagsUsingCondstore(List<ImapMessage> messages,
+            final MessageDownloader messageDownloader) throws MessagingException {
         final Map<Long, Message> knownMessageMap = new HashMap<>();
         Iterator<ImapMessage> iterator = messages.iterator();
         while (iterator.hasNext()) {
@@ -134,7 +133,6 @@ class NonQresyncExtensionHandler {
         if (knownMessageMap.size() != 0) {
             Timber.v("SYNC: Fetching and syncing flags for %d local messages using CONDSTORE", knownMessageMap.size());
             long cachedHighestModSeq = localFolder.getHighestModSeq();
-            final AtomicInteger flagSyncProgress = new AtomicInteger(0);
             imapFolder.fetchChangedMessageFlagsUsingCondstore(new ArrayList<>(knownMessageMap.keySet()),
                     cachedHighestModSeq, new MessageRetrievalListener<ImapMessage>() {
                         @Override

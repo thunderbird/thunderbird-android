@@ -1016,10 +1016,9 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                         "folder_id = ? ORDER BY date DESC",
                                 new String[] { Long.toString(mFolderId) });
 
-                        if (cursor.getCount() != 1) {
+                        if (!cursor.moveToFirst()) {
                             return null;
                         }
-                        cursor.moveToFirst();
                         return cursor.getLong(0);
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
