@@ -525,14 +525,17 @@ public class ImapFolder extends Folder<ImapMessage> {
         return getMessages(start, end, earliestDate, false, listener);
     }
 
-    public void fetchChangedMessageFlagsUsingCondstore(List<Long> uids, long modseq,
+    public void fetchChangedMessageFlagsUsingCondstore(List<ImapMessage> messages, long modseq,
             MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
         checkOpen();
 
+        List<Long> uids = new ArrayList<>(messages.size());
         HashMap<String, Message> messageMap = new HashMap<>();
-        for (Long uid : uids) {
-            ImapMessage imapMessage = new ImapMessage(String.valueOf(uid), this);
-            messageMap.put(String.valueOf(uid), imapMessage);
+
+        for (ImapMessage message : messages) {
+            Long uid = Long.parseLong(message.getUid());
+            uids.add(uid);
+            messageMap.put(String.valueOf(uid), message);
         }
 
         FetchProfile fp = new FetchProfile();

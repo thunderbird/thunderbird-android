@@ -128,6 +128,7 @@ public class MessagingController {
     private final Context context;
     private final Contacts contacts;
     private final NotificationController notificationController;
+    private final FlagSyncHelper flagSyncHelper;
     private final MessageDownloader messageDownloader;
 
     private final Thread controllerThread;
@@ -164,6 +165,7 @@ public class MessagingController {
         this.notificationController = notificationController;
         this.contacts = contacts;
         this.transportProvider = transportProvider;
+        flagSyncHelper = FlagSyncHelper.newInstance(context, this);
         messageDownloader = MessageDownloader.newInstance(context, this);
 
         controllerThread = new Thread(new Runnable() {
@@ -752,7 +754,7 @@ public class MessagingController {
         String storeUri = account.getStoreUri();
         if (ImapStore.isStoreUriImap(storeUri)) {
             ImapSyncInteractor syncInteractor = new ImapSyncInteractor(account, folderName, listener, this);
-            syncInteractor.performSync(messageDownloader);
+            syncInteractor.performSync(flagSyncHelper, messageDownloader);
         } else {
             LegacySyncInteractor.performSync(account, folderName, listener, this, messageDownloader);
         }
@@ -1616,7 +1618,7 @@ public class MessagingController {
 
                 if (loadPartialFromSearch) {
                     messageDownloader.downloadMessages(account, remoteFolder, localFolder,
-                            Collections.singletonList(remoteMessage), false, false, true);
+                            Collections.singletonList(remoteMessage), false, true);
                 } else {
                     FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);

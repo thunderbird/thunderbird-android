@@ -128,7 +128,7 @@ class LegacySyncInteractor {
              * Now we download the actual content of messages.
              */
             int newMessages =  messageDownloader.downloadMessages(account, remoteFolder, localFolder, remoteMessages,
-                    false, true, true);
+                    true, true);
             int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : controller.getListeners()) {
                 l.folderStatusChanged(account, folderName, unreadMessageCount);

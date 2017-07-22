@@ -39,7 +39,7 @@ class ImapSyncInteractor {
         this.controller = controller;
     }
 
-    void performSync(MessageDownloader messageDownloader) {
+    void performSync(FlagSyncHelper flagSyncHelper, MessageDownloader messageDownloader) {
         Exception commandException = null;
 
         try {
@@ -97,12 +97,12 @@ class ImapSyncInteractor {
             if (!qresyncEnabled) {
                 NonQresyncExtensionHandler handler = new NonQresyncExtensionHandler(account, localFolder, imapFolder,
                         listener, controller, this);
-                newMessages = handler.continueSync(messageDownloader);
+                newMessages = handler.continueSync(messageDownloader, flagSyncHelper);
             } else {
                 Timber.v("SYNC: QRESYNC extension found and enabled for folder %s", folderName);
                 QresyncExtensionHandler handler = new QresyncExtensionHandler(account, localFolder, imapFolder,
                         listener, controller, this);
-                newMessages = handler.continueSync(qresyncParamResponse, expungedUids, messageDownloader);
+                newMessages = handler.continueSync(qresyncParamResponse, expungedUids, messageDownloader, flagSyncHelper);
             }
 
             localFolder.setUidValidity(imapFolder.getUidValidity());
@@ -210,7 +210,7 @@ class ImapSyncInteractor {
         return remoteStart;
     }
 
-    static void updateHighestModSeqIfNecessary(final LocalFolder localFolder, final Folder remoteFolder)
+    private static void updateHighestModSeqIfNecessary(final LocalFolder localFolder, final Folder remoteFolder)
             throws MessagingException {
         if (remoteFolder instanceof ImapFolder) {
             ImapFolder imapFolder = (ImapFolder) remoteFolder;

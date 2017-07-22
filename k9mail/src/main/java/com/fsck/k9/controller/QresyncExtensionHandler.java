@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
@@ -38,7 +37,7 @@ class QresyncExtensionHandler {
     }
 
     int continueSync(QresyncParamResponse qresyncParamResponse, List<String> expungedUids,
-            MessageDownloader messageDownloader) throws MessagingException, IOException {
+            MessageDownloader messageDownloader, FlagSyncHelper flagSyncHelper) throws MessagingException, IOException {
         final String folderName = localFolder.getName();
         final List<ImapMessage> remoteMessagesToDownload = new ArrayList<>();
 
@@ -52,7 +51,7 @@ class QresyncExtensionHandler {
             l.synchronizeMailboxHeadersStarted(account, folderName);
         }
 
-        processFetchResponses(remoteMessagesToDownload, qresyncParamResponse, messageDownloader);
+        processFetchResponses(remoteMessagesToDownload, qresyncParamResponse, flagSyncHelper);
 
         int newLocalMessageCount = remoteMessagesToDownload.size() + localFolder.getMessageCount();
         if (imapFolder.getMessageCount() >= localFolder.getVisibleLimit() && imapFolder.getMessageCount() >=
@@ -65,12 +64,12 @@ class QresyncExtensionHandler {
             l.synchronizeMailboxHeadersFinished(account, folderName, messageDownloadCount, messageDownloadCount);
         }
 
-        return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessagesToDownload, false,
-                true, false);
+        return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessagesToDownload, true,
+                false);
     }
 
     private void processFetchResponses(List<ImapMessage> remoteMessagesToDownload, QresyncParamResponse
-            qresyncParamResponse, MessageDownloader messageDownloader) throws MessagingException {
+            qresyncParamResponse, FlagSyncHelper flagSyncHelper) throws MessagingException {
         String folderName = imapFolder.getName();
         final AtomicInteger headerProgress = new AtomicInteger(0);
 
@@ -80,19 +79,21 @@ class QresyncExtensionHandler {
         Long cachedSmallestUid = localFolder.getSmallestMessageUid();
         long smallestLocalUid = cachedSmallestUid == null ? 1 : cachedSmallestUid;
 
-        for (ImapMessage imapMessage : modifiedMessages) {
-            long remoteMessageUid = Long.parseLong(imapMessage.getUid());
+        List<Message> newMessages = new ArrayList<>();
+        List<Message> syncFlagMessages = new ArrayList<>();
+
+        for (Message message : modifiedMessages) {
+            SyncUtils.evaluateMessageForDownload(message, folderName, localFolder, imapFolder, account, newMessages,
+                    syncFlagMessages, controller);
+        }
+
+        for (Message message : syncFlagMessages) {
+            long remoteMessageUid = Long.parseLong(message.getUid());
             if (remoteMessageUid < smallestLocalUid) {
                 continue;
             }
-            Message localMessage = localFolder.getMessage(imapMessage.getUid());
 
-            if (localMessage == null || (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) &&
-                    !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL))) {
-                remoteMessagesToDownload.add(imapMessage);
-            } else {
-                messageDownloader.processDownloadedFlags(account, localFolder, imapMessage);
-            }
+            flagSyncHelper.processDownloadedFlags(account, localFolder, message);
 
             headerProgress.incrementAndGet();
             for (MessagingListener l : controller.getListeners()) {
@@ -100,6 +101,9 @@ class QresyncExtensionHandler {
             }
         }
 
+        for (Message newMessage : newMessages) {
+            remoteMessagesToDownload.add((ImapMessage) newMessage);
+        }
         Timber.v("SYNC: Received %d new message UIDs in QRESYNC response", remoteMessagesToDownload.size());
     }
 
