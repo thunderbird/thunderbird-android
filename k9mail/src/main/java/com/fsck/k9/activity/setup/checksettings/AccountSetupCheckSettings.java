@@ -20,7 +20,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9MaterialActivity;
-import com.fsck.k9.activity.setup.AccountSetupAccountType;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsContract.Presenter;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
@@ -122,11 +121,6 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
     }
 
     @Override
-    public void manualSetup(Account account) {
-        AccountSetupAccountType.actionSelectAccountType(this, account, false);
-    }
-
-    @Override
     public void showAcceptKeyDialog(final int msgResId, final String exMessage, final String message,
             final X509Certificate certificate) {
 
@@ -145,7 +139,7 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
                                 getString(R.string.account_setup_failed_dlg_invalid_certificate_accept),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        presenter.acceptCertificate(certificate);
+                                        presenter.onCertificateAccepted(certificate);
                                     }
                                 })
                         .setNegativeButton(

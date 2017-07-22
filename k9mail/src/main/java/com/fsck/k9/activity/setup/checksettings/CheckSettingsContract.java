@@ -14,7 +14,6 @@ interface CheckSettingsContract {
     interface View extends BaseView<Presenter> {
         void goNext(Account account);
         void autoConfigurationFail();
-        void manualSetup(Account account);
         void showAcceptKeyDialog(final int msgResId,  final String exMessage, String message,
                 X509Certificate certificate);
         void showErrorDialog(final int msgResId, final Object... args);
@@ -26,6 +25,6 @@ interface CheckSettingsContract {
         void skip();
         void autoConfiguration(String email, String password);
         void checkSettings();
-        void acceptCertificate(X509Certificate certificate);
+        void onCertificateAccepted(X509Certificate certificate);
     }
 }

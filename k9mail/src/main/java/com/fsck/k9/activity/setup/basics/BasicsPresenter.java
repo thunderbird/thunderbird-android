@@ -28,18 +28,18 @@ class BasicsPresenter implements BasicsContract.Presenter {
     }
 
     @Override
-    public void validateFields(String email, String password) {
+    public void onInputChanged(String email, String password) {
         EmailAddressValidator emailValidator = new EmailAddressValidator();
 
         boolean valid = email != null && email.length() > 0
                 && password != null && password.length() > 0
                 && emailValidator.isValidAddressOnly(email);
 
-        view.enableNext(valid);
+        view.setNextEnabled(valid);
     }
 
     @Override
-    public void manualSetup(String email, String password) {
+    public void onManualSetupButtonClicked(String email, String password) {
         if (account == null) {
             account = Preferences.getPreferences(K9.app).newAccount();
         }
@@ -68,16 +68,16 @@ class BasicsPresenter implements BasicsContract.Presenter {
     }
 
     @Override
-    public void handleAutoConfigurationResult(int resultCode, String email, String password) {
+    public void onAutoConfigurationResult(int resultCode, String email, String password) {
         if (resultCode == RESULT_OK) {
             view.onAutoConfigurationSuccess(account);
         } else {
-            manualSetup(email, password);
+            onManualSetupButtonClicked(email, password);
         }
     }
 
     @Override
-    public void next() {
+    public void onNextButtonClicked() {
         if (account == null) {
             account = Preferences.getPreferences(K9.app).newAccount();
         }
