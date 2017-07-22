@@ -81,19 +81,12 @@ public class AccountSetupBasics extends K9MaterialActivity
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        /*
-         * We wait until now to initialize the listeners because we didn't want
-         * the OnCheckedChangeListener active while the
-         * mClientCertificateCheckBox state was being restored because it could
-         * trigger the pop-up of a ClientCertificateSpinner.chooseCertificate()
-         * dialog.
-         */
         initializeViewListeners();
-        presenter.validateFields(emailView.getText().toString(), passwordView.getText().toString());
+        presenter.onInputChanged(emailView.getText().toString(), passwordView.getText().toString());
     }
 
     public void afterTextChanged(Editable s) {
-        presenter.validateFields(emailView.getText().toString(), passwordView.getText().toString());
+        presenter.onInputChanged(emailView.getText().toString(), passwordView.getText().toString());
     }
 
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -108,19 +101,19 @@ public class AccountSetupBasics extends K9MaterialActivity
 
         String email = emailView.getText().toString();
         String password = passwordView.getText().toString();
-        presenter.handleAutoConfigurationResult(resultCode, email, password);
+        presenter.onAutoConfigurationResult(resultCode, email, password);
     }
 
 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.next:
-                presenter.next();
+                presenter.onNextButtonClicked();
                 break;
             case R.id.manual_setup:
                 String email = emailView.getText().toString();
                 String password = passwordView.getText().toString();
-                presenter.manualSetup(email, password);
+                presenter.onManualSetupButtonClicked(email, password);
                 break;
         }
     }
@@ -131,7 +124,7 @@ public class AccountSetupBasics extends K9MaterialActivity
     }
 
     @Override
-    public void enableNext(boolean enabled) {
+    public void setNextEnabled(boolean enabled) {
         nextButton.setEnabled(enabled);
     }
 

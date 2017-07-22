@@ -215,7 +215,7 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
     }
 
     @Override
-    public void acceptCertificate(X509Certificate certificate) {
+    public void onCertificateAccepted(X509Certificate certificate) {
         try {
             account.addCertificate(direction, certificate);
         } catch (CertificateException e) {
