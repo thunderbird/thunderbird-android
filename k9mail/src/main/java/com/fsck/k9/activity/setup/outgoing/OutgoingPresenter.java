@@ -177,8 +177,8 @@ class OutgoingPresenter implements OutgoingContract.Presenter {
         }
 
         revokeInvalidSettingsAndUpdateView(authType, connectionSecurity, port);
-        validateFields(certificateAlias, server, port, username, password, authType,
-                connectionSecurity, requireLogin);
+        validateFields(certificateAlias, server, currentPort, username, password, currentAuthType,
+                currentSecurityType, requireLogin);
     }
 
     private void validateFields(String certificateAlias, String server, String port,
