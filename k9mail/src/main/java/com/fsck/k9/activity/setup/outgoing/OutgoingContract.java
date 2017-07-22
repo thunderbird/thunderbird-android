@@ -5,6 +5,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.BasePresenter;
 import com.fsck.k9.BaseState;
 import com.fsck.k9.BaseView;
+import com.fsck.k9.activity.setup.IncomingAndOutgoingState;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
@@ -45,11 +46,11 @@ interface OutgoingContract {
                     AuthType authType, boolean requireLogin);
 
         void onInputChanged(String certificateAlias, String server, String port,
-                String username, String password, AuthType authType, ConnectionSecurity connectionSecurity,
-                boolean requireLogin);
+                            String username, String password, AuthType authType,
+                            ConnectionSecurity connectionSecurity, boolean requireLogin);
 
-        OutgoingState getState();
-        void setState(OutgoingState state);
+        IncomingAndOutgoingState getState();
+        void setState(IncomingAndOutgoingState state);
     }
 
 }

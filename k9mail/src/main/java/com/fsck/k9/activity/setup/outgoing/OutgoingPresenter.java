@@ -8,6 +8,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
+import com.fsck.k9.activity.setup.IncomingAndOutgoingState;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.activity.setup.outgoing.OutgoingContract.View;
 import com.fsck.k9.helper.Utility;
@@ -33,6 +34,12 @@ class OutgoingPresenter implements OutgoingContract.Presenter {
         view.setPresenter(this);
     }
 
+    OutgoingPresenter(View view, Account account) {
+        this.view = view;
+        setAccount(account);
+        view.setPresenter(this);
+    }
+
     @Override
     public void onAccountEdited() {
         account.save(Preferences.getPreferences(K9.app));
@@ -43,9 +50,8 @@ class OutgoingPresenter implements OutgoingContract.Presenter {
         return account;
     }
 
-    @Override
-    public void setAccount(String accountUuid) {
-        account = Preferences.getPreferences(K9.app).getAccount(accountUuid);
+    private void setAccount(Account account) {
+        this.account = account;
 
         try {
             if (new URI(account.getStoreUri()).getScheme().startsWith("webdav")) {
@@ -92,6 +98,13 @@ class OutgoingPresenter implements OutgoingContract.Presenter {
         }
     }
 
+    @Override
+    public void setAccount(String accountUuid) {
+        Account account = Preferences.getPreferences(K9.app).getAccount(accountUuid);
+
+        setAccount(account);
+    }
+
     private void setAuthType(AuthType authType) {
         view.setAuthType(authType);
 
@@ -105,9 +118,12 @@ class OutgoingPresenter implements OutgoingContract.Presenter {
     }
 
     @Override
-    public void setState(OutgoingState state) {
-        view.setAuthType(state.authType);
-        view.setSecurityType(state.connectionSecurity);
+    public void setState(IncomingAndOutgoingState state) {
+        view.setAuthType(state.getAuthType());
+        view.setSecurityType(state.getConnectionSecurity());
+
+        currentAuthType = state.getAuthType();
+        currentSecurityType = state.getConnectionSecurity();
     }
 
     private void onSecuritySelected(ConnectionSecurity securityType) {
@@ -231,7 +247,7 @@ class OutgoingPresenter implements OutgoingContract.Presenter {
     }
 
     @Override
-    public OutgoingState getState() {
-        return new OutgoingState(currentAuthType, currentSecurityType);
+    public IncomingAndOutgoingState getState() {
+        return new IncomingAndOutgoingState(currentAuthType, currentSecurityType);
     }
 }

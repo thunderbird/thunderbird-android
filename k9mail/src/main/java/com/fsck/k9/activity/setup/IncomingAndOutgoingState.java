@@ -1,4 +1,4 @@
-package com.fsck.k9.activity.setup.outgoing;
+package com.fsck.k9.activity.setup;
 
 import android.os.Parcel;
 
@@ -6,7 +6,9 @@ import com.fsck.k9.BaseState;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 
-class OutgoingState implements BaseState {
+
+public class IncomingAndOutgoingState implements BaseState {
+
     AuthType authType;
     ConnectionSecurity connectionSecurity;
 
@@ -21,27 +23,35 @@ class OutgoingState implements BaseState {
         dest.writeInt(this.connectionSecurity == null ? -1 : this.connectionSecurity.ordinal());
     }
 
-    OutgoingState(AuthType authType, ConnectionSecurity connectionSecurity) {
+    public IncomingAndOutgoingState(AuthType authType, ConnectionSecurity connectionSecurity) {
         this.authType = authType;
         this.connectionSecurity = connectionSecurity;
     }
 
-    protected OutgoingState(Parcel in) {
+    protected IncomingAndOutgoingState(Parcel in) {
         int tmpAuthType = in.readInt();
         this.authType = tmpAuthType == -1 ? null : AuthType.values()[tmpAuthType];
         int tmpConnectionSecurity = in.readInt();
         this.connectionSecurity = tmpConnectionSecurity == -1 ? null : ConnectionSecurity.values()[tmpConnectionSecurity];
     }
 
-    public static final Creator<OutgoingState> CREATOR = new Creator<OutgoingState>() {
+    public static final Creator<IncomingAndOutgoingState> CREATOR = new Creator<IncomingAndOutgoingState>() {
         @Override
-        public OutgoingState createFromParcel(Parcel source) {
-            return new OutgoingState(source);
+        public IncomingAndOutgoingState createFromParcel(Parcel source) {
+            return new IncomingAndOutgoingState(source);
         }
 
         @Override
-        public OutgoingState[] newArray(int size) {
-            return new OutgoingState[size];
+        public IncomingAndOutgoingState[] newArray(int size) {
+            return new IncomingAndOutgoingState[size];
         }
     };
+
+    public AuthType getAuthType() {
+        return authType;
+    }
+
+    public ConnectionSecurity getConnectionSecurity() {
+        return connectionSecurity;
+    }
 }

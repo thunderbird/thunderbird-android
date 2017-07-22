@@ -13,6 +13,7 @@ import com.fsck.k9.activity.setup.AuthTypeAdapter;
 import com.fsck.k9.activity.setup.AuthTypeHolder;
 import com.fsck.k9.activity.setup.ConnectionSecurityAdapter;
 import com.fsck.k9.activity.setup.ConnectionSecurityHolder;
+import com.fsck.k9.activity.setup.IncomingAndOutgoingState;
 import com.fsck.k9.activity.setup.checksettings.AccountSetupCheckSettings;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.activity.setup.outgoing.OutgoingContract.Presenter;
@@ -114,9 +115,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         presenter = new OutgoingPresenter(this, accountUuid);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE)) {
-            presenter.setState((OutgoingState) savedInstanceState.getParcelable(STATE));
+            presenter.setState((IncomingAndOutgoingState) savedInstanceState.getParcelable(STATE));
         }
-
     }
 
     /**
@@ -158,7 +158,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         });
 
         requireLoginView.setOnCheckedChangeListener(this);
-        clientCertificateSpinner.setOnClientCertificateChangedListener(clientCertificateChangedListener);
+        clientCertificateSpinner
+                .setOnClientCertificateChangedListener(clientCertificateChangedListener);
         usernameView.addTextChangedListener(validationTextWatcher);
         passwordView.addTextChangedListener(validationTextWatcher);
         serverView.addTextChangedListener(validationTextWatcher);
