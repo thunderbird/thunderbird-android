@@ -1924,7 +1924,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.setType("application/octet-stream");
-            intent.putExtra(Intent.EXTRA_TITLE, SettingsExporter.EXPORT_FILENAME);
+            intent.putExtra(Intent.EXTRA_TITLE, SettingsExporter.generateDatedExportFileName());
             intent.addCategory(Intent.CATEGORY_OPENABLE);
 
             startActivityForResult(intent, ACTIVITY_REQUEST_SAVE_SETTINGS_FILE);
