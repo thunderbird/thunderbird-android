@@ -107,13 +107,14 @@ abstract class FolderSelectedStateCommand {
         C command;
         B builder;
 
-        abstract C createCommand();
-        abstract B createBuilder();
-
         public Builder() {
             command = createCommand();
             builder = createBuilder();
         }
+
+        abstract C createCommand();
+
+        abstract B createBuilder();
 
         public B idSet(Collection<Long> idSet) {
             if (idSet != null) {
@@ -195,6 +196,7 @@ abstract class FolderSelectedStateCommand {
 
         @Override
         public String toString() {
+            //The highest UID is queried as *:*, see the note in RFC 3501, page 60
             if (start == LAST_ID && end == LAST_ID) {
                 return "*:*";
             }
