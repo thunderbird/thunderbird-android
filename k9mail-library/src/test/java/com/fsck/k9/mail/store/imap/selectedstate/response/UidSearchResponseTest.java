@@ -45,7 +45,8 @@ public class UidSearchResponseTest {
 
     @Test
     public void parse_withMultipleSearchResponses_shouldExtractNumbers() throws Exception {
-        List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2, SEARCH_RESPONSE_3);
+        List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2,
+                SEARCH_RESPONSE_3);
 
         UidSearchResponse result = UidSearchResponse.parse(responses);
 
@@ -65,7 +66,8 @@ public class UidSearchResponseTest {
 
     @Test
     public void parse_withMultipleSearchResponsesAndSingleTaggedSearchResponse_shouldExtractNumbers() throws Exception {
-        List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2, SEARCH_RESPONSE_TAGGED);
+        List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2,
+                SEARCH_RESPONSE_TAGGED);
 
         UidSearchResponse result = UidSearchResponse.parse(responses);
 
@@ -85,7 +87,8 @@ public class UidSearchResponseTest {
 
     @Test
     public void parse_withMultipleSearchResponsesAndSingleTooShortResponse_shouldExtractNumbers() throws Exception {
-        List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2, SEARCH_RESPONSE_SHORT);
+        List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2,
+                SEARCH_RESPONSE_SHORT);
 
         UidSearchResponse result = UidSearchResponse.parse(responses);
 
@@ -105,7 +108,8 @@ public class UidSearchResponseTest {
 
     @Test
     public void parse_withMultipleSearchResponsesAndSingleNoSearchResponse_shouldExtractNumbers() throws Exception {
-        List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2, SEARCH_RESPONSE_NONE);
+        List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2,
+                SEARCH_RESPONSE_NONE);
 
         UidSearchResponse result = UidSearchResponse.parse(responses);
 
@@ -124,8 +128,10 @@ public class UidSearchResponseTest {
     }
 
     @Test
-    public void parse_withMultipleSearchResponsesAndSingleSearchResponseContainingInvalidNumber_shouldExtractNumbers() throws Exception {
-        List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2, SEARCH_RESPONSE_INVALID);
+    public void parse_withMultipleSearchResponsesAndSingleSearchResponseContainingInvalidNumber_shouldExtractNumbers()
+            throws Exception {
+        List<List<ImapResponse>> responses = createMultipleImapResponses(SEARCH_RESPONSE_1, SEARCH_RESPONSE_2,
+                SEARCH_RESPONSE_INVALID);
 
         UidSearchResponse result = UidSearchResponse.parse(responses);
 

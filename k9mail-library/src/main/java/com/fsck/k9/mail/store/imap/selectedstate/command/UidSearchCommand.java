@@ -19,7 +19,7 @@ import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.store.imap.selectedstate.response.UidSearchResponse;
 
 
-public class UidSearchCommand extends SelectedStateCommand {
+public class UidSearchCommand extends FolderSelectedStateCommand {
     private boolean useUids;
     private String queryString;
     private String messageId;
@@ -34,7 +34,7 @@ public class UidSearchCommand extends SelectedStateCommand {
     }
 
     @Override
-    public String createCommandString() {
+    String createCommandString() {
         StringBuilder builder = new StringBuilder(Commands.UID_SEARCH).append(" ");
         if (useUids) {
             builder.append("UID ");
@@ -145,7 +145,7 @@ public class UidSearchCommand extends SelectedStateCommand {
                 .listener(listener);
     }
 
-    public static class Builder extends SelectedStateCommand.Builder<UidSearchCommand, Builder> {
+    public static class Builder extends FolderSelectedStateCommand.Builder<UidSearchCommand, Builder> {
 
         public Builder useUids(boolean useUids) {
             command.useUids = useUids;
