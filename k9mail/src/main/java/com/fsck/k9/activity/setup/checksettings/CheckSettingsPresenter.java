@@ -23,13 +23,13 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
+import com.fsck.k9.activity.setup.AbstractAccountSetup.AccountState;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsContract.View;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
@@ -45,11 +45,17 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
     private Account account;
     private CheckDirection currentDirection;
     private CheckDirection direction;
+    private AccountState state;
 
     public enum CheckDirection {
         INCOMING,
         OUTGOING,
         BOTH
+    }
+
+    CheckSettingsPresenter(View view) {
+        this.view = view;
+        view.setPresenter(this);
     }
 
     CheckSettingsPresenter(View view, Account account) {
@@ -71,14 +77,16 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
     @Override
     public void skip() {
         if (direction == CheckDirection.BOTH && currentDirection == CheckDirection.INCOMING) {
-            currentDirection = CheckDirection.OUTGOING;
+            checkOutgoing();
+        } else if (currentDirection == CheckDirection.OUTGOING){
+            view.goToNames();
         } else {
-            view.goNext(account);
+            view.goToOutgoing();
         }
     }
 
-    @Override
-    public void autoConfiguration(final String email, final String password) {
+
+    private void autoConfiguration(final String email, final String password) {
         view.setMessage(R.string.account_setup_check_settings_retr_info_msg);
 
         EmailHelper emailHelper = new EmailHelper();
@@ -91,15 +99,229 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
 
         try {
             modifyAccount(email, password, provider);
-            direction = CheckDirection.BOTH;
-            currentDirection = CheckDirection.INCOMING;
-            checkSettings();
+
+            checkIncomingAndOutgoing();
         } catch (URISyntaxException e) {
             Preferences.getPreferences(K9.app).deleteAccount(account);
             view.autoConfigurationFail();
         }
     }
 
+    private void checkIncomingAndOutgoing() {
+        currentDirection = CheckDirection.INCOMING;
+        new CheckIncomingTask(account, new CheckSettingsSuccessCallback() {
+            @Override
+            public void onCheckSuccess() {
+                checkOutgoing();
+            }
+        }).execute();
+    }
+
+    private void checkIncoming() {
+        currentDirection = CheckDirection.INCOMING;
+        new CheckIncomingTask(account, new CheckSettingsSuccessCallback() {
+            @Override
+            public void onCheckSuccess() {
+                // TODO: 7/23/2017 should it be changed?
+                account.setDescription(account.getEmail());
+                account.save(Preferences.getPreferences(K9.app));
+                K9.setServicesEnabled(K9.app);
+
+                view.goToOutgoing();
+            }
+        }).execute();
+    }
+
+    private void checkOutgoing() {
+        currentDirection = CheckDirection.OUTGOING;
+
+        new CheckOutgoingTask(account, new CheckSettingsSuccessCallback() {
+            @Override
+            public void onCheckSuccess() {
+                //We've successfully checked outgoing as well.
+                account.setDescription(account.getEmail());
+                account.save(Preferences.getPreferences(K9.app));
+                K9.setServicesEnabled(K9.app);
+
+                view.goToNames();
+            }
+        }).execute();
+    }
+
+    @Override
+    public void onViewStart(AccountState state) {
+        this.state = state;
+
+        int step = state.getStep();
+
+        switch (step) {
+            case AccountState.STEP_AUTO_CONFIGURATION:
+                autoConfiguration(state.getEmail(), state.getPassword());
+                break;
+            case AccountState.STEP_CHECK_INCOMING:
+                checkIncoming();
+                break;
+            case AccountState.STEP_CHECK_OUTGOING:
+                checkOutgoing();
+                break;
+        }
+    }
+
+
+    private class CheckOutgoingTask extends CheckAccountTask {
+
+        private CheckOutgoingTask(Account account) {
+            super(account);
+        }
+
+        private CheckOutgoingTask(Account account, CheckSettingsSuccessCallback callback) {
+            super(account, callback);
+        }
+
+        @Override
+        void checkSettings() throws Exception {
+            clearCertificateErrorNotifications(CheckDirection.OUTGOING);
+
+            if (!(account.getRemoteStore() instanceof WebDavStore)) {
+                publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
+            }
+            Transport transport = TransportProvider.getInstance().getTransport(K9.app, account);
+            transport.close();
+            try {
+                transport.open();
+            } finally {
+                transport.close();
+            }
+        }
+    }
+
+    private class CheckIncomingTask extends CheckAccountTask {
+        private CheckIncomingTask(Account account) {
+            super(account);
+        }
+
+        private CheckIncomingTask(Account account, CheckSettingsSuccessCallback callback) {
+            super(account, callback);
+        }
+
+        @Override
+        void checkSettings() throws Exception {
+
+            clearCertificateErrorNotifications(CheckDirection.INCOMING);
+
+            Store store = account.getRemoteStore();
+            if (store instanceof WebDavStore) {
+                publishProgress(R.string.account_setup_check_settings_authenticate);
+            } else {
+                publishProgress(R.string.account_setup_check_settings_check_incoming_msg);
+            }
+            store.checkSettings();
+
+            if (store instanceof WebDavStore) {
+                publishProgress(R.string.account_setup_check_settings_fetch);
+            }
+            MessagingController.getInstance(K9.app).listFoldersSynchronous(account, true, null);
+            MessagingController.getInstance(K9.app)
+                    .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
+        }
+    }
+
+    /**
+     * FIXME: Don't use an AsyncTask to perform network operations.
+     * See also discussion in https://github.com/k9mail/k-9/pull/560
+     */
+    private abstract class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Void> {
+        private final Account account;
+        private CheckSettingsSuccessCallback callback;
+
+        private CheckAccountTask(Account account) {
+            this(account, null);
+        }
+
+        private CheckAccountTask(Account account, CheckSettingsSuccessCallback callback) {
+            this.account = account;
+            this.callback = callback;
+        }
+
+        abstract void checkSettings() throws Exception;
+
+        @Override
+        protected Void doInBackground(CheckDirection... params) {
+            try {
+                /*
+                 * This task could be interrupted at any point, but network operations can block,
+                 * so relying on InterruptedException is not enough. Instead, check after
+                 * each potentially long-running operation.
+                 */
+                if (cancelled()) {
+                    return null;
+                }
+
+                checkSettings();
+
+                if (cancelled()) {
+                    return null;
+                }
+
+                if (callback != null) {
+                    callback.onCheckSuccess();
+                }
+
+
+            } catch (AuthenticationFailedException afe) {
+                Timber.e(afe, "Error while testing settings");
+                view.showErrorDialog(
+                        R.string.account_setup_failed_dlg_auth_message_fmt,
+                        afe.getMessage() == null ? "" : afe.getMessage());
+            } catch (CertificateValidationException cve) {
+                handleCertificateValidationException(cve);
+            } catch (Exception e) {
+                Timber.e(e, "Error while testing settings");
+                String message = e.getMessage() == null ? "" : e.getMessage();
+                view.showErrorDialog(R.string.account_setup_failed_dlg_server_message_fmt, message);
+            }
+            return null;
+        }
+
+        void clearCertificateErrorNotifications(CheckDirection direction) {
+            final MessagingController ctrl = MessagingController.getInstance(K9.app);
+            ctrl.clearCertificateErrorNotifications(account, direction);
+        }
+
+        private boolean cancelled() {
+            return view.canceled();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            view.setMessage(values[0]);
+        }
+
+
+    }
+
+    private String getOwnerName() {
+        String name = null;
+        try {
+            name = getDefaultAccountName();
+        } catch (Exception e) {
+            Timber.e(e, "Could not get default account name");
+        }
+
+        if (name == null) {
+            name = "";
+        }
+        return name;
+    }
+
+    private String getDefaultAccountName() {
+        String name = null;
+        Account account = Preferences.getPreferences(K9.app).getDefaultAccount();
+        if (account != null) {
+            name = account.getName();
+        }
+        return name;
+    }
 
     private String getXmlAttribute(XmlResourceParser xml, String name) {
         int resId = xml.getAttributeResourceValue(null, name, 0);
@@ -144,11 +366,6 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
             Timber.e(e, "Error while trying to load provider settings.");
         }
         return null;
-    }
-
-    @Override
-    public void checkSettings() {
-        new CheckAccountTask(account).execute();
     }
 
     private void modifyAccount(String email, String password, @NonNull Provider provider) throws URISyntaxException {
@@ -224,9 +441,29 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
                     e.getMessage() == null ? "" : e.getMessage());
         }
 
-        checkSettings();
+        replayChecking();
     }
 
+    @Override
+    public void onError() {
+        if (state.getStep() == AccountState.STEP_AUTO_CONFIGURATION) {
+            view.goToBasics();
+        } else if (state.getStep() == AccountState.STEP_CHECK_INCOMING) {
+            view.goToIncoming();
+        } else {
+            view.goToOutgoing();
+        }
+    }
+
+    private void replayChecking() {
+        if (direction == CheckDirection.BOTH && currentDirection == CheckDirection.INCOMING) {
+            checkIncomingAndOutgoing();
+        } else if (currentDirection == CheckDirection.INCOMING) {
+            checkIncoming();
+        } else {
+            checkOutgoing();
+        }
+    }
 
     private String errorMessageForCertificateException(CertificateValidationException e) {
         switch (e.getReason()) {
@@ -372,151 +609,6 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
         }
     }
 
-    /**
-     * FIXME: Don't use an AsyncTask to perform network operations.
-     * See also discussion in https://github.com/k9mail/k-9/pull/560
-     */
-    private class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Void> {
-        private final Account account;
-
-        private CheckAccountTask(Account account) {
-            this.account = account;
-        }
-
-        @Override
-        protected Void doInBackground(CheckDirection... params) {
-            try {
-                /*
-                 * This task could be interrupted at any point, but network operations can block,
-                 * so relying on InterruptedException is not enough. Instead, check after
-                 * each potentially long-running operation.
-                 */
-                if (cancelled()) {
-                    return null;
-                }
-
-                clearCertificateErrorNotifications(CheckSettingsPresenter.this.direction);
-
-                checkServerSettings(CheckSettingsPresenter.this.direction);
-
-                if (cancelled()) {
-                    return null;
-                }
-
-                if (CheckSettingsPresenter.this.direction == CheckDirection.BOTH &&
-                        CheckSettingsPresenter.this.currentDirection == CheckDirection.INCOMING) {
-
-                    CheckSettingsPresenter.this.currentDirection = CheckDirection.OUTGOING;
-
-                    clearCertificateErrorNotifications(CheckSettingsPresenter.this.currentDirection);
-
-                    checkServerSettings(CheckSettingsPresenter.this.currentDirection);
-                }
-
-                //We've successfully checked outgoing as well.
-                account.setDescription(account.getEmail());
-                account.save(Preferences.getPreferences(K9.app));
-                K9.setServicesEnabled(K9.app);
-
-                view.goNext(account);
-
-            } catch (AuthenticationFailedException afe) {
-                Timber.e(afe, "Error while testing settings");
-                view.showErrorDialog(
-                        R.string.account_setup_failed_dlg_auth_message_fmt,
-                        afe.getMessage() == null ? "" : afe.getMessage());
-            } catch (CertificateValidationException cve) {
-                handleCertificateValidationException(cve);
-            } catch (Exception e) {
-                Timber.e(e, "Error while testing settings");
-                String message = e.getMessage() == null ? "" : e.getMessage();
-                view.showErrorDialog(R.string.account_setup_failed_dlg_server_message_fmt, message);
-            }
-            return null;
-        }
-
-        private void clearCertificateErrorNotifications(CheckDirection direction) {
-            final MessagingController ctrl = MessagingController.getInstance(K9.app);
-            ctrl.clearCertificateErrorNotifications(account, direction);
-        }
-
-        private boolean cancelled() {
-            return view.canceled();
-        }
-
-        private void checkServerSettings(CheckDirection direction) throws MessagingException {
-            switch (direction) {
-                case INCOMING: {
-                    checkIncoming();
-                    break;
-                }
-                case OUTGOING: {
-                    checkOutgoing();
-                    break;
-                }
-            }
-        }
-
-        private void checkOutgoing() throws MessagingException {
-            if (!(account.getRemoteStore() instanceof WebDavStore)) {
-                publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
-            }
-            Transport transport = TransportProvider.getInstance().getTransport(K9.app, account);
-            transport.close();
-            try {
-                transport.open();
-            } finally {
-                transport.close();
-            }
-        }
-
-        private void checkIncoming() throws MessagingException {
-            Store store = account.getRemoteStore();
-            if (store instanceof WebDavStore) {
-                publishProgress(R.string.account_setup_check_settings_authenticate);
-            } else {
-                publishProgress(R.string.account_setup_check_settings_check_incoming_msg);
-            }
-            store.checkSettings();
-
-            if (store instanceof WebDavStore) {
-                publishProgress(R.string.account_setup_check_settings_fetch);
-            }
-            MessagingController.getInstance(K9.app).listFoldersSynchronous(account, true, null);
-            MessagingController.getInstance(K9.app)
-                    .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            view.setMessage(values[0]);
-        }
-    }
-
-
-    private String getOwnerName() {
-        String name = null;
-        try {
-            name = getDefaultAccountName();
-        } catch (Exception e) {
-            Timber.e(e, "Could not get default account name");
-        }
-
-        if (name == null) {
-            name = "";
-        }
-        return name;
-    }
-
-    private String getDefaultAccountName() {
-        String name = null;
-        Account account = Preferences.getPreferences(K9.app).getDefaultAccount();
-        if (account != null) {
-            name = account.getName();
-        }
-        return name;
-    }
-
     private static class Provider implements Serializable {
         private static final long serialVersionUID = 8511656164616538989L;
 
@@ -535,7 +627,10 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
         public String outgoingUsernameTemplate;
 
         public String note;
+    }
 
+    private interface CheckSettingsSuccessCallback {
+        void onCheckSuccess();
     }
 }
 

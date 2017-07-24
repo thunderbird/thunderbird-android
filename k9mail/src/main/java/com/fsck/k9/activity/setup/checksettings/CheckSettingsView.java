@@ -17,9 +17,8 @@ import android.support.annotation.StringRes;
 import android.widget.TextView;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.K9MaterialActivity;
+import com.fsck.k9.activity.setup.AbstractAccountSetup;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsContract.Presenter;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
@@ -27,8 +26,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
-public class AccountSetupCheckSettings extends K9MaterialActivity
-        implements CheckSettingsContract.View,
+public class CheckSettingsView implements CheckSettingsContract.View,
         ConfirmationDialogFragmentListener {
 
     public static final int ACTIVITY_REQUEST_CODE = 1;
@@ -40,6 +38,7 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
     private static final String EXTRA_AUTOCONFIGURATION = "autocongifuration";
 
     private Presenter presenter;
+    private AbstractAccountSetup activity;
     private boolean destroyed;
     private boolean canceled;
     private TextView messageView;
@@ -50,21 +49,36 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
 
     private Handler handler;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.account_setup_autoconfiguration);
-        messageView = (TextView)findViewById(R.id.message);
-        progressBar = (MaterialProgressBar) findViewById(R.id.progress);
+    public CheckSettingsView(AbstractAccountSetup activity) {
+        setActivity(activity);
+
+        messageView = (TextView) activity.findViewById(R.id.message);
+        progressBar = (MaterialProgressBar) activity.findViewById(R.id.progress);
 
         progressBar.setIndeterminate(true);
 
         handler = new Handler(Looper.getMainLooper());
 
-        Account account;
+        Account account = activity.getState().getAccount();
+        String email = activity.getState().getEmail();
+        String password = activity.getState().getPassword();
 
-        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        account = Preferences.getPreferences(this).getAccount(accountUuid);
+
+
+        // String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        // account = Preferences.getPreferences(this).getAccount(accountUuid);
+
+
+    }
+
+    @Override
+    public void start() {
+        presenter.onViewStart(activity.getState());
+
+
+
+        /* if (activity.getState().getStep() == AccountState.STEP_AUTO_CONFIGURATION) {
+        }
         if (getIntent().getBooleanExtra(EXTRA_AUTOCONFIGURATION, false)) {
             email = getIntent().getStringExtra(EXTRA_EMAIL);
             password = getIntent().getStringExtra(EXTRA_PASSWORD);
@@ -74,30 +88,16 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
             CheckDirection direction = (CheckDirection) getIntent().getSerializableExtra(EXTRA_CHECK_DIRECTION);
             presenter = new CheckSettingsPresenter(this, account, direction);
             presenter.checkSettings();
-        }
+        } */
     }
 
+    // FIXME: 7/24/2017 change it
     public static void startChecking(Activity activity, String accountUuid, CheckDirection checkDirection) {
         Bundle bundle = new Bundle();
         bundle.putString(EXTRA_ACCOUNT, accountUuid);
         bundle.putSerializable(EXTRA_CHECK_DIRECTION, checkDirection);
 
-        Intent intent = new Intent(activity, AccountSetupCheckSettings.class);
-        intent.putExtras(bundle);
-
-        activity.startActivityForResult(intent, ACTIVITY_REQUEST_CODE);
-    }
-
-    public static void startAutoConfigurationAndChecking(Activity activity, Account account, String email,
-            String password) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(EXTRA_ACCOUNT, account.getUuid());
-        bundle.putString(EXTRA_EMAIL, email);
-        bundle.putString(EXTRA_PASSWORD, password);
-        bundle.putBoolean(EXTRA_AUTOCONFIGURATION, true);
-
-        Intent intent = new Intent(activity, AccountSetupCheckSettings.class);
-
+        Intent intent = new Intent(activity, CheckSettingsView.class);
         intent.putExtras(bundle);
 
         activity.startActivityForResult(intent, ACTIVITY_REQUEST_CODE);
@@ -109,15 +109,13 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
     }
 
     @Override
-    public void goNext(Account account) {
-        setResult(RESULT_OK);
-        finish();
+    public void setActivity(AbstractAccountSetup activity) {
+        this.activity = activity;
     }
 
     @Override
     public void autoConfigurationFail() {
-        setResult(RESULT_CANCELED);
-        finish();
+        activity.goToManualSetup();
     }
 
     @Override
@@ -129,24 +127,24 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
             public void run() {
                 // TODO: refactor with DialogFragment.
                 // This is difficult because we need to pass through chain[0] for onClick()
-                new AlertDialog.Builder(AccountSetupCheckSettings.this)
-                        .setTitle(getString(R.string.account_setup_failed_dlg_invalid_certificate_title))
-                        .setMessage(getString(msgResId, exMessage)
+                new AlertDialog.Builder(activity)
+                        .setTitle(activity.getString(R.string.account_setup_failed_dlg_invalid_certificate_title))
+                        .setMessage(activity.getString(msgResId, exMessage)
                                 + " " + message
                         )
                         .setCancelable(true)
                         .setPositiveButton(
-                                getString(R.string.account_setup_failed_dlg_invalid_certificate_accept),
+                                activity.getString(R.string.account_setup_failed_dlg_invalid_certificate_accept),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         presenter.onCertificateAccepted(certificate);
                                     }
                                 })
                         .setNegativeButton(
-                                getString(R.string.account_setup_failed_dlg_invalid_certificate_reject),
+                                activity.getString(R.string.account_setup_failed_dlg_invalid_certificate_reject),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        finish();
+                                        activity.finish();
                                     }
                                 })
                         .show();
@@ -159,7 +157,7 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
         handler.post(new Runnable() {
             @Override
             public void run() {
-                showDialogFragment(R.id.dialog_account_setup_error, getString(msgResId, args));
+                showDialogFragment(R.id.dialog_account_setup_error, activity.getString(msgResId, args));
             }
         });
     }
@@ -171,7 +169,27 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
 
     @Override
     public void setMessage(@StringRes int id) {
-        messageView.setText(getString(id));
+        messageView.setText(activity.getString(id));
+    }
+
+    @Override
+    public void goToBasics() {
+        activity.goToBasics();
+    }
+
+    @Override
+    public void goToIncoming() {
+        activity.goToIncoming();
+    }
+
+    @Override
+    public void goToOutgoing() {
+        activity.goToOutgoing();
+    }
+
+    @Override
+    public void goToNames() {
+        activity.goToAccountNames();
     }
 
     private void showDialogFragment(int dialogId, String customMessage) {
@@ -183,10 +201,10 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
         switch (dialogId) {
             case R.id.dialog_account_setup_error: {
                 fragment = ConfirmationDialogFragment.newInstance(dialogId,
-                        getString(R.string.account_setup_failed_dlg_title),
+                        activity.getString(R.string.account_setup_failed_dlg_title),
                         customMessage,
-                        getString(R.string.account_setup_failed_dlg_edit_details_action),
-                        getString(R.string.account_setup_failed_dlg_continue_action)
+                        activity.getString(R.string.account_setup_failed_dlg_edit_details_action),
+                        activity.getString(R.string.account_setup_failed_dlg_continue_action)
                 );
                 break;
             }
@@ -195,7 +213,7 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
             }
         }
 
-        FragmentTransaction ta = getFragmentManager().beginTransaction();
+        FragmentTransaction ta = activity.getFragmentManager().beginTransaction();
         ta.add(fragment, getDialogTag(dialogId));
         ta.commitAllowingStateLoss();
 
@@ -208,19 +226,11 @@ public class AccountSetupCheckSettings extends K9MaterialActivity
         return String.format(Locale.US, "dialog-%d", dialogId);
     }
 
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        destroyed = true;
-        canceled = true;
-    }
-
     @Override
     public void doPositiveClick(int dialogId) {
         switch (dialogId) {
             case R.id.dialog_account_setup_error: {
-                finish();
+                presenter.onError();
                 break;
             }
         }

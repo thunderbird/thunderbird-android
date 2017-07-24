@@ -9,14 +9,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 
-import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.activity.setup.AbstractAccountSetup;
 import com.fsck.k9.activity.setup.IncomingAndOutgoingState;
 import com.fsck.k9.activity.setup.outgoing.AccountSetupOutgoing;
 import com.fsck.k9.activity.setup.AuthTypeAdapter;
 import com.fsck.k9.activity.setup.AuthTypeHolder;
 import com.fsck.k9.activity.setup.ConnectionSecurityAdapter;
 import com.fsck.k9.activity.setup.ConnectionSecurityHolder;
-import com.fsck.k9.activity.setup.checksettings.AccountSetupCheckSettings;
+import com.fsck.k9.activity.setup.checksettings.CheckSettingsView;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.activity.setup.incoming.IncomingContract.Presenter;
 import timber.log.Timber;
@@ -34,7 +34,7 @@ import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
 
-public class AccountSetupIncoming extends K9Activity implements OnClickListener, IncomingContract.View {
+public class AccountSetupIncoming implements OnClickListener, IncomingContract.View {
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
@@ -64,6 +64,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener,
     private AuthTypeAdapter authTypeAdapter;
     private Presenter presenter;
 
+    private AbstractAccountSetup activity;
+
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
@@ -87,60 +89,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_incoming);
 
-        usernameView = (EditText)findViewById(R.id.account_username);
-        passwordView = (EditText)findViewById(R.id.account_password);
-        clientCertificateSpinner = (ClientCertificateSpinner)findViewById(R.id.account_client_certificate_spinner);
-        clientCertificateLabelView = (TextView)findViewById(R.id.account_client_certificate_label);
-        passwordLabelView = (TextView)findViewById(R.id.account_password_label);
-        serverLabelView = (TextView) findViewById(R.id.account_server_label);
-        serverView = (EditText)findViewById(R.id.account_server);
-        portView = (EditText)findViewById(R.id.account_port);
-        securityTypeView = (Spinner)findViewById(R.id.account_security_type);
-        authTypeView = (Spinner)findViewById(R.id.account_auth_type);
-        imapAutoDetectNamespaceView = (CheckBox)findViewById(R.id.imap_autodetect_namespace);
-        imapPathPrefixView = (EditText)findViewById(R.id.imap_path_prefix);
-        webdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
-        webdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
-        webdavMailboxPathView = (EditText)findViewById(R.id.webdav_mailbox_path);
-        nextButton = (Button)findViewById(R.id.next);
-        compressionMobile = (CheckBox)findViewById(R.id.compression_mobile);
-        compressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
-        compressionOther = (CheckBox)findViewById(R.id.compression_other);
-        subscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
-
-        nextButton.setOnClickListener(this);
-
-        imapAutoDetectNamespaceView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                imapPathPrefixView.setEnabled(!isChecked);
-                if (isChecked && imapPathPrefixView.hasFocus()) {
-                    imapPathPrefixView.focusSearch(View.FOCUS_UP).requestFocus();
-                } else if (!isChecked) {
-                    imapPathPrefixView.requestFocus();
-                }
-            }
-        });
-
-        authTypeAdapter = AuthTypeAdapter.get(this);
-        authTypeView.setAdapter(authTypeAdapter);
-
-        portView.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
-
-        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        makeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
-            accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
-        }
-
-        boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
-
-        presenter = new IncomingPresenter(this, accountUuid, editSettings);
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(STATE)) {
-            presenter.setState((IncomingAndOutgoingState) savedInstanceState.getParcelable(STATE));
-        }
     }
 
     private void initializeViewListeners() {
@@ -254,7 +202,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener,
                     connectionSecurity, authType, compressMobile, compressWifi, compressOther,
                     subscribeFoldersOnly);
 
-            AccountSetupCheckSettings.startChecking(this, presenter.getAccount().getUuid(),
+            CheckSettingsView.startChecking(this, presenter.getAccount().getUuid(),
                     CheckDirection.INCOMING);
         } catch (Exception e) {
             failure(e);
@@ -278,7 +226,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener,
         Timber.e(use, "Failure");
         String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
 
-        Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(activity.getApplication(), toastText, Toast.LENGTH_LONG);
         toast.show();
     }
 
@@ -360,36 +308,36 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener,
 
     @Override
     public void hideViewsWhenPop3() {
-        findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
-        findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
-        findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
-        findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
-        findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-        findViewById(R.id.compression_section).setVisibility(View.GONE);
-        findViewById(R.id.compression_label).setVisibility(View.GONE);
+        activity.findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+        activity.findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
+        activity.findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
+        activity.findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
+        activity.findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
+        activity.findViewById(R.id.compression_section).setVisibility(View.GONE);
+        activity.findViewById(R.id.compression_label).setVisibility(View.GONE);
         subscribedFoldersOnly.setVisibility(View.GONE);
     }
 
     @Override
     public void hideViewsWhenImap() {
-        findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
-        findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
-        findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
-        findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
+        activity.findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
+        activity.findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
+        activity.findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
+        activity.findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
     }
 
     @Override
     public void hideViewsWhenImapAndNotEdit() {
-        findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
+        activity.findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
     }
 
     @Override
     public void hideViewsWhenWebDav() {
-        findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
-        findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
-        findViewById(R.id.account_auth_type).setVisibility(View.GONE);
-        findViewById(R.id.compression_section).setVisibility(View.GONE);
-        findViewById(R.id.compression_label).setVisibility(View.GONE);
+        activity.findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+        activity.findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
+        activity.findViewById(R.id.account_auth_type).setVisibility(View.GONE);
+        activity.findViewById(R.id.compression_section).setVisibility(View.GONE);
+        activity.findViewById(R.id.compression_label).setVisibility(View.GONE);
         subscribedFoldersOnly.setVisibility(View.GONE);
     }
 
@@ -431,6 +379,60 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener,
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void setActivity(AbstractAccountSetup activity) {
+        this.activity = activity;
+    }
+
+    @Override
+    public void start() {
+        usernameView = (EditText) activity.findViewById(R.id.account_username);
+        passwordView = (EditText) activity.findViewById(R.id.account_password);
+        clientCertificateSpinner = (ClientCertificateSpinner) activity.findViewById(R.id.account_client_certificate_spinner);
+        clientCertificateLabelView = (TextView) activity.findViewById(R.id.account_client_certificate_label);
+        passwordLabelView = (TextView) activity.findViewById(R.id.account_password_label);
+        serverLabelView = (TextView)  activity.findViewById(R.id.account_server_label);
+        serverView = (EditText) activity.findViewById(R.id.account_server);
+        portView = (EditText) activity.findViewById(R.id.account_port);
+        securityTypeView = (Spinner) activity.findViewById(R.id.account_security_type);
+        authTypeView = (Spinner) activity.findViewById(R.id.account_auth_type);
+        imapAutoDetectNamespaceView = (CheckBox) activity.findViewById(R.id.imap_autodetect_namespace);
+        imapPathPrefixView = (EditText) activity.findViewById(R.id.imap_path_prefix);
+        webdavPathPrefixView = (EditText) activity.findViewById(R.id.webdav_path_prefix);
+        webdavAuthPathView = (EditText) activity.findViewById(R.id.webdav_auth_path);
+        webdavMailboxPathView = (EditText) activity.findViewById(R.id.webdav_mailbox_path);
+        nextButton = (Button) activity.findViewById(R.id.next);
+        compressionMobile = (CheckBox) activity.findViewById(R.id.compression_mobile);
+        compressionWifi = (CheckBox) activity.findViewById(R.id.compression_wifi);
+        compressionOther = (CheckBox) activity.findViewById(R.id.compression_other);
+        subscribedFoldersOnly = (CheckBox) activity.findViewById(R.id.subscribed_folders_only);
+
+        nextButton.setOnClickListener(this);
+
+        imapAutoDetectNamespaceView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                imapPathPrefixView.setEnabled(!isChecked);
+                if (isChecked && imapPathPrefixView.hasFocus()) {
+                    imapPathPrefixView.focusSearch(View.FOCUS_UP).requestFocus();
+                } else if (!isChecked) {
+                    imapPathPrefixView.requestFocus();
+                }
+            }
+        });
+
+        authTypeAdapter = AuthTypeAdapter.get(activity);
+        authTypeView.setAdapter(authTypeAdapter);
+
+        portView.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
+
+        presenter = new IncomingPresenter(this, activity.getState());
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(STATE)) {
+            presenter.setState((IncomingAndOutgoingState) savedInstanceState.getParcelable(STATE));
+        }
     }
 
     @Override

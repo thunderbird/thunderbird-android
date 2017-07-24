@@ -81,7 +81,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
 
         /*
          * The user info we have been given from
-         * AccountSetupBasics.onManualSetup() is encoded as an IMAP store
+         * BasicsView.onManualSetup() is encoded as an IMAP store
          * URI: AuthType:UserName:Password (no fields should be empty).
          * However, AuthType is not applicable to WebDAV nor to its store
          * URI. Re-encode without it, using just the UserName and Password.

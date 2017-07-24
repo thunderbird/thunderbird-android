@@ -14,7 +14,7 @@ import com.fsck.k9.activity.setup.AuthTypeHolder;
 import com.fsck.k9.activity.setup.ConnectionSecurityAdapter;
 import com.fsck.k9.activity.setup.ConnectionSecurityHolder;
 import com.fsck.k9.activity.setup.IncomingAndOutgoingState;
-import com.fsck.k9.activity.setup.checksettings.AccountSetupCheckSettings;
+import com.fsck.k9.activity.setup.checksettings.CheckSettingsView;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.activity.setup.outgoing.OutgoingContract.Presenter;
 import timber.log.Timber;
@@ -310,7 +310,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     @Override
     public void next(String accountUuid) {
-        AccountSetupCheckSettings.startChecking(this, accountUuid, CheckDirection.OUTGOING);
+        CheckSettingsView.startChecking(this, accountUuid, CheckDirection.OUTGOING);
     }
 
     @Override
