@@ -955,6 +955,14 @@ public class ImapFolder extends Folder<ImapMessage> {
                     Timber.d("Got untagged EXPUNGE with messageCount %d for %s", messageCount, getLogId());
                 }
             }
+
+            if (equalsIgnoreCase(response.get(0), "VANISHED") && messageCount > 0) {
+                List<String> vanishedUids = ImapUtility.extractVanishedUids(Collections.singletonList(response));
+                messageCount -= vanishedUids.size();
+                if (K9MailLib.isDebug()) {
+                    Timber.d("Got untagged VANISHED with messageCount %d for %s", messageCount, getLogId());
+                }
+            }
         }
     }
 
@@ -1253,25 +1261,20 @@ public class ImapFolder extends Folder<ImapMessage> {
 
         try {
             List<ImapResponse> expungeResponses = executeSimpleCommand("EXPUNGE");
-            return handleExpungeResponses(expungeResponses);
+            handleExpungeResponses(expungeResponses);
+            return ImapUtility.extractVanishedUids(expungeResponses);
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         }
     }
 
-    private List<String> handleExpungeResponses(List<ImapResponse> imapResponses) {
-        List<String> expungedUids = new ArrayList<>();
+    private void handleExpungeResponses(List<ImapResponse> imapResponses) {
         for (ImapResponse imapResponse : imapResponses) {
-            if (imapResponse.getTag() == null && ImapResponseParser.equalsIgnoreCase(imapResponse.get(0), "VANISHED")) {
-                expungedUids = ImapUtility.getImapSequenceValues(imapResponse.getString(1));
-            } else {
-                Long highestModSeq = ImapUtility.extractHighestModSeq(imapResponse);
-                if (highestModSeq != null) {
-                    this.highestModSeq = highestModSeq;
-                }
+            Long highestModSeq = ImapUtility.extractHighestModSeq(imapResponse);
+            if (highestModSeq != null) {
+                this.highestModSeq = highestModSeq;
             }
         }
-        return expungedUids;
     }
 
     @Override

@@ -237,4 +237,15 @@ public class ImapUtility {
         }
         return null;
     }
+
+    static List<String> extractVanishedUids(List<ImapResponse> imapResponses) {
+        List<String> uids = new ArrayList<>();
+        for (ImapResponse imapResponse : imapResponses) {
+            if (imapResponse.getTag() == null && ImapResponseParser.equalsIgnoreCase(imapResponse.get(0), "VANISHED")
+                    && imapResponse.isString(1)) {
+                uids = ImapUtility.getImapSequenceValues(imapResponse.getString(1));
+            }
+        }
+        return uids;
+    }
 }
