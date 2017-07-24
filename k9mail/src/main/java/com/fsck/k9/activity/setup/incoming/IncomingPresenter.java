@@ -12,6 +12,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
+import com.fsck.k9.activity.setup.AbstractAccountSetup.AccountState;
 import com.fsck.k9.activity.setup.IncomingAndOutgoingState;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.activity.setup.incoming.IncomingContract.View;
@@ -40,10 +41,11 @@ class IncomingPresenter implements IncomingContract.Presenter {
     private ConnectionSecurity currentSecurityType;
     private String currentPort;
 
-    IncomingPresenter(View view, String accountUuid, boolean editSettings) {
+    IncomingPresenter(View view, AccountState state) {
         this.view = view;
-        this.account = Preferences.getPreferences(K9.app).getAccount(accountUuid);
         view.setPresenter(this);
+
+        account = state.getAccount();
 
         ConnectionSecurity[] connectionSecurityChoices = ConnectionSecurity.values();
         try {
@@ -77,6 +79,9 @@ class IncomingPresenter implements IncomingContract.Presenter {
             }
 
             storeType = settings.type;
+
+            boolean editSettings = state.isEditSettings();
+
             if (Type.POP3 == settings.type) {
                 view.setServerLabel(getString(R.string.account_setup_incoming_pop_server_label));
 
