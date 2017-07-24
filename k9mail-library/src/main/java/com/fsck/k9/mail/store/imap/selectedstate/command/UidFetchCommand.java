@@ -2,9 +2,9 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import com.fsck.k9.mail.BodyFactory;
