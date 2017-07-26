@@ -14,7 +14,11 @@ public abstract class AbstractAccountSetup extends AppCompatActivity {
     public abstract void goToIncoming();
     public abstract void goToManualSetup();
     public abstract void goToAutoConfiguration();
+    public abstract void goToAccountType();
     public abstract void goToAccountNames();
+    public abstract void goToOutgoingChecking();
+    public abstract void goToIncomingChecking();
+    public abstract void listAccounts();
 
     public abstract AbstractAccountSetup.AccountState getState();
 

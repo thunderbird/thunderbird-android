@@ -19,6 +19,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+
+import com.fsck.k9.helper.EmailHelper;
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.Transport;
 import timber.log.Timber;
 
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
@@ -1852,5 +1858,66 @@ public class Account implements BaseAccount, StoreConfig {
             Uri uri = Uri.parse(transportUri);
             localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
         }
+    }
+
+    public void init(String email, String password) {
+        setName(getOwnerName());
+        setEmail(email);
+
+        EmailHelper emailHelper = new EmailHelper();
+        String[] emailParts = emailHelper.splitEmail(email);
+        String user = emailParts[0];
+        String domain = emailParts[1];
+
+        // set default uris
+        // NOTE: they will be changed again in AccountSetupAccountType!
+        ServerSettings storeServer = new ServerSettings(ServerSettings.Type.IMAP, "mail." + domain, -1,
+                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, user, password, null);
+        ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
+                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, user, password, null);
+        String storeUri = RemoteStore.createStoreUri(storeServer);
+        String transportUri = Transport.createTransportUri(transportServer);
+        setStoreUri(storeUri);
+        setTransportUri(transportUri);
+
+        setupFolderNames(domain);
+    }
+
+    private void setupFolderNames(String domain) {
+        setDraftsFolderName(K9.getK9String(R.string.special_mailbox_name_drafts));
+        setTrashFolderName(K9.getK9String(R.string.special_mailbox_name_trash));
+        setSentFolderName(K9.getK9String(R.string.special_mailbox_name_sent));
+        setArchiveFolderName(K9.getK9String(R.string.special_mailbox_name_archive));
+
+        // Yahoo! has a special folder for Spam, called "Bulk Mail".
+        if (domain.endsWith(".yahoo.com")) {
+            setSpamFolderName("Bulk Mail");
+        } else {
+            setSpamFolderName(K9.getK9String(R.string.special_mailbox_name_spam));
+        }
+    }
+
+
+    private String getOwnerName() {
+        String name = null;
+        try {
+            name = getDefaultAccountName();
+        } catch (Exception e) {
+            Timber.e(e, "Could not get default account name");
+        }
+
+        if (name == null) {
+            name = "";
+        }
+        return name;
+    }
+
+    private String getDefaultAccountName() {
+        String name = null;
+        Account account = Preferences.getPreferences(K9.app).getDefaultAccount();
+        if (account != null) {
+            name = account.getName();
+        }
+        return name;
     }
 }

@@ -3,19 +3,15 @@ package com.fsck.k9.activity.setup.outgoing;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 
-import com.fsck.k9.activity.setup.AccountSetupOptions;
+import com.fsck.k9.activity.setup.AbstractAccountSetup;
 import com.fsck.k9.activity.setup.AuthTypeAdapter;
 import com.fsck.k9.activity.setup.AuthTypeHolder;
 import com.fsck.k9.activity.setup.ConnectionSecurityAdapter;
 import com.fsck.k9.activity.setup.ConnectionSecurityHolder;
-import com.fsck.k9.activity.setup.IncomingAndOutgoingState;
-import com.fsck.k9.activity.setup.checksettings.CheckSettingsView;
-import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.activity.setup.outgoing.OutgoingContract.Presenter;
 import timber.log.Timber;
 import android.view.View;
@@ -26,7 +22,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.fsck.k9.*;
-import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -34,7 +29,7 @@ import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
 
-public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
+public class OutgoingView implements OnClickListener,
     OnCheckedChangeListener, OutgoingContract.View {
     private static final String EXTRA_ACCOUNT = "account";
 
@@ -57,10 +52,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private Button nextButton;
     private boolean makeDefault;
 
+    private AbstractAccountSetup activity;
+
     private Presenter presenter;
 
     public static void actionOutgoingSettings(Context context, Account account, boolean makeDefault) {
-        Intent i = new Intent(context, AccountSetupOutgoing.class);
+        Intent i = new Intent(context, OutgoingView.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
         context.startActivity(i);
@@ -71,52 +68,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     public static Intent intentActionEditOutgoingSettings(Context context, Account account) {
-        Intent i = new Intent(context, AccountSetupOutgoing.class);
+        Intent i = new Intent(context, OutgoingView.class);
         i.setAction(Intent.ACTION_EDIT);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         return i;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.account_setup_outgoing);
-
-        usernameView = (EditText)findViewById(R.id.account_username);
-        passwordView = (EditText)findViewById(R.id.account_password);
-        clientCertificateSpinner = (ClientCertificateSpinner)findViewById(R.id.account_client_certificate_spinner);
-        clientCertificateLabelView = (TextView)findViewById(R.id.account_client_certificate_label);
-        passwordLabelView = (TextView)findViewById(R.id.account_password_label);
-        serverView = (EditText)findViewById(R.id.account_server);
-        portView = (EditText)findViewById(R.id.account_port);
-        requireLoginView = (CheckBox)findViewById(R.id.account_require_login);
-        requireLoginSettingsView = (ViewGroup)findViewById(R.id.account_require_login_settings);
-        securityTypeView = (Spinner)findViewById(R.id.account_security_type);
-        authTypeView = (Spinner)findViewById(R.id.account_auth_type);
-        nextButton = (Button)findViewById(R.id.next);
-
-        nextButton.setOnClickListener(this);
-
-        securityTypeView.setAdapter(ConnectionSecurityAdapter.get(this));
-
-        authTypeAdapter = AuthTypeAdapter.get(this);
-        authTypeView.setAdapter(authTypeAdapter);
-
-        portView.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
-
-        makeDefault = getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
-
-        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
-            accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
-        }
-
-        presenter = new OutgoingPresenter(this, accountUuid);
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(STATE)) {
-            presenter.setState((IncomingAndOutgoingState) savedInstanceState.getParcelable(STATE));
-        }
     }
 
     /**
@@ -166,37 +121,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         portView.addTextChangedListener(validationTextWatcher);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(EXTRA_ACCOUNT, presenter.getAccount().getUuid());
-        outState.putParcelable(STATE, presenter.getState());
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        if (requireLoginView.isChecked()) {
-            requireLoginSettingsView.setVisibility(View.VISIBLE);
-        } else {
-            requireLoginSettingsView.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        /*
-         * We didn't want the listeners active while the state was being restored
-         * because they could overwrite the restored port with a default port when
-         * the security type was restored.
-         */
-        initializeViewListeners();
-        onInputChanged();
-    }
-
     /**
      * This is invoked only when the user makes changes to a widget, not when
      * widgets are changed programmatically.  (The logic is simpler when you know
@@ -211,19 +135,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 passwordView.getText().toString(), getSelectedAuthType(), getSelectedSecurity(),
                 requireLoginView.isChecked());
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                presenter.onAccountEdited();
-                finish();
-            } else {
-                AccountSetupOptions.actionOptions(this, presenter.getAccount(), makeDefault);
-                finish();
-            }
-        }
     }
 
     protected void onNext() {
@@ -258,17 +169,22 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     @Override
     public void onAccountLoadFailure(Exception use) {
         Timber.e(use, "Failure");
-        String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
+        String toastText = activity.getString(R.string.account_setup_bad_uri, use.getMessage());
 
-        Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(activity, toastText, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    @Override
+    public void next() {
+        activity.goToAccountNames();
     }
 
     /*
      * Calls onInputChanged() which enables or disables the Next button
      * based on the fields' validity.
      */
-    TextWatcher validationTextWatcher = new TextWatcher() {
+    private TextWatcher validationTextWatcher = new TextWatcher() {
         public void afterTextChanged(Editable s) {
             onInputChanged();
         }
@@ -280,7 +196,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
     };
 
-    OnClientCertificateChangedListener clientCertificateChangedListener = new OnClientCertificateChangedListener() {
+    private OnClientCertificateChangedListener clientCertificateChangedListener = new OnClientCertificateChangedListener() {
         @Override
         public void onClientCertificateChanged(String alias) {
             onInputChanged();
@@ -303,14 +219,63 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     @Override
-    public void setNextButtonEnabled(boolean enabled) {
-        nextButton.setEnabled(enabled);
-        Utility.setCompoundDrawablesAlpha(nextButton, nextButton.isEnabled() ? 255 : 128);
+    public void setActivity(AbstractAccountSetup activity) {
+        this.activity = activity;
     }
 
     @Override
-    public void next(String accountUuid) {
-        CheckSettingsView.startChecking(this, accountUuid, CheckDirection.OUTGOING);
+    public void start() {
+        usernameView = (EditText) activity.findViewById(R.id.account_username);
+        passwordView = (EditText) activity.findViewById(R.id.account_password);
+        clientCertificateSpinner = (ClientCertificateSpinner) activity.findViewById(R.id.account_client_certificate_spinner);
+        clientCertificateLabelView = (TextView) activity.findViewById(R.id.account_client_certificate_label);
+        passwordLabelView = (TextView) activity.findViewById(R.id.account_password_label);
+        serverView = (EditText) activity.findViewById(R.id.account_server);
+        portView = (EditText) activity.findViewById(R.id.account_port);
+        requireLoginView = (CheckBox) activity.findViewById(R.id.account_require_login);
+        requireLoginSettingsView = (ViewGroup) activity.findViewById(R.id.account_require_login_settings);
+        securityTypeView = (Spinner) activity.findViewById(R.id.account_security_type);
+        authTypeView = (Spinner) activity.findViewById(R.id.account_auth_type);
+        nextButton = (Button) activity.findViewById(R.id.next);
+
+        nextButton.setOnClickListener(this);
+
+        securityTypeView.setAdapter(ConnectionSecurityAdapter.get(activity));
+
+        authTypeAdapter = AuthTypeAdapter.get(activity);
+        authTypeView.setAdapter(authTypeAdapter);
+
+        portView.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
+
+        makeDefault = activity.getState().isMakeDefault();
+
+        Account account = activity.getState().getAccount();
+
+        // TODO: 7/25/2017 please guarantee the state is already restored so I can remove the following safely
+        /* if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
+            accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
+        } */
+
+        presenter = new OutgoingPresenter(this, account);
+
+        /* if (savedInstanceState != null && savedInstanceState.containsKey(STATE)) {
+            presenter.setState((IncomingAndOutgoingState) savedInstanceState.getParcelable(STATE));
+        } */
+
+        initializeViewListeners();
+        onInputChanged();
+
+        if (requireLoginView.isChecked()) {
+            requireLoginSettingsView.setVisibility(View.VISIBLE);
+        } else {
+            requireLoginSettingsView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void setNextButtonEnabled(boolean enabled) {
+        nextButton.setEnabled(enabled);
+        Utility.setCompoundDrawablesAlpha(nextButton, nextButton.isEnabled() ? 255 : 128);
     }
 
     @Override
@@ -368,12 +333,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     @Override
     public void showInvalidSettingsToast() {
-        String toastText = getString(R.string.account_setup_outgoing_invalid_setting_combo_notice,
-                getString(R.string.account_setup_incoming_auth_type_label),
+        String toastText = activity.getString(R.string.account_setup_outgoing_invalid_setting_combo_notice,
+                activity.getString(R.string.account_setup_incoming_auth_type_label),
                 AuthType.EXTERNAL.toString(),
-                getString(R.string.account_setup_incoming_security_label),
+                activity.getString(R.string.account_setup_incoming_security_label),
                 ConnectionSecurity.NONE.toString());
-        Toast.makeText(this, toastText, Toast.LENGTH_LONG).show();
+        Toast.makeText(activity, toastText, Toast.LENGTH_LONG).show();
     }
 
     @Override

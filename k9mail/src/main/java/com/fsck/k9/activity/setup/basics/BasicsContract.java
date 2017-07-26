@@ -18,7 +18,7 @@ interface BasicsContract {
         void onInputChanged(String email, String password);
         void onManualSetupButtonClicked(String email, String password);
         void onAutoConfigurationResult(int resultCode, String email, String password);
-        void onNextButtonClicked();
+        void onNextButtonClicked(String email, String password);
         void setAccount(Account account);
         Account getAccount();
     }
