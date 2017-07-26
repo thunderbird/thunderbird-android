@@ -128,7 +128,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    public QresyncParamResponse open(int mode, long cachedUidValidity, long cachedHighestModSeq)
+    public QresyncParamResponse openUsingQresyncParam(int mode, long cachedUidValidity, long cachedHighestModSeq)
             throws MessagingException {
         SelectOrExamineResponse response = internalOpen(mode, cachedUidValidity, cachedHighestModSeq);
 
@@ -439,8 +439,8 @@ public class ImapFolder extends Folder<ImapMessage> {
         return !(highestModSeq == INVALID_HIGHEST_MOD_SEQ);
     }
 
-    boolean supportsQresync() throws IOException, MessagingException {
-        return supportsModSeq() && connection.isQresyncCapable();
+    boolean doesConnectionSupportQresync() throws IOException, MessagingException {
+        return connection.isQresyncCapable();
     }
 
     public long getUidValidity() {
@@ -527,6 +527,9 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     public void fetchChangedMessageFlagsUsingCondstore(List<ImapMessage> messages, long modseq,
             MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
+        if (messages == null || messages.isEmpty()) {
+            return;
+        }
         checkOpen();
 
         List<Long> uids = new ArrayList<>(messages.size());
@@ -753,7 +756,7 @@ public class ImapFolder extends Folder<ImapMessage> {
                 }
 
                 if (listener != null) {
-                    listener.messageStarted(uid, messageNumber++, messageMap.size());
+                    listener.messageStarted(uid, messageNumber, messageMap.size());
                 }
 
                 ImapMessage imapMessage = (ImapMessage) message;
@@ -775,6 +778,7 @@ public class ImapFolder extends Folder<ImapMessage> {
                 if (listener != null) {
                     listener.messageFinished(imapMessage, messageNumber, messageMap.size());
                 }
+                messageNumber++;
             } else {
                 handleUntaggedResponse(response);
             }

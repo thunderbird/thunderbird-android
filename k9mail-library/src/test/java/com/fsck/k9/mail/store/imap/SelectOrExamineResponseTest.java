@@ -36,7 +36,7 @@ public class SelectOrExamineResponseTest {
         when(store.getPermanentFlagsIndex()).thenReturn(TEST_PERMANENT_FLAGS);
         folder = mock(ImapFolder.class);
         when(folder.getStore()).thenReturn(store);
-        when(folder.supportsQresync()).thenReturn(true);
+        when(folder.doesConnectionSupportQresync()).thenReturn(true);
     }
 
     @Test

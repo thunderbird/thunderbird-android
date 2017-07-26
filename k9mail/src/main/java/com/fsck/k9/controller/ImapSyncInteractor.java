@@ -71,7 +71,7 @@ class ImapSyncInteractor {
 
             QresyncParamResponse qresyncParamResponse;
             Timber.v("SYNC: About to open remote IMAP folder %s", folderName);
-            qresyncParamResponse = imapFolder.open(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
+            qresyncParamResponse = imapFolder.openUsingQresyncParam(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
                     localFolder.getHighestModSeq());
 
             boolean qresyncEnabled = qresyncParamResponse != null;

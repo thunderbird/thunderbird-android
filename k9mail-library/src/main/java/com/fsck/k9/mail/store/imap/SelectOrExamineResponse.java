@@ -15,8 +15,10 @@ import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 class SelectOrExamineResponse {
 
+    private static final long INVALID_HIGHEST_MOD_SEQ = -1L;
+
     private long uidValidity;
-    private long highestModSeq = -1L;
+    private long highestModSeq = INVALID_HIGHEST_MOD_SEQ;
     private boolean canCreateKeywords;
     private QresyncParamResponse qresyncParamResponse;
     private Boolean readWriteMode;
@@ -45,7 +47,8 @@ class SelectOrExamineResponse {
             parsePermanentFlags(imapResponse, folder.getStore().getPermanentFlagsIndex());
         }
         this.readWriteMode = isModeReadWriteIfAvailable(ImapUtility.getLastResponse(imapResponses));
-        if (folder.supportsQresync() && K9MailLib.shouldUseQresync()) {
+        if (folder.doesConnectionSupportQresync() && highestModSeq != INVALID_HIGHEST_MOD_SEQ
+                && K9MailLib.shouldUseQresync()) {
             this.qresyncParamResponse = QresyncParamResponse.fromSelectOrExamineResponse(imapResponses, folder);
         } else {
             this.qresyncParamResponse = null;

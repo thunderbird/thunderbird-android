@@ -2,6 +2,7 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
 import java.util.Collections;
+import java.util.HashMap;
 
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
@@ -106,8 +107,8 @@ public class UidFetchCommandTest {
         return new UidFetchCommand.Builder()
                 .maximumAutoDownloadMessageSize(maximumAutoDownloadMessageSize)
                 .idSet(Collections.singletonList(uid))
-                .messageParams(fetchProfile, Collections.singletonMap(String.valueOf(uid),
-                        (Message) createImapMessage(String.valueOf(uid))))
+                .messageParams(fetchProfile, new HashMap<>(Collections.singletonMap(String.valueOf(uid),
+                        (Message) createImapMessage(String.valueOf(uid)))))
                 .build();
     }
 
