@@ -56,7 +56,7 @@ class OutgoingPresenter implements OutgoingContract.Presenter {
         try {
             if (new URI(account.getStoreUri()).getScheme().startsWith("webdav")) {
                 account.setTransportUri(account.getStoreUri());
-                view.next(account.getUuid());
+                view.next();
 
                 return;
             }
@@ -156,7 +156,7 @@ class OutgoingPresenter implements OutgoingContract.Presenter {
         account.deleteCertificate(host, port, CheckDirection.OUTGOING);
         account.setTransportUri(uri);
 
-        view.next(account.getUuid());
+        view.next();
     }
 
     @Override

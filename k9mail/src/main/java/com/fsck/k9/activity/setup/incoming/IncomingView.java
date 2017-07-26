@@ -10,20 +10,15 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 
 import com.fsck.k9.activity.setup.AbstractAccountSetup;
-import com.fsck.k9.activity.setup.IncomingAndOutgoingState;
-import com.fsck.k9.activity.setup.outgoing.AccountSetupOutgoing;
 import com.fsck.k9.activity.setup.AuthTypeAdapter;
 import com.fsck.k9.activity.setup.AuthTypeHolder;
 import com.fsck.k9.activity.setup.ConnectionSecurityAdapter;
 import com.fsck.k9.activity.setup.ConnectionSecurityHolder;
-import com.fsck.k9.activity.setup.checksettings.CheckSettingsView;
-import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.activity.setup.incoming.IncomingContract.Presenter;
 import timber.log.Timber;
 import android.view.View;
@@ -74,7 +69,7 @@ import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
 
-public class AccountSetupIncoming implements OnClickListener, IncomingContract.View {
+public class IncomingView implements OnClickListener, IncomingContract.View {
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
@@ -106,8 +101,12 @@ public class AccountSetupIncoming implements OnClickListener, IncomingContract.V
 
     private AbstractAccountSetup activity;
 
+    public IncomingView(AbstractAccountSetup activity) {
+        setActivity(activity);
+    }
+
     public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
-        Intent i = new Intent(context, AccountSetupIncoming.class);
+        Intent i = new Intent(context, IncomingView.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
         context.startActivity(i);
@@ -118,17 +117,10 @@ public class AccountSetupIncoming implements OnClickListener, IncomingContract.V
     }
 
     public static Intent intentActionEditIncomingSettings(Context context, Account account) {
-        Intent i = new Intent(context, AccountSetupIncoming.class);
+        Intent i = new Intent(context, IncomingView.class);
         i.setAction(Intent.ACTION_EDIT);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         return i;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.account_setup_incoming);
-
     }
 
     private void initializeViewListeners() {
@@ -174,34 +166,30 @@ public class AccountSetupIncoming implements OnClickListener, IncomingContract.V
 
     }
 
-    @Override
+    /* @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(EXTRA_ACCOUNT, presenter.getAccount().getUuid());
 
         outState.putParcelable(STATE, presenter.getState());
-    }
+    }*/
 
-    @Override
+    /* @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
         initializeViewListeners();
         onInputChanged();
-    }
+    } */
 
 
-    @Override
+    /* @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                 presenter.updateAccount();
                 finish();
             } else {
-                /*
-                 * Set the username and password for the outgoing settings to the username and
-                 * password the user just set for incoming.
-                 */
                 String username = usernameView.getText().toString();
                 String password = passwordView.getText().toString();
                 String clientCertificateAlias = clientCertificateSpinner.getAlias();
@@ -212,7 +200,7 @@ public class AccountSetupIncoming implements OnClickListener, IncomingContract.V
                 finish();
             }
         }
-    }
+    } */
 
     protected void onNext() {
         try {
@@ -242,12 +230,13 @@ public class AccountSetupIncoming implements OnClickListener, IncomingContract.V
                     connectionSecurity, authType, compressMobile, compressWifi, compressOther,
                     subscribeFoldersOnly);
 
-            CheckSettingsView.startChecking(this, presenter.getAccount().getUuid(),
-                    CheckDirection.INCOMING);
+            activity.goToIncomingChecking();
+
+            // CheckSettingsView.startChecking(this, presenter.getAccount().getUuid(),
+                    // CheckDirection.INCOMING);
         } catch (Exception e) {
             failure(e);
         }
-
     }
 
     public void onClick(View v) {
@@ -264,14 +253,14 @@ public class AccountSetupIncoming implements OnClickListener, IncomingContract.V
 
     private void failure(Exception use) {
         Timber.e(use, "Failure");
-        String toastText = getString(R.string.account_setup_bad_uri, use.getMessage());
+        String toastText = activity.getString(R.string.account_setup_bad_uri, use.getMessage());
 
         Toast toast = Toast.makeText(activity.getApplication(), toastText, Toast.LENGTH_LONG);
         toast.show();
     }
 
 
-    TextWatcher validationTextWatcher = new TextWatcher() {
+    private TextWatcher validationTextWatcher = new TextWatcher() {
         public void afterTextChanged(Editable s) {
             onInputChanged();
         }
@@ -283,7 +272,7 @@ public class AccountSetupIncoming implements OnClickListener, IncomingContract.V
         }
     };
 
-    OnClientCertificateChangedListener clientCertificateChangedListener = new OnClientCertificateChangedListener() {
+    private OnClientCertificateChangedListener clientCertificateChangedListener = new OnClientCertificateChangedListener() {
         @Override
         public void onClientCertificateChanged(String alias) {
             onInputChanged();
@@ -470,14 +459,17 @@ public class AccountSetupIncoming implements OnClickListener, IncomingContract.V
 
         presenter = new IncomingPresenter(this, activity.getState());
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(STATE)) {
+        /* if (savedInstanceState != null && savedInstanceState.containsKey(STATE)) {
             presenter.setState((IncomingAndOutgoingState) savedInstanceState.getParcelable(STATE));
-        }
+        } */
+
+        initializeViewListeners();
     }
 
     @Override
     public void goToOutgoingSettings(Account account) {
-        AccountSetupOutgoing.actionOutgoingSettings(this, account, makeDefault);
+        // OutgoingView.actionOutgoingSettings(this, account, makeDefault);
+        activity.goToOutgoing();
     }
 
     @Override
@@ -488,14 +480,14 @@ public class AccountSetupIncoming implements OnClickListener, IncomingContract.V
 
     @Override
     public Context getContext() {
-        return this;
+        return activity;
     }
 
     @Override
     public void setSecurityChoices(ConnectionSecurity[] choices) {
         // Note that connectionSecurityChoices is configured above based on server type
         ConnectionSecurityAdapter securityTypesAdapter =
-                ConnectionSecurityAdapter.get(this, choices);
+                ConnectionSecurityAdapter.get(activity, choices);
         securityTypeView.setAdapter(securityTypesAdapter);
     }
 
@@ -551,11 +543,11 @@ public class AccountSetupIncoming implements OnClickListener, IncomingContract.V
 
     @Override
     public void showInvalidSettingsToast() {
-        String toastText = getString(R.string.account_setup_outgoing_invalid_setting_combo_notice,
-                getString(R.string.account_setup_incoming_auth_type_label),
+        String toastText = activity.getString(R.string.account_setup_outgoing_invalid_setting_combo_notice,
+                activity.getString(R.string.account_setup_incoming_auth_type_label),
                 AuthType.EXTERNAL.toString(),
-                getString(R.string.account_setup_incoming_security_label),
+                activity.getString(R.string.account_setup_incoming_security_label),
                 ConnectionSecurity.NONE.toString());
-        Toast.makeText(this, toastText, Toast.LENGTH_LONG).show();
+        Toast.makeText(activity, toastText, Toast.LENGTH_LONG).show();
     }
 }

@@ -43,11 +43,6 @@ public class BasicsView implements BasicsContract.View, OnClickListener, TextWat
 
     @Override
     public void start() {
-    }
-
-    public BasicsView(AbstractAccountSetup activity) {
-        setActivity(activity);
-
         emailView = (EditText) activity.findViewById(R.id.account_email);
         passwordView = (EditText) activity.findViewById(R.id.account_password);
         manualSetupButton = (Button) activity.findViewById(R.id.manual_setup);
@@ -55,9 +50,14 @@ public class BasicsView implements BasicsContract.View, OnClickListener, TextWat
         nextButton.setOnClickListener(this);
         manualSetupButton.setOnClickListener(this);
 
-        presenter = new BasicsPresenter(this);
+        presenter = new BasicsPresenter(this, activity.getState());
 
         initializeViewListeners();
+    }
+
+    public BasicsView(AbstractAccountSetup activity) {
+        setActivity(activity);
+
     }
 
     private void initializeViewListeners() {
@@ -114,13 +114,13 @@ public class BasicsView implements BasicsContract.View, OnClickListener, TextWat
 
 
     public void onClick(View v) {
+        String email = emailView.getText().toString();
+        String password = passwordView.getText().toString();
         switch (v.getId()) {
             case R.id.next:
-                presenter.onNextButtonClicked();
+                presenter.onNextButtonClicked(email, password);
                 break;
             case R.id.manual_setup:
-                String email = emailView.getText().toString();
-                String password = passwordView.getText().toString();
                 presenter.onManualSetupButtonClicked(email, password);
                 break;
         }

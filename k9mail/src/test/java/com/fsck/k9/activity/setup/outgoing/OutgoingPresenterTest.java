@@ -2,9 +2,7 @@ package com.fsck.k9.activity.setup.outgoing;
 
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTestRunner;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 
@@ -12,15 +10,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatcher;
-import org.mockito.InOrder;
-import org.mockito.Mockito;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(K9RobolectricTestRunner.class)
@@ -29,7 +23,7 @@ public class OutgoingPresenterTest {
     private static final String DEFAULT_PORT_FOR_STARTTLS = "587";
 
     OutgoingPresenter presenter;
-    AccountSetupOutgoing view;
+    OutgoingView view;
     Account account;
 
     @Before
@@ -37,7 +31,7 @@ public class OutgoingPresenterTest {
         String incomingUri = "imap+ssl+://PLAIN:daquexian566:denx+ajs@mail.gmail.com/1%7C";
         String outgoingUri = "smtp+ssl+://daquexian566:denx+ajs:PLAIN@mail.gmail.com";
 
-        view = mock(AccountSetupOutgoing.class);
+        view = mock(OutgoingView.class);
 
         account = mock(Account.class);
         when(account.getStoreUri()).thenReturn(incomingUri);

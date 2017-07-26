@@ -15,8 +15,6 @@ interface OutgoingContract {
     interface View extends BaseView<Presenter> {
         void setNextButtonEnabled(boolean enabled);
 
-        void next(String accountUuid);
-
         void setAuthType(AuthType authType);
         void setSecurityType(ConnectionSecurity security);
 
@@ -34,6 +32,8 @@ interface OutgoingContract {
         void onAuthTypeIsExternal();
 
         void onAccountLoadFailure(Exception use);
+
+        void next();
     }
 
     interface Presenter extends BasePresenter {

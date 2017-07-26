@@ -19,6 +19,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -37,6 +38,7 @@ import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
+import com.fsck.k9.service.MailService;
 import timber.log.Timber;
 
 
@@ -46,6 +48,7 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
     private CheckDirection currentDirection;
     private CheckDirection direction;
     private AccountState state;
+    private boolean editSettings;
 
     public enum CheckDirection {
         INCOMING,
@@ -75,7 +78,7 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
     }
 
     @Override
-    public void skip() {
+    public void onContinueClickedWhenError() {
         if (direction == CheckDirection.BOTH && currentDirection == CheckDirection.INCOMING) {
             checkOutgoing();
         } else if (currentDirection == CheckDirection.OUTGOING){
@@ -86,24 +89,25 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
     }
 
 
-    private void autoConfiguration(final String email, final String password) {
+    private void autoConfiguration() {
         view.setMessage(R.string.account_setup_check_settings_retr_info_msg);
 
         EmailHelper emailHelper = new EmailHelper();
-        String domain = emailHelper.splitEmail(email)[1];
+        String domain = emailHelper.splitEmail(state.getEmail())[1];
         Provider provider = findProviderForDomain(domain);
         if (provider == null) {
-            view.autoConfigurationFail();
+            state.getAccount().init(state.getEmail(), state.getPassword());
+            view.onAutoConfigurationFail();
             return;
         }
 
         try {
-            modifyAccount(email, password, provider);
+            modifyAccount(state.getEmail(), state.getPassword(), provider);
 
             checkIncomingAndOutgoing();
         } catch (URISyntaxException e) {
             Preferences.getPreferences(K9.app).deleteAccount(account);
-            view.autoConfigurationFail();
+            view.onAutoConfigurationFail();
         }
     }
 
@@ -123,11 +127,14 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
             @Override
             public void onCheckSuccess() {
                 // TODO: 7/23/2017 should it be changed?
-                account.setDescription(account.getEmail());
                 account.save(Preferences.getPreferences(K9.app));
-                K9.setServicesEnabled(K9.app);
 
-                view.goToOutgoing();
+                if (!editSettings) {
+                    account.setDescription(account.getEmail());
+                    K9.setServicesEnabled(K9.app);
+
+                    view.goToOutgoing();
+                }
             }
         }).execute();
     }
@@ -138,12 +145,25 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
         new CheckOutgoingTask(account, new CheckSettingsSuccessCallback() {
             @Override
             public void onCheckSuccess() {
-                //We've successfully checked outgoing as well.
-                account.setDescription(account.getEmail());
                 account.save(Preferences.getPreferences(K9.app));
-                K9.setServicesEnabled(K9.app);
+                if (!editSettings) {
+                    //We've successfully checked outgoing as well.
+                    account.setDescription(account.getEmail());
+                    K9.setServicesEnabled(K9.app);
 
-                view.goToNames();
+                    view.goToNames();
+                } else {
+                    boolean isPushCapable = false;
+                    try {
+                        Store store = account.getRemoteStore();
+                        isPushCapable = store.isPushCapable();
+                    } catch (Exception e) {
+                        Timber.e(e, "Could not get remote store");
+                    }
+                    if (isPushCapable && account.getFolderPushMode() != FolderMode.NONE) {
+                        MailService.actionRestartPushers(view.getContext(), null);
+                    }
+                }
             }
         }).execute();
     }
@@ -152,11 +172,15 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
     public void onViewStart(AccountState state) {
         this.state = state;
 
+        account = state.getAccount();
+
+        editSettings = state.isEditSettings();
+
         int step = state.getStep();
 
         switch (step) {
             case AccountState.STEP_AUTO_CONFIGURATION:
-                autoConfiguration(state.getEmail(), state.getPassword());
+                autoConfiguration();
                 break;
             case AccountState.STEP_CHECK_INCOMING:
                 checkIncoming();
@@ -230,7 +254,7 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
      * FIXME: Don't use an AsyncTask to perform network operations.
      * See also discussion in https://github.com/k9mail/k-9/pull/560
      */
-    private abstract class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Void> {
+    private abstract class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Boolean> {
         private final Account account;
         private CheckSettingsSuccessCallback callback;
 
@@ -246,7 +270,7 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
         abstract void checkSettings() throws Exception;
 
         @Override
-        protected Void doInBackground(CheckDirection... params) {
+        protected Boolean doInBackground(CheckDirection... params) {
             try {
                 /*
                  * This task could be interrupted at any point, but network operations can block,
@@ -254,19 +278,16 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
                  * each potentially long-running operation.
                  */
                 if (cancelled()) {
-                    return null;
+                    return false;
                 }
 
                 checkSettings();
 
                 if (cancelled()) {
-                    return null;
+                    return false;
                 }
 
-                if (callback != null) {
-                    callback.onCheckSuccess();
-                }
-
+                return true;
 
             } catch (AuthenticationFailedException afe) {
                 Timber.e(afe, "Error while testing settings");
@@ -280,7 +301,16 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
                 String message = e.getMessage() == null ? "" : e.getMessage();
                 view.showErrorDialog(R.string.account_setup_failed_dlg_server_message_fmt, message);
             }
-            return null;
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean bool) {
+            super.onPostExecute(bool);
+
+            if (bool && callback != null) {
+                callback.onCheckSuccess();
+            }
         }
 
         void clearCertificateErrorNotifications(CheckDirection direction) {
@@ -445,7 +475,7 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
     }
 
     @Override
-    public void onError() {
+    public void onEditDetailClickedWhenError() {
         if (state.getStep() == AccountState.STEP_AUTO_CONFIGURATION) {
             view.goToBasics();
         } else if (state.getStep() == AccountState.STEP_CHECK_INCOMING) {

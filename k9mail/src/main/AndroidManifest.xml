@@ -109,33 +109,14 @@
             android:configChanges="locale"
             android:label="@string/font_size_settings_title"/>
 
-        <activity
-            android:name=".activity.setup.basics.BasicsView"
-            android:configChanges="locale"
-            android:label="@string/account_setup_basics_title"/>
-
-        <activity android:name=".activity.setup.checksettings.CheckSettingsView"
+        <activity android:name=".activity.setup.AccountSetup"
+            android:theme="@style/Theme.K9.Material.Light"
             android:configChanges="locale"/>
-
-        <activity
-            android:name=".activity.setup.AccountSetupAccountType"
-            android:configChanges="locale"
-            android:label="@string/account_setup_account_type_title"/>
-
-        <activity
-            android:name=".activity.setup.incoming.AccountSetupIncoming"
-            android:configChanges="locale"
-            android:label="@string/account_setup_incoming_title"/>
 
         <activity
             android:name=".activity.setup.AccountSetupComposition"
             android:configChanges="locale"
             android:label="@string/account_settings_composition_title"/>
-
-        <activity
-            android:name=".activity.setup.outgoing.AccountSetupOutgoing"
-            android:configChanges="locale"
-            android:label="@string/account_setup_outgoing_title"/>
 
         <activity
             android:name=".activity.setup.AccountSetupOptions"

@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,8 +27,8 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
-public class CheckSettingsView implements CheckSettingsContract.View,
-        ConfirmationDialogFragmentListener {
+public class CheckSettingsView implements CheckSettingsContract.View {
+
 
     public static final int ACTIVITY_REQUEST_CODE = 1;
 
@@ -73,6 +74,7 @@ public class CheckSettingsView implements CheckSettingsContract.View,
 
     @Override
     public void start() {
+        presenter = new CheckSettingsPresenter(this);
         presenter.onViewStart(activity.getState());
 
 
@@ -114,7 +116,7 @@ public class CheckSettingsView implements CheckSettingsContract.View,
     }
 
     @Override
-    public void autoConfigurationFail() {
+    public void onAutoConfigurationFail() {
         activity.goToManualSetup();
     }
 
@@ -192,6 +194,11 @@ public class CheckSettingsView implements CheckSettingsContract.View,
         activity.goToAccountNames();
     }
 
+    @Override
+    public Context getContext() {
+        return activity;
+    }
+
     private void showDialogFragment(int dialogId, String customMessage) {
         if (destroyed) {
             return;
@@ -226,27 +233,4 @@ public class CheckSettingsView implements CheckSettingsContract.View,
         return String.format(Locale.US, "dialog-%d", dialogId);
     }
 
-    @Override
-    public void doPositiveClick(int dialogId) {
-        switch (dialogId) {
-            case R.id.dialog_account_setup_error: {
-                presenter.onError();
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void doNegativeClick(int dialogId) {
-        switch (dialogId) {
-            case R.id.dialog_account_setup_error: {
-                presenter.skip();
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void dialogCancelled(int dialogId) {
-    }
 }

@@ -6,6 +6,7 @@ import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.activity.setup.AbstractAccountSetup.AccountState;
 import com.fsck.k9.activity.setup.basics.BasicsContract.View;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.mail.AuthType;
@@ -21,10 +22,12 @@ import static android.app.Activity.RESULT_OK;
 class BasicsPresenter implements BasicsContract.Presenter {
     private View view;
     private Account account;
+    private AccountState state;
 
-    BasicsPresenter(View view) {
+    BasicsPresenter(View view, AccountState state) {
         this.view = view;
         view.setPresenter(this);
+        this.state = state;
     }
 
     @Override
@@ -43,26 +46,12 @@ class BasicsPresenter implements BasicsContract.Presenter {
         if (account == null) {
             account = Preferences.getPreferences(K9.app).newAccount();
         }
-        account.setName(getOwnerName());
-        account.setEmail(email);
 
-        EmailHelper emailHelper = new EmailHelper();
-        String[] emailParts = emailHelper.splitEmail(email);
-        String user = emailParts[0];
-        String domain = emailParts[1];
+        account.init(email, password);
 
-        // set default uris
-        // NOTE: they will be changed again in AccountSetupAccountType!
-        ServerSettings storeServer = new ServerSettings(ServerSettings.Type.IMAP, "mail." + domain, -1,
-                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, user, password, null);
-        ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
-                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, user, password, null);
-        String storeUri = RemoteStore.createStoreUri(storeServer);
-        String transportUri = Transport.createTransportUri(transportServer);
-        account.setStoreUri(storeUri);
-        account.setTransportUri(transportUri);
-
-        setupFolderNames(account, domain);
+        state.setAccount(account);
+        state.setEmail(email);
+        state.setPassword(password);
 
         view.goToManualSetup(account);
     }
@@ -77,10 +66,16 @@ class BasicsPresenter implements BasicsContract.Presenter {
     }
 
     @Override
-    public void onNextButtonClicked() {
+    public void onNextButtonClicked(String email, String password) {
         if (account == null) {
             account = Preferences.getPreferences(K9.app).newAccount();
         }
+        account.setEmail(email);
+
+        state.setEmail(email);
+        state.setPassword(password);
+
+        state.setAccount(account);
         view.goToAutoConfiguration(account);
     }
 
@@ -94,41 +89,4 @@ class BasicsPresenter implements BasicsContract.Presenter {
         return account;
     }
 
-    private void setupFolderNames(Account account, String domain) {
-        account.setDraftsFolderName(K9.getK9String(R.string.special_mailbox_name_drafts));
-        account.setTrashFolderName(K9.getK9String(R.string.special_mailbox_name_trash));
-        account.setSentFolderName(K9.getK9String(R.string.special_mailbox_name_sent));
-        account.setArchiveFolderName(K9.getK9String(R.string.special_mailbox_name_archive));
-
-        // Yahoo! has a special folder for Spam, called "Bulk Mail".
-        if (domain.endsWith(".yahoo.com")) {
-            account.setSpamFolderName("Bulk Mail");
-        } else {
-            account.setSpamFolderName(K9.getK9String(R.string.special_mailbox_name_spam));
-        }
-    }
-
-
-    private String getOwnerName() {
-        String name = null;
-        try {
-            name = getDefaultAccountName();
-        } catch (Exception e) {
-            Timber.e(e, "Could not get default account name");
-        }
-
-        if (name == null) {
-            name = "";
-        }
-        return name;
-    }
-
-    private String getDefaultAccountName() {
-        String name = null;
-        Account account = Preferences.getPreferences(K9.app).getDefaultAccount();
-        if (account != null) {
-            name = account.getName();
-        }
-        return name;
-    }
 }
