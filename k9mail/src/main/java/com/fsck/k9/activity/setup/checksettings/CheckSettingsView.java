@@ -30,7 +30,7 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 public class CheckSettingsView implements CheckSettingsContract.View {
 
 
-    public static final int ACTIVITY_REQUEST_CODE = 1;
+    private static final int ACTIVITY_REQUEST_CODE = 1;
 
     private static final String EXTRA_EMAIL = "email";
     private static final String EXTRA_PASSWORD = "password";
@@ -40,13 +40,8 @@ public class CheckSettingsView implements CheckSettingsContract.View {
 
     private Presenter presenter;
     private AbstractAccountSetup activity;
-    private boolean destroyed;
-    private boolean canceled;
     private TextView messageView;
     private MaterialProgressBar progressBar;
-
-    private String email;
-    private String password;
 
     private Handler handler;
 
@@ -60,16 +55,6 @@ public class CheckSettingsView implements CheckSettingsContract.View {
 
         handler = new Handler(Looper.getMainLooper());
 
-        Account account = activity.getState().getAccount();
-        String email = activity.getState().getEmail();
-        String password = activity.getState().getPassword();
-
-
-
-        // String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
-        // account = Preferences.getPreferences(this).getAccount(accountUuid);
-
-
     }
 
     @Override
@@ -77,20 +62,6 @@ public class CheckSettingsView implements CheckSettingsContract.View {
         presenter = new CheckSettingsPresenter(this);
         presenter.onViewStart(activity.getState());
 
-
-
-        /* if (activity.getState().getStep() == AccountState.STEP_AUTO_CONFIGURATION) {
-        }
-        if (getIntent().getBooleanExtra(EXTRA_AUTOCONFIGURATION, false)) {
-            email = getIntent().getStringExtra(EXTRA_EMAIL);
-            password = getIntent().getStringExtra(EXTRA_PASSWORD);
-            presenter = new CheckSettingsPresenter(this, account);
-            presenter.autoConfiguration(email, password);
-        } else {
-            CheckDirection direction = (CheckDirection) getIntent().getSerializableExtra(EXTRA_CHECK_DIRECTION);
-            presenter = new CheckSettingsPresenter(this, account, direction);
-            presenter.checkSettings();
-        } */
     }
 
     // FIXME: 7/24/2017 change it
@@ -166,7 +137,8 @@ public class CheckSettingsView implements CheckSettingsContract.View {
 
     @Override
     public boolean canceled() {
-        return canceled | destroyed;
+        // TODO: 7/27/17 update later
+        return false;
     }
 
     @Override
@@ -200,9 +172,10 @@ public class CheckSettingsView implements CheckSettingsContract.View {
     }
 
     private void showDialogFragment(int dialogId, String customMessage) {
-        if (destroyed) {
+        // TODO: 7/27/2017 implement it
+        /* if (destroyed) {
             return;
-        }
+        } */
 
         DialogFragment fragment;
         switch (dialogId) {

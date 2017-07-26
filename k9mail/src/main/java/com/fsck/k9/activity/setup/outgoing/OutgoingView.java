@@ -55,8 +55,6 @@ public class OutgoingView implements OnClickListener,
 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
 
-    private static final String STATE = "state";
-
     private EditText usernameView;
     private EditText passwordView;
     private ClientCertificateSpinner clientCertificateSpinner;
@@ -70,18 +68,10 @@ public class OutgoingView implements OnClickListener,
     private Spinner authTypeView;
     private AuthTypeAdapter authTypeAdapter;
     private Button nextButton;
-    private boolean makeDefault;
 
     private AbstractAccountSetup activity;
 
     private Presenter presenter;
-
-    public static void actionOutgoingSettings(Context context, Account account, boolean makeDefault) {
-        Intent i = new Intent(context, OutgoingView.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
-        context.startActivity(i);
-    }
 
     public static void actionEditOutgoingSettings(Context context, Account account) {
         context.startActivity(intentActionEditOutgoingSettings(context, account));
@@ -267,8 +257,6 @@ public class OutgoingView implements OnClickListener,
 
         portView.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
 
-        makeDefault = activity.getState().isMakeDefault();
-
         Account account = activity.getState().getAccount();
 
         // TODO: 7/25/2017 please guarantee the state is already restored so I can remove the following safely
@@ -277,10 +265,6 @@ public class OutgoingView implements OnClickListener,
         } */
 
         presenter = new OutgoingPresenter(this, account);
-
-        /* if (savedInstanceState != null && savedInstanceState.containsKey(STATE)) {
-            presenter.setState((IncomingAndOutgoingState) savedInstanceState.getParcelable(STATE));
-        } */
 
         initializeViewListeners();
         onInputChanged();

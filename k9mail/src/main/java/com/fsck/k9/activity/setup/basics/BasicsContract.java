@@ -10,14 +10,12 @@ interface BasicsContract {
     interface View extends BaseView<Presenter> {
         void setNextEnabled(boolean enabled);
         void goToManualSetup(Account account);
-        void onAutoConfigurationSuccess(Account account);
         void goToAutoConfiguration(Account account);
     }
 
     interface Presenter extends BasePresenter {
         void onInputChanged(String email, String password);
         void onManualSetupButtonClicked(String email, String password);
-        void onAutoConfigurationResult(int resultCode, String email, String password);
         void onNextButtonClicked(String email, String password);
         void setAccount(Account account);
         Account getAccount();
