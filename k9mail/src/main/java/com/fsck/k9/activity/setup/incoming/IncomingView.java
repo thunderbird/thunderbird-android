@@ -31,9 +31,6 @@ import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListe
 
 public class IncomingView implements OnClickListener, IncomingContract.View {
     private static final String EXTRA_ACCOUNT = "account";
-    private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
-
-    private static final String STATE = "state";
 
     private TextView serverLabelView;
     private EditText usernameView;
@@ -51,7 +48,6 @@ public class IncomingView implements OnClickListener, IncomingContract.View {
     private EditText webdavAuthPathView;
     private EditText webdavMailboxPathView;
     private Button nextButton;
-    private boolean makeDefault;
     private CheckBox compressionMobile;
     private CheckBox compressionWifi;
     private CheckBox compressionOther;
@@ -63,13 +59,6 @@ public class IncomingView implements OnClickListener, IncomingContract.View {
 
     public IncomingView(AbstractAccountSetup activity) {
         setActivity(activity);
-    }
-
-    public static void actionIncomingSettings(Activity context, Account account, boolean makeDefault) {
-        Intent i = new Intent(context, IncomingView.class);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        i.putExtra(EXTRA_MAKE_DEFAULT, makeDefault);
-        context.startActivity(i);
     }
 
     public static void actionEditIncomingSettings(Activity context, Account account) {
@@ -126,41 +115,6 @@ public class IncomingView implements OnClickListener, IncomingContract.View {
 
     }
 
-    /* @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(EXTRA_ACCOUNT, presenter.getAccount().getUuid());
-
-        outState.putParcelable(STATE, presenter.getState());
-    }*/
-
-    /* @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        initializeViewListeners();
-        onInputChanged();
-    } */
-
-
-    /* @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                presenter.updateAccount();
-                finish();
-            } else {
-                String username = usernameView.getText().toString();
-                String password = passwordView.getText().toString();
-                String clientCertificateAlias = clientCertificateSpinner.getAlias();
-                AuthType authType = getSelectedAuthType();
-
-                presenter.prepareForOutgoing(username, password, clientCertificateAlias, authType);
-
-                finish();
-            }
-        }
-    } */
 
     protected void onNext() {
         try {
@@ -192,8 +146,6 @@ public class IncomingView implements OnClickListener, IncomingContract.View {
 
             activity.goToIncomingChecking();
 
-            // CheckSettingsView.startChecking(this, presenter.getAccount().getUuid(),
-                    // CheckDirection.INCOMING);
         } catch (Exception e) {
             failure(e);
         }
@@ -418,10 +370,6 @@ public class IncomingView implements OnClickListener, IncomingContract.View {
         portView.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
 
         presenter = new IncomingPresenter(this, activity.getState());
-
-        /* if (savedInstanceState != null && savedInstanceState.containsKey(STATE)) {
-            presenter.setState((IncomingAndOutgoingState) savedInstanceState.getParcelable(STATE));
-        } */
 
         initializeViewListeners();
     }

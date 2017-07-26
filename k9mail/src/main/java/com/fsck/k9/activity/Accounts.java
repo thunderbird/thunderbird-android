@@ -72,6 +72,7 @@ import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.setup.AccountSettings;
+import com.fsck.k9.activity.setup.AccountSetup;
 import com.fsck.k9.activity.setup.basics.BasicsView;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.WelcomeMessage;
@@ -610,7 +611,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     private void onAddNewAccount() {
-        BasicsView.actionNewAccount(this);
+        AccountSetup.actionNewAccount(this);
     }
 
     private void onEditPrefs() {

@@ -157,8 +157,6 @@ public class AccountSetup extends AbstractAccountSetup implements ConfirmationDi
         setSelection(getPositionFromLayoutId(R.layout.account_setup_autoconfiguration));
     }
 
-
-
     @Override
     public void listAccounts() {
         Accounts.listAccounts(this);

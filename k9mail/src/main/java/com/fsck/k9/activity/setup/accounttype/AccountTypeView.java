@@ -43,7 +43,7 @@ public class AccountTypeView implements AccountTypeContract.View, OnClickListene
         activity.findViewById(R.id.imap).setOnClickListener(this);
         activity.findViewById(R.id.webdav).setOnClickListener(this);
 
-        presenter = new AccountTypePresenter(this, activity.getState());
+        presenter = new AccountTypePresenter(this, state);
     }
 
     @Override
