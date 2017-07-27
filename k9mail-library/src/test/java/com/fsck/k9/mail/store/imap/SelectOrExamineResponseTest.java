@@ -2,8 +2,11 @@ package com.fsck.k9.mail.store.imap;
 
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.fsck.k9.mail.Flag;
@@ -36,12 +39,12 @@ public class SelectOrExamineResponseTest {
         when(store.getPermanentFlagsIndex()).thenReturn(TEST_PERMANENT_FLAGS);
         folder = mock(ImapFolder.class);
         when(folder.getStore()).thenReturn(store);
-        when(folder.doesConnectionSupportQresync()).thenReturn(true);
     }
 
     @Test
     public void newInstance_withSelectResponse_shouldParseAllFieldsCorrectly() throws Exception {
         List<ImapResponse> imapResponses = createMockImapResponses("1 OK [READ-WRITE] mailbox selected");
+        when(folder.doesConnectionSupportQresync()).thenReturn(true);
 
         SelectOrExamineResponse result = SelectOrExamineResponse.newInstance(imapResponses, folder);
 
@@ -141,20 +144,15 @@ public class SelectOrExamineResponseTest {
         assertNull(result);
     }
 
-    private static List<ImapResponse> createMockImapResponses(String lastLine) throws IOException {
-        return asList(
-                createImapResponse("* 23 EXISTS"),
-                createImapResponse("* 0 RECENT"),
-                createImapResponse("* OK [UIDVALIDITY " + TEST_UIDVALIDITY + "] UIDs valid"),
-                createImapResponse("* OK [UIDNEXT 57576] Predicted next UID"),
-                createImapResponse("* OK [HIGHESTMODSEQ " + TEST_HIGHESTMODSEQ + "] Highest mailbox mod-sequence"),
-                createImapResponse("* FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft NonJunk $MDNSent)"),
-                createImapResponse("* OK [PERMANENTFLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft NonJunk " +
-                        "$MDNSent \\*)] Flags permitted."),
-                createImapResponse("* VANISHED (EARLIER) 41,200,230:233"),
-                createImapResponse("* 49 FETCH (UID 117 FLAGS (\\Seen \\Answered) MODSEQ (90060115194045001))"),
-                createImapResponse("* 50 FETCH (UID 119 FLAGS (\\Draft $MDNSent) MODSEQ (90060115194045308))"),
-                createImapResponse(lastLine)
-        );
+    private List<ImapResponse> createMockImapResponses(String lastLine) throws IOException {
+        List<String> expungedUids = asList("41", "200", "230", "252", "255", "257");
+        Map<String, Set<Flag>> modifiedMessages = new HashMap<>(2);
+        modifiedMessages.put("117", new HashSet<>(asList(Flag.SEEN, Flag.ANSWERED)));
+        modifiedMessages.put("119", Collections.singleton(Flag.DRAFT));
+        List<ImapResponse> responses = ImapResponseHelper.createFolderOpenedResponse(OPEN_MODE_RW, TEST_UIDVALIDITY,
+                TEST_HIGHESTMODSEQ, expungedUids, modifiedMessages);
+        responses.remove(responses.size() - 1);
+        responses.add(createImapResponse(lastLine));
+        return responses;
     }
 }

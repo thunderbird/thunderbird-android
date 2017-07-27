@@ -10,7 +10,6 @@ import com.fsck.k9.mail.internet.MimeMessage;
 
 
 public class ImapMessage extends MimeMessage {
-
     public ImapMessage(String uid, Folder folder) {
         this.mUid = uid;
         this.mFolder = folder;
@@ -34,5 +33,4 @@ public class ImapMessage extends MimeMessage {
     public void delete(String trashFolderName) throws MessagingException {
         getFolder().delete(Collections.singletonList(this), trashFolderName);
     }
-
 }

@@ -42,8 +42,6 @@ import com.fsck.k9.mail.store.imap.selectedstate.response.UidCopyResponse;
 import com.fsck.k9.mail.store.imap.selectedstate.response.UidSearchResponse;
 import timber.log.Timber;
 
-import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
-
 
 public class ImapFolder extends Folder<ImapMessage> {
     private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
@@ -730,7 +728,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
             response = command.readResponse(connection);
 
-            if (response.getTag() == null && equalsIgnoreCase(response.get(1), "FETCH")) {
+            if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
                 ImapList fetchList = (ImapList) response.getKeyedValue("FETCH");
                 String uid = fetchList.getKeyedString("UID");
                 long msgSeq = response.getLong(0);
@@ -805,7 +803,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             do {
                 response = command.readResponse(connection);
 
-                if (response.getTag() == null && equalsIgnoreCase(response.get(1), "FETCH")) {
+                if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
                     ImapList fetchList = (ImapList) response.getKeyedValue("FETCH");
                     String uid = fetchList.getKeyedString("UID");
 
@@ -918,7 +916,7 @@ public class ImapFolder extends Folder<ImapMessage> {
     }
 
     protected void handlePossibleUidNext(ImapResponse response) {
-        if (equalsIgnoreCase(response.get(0), "OK") && response.size() > 1) {
+        if (ImapResponseParser.equalsIgnoreCase(response.get(0), "OK") && response.size() > 1) {
             Object bracketedObj = response.get(1);
             if (bracketedObj instanceof ImapList) {
                 ImapList bracketed = (ImapList) bracketedObj;
@@ -944,7 +942,7 @@ public class ImapFolder extends Folder<ImapMessage> {
      */
     protected void handleUntaggedResponse(ImapResponse response) {
         if (response.getTag() == null && response.size() > 1) {
-            if (equalsIgnoreCase(response.get(1), "EXISTS")) {
+            if (ImapResponseParser.equalsIgnoreCase(response.get(1), "EXISTS")) {
                 messageCount = response.getNumber(0);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Got untagged EXISTS with value %d for %s", messageCount, getLogId());
@@ -953,14 +951,14 @@ public class ImapFolder extends Folder<ImapMessage> {
 
             handlePossibleUidNext(response);
 
-            if (equalsIgnoreCase(response.get(1), "EXPUNGE") && messageCount > 0) {
+            if (ImapResponseParser.equalsIgnoreCase(response.get(1), "EXPUNGE") && messageCount > 0) {
                 messageCount--;
                 if (K9MailLib.isDebug()) {
                     Timber.d("Got untagged EXPUNGE with messageCount %d for %s", messageCount, getLogId());
                 }
             }
 
-            if (equalsIgnoreCase(response.get(0), "VANISHED") && messageCount > 0) {
+            if (ImapResponseParser.equalsIgnoreCase(response.get(0), "VANISHED") && messageCount > 0) {
                 List<String> vanishedUids = ImapUtility.extractVanishedUids(Collections.singletonList(response));
                 messageCount -= vanishedUids.size();
                 if (K9MailLib.isDebug()) {

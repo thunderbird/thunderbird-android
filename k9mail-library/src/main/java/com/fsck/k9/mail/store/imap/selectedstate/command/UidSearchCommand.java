@@ -27,7 +27,6 @@ public class UidSearchCommand extends FolderSelectedStateCommand {
     private Date since;
     private Set<Flag> requiredFlags;
     private Set<Flag> forbiddenFlags;
-    private Long modSeq;
     private MessageRetrievalListener<ImapMessage> listener;
 
     private UidSearchCommand() {
@@ -45,7 +44,6 @@ public class UidSearchCommand extends FolderSelectedStateCommand {
         addSince(builder);
         addFlags(builder, requiredFlags, false);
         addFlags(builder, forbiddenFlags, true);
-        addModSeq(builder);
         return builder.toString().trim();
     }
 
@@ -125,12 +123,6 @@ public class UidSearchCommand extends FolderSelectedStateCommand {
         }
     }
 
-    private void addModSeq(StringBuilder builder) {
-        if (modSeq != null) {
-            builder.append("MODSEQ ").append(modSeq).append(" ");
-        }
-    }
-
     @Override
     Builder newBuilder() {
         return new Builder()
@@ -141,7 +133,6 @@ public class UidSearchCommand extends FolderSelectedStateCommand {
                 .since(since)
                 .requiredFlags(requiredFlags)
                 .forbiddenFlags(forbiddenFlags)
-                .modSeq(modSeq)
                 .listener(listener);
     }
 
@@ -179,11 +170,6 @@ public class UidSearchCommand extends FolderSelectedStateCommand {
 
         public Builder forbiddenFlags(Set<Flag> forbiddenFlags) {
             command.forbiddenFlags = forbiddenFlags;
-            return builder;
-        }
-
-        public Builder modSeq(long modSeq) {
-            command.modSeq = modSeq;
             return builder;
         }
 

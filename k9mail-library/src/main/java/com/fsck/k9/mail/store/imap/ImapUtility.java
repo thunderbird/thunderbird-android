@@ -26,8 +26,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 import timber.log.Timber;
 
-import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
-
 
 /**
  * Utility methods for use with IMAP.
@@ -224,13 +222,13 @@ public class ImapUtility {
         for (Object token : imapResponse) {
             if (token instanceof ImapList) {
                 ImapList list = (ImapList) token;
-                if (list.size() < 2 || !(equalsIgnoreCase(list.get(0), Responses.HIGHESTMODSEQ)
-                        || equalsIgnoreCase(list.get(0), Responses.NOMODSEQ)) ||
+                if (list.size() < 2 || !(ImapResponseParser.equalsIgnoreCase(list.get(0), Responses.HIGHESTMODSEQ)
+                        || ImapResponseParser.equalsIgnoreCase(list.get(0), Responses.NOMODSEQ)) ||
                         !list.isString(1)) {
                     continue;
                 }
 
-                if (equalsIgnoreCase(list.get(0), Responses.HIGHESTMODSEQ)) {
+                if (ImapResponseParser.equalsIgnoreCase(list.get(0), Responses.HIGHESTMODSEQ)) {
                     return Long.parseLong(list.getString(1));
                 }
             }
