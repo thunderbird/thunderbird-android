@@ -2,9 +2,9 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import com.fsck.k9.mail.BodyFactory;
@@ -26,7 +26,7 @@ public class UidFetchCommand extends FolderSelectedStateCommand {
     private int maximumAutoDownloadMessageSize;
     private FetchProfile fetchProfile;
     private Long changedSince;
-    private HashMap<String, Message> messageMap;
+    private Map<String, Message> messageMap;
     private Part part;
     private BodyFactory bodyFactory;
 
@@ -134,7 +134,7 @@ public class UidFetchCommand extends FolderSelectedStateCommand {
             return builder;
         }
 
-        public Builder messageParams(FetchProfile fetchProfile, HashMap<String, Message> messageMap) {
+        public Builder messageParams(FetchProfile fetchProfile, Map<String, Message> messageMap) {
             command.fetchProfile = fetchProfile;
             command.messageMap = messageMap;
             return builder;
