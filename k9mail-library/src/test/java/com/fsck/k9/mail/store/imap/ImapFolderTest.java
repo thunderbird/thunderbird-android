@@ -39,11 +39,10 @@ import org.robolectric.RuntimeEnvironment;
 
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
-import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createFolderOpenedResponse;
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
+import static com.fsck.k9.mail.store.imap.SelectOrExamineResponseDataFixture.TEST_CURRENT_HIGHEST_MOD_SEQ;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static java.util.Collections.singletonMap;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -66,12 +65,6 @@ public class ImapFolderTest {
 
     private static final long TEST_CACHED_UID_VALIDITY = 1234567L;
     private static final long TEST_CACHED_HIGHEST_MOD_SEQ = 10045673849L;
-    private static final long TEST_CURRENT_HIGHEST_MOD_SEQ = 10045679000L;
-    private static final List<String> TEST_EXPUNGED_UIDS = asList("10056", "10078");
-    private static final String TEST_MODIFIED_MESSAGE_UID = "10099";
-    private static final Set<Flag> TEST_MODIFIED_MESSAGE_FLAGS = new HashSet<>(asList(Flag.SEEN, Flag.FLAGGED));
-    private static final Map<String, Set<Flag>> TEST_MODIFIED_MESSAGES = singletonMap(TEST_MODIFIED_MESSAGE_UID,
-            TEST_MODIFIED_MESSAGE_FLAGS);
 
     private ImapStore imapStore;
     private ImapConnection imapConnection;
@@ -116,7 +109,7 @@ public class ImapFolderTest {
 
         imapFolder.open(OPEN_MODE_RW);
 
-        assertEquals(23, imapFolder.getMessageCount());
+        assertEquals(SelectOrExamineResponseDataFixture.TEST_MESSAGE_COUNT, imapFolder.getMessageCount());
     }
 
     @Test
@@ -146,18 +139,17 @@ public class ImapFolderTest {
 
         imapFolder.open(OPEN_MODE_RW);
 
-        assertEquals(TEST_CACHED_UID_VALIDITY, imapFolder.getUidValidity());
+        assertEquals(SelectOrExamineResponseDataFixture.TEST_CURRENT_UID_VALIDITY, imapFolder.getUidValidity());
     }
 
     @Test
     public void open_withCondstoreParam_shouldFetchHighestModSeq() throws Exception {
         ImapFolder imapFolder = createFolder("Folder");
-        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, TEST_CACHED_UID_VALIDITY,
-                TEST_CACHED_HIGHEST_MOD_SEQ);
+        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, false);
 
         imapFolder.open(OPEN_MODE_RW);
 
-        assertEquals(TEST_CACHED_HIGHEST_MOD_SEQ, imapFolder.getHighestModSeq());
+        assertEquals(SelectOrExamineResponseDataFixture.TEST_CURRENT_HIGHEST_MOD_SEQ, imapFolder.getHighestModSeq());
     }
 
     @Test
@@ -244,7 +236,7 @@ public class ImapFolderTest {
     public void openUsingQresyncParam_withValidParams_shouldReturnValidQresyncParamResponse() throws Exception {
         ImapFolder imapFolder = createFolder("Folder");
 
-        QresyncParamResponse response = openImapFolderUsingQresyncParam(imapFolder, OPEN_MODE_RW);
+        QresyncParamResponse response = openImapFolderUsingQresyncParam(imapFolder, OPEN_MODE_RW, false);
 
         assertNotNull(response);
     }
@@ -253,7 +245,7 @@ public class ImapFolderTest {
     public void openUsingQresyncParam_shouldFetchHighestModSeq() throws Exception {
         ImapFolder imapFolder = createFolder("Folder");
 
-        openImapFolderUsingQresyncParam(imapFolder, OPEN_MODE_RW);
+        openImapFolderUsingQresyncParam(imapFolder, OPEN_MODE_RW, false);
 
         assertEquals(TEST_CURRENT_HIGHEST_MOD_SEQ, imapFolder.getHighestModSeq());
     }
@@ -283,8 +275,7 @@ public class ImapFolderTest {
     @Test
     public void supportsModSeq_afterCondstoreOpen_shouldReturnTrue() throws Exception {
         ImapFolder imapFolder = createFolder("Folder");
-        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, TEST_CACHED_UID_VALIDITY,
-                TEST_CURRENT_HIGHEST_MOD_SEQ);
+        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, false);
         imapFolder.open(OPEN_MODE_RW);
 
         boolean supportsModSeq = imapFolder.supportsModSeq();
@@ -295,7 +286,7 @@ public class ImapFolderTest {
     @Test
     public void supportsModSeq_afterCondstoreOpenWithNoModSeqResponse_shouldReturnFalse() throws Exception {
         ImapFolder imapFolder = createFolder("Folder");
-        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, TEST_CACHED_UID_VALIDITY, null);
+        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, true);
         imapFolder.open(OPEN_MODE_RW);
 
         boolean supportsModSeq = imapFolder.supportsModSeq();
@@ -306,7 +297,7 @@ public class ImapFolderTest {
     @Test
     public void supportsModSeq_afterQresyncOpen_shouldReturnTrue() throws Exception {
         ImapFolder imapFolder = createFolder("Folder");
-        openImapFolderUsingQresyncParam(imapFolder, OPEN_MODE_RW);
+        openImapFolderUsingQresyncParam(imapFolder, OPEN_MODE_RW, false);
 
         boolean supportsModSeq = imapFolder.supportsModSeq();
 
@@ -317,7 +308,7 @@ public class ImapFolderTest {
     public void supportsModSeq_afterQresyncOpenWithNoModSeqResponse_shouldReturnFalse() throws Exception {
         ImapFolder imapFolder = createFolder("Folder");
         prepareImapFolderForOpenUsingQresyncParam(OPEN_MODE_RW, TEST_CACHED_UID_VALIDITY, TEST_CACHED_HIGHEST_MOD_SEQ,
-                null, TEST_EXPUNGED_UIDS, TEST_MODIFIED_MESSAGES);
+                true);
 
         boolean supportsModSeq = imapFolder.supportsModSeq();
 
@@ -1083,8 +1074,7 @@ public class ImapFolderTest {
     @Test
     public void fetchChangedMessageFlagsUsingCondstore_shouldIssueRespectiveCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, TEST_CACHED_UID_VALIDITY,
-                TEST_CURRENT_HIGHEST_MOD_SEQ);
+        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, false);
         folder.open(OPEN_MODE_RW);
         List<ImapMessage> messages = createImapMessages("101");
         when(imapConnection.readResponse(any(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
@@ -1097,13 +1087,11 @@ public class ImapFolderTest {
     @Test
     public void fetchChangedMessageFlagsUsingCondstore_shouldSetFlags() throws Exception {
         ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, TEST_CACHED_UID_VALIDITY,
-                TEST_CURRENT_HIGHEST_MOD_SEQ);
+        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, false);
         folder.open(OPEN_MODE_RW);
         List<ImapMessage> messages = createImapMessages("101");
         when(imapConnection.readResponse(any(ImapResponseCallback.class)))
-                .thenReturn(createImapResponse(String.format(Locale.US, "* 1 FETCH (UID 101 FLAGS (\\Seen) MODSEQ (%s))",
-                        TEST_CURRENT_HIGHEST_MOD_SEQ)))
+                .thenReturn(createImapResponse("* 1 FETCH (UID 101 FLAGS (\\Seen) MODSEQ (%s))"))
                 .thenReturn(createImapResponse("x OK"));
 
         folder.fetchChangedMessageFlagsUsingCondstore(messages, TEST_CACHED_HIGHEST_MOD_SEQ, null);
@@ -1114,13 +1102,11 @@ public class ImapFolderTest {
     @Test
     public void fetchChangedMessageFlagsUsingCondstore_withListener_shouldCallListener() throws Exception {
         ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, TEST_CACHED_UID_VALIDITY,
-                TEST_CURRENT_HIGHEST_MOD_SEQ);
+        prepareImapFolderForOpenUsingCondstoreParam(OPEN_MODE_RW, false);
         folder.open(OPEN_MODE_RW);
         List<ImapMessage> messages = createImapMessages("101");
         when(imapConnection.readResponse(any(ImapResponseCallback.class)))
-                .thenReturn(createImapResponse(String.format(Locale.US, "* 1 FETCH (UID 101 FLAGS (\\Seen) MODSEQ (%s))",
-                        TEST_CURRENT_HIGHEST_MOD_SEQ)))
+                .thenReturn(createImapResponse("* 1 FETCH (UID 101 FLAGS (\\Seen) MODSEQ (123456789))"))
                 .thenReturn(createImapResponse("x OK"));
         MessageRetrievalListener<ImapMessage> listener = createMessageRetrievalListener();
 
@@ -1197,7 +1183,7 @@ public class ImapFolderTest {
     @Test
     public void expungeUsingQresync_shouldIssueExpungeCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
-        openImapFolderUsingQresyncParam(folder, OPEN_MODE_RW);
+        openImapFolderUsingQresyncParam(folder, OPEN_MODE_RW, false);
 
         folder.expungeUsingQresync();
 
@@ -1207,7 +1193,7 @@ public class ImapFolderTest {
     @Test
     public void expungeUsingQresync_withUidsExpunged_shouldReportExpungedUidsAndUpdateModSeq() throws Exception {
         ImapFolder folder = createFolder("Folder");
-        openImapFolderUsingQresyncParam(folder, OPEN_MODE_RW);
+        openImapFolderUsingQresyncParam(folder, OPEN_MODE_RW, false);
         when(imapConnection.executeSimpleCommand("EXPUNGE")).thenReturn(
                 asList(createImapResponse("* VANISHED 405,407,410,425"),
                         createImapResponse("4 OK [HIGHESTMODSEQ 1004568000] expunged")));
@@ -1399,8 +1385,8 @@ public class ImapFolderTest {
 
     private void prepareImapFolderForOpen(int openMode) throws MessagingException, IOException {
         when(imapStore.getConnection()).thenReturn(imapConnection);
-        List<ImapResponse> imapResponses = createFolderOpenedResponse(openMode, TEST_CACHED_UID_VALIDITY, null, null,
-                null);
+        SelectOrExamineResponseDataFixture dataFixture = SelectOrExamineResponseDataFixture.getDefaultInstance();
+        List<ImapResponse> imapResponses = dataFixture.create(openMode);
 
         if (openMode == OPEN_MODE_RW) {
             when(imapConnection.executeSimpleCommand("SELECT \"Folder\"")).thenReturn(imapResponses);
@@ -1411,11 +1397,12 @@ public class ImapFolderTest {
                 Collections.singletonList(createImapResponse("3 OK")));
     }
 
-    private void prepareImapFolderForOpenUsingCondstoreParam(int openMode, Long uidValidity, Long highestModSeq)
+    private void prepareImapFolderForOpenUsingCondstoreParam(int openMode, boolean noModSeq)
             throws IOException, MessagingException {
         when(imapStore.getConnection()).thenReturn(imapConnection);
         when(imapConnection.isCondstoreCapable()).thenReturn(true);
-        List<ImapResponse> imapResponses = createFolderOpenedResponse(openMode, uidValidity, highestModSeq, null, null);
+        SelectOrExamineResponseDataFixture dataFixture = SelectOrExamineResponseDataFixture.getDefaultInstance();
+        List<ImapResponse> imapResponses = dataFixture.createForCondstoreParam(openMode, noModSeq);
 
         if (openMode == OPEN_MODE_RW) {
             when(imapConnection.executeSimpleCommand("SELECT \"Folder\" (CONDSTORE)")).thenReturn(imapResponses);
@@ -1424,20 +1411,19 @@ public class ImapFolderTest {
         }
     }
 
-    private QresyncParamResponse openImapFolderUsingQresyncParam(ImapFolder folder, int mode) throws MessagingException,
-            IOException {
+    private QresyncParamResponse openImapFolderUsingQresyncParam(ImapFolder folder, int mode, boolean noModSeq)
+            throws MessagingException, IOException {
         prepareImapFolderForOpenUsingQresyncParam(OPEN_MODE_RW, TEST_CACHED_UID_VALIDITY, TEST_CACHED_HIGHEST_MOD_SEQ,
-                TEST_CURRENT_HIGHEST_MOD_SEQ, TEST_EXPUNGED_UIDS, TEST_MODIFIED_MESSAGES);
+                noModSeq);
         return folder.openUsingQresyncParam(mode, TEST_CACHED_UID_VALIDITY, TEST_CACHED_HIGHEST_MOD_SEQ);
     }
 
-    private void prepareImapFolderForOpenUsingQresyncParam(int openMode, Long cachedUidValidity, Long cachedHighestModSeq,
-            Long currentHighestModSeq, List<String> vanishedUids, Map<String, Set<Flag>> fetchResponses)
-            throws MessagingException, IOException {
+    private void prepareImapFolderForOpenUsingQresyncParam(int openMode, Long cachedUidValidity,
+            Long cachedHighestModSeq, boolean noModSeq) throws MessagingException, IOException {
         when(imapStore.getConnection()).thenReturn(imapConnection);
         when(imapConnection.isQresyncCapable()).thenReturn(true);
-        List<ImapResponse> imapResponses = createFolderOpenedResponse(openMode, cachedUidValidity, currentHighestModSeq,
-                vanishedUids, fetchResponses);
+        SelectOrExamineResponseDataFixture dataFixture = SelectOrExamineResponseDataFixture.getDefaultInstance();
+        List<ImapResponse> imapResponses = dataFixture.createForQresyncParam(openMode, noModSeq);
         when(imapConnection.executeSimpleCommand(String.format(Locale.US, "%s \"Folder\" (QRESYNC (%d %d))",
                 (openMode == OPEN_MODE_RW) ? "SELECT" : "EXAMINE", cachedUidValidity, cachedHighestModSeq)))
                 .thenReturn(imapResponses);
