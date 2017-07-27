@@ -240,9 +240,14 @@ public class ImapUtility {
         List<String> uids = new ArrayList<>();
         for (ImapResponse imapResponse : imapResponses) {
             if (imapResponse.getTag() == null && ImapResponseParser.equalsIgnoreCase(imapResponse.get(0), "VANISHED")) {
+
+                //For VANISHED responses. ex : * VANISHED 505,507,510,625
                 if (imapResponse.isString(1)) {
                     uids = ImapUtility.getImapSequenceValues(imapResponse.getString(1));
-                } else if (imapResponse.isList(1) && imapResponse.getList(1).getString(0).equals("EARLIER")
+                }
+
+                //For VANISHED (EARLIER) responses. ex : * VANISHED (EARLIER) 300:310,405,411
+                if (imapResponse.isList(1) && imapResponse.getList(1).getString(0).equals("EARLIER")
                         && imapResponse.isString(2)) {
                     uids = ImapUtility.getImapSequenceValues(imapResponse.getString(2));
                 }
