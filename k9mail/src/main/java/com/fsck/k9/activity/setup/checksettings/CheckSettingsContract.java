@@ -30,9 +30,9 @@ interface CheckSettingsContract {
     }
 
     interface Presenter extends BasePresenter {
-        void onContinueClickedWhenError();
+        void onNegativeClickedInConfirmationDialog();
         void onViewStart(AbstractAccountSetup.AccountState state);
         void onCertificateAccepted(X509Certificate certificate);
-        void onEditDetailClickedWhenError();
+        void onPositiveClickedInConfirmationDialog();
     }
 }

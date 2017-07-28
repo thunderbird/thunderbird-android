@@ -17,7 +17,6 @@ import android.os.Looper;
 import android.support.annotation.StringRes;
 import android.widget.TextView;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.setup.AbstractAccountSetup;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsContract.Presenter;
@@ -27,7 +26,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
-public class CheckSettingsView implements CheckSettingsContract.View {
+public class CheckSettingsView implements CheckSettingsContract.View, ConfirmationDialogFragmentListener {
 
 
     private static final int ACTIVITY_REQUEST_CODE = 1;
@@ -184,7 +183,8 @@ public class CheckSettingsView implements CheckSettingsContract.View {
                         activity.getString(R.string.account_setup_failed_dlg_title),
                         customMessage,
                         activity.getString(R.string.account_setup_failed_dlg_edit_details_action),
-                        activity.getString(R.string.account_setup_failed_dlg_continue_action)
+                        activity.getString(R.string.account_setup_failed_dlg_continue_action),
+                        this
                 );
                 break;
             }
@@ -206,4 +206,18 @@ public class CheckSettingsView implements CheckSettingsContract.View {
         return String.format(Locale.US, "dialog-%d", dialogId);
     }
 
+    @Override
+    public void doPositiveClick(int dialogId) {
+        presenter.onPositiveClickedInConfirmationDialog();
+    }
+
+    @Override
+    public void doNegativeClick(int dialogId) {
+        presenter.onNegativeClickedInConfirmationDialog();
+    }
+
+    @Override
+    public void dialogCancelled(int dialogId) {
+
+    }
 }
