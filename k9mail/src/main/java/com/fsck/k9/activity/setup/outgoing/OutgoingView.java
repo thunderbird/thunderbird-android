@@ -170,7 +170,7 @@ public class OutgoingView extends AccountSetupView implements OnClickListener,
 
     @Override
     public void next() {
-        activity.goToAccountNames();
+        activity.goToOutgoingChecking();
     }
 
     /*
