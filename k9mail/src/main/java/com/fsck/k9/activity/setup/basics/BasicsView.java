@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 
 import com.fsck.k9.activity.setup.AbstractAccountSetup;
+import com.fsck.k9.activity.setup.AccountSetupView;
 import com.fsck.k9.activity.setup.basics.BasicsContract.Presenter;
 
 import android.view.View;
@@ -17,19 +18,13 @@ import com.fsck.k9.Account;
 import com.fsck.k9.R;
 
 
-public class BasicsView implements BasicsContract.View, OnClickListener, TextWatcher {
+public class BasicsView extends AccountSetupView implements BasicsContract.View, OnClickListener, TextWatcher {
 
-    private AbstractAccountSetup activity;
     private Presenter presenter;
     private EditText emailView;
     private EditText passwordView;
     private TextView nextButton;
     private Button manualSetupButton;
-
-    @Override
-    public void setActivity(AbstractAccountSetup activity) {
-        this.activity = activity;
-    }
 
     @Override
     public void start() {
@@ -46,8 +41,7 @@ public class BasicsView implements BasicsContract.View, OnClickListener, TextWat
     }
 
     public BasicsView(AbstractAccountSetup activity) {
-        setActivity(activity);
-
+        super(activity);
     }
 
     private void initializeViewListeners() {

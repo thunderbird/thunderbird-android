@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.fsck.k9.R;
 import com.fsck.k9.activity.setup.AbstractAccountSetup;
-import com.fsck.k9.activity.setup.AbstractAccountSetup.AccountState;
+import com.fsck.k9.activity.setup.AccountSetupView;
 import com.fsck.k9.activity.setup.accounttype.AccountTypeContract.Presenter;
 import timber.log.Timber;
 
@@ -17,24 +17,16 @@ import static com.fsck.k9.mail.ServerSettings.Type.IMAP;
 import static com.fsck.k9.mail.ServerSettings.Type.POP3;
 
 
-public class AccountTypeView implements AccountTypeContract.View, OnClickListener {
+public class AccountTypeView extends AccountSetupView implements AccountTypeContract.View, OnClickListener {
     private Presenter presenter;
-    private AbstractAccountSetup activity;
-    private AccountState state;
 
     public AccountTypeView(AbstractAccountSetup activity) {
-        setActivity(activity);
+        super(activity);
     }
 
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
-    }
-
-    @Override
-    public void setActivity(AbstractAccountSetup activity) {
-        this.activity = activity;
-        state = activity.getState();
     }
 
     @Override

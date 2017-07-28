@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 
 import com.fsck.k9.activity.setup.AbstractAccountSetup;
+import com.fsck.k9.activity.setup.AccountSetupView;
 import com.fsck.k9.activity.setup.AuthTypeAdapter;
 import com.fsck.k9.activity.setup.AuthTypeHolder;
 import com.fsck.k9.activity.setup.ConnectionSecurityAdapter;
@@ -29,7 +30,7 @@ import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
 
-public class OutgoingView implements OnClickListener,
+public class OutgoingView extends AccountSetupView implements OnClickListener,
     OnCheckedChangeListener, OutgoingContract.View {
     private static final String EXTRA_ACCOUNT = "account";
 
@@ -49,9 +50,11 @@ public class OutgoingView implements OnClickListener,
     private AuthTypeAdapter authTypeAdapter;
     private Button nextButton;
 
-    private AbstractAccountSetup activity;
-
     private Presenter presenter;
+
+    public OutgoingView(AbstractAccountSetup activity) {
+        super(activity);
+    }
 
     public static void actionEditOutgoingSettings(Context context, Account account) {
         context.startActivity(intentActionEditOutgoingSettings(context, account));
@@ -206,11 +209,6 @@ public class OutgoingView implements OnClickListener,
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
-    }
-
-    @Override
-    public void setActivity(AbstractAccountSetup activity) {
-        this.activity = activity;
     }
 
     @Override

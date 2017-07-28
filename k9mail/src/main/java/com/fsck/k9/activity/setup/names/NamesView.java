@@ -8,28 +8,23 @@ import android.widget.EditText;
 
 import com.fsck.k9.R;
 import com.fsck.k9.activity.setup.AbstractAccountSetup;
+import com.fsck.k9.activity.setup.AccountSetupView;
 import com.fsck.k9.activity.setup.names.NamesContract.Presenter;
 
 
-public class NamesView implements NamesContract.View, OnClickListener {
+public class NamesView extends AccountSetupView implements NamesContract.View, OnClickListener {
     Presenter presenter;
-    AbstractAccountSetup activity;
     private EditText description;
     private EditText name;
     private Button doneButton;
 
     public NamesView(AbstractAccountSetup activity) {
-        this.activity = activity;
+        super(activity);
     }
 
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
-    }
-
-    @Override
-    public void setActivity(AbstractAccountSetup activity) {
-        this.activity = activity;
     }
 
     @Override

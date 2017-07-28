@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 
 import com.fsck.k9.activity.setup.AbstractAccountSetup;
+import com.fsck.k9.activity.setup.AccountSetupView;
 import com.fsck.k9.activity.setup.AuthTypeAdapter;
 import com.fsck.k9.activity.setup.AuthTypeHolder;
 import com.fsck.k9.activity.setup.ConnectionSecurityAdapter;
@@ -29,7 +30,7 @@ import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
 
-public class IncomingView implements OnClickListener, IncomingContract.View {
+public class IncomingView extends AccountSetupView implements OnClickListener, IncomingContract.View {
     private static final String EXTRA_ACCOUNT = "account";
 
     private TextView serverLabelView;
@@ -55,10 +56,8 @@ public class IncomingView implements OnClickListener, IncomingContract.View {
     private AuthTypeAdapter authTypeAdapter;
     private Presenter presenter;
 
-    private AbstractAccountSetup activity;
-
     public IncomingView(AbstractAccountSetup activity) {
-        setActivity(activity);
+        super(activity);
     }
 
     public static void actionEditIncomingSettings(Activity context, Account account) {
@@ -320,11 +319,6 @@ public class IncomingView implements OnClickListener, IncomingContract.View {
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
-    }
-
-    @Override
-    public void setActivity(AbstractAccountSetup activity) {
-        this.activity = activity;
     }
 
     @Override
