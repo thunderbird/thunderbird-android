@@ -14,7 +14,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.setup.AbstractAccountSetup.AccountState;
 import com.fsck.k9.activity.setup.IncomingAndOutgoingState;
-import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
+import com.fsck.k9.activity.setup.checksettings.CheckDirection;
 import com.fsck.k9.activity.setup.incoming.IncomingContract.View;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;

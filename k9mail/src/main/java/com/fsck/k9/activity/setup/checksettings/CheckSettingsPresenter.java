@@ -42,19 +42,13 @@ import com.fsck.k9.service.MailService;
 import timber.log.Timber;
 
 
-public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
+class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
     private View view;
     private Account account;
     private CheckDirection currentDirection;
     private CheckDirection direction;
     private AccountState state;
     private boolean editSettings;
-
-    public enum CheckDirection {
-        INCOMING,
-        OUTGOING,
-        BOTH
-    }
 
     CheckSettingsPresenter(View view) {
         this.view = view;
@@ -82,7 +76,7 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
         if (direction == CheckDirection.BOTH && currentDirection == CheckDirection.INCOMING) {
             checkOutgoing();
         } else if (currentDirection == CheckDirection.OUTGOING){
-            view.goToNames();
+            view.goToOptions();
         } else {
             view.goToOutgoing();
         }
@@ -151,7 +145,7 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
                     account.setDescription(account.getEmail());
                     K9.setServicesEnabled(K9.app);
 
-                    view.goToNames();
+                    view.goToOptions();
                 } else {
                     boolean isPushCapable = false;
                     try {

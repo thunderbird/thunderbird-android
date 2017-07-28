@@ -24,7 +24,8 @@ interface CheckSettingsContract {
         void goToBasics();
         void goToIncoming();
         void goToOutgoing();
-        void goToNames();
+
+        void goToOptions();
 
         Context getContext();
     }

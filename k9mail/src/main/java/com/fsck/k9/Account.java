@@ -20,6 +20,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 
+import com.fsck.k9.activity.setup.checksettings.CheckDirection;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -27,7 +28,6 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import timber.log.Timber;
 
-import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;

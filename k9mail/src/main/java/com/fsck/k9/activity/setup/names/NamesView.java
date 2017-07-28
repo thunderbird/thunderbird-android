@@ -43,7 +43,7 @@ public class NamesView extends AccountSetupView implements NamesContract.View, O
     }
 
     @Override
-    public void onSetupFinished() {
+    public void next() {
         activity.listAccounts();
     }
 }

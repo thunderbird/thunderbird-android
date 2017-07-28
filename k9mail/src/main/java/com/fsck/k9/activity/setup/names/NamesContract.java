@@ -5,9 +5,9 @@ import com.fsck.k9.BasePresenter;
 import com.fsck.k9.BaseView;
 
 
-public interface NamesContract {
+interface NamesContract {
     interface View extends BaseView<Presenter> {
-        void onSetupFinished();
+        void next();
     }
 
     interface Presenter extends BasePresenter {
