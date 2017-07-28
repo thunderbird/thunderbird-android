@@ -11,7 +11,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 
 
-public interface IncomingContract {
+interface IncomingContract {
     interface View extends BaseView<Presenter> {
         void goToOutgoingSettings(Account account);
         void setNextEnabled(boolean enabled);

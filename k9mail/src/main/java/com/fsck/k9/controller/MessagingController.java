@@ -54,7 +54,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ActivityListener;
 import com.fsck.k9.activity.MessageReference;
-import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
+import com.fsck.k9.activity.setup.checksettings.CheckDirection;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;

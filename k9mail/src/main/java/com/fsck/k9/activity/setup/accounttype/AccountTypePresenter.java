@@ -15,14 +15,15 @@ import static com.fsck.k9.mail.ServerSettings.Type.SMTP;
 import static com.fsck.k9.mail.ServerSettings.Type.WebDAV;
 
 
-public class AccountTypePresenter implements AccountTypeContract.Presenter {
+class AccountTypePresenter implements AccountTypeContract.Presenter {
     private AccountState state;
     private AccountTypeContract.View view;
     private Account account;
     private ServerNameSuggester serverNameSuggester;
 
-    public AccountTypePresenter(View view, AccountState state) {
+    AccountTypePresenter(View view, AccountState state) {
         this.view = view;
+        view.setPresenter(this);
         this.state = state;
         this.account = state.getAccount();
         serverNameSuggester = new ServerNameSuggester();

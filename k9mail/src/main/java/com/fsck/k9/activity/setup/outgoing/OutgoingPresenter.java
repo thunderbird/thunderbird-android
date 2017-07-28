@@ -9,7 +9,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.setup.IncomingAndOutgoingState;
-import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
+import com.fsck.k9.activity.setup.checksettings.CheckDirection;
 import com.fsck.k9.activity.setup.outgoing.OutgoingContract.View;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;

@@ -21,7 +21,6 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.setup.AbstractAccountSetup;
 import com.fsck.k9.activity.setup.AccountSetupView;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsContract.Presenter;
-import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
@@ -154,8 +153,8 @@ public class CheckSettingsView extends AccountSetupView implements CheckSettings
     }
 
     @Override
-    public void goToNames() {
-        activity.goToAccountNames();
+    public void goToOptions() {
+        activity.goToOptions();
     }
 
     @Override

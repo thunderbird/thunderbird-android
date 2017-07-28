@@ -18,6 +18,7 @@ import com.fsck.k9.activity.setup.basics.BasicsView;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsView;
 import com.fsck.k9.activity.setup.incoming.IncomingView;
 import com.fsck.k9.activity.setup.names.NamesView;
+import com.fsck.k9.activity.setup.options.OptionsView;
 import com.fsck.k9.activity.setup.outgoing.OutgoingView;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 
@@ -33,11 +34,13 @@ public class AccountSetup extends AbstractAccountSetup {
     private IncomingView incomingView;
     private OutgoingView outgoingView;
     private AccountTypeView accountTypeView;
+    private OptionsView optionsView;
     private NamesView namesView;
 
     int[] layoutIds = new int[]{R.layout.account_setup_basics,
             R.layout.account_setup_autoconfiguration, R.layout.account_setup_account_type,
-            R.layout.account_setup_incoming, R.layout.account_setup_outgoing, R.layout.account_setup_names};
+            R.layout.account_setup_incoming, R.layout.account_setup_outgoing,
+            R.layout.account_setup_options, R.layout.account_setup_names};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,6 +144,11 @@ public class AccountSetup extends AbstractAccountSetup {
     }
 
     @Override
+    public void goToOptions() {
+        setSelection(getPositionFromLayoutId(R.layout.account_setup_options));
+    }
+
+    @Override
     public void goToAccountNames() {
         setSelection(getPositionFromLayoutId(R.layout.account_setup_names));
     }
@@ -193,6 +201,10 @@ public class AccountSetup extends AbstractAccountSetup {
             case R.layout.account_setup_account_type:
                 accountTypeView = new AccountTypeView(this);
                 accountTypeView.start();
+                break;
+            case R.layout.account_setup_options:
+                optionsView = new OptionsView(this);
+                optionsView.start();
                 break;
             case R.layout.account_setup_names:
                 namesView = new NamesView(this);
