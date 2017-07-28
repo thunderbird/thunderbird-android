@@ -78,7 +78,7 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
     }
 
     @Override
-    public void onContinueClickedWhenError() {
+    public void onNegativeClickedInConfirmationDialog() {
         if (direction == CheckDirection.BOTH && currentDirection == CheckDirection.INCOMING) {
             checkOutgoing();
         } else if (currentDirection == CheckDirection.OUTGOING){
@@ -475,7 +475,7 @@ public class CheckSettingsPresenter implements CheckSettingsContract.Presenter {
     }
 
     @Override
-    public void onEditDetailClickedWhenError() {
+    public void onPositiveClickedInConfirmationDialog() {
         if (state.getStep() == AccountState.STEP_AUTO_CONFIGURATION) {
             view.goToBasics();
         } else if (state.getStep() == AccountState.STEP_CHECK_INCOMING) {

@@ -22,7 +22,7 @@ import com.fsck.k9.activity.setup.outgoing.OutgoingView;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 
 
-public class AccountSetup extends AbstractAccountSetup implements ConfirmationDialogFragmentListener {
+public class AccountSetup extends AbstractAccountSetup {
     private AdapterViewFlipper flipper;
 
     private int position;
@@ -197,27 +197,4 @@ public class AccountSetup extends AbstractAccountSetup implements ConfirmationDi
         }
     }
 
-    @Override
-    public void doPositiveClick(int dialogId) {
-        switch (dialogId) {
-            case R.id.dialog_account_setup_error: {
-                // presenter.onEditDetailClickedWhenError();
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void doNegativeClick(int dialogId) {
-        switch (dialogId) {
-            case R.id.dialog_account_setup_error: {
-                // presenter.onContinueClickedWhenError();
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void dialogCancelled(int dialogId) {
-    }
 }
