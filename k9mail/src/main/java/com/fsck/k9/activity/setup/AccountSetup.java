@@ -186,6 +186,10 @@ public class AccountSetup extends AbstractAccountSetup {
                 incomingView = new IncomingView(this);
                 incomingView.start();
                 break;
+            case R.layout.account_setup_outgoing:
+                outgoingView = new OutgoingView(this);
+                outgoingView.start();
+                break;
             case R.layout.account_setup_account_type:
                 accountTypeView = new AccountTypeView(this);
                 accountTypeView.start();

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.fsck.k9.R;
 import com.fsck.k9.activity.setup.AbstractAccountSetup;
+import com.fsck.k9.activity.setup.AccountSetupView;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsContract.Presenter;
 import com.fsck.k9.activity.setup.checksettings.CheckSettingsPresenter.CheckDirection;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
@@ -26,7 +27,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
-public class CheckSettingsView implements CheckSettingsContract.View, ConfirmationDialogFragmentListener {
+public class CheckSettingsView extends AccountSetupView implements CheckSettingsContract.View, ConfirmationDialogFragmentListener {
 
 
     private static final int ACTIVITY_REQUEST_CODE = 1;
@@ -38,15 +39,17 @@ public class CheckSettingsView implements CheckSettingsContract.View, Confirmati
     private static final String EXTRA_AUTOCONFIGURATION = "autocongifuration";
 
     private Presenter presenter;
-    private AbstractAccountSetup activity;
     private TextView messageView;
     private MaterialProgressBar progressBar;
 
     private Handler handler;
 
     public CheckSettingsView(AbstractAccountSetup activity) {
-        setActivity(activity);
+        super(activity);
+    }
 
+    @Override
+    public void start() {
         messageView = (TextView) activity.findViewById(R.id.message);
         progressBar = (MaterialProgressBar) activity.findViewById(R.id.progress);
 
@@ -54,13 +57,8 @@ public class CheckSettingsView implements CheckSettingsContract.View, Confirmati
 
         handler = new Handler(Looper.getMainLooper());
 
-    }
-
-    @Override
-    public void start() {
         presenter = new CheckSettingsPresenter(this);
         presenter.onViewStart(activity.getState());
-
     }
 
     // FIXME: 7/24/2017 change it
@@ -78,11 +76,6 @@ public class CheckSettingsView implements CheckSettingsContract.View, Confirmati
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter = presenter;
-    }
-
-    @Override
-    public void setActivity(AbstractAccountSetup activity) {
-        this.activity = activity;
     }
 
     @Override
