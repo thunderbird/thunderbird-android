@@ -39,7 +39,7 @@ class NonQresyncExtensionHandler {
         this.imapSyncInteractor = imapSyncInteractor;
     }
 
-    int continueSync(MessageDownloader messageDownloader, FlagSyncHelper flagSyncHelper)
+    int continueSync(MessageDownloader messageDownloader, FlagSyncHelper flagSyncHelper, SyncHelper syncHelper)
             throws MessagingException, IOException {
         Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
         String folderName = localFolder.getName();
@@ -65,7 +65,7 @@ class NonQresyncExtensionHandler {
         List<Message> syncFlagMessages = new ArrayList<>();
 
         for (Message message : remoteMessages) {
-            SyncUtils.evaluateMessageForDownload(message, folderName, localFolder, imapFolder, account, newMessages,
+            syncHelper.evaluateMessageForDownload(message, folderName, localFolder, imapFolder, account, newMessages,
                     syncFlagMessages, controller);
         }
 

@@ -37,7 +37,8 @@ class QresyncExtensionHandler {
     }
 
     int continueSync(QresyncParamResponse qresyncParamResponse, List<String> expungedUids,
-            MessageDownloader messageDownloader, FlagSyncHelper flagSyncHelper) throws MessagingException, IOException {
+            MessageDownloader messageDownloader, FlagSyncHelper flagSyncHelper, SyncHelper syncHelper)
+            throws MessagingException, IOException {
         final String folderName = localFolder.getName();
         final List<ImapMessage> remoteMessagesToDownload = new ArrayList<>();
 
@@ -51,7 +52,7 @@ class QresyncExtensionHandler {
             l.synchronizeMailboxHeadersStarted(account, folderName);
         }
 
-        processFetchResponses(remoteMessagesToDownload, qresyncParamResponse, flagSyncHelper);
+        processFetchResponses(remoteMessagesToDownload, qresyncParamResponse, flagSyncHelper, syncHelper);
 
         int newLocalMessageCount = remoteMessagesToDownload.size() + localFolder.getMessageCount();
         if (imapFolder.getMessageCount() >= localFolder.getVisibleLimit() && imapFolder.getMessageCount() >=
@@ -69,7 +70,7 @@ class QresyncExtensionHandler {
     }
 
     private void processFetchResponses(List<ImapMessage> remoteMessagesToDownload, QresyncParamResponse
-            qresyncParamResponse, FlagSyncHelper flagSyncHelper) throws MessagingException {
+            qresyncParamResponse, FlagSyncHelper flagSyncHelper, SyncHelper syncHelper) throws MessagingException {
         String folderName = imapFolder.getName();
         final AtomicInteger headerProgress = new AtomicInteger(0);
 
@@ -83,7 +84,7 @@ class QresyncExtensionHandler {
         List<Message> syncFlagMessages = new ArrayList<>();
 
         for (Message message : modifiedMessages) {
-            SyncUtils.evaluateMessageForDownload(message, folderName, localFolder, imapFolder, account, newMessages,
+            syncHelper.evaluateMessageForDownload(message, folderName, localFolder, imapFolder, account, newMessages,
                     syncFlagMessages, controller);
         }
 

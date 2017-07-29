@@ -41,20 +41,22 @@ class MessageDownloader {
     private final MessagingController controller;
     private final Contacts contacts;
     private final NotificationController notificationController;
+    private final SyncHelper syncHelper;
 
-    public static MessageDownloader newInstance(Context context, MessagingController controller) {
+    public static MessageDownloader newInstance(Context context, MessagingController controller, SyncHelper syncHelper) {
         Context appContext = context.getApplicationContext();
         Contacts contacts = Contacts.getInstance(context);
         NotificationController notificationController = NotificationController.newInstance(appContext);
-        return new MessageDownloader(appContext, controller, contacts, notificationController);
+        return new MessageDownloader(appContext, controller, contacts, notificationController, syncHelper);
     }
 
     private MessageDownloader(Context context, MessagingController controller, Contacts contacts,
-            NotificationController notificationController) {
+            NotificationController notificationController, SyncHelper syncHelper) {
         this.context = context;
         this.controller = controller;
         this.contacts = contacts;
         this.notificationController = notificationController;
+        this.syncHelper = syncHelper;
     }
 
     /**
@@ -106,8 +108,8 @@ class MessageDownloader {
         List<Message> messages = new ArrayList<>(inputMessages);
 
         for (Message message : messages) {
-            SyncUtils.evaluateMessageForDownload(message, folderName, localFolder, remoteFolder, account, unsyncedMessages,
-                    syncFlagMessages, controller);
+            syncHelper.evaluateMessageForDownload(message, folderName, localFolder, remoteFolder, account,
+                    unsyncedMessages, syncFlagMessages, controller);
         }
 
         final AtomicInteger progress = new AtomicInteger(0);
@@ -186,8 +188,8 @@ class MessageDownloader {
 
         Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folderName, newMessages.get());
 
-        FlagSyncHelper.newInstance(context, controller).refreshLocalMessageFlags(account, remoteFolder, localFolder,
-                syncFlagMessages);
+        FlagSyncHelper.newInstance(context, controller, syncHelper).refreshLocalMessageFlags(account, remoteFolder,
+                localFolder, syncFlagMessages);
 
         Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folderName, newMessages.get());
 
@@ -250,7 +252,8 @@ class MessageDownloader {
                                 }
                                 progress.incrementAndGet();
                                 for (MessagingListener l : controller.getListeners()) {
-                                    //TODO: This might be the source of poll count errors in the UI. Is todo always the same as ofTotal
+                                    //TODO: This might be the source of poll count errors in the UI. Is todo always the
+                                    // same as ofTotal
                                     l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
                                 }
                                 return;
@@ -342,7 +345,7 @@ class MessageDownloader {
                             }
                             // Send a notification of this message
 
-                            if (SyncUtils.shouldNotifyForMessage(account, localFolder, message, contacts)) {
+                            if (syncHelper.shouldNotifyForMessage(account, localFolder, message, contacts)) {
                                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                                 notificationController.addNewMailNotification(account, localMessage, unreadBeforeStart);
                             }
@@ -411,7 +414,7 @@ class MessageDownloader {
                 }
             }
             // Send a notification of this message
-            if (SyncUtils.shouldNotifyForMessage(account, localFolder, message, contacts)) {
+            if (syncHelper.shouldNotifyForMessage(account, localFolder, message, contacts)) {
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 notificationController.addNewMailNotification(account, localMessage, unreadBeforeStart);
             }

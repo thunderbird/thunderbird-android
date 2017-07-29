@@ -29,7 +29,7 @@ accounts only
 class LegacySyncInteractor {
 
     static void performSync(Account account, String folderName, MessagingListener listener,
-            MessagingController controller, MessageDownloader messageDownloader) {
+            MessagingController controller, MessageDownloader messageDownloader, SyncHelper syncHelper) {
 
         Exception commandException = null;
         LocalFolder localFolder = null;
@@ -51,14 +51,14 @@ class LegacySyncInteractor {
              * the uids within the list.
              */
             Timber.v("SYNC: About to get local folder %s", folderName);
-            localFolder = SyncUtils.getOpenedLocalFolder(account, folderName);
+            localFolder = syncHelper.getOpenedLocalFolder(account, folderName);
             localFolder.updateLastUid();
 
             Store remoteStore = account.getRemoteStore();
             Timber.v("SYNC: About to get remote folder %s", folderName);
             remoteFolder = remoteStore.getFolder(folderName);
 
-            if (!SyncUtils.verifyOrCreateRemoteSpecialFolder(account, folderName, remoteFolder, listener, controller)) {
+            if (!syncHelper.verifyOrCreateRemoteSpecialFolder(account, folderName, remoteFolder, listener, controller)) {
                 return;
             }
 

@@ -31,20 +31,22 @@ class FlagSyncHelper {
     private final MessagingController controller;
     private final Contacts contacts;
     private final NotificationController notificationController;
+    private final SyncHelper syncHelper;
 
-    public static FlagSyncHelper newInstance(Context context, MessagingController controller) {
+    public static FlagSyncHelper newInstance(Context context, MessagingController controller, SyncHelper syncHelper) {
         Context appContext = context.getApplicationContext();
         Contacts contacts = Contacts.getInstance(context);
         NotificationController notificationController = NotificationController.newInstance(appContext);
-        return new FlagSyncHelper(appContext, controller, contacts, notificationController);
+        return new FlagSyncHelper(appContext, controller, contacts, notificationController, syncHelper);
     }
 
     private FlagSyncHelper(Context context, MessagingController controller, Contacts contacts,
-            NotificationController notificationController) {
+            NotificationController notificationController, SyncHelper syncHelper) {
         this.context = context;
         this.controller = controller;
         this.contacts = contacts;
         this.notificationController = notificationController;
+        this.syncHelper = syncHelper;
     }
 
     void refreshLocalMessageFlags(final Account account, final Folder remoteFolder, final LocalFolder localFolder,
@@ -85,12 +87,12 @@ class FlagSyncHelper {
         boolean messageChanged = syncFlags(localMessage, remoteMessage);
         if (messageChanged) {
             boolean shouldBeNotifiedOf = false;
-            if (localMessage.isSet(Flag.DELETED) || SyncUtils.isMessageSuppressed(localMessage, context)) {
+            if (localMessage.isSet(Flag.DELETED) || syncHelper.isMessageSuppressed(localMessage, context)) {
                 for (MessagingListener l : controller.getListeners()) {
                     l.synchronizeMailboxRemovedMessage(account, folderName, localMessage);
                 }
             } else {
-                if (SyncUtils.shouldNotifyForMessage(account, localFolder, localMessage, contacts)) {
+                if (syncHelper.shouldNotifyForMessage(account, localFolder, localMessage, contacts)) {
                     shouldBeNotifiedOf = true;
                 }
             }

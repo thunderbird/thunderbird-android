@@ -128,6 +128,7 @@ public class MessagingController {
     private final Context context;
     private final Contacts contacts;
     private final NotificationController notificationController;
+    private final SyncHelper syncHelper;
     private final FlagSyncHelper flagSyncHelper;
     private final MessageDownloader messageDownloader;
 
@@ -165,8 +166,9 @@ public class MessagingController {
         this.notificationController = notificationController;
         this.contacts = contacts;
         this.transportProvider = transportProvider;
-        flagSyncHelper = FlagSyncHelper.newInstance(context, this);
-        messageDownloader = MessageDownloader.newInstance(context, this);
+        syncHelper = SyncHelper.getInstance();
+        flagSyncHelper = FlagSyncHelper.newInstance(context, this, syncHelper);
+        messageDownloader = MessageDownloader.newInstance(context, this, syncHelper);
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -516,7 +518,7 @@ public class MessagingController {
 
                 @Override
                 public void messageFinished(LocalMessage message, int number, int ofTotal) {
-                    if (!SyncUtils.isMessageSuppressed(message, context)) {
+                    if (!syncHelper.isMessageSuppressed(message, context)) {
                         List<LocalMessage> messages = new ArrayList<>();
 
                         messages.add(message);
@@ -754,9 +756,9 @@ public class MessagingController {
         String storeUri = account.getStoreUri();
         if (ImapStore.isStoreUriImap(storeUri)) {
             ImapSyncInteractor syncInteractor = new ImapSyncInteractor(account, folderName, listener, this);
-            syncInteractor.performSync(flagSyncHelper, messageDownloader);
+            syncInteractor.performSync(flagSyncHelper, messageDownloader, syncHelper);
         } else {
-            LegacySyncInteractor.performSync(account, folderName, listener, this, messageDownloader);
+            LegacySyncInteractor.performSync(account, folderName, listener, this, messageDownloader, syncHelper);
         }
     }
 
@@ -2827,7 +2829,7 @@ public class MessagingController {
                 Folder.FolderClass fDisplayClass = folder.getDisplayClass();
                 Folder.FolderClass fSyncClass = folder.getSyncClass();
 
-                if (SyncUtils.modeMismatch(aDisplayMode, fDisplayClass)) {
+                if (syncHelper.modeMismatch(aDisplayMode, fDisplayClass)) {
                     // Never sync a folder that isn't displayed
                     /*
                     if (K9.DEBUG) {
@@ -2839,7 +2841,7 @@ public class MessagingController {
                     continue;
                 }
 
-                if (SyncUtils.modeMismatch(aSyncMode, fSyncClass)) {
+                if (syncHelper.modeMismatch(aSyncMode, fSyncClass)) {
                     // Do not sync folders in the wrong class
                     /*
                     if (K9.DEBUG) {
@@ -3151,7 +3153,7 @@ public class MessagingController {
                 Folder.FolderClass fDisplayClass = folder.getDisplayClass();
                 Folder.FolderClass fPushClass = folder.getPushClass();
 
-                if (SyncUtils.modeMismatch(aDisplayMode, fDisplayClass)) {
+                if (syncHelper.modeMismatch(aDisplayMode, fDisplayClass)) {
                     // Never push a folder that isn't displayed
                     /*
                     if (K9.DEBUG) {
@@ -3163,7 +3165,7 @@ public class MessagingController {
                     continue;
                 }
 
-                if (SyncUtils.modeMismatch(aPushMode, fPushClass)) {
+                if (syncHelper.modeMismatch(aPushMode, fPushClass)) {
                     // Do not push folders in the wrong class
                     /*
                     if (K9.DEBUG) {

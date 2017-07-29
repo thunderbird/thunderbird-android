@@ -21,9 +21,21 @@ import com.fsck.k9.mailstore.LocalStore;
 import timber.log.Timber;
 
 
-class SyncUtils {
+class SyncHelper {
 
-    static LocalFolder getOpenedLocalFolder(Account account, String folderName) throws MessagingException{
+    private static SyncHelper INSTANCE;
+
+    private SyncHelper() {
+    }
+
+    static SyncHelper getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new SyncHelper();
+        }
+        return INSTANCE;
+    }
+
+    LocalFolder getOpenedLocalFolder(Account account, String folderName) throws MessagingException{
         final LocalStore localStore = account.getLocalStore();
         LocalFolder localFolder = localStore.getFolder(folderName);
         localFolder.open(Folder.OPEN_MODE_RW);
@@ -37,7 +49,7 @@ class SyncUtils {
      * designed and on Imap folders during error conditions. This allows us
      * to treat Pop3 and Imap the same in this code.
      */
-    static boolean verifyOrCreateRemoteSpecialFolder(Account account, String folder, Folder remoteFolder,
+    boolean verifyOrCreateRemoteSpecialFolder(Account account, String folder, Folder remoteFolder,
             MessagingListener listener, MessagingController controller) throws MessagingException {
         if (folder.equals(account.getTrashFolderName()) ||
                 folder.equals(account.getSentFolderName()) ||
@@ -56,7 +68,7 @@ class SyncUtils {
         return true;
     }
 
-    static boolean isMessageSuppressed(LocalMessage message, Context context) {
+    boolean isMessageSuppressed(LocalMessage message, Context context) {
         long messageId = message.getId();
         long folderId = message.getFolder().getId();
 
@@ -64,7 +76,7 @@ class SyncUtils {
         return cache.isMessageHidden(messageId, folderId);
     }
 
-    static boolean modeMismatch(Account.FolderMode aMode, Folder.FolderClass fMode) {
+    boolean modeMismatch(Account.FolderMode aMode, Folder.FolderClass fMode) {
         if (aMode == Account.FolderMode.NONE
                 || (aMode == Account.FolderMode.FIRST_CLASS &&
                 fMode != Folder.FolderClass.FIRST_CLASS)
@@ -79,7 +91,7 @@ class SyncUtils {
         }
     }
 
-    static void evaluateMessageForDownload(final Message message, final String folderName, final LocalFolder localFolder,
+    void evaluateMessageForDownload(final Message message, final String folderName, final LocalFolder localFolder,
             final Folder remoteFolder, final Account account, final List<Message> unsyncedMessages,
             final List< Message> syncFlagMessages, MessagingController controller) throws MessagingException {
         if (message.isSet(Flag.DELETED)) {
@@ -133,7 +145,7 @@ class SyncUtils {
         }
     }
 
-    static boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message, Contacts contacts) {
+    boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message, Contacts contacts) {
         // If we don't even have an account name, don't show the notification.
         // (This happens during initial account setup)
         if (account.getName() == null) {
@@ -151,12 +163,12 @@ class SyncUtils {
         Folder.FolderClass fDisplayClass = localFolder.getDisplayClass();
         Folder.FolderClass fNotifyClass = localFolder.getNotifyClass();
 
-        if (SyncUtils.modeMismatch(aDisplayMode, fDisplayClass)) {
+        if (modeMismatch(aDisplayMode, fDisplayClass)) {
             // Never notify a folder that isn't displayed
             return false;
         }
 
-        if (SyncUtils.modeMismatch(aNotifyMode, fNotifyClass)) {
+        if (modeMismatch(aNotifyMode, fNotifyClass)) {
             // Do not notify folders in the wrong class
             return false;
         }

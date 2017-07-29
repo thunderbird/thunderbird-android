@@ -39,7 +39,7 @@ class ImapSyncInteractor {
         this.controller = controller;
     }
 
-    void performSync(FlagSyncHelper flagSyncHelper, MessageDownloader messageDownloader) {
+    void performSync(FlagSyncHelper flagSyncHelper, MessageDownloader messageDownloader, SyncHelper syncHelper) {
         Exception commandException = null;
 
         try {
@@ -54,7 +54,7 @@ class ImapSyncInteractor {
             }
 
             Timber.v("SYNC: About to get local folder %s and open it", folderName);
-            localFolder = SyncUtils.getOpenedLocalFolder(account, folderName);
+            localFolder = syncHelper.getOpenedLocalFolder(account, folderName);
             localFolder.updateLastUid();
 
             Store remoteStore = account.getRemoteStore();
@@ -65,7 +65,7 @@ class ImapSyncInteractor {
             }
             imapFolder = (ImapFolder) remoteFolder;
 
-            if (!SyncUtils.verifyOrCreateRemoteSpecialFolder(account, folderName, imapFolder, listener, controller)) {
+            if (!syncHelper.verifyOrCreateRemoteSpecialFolder(account, folderName, imapFolder, listener, controller)) {
                 return;
             }
 
@@ -97,12 +97,13 @@ class ImapSyncInteractor {
             if (!qresyncEnabled) {
                 NonQresyncExtensionHandler handler = new NonQresyncExtensionHandler(account, localFolder, imapFolder,
                         listener, controller, this);
-                newMessages = handler.continueSync(messageDownloader, flagSyncHelper);
+                newMessages = handler.continueSync(messageDownloader, flagSyncHelper, syncHelper);
             } else {
                 Timber.v("SYNC: QRESYNC extension found and enabled for folder %s", folderName);
                 QresyncExtensionHandler handler = new QresyncExtensionHandler(account, localFolder, imapFolder,
                         listener, controller, this);
-                newMessages = handler.continueSync(qresyncParamResponse, expungedUids, messageDownloader, flagSyncHelper);
+                newMessages = handler.continueSync(qresyncParamResponse, expungedUids, messageDownloader,
+                        flagSyncHelper, syncHelper);
             }
 
             localFolder.setUidValidity(imapFolder.getUidValidity());
