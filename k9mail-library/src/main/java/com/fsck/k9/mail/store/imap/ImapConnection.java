@@ -479,17 +479,17 @@ class ImapConnection {
         String command = Commands.AUTHENTICATE_PLAIN;
         String tag = sendCommand(command, false);
 
-        readContinuationResponse(tag);
-
-        String credentials = "\000" + settings.getUsername() + "\000" + settings.getPassword();
-        byte[] encodedCredentials = Base64.encodeBase64(credentials.getBytes());
-
-        outputStream.write(encodedCredentials);
-        outputStream.write('\r');
-        outputStream.write('\n');
-        outputStream.flush();
-
         try {
+            readContinuationResponse(tag);
+
+            String credentials = "\000" + settings.getUsername() + "\000" + settings.getPassword();
+            byte[] encodedCredentials = Base64.encodeBase64(credentials.getBytes());
+
+            outputStream.write(encodedCredentials);
+            outputStream.write('\r');
+            outputStream.write('\n');
+            outputStream.flush();
+
             return responseParser.readStatusResponse(tag, command, getLogId(), null);
         } catch (NegativeImapResponseException e) {
             throw handleAuthenticationFailure(e);
@@ -833,7 +833,12 @@ class ImapConnection {
             String responseTag = response.getTag();
             if (responseTag != null) {
                 if (responseTag.equalsIgnoreCase(tag)) {
-                    throw new MessagingException("Command continuation aborted: " + response);
+                    if (response.size() < 1 || !equalsIgnoreCase(response.get(0), Responses.OK)) {
+                        String message = "Command continuation aborted: " + response.toString();
+                        throw new NegativeImapResponseException(message, Collections.singletonList(response));
+                    } else {
+                        throw new MessagingException("Command continuation aborted: " + response);
+                    }
                 } else {
                     Timber.w("After sending tag %s, got tag response from previous command %s for %s",
                             tag, response, getLogId());

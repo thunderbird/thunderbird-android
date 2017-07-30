@@ -193,6 +193,24 @@ public class ImapConnectionTest {
     }
 
     @Test
+    public void open_authPlainWithAuthenticationFailurePreContinuation_shouldFallbackToLogin() throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server, "AUTH=PLAIN");
+        server.expect("2 AUTHENTICATE PLAIN");
+        server.output("2 NO Login Failure");
+        server.expect("3 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
+        server.output("3 OK LOGIN completed");
+        postAuthenticationDialogRequestingCapabilities(server, 4);
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        imapConnection.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
     public void open_authPlainAndLoginFallbackWithAuthenticationFailure_shouldThrow() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
         MockImapServer server = new MockImapServer();
