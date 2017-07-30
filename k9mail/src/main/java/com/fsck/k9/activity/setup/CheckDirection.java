@@ -1,4 +1,4 @@
-package com.fsck.k9.activity.setup.checksettings;
+package com.fsck.k9.activity.setup;
 
 
 public enum CheckDirection {

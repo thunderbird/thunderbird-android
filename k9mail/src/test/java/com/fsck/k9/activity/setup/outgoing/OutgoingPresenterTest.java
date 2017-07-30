@@ -39,12 +39,12 @@ public class OutgoingPresenterTest {
 
         presenter = new OutgoingPresenter(view, account);
 
-        verify(view, atLeastOnce()).setSecurityType(ConnectionSecurity.SSL_TLS_REQUIRED);
-        verify(view, atLeastOnce()).setUsername("daquexian566");
-        verify(view, atLeastOnce()).setPassword("denx ajs");
-        verify(view, atLeastOnce()).setServer("mail.gmail.com");
-        verify(view, atLeastOnce()).setAuthType(AuthType.PLAIN);
-        verify(view, atLeastOnce()).setPort(DEFAULT_PORT_FOR_SSL_TLS);
+        verify(view, atLeastOnce()).setSecurityTypeInOutgoing(ConnectionSecurity.SSL_TLS_REQUIRED);
+        verify(view, atLeastOnce()).setUsernameInOutgoing("daquexian566");
+        verify(view, atLeastOnce()).setPasswordInOutgoing("denx ajs");
+        verify(view, atLeastOnce()).setServerInOutgoing("mail.gmail.com");
+        verify(view, atLeastOnce()).setAuthTypeInOutgoing(AuthType.PLAIN);
+        verify(view, atLeastOnce()).setPortInOutgoing(DEFAULT_PORT_FOR_SSL_TLS);
     }
 
     @Test
@@ -54,84 +54,84 @@ public class OutgoingPresenterTest {
 
     @Test
     public void testFields_withPassword() {
-        presenter.onInputChanged(null, "mail.abc.com", "123", "test", "password", AuthType.PLAIN,
+        presenter.onInputChangedInOutgoing(null, "mail.abc.com", "123", "test", "password", AuthType.PLAIN,
                 ConnectionSecurity.SSL_TLS_REQUIRED, true);
 
-        verify(view).setNextButtonEnabled(true);
+        verify(view).setNextButtonInOutgoingEnabled(true);
     }
 
     @Test
     public void testFields_withCertificate() {
-        presenter.onInputChanged("certificate", "mail.abc.com", "123", "test", null, AuthType.EXTERNAL,
+        presenter.onInputChangedInOutgoing("certificate", "mail.abc.com", "123", "test", null, AuthType.EXTERNAL,
                 ConnectionSecurity.SSL_TLS_REQUIRED, true);
-        verify(view).setNextButtonEnabled(true);
+        verify(view).setNextButtonInOutgoingEnabled(true);
     }
 
     @Test
     public void testFields_withNotRequiredLogin() {
-        presenter.onInputChanged(null, "mail.abc.com", "123", null, null, AuthType.PLAIN,
+        presenter.onInputChangedInOutgoing(null, "mail.abc.com", "123", null, null, AuthType.PLAIN,
                 ConnectionSecurity.SSL_TLS_REQUIRED, false);
-        verify(view).setNextButtonEnabled(true);
+        verify(view).setNextButtonInOutgoingEnabled(true);
     }
 
     @Test
     public void testFields_withInvalidPassword() {
-        presenter.onInputChanged(null, "mail.abc.com", "123", "test", "", AuthType.PLAIN,
+        presenter.onInputChangedInOutgoing(null, "mail.abc.com", "123", "test", "", AuthType.PLAIN,
                 ConnectionSecurity.SSL_TLS_REQUIRED, true);
-        verify(view).setNextButtonEnabled(false);
+        verify(view).setNextButtonInOutgoingEnabled(false);
     }
 
     @Test
     public void testFields_withIncompleteServer() {
-        presenter.onInputChanged(null, "mail.abc.", "123", "test", "password", AuthType.PLAIN,
+        presenter.onInputChangedInOutgoing(null, "mail.abc.", "123", "test", "password", AuthType.PLAIN,
                 ConnectionSecurity.SSL_TLS_REQUIRED, true);
-        verify(view).setNextButtonEnabled(false);
+        verify(view).setNextButtonInOutgoingEnabled(false);
     }
 
     @Test
     public void testFields_withInvalidPort() {
-        presenter.onInputChanged(null, "mail.abc.com", "", "test", "password", AuthType.PLAIN,
+        presenter.onInputChangedInOutgoing(null, "mail.abc.com", "", "test", "password", AuthType.PLAIN,
                 ConnectionSecurity.SSL_TLS_REQUIRED, true);
-        verify(view).setNextButtonEnabled(false);
+        verify(view).setNextButtonInOutgoingEnabled(false);
     }
 
     @Test
     public void testRevokeInvalidSettings_withCertificateChanged() {
-        presenter.onInputChanged(null, "mail.abc.com", "123", "username", "password",
+        presenter.onInputChangedInOutgoing(null, "mail.abc.com", "123", "username", "password",
                 AuthType.EXTERNAL, ConnectionSecurity.NONE, true);
 
-        verify(view).setAuthType(AuthType.PLAIN);
+        verify(view).setAuthTypeInOutgoing(AuthType.PLAIN);
     }
 
     @Test
     public void testRevokeInvalidSettings_withSecurityChanged() {
-        verify(view).setSecurityType(any(ConnectionSecurity.class));
-        presenter.onInputChanged("certificate", "mail.abc.com", "123", "username", "password",
+        verify(view).setSecurityTypeInOutgoing(any(ConnectionSecurity.class));
+        presenter.onInputChangedInOutgoing("certificate", "mail.abc.com", "123", "username", "password",
                 AuthType.EXTERNAL, ConnectionSecurity.STARTTLS_REQUIRED, true);
 
-        presenter.onInputChanged("certificate", "mail.abc.com", "123", "username", "password",
+        presenter.onInputChangedInOutgoing("certificate", "mail.abc.com", "123", "username", "password",
                 AuthType.EXTERNAL, ConnectionSecurity.NONE, true);
 
-        verify(view).setSecurityType(ConnectionSecurity.STARTTLS_REQUIRED);
+        verify(view).setSecurityTypeInOutgoing(ConnectionSecurity.STARTTLS_REQUIRED);
     }
 
     @Test
     public void testUpdatePortFromSecurity() {
-        presenter.onInputChanged("certificate", "mail.abc.com", "123", "username", "password",
+        presenter.onInputChangedInOutgoing("certificate", "mail.abc.com", "123", "username", "password",
                 AuthType.EXTERNAL, ConnectionSecurity.STARTTLS_REQUIRED, true);
 
         // any better way?
-        verify(view, atLeastOnce()).setPort(DEFAULT_PORT_FOR_STARTTLS);
+        verify(view, atLeastOnce()).setPortInOutgoing(DEFAULT_PORT_FOR_STARTTLS);
     }
 
     @Test
     public void testUpdateViewFromAuthType() {
-        presenter.onInputChanged("certificate", "mail.abc.com", "123", "username", "password",
+        presenter.onInputChangedInOutgoing("certificate", "mail.abc.com", "123", "username", "password",
                 AuthType.EXTERNAL, ConnectionSecurity.STARTTLS_REQUIRED, true);
-        verify(view).onAuthTypeIsExternal();
+        verify(view).onAuthTypeIsExternalInOutgoing();
 
-        presenter.onInputChanged("certificate", "mail.abc.com", "123", "username", "password",
+        presenter.onInputChangedInOutgoing("certificate", "mail.abc.com", "123", "username", "password",
                 AuthType.PLAIN, ConnectionSecurity.STARTTLS_REQUIRED, true);
-        verify(view).onAuthTypeIsNotExternal();
+        verify(view).onAuthTypeIsNotExternalInOutgoing();
     }
 }

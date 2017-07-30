@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.K9Activity;
-import com.fsck.k9.activity.setup.basics.BasicsView;
 import com.fsck.k9.message.html.HtmlConverter;
 
 /**
@@ -41,7 +40,7 @@ public class WelcomeMessage extends K9Activity implements OnClickListener{
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.next: {
-                AccountSetup.actionNewAccount(this);
+                AccountSetupActivity.actionNewAccount(this);
                 finish();
                 break;
             }

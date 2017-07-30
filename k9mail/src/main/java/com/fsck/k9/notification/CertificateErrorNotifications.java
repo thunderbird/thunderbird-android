@@ -9,8 +9,7 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.setup.incoming.IncomingView;
-import com.fsck.k9.activity.setup.outgoing.OutgoingView;
+import com.fsck.k9.activity.setup.AccountSetupActivity;
 
 import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
 import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_FAILURE_COLOR;
@@ -57,8 +56,8 @@ class CertificateErrorNotifications {
 
     PendingIntent createContentIntent(Context context, Account account, boolean incoming) {
         Intent editServerSettingsIntent = incoming ?
-                IncomingView.intentActionEditIncomingSettings(context, account) :
-                OutgoingView.intentActionEditOutgoingSettings(context, account);
+                AccountSetupActivity.intentActionEditIncomingSettings(context, account) :
+                AccountSetupActivity.intentActionEditOutgoingSettings(context, account);
 
         return PendingIntent.getActivity(context, account.getAccountNumber(), editServerSettingsIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

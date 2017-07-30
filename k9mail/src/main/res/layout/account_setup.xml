@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AdapterViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/view_flipper"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</AdapterViewFlipper>
+    <include android:id="@+id/account_setup_basics"
+        layout="@layout/account_setup_basics"/>
+
+    <include android:id="@+id/account_setup_autoconfiguration"
+        layout="@layout/account_setup_check_settings"/>
+
+    <include android:id="@+id/account_setup_account_type"
+        layout="@layout/account_setup_account_type"/>
+
+    <include android:id="@+id/account_setup_incoming"
+        layout="@layout/account_setup_incoming"/>
+
+    <include android:id="@+id/account_setup_outgoing"
+        layout="@layout/account_setup_outgoing"/>
+
+    <include android:id="@+id/account_setup_options"
+        layout="@layout/account_setup_options"/>
+
+    <include android:id="@+id/account_setup_names"
+        layout="@layout/account_setup_names"/>
+</ViewFlipper>

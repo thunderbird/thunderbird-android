@@ -34,6 +34,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+
+import com.fsck.k9.activity.setup.AccountSetupActivity;
 import timber.log.Timber;
 import android.util.SparseBooleanArray;
 import android.view.ContextMenu;
@@ -72,8 +74,6 @@ import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.setup.AccountSettings;
-import com.fsck.k9.activity.setup.AccountSetup;
-import com.fsck.k9.activity.setup.basics.BasicsView;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.WelcomeMessage;
 import com.fsck.k9.controller.MessagingController;
@@ -611,7 +611,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     private void onAddNewAccount() {
-        AccountSetup.actionNewAccount(this);
+        AccountSetupActivity.actionNewAccount(this);
     }
 
     private void onEditPrefs() {

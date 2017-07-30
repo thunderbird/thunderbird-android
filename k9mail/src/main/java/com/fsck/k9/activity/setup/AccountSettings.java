@@ -41,8 +41,6 @@ import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
-import com.fsck.k9.activity.setup.incoming.IncomingView;
-import com.fsck.k9.activity.setup.outgoing.OutgoingView;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Store;
@@ -889,11 +887,11 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private void onIncomingSettings() {
-        IncomingView.actionEditIncomingSettings(this, account);
+        AccountSetupActivity.actionEditIncomingSettings(this, account);
     }
 
     private void onOutgoingSettings() {
-        OutgoingView.actionEditOutgoingSettings(this, account);
+        AccountSetupActivity.actionEditOutgoingSettings(this, account);
     }
 
     public void onChooseChipColor() {

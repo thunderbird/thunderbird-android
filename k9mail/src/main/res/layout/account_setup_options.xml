@@ -5,67 +5,92 @@
     android:layout_height="fill_parent"
     android:layout_width="fill_parent">
 
-<ScrollView
-    android:layout_width="fill_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    android:layout_marginBottom="54dip"
-    android:fadingEdge="none"
-    android:padding="6dip"
-    android:scrollbarStyle="outsideInset">
-    <LinearLayout
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
-        <TextView
-            android:text="@string/account_setup_options_mail_check_frequency_label"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary"
-            />
-        <Spinner
-            android:id="@+id/account_check_frequency"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:contentDescription="@string/account_setup_options_mail_check_frequency_label" />
-        <CheckBox
-            android:id="@+id/account_enable_push"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textColor="?android:attr/textColorPrimary"
-            android:text="@string/account_setup_options_enable_push_label"
-            android:summary="@string/account_setup_options_enable_push_summary"
-           />
-        <TextView
-            android:text="@string/account_setup_options_mail_display_count_label"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorPrimary" />
-        <Spinner
-            android:id="@+id/account_display_count"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:contentDescription="@string/account_setup_options_mail_display_count_label" />
-        <CheckBox
-            android:id="@+id/account_notify"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textColor="?android:attr/textColorPrimary"
-            android:text="@string/account_setup_options_notify_label" />
-        <CheckBox
-            android:id="@+id/account_notify_sync"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textColor="?android:attr/textColorPrimary"
-
-            android:text="@string/account_setup_options_notify_sync_label" />
-        <View
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="54dip"
+        android:fadingEdge="none"
+        android:padding="6dip"
+        android:scrollbarStyle="outsideInset">
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:orientation="vertical">
+            <TextView
+                android:text="@string/account_setup_options_mail_check_frequency_label"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary"
+                />
+            <Spinner
+                android:id="@+id/account_check_frequency"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_options_mail_check_frequency_label" />
+            <CheckBox
+                android:id="@+id/account_enable_push"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textColor="?android:attr/textColorPrimary"
+                android:text="@string/account_setup_options_enable_push_label"
+                android:summary="@string/account_setup_options_enable_push_summary"
+                />
+            <TextView
+                android:text="@string/account_setup_options_mail_display_count_label"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary" />
+            <Spinner
+                android:id="@+id/account_display_count"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:contentDescription="@string/account_setup_options_mail_display_count_label" />
+            <CheckBox
+                android:id="@+id/account_notify"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textColor="?android:attr/textColorPrimary"
+                android:text="@string/account_setup_options_notify_label" />
+            <CheckBox
+                android:id="@+id/account_notify_sync"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textColor="?android:attr/textColorPrimary"
+
+                android:text="@string/account_setup_options_notify_sync_label" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </ScrollView>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/dividerHorizontal" />
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
             android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/options_next"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selectable_item_background"
+            android:text="@string/next_action" />
     </LinearLayout>
-</ScrollView>
-    <include layout="@layout/wizard_next" />
 </LinearLayout>
