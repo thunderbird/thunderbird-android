@@ -452,9 +452,22 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         updateFolderColumn("uid_validity", uidValidity);
     }
 
+    public boolean isCachedUidValidityValid() throws MessagingException {
+        return uidValidity != INVALID_UID_VALIDITY;
+    }
+
     public void setHighestModSeq(final long highestModSeq) throws MessagingException {
         this.highestModSeq = highestModSeq;
         updateFolderColumn("highest_mod_seq", highestModSeq);
+    }
+
+    public void invalidateHighestModSeq() throws MessagingException {
+        this.highestModSeq = INVALID_HIGHEST_MOD_SEQ;
+        updateFolderColumn("highest_mod_seq", null);
+    }
+
+    public boolean isCachedHighestModSeqValid() throws MessagingException {
+        return highestModSeq != INVALID_HIGHEST_MOD_SEQ;
     }
 
     public void setPushState(final String pushState) throws MessagingException {

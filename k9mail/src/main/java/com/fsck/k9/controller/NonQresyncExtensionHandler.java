@@ -47,7 +47,7 @@ class NonQresyncExtensionHandler {
         Map<String, ImapMessage> remoteUidMap = new HashMap<>();
 
         int remoteMessageCount = imapFolder.getMessageCount();
-        int remoteStart = ImapSyncInteractor.getRemoteStart(localFolder, imapFolder);
+        int remoteStart = syncHelper.getRemoteStart(localFolder, imapFolder);
 
         Timber.v("SYNC: About to fetch UIDs for messages %d through %d in folder %s",
                 remoteStart, remoteMessageCount, folderName);
@@ -55,7 +55,7 @@ class NonQresyncExtensionHandler {
         findRemoteMessagesToDownload(localUidMap, remoteMessages, remoteUidMap, remoteStart);
 
         if (account.syncRemoteDeletions()) {
-            imapSyncInteractor.syncRemoteDeletions(findDeletedMessageUids(localUidMap, remoteUidMap));
+            imapSyncInteractor.syncRemoteDeletions(findDeletedMessageUids(localUidMap, remoteUidMap), syncHelper);
         }
 
         // noinspection UnusedAssignment, free memory early?

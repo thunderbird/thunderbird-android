@@ -8,6 +8,7 @@ import java.util.List;
 import android.content.Context;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.K9;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Flag;
@@ -66,6 +67,24 @@ class SyncHelper {
             }
         }
         return true;
+    }
+
+    int getRemoteStart(LocalFolder localFolder, Folder remoteFolder) throws MessagingException {
+        int remoteMessageCount = remoteFolder.getMessageCount();
+
+        int visibleLimit = localFolder.getVisibleLimit();
+        if (visibleLimit < 0) {
+            visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
+        }
+
+        int remoteStart;
+        /* Message numbers start at 1.  */
+        if (visibleLimit > 0) {
+            remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
+        } else {
+            remoteStart = 1;
+        }
+        return remoteStart;
     }
 
     boolean isMessageSuppressed(LocalMessage message, Context context) {

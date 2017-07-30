@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.Expunge;
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
@@ -80,25 +79,13 @@ class LegacySyncInteractor {
             int remoteMessageCount = remoteFolder.getMessageCount();
             Timber.v("SYNC: Remote message count for folder %s is %d", folderName, remoteMessageCount);
 
-            int visibleLimit = localFolder.getVisibleLimit();
-            if (visibleLimit < 0) {
-                visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
-            }
-
             final List<Message> remoteMessages = new ArrayList<>();
             Map<String, Message> remoteUidMap = new HashMap<>();
 
             final Date earliestDate = account.getEarliestPollDate();
 
-            int remoteStart = 1;
+            int remoteStart = syncHelper.getRemoteStart(localFolder, remoteFolder);
             if (remoteMessageCount > 0) {
-                /* Message numbers start at 1.  */
-                if (visibleLimit > 0) {
-                    remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
-                } else {
-                    remoteStart = 1;
-                }
-
                 Timber.v("SYNC: About to get messages %d through %d for folder %s",
                         remoteStart, remoteMessageCount, folderName);
 

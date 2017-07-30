@@ -3,13 +3,13 @@ package com.fsck.k9.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.Expunge;
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
@@ -29,8 +29,8 @@ class ImapSyncInteractor {
     private final String folderName;
     private LocalFolder localFolder;
     private ImapFolder imapFolder;
-    private final  MessagingListener listener;
-    private final  MessagingController controller;
+    private final MessagingListener listener;
+    private final MessagingController controller;
 
     ImapSyncInteractor(Account account, String folderName, MessagingListener listener, MessagingController controller) {
         this.account = account;
@@ -53,26 +53,23 @@ class ImapSyncInteractor {
                 commandException = e;
             }
 
-            Timber.v("SYNC: About to get local folder %s and open it", folderName);
-            localFolder = syncHelper.getOpenedLocalFolder(account, folderName);
+            getAndOpenLocalFolder(syncHelper);
             localFolder.updateLastUid();
 
-            Store remoteStore = account.getRemoteStore();
-            Timber.v("SYNC: About to get remote folder %s", folderName);
-            Folder remoteFolder = remoteStore.getFolder(folderName);
-            if (!(remoteFolder instanceof ImapFolder)) {
-                throw new IllegalArgumentException("A non-IMAP account was provided to ImapSyncInteractor");
-            }
-            imapFolder = (ImapFolder) remoteFolder;
+            getImapFolder();
 
             if (!syncHelper.verifyOrCreateRemoteSpecialFolder(account, folderName, imapFolder, listener, controller)) {
                 return;
             }
 
-            QresyncParamResponse qresyncParamResponse;
+            QresyncParamResponse qresyncParamResponse = null;
             Timber.v("SYNC: About to open remote IMAP folder %s", folderName);
-            qresyncParamResponse = imapFolder.openUsingQresyncParam(Folder.OPEN_MODE_RW, localFolder.getUidValidity(),
-                    localFolder.getHighestModSeq());
+            if (localFolder.isCachedUidValidityValid() && localFolder.isCachedHighestModSeqValid()) {
+                qresyncParamResponse = imapFolder.openUsingQresyncParam(Folder.OPEN_MODE_RW,
+                        localFolder.getUidValidity(), localFolder.getHighestModSeq());
+            } else {
+                imapFolder.open(Folder.OPEN_MODE_RW);
+            }
 
             boolean qresyncEnabled = qresyncParamResponse != null;
             List<String> expungedUids = new ArrayList<>();
@@ -107,7 +104,7 @@ class ImapSyncInteractor {
             }
 
             localFolder.setUidValidity(imapFolder.getUidValidity());
-            updateHighestModSeqIfNecessary(localFolder, imapFolder);
+            updateHighestModSeqIfNecessary();
 
             int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : controller.getListeners()) {
@@ -177,54 +174,40 @@ class ImapSyncInteractor {
         long cachedUidValidity = localFolder.getUidValidity();
         long currentUidValidity = imapFolder.getUidValidity();
 
-        if (cachedUidValidity != 0L && cachedUidValidity != currentUidValidity) {
+        if (localFolder.isCachedUidValidityValid() && cachedUidValidity != currentUidValidity) {
 
             Timber.v("SYNC: Deleting all local messages in folder %s due to UIDVALIDITY change", localFolder);
             Set<String> localUids = localFolder.getAllMessagesAndEffectiveDates().keySet();
             List<LocalMessage> destroyedMessages = localFolder.getMessagesByUids(localUids);
 
-            localFolder.destroyMessages(localFolder.getMessagesByUids(localUids));
-            for (Message destroyMessage : destroyedMessages) {
+            localFolder.destroyMessages(destroyedMessages);
+            for (Message destroyedMessage : destroyedMessages) {
                 for (MessagingListener l : controller.getListeners(listener)) {
-                    l.synchronizeMailboxRemovedMessage(account, imapFolder.getName(), destroyMessage);
+                    l.synchronizeMailboxRemovedMessage(account, imapFolder.getName(), destroyedMessage);
                 }
             }
-            localFolder.setHighestModSeq(0);
+            localFolder.invalidateHighestModSeq();
         }
     }
 
-    static int getRemoteStart(LocalFolder localFolder, ImapFolder imapFolder) throws MessagingException {
-        int remoteMessageCount = imapFolder.getMessageCount();
+    private void updateHighestModSeqIfNecessary() throws MessagingException {
+        long cachedHighestModSeq = localFolder.getHighestModSeq();
+        long remoteHighestModSeq = imapFolder.getHighestModSeq();
 
-        int visibleLimit = localFolder.getVisibleLimit();
-        if (visibleLimit < 0) {
-            visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
+        if (!imapFolder.supportsModSeq()) {
+            localFolder.invalidateHighestModSeq();
         }
 
-        int remoteStart;
-        /* Message numbers start at 1.  */
-        if (visibleLimit > 0) {
-            remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
-        } else {
-            remoteStart = 1;
+        if (remoteHighestModSeq > cachedHighestModSeq) {
+            localFolder.setHighestModSeq(remoteHighestModSeq);
         }
-        return remoteStart;
-    }
+}
 
-    private static void updateHighestModSeqIfNecessary(final LocalFolder localFolder, final Folder remoteFolder)
-            throws MessagingException {
-        if (remoteFolder instanceof ImapFolder) {
-            ImapFolder imapFolder = (ImapFolder) remoteFolder;
-            long cachedHighestModSeq = localFolder.getHighestModSeq();
-            long remoteHighestModSeq = imapFolder.getHighestModSeq();
-            if (remoteHighestModSeq > cachedHighestModSeq) {
-                localFolder.setHighestModSeq(remoteHighestModSeq);
-            }
-        }
-    }
+    void syncRemoteDeletions(Collection<String> deletedMessageUids, SyncHelper syncHelper) throws IOException,
+            MessagingException {
+        getAndOpenLocalFolder(syncHelper);
+        getImapFolder();
 
-    void syncRemoteDeletions(List<String> deletedMessageUids) throws IOException, MessagingException {
-        String folderName = localFolder.getName();
         MoreMessages moreMessages = localFolder.getMoreMessages();
 
         Timber.v("SYNC: Deleting %d messages in the local store that are not present in the remote mailbox",
@@ -243,8 +226,27 @@ class ImapSyncInteractor {
 
         if (moreMessages != null && moreMessages == MoreMessages.UNKNOWN) {
             final Date earliestDate = account.getEarliestPollDate();
-            int remoteStart = getRemoteStart(localFolder, imapFolder);
+            int remoteStart = syncHelper.getRemoteStart(localFolder, imapFolder);
             updateMoreMessages(earliestDate, remoteStart);
+        }
+    }
+
+    private void getAndOpenLocalFolder(SyncHelper syncHelper) throws MessagingException {
+        if (localFolder == null || !localFolder.isOpen()) {
+            Timber.v("SYNC: About to get local folder %s and open it", folderName);
+            localFolder = syncHelper.getOpenedLocalFolder(account, folderName);
+        }
+    }
+
+    private void getImapFolder() throws MessagingException {
+        if (imapFolder == null || !imapFolder.isOpen()) {
+            Store remoteStore = account.getRemoteStore();
+            Timber.v("SYNC: About to get remote folder %s", folderName);
+            Folder remoteFolder = remoteStore.getFolder(folderName);
+            if (!(remoteFolder instanceof ImapFolder)) {
+                throw new IllegalArgumentException("A non-IMAP account was provided to ImapSyncInteractor");
+            }
+            imapFolder = (ImapFolder) remoteFolder;
         }
     }
 

@@ -45,7 +45,7 @@ class QresyncExtensionHandler {
         if (account.syncRemoteDeletions()) {
             List<String> deletedUids = new ArrayList<>(expungedUids);
             deletedUids.addAll(qresyncParamResponse.getExpungedUids());
-            imapSyncInteractor.syncRemoteDeletions(deletedUids);
+            imapSyncInteractor.syncRemoteDeletions(deletedUids, syncHelper);
         }
 
         for (MessagingListener l : controller.getListeners(listener)) {
@@ -57,7 +57,7 @@ class QresyncExtensionHandler {
         int newLocalMessageCount = remoteMessagesToDownload.size() + localFolder.getMessageCount();
         if (imapFolder.getMessageCount() >= localFolder.getVisibleLimit() && imapFolder.getMessageCount() >=
                 newLocalMessageCount) {
-            findOldRemoteMessagesToDownload(remoteMessagesToDownload);
+            findOldRemoteMessagesToDownload(remoteMessagesToDownload, syncHelper);
         }
 
         int messageDownloadCount = remoteMessagesToDownload.size();
@@ -108,7 +108,8 @@ class QresyncExtensionHandler {
         Timber.v("SYNC: Received %d new message UIDs in QRESYNC response", remoteMessagesToDownload.size());
     }
 
-    private void findOldRemoteMessagesToDownload(List<ImapMessage> remoteMessagesToDownload) throws MessagingException {
+    private void findOldRemoteMessagesToDownload(List<ImapMessage> remoteMessagesToDownload, SyncHelper syncHelper)
+            throws MessagingException {
         /*At ths point, UIDs and flags for new messages and existing changed messages have been fetched, so all N
           messages in the local store should correspond to the most recent N messages in the remote store. We still need
           to download historical messages (messages older than the oldest message in the inbox) if necessary till we
@@ -119,7 +120,7 @@ class QresyncExtensionHandler {
         final AtomicInteger headerProgress = new AtomicInteger(0);
 
         int newLocalMessageCount = remoteMessagesToDownload.size() + localFolder.getMessageCount();
-        int oldMessagesStart = ImapSyncInteractor.getRemoteStart(localFolder, imapFolder);
+        int oldMessagesStart = syncHelper.getRemoteStart(localFolder, imapFolder);
         int oldMessagesEnd = oldMessagesStart - 1 + localFolder.getVisibleLimit() - newLocalMessageCount;
 
         if (oldMessagesEnd > oldMessagesStart) {
