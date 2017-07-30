@@ -1058,8 +1058,14 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_remote_search_num_label">Server search limit</string>
     <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>
     <string name="remote_search_sending_query">Sending query to server</string>
-    <string name="remote_search_downloading">Fetching %d results</string>
-    <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>
+    <plurals name="remote_search_downloading">
+        <item quantity="one">Fetching %d result</item>
+        <item quantity="other">Fetching %d results</item>
+    </plurals>
+    <plurals name="remote_search_downloading_limited">
+        <item quantity="one">Fetching %1$d of %2$d results</item>
+        <item quantity="other">Fetching %1$d of %2$d results</item>
+    </plurals>
     <string name="remote_search_error">Remote search failed</string>
 
     <string name="account_settings_search">Search</string>
