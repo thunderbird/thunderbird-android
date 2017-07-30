@@ -109,7 +109,7 @@
             android:configChanges="locale"
             android:label="@string/font_size_settings_title"/>
 
-        <activity android:name=".activity.setup.AccountSetup"
+        <activity android:name=".activity.setup.AccountSetupActivity"
             android:theme="@style/Theme.K9.Material.Light"
             android:configChanges="locale"/>
 
@@ -117,11 +117,6 @@
             android:name=".activity.setup.AccountSetupComposition"
             android:configChanges="locale"
             android:label="@string/account_settings_composition_title"/>
-
-        <activity
-            android:name=".activity.setup.AccountSetupNames"
-            android:configChanges="locale"
-            android:label="@string/account_setup_names_title"/>
 
         <activity
             android:name=".activity.ChooseFolder"
