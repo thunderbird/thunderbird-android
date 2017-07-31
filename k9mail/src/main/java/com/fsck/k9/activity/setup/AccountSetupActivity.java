@@ -65,9 +65,11 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_STAGE = "stage";
     private static final String EXTRA_EDIT_SETTINGS = "edit_settings";
+    private static final String EXTRA_MAKE_DEFAULT = "make_default";
     private static final String STATE_STAGE = "state_stage";
     private static final String STATE_ACCOUNT = "state_account";
     private static final String STATE_EDIT_SETTINGS = "state_edit_settings";
+    private static final String STATE_MAKE_DEFAULT = "state_make_default";
     private static final String TAG = "Accou";
 
     private boolean canceled;
@@ -147,11 +149,13 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         stage = (Stage) intent.getSerializableExtra(EXTRA_STAGE);
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         editSettings = intent.getBooleanExtra(EXTRA_EDIT_SETTINGS, false);
+        boolean makeDefault = intent.getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
 
         if (savedInstanceState != null) {
             stage = (Stage) savedInstanceState.getSerializable(STATE_STAGE);
             accountUuid = savedInstanceState.getString(STATE_ACCOUNT, accountUuid);
             editSettings = savedInstanceState.getBoolean(STATE_EDIT_SETTINGS, editSettings);
+            makeDefault = savedInstanceState.getBoolean(STATE_MAKE_DEFAULT, makeDefault);
         }
 
         if (stage == null) {
@@ -160,6 +164,10 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
         if (accountUuid != null) {
             presenter.onGetAccountUuid(accountUuid);
+        }
+
+        if (makeDefault) {
+            presenter.onMakeDefault();
         }
 
         switch (stage) {
@@ -206,25 +214,9 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        AdapterView.OnItemSelectedListener authTypeSelectedListener = null;
-        AdapterView.OnItemSelectedListener securityTypeSelectedListener = null;
-        if (authTypeView != null) {
-            authTypeSelectedListener = authTypeView.getOnItemSelectedListener();
-            authTypeView.setOnItemSelectedListener(null);
-        }
-        if (securityTypeView != null) {
-            securityTypeSelectedListener = securityTypeView.getOnItemSelectedListener();
-            securityTypeView.setOnItemSelectedListener(null);
-        }
-
+        presenter.onRestoreStart();
         super.onRestoreInstanceState(savedInstanceState);
-
-        if (authTypeView != null) {
-            authTypeView.setOnItemSelectedListener(authTypeSelectedListener);
-        }
-        if (securityTypeView != null) {
-            securityTypeView.setOnItemSelectedListener(securityTypeSelectedListener);
-        }
+        presenter.onRestoreEnd();
     }
 
     private void basicsStart() {
@@ -671,7 +663,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     @Override
-    public void setSecurityType(ConnectionSecurity security) {
+    public void setSecurityTypeInIncoming(ConnectionSecurity security) {
         OnItemSelectedListener onItemSelectedListener = securityTypeView.getOnItemSelectedListener();
         securityTypeView.setOnItemSelectedListener(null);
         securityTypeView.setSelection(security.ordinal(), false);

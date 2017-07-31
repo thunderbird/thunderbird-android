@@ -45,7 +45,7 @@ public interface AccountSetupContract {
         void goToIncomingChecking();
         void setNextButtonInIncomingEnabled(boolean enabled);
         void setAuthType(AuthType authType);
-        void setSecurityType(ConnectionSecurity security);
+        void setSecurityTypeInIncoming(ConnectionSecurity security);
 
         void setUsernameInIncoming(String username);
         void setPasswordInIncoming(String password);
@@ -191,5 +191,8 @@ public interface AccountSetupContract {
         // ---
 
         void onGetAccountUuid(String accountUuid);
+        void onRestoreStart();
+        void onRestoreEnd();
+        void onMakeDefault();
     }
 }
