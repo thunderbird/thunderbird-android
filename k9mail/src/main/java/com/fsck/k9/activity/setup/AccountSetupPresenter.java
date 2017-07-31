@@ -59,6 +59,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     private ServerSettings incomingSettings;
     private ServerSettings outgoingSettings;
+    private boolean makeDefault;
 
     enum Stage {
         BASICS,
@@ -77,11 +78,12 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     private View view;
 
     private Account account;
-    private AccountState state;
 
     private CheckDirection currentDirection;
     private CheckDirection direction;
     private boolean editSettings;
+
+    private String password;
 
     private ConnectionSecurity currentSecurityType;
     private AuthType currentAuthType;
@@ -107,9 +109,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     private Stage stage;
 
+    private boolean restoring;
+
     public AccountSetupPresenter(View view) {
         this.view = view;
-        state = new AccountState();
     }
 
     @Override
@@ -131,10 +134,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
         account.init(email, password);
 
-        state.setAccount(account);
-        state.setEmail(email);
-        state.setPassword(password);
-
         view.goToAccountType();
     }
 
@@ -145,10 +144,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         }
         account.setEmail(email);
 
-        state.setEmail(email);
-        state.setPassword(password);
+        this.password = password;
 
-        state.setAccount(account);
         view.goToAutoConfiguration();
     }
 
@@ -188,16 +185,16 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         view.setMessage(R.string.account_setup_check_settings_retr_info_msg);
 
         EmailHelper emailHelper = new EmailHelper();
-        String domain = emailHelper.splitEmail(state.getEmail())[1];
+        String domain = emailHelper.splitEmail(account.getEmail())[1];
         Provider provider = findProviderForDomain(domain);
         if (provider == null) {
-            state.getAccount().init(state.getEmail(), state.getPassword());
+            account.init(account.getEmail(), password);
             view.goToAccountType();
             return;
         }
 
         try {
-            modifyAccount(state.getEmail(), state.getPassword(), provider);
+            modifyAccount(account.getEmail(), password, provider);
 
             checkIncomingAndOutgoing();
         } catch (URISyntaxException e) {
@@ -577,6 +574,21 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     @Override
+    public void onRestoreStart() {
+        restoring = true;
+    }
+
+    @Override
+    public void onRestoreEnd() {
+        restoring = false;
+    }
+
+    @Override
+    public void onMakeDefault() {
+        makeDefault = true;
+    }
+
+    @Override
     public void onPositiveClickedInConfirmationDialog() {
         if (stage == Stage.INCOMING_CHECKING) {
             view.goToIncoming();
@@ -851,7 +863,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
             view.setSecurityChoices(connectionSecurityChoices);
 
-            view.setSecurityType(currentSecurityType);
+            view.setSecurityTypeInIncoming(currentSecurityType);
             updateAuthPlainTextFromSecurityType(currentSecurityType);
 
             if (incomingSettings.host != null) {
@@ -863,7 +875,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                 view.setPortInIncoming(port);
                 currentPort = port;
             } else {
-                updatePortFromSecurityType(currentSecurityType);
+                updatePortFromSecurityTypeInIncoming(currentSecurityType);
             }
 
             view.setCompressionMobile(account.useCompression(NetworkType.MOBILE));
@@ -882,7 +894,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         onIncomingStart(false);
     }
 
-    private void updatePortFromSecurityType(ConnectionSecurity securityType) {
+    private void updatePortFromSecurityTypeInIncoming(ConnectionSecurity securityType) {
+        if (restoring) return;
+
         String port = String.valueOf(AccountCreator.getDefaultPort(securityType, incomingSettings.type));
         view.setPortInIncoming(port);
         currentPort = port;
@@ -900,23 +914,19 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     @Override
     public void setState(IncomingAndOutgoingState state) {
         view.setAuthType(state.getAuthType());
-        view.setSecurityType(state.getConnectionSecurity());
+        view.setSecurityTypeInIncoming(state.getConnectionSecurity());
 
         currentAuthType = state.getAuthType();
         currentSecurityType = state.getConnectionSecurity();
     }
 
-    @Override
-    public void onNamesStart() {
-        stage = Stage.ACCOUNT_NAMES;
-    }
 
     @Override
     public void onInputChangedInIncoming(String certificateAlias, String server, String port,
                                          String username, String password, AuthType authType,
                                          ConnectionSecurity connectionSecurity) {
 
-        revokeInvalidSettingsAndUpdateView(authType, connectionSecurity, port);
+        revokeInvalidSettingsAndUpdateViewInIncoming(authType, connectionSecurity, port);
         validateFieldInIncoming(certificateAlias, server, currentPort, username, password, currentAuthType,
                 currentSecurityType);
     }
@@ -963,9 +973,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         account.setSubscribedFoldersOnly(subscribedFoldersOnly);
     }
 
-    private void revokeInvalidSettingsAndUpdateView(AuthType authType,
-                                                    ConnectionSecurity connectionSecurity,
-                                                    String port) {
+    private void revokeInvalidSettingsAndUpdateViewInIncoming(AuthType authType,
+                                                              ConnectionSecurity connectionSecurity,
+                                                              String port) {
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
 
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
@@ -973,7 +983,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         if (isAuthTypeExternal && !hasConnectionSecurity) {
             view.showInvalidSettingsToast();
             view.setAuthType(currentAuthType);
-            view.setSecurityType(currentSecurityType);
+            view.setSecurityTypeInIncoming(currentSecurityType);
             view.setPortInIncoming(currentPort);
         } else {
             onAuthTypeSelected(authType);
@@ -986,14 +996,14 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     private void onSecuritySelectedInIncoming(ConnectionSecurity securityType) {
         if (securityType != currentSecurityType) {
-            setSecurityType(securityType);
+            setSecurityTypeInIncoming(securityType);
         }
     }
 
     private void setSecurityTypeInIncoming(ConnectionSecurity securityType) {
-        view.setSecurityType(securityType);
+        view.setSecurityTypeInIncoming(securityType);
 
-        updatePortFromSecurityType(securityType);
+        updatePortFromSecurityTypeInIncoming(securityType);
         updateAuthPlainTextFromSecurityType(securityType);
     }
 
@@ -1022,7 +1032,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         view.setNextButtonInIncomingEnabled(enabled);
     }
 
-    public void updateAccount() {
+    private void updateAccount() {
         boolean isPushCapable = false;
         try {
             Store store = account.getRemoteStore();
@@ -1048,10 +1058,14 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     // names
+
+    @Override
+    public void onNamesStart() {
+        stage = Stage.ACCOUNT_NAMES;
+    }
+
     @Override
     public void onNextButtonInNamesClicked(String name, String description) {
-        Account account = state.getAccount();
-
         if (Utility.requiredFieldValid(description)) {
             account.setDescription(description);
         }
@@ -1091,8 +1105,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     public void onNextButtonInOptionsClicked(boolean isNotifyViewChecked, boolean isNotifySyncViewClicked,
                                     int checkFrequencyViewSelectedValue, int displayCountViewSelectedValue,
                                     boolean isPushEnableClicked) {
-        Account account = state.getAccount();
-
         account.setDescription(account.getEmail());
         account.setNotifyNewMail(isNotifyViewChecked);
         account.setShowOngoing(isNotifySyncViewClicked);
@@ -1107,7 +1119,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
         account.save(Preferences.getPreferences(K9.app));
         if (account.equals(Preferences.getPreferences(K9.app).getDefaultAccount()) ||
-                state.isMakeDefault()) {
+                makeDefault) {
             Preferences.getPreferences(K9.app).setDefaultAccount(account);
         }
         K9.setServicesEnabled(K9.app);
@@ -1148,7 +1160,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             setAuthType(currentAuthType);
 
             currentSecurityType = outgoingSettings.connectionSecurity;
-            setSecurityType(currentSecurityType);
+            setSecurityTypeInOutgoing(currentSecurityType);
 
             if (outgoingSettings.username != null && !outgoingSettings.username.isEmpty()) {
                 view.setUsernameInOutgoing(outgoingSettings.username);
@@ -1182,15 +1194,15 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         updateViewFromAuthTypeInOutgoing(authType);
     }
 
-    private void setSecurityType(ConnectionSecurity securityType) {
+    private void setSecurityTypeInOutgoing(ConnectionSecurity securityType) {
         view.setSecurityTypeInOutgoing(securityType);
 
-        updateViewFromSecurityType(securityType);
+        updateViewFromSecurityTypeInOutgoing(securityType);
     }
 
     private void onSecuritySelectedInOutgoing(ConnectionSecurity securityType) {
         if (securityType != currentSecurityType) {
-            updateViewFromSecurityType(securityType);
+            updateViewFromSecurityTypeInOutgoing(securityType);
         }
     }
 
@@ -1292,16 +1304,12 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         }
     }
 
-    private void updateViewFromSecurityType(ConnectionSecurity securityType) {
+    private void updateViewFromSecurityTypeInOutgoing(ConnectionSecurity securityType) {
         view.updateAuthPlainTextInOutgoing(securityType == ConnectionSecurity.NONE);
 
+        if (restoring) return;
         String port = String.valueOf(AccountCreator.getDefaultPort(securityType, SMTP));
-
-        if (stage == Stage.OUTGOING) {
-            view.setPortInOutgoing(port);
-        } else {
-            view.setPortInIncoming(port);
-        }
+        view.setPortInOutgoing(port);
         currentPort = port;
     }
 
@@ -1314,8 +1322,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     // account type
-
-
     @Override
     public void onAccountTypeStart() {
         stage = Stage.ACCOUNT_TYPE;
