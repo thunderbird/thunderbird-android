@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -70,7 +69,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private static final String STATE_ACCOUNT = "state_account";
     private static final String STATE_EDIT_SETTINGS = "state_edit_settings";
     private static final String STATE_MAKE_DEFAULT = "state_make_default";
-    private static final String TAG = "Accou";
 
     private boolean canceled;
     private boolean destroyed;
@@ -83,6 +81,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private TextView serverLabelView;
     private EditText usernameView;
     private EditText passwordView;
+    @SuppressWarnings("FieldCanBeLocal")
+    private Button manualSetupButton;
     private ClientCertificateSpinner clientCertificateSpinner;
     private TextView clientCertificateLabelView;
     private TextView passwordLabelView;
@@ -102,6 +102,9 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private CheckBox subscribedFoldersOnly;
     private AuthTypeAdapter authTypeAdapter;
 
+    @SuppressWarnings("FieldCanBeLocal")
+    private MaterialProgressBar progressBar;
+
     private CheckBox requireLoginView;
     private ViewGroup requireLoginSettingsView;
 
@@ -115,10 +118,12 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     private EditText description;
     private EditText name;
+    @SuppressWarnings("FieldCanBeLocal")
     private Button doneButton;
 
     private ViewFlipper flipper;
 
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private int position;
 
     int[] layoutIds = new int[]{R.layout.account_setup_basics,
@@ -126,9 +131,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
             R.layout.account_setup_incoming, R.layout.account_setup_outgoing,
             R.layout.account_setup_options, R.layout.account_setup_names};
     private EditText emailView;
-    private Button manualSetupButton;
-
-    private MaterialProgressBar progressBar;
 
     boolean editSettings;
 
@@ -290,16 +292,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         Intent i = new Intent(context, AccountSetupActivity.class);
         context.startActivity(i);
     }
-
-    public void goToNext() {
-        setSelection(position + 1);
-    }
-
-
-    public void goToPrevious() {
-        setSelection(position - 1);
-    }
-
 
     public void goToBasics() {
         stage = Stage.BASICS;
@@ -958,7 +950,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
         };
 
-        ArrayAdapter<SpinnerOption> checkFrequenciesAdapter = new ArrayAdapter<SpinnerOption>(this,
+        ArrayAdapter<SpinnerOption> checkFrequenciesAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, checkFrequencies);
         checkFrequenciesAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -974,7 +966,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
                 new SpinnerOption(1000, getString(R.string.account_setup_options_mail_display_count_1000)),
         };
 
-        ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<SpinnerOption>(this,
+        ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, displayCounts);
         displayCountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         displayCountView.setAdapter(displayCountsAdapter);
