@@ -131,8 +131,8 @@ public class ImapSyncInteractorTest {
         verify(imapFolder).openUsingQresyncParam(OPEN_MODE_RW, CACHED_UID_VALIDITY, CACHED_HIGHEST_MOD_SEQ);
     }
     @Test
-    public void performSync_withInvalidCachedUidValidity_shouldOpenImapFolderNormally() throws Exception {
-        when(localFolder.isCachedUidValidityValid()).thenReturn(false);
+    public void performSync_withoutCachedUidValidity_shouldOpenImapFolderNormally() throws Exception {
+        when(localFolder.hasCachedUidValidity()).thenReturn(false);
 
         syncInteractor.performSync(flagSyncHelper, messageDownloader, syncHelper);
 
@@ -232,8 +232,8 @@ public class ImapSyncInteractorTest {
     }
 
     @Test
-    public void performSync_withInvalidCachedUidValidity_shouldNotDeleteAllLocallyStoredMessages() throws Exception {
-        when(localFolder.isCachedUidValidityValid()).thenReturn(false);
+    public void performSync_withoutCachedUidValidity_shouldNotDeleteAllLocallyStoredMessages() throws Exception {
+        when(localFolder.hasCachedUidValidity()).thenReturn(false);
         when(imapFolder.getUidValidity()).thenReturn(CURRENT_UID_VALIDITY);
         List<LocalMessage> localMessages = configureLocalFolderWithSingleMessage();
 
@@ -338,7 +338,7 @@ public class ImapSyncInteractorTest {
 
     private void configureLocalFolder() throws Exception {
         when(localFolder.getName()).thenReturn(FOLDER_NAME);
-        when(localFolder.isCachedUidValidityValid()).thenReturn(true);
+        when(localFolder.hasCachedUidValidity()).thenReturn(true);
         when(localFolder.getUidValidity()).thenReturn(CACHED_UID_VALIDITY);
         when(localFolder.isCachedHighestModSeqValid()).thenReturn(true);
         when(localFolder.getHighestModSeq()).thenReturn(CACHED_HIGHEST_MOD_SEQ);

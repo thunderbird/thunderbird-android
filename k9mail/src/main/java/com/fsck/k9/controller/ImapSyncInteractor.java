@@ -64,7 +64,7 @@ class ImapSyncInteractor {
 
             QresyncParamResponse qresyncParamResponse = null;
             Timber.v("SYNC: About to open remote IMAP folder %s", folderName);
-            if (localFolder.isCachedUidValidityValid() && localFolder.isCachedHighestModSeqValid()) {
+            if (localFolder.hasCachedUidValidity() && localFolder.isCachedHighestModSeqValid()) {
                 qresyncParamResponse = imapFolder.openUsingQresyncParam(Folder.OPEN_MODE_RW,
                         localFolder.getUidValidity(), localFolder.getHighestModSeq());
             } else {
@@ -174,7 +174,7 @@ class ImapSyncInteractor {
         long cachedUidValidity = localFolder.getUidValidity();
         long currentUidValidity = imapFolder.getUidValidity();
 
-        if (localFolder.isCachedUidValidityValid() && cachedUidValidity != currentUidValidity) {
+        if (localFolder.hasCachedUidValidity() && cachedUidValidity != currentUidValidity) {
 
             Timber.v("SYNC: Deleting all local messages in folder %s due to UIDVALIDITY change", localFolder);
             Set<String> localUids = localFolder.getAllMessagesAndEffectiveDates().keySet();

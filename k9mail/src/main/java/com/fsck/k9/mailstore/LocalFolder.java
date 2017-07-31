@@ -452,7 +452,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         updateFolderColumn("uid_validity", uidValidity);
     }
 
-    public boolean isCachedUidValidityValid() throws MessagingException {
+    public boolean hasCachedUidValidity() throws MessagingException {
         return uidValidity != INVALID_UID_VALIDITY;
     }
 
