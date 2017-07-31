@@ -224,10 +224,28 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                     updateAccount();
                     view.end();
                 } else {
-                    account.save(Preferences.getPreferences(K9.app));
+                    try {
+                        String password = null;
+                        String clientCertificateAlias = null;
+                        if (AuthType.EXTERNAL == incomingSettings.authenticationType) {
+                            clientCertificateAlias = incomingSettings.clientCertificateAlias;
+                        } else {
+                            password = incomingSettings.password;
+                        }
 
-                    account.setDescription(account.getEmail());
-                    K9.setServicesEnabled(K9.app);
+                        URI oldUri = new URI(account.getTransportUri());
+                        ServerSettings transportServer = new ServerSettings(Type.SMTP,
+                                oldUri.getHost(), oldUri.getPort(),
+                                ConnectionSecurity.SSL_TLS_REQUIRED, currentAuthType,
+                                incomingSettings.username, password, clientCertificateAlias);
+                        String transportUri = Transport.createTransportUri(transportServer);
+                        account.setTransportUri(transportUri);
+                    } catch (URISyntaxException use) {
+                    /*
+                     * If we can't set up the URL we just continue. It's only for
+                     * convenience.
+                     */
+                    }
 
                     view.goToOutgoing();
                 }
