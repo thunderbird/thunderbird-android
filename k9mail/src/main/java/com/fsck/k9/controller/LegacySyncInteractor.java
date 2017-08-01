@@ -11,14 +11,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.Expunge;
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.notification.NotificationController;
 import timber.log.Timber;
 
 /* This class contains code that used to be present directly in the MessagingController. It used to represent a common
@@ -27,12 +31,22 @@ accounts only
  */
 class LegacySyncInteractor {
 
-    static void performSync(Account account, String folderName, MessagingListener listener,
-            MessagingController controller, MessageDownloader messageDownloader, SyncHelper syncHelper) {
+    private final Account account;
+    private final String folderName;
+    private LocalFolder localFolder;
+    private Folder<? extends Message> remoteFolder;
+    private final MessagingListener listener;
+    private final MessagingController controller;
 
+    LegacySyncInteractor(Account account, String folderName, MessagingListener listener, MessagingController controller) {
+        this.account = account;
+        this.folderName = folderName;
+        this.listener = listener;
+        this.controller = controller;
+    }
+
+    void performSync(MessageDownloader messageDownloader, NotificationController notificationController) {
         Exception commandException = null;
-        LocalFolder localFolder = null;
-        Folder remoteFolder = null;
 
         try {
             Timber.d("SYNC: About to process pending commands for account %s", account.getDescription());
@@ -50,16 +64,40 @@ class LegacySyncInteractor {
              * the uids within the list.
              */
             Timber.v("SYNC: About to get local folder %s", folderName);
-            localFolder = syncHelper.getOpenedLocalFolder(account, folderName);
+
+            final LocalStore localStore = account.getLocalStore();
+            localFolder = localStore.getFolder(folderName);
+            localFolder.open(Folder.OPEN_MODE_RW);
             localFolder.updateLastUid();
+            Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
 
             Store remoteStore = account.getRemoteStore();
+
             Timber.v("SYNC: About to get remote folder %s", folderName);
             remoteFolder = remoteStore.getFolder(folderName);
 
-            if (!syncHelper.verifyOrCreateRemoteSpecialFolder(account, folderName, remoteFolder, listener, controller)) {
+            if (!verifyOrCreateRemoteSpecialFolder(account, folderName, remoteFolder, listener, controller)) {
                 return;
             }
+
+
+            /*
+             * Synchronization process:
+             *
+            Open the folder
+            Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
+            Get the message count
+            Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
+            getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
+            See if we have each message locally, if not fetch it's flags and envelope
+            Get and update the unread count for the folder
+            Update the remote flags of any messages we have locally with an internal date newer than the remote message.
+            Get the current flags for any messages we have locally but did not just download
+            Update local flags
+            For any message we have locally but not remotely, delete the local message to keep cache clean.
+            Download larger parts of any new messages.
+            (Optional) Download small attachments in the background.
+             */
 
             /*
              * Open the remote folder. This pre-loads certain metadata like message count.
@@ -71,26 +109,68 @@ class LegacySyncInteractor {
                 remoteFolder.expunge();
             }
 
-            Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
+            notificationController.clearAuthenticationErrorNotification(account, true);
 
             /*
              * Get the remote message count.
              */
             int remoteMessageCount = remoteFolder.getMessageCount();
-            Timber.v("SYNC: Remote message count for folder %s is %d", folderName, remoteMessageCount);
+
+            int visibleLimit = localFolder.getVisibleLimit();
+
+            if (visibleLimit < 0) {
+                visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
+            }
 
             final List<Message> remoteMessages = new ArrayList<>();
             Map<String, Message> remoteUidMap = new HashMap<>();
 
-            final Date earliestDate = account.getEarliestPollDate();
+            Timber.v("SYNC: Remote message count for folder %s is %d", folderName, remoteMessageCount);
 
-            int remoteStart = syncHelper.getRemoteStart(localFolder, remoteFolder);
+            final Date earliestDate = account.getEarliestPollDate();
+            long earliestTimestamp = earliestDate != null ? earliestDate.getTime() : 0L;
+
+
+            int remoteStart = 1;
             if (remoteMessageCount > 0) {
+                /* Message numbers start at 1.  */
+                if (visibleLimit > 0) {
+                    remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
+                } else {
+                    remoteStart = 1;
+                }
+
                 Timber.v("SYNC: About to get messages %d through %d for folder %s",
                         remoteStart, remoteMessageCount, folderName);
 
-                findRemoteMessagesToDownload(account, remoteFolder, localUidMap, remoteMessages, remoteUidMap,
-                        earliestDate, remoteStart, listener, controller);
+                final AtomicInteger headerProgress = new AtomicInteger(0);
+                for (MessagingListener l : controller.getListeners(listener)) {
+                    l.synchronizeMailboxHeadersStarted(account, folderName);
+                }
+
+
+                List<? extends Message> remoteMessageArray =
+                        remoteFolder.getMessages(remoteStart, remoteMessageCount, earliestDate, null);
+
+                int messageCount = remoteMessageArray.size();
+
+                for (Message thisMess : remoteMessageArray) {
+                    headerProgress.incrementAndGet();
+                    for (MessagingListener l : controller.getListeners(listener)) {
+                        l.synchronizeMailboxHeadersProgress(account, folderName, headerProgress.get(), messageCount);
+                    }
+                    Long localMessageTimestamp = localUidMap.get(thisMess.getUid());
+                    if (localMessageTimestamp == null || localMessageTimestamp >= earliestTimestamp) {
+                        remoteMessages.add(thisMess);
+                        remoteUidMap.put(thisMess.getUid(), thisMess);
+                    }
+                }
+
+                Timber.v("SYNC: Got %d messages for folder %s", remoteUidMap.size(), folderName);
+
+                for (MessagingListener l : controller.getListeners(listener)) {
+                    l.synchronizeMailboxHeadersFinished(account, folderName, headerProgress.get(), remoteUidMap.size());
+                }
 
             } else if (remoteMessageCount < 0) {
                 throw new Exception("Message count " + remoteMessageCount + " for folder " + folderName);
@@ -99,23 +179,41 @@ class LegacySyncInteractor {
             /*
              * Remove any messages that are in the local store but no longer on the remote store or are too old
              */
-            MoreMessages moreMessages = null;
+            MoreMessages moreMessages = localFolder.getMoreMessages();
             if (account.syncRemoteDeletions()) {
-                moreMessages = syncRemoteDeletions(account, localFolder, localUidMap, remoteUidMap, listener, controller);
-            }
+                List<String> destroyMessageUids = new ArrayList<>();
+                for (String localMessageUid : localUidMap.keySet()) {
+                    if (remoteUidMap.get(localMessageUid) == null) {
+                        destroyMessageUids.add(localMessageUid);
+                    }
+                }
 
+                List<LocalMessage> destroyMessages = localFolder.getMessagesByUids(destroyMessageUids);
+                if (!destroyMessageUids.isEmpty()) {
+                    moreMessages = MoreMessages.UNKNOWN;
+
+                    localFolder.destroyMessages(destroyMessages);
+
+                    for (Message destroyMessage : destroyMessages) {
+                        for (MessagingListener l : controller.getListeners(listener)) {
+                            l.synchronizeMailboxRemovedMessage(account, folderName, destroyMessage);
+                        }
+                    }
+                }
+            }
             // noinspection UnusedAssignment, free memory early? (better break up the method!)
             localUidMap = null;
 
-            if (moreMessages != null && moreMessages == MoreMessages.UNKNOWN) {
+            if (moreMessages == MoreMessages.UNKNOWN) {
                 updateMoreMessages(remoteFolder, localFolder, earliestDate, remoteStart);
             }
 
             /*
              * Now we download the actual content of messages.
              */
-            int newMessages =  messageDownloader.downloadMessages(account, remoteFolder, localFolder, remoteMessages,
-                    true, true);
+            int newMessages = messageDownloader.downloadMessages(account, remoteFolder, localFolder,
+                    remoteMessages, true, true);
+
             int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : controller.getListeners()) {
                 l.folderStatusChanged(account, folderName, unreadMessageCount);
@@ -164,7 +262,7 @@ class LegacySyncInteractor {
                     localFolder.setLastChecked(System.currentTimeMillis());
                 } catch (MessagingException me) {
                     Timber.e(e, "Could not set last checked on folder %s:%s",
-                            account.getDescription(), localFolder.getName());
+                            account.getDescription(), folderName);
                 }
             }
 
@@ -182,73 +280,35 @@ class LegacySyncInteractor {
         }
     }
 
-    private static void findRemoteMessagesToDownload(Account account, Folder remoteFolder, Map<String, Long> localUidMap,
-            List<Message> remoteMessages, Map<String, Message> remoteUidMap, Date earliestDate, int remoteStart,
+    /*
+     * If the folder is a "special" folder we need to see if it exists
+     * on the remote server. It if does not exist we'll try to create it. If we
+     * can't create we'll abort. This will happen on every single Pop3 folder as
+     * designed and on Imap folders during error conditions. This allows us
+     * to treat Pop3 and Imap the same in this code.
+     */
+    private boolean verifyOrCreateRemoteSpecialFolder(Account account, String folder, Folder remoteFolder,
             MessagingListener listener, MessagingController controller) throws MessagingException {
+        if (folder.equals(account.getTrashFolderName()) ||
+                folder.equals(account.getSentFolderName()) ||
+                folder.equals(account.getDraftsFolderName())) {
+            if (!remoteFolder.exists()) {
+                if (!remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
+                    for (MessagingListener l : controller.getListeners(listener)) {
+                        l.synchronizeMailboxFinished(account, folder, 0, 0);
+                    }
 
-        String folderName = remoteFolder.getName();
-        int remoteMessageCount = remoteFolder.getMessageCount();
-        long earliestTimestamp = earliestDate != null ? earliestDate.getTime() : 0L;
-        final AtomicInteger headerProgress = new AtomicInteger(0);
-
-        for (MessagingListener l : controller.getListeners(listener)) {
-            l.synchronizeMailboxHeadersStarted(account, folderName);
-        }
-
-        List<? extends Message> remoteMessageArray =
-                remoteFolder.getMessages(remoteStart, remoteMessageCount, earliestDate, null);
-
-        int messageCount = remoteMessageArray.size();
-
-        for (Message thisMess : remoteMessageArray) {
-            headerProgress.incrementAndGet();
-            for (MessagingListener l : controller.getListeners(listener)) {
-                l.synchronizeMailboxHeadersProgress(account, folderName, headerProgress.get(), messageCount);
-            }
-            Long localMessageTimestamp = localUidMap.get(thisMess.getUid());
-            if (localMessageTimestamp == null || localMessageTimestamp >= earliestTimestamp) {
-                remoteMessages.add(thisMess);
-                remoteUidMap.put(thisMess.getUid(), thisMess);
-            }
-        }
-
-        Timber.v("SYNC: Got %d messages for folder %s", remoteUidMap.size(), folderName);
-
-        for (MessagingListener l : controller.getListeners(listener)) {
-            l.synchronizeMailboxHeadersFinished(account, folderName, headerProgress.get(), remoteUidMap.size());
-        }
-    }
-
-    private static MoreMessages syncRemoteDeletions(Account account, LocalFolder localFolder,
-            Map<String, Long> localUidMap, Map<String, Message> remoteUidMap, MessagingListener listener,
-            MessagingController controller) throws MessagingException {
-
-        String folderName = localFolder.getName();
-        MoreMessages moreMessages = localFolder.getMoreMessages();
-        List<String> destroyMessageUids = new ArrayList<>();
-        for (String localMessageUid : localUidMap.keySet()) {
-            if (remoteUidMap.get(localMessageUid) == null) {
-                destroyMessageUids.add(localMessageUid);
-            }
-        }
-
-        List<LocalMessage> destroyMessages = localFolder.getMessagesByUids(destroyMessageUids);
-        if (!destroyMessageUids.isEmpty()) {
-            moreMessages = MoreMessages.UNKNOWN;
-
-            localFolder.destroyMessages(destroyMessages);
-
-            for (Message destroyMessage : destroyMessages) {
-                for (MessagingListener l : controller.getListeners(listener)) {
-                    l.synchronizeMailboxRemovedMessage(account, folderName, destroyMessage);
+                    Timber.i("Done synchronizing folder %s", folder);
+                    return false;
                 }
             }
         }
-        return moreMessages;
+        return true;
     }
 
-    private static void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate,
-            int remoteStart) throws MessagingException, IOException {
+
+    private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
+            throws MessagingException, IOException {
 
         if (remoteStart == 1) {
             localFolder.setMoreMessages(MoreMessages.FALSE);

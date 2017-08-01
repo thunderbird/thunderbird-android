@@ -16,6 +16,7 @@ import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.QresyncParamResponse;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.notification.NotificationController;
 import timber.log.Timber;
 
 
@@ -35,7 +36,8 @@ class ImapSyncInteractor {
         this.controller = controller;
     }
 
-    void performSync(FlagSyncHelper flagSyncHelper, MessageDownloader messageDownloader, SyncHelper syncHelper) {
+    void performSync(FlagSyncHelper flagSyncHelper, MessageDownloader messageDownloader,
+            NotificationController notificationController, SyncHelper syncHelper) {
         Exception commandException = null;
 
         try {
@@ -55,6 +57,8 @@ class ImapSyncInteractor {
             if (!syncHelper.verifyOrCreateRemoteSpecialFolder(account, folderName, imapFolder, listener, controller)) {
                 return;
             }
+
+            notificationController.clearAuthenticationErrorNotification(account, true);
 
             QresyncParamResponse qresyncParamResponse = null;
             Timber.v("SYNC: About to open remote IMAP folder %s", folderName);

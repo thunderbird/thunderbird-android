@@ -756,9 +756,10 @@ public class MessagingController {
         String storeUri = account.getStoreUri();
         if (ImapStore.isStoreUriImap(storeUri)) {
             ImapSyncInteractor syncInteractor = new ImapSyncInteractor(account, folderName, listener, this);
-            syncInteractor.performSync(flagSyncHelper, messageDownloader, syncHelper);
+            syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
         } else {
-            LegacySyncInteractor.performSync(account, folderName, listener, this, messageDownloader, syncHelper);
+            LegacySyncInteractor syncInteractor = new LegacySyncInteractor(account, folderName, listener, this);
+            syncInteractor.performSync(messageDownloader, notificationController);
         }
     }
 
