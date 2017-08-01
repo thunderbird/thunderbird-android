@@ -53,10 +53,8 @@ class ImapSyncInteractor {
                 commandException = e;
             }
 
-            getAndOpenLocalFolder(syncHelper);
+            initialize(syncHelper);
             localFolder.updateLastUid();
-
-            getImapFolder();
 
             if (!syncHelper.verifyOrCreateRemoteSpecialFolder(account, folderName, imapFolder, listener, controller)) {
                 return;
@@ -205,8 +203,7 @@ class ImapSyncInteractor {
 
     void syncRemoteDeletions(Collection<String> deletedMessageUids, SyncHelper syncHelper) throws IOException,
             MessagingException {
-        getAndOpenLocalFolder(syncHelper);
-        getImapFolder();
+        initialize(syncHelper);
 
         MoreMessages moreMessages = localFolder.getMoreMessages();
 
@@ -231,14 +228,12 @@ class ImapSyncInteractor {
         }
     }
 
-    private void getAndOpenLocalFolder(SyncHelper syncHelper) throws MessagingException {
+    private void initialize(SyncHelper syncHelper) throws MessagingException {
         if (localFolder == null || !localFolder.isOpen()) {
             Timber.v("SYNC: About to get local folder %s and open it", folderName);
             localFolder = syncHelper.getOpenedLocalFolder(account, folderName);
         }
-    }
 
-    private void getImapFolder() throws MessagingException {
         if (imapFolder == null || !imapFolder.isOpen()) {
             Store remoteStore = account.getRemoteStore();
             Timber.v("SYNC: About to get remote folder %s", folderName);
