@@ -24,16 +24,14 @@ class QresyncExtensionHandler {
     private final ImapFolder imapFolder;
     private final MessagingListener listener;
     private final MessagingController controller;
-    private final ImapSyncInteractor imapSyncInteractor;
 
     QresyncExtensionHandler(Account account, LocalFolder localFolder, ImapFolder imapFolder, MessagingListener listener,
-            MessagingController controller, ImapSyncInteractor imapSyncInteractor) {
+            MessagingController controller) {
         this.account = account;
         this.localFolder = localFolder;
         this.imapFolder = imapFolder;
         this.listener = listener;
         this.controller = controller;
-        this.imapSyncInteractor = imapSyncInteractor;
     }
 
     int continueSync(QresyncParamResponse qresyncParamResponse, List<String> expungedUids,
@@ -45,7 +43,7 @@ class QresyncExtensionHandler {
         if (account.syncRemoteDeletions()) {
             List<String> deletedUids = new ArrayList<>(expungedUids);
             deletedUids.addAll(qresyncParamResponse.getExpungedUids());
-            imapSyncInteractor.syncRemoteDeletions(deletedUids, syncHelper);
+            syncHelper.deleteLocalMessages(deletedUids, account, localFolder, imapFolder, controller, listener);
         }
 
         for (MessagingListener l : controller.getListeners(listener)) {

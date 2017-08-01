@@ -1,7 +1,6 @@
 package com.fsck.k9.controller;
 
 
-import java.util.Date;
 import java.util.List;
 
 import com.fsck.k9.Account;
@@ -14,7 +13,6 @@ import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.QresyncParamResponse;
 import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +20,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
-import static edu.emory.mathcs.backport.java.util.Collections.emptyList;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
@@ -243,6 +240,27 @@ public class ImapSyncInteractorTest {
     }
 
     @Test
+    public void performSync_withSyncRemoteDeletionsSetToTrue_shouldDeleteLocalCopiesIfNecessary() throws Exception {
+        when(account.syncRemoteDeletions()).thenReturn(true);
+
+        syncInteractor.performSync(flagSyncHelper, messageDownloader, syncHelper);
+
+        verify(syncHelper).deleteLocalMessages(anyCollection(), eq(account), eq(localFolder), eq(imapFolder),
+                eq(controller), eq(listener));
+    }
+
+    @Test
+    public void performSync_withSyncRemoteDeletionsSetToFalse_shouldDeleteLocalCopiesIfNecessary() throws Exception {
+        when(account.syncRemoteDeletions()).thenReturn(false);
+
+        syncInteractor.performSync(flagSyncHelper, messageDownloader, syncHelper);
+
+        verify(syncHelper, never()).deleteLocalMessages(anyCollection(), any(Account.class), any(LocalFolder.class),
+                any(Folder.class), any(MessagingController.class), any(MessagingListener.class));
+    }
+
+
+    @Test
     public void performSync_shouldUpdateCachedUidValidity() throws Exception {
         when(imapFolder.getUidValidity()).thenReturn(CURRENT_UID_VALIDITY);
 
@@ -275,65 +293,6 @@ public class ImapSyncInteractorTest {
 
         verify(localFolder).close();
         verify(imapFolder).close();
-    }
-
-    @Test
-    public void syncRemoteDeletions_withNonEmptyMessageUidList_shouldDeleteLocalCopiesOfMessages() throws Exception {
-        List<LocalMessage> localMessages = configureLocalFolderWithSingleMessage();
-
-        syncInteractor.syncRemoteDeletions(LOCAL_MESSAGE_UIDS, syncHelper);
-
-        verify(localFolder).destroyMessages(localMessages);
-    }
-
-    @Test
-    public void syncRemoteDeletions_withNonEmptyMessageUidList_shouldNotifyListeners() throws Exception {
-        List<LocalMessage> localMessages = configureLocalFolderWithSingleMessage();
-
-        syncInteractor.syncRemoteDeletions(LOCAL_MESSAGE_UIDS, syncHelper);
-
-        verify(listener).synchronizeMailboxRemovedMessage(account, FOLDER_NAME, localMessages.get(0));
-    }
-
-    @Test
-    public void syncRemoteDeletions_withNonEmptyMessageUidListAndRemoteStartAsOne_shouldNotCheckForMoreMessages()
-            throws Exception {
-        configureLocalFolderWithSingleMessage();
-        when(syncHelper.getRemoteStart(localFolder, imapFolder)).thenReturn(1);
-
-        syncInteractor.syncRemoteDeletions(LOCAL_MESSAGE_UIDS, syncHelper);
-
-        verify(imapFolder, never()).areMoreMessagesAvailable(anyInt(), any(Date.class));
-        verify(localFolder).setMoreMessages(MoreMessages.FALSE);
-    }
-
-    @Test
-    public void syncRemoteDeletions_withNonEmptyMessageUidListAndMoreMessagesAvailable_shouldSetMoreMessagesAsTrue()
-            throws Exception {
-        configureLocalFolderWithSingleMessage();
-        when(imapFolder.areMoreMessagesAvailable(anyInt(), any(Date.class))).thenReturn(true);
-
-        syncInteractor.syncRemoteDeletions(LOCAL_MESSAGE_UIDS, syncHelper);
-
-        verify(localFolder).setMoreMessages(MoreMessages.TRUE);
-    }
-
-    @Test
-    public void syncRemoteDeletions_withNonEmptyMessageUidListAndNoMoreMessagesAvailable_shouldSetMoreMessagesAsFalse()
-            throws Exception {
-        configureLocalFolderWithSingleMessage();
-        when(imapFolder.areMoreMessagesAvailable(anyInt(), any(Date.class))).thenReturn(false);
-
-        syncInteractor.syncRemoteDeletions(LOCAL_MESSAGE_UIDS, syncHelper);
-
-        verify(localFolder).setMoreMessages(MoreMessages.FALSE);
-    }
-
-    @Test
-    public void syncRemoteDeletions_withEmptyMessageUidList_shouldNotCheckForMoreMessages() throws Exception {
-        syncInteractor.syncRemoteDeletions(emptyList(), syncHelper);
-
-        verify(imapFolder, never()).areMoreMessagesAvailable(anyInt(), any(Date.class));
     }
 
     private void configureLocalFolder() throws Exception {

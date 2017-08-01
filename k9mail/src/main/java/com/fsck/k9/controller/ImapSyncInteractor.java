@@ -1,10 +1,7 @@
 package com.fsck.k9.controller;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -18,7 +15,6 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.QresyncParamResponse;
 import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
 import timber.log.Timber;
 
@@ -91,12 +87,12 @@ class ImapSyncInteractor {
             int newMessages;
             if (!qresyncEnabled) {
                 NonQresyncExtensionHandler handler = new NonQresyncExtensionHandler(account, localFolder, imapFolder,
-                        listener, controller, this);
+                        listener, controller);
                 newMessages = handler.continueSync(messageDownloader, flagSyncHelper, syncHelper);
             } else {
                 Timber.v("SYNC: QRESYNC extension found and enabled for folder %s", folderName);
                 QresyncExtensionHandler handler = new QresyncExtensionHandler(account, localFolder, imapFolder,
-                        listener, controller, this);
+                        listener, controller);
                 newMessages = handler.continueSync(qresyncParamResponse, expungedUids, messageDownloader,
                         flagSyncHelper, syncHelper);
             }
@@ -199,33 +195,6 @@ class ImapSyncInteractor {
         if (remoteHighestModSeq > cachedHighestModSeq) {
             localFolder.setHighestModSeq(remoteHighestModSeq);
         }
-}
-
-    void syncRemoteDeletions(Collection<String> deletedMessageUids, SyncHelper syncHelper) throws IOException,
-            MessagingException {
-        initialize(syncHelper);
-
-        MoreMessages moreMessages = localFolder.getMoreMessages();
-
-        Timber.v("SYNC: Deleting %d messages in the local store that are not present in the remote mailbox",
-                deletedMessageUids.size());
-        if (!deletedMessageUids.isEmpty()) {
-            moreMessages = MoreMessages.UNKNOWN;
-            List<LocalMessage> destroyMessages = localFolder.getMessagesByUids(deletedMessageUids);
-            localFolder.destroyMessages(destroyMessages);
-
-            for (Message destroyMessage : destroyMessages) {
-                for (MessagingListener l : controller.getListeners(listener)) {
-                    l.synchronizeMailboxRemovedMessage(account, folderName, destroyMessage);
-                }
-            }
-        }
-
-        if (moreMessages != null && moreMessages == MoreMessages.UNKNOWN) {
-            final Date earliestDate = account.getEarliestPollDate();
-            int remoteStart = syncHelper.getRemoteStart(localFolder, imapFolder);
-            updateMoreMessages(earliestDate, remoteStart);
-        }
     }
 
     private void initialize(SyncHelper syncHelper) throws MessagingException {
@@ -242,17 +211,6 @@ class ImapSyncInteractor {
                 throw new IllegalArgumentException("A non-IMAP account was provided to ImapSyncInteractor");
             }
             imapFolder = (ImapFolder) remoteFolder;
-        }
-    }
-
-    private void updateMoreMessages(Date earliestDate, int remoteStart) throws MessagingException, IOException {
-        if (remoteStart == 1) {
-            localFolder.setMoreMessages(MoreMessages.FALSE);
-        } else {
-            boolean moreMessagesAvailable = imapFolder.areMoreMessagesAvailable(remoteStart, earliestDate);
-
-            MoreMessages newMoreMessages = (moreMessagesAvailable) ? MoreMessages.TRUE : MoreMessages.FALSE;
-            localFolder.setMoreMessages(newMoreMessages);
         }
     }
 }

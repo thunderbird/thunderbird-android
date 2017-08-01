@@ -27,16 +27,14 @@ class NonQresyncExtensionHandler {
     private final ImapFolder imapFolder;
     private final MessagingListener listener;
     private final MessagingController controller;
-    private final ImapSyncInteractor imapSyncInteractor;
 
     NonQresyncExtensionHandler(Account account, LocalFolder localFolder, ImapFolder imapFolder,
-            MessagingListener listener, MessagingController controller, ImapSyncInteractor imapSyncInteractor) {
+            MessagingListener listener, MessagingController controller) {
         this.account = account;
         this.localFolder = localFolder;
         this.imapFolder = imapFolder;
         this.listener = listener;
         this.controller = controller;
-        this.imapSyncInteractor = imapSyncInteractor;
     }
 
     int continueSync(MessageDownloader messageDownloader, FlagSyncHelper flagSyncHelper, SyncHelper syncHelper)
@@ -55,7 +53,8 @@ class NonQresyncExtensionHandler {
         findRemoteMessagesToDownload(localUidMap, remoteMessages, remoteUidMap, remoteStart);
 
         if (account.syncRemoteDeletions()) {
-            imapSyncInteractor.syncRemoteDeletions(findDeletedMessageUids(localUidMap, remoteUidMap), syncHelper);
+            List<String> deletedUids = findDeletedMessageUids(localUidMap, remoteUidMap);
+            syncHelper.deleteLocalMessages(deletedUids, account, localFolder, imapFolder, controller, listener);
         }
 
         // noinspection UnusedAssignment, free memory early?

@@ -1,6 +1,8 @@
 package com.fsck.k9.controller;
 
 
+import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +19,7 @@ import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
+import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import timber.log.Timber;
@@ -85,6 +88,27 @@ class SyncHelper {
             remoteStart = 1;
         }
         return remoteStart;
+    }
+
+    void deleteLocalMessages(Collection<String> deletedMessageUids, Account account, LocalFolder localFolder,
+            Folder remoteFolder, MessagingController controller, MessagingListener listener) throws IOException,
+            MessagingException {
+        String folderName = localFolder.getName();
+        Timber.v("SYNC: Deleting %d messages in the local cache that are not present in the remote mailbox for folder %s",
+                deletedMessageUids.size(), folderName);
+
+        if (!deletedMessageUids.isEmpty()) {
+            List<LocalMessage> destroyMessages = localFolder.getMessagesByUids(deletedMessageUids);
+            localFolder.destroyMessages(destroyMessages);
+
+            for (Message destroyMessage : destroyMessages) {
+                for (MessagingListener l : controller.getListeners(listener)) {
+                    l.synchronizeMailboxRemovedMessage(account, folderName, destroyMessage);
+                }
+            }
+
+            updateMoreMessages(account, localFolder, remoteFolder);
+        }
     }
 
     boolean isMessageSuppressed(LocalMessage message, Context context) {
@@ -237,5 +261,20 @@ class SyncHelper {
         }
 
         return true;
+    }
+
+    private void updateMoreMessages(Account account, LocalFolder localFolder, Folder remoteFolder)
+            throws IOException, MessagingException {
+        final Date earliestDate = account.getEarliestPollDate();
+        int remoteStart = getRemoteStart(localFolder, remoteFolder);
+
+        if (remoteStart == 1) {
+            localFolder.setMoreMessages(MoreMessages.FALSE);
+        } else {
+            boolean moreMessagesAvailable = remoteFolder.areMoreMessagesAvailable(remoteStart, earliestDate);
+
+            MoreMessages newMoreMessages = (moreMessagesAvailable) ? MoreMessages.TRUE : MoreMessages.FALSE;
+            localFolder.setMoreMessages(newMoreMessages);
+        }
     }
 }
