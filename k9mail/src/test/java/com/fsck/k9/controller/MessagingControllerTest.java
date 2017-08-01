@@ -631,7 +631,7 @@ public class MessagingControllerTest {
             throws Exception {
         messageCountInRemoteFolder(1);
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(listener).synchronizeMailboxFinished(account, FOLDER_NAME, 1, 0);
     }
@@ -641,7 +641,7 @@ public class MessagingControllerTest {
             throws Exception {
         messageCountInRemoteFolder(0);
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(listener).synchronizeMailboxFinished(account, FOLDER_NAME, 0, 0);
     }
@@ -651,7 +651,7 @@ public class MessagingControllerTest {
             throws Exception {
         messageCountInRemoteFolder(-1);
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(listener).synchronizeMailboxFailed(account, FOLDER_NAME,
                 "Exception: Message count -1 for folder Folder");
@@ -661,7 +661,7 @@ public class MessagingControllerTest {
     public void synchronizeMailboxSynchronous_withRemoteFolderProvided_shouldNotOpenRemoteFolder() throws Exception {
         messageCountInRemoteFolder(1);
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(remoteFolder, never()).open(Folder.OPEN_MODE_RW);
     }
@@ -672,7 +672,7 @@ public class MessagingControllerTest {
         messageCountInRemoteFolder(1);
         configureRemoteStoreWithFolder();
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, null);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(remoteFolder).open(Folder.OPEN_MODE_RW);
     }
@@ -681,7 +681,7 @@ public class MessagingControllerTest {
     public void synchronizeMailboxSynchronous_withRemoteFolderProvided_shouldNotCloseRemoteFolder() throws Exception {
         messageCountInRemoteFolder(1);
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(remoteFolder, never()).close();
     }
@@ -692,7 +692,7 @@ public class MessagingControllerTest {
         messageCountInRemoteFolder(1);
         configureRemoteStoreWithFolder();
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, null);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(remoteFolder).close();
     }
@@ -704,7 +704,7 @@ public class MessagingControllerTest {
         when(account.getExpungePolicy()).thenReturn(Account.Expunge.EXPUNGE_ON_POLL);
         configureRemoteStoreWithFolder();
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, null);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(remoteFolder).expunge();
     }
@@ -715,7 +715,7 @@ public class MessagingControllerTest {
         messageCountInRemoteFolder(1);
         when(account.getExpungePolicy()).thenReturn(Account.Expunge.EXPUNGE_MANUALLY);
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, null);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(remoteFolder, never()).expunge();
     }
@@ -730,7 +730,7 @@ public class MessagingControllerTest {
         when(localFolder.getMessagesByUids(any(List.class)))
                 .thenReturn(Collections.singletonList(localCopyOfRemoteDeletedMessage));
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(localFolder).destroyMessages(messageListCaptor.capture());
         assertEquals(localCopyOfRemoteDeletedMessage, messageListCaptor.getValue().get(0));
@@ -747,7 +747,7 @@ public class MessagingControllerTest {
         when(localMessage.olderThan(dateOfEarliestPoll)).thenReturn(false);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessage));
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(localFolder, never()).destroyMessages(messageListCaptor.capture());
     }
@@ -764,7 +764,7 @@ public class MessagingControllerTest {
         when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
         when(localFolder.getMessagesByUids(any(List.class))).thenReturn(Collections.singletonList(localMessage));
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(localFolder).destroyMessages(messageListCaptor.capture());
         assertEquals(localMessage, messageListCaptor.getValue().get(0));
@@ -778,7 +778,7 @@ public class MessagingControllerTest {
         when(account.syncRemoteDeletions()).thenReturn(false);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(remoteDeletedMessage));
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(localFolder, never()).destroyMessages(messageListCaptor.capture());
     }
@@ -790,7 +790,7 @@ public class MessagingControllerTest {
         hasUnsyncedRemoteMessage();
         when(remoteFolder.supportsFetchingFlags()).thenReturn(true);
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(remoteFolder, atLeastOnce()).fetch(any(List.class), fetchProfileCaptor.capture(),
                 any(MessageRetrievalListener.class));
@@ -806,7 +806,7 @@ public class MessagingControllerTest {
         hasUnsyncedRemoteMessage();
         when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(remoteFolder, atLeastOnce()).fetch(any(List.class), fetchProfileCaptor.capture(),
                 any(MessageRetrievalListener.class));
@@ -823,7 +823,7 @@ public class MessagingControllerTest {
         when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
         respondToFetchEnvelopesWithMessage(smallMessage);
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         verify(remoteFolder, atLeast(2)).fetch(any(List.class), fetchProfileCaptor.capture(),
                 any(MessageRetrievalListener.class));
@@ -840,7 +840,7 @@ public class MessagingControllerTest {
         when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
         respondToFetchEnvelopesWithMessage(largeMessage);
 
-        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener, remoteFolder);
+        controller.synchronizeMailboxSynchronous(account, FOLDER_NAME, listener);
 
         //TODO: Don't bother fetching messages of a size we don't have
         verify(remoteFolder, atLeast(4)).fetch(any(List.class), fetchProfileCaptor.capture(),

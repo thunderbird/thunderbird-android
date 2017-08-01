@@ -29,17 +29,17 @@ public class MessagingControllerPushReceiver implements PushReceiver {
 
     @Override
     public void messagesFlagsChanged(Folder folder, List<Message> messages) {
-        controller.synchronizeMailbox(account, folder.getName(), null, null);
+        controller.synchronizeMailbox(account, folder.getName(), null);
     }
 
     @Override
     public void messagesArrived(Folder folder, List<Message> messages) {
-        controller.synchronizeMailbox(account, folder.getName(), null, null);
+        controller.synchronizeMailbox(account, folder.getName(), null);
     }
 
     @Override
     public void messagesRemoved(Folder folder, List<Message> messages) {
-        controller.synchronizeMailbox(account, folder.getName(), null, null);
+        controller.synchronizeMailbox(account, folder.getName(), null);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
             String message) {
                 latch.countDown();
             }
-        }, folder);
+        });
 
         Timber.v("syncFolder(%s) about to await latch release", folder.getName());
 

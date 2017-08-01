@@ -690,7 +690,7 @@ public class MessagingController {
             if (localFolder.getVisibleLimit() > 0) {
                 localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
             }
-            synchronizeMailbox(account, folder, listener, null);
+            synchronizeMailbox(account, folder, listener);
         } catch (MessagingException me) {
             addErrorMessage(account, null, me);
 
@@ -701,12 +701,11 @@ public class MessagingController {
     /**
      * Start background synchronization of the specified folder.
      */
-    public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener,
-            final Folder providedRemoteFolder) {
+    public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener) {
         putBackground("synchronizeMailbox", listener, new Runnable() {
             @Override
             public void run() {
-                synchronizeMailboxSynchronous(account, folder, listener, providedRemoteFolder);
+                synchronizeMailboxSynchronous(account, folder, listener);
             }
         });
     }
@@ -716,8 +715,8 @@ public class MessagingController {
      * by synchronizeMailbox.
      */
     @VisibleForTesting
-    void synchronizeMailboxSynchronous(final Account account, final String folderName, final MessagingListener listener,
-            Folder providedRemoteFolder) {
+    void synchronizeMailboxSynchronous(final Account account, final String folderName,
+            final MessagingListener listener) {
 
         /*
          * Synchronization process:
@@ -2914,7 +2913,7 @@ public class MessagingController {
                             }
                             showFetchingMailNotificationIfNecessary(account, folder);
                             try {
-                                synchronizeMailboxSynchronous(account, folder.getName(), listener, null);
+                                synchronizeMailboxSynchronous(account, folder.getName(), listener);
                             } finally {
                                 clearFetchingMailNotificationIfNecessary(account);
                             }
