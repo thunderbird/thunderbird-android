@@ -1,6 +1,7 @@
 package com.fsck.k9.activity.setup;
 
 
+import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -57,6 +58,9 @@ import static com.fsck.k9.mail.ServerSettings.Type.WebDAV;
 
 public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
+    private Context context;
+    private Preferences preferences;
+
     private ServerSettings incomingSettings;
     private ServerSettings outgoingSettings;
     private boolean makeDefault;
@@ -89,29 +93,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     private AuthType currentAuthType;
     private String currentPort;
 
-    /* private Type incomingType;
-    private String incomingHost;
-    private int incomingPort;
-    private ConnectionSecurity incomingSecurity;
-    private AuthType incomingAuthType;
-    private String incomingUsername;
-    private String incomingPassword;
-    private String incomingCertificateAlias;
-
-    private Type outgoingType;
-    private String outgoingHost;
-    private int outgoingPort;
-    private ConnectionSecurity outgoingSecurity;
-    private AuthType outgoingAuthType;
-    private String outgoingUsername;
-    private String outgoingPassword;
-    private String outgoingCertificateAlias;*/
-
     private Stage stage;
 
     private boolean restoring;
 
-    public AccountSetupPresenter(View view) {
+    public AccountSetupPresenter(Context context, Preferences preferences, View view) {
+        this.context = context;
+        this.preferences = preferences;
         this.view = view;
     }
 
@@ -129,7 +117,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     @Override
     public void onManualSetupButtonClicked(String email, String password) {
         if (account == null) {
-            account = Preferences.getPreferences(K9.app).newAccount();
+            account = preferences.newAccount();
         }
 
         account.init(email, password);
@@ -140,7 +128,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     @Override
     public void onNextButtonInBasicViewClicked(String email, String password) {
         if (account == null) {
-            account = Preferences.getPreferences(K9.app).newAccount();
+            account = preferences.newAccount();
         }
         account.setEmail(email);
 
@@ -165,14 +153,14 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             checkOutgoing();
         } else if (currentDirection == CheckDirection.OUTGOING){
             if (editSettings) {
-                account.save(Preferences.getPreferences(K9.app));
+                account.save(preferences);
                 view.end();
             } else {
                 view.goToOptions();
             }
         } else {
             if (editSettings) {
-                account.save(Preferences.getPreferences(K9.app));
+                account.save(preferences);
                 view.end();
             } else {
                 view.goToOutgoing();
@@ -198,7 +186,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
             checkIncomingAndOutgoing();
         } catch (URISyntaxException e) {
-            Preferences.getPreferences(K9.app).deleteAccount(account);
+            preferences.deleteAccount(account);
             view.goToAccountType();
         }
     }
@@ -263,9 +251,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                 if (!editSettings) {
                     //We've successfully checked outgoing as well.
                     account.setDescription(account.getEmail());
-                    account.save(Preferences.getPreferences(K9.app));
+                    account.save(preferences);
 
-                    K9.setServicesEnabled(K9.app);
+                    K9.setServicesEnabled(context);
 
                     view.goToOptions();
                 } else {
@@ -312,7 +300,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             if (!(account.getRemoteStore() instanceof WebDavStore)) {
                 publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
             }
-            Transport transport = TransportProvider.getInstance().getTransport(K9.app, account);
+            Transport transport = TransportProvider.getInstance().getTransport(context, account);
             transport.close();
             try {
                 transport.open();
@@ -347,8 +335,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             if (store instanceof WebDavStore) {
                 publishProgress(R.string.account_setup_check_settings_fetch);
             }
-            MessagingController.getInstance(K9.app).listFoldersSynchronous(account, true, null);
-            MessagingController.getInstance(K9.app)
+            MessagingController.getInstance(context).listFoldersSynchronous(account, true, null);
+            MessagingController.getInstance(context)
                     .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
         }
     }
@@ -417,7 +405,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         }
 
         void clearCertificateErrorNotifications(CheckDirection direction) {
-            final MessagingController ctrl = MessagingController.getInstance(K9.app);
+            final MessagingController ctrl = MessagingController.getInstance(context);
             ctrl.clearCertificateErrorNotifications(account, direction);
         }
 
@@ -449,7 +437,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     private String getDefaultAccountName() {
         String name = null;
-        Account account = Preferences.getPreferences(K9.app).getDefaultAccount();
+        Account account = preferences.getDefaultAccount();
         if (account != null) {
             name = account.getName();
         }
@@ -461,13 +449,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         if (resId == 0) {
             return xml.getAttributeValue(null, name);
         } else {
-            return K9.app.getString(resId);
+            return context.getString(resId);
         }
     }
 
     private Provider findProviderForDomain(String domain) {
         try {
-            XmlResourceParser xml = K9.app.getResources().getXml(R.xml.providers);
+            XmlResourceParser xml = context.getResources().getXml(R.xml.providers);
             int xmlEventType;
             Provider provider = null;
             while ((xmlEventType = xml.next()) != XmlResourceParser.END_DOCUMENT) {
@@ -588,7 +576,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     @Override
     public void onGetAccountUuid(String accountUuid) {
-        account = Preferences.getPreferences(K9.app).getAccount(accountUuid);
+        account = preferences.getAccount(accountUuid);
     }
 
     @Override
@@ -804,16 +792,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         try {
             incomingSettings = RemoteStore.decodeStoreUri(account.getStoreUri());
 
-            /* if (savedInstanceState == null) {
-                // The first item is selected if settings.authenticationType is null or is not in authTypeAdapter
-                currentAuthTypeViewPosition = authTypeAdapter.getAuthPosition(settings.authenticationType);
-            } else {
-                currentAuthTypeViewPosition = savedInstanceState.getInt(STATE_AUTH_TYPE_POSITION);
-            } */
-
             currentAuthType = incomingSettings.authenticationType;
 
-            view.setAuthType(currentAuthType);
+            view.setAuthTypeInIncoming(currentAuthType);
 
             updateViewFromAuthTypeInIncoming(currentAuthType);
 
@@ -856,7 +837,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                         ConnectionSecurity.NONE,
                         ConnectionSecurity.SSL_TLS_REQUIRED };
 
-                // Hide the unnecessary fields
                 view.hideViewsWhenWebDav();
                 WebDavStoreSettings webDavSettings = (WebDavStoreSettings) incomingSettings;
 
@@ -925,21 +905,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     @Override
-    public IncomingAndOutgoingState getState() {
-        return new IncomingAndOutgoingState(currentAuthType, currentSecurityType);
-    }
-
-    @Override
-    public void setState(IncomingAndOutgoingState state) {
-        view.setAuthType(state.getAuthType());
-        view.setSecurityTypeInIncoming(state.getConnectionSecurity());
-
-        currentAuthType = state.getAuthType();
-        currentSecurityType = state.getConnectionSecurity();
-    }
-
-
-    @Override
     public void onInputChangedInIncoming(String certificateAlias, String server, String port,
                                          String username, String password, AuthType authType,
                                          ConnectionSecurity connectionSecurity) {
@@ -1000,11 +965,11 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
         if (isAuthTypeExternal && !hasConnectionSecurity) {
             view.showInvalidSettingsToast();
-            view.setAuthType(currentAuthType);
+            view.setAuthTypeInIncoming(currentAuthType);
             view.setSecurityTypeInIncoming(currentSecurityType);
             view.setPortInIncoming(currentPort);
         } else {
-            onAuthTypeSelected(authType);
+            onAuthTypeSelectedInIncoming(authType);
             onSecuritySelectedInIncoming(connectionSecurity);
             currentAuthType = authType;
             currentSecurityType = connectionSecurity;
@@ -1012,10 +977,22 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         }
     }
 
+    private void onAuthTypeSelectedInIncoming(AuthType authType) {
+        if (authType != currentAuthType) {
+            setAuthTypeInIncoming(authType);
+        }
+    }
+
     private void onSecuritySelectedInIncoming(ConnectionSecurity securityType) {
         if (securityType != currentSecurityType) {
             setSecurityTypeInIncoming(securityType);
         }
+    }
+
+    private void setAuthTypeInIncoming(AuthType authType) {
+        view.setAuthTypeInIncoming(authType);
+
+        updateViewFromAuthTypeInIncoming(authType);
     }
 
     private void setSecurityTypeInIncoming(ConnectionSecurity securityType) {
@@ -1061,7 +1038,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         if (isPushCapable && account.getFolderPushMode() != FolderMode.NONE) {
             MailService.actionRestartPushers(view.getContext(), null);
         }
-        account.save(Preferences.getPreferences(K9.app));
+        account.save(preferences);
     }
 
     private void updateViewFromAuthTypeInIncoming(AuthType authType) {
@@ -1072,7 +1049,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         }
     }
     private String getString(int id) {
-        return K9.app.getString(id);
+        return context.getString(id);
     }
 
     // names
@@ -1089,7 +1066,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         }
 
         account.setName(name);
-        account.save(Preferences.getPreferences(K9.app));
+        account.save(preferences);
 
         view.goToListAccounts();
     }
@@ -1135,12 +1112,12 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             account.setFolderPushMode(Account.FolderMode.NONE);
         }
 
-        account.save(Preferences.getPreferences(K9.app));
-        if (account.equals(Preferences.getPreferences(K9.app).getDefaultAccount()) ||
+        account.save(preferences);
+        if (account.equals(preferences.getDefaultAccount()) ||
                 makeDefault) {
-            Preferences.getPreferences(K9.app).setDefaultAccount(account);
+            preferences.setDefaultAccount(account);
         }
-        K9.setServicesEnabled(K9.app);
+        K9.setServicesEnabled(context);
 
         view.goToAccountNames();
     }
@@ -1175,7 +1152,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             outgoingSettings = Transport.decodeTransportUri(account.getTransportUri());
 
             currentAuthType = outgoingSettings.authenticationType;
-            setAuthType(currentAuthType);
+            setAuthTypeInOutgoing(currentAuthType);
 
             currentSecurityType = outgoingSettings.connectionSecurity;
             setSecurityTypeInOutgoing(currentSecurityType);
@@ -1206,7 +1183,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
 
-    private void setAuthType(AuthType authType) {
+    private void setAuthTypeInOutgoing(AuthType authType) {
         view.setAuthTypeInOutgoing(authType);
 
         updateViewFromAuthTypeInOutgoing(authType);
@@ -1224,9 +1201,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         }
     }
 
-    private void onAuthTypeSelected(AuthType authType) {
+    private void onAuthTypeSelectedInOutgoing(AuthType authType) {
         if (authType != currentAuthType) {
-            setAuthType(authType);
+            setAuthTypeInOutgoing(authType);
         }
     }
 
@@ -1314,7 +1291,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             view.setSecurityTypeInOutgoing(currentSecurityType);
             view.setPortInOutgoing(currentPort);
         } else {
-            onAuthTypeSelected(authType);
+            onAuthTypeSelectedInOutgoing(authType);
             onSecuritySelectedInOutgoing(connectionSecurity);
             currentAuthType = authType;
             currentSecurityType = connectionSecurity;
