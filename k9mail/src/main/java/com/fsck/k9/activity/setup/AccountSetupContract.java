@@ -15,7 +15,7 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings.Type;
 
 
-public interface AccountSetupContract {
+interface AccountSetupContract {
     interface View {
         // account type
         void goToIncomingSettings();
@@ -44,7 +44,7 @@ public interface AccountSetupContract {
 
         void goToIncomingChecking();
         void setNextButtonInIncomingEnabled(boolean enabled);
-        void setAuthType(AuthType authType);
+        void setAuthTypeInIncoming(AuthType authType);
         void setSecurityTypeInIncoming(ConnectionSecurity security);
 
         void setUsernameInIncoming(String username);
@@ -159,9 +159,6 @@ public interface AccountSetupContract {
                 String webdavMailboxPath, String host, int port, ConnectionSecurity connectionSecurity,
                 AuthType authType, boolean compressMobile, boolean compressWifi, boolean compressOther,
                 boolean subscribedFoldersOnly);
-
-        IncomingAndOutgoingState getState();
-        void setState(IncomingAndOutgoingState state);
 
         /* --names--*/
         void onNamesStart();

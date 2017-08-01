@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.setup.AccountSetupPresenter.Stage;
@@ -144,7 +145,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
         flipper = (ViewFlipper) findViewById(R.id.view_flipper);
 
-        presenter = new AccountSetupPresenter(this);
+        Preferences preferences = Preferences.getPreferences(this);
+        presenter = new AccountSetupPresenter(this, preferences, this);
 
         Intent intent = getIntent();
 
@@ -276,6 +278,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         findViewById(R.id.pop).setOnClickListener(this);
         findViewById(R.id.imap).setOnClickListener(this);
         findViewById(R.id.webdav).setOnClickListener(this);
+
+        presenter.onAccountTypeStart();
     }
 
     private int getPositionFromLayoutId(@LayoutRes int layoutId) {
@@ -647,7 +651,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     };
 
     @Override
-    public void setAuthType(AuthType authType) {
+    public void setAuthTypeInIncoming(AuthType authType) {
         OnItemSelectedListener onItemSelectedListener = authTypeView.getOnItemSelectedListener();
         authTypeView.setOnItemSelectedListener(null);
         authTypeView.setSelection(authTypeAdapter.getAuthPosition(authType), false);
