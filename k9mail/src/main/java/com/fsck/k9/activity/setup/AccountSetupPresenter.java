@@ -85,13 +85,18 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     private CheckDirection currentDirection;
     private CheckDirection direction;
+
     private boolean editSettings;
 
     private String password;
 
-    private ConnectionSecurity currentSecurityType;
-    private AuthType currentAuthType;
-    private String currentPort;
+    private ConnectionSecurity currentIncomingSecurityType;
+    private AuthType currentIncomingAuthType;
+    private String currentIncomingPort;
+
+    private ConnectionSecurity currentOutgoingSecurityType;
+    private AuthType currentOutgoingAuthType;
+    private String currentOutgoingPort;
 
     private Stage stage;
 
@@ -101,6 +106,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         this.context = context;
         this.preferences = preferences;
         this.view = view;
+    }
+
+    // region basics
+
+    @Override
+    public void onBasicsStart() {
+        stage = Stage.BASICS;
     }
 
     @Override
@@ -137,15 +149,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         view.goToAutoConfiguration();
     }
 
-    @Override
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+    // endregion basics
 
-    @Override
-    public Account getAccount() {
-        return account;
-    }
+    // region checking
 
     @Override
     public void onNegativeClickedInConfirmationDialog() {
@@ -224,7 +230,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                         URI oldUri = new URI(account.getTransportUri());
                         ServerSettings transportServer = new ServerSettings(Type.SMTP,
                                 oldUri.getHost(), oldUri.getPort(),
-                                ConnectionSecurity.SSL_TLS_REQUIRED, currentAuthType,
+                                ConnectionSecurity.SSL_TLS_REQUIRED, currentIncomingAuthType,
                                 incomingSettings.username, password, clientCertificateAlias);
                         String transportUri = Transport.createTransportUri(transportServer);
                         account.setTransportUri(transportUri);
@@ -575,26 +581,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     @Override
-    public void onGetAccountUuid(String accountUuid) {
-        account = preferences.getAccount(accountUuid);
-    }
-
-    @Override
-    public void onRestoreStart() {
-        restoring = true;
-    }
-
-    @Override
-    public void onRestoreEnd() {
-        restoring = false;
-    }
-
-    @Override
-    public void onMakeDefault() {
-        makeDefault = true;
-    }
-
-    @Override
     public void onPositiveClickedInConfirmationDialog() {
         if (stage == Stage.INCOMING_CHECKING) {
             view.goToIncoming();
@@ -781,7 +767,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         void onCheckSuccess();
     }
 
-    // incoming
+    // endregion checking
+
+    // region incoming
 
     @Override
     public void onIncomingStart(boolean editSettings) {
@@ -792,13 +780,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         try {
             incomingSettings = RemoteStore.decodeStoreUri(account.getStoreUri());
 
-            currentAuthType = incomingSettings.authenticationType;
+            currentIncomingAuthType = incomingSettings.authenticationType;
 
-            view.setAuthTypeInIncoming(currentAuthType);
+            view.setAuthTypeInIncoming(currentIncomingAuthType);
 
-            updateViewFromAuthTypeInIncoming(currentAuthType);
+            updateViewFromAuthTypeInIncoming(currentIncomingAuthType);
 
-            currentSecurityType = incomingSettings.connectionSecurity;
+            currentIncomingSecurityType = incomingSettings.connectionSecurity;
 
             if (incomingSettings.username != null) {
                 view.setUsernameInIncoming(incomingSettings.username);
@@ -861,8 +849,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
             view.setSecurityChoices(connectionSecurityChoices);
 
-            view.setSecurityTypeInIncoming(currentSecurityType);
-            updateAuthPlainTextFromSecurityType(currentSecurityType);
+            view.setSecurityTypeInIncoming(currentIncomingSecurityType);
+            updateAuthPlainTextFromSecurityType(currentIncomingSecurityType);
 
             if (incomingSettings.host != null) {
                 view.setServerInIncoming(incomingSettings.host);
@@ -871,9 +859,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             if (incomingSettings.port != -1) {
                 String port = String.valueOf(incomingSettings.port);
                 view.setPortInIncoming(port);
-                currentPort = port;
+                currentIncomingPort = port;
             } else {
-                updatePortFromSecurityTypeInIncoming(currentSecurityType);
+                updatePortFromSecurityTypeInIncoming(currentIncomingSecurityType);
             }
 
             view.setCompressionMobile(account.useCompression(NetworkType.MOBILE));
@@ -897,7 +885,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
         String port = String.valueOf(AccountCreator.getDefaultPort(securityType, incomingSettings.type));
         view.setPortInIncoming(port);
-        currentPort = port;
+        currentIncomingPort = port;
     }
 
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
@@ -910,8 +898,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                                          ConnectionSecurity connectionSecurity) {
 
         revokeInvalidSettingsAndUpdateViewInIncoming(authType, connectionSecurity, port);
-        validateFieldInIncoming(certificateAlias, server, currentPort, username, password, currentAuthType,
-                currentSecurityType);
+        validateFieldInIncoming(certificateAlias, server, currentIncomingPort, username, password, currentIncomingAuthType,
+                currentIncomingSecurityType);
     }
 
     @Override
@@ -965,26 +953,28 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
         if (isAuthTypeExternal && !hasConnectionSecurity) {
             view.showInvalidSettingsToast();
-            view.setAuthTypeInIncoming(currentAuthType);
-            view.setSecurityTypeInIncoming(currentSecurityType);
-            view.setPortInIncoming(currentPort);
+            view.setAuthTypeInIncoming(currentIncomingAuthType);
+            view.setSecurityTypeInIncoming(currentIncomingSecurityType);
+            view.setPortInIncoming(currentIncomingPort);
         } else {
+            currentIncomingPort = port;
+
             onAuthTypeSelectedInIncoming(authType);
             onSecuritySelectedInIncoming(connectionSecurity);
-            currentAuthType = authType;
-            currentSecurityType = connectionSecurity;
-            currentPort = port;
+
+            currentIncomingAuthType = authType;
+            currentIncomingSecurityType = connectionSecurity;
         }
     }
 
     private void onAuthTypeSelectedInIncoming(AuthType authType) {
-        if (authType != currentAuthType) {
+        if (authType != currentIncomingAuthType) {
             setAuthTypeInIncoming(authType);
         }
     }
 
     private void onSecuritySelectedInIncoming(ConnectionSecurity securityType) {
-        if (securityType != currentSecurityType) {
+        if (securityType != currentIncomingSecurityType) {
             setSecurityTypeInIncoming(securityType);
         }
     }
@@ -1052,7 +1042,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         return context.getString(id);
     }
 
-    // names
+    // endregion incoming
+
+    // region names
 
     @Override
     public void onNamesStart() {
@@ -1070,6 +1062,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
         view.goToListAccounts();
     }
+
+    // endregion names
+
+    // region options
 
     @Override
     public void onOptionsStart() {
@@ -1095,7 +1091,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         }
     }
 
-    // options
     @Override
     public void onNextButtonInOptionsClicked(boolean isNotifyViewChecked, boolean isNotifySyncViewClicked,
                                     int checkFrequencyViewSelectedValue, int displayCountViewSelectedValue,
@@ -1122,8 +1117,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         view.goToAccountNames();
     }
 
+    // endregion options
 
-    // outgoing
+    // region outgoing
     @Override
     public void onOutgoingStart() {
         onOutgoingStart(false);
@@ -1151,11 +1147,11 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         try {
             outgoingSettings = Transport.decodeTransportUri(account.getTransportUri());
 
-            currentAuthType = outgoingSettings.authenticationType;
-            setAuthTypeInOutgoing(currentAuthType);
+            currentOutgoingAuthType = outgoingSettings.authenticationType;
+            setAuthTypeInOutgoing(currentOutgoingAuthType);
 
-            currentSecurityType = outgoingSettings.connectionSecurity;
-            setSecurityTypeInOutgoing(currentSecurityType);
+            currentOutgoingSecurityType = outgoingSettings.connectionSecurity;
+            setSecurityTypeInOutgoing(currentOutgoingSecurityType);
 
             if (outgoingSettings.username != null && !outgoingSettings.username.isEmpty()) {
                 view.setUsernameInOutgoing(outgoingSettings.username);
@@ -1174,8 +1170,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             }
 
             if (outgoingSettings.port != -1) {
-                currentPort = String.valueOf(outgoingSettings.port);
-                view.setPortInOutgoing(currentPort);
+                currentOutgoingPort = String.valueOf(outgoingSettings.port);
+                view.setPortInOutgoing(currentOutgoingPort);
             }
         } catch (Exception e) {
             view.showFailureToast(e);
@@ -1196,13 +1192,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     private void onSecuritySelectedInOutgoing(ConnectionSecurity securityType) {
-        if (securityType != currentSecurityType) {
+        if (securityType != currentOutgoingSecurityType) {
             updateViewFromSecurityTypeInOutgoing(securityType);
         }
     }
 
     private void onAuthTypeSelectedInOutgoing(AuthType authType) {
-        if (authType != currentAuthType) {
+        if (authType != currentOutgoingAuthType) {
             setAuthTypeInOutgoing(authType);
         }
     }
@@ -1233,7 +1229,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                                          String password, AuthType authType,
                                          ConnectionSecurity connectionSecurity, boolean requireLogin) {
 
-        if (currentSecurityType != connectionSecurity) {
+        if (currentOutgoingSecurityType != connectionSecurity) {
             boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
 
             boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
@@ -1246,8 +1242,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         }
 
         revokeInvalidSettingsAndUpdateViewInOutgoing(authType, connectionSecurity, port);
-        validateFieldInOutgoing(certificateAlias, server, currentPort, username, password, currentAuthType,
-                currentSecurityType, requireLogin);
+        validateFieldInOutgoing(certificateAlias, server, currentOutgoingPort, username, password, currentOutgoingAuthType,
+                currentOutgoingSecurityType, requireLogin);
     }
 
     private void validateFieldInOutgoing(String certificateAlias, String server, String port,
@@ -1287,15 +1283,17 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
         if (isAuthTypeExternal && !hasConnectionSecurity) {
             view.showInvalidSettingsToastInOutgoing();
-            view.setAuthTypeInOutgoing(currentAuthType);
-            view.setSecurityTypeInOutgoing(currentSecurityType);
-            view.setPortInOutgoing(currentPort);
+            view.setAuthTypeInOutgoing(currentOutgoingAuthType);
+            view.setSecurityTypeInOutgoing(currentOutgoingSecurityType);
+            view.setPortInOutgoing(currentOutgoingPort);
         } else {
+            currentOutgoingPort = port;
+
             onAuthTypeSelectedInOutgoing(authType);
             onSecuritySelectedInOutgoing(connectionSecurity);
-            currentAuthType = authType;
-            currentSecurityType = connectionSecurity;
-            currentPort = port;
+
+            currentOutgoingAuthType = authType;
+            currentOutgoingSecurityType = connectionSecurity;
         }
     }
 
@@ -1305,7 +1303,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         if (restoring) return;
         String port = String.valueOf(AccountCreator.getDefaultPort(securityType, SMTP));
         view.setPortInOutgoing(port);
-        currentPort = port;
+        currentOutgoingPort = port;
     }
 
     private void updateViewFromAuthTypeInOutgoing(AuthType authType) {
@@ -1316,7 +1314,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         }
     }
 
-    // account type
+    // endregion outgoing
+
+    // region account type
     @Override
     public void onAccountTypeStart() {
         stage = Stage.ACCOUNT_TYPE;
@@ -1373,13 +1373,139 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         view.goToIncomingSettings();
     }
 
+    // endregion account type
+
     @Override
-    public void onBasicsStart() {
-        stage = Stage.BASICS;
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    @Override
+    public Account getAccount() {
+        return account;
     }
 
     public boolean isEditSettings() {
         return editSettings;
     }
 
+    @Override
+    public void onGetAccountUuid(String accountUuid) {
+        account = preferences.getAccount(accountUuid);
+    }
+
+    @Override
+    public void onRestoreStart() {
+        restoring = true;
+    }
+
+    @Override
+    public void onRestoreEnd() {
+        restoring = false;
+    }
+
+    @Override
+    public AccountSetupStatus getStatus() {
+        return new AccountSetupStatus(currentIncomingSecurityType, currentIncomingAuthType,
+                currentIncomingPort, currentOutgoingSecurityType, currentOutgoingAuthType,
+                currentOutgoingPort, account.isNotifyNewMail(), account.isShowOngoing(),
+                account.getAutomaticCheckIntervalMinutes(), account.getDisplayCount(), account.getFolderPushMode(),
+                account.getName(), account.getDescription());
+    }
+
+    @Override
+    public void onMakeDefault() {
+        makeDefault = true;
+    }
+
+    static class AccountSetupStatus {
+        private ConnectionSecurity incomingSecurityType;
+        private AuthType incomingAuthType;
+        private String incomingPort;
+
+        private ConnectionSecurity outgoingSecurityType;
+        private AuthType outgoingAuthType;
+        private String outgoingPort;
+
+        private boolean notifyNewMail;
+        private boolean showOngoing;
+        private int automaticCheckIntervalMinutes;
+        private int displayCount;
+        private Account.FolderMode folderPushMode;
+
+        private String name;
+        private String description;
+
+        AccountSetupStatus(ConnectionSecurity incomingSecurityType, AuthType incomingAuthType,
+                String incomingPort, ConnectionSecurity outgoingSecurityType, AuthType outgoingAuthType,
+                String outgoingPort, boolean notifyNewMail, boolean showOngoing, int automaticCheckIntervalMinutes,
+                int displayCount, Account.FolderMode folderPushMode,
+                String name, String description) {
+            this.incomingSecurityType = incomingSecurityType;
+            this.incomingAuthType = incomingAuthType;
+            this.incomingPort = incomingPort;
+            this.outgoingSecurityType = outgoingSecurityType;
+            this.outgoingAuthType = outgoingAuthType;
+            this.outgoingPort = outgoingPort;
+            this.notifyNewMail = notifyNewMail;
+            this.showOngoing = showOngoing;
+            this.automaticCheckIntervalMinutes = automaticCheckIntervalMinutes;
+            this.displayCount = displayCount;
+            this.folderPushMode = folderPushMode;
+            this.name = name;
+            this.description = description;
+        }
+
+        public ConnectionSecurity getIncomingSecurityType() {
+            return incomingSecurityType;
+        }
+
+        public AuthType getIncomingAuthType() {
+            return incomingAuthType;
+        }
+
+        public String getIncomingPort() {
+            return incomingPort;
+        }
+
+        public ConnectionSecurity getOutgoingSecurityType() {
+            return outgoingSecurityType;
+        }
+
+        public AuthType getOutgoingAuthType() {
+            return outgoingAuthType;
+        }
+
+        public String getOutgoingPort() {
+            return outgoingPort;
+        }
+
+        public boolean isNotifyNewMail() {
+            return notifyNewMail;
+        }
+
+        public boolean isShowOngoing() {
+            return showOngoing;
+        }
+
+        public int getAutomaticCheckIntervalMinutes() {
+            return automaticCheckIntervalMinutes;
+        }
+
+        public int getDisplayCount() {
+            return displayCount;
+        }
+
+        public FolderMode getFolderPushMode() {
+            return folderPushMode;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
 }

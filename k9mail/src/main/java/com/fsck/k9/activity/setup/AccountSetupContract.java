@@ -191,5 +191,7 @@ interface AccountSetupContract {
         void onRestoreStart();
         void onRestoreEnd();
         void onMakeDefault();
+
+        AccountSetupPresenter.AccountSetupStatus getStatus();
     }
 }
