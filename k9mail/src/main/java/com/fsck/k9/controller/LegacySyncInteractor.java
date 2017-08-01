@@ -46,6 +46,10 @@ class LegacySyncInteractor {
     }
 
     void performSync(MessageDownloader messageDownloader, NotificationController notificationController) {
+        for (MessagingListener l : controller.getListeners(listener)) {
+            l.synchronizeMailboxStarted(account, folderName);
+        }
+
         Exception commandException = null;
 
         try {

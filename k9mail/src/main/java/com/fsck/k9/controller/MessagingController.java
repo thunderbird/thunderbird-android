@@ -739,15 +739,12 @@ public class MessagingController {
 
         Timber.i("Synchronizing folder %s:%s", account.getDescription(), folderName);
 
-        for (MessagingListener l : getListeners(listener)) {
-            l.synchronizeMailboxStarted(account, folderName);
-        }
-
         /*
          * We don't ever sync the Outbox or errors folder
          */
         if (folderName.equals(account.getOutboxFolderName()) || folderName.equals(account.getErrorFolderName())) {
             for (MessagingListener l : getListeners(listener)) {
+                l.synchronizeMailboxStarted(account, folderName);
                 l.synchronizeMailboxFinished(account, folderName, 0, 0);
             }
             return;

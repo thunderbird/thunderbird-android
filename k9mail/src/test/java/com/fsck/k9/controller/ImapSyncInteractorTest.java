@@ -14,6 +14,7 @@ import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.QresyncParamResponse;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.notification.NotificationController;
 import org.junit.Before;
 import org.junit.Test;
@@ -75,13 +76,17 @@ public class ImapSyncInteractorTest {
         configureLocalFolder();
         configureRemoteFolder();
 
-        when(syncHelper.verifyOrCreateRemoteSpecialFolder(account, FOLDER_NAME, imapFolder, listener, controller))
-                .thenReturn(true);
-        when(syncHelper.getOpenedLocalFolder(account, FOLDER_NAME)).thenReturn(localFolder);
-        when(controller.getListeners(listener)).thenReturn(singleton(listener));
+        LocalStore localStore = mock(LocalStore.class);
+        when(account.getLocalStore()).thenReturn(localStore);
+        when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
+
         Store remoteStore = mock(RemoteStore.class);
         when(account.getRemoteStore()).thenReturn(remoteStore);
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn((Folder) imapFolder);
+
+        when(syncHelper.verifyOrCreateRemoteSpecialFolder(account, FOLDER_NAME, imapFolder, listener, controller))
+                .thenReturn(true);
+        when(controller.getListeners(listener)).thenReturn(singleton(listener));
 
         syncInteractor = new ImapSyncInteractor(account, FOLDER_NAME, listener, controller);
     }

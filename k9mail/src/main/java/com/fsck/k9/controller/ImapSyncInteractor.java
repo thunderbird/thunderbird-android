@@ -16,6 +16,7 @@ import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.QresyncParamResponse;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.notification.NotificationController;
 import timber.log.Timber;
 
@@ -38,6 +39,10 @@ class ImapSyncInteractor {
 
     void performSync(FlagSyncHelper flagSyncHelper, MessageDownloader messageDownloader,
             NotificationController notificationController, SyncHelper syncHelper) {
+        for (MessagingListener l : controller.getListeners(listener)) {
+            l.synchronizeMailboxStarted(account, folderName);
+        }
+
         Exception commandException = null;
 
         try {
@@ -51,7 +56,7 @@ class ImapSyncInteractor {
                 commandException = e;
             }
 
-            initialize(syncHelper);
+            initialize();
             localFolder.updateLastUid();
 
             if (!syncHelper.verifyOrCreateRemoteSpecialFolder(account, folderName, imapFolder, listener, controller)) {
@@ -201,10 +206,12 @@ class ImapSyncInteractor {
         }
     }
 
-    private void initialize(SyncHelper syncHelper) throws MessagingException {
+    private void initialize() throws MessagingException {
         if (localFolder == null || !localFolder.isOpen()) {
             Timber.v("SYNC: About to get local folder %s and open it", folderName);
-            localFolder = syncHelper.getOpenedLocalFolder(account, folderName);
+            final LocalStore localStore = account.getLocalStore();
+            localFolder = localStore.getFolder(folderName);
+            localFolder.open(Folder.OPEN_MODE_RW);
         }
 
         if (imapFolder == null || !imapFolder.isOpen()) {

@@ -21,7 +21,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.mailstore.LocalStore;
 import timber.log.Timber;
 
 
@@ -37,13 +36,6 @@ class SyncHelper {
             INSTANCE = new SyncHelper();
         }
         return INSTANCE;
-    }
-
-    LocalFolder getOpenedLocalFolder(Account account, String folderName) throws MessagingException{
-        final LocalStore localStore = account.getLocalStore();
-        LocalFolder localFolder = localStore.getFolder(folderName);
-        localFolder.open(Folder.OPEN_MODE_RW);
-        return localFolder;
     }
 
     /*
