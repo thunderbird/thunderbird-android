@@ -52,10 +52,11 @@ class QresyncExtensionHandler {
 
         processFetchResponses(remoteMessagesToDownload, qresyncParamResponse, flagSyncHelper, syncHelper);
 
+        boolean flaglessMessagesPresent = false;
         int newLocalMessageCount = remoteMessagesToDownload.size() + localFolder.getMessageCount();
         if (imapFolder.getMessageCount() >= localFolder.getVisibleLimit() && imapFolder.getMessageCount() >=
                 newLocalMessageCount) {
-            findOldRemoteMessagesToDownload(remoteMessagesToDownload, syncHelper);
+            flaglessMessagesPresent = findOldRemoteMessagesToDownload(remoteMessagesToDownload, syncHelper);
         }
 
         int messageDownloadCount = remoteMessagesToDownload.size();
@@ -64,7 +65,7 @@ class QresyncExtensionHandler {
         }
 
         return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessagesToDownload, true,
-                false);
+                flaglessMessagesPresent);
     }
 
     private void processFetchResponses(List<ImapMessage> remoteMessagesToDownload, QresyncParamResponse
@@ -106,7 +107,7 @@ class QresyncExtensionHandler {
         Timber.v("SYNC: Received %d new message UIDs in QRESYNC response", remoteMessagesToDownload.size());
     }
 
-    private void findOldRemoteMessagesToDownload(List<ImapMessage> remoteMessagesToDownload, SyncHelper syncHelper)
+    private boolean findOldRemoteMessagesToDownload(List<ImapMessage> remoteMessagesToDownload, SyncHelper syncHelper)
             throws MessagingException {
         /*At ths point, UIDs and flags for new messages and existing changed messages have been fetched, so all N
           messages in the local store should correspond to the most recent N messages in the remote store. We still need
@@ -121,7 +122,7 @@ class QresyncExtensionHandler {
         int oldMessagesStart = syncHelper.getRemoteStart(localFolder, imapFolder);
         int oldMessagesEnd = oldMessagesStart - 1 + localFolder.getVisibleLimit() - newLocalMessageCount;
 
-        if (oldMessagesEnd > oldMessagesStart) {
+        if (oldMessagesEnd >= oldMessagesStart) {
             List<ImapMessage> oldMessages = imapFolder.getMessages(oldMessagesStart, oldMessagesEnd, earliestDate, null);
             Timber.v("SYNC: Fetched %d old message UIDs for folder %s", oldMessages.size(), folderName);
 
@@ -133,6 +134,8 @@ class QresyncExtensionHandler {
 
                 remoteMessagesToDownload.add(oldMessage);
             }
+            return true;
         }
+        return false;
     }
 }
