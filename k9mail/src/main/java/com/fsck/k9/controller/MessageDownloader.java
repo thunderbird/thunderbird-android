@@ -73,15 +73,15 @@ class MessageDownloader {
      *         A list of message objects that store the UIDs of which messages to download.
      * @param purgeToVisibleLimit
      *         If true, local messages will be purged down to the limit of visible messages.
-     * @param downloadFlagsForRemoteMessages
-     *         If true, flags will be downloaded.
+     * @param downloadFlagsForNewMessages
+     *         If true, flags will be downloaded for messages that are not present locally.
      *
      * @return The number of downloaded messages that are not flagged as {@link Flag#SEEN}.
      *
      * @throws MessagingException
      */
     int downloadMessages(final Account account, final Folder remoteFolder, final LocalFolder localFolder,
-            List<? extends Message> inputMessages, boolean purgeToVisibleLimit, boolean downloadFlagsForRemoteMessages)
+            List<? extends Message> inputMessages, boolean purgeToVisibleLimit, boolean downloadFlagsForNewMessages)
             throws MessagingException {
 
         final Date earliestDate = account.getEarliestPollDate();
@@ -138,7 +138,7 @@ class MessageDownloader {
             }
 
             FetchProfile fp = new FetchProfile();
-            if (downloadFlagsForRemoteMessages && remoteFolder.supportsFetchingFlags()) {
+            if (downloadFlagsForNewMessages && remoteFolder.supportsFetchingFlags()) {
                 fp.add(FetchProfile.Item.FLAGS);
             }
             fp.add(FetchProfile.Item.ENVELOPE);
