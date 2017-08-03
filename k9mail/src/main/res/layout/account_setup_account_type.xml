@@ -4,18 +4,59 @@
     android:layout_height="fill_parent"
     android:padding="6dip"
     android:orientation="vertical"
-        android:layout_gravity="center_horizontal|center_vertical"
-      >
-      <TextView
-          android:text="@string/account_setup_account_type_instructions"
+    android:layout_gravity="center_horizontal|center_vertical"
+    >
+    <TextView
+        android:text="@string/account_setup_account_type_instructions"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:layout_marginLeft="@dimen/account_setup_settings_margin_start"
+        android:layout_marginStart="@dimen/account_setup_settings_margin_start"
+        android:layout_marginTop="@dimen/account_setup_settings_title_margin_top"
         android:paddingBottom="10dip"
-        android:focusable="true"
-          />
-    <Button
+        android:focusable="true"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="6dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="@dimen/account_setup_margin_below_title_incoming_and_outgoing"
+        android:layout_marginLeft="@dimen/account_setup_settings_margin_start"
+        android:layout_marginStart="@dimen/account_setup_settings_margin_start"
+        android:layout_marginRight="@dimen/account_setup_settings_field_margin_end"
+        android:layout_marginEnd="@dimen/account_setup_settings_field_margin_end"
+        android:clipToPadding="false"
+        android:fadingEdge="none"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbarStyle="outsideInset">
+
+        <RadioGroup
+            android:id="@+id/account_type_radio_group"
+            android:checkedButton="@+id/imap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/imap"
+                android:text="@string/account_setup_account_type_imap_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/pop"
+                android:text="@string/account_setup_account_type_pop_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/webdav"
+                android:text="@string/account_setup_account_type_webdav_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+    </ScrollView>
+    <!--<Button
         android:id="@+id/imap"
         android:text="@string/account_setup_account_type_imap_action"
         android:layout_height="wrap_content"
@@ -41,5 +82,31 @@
         android:minWidth="@dimen/button_minWidth"
         android:layout_gravity="center_horizontal"
         android:padding="10dip"
-        />
+        />-->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/dividerHorizontal" />
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/account_type_next"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selectable_item_background"
+            android:text="@string/next_action" />
+    </LinearLayout>
 </LinearLayout>

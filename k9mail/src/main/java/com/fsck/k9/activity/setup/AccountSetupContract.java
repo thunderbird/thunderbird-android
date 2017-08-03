@@ -125,8 +125,7 @@ interface AccountSetupContract {
     interface Presenter extends BasePresenter {
         // account type
         void onAccountTypeStart();
-        void onImapOrPop3Selected(Type serverType, String schemePrefix) throws URISyntaxException;
-        void onWebdavSelected() throws URISyntaxException;
+        void onNextButtonInAccountTypeClicked(Type serverType) throws URISyntaxException;
 
         // basics
         void onBasicsStart();
