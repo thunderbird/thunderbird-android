@@ -358,11 +358,11 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_incoming_subscribed_folders_only_label">Показвай само абонираните папките</string>
   <string name="account_setup_auto_expand_folder">Автоматично разгъване на папка</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA path</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Незадължителен</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Незадължителен</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Authentication path</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Незадължителен</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Незадължителен</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Прякор на профила</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Незадължителен</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Незадължителен</string>
   <string name="account_setup_outgoing_title">Настройки за изходяща поща</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP сървър</string>
   <string name="account_setup_outgoing_port_label">Порт</string>

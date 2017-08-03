@@ -329,11 +329,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Sadece abone olunan klasörleri göster</string>
   <string name="account_setup_auto_expand_folder">Otomatik genişleyen klasör</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA yolu</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">İsteğe bağlı</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">İsteğe bağlı</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Kimlik doğrulama yolu</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">İsteğe bağlı</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">İsteğe bağlı</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Mailbox takma adı</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">İsteğe bağlı</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">İsteğe bağlı</string>
   <string name="account_setup_outgoing_title">Giden sunucu ayarları</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP sunucu</string>
   <string name="account_setup_outgoing_port_label">Port</string>

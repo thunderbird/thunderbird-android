@@ -52,6 +52,8 @@ import java.util.Map;
 import com.fsck.k9.setup.ServerNameSuggester;
 import timber.log.Timber;
 
+import static com.fsck.k9.mail.ServerSettings.Type.IMAP;
+import static com.fsck.k9.mail.ServerSettings.Type.POP3;
 import static com.fsck.k9.mail.ServerSettings.Type.SMTP;
 import static com.fsck.k9.mail.ServerSettings.Type.WebDAV;
 
@@ -942,6 +944,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         account.setCompression(NetworkType.WIFI, compressWifi);
         account.setCompression(NetworkType.OTHER, compressOther);
         account.setSubscribedFoldersOnly(subscribedFoldersOnly);
+
+        view.goToIncomingChecking();
     }
 
     private void revokeInvalidSettingsAndUpdateViewInIncoming(AuthType authType,
@@ -1066,7 +1070,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     // endregion names
 
     // region options
-
     @Override
     public void onOptionsStart() {
         stage = Stage.ACCOUNT_OPTIONS;
@@ -1323,7 +1326,21 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     @Override
-    public void onImapOrPop3Selected(Type serverType, String schemePrefix) throws URISyntaxException {
+    public void onNextButtonInAccountTypeClicked(Type serverType) throws URISyntaxException {
+        switch (serverType) {
+            case IMAP:
+                onImapOrPop3Selected(IMAP, "imap+ssl+");
+                break;
+            case POP3:
+                onImapOrPop3Selected(POP3, "pop3+ssl+");
+                break;
+            case WebDAV:
+                onWebdavSelected();
+                break;
+        }
+    }
+
+    private void onImapOrPop3Selected(Type serverType, String schemePrefix) throws URISyntaxException {
         ServerNameSuggester serverNameSuggester = new ServerNameSuggester();
 
         String domainPart = EmailHelper.getDomainFromEmailAddress(account.getEmail());
@@ -1343,8 +1360,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         view.goToIncomingSettings();
     }
 
-    @Override
-    public void onWebdavSelected() throws URISyntaxException {
+    private void onWebdavSelected() throws URISyntaxException {
         ServerNameSuggester serverNameSuggester = new ServerNameSuggester();
 
         URI uriForDecode = new URI(account.getStoreUri());

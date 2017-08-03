@@ -359,11 +359,11 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_incoming_subscribed_folders_only_label">Nur ausgewählte Ordner anzeigen</string>
   <string name="account_setup_auto_expand_folder">Startordner</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">WebDAV-(Exchange-)Pfad</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Optional</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Optional</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Authentifizierungspfad</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Optional</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Optional</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Mailbox-Pfad</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Optional</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Optional</string>
   <string name="account_setup_outgoing_title">Einstellungen für Postausgangsserver</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-Server</string>
   <string name="account_setup_outgoing_port_label">Port</string>

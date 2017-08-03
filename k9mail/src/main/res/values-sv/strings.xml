@@ -359,11 +359,11 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="account_setup_incoming_subscribed_folders_only_label">Visa endast prenumererade mappar</string>
   <string name="account_setup_auto_expand_folder">Auto-expandera mapp</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Sökväg för Outlook Web App</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">valfritt</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">valfritt</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Sökväg för autentisering</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">valfritt</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">valfritt</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Sökväg för brevlåda</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">valfritt</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">valfritt</string>
   <string name="account_setup_outgoing_title">Inställningar för utgående server</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-server</string>
   <string name="account_setup_outgoing_port_label">Port</string>

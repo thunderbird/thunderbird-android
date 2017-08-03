@@ -359,11 +359,11 @@ Send venligst fejlrapporter, forslag til nye funktioner samt spørgsmål på:
   <string name="account_setup_incoming_subscribed_folders_only_label">Vis kun mapper du abonerer på</string>
   <string name="account_setup_auto_expand_folder">Udvid mapper automatisk</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Sti til WebDav (Exchange)</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Frivilligt</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Frivilligt</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Sti til autentifikation</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Frivilligt</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Frivilligt</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Sti til mailboks (alias)</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Frivilligt</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Frivilligt</string>
   <string name="account_setup_outgoing_title">Udgående server indstillinger</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
   <string name="account_setup_outgoing_port_label">Port</string>

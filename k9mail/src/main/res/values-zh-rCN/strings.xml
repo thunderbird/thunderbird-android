@@ -320,11 +320,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">只显示订阅的文件夹</string>
   <string name="account_setup_auto_expand_folder">自动展开文件夹</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">WebDAV (Exchange)路径</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">可选</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">可选</string>
   <string name="account_setup_incoming_webdav_auth_path_label">身份验证路径</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">可选</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">可选</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">邮箱路径</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">可选</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">可选</string>
   <string name="account_setup_outgoing_title">发件服务器设置</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP服务器</string>
   <string name="account_setup_outgoing_port_label">端口</string>

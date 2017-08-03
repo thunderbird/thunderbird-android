@@ -361,11 +361,11 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_incoming_subscribed_folders_only_label">Zobraziť iba odoberané priečinky</string>
   <string name="account_setup_auto_expand_folder">Automaticky rozbaliť priečinok</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Cesta OWA</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Voliteľné</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Voliteľné</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Overovacia cesta</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Voliteľné</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Voliteľné</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Identita schránky</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Voliteľné</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Voliteľné</string>
   <string name="account_setup_outgoing_title">Nastavenia servera odchádzajúcej pošty</string>
   <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>

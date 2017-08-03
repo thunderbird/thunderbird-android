@@ -327,11 +327,11 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Pokaż tylko subskrybowane foldery</string>
   <string name="account_setup_auto_expand_folder">Zawsze rozwijaj folder</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Ścieżka WebDAV (Exchange)</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Opcjonalne</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Opcjonalne</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Ścieżka uwierzytelnienia</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Opcjonalne</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Opcjonalne</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Ścieżka Mailboxa</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Opcjonalne</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Opcjonalne</string>
   <string name="account_setup_outgoing_title">Poczta wychodząca (SMTP)</string>
   <string name="account_setup_outgoing_smtp_server_label">Nazwa serwera SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>
