@@ -60,8 +60,9 @@ class QresyncExtensionHandler {
         }
 
         int messageDownloadCount = remoteMessagesToDownload.size();
+        newLocalMessageCount = localFolder.getMessageCount() + remoteMessagesToDownload.size();
         for (MessagingListener l : controller.getListeners(listener)) {
-            l.synchronizeMailboxHeadersFinished(account, folderName, messageDownloadCount, messageDownloadCount);
+            l.synchronizeMailboxHeadersFinished(account, folderName, newLocalMessageCount, messageDownloadCount);
         }
 
         return messageDownloader.downloadMessages(account, imapFolder, localFolder, remoteMessagesToDownload, true,
@@ -97,7 +98,7 @@ class QresyncExtensionHandler {
 
             headerProgress.incrementAndGet();
             for (MessagingListener l : controller.getListeners()) {
-                l.synchronizeMailboxProgress(account, folderName, headerProgress.get(), modifiedMessages.size());
+                l.synchronizeMailboxProgress(account, folderName, headerProgress.get(), syncFlagMessages.size());
             }
         }
 
