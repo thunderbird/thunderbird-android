@@ -361,11 +361,11 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="account_setup_incoming_subscribed_folders_only_label">Zobrazit jen odebírané složky</string>
   <string name="account_setup_auto_expand_folder">Aut. rozbalená složka</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA cesta</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Volitelné</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Volitelné</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Ověřovací cesta</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Volitelné</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Volitelné</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Cesta k poštovnímu boxu</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Volitelné</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Volitelné</string>
   <string name="account_setup_outgoing_title">Nastavení serveru odchozí pošty</string>
   <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>

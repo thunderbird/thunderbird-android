@@ -384,7 +384,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_check_settings_canceling_msg">Canceling\u2026</string>
 
     <string name="account_setup_names_title">You\'re almost done!</string>
-    <string name="account_setup_names_account_name_label">Give this account a name (optional):</string>
+    <string name="account_setup_names_account_name_label">Give this account a name</string>
     <string name="account_setup_names_user_name_label">Type your name (displays on outgoing messages):</string>
 
     <string name="account_setup_account_type_title">Account type</string>
@@ -446,12 +446,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_auto_expand_folder">Auto-expand folder</string>
 
     <string name="account_setup_incoming_webdav_path_prefix_label">OWA path</string>
-    <string name="account_setup_incoming_webdav_path_prefix_hint">Optional</string>
+    <string name="account_setup_incoming_webdav_path_prefix_helper_text">Optional</string>
 
     <string name="account_setup_incoming_webdav_auth_path_label">Authentication path</string>
-    <string name="account_setup_incoming_webdav_auth_path_hint">Optional</string>
+    <string name="account_setup_incoming_webdav_auth_path_helper_text">Optional</string>
     <string name="account_setup_incoming_webdav_mailbox_path_label">Mailbox alias</string>
-    <string name="account_setup_incoming_webdav_mailbox_path_hint">Optional</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Optional</string>
 
     <string name="account_setup_outgoing_title">Outgoing server settings</string>
     <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
@@ -1242,4 +1242,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="mail_list_widget_loading">Loading messages…</string>
     <string name="fetching_folders_failed">Fetching folder list failed</string>
     <string name="messageview_crypto_warning_details">Show Details</string>
+    <string name="incoming_settings">Incoming Settings</string>
+    <string name="account_names">Account Names</string>
+    <string name="outgoing_settings">Outgoing settings</string>
+    <string name="account_description_helper_text">Optional</string>
+    <string name="add_email">Add email</string>
 </resources>

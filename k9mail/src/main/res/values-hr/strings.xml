@@ -318,11 +318,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Prikaži samo pretplaćene mape</string>
   <string name="account_setup_auto_expand_folder">Automatsko proširivanje mapa</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA putanja</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Opcionalno</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Opcionalno</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Putanja identifikacije</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Opcionalno</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Opcionalno</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Alias poštanskog sandučića</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Opcionalno</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Opcionalno</string>
   <string name="account_setup_outgoing_title">Postavke odlaznog poslužitelja</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP poslužitelj</string>
   <string name="account_setup_outgoing_port_label">Ulaz</string>

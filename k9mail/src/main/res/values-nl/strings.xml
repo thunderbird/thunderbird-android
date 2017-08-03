@@ -354,11 +354,11 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_incoming_subscribed_folders_only_label">Laat alleen geabonneerde mappen zien</string>
   <string name="account_setup_auto_expand_folder">Auto-uitbreiden mappen</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">WebDAV (Exchange) path</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Optioneel</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Optioneel</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Authenticatie pad</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Optioneel</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Optioneel</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Mailbox path</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Optioneel</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Optioneel</string>
   <string name="account_setup_outgoing_title">Uitgaande server instellingen</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
   <string name="account_setup_outgoing_port_label">Poort</string>

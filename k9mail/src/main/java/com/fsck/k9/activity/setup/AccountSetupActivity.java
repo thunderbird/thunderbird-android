@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,6 +24,7 @@ import com.fsck.k9.Account;
 
 import java.security.cert.X509Certificate;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -40,6 +43,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
+import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.view.ClientCertificateSpinner;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
@@ -57,6 +61,7 @@ import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListe
 
 import static com.fsck.k9.mail.ServerSettings.Type.IMAP;
 import static com.fsck.k9.mail.ServerSettings.Type.POP3;
+import static com.fsck.k9.mail.ServerSettings.Type.WebDAV;
 
 
 public class AccountSetupActivity extends AppCompatActivity implements AccountSetupContract.View,
@@ -79,19 +84,23 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private TextView messageView;
     private Handler handler;
 
-    private TextView serverLabelView;
     private EditText usernameView;
     private EditText passwordView;
     @SuppressWarnings("FieldCanBeLocal")
     private Button manualSetupButton;
+
+    private RadioGroup accountTypeRadioGroup;
+
     private ClientCertificateSpinner clientCertificateSpinner;
     private TextView clientCertificateLabelView;
-    private TextView passwordLabelView;
-    private EditText serverView;
-    private EditText portView;
+    private TextInputLayout passwordViewLayout;
+    private TextInputLayout serverViewLayout;
+    private TextInputEditText serverView;
+    private TextInputEditText portView;
     private Spinner securityTypeView;
     private Spinner authTypeView;
     private CheckBox imapAutoDetectNamespaceView;
+    private TextInputLayout imapPathPrefixLayout;
     private EditText imapPathPrefixView;
     private EditText webdavPathPrefixView;
     private EditText webdavAuthPathView;
@@ -107,7 +116,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private MaterialProgressBar progressBar;
 
     private CheckBox requireLoginView;
-    private ViewGroup requireLoginSettingsView;
 
     private Spinner checkFrequencyView;
 
@@ -136,6 +144,10 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     boolean editSettings;
 
     Stage stage;
+    private TextView authenticationLabel;
+    private TextInputLayout usernameLayout;
+    private TextInputLayout passwordLayout;
+    private ViewGroup requireLoginSettingsView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -275,9 +287,9 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     private void accountTypeStart() {
-        findViewById(R.id.pop).setOnClickListener(this);
-        findViewById(R.id.imap).setOnClickListener(this);
-        findViewById(R.id.webdav).setOnClickListener(this);
+        accountTypeRadioGroup = (RadioGroup) findViewById(R.id.account_type_radio_group);
+
+        findViewById(R.id.account_type_next).setOnClickListener(this);
 
         presenter.onAccountTypeStart();
     }
@@ -572,8 +584,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
                     connectionSecurity, authType, compressMobile, compressWifi, compressOther,
                     subscribeFoldersOnly);
 
-            goToIncomingChecking();
-
         } catch (Exception e) {
             failure(e);
         }
@@ -586,6 +596,26 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
                     presenter.onNextButtonInBasicViewClicked(emailView.getText().toString(),
                             passwordView.getText().toString());
                     break;
+                case R.id.account_type_next:
+                    Type serverType;
+                    switch (accountTypeRadioGroup.getCheckedRadioButtonId()) {
+                        case R.id.imap:
+                            serverType = IMAP;
+                            break;
+                        case R.id.pop:
+                            serverType = POP3;
+                            break;
+                        case R.id.webdav:
+                            serverType = WebDAV;
+                            break;
+                        default:
+                            serverType = null;
+                            break;
+                    }
+
+                    presenter.onNextButtonInAccountTypeClicked(serverType);
+                    break;
+
                 case R.id.incoming_next:
                     onNextInIncoming();
                     break;
@@ -601,17 +631,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
                 case R.id.done:
                     presenter.onNextButtonInNamesClicked(name.getText().toString(), description.getText().toString());
                     break;
-
-                case R.id.pop:
-                    presenter.onImapOrPop3Selected(POP3, "pop3+ssl+");
-                    break;
-                case R.id.imap:
-                    presenter.onImapOrPop3Selected(IMAP, "imap+ssl+");
-                    break;
-                case R.id.webdav:
-                    presenter.onWebdavSelected();
-                    break;
-
                 case R.id.manual_setup:
                     presenter.onManualSetupButtonClicked(emailView.getText().toString(),
                             passwordView.getText().toString());
@@ -708,7 +727,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     @Override
     public void setServerLabel(String label) {
-        serverLabelView.setText(label);
+        serverViewLayout.setHint(label);
     }
 
     @Override
@@ -739,7 +758,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public void hideViewsWhenWebDav() {
         findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
-        findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
+        // findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
+        findViewById(R.id.incoming_account_auth_type_label).setVisibility(View.GONE);
         findViewById(R.id.incoming_account_auth_type).setVisibility(View.GONE);
         findViewById(R.id.compression_section).setVisibility(View.GONE);
         findViewById(R.id.compression_label).setVisibility(View.GONE);
@@ -778,13 +798,14 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         passwordView = (EditText) incomingView.findViewById(R.id.incoming_account_password);
         clientCertificateSpinner = (ClientCertificateSpinner) incomingView.findViewById(R.id.incoming_account_client_certificate_spinner);
         clientCertificateLabelView = (TextView) incomingView.findViewById(R.id.account_client_certificate_label);
-        passwordLabelView = (TextView) incomingView.findViewById(R.id.account_password_label);
-        serverLabelView = (TextView)  incomingView.findViewById(R.id.account_server_label);
-        serverView = (EditText) incomingView.findViewById(R.id.incoming_account_server);
-        portView = (EditText) incomingView.findViewById(R.id.incoming_account_port);
+        passwordViewLayout = (TextInputLayout) incomingView.findViewById(R.id.incoming_account_password_layout);
+        serverViewLayout = (TextInputLayout)  incomingView.findViewById(R.id.incoming_account_server_layout);
+        serverView = (TextInputEditText) incomingView.findViewById(R.id.incoming_account_server);
+        portView = (TextInputEditText) incomingView.findViewById(R.id.incoming_account_port);
         securityTypeView = (Spinner) incomingView.findViewById(R.id.incoming_account_security_type);
         authTypeView = (Spinner) incomingView.findViewById(R.id.incoming_account_auth_type);
         imapAutoDetectNamespaceView = (CheckBox) incomingView.findViewById(R.id.imap_autodetect_namespace);
+        imapPathPrefixLayout = (TextInputLayout) incomingView.findViewById(R.id.imap_path_prefix_layout);
         imapPathPrefixView = (EditText) incomingView.findViewById(R.id.imap_path_prefix);
         webdavPathPrefixView = (EditText) incomingView.findViewById(R.id.webdav_path_prefix);
         webdavAuthPathView = (EditText) incomingView.findViewById(R.id.webdav_auth_path);
@@ -800,12 +821,13 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         imapAutoDetectNamespaceView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                imapPathPrefixView.setEnabled(!isChecked);
+                // imapPathPrefixView.setEnabled(!isChecked);
                 if (isChecked && imapPathPrefixView.hasFocus()) {
                     imapPathPrefixView.focusSearch(View.FOCUS_UP).requestFocus();
                 } else if (!isChecked) {
                     imapPathPrefixView.requestFocus();
                 }
+                imapPathPrefixLayout.setVisibility(isChecked ? View.GONE : View.VISIBLE);
             }
         });
 
@@ -856,7 +878,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public void setViewNotExternalInIncoming() {
         passwordView.setVisibility(View.VISIBLE);
-        passwordLabelView.setVisibility(View.VISIBLE);
+        passwordViewLayout.setVisibility(View.VISIBLE);
         clientCertificateLabelView.setVisibility(View.GONE);
         clientCertificateSpinner.setVisibility(View.GONE);
 
@@ -866,7 +888,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public void setViewExternalInIncoming() {
         passwordView.setVisibility(View.GONE);
-        passwordLabelView.setVisibility(View.GONE);
+        passwordViewLayout.setVisibility(View.GONE);
         clientCertificateLabelView.setVisibility(View.VISIBLE);
         clientCertificateSpinner.setVisibility(View.VISIBLE);
 
@@ -1143,14 +1165,16 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         final View outgoingView = findViewById(R.id.account_setup_outgoing);
         usernameView = (EditText) outgoingView.findViewById(R.id.outgoing_account_username);
         passwordView = (EditText) outgoingView.findViewById(R.id.outgoing_account_password);
+        passwordLayout = (TextInputLayout) outgoingView.findViewById(R.id.outgoing_account_password_layout);
         clientCertificateSpinner = (ClientCertificateSpinner) outgoingView.findViewById(R.id.outgoing_account_client_certificate_spinner);
         clientCertificateLabelView = (TextView) outgoingView.findViewById(R.id.account_client_certificate_label);
-        passwordLabelView = (TextView) outgoingView.findViewById(R.id.account_password_label);
-        serverView = (EditText) outgoingView.findViewById(R.id.outgoing_account_server);
-        portView = (EditText) outgoingView.findViewById(R.id.outgoing_account_port);
+        serverView = (TextInputEditText) outgoingView.findViewById(R.id.outgoing_account_server);
+        portView = (TextInputEditText) outgoingView.findViewById(R.id.outgoing_account_port);
         requireLoginView = (CheckBox) outgoingView.findViewById(R.id.account_require_login);
         requireLoginSettingsView = (ViewGroup) outgoingView.findViewById(R.id.account_require_login_settings);
+        usernameLayout = (TextInputLayout) outgoingView.findViewById(R.id.outgoing_account_username_layout);
         securityTypeView = (Spinner) outgoingView.findViewById(R.id.outgoing_account_security_type);
+        authenticationLabel = (TextView) outgoingView.findViewById(R.id.account_setup_outgoing_authentication_label);
         authTypeView = (Spinner) outgoingView.findViewById(R.id.outgoing_account_auth_type);
         nextButton = (Button) outgoingView.findViewById(R.id.outgoing_next);
 
@@ -1168,11 +1192,13 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
             accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
         } */
 
-        if (requireLoginView.isChecked()) {
+        /* if (requireLoginView.isChecked()) {
             requireLoginSettingsView.setVisibility(View.VISIBLE);
         } else {
             requireLoginSettingsView.setVisibility(View.GONE);
-        }
+        }*/
+
+        onCheckedChanged(requireLoginView, requireLoginView.isChecked());
 
         boolean editSettings = false;
         if (getIntent().getAction() != null) {
@@ -1262,8 +1288,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public void setViewNotExternalInOutgoing() {
         // show password fields, hide client certificate fields
-        passwordView.setVisibility(View.VISIBLE);
-        passwordLabelView.setVisibility(View.VISIBLE);
+        passwordLayout.setVisibility(View.VISIBLE);
         clientCertificateLabelView.setVisibility(View.GONE);
         clientCertificateSpinner.setVisibility(View.GONE);
 
@@ -1273,8 +1298,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public void setViewExternalInOutgoing() {
         // hide password fields, show client certificate fields
-        passwordView.setVisibility(View.GONE);
-        passwordLabelView.setVisibility(View.GONE);
+        passwordLayout.setVisibility(View.GONE);
         clientCertificateLabelView.setVisibility(View.VISIBLE);
         clientCertificateSpinner.setVisibility(View.VISIBLE);
 

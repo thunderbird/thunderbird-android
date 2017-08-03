@@ -362,11 +362,11 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_incoming_subscribed_folders_only_label">Только подписанные папки</string>
   <string name="account_setup_auto_expand_folder">Автопереход в папку</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Путь OWA</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">опция</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">опция</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Путь аутентификации</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">опция</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">опция</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Псевдоним ящика</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">опция</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">опция</string>
   <string name="account_setup_outgoing_title">Сервер исходящей почты</string>
   <string name="account_setup_outgoing_smtp_server_label">Сервер SMTP</string>
   <string name="account_setup_outgoing_port_label">Порт</string>

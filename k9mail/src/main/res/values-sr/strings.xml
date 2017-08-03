@@ -361,11 +361,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Прикажи само претплаћене фасцикле</string>
   <string name="account_setup_auto_expand_folder">Аутоматски рашири фасциклу</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA путања</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Необавезно</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Необавезно</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Путања аутентификације</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Необавезно</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Необавезно</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Псеудоним поштанског сандучета</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Необавезно</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Необавезно</string>
   <string name="account_setup_outgoing_title">Поставке за одлазни сервер</string>
   <string name="account_setup_outgoing_smtp_server_label">СМТП сервер</string>
   <string name="account_setup_outgoing_port_label">Порт</string>

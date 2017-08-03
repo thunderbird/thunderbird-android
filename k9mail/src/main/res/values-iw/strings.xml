@@ -294,11 +294,11 @@
   <string name="spam_folder_label">תיקיית דואר זבל</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">הצג רק תיקיות רשומות</string>
   <string name="account_setup_auto_expand_folder">הרחב את התיקייה אוטומטית</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">לא חובה</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">לא חובה</string>
   <string name="account_setup_incoming_webdav_auth_path_label">נתיב אימות</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">לא חובה</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">לא חובה</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">כינוי תיבת דואר</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">לא חובה</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">לא חובה</string>
   <string name="account_setup_outgoing_title">הגדרות שרת דואר יוצא</string>
   <string name="account_setup_outgoing_smtp_server_label">שרת SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>

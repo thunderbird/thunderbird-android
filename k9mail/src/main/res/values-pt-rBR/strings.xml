@@ -356,11 +356,11 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_incoming_subscribed_folders_only_label">Mostrar apenas pastas subscritas</string>
   <string name="account_setup_auto_expand_folder">Auto-expandir pastas</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Diretório WebDAV (Exchange)</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Opcional</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Diretório de autenticação</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Opcional</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Diretório da caixa de correio</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Opcional</string>
   <string name="account_setup_outgoing_title">Configurações do servidor de saída</string>
   <string name="account_setup_outgoing_smtp_server_label">Servidor SMTP</string>
   <string name="account_setup_outgoing_port_label">Porta</string>

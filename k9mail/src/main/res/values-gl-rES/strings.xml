@@ -314,11 +314,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Ver só cartafoles subscritos</string>
   <string name="account_setup_auto_expand_folder">Expandir automaticamente cartafol</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Camiño OWA</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Opcional</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Camiño de autenticación</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Opcional</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Alcume da caixa de correo</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Opcional</string>
   <string name="account_setup_outgoing_title">Axustes do servidor de saída</string>
   <string name="account_setup_outgoing_smtp_server_label">Servidor SMTP</string>
   <string name="account_setup_outgoing_port_label">Porto</string>

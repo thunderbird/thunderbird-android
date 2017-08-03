@@ -358,11 +358,11 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_incoming_subscribed_folders_only_label">Näytä vain tilatut kansiot</string>
   <string name="account_setup_auto_expand_folder">Avaa kansio automaattisesti</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA-polku</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Valinnainen</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Valinnainen</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Autentikointipolku</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Valinnainen</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Valinnainen</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Postilaatikon polku</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Valinnainen</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Valinnainen</string>
   <string name="account_setup_outgoing_title">Lähtevän postin palvelimen asetukset</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-palvelin</string>
   <string name="account_setup_outgoing_port_label">Portti</string>

@@ -285,11 +285,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">只顯示訂閱的信件匣</string>
   <string name="account_setup_auto_expand_folder">自動展開信件匣</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">WebDAV (Exchange)路徑</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">可選擇</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">可選擇</string>
   <string name="account_setup_incoming_webdav_auth_path_label">身份驗證路徑</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">可選擇</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">可選擇</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">郵箱路徑</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">可選擇</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">可選擇</string>
   <string name="account_setup_outgoing_title">外寄伺服器設定</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP伺服器</string>
   <string name="account_setup_outgoing_port_label">埠號</string>

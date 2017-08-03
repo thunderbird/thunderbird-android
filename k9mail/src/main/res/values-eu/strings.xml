@@ -292,11 +292,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Harpidetutako karpetak bakarrik ikusi</string>
   <string name="account_setup_auto_expand_folder">Karpetak automatikoki zabaldu</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA bidea</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Aukerazkoa</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Aukerazkoa</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Kautotze bidea</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Aukerazkoa</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Aukerazkoa</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Postontzi aliasa</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Aukerazkoa</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Aukerazkoa</string>
   <string name="account_setup_outgoing_title">Bidaltzeko zerbitzariaren ezarpenak</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP zerbitzaria</string>
   <string name="account_setup_outgoing_port_label">Portua</string>
