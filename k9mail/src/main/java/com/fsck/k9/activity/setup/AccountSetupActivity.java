@@ -654,7 +654,9 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     public void setAuthTypeInIncoming(AuthType authType) {
         OnItemSelectedListener onItemSelectedListener = authTypeView.getOnItemSelectedListener();
         authTypeView.setOnItemSelectedListener(null);
-        authTypeView.setSelection(authTypeAdapter.getAuthPosition(authType), false);
+        int authTypePosition =
+                ((AuthTypeAdapter) authTypeView.getAdapter()).getAuthPosition(authType);
+        authTypeView.setSelection(authTypePosition, false);
         authTypeView.setOnItemSelectedListener(onItemSelectedListener);
     }
 
@@ -662,7 +664,9 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     public void setSecurityTypeInIncoming(ConnectionSecurity security) {
         OnItemSelectedListener onItemSelectedListener = securityTypeView.getOnItemSelectedListener();
         securityTypeView.setOnItemSelectedListener(null);
-        securityTypeView.setSelection(security.ordinal(), false);
+        int connectionSecurityPosition = ((ConnectionSecurityAdapter)
+                securityTypeView.getAdapter()).getConnectionSecurityPosition(security);
+        securityTypeView.setSelection(connectionSecurityPosition, false);
         securityTypeView.setOnItemSelectedListener(onItemSelectedListener);
     }
 
