@@ -1056,6 +1056,15 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     @Override
+    public void onInputChangedInNames(String name, String description) {
+        if (Utility.requiredFieldValid(name)) {
+            view.setDoneButtonInNamesEnabled(true);
+        } else {
+            view.setDoneButtonInNamesEnabled(false);
+        }
+    }
+
+    @Override
     public void onNextButtonInNamesClicked(String name, String description) {
         if (Utility.requiredFieldValid(description)) {
             account.setDescription(description);
