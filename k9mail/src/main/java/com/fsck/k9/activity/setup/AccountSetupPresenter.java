@@ -164,7 +164,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                 account.save(preferences);
                 view.end();
             } else {
-                view.goToOptions();
+                view.goToAccountNames();
             }
         } else {
             if (editSettings) {
@@ -263,7 +263,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
                     K9.setServicesEnabled(context);
 
-                    view.goToOptions();
+                    view.goToAccountNames();
                 } else {
                     updateAccount();
 
@@ -1053,6 +1053,15 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     @Override
     public void onNamesStart() {
         stage = Stage.ACCOUNT_NAMES;
+    }
+
+    @Override
+    public void onInputChangedInNames(String name, String description) {
+        if (Utility.requiredFieldValid(name)) {
+            view.setDoneButtonInNamesEnabled(true);
+        } else {
+            view.setDoneButtonInNamesEnabled(false);
+        }
     }
 
     @Override

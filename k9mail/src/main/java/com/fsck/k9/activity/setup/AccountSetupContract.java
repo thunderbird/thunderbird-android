@@ -85,6 +85,7 @@ interface AccountSetupContract {
         void showInvalidSettingsToast();
 
         /* --Names-- */
+        void setDoneButtonInNamesEnabled(boolean enabled);
         void goToListAccounts();
 
         /* --options-- */
@@ -161,6 +162,7 @@ interface AccountSetupContract {
 
         /* --names--*/
         void onNamesStart();
+        void onInputChangedInNames(String name, String description);
         void onNextButtonInNamesClicked(String name, String description);
 
         /* --options-- */

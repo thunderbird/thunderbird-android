@@ -3,15 +3,11 @@ package com.fsck.k9.activity.setup;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.cert.X509Certificate;
 
 import android.content.Context;
-import android.net.Uri;
 import android.test.mock.MockContext;
-import android.util.Log;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.setup.AccountSetupPresenter.Stage;
@@ -21,13 +17,12 @@ import com.fsck.k9.mail.ServerSettings.Type;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -44,10 +39,11 @@ public class AccountSetupPresenterTest {
     private static final String DEFAULT_PORT_FOR_POP3_SSL_TLS = "995";
     private static final String DEFAULT_PORT_FOR_POP3_STARTTLS = "110";
 
-    AccountSetupPresenter presenter;
-    AccountSetupActivity view;
-    Account account;
-    Context context;
+    private AccountSetupPresenter presenter;
+    private AccountSetupActivity view;
+    private Account account;
+    @SuppressWarnings("FieldCanBeLocal")
+    private Context context;
 
     @Before
     public void setUp() {
@@ -170,7 +166,7 @@ public class AccountSetupPresenterTest {
             }
         }).when(account).setStoreUri(Matchers.anyString());
 
-        presenter.onImapOrPop3Selected(Type.IMAP, "imap+ssl+");
+        presenter.onNextButtonInAccountTypeClicked(Type.IMAP);
 
         verify(view).goToIncomingSettings();
     }
@@ -190,7 +186,7 @@ public class AccountSetupPresenterTest {
             }
         }).when(account).setStoreUri(Matchers.anyString());
 
-        presenter.onWebdavSelected();
+        presenter.onNextButtonInAccountTypeClicked(Type.WebDAV);
 
         verify(view).goToIncomingSettings();
     }
