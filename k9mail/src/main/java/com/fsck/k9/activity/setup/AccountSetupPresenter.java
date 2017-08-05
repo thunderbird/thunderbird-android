@@ -164,7 +164,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                 account.save(preferences);
                 view.end();
             } else {
-                view.goToOptions();
+                view.goToAccountNames();
             }
         } else {
             if (editSettings) {
@@ -263,7 +263,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
                     K9.setServicesEnabled(context);
 
-                    view.goToOptions();
+                    view.goToAccountNames();
                 } else {
                     updateAccount();
 
