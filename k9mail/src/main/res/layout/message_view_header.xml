@@ -179,6 +179,33 @@
                         android:paddingTop="2dp"
                         android:textColor="?android:attr/textColorSecondary"
                         android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <!-- BCC -->
+                    <TextView
+                        android:id="@+id/bcc_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cc_label"
+                        android:layout_alignLeft="@+id/cc_label"
+                        android:layout_alignBaseline="@+id/bcc"
+                        android:paddingTop="2dp"
+                        android:paddingRight="4dp"
+                        android:text="@string/message_view_bcc_label"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textStyle="bold"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <TextView
+                        android:id="@+id/bcc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/bcc_label"
+                        android:layout_below="@+id/cc"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="2dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
                     
                     <!-- Date -->
                     <TextView
