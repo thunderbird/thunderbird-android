@@ -758,7 +758,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public void hideViewsWhenWebDav() {
         findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
-        // findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
         findViewById(R.id.incoming_account_auth_type_label).setVisibility(View.GONE);
         findViewById(R.id.incoming_account_auth_type).setVisibility(View.GONE);
         findViewById(R.id.compression_section).setVisibility(View.GONE);
@@ -821,7 +820,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         imapAutoDetectNamespaceView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // imapPathPrefixView.setEnabled(!isChecked);
                 if (isChecked && imapPathPrefixView.hasFocus()) {
                     imapPathPrefixView.focusSearch(View.FOCUS_UP).requestFocus();
                 } else if (!isChecked) {
@@ -952,8 +950,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
                 onInputChangeInNames();
             }
         });
-
-        // onInputChangeInNames();
 
         presenter.onNamesStart();
     }
@@ -1212,17 +1208,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         authTypeView.setAdapter(authTypeAdapter);
 
         portView.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
-
-        // TODO: 7/25/2017 please guarantee the state is already restored so I can remove the following safely
-        /* if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_ACCOUNT)) {
-            accountUuid = savedInstanceState.getString(EXTRA_ACCOUNT);
-        } */
-
-        /* if (requireLoginView.isChecked()) {
-            requireLoginSettingsView.setVisibility(View.VISIBLE);
-        } else {
-            requireLoginSettingsView.setVisibility(View.GONE);
-        }*/
 
         onCheckedChanged(requireLoginView, requireLoginView.isChecked());
 
