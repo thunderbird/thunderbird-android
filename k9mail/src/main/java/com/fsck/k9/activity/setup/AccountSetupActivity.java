@@ -933,12 +933,38 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     // names
 
     public void namesStart() {
-        description = (EditText) findViewById(R.id.account_description);
-        name = (EditText) findViewById(R.id.account_name);
         doneButton = (Button) findViewById(R.id.done);
         doneButton.setOnClickListener(this);
 
+        description = (EditText) findViewById(R.id.account_description);
+        name = (EditText) findViewById(R.id.account_name);
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                onInputChangeInNames();
+            }
+        });
+
+        // onInputChangeInNames();
+
         presenter.onNamesStart();
+    }
+
+    @Override
+    public void setDoneButtonInNamesEnabled(boolean enabled) {
+        doneButton.setEnabled(enabled);
+    }
+
+    private void onInputChangeInNames() {
+        presenter.onInputChangedInNames(name.getText().toString(), description.getText().toString());
     }
 
     // options
