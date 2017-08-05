@@ -43,9 +43,7 @@
                 android:id="@+id/incoming_account_server_layout"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:textColorHint="@android:color/black"
-                android:layout_marginRight="@dimen/account_setup_settings_field_margin_end"
-                android:layout_marginEnd="@dimen/account_setup_settings_field_margin_end"
+                android:textColorHint="?android:attr/textColorPrimary"
                 >
 
                 <android.support.design.widget.TextInputEditText

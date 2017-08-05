@@ -43,11 +43,9 @@
                 app:layout_constraintTop_toBottomOf="@id/title"
                 app:layout_constraintLeft_toLeftOf="@id/title"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginRight="@dimen/account_setup_settings_field_margin_end"
-                android:layout_marginEnd="@dimen/account_setup_settings_field_margin_end"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@android:color/black">
+                android:textColorHint="?android:attr/textColorPrimary">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/outgoing_account_server"
@@ -55,7 +53,6 @@
                     android:inputType="textUri"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textColor="@color/light_black"
                     android:hint="@string/account_setup_outgoing_smtp_server_label" />
             </android.support.design.widget.TextInputLayout>
 
@@ -90,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/account_setup_margin_between_items_incoming_and_outgoing"
-                android:textColorHint="@android:color/black">
+                android:textColorHint="?android:attr/textColorPrimary">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/outgoing_account_port"
@@ -98,7 +95,6 @@
                     android:inputType="number"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textColor="@color/light_black"
                     android:hint="@string/account_setup_outgoing_port_label" />
             </android.support.design.widget.TextInputLayout>
 
@@ -123,7 +119,7 @@
                 android:id="@+id/outgoing_account_username_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@android:color/black"
+                android:textColorHint="?android:attr/textColorPrimary"
                 android:layout_marginTop="@dimen/account_setup_margin_between_items_incoming_and_outgoing"
 
                 app:layout_constraintTop_toBottomOf="@id/account_require_login"
@@ -167,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/account_setup_margin_between_items_incoming_and_outgoing"
-                android:textColorHint="@android:color/black"
+                android:textColorHint="?android:attr/textColorPrimary"
                 app:layout_constraintTop_toBottomOf="@id/outgoing_account_auth_type"
                 app:layout_constraintLeft_toLeftOf="@id/outgoing_account_server_layout"
                 app:layout_constraintRight_toRightOf="@id/outgoing_account_server_layout"

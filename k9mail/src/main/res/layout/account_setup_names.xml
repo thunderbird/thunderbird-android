@@ -40,8 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginRight="@dimen/account_setup_settings_field_margin_end"
-            android:layout_marginEnd="@dimen/account_setup_settings_field_margin_end"
             >
             <com.fsck.k9.view.TextInputLayoutWithHelperText
                 android:id="@+id/account_description_layout"
