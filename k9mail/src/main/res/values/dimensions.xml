@@ -5,7 +5,7 @@
     <dimen name="account_setup_settings_title_margin_top">32dp</dimen>
     <dimen name="account_setup_settings_margin_start">32dp</dimen>
     <dimen name="account_setup_settings_title_size">32sp</dimen>
-    <dimen name="account_setup_margin_below_title">100dp</dimen>
+    <dimen name="account_setup_margin_below_title_basics">100dp</dimen>
     <dimen name="account_setup_margin_between_items">24dp</dimen>
     <dimen name="account_setup_margin_between_items_incoming_and_outgoing">8dp</dimen>
 

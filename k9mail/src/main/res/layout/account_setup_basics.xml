@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,65 +14,88 @@
         style="@style/AccountSetupTitle"
         android:layout_marginLeft="@dimen/account_setup_settings_margin_start"
         android:layout_marginStart="@dimen/account_setup_settings_margin_start"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/account_setup_settings_title_margin_top"
-        />
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/email_input_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/title"
-        android:layout_marginTop="@dimen/account_setup_margin_below_title"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="@dimen/account_setup_settings_field_margin_end"
         android:layout_marginEnd="@dimen/account_setup_settings_field_margin_end"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="6dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="@dimen/account_setup_margin_below_title_basics"
+        android:layout_marginLeft="@dimen/account_setup_settings_margin_start"
+        android:layout_marginStart="@dimen/account_setup_settings_margin_start"
+        android:layout_marginRight="@dimen/account_setup_settings_field_margin_end"
+        android:layout_marginEnd="@dimen/account_setup_settings_field_margin_end"
+        android:clipToPadding="false"
+        android:fadingEdge="none"
+        android:scrollbarStyle="outsideInset"
+        android:overScrollMode="ifContentScrolls"
         >
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/account_email"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textEmailAddress"
-            android:hint="email address" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/password_input_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/title"
-        android:layout_marginTop="@dimen/account_setup_margin_between_items"
-        app:layout_constraintTop_toBottomOf="@+id/email_input_layout"
-        app:passwordToggleEnabled="true"
-        app:layout_constraintRight_toRightOf="@id/email_input_layout"
-        >
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/email_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                >
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/account_password"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textPassword"
-            android:hint="password" />
-    </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/account_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/account_setup_basics_email_hint" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/password_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="@+id/title"
+                android:layout_marginTop="@dimen/account_setup_margin_between_items"
+                app:layout_constraintTop_toBottomOf="@+id/email_input_layout"
+                app:passwordToggleEnabled="true"
+                app:layout_constraintRight_toRightOf="@id/email_input_layout"
+                >
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/account_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPassword"
+                    android:hint="@string/account_setup_basics_password_hint" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/manual_setup"
+                android:textColor="@android:color/holo_blue_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="@string/manual_setup"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/dividerHorizontal" />
 
     <LinearLayout
-        android:id="@+id/button_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
         style="?android:attr/buttonBarStyle"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:layout_constraintRight_creator="1"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
+        android:orientation="horizontal" >
 
         <View
             android:layout_width="0dp"
@@ -87,30 +111,4 @@
             android:background="@drawable/selectable_item_background"
             android:text="@string/next_action" />
     </LinearLayout>
-
-    <View
-        app:layout_constraintBottom_toTopOf="@+id/button_bar"
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="?android:attr/dividerHorizontal"
-        tools:layout_constraintRight_creator="1"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
-
-    <Button
-        android:id="@+id/manual_setup"
-        android:textColor="@android:color/holo_blue_light"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:text="Manual Setup"
-        app:layout_constraintLeft_toLeftOf="@+id/password_input_layout"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/password_input_layout" />
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

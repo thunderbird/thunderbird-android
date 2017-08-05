@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="6dip"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_gravity="center_horizontal|center_vertical"
     >
     <TextView
         android:text="@string/account_setup_account_type_instructions"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:textSize="20sp"
-        android:textColor="@android:color/black"
+        android:textColor="?android:attr/textColorPrimary"
         android:layout_marginLeft="@dimen/account_setup_settings_margin_start"
         android:layout_marginStart="@dimen/account_setup_settings_margin_start"
         android:layout_marginTop="@dimen/account_setup_settings_title_margin_top"
@@ -56,33 +54,7 @@
                 android:layout_height="wrap_content" />
         </RadioGroup>
     </ScrollView>
-    <!--<Button
-        android:id="@+id/imap"
-        android:text="@string/account_setup_account_type_imap_action"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:minWidth="@dimen/button_minWidth"
-        android:layout_gravity="center_horizontal"
-        android:padding="10dip"
-        />
-    <Button
-        android:id="@+id/pop"
-        android:text="@string/account_setup_account_type_pop_action"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:minWidth="@dimen/button_minWidth"
-        android:layout_gravity="center_horizontal"
-        android:padding="10dip"
-        />
-    <Button
-        android:id="@+id/webdav"
-        android:text="@string/account_setup_account_type_webdav_action"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:minWidth="@dimen/button_minWidth"
-        android:layout_gravity="center_horizontal"
-        android:padding="10dip"
-        />-->
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"

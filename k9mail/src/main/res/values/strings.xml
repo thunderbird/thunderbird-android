@@ -1247,4 +1247,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="outgoing_settings">Outgoing settings</string>
     <string name="account_description_helper_text">Optional</string>
     <string name="add_email">Add email</string>
+    <string name="manual_setup">Manual Setup</string>
 </resources>
