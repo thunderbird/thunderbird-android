@@ -99,7 +99,7 @@ public class AccountSetupPresenterTest {
 
         presenter.onNegativeClickedInConfirmationDialog();
 
-        verify(view).goToOptions();
+        verify(view).goToAccountNames();
     }
 
     @Test
