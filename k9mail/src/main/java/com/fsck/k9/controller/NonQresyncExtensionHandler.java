@@ -68,7 +68,7 @@ class NonQresyncExtensionHandler {
                     syncFlagMessages, controller);
         }
 
-        if (localFolder.getHighestModSeq() != 0 && imapFolder.supportsModSeq() && K9.shouldUseCondstore()) {
+        if (localFolder.isCachedHighestModSeqValid() && imapFolder.supportsModSeq() && K9.shouldUseCondstore()) {
             downloadChangedMessageFlagsUsingCondstore(syncFlagMessages, flagSyncHelper);
         } else {
             flagSyncHelper.refreshLocalMessageFlags(account, imapFolder, localFolder, syncFlagMessages);
