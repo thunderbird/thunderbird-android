@@ -88,7 +88,8 @@ public class ImapSyncInteractorTest {
                 .thenReturn(true);
         when(controller.getListeners(listener)).thenReturn(singleton(listener));
 
-        syncInteractor = new ImapSyncInteractor(account, FOLDER_NAME, listener, controller);
+        syncInteractor = new ImapSyncInteractor(syncHelper, flagSyncHelper, controller, messageDownloader,
+                notificationController);
     }
 
     @Test
@@ -96,13 +97,13 @@ public class ImapSyncInteractorTest {
             throws Exception {
         doThrow(MessagingException.class).when(controller).processPendingCommandsSynchronous(account);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(listener).synchronizeMailboxFailed(eq(account), eq(FOLDER_NAME), anyString());
     }
     @Test
     public void performSync_withImapFolder_shouldFinishWithoutError() throws Exception {
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(listener).synchronizeMailboxFinished(eq(account), eq(FOLDER_NAME), anyInt(), anyInt());
     }
@@ -113,7 +114,7 @@ public class ImapSyncInteractorTest {
         when(account.getRemoteStore()).thenReturn(remoteStore);
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(mock(Folder.class));
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(listener).synchronizeMailboxFailed(eq(account), eq(FOLDER_NAME), anyString());
     }
@@ -123,7 +124,7 @@ public class ImapSyncInteractorTest {
         when(syncHelper.verifyOrCreateRemoteSpecialFolder(account, FOLDER_NAME, imapFolder, listener, controller))
                 .thenReturn(false);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(imapFolder, never()).openUsingQresyncParam(anyInt(), anyLong(), anyLong());
     }
@@ -131,7 +132,7 @@ public class ImapSyncInteractorTest {
     @Test
     public void performSync_withValidCachedUidValidityAndHighestModSeq_shouldOpenFolderUsingQresyncParams()
             throws Exception {
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);;
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(imapFolder).openUsingQresyncParam(OPEN_MODE_RW, CACHED_UID_VALIDITY, CACHED_HIGHEST_MOD_SEQ);
     }
@@ -139,7 +140,7 @@ public class ImapSyncInteractorTest {
     public void performSync_withoutCachedUidValidity_shouldOpenImapFolderNormally() throws Exception {
         when(localFolder.hasCachedUidValidity()).thenReturn(false);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(imapFolder).open(OPEN_MODE_RW);
     }
@@ -148,7 +149,7 @@ public class ImapSyncInteractorTest {
     public void performSync_withInvalidCachedHighestModSeq_shouldOpenImapFolderNormally() throws Exception {
         when(localFolder.isCachedHighestModSeqValid()).thenReturn(false);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(imapFolder).open(OPEN_MODE_RW);
     }
@@ -160,7 +161,7 @@ public class ImapSyncInteractorTest {
                 .thenReturn(mock(QresyncParamResponse.class));
         when(account.getExpungePolicy()).thenReturn(Expunge.EXPUNGE_ON_POLL);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(imapFolder).expungeUsingQresync();
     }
@@ -172,7 +173,7 @@ public class ImapSyncInteractorTest {
                 .thenReturn(null);
         when(account.getExpungePolicy()).thenReturn(Expunge.EXPUNGE_ON_POLL);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(imapFolder).expunge();
     }
@@ -181,7 +182,7 @@ public class ImapSyncInteractorTest {
     public void performSync_withAccountNotSetToExpungeOnPoll_shouldNotExpungeRemoteFolder() throws Exception {
         when(account.getExpungePolicy()).thenReturn(Expunge.EXPUNGE_MANUALLY);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(imapFolder, never()).expunge();
         verify(imapFolder, never()).expungeUsingQresync();
@@ -191,7 +192,7 @@ public class ImapSyncInteractorTest {
     public void performSync_withNegativeMessageCount_shouldFinishWithError() throws Exception {
         when(imapFolder.getMessageCount()).thenReturn(-1);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(listener).synchronizeMailboxFailed(eq(account), eq(FOLDER_NAME), anyString());
     }
@@ -201,7 +202,7 @@ public class ImapSyncInteractorTest {
         when(imapFolder.getUidValidity()).thenReturn(CURRENT_UID_VALIDITY);
         List<LocalMessage> localMessages = configureLocalFolderWithSingleMessage();
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder).destroyMessages(localMessages);
     }
@@ -211,7 +212,7 @@ public class ImapSyncInteractorTest {
         when(imapFolder.getUidValidity()).thenReturn(CURRENT_UID_VALIDITY);
         List<LocalMessage> localMessages = configureLocalFolderWithSingleMessage();
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(listener).synchronizeMailboxRemovedMessage(account, FOLDER_NAME, localMessages.get(0));
     }
@@ -221,7 +222,7 @@ public class ImapSyncInteractorTest {
         when(imapFolder.getUidValidity()).thenReturn(CURRENT_UID_VALIDITY);
         configureLocalFolderWithSingleMessage();
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder, atLeastOnce()).invalidateHighestModSeq();
     }
@@ -231,7 +232,7 @@ public class ImapSyncInteractorTest {
         when(imapFolder.getUidValidity()).thenReturn(CACHED_UID_VALIDITY);
         List<LocalMessage> localMessages = configureLocalFolderWithSingleMessage();
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder, never()).destroyMessages(localMessages);
     }
@@ -242,7 +243,7 @@ public class ImapSyncInteractorTest {
         when(imapFolder.getUidValidity()).thenReturn(CURRENT_UID_VALIDITY);
         List<LocalMessage> localMessages = configureLocalFolderWithSingleMessage();
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder, never()).destroyMessages(localMessages);
     }
@@ -251,7 +252,7 @@ public class ImapSyncInteractorTest {
     public void performSync_withSyncRemoteDeletionsSetToTrue_shouldDeleteLocalCopiesIfNecessary() throws Exception {
         when(account.syncRemoteDeletions()).thenReturn(true);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(syncHelper).deleteLocalMessages(anyCollection(), eq(account), eq(localFolder), eq(imapFolder),
                 eq(controller), eq(listener));
@@ -261,7 +262,7 @@ public class ImapSyncInteractorTest {
     public void performSync_withSyncRemoteDeletionsSetToFalse_shouldDeleteLocalCopiesIfNecessary() throws Exception {
         when(account.syncRemoteDeletions()).thenReturn(false);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(syncHelper, never()).deleteLocalMessages(anyCollection(), any(Account.class), any(LocalFolder.class),
                 any(Folder.class), any(MessagingController.class), any(MessagingListener.class));
@@ -272,7 +273,7 @@ public class ImapSyncInteractorTest {
     public void performSync_shouldUpdateCachedUidValidity() throws Exception {
         when(imapFolder.getUidValidity()).thenReturn(CURRENT_UID_VALIDITY);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder).setUidValidity(CURRENT_UID_VALIDITY);
     }
@@ -281,7 +282,7 @@ public class ImapSyncInteractorTest {
     public void performSync_withFolderSupportingModSeqs_shouldUpdateCachedHighestModSeq() throws Exception {
         when(imapFolder.supportsModSeq()).thenReturn(true);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder).setHighestModSeq(CURRENT_HIGHEST_MOD_SEQ);
     }
@@ -290,14 +291,14 @@ public class ImapSyncInteractorTest {
     public void performSync_withFolderNotSupportingModSeqs_shouldInvalidateCachedHighestModSeq() throws Exception {
         when(imapFolder.supportsModSeq()).thenReturn(false);
 
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder).invalidateHighestModSeq();
     }
 
     @Test
     public void performSync_afterCompletion_shouldCloseFolders() throws Exception {
-        syncInteractor.performSync(flagSyncHelper, messageDownloader, notificationController, syncHelper);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder).close();
         verify(imapFolder).close();

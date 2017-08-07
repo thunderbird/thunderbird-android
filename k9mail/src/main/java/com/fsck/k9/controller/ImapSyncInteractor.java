@@ -23,27 +23,30 @@ import timber.log.Timber;
 
 class ImapSyncInteractor {
 
-    private final Account account;
-    private final String folderName;
-    private LocalFolder localFolder;
-    private ImapFolder imapFolder;
-    private final MessagingListener listener;
+    private final SyncHelper syncHelper;
+    private final FlagSyncHelper flagSyncHelper;
     private final MessagingController controller;
+    private final MessageDownloader messageDownloader;
+    private final NotificationController notificationController;
 
-    ImapSyncInteractor(Account account, String folderName, MessagingListener listener, MessagingController controller) {
-        this.account = account;
-        this.folderName = folderName;
-        this.listener = listener;
+    ImapSyncInteractor(SyncHelper syncHelper, FlagSyncHelper flagSyncHelper, MessagingController controller,
+            MessageDownloader messageDownloader, NotificationController notificationController) {
+        this.syncHelper = syncHelper;
+        this.flagSyncHelper = flagSyncHelper;
         this.controller = controller;
+        this.messageDownloader = messageDownloader;
+        this.notificationController = notificationController;
     }
 
-    void performSync(FlagSyncHelper flagSyncHelper, MessageDownloader messageDownloader,
-            NotificationController notificationController, SyncHelper syncHelper) {
+    void performSync(Account account, String folderName, MessagingListener listener) {
+
         for (MessagingListener l : controller.getListeners(listener)) {
             l.synchronizeMailboxStarted(account, folderName);
         }
 
         Exception commandException = null;
+        LocalFolder localFolder = null;
+        ImapFolder imapFolder = null;
 
         try {
             Timber.d("SYNC: About to process pending commands for account %s", account.getDescription());
@@ -56,8 +59,9 @@ class ImapSyncInteractor {
                 commandException = e;
             }
 
-            initialize();
+            localFolder = getOpenedLocalFolder(account, folderName);
             localFolder.updateLastUid();
+            imapFolder = getOpenedImapFolder(account, folderName);
 
             if (!syncHelper.verifyOrCreateRemoteSpecialFolder(account, folderName, imapFolder, listener, controller)) {
                 return;
@@ -92,22 +96,22 @@ class ImapSyncInteractor {
 
             Timber.v("SYNC: Remote message count for folder %s is %d", folderName, remoteMessageCount);
 
-            handleUidValidity();
+            handleUidValidity(account, localFolder, imapFolder, listener);
             int newMessages;
             if (!qresyncEnabled) {
-                NonQresyncExtensionHandler handler = new NonQresyncExtensionHandler(account, localFolder, imapFolder,
-                        listener, controller);
-                newMessages = handler.continueSync(messageDownloader, flagSyncHelper, syncHelper);
+                NonQresyncExtensionHandler handler = new NonQresyncExtensionHandler(syncHelper, flagSyncHelper,
+                        controller, messageDownloader);
+                newMessages = handler.continueSync(account, localFolder, imapFolder, listener);
             } else {
                 Timber.v("SYNC: QRESYNC extension found and enabled for folder %s", folderName);
-                QresyncExtensionHandler handler = new QresyncExtensionHandler(account, localFolder, imapFolder,
-                        listener, controller);
-                newMessages = handler.continueSync(qresyncParamResponse, expungedUids, messageDownloader,
-                        flagSyncHelper, syncHelper);
+                QresyncExtensionHandler handler = new QresyncExtensionHandler(syncHelper, flagSyncHelper, controller,
+                        messageDownloader);
+                newMessages = handler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, expungedUids,
+                        listener);
             }
 
             localFolder.setUidValidity(imapFolder.getUidValidity());
-            updateHighestModSeqIfNecessary();
+            updateHighestModSeqIfNecessary(localFolder, imapFolder);
 
             int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : controller.getListeners()) {
@@ -173,7 +177,8 @@ class ImapSyncInteractor {
         }
     }
 
-    private void handleUidValidity() throws MessagingException {
+    private void handleUidValidity(Account account, LocalFolder localFolder, ImapFolder imapFolder,
+            MessagingListener listener) throws MessagingException {
         long cachedUidValidity = localFolder.getUidValidity();
         long currentUidValidity = imapFolder.getUidValidity();
 
@@ -193,7 +198,8 @@ class ImapSyncInteractor {
         }
     }
 
-    private void updateHighestModSeqIfNecessary() throws MessagingException {
+    private void updateHighestModSeqIfNecessary(LocalFolder localFolder, ImapFolder imapFolder)
+            throws MessagingException {
         long cachedHighestModSeq = localFolder.getHighestModSeq();
         long remoteHighestModSeq = imapFolder.getHighestModSeq();
 
@@ -206,22 +212,21 @@ class ImapSyncInteractor {
         }
     }
 
-    private void initialize() throws MessagingException {
-        if (localFolder == null || !localFolder.isOpen()) {
-            Timber.v("SYNC: About to get local folder %s and open it", folderName);
-            final LocalStore localStore = account.getLocalStore();
-            localFolder = localStore.getFolder(folderName);
-            localFolder.open(Folder.OPEN_MODE_RW);
-        }
+    private LocalFolder getOpenedLocalFolder(Account account, String folderName) throws MessagingException {
+        Timber.v("SYNC: About to get local folder %s and open it", folderName);
+        final LocalStore localStore = account.getLocalStore();
+        LocalFolder localFolder = localStore.getFolder(folderName);
+        localFolder.open(Folder.OPEN_MODE_RW);
+        return localFolder;
+    }
 
-        if (imapFolder == null || !imapFolder.isOpen()) {
-            Store remoteStore = account.getRemoteStore();
-            Timber.v("SYNC: About to get remote folder %s", folderName);
-            Folder remoteFolder = remoteStore.getFolder(folderName);
-            if (!(remoteFolder instanceof ImapFolder)) {
-                throw new IllegalArgumentException("A non-IMAP account was provided to ImapSyncInteractor");
-            }
-            imapFolder = (ImapFolder) remoteFolder;
+    private ImapFolder getOpenedImapFolder(Account account, String folderName) throws MessagingException {
+        Store remoteStore = account.getRemoteStore();
+        Timber.v("SYNC: About to get remote IMAP folder %s", folderName);
+        Folder remoteFolder = remoteStore.getFolder(folderName);
+        if (!(remoteFolder instanceof ImapFolder)) {
+            throw new IllegalArgumentException("A non-IMAP account was provided to ImapSyncInteractor");
         }
+        return  (ImapFolder) remoteFolder;
     }
 }

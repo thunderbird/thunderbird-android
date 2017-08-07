@@ -22,22 +22,20 @@ import timber.log.Timber;
 
 class NonQresyncExtensionHandler {
 
-    private final Account account;
-    private final LocalFolder localFolder;
-    private final ImapFolder imapFolder;
-    private final MessagingListener listener;
+    private final SyncHelper syncHelper;
+    private final FlagSyncHelper flagSyncHelper;
     private final MessagingController controller;
+    private final MessageDownloader messageDownloader;
 
-    NonQresyncExtensionHandler(Account account, LocalFolder localFolder, ImapFolder imapFolder,
-            MessagingListener listener, MessagingController controller) {
-        this.account = account;
-        this.localFolder = localFolder;
-        this.imapFolder = imapFolder;
-        this.listener = listener;
+    NonQresyncExtensionHandler(SyncHelper syncHelper, FlagSyncHelper flagSyncHelper, MessagingController controller,
+            MessageDownloader messageDownloader) {
+        this.syncHelper = syncHelper;
+        this.flagSyncHelper = flagSyncHelper;
         this.controller = controller;
+        this.messageDownloader = messageDownloader;
     }
 
-    int continueSync(MessageDownloader messageDownloader, FlagSyncHelper flagSyncHelper, SyncHelper syncHelper)
+    int continueSync(Account account, LocalFolder localFolder, ImapFolder imapFolder, MessagingListener listener)
             throws MessagingException, IOException {
         Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
         String folderName = localFolder.getName();
@@ -50,7 +48,8 @@ class NonQresyncExtensionHandler {
         Timber.v("SYNC: About to fetch UIDs for messages %d through %d in folder %s",
                 remoteStart, remoteMessageCount, folderName);
 
-        findRemoteMessagesToDownload(localUidMap, remoteMessages, remoteUidMap, remoteStart);
+        findRemoteMessagesToDownload(account, imapFolder, localUidMap, remoteMessages, remoteUidMap, remoteStart,
+                listener);
 
         if (account.syncRemoteDeletions()) {
             List<String> deletedUids = findDeletedMessageUids(localUidMap, remoteUidMap);
@@ -69,7 +68,7 @@ class NonQresyncExtensionHandler {
         }
 
         if (localFolder.isCachedHighestModSeqValid() && imapFolder.supportsModSeq() && K9.shouldUseCondstore()) {
-            downloadChangedMessageFlagsUsingCondstore(syncFlagMessages, flagSyncHelper);
+            downloadChangedMessageFlagsUsingCondstore(account, localFolder, imapFolder, syncFlagMessages);
         } else {
             flagSyncHelper.refreshLocalMessageFlags(account, imapFolder, localFolder, syncFlagMessages);
         }
@@ -77,8 +76,10 @@ class NonQresyncExtensionHandler {
         return messageDownloader.downloadMessages(account, imapFolder, localFolder, newMessages, true, true);
     }
 
-    private void findRemoteMessagesToDownload(Map<String, Long> localUidMap, List<ImapMessage> remoteMessages,
-            Map<String, ImapMessage> remoteUidMap, int remoteStart) throws MessagingException {
+    private void findRemoteMessagesToDownload(Account account, ImapFolder imapFolder,
+            Map<String, Long> localUidMap, List<ImapMessage> remoteMessages,
+            Map<String, ImapMessage> remoteUidMap, int remoteStart, MessagingListener listener)
+            throws MessagingException {
         String folderName = imapFolder.getName();
         final Date earliestDate = account.getEarliestPollDate();
         long earliestTimestamp = earliestDate != null ? earliestDate.getTime() : 0L;
@@ -125,8 +126,8 @@ class NonQresyncExtensionHandler {
         return deletedMessageUids;
     }
 
-    private void downloadChangedMessageFlagsUsingCondstore(List<Message> messages,
-            final FlagSyncHelper flagSyncHelper) throws MessagingException {
+    private void downloadChangedMessageFlagsUsingCondstore(final Account account, final LocalFolder localFolder,
+            ImapFolder imapFolder, List<Message> messages) throws MessagingException {
 
         if (messages.size() != 0) {
             Timber.v("SYNC: Fetching and syncing flags for %d local messages using CONDSTORE", messages.size());

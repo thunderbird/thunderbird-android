@@ -82,7 +82,7 @@ public class NonQresyncExtensionHandlerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        extensionHandler = new NonQresyncExtensionHandler(account, localFolder, imapFolder, listener, controller);
+        extensionHandler = new NonQresyncExtensionHandler(syncHelper, flagSyncHelper, controller, messageDownloader);
 
         configureLocalFolder();
         configureImapFolder();
@@ -93,7 +93,7 @@ public class NonQresyncExtensionHandlerTest {
     public void continueSync_shouldNotifyListenersOfHeaderSynchronization() throws Exception {
         when(account.syncRemoteDeletions()).thenReturn(true);
 
-        extensionHandler.continueSync(messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, listener);
 
         verify(listener).synchronizeMailboxHeadersStarted(account, FOLDER_NAME);
         verify(listener).synchronizeMailboxHeadersProgress(account, FOLDER_NAME, 1, 2);
@@ -108,7 +108,7 @@ public class NonQresyncExtensionHandlerTest {
         when(imapFolder.getMessages(eq(1), eq(2), any(Date.class), any(MessageRetrievalListener.class)))
                 .thenReturn(singletonList(remoteNewMessage));
 
-        extensionHandler.continueSync(messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, listener);
 
         verify(syncHelper).deleteLocalMessages(deletedUidsCaptor.capture(), eq(account), eq(localFolder), eq(imapFolder),
                 eq(controller), eq(listener));
@@ -122,7 +122,7 @@ public class NonQresyncExtensionHandlerTest {
         when(imapFolder.getMessages(eq(1), eq(2), any(Date.class), any(MessageRetrievalListener.class)))
                 .thenReturn(singletonList(remoteNewMessage));
 
-        extensionHandler.continueSync(messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, listener);
 
         verify(syncHelper, never()).deleteLocalMessages(anyList(), eq(account), eq(localFolder), eq(imapFolder),
                 eq(controller), eq(listener));
@@ -133,7 +133,7 @@ public class NonQresyncExtensionHandlerTest {
         when(localFolder.isCachedHighestModSeqValid()).thenReturn(true);
         when(imapFolder.supportsModSeq()).thenReturn(true);
 
-        extensionHandler.continueSync(messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, listener);
 
         verify(imapFolder).fetchChangedMessageFlagsUsingCondstore(condstoreFlagSyncCaptor.capture(), anyLong(),
                 any(MessageRetrievalListener.class));
@@ -144,7 +144,7 @@ public class NonQresyncExtensionHandlerTest {
     public void continueSync_withoutCondstore_shouldFetchFlagsForAllMessages() throws Exception {
         when(localFolder.isCachedHighestModSeqValid()).thenReturn(false);
 
-        extensionHandler.continueSync(messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, listener);
 
         verify(flagSyncHelper).refreshLocalMessageFlags(eq(account), eq(imapFolder), eq(localFolder),
                 syncFlagCaptor.capture());
@@ -156,7 +156,7 @@ public class NonQresyncExtensionHandlerTest {
         when(localFolder.isCachedHighestModSeqValid()).thenReturn(true);
         when(imapFolder.supportsModSeq()).thenReturn(false);
 
-        extensionHandler.continueSync(messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, listener);
 
         verify(flagSyncHelper).refreshLocalMessageFlags(eq(account), eq(imapFolder), eq(localFolder),
                 syncFlagCaptor.capture());
@@ -165,7 +165,7 @@ public class NonQresyncExtensionHandlerTest {
 
     @Test
     public void continueSync_shouldDownloadNewMessages() throws Exception {
-        extensionHandler.continueSync(messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, listener);
 
         verify(messageDownloader).downloadMessages(eq(account), eq(imapFolder), eq(localFolder),
                 downloadMessagesCaptor.capture(), eq(true), eq(true));

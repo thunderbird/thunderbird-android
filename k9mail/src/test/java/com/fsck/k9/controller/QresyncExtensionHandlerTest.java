@@ -80,7 +80,7 @@ public class QresyncExtensionHandlerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        extensionHandler = new QresyncExtensionHandler(account, localFolder, imapFolder, listener, controller);
+        extensionHandler = new QresyncExtensionHandler(syncHelper, flagSyncHelper, controller, messageDownloader);
 
         when(localFolder.getName()).thenReturn(FOLDER_NAME);
         when(localFolder.getSmallestMessageUid()).thenReturn(SMALLEST_LOCAL_UID);
@@ -101,7 +101,7 @@ public class QresyncExtensionHandlerTest {
         when(account.syncRemoteDeletions()).thenReturn(true);
         ArgumentCaptor<List> deletedUidsCaptor = ArgumentCaptor.forClass(List.class);
 
-        extensionHandler.continueSync(qresyncParamResponse, EXPUNGED_UIDS, messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, EXPUNGED_UIDS, listener);
 
         verify(syncHelper).deleteLocalMessages(deletedUidsCaptor.capture(), eq(account), eq(localFolder), eq(imapFolder),
                 eq(controller), eq(listener));
@@ -116,7 +116,7 @@ public class QresyncExtensionHandlerTest {
         EXPUNGED_UIDS.add("1");
         when(account.syncRemoteDeletions()).thenReturn(false);
 
-        extensionHandler.continueSync(qresyncParamResponse, EXPUNGED_UIDS, messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, EXPUNGED_UIDS, listener);
 
         verify(syncHelper, never()).deleteLocalMessages(anyCollection(), eq(account), eq(localFolder), eq(imapFolder),
                 eq(controller), eq(listener));
@@ -126,7 +126,7 @@ public class QresyncExtensionHandlerTest {
     public void continueSync_withModifiedMessage_shouldProcessFlags() throws Exception {
         ImapMessage modifiedMessage = addModifiedMessageToResponse(SMALLEST_LOCAL_UID + 1, false);
 
-        extensionHandler.continueSync(qresyncParamResponse, EXPUNGED_UIDS, messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, EXPUNGED_UIDS, listener);
 
         verify(flagSyncHelper).processDownloadedFlags(account, localFolder, modifiedMessage);
     }
@@ -135,7 +135,7 @@ public class QresyncExtensionHandlerTest {
     public void continueSync_withChangesToOutdatedMessage_shouldNotProcessFlags() throws Exception {
         ImapMessage modifiedMessage = addModifiedMessageToResponse(SMALLEST_LOCAL_UID - 1, false);
 
-        extensionHandler.continueSync(qresyncParamResponse, EXPUNGED_UIDS, messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, EXPUNGED_UIDS, listener);
 
         verify(flagSyncHelper, never()).processDownloadedFlags(account, localFolder, modifiedMessage);
     }
@@ -144,7 +144,7 @@ public class QresyncExtensionHandlerTest {
     public void continueSync_withNewMessage_shouldDownloadNewMessage() throws Exception {
         ImapMessage modifiedMessage = addModifiedMessageToResponse(SMALLEST_LOCAL_UID + 1, true);
 
-        extensionHandler.continueSync(qresyncParamResponse, EXPUNGED_UIDS, messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, EXPUNGED_UIDS, listener);
 
         verify(messageDownloader).downloadMessages(eq(account), eq(imapFolder), eq(localFolder),
                 downloadedMessagesCaptor.capture(), eq(true), eq(false));
@@ -162,7 +162,7 @@ public class QresyncExtensionHandlerTest {
         when(imapFolder.getMessages(eq(2), eq(2), any(Date.class), any(MessageRetrievalListener.class)))
                 .thenReturn(singletonList(oldMessage));
 
-        extensionHandler.continueSync(qresyncParamResponse, EXPUNGED_UIDS, messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, EXPUNGED_UIDS, listener);
 
         verify(messageDownloader).downloadMessages(eq(account), eq(imapFolder), eq(localFolder),
                 downloadedMessagesCaptor.capture(), eq(true), eq(true));
@@ -176,7 +176,7 @@ public class QresyncExtensionHandlerTest {
         when(imapFolder.getMessageCount()).thenReturn(3);
         ImapMessage newMessage = addModifiedMessageToResponse(SMALLEST_LOCAL_UID + 1, true);
 
-        extensionHandler.continueSync(qresyncParamResponse, EXPUNGED_UIDS, messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, EXPUNGED_UIDS, listener);
 
         verify(messageDownloader).downloadMessages(eq(account), eq(imapFolder), eq(localFolder),
                 downloadedMessagesCaptor.capture(), eq(true), eq(false));
@@ -192,7 +192,7 @@ public class QresyncExtensionHandlerTest {
         when(imapFolder.getMessageCount()).thenReturn(3);
         ImapMessage newMessage = addModifiedMessageToResponse(SMALLEST_LOCAL_UID + 1, true);
 
-        extensionHandler.continueSync(qresyncParamResponse, EXPUNGED_UIDS, messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, EXPUNGED_UIDS, listener);
 
         verify(messageDownloader).downloadMessages(eq(account), eq(imapFolder), eq(localFolder),
                 downloadedMessagesCaptor.capture(), eq(true), eq(false));
@@ -211,7 +211,7 @@ public class QresyncExtensionHandlerTest {
         when(imapFolder.getMessages(eq(1), eq(1), any(Date.class), any(MessageRetrievalListener.class)))
                 .thenReturn(singletonList(mock(ImapMessage.class)));
 
-        extensionHandler.continueSync(qresyncParamResponse, EXPUNGED_UIDS, messageDownloader, flagSyncHelper, syncHelper);
+        extensionHandler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, EXPUNGED_UIDS, listener);
 
         verify(listener).synchronizeMailboxHeadersStarted(account, FOLDER_NAME);
         verify(listener).synchronizeMailboxHeadersProgress(account, FOLDER_NAME, 1, 1);

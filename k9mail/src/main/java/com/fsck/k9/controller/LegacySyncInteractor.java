@@ -31,26 +31,25 @@ accounts only
  */
 class LegacySyncInteractor {
 
-    private final Account account;
-    private final String folderName;
-    private LocalFolder localFolder;
-    private Folder<? extends Message> remoteFolder;
-    private final MessagingListener listener;
     private final MessagingController controller;
+    private final MessageDownloader messageDownloader;
+    private final NotificationController notificationController;
 
-    LegacySyncInteractor(Account account, String folderName, MessagingListener listener, MessagingController controller) {
-        this.account = account;
-        this.folderName = folderName;
-        this.listener = listener;
+    LegacySyncInteractor(MessagingController controller, MessageDownloader messageDownloader,
+            NotificationController notificationController) {
         this.controller = controller;
+        this.messageDownloader = messageDownloader;
+        this.notificationController = notificationController;
     }
 
-    void performSync(MessageDownloader messageDownloader, NotificationController notificationController) {
+    void performSync(Account account, String folderName, MessagingListener listener) {
         for (MessagingListener l : controller.getListeners(listener)) {
             l.synchronizeMailboxStarted(account, folderName);
         }
 
         Exception commandException = null;
+        LocalFolder localFolder = null;
+        Folder<? extends Message> remoteFolder = null;
 
         try {
             Timber.d("SYNC: About to process pending commands for account %s", account.getDescription());
@@ -309,7 +308,6 @@ class LegacySyncInteractor {
         }
         return true;
     }
-
 
     private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
             throws MessagingException, IOException {

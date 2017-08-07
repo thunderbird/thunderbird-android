@@ -65,7 +65,7 @@ public class LegacySyncInteractorTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        syncInteractor = new LegacySyncInteractor(account, FOLDER_NAME, listener, controller);
+        syncInteractor = new LegacySyncInteractor(controller, messageDownloader, notificationController);
 
         configureLocalStoreWithFolder();
         configureRemoteStoreWithFolder();
@@ -76,7 +76,7 @@ public class LegacySyncInteractorTest {
     public void performSync_withOneMessageInRemoteFolder_shouldFinishWithoutError() throws Exception {
         messageCountInRemoteFolder(1);
 
-        syncInteractor.performSync(messageDownloader, notificationController);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(listener).synchronizeMailboxFinished(account, FOLDER_NAME, 1, 0);
     }
@@ -85,7 +85,7 @@ public class LegacySyncInteractorTest {
     public void performSync_withEmptyRemoteFolder_shouldFinishWithoutError() throws Exception {
         messageCountInRemoteFolder(0);
 
-        syncInteractor.performSync(messageDownloader, notificationController);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(listener).synchronizeMailboxFinished(account, FOLDER_NAME, 0, 0);
     }
@@ -94,7 +94,7 @@ public class LegacySyncInteractorTest {
     public void performSync_withNegativeMessageCountInRemoteFolder_shouldFinishWithError() throws Exception {
         messageCountInRemoteFolder(-1);
 
-        syncInteractor.performSync(messageDownloader, notificationController);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(listener).synchronizeMailboxFailed(account, FOLDER_NAME,
                 "Exception: Message count -1 for folder Folder");
@@ -104,7 +104,7 @@ public class LegacySyncInteractorTest {
     public void performSync_shouldOpenRemoteFolderFromStore() throws Exception {
         messageCountInRemoteFolder(1);
 
-        syncInteractor.performSync(messageDownloader, notificationController);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(remoteFolder).open(Folder.OPEN_MODE_RW);
     }
@@ -114,7 +114,7 @@ public class LegacySyncInteractorTest {
         messageCountInRemoteFolder(1);
         when(account.getExpungePolicy()).thenReturn(Account.Expunge.EXPUNGE_ON_POLL);
 
-        syncInteractor.performSync(messageDownloader, notificationController);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(remoteFolder).expunge();
     }
@@ -124,7 +124,7 @@ public class LegacySyncInteractorTest {
         messageCountInRemoteFolder(1);
         when(account.getExpungePolicy()).thenReturn(Account.Expunge.EXPUNGE_MANUALLY);
 
-        syncInteractor.performSync(messageDownloader, notificationController);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(remoteFolder, never()).expunge();
     }
@@ -138,7 +138,7 @@ public class LegacySyncInteractorTest {
         when(localFolder.getMessagesByUids(any(List.class)))
                 .thenReturn(Collections.singletonList(localCopyOfRemoteDeletedMessage));
 
-        syncInteractor.performSync(messageDownloader, notificationController);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder).destroyMessages(messageListCaptor.capture());
         assertEquals(localCopyOfRemoteDeletedMessage, messageListCaptor.getValue().get(0));
@@ -155,7 +155,7 @@ public class LegacySyncInteractorTest {
         when(localMessage.olderThan(dateOfEarliestPoll)).thenReturn(false);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessage));
 
-        syncInteractor.performSync(messageDownloader, notificationController);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder, never()).destroyMessages(messageListCaptor.capture());
     }
@@ -172,7 +172,7 @@ public class LegacySyncInteractorTest {
         when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(singletonMap("1", 0L));
         when(localFolder.getMessagesByUids(any(List.class))).thenReturn(Collections.singletonList(localMessage));
 
-        syncInteractor.performSync(messageDownloader, notificationController);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder).destroyMessages(messageListCaptor.capture());
         assertEquals(localMessage, messageListCaptor.getValue().get(0));
@@ -186,7 +186,7 @@ public class LegacySyncInteractorTest {
         when(account.syncRemoteDeletions()).thenReturn(false);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(remoteDeletedMessage));
 
-        syncInteractor.performSync(messageDownloader, notificationController);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(localFolder, never()).destroyMessages(messageListCaptor.capture());
     }
@@ -196,7 +196,7 @@ public class LegacySyncInteractorTest {
         messageCountInRemoteFolder(1);
         localMessageWithCopyOnServer();
 
-        syncInteractor.performSync(messageDownloader, notificationController);
+        syncInteractor.performSync(account, FOLDER_NAME, listener);
 
         verify(messageDownloader).downloadMessages(eq(account), eq(remoteFolder), eq(localFolder),
                 messageListCaptor.capture(), eq(true), eq(true));

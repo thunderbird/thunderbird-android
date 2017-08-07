@@ -19,23 +19,21 @@ import timber.log.Timber;
 
 class QresyncExtensionHandler {
 
-    private final Account account;
-    private final LocalFolder localFolder;
-    private final ImapFolder imapFolder;
-    private final MessagingListener listener;
+    private final SyncHelper syncHelper;
+    private final FlagSyncHelper flagSyncHelper;
     private final MessagingController controller;
+    private final MessageDownloader messageDownloader;
 
-    QresyncExtensionHandler(Account account, LocalFolder localFolder, ImapFolder imapFolder, MessagingListener listener,
-            MessagingController controller) {
-        this.account = account;
-        this.localFolder = localFolder;
-        this.imapFolder = imapFolder;
-        this.listener = listener;
+    QresyncExtensionHandler(SyncHelper syncHelper, FlagSyncHelper flagSyncHelper, MessagingController controller,
+            MessageDownloader messageDownloader) {
+        this.syncHelper = syncHelper;
+        this.flagSyncHelper = flagSyncHelper;
         this.controller = controller;
+        this.messageDownloader = messageDownloader;
     }
 
-    int continueSync(QresyncParamResponse qresyncParamResponse, List<String> expungedUids,
-            MessageDownloader messageDownloader, FlagSyncHelper flagSyncHelper, SyncHelper syncHelper)
+    int continueSync(Account account, LocalFolder localFolder, ImapFolder imapFolder,
+            QresyncParamResponse qresyncParamResponse, List<String> expungedUids, MessagingListener listener)
             throws MessagingException, IOException {
         final String folderName = localFolder.getName();
         final List<ImapMessage> remoteMessagesToDownload = new ArrayList<>();
@@ -50,13 +48,14 @@ class QresyncExtensionHandler {
             l.synchronizeMailboxHeadersStarted(account, folderName);
         }
 
-        processFetchResponses(remoteMessagesToDownload, qresyncParamResponse, flagSyncHelper, syncHelper);
+        processFetchResponses(account, localFolder, imapFolder, remoteMessagesToDownload, qresyncParamResponse);
 
         boolean flaglessMessagesPresent = false;
         int newLocalMessageCount = remoteMessagesToDownload.size() + localFolder.getMessageCount();
         if (imapFolder.getMessageCount() >= localFolder.getVisibleLimit() && imapFolder.getMessageCount() >=
                 newLocalMessageCount) {
-            flaglessMessagesPresent = findOldRemoteMessagesToDownload(remoteMessagesToDownload, syncHelper);
+            flaglessMessagesPresent = findOldRemoteMessagesToDownload(account, localFolder, imapFolder,
+                    remoteMessagesToDownload, listener);
         }
 
         int messageDownloadCount = remoteMessagesToDownload.size();
@@ -69,8 +68,9 @@ class QresyncExtensionHandler {
                 flaglessMessagesPresent);
     }
 
-    private void processFetchResponses(List<ImapMessage> remoteMessagesToDownload, QresyncParamResponse
-            qresyncParamResponse, FlagSyncHelper flagSyncHelper, SyncHelper syncHelper) throws MessagingException {
+    private void processFetchResponses(Account account, LocalFolder localFolder, ImapFolder imapFolder,
+            List<ImapMessage> remoteMessagesToDownload, QresyncParamResponse qresyncParamResponse)
+            throws MessagingException {
         String folderName = imapFolder.getName();
         final AtomicInteger headerProgress = new AtomicInteger(0);
 
@@ -108,8 +108,8 @@ class QresyncExtensionHandler {
         Timber.v("SYNC: Received %d new message UIDs in QRESYNC response", remoteMessagesToDownload.size());
     }
 
-    private boolean findOldRemoteMessagesToDownload(List<ImapMessage> remoteMessagesToDownload, SyncHelper syncHelper)
-            throws MessagingException {
+    private boolean findOldRemoteMessagesToDownload(Account account, LocalFolder localFolder, ImapFolder imapFolder,
+            List<ImapMessage> remoteMessagesToDownload, MessagingListener listener) throws MessagingException {
         /*At ths point, UIDs and flags for new messages and existing changed messages have been fetched, so all N
           messages in the local store should correspond to the most recent N messages in the remote store. We still need
           to download historical messages (messages older than the oldest message in the inbox) if necessary till we
