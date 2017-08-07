@@ -27,6 +27,7 @@ dependencies {
     compile "com.squareup.okio:okio:${okioVersion}"
     compile 'commons-io:commons-io:2.4'
     compile "com.android.support:support-v4:${androidSupportLibraryVersion}"
+    compile "com.android.support:design:${androidSupportLibraryVersion}"
     compile 'org.jsoup:jsoup:1.10.2'
     compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'

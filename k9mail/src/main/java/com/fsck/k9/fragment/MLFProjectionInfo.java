@@ -21,6 +21,7 @@ public final class MLFProjectionInfo {
             MessageColumns.CC_LIST,
             MessageColumns.READ,
             MessageColumns.FLAGGED,
+            MessageColumns.FLAGS,
             MessageColumns.ANSWERED,
             MessageColumns.FORWARDED,
             MessageColumns.ATTACHMENT_COUNT,
@@ -44,16 +45,17 @@ public final class MLFProjectionInfo {
     static final int CC_LIST_COLUMN = 7;
     static final int READ_COLUMN = 8;
     static final int FLAGGED_COLUMN = 9;
-    static final int ANSWERED_COLUMN = 10;
-    static final int FORWARDED_COLUMN = 11;
-    static final int ATTACHMENT_COUNT_COLUMN = 12;
-    static final int FOLDER_ID_COLUMN = 13;
-    static final int PREVIEW_TYPE_COLUMN = 14;
-    static final int PREVIEW_COLUMN = 15;
-    static final int THREAD_ROOT_COLUMN = 16;
-    static final int ACCOUNT_UUID_COLUMN = 17;
-    static final int FOLDER_NAME_COLUMN = 18;
-    static final int THREAD_COUNT_COLUMN = 19;
+    static final int FLAGS_COLUMN = 10;
+    static final int ANSWERED_COLUMN = 11;
+    static final int FORWARDED_COLUMN = 12;
+    static final int ATTACHMENT_COUNT_COLUMN = 13;
+    static final int FOLDER_ID_COLUMN = 14;
+    static final int PREVIEW_TYPE_COLUMN = 15;
+    static final int PREVIEW_COLUMN = 16;
+    static final int THREAD_ROOT_COLUMN = 17;
+    static final int ACCOUNT_UUID_COLUMN = 18;
+    static final int FOLDER_NAME_COLUMN = 19;
+    static final int THREAD_COUNT_COLUMN = 20;
 
     static final String[] PROJECTION = Arrays.copyOf(THREADED_PROJECTION,
             THREAD_COUNT_COLUMN);

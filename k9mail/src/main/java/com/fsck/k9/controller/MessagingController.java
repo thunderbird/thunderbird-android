@@ -75,6 +75,7 @@ import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.FolderType;
+import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -129,8 +130,12 @@ import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
 public class MessagingController {
     public static final long INVALID_MESSAGE_ID = -1;
 
-    private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
-
+    private static final Set<Flag> PREDEFINED_SYNC_FLAGS =
+        Collections.unmodifiableSet(new HashSet<Flag>(Arrays.asList(
+            Flag.SEEN,
+            Flag.FLAGGED,
+            Flag.ANSWERED,
+            Flag.FORWARDED)));
 
     private static MessagingController inst = null;
 
@@ -1608,24 +1613,9 @@ public class MessagingController {
                 messageChanged = true;
             }
         } else {
-            /* TODO should synchronize the local and remote flags, not just do "server-wins" */
-
-            /* Aggregate local and remote flags here before testing which one goes where */
-            Set<Flag> allFlags = new HashSet<Flag>(remoteMessage.getFlags());
-            allFlags.addAll(localMessage.getFlags());
-
-            /* Filter out the non-custom ones */
-            Iterator<Flag> it = allFlags.iterator();
-            while (it.hasNext()) {
-                if (!it.next().isCustom()) {
-                    it.remove();
-                }
-            }
-
-            /* add the "system" flags */
-            allFlags.addAll(Flag.SYNC_FLAGS);
-
-            for (Flag flag : allFlags) {
+            HashSet<Flag> syncFlags = new HashSet<Flag>(Keyword.getKeywords());
+            syncFlags.addAll(MessagingController.PREDEFINED_SYNC_FLAGS);
+            for (Flag flag : syncFlags) {
                 if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
                     localMessage.setFlag(flag, remoteMessage.isSet(flag));
                     messageChanged = true;
@@ -3633,9 +3623,13 @@ public class MessagingController {
                         accounts = prefs.getAvailableAccounts();
                     }
 
+                    prefs.loadKeywords();
+
                     for (final Account account : accounts) {
                         checkMailForAccount(context, account, ignoreLastCheckedTime, listener);
                     }
+
+                    prefs.saveKeywords();
 
                 } catch (Exception e) {
                     Timber.e(e, "Unable to synchronize mail");
@@ -3718,8 +3712,6 @@ public class MessagingController {
                 synchronizeFolder(account, folder, ignoreLastCheckedTime, accountInterval, listener);
             }
 
-            /* Now synchronize the mappings (db -> memory) */
-            localStore.updateTagMappings();
         } catch (MessagingException e) {
             Timber.e(e, "Unable to synchronize account %s", account.getName());
             addErrorMessage(account, null, e);

@@ -45,6 +45,7 @@
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_light</item>
         <item name="iconActionExpand">@drawable/ic_action_expand_light</item>
         <item name="iconActionCollapse">@drawable/ic_action_collapse_light</item>
+        <item name="iconTag">@drawable/ic_tag_light</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
@@ -64,6 +65,9 @@
         <item name="tintColorBulletPointPositive">#77aa22</item>
         <item name="tintColorBulletPointNegative">#dd2222</item>
         <item name="tintColorBulletPointNeutral">#888</item>
+        <item name="colorKeywordEditorEye">#FFA0A0A0</item>
+        <item name="colorKeywordNotVisible">#FFA0A0A0</item>
+        <item name="colorNoTags">#FFA0A0A0</item>
 
         <item name="openpgp_black">#000</item>
         <item name="openpgp_orange">#FF8800</item>
@@ -110,6 +114,7 @@
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_dark</item>
         <item name="iconActionExpand">@drawable/ic_action_expand_dark</item>
         <item name="iconActionCollapse">@drawable/ic_action_collapse_dark</item>
+        <item name="iconTag">@drawable/ic_tag_dark</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
@@ -129,6 +134,9 @@
         <item name="tintColorBulletPointPositive">#77aa22</item>
         <item name="tintColorBulletPointNegative">#dd2222</item>
         <item name="tintColorBulletPointNeutral">#bbb</item>
+        <item name="colorKeywordEditorEye">#FFA0A0A0</item>
+        <item name="colorKeywordNotVisible">#FF808080</item>
+        <item name="colorNoTags">#FF808080</item>
 
         <item name="openpgp_black">#fff</item>
         <item name="openpgp_orange">#ee7700</item>

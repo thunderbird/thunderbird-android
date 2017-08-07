@@ -122,9 +122,6 @@ public class LocalStore extends Store implements Serializable {
     static final int FOLDER_NOTIFY_CLASS_INDEX = 12;
     static final int MORE_MESSAGES_INDEX = 13;
 
-    static final int KEYWTAG_KEYWORD_INDEX = 0;
-    static final int KEYWTAG_TAG_INDEX = 1;
-
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 
     private static final String[] GET_ATTACHMENT_COLS = new String[] { "id", "root", "data_location", "encoding", "data" };
@@ -156,7 +153,7 @@ public class LocalStore extends Store implements Serializable {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 61;
+    public static final int DB_VERSION = 60;
 
 
     public static String getColumnNameForFlag(Flag flag) {
@@ -427,96 +424,6 @@ public class LocalStore extends Store implements Serializable {
             throw(MessagingException) e.getCause();
         }
         return folders;
-    }
-
-    @Override
-    public void updateTagMappings() throws MessagingException {
-        try {
-            /* For every keyword->tag mapping in the database, update the corresponding Flag object
-             * and change its attribute to match.
-             */
-            database.execute(false, new DbCallback <Map<String, Flag>> () {
-                @Override
-                public Map<String, Flag> doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    Cursor cursor = null;
-
-                    try {
-                        cursor = db.rawQuery("SELECT * FROM keyword_tag_map WHERE tag NOT NULL", null);
-                        while (cursor.moveToNext()) {
-                            String imapKeyword = cursor.getString(KEYWTAG_KEYWORD_INDEX);
-                            String tag = cursor.getString(KEYWTAG_TAG_INDEX);
-
-                            Flag keywordObj = Flag.valueOf(imapKeyword); /* obj added to map here */
-                            keywordObj.setTagName(tag);
-                        }
-                    } catch (Exception e) {
-                        throw new WrappedException(e);
-                    } finally {
-                        Utility.closeQuietly(cursor);
-                    }
-
-                    return Flag.REMEMBERED_KEYWORDS;
-                }
-            });
-
-            /* Now do the reverse: insert keywords from the memory map. Because they are UNIQUE,
-             * only the ones that do not yet exist in the db should be inserted.
-             */
-            database.execute(false, new DbCallback <Void> () {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    ContentValues cv = new ContentValues();
-
-                    try {
-                        for (Flag f : getTagMappings().values()) {
-                            cv.clear();
-                            cv.put("keyword", f.name());
-                            cv.put("tag", f.tagName());
-                            db.insert("keyword_tag_map", null, cv);
-                        }
-                    } catch (Exception e) {
-                        throw new WrappedException(e);
-                    } finally {
-                        /* No need to rollback inserted keywords */
-                    }
-
-                    return null;
-                }
-            });
-        } catch (WrappedException e) {
-            /* Not sure if we should throw a MessagingException here... */
-            //throw(MessagingException) e.getCause();
-        }
-    }
-
-    @Override
-    public void changeTagMapping(final Flag f) throws MessagingException {
-        try {
-            /* Use the tag name in memory to update the keyword's tag name in the database */
-            database.execute(false, new DbCallback <Void> () {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    int rows = 0;
-
-                    ContentValues cv = new ContentValues();
-                    cv.put("tag", f.tagName());
-
-                    try {
-                        rows = db.update("keyword_tag_map", cv, "keyword = ?", new String[] { f.name() });
-                    } catch (Exception e) {
-                        throw new WrappedException(e);
-                    }
-                    return null;
-                }
-            });
-        } catch (WrappedException e) {
-            /* Not sure if we should throw a MessagingException here... */
-            //throw(MessagingException) e.getCause();
-        }
-    }
-
-    public Map<String, Flag> getTagMappings() {
-        return Flag.REMEMBERED_KEYWORDS;
     }
 
     @Override
@@ -1054,7 +961,6 @@ public class LocalStore extends Store implements Serializable {
             }
         }
 
-        /* TODO does k-9/IMAP allow tags with commas in their names? */
         return Utility.combine(extraFlags, ',');
     }
 

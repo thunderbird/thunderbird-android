@@ -72,6 +72,7 @@ public class EmailProvider extends ContentProvider {
         THREAD_AGGREGATION_FUNCS.put(MessageColumns.ATTACHMENT_COUNT, "SUM");
         THREAD_AGGREGATION_FUNCS.put(MessageColumns.READ, "MIN");
         THREAD_AGGREGATION_FUNCS.put(MessageColumns.FLAGGED, "MAX");
+        THREAD_AGGREGATION_FUNCS.put(MessageColumns.FLAGS, "MAX");
         THREAD_AGGREGATION_FUNCS.put(MessageColumns.ANSWERED, "MIN");
         THREAD_AGGREGATION_FUNCS.put(MessageColumns.FORWARDED, "MIN");
     }

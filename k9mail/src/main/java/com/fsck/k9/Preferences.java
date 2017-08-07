@@ -2,9 +2,11 @@
 package com.fsck.k9;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +14,11 @@ import java.util.Map;
 import android.content.Context;
 import timber.log.Timber;
 
+import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.Storage;
-
 
 public class Preferences {
 
@@ -35,6 +37,7 @@ public class Preferences {
     private Map<String, Account> accounts = null;
     private List<Account> accountsInOrder = null;
     private Account newAccount;
+    private ArrayList<String> keywordListExternalCodes = null;
     private Context context;
 
     private Preferences(Context context) {
@@ -161,6 +164,115 @@ public class Preferences {
 
     public void setDefaultAccount(Account account) {
         getStorage().edit().putString("defaultAccountUuid", account.getUuid()).commit();
+    }
+
+    private synchronized ArrayList<String> loadKeywordList() {
+        if (keywordListExternalCodes == null) {
+            final String keywordList = getStorage().getString("keywords", null);
+            if ((keywordList != null) && (keywordList.length() != 0)) {
+                keywordListExternalCodes = new ArrayList<String>(
+                    Arrays.asList(keywordList.split(",")));
+            } else {
+                keywordListExternalCodes = new ArrayList<String>();
+            }
+        }
+        return keywordListExternalCodes;
+    }
+
+    private synchronized void saveKeywordList(ArrayList<String> externalCodes)
+    {
+        String keywordList = new String();
+        boolean first = true;
+        for (String externalCode : externalCodes) {
+            if (first) {
+                keywordList += externalCode;
+                first = false;
+            } else {
+                keywordList += "," + externalCode;
+            }
+        }
+        getStorage().edit().putString("keywords", keywordList).commit();
+        keywordListExternalCodes = externalCodes;
+    }
+
+    public synchronized void loadKeywords() {
+        if (keywordListExternalCodes != null) {
+            return;
+        }
+
+        Storage storage = getStorage();
+        ArrayList<String> externalCodes = loadKeywordList();
+        for (String externalCode : externalCodes) {
+            final String baseKey = "keyword." + externalCode + ".";
+            final String name = storage.getString(baseKey + "name", null);
+            final boolean visible = storage.getBoolean(baseKey + "visible", true);
+            final int color = storage.getInt(baseKey + "color", -1);
+
+            Keyword k = Keyword.getKeywordByExternalCode(externalCode);
+            k.setName(name);
+            k.setVisible(visible);
+            k.setColor(color);
+        }
+    }
+
+    public synchronized void saveKeywords() {
+        saveKeywords(/*saveOnlyKeywordOrder*/ false);
+    }
+
+    public synchronized void saveKeywordOrder() {
+        saveKeywords(/*saveOnlyKeywordOrder*/ true);
+    }
+
+    public synchronized void saveKeywords(boolean saveOnlyKeywordOrder) {
+        ArrayList<String> oldExternalCodes = loadKeywordList();
+        ArrayList<String> newExternalCodes = new ArrayList<String>();
+        HashSet<String> deletedExternalCodes =
+            new HashSet<String>(oldExternalCodes);
+
+        for (Keyword keyword : Keyword.getKeywords()) {
+            if (!saveOnlyKeywordOrder) {
+                updateKeyword(keyword);
+            }
+            newExternalCodes.add(keyword.getExternalCode());
+            deletedExternalCodes.remove(keyword.getExternalCode());
+        }
+        if (oldExternalCodes != newExternalCodes) {
+            saveKeywordList(newExternalCodes);
+        }
+        if (deletedExternalCodes.size() != 0) {
+            deleteKeywords(deletedExternalCodes);
+        }
+    }
+
+    // NOTE: This either updates in place or appends to the end.
+    public synchronized void saveKeyword(Keyword keyword) {
+        updateKeyword(keyword);
+        ArrayList<String> externalCodes = loadKeywordList();
+        boolean addedKeywords = false;
+        if (!externalCodes.contains(keyword.getExternalCode())) {
+            externalCodes.add(keyword.getExternalCode());
+            saveKeywordList(externalCodes);
+        }
+    }
+
+    private void updateKeyword(Keyword keyword) {
+        final String baseKey = "keyword." + keyword.getExternalCode() + ".";
+        StorageEditor edit = getStorage().edit();
+        edit.putString(baseKey + "name", keyword.getName());
+        edit.putBoolean(baseKey + "visible", keyword.isVisible());
+        edit.putInt(baseKey + "color", keyword.getColor());
+        edit.commit();
+    }
+
+    private void deleteKeywords(Collection<String> externalCodes) {
+        StorageEditor edit = getStorage().edit();
+        for (String externalCode : externalCodes) {
+            final String baseKey = "keyword." + externalCode + ".";
+            edit.remove(baseKey + "name");
+            edit.remove(baseKey + "visible");
+            edit.remove(baseKey + "color");
+        }
+        edit.commit();
     }
 
     public Storage getStorage() {

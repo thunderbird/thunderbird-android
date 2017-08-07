@@ -1,8 +1,9 @@
 package com.fsck.k9.ui.messageview;
 
-
+import java.lang.Exception;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -36,13 +37,16 @@ import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.OpenPgpAppSelectDialog;
+import com.fsck.k9.activity.KeywordEditor;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
+import com.fsck.k9.fragment.TagChoiceDialogFragment;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
@@ -61,6 +65,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
+    private static final int ACTIVITY_KEYWORD_EDITOR = 4;
 
     public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
@@ -179,6 +184,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             @Override
             public void onClick(View v) {
                 onToggleFlagged();
+            }
+        });
+
+        mMessageView.setOnTagsClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onTagDialog();
             }
         });
 
@@ -343,6 +355,41 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
+    public void onTagDialog() {
+        try {
+            TagChoiceDialogFragment fragment = new TagChoiceDialogFragment();
+            fragment.setPreSelectedTags(
+                Keyword.getVisibleKeywords(mMessage.getFlags()));
+            fragment.show(getFragmentManager(), "tag_choice");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onStoreTags(Set<Keyword> addedTags, Set<Keyword> deletedTags) {
+        if (mMessage == null) {
+            return;
+        }
+
+        for (Keyword tag : addedTags) {
+            mController.setFlag(mAccount, mMessage.getFolder().getName(),
+                Collections.singletonList(mMessage), tag, true);
+        }
+
+        for (Keyword tag : deletedTags) {
+            mController.setFlag(mAccount, mMessage.getFolder().getName(),
+                Collections.singletonList(mMessage), tag, false);
+        }
+
+        mMessageView.setHeaders(mMessage, mAccount);
+    }
+
+    public void onStartKeywordEditor() {
+        Intent intentKeywordEditor =
+            new Intent(getActivity(), KeywordEditor.class);
+        startActivityForResult(intentKeywordEditor, ACTIVITY_KEYWORD_EDITOR);
+    }
+
     public void onMove() {
         if ((!mController.isMoveCapable(mAccount))
                 || (mMessage == null)) {
@@ -459,6 +506,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     }
                 }
                 break;
+            }
+            case ACTIVITY_KEYWORD_EDITOR: {
+                if (mMessage != null) {
+                    mMessageView.setHeaders(mMessage, mAccount);
+                }
             }
         }
     }

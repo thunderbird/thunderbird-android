@@ -202,7 +202,7 @@
         </activity>
 
         <activity
-            android:name=".activity.TagMapping"
+            android:name=".activity.KeywordEditor"
             android:configChanges="locale"
             android:uiOptions="splitActionBarWhenNarrow">
         </activity>

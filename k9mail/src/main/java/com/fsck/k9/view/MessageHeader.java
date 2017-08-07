@@ -16,6 +16,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import timber.log.Timber;
@@ -32,7 +33,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.TagMapping;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.ContactPicture;
@@ -41,6 +41,7 @@ import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -58,13 +59,13 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView mCcView;
     private TextView mCcLabel;
     private TextView mTagsView;
-    private TextView mTagsLabel;
     private TextView mSubjectView;
     private MessageCryptoStatusView mCryptoStatusIcon;
 
     private View mChip;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
+    private int defaultTagsColor;
     private TextView mAdditionalHeadersView;
     private View mAnsweredIcon;
     private View mForwardedIcon;
@@ -114,7 +115,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mCcView = (TextView) findViewById(R.id.cc);
         mCcLabel = (TextView) findViewById(R.id.cc_label);
         mTagsView = (TextView) findViewById(R.id.tags);
-        mTagsLabel = (TextView) findViewById(R.id.tags_label);
 
         mContactBadge = (ContactBadge) findViewById(R.id.contact_badge);
 
@@ -134,8 +134,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mFontSizes.setViewTextSize(mToLabel, mFontSizes.getMessageViewTo());
         mFontSizes.setViewTextSize(mCcView, mFontSizes.getMessageViewCC());
         mFontSizes.setViewTextSize(mCcLabel, mFontSizes.getMessageViewCC());
-        mFontSizes.setViewTextSize(mTagsView, mFontSizes.getMessageViewCC()); /* same font as cc */
-        mFontSizes.setViewTextSize(mTagsLabel, mFontSizes.getMessageViewCC());
+
+        defaultTagsColor = mTagsView.getCurrentTextColor();
+        mFontSizes.setViewTextSize(mTagsView, mFontSizes.getMessageViewTags());
 
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
@@ -169,13 +170,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             }
             case R.id.crypto_status_icon: {
                 onCryptoClickListener.onCryptoClick();
-                break;
-            }
-            case R.id.tags:
-            case R.id.tags_label: {
-                Intent intent = new Intent(mContext, TagMapping.class);
-                intent.putExtra("account", mAccount.getUuid());
-                mContext.startActivity(intent);
                 break;
             }
         }
@@ -228,6 +222,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     public void setOnFlagListener(OnClickListener listener) {
         mFlagged.setOnClickListener(listener);
+    }
+
+    public void setOnTagsListener(OnClickListener listener) {
+        mTagsView.setOnClickListener(listener);
     }
 
     public boolean additionalHeadersVisible() {
@@ -358,21 +356,31 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
 
-        /* Are there user tags? Show them */
-        StringBuilder sb = new StringBuilder();
-        if (!msgFlags.isEmpty()) {
-            for (Flag f : msgFlags) {
-                if (f.isCustom() && f.tagName().length() > 0) {
-                    sb.append(f.tagName() + ", ");
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        List<Keyword> tags = Keyword.getVisibleKeywords(msgFlags);
+        if (tags.size() != 0) {
+            boolean first = true;
+            for (Keyword keyword : tags) {
+                if (!first) {
+                    sb.append(", ");
+                } else {
+                    first = false;
                 }
+                ForegroundColorSpan colorSpan =
+                    new ForegroundColorSpan(keyword.getTextColor());
+                SpannableString sp = new SpannableString(keyword.getName());
+                sp.setSpan(colorSpan, 0, sp.length(), 0);
+                sb.append(sp);
             }
-
-            /* Remove last comma-space */
-            if (sb.length() > 0) {
-                sb.setLength(sb.length()-2);
-            }
+        } else {
+            ForegroundColorSpan colorSpan =
+                new ForegroundColorSpan(defaultTagsColor);
+            SpannableString sp = new SpannableString(
+                getResources().getString(R.string.message_view_no_tags));
+            sp.setSpan(colorSpan, 0, sp.length(), 0);
+            sb.append(sp);
         }
-        updateAddressField(mTagsView, sb, mTagsLabel);
+        mTagsView.setText(sb);
 
         mChip.setBackgroundColor(mAccount.getChipColor());
 

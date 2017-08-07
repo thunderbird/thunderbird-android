@@ -37,6 +37,7 @@
         <attr name="iconActionRequestReadReceipt" format="reference" />
         <attr name="iconActionExpand" format="reference" />
         <attr name="iconActionCollapse" format="reference" />
+        <attr name="iconTag" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />
@@ -57,6 +58,9 @@
         <attr name="tintColorBulletPointPositive" format="reference|color"/>
         <attr name="tintColorBulletPointNeutral" format="reference|color"/>
         <attr name="tintColorBulletPointNegative" format="reference|color"/>
+        <attr name="colorKeywordEditorEye" format="reference|color"/>
+        <attr name="colorKeywordNotVisible" format="reference|color"/>
+        <attr name="colorNoTags" format="reference|color"/>
 
         <attr name="openpgp_black" format="reference|color" />
         <attr name="openpgp_orange" format="reference|color" />

@@ -17,12 +17,6 @@ public abstract class Store {
 
     public abstract List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException;
 
-    public void updateTagMappings() throws MessagingException {
-    }
-
-    public void changeTagMapping(Flag f) throws MessagingException {
-    }
-
     public abstract void checkSettings() throws MessagingException;
 
     public boolean isCopyCapable() {

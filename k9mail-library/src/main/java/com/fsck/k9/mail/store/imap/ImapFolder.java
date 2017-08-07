@@ -24,6 +24,7 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
@@ -866,7 +867,8 @@ class ImapFolder extends Folder<ImapMessage> {
             ImapList flags = fetchList.getKeyedList("FLAGS");
             if (flags != null) {
                 for (int i = 0, count = flags.size(); i < count; i++) {
-                    message.setFlagInternal(Flag.valueOfByRealName(flags.getString(i)), true);
+                    message.setFlagInternal(Flag.getFlagByExternalCode(
+                        flags.getString(i)), true);
                 }
             }
         }
@@ -1264,7 +1266,7 @@ class ImapFolder extends Folder<ImapMessage> {
         for (Flag flag : flags) {
             // client's can't add the RECENT flag!
             if (!flag.equals(Flag.RECENT)) {
-                flagNames.add(flag.realName());
+                flagNames.add(flag.getExternalCode());
             }
         }
 
@@ -1394,16 +1396,15 @@ class ImapFolder extends Folder<ImapMessage> {
             public List<ImapResponse> search() throws IOException, MessagingException {
                 String imapQuery = "UID SEARCH ";
                 if (requiredFlags != null) {
-                    /* TODO not sure of this: should probably use Flag.mName instead */
                     for (Flag flag : requiredFlags) {
-                        imapQuery += flag.toString() + " ";
+                        imapQuery += flag.getExternalCode() + " ";
                     }
                 }
 
                 if (forbiddenFlags != null) {
                     for (Flag flag : forbiddenFlags) {
-                        if (!flag.isCustom()) {
-                            imapQuery += "UN" + flag.toString() + " ";
+                        if (!(flag instanceof Keyword)) {
+                            imapQuery += "UN" + flag.getExternalCode() + " ";
                         }
                     }
                 }

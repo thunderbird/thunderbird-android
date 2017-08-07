@@ -75,8 +75,6 @@ public class Migrations {
                 MigrationTo59.addMissingIndexes(db);
             case 59:
                 MigrationTo60.migratePendingCommands(db);
-            case 60:
-                MigrationTo61.addKeywords(db);
         }
     }
 }

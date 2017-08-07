@@ -18,13 +18,17 @@ import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mailstore.DatabasePreviewType;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.ContactBadge;
 
 import static com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN;
@@ -32,6 +36,7 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.CC_LIST_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.DATE_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FLAGGED_COLUMN;
+import static com.fsck.k9.fragment.MLFProjectionInfo.FLAGS_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_NAME_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FORWARDED_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_COLUMN;
@@ -43,6 +48,7 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN;
 
+import java.util.List;
 
 public class MessageListAdapter extends CursorAdapter {
 
@@ -168,6 +174,24 @@ public class MessageListAdapter extends CursorAdapter {
         boolean answered = (cursor.getInt(ANSWERED_COLUMN) == 1);
         boolean forwarded = (cursor.getInt(FORWARDED_COLUMN) == 1);
 
+        Keyword firstTag = null;
+        String flagList = cursor.getString(FLAGS_COLUMN);
+
+        if (flagList != null && flagList.length() > 0) {
+            final int preExistingKeywords = Keyword.getKeywords().size();
+            List<Flag> flags = Flag.parseCodeList(flagList);
+            if (preExistingKeywords != Keyword.getKeywords().size()) {
+                Preferences.getPreferences(context).saveKeywords();
+            }
+
+            List<Keyword> orderedTags = Keyword.getVisibleKeywords(flags);
+            if (orderedTags.size() > 0) {
+                firstTag = orderedTags.get(0);
+            }
+        }
+
+
+
         boolean hasAttachments = (cursor.getInt(ATTACHMENT_COUNT_COLUMN) > 0);
 
         MessageViewHolder holder = (MessageViewHolder) view.getTag();
@@ -188,7 +212,7 @@ public class MessageListAdapter extends CursorAdapter {
         if (holder.contactBadge != null) {
             updateContactBadge(holder, counterpartyAddress);
         }
-        setBackgroundColor(view, selected, read);
+        setBackgroundColor(view, selected, read, firstTag);
         if (fragment.activeMessage != null) {
             changeBackgroundColorIfActiveMessage(cursor, account, view);
         }
@@ -320,20 +344,37 @@ public class MessageListAdapter extends CursorAdapter {
         return null;
     }
 
-    private void setBackgroundColor(View view, boolean selected, boolean read) {
+    private void setBackgroundColor(
+        View view, boolean selected, boolean read, Keyword firstTag)
+    {
         if (selected || K9.useBackgroundAsUnreadIndicator()) {
             int res;
             if (selected) {
                 res = R.attr.messageListSelectedBackgroundColor;
-            } else if (read) {
-                res = R.attr.messageListReadItemBackgroundColor;
             } else {
-                res = R.attr.messageListUnreadItemBackgroundColor;
+                if (read) {
+                    res = R.attr.messageListReadItemBackgroundColor;
+                } else {
+                    res = R.attr.messageListUnreadItemBackgroundColor;
+                }
             }
 
             TypedValue outValue = new TypedValue();
             fragment.getActivity().getTheme().resolveAttribute(res, outValue, true);
-            view.setBackgroundColor(outValue.data);
+            int backgroundColor = outValue.data;
+
+            if (firstTag != null)
+            {
+                if (K9.getK9Theme() == K9.Theme.LIGHT) {
+                    backgroundColor =
+                        firstTag.blendLightBackgroundColor(backgroundColor);
+                } else {
+                    backgroundColor =
+                        firstTag.blendDarkBackgroundColor(backgroundColor);
+                }
+            }
+
+            view.setBackgroundColor(backgroundColor);
         } else {
             view.setBackgroundColor(Color.TRANSPARENT);
         }

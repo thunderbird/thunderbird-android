@@ -70,7 +70,7 @@ public class MessageReference {
         refString.append(Base64.encode(uid));
         if (flag != null) {
             refString.append(IDENTITY_SEPARATOR);
-            refString.append(flag.name());
+            refString.append(flag.getCode());
         }
 
         return refString.toString();

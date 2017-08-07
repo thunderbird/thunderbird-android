@@ -563,4 +563,36 @@
         <item>NEVER</item>
         <item>WHEN_IN_LANDSCAPE</item>
     </string-array>
+
+    <string-array name="default_keyword_external_codes" translatable="false">
+      <item>$label1</item>
+      <item>$label2</item>
+      <item>$label3</item>
+      <item>$label4</item>
+      <item>$label5</item>
+    </string-array>
+
+    <string-array name="default_keyword_names">
+      <item>@string/default_keyword_name_1</item>
+      <item>@string/default_keyword_name_2</item>
+      <item>@string/default_keyword_name_3</item>
+      <item>@string/default_keyword_name_4</item>
+      <item>@string/default_keyword_name_5</item>
+    </string-array>
+
+    <array name="default_keyword_colors">
+      <item>#FFFF0000</item>
+      <item>#FFFFAA00</item>
+      <item>#FF00FF00</item>
+      <item>#FF0000FF</item>
+      <item>#FFFF00FF</item>
+    </array>
+
+    <array name="default_keyword_positions">
+      <item>0</item>
+      <item>1</item>
+      <item>2</item>
+      <item>3</item>
+      <item>4</item>
+    </array>
 </resources>

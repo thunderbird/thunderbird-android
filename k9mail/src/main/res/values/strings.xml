@@ -282,7 +282,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_from_format">From: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">To:</string>
     <string name="message_view_cc_label">Cc:</string>
-    <string name="message_view_tags_label">Tags:</string>
+    <string name="message_view_no_tags">No tags</string>
     <string name="message_view_attachment_view_action">Open</string>
     <string name="message_view_attachment_download_action">Save</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment to SD card.</string>
@@ -292,6 +292,23 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_download_remainder">Download complete message</string>
     <string name="message_view_toast_unable_to_display_message">Unable to display message</string>
     <string name="message_view_sender_label">via %1$s</string>
+
+    <string name="tag_choice_dialog_title">Select tags</string>
+    <string name="keyword_edit_name_dialog_title">Edit tag name</string>
+    <string name="keyword_external_code_title">Server keyword:</string>
+    <string name="add_keyword_action">Add keyword</string>
+    <string name="delete_keyword_action">Delete keyword</string>
+    <string name="delete_keyword_confirmation_title">Delete keyword \"%s\"?</string>
+    <string name="delete_keyword_confirmation_message" formatted="false">Do you really want to delete the keyword \"%s\" (server keyword: \"%s\")?\n\nIt will be added back automatically, once an email is encountered that still has this keyword set.</string>
+    <string name="keyword_add_dialog_title">Add server keyword</string>
+    <string name="keyword_external_code_invalid">Invalid server keyword</string>
+
+
+    <string name="default_keyword_name_1">Important</string>
+    <string name="default_keyword_name_2">Work</string>
+    <string name="default_keyword_name_3">Personal</string>
+    <string name="default_keyword_name_4">To Do</string>
+    <string name="default_keyword_name_5">Later</string>
 
     <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>
@@ -903,6 +920,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_message_view_sender">Sender</string>
     <string name="font_size_message_view_to">To</string>
     <string name="font_size_message_view_cc">Cc</string>
+    <string name="font_size_message_view_tags">Tags</string>
     <string name="font_size_message_view_additional_headers">Additional headers</string>
     <string name="font_size_message_view_subject">Subject</string>
     <string name="font_size_message_view_date">Time and date</string>
