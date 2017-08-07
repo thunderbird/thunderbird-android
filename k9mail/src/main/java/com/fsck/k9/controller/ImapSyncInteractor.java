@@ -110,6 +110,8 @@ class ImapSyncInteractor {
                         listener);
             }
 
+            syncHelper.updateMoreMessages(account, localFolder, imapFolder);
+
             localFolder.setUidValidity(imapFolder.getUidValidity());
             updateHighestModSeqIfNecessary(localFolder, imapFolder);
 

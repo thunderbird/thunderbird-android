@@ -110,7 +110,7 @@ public class NonQresyncExtensionHandlerTest {
 
         extensionHandler.continueSync(account, localFolder, imapFolder, listener);
 
-        verify(syncHelper).deleteLocalMessages(deletedUidsCaptor.capture(), eq(account), eq(localFolder), eq(imapFolder),
+        verify(syncHelper).deleteLocalMessages(deletedUidsCaptor.capture(), eq(account), eq(localFolder),
                 eq(controller), eq(listener));
         assertEquals(deletedUidsCaptor.getValue(), singletonList(OLD_MESSAGE_UID));
     }
@@ -124,8 +124,8 @@ public class NonQresyncExtensionHandlerTest {
 
         extensionHandler.continueSync(account, localFolder, imapFolder, listener);
 
-        verify(syncHelper, never()).deleteLocalMessages(anyList(), eq(account), eq(localFolder), eq(imapFolder),
-                eq(controller), eq(listener));
+        verify(syncHelper, never()).deleteLocalMessages(anyList(), eq(account), eq(localFolder), eq(controller),
+                eq(listener));
     }
 
     @Test

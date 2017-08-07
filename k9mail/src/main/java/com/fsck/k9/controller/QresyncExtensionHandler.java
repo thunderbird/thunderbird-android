@@ -41,7 +41,7 @@ class QresyncExtensionHandler {
         if (account.syncRemoteDeletions()) {
             List<String> deletedUids = new ArrayList<>(expungedUids);
             deletedUids.addAll(qresyncParamResponse.getExpungedUids());
-            syncHelper.deleteLocalMessages(deletedUids, account, localFolder, imapFolder, controller, listener);
+            syncHelper.deleteLocalMessages(deletedUids, account, localFolder, controller, listener);
         }
 
         for (MessagingListener l : controller.getListeners(listener)) {

@@ -2,7 +2,6 @@ package com.fsck.k9.controller;
 
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.fsck.k9.Account;
@@ -14,7 +13,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapMessage;
 import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,8 +24,6 @@ import org.robolectric.annotation.Config;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static junit.framework.TestCase.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -104,22 +100,9 @@ public class SyncHelperTest {
         LocalMessage destroyedMessage = mock(LocalMessage.class);
         when(localFolder.getMessagesByUids(singleton("1"))).thenReturn(singletonList(destroyedMessage));
 
-        syncHelper.deleteLocalMessages(singleton("1"), account, localFolder, remoteFolder, controller, listener);
+        syncHelper.deleteLocalMessages(singleton("1"), account, localFolder, controller, listener);
 
         verify(listener).synchronizeMailboxRemovedMessage(account, FOLDER_NAME, destroyedMessage);
-    }
-
-    @Test
-    public void deleteLocalMessages_withDeletedMessages_shouldUpdateMoreMessages() throws Exception {
-        LocalMessage destroyedMessage = mock(LocalMessage.class);
-        when(localFolder.getMessagesByUids(singleton("1"))).thenReturn(singletonList(destroyedMessage));
-        when(remoteFolder.getMessageCount()).thenReturn(152);
-        when(localFolder.getVisibleLimit()).thenReturn(100);
-        when(remoteFolder.areMoreMessagesAvailable(eq(53), any(Date.class))).thenReturn(true);
-
-        syncHelper.deleteLocalMessages(singleton("1"), account, localFolder, remoteFolder, controller, listener);
-
-        verify(localFolder).setMoreMessages(MoreMessages.TRUE);
     }
 
     @Test

@@ -103,7 +103,7 @@ public class QresyncExtensionHandlerTest {
 
         extensionHandler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, EXPUNGED_UIDS, listener);
 
-        verify(syncHelper).deleteLocalMessages(deletedUidsCaptor.capture(), eq(account), eq(localFolder), eq(imapFolder),
+        verify(syncHelper).deleteLocalMessages(deletedUidsCaptor.capture(), eq(account), eq(localFolder),
                 eq(controller), eq(listener));
         List<String> deletedUids = deletedUidsCaptor.getValue();
         assertTrue(deletedUids.contains(vanishedUid));
@@ -118,8 +118,8 @@ public class QresyncExtensionHandlerTest {
 
         extensionHandler.continueSync(account, localFolder, imapFolder, qresyncParamResponse, EXPUNGED_UIDS, listener);
 
-        verify(syncHelper, never()).deleteLocalMessages(anyCollection(), eq(account), eq(localFolder), eq(imapFolder),
-                eq(controller), eq(listener));
+        verify(syncHelper, never()).deleteLocalMessages(anyCollection(), eq(account), eq(localFolder), eq(controller),
+                eq(listener));
     }
 
     @Test

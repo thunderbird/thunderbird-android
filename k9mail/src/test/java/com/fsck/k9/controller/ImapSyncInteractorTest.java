@@ -26,7 +26,6 @@ import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
@@ -241,27 +240,6 @@ public class ImapSyncInteractorTest {
 
         verify(localFolder, never()).destroyMessages(localMessages);
     }
-
-    @Test
-    public void performSync_withSyncRemoteDeletionsSetToTrue_shouldDeleteLocalCopiesIfNecessary() throws Exception {
-        when(account.syncRemoteDeletions()).thenReturn(true);
-
-        syncInteractor.performSync(account, FOLDER_NAME, listener);
-
-        verify(syncHelper).deleteLocalMessages(anyCollection(), eq(account), eq(localFolder), eq(imapFolder),
-                eq(controller), eq(listener));
-    }
-
-    @Test
-    public void performSync_withSyncRemoteDeletionsSetToFalse_shouldDeleteLocalCopiesIfNecessary() throws Exception {
-        when(account.syncRemoteDeletions()).thenReturn(false);
-
-        syncInteractor.performSync(account, FOLDER_NAME, listener);
-
-        verify(syncHelper, never()).deleteLocalMessages(anyCollection(), any(Account.class), any(LocalFolder.class),
-                any(Folder.class), any(MessagingController.class), any(MessagingListener.class));
-    }
-
 
     @Test
     public void performSync_shouldUpdateCachedUidValidity() throws Exception {

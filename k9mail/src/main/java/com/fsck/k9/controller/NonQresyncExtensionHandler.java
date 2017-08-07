@@ -53,7 +53,7 @@ class NonQresyncExtensionHandler {
 
         if (account.syncRemoteDeletions()) {
             List<String> deletedUids = findDeletedMessageUids(localUidMap, remoteUidMap);
-            syncHelper.deleteLocalMessages(deletedUids, account, localFolder, imapFolder, controller, listener);
+            syncHelper.deleteLocalMessages(deletedUids, account, localFolder, controller, listener);
         }
 
         // noinspection UnusedAssignment, free memory early?

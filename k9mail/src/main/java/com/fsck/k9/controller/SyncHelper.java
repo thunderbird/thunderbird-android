@@ -83,8 +83,7 @@ class SyncHelper {
     }
 
     void deleteLocalMessages(Collection<String> deletedMessageUids, Account account, LocalFolder localFolder,
-            Folder remoteFolder, MessagingController controller, MessagingListener listener) throws IOException,
-            MessagingException {
+            MessagingController controller, MessagingListener listener) throws IOException, MessagingException {
         String folderName = localFolder.getName();
         Timber.v("SYNC: Deleting %d messages in the local cache that are not present in the remote mailbox for folder %s",
                 deletedMessageUids.size(), folderName);
@@ -98,8 +97,6 @@ class SyncHelper {
                     l.synchronizeMailboxRemovedMessage(account, folderName, destroyMessage);
                 }
             }
-
-            updateMoreMessages(account, localFolder, remoteFolder);
         }
     }
 
@@ -255,8 +252,8 @@ class SyncHelper {
         return true;
     }
 
-    private void updateMoreMessages(Account account, LocalFolder localFolder, Folder remoteFolder)
-            throws IOException, MessagingException {
+    void updateMoreMessages(Account account, LocalFolder localFolder, Folder remoteFolder) throws IOException,
+            MessagingException {
         final Date earliestDate = account.getEarliestPollDate();
         int remoteStart = getRemoteStart(localFolder, remoteFolder);
 
