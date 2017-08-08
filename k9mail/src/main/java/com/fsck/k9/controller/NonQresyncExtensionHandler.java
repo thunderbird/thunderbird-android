@@ -68,7 +68,11 @@ class NonQresyncExtensionHandler {
         }
 
         if (localFolder.isCachedHighestModSeqValid() && imapFolder.supportsModSeq() && K9.shouldUseCondstore()) {
-            downloadChangedMessageFlagsUsingCondstore(account, localFolder, imapFolder, syncFlagMessages);
+            if (localFolder.getHighestModSeq() == imapFolder.getHighestModSeq()) {
+                Timber.v("SYNC: HIGHESTMODSEQ has not changed, skipping flag synchronization");
+            } else {
+                downloadChangedMessageFlagsUsingCondstore(account, localFolder, imapFolder, syncFlagMessages);
+            }
         } else {
             flagSyncHelper.refreshLocalMessageFlags(account, imapFolder, localFolder, syncFlagMessages);
         }
