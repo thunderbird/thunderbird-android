@@ -1397,14 +1397,14 @@ class ImapFolder extends Folder<ImapMessage> {
                 String imapQuery = "UID SEARCH ";
                 if (requiredFlags != null) {
                     for (Flag flag : requiredFlags) {
-                        imapQuery += flag.getExternalCode() + " ";
+                        imapQuery += flag.getCode() + " ";
                     }
                 }
 
                 if (forbiddenFlags != null) {
                     for (Flag flag : forbiddenFlags) {
                         if (!(flag instanceof Keyword)) {
-                            imapQuery += "UN" + flag.getExternalCode() + " ";
+                            imapQuery += "UN" + flag.getCode() + " ";
                         }
                     }
                 }
