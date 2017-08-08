@@ -133,8 +133,7 @@ class SyncHelper {
             return;
         }
 
-        //TODO: Use an optimized query here without fetching unnecessary message fields
-        Message localMessage = localFolder.getMessage(message.getUid());
+        Message localMessage = localFolder.getMessageUidAndFlags(message.getUid());
 
         if (localMessage == null) {
             if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
