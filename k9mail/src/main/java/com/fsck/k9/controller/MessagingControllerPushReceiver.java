@@ -1,6 +1,5 @@
 package com.fsck.k9.controller;
 
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import android.content.Context;
@@ -8,7 +7,6 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -28,26 +26,11 @@ public class MessagingControllerPushReceiver implements PushReceiver {
     }
 
     @Override
-    public void messagesFlagsChanged(Folder folder, List<Message> messages) {
-        controller.synchronizeMailbox(account, folder.getName(), null);
-    }
-
-    @Override
-    public void messagesArrived(Folder folder, List<Message> messages) {
-        controller.synchronizeMailbox(account, folder.getName(), null);
-    }
-
-    @Override
-    public void messagesRemoved(Folder folder, List<Message> messages) {
-        controller.synchronizeMailbox(account, folder.getName(), null);
-    }
-
-    @Override
-    public void syncFolder(Folder folder) {
-        Timber.v("syncFolder(%s)", folder.getName());
+    public void syncFolder(String folderName) {
+        Timber.v("syncFolder(%s)", folderName);
 
         final CountDownLatch latch = new CountDownLatch(1);
-        controller.synchronizeMailbox(account, folder.getName(), new SimpleMessagingListener() {
+        controller.synchronizeMailbox(account, folderName, new SimpleMessagingListener() {
             @Override
             public void synchronizeMailboxFinished(Account account, String folder,
             int totalMessagesInMailbox, int numNewMessages) {
@@ -61,11 +44,11 @@ public class MessagingControllerPushReceiver implements PushReceiver {
             }
         });
 
-        Timber.v("syncFolder(%s) about to await latch release", folder.getName());
+        Timber.v("syncFolder(%s) about to await latch release", folderName);
 
         try {
             latch.await();
-            Timber.v("syncFolder(%s) got latch release", folder.getName());
+            Timber.v("syncFolder(%s) got latch release", folderName);
         } catch (Exception e) {
             Timber.e(e, "Interrupted while awaiting latch release");
         }
