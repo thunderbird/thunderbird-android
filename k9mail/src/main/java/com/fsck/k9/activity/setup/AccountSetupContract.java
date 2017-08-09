@@ -120,6 +120,7 @@ interface AccountSetupContract {
         void goToOutgoingChecking();
 
         // ---
+        void goBack();
         void end();
     }
 
@@ -188,6 +189,7 @@ interface AccountSetupContract {
 
         // ---
 
+        void onBackPressed();
         void onGetAccountUuid(String accountUuid);
         void onRestoreStart();
         void onRestoreEnd();

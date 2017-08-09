@@ -24,7 +24,6 @@ import com.fsck.k9.Account;
 
 import java.security.cert.X509Certificate;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -106,6 +105,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private EditText webdavAuthPathView;
     private EditText webdavMailboxPathView;
     private Button nextButton;
+    private ViewGroup requireLoginSettingsView;
     private CheckBox compressionMobile;
     private CheckBox compressionWifi;
     private CheckBox compressionOther;
@@ -144,10 +144,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     boolean editSettings;
 
     Stage stage;
-    private TextView authenticationLabel;
-    private TextInputLayout usernameLayout;
-    private TextInputLayout passwordLayout;
-    private ViewGroup requireLoginSettingsView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -156,6 +152,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         setContentView(R.layout.account_setup);
 
         flipper = (ViewFlipper) findViewById(R.id.view_flipper);
+        flipper.setInAnimation(this, R.anim.fade_in);
+        flipper.setOutAnimation(this, R.anim.fade_out);
 
         Preferences preferences = Preferences.getPreferences(this);
         presenter = new AccountSetupPresenter(this, preferences, this);
@@ -1187,16 +1185,14 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         final View outgoingView = findViewById(R.id.account_setup_outgoing);
         usernameView = (EditText) outgoingView.findViewById(R.id.outgoing_account_username);
         passwordView = (EditText) outgoingView.findViewById(R.id.outgoing_account_password);
-        passwordLayout = (TextInputLayout) outgoingView.findViewById(R.id.outgoing_account_password_layout);
+        passwordViewLayout = (TextInputLayout) outgoingView.findViewById(R.id.outgoing_account_password_layout);
         clientCertificateSpinner = (ClientCertificateSpinner) outgoingView.findViewById(R.id.outgoing_account_client_certificate_spinner);
         clientCertificateLabelView = (TextView) outgoingView.findViewById(R.id.account_client_certificate_label);
         serverView = (TextInputEditText) outgoingView.findViewById(R.id.outgoing_account_server);
         portView = (TextInputEditText) outgoingView.findViewById(R.id.outgoing_account_port);
         requireLoginView = (CheckBox) outgoingView.findViewById(R.id.account_require_login);
         requireLoginSettingsView = (ViewGroup) outgoingView.findViewById(R.id.account_require_login_settings);
-        usernameLayout = (TextInputLayout) outgoingView.findViewById(R.id.outgoing_account_username_layout);
         securityTypeView = (Spinner) outgoingView.findViewById(R.id.outgoing_account_security_type);
-        authenticationLabel = (TextView) outgoingView.findViewById(R.id.account_setup_outgoing_authentication_label);
         authTypeView = (Spinner) outgoingView.findViewById(R.id.outgoing_account_auth_type);
         nextButton = (Button) outgoingView.findViewById(R.id.outgoing_next);
 
@@ -1299,7 +1295,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public void setViewNotExternalInOutgoing() {
         // show password fields, hide client certificate fields
-        passwordLayout.setVisibility(View.VISIBLE);
+        passwordViewLayout.setVisibility(View.VISIBLE);
         clientCertificateLabelView.setVisibility(View.GONE);
         clientCertificateSpinner.setVisibility(View.GONE);
 
@@ -1309,7 +1305,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public void setViewExternalInOutgoing() {
         // hide password fields, show client certificate fields
-        passwordLayout.setVisibility(View.GONE);
+        passwordViewLayout.setVisibility(View.GONE);
         clientCertificateLabelView.setVisibility(View.VISIBLE);
         clientCertificateSpinner.setVisibility(View.VISIBLE);
 
@@ -1339,6 +1335,16 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         i.putExtra(EXTRA_STAGE, Stage.OUTGOING);
         return i;
+    }
+
+    @Override
+    public void onBackPressed() {
+        presenter.onBackPressed();
+    }
+
+    @Override
+    public void goBack() {
+        super.onBackPressed();
     }
 
     @Override
