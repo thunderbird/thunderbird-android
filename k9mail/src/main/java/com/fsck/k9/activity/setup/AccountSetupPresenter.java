@@ -1401,6 +1401,36 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     // endregion account type
 
     @Override
+    public void onBackPressed() {
+        switch (stage) {
+            case AUTOCONFIGURATION:
+            case AUTOCONFIGURATION_INCOMING_CHECKING:
+            case AUTOCONFIGURATION_OUTGOING_CHECKING:
+            case ACCOUNT_TYPE:
+                stage = Stage.BASICS;
+                view.goToBasics();
+                break;
+            case INCOMING:
+                stage = Stage.ACCOUNT_TYPE;
+                view.goToAccountType();
+                break;
+            case INCOMING_CHECKING:
+            case OUTGOING:
+                stage = Stage.INCOMING;
+                view.goToIncoming();
+                break;
+            case OUTGOING_CHECKING:
+            case ACCOUNT_NAMES:
+                stage = Stage.OUTGOING;
+                view.goToOutgoing();
+                break;
+            default:
+                view.goBack();
+                break;
+        }
+    }
+
+    @Override
     public void setAccount(Account account) {
         this.account = account;
     }
