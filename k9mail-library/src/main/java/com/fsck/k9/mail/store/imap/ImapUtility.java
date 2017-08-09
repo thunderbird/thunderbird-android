@@ -17,16 +17,20 @@
 
 package com.fsck.k9.mail.store.imap;
 
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.MessagingException;
 import timber.log.Timber;
 
 
 /**
  * Utility methods for use with IMAP.
  */
-class ImapUtility {
+public class ImapUtility {
     /**
      * Gets all of the values in a sequence set per RFC 3501.
      *
@@ -144,6 +148,7 @@ class ImapUtility {
      *
      * @return The string encoded as quoted (IMAP) string.
      */
+    //TODO use a literal string
     public static String encodeString(String str) {
         return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
     }
@@ -152,5 +157,102 @@ class ImapUtility {
         int lastIndex = responses.size() - 1;
 
         return responses.get(lastIndex);
+    }
+
+    public static String combineFlags(Iterable<Flag> flags, boolean canCreateForwardedFlag) {
+        List<String> flagNames = new ArrayList<String>();
+        for (Flag flag : flags) {
+            if (flag == Flag.SEEN) {
+                flagNames.add("\\Seen");
+            } else if (flag == Flag.DELETED) {
+                flagNames.add("\\Deleted");
+            } else if (flag == Flag.ANSWERED) {
+                flagNames.add("\\Answered");
+            } else if (flag == Flag.FLAGGED) {
+                flagNames.add("\\Flagged");
+            } else if (flag == Flag.FORWARDED && canCreateForwardedFlag) {
+                flagNames.add("$Forwarded");
+            }
+        }
+
+        return ImapUtility.join(" ", flagNames);
+    }
+
+    public static String join(String delimiter, Collection<? extends Object> tokens) {
+        if (tokens == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        boolean firstTime = true;
+        for (Object token: tokens) {
+            if (firstTime) {
+                firstTime = false;
+            } else {
+                sb.append(delimiter);
+            }
+            sb.append(token);
+        }
+        return sb.toString();
+    }
+
+
+    static void setMessageFlags(ImapList fetchList, ImapMessage message, ImapStore store) throws MessagingException {
+        ImapList flags = fetchList.getKeyedList("FLAGS");
+        if (flags != null) {
+            for (int i = 0, count = flags.size(); i < count; i++) {
+                String flag = flags.getString(i);
+                if (flag.equalsIgnoreCase("\\Deleted")) {
+                    message.setFlagInternal(Flag.DELETED, true);
+                } else if (flag.equalsIgnoreCase("\\Answered")) {
+                    message.setFlagInternal(Flag.ANSWERED, true);
+                } else if (flag.equalsIgnoreCase("\\Seen")) {
+                    message.setFlagInternal(Flag.SEEN, true);
+                } else if (flag.equalsIgnoreCase("\\Flagged")) {
+                    message.setFlagInternal(Flag.FLAGGED, true);
+                } else if (flag.equalsIgnoreCase("$Forwarded")) {
+                    message.setFlagInternal(Flag.FORWARDED, true);
+                    /* a message contains FORWARDED FLAG -> so we can also create them */
+                    store.getPermanentFlagsIndex().add(Flag.FORWARDED);
+                }
+            }
+        }
+    }
+
+    static Long extractHighestModSeq(ImapResponse imapResponse) {
+        for (Object token : imapResponse) {
+            if (token instanceof ImapList) {
+                ImapList list = (ImapList) token;
+                if (list.size() < 2 || !(ImapResponseParser.equalsIgnoreCase(list.get(0), Responses.HIGHESTMODSEQ)
+                        || ImapResponseParser.equalsIgnoreCase(list.get(0), Responses.NOMODSEQ)) ||
+                        !list.isString(1)) {
+                    continue;
+                }
+
+                if (ImapResponseParser.equalsIgnoreCase(list.get(0), Responses.HIGHESTMODSEQ)) {
+                    return Long.parseLong(list.getString(1));
+                }
+            }
+        }
+        return null;
+    }
+
+    static List<String> extractVanishedUids(List<ImapResponse> imapResponses) {
+        List<String> uids = new ArrayList<>();
+        for (ImapResponse imapResponse : imapResponses) {
+            if (imapResponse.getTag() == null && ImapResponseParser.equalsIgnoreCase(imapResponse.get(0), "VANISHED")) {
+
+                //For VANISHED responses. ex : * VANISHED 505,507,510,625
+                if (imapResponse.isString(1)) {
+                    uids = ImapUtility.getImapSequenceValues(imapResponse.getString(1));
+                }
+
+                //For VANISHED (EARLIER) responses. ex : * VANISHED (EARLIER) 300:310,405,411
+                if (imapResponse.isList(1) && imapResponse.getList(1).getString(0).equals("EARLIER")
+                        && imapResponse.isString(2)) {
+                    uids = ImapUtility.getImapSequenceValues(imapResponse.getString(2));
+                }
+            }
+        }
+        return uids;
     }
 }

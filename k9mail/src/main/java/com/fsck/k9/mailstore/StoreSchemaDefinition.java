@@ -2,24 +2,20 @@ package com.fsck.k9.mailstore;
 
 
 import java.util.List;
-import java.util.Locale;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.BuildConfig;
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.migrations.Migrations;
 import com.fsck.k9.mailstore.migrations.MigrationsHelper;
 import com.fsck.k9.preferences.Storage;
+import timber.log.Timber;
 
 import static com.fsck.k9.mailstore.LocalStore.DB_VERSION;
-import static java.lang.String.format;
-import static java.util.Locale.US;
 
 
 class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
@@ -85,6 +81,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 "unread_count INTEGER, " +
                 "visible_limit INTEGER, " +
                 "status TEXT, " +
+                "uid_validity INTEGER default null," +
+                "highest_mod_seq INTEGER default null," +
                 "push_state TEXT, " +
                 "last_pushed INTEGER, " +
                 "flagged_count INTEGER default 0, " +

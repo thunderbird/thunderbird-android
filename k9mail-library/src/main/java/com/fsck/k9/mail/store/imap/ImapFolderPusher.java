@@ -100,9 +100,7 @@ class ImapFolderPusher extends ImapFolder {
     @Override
     protected void handleUntaggedResponse(ImapResponse response) {
         if (response.getTag() == null && response.size() > 1) {
-            Object responseType = response.get(1);
-            if (equalsIgnoreCase(responseType, "FETCH") || equalsIgnoreCase(responseType, "EXPUNGE") ||
-                    equalsIgnoreCase(responseType, "EXISTS")) {
+            if (isUntaggedResponseSupported(response)) {
 
                 if (K9MailLib.isDebug()) {
                     Timber.d("Storing response %s for later processing", response);
@@ -115,6 +113,11 @@ class ImapFolderPusher extends ImapFolder {
 
             handlePossibleUidNext(response);
         }
+    }
+
+    private boolean isUntaggedResponseSupported(ImapResponse response) {
+        return (equalsIgnoreCase(response.get(1), "EXISTS") || equalsIgnoreCase(response.get(1), "EXPUNGE") ||
+                equalsIgnoreCase(response.get(1), "FETCH") || equalsIgnoreCase(response.get(0), "VANISHED"));
     }
 
     private void superHandleUntaggedResponse(ImapResponse response) {
@@ -325,7 +328,7 @@ class ImapFolderPusher extends ImapFolder {
 
         private boolean openConnectionIfNecessary() throws MessagingException {
             ImapConnection oldConnection = connection;
-            internalOpen(OPEN_MODE_RO);
+            internalOpen(OPEN_MODE_RO, INVALID_UID_VALIDITY, INVALID_HIGHEST_MOD_SEQ);
 
             ImapConnection conn = connection;
 
@@ -375,10 +378,7 @@ class ImapFolderPusher extends ImapFolder {
             } else {
                 if (response.getTag() == null) {
                     if (response.size() > 1) {
-                        Object responseType = response.get(1);
-                        if (equalsIgnoreCase(responseType, "EXISTS") || equalsIgnoreCase(responseType, "EXPUNGE") ||
-                                equalsIgnoreCase(responseType, "FETCH")) {
-
+                        if (isUntaggedResponseSupported(response)) {
                             wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
 
                             if (K9MailLib.isDebug()) {
@@ -521,6 +521,12 @@ class ImapFolderPusher extends ImapFolder {
                         List<Long> msgSeqs = new ArrayList<Long>(msgSeqUidMap.keySet());
                         Collections.sort(msgSeqs);  // Have to do comparisons in order because of msgSeq reductions
 
+                        //TODO: Add a fix for this case in CONDSTORE and regular IMAP folders.
+                        if (msgSeqs.isEmpty()) {
+                            Timber.e("Received untagged EXPUNGE response for folder %s, but msgSeqUidMap is empty",
+                                    getName());
+                        }
+
                         for (long msgSeqNum : msgSeqs) {
                             if (K9MailLib.isDebug()) {
                                 Timber.v("Comparing EXPUNGEd msgSeq %d to %d", msgSeq, msgSeqNum);
@@ -545,6 +551,22 @@ class ImapFolderPusher extends ImapFolder {
                                 msgSeqUidMap.remove(msgSeqNum);
                                 msgSeqUidMap.put(msgSeqNum - 1, uid);
                             }
+                        }
+                    }
+
+                    if (equalsIgnoreCase(response.get(0), "VANISHED")) {
+                        List<String> vanishedUids = ImapUtility.extractVanishedUids(Collections.singletonList(response));
+                        messageCountDelta -= vanishedUids.size();
+
+                        if (K9MailLib.isDebug()) {
+                            Timber.d("Got untagged VANISHED for UIDs %s for %s", vanishedUids, getLogId());
+                        }
+
+                        for (String uid : vanishedUids) {
+                            if (K9MailLib.isDebug()) {
+                                Timber.d("Scheduling removal of UID %s", uid);
+                            }
+                            removeMsgUids.add(uid);
                         }
                     }
                 } catch (Exception e) {
@@ -588,7 +610,7 @@ class ImapFolderPusher extends ImapFolder {
                     }
 
                     if (!messages.isEmpty()) {
-                        pushReceiver.messagesArrived(ImapFolderPusher.this, messages);
+                        pushReceiver.syncFolder(getName());
                     }
                 }
             }
@@ -600,7 +622,7 @@ class ImapFolderPusher extends ImapFolder {
 
                 List<Message> messages = new ArrayList<Message>();
                 messages.addAll(messageList);
-                pushReceiver.messagesFlagsChanged(ImapFolderPusher.this, messages);
+                pushReceiver.syncFolder(getName());
             } catch (Exception e) {
                 pushReceiver.pushError("Exception while processing Push untagged responses", e);
             }
@@ -633,7 +655,7 @@ class ImapFolderPusher extends ImapFolder {
                     messages.add(message);
                 }
 
-                pushReceiver.messagesRemoved(ImapFolderPusher.this, messages);
+                pushReceiver.syncFolder(getName());
             } catch (Exception e) {
                 Timber.e("Cannot remove EXPUNGEd messages");
             }
@@ -646,7 +668,7 @@ class ImapFolderPusher extends ImapFolder {
                 throw new MessagingException("Message count = -1 for idling");
             }
 
-            pushReceiver.syncFolder(ImapFolderPusher.this);
+            pushReceiver.syncFolder(getName());
         }
 
         private void notifyMessagesArrived(long startUid, long uidNext) {
@@ -662,7 +684,7 @@ class ImapFolderPusher extends ImapFolder {
                 messages.add(message);
             }
 
-            pushReceiver.messagesArrived(ImapFolderPusher.this, messages);
+            pushReceiver.syncFolder(getName());
         }
 
         private long getOldUidNext() {

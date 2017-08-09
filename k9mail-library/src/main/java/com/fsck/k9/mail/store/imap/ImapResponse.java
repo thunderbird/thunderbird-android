@@ -8,7 +8,7 @@ package com.fsck.k9.mail.store.imap;
  * object will contain all of the available tokens at the time the response is received.
  * </p>
  */
-class ImapResponse extends ImapList {
+public class ImapResponse extends ImapList {
     private static final long serialVersionUID = 6886458551615975669L;
 
 

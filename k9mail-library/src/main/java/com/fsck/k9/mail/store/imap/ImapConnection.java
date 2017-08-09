@@ -57,7 +57,7 @@ import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 /**
  * A cacheable class that stores the details for a single IMAP connection.
  */
-class ImapConnection {
+public class ImapConnection {
     private static final int BUFFER_SIZE = 1024;
 
 
@@ -77,6 +77,7 @@ class ImapConnection {
     private Exception stacktraceForClose;
     private boolean open = false;
     private boolean retryXoauth2WithNewToken = true;
+    private boolean qresyncEnabled = false;
 
 
     public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
@@ -130,6 +131,7 @@ class ImapConnection {
             extractOrRequestCapabilities(responses);
 
             enableCompressionIfRequested();
+            enableQresync();
 
             retrievePathPrefixIfNecessary();
             retrievePathDelimiterIfNecessary();
@@ -601,6 +603,14 @@ class ImapConnection {
         }
     }
 
+    void enableQresync() throws IOException, MessagingException {
+        if (!qresyncEnabled && hasCapability(Capabilities.QRESYNC) && K9MailLib.shouldUseQresync()) {
+            executeSimpleCommand(String.format("%s %s %s", Commands.ENABLE, Capabilities.CONDSTORE,
+                    Capabilities.QRESYNC));
+            qresyncEnabled = true;
+        }
+    }
+
     private void retrievePathPrefixIfNecessary() throws IOException, MessagingException {
         if (settings.getPathPrefix() != null) {
             return;
@@ -679,8 +689,17 @@ class ImapConnection {
         return isListResponse && hierarchyDelimiterValid;
     }
 
-    protected boolean hasCapability(String capability) {
+    boolean hasCapability(String capability) throws IOException, MessagingException {
+        requestCapabilitiesIfNecessary();
         return capabilities.contains(capability.toUpperCase(Locale.US));
+    }
+
+    public boolean isCondstoreCapable() throws IOException, MessagingException {
+        return hasCapability(Capabilities.CONDSTORE);
+    }
+
+    boolean isQresyncCapable() throws IOException, MessagingException {
+        return hasCapability(Capabilities.QRESYNC);
     }
 
     protected boolean isIdleCapable() {

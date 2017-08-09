@@ -9,8 +9,8 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 
 
-class ImapMessage extends MimeMessage {
-    ImapMessage(String uid, Folder folder) {
+public class ImapMessage extends MimeMessage {
+    public ImapMessage(String uid, Folder folder) {
         this.mUid = uid;
         this.mFolder = folder;
     }
