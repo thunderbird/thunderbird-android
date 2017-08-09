@@ -1342,6 +1342,16 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     @Override
+    public void onBackPressed() {
+        presenter.onBackPressed();
+    }
+
+    @Override
+    public void goBack() {
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         canceled = false;
