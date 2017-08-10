@@ -72,6 +72,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private static final String EXTRA_MAKE_DEFAULT = "make_default";
     private static final String STATE_STAGE = "state_stage";
     private static final String STATE_ACCOUNT = "state_account";
+    private static final String STAGE_CONFIG = "state_config";
     private static final String STATE_EDIT_SETTINGS = "state_edit_settings";
     private static final String STATE_MAKE_DEFAULT = "state_make_default";
 
@@ -167,21 +168,20 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
         if (savedInstanceState != null) {
             stage = (Stage) savedInstanceState.getSerializable(STATE_STAGE);
-            accountUuid = savedInstanceState.getString(STATE_ACCOUNT, accountUuid);
             editSettings = savedInstanceState.getBoolean(STATE_EDIT_SETTINGS, editSettings);
+
+            accountUuid = savedInstanceState.getString(STATE_ACCOUNT);
+            presenter.onGetAccountUuid(accountUuid);
+
+            AccountConfigImpl accountConfig = savedInstanceState.getParcelable(STAGE_CONFIG);
+            presenter.onGetAccountConfig(accountConfig);
+
             makeDefault = savedInstanceState.getBoolean(STATE_MAKE_DEFAULT, makeDefault);
+            presenter.onGetMakeDefault(makeDefault);
         }
 
         if (stage == null) {
             stage = Stage.BASICS;
-        }
-
-        if (accountUuid != null) {
-            presenter.onGetAccountUuid(accountUuid);
-        }
-
-        if (makeDefault) {
-            presenter.onMakeDefault();
         }
 
         switch (stage) {
@@ -222,8 +222,13 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         super.onSaveInstanceState(outState);
 
         outState.putSerializable(STATE_STAGE, stage);
-        outState.putString(STATE_ACCOUNT, presenter.getAccount().getUuid());
-        outState.putBoolean(STATE_EDIT_SETTINGS, presenter.isEditSettings());
+        final boolean editSettings = presenter.isEditSettings();
+        outState.putBoolean(STATE_EDIT_SETTINGS, editSettings);
+        if (editSettings) {
+            outState.putString(STATE_ACCOUNT, presenter.getAccount().getUuid());
+        } else {
+            outState.putParcelable(STAGE_CONFIG, (AccountConfigImpl) presenter.getAccountConfig());
+        }
     }
 
     @Override
