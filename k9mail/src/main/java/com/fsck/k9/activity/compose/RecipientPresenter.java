@@ -39,6 +39,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.message.AutocryptStatusInteractor;
 import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus;
+import com.fsck.k9.message.ComposePgpEnableByDefaultDecider;
 import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.PgpMessageBuilder;
@@ -71,6 +72,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     // transient state, which is either obtained during construction and initialization, or cached
     private final Context context;
     private final RecipientMvpView recipientMvpView;
+    private final ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider;
     private final ComposePgpInlineDecider composePgpInlineDecider;
     private final AutocryptStatusInteractor autocryptStatusInteractor;
     private final RecipientsChangedListener listener;
@@ -87,19 +89,20 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     // persistent state, saved during onSaveInstanceState
     private RecipientType lastFocusedType = RecipientType.TO;
-    // TODO initialize cryptoMode to other values under some circumstances, e.g. if we reply to an encrypted e-mail
     private CryptoMode currentCryptoMode = CryptoMode.NO_CHOICE;
     private boolean cryptoEnablePgpInline = false;
 
 
     public RecipientPresenter(Context context, LoaderManager loaderManager,
             RecipientMvpView recipientMvpView, Account account, ComposePgpInlineDecider composePgpInlineDecider,
+            ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider,
             AutocryptStatusInteractor autocryptStatusInteractor,
             ReplyToParser replyToParser, RecipientsChangedListener recipientsChangedListener) {
         this.recipientMvpView = recipientMvpView;
         this.context = context;
         this.autocryptStatusInteractor = autocryptStatusInteractor;
         this.composePgpInlineDecider = composePgpInlineDecider;
+        this.composePgpEnableByDefaultDecider = composePgpEnableByDefaultDecider;
         this.replyToParser = replyToParser;
         this.listener = recipientsChangedListener;
 
@@ -170,6 +173,9 @@ public class RecipientPresenter implements PermissionPingCallback {
         if (shouldSendAsPgpInline) {
             cryptoEnablePgpInline = true;
         }
+
+        boolean shouldEnablePgpByDefault = composePgpEnableByDefaultDecider.shouldEncryptByDefault(message);
+        currentCryptoMode = shouldEnablePgpByDefault ? CryptoMode.CHOICE_ENABLED : CryptoMode.NO_CHOICE;
     }
 
     public void initFromTrustIdAction(String trustId) {
@@ -432,9 +438,6 @@ public class RecipientPresenter implements PermissionPingCallback {
         recipientMvpView.setRecipientTokensShowCryptoEnabled(cachedCryptoStatus.isEncryptionEnabled());
 
         CryptoStatusDisplayType cryptoStatusDisplayType = cachedCryptoStatus.getCryptoStatusDisplayType();
-        if (cryptoStatusDisplayType == CryptoStatusDisplayType.ERROR) {
-            recipientMvpView.showErrorOpenPgpRetrieveStatus();
-        }
         recipientMvpView.showCryptoStatus(cryptoStatusDisplayType);
         recipientMvpView.showCryptoSpecialMode(cachedCryptoStatus.getCryptoSpecialModeDisplayType());
     }
