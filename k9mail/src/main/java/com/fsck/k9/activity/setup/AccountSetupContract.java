@@ -9,6 +9,7 @@ import android.support.annotation.StringRes;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.BasePresenter;
+import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.AccountSetupPresenter.Stage;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -190,11 +191,13 @@ interface AccountSetupContract {
         // ---
 
         void onBackPressed();
+        void onGetMakeDefault(boolean makeDefault);
         void onGetAccountUuid(String accountUuid);
+        void onGetAccountConfig(AccountConfigImpl accountConfig);
         void onRestoreStart();
         void onRestoreEnd();
-        void onMakeDefault();
 
         AccountSetupPresenter.AccountSetupStatus getStatus();
+        AccountConfig getAccountConfig();
     }
 }
