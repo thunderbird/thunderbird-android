@@ -20,6 +20,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 
+import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.CheckDirection;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.mail.AuthType;
@@ -36,7 +37,6 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.mailstore.LocalStore;
@@ -60,11 +60,11 @@ import static com.fsck.k9.Preferences.getEnumStringPref;
  * Account stores all of the settings for a single account defined by the user. It is able to save
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
-public class Account implements BaseAccount, StoreConfig {
+public class Account implements BaseAccount, AccountConfig {
     /**
      * Default value for the inbox folder (never changes for POP3 and IMAP)
      */
-    private static final String INBOX = "INBOX";
+    public static final String INBOX = "INBOX";
 
     /**
      * This local folder is used to store messages to be sent.
@@ -347,6 +347,31 @@ public class Account implements BaseAccount, StoreConfig {
         notificationSetting.setLedColor(chipColor);
 
         cacheChips();
+    }
+
+    public void loadConfig(AccountConfig accountConfig) {
+        setName(accountConfig.getName());
+        setEmail(accountConfig.getEmail());
+        setStoreUri(accountConfig.getStoreUri());
+        setTransportUri(accountConfig.getTransportUri());
+        setDescription(accountConfig.getDescription());
+        setInboxFolderName(accountConfig.getInboxFolderName());
+        setDraftsFolderName(accountConfig.getDraftsFolderName());
+        setArchiveFolderName(accountConfig.getArchiveFolderName());
+        setSentFolderName(accountConfig.getSentFolderName());
+        setSpamFolderName(accountConfig.getSpamFolderName());
+        setTrashFolderName(accountConfig.getTrashFolderName());
+        setAutoExpandFolderName(accountConfig.getAutoExpandFolderName());
+        setDisplayCount(accountConfig.getDisplayCount());
+        setAllowRemoteSearch(accountConfig.allowRemoteSearch());
+        setAutomaticCheckIntervalMinutes(accountConfig.getAutomaticCheckIntervalMinutes());
+        setDeletePolicy(accountConfig.getDeletePolicy());
+        setCompression(NetworkType.WIFI, accountConfig.useCompression(NetworkType.WIFI));
+        setCompression(NetworkType.MOBILE, accountConfig.useCompression(NetworkType.MOBILE));
+        setCompression(NetworkType.OTHER, accountConfig.useCompression(NetworkType.OTHER));
+        setFolderPushMode(accountConfig.getFolderPushMode());
+        setNotifyNewMail(accountConfig.isNotifyNewMail());
+        setShowOngoing(accountConfig.isShowOngoing());
     }
 
     /*
@@ -870,18 +895,22 @@ public class Account implements BaseAccount, StoreConfig {
         return accountUuid;
     }
 
+    @Override
     public synchronized String getStoreUri() {
         return storeUri;
     }
 
+    @Override
     public synchronized void setStoreUri(String storeUri) {
         this.storeUri = storeUri;
     }
 
+    @Override
     public synchronized String getTransportUri() {
         return transportUri;
     }
 
+    @Override
     public synchronized void setTransportUri(String transportUri) {
         this.transportUri = transportUri;
     }
@@ -896,10 +925,12 @@ public class Account implements BaseAccount, StoreConfig {
         this.description = description;
     }
 
+    @Override
     public synchronized String getName() {
         return identities.get(0).getName();
     }
 
+    @Override
     public synchronized void setName(String name) {
         identities.get(0).setName(name);
     }
@@ -976,6 +1007,7 @@ public class Account implements BaseAccount, StoreConfig {
     /**
      * Returns -1 for never.
      */
+    @Override
     public synchronized int getAutomaticCheckIntervalMinutes() {
         return automaticCheckIntervalMinutes;
     }
@@ -990,6 +1022,7 @@ public class Account implements BaseAccount, StoreConfig {
         return (oldInterval != automaticCheckIntervalMinutes);
     }
 
+    @Override
     public synchronized int getDisplayCount() {
         return displayCount;
     }
@@ -1011,6 +1044,37 @@ public class Account implements BaseAccount, StoreConfig {
         this.latestOldMessageSeenTime = latestOldMessageSeenTime;
     }
 
+    @Override
+    public ConnectionSecurity getIncomingSecurityType() {
+        return RemoteStore.decodeStoreUri(getStoreUri()).connectionSecurity;
+    }
+
+    @Override
+    public AuthType getIncomingAuthType() {
+        return RemoteStore.decodeStoreUri(getStoreUri()).authenticationType;
+    }
+
+    @Override
+    public String getIncomingPort() {
+        return String.valueOf(RemoteStore.decodeStoreUri(getStoreUri()).port);
+    }
+
+    @Override
+    public ConnectionSecurity getOutgoingSecurityType() {
+        return Transport.decodeTransportUri(getTransportUri()).connectionSecurity;
+    }
+
+    @Override
+    public AuthType getOutgoingAuthType() {
+        return Transport.decodeTransportUri(getTransportUri()).authenticationType;
+    }
+
+    @Override
+    public String getOutgoingPort() {
+        return String.valueOf(Transport.decodeTransportUri(getTransportUri()).port);
+    }
+
+    @Override
     public synchronized boolean isNotifyNewMail() {
         return notifyNewMail;
     }
@@ -1031,6 +1095,7 @@ public class Account implements BaseAccount, StoreConfig {
         return deletePolicy;
     }
 
+    @Override
     public synchronized void setDeletePolicy(DeletePolicy deletePolicy) {
         this.deletePolicy = deletePolicy;
     }
@@ -1174,6 +1239,7 @@ public class Account implements BaseAccount, StoreConfig {
         return false;
     }
 
+    @Override
     public synchronized FolderMode getFolderPushMode() {
         return folderPushMode;
     }
@@ -1185,6 +1251,7 @@ public class Account implements BaseAccount, StoreConfig {
         return pushMode != oldPushMode;
     }
 
+    @Override
     public synchronized boolean isShowOngoing() {
         return notifySync;
     }
@@ -1822,6 +1889,7 @@ public class Account implements BaseAccount, StoreConfig {
      * new host/port, then try and delete any (possibly non-existent) certificate stored for the
      * old host/port.
      */
+    @Override
     public void deleteCertificate(String newHost, int newPort, CheckDirection direction) {
         Uri uri;
         if (direction == CheckDirection.INCOMING) {

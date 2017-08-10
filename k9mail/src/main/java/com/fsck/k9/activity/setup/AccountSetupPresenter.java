@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
@@ -13,6 +14,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
+import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.AccountSetupContract.View;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.EmailHelper;
@@ -83,8 +85,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     private View view;
 
-    private Account account;
-
     private CheckDirection currentDirection;
     private CheckDirection direction;
 
@@ -103,6 +103,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     private Stage stage;
 
     private boolean restoring;
+
+    private AccountConfig accountConfig;
 
     public AccountSetupPresenter(Context context, Preferences preferences, View view) {
         this.context = context;
@@ -130,21 +132,22 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     @Override
     public void onManualSetupButtonClicked(String email, String password) {
-        if (account == null) {
-            account = preferences.newAccount();
+        if (accountConfig == null) {
+            accountConfig = new AccountConfigImpl();
         }
 
-        account.init(email, password);
+        accountConfig.init(email, password);
 
         view.goToAccountType();
     }
 
     @Override
     public void onNextButtonInBasicViewClicked(String email, String password) {
-        if (account == null) {
-            account = preferences.newAccount();
+        if (accountConfig == null) {
+            accountConfig = new AccountConfigImpl();
         }
-        account.setEmail(email);
+
+        accountConfig.setEmail(email);
 
         this.password = password;
 
@@ -159,16 +162,16 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     public void onNegativeClickedInConfirmationDialog() {
         if (direction == CheckDirection.BOTH && currentDirection == CheckDirection.INCOMING) {
             checkOutgoing();
-        } else if (currentDirection == CheckDirection.OUTGOING){
+        } else if (currentDirection == CheckDirection.OUTGOING) {
             if (editSettings) {
-                account.save(preferences);
+                ((Account) accountConfig).save(preferences);
                 view.end();
             } else {
                 view.goToAccountNames();
             }
         } else {
             if (editSettings) {
-                account.save(preferences);
+                ((Account) accountConfig).save(preferences);
                 view.end();
             } else {
                 view.goToOutgoing();
@@ -181,20 +184,20 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         view.setMessage(R.string.account_setup_check_settings_retr_info_msg);
 
         EmailHelper emailHelper = new EmailHelper();
-        String domain = emailHelper.splitEmail(account.getEmail())[1];
+        String domain = emailHelper.splitEmail(accountConfig.getEmail())[1];
         Provider provider = findProviderForDomain(domain);
         if (provider == null) {
-            account.init(account.getEmail(), password);
+            accountConfig.init(accountConfig.getEmail(), password);
+
             view.goToAccountType();
             return;
         }
 
         try {
-            modifyAccount(account.getEmail(), password, provider);
+            modifyAccount(accountConfig.getEmail(), password, provider);
 
             checkIncomingAndOutgoing();
         } catch (URISyntaxException e) {
-            preferences.deleteAccount(account);
             view.goToAccountType();
         }
     }
@@ -202,7 +205,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     private void checkIncomingAndOutgoing() {
         direction = CheckDirection.BOTH;
         currentDirection = CheckDirection.INCOMING;
-        new CheckIncomingTask(account, new CheckSettingsSuccessCallback() {
+        new CheckIncomingTask(accountConfig, new CheckSettingsSuccessCallback() {
             @Override
             public void onCheckSuccess() {
                 checkOutgoing();
@@ -213,7 +216,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     private void checkIncoming() {
         direction = CheckDirection.INCOMING;
         currentDirection = CheckDirection.INCOMING;
-        new CheckIncomingTask(account, new CheckSettingsSuccessCallback() {
+        new CheckIncomingTask(accountConfig, new CheckSettingsSuccessCallback() {
             @Override
             public void onCheckSuccess() {
                 if (editSettings) {
@@ -229,13 +232,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                             password = incomingSettings.password;
                         }
 
-                        URI oldUri = new URI(account.getTransportUri());
+                        URI oldUri = new URI(accountConfig.getTransportUri());
                         ServerSettings transportServer = new ServerSettings(Type.SMTP,
                                 oldUri.getHost(), oldUri.getPort(),
                                 ConnectionSecurity.SSL_TLS_REQUIRED, currentIncomingAuthType,
                                 incomingSettings.username, password, clientCertificateAlias);
                         String transportUri = Transport.createTransportUri(transportServer);
-                        account.setTransportUri(transportUri);
+                        accountConfig.setTransportUri(transportUri);
                     } catch (URISyntaxException use) {
                     /*
                      * If we can't set up the URL we just continue. It's only for
@@ -253,15 +256,15 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         direction = CheckDirection.OUTGOING;
         currentDirection = CheckDirection.OUTGOING;
 
-        new CheckOutgoingTask(account, new CheckSettingsSuccessCallback() {
+        new CheckOutgoingTask(accountConfig, new CheckSettingsSuccessCallback() {
             @Override
             public void onCheckSuccess() {
                 if (!editSettings) {
                     //We've successfully checked outgoing as well.
-                    account.setDescription(account.getEmail());
-                    account.save(preferences);
+                    accountConfig.setDescription(accountConfig.getEmail());
+                    // account.save(preferences);
 
-                    K9.setServicesEnabled(context);
+                    // K9.setServicesEnabled(context);
 
                     view.goToAccountNames();
                 } else {
@@ -292,7 +295,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
 
     private class CheckOutgoingTask extends CheckAccountTask {
-
         private CheckOutgoingTask(Account account) {
             super(account);
         }
@@ -301,20 +303,34 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             super(account, callback);
         }
 
+        private CheckOutgoingTask(AccountConfig accountConfig) {
+            super(accountConfig);
+        }
+
+        private CheckOutgoingTask(AccountConfig accountConfig, CheckSettingsSuccessCallback callback) {
+            super(accountConfig, callback);
+        }
+
         @Override
         void checkSettings() throws Exception {
-            clearCertificateErrorNotifications(CheckDirection.OUTGOING);
+            Transport transport;
 
-            if (!(account.getRemoteStore() instanceof WebDavStore)) {
+            if (editSettings) {
+                clearCertificateErrorNotifications(CheckDirection.OUTGOING);
+            }
+            if (!(accountConfig.getRemoteStore() instanceof WebDavStore)) {
                 publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
             }
-            Transport transport = TransportProvider.getInstance().getTransport(context, account);
+
+            transport = TransportProvider.getInstance().getTransport(context, accountConfig);
+
             transport.close();
             try {
                 transport.open();
             } finally {
                 transport.close();
             }
+
         }
     }
 
@@ -327,12 +343,24 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             super(account, callback);
         }
 
+        private CheckIncomingTask(AccountConfig accountConfig) {
+            super(accountConfig);
+        }
+
+        private CheckIncomingTask(AccountConfig accountConfig, CheckSettingsSuccessCallback callback) {
+            super(accountConfig, callback);
+        }
+
         @Override
         void checkSettings() throws Exception {
+            Store store;
 
-            clearCertificateErrorNotifications(CheckDirection.INCOMING);
+            if (editSettings) {
+                clearCertificateErrorNotifications(CheckDirection.INCOMING);
+            }
 
-            Store store = account.getRemoteStore();
+            store = accountConfig.getRemoteStore();
+
             if (store instanceof WebDavStore) {
                 publishProgress(R.string.account_setup_check_settings_authenticate);
             } else {
@@ -343,9 +371,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             if (store instanceof WebDavStore) {
                 publishProgress(R.string.account_setup_check_settings_fetch);
             }
-            MessagingController.getInstance(context).listFoldersSynchronous(account, true, null);
-            MessagingController.getInstance(context)
-                    .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
+
+            if (editSettings) {
+                Account account = (Account) accountConfig;
+                MessagingController.getInstance(context).listFoldersSynchronous(account, true, null);
+                MessagingController.getInstance(context)
+                        .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
+            }
         }
     }
 
@@ -354,6 +386,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
      * See also discussion in https://github.com/k9mail/k-9/pull/560
      */
     private abstract class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Boolean> {
+        private final AccountConfig accountConfig;
         private final Account account;
         private CheckSettingsSuccessCallback callback;
 
@@ -363,6 +396,17 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
         private CheckAccountTask(Account account, CheckSettingsSuccessCallback callback) {
             this.account = account;
+            this.accountConfig = null;
+            this.callback = callback;
+        }
+
+        private CheckAccountTask(AccountConfig accountConfig) {
+            this(accountConfig, null);
+        }
+
+        private CheckAccountTask(AccountConfig accountConfig, CheckSettingsSuccessCallback callback) {
+            this.account = null;
+            this.accountConfig = accountConfig;
             this.callback = callback;
         }
 
@@ -429,28 +473,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     }
 
-    private String getOwnerName() {
-        String name = null;
-        try {
-            name = getDefaultAccountName();
-        } catch (Exception e) {
-            Timber.e(e, "Could not get default account name");
-        }
-
-        if (name == null) {
-            name = "";
-        }
-        return name;
-    }
-
-    private String getDefaultAccountName() {
-        String name = null;
-        Account account = preferences.getDefaultAccount();
-        if (account != null) {
-            name = account.getName();
-        }
-        return name;
-    }
 
     private String getXmlAttribute(XmlResourceParser xml, String name) {
         int resId = xml.getAttributeResourceValue(null, name, 0);
@@ -498,6 +520,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     private void modifyAccount(String email, String password, @NonNull Provider provider) throws URISyntaxException {
+        accountConfig.init(email, password);
+
         EmailHelper emailHelper = new EmailHelper();
         String[] emailParts = emailHelper.splitEmail(email);
         String user = emailParts[0];
@@ -535,35 +559,33 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
         }
 
-        account.setName(getOwnerName());
-        account.setEmail(email);
-        account.setStoreUri(incomingUri.toString());
-        account.setTransportUri(outgoingUri.toString());
+        accountConfig.setStoreUri(incomingUri.toString());
+        accountConfig.setTransportUri(outgoingUri.toString());
 
         setupFolderNames(incomingUriTemplate.getHost().toLowerCase(Locale.US));
 
         ServerSettings incomingSettings = RemoteStore.decodeStoreUri(incomingUri.toString());
-        account.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
+        accountConfig.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
     }
 
     private void setupFolderNames(String domain) {
-        account.setDraftsFolderName(K9.getK9String(R.string.special_mailbox_name_drafts));
-        account.setTrashFolderName(K9.getK9String(R.string.special_mailbox_name_trash));
-        account.setSentFolderName(K9.getK9String(R.string.special_mailbox_name_sent));
-        account.setArchiveFolderName(K9.getK9String(R.string.special_mailbox_name_archive));
+        accountConfig.setDraftsFolderName(K9.getK9String(R.string.special_mailbox_name_drafts));
+        accountConfig.setTrashFolderName(K9.getK9String(R.string.special_mailbox_name_trash));
+        accountConfig.setSentFolderName(K9.getK9String(R.string.special_mailbox_name_sent));
+        accountConfig.setArchiveFolderName(K9.getK9String(R.string.special_mailbox_name_archive));
 
         // Yahoo! has a special folder for Spam, called "Bulk Mail".
         if (domain.endsWith(".yahoo.com")) {
-            account.setSpamFolderName("Bulk Mail");
+            accountConfig.setSpamFolderName("Bulk Mail");
         } else {
-            account.setSpamFolderName(K9.getK9String(R.string.special_mailbox_name_spam));
+            accountConfig.setSpamFolderName(K9.getK9String(R.string.special_mailbox_name_spam));
         }
     }
 
     @Override
     public void onCertificateAccepted(X509Certificate certificate) {
         try {
-            account.addCertificate(currentDirection, certificate);
+            accountConfig.addCertificate(currentDirection, certificate);
         } catch (CertificateException e) {
             view.showErrorDialog(
                     R.string.account_setup_failed_dlg_certificate_message_fmt,
@@ -780,7 +802,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         stage = Stage.INCOMING;
         ConnectionSecurity[] connectionSecurityChoices = ConnectionSecurity.values();
         try {
-            incomingSettings = RemoteStore.decodeStoreUri(account.getStoreUri());
+            incomingSettings = RemoteStore.decodeStoreUri(accountConfig.getStoreUri());
 
             currentIncomingAuthType = incomingSettings.authenticationType;
 
@@ -842,11 +864,11 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                     view.setWebDavMailboxPath(webDavSettings.mailboxPath);
                 }
             } else {
-                throw new IllegalArgumentException("Unknown account type: " + account.getStoreUri());
+                throw new IllegalArgumentException("Unknown account type: " + accountConfig.getStoreUri());
             }
 
             if (!editSettings) {
-                account.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
+                accountConfig.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
             }
 
             view.setSecurityChoices(connectionSecurityChoices);
@@ -866,11 +888,11 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                 updatePortFromSecurityTypeInIncoming(currentIncomingSecurityType);
             }
 
-            view.setCompressionMobile(account.useCompression(NetworkType.MOBILE));
-            view.setCompressionWifi(account.useCompression(NetworkType.WIFI));
-            view.setCompressionOther(account.useCompression(NetworkType.OTHER));
+            view.setCompressionMobile(accountConfig.useCompression(NetworkType.MOBILE));
+            view.setCompressionWifi(accountConfig.useCompression(NetworkType.WIFI));
+            view.setCompressionOther(accountConfig.useCompression(NetworkType.OTHER));
 
-            view.setSubscribedFoldersOnly(account.subscribedFoldersOnly());
+            view.setSubscribedFoldersOnly(accountConfig.subscribedFoldersOnly());
 
         } catch (IllegalArgumentException e) {
             view.showFailureToast(e);
@@ -900,7 +922,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                                          ConnectionSecurity connectionSecurity) {
 
         revokeInvalidSettingsAndUpdateViewInIncoming(authType, connectionSecurity, port);
-        validateFieldInIncoming(certificateAlias, server, currentIncomingPort, username, password, currentIncomingAuthType,
+        validateFieldInIncoming(certificateAlias, server, currentIncomingPort, username, password,
+                currentIncomingAuthType,
                 currentIncomingSecurityType);
     }
 
@@ -934,16 +957,16 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                     webdavMailboxPath);
         }
 
-        account.deleteCertificate(host, port, CheckDirection.INCOMING);
+        accountConfig.deleteCertificate(host, port, CheckDirection.INCOMING);
         incomingSettings = new ServerSettings(incomingSettings.type, host, port,
                 connectionSecurity, authType, username, password, clientCertificateAlias, extra);
 
-        account.setStoreUri(RemoteStore.createStoreUri(incomingSettings));
+        accountConfig.setStoreUri(RemoteStore.createStoreUri(incomingSettings));
 
-        account.setCompression(NetworkType.MOBILE, compressMobile);
-        account.setCompression(NetworkType.WIFI, compressWifi);
-        account.setCompression(NetworkType.OTHER, compressOther);
-        account.setSubscribedFoldersOnly(subscribedFoldersOnly);
+        accountConfig.setCompression(NetworkType.MOBILE, compressMobile);
+        accountConfig.setCompression(NetworkType.WIFI, compressWifi);
+        accountConfig.setCompression(NetworkType.OTHER, compressOther);
+        accountConfig.setSubscribedFoldersOnly(subscribedFoldersOnly);
 
         view.goToIncomingChecking();
     }
@@ -1022,6 +1045,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     private void updateAccount() {
+        Account account = (Account) accountConfig;
+
         boolean isPushCapable = false;
         try {
             Store store = account.getRemoteStore();
@@ -1042,6 +1067,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             view.setViewNotExternalInIncoming();
         }
     }
+
     private String getString(int id) {
         return context.getString(id);
     }
@@ -1067,11 +1093,25 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     @Override
     public void onNextButtonInNamesClicked(String name, String description) {
         if (Utility.requiredFieldValid(description)) {
-            account.setDescription(description);
+            accountConfig.setDescription(description);
         }
 
-        account.setName(name);
+        accountConfig.setName(name);
+
+        Account account = preferences.newAccount();
+        account.loadConfig(accountConfig);
+
+        MessagingController.getInstance(context).listFoldersSynchronous(account, true, null);
+        MessagingController.getInstance(context)
+                .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
+
         account.save(preferences);
+
+        if (account.equals(preferences.getDefaultAccount()) || makeDefault) {
+            preferences.setDefaultAccount(account);
+        }
+
+        K9.setServicesEnabled(context);
 
         view.goToListAccounts();
     }
@@ -1083,14 +1123,14 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     public void onOptionsStart() {
         stage = Stage.ACCOUNT_OPTIONS;
 
-        view.setNotifyViewChecked(account.isNotifyNewMail());
-        view.setNotifySyncViewChecked(account.isShowOngoing());
-        view.setCheckFrequencyViewValue(account.getAutomaticCheckIntervalMinutes());
-        view.setDisplayCountViewValue(account.getDisplayCount());
+        view.setNotifyViewChecked(accountConfig.isNotifyNewMail());
+        view.setNotifySyncViewChecked(accountConfig.isShowOngoing());
+        view.setCheckFrequencyViewValue(accountConfig.getAutomaticCheckIntervalMinutes());
+        view.setDisplayCountViewValue(accountConfig.getDisplayCount());
 
         boolean isPushCapable = false;
         try {
-            Store store = account.getRemoteStore();
+            Store store = accountConfig.getRemoteStore();
             isPushCapable = store.isPushCapable();
         } catch (Exception e) {
             Timber.e(e, "Could not get remote store");
@@ -1105,28 +1145,28 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     @Override
     public void onNextButtonInOptionsClicked(boolean isNotifyViewChecked, boolean isNotifySyncViewClicked,
-                                    int checkFrequencyViewSelectedValue, int displayCountViewSelectedValue,
-                                    boolean isPushEnableClicked) {
-        account.setDescription(account.getEmail());
-        account.setNotifyNewMail(isNotifyViewChecked);
-        account.setShowOngoing(isNotifySyncViewClicked);
-        account.setAutomaticCheckIntervalMinutes(checkFrequencyViewSelectedValue);
-        account.setDisplayCount(displayCountViewSelectedValue);
+            int checkFrequencyViewSelectedValue, int displayCountViewSelectedValue,
+            boolean isPushEnableClicked) {
+        /* accountConfig.setDescription(accountConfig.getEmail());
+        accountConfig.setNotifyNewMail(isNotifyViewChecked);
+        accountConfig.setShowOngoing(isNotifySyncViewClicked);
+        accountConfig.setAutomaticCheckIntervalMinutes(checkFrequencyViewSelectedValue);
+        accountConfig.setDisplayCount(displayCountViewSelectedValue);
 
         if (isPushEnableClicked) {
-            account.setFolderPushMode(Account.FolderMode.FIRST_CLASS);
+            accountConfig.setFolderPushMode(Account.FolderMode.FIRST_CLASS);
         } else {
-            account.setFolderPushMode(Account.FolderMode.NONE);
+            accountConfig.setFolderPushMode(Account.FolderMode.NONE);
         }
 
-        account.save(preferences);
-        if (account.equals(preferences.getDefaultAccount()) ||
+        accountConfig.save(preferences);
+        if (accountConfig.equals(preferences.getDefaultAccount()) ||
                 makeDefault) {
-            preferences.setDefaultAccount(account);
+            preferences.setDefaultAccount(accountConfig);
         }
         K9.setServicesEnabled(context);
 
-        view.goToAccountNames();
+        view.goToAccountNames();*/
     }
 
     // endregion options
@@ -1146,8 +1186,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     private void analysisAccount() {
         try {
-            if (new URI(account.getStoreUri()).getScheme().startsWith("webdav")) {
-                account.setTransportUri(account.getStoreUri());
+            if (new URI(accountConfig.getStoreUri()).getScheme().startsWith("webdav")) {
+                accountConfig.setTransportUri(accountConfig.getStoreUri());
                 view.goToOutgoingChecking();
 
                 return;
@@ -1157,7 +1197,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         }
 
         try {
-            outgoingSettings = Transport.decodeTransportUri(account.getTransportUri());
+            outgoingSettings = Transport.decodeTransportUri(accountConfig.getTransportUri());
 
             currentOutgoingAuthType = outgoingSettings.authenticationType;
             setAuthTypeInOutgoing(currentOutgoingAuthType);
@@ -1227,11 +1267,11 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             clientCertificateAlias = null;
         }
 
-        account.deleteCertificate(host, port, CheckDirection.OUTGOING);
+        accountConfig.deleteCertificate(host, port, CheckDirection.OUTGOING);
         ServerSettings server = new ServerSettings(Type.SMTP, host, port, connectionSecurity,
                 authType, username, password, clientCertificateAlias);
         String uri = Transport.createTransportUri(server);
-        account.setTransportUri(uri);
+        accountConfig.setTransportUri(uri);
 
         view.goToOutgoingChecking();
     }
@@ -1352,19 +1392,19 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     private void onImapOrPop3Selected(Type serverType, String schemePrefix) throws URISyntaxException {
         ServerNameSuggester serverNameSuggester = new ServerNameSuggester();
 
-        String domainPart = EmailHelper.getDomainFromEmailAddress(account.getEmail());
+        String domainPart = EmailHelper.getDomainFromEmailAddress(accountConfig.getEmail());
 
         String suggestedStoreServerName = serverNameSuggester.suggestServerName(serverType, domainPart);
-        URI storeUriForDecode = new URI(account.getStoreUri());
+        URI storeUriForDecode = new URI(accountConfig.getStoreUri());
         URI storeUri = new URI(schemePrefix, storeUriForDecode.getUserInfo(), suggestedStoreServerName,
                 storeUriForDecode.getPort(), null, null, null);
-        account.setStoreUri(storeUri.toString());
+        accountConfig.setStoreUri(storeUri.toString());
 
         String suggestedTransportServerName = serverNameSuggester.suggestServerName(SMTP, domainPart);
-        URI transportUriForDecode = new URI(account.getTransportUri());
+        URI transportUriForDecode = new URI(accountConfig.getTransportUri());
         URI transportUri = new URI("smtp+tls+", transportUriForDecode.getUserInfo(), suggestedTransportServerName,
                 transportUriForDecode.getPort(), null, null, null);
-        account.setTransportUri(transportUri.toString());
+        accountConfig.setTransportUri(transportUri.toString());
 
         view.goToIncomingSettings();
     }
@@ -1372,7 +1412,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     private void onWebdavSelected() throws URISyntaxException {
         ServerNameSuggester serverNameSuggester = new ServerNameSuggester();
 
-        URI uriForDecode = new URI(account.getStoreUri());
+        URI uriForDecode = new URI(accountConfig.getStoreUri());
 
         /*
          * The user info we have been given from
@@ -1390,10 +1430,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             userPass = userPass + ":" + userInfo[2];
         }
 
-        String domainPart = EmailHelper.getDomainFromEmailAddress(account.getEmail());
+        String domainPart = EmailHelper.getDomainFromEmailAddress(accountConfig.getEmail());
         String suggestedServerName = serverNameSuggester.suggestServerName(WebDAV, domainPart);
         URI uri = new URI("webdav+ssl+", userPass, suggestedServerName, uriForDecode.getPort(), null, null, null);
-        account.setStoreUri(uri.toString());
+        accountConfig.setStoreUri(uri.toString());
 
         view.goToIncomingSettings();
     }
@@ -1432,12 +1472,12 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     @Override
     public void setAccount(Account account) {
-        this.account = account;
+        this.accountConfig = account;
     }
 
     @Override
     public Account getAccount() {
-        return account;
+        return (Account) accountConfig;
     }
 
     public boolean isEditSettings() {
@@ -1445,8 +1485,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     @Override
-    public void onGetAccountUuid(String accountUuid) {
-        account = preferences.getAccount(accountUuid);
+    public void onGetAccountUuid(@Nullable String accountUuid) {
+        accountConfig = preferences.getAccount(accountUuid);
+    }
+
+    @Override
+    public void onGetAccountConfig(AccountConfigImpl accountConfig) {
+        this.accountConfig = accountConfig;
     }
 
     @Override
@@ -1463,14 +1508,19 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     public AccountSetupStatus getStatus() {
         return new AccountSetupStatus(currentIncomingSecurityType, currentIncomingAuthType,
                 currentIncomingPort, currentOutgoingSecurityType, currentOutgoingAuthType,
-                currentOutgoingPort, account.isNotifyNewMail(), account.isShowOngoing(),
-                account.getAutomaticCheckIntervalMinutes(), account.getDisplayCount(), account.getFolderPushMode(),
-                account.getName(), account.getDescription());
+                currentOutgoingPort, accountConfig.isNotifyNewMail(), accountConfig.isShowOngoing(),
+                accountConfig.getAutomaticCheckIntervalMinutes(), accountConfig.getDisplayCount(), accountConfig.getFolderPushMode(),
+                accountConfig.getName(), accountConfig.getDescription());
     }
 
     @Override
-    public void onMakeDefault() {
-        makeDefault = true;
+    public AccountConfig getAccountConfig() {
+        return accountConfig;
+    }
+
+    @Override
+    public void onGetMakeDefault(boolean makeDefault) {
+        this.makeDefault = makeDefault;
     }
 
     static class AccountSetupStatus {
@@ -1563,4 +1613,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             return description;
         }
     }
+
+
 }
+
