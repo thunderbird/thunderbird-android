@@ -1436,7 +1436,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     @Override
-    public void onGetAccountConfig(AccountConfigImpl accountConfig) {
+    public void onGetAccountConfig(@Nullable AccountConfigImpl accountConfig) {
         this.accountConfig = accountConfig;
     }
 

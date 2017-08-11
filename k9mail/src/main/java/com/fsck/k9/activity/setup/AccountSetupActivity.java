@@ -170,8 +170,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
             stage = (Stage) savedInstanceState.getSerializable(STATE_STAGE);
             editSettings = savedInstanceState.getBoolean(STATE_EDIT_SETTINGS, editSettings);
 
-            accountUuid = savedInstanceState.getString(STATE_ACCOUNT);
-            presenter.onGetAccountUuid(accountUuid);
+            accountUuid = savedInstanceState.getString(STATE_ACCOUNT, accountUuid);
 
             AccountConfigImpl accountConfig = savedInstanceState.getParcelable(STAGE_CONFIG);
             presenter.onGetAccountConfig(accountConfig);
@@ -180,33 +179,29 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
             presenter.onGetMakeDefault(makeDefault);
         }
 
+        presenter.onGetAccountUuid(accountUuid);
+
         if (stage == null) {
             stage = Stage.BASICS;
         }
 
         switch (stage) {
             case BASICS:
+            case AUTOCONFIGURATION:
+            case AUTOCONFIGURATION_INCOMING_CHECKING:
+            case AUTOCONFIGURATION_OUTGOING_CHECKING:
                 goToBasics();
                 break;
             case ACCOUNT_TYPE:
                 goToAccountType();
                 break;
-            case AUTOCONFIGURATION:
-            case AUTOCONFIGURATION_INCOMING_CHECKING:
-            case AUTOCONFIGURATION_OUTGOING_CHECKING:
-                goToAutoConfiguration();
-                break;
             case INCOMING:
+            case INCOMING_CHECKING:
                 goToIncoming();
                 break;
-            case INCOMING_CHECKING:
-                goToIncomingChecking();
-                break;
             case OUTGOING:
-                goToOutgoing();
-                break;
             case OUTGOING_CHECKING:
-                goToOutgoingChecking();
+                goToOutgoing();
                 break;
             case ACCOUNT_NAMES:
                 goToAccountNames();
