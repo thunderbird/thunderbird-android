@@ -37,8 +37,6 @@ interface AccountSetupContract {
         void goToIncoming();
         void goToOutgoing();
 
-        void goToOptions();
-
         Context getContext();
 
         /* --incoming-- */
@@ -89,15 +87,6 @@ interface AccountSetupContract {
         void setDoneButtonInNamesEnabled(boolean enabled);
         void goToListAccounts();
 
-        /* --options-- */
-        void setNotifyViewChecked(boolean checked);
-        void setNotifySyncViewChecked(boolean checked);
-        void setCheckFrequencyViewValue(int value);
-        void setDisplayCountViewValue(int value);
-        void setPushEnableChecked(boolean checked);
-        void setPushEnableVisibility(int visibility);
-        void goToAccountNames();
-
         /* --outgoing-- */
 
         void setNextButtonInOutgoingEnabled(boolean enabled);
@@ -120,6 +109,7 @@ interface AccountSetupContract {
 
         void goToOutgoingChecking();
 
+        void goToAccountNames();
         // ---
         void goBack();
         void end();
@@ -166,12 +156,6 @@ interface AccountSetupContract {
         void onNamesStart();
         void onInputChangedInNames(String name, String description);
         void onNextButtonInNamesClicked(String name, String description);
-
-        /* --options-- */
-        void onOptionsStart();
-        void onNextButtonInOptionsClicked(boolean isNotifyViewChecked, boolean isNotifySyncViewClicked,
-                int checkFrequencyViewSelectedValue, int displayCountViewSelectedValue,
-                boolean isPushEnableClicked);
 
         // outgoing
         void onOutgoingStart();

@@ -208,9 +208,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
             case OUTGOING_CHECKING:
                 goToOutgoingChecking();
                 break;
-            case ACCOUNT_OPTIONS:
-                goToOptions();
-                break;
             case ACCOUNT_NAMES:
                 goToAccountNames();
                 break;
@@ -349,15 +346,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         setSelection(getPositionFromLayoutId(R.layout.account_setup_account_type));
         accountTypeStart();
     }
-
-
-    @Override
-    public void goToOptions() {
-        stage = Stage.ACCOUNT_OPTIONS;
-        setSelection(getPositionFromLayoutId(R.layout.account_setup_options));
-        optionsStart();
-    }
-
 
     @Override
     public void goToAccountNames() {
@@ -624,12 +612,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
                     break;
                 case R.id.outgoing_next:
                     onNextInOutgoing();
-                    break;
-                case R.id.options_next:
-                    presenter.onNextButtonInOptionsClicked(notifyView.isChecked(), notifySyncView.isChecked(),
-                            (int)((SpinnerOption) checkFrequencyView .getSelectedItem()).value,
-                            (int)((SpinnerOption) displayCountView .getSelectedItem()).value,
-                            pushEnable.isChecked());
                     break;
                 case R.id.done:
                     presenter.onNextButtonInNamesClicked(name.getText().toString(), description.getText().toString());
@@ -966,102 +948,9 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         presenter.onInputChangedInNames(name.getText().toString(), description.getText().toString());
     }
 
-    // options
-
-    public void optionsStart() {
-        checkFrequencyView = (Spinner) findViewById(R.id.account_check_frequency);
-        displayCountView = (Spinner) findViewById(R.id.account_display_count);
-        notifyView = (CheckBox) findViewById(R.id.account_notify);
-        notifySyncView = (CheckBox) findViewById(R.id.account_notify_sync);
-        pushEnable = (CheckBox) findViewById(R.id.account_enable_push);
-
-        findViewById(R.id.account_setup_options).findViewById(R.id.options_next).setOnClickListener(this);
-
-        SpinnerOption checkFrequencies[] = {
-                new SpinnerOption(-1,
-                        getString(R.string.account_setup_options_mail_check_frequency_never)),
-                new SpinnerOption(1,
-                        getString(R.string.account_setup_options_mail_check_frequency_1min)),
-                new SpinnerOption(5,
-                        getString(R.string.account_setup_options_mail_check_frequency_5min)),
-                new SpinnerOption(10,
-                        getString(R.string.account_setup_options_mail_check_frequency_10min)),
-                new SpinnerOption(15,
-                        getString(R.string.account_setup_options_mail_check_frequency_15min)),
-                new SpinnerOption(30,
-                        getString(R.string.account_setup_options_mail_check_frequency_30min)),
-                new SpinnerOption(60,
-                        getString(R.string.account_setup_options_mail_check_frequency_1hour)),
-                new SpinnerOption(120,
-                        getString(R.string.account_setup_options_mail_check_frequency_2hour)),
-                new SpinnerOption(180,
-                        getString(R.string.account_setup_options_mail_check_frequency_3hour)),
-                new SpinnerOption(360,
-                        getString(R.string.account_setup_options_mail_check_frequency_6hour)),
-                new SpinnerOption(720,
-                        getString(R.string.account_setup_options_mail_check_frequency_12hour)),
-                new SpinnerOption(1440,
-                        getString(R.string.account_setup_options_mail_check_frequency_24hour)),
-
-        };
-
-        ArrayAdapter<SpinnerOption> checkFrequenciesAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, checkFrequencies);
-        checkFrequenciesAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        checkFrequencyView.setAdapter(checkFrequenciesAdapter);
-
-        SpinnerOption displayCounts[] = {
-                new SpinnerOption(10, getString(R.string.account_setup_options_mail_display_count_10)),
-                new SpinnerOption(25, getString(R.string.account_setup_options_mail_display_count_25)),
-                new SpinnerOption(50, getString(R.string.account_setup_options_mail_display_count_50)),
-                new SpinnerOption(100, getString(R.string.account_setup_options_mail_display_count_100)),
-                new SpinnerOption(250, getString(R.string.account_setup_options_mail_display_count_250)),
-                new SpinnerOption(500, getString(R.string.account_setup_options_mail_display_count_500)),
-                new SpinnerOption(1000, getString(R.string.account_setup_options_mail_display_count_1000)),
-        };
-
-        ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, displayCounts);
-        displayCountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        displayCountView.setAdapter(displayCountsAdapter);
-
-        presenter.onOptionsStart();
-    }
-
     @Override
     public void goToListAccounts() {
         listAccounts();
-    }
-
-    @Override
-    public void setNotifyViewChecked(boolean checked) {
-        notifyView.setChecked(checked);
-    }
-
-    @Override
-    public void setNotifySyncViewChecked(boolean checked) {
-        notifySyncView.setChecked(checked);
-    }
-
-    @Override
-    public void setCheckFrequencyViewValue(int value) {
-        SpinnerOption.setSpinnerOptionValue(checkFrequencyView, value);
-    }
-
-    @Override
-    public void setDisplayCountViewValue(int value) {
-        SpinnerOption.setSpinnerOptionValue(displayCountView, value);
-    }
-
-    @Override
-    public void setPushEnableChecked(boolean checked) {
-        pushEnable.setChecked(checked);
-    }
-
-    @Override
-    public void setPushEnableVisibility(int visibility) {
-        pushEnable.setVisibility(visibility);
     }
 
     // outgoing
