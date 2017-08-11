@@ -79,7 +79,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         OUTGOING,
         OUTGOING_CHECKING,
         ACCOUNT_TYPE,
-        ACCOUNT_OPTIONS,
         ACCOUNT_NAMES,
     }
 
@@ -1117,59 +1116,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     // endregion names
-
-    // region options
-    @Override
-    public void onOptionsStart() {
-        stage = Stage.ACCOUNT_OPTIONS;
-
-        view.setNotifyViewChecked(accountConfig.isNotifyNewMail());
-        view.setNotifySyncViewChecked(accountConfig.isShowOngoing());
-        view.setCheckFrequencyViewValue(accountConfig.getAutomaticCheckIntervalMinutes());
-        view.setDisplayCountViewValue(accountConfig.getDisplayCount());
-
-        boolean isPushCapable = false;
-        try {
-            Store store = accountConfig.getRemoteStore();
-            isPushCapable = store.isPushCapable();
-        } catch (Exception e) {
-            Timber.e(e, "Could not get remote store");
-        }
-
-        if (!isPushCapable) {
-            view.setPushEnableVisibility(android.view.View.GONE);
-        } else {
-            view.setPushEnableChecked(true);
-        }
-    }
-
-    @Override
-    public void onNextButtonInOptionsClicked(boolean isNotifyViewChecked, boolean isNotifySyncViewClicked,
-            int checkFrequencyViewSelectedValue, int displayCountViewSelectedValue,
-            boolean isPushEnableClicked) {
-        /* accountConfig.setDescription(accountConfig.getEmail());
-        accountConfig.setNotifyNewMail(isNotifyViewChecked);
-        accountConfig.setShowOngoing(isNotifySyncViewClicked);
-        accountConfig.setAutomaticCheckIntervalMinutes(checkFrequencyViewSelectedValue);
-        accountConfig.setDisplayCount(displayCountViewSelectedValue);
-
-        if (isPushEnableClicked) {
-            accountConfig.setFolderPushMode(Account.FolderMode.FIRST_CLASS);
-        } else {
-            accountConfig.setFolderPushMode(Account.FolderMode.NONE);
-        }
-
-        accountConfig.save(preferences);
-        if (accountConfig.equals(preferences.getDefaultAccount()) ||
-                makeDefault) {
-            preferences.setDefaultAccount(accountConfig);
-        }
-        K9.setServicesEnabled(context);
-
-        view.goToAccountNames();*/
-    }
-
-    // endregion options
 
     // region outgoing
     @Override
