@@ -8,10 +8,12 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.fsck.k9.R;
 import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.OAuth2NeedUserPromptException;
 import com.fsck.k9.mail.oauth.AuthorizationException;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 
@@ -31,9 +33,14 @@ public class AndroidAccountOAuth2TokenStore implements OAuth2TokenProvider {
 
     private Map<String,String> authTokens = new HashMap<>();
     private AccountManager accountManager;
+    private GMailXOauth2PromptRequestHandler promptRequestHandler;
 
     public AndroidAccountOAuth2TokenStore(Context applicationContext) {
         this.accountManager = AccountManager.get(applicationContext);
+    }
+
+    public void setPromptRequestHandler(GMailXOauth2PromptRequestHandler promptRequestHandler) {
+        this.promptRequestHandler = promptRequestHandler;
     }
 
     @Override
@@ -79,7 +86,8 @@ public class AndroidAccountOAuth2TokenStore implements OAuth2TokenProvider {
     }
 
     @Override
-    public String getToken(String username, long timeoutMillis) throws AuthenticationFailedException {
+    public String getToken(String username, long timeoutMillis) throws
+            AuthenticationFailedException, OAuth2NeedUserPromptException {
         if(authTokens.get(username) == null) {
             Account account = getAccountFromManager(username);
             if (account == null) {
@@ -101,19 +109,26 @@ public class AndroidAccountOAuth2TokenStore implements OAuth2TokenProvider {
     }
 
     private void fetchNewAuthToken(String username, Account account, long timeoutMillis)
-            throws AuthenticationFailedException {
+            throws AuthenticationFailedException, OAuth2NeedUserPromptException {
         try {
             AccountManagerFuture<Bundle> future = accountManager
-                    .getAuthToken(account, GMAIL_AUTH_TOKEN_TYPE, false, null, null);
+                    .getAuthToken(account, GMAIL_AUTH_TOKEN_TYPE, null, false, null, null);
             Bundle bundle = future.getResult(timeoutMillis, TimeUnit.MILLISECONDS);
             if (bundle == null)
                 throw new AuthenticationFailedException("No token provided");
-            if (bundle.get(AccountManager.KEY_ACCOUNT_NAME) == null)
-                throw new AuthenticationFailedException("No account information provided");
-            if (bundle.get(AccountManager.KEY_ACCOUNT_NAME).equals(username))
-                authTokens.put(username, bundle.get(AccountManager.KEY_AUTHTOKEN).toString());
-            else
-                throw new AuthenticationFailedException("Unexpected account information provided");
+            if (bundle.get(AccountManager.KEY_INTENT) != null) {
+                promptRequestHandler.handleIntent((Intent) bundle.get(AccountManager.KEY_INTENT));
+                throw new OAuth2NeedUserPromptException();
+            } else {
+                if (bundle.get(AccountManager.KEY_ACCOUNT_NAME) == null)
+                    throw new AuthenticationFailedException("No account information provided");
+                if (bundle.get(AccountManager.KEY_ACCOUNT_NAME).equals(username))
+                    authTokens.put(username, bundle.get(AccountManager.KEY_AUTHTOKEN).toString());
+                else
+                    throw new AuthenticationFailedException("Unexpected account information provided");
+            }
+        } catch (OAuth2NeedUserPromptException e) {
+            throw e;
         } catch (Exception e) {
             throw new AuthenticationFailedException(e.getMessage());
         }

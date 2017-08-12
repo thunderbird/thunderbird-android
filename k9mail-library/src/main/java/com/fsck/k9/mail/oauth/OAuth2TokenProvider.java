@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 
 import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.OAuth2NeedUserPromptException;
 
 
 public interface OAuth2TokenProvider {
@@ -50,7 +51,7 @@ public interface OAuth2TokenProvider {
      * @return Token string
      * @throws AuthenticationFailedException
      */
-    String getToken(String username, long timeoutMillis) throws AuthenticationFailedException;
+    String getToken(String username, long timeoutMillis) throws AuthenticationFailedException, OAuth2NeedUserPromptException;
 
     /**
      * Invalidate the token for this username.
