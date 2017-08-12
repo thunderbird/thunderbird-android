@@ -29,6 +29,7 @@ public class MailService extends CoreService {
     private static final String ACTION_CANCEL = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL";
     private static final String ACTION_REFRESH_PUSHERS = "com.fsck.k9.intent.action.MAIL_SERVICE_REFRESH_PUSHERS";
     private static final String ACTION_RESTART_PUSHERS = "com.fsck.k9.intent.action.MAIL_SERVICE_RESTART_PUSHERS";
+    private static final String ACTION_STOP_PUSHERS = "com.fsck.k9.intent.action.MAIL_SERVICE_STOP_PUSHERS";
     private static final String CONNECTIVITY_CHANGE = "com.fsck.k9.intent.action.MAIL_SERVICE_CONNECTIVITY_CHANGE";
     private static final String CANCEL_CONNECTIVITY_NOTICE = "com.fsck.k9.intent.action.MAIL_SERVICE_CANCEL_CONNECTIVITY_NOTICE";
 
@@ -52,6 +53,14 @@ public class MailService extends CoreService {
         i.setClass(context, MailService.class);
         i.setAction(MailService.ACTION_RESTART_PUSHERS);
         addWakeLockId(context, i, wakeLockId, true);
+        context.startService(i);
+    }
+
+    public static void actionStopPushers(Context context, Integer wakeLockId) {
+        Intent i = new Intent();
+        i.setClass(context, MailService.class);
+        i.setAction(MailService.ACTION_STOP_PUSHERS);
+        addWakeLockId(context, i, wakeLockId, false); // CK:Q: why should we not create a wake lock if one is not already existing like for example in actionReschedulePoll?
         context.startService(i);
     }
 
@@ -136,6 +145,9 @@ public class MailService extends CoreService {
             reschedulePollInBackground(hasConnectivity, doBackground, startId, true);
         } else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction())) {
             refreshPushersInBackground(hasConnectivity, doBackground, startId);
+        } else if (ACTION_STOP_PUSHERS.equals(intent.getAction())) {
+            Timber.v("***** MailService *****: stopping pushers");
+            stopPushersInBackground(startId);
         } else if (CONNECTIVITY_CHANGE.equals(intent.getAction())) {
             rescheduleAllInBackground(hasConnectivity, doBackground, startId);
             Timber.i("Got connectivity action with hasConnectivity = %s, doBackground = %s",
@@ -223,6 +235,15 @@ public class MailService extends CoreService {
                 }
             }, K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT, startId);
         }
+    }
+
+    private void stopPushersInBackground(Integer startId) {
+        execute(getApplication(), new Runnable() {
+            @Override
+            public void run() {
+                stopPushers();
+            }
+        }, K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT, startId);
     }
 
     private void reschedulePoll(final boolean hasConnectivity, final boolean doBackground,
