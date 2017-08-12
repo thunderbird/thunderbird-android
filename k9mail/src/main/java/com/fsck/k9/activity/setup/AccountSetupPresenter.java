@@ -30,6 +30,11 @@ import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
+import com.fsck.k9.mail.autoconfiguration.AutoConfigure;
+import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
+import com.fsck.k9.mail.autoconfiguration.AutoConfigureAutodiscover;
+import com.fsck.k9.mail.autoconfiguration.AutoconfigureMozilla;
+import com.fsck.k9.mail.autoconfiguration.AutoconfigureSrv;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
@@ -68,6 +73,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     private ServerSettings incomingSettings;
     private ServerSettings outgoingSettings;
     private boolean makeDefault;
+    private Provider provider;
 
     enum Stage {
         BASICS,
@@ -182,8 +188,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     private void autoConfiguration() {
         view.setMessage(R.string.account_setup_check_settings_retr_info_msg);
 
-        EmailHelper emailHelper = new EmailHelper();
-        String domain = emailHelper.splitEmail(accountConfig.getEmail())[1];
+        findProvider(accountConfig.getEmail());
+
+        /* String domain = emailHelper.splitEmail(accountConfig.getEmail())[1];
+
         Provider provider = findProviderForDomain(domain);
         if (provider == null) {
             accountConfig.init(accountConfig.getEmail(), password);
@@ -198,7 +206,64 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             checkIncomingAndOutgoing();
         } catch (URISyntaxException e) {
             view.goToAccountType();
-        }
+        } */
+    }
+
+    private void findProvider(final String email) {
+        new AsyncTask<Void, Void, ProviderInfo>() {
+            @Override
+            protected ProviderInfo doInBackground(Void... params) {
+                EmailHelper emailHelper = new EmailHelper();
+                String[] emailParts = emailHelper.splitEmail(email);
+                final String domain = emailParts[1];
+
+                ProviderInfo providerInfo;
+                AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
+                AutoconfigureSrv autoconfigureSrv = new AutoconfigureSrv();
+                AutoConfigureAutodiscover autodiscover = new AutoConfigureAutodiscover();
+
+                provider = findProviderForDomain(domain);
+
+                if (provider != null) return null;
+
+                providerInfo = autoconfigureMozilla.findProviderInfo(email);
+                if (providerInfo != null) return providerInfo;
+
+                providerInfo = autoconfigureSrv.findProviderInfo(email);
+                if (providerInfo != null) return providerInfo;
+
+                providerInfo = autodiscover.findProviderInfo(email);
+
+                return providerInfo;
+            }
+
+            @Override
+            protected void onPostExecute(ProviderInfo providerInfo) {
+                super.onPostExecute(providerInfo);
+
+                if (providerInfo != null) {
+                    try {
+                        provider = Provider.newInstanceFromProviderInfo(providerInfo);
+                        modifyAccount(accountConfig.getEmail(), password, provider);
+
+                        checkIncomingAndOutgoing();
+                    } catch (URISyntaxException e) {
+                        Timber.e(e, "Error while converting providerInfo to provider");
+                        provider = null;
+                    }
+                }
+
+                if (provider == null) {
+                    view.goToAccountType();
+                }
+
+                /* if (provider.note != null) {
+                    showDialog(DIALOG_NOTE);
+                } else {
+                    finishAutoSetup();
+                } */
+            }
+        }.execute();
     }
 
     private void checkIncomingAndOutgoing() {
@@ -784,6 +849,30 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         public String outgoingUsernameTemplate;
 
         public String note;
+
+        public static Provider newInstanceFromProviderInfo(@Nullable AutoConfigure.ProviderInfo providerInfo) throws URISyntaxException {
+            if (providerInfo == null) return null;
+
+            Provider provider = new Provider();
+
+            provider.incomingUsernameTemplate = providerInfo.incomingUsernameTemplate;
+            provider.outgoingUsernameTemplate = providerInfo.outgoingUsernameTemplate;
+
+            provider.incomingUriTemplate = new URI(providerInfo.incomingType + "+"
+                    + ("".equals(providerInfo.incomingSocketType) ? "" : (providerInfo.incomingSocketType + "+")),
+                    null,
+                    providerInfo.incomingAddr,
+                    providerInfo.incomingPort,
+                    null, null, null);
+            provider.outgoingUriTemplate = new URI(providerInfo.outgoingType + "+"
+                    + ("".equals(providerInfo.outgoingSocketType) ? "" : (providerInfo.outgoingSocketType + "+")),
+                    null,
+                    providerInfo.outgoingAddr,
+                    providerInfo.outgoingPort,
+                    null, null, null);
+
+            return provider;
+        }
     }
 
     private interface CheckSettingsSuccessCallback {
@@ -917,8 +1006,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     @Override
     public void onInputChangedInIncoming(String certificateAlias, String server, String port,
-                                         String username, String password, AuthType authType,
-                                         ConnectionSecurity connectionSecurity) {
+            String username, String password, AuthType authType,
+            ConnectionSecurity connectionSecurity) {
 
         revokeInvalidSettingsAndUpdateViewInIncoming(authType, connectionSecurity, port);
         validateFieldInIncoming(certificateAlias, server, currentIncomingPort, username, password,
@@ -928,10 +1017,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     @Override
     public void onNextInIncomingClicked(String username, String password, String clientCertificateAlias,
-                              boolean autoDetectNamespace, String imapPathPrefix, String webdavPathPrefix, String webdavAuthPath,
-                              String webdavMailboxPath, String host, int port, ConnectionSecurity connectionSecurity,
-                              AuthType authType, boolean compressMobile, boolean compressWifi, boolean compressOther,
-                              boolean subscribedFoldersOnly) {
+            boolean autoDetectNamespace, String imapPathPrefix, String webdavPathPrefix, String webdavAuthPath,
+            String webdavMailboxPath, String host, int port, ConnectionSecurity connectionSecurity,
+            AuthType authType, boolean compressMobile, boolean compressWifi, boolean compressOther,
+            boolean subscribedFoldersOnly) {
 
         if (authType == AuthType.EXTERNAL) {
             password = null;
@@ -971,8 +1060,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     private void revokeInvalidSettingsAndUpdateViewInIncoming(AuthType authType,
-                                                              ConnectionSecurity connectionSecurity,
-                                                              String port) {
+            ConnectionSecurity connectionSecurity,
+            String port) {
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
 
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
@@ -1020,7 +1109,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
 
     private void validateFieldInIncoming(String certificateAlias, String server, String port,
-                                String username, String password, AuthType authType, ConnectionSecurity connectionSecurity) {
+            String username, String password, AuthType authType, ConnectionSecurity connectionSecurity) {
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
 
@@ -1203,8 +1292,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     @Override
     public void onNextInOutgoingClicked(String username, String password, String clientCertificateAlias,
-                       String host, int port, ConnectionSecurity connectionSecurity,
-                       AuthType authType, boolean requireLogin) {
+            String host, int port, ConnectionSecurity connectionSecurity,
+            AuthType authType, boolean requireLogin) {
 
         if (!requireLogin) {
             username = null;
@@ -1224,8 +1313,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     @Override
     public void onInputChangedInOutgoing(String certificateAlias, String server, String port, String username,
-                                         String password, AuthType authType,
-                                         ConnectionSecurity connectionSecurity, boolean requireLogin) {
+            String password, AuthType authType,
+            ConnectionSecurity connectionSecurity, boolean requireLogin) {
 
         if (currentOutgoingSecurityType != connectionSecurity) {
             boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
@@ -1245,9 +1334,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     private void validateFieldInOutgoing(String certificateAlias, String server, String port,
-                                String username, String password, AuthType authType,
-                                ConnectionSecurity connectionSecurity,
-                                boolean requireLogin) {
+            String username, String password, AuthType authType,
+            ConnectionSecurity connectionSecurity,
+            boolean requireLogin) {
 
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
@@ -1273,8 +1362,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     }
 
     private void revokeInvalidSettingsAndUpdateViewInOutgoing(AuthType authType,
-                                                    ConnectionSecurity connectionSecurity,
-                                                    String port) {
+            ConnectionSecurity connectionSecurity,
+            String port) {
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
 
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
