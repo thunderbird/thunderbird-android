@@ -59,6 +59,7 @@ interface AccountSetupContract {
         void hideViewsWhenImapAndNotEdit();
         void hideViewsWhenWebDav();
 
+        void setImapPathPrefixSectionVisibility(int visibility);
         void setImapAutoDetectNamespace(boolean autoDetectNamespace);
         void setImapPathPrefix(String prefix);
 
@@ -75,6 +76,7 @@ interface AccountSetupContract {
 
         void showFailureToast(Exception use);
 
+        void setCompressionSectionVisibility(int visibility);
         void setCompressionMobile(boolean compressionMobile);
         void setCompressionWifi(boolean compressionWifi);
         void setCompressionOther(boolean compressionOther);

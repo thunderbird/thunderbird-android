@@ -966,6 +966,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                 updatePortFromSecurityTypeInIncoming(currentIncomingSecurityType);
             }
 
+            if (editSettings) {
+                view.setCompressionSectionVisibility(android.view.View.VISIBLE);
+                view.setImapPathPrefixSectionVisibility(android.view.View.VISIBLE);
+            }
             view.setCompressionMobile(accountConfig.useCompression(NetworkType.MOBILE));
             view.setCompressionWifi(accountConfig.useCompression(NetworkType.WIFI));
             view.setCompressionOther(accountConfig.useCompression(NetworkType.OTHER));
@@ -979,7 +983,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     @Override
     public void onIncomingStart() {
-        onIncomingStart(false);
+        onIncomingStart(editSettings);
     }
 
     private void updatePortFromSecurityTypeInIncoming(ConnectionSecurity securityType) {
@@ -1199,7 +1203,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     // region outgoing
     @Override
     public void onOutgoingStart() {
-        onOutgoingStart(false);
+        onOutgoingStart(editSettings);
     }
 
     @Override

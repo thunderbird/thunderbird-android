@@ -156,6 +156,7 @@
                         android:id="@+id/imap_path_prefix_section"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="vertical">
                         <CheckBox
                             android:id="@+id/imap_autodetect_namespace"
@@ -265,11 +266,13 @@
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
                         android:layout_marginTop="@dimen/account_setup_margin_between_items_incoming_and_outgoing"
+                        android:visibility="gone"
                         style="@style/InputLabel"/>
                     <LinearLayout
                         android:id="@+id/compression_section"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="horizontal">
                         <CheckBox
                             android:id="@+id/compression_mobile"
