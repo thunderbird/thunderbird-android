@@ -1051,7 +1051,6 @@ public class Account implements BaseAccount, AccountConfig {
     /**
      * Returns -1 for never.
      */
-    @Override
     public synchronized int getAutomaticCheckIntervalMinutes() {
         return automaticCheckIntervalMinutes;
     }

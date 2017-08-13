@@ -44,7 +44,6 @@ public interface AccountConfig extends StoreConfig {
     public void setTransportUri(String transportUri);
     void setCompression(NetworkType networkType, boolean useCompression);
 
-
     void addCertificate(CheckDirection direction, X509Certificate certificate) throws CertificateException;
 
     void setSubscribedFoldersOnly(boolean subscribedFoldersOnly);

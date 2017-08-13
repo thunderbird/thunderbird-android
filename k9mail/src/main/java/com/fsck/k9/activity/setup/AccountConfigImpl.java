@@ -70,7 +70,7 @@ class AccountConfigImpl implements AccountConfig, Parcelable {
 
     private boolean notifyNewMail;
     private boolean showOngoing;
-    private int automaticCheckIntervalMinutes;
+    private int automaticCheckIntervalMinutes = 5;
     private Account.FolderMode folderPushMode = FolderMode.FIRST_CLASS;
 
     private DeletePolicy deletePolicy = DeletePolicy.NEVER;
@@ -440,9 +440,6 @@ class AccountConfigImpl implements AccountConfig, Parcelable {
         dest.writeInt(this.automaticCheckIntervalMinutes);
         dest.writeInt(this.folderPushMode == null ? -1 : this.folderPushMode.ordinal());
         dest.writeInt(this.deletePolicy == null ? -1 : this.deletePolicy.ordinal());
-    }
-
-    public AccountConfigImpl() {
     }
 
     protected AccountConfigImpl(Parcel in) {

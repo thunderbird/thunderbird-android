@@ -815,6 +815,16 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         presenter.onIncomingStart(editSettings);
     }
 
+    @Override
+    public void setImapPathPrefixSectionVisibility(int visibility) {
+        findViewById(R.id.imap_path_prefix_section).setVisibility(visibility);
+    }
+
+    @Override
+    public void setCompressionSectionVisibility(int visibility) {
+        findViewById(R.id.compression_label).setVisibility(visibility);
+        findViewById(R.id.compression_section).setVisibility(visibility);
+    }
 
     @Override
     public void setNextButtonInIncomingEnabled(boolean enabled) {
