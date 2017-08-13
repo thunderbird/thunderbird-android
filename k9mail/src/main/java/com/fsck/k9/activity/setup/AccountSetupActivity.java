@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
@@ -82,7 +84,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private AccountSetupPresenter presenter;
 
     private TextView messageView;
-    private Handler handler;
 
     private EditText usernameView;
     private EditText passwordView;
@@ -112,6 +113,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private CheckBox compressionOther;
     private CheckBox subscribedFoldersOnly;
     private AuthTypeAdapter authTypeAdapter;
+    private CoordinatorLayout coordinatorLayout;
 
     @SuppressWarnings("FieldCanBeLocal")
     private MaterialProgressBar progressBar;
@@ -277,8 +279,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         progressBar = (MaterialProgressBar) findViewById(R.id.progress);
 
         progressBar.setIndeterminate(true);
-
-        handler = new Handler(Looper.getMainLooper());
     }
 
     private void accountTypeStart() {
@@ -387,44 +387,35 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     public void showAcceptKeyDialog(final int msgResId, final String exMessage, final String message,
             final X509Certificate certificate) {
 
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                // TODO: refactor with DialogFragment.
-                // This is difficult because we need to pass through chain[0] for onClick()
-                new AlertDialog.Builder(AccountSetupActivity.this)
-                        .setTitle(getString(R.string.account_setup_failed_dlg_invalid_certificate_title))
-                        .setMessage(getString(msgResId, exMessage)
-                                + " " + message
-                        )
-                        .setCancelable(true)
-                        .setPositiveButton(
-                                getString(R.string.account_setup_failed_dlg_invalid_certificate_accept),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        presenter.onCertificateAccepted(certificate);
-                                    }
-                                })
-                        .setNegativeButton(
-                                getString(R.string.account_setup_failed_dlg_invalid_certificate_reject),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        presenter.onCertificateRefused();
-                                    }
-                                })
-                        .show();
-            }
-        });
+        // TODO: refactor with DialogFragment.
+        // This is difficult because we need to pass through chain[0] for onClick()
+        new AlertDialog.Builder(AccountSetupActivity.this)
+                .setTitle(getString(R.string.account_setup_failed_dlg_invalid_certificate_title))
+                .setMessage(getString(msgResId, exMessage)
+                        + " " + message
+                )
+                .setCancelable(true)
+                .setPositiveButton(
+                        getString(R.string.account_setup_failed_dlg_invalid_certificate_accept),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                presenter.onCertificateAccepted(certificate);
+                            }
+                        })
+                .setNegativeButton(
+                        getString(R.string.account_setup_failed_dlg_invalid_certificate_reject),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                presenter.onCertificateRefused();
+                            }
+                        })
+                .show();
     }
 
     @Override
     public void showErrorDialog(@StringRes final int msgResId, final Object... args) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                showDialogFragment(R.id.dialog_account_setup_error, getString(msgResId, args));
-            }
-        });
+        // TODO: 8/13/17 add a "detail" button and show exception details here
+        Snackbar.make(coordinatorLayout, getString(msgResId, args), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -773,6 +764,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     private void incomingStart() {
         View incomingView = findViewById(R.id.account_setup_incoming);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.incoming_coordinator_layout);
         usernameView = (EditText) incomingView.findViewById(R.id.incoming_account_username);
         passwordView = (EditText) incomingView.findViewById(R.id.incoming_account_password);
         clientCertificateSpinner = (ClientCertificateSpinner) incomingView.findViewById(R.id.incoming_account_client_certificate_spinner);
@@ -1072,6 +1064,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     private void outgoingStart() {
         final View outgoingView = findViewById(R.id.account_setup_outgoing);
+        coordinatorLayout = (CoordinatorLayout) outgoingView.findViewById(R.id.outgoing_coordinator_layout);
         usernameView = (EditText) outgoingView.findViewById(R.id.outgoing_account_username);
         passwordView = (EditText) outgoingView.findViewById(R.id.outgoing_account_password);
         passwordViewLayout = (TextInputLayout) outgoingView.findViewById(R.id.outgoing_account_password_layout);
@@ -1233,7 +1226,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     @Override
     public void goBack() {
-        super.onBackPressed();
+        onBackPressed();
     }
 
     @Override

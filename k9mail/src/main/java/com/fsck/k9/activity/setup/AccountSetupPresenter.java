@@ -4,6 +4,8 @@ package com.fsck.k9.activity.setup;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -111,10 +113,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     private AccountConfig accountConfig;
 
+    private Handler handler;
+
     public AccountSetupPresenter(Context context, Preferences preferences, View view) {
         this.context = context;
         this.preferences = preferences;
         this.view = view;
+        this.handler = new Handler(Looper.getMainLooper());
     }
 
     // region basics
@@ -466,17 +471,26 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
                 return true;
 
-            } catch (AuthenticationFailedException afe) {
+            } catch (final AuthenticationFailedException afe) {
                 Timber.e(afe, "Error while testing settings");
-                view.showErrorDialog(
-                        R.string.account_setup_failed_dlg_auth_message_fmt,
-                        afe.getMessage() == null ? "" : afe.getMessage());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.goBack();
+                        view.showErrorDialog(R.string.account_setup_failed_auth_message);
+                    }
+                });
             } catch (CertificateValidationException cve) {
                 handleCertificateValidationException(cve);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 Timber.e(e, "Error while testing settings");
-                String message = e.getMessage() == null ? "" : e.getMessage();
-                view.showErrorDialog(R.string.account_setup_failed_dlg_server_message_fmt, message);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.goBack();
+                        view.showErrorDialog(R.string.account_setup_failed_server_message);
+                    }
+                });
             }
             return false;
         }
@@ -686,7 +700,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             }
         }
 
-        StringBuilder chainInfo = new StringBuilder(100);
+        final StringBuilder chainInfo = new StringBuilder(100);
         MessageDigest sha1 = null;
         try {
             sha1 = MessageDigest.getInstance("SHA-1");
@@ -782,7 +796,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
         }
 
-        view.showAcceptKeyDialog(msgResId, exMessage, chainInfo.toString(), chain[0]);
+        final String finalExMessage = exMessage;
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                view.showAcceptKeyDialog(msgResId, finalExMessage, chainInfo.toString(), chain[0]);
+            }
+        });
     }
 
     private void handleCertificateValidationException(CertificateValidationException cve) {
@@ -1470,7 +1490,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                 view.goToOutgoing();
                 break;
             default:
-                view.goBack();
+                view.end();
                 break;
         }
     }

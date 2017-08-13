@@ -519,9 +519,11 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronized with the server</string>
 
     <string name="account_setup_failed_dlg_title">Setup could not finish</string>
+    <string name="account_setup_failed_auth_message">Username or password incorrect</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">Username or password incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_certificate_message_fmt">The server presented an invalid SSL certificate. Sometimes, this is because of a server misconfiguration. Sometimes it is because someone is trying to attack you or your mail server. If you\'re not sure what\'s up, click Reject and contact the folks who manage your mail server.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_server_message_fmt">Cannot connect to server.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_server_message">Cannot connect to server</string>
     <string name="account_setup_failed_dlg_edit_details_action">Edit details</string>
     <string name="account_setup_failed_dlg_continue_action">Continue</string>
 
