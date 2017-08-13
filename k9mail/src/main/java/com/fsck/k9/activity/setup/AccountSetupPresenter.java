@@ -148,7 +148,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     @Override
     public void onNextButtonInBasicViewClicked(String email, String password) {
         if (accountConfig == null) {
-            accountConfig = new AccountConfigImpl();
+            accountConfig = new AccountConfigImpl(preferences);
         }
 
         accountConfig.setEmail(email);
@@ -1480,13 +1480,24 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                 view.goToBasics();
                 break;
             case INCOMING:
-                stage = Stage.ACCOUNT_TYPE;
-                view.goToAccountType();
+                if (!editSettings) {
+                    stage = Stage.ACCOUNT_TYPE;
+                    view.goToAccountType();
+                } else {
+                    view.end();
+                }
                 break;
             case INCOMING_CHECKING:
-            case OUTGOING:
                 stage = Stage.INCOMING;
                 view.goToIncoming();
+                break;
+            case OUTGOING:
+                if (!editSettings) {
+                    stage = Stage.INCOMING;
+                    view.goToIncoming();
+                } else {
+                    view.end();
+                }
                 break;
             case OUTGOING_CHECKING:
             case ACCOUNT_NAMES:
@@ -1554,7 +1565,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     private void manualSetup(String email, String password) {
         if (accountConfig == null) {
-            accountConfig = new AccountConfigImpl();
+            accountConfig = new AccountConfigImpl(preferences);
         }
 
         accountConfig.init(email, password);
