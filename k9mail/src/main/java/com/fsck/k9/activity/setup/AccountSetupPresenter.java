@@ -137,13 +137,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
     @Override
     public void onManualSetupButtonClicked(String email, String password) {
-        if (accountConfig == null) {
-            accountConfig = new AccountConfigImpl();
-        }
-
-        accountConfig.init(email, password);
-
-        view.goToAccountType();
+        manualSetup(email, password);
     }
 
     @Override
@@ -189,24 +183,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         view.setMessage(R.string.account_setup_check_settings_retr_info_msg);
 
         findProvider(accountConfig.getEmail());
-
-        /* String domain = emailHelper.splitEmail(accountConfig.getEmail())[1];
-
-        Provider provider = findProviderForDomain(domain);
-        if (provider == null) {
-            accountConfig.init(accountConfig.getEmail(), password);
-
-            view.goToAccountType();
-            return;
-        }
-
-        try {
-            modifyAccount(accountConfig.getEmail(), password, provider);
-
-            checkIncomingAndOutgoing();
-        } catch (URISyntaxException e) {
-            view.goToAccountType();
-        } */
     }
 
     private void findProvider(final String email) {
@@ -254,14 +230,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                 }
 
                 if (provider == null) {
-                    view.goToAccountType();
+                    manualSetup(accountConfig.getEmail(), password);
                 }
-
-                /* if (provider.note != null) {
-                    showDialog(DIALOG_NOTE);
-                } else {
-                    finishAutoSetup();
-                } */
             }
         }.execute();
     }
@@ -1556,6 +1526,16 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     @Override
     public void onGetMakeDefault(boolean makeDefault) {
         this.makeDefault = makeDefault;
+    }
+
+    private void manualSetup(String email, String password) {
+        if (accountConfig == null) {
+            accountConfig = new AccountConfigImpl();
+        }
+
+        accountConfig.init(email, password);
+
+        view.goToAccountType();
     }
 
     static class AccountSetupStatus {
