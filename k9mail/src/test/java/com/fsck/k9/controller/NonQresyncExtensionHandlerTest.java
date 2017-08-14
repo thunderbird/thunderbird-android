@@ -129,15 +129,32 @@ public class NonQresyncExtensionHandlerTest {
     }
 
     @Test
-    public void continueSync_withCondstoreEnabled_shouldFetchChangedMessageFlagsUsingCondstore() throws Exception {
+    public void continueSync_withCondstoreEnabledAndHighestModSeqChanged_shouldFetchChangedMessageFlagsUsingCondstore()
+            throws Exception {
         when(localFolder.isCachedHighestModSeqValid()).thenReturn(true);
         when(imapFolder.supportsModSeq()).thenReturn(true);
+        when(localFolder.getHighestModSeq()).thenReturn(1L);
+        when(imapFolder.getHighestModSeq()).thenReturn(2L);
 
         extensionHandler.continueSync(account, localFolder, imapFolder, listener);
 
         verify(imapFolder).fetchChangedMessageFlagsUsingCondstore(condstoreFlagSyncCaptor.capture(), anyLong(),
                 any(MessageRetrievalListener.class));
         assertEquals(condstoreFlagSyncCaptor.getValue(), singletonList(remoteOldMessage));
+    }
+
+    @Test
+    public void continueSync_withCondstoreEnabledAndHighestModSeqNotChanged_shouldNotFetchChangedMessageFlags()
+            throws Exception {
+        when(localFolder.isCachedHighestModSeqValid()).thenReturn(true);
+        when(imapFolder.supportsModSeq()).thenReturn(true);
+        when(localFolder.getHighestModSeq()).thenReturn(1L);
+        when(imapFolder.getHighestModSeq()).thenReturn(1L);
+
+        extensionHandler.continueSync(account, localFolder, imapFolder, listener);
+
+        verify(imapFolder, never()).fetchChangedMessageFlagsUsingCondstore(anyList(), anyLong(),
+                any(MessageRetrievalListener.class));
     }
 
     @Test

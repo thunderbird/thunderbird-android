@@ -136,7 +136,7 @@ public class SyncHelperTest {
         if (availableLocally) {
             LocalMessage localMessage = mock(LocalMessage.class);
             when(localMessage.isSet(Flag.X_DOWNLOADED_FULL)).thenReturn(true);
-            when(localFolder.getMessage(uid)).thenReturn(localMessage);
+            when(localFolder.getMessageUidAndFlags(uid)).thenReturn(localMessage);
         } else {
             when(localFolder.getMessage(uid)).thenReturn(null);
         }
