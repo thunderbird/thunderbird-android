@@ -672,8 +672,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
 
-    <string name="folder_settings_folder_sync_mode_label">Folder sync class</string>
-    <string name="folder_settings_folder_sync_mode_normal">No Class</string>
+    <string name="folder_settings_folder_sync_mode_label">Folder poll class</string>
+    <string name="folder_settings_folder_sync_mode_normal">None</string>
     <string name="folder_settings_folder_sync_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_sync_mode_inherited">Same as display class</string>
