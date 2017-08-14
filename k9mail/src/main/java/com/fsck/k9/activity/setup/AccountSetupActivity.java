@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -12,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 
 import com.fsck.k9.Preferences;
@@ -31,7 +31,6 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -233,7 +232,9 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     private void basicsStart() {
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.basics_coordinator_layout);
         emailView = (EditText) findViewById(R.id.account_email);
+        passwordViewLayout = (TextInputLayout) findViewById(R.id.password_input_layout);
         passwordView = (EditText) findViewById(R.id.account_password);
         manualSetupButton = (Button) findViewById(R.id.manual_setup);
         nextButton = (Button) findViewById(R.id.basics_next);
@@ -272,6 +273,20 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private void initializeViewListenersInBasics() {
         emailView.addTextChangedListener(validationTextWatcherInBasics);
         passwordView.addTextChangedListener(validationTextWatcherInBasics);
+        emailView.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    presenter.onEmailEditTextLosesFocus(emailView.getText().toString());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void setPasswordAndManualSetupButtonInBasicsVisibility(int visibility) {
+        passwordViewLayout.setVisibility(visibility);
+        manualSetupButton.setVisibility(visibility);
     }
 
     private void checkingStart() {
@@ -1237,6 +1252,17 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public void goBack() {
         onBackPressed();
+    }
+
+    @Override
+    public void startIntentForResult(Intent intent, int requestCode) {
+        startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        canceled = false;
+        presenter.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
