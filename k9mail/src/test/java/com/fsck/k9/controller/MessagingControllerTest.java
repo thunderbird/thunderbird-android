@@ -69,7 +69,6 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(K9RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
 public class MessagingControllerTest {
 
     private static final String FOLDER_NAME = "Folder";

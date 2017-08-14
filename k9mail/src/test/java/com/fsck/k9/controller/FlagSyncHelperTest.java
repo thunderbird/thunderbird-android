@@ -37,7 +37,6 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 @RunWith(K9RobolectricTestRunner.class)
-@Config(manifest=Config.NONE)
 public class FlagSyncHelperTest {
 
     private Account account;
