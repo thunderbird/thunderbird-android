@@ -188,16 +188,23 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
     }
 
-    void open(Cursor cursor) throws MessagingException {
+    public void open(Cursor cursor) throws MessagingException {
         mFolderId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
         mName = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
         mVisibleLimit = cursor.getInt(LocalStore.FOLDER_VISIBLE_LIMIT_INDEX);
-        if (!cursor.isNull(LocalStore.FOLDER_UID_VALIDITY_INDEX)) {
-            uidValidity = cursor.getLong(LocalStore.FOLDER_UID_VALIDITY_INDEX);
+
+        //The index check here is because of an issue that occurs while upgrading the db to V55 - at that point, the
+        //uid_validity and highest_mod_Seq columns do not exist yet
+        int uidUalidityIndex = cursor.getColumnIndex("uid_validity");
+        if (uidUalidityIndex != -1 && !cursor.isNull(uidUalidityIndex)) {
+            uidValidity = cursor.getLong(uidUalidityIndex);
         }
-        if (!cursor.isNull(LocalStore.FOLDER_HIGHEST_MOD_SEQ_INDEX)) {
-            highestModSeq = cursor.getInt(LocalStore.FOLDER_HIGHEST_MOD_SEQ_INDEX);
+
+        int highestModSeqIndex = cursor.getColumnIndex("highest_mod_seq");
+        if (highestModSeqIndex != -1 && !cursor.isNull(highestModSeqIndex)) {
+            highestModSeq = cursor.getLong(highestModSeqIndex);
         }
+
         mPushState = cursor.getString(LocalStore.FOLDER_PUSH_STATE_INDEX);
         super.setStatus(cursor.getString(LocalStore.FOLDER_STATUS_INDEX));
         // Only want to set the local variable stored in the super class.  This class

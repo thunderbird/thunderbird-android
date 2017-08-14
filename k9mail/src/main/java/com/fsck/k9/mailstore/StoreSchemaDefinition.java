@@ -81,8 +81,6 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 "unread_count INTEGER, " +
                 "visible_limit INTEGER, " +
                 "status TEXT, " +
-                "uid_validity INTEGER default null," +
-                "highest_mod_seq INTEGER default null," +
                 "push_state TEXT, " +
                 "last_pushed INTEGER, " +
                 "flagged_count INTEGER default 0, " +
@@ -92,7 +90,9 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 "push_class TEXT, " +
                 "display_class TEXT, " +
                 "notify_class TEXT default '"+ Folder.FolderClass.INHERITED.name() + "', " +
-                "more_messages TEXT default \"unknown\"" +
+                "more_messages TEXT default \"unknown\", " +
+                "uid_validity INTEGER default null, " +
+                "highest_mod_seq INTEGER default null" +
                 ")");
 
         db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
