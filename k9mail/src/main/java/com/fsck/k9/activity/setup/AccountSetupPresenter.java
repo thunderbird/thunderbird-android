@@ -1,7 +1,9 @@
 package com.fsck.k9.activity.setup;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -17,6 +19,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
+import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
+import com.fsck.k9.account.GMailXOauth2PromptRequestHandler;
 import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.AccountSetupContract.View;
 import com.fsck.k9.controller.MessagingController;
@@ -28,6 +32,7 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.NetworkType;
+import com.fsck.k9.mail.OAuth2NeedUserPromptException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Store;
@@ -68,7 +73,8 @@ import static com.fsck.k9.mail.ServerSettings.Type.SMTP;
 import static com.fsck.k9.mail.ServerSettings.Type.WebDAV;
 
 
-public class AccountSetupPresenter implements AccountSetupContract.Presenter {
+public class AccountSetupPresenter implements AccountSetupContract.Presenter,
+        GMailXOauth2PromptRequestHandler {
 
     private Context context;
     private Preferences preferences;
@@ -77,6 +83,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
     private ServerSettings outgoingSettings;
     private boolean makeDefault;
     private Provider provider;
+
+    private static final int REQUEST_CODE_GMAIL = 1;
 
     enum Stage {
         BASICS,
@@ -121,6 +129,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         this.preferences = preferences;
         this.view = view;
         this.handler = new Handler(Looper.getMainLooper());
+        ((AndroidAccountOAuth2TokenStore) Globals.getOAuth2TokenProvider()).
+                setPromptRequestHandler(this);
     }
 
     // region basics
@@ -135,10 +145,30 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         EmailAddressValidator emailValidator = new EmailAddressValidator();
 
         boolean valid = email != null && email.length() > 0
-                && password != null && password.length() > 0
+                && (onlyXOAuth2(email) || (password != null && password.length() > 0))
                 && emailValidator.isValidAddressOnly(email);
 
+        if (!onlyXOAuth2(email)) {
+            view.setPasswordAndManualSetupButtonInBasicsVisibility(android.view.View.VISIBLE);
+        }
+
         view.setNextButtonInBasicsEnabled(valid);
+    }
+
+    @Override
+    public void onEmailEditTextLosesFocus(String email) {
+        if (onlyXOAuth2(email)) {
+            view.setPasswordAndManualSetupButtonInBasicsVisibility(android.view.View.GONE);
+            view.setNextButtonInBasicsEnabled(true);
+        } else {
+            view.setPasswordAndManualSetupButtonInBasicsVisibility(android.view.View.VISIBLE);
+        }
+    }
+
+    private boolean onlyXOAuth2(String email) {
+        EmailHelper emailHelper = new EmailHelper();
+        String domain = emailHelper.splitEmail(email)[1];
+        return domain.equals("gmail.com");
     }
 
     @Override
@@ -198,7 +228,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
                 EmailHelper emailHelper = new EmailHelper();
                 String[] emailParts = emailHelper.splitEmail(email);
                 final String domain = emailParts[1];
-
                 ProviderInfo providerInfo;
                 AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
                 AutoconfigureSrv autoconfigureSrv = new AutoconfigureSrv();
@@ -223,16 +252,23 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             protected void onPostExecute(ProviderInfo providerInfo) {
                 super.onPostExecute(providerInfo);
 
-                if (providerInfo != null) {
-                    try {
+                try {
+                    if (providerInfo != null) {
                         provider = Provider.newInstanceFromProviderInfo(providerInfo);
-                        modifyAccount(accountConfig.getEmail(), password, provider);
+                    }
+
+                    if (provider != null) {
+                        boolean usingOAuth2 = false;
+                        if (onlyXOAuth2(email)) {
+                            usingOAuth2 = true;
+                        }
+                        modifyAccount(accountConfig.getEmail(), password, provider, usingOAuth2);
 
                         checkIncomingAndOutgoing();
-                    } catch (URISyntaxException e) {
-                        Timber.e(e, "Error while converting providerInfo to provider");
-                        provider = null;
                     }
+                } catch (URISyntaxException e) {
+                    Timber.e(e, "Error while converting providerInfo to provider");
+                    provider = null;
                 }
 
                 if (provider == null) {
@@ -473,6 +509,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
 
                 return true;
 
+            } catch (OAuth2NeedUserPromptException ignored) {
+
             } catch (final AuthenticationFailedException afe) {
                 Timber.e(afe, "Error while testing settings");
                 handler.post(new Runnable() {
@@ -569,7 +607,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         return null;
     }
 
-    private void modifyAccount(String email, String password, @NonNull Provider provider) throws URISyntaxException {
+    private void modifyAccount(String email, String password, @NonNull Provider provider,
+                               boolean usingOAuth2) throws URISyntaxException {
+
         accountConfig.init(email, password);
 
         EmailHelper emailHelper = new EmailHelper();
@@ -585,7 +625,11 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         incomingUsername = incomingUsername.replaceAll("\\$domain", domain);
 
         URI incomingUriTemplate = provider.incomingUriTemplate;
-        URI incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUsername + ":" + passwordEnc,
+        String incomingUserInfo = incomingUsername + ":" + passwordEnc;
+        if (usingOAuth2) {
+            incomingUserInfo = AuthType.XOAUTH2 + ":" + incomingUserInfo;
+        }
+        URI incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUserInfo,
                 incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null, null, null);
 
         String outgoingUsername = provider.outgoingUsernameTemplate;
@@ -598,8 +642,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
             outgoingUsername = outgoingUsername.replaceAll("\\$email", email);
             outgoingUsername = outgoingUsername.replaceAll("\\$user", userEnc);
             outgoingUsername = outgoingUsername.replaceAll("\\$domain", domain);
-            outgoingUri = new URI(outgoingUriTemplate.getScheme(), outgoingUsername + ":"
-                    + passwordEnc, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
+
+            String outgoingUserInfo = outgoingUsername + ":" + passwordEnc;
+            if (usingOAuth2) {
+                outgoingUserInfo = outgoingUserInfo + ":" + AuthType.XOAUTH2;
+            }
+            outgoingUri = new URI(outgoingUriTemplate.getScheme(), outgoingUserInfo,
+                    outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
                     null, null);
 
         } else {
@@ -1573,6 +1622,22 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter {
         accountConfig.init(email, password);
 
         view.goToAccountType();
+    }
+
+    @Override
+    public void handleGMailXOAuth2Intent(Intent intent) {
+        view.startIntentForResult(intent, REQUEST_CODE_GMAIL);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_GMAIL) {
+            if (resultCode == Activity.RESULT_OK) {
+                checkIncomingAndOutgoing();
+            } else {
+                view.goBack();
+            }
+        }
     }
 
     static class AccountSetupStatus {

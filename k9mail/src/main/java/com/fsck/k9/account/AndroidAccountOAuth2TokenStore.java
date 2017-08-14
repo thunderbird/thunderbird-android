@@ -117,7 +117,7 @@ public class AndroidAccountOAuth2TokenStore implements OAuth2TokenProvider {
             if (bundle == null)
                 throw new AuthenticationFailedException("No token provided");
             if (bundle.get(AccountManager.KEY_INTENT) != null) {
-                promptRequestHandler.handleIntent((Intent) bundle.get(AccountManager.KEY_INTENT));
+                promptRequestHandler.handleGMailXOAuth2Intent((Intent) bundle.get(AccountManager.KEY_INTENT));
                 throw new OAuth2NeedUserPromptException();
             } else {
                 if (bundle.get(AccountManager.KEY_ACCOUNT_NAME) == null)

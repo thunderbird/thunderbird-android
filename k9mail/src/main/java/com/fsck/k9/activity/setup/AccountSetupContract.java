@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.security.cert.X509Certificate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.StringRes;
 
 import com.fsck.k9.Account;
@@ -22,6 +23,7 @@ interface AccountSetupContract {
         void goToIncomingSettings();
 
         // basics
+        void setPasswordAndManualSetupButtonInBasicsVisibility(int visibility);
         void setNextButtonInBasicsEnabled(boolean enabled);
         void goToAccountType();
         void goToAutoConfiguration();
@@ -115,6 +117,7 @@ interface AccountSetupContract {
         // ---
         void goBack();
         void end();
+        void startIntentForResult(Intent intent, int requestCode);
     }
 
     interface Presenter extends BasePresenter {
@@ -128,6 +131,7 @@ interface AccountSetupContract {
         void onManualSetupButtonClicked(String email, String password);
         void onNextButtonInBasicViewClicked(String email, String password);
         void setAccount(Account account);
+        void onEmailEditTextLosesFocus(String email);
         Account getAccount();
 
         /* checking */
@@ -182,6 +186,8 @@ interface AccountSetupContract {
         void onGetAccountConfig(AccountConfigImpl accountConfig);
         void onRestoreStart();
         void onRestoreEnd();
+
+        void onActivityResult(int requestCode, int resultCode, Intent data);
 
         AccountSetupPresenter.AccountSetupStatus getStatus();
         AccountConfig getAccountConfig();
