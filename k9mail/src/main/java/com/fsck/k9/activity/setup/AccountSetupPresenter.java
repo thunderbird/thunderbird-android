@@ -84,6 +84,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     private boolean makeDefault;
     private Provider provider;
 
+    private boolean autoconfiguration;
+
     private static final int REQUEST_CODE_GMAIL = 1;
 
     enum Stage {
@@ -254,6 +256,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     }
 
                     if (provider != null) {
+                        autoconfiguration = true;
+
                         boolean usingOAuth2 = false;
                         if (onlyXOAuth2(email)) {
                             usingOAuth2 = true;
@@ -268,6 +272,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 }
 
                 if (provider == null) {
+                    autoconfiguration = false;
                     manualSetup(accountConfig.getEmail(), password);
                 }
             }
@@ -1548,8 +1553,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 break;
             case OUTGOING_CHECKING:
             case ACCOUNT_NAMES:
-                stage = Stage.OUTGOING;
-                view.goToOutgoing();
+                if (autoconfiguration) {
+                    stage = Stage.BASICS;
+                    view.goToBasics();
+                } else {
+                    stage = Stage.OUTGOING;
+                    view.goToOutgoing();
+                }
                 break;
             default:
                 view.end();
@@ -1611,6 +1621,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     private void manualSetup(String email, String password) {
+        autoconfiguration = false;
+
         if (accountConfig == null) {
             accountConfig = new AccountConfigImpl(preferences);
         }
