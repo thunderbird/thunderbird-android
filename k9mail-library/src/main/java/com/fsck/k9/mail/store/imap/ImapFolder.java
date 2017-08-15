@@ -160,11 +160,11 @@ public class ImapFolder extends Folder<ImapMessage> {
             String encodedFolderName = folderNameCodec.encode(getPrefixedName());
             String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
             SelectOrExamineCommand command;
-            if (connection.isQresyncCapable() && K9MailLib.shouldUseQresync()) {
+            if (connection.isQresyncCapable() && ImapConfig.shouldUseQresync()) {
                 connection.enableQresync();
                 command = SelectOrExamineCommand.createWithQresyncParameter(mode, escapedFolderName, cachedUidValidity,
                         cachedHighestModSeq);
-            } else if (connection.isCondstoreCapable() && K9MailLib.shouldUseCondstore()) {
+            } else if (connection.isCondstoreCapable() && ImapConfig.shouldUseCondstore()) {
                 command = SelectOrExamineCommand.createWithCondstoreParameter(mode, escapedFolderName);
             } else {
                 command = SelectOrExamineCommand.create(mode, escapedFolderName);

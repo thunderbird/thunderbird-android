@@ -42,9 +42,9 @@ class SelectOrExamineCommand {
         StringBuilder builder = new StringBuilder();
         String openCommand = mode == OPEN_MODE_RW ? "SELECT" : "EXAMINE";
         builder.append(String.format("%s %s", openCommand, escapedFolderName));
-        if (useQresync() && K9MailLib.shouldUseQresync()) {
+        if (useQresync() && ImapConfig.shouldUseQresync()) {
             builder.append(String.format(" (%s (%s %s))", Capabilities.QRESYNC, cachedUidValidity, cachedHighestModSeq));
-        } else if (useCondstore && K9MailLib.shouldUseCondstore()) {
+        } else if (useCondstore && ImapConfig.shouldUseCondstore()) {
             builder.append(String.format(" (%s)", Capabilities.CONDSTORE));
         }
         return builder.toString();

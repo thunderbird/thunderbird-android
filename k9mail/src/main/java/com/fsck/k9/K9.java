@@ -37,6 +37,7 @@ import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
+import com.fsck.k9.mail.store.imap.ImapConfig;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
@@ -539,7 +540,7 @@ public class K9 extends Application {
             }
         });
 
-        K9MailLib.setImapExtensionStatus(new K9MailLib.ImapExtensionStatus() {
+        ImapConfig.setExtensionStatus(new ImapConfig.ExtensionStatus() {
 
             @Override
             public boolean useCondstore() {

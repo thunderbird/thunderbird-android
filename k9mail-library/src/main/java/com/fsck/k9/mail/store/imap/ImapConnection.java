@@ -604,7 +604,7 @@ public class ImapConnection {
     }
 
     void enableQresync() throws IOException, MessagingException {
-        if (!qresyncEnabled && hasCapability(Capabilities.QRESYNC) && K9MailLib.shouldUseQresync()) {
+        if (!qresyncEnabled && hasCapability(Capabilities.QRESYNC) && ImapConfig.shouldUseQresync()) {
             executeSimpleCommand(String.format("%s %s %s", Commands.ENABLE, Capabilities.CONDSTORE,
                     Capabilities.QRESYNC));
             qresyncEnabled = true;

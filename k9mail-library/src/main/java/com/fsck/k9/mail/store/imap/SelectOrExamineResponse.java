@@ -48,7 +48,7 @@ class SelectOrExamineResponse {
         }
         this.readWriteMode = isModeReadWriteIfAvailable(ImapUtility.getLastResponse(imapResponses));
         if (folder.doesConnectionSupportQresync() && highestModSeq != INVALID_HIGHEST_MOD_SEQ
-                && K9MailLib.shouldUseQresync()) {
+                && ImapConfig.shouldUseQresync()) {
             this.qresyncParamResponse = QresyncParamResponse.fromSelectOrExamineResponse(imapResponses, folder);
         } else {
             this.qresyncParamResponse = null;
