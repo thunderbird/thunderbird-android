@@ -113,14 +113,16 @@ public class LocalMessage extends MimeMessage {
             String[] flags = flagList.split(",");
 
             for (String flag : flags) {
+                if ("X_BAD_FLAG".equals(flag)) {
+                    continue;
+                }
+
                 try {
                     setFlagInternal(Flag.valueOf(flag), true);
                 }
 
                 catch (Exception e) {
-                    if (!"X_BAD_FLAG".equals(flag)) {
-                        Timber.w("Unable to parse flag %s", flag);
-                    }
+                    Timber.w("Unable to parse flag %s", flag);
                 }
             }
         }

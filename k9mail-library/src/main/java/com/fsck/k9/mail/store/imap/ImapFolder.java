@@ -52,8 +52,8 @@ public class ImapFolder extends Folder<ImapMessage> {
     };
     private static final int MORE_MESSAGES_WINDOW_SIZE = 500;
     private static final int FETCH_WINDOW_SIZE = 100;
-    static final int INVALID_UID_VALIDITY = -1;
-    static final int INVALID_HIGHEST_MOD_SEQ = -1;
+    public static final int INVALID_UID_VALIDITY = -1;
+    public static final int INVALID_HIGHEST_MOD_SEQ = -1;
 
 
     protected volatile int messageCount = -1;
@@ -177,13 +177,13 @@ public class ImapFolder extends Folder<ImapMessage> {
              * If the command succeeds we expect the folder has been opened read-write unless we
              * are notified otherwise in the responses.
              */
-            this.mode = mode;
-            if (response.hasOpenMode()) {
-                this.mode = response.getOpenMode();
-            }
             if (response == null) {
                 // This shouldn't happen
                 return null;
+            }
+            this.mode = mode;
+            if (response.hasOpenMode()) {
+                this.mode = response.getOpenMode();
             }
             exists = true;
             uidValidity = response.getUidValidity();
@@ -733,13 +733,9 @@ public class ImapFolder extends Folder<ImapMessage> {
                 String uid = fetchList.getKeyedString("UID");
                 long msgSeq = response.getLong(0);
                 if (uid != null) {
-                    try {
-                        msgSeqUidMap.put(msgSeq, uid);
-                        if (K9MailLib.isDebug()) {
-                            Timber.v("Stored uid '%s' for msgSeq %d into map", uid, msgSeq);
-                        }
-                    } catch (Exception e) {
-                        Timber.e("Unable to store uid '%s' for msgSeq %d", uid, msgSeq);
+                    msgSeqUidMap.put(msgSeq, uid);
+                    if (K9MailLib.isDebug()) {
+                        Timber.v("Stored uid '%s' for msgSeq %d into map", uid, msgSeq);
                     }
                 }
 
@@ -1263,14 +1259,14 @@ public class ImapFolder extends Folder<ImapMessage> {
 
         try {
             List<ImapResponse> expungeResponses = executeSimpleCommand("EXPUNGE");
-            handleExpungeResponses(expungeResponses);
+            updateHighestModSeqFromResponses(expungeResponses);
             return ImapUtility.extractVanishedUids(expungeResponses);
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         }
     }
 
-    private void handleExpungeResponses(List<ImapResponse> imapResponses) {
+    private void updateHighestModSeqFromResponses(List<ImapResponse> imapResponses) {
         for (ImapResponse imapResponse : imapResponses) {
             Long highestModSeq = ImapUtility.extractHighestModSeq(imapResponse);
             if (highestModSeq != null) {
@@ -1368,8 +1364,12 @@ public class ImapFolder extends Folder<ImapMessage> {
         return getName().hashCode();
     }
 
-    ImapStore getStore() {
+    private ImapStore getStore() {
         return store;
+    }
+
+    Set<Flag> getPermanentFlags() {
+        return getStore().getPermanentFlagsIndex();
     }
 
     protected String getLogId() {

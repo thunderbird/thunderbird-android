@@ -47,19 +47,15 @@ class SyncHelper {
      */
     boolean verifyOrCreateRemoteSpecialFolder(Account account, String folderName, Folder remoteFolder,
             MessagingListener listener, MessagingController controller) throws MessagingException {
-        if (folderName.equals(account.getTrashFolderName()) ||
-                folderName.equals(account.getSentFolderName()) ||
-                folderName.equals(account.getDraftsFolderName())) {
-            if (!remoteFolder.exists()) {
-                if (!remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
-                    for (MessagingListener l : controller.getListeners(listener)) {
-                        l.synchronizeMailboxFinished(account, folderName, 0, 0);
-                    }
-
-                    Timber.i("Done synchronizing folder %s", folderName);
-                    return false;
-                }
+        if ((folderName.equals(account.getTrashFolderName()) || folderName.equals(account.getSentFolderName()) ||
+                folderName.equals(account.getDraftsFolderName())) && !remoteFolder.exists() &&
+                !remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
+            for (MessagingListener l : controller.getListeners(listener)) {
+                l.synchronizeMailboxFinished(account, folderName, 0, 0);
             }
+
+            Timber.i("Done synchronizing folder %s", folderName);
+            return false;
         }
         return true;
     }

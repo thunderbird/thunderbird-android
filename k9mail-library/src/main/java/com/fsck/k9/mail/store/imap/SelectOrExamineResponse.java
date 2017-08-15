@@ -44,7 +44,7 @@ class SelectOrExamineResponse {
             }
             parseUidValidity(imapResponse);
             parseHighestModSeq(imapResponse);
-            parsePermanentFlags(imapResponse, folder.getStore().getPermanentFlagsIndex());
+            parsePermanentFlags(imapResponse, folder.getPermanentFlags());
         }
         this.readWriteMode = isModeReadWriteIfAvailable(ImapUtility.getLastResponse(imapResponses));
         if (folder.doesConnectionSupportQresync() && highestModSeq != INVALID_HIGHEST_MOD_SEQ

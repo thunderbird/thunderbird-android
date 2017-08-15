@@ -27,6 +27,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+
+import com.fsck.k9.mail.store.imap.ImapFolder;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
@@ -75,8 +77,6 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     private static final long serialVersionUID = -1973296520918624767L;
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
     static final long INVALID_MESSAGE_PART_ID = -1;
-    private static final int INVALID_UID_VALIDITY = -1;
-    private static final int INVALID_HIGHEST_MOD_SEQ = -1;
 
     private final LocalStore localStore;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
@@ -85,8 +85,8 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     private long mFolderId = -1;
     private int mVisibleLimit = -1;
     private String prefId = null;
-    private long uidValidity = INVALID_UID_VALIDITY;
-    private long highestModSeq = INVALID_HIGHEST_MOD_SEQ;
+    private long uidValidity = ImapFolder.INVALID_UID_VALIDITY;
+    private long highestModSeq = ImapFolder.INVALID_HIGHEST_MOD_SEQ;
     private FolderClass mDisplayClass = FolderClass.NO_CLASS;
     private FolderClass mSyncClass = FolderClass.INHERITED;
     private FolderClass mPushClass = FolderClass.SECOND_CLASS;
@@ -460,7 +460,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     public boolean hasCachedUidValidity() throws MessagingException {
-        return uidValidity != INVALID_UID_VALIDITY;
+        return uidValidity != ImapFolder.INVALID_UID_VALIDITY;
     }
 
     public void setHighestModSeq(final long highestModSeq) throws MessagingException {
@@ -469,12 +469,12 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     public void invalidateHighestModSeq() throws MessagingException {
-        this.highestModSeq = INVALID_HIGHEST_MOD_SEQ;
+        this.highestModSeq = ImapFolder.INVALID_HIGHEST_MOD_SEQ;
         updateFolderColumn("highest_mod_seq", null);
     }
 
     public boolean isCachedHighestModSeqValid() throws MessagingException {
-        return highestModSeq != INVALID_HIGHEST_MOD_SEQ;
+        return highestModSeq != ImapFolder.INVALID_HIGHEST_MOD_SEQ;
     }
 
     public void setPushState(final String pushState) throws MessagingException {

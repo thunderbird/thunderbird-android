@@ -28,10 +28,8 @@ public class SelectOrExamineResponseTest {
 
     @Before
     public void setup() throws Exception {
-        ImapStore store = mock(ImapStore.class);
-        when(store.getPermanentFlagsIndex()).thenReturn(TEST_PERMANENT_FLAGS);
         folder = mock(ImapFolder.class);
-        when(folder.getStore()).thenReturn(store);
+        when(folder.getPermanentFlags()).thenReturn(TEST_PERMANENT_FLAGS);
     }
 
     @Test
