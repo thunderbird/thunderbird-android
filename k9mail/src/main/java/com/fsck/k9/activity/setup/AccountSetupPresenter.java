@@ -149,20 +149,16 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 && emailValidator.isValidAddressOnly(email);
 
         if (!onlyXOAuth2(email)) {
-            view.setPasswordAndManualSetupButtonInBasicsVisibility(android.view.View.VISIBLE);
+            view.setPasswordInBasicsEnabled(true);
+            view.setManualSetupButtonInBasicsVisibility(android.view.View.VISIBLE);
+            view.setPasswordHintInBasics(context.getString(R.string.account_setup_basics_password_hint));
+        } else {
+            view.setPasswordInBasicsEnabled(false);
+            view.setPasswordHintInBasics(context.getString(R.string.account_setup_basics_password_gmail_hint));
+            view.setManualSetupButtonInBasicsVisibility(android.view.View.INVISIBLE);
         }
 
         view.setNextButtonInBasicsEnabled(valid);
-    }
-
-    @Override
-    public void onEmailEditTextLosesFocus(String email) {
-        if (onlyXOAuth2(email)) {
-            view.setPasswordAndManualSetupButtonInBasicsVisibility(android.view.View.GONE);
-            view.setNextButtonInBasicsEnabled(true);
-        } else {
-            view.setPasswordAndManualSetupButtonInBasicsVisibility(android.view.View.VISIBLE);
-        }
     }
 
     private boolean onlyXOAuth2(String email) {

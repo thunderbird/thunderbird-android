@@ -23,7 +23,9 @@ interface AccountSetupContract {
         void goToIncomingSettings();
 
         // basics
-        void setPasswordAndManualSetupButtonInBasicsVisibility(int visibility);
+        void setPasswordInBasicsEnabled(boolean enabled);
+        void setPasswordHintInBasics(String hint);
+        void setManualSetupButtonInBasicsVisibility(int visibility);
         void setNextButtonInBasicsEnabled(boolean enabled);
         void goToAccountType();
         void goToAutoConfiguration();
@@ -131,7 +133,6 @@ interface AccountSetupContract {
         void onManualSetupButtonClicked(String email, String password);
         void onNextButtonInBasicViewClicked(String email, String password);
         void setAccount(Account account);
-        void onEmailEditTextLosesFocus(String email);
         Account getAccount();
 
         /* checking */

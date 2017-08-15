@@ -273,19 +273,20 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private void initializeViewListenersInBasics() {
         emailView.addTextChangedListener(validationTextWatcherInBasics);
         passwordView.addTextChangedListener(validationTextWatcherInBasics);
-        emailView.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    presenter.onEmailEditTextLosesFocus(emailView.getText().toString());
-                }
-            }
-        });
     }
 
     @Override
-    public void setPasswordAndManualSetupButtonInBasicsVisibility(int visibility) {
-        passwordViewLayout.setVisibility(visibility);
+    public void setPasswordInBasicsEnabled(boolean enabled) {
+        passwordViewLayout.setEnabled(enabled);
+    }
+
+    @Override
+    public void setPasswordHintInBasics(String hint) {
+        passwordViewLayout.setHint(hint);
+    }
+
+    @Override
+    public void setManualSetupButtonInBasicsVisibility(int visibility) {
         manualSetupButton.setVisibility(visibility);
     }
 
