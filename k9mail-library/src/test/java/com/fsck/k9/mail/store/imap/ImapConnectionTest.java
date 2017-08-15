@@ -1042,7 +1042,7 @@ public class ImapConnectionTest {
             }
 
             @Override
-            public void authorizeApi(String username, Activity activity, OAuth2TokenProviderAuthCallback callback) {
+            public void authorizeAPI(String username, Activity activity, OAuth2TokenProviderAuthCallback callback) {
                 throw new UnsupportedOperationException();
             }
         };
