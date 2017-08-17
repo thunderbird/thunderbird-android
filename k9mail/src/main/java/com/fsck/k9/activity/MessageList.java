@@ -1616,4 +1616,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
         }
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 }
