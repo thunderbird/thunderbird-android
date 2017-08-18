@@ -16,10 +16,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 
+import com.fsck.k9.account.GmailOAuth2TokenStore;
 import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.CheckDirection;
 import com.fsck.k9.helper.EmailHelper;
@@ -29,7 +31,6 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import timber.log.Timber;
 
-import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
@@ -610,6 +611,9 @@ public class Account implements BaseAccount, AccountConfig {
         // TODO: Remove preference settings that may exist for individual
         // folders in the account.
         editor.commit();
+
+        SharedPreferences oauth2SP = ((GmailOAuth2TokenStore) Globals.getOAuth2TokenProvider()).getSharedPreference();
+        oauth2SP.edit().remove(getEmail()).apply();
     }
 
     private static int findNewAccountNumber(List<Integer> accountNumbers) {

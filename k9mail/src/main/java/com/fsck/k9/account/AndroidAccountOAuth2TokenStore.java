@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * An interface between the OAuth2 requirements used for authentication and the AccountManager.
+ * It's not used for the time being because we have {@link GmailOAuth2TokenStore} that handle all Gmail account
  */
 public class AndroidAccountOAuth2TokenStore implements OAuth2TokenProvider {
     private static final String GMAIL_AUTH_TOKEN_TYPE = "oauth2:https://mail.google.com/";
@@ -44,45 +45,8 @@ public class AndroidAccountOAuth2TokenStore implements OAuth2TokenProvider {
     }
 
     @Override
-    public void authorizeAPI(final String emailAddress, final Activity activity,
-                             final OAuth2TokenProviderAuthCallback callback) {
-        Account account = getAccountFromManager(emailAddress);
-        if (account == null) {
-            callback.failure(new AuthorizationException(activity.getString(R.string.xoauth2_account_doesnt_exist)));
-            return;
-        }
-        if (account.name.equals(emailAddress)) {
-            accountManager.getAuthToken(account, GMAIL_AUTH_TOKEN_TYPE, null, activity,
-                new AccountManagerCallback<Bundle>() {
-                    @Override
-                    public void run(AccountManagerFuture<Bundle> future) {
-                        try {
-                            Bundle bundle = future.getResult();
-                            Object keyAccountName = bundle.get(AccountManager.KEY_ACCOUNT_NAME);
-                            if (keyAccountName == null) {
-                                callback.failure(new AuthorizationException(activity.getString(
-                                        R.string.xoauth2_no_account)));
-                                return;
-                            }
-                            if (keyAccountName.equals(emailAddress)) {
-                                callback.success();
-                            } else {
-                                callback.failure(new AuthorizationException(activity.getString(
-                                        R.string.xoauth2_incorrect_auth_info_provided)));
-                            }
-                        } catch (OperationCanceledException e) {
-                            callback.failure(new AuthorizationException(activity.getString(
-                                    R.string.xoauth2_auth_cancelled_by_user), e));
-                        } catch (IOException e) {
-                            callback.failure(new AuthorizationException(activity.getString(
-                                    R.string.xoauth2_unable_to_contact_auth_server), e));
-                        } catch (AuthenticatorException e) {
-                            callback.failure(new AuthorizationException(activity.getString(
-                                    R.string.xoauth2_error_contacting_auth_server), e));
-                        }
-                    }
-                }, null);
-        }
+    public boolean exchangeCode(String username, String code) {
+        return false;
     }
 
     @Override

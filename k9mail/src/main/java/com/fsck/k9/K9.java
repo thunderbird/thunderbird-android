@@ -30,6 +30,7 @@ import android.support.annotation.StringRes;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
+import com.fsck.k9.account.GmailOAuth2TokenStore;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.controller.MessagingController;
@@ -539,7 +540,7 @@ public class K9 extends Application {
         super.onCreate();
         app = this;
         Globals.setContext(this);
-        Globals.setOAuth2TokenProvider(new AndroidAccountOAuth2TokenStore(this));
+        Globals.setOAuth2TokenProvider(new GmailOAuth2TokenStore(this));
 
         K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {
             @Override public boolean enabled() {

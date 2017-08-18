@@ -1260,4 +1260,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="xoauth2_account_doesnt_exist">Account doesn\'t exist</string>
     <string name="xoauth2_incorrect_auth_info_provided">Incorrect auth info provided</string>
     <string name="xoauth2_no_account">No account provided</string>
+    <string name="linked_webview_title_gmail">Gmail Authorization</string>
 </resources>

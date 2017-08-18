@@ -21,6 +21,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
 import com.fsck.k9.account.GMailXOauth2PromptRequestHandler;
+import com.fsck.k9.account.GmailOAuth2TokenStore;
 import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.AccountSetupContract.View;
 import com.fsck.k9.controller.MessagingController;
@@ -88,6 +89,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
     private static final int REQUEST_CODE_GMAIL = 1;
 
+    private boolean oAuth2CodeGotten = false;
+
     enum Stage {
         BASICS,
         AUTOCONFIGURATION,
@@ -131,7 +134,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         this.preferences = preferences;
         this.view = view;
         this.handler = new Handler(Looper.getMainLooper());
-        ((AndroidAccountOAuth2TokenStore) Globals.getOAuth2TokenProvider()).
+        ((GmailOAuth2TokenStore) Globals.getOAuth2TokenProvider()).
                 setPromptRequestHandler(this);
     }
 
@@ -1638,6 +1641,16 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     @Override
+    public void handleRedirectUrl(final String url) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                view.openUrl(url);
+            }
+        });
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_GMAIL) {
             if (resultCode == Activity.RESULT_OK) {
@@ -1645,6 +1658,43 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             } else {
                 view.goBack();
             }
+        }
+    }
+
+    @Override
+    public void onOAuthCodeGot(final String code) {
+        oAuth2CodeGotten = true;
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                return Globals.getOAuth2TokenProvider().exchangeCode(accountConfig.getEmail(), code);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (result) {
+                    checkIncomingAndOutgoing();
+                } else {
+                    oAuth2CodeGotten = false;
+                    view.goToBasics();
+                    view.showErrorDialog("Error when exchanging code");
+                }
+            }
+        }.execute();
+    }
+
+    @Override
+    public void onErrorWhenGettingOAuthCode(String errorMessage) {
+        oAuth2CodeGotten = false;
+        view.goToBasics();
+        view.showErrorDialog(errorMessage);
+    }
+
+    @Override
+    public void onWebViewDismiss() {
+        if (!oAuth2CodeGotten) {
+            view.goToBasics();
+            view.showErrorDialog("Please Connect us with Gmail"); // TODO: 8/18/17 A better error message?
         }
     }
 

@@ -54,7 +54,6 @@ import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ActivityListener;
-import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.CheckDirection;
 import com.fsck.k9.cache.EmailProviderCache;
