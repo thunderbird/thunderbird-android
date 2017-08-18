@@ -34,6 +34,7 @@ interface AccountSetupContract {
         void showAcceptKeyDialog(final int msgResId,  final String exMessage, String message,
                 X509Certificate certificate);
         void showErrorDialog(final int msgResId, final Object... args);
+        void showErrorDialog(String string);
         boolean canceled();
         void setMessage(@StringRes int id);
 
@@ -120,6 +121,7 @@ interface AccountSetupContract {
         void goBack();
         void end();
         void startIntentForResult(Intent intent, int requestCode);
+        void openUrl(String url);
     }
 
     interface Presenter extends BasePresenter {
@@ -192,5 +194,8 @@ interface AccountSetupContract {
 
         AccountSetupPresenter.AccountSetupStatus getStatus();
         AccountConfig getAccountConfig();
+        void onWebViewDismiss();
+        void onOAuthCodeGot(String code);
+        void onErrorWhenGettingOAuthCode(String errorMessage);
     }
 }

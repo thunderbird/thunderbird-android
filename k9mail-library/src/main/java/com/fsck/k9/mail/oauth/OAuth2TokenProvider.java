@@ -3,8 +3,6 @@ package com.fsck.k9.mail.oauth;
 
 import java.util.List;
 
-import android.app.Activity;
-
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.OAuth2NeedUserPromptException;
 
@@ -16,34 +14,7 @@ public interface OAuth2TokenProvider {
     int OAUTH2_TIMEOUT = 30000;
 
     
-    /**
-     * @return Accounts suitable for OAuth 2.0 token provision.
-     */
-    List<String> getAccounts();
-
-    /**
-     * Provides an asynchronous response to an
-     * {@link OAuth2TokenProvider#authorizeAPI(String, Activity, OAuth2TokenProviderAuthCallback)} request
-     */
-    interface OAuth2TokenProviderAuthCallback {
-
-        void success();
-
-        void failure(AuthorizationException e);
-    }
-
-    /**
-     * Request API authorization. This is a foreground action that may produce a dialog to interact with.
-     *
-     * @param username
-     *         Username
-     * @param activity
-     *         The responsible activity
-     * @param callback
-     *         A callback to process the asynchronous response
-     */
-    void authorizeAPI(String username, Activity activity,
-                        OAuth2TokenProviderAuthCallback callback);
+    boolean exchangeCode(String username, String code);
 
     /**
      * Fetch a token. No guarantees are provided for validity.

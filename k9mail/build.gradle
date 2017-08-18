@@ -44,6 +44,8 @@ dependencies {
     compile "com.jakewharton.timber:timber:${timberVersion}"
     compile 'net.jcip:jcip-annotations:1.0'
 
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
