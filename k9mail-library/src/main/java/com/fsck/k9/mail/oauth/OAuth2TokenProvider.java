@@ -14,11 +14,6 @@ public interface OAuth2TokenProvider {
     int OAUTH2_TIMEOUT = 30000;
 
     
-    /**
-     * @return Accounts suitable for OAuth 2.0 token provision.
-     */
-    List<String> getAccounts();
-
     boolean exchangeCode(String username, String code);
 
     /**

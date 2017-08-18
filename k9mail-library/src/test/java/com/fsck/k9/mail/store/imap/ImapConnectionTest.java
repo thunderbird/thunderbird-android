@@ -1037,14 +1037,10 @@ public class ImapConnectionTest {
             }
 
             @Override
-            public List<String> getAccounts() {
+            public boolean exchangeCode(String username, String code) {
                 throw new UnsupportedOperationException();
             }
 
-            @Override
-            public void authorizeAPI(String username, Activity activity, OAuth2TokenProviderAuthCallback callback) {
-                throw new UnsupportedOperationException();
-            }
         };
     }
 }

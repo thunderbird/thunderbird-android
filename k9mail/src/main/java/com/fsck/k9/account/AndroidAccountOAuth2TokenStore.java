@@ -104,7 +104,6 @@ public class AndroidAccountOAuth2TokenStore implements OAuth2TokenProvider {
         authTokens.remove(username);
     }
 
-    @Override
     public List<String> getAccounts() {
         Account[] accounts = accountManager.getAccountsByType(GOOGLE_ACCOUNT_TYPE);
         ArrayList<String> accountNames = new ArrayList<>();

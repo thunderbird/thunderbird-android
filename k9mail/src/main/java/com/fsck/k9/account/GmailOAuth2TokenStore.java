@@ -60,11 +60,6 @@ public class GmailOAuth2TokenStore implements OAuth2TokenProvider {
     }
 
     @Override
-    public List<String> getAccounts() {
-        return null;
-    }
-
-    @Override
     public String getToken(String username, long timeoutMillis)
             throws AuthenticationFailedException, OAuth2NeedUserPromptException {
         if (!authTokens.containsKey(username)) {
