@@ -125,8 +125,8 @@ public class KeywordEditor extends K9ListActivity implements
             if (keyword != null) {
                 CheckBox cbVis = (CheckBox) convertView.findViewById(
                     R.id.checkbox_keyword_visibility);
-                cbVis.setChecked(keyword.isVisible());
                 cbVis.setTag(position);
+                cbVis.setChecked(keyword.isVisible());
                 cbVis.setOnCheckedChangeListener(
                     new CompoundButton.OnCheckedChangeListener()
                 {
