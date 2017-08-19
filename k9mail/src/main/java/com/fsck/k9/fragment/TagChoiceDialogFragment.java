@@ -88,9 +88,9 @@ public class TagChoiceDialogFragment extends DialogFragment {
             public void onItemClick(
                 AdapterView parent, View view, int position, long id)
             {
-                ListView lv = (ListView) parent;
+                ListView parentListView = (ListView) parent;
                 Keyword clickedTag = tags.get(position);
-                if (lv.isItemChecked(position)) {
+                if (parentListView.isItemChecked(position)) {
                     selectedTags.add(clickedTag);
                 } else {
                     selectedTags.remove(clickedTag);
@@ -145,16 +145,16 @@ public class TagChoiceDialogFragment extends DialogFragment {
             }
 
             Keyword tag = getItem(position);
-            TextView tv = (TextView) convertView.findViewById(
+            TextView textViewName = (TextView) convertView.findViewById(
                 android.R.id.text1);
-            if (tv != null && tag != null) {
-                tv.setText(tag.getName());
-                tv.setTextColor(tag.getTextColor());
+            if (textViewName != null && tag != null) {
+                textViewName.setText(tag.getName());
+                textViewName.setTextColor(tag.getTextColor());
             }
 
-            ListView lv = (ListView) parent;
-            if (lv != null && selectedTags.contains(tag)) {
-                lv.setItemChecked(position, true);
+            ListView parentListView = (ListView) parent;
+            if (parentListView != null && selectedTags.contains(tag)) {
+                parentListView.setItemChecked(position, true);
             }
 
             return convertView;
