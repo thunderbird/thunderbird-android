@@ -363,8 +363,7 @@ public class MessageListAdapter extends CursorAdapter {
             fragment.getActivity().getTheme().resolveAttribute(res, outValue, true);
             int backgroundColor = outValue.data;
 
-            if (firstTag != null)
-            {
+            if (firstTag != null) {
                 if (K9.getK9Theme() == K9.Theme.LIGHT) {
                     backgroundColor =
                         firstTag.blendLightBackgroundColor(backgroundColor);
