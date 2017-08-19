@@ -1264,7 +1264,7 @@ class ImapFolder extends Folder<ImapMessage> {
     private String combineFlags(Iterable<Flag> flags) {
         List<String> flagNames = new ArrayList<String>();
         for (Flag flag : flags) {
-            // client's can't add the RECENT flag!
+            // clients can't add the RECENT flag!
             if (!flag.equals(Flag.RECENT)) {
                 flagNames.add(flag.getExternalCode());
             }
