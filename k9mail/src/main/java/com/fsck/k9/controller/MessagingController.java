@@ -3630,7 +3630,6 @@ public class MessagingController {
                     }
 
                     prefs.saveKeywords();
-
                 } catch (Exception e) {
                     Timber.e(e, "Unable to synchronize mail");
                     addErrorMessage(account, null, e);
@@ -3711,7 +3710,6 @@ public class MessagingController {
                 }
                 synchronizeFolder(account, folder, ignoreLastCheckedTime, accountInterval, listener);
             }
-
         } catch (MessagingException e) {
             Timber.e(e, "Unable to synchronize account %s", account.getName());
             addErrorMessage(account, null, e);
