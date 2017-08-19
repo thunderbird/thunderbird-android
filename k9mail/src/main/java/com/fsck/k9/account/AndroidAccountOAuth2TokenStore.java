@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * It's not used for the time being because we have {@link GmailOAuth2TokenStore} that handle all Gmail account
  */
 // TODO: 2017/8/19 maybe we can use it when google account is in Android account system (don't know whether it need effort)
-public class AndroidAccountOAuth2TokenStore implements SpecificOAuth2TokenProvider {
+public class AndroidAccountOAuth2TokenStore extends SpecificOAuth2TokenProvider {
     private static final String GMAIL_AUTH_TOKEN_TYPE = "oauth2:https://mail.google.com/";
     private static final String GOOGLE_ACCOUNT_TYPE = "com.google";
 

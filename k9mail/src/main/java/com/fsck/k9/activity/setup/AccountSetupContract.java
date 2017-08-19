@@ -121,7 +121,9 @@ interface AccountSetupContract {
         void goBack();
         void end();
         void startIntentForResult(Intent intent, int requestCode);
-        void openUrl(String url);
+        void openGmailUrl(String url);
+        void openOutlookUrl(String url);
+        void closeAuthDialog();
     }
 
     interface Presenter extends BasePresenter {

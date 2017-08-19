@@ -11,18 +11,22 @@ public class K9OAuth2TokenProvider extends OAuth2TokenProvider {
     private static final String REFRESH_TOKEN_SP = "refresh_token";
 
     private enum TYPE {
-        GMAIL
+        GMAIL,
+        OUTLOOK,
     }
 
     private GmailOAuth2TokenStore gmailOAuth2TokenStore;
+    private OutlookOAuth2TokenStore outlookOAuth2TokenStore;
 
     public K9OAuth2TokenProvider(Context context) {
         this.context = context;
         gmailOAuth2TokenStore = new GmailOAuth2TokenStore();
+        outlookOAuth2TokenStore = new OutlookOAuth2TokenStore();
     }
 
     public void setPromptRequestHandler(XOauth2PromptRequestHandler promptRequestHandler) {
         gmailOAuth2TokenStore.setPromptRequestHandler(promptRequestHandler);
+        outlookOAuth2TokenStore.setPromptRequestHandler(promptRequestHandler);
     }
 
     @Override
@@ -54,6 +58,8 @@ public class K9OAuth2TokenProvider extends OAuth2TokenProvider {
         switch (type) {
             case GMAIL:
                 return gmailOAuth2TokenStore;
+            case OUTLOOK:
+                return outlookOAuth2TokenStore;
         }
         return null;
     }
@@ -63,6 +69,8 @@ public class K9OAuth2TokenProvider extends OAuth2TokenProvider {
         switch (domain) {
             case "gmail.com":
                 return TYPE.GMAIL;
+            case "outlook.com":
+                return TYPE.OUTLOOK;
         }
         return null;
     }
