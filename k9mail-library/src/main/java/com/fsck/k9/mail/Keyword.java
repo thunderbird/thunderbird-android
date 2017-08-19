@@ -62,6 +62,10 @@ public final class Keyword extends Flag implements Parcelable {
     public static Keyword getKeywordByExternalCode(String externalCode)
         throws IllegalArgumentException
     {
+        if (externalCode == null) {
+            throw new IllegalArgumentException("externalCode is null");
+        }
+
         if (mapExternalCodeToKeyword.containsKey(externalCode)) {
             return mapExternalCodeToKeyword.get(externalCode);
         }
