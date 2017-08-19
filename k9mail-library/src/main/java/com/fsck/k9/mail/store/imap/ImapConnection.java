@@ -37,7 +37,6 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.OAuth2NeedUserPromptException;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
@@ -396,7 +395,7 @@ class ImapConnection {
             return attemptXOAuth2();
         } catch (NegativeImapResponseException e) {
             //TODO: Check response code so we don't needlessly invalidate the token.
-            oauthTokenProvider.invalidateToken(settings.getUsername());
+            oauthTokenProvider.invalidateAccessToken(settings.getUsername());
 
             if (!retryXoauth2WithNewToken) {
                 throw handlePermanentXoauth2Failure(e);
@@ -424,7 +423,8 @@ class ImapConnection {
             //Okay, we failed on a new token.
             //Invalidate the token anyway but assume it's permanent.
             Timber.v(e, "Authentication exception for new token, permanent error assumed");
-            oauthTokenProvider.invalidateToken(settings.getUsername());
+            oauthTokenProvider.invalidateAccessToken(settings.getUsername());
+            oauthTokenProvider.invalidateRefreshToken(settings.getUsername());
             throw handlePermanentXoauth2Failure(e2);
         }
     }

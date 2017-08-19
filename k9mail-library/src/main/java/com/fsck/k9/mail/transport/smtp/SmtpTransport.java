@@ -766,7 +766,7 @@ public class SmtpTransport extends Transport {
                 throw negativeResponse;
             }
 
-            oauthTokenProvider.invalidateToken(username);
+            oauthTokenProvider.invalidateAccessToken(username);
 
             if (!retryXoauthWithNewToken) {
                 handlePermanentFailure(negativeResponse);
@@ -800,7 +800,7 @@ public class SmtpTransport extends Transport {
             //Invalidate the token anyway but assume it's permanent.
             Timber.v(negativeResponseFromNewToken, "Authentication exception for new token, permanent error assumed");
 
-            oauthTokenProvider.invalidateToken(username);
+            oauthTokenProvider.invalidateAccessToken(username);
 
             handlePermanentFailure(negativeResponseFromNewToken);
         }
