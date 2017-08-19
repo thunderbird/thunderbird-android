@@ -136,10 +136,12 @@ public class KeywordEditor extends K9ListActivity implements
                         {
                             final int pos = (int) view.getTag();
                             Keyword keyword = getItem(pos);
-                            remove(keyword);
-                            keyword.setVisible(isChecked);
-                            insert(keyword, pos);
-                            saveChangedKeyword(keyword);
+                            if (keyword.isVisible() != isChecked) {
+                                remove(keyword);
+                                keyword.setVisible(isChecked);
+                                insert(keyword, pos);
+                                saveChangedKeyword(keyword);
+                            }
                         }
                 });
                 cbVis.setLongClickable(true);
