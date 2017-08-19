@@ -4,18 +4,19 @@ package com.fsck.k9;
 import android.content.Context;
 import android.support.annotation.VisibleForTesting;
 
+import com.fsck.k9.account.K9OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 
 
 public class Globals {
     private static Context context;
-    private static OAuth2TokenProvider oAuth2TokenProvider;
+    private static K9OAuth2TokenProvider oAuth2TokenProvider;
 
     static void setContext(Context context) {
         Globals.context = context;
     }
 
-    static void setOAuth2TokenProvider(OAuth2TokenProvider oAuth2TokenProvider) {
+    static void setOAuth2TokenProvider(K9OAuth2TokenProvider oAuth2TokenProvider) {
         Globals.oAuth2TokenProvider = oAuth2TokenProvider;
     }
 
@@ -27,7 +28,7 @@ public class Globals {
         return context;
     }
 
-    public static OAuth2TokenProvider getOAuth2TokenProvider() {
+    public static K9OAuth2TokenProvider getOAuth2TokenProvider() {
         if (oAuth2TokenProvider == null) {
             throw new IllegalStateException("No OAuth 2.0 Token Provider provided");
         }

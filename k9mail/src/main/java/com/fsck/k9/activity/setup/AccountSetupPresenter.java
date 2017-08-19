@@ -19,9 +19,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
-import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
-import com.fsck.k9.account.GMailXOauth2PromptRequestHandler;
-import com.fsck.k9.account.GmailOAuth2TokenStore;
+import com.fsck.k9.account.XOauth2PromptRequestHandler;
+import com.fsck.k9.account.K9OAuth2TokenProvider;
 import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.AccountSetupContract.View;
 import com.fsck.k9.controller.MessagingController;
@@ -75,7 +74,7 @@ import static com.fsck.k9.mail.ServerSettings.Type.WebDAV;
 
 
 public class AccountSetupPresenter implements AccountSetupContract.Presenter,
-        GMailXOauth2PromptRequestHandler {
+        XOauth2PromptRequestHandler {
 
     private Context context;
     private Preferences preferences;
@@ -134,7 +133,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         this.preferences = preferences;
         this.view = view;
         this.handler = new Handler(Looper.getMainLooper());
-        ((GmailOAuth2TokenStore) Globals.getOAuth2TokenProvider()).
+        ((K9OAuth2TokenProvider) Globals.getOAuth2TokenProvider()).
                 setPromptRequestHandler(this);
     }
 
@@ -514,7 +513,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 return true;
 
             } catch (OAuth2NeedUserPromptException ignored) {
-
             } catch (final AuthenticationFailedException afe) {
                 Timber.e(afe, "Error while testing settings");
                 handler.post(new Runnable() {
@@ -1636,12 +1634,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     @Override
-    public void handleGMailXOAuth2Intent(Intent intent) {
-        view.startIntentForResult(intent, REQUEST_CODE_GMAIL);
-    }
-
-    @Override
-    public void handleRedirectUrl(final String url) {
+    public void handleGmailRedirectUrl(final String url) {
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -1667,7 +1660,12 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... params) {
-                return Globals.getOAuth2TokenProvider().exchangeCode(accountConfig.getEmail(), code);
+                try {
+                    Globals.getOAuth2TokenProvider().exchangeCode(accountConfig.getEmail(), code);
+                } catch (AuthenticationFailedException e) {
+                    return false;
+                }
+                return true;
             }
 
             @Override
@@ -1694,7 +1692,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     public void onWebViewDismiss() {
         if (!oAuth2CodeGotten) {
             view.goToBasics();
-            view.showErrorDialog("Please Connect us with Gmail"); // TODO: 8/18/17 A better error message?
+            view.showErrorDialog("Please connect us with Gmail"); // TODO: 8/18/17 A better error message?
         }
     }
 

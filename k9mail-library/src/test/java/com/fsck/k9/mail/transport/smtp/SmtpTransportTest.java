@@ -235,7 +235,7 @@ public class SmtpTransportTest {
 
         InOrder inOrder = inOrder(oAuth2TokenProvider);
         inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
-        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        inOrder.verify(oAuth2TokenProvider).invalidateAccessToken(USERNAME);
         server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
@@ -260,7 +260,7 @@ public class SmtpTransportTest {
 
         InOrder inOrder = inOrder(oAuth2TokenProvider);
         inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
-        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        inOrder.verify(oAuth2TokenProvider).invalidateAccessToken(USERNAME);
         inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
@@ -286,7 +286,7 @@ public class SmtpTransportTest {
 
         InOrder inOrder = inOrder(oAuth2TokenProvider);
         inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
-        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        inOrder.verify(oAuth2TokenProvider).invalidateAccessToken(USERNAME);
         inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
@@ -312,7 +312,7 @@ public class SmtpTransportTest {
 
         InOrder inOrder = inOrder(oAuth2TokenProvider);
         inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
-        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        inOrder.verify(oAuth2TokenProvider).invalidateAccessToken(USERNAME);
         inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
@@ -528,7 +528,7 @@ public class SmtpTransportTest {
 
         InOrder inOrder = inOrder(oAuth2TokenProvider);
         inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
-        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        inOrder.verify(oAuth2TokenProvider).invalidateAccessToken(USERNAME);
         server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }

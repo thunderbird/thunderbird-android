@@ -3,9 +3,7 @@ package com.fsck.k9.mail.store.imap;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.List;
 
-import android.app.Activity;
 import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.AuthType;
@@ -19,6 +17,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.XOAuth2ChallengeParserTest;
 import com.fsck.k9.mail.helpers.TestTrustedSocketFactory;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
+import com.fsck.k9.mail.oauth.SpecificOAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.imap.mockserver.MockImapServer;
 import okio.ByteString;
@@ -1010,14 +1009,14 @@ public class ImapConnectionTest {
 
     private OAuth2TokenProvider createOAuth2TokenProvider() throws AuthenticationFailedException {
         return new OAuth2TokenProvider() {
-            private int invalidationCount = 0;
+            private int accessTokenInvalidationCount = 0;
 
             @Override
-            public String getToken(String username, long timeoutMillis) throws AuthenticationFailedException {
-                assertEquals(USERNAME, username);
+            public String getToken(String email, long timeoutMillis) throws AuthenticationFailedException {
+                assertEquals(USERNAME, email);
                 assertEquals(OAUTH2_TIMEOUT, timeoutMillis);
 
-                switch (invalidationCount) {
+                switch (accessTokenInvalidationCount) {
                     case 0: {
                         return XOAUTH_TOKEN;
                     }
@@ -1025,19 +1024,44 @@ public class ImapConnectionTest {
                         return XOAUTH_ANOTHER_TOKEN;
                     }
                     default: {
-                        throw new AssertionError("Ran out of auth tokens. invalidateToken() called too often?");
+                        throw new AssertionError("Ran out of auth tokens. invalidateAccessToken() called too often?");
                     }
                 }
             }
 
             @Override
-            public void invalidateToken(String username) {
-                assertEquals(USERNAME, username);
-                invalidationCount++;
+            public void showAuthDialog(String email) {
+                throw new UnsupportedOperationException();
             }
 
             @Override
-            public boolean exchangeCode(String username, String code) {
+            protected String getRefreshToken(String username) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public void invalidateAccessToken(String email) {
+                assertEquals(USERNAME, email);
+                accessTokenInvalidationCount++;
+            }
+
+            @Override
+            public void invalidateRefreshToken(String email) {
+                assertEquals(USERNAME, email);
+            }
+
+            @Override
+            protected SpecificOAuth2TokenProvider getSpecificProviderFromEmail(String email) {
+                return null;
+            }
+
+            @Override
+            public void exchangeCode(String email, String code) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            protected void saveRefreshToken(String email, String refreshToken) {
                 throw new UnsupportedOperationException();
             }
 
