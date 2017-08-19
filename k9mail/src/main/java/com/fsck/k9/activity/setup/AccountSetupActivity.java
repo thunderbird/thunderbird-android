@@ -1,14 +1,10 @@
 package com.fsck.k9.activity.setup;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -16,16 +12,14 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.util.Log;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 
 import com.fsck.k9.BuildConfig;
-import com.fsck.k9.Globals;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.account.GmailOAuth2TokenStore;
+import com.fsck.k9.account.GmailWebViewClient;
+import com.fsck.k9.account.OutlookWebViewClient;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.setup.AccountSetupPresenter.Stage;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
@@ -36,7 +30,6 @@ import com.fsck.k9.Account;
 
 import java.security.cert.X509Certificate;
 import java.util.Locale;
-import java.util.Random;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -47,9 +40,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.webkit.CookieManager;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -148,6 +139,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private Button doneButton;
 
     private ViewFlipper flipper;
+
+    Dialog authDialog;
 
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private int position;
@@ -1281,66 +1274,64 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     @Override
-    public void openUrl(String url) {
+    public void openGmailUrl(String url) {
         CookieManager cookieManager = CookieManager.getInstance();
         //noinspection deprecation
         cookieManager.removeAllCookie();
 
-        final Dialog auth_dialog = new Dialog(this);
-        auth_dialog.setContentView(R.layout.oauth_webview);
-        WebView web = (WebView) auth_dialog.findViewById(R.id.web_view);
+        authDialog = new Dialog(this);
+        authDialog.setContentView(R.layout.oauth_webview);
+        WebView web = (WebView) authDialog.findViewById(R.id.web_view);
         web.getSettings().setSaveFormData(false);
         web.getSettings().setJavaScriptEnabled(true);
         web.getSettings().setUserAgentString("K-9 Mail " + BuildConfig.VERSION_NAME);
-        web.setWebViewClient(new WebViewClient() {
-            @SuppressWarnings("deprecation")
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Uri uri = Uri.parse(url);
+        web.setWebViewClient(new GmailWebViewClient(presenter));
 
-                if ("com.fsck.k9.debug".equals(uri.getScheme())) {
-
-                    if (uri.getQueryParameter("error") != null) {
-                        Timber.i("got oauth error: " + uri.getQueryParameter("error"));
-                        presenter.onErrorWhenGettingOAuthCode(uri.getQueryParameter("error"));
-                        auth_dialog.dismiss();
-                        return true;
-                    }
-
-                    String oAuthCode = uri.getQueryParameter("code");
-                    presenter.onOAuthCodeGot(oAuthCode);
-
-                    auth_dialog.dismiss();
-                    return true;
-                }
-
-                if (!uri.getHost().contains("google")) { // TODO: 8/18/17 how to improve it?
-                    presenter.onErrorWhenGettingOAuthCode("Don't surf away from google");
-                    auth_dialog.dismiss();
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            @TargetApi(VERSION_CODES.N)
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return shouldOverrideUrlLoading(view, request.getUrl().toString());
-            }
-
-        });
-
-        auth_dialog.setTitle(R.string.linked_webview_title_gmail);
-        auth_dialog.setCancelable(true);
-        auth_dialog.setOnDismissListener(new OnDismissListener() {
+        authDialog.setTitle(R.string.linked_webview_title_gmail);
+        authDialog.setCancelable(true);
+        authDialog.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 presenter.onWebViewDismiss();
             }
         });
-        auth_dialog.show();
+        authDialog.show();
 
         web.loadUrl(url);
+    }
+
+    @Override
+    public void openOutlookUrl(String url) {
+        CookieManager cookieManager = CookieManager.getInstance();
+        //noinspection deprecation
+        cookieManager.removeAllCookie();
+
+        authDialog = new Dialog(this);
+        authDialog.setContentView(R.layout.oauth_webview);
+        WebView web = (WebView) authDialog.findViewById(R.id.web_view);
+        web.getSettings().setSaveFormData(false);
+        web.getSettings().setJavaScriptEnabled(true);
+        web.getSettings().setUserAgentString("K-9 Mail " + BuildConfig.VERSION_NAME);
+        web.setWebViewClient(new OutlookWebViewClient(presenter));
+
+        authDialog.setTitle(R.string.linked_webview_title_outlook);
+        authDialog.setCancelable(true);
+        authDialog.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                presenter.onWebViewDismiss();
+            }
+        });
+        authDialog.show();
+
+        web.loadUrl(url);
+    }
+
+    @Override
+    public void closeAuthDialog() {
+        if (authDialog != null) {
+            authDialog.dismiss();
+        }
     }
 
     @Override

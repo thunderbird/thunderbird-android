@@ -20,7 +20,6 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.account.XOauth2PromptRequestHandler;
-import com.fsck.k9.account.K9OAuth2TokenProvider;
 import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.AccountSetupContract.View;
 import com.fsck.k9.controller.MessagingController;
@@ -133,8 +132,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         this.preferences = preferences;
         this.view = view;
         this.handler = new Handler(Looper.getMainLooper());
-        ((K9OAuth2TokenProvider) Globals.getOAuth2TokenProvider()).
-                setPromptRequestHandler(this);
+        Globals.getOAuth2TokenProvider(). setPromptRequestHandler(this);
     }
 
     // region basics
@@ -149,10 +147,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         EmailAddressValidator emailValidator = new EmailAddressValidator();
 
         boolean valid = email != null && email.length() > 0
-                && (onlyXOAuth2(email) || (password != null && password.length() > 0))
+                && (canOAuth2(email) || (password != null && password.length() > 0))
                 && emailValidator.isValidAddressOnly(email);
 
-        if (!onlyXOAuth2(email)) {
+        if (!canOAuth2(email)) {
             view.setPasswordInBasicsEnabled(true);
             view.setManualSetupButtonInBasicsVisibility(android.view.View.VISIBLE);
             view.setPasswordHintInBasics(context.getString(R.string.account_setup_basics_password_hint));
@@ -165,10 +163,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         view.setNextButtonInBasicsEnabled(valid);
     }
 
-    private boolean onlyXOAuth2(String email) {
+    private boolean canOAuth2(String email) {
         EmailHelper emailHelper = new EmailHelper();
         String domain = emailHelper.splitEmail(email)[1];
-        return domain.equals("gmail.com");
+        return domain.equals("gmail.com") || domain.equals("outlook.com");
     }
 
     @Override
@@ -261,7 +259,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                         autoconfiguration = true;
 
                         boolean usingOAuth2 = false;
-                        if (onlyXOAuth2(email)) {
+                        if (canOAuth2(email)) {
                             usingOAuth2 = true;
                         }
                         modifyAccount(accountConfig.getEmail(), password, provider, usingOAuth2);
@@ -1638,7 +1636,17 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         handler.post(new Runnable() {
             @Override
             public void run() {
-                view.openUrl(url);
+                view.openGmailUrl(url);
+            }
+        });
+    }
+
+    @Override
+    public void handleOutlookRedirectUrl(final String url) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                view.openOutlookUrl(url);
             }
         });
     }
@@ -1657,6 +1665,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     @Override
     public void onOAuthCodeGot(final String code) {
         oAuth2CodeGotten = true;
+        view.closeAuthDialog();
         new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... params) {
@@ -1684,6 +1693,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     @Override
     public void onErrorWhenGettingOAuthCode(String errorMessage) {
         oAuth2CodeGotten = false;
+        view.closeAuthDialog();
         view.goToBasics();
         view.showErrorDialog(errorMessage);
     }
