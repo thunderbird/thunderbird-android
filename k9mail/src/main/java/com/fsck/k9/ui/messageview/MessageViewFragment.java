@@ -362,7 +362,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 Keyword.getVisibleKeywords(mMessage.getFlags()));
             fragment.show(getFragmentManager(), "tag_choice");
         } catch (Exception e) {
-            e.printStackTrace();
+            Timber.e(e, "Cannot show TagChoiceDialogFragment");
         }
     }
 
