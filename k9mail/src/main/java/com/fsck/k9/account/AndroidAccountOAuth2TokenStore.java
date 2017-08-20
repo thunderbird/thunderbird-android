@@ -4,7 +4,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -29,13 +28,13 @@ public class AndroidAccountOAuth2TokenStore extends SpecificOAuth2TokenProvider 
 
     private Map<String,String> authTokens = new HashMap<>();
     private AccountManager accountManager;
-    private XOauth2PromptRequestHandler promptRequestHandler;
+    private Oauth2PromptRequestHandler promptRequestHandler;
 
     public AndroidAccountOAuth2TokenStore(Context applicationContext) {
         this.accountManager = AccountManager.get(applicationContext);
     }
 
-    public void setPromptRequestHandler(XOauth2PromptRequestHandler promptRequestHandler) {
+    public void setPromptRequestHandler(Oauth2PromptRequestHandler promptRequestHandler) {
         this.promptRequestHandler = promptRequestHandler;
     }
 

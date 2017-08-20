@@ -197,7 +197,5 @@ interface AccountSetupContract {
         AccountSetupPresenter.AccountSetupStatus getStatus();
         AccountConfig getAccountConfig();
         void onWebViewDismiss();
-        void onOAuthCodeGot(String code);
-        void onErrorWhenGettingOAuthCode(String errorMessage);
     }
 }

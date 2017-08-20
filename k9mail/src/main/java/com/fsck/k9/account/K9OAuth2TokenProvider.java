@@ -24,7 +24,7 @@ public class K9OAuth2TokenProvider extends OAuth2TokenProvider {
         outlookOAuth2TokenStore = new OutlookOAuth2TokenStore();
     }
 
-    public void setPromptRequestHandler(XOauth2PromptRequestHandler promptRequestHandler) {
+    public void setPromptRequestHandler(Oauth2PromptRequestHandler promptRequestHandler) {
         gmailOAuth2TokenStore.setPromptRequestHandler(promptRequestHandler);
         outlookOAuth2TokenStore.setPromptRequestHandler(promptRequestHandler);
     }

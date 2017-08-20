@@ -372,7 +372,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_basics_title">Set up a new account</string>
     <string name="account_setup_basics_email_hint">Email address</string>
     <string name="account_setup_basics_password_hint">Password</string>
-    <string name="account_setup_basics_password_gmail_hint">No password needed for Gmail</string>
+    <string name="account_setup_basics_password_no_password_needed_hint">No password needed for %s</string>
     <string name="account_setup_basics_show_password">Show password</string>
     <string name="account_setup_basics_manual_setup_action">Manual setup</string>
 

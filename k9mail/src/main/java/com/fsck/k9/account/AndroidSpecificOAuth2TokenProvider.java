@@ -11,15 +11,17 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 /**
- *
+ * base class for OAuth 2.0 standard authorization code flow
+ * Classes extended this should override two methods that return Retrofit's calls
+ * For other OAuth 2.0 flows, please create another TokenProvider
  */
-public abstract class AndroidSpecificOAuth2TokenProvider extends SpecificOAuth2TokenProvider {
-    protected XOauth2PromptRequestHandler promptRequestHandler;
+abstract class AndroidSpecificOAuth2TokenProvider extends SpecificOAuth2TokenProvider {
+    protected Oauth2PromptRequestHandler promptRequestHandler;
 
     protected abstract Call<ExchangeResponse> getExchangeCodeCall(String code);
     protected abstract Call<RefreshResponse> getRefreshTokenCall(String code);
 
-    void setPromptRequestHandler(XOauth2PromptRequestHandler promptRequestHandler) {
+    void setPromptRequestHandler(Oauth2PromptRequestHandler promptRequestHandler) {
         this.promptRequestHandler = promptRequestHandler;
     }
 

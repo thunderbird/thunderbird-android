@@ -11,6 +11,16 @@ public final class EmailHelper {
         return email.substring(separatorIndex + 1);
     }
 
+    public static String getProviderNameFromEmailAddress(String email) {
+        String domain = getDomainFromEmailAddress(email);
+        if (domain == null) return null;
+
+        int dotIndex = domain.lastIndexOf(".");
+        if (dotIndex == -1) return null;
+
+        return domain.substring(0, dotIndex);
+    }
+
     public String[] splitEmail(String email) {
         String[] retParts = new String[2];
         String[] emailParts = email.split("@");

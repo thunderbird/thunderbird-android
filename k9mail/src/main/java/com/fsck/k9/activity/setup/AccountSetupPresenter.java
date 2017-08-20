@@ -19,7 +19,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
-import com.fsck.k9.account.XOauth2PromptRequestHandler;
+import com.fsck.k9.account.Oauth2PromptRequestHandler;
 import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.AccountSetupContract.View;
 import com.fsck.k9.controller.MessagingController;
@@ -73,7 +73,7 @@ import static com.fsck.k9.mail.ServerSettings.Type.WebDAV;
 
 
 public class AccountSetupPresenter implements AccountSetupContract.Presenter,
-        XOauth2PromptRequestHandler {
+        Oauth2PromptRequestHandler {
 
     private Context context;
     private Preferences preferences;
@@ -156,7 +156,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             view.setPasswordHintInBasics(context.getString(R.string.account_setup_basics_password_hint));
         } else {
             view.setPasswordInBasicsEnabled(false);
-            view.setPasswordHintInBasics(context.getString(R.string.account_setup_basics_password_gmail_hint));
+            view.setPasswordHintInBasics(context.getString(
+                    R.string.account_setup_basics_password_no_password_needed_hint,
+                    EmailHelper.getProviderNameFromEmailAddress(email))
+            );
             view.setManualSetupButtonInBasicsVisibility(android.view.View.INVISIBLE);
         }
 
@@ -164,9 +167,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     private boolean canOAuth2(String email) {
-        EmailHelper emailHelper = new EmailHelper();
-        String domain = emailHelper.splitEmail(email)[1];
-        return domain.equals("gmail.com") || domain.equals("outlook.com");
+        String domain = EmailHelper.getDomainFromEmailAddress(email);
+        return domain != null && (domain.equals("gmail.com") || domain.equals("outlook.com"));
     }
 
     @Override
