@@ -21,7 +21,7 @@ public final class EmailHelper {
         return domain.substring(0, dotIndex);
     }
 
-    public String[] splitEmail(String email) {
+    public static String[] splitEmail(String email) {
         String[] retParts = new String[2];
         String[] emailParts = email.split("@");
         retParts[0] = (emailParts.length > 0) ? emailParts[0] : "";

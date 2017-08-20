@@ -1937,8 +1937,7 @@ public class Account implements BaseAccount, AccountConfig {
         setName(getOwnerName());
         setEmail(email);
 
-        EmailHelper emailHelper = new EmailHelper();
-        String[] emailParts = emailHelper.splitEmail(email);
+        String[] emailParts = EmailHelper.splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
 

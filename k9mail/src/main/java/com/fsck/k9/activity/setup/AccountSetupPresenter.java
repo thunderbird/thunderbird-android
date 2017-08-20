@@ -225,8 +225,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         new AsyncTask<Void, Void, ProviderInfo>() {
             @Override
             protected ProviderInfo doInBackground(Void... params) {
-                EmailHelper emailHelper = new EmailHelper();
-                String[] emailParts = emailHelper.splitEmail(email);
+                String[] emailParts = EmailHelper.splitEmail(email);
                 final String domain = emailParts[1];
                 ProviderInfo providerInfo;
                 AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
@@ -614,8 +613,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
         accountConfig.init(email, password);
 
-        EmailHelper emailHelper = new EmailHelper();
-        String[] emailParts = emailHelper.splitEmail(email);
+        String[] emailParts = EmailHelper.splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
         String userEnc = UrlEncodingHelper.encodeUtf8(user);
