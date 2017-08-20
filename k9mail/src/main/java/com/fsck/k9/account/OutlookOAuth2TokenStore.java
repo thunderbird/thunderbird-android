@@ -16,7 +16,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 class OutlookOAuth2TokenStore extends SpecificOAuth2TokenProvider {
-    private XOauth2PromptRequestHandler promptRequestHandler;
+    private Oauth2PromptRequestHandler promptRequestHandler;
     private static final String OUTLOOK_BASE_URL = "https://login.live.com/";
     private static final String REDIRECT_URI = "msala41aa976-c5ad-405f-a8e3-ed18c07bb13a://auth";
     private static final String CLIENT_ID = "a41aa976-c5ad-405f-a8e3-ed18c07bb13a";
@@ -72,7 +72,7 @@ class OutlookOAuth2TokenStore extends SpecificOAuth2TokenProvider {
         promptRequestHandler.handleOutlookRedirectUrl(AUTHORIZATION_URL);
     }
 
-    void setPromptRequestHandler(XOauth2PromptRequestHandler promptRequestHandler) {
+    void setPromptRequestHandler(Oauth2PromptRequestHandler promptRequestHandler) {
         this.promptRequestHandler = promptRequestHandler;
     }
 

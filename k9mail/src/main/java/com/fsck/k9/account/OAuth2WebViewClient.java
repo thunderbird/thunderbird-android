@@ -11,11 +11,14 @@ import com.fsck.k9.activity.setup.AccountSetupPresenter;
 
 import timber.log.Timber;
 
-public abstract class OAuth2WebViewClient extends WebViewClient {
-    AccountSetupPresenter presenter;
+/**
+ * bass class for standard authorization code flow like Google's or Microsoft's
+ */
+abstract class OAuth2WebViewClient extends WebViewClient {
+    private Oauth2PromptRequestHandler requestHandler;
 
-    public OAuth2WebViewClient(AccountSetupPresenter presenter) {
-        this.presenter = presenter;
+    public OAuth2WebViewClient(Oauth2PromptRequestHandler requestHandler) {
+        this.requestHandler = requestHandler;
     }
 
     protected abstract boolean arrivedAtRedirectUri(Uri uri);
@@ -29,18 +32,18 @@ public abstract class OAuth2WebViewClient extends WebViewClient {
         if (arrivedAtRedirectUri(uri)) {
             if (uri.getQueryParameter("error") != null) {
                 Timber.i("got oauth error: " + uri.getQueryParameter("error"));
-                presenter.onErrorWhenGettingOAuthCode(uri.getQueryParameter("error"));
+                requestHandler.onErrorWhenGettingOAuthCode(uri.getQueryParameter("error"));
                 return true;
             }
 
             String oAuthCode = uri.getQueryParameter("code");
-            presenter.onOAuthCodeGot(oAuthCode);
+            requestHandler.onOAuthCodeGot(oAuthCode);
             return true;
         }
 
         // if (!uri.getHost().contains("google")) {
         if (getOutOfDomain(uri)) {
-            presenter.onErrorWhenGettingOAuthCode("Don't surf away"); // TODO: 2017/8/19 better error message
+            requestHandler.onErrorWhenGettingOAuthCode("Don't surf away"); // TODO: 2017/8/19 better error message
             return true;
         }
         return false;
