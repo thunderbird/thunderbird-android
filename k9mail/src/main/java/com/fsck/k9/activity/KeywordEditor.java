@@ -120,150 +120,193 @@ public class KeywordEditor extends K9ListActivity implements
                 convertView = inflater.inflate(
                     R.layout.keyword_editor_list_item, null);
             }
-
             final Keyword keyword = getItem(position);
             if (keyword != null) {
-                CheckBox cbVis = (CheckBox) convertView.findViewById(
-                    R.id.checkbox_keyword_visibility);
-                cbVis.setTag(position);
-                cbVis.setChecked(keyword.isVisible());
-                cbVis.setOnCheckedChangeListener(
-                    new CompoundButton.OnCheckedChangeListener()
-                {
-                    @Override
-                    public void onCheckedChanged(
-                        CompoundButton view, boolean isChecked)
-                        {
-                            final int pos = (int) view.getTag();
-                            Keyword keyword = getItem(pos);
-                            if (keyword.isVisible() != isChecked) {
-                                remove(keyword);
-                                keyword.setVisible(isChecked);
-                                insert(keyword, pos);
-                                saveChangedKeyword(keyword);
-                            }
-                        }
-                });
-                cbVis.setLongClickable(true);
-
-                LinearLayout lv = (LinearLayout) convertView.findViewById(
-                    R.id.keyword_name_and_external_code);
-                if (keyword.isVisible()) {
-                    lv.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(final View view) {
-                                KeywordEditNameDialogFragment fragment =
-                                      new KeywordEditNameDialogFragment();
-                                fragment.setKeyword(keyword, position);
-                                fragment.show(
-                                    getFragmentManager(), "keyword_edit_name");
-                            }
-                        });
-                } else {
-                    lv.setOnClickListener(null);
-                }
-                lv.setLongClickable(true);
-
-                TextView tvName = (TextView) convertView.findViewById(
-                    R.id.keyword_name);
-                tvName.setText(keyword.getName());
-                if (keyword.isVisible()) {
-                    tvName.setTextColor(keyword.getTextColor());
-                } else {
-                    tvName.setTextColor(colorKeywordNotVisible);
-                }
-
-                TextView tvKeyword = (TextView) convertView.findViewById(
-                    R.id.keyword_external_code);
-                tvKeyword.setText(keyword.getExternalCode());
-
-                ImageButton btnColorDialog = (ImageButton)
-                    convertView.findViewById(R.id.button_keyword_color_dialog);
-                btnColorDialog.setTag(position);
-                if (keyword.isVisible()) {
-                    btnColorDialog.setColorFilter(keyword.getTextColor());
-                    btnColorDialog.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(final View view) {
-                                Dialog dialog = new ColorPickerDialog(
-                                    view.getContext(),
-                                    new ColorPickerDialog.OnColorChangedListener()
-                                    {
-                                        public void colorChanged(int color) {
-                                            final int pos = (int) view.getTag();
-                                            Keyword keyword = getItem(pos);
-                                            remove(keyword);
-                                            keyword.setColor(color);
-                                            insert(keyword, pos);
-                                            saveChangedKeyword(keyword);
-                                        }
-                                    },
-                                    keyword.getColor());
-                                dialog.show();
-                            }
-                        });
-                } else {
-                    btnColorDialog.setColorFilter(colorKeywordNotVisible);
-                    btnColorDialog.setOnClickListener(null);
-                }
-                btnColorDialog.setLongClickable(true);
-
-                ImageButton btnUp = (ImageButton)
-                    convertView.findViewById(R.id.button_keyword_up);
-                btnUp.setTag(position);
-                if (position >= 1) {
-                    btnUp.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(final View view) {
-                                final int pos = (int) view.getTag();
-                                if (pos >= 1) {
-                                    final int newPos = pos - 1;
-                                    Keyword keyword = getItem(pos);
-                                    remove(keyword);
-                                    keyword.moveTo(newPos);
-                                    insert(keyword, newPos);
-                                    saveChangedKeywordOrder();
-                                }
-                            }
-                        });
-                } else {
-                    btnUp.setVisibility(View.INVISIBLE);
-                    btnUp.setOnClickListener(null);
-                }
-                btnUp.setLongClickable(true);
-
-                ImageButton btnDown = (ImageButton)
-                    convertView.findViewById(R.id.button_keyword_down);
-                btnDown.setTag(position);
-                if (position < getCount() - 1) {
-                    btnDown.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(final View view) {
-                                final int pos = (int) view.getTag();
-                                if (pos < getCount() - 1) {
-                                    final int newPos = pos + 1;
-                                    Keyword keyword = getItem(pos);
-                                    remove(keyword);
-                                    keyword.moveTo(newPos);
-                                    insert(keyword, newPos);
-                                    saveChangedKeywordOrder();
-                                }
-                            }
-                        });
-                } else {
-                    btnDown.setVisibility(View.INVISIBLE);
-                    btnDown.setOnClickListener(null);
-                }
-                btnDown.setLongClickable(true);
+                ItemViewHolder holder = getHolder(convertView);
+                assignKeyword(holder, position, keyword);
             }
-
             return convertView;
         }
 
+        private ItemViewHolder getHolder(View view) {
+            ItemViewHolder holder = (ItemViewHolder) view.getTag();
+            if (holder == null) {
+                holder = new ItemViewHolder();
+
+                holder.cbVisibility = (CheckBox) view.findViewById(
+                    R.id.checkbox_keyword_visibility);
+                holder.cbVisibility.setOnCheckedChangeListener(
+                    new OnVisibilityChangeListener());
+                holder.cbVisibility.setLongClickable(true);
+
+                holder.llTexts = (LinearLayout) view.findViewById(
+                    R.id.keyword_name_and_external_code);
+                holder.llTexts.setLongClickable(true);
+
+                holder.tvName = (TextView) view.findViewById(R.id.keyword_name);
+
+                holder.tvKeyword = (TextView) view.findViewById(
+                    R.id.keyword_external_code);
+
+                holder.btnColorDialog = (ImageButton) view.findViewById(
+                    R.id.button_keyword_color_dialog);
+                holder.btnColorDialog.setLongClickable(true);
+
+                holder.btnUp = (ImageButton) view.findViewById(
+                    R.id.button_keyword_up);
+                holder.btnUp.setLongClickable(true);
+
+                holder.btnDown = (ImageButton) view.findViewById(
+                    R.id.button_keyword_down);
+                holder.btnDown.setLongClickable(true);
+
+                view.setTag(holder);
+            }
+            return holder;
+        }
+
+        private void assignKeyword(
+            ItemViewHolder holder, final int position, final Keyword keyword)
+        {
+            holder.cbVisibility.setTag(position);
+            holder.cbVisibility.setChecked(keyword.isVisible());
+
+            holder.llTexts.setTag(position);
+            if (keyword.isVisible()) {
+                holder.llTexts.setOnClickListener(new OnEditNameListener());
+            } else {
+                holder.llTexts.setOnClickListener(null);
+            }
+
+            holder.tvName.setText(keyword.getName());
+            if (keyword.isVisible()) {
+                holder.tvName.setTextColor(keyword.getTextColor());
+            } else {
+                holder.tvName.setTextColor(colorKeywordNotVisible);
+            }
+
+            holder.tvKeyword.setText(keyword.getExternalCode());
+
+            holder.btnColorDialog.setTag(position);
+            if (keyword.isVisible()) {
+                holder.btnColorDialog.setColorFilter(keyword.getTextColor());
+                holder.btnColorDialog.setOnClickListener(
+                    new OnColorDialogListener());
+            } else {
+                holder.btnColorDialog.setColorFilter(colorKeywordNotVisible);
+                holder.btnColorDialog.setOnClickListener(null);
+            }
+
+            holder.btnUp.setTag(position);
+            if (position >= 1) {
+                holder.btnUp.setVisibility(View.VISIBLE);
+                holder.btnUp.setOnClickListener(new OnMoveUpListener());
+            } else {
+                holder.btnUp.setVisibility(View.INVISIBLE);
+                holder.btnUp.setOnClickListener(null);
+            }
+
+            holder.btnDown.setTag(position);
+            if (position < getCount() - 1) {
+                holder.btnDown.setVisibility(View.VISIBLE);
+                holder.btnDown.setOnClickListener(new OnMoveDownListener());
+            } else {
+                holder.btnDown.setVisibility(View.INVISIBLE);
+                holder.btnDown.setOnClickListener(null);
+            }
+        }
+
+        private class OnVisibilityChangeListener
+            implements CompoundButton.OnCheckedChangeListener
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton view, boolean isChecked)
+            {
+                final int pos = (int) view.getTag();
+                Keyword keyword = getItem(pos);
+                if (keyword.isVisible() != isChecked) {
+                    remove(keyword);
+                    keyword.setVisible(isChecked);
+                    insert(keyword, pos);
+                    saveChangedKeyword(keyword);
+                }
+            }
+        }
+
+        private class OnEditNameListener implements View.OnClickListener {
+            @Override
+            public void onClick(final View view) {
+                final int pos = (int) view.getTag();
+                final Keyword keyword = getItem(pos);
+                KeywordEditNameDialogFragment fragment =
+                    new KeywordEditNameDialogFragment();
+                fragment.setKeyword(keyword, pos);
+                fragment.show(getFragmentManager(), "keyword_edit_name");
+            }
+        }
+
+        private class OnColorDialogListener implements View.OnClickListener {
+            @Override
+            public void onClick(final View view) {
+                final int pos = (int) view.getTag();
+                final Keyword keyword = getItem(pos);
+                Dialog dialog = new ColorPickerDialog(
+                    view.getContext(),
+                    new ColorPickerDialog.OnColorChangedListener()
+                    {
+                        public void colorChanged(int color) {
+                            final int pos = (int) view.getTag();
+                            Keyword keyword = getItem(pos);
+                            remove(keyword);
+                            keyword.setColor(color);
+                            insert(keyword, pos);
+                            saveChangedKeyword(keyword);
+                        }
+                    },
+                    keyword.getColor());
+                dialog.show();
+            }
+        }
+
+        private class OnMoveUpListener implements View.OnClickListener {
+            @Override
+            public void onClick(final View view) {
+                final int pos = (int) view.getTag();
+                if (pos >= 1) {
+                    final int newPos = pos - 1;
+                    Keyword keyword = getItem(pos);
+                    remove(keyword);
+                    keyword.moveTo(newPos);
+                    insert(keyword, newPos);
+                    saveChangedKeywordOrder();
+                }
+            }
+        }
+
+        private class OnMoveDownListener implements View.OnClickListener {
+            @Override
+            public void onClick(final View view) {
+                final int pos = (int) view.getTag();
+                if (pos < getCount() - 1) {
+                    final int newPos = pos + 1;
+                    Keyword keyword = getItem(pos);
+                    remove(keyword);
+                    keyword.moveTo(newPos);
+                    insert(keyword, newPos);
+                    saveChangedKeywordOrder();
+                }
+            }
+        }
+
+        private class ItemViewHolder {
+            public CheckBox cbVisibility;
+            public LinearLayout llTexts;
+            public TextView tvName;
+            public TextView tvKeyword;
+            public ImageButton btnColorDialog;
+            public ImageButton btnUp;
+            public ImageButton btnDown;
+        }
     }
 
     @Override
