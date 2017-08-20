@@ -52,46 +52,16 @@ public class KeywordAddDialogFragment extends DialogFragment {
 
         externalCodeEdit = (EditText) view.findViewById(
             R.id.keyword_external_code_edit);
-        externalCodeEdit.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (positiveButton != null) {
-                    final boolean valid = isInputValid();
-                    positiveButton.setEnabled(valid);
-                    message.setVisibility(
-                        valid ? View.INVISIBLE : View.VISIBLE);
-                }
-            }
-            @Override
-            public void beforeTextChanged(
-                CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(
-                CharSequence s, int start, int before, int count) {
-            }
-        });
+        externalCodeEdit.addTextChangedListener(new ExternalCodeWatcher());
         externalCodeEdit.setText(externalCode);
         externalCodeEdit.setSelection(externalCode.length());
-        final EditText externalCodeEditFinal = externalCodeEdit;
 
         message = (TextView) view.findViewById(R.id.keyword_add_message);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.keyword_add_dialog_title)
             .setView(view)
-            .setPositiveButton(
-                android.R.string.ok, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    if (isInputValid()) {
-                        listener.onKeywordAdded(
-                            externalCodeEditFinal.getText().toString());
-                    }
-                }
-            })
+            .setPositiveButton(android.R.string.ok, new OkListener())
             .setNegativeButton(android.R.string.cancel, null);
 
         final Dialog dialog = builder.create();
@@ -129,5 +99,35 @@ public class KeywordAddDialogFragment extends DialogFragment {
         final String externalCode = externalCodeEdit.getText().toString();
         return (externalCode.length() != 0) &&
                Keyword.isValidImapKeyword(externalCode);
+    }
+
+    private class ExternalCodeWatcher implements TextWatcher {
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (positiveButton != null) {
+                final boolean valid = isInputValid();
+                positiveButton.setEnabled(valid);
+                message.setVisibility(valid ? View.INVISIBLE : View.VISIBLE);
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(
+            CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(
+            CharSequence s, int start, int before, int count) {
+        }
+    }
+
+    private class OkListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int id) {
+            if (isInputValid()) {
+                listener.onKeywordAdded(externalCodeEdit.getText().toString());
+            }
+        }
     }
 }

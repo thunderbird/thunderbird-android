@@ -66,15 +66,7 @@ public class KeywordEditNameDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.keyword_edit_name_dialog_title)
             .setView(view)
-            .setPositiveButton(
-                android.R.string.ok, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    listener.onKeywordNameChanged(
-                        nameEditFinal.getText().toString(), position);
-                }
-            })
+            .setPositiveButton(android.R.string.ok, new OkListener())
             .setNegativeButton(android.R.string.cancel, null);
 
         Dialog dialog = builder.create();
@@ -92,6 +84,14 @@ public class KeywordEditNameDialogFragment extends DialogFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() +
                 "does not implement KeywordEditNameDialogListener");
+        }
+    }
+
+    private class OkListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int id) {
+            listener.onKeywordNameChanged(
+                nameEdit.getText().toString(), position);
         }
     }
 }
