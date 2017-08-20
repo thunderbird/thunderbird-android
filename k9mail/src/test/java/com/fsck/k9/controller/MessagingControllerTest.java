@@ -20,6 +20,7 @@ import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
 import com.fsck.k9.account.GmailOAuth2TokenStore;
+import com.fsck.k9.account.K9OAuth2TokenProvider;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -147,7 +148,7 @@ public class MessagingControllerTest {
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
         GlobalsHelper.setContext(appContext);
-        GlobalsHelper.setOAuth2TokenProvider(new GmailOAuth2TokenStore(appContext));
+        GlobalsHelper.setOAuth2TokenProvider(new K9OAuth2TokenProvider(appContext));
 
         controller = new MessagingController(appContext, notificationController, contacts, transportProvider);
 
