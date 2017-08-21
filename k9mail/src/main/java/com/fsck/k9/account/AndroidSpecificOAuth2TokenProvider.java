@@ -1,7 +1,7 @@
 package com.fsck.k9.account;
 
 import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
+import com.fsck.k9.mail.oauth.OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.mail.oauth.SpecificOAuth2TokenProvider;
 import com.google.gson.annotations.SerializedName;
 
@@ -25,7 +25,7 @@ abstract class AndroidSpecificOAuth2TokenProvider extends SpecificOAuth2TokenPro
         this.promptRequestHandler = promptRequestHandler;
     }
 
-    public OAuth2TokenProvider.Tokens exchangeCode(String username, String code) throws AuthenticationFailedException {
+    public OAuth2AuthorizationCodeFlowTokenProvider.Tokens exchangeCode(String username, String code) throws AuthenticationFailedException {
         Call<ExchangeResponse> call = getExchangeCodeCall(code);
         ExchangeResponse exchangeResponse;
         Response<ExchangeResponse> response;
@@ -37,7 +37,7 @@ abstract class AndroidSpecificOAuth2TokenProvider extends SpecificOAuth2TokenPro
         }
         if (exchangeResponse == null || exchangeResponse.accessToken.isEmpty()) return null;
 
-        return new OAuth2TokenProvider.Tokens(exchangeResponse.accessToken, exchangeResponse.refreshToken);
+        return new OAuth2AuthorizationCodeFlowTokenProvider.Tokens(exchangeResponse.accessToken, exchangeResponse.refreshToken);
     }
 
     public String refreshToken(String username, String refreshToken) throws AuthenticationFailedException {

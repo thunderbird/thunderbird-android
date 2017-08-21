@@ -13,14 +13,11 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
-import com.fsck.k9.Globals;
 import com.fsck.k9.GlobalsHelper;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
-import com.fsck.k9.account.GmailOAuth2TokenStore;
-import com.fsck.k9.account.K9OAuth2TokenProvider;
+import com.fsck.k9.account.K9OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -33,7 +30,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
+import com.fsck.k9.mail.oauth.OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -148,7 +145,7 @@ public class MessagingControllerTest {
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
         GlobalsHelper.setContext(appContext);
-        GlobalsHelper.setOAuth2TokenProvider(new K9OAuth2TokenProvider(appContext));
+        GlobalsHelper.setOAuth2TokenProvider(new K9OAuth2AuthorizationCodeFlowTokenProvider(appContext));
 
         controller = new MessagingController(appContext, notificationController, contacts, transportProvider);
 
@@ -866,7 +863,7 @@ public class MessagingControllerTest {
         when(localStore.getFolder(SENT_FOLDER_NAME)).thenReturn(sentFolder);
         when(sentFolder.getDatabaseId()).thenReturn(1L);
         when(localFolder.exists()).thenReturn(true);
-        when(transportProvider.getTransport(any(Context.class), any(Account.class), any(OAuth2TokenProvider.class))).thenReturn(transport);
+        when(transportProvider.getTransport(any(Context.class), any(Account.class), any(OAuth2AuthorizationCodeFlowTokenProvider.class))).thenReturn(transport);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessageToSend1));
         when(localMessageToSend1.getUid()).thenReturn("localMessageToSend1");
         when(localMessageToSend1.getHeader(K9.IDENTITY_HEADER)).thenReturn(new String[]{});

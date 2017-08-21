@@ -16,13 +16,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 
-import com.fsck.k9.account.GmailOAuth2TokenStore;
-import com.fsck.k9.account.K9OAuth2TokenProvider;
 import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.CheckDirection;
 import com.fsck.k9.helper.EmailHelper;
@@ -613,8 +610,8 @@ public class Account implements BaseAccount, AccountConfig {
         // folders in the account.
         editor.commit();
 
-        Globals.getOAuth2TokenProvider().invalidateAccessToken(getEmail());
-        Globals.getOAuth2TokenProvider().invalidateRefreshToken(getEmail());
+        Globals.getOAuth2TokenProvider().invalidateToken(getEmail());
+        Globals.getOAuth2TokenProvider().disconnectEmailWithK9(getEmail());
     }
 
     private static int findNewAccountNumber(List<Integer> accountNumbers) {

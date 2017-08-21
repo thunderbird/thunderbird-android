@@ -14,7 +14,7 @@ import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
+import com.fsck.k9.mail.oauth.OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import org.junit.Before;
@@ -45,9 +45,11 @@ public class ImapStoreTest {
         storeConfig = createStoreConfig();
         TrustedSocketFactory trustedSocketFactory = mock(TrustedSocketFactory.class);
         ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
-        OAuth2TokenProvider oauth2TokenProvider = mock(OAuth2TokenProvider.class);
+        OAuth2AuthorizationCodeFlowTokenProvider
+                oauth2AuthorizationCodeFlowTokenProvider = mock(OAuth2AuthorizationCodeFlowTokenProvider.class);
 
-        imapStore = new TestImapStore(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
+        imapStore = new TestImapStore(storeConfig, trustedSocketFactory, connectivityManager,
+                oauth2AuthorizationCodeFlowTokenProvider);
     }
 
     @Test
@@ -315,8 +317,8 @@ public class ImapStoreTest {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();
 
         public TestImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-                ConnectivityManager connectivityManager, OAuth2TokenProvider oauth2TokenProvider) throws MessagingException {
-            super(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
+                ConnectivityManager connectivityManager, OAuth2AuthorizationCodeFlowTokenProvider oauth2AuthorizationCodeFlowTokenProvider) throws MessagingException {
+            super(storeConfig, trustedSocketFactory, connectivityManager, oauth2AuthorizationCodeFlowTokenProvider);
         }
 
         @Override

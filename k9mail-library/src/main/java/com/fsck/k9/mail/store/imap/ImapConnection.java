@@ -38,6 +38,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.PeekableInputStream;
+import com.fsck.k9.mail.oauth.OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -380,7 +381,7 @@ class ImapConnection {
             return attemptXOAuth2();
         } catch (NegativeImapResponseException e) {
             //TODO: Check response code so we don't needlessly invalidate the token.
-            oauthTokenProvider.invalidateAccessToken(settings.getUsername());
+            oauthTokenProvider.invalidateToken(settings.getUsername());
 
             if (!retryXoauth2WithNewToken) {
                 throw handlePermanentXoauth2Failure(e);
@@ -408,14 +409,14 @@ class ImapConnection {
             //Okay, we failed on a new token.
             //Invalidate the token anyway but assume it's permanent.
             Timber.v(e, "Authentication exception for new token, permanent error assumed");
-            oauthTokenProvider.invalidateAccessToken(settings.getUsername());
-            oauthTokenProvider.invalidateRefreshToken(settings.getUsername());
+            oauthTokenProvider.invalidateToken(settings.getUsername());
+            oauthTokenProvider.disconnectEmailWithK9(settings.getUsername());
             throw handlePermanentXoauth2Failure(e2);
         }
     }
 
     private List<ImapResponse> attemptXOAuth2() throws MessagingException, IOException {
-        String token = oauthTokenProvider.getToken(settings.getUsername(), OAuth2TokenProvider.OAUTH2_TIMEOUT);
+        String token = oauthTokenProvider.getToken(settings.getUsername(), OAuth2AuthorizationCodeFlowTokenProvider.OAUTH2_TIMEOUT);
         String authString = Authentication.computeXoauth(settings.getUsername(), token);
         String tag = sendSaslIrCommand(Commands.AUTHENTICATE_XOAUTH2, authString, true);
 

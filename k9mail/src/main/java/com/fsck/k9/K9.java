@@ -29,8 +29,7 @@ import android.os.StrictMode;
 import android.support.annotation.StringRes;
 
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.account.AndroidAccountOAuth2TokenStore;
-import com.fsck.k9.account.GmailOAuth2TokenStore;
+import com.fsck.k9.account.K9OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.account.K9OAuth2TokenProvider;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.UpgradeDatabases;
