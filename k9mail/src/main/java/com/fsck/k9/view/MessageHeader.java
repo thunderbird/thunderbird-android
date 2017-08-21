@@ -111,8 +111,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mToLabel = (TextView) findViewById(R.id.to_label);
         mCcView = (TextView) findViewById(R.id.cc);
         mCcLabel = (TextView) findViewById(R.id.cc_label);
-        mBccView = (TextView) findViewById(R.id.cc);
-        mBccLabel = (TextView) findViewById(R.id.cc_label);
+        mBccView = (TextView) findViewById(R.id.bcc);
+        mBccLabel = (TextView) findViewById(R.id.bcc_label);
 
         mContactBadge = (ContactBadge) findViewById(R.id.contact_badge);
 
