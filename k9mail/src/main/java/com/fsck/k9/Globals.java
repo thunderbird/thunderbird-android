@@ -3,8 +3,8 @@ package com.fsck.k9;
 
 import android.content.Context;
 
+import com.fsck.k9.account.K9OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.account.K9OAuth2TokenProvider;
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 
 
 public class Globals {

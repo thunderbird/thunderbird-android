@@ -11,6 +11,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.oauth.OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -58,7 +59,7 @@ public abstract class RemoteStore extends Store {
                             new DefaultTrustedSocketFactory(context),
                             (ConnectivityManager) context
                                     .getSystemService(Context.CONNECTIVITY_SERVICE),
-                            oAuth2TokenProvider
+                        oAuth2TokenProvider
                         );
             } else if (uri.startsWith("pop3")) {
                 store = new Pop3Store(storeConfig, new DefaultTrustedSocketFactory(context));

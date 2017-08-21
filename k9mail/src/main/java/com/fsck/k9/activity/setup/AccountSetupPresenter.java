@@ -132,7 +132,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         this.preferences = preferences;
         this.view = view;
         this.handler = new Handler(Looper.getMainLooper());
-        Globals.getOAuth2TokenProvider(). setPromptRequestHandler(this);
+        Globals.getOAuth2TokenProvider().setPromptRequestHandler(this);
     }
 
     // region basics
@@ -1632,6 +1632,11 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     @Override
+    public void handleGmailXOAuth2Intent(Intent intent) {
+        view.startIntentForResult(intent, REQUEST_CODE_GMAIL);
+    }
+
+    @Override
     public void handleGmailRedirectUrl(final String url) {
         handler.post(new Runnable() {
             @Override
@@ -1670,7 +1675,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             @Override
             protected Boolean doInBackground(Void... params) {
                 try {
-                    Globals.getOAuth2TokenProvider().exchangeCode(accountConfig.getEmail(), code);
+                    Globals.getOAuth2TokenProvider().getAuthorizationCodeFlowTokenProvider().exchangeCode(accountConfig.getEmail(), code);
                 } catch (AuthenticationFailedException e) {
                     return false;
                 }
