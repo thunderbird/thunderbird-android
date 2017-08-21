@@ -1,7 +1,6 @@
 package com.fsck.k9.crypto;
 
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -12,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeUtility;
 import okio.ByteString;
 import org.openintents.openpgp.AutocryptPeerUpdate;
@@ -57,14 +55,6 @@ public class AutocryptOperations {
         intent.putExtra(OpenPgpApi.EXTRA_AUTOCRYPT_PEER_ID, messageFromAddress);
         intent.putExtra(OpenPgpApi.EXTRA_AUTOCRYPT_PEER_UPDATE, data);
         return true;
-    }
-
-    public void processCleartextMessage(OpenPgpApi openPgpApi, Message currentMessage) {
-        Intent intent = new Intent(OpenPgpApi.ACTION_UPDATE_AUTOCRYPT_PEER);
-        boolean hasInlineKeyData = addAutocryptPeerUpdateToIntentIfPresent(currentMessage, intent);
-        if (hasInlineKeyData) {
-            openPgpApi.executeApi(intent, (InputStream) null, null);
-        }
     }
 
     @Nullable
