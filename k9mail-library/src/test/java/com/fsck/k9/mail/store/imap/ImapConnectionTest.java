@@ -62,7 +62,7 @@ public class ImapConnectionTest {
     public void setUp() throws Exception {
         connectivityManager = mock(ConnectivityManager.class);
         oAuth2TokenProvider = createOAuth2TokenProvider();
-        socketFactory = new TestTrustedSocketFactory();
+        socketFactory = TestTrustedSocketFactory.newInstance();
 
         settings = new SimpleImapSettings();
         settings.setUsername(USERNAME);

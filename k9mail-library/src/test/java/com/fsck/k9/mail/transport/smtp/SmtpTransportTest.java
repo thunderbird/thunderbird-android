@@ -52,7 +52,7 @@ public class SmtpTransportTest {
     
     @Before
     public void before() throws AuthenticationFailedException {
-        socketFactory = new TestTrustedSocketFactory();
+        socketFactory = TestTrustedSocketFactory.newInstance();
         oAuth2TokenProvider = mock(OAuth2TokenProvider.class);
         when(oAuth2TokenProvider.getToken(eq(USERNAME), anyInt()))
                 .thenReturn("oldToken").thenReturn("newToken");

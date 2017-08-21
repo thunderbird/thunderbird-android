@@ -23,6 +23,7 @@ import java.util.zip.InflaterInputStream;
 
 import android.annotation.SuppressLint;
 
+import com.fsck.k9.mail.helpers.KeyStoreProvider;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 import javax.net.ssl.KeyManagerFactory;
@@ -37,15 +38,13 @@ import org.apache.commons.io.IOUtils;
 
 @SuppressLint("NewApi")
 public class MockImapServer {
-    private static final String KEYSTORE_PASSWORD = "password";
-    private static final String KEYSTORE_RESOURCE = "/keystore.jks";
-
     private static final byte[] CRLF = { '\r', '\n' };
 
 
     private final Deque<ImapInteraction> interactions = new ConcurrentLinkedDeque<>();
     private final CountDownLatch waitForConnectionClosed = new CountDownLatch(1);
     private final CountDownLatch waitForAllExpectedCommands = new CountDownLatch(1);
+    private final KeyStoreProvider keyStoreProvider;
     private final Logger logger;
 
     private MockServerThread mockServerThread;
@@ -54,10 +53,11 @@ public class MockImapServer {
 
 
     public MockImapServer() {
-        this(new DefaultLogger());
+        this(KeyStoreProvider.getInstance(), new DefaultLogger());
     }
 
-    public MockImapServer(Logger logger) {
+    public MockImapServer(KeyStoreProvider keyStoreProvider, Logger logger) {
+        this.keyStoreProvider = keyStoreProvider;
         this.logger = logger;
     }
 
@@ -96,7 +96,7 @@ public class MockImapServer {
         port = serverSocket.getLocalPort();
 
         mockServerThread = new MockServerThread(serverSocket, interactions, waitForConnectionClosed,
-                waitForAllExpectedCommands, logger);
+                waitForAllExpectedCommands, logger, keyStoreProvider);
         mockServerThread.start();
     }
 
@@ -236,6 +236,7 @@ public class MockImapServer {
         private final CountDownLatch waitForConnectionClosed;
         private final CountDownLatch waitForAllExpectedCommands;
         private final Logger logger;
+        private final KeyStoreProvider keyStoreProvider;
 
         private volatile boolean shouldStop = false;
         private volatile Socket clientSocket;
@@ -246,13 +247,15 @@ public class MockImapServer {
 
 
         public MockServerThread(ServerSocket serverSocket, Deque<ImapInteraction> interactions,
-                CountDownLatch waitForConnectionClosed, CountDownLatch waitForAllExpectedCommands, Logger logger) {
+                CountDownLatch waitForConnectionClosed, CountDownLatch waitForAllExpectedCommands, Logger logger,
+                KeyStoreProvider keyStoreProvider) {
             super("MockImapServer");
             this.serverSocket = serverSocket;
             this.interactions = interactions;
             this.waitForConnectionClosed = waitForConnectionClosed;
             this.waitForAllExpectedCommands = waitForAllExpectedCommands;
             this.logger = logger;
+            this.keyStoreProvider = keyStoreProvider;
         }
 
         @Override
@@ -356,11 +359,11 @@ public class MockImapServer {
         private void upgradeToTls(Socket socket) throws KeyStoreException, IOException, NoSuchAlgorithmException,
                 CertificateException, UnrecoverableKeyException, KeyManagementException {
 
-            KeyStore keyStore = loadKeyStore();
+            KeyStore keyStore = keyStoreProvider.getKeyStore();
 
             String defaultAlgorithm = KeyManagerFactory.getDefaultAlgorithm();
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(defaultAlgorithm);
-            keyManagerFactory.init(keyStore, KEYSTORE_PASSWORD.toCharArray());
+            keyManagerFactory.init(keyStore, keyStoreProvider.getPassword());
 
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
@@ -373,20 +376,6 @@ public class MockImapServer {
 
             input = Okio.buffer(Okio.source(sslSocket.getInputStream()));
             output = Okio.buffer(Okio.sink(sslSocket.getOutputStream()));
-        }
-
-        private KeyStore loadKeyStore() throws KeyStoreException, IOException, NoSuchAlgorithmException,
-                CertificateException {
-            KeyStore keyStore = KeyStore.getInstance("JKS");
-
-            InputStream keyStoreInputStream = getClass().getResourceAsStream(KEYSTORE_RESOURCE);
-            try {
-                keyStore.load(keyStoreInputStream, KEYSTORE_PASSWORD.toCharArray());
-            } finally {
-                keyStoreInputStream.close();
-            }
-
-            return keyStore;
         }
 
         private void readAdditionalCommands() throws IOException {
