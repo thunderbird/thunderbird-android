@@ -291,6 +291,9 @@ public class GlobalSettings {
         s.put("openPgpSupportSignOnly", Settings.versions(
                 new V(47, new BooleanSetting(false))
         ));
+        s.put("fontSizeMessageViewBCC", Settings.versions(
+                new V(48, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
