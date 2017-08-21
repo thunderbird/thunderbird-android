@@ -901,6 +901,39 @@ public class ImapConnectionTest {
         server.verifyInteractionCompleted();
     }
 
+    @Test
+    public void executeSingleCommand_withOkResponse_shouldReturnResult() throws Exception {
+        MockImapServer server = new MockImapServer();
+        simpleOpenDialog(server, "");
+        server.expect("4 CREATE Folder");
+        server.output("4 OK Folder created");
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        List<ImapResponse> result = imapConnection.executeSimpleCommand("CREATE Folder");
+
+        assertEquals(result.size(), 1);
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void executeSingleCommand_withNoResponse_shouldThrowNegativeImapResponseException() throws Exception {
+        MockImapServer server = new MockImapServer();
+        simpleOpenDialog(server, "");
+        server.expect("4 CREATE Folder");
+        server.output("4 NO Folder exists");
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        try {
+            imapConnection.executeSimpleCommand("CREATE Folder");
+
+            fail("Expected exception");
+        } catch (NegativeImapResponseException e) {
+            assertEquals("Folder exists", e.getLastResponse().getString(1));
+        }
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
 
     private ImapConnection createImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
             ConnectivityManager connectivityManager, OAuth2TokenProvider oAuth2TokenProvider) {
