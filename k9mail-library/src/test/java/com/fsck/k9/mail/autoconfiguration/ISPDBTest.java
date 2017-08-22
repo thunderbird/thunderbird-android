@@ -36,8 +36,8 @@ public class ISPDBTest {
 
         Document document = Jsoup.parse(xml);
 
-        AutoconfigureISPDB autoconfigureISPDB = new AutoconfigureISPDB();
-        ProviderInfo actual = autoconfigureISPDB.parse(document).fillDefaultPorts();
+        AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
+        ProviderInfo actual = autoconfigureMozilla.parse(document).fillDefaultPorts();
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
@@ -97,8 +97,8 @@ public class ISPDBTest {
 
         Document document = Jsoup.parse(xml);
 
-        AutoconfigureISPDB autoconfigureISPDB = new AutoconfigureISPDB();
-        ProviderInfo actual = autoconfigureISPDB.parse(document).fillDefaultPorts();
+        AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
+        ProviderInfo actual = autoconfigureMozilla.parse(document).fillDefaultPorts();
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         expected.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
@@ -165,8 +165,8 @@ public class ISPDBTest {
 
         Document document = Jsoup.parse(xml);
 
-        AutoconfigureISPDB autoconfigureISPDB = new AutoconfigureISPDB();
-        ProviderInfo actual = autoconfigureISPDB.parse(document).fillDefaultPorts();
+        AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
+        ProviderInfo actual = autoconfigureMozilla.parse(document).fillDefaultPorts();
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
@@ -207,8 +207,8 @@ public class ISPDBTest {
 
         Document document = Jsoup.parse(xml);
 
-        AutoconfigureISPDB autoconfigureISPDB = new AutoconfigureISPDB();
-        ProviderInfo actual = autoconfigureISPDB.parse(document).fillDefaultPorts();
+        AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
+        ProviderInfo actual = autoconfigureMozilla.parse(document).fillDefaultPorts();
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         expected.incomingSocketType = "";
@@ -249,8 +249,8 @@ public class ISPDBTest {
 
         Document document = Jsoup.parse(xml);
 
-        AutoconfigureISPDB autoconfigureISPDB = new AutoconfigureISPDB();
-        ProviderInfo actual = autoconfigureISPDB.parse(document).fillDefaultPorts();
+        AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
+        ProviderInfo actual = autoconfigureMozilla.parse(document).fillDefaultPorts();
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         expected.incomingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
@@ -294,8 +294,8 @@ public class ISPDBTest {
 
         Document document = Jsoup.parse(xml);
 
-        AutoconfigureISPDB autoconfigureISPDB = new AutoconfigureISPDB();
-        ProviderInfo actual = autoconfigureISPDB.parse(document).fillDefaultPorts();
+        AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
+        ProviderInfo actual = autoconfigureMozilla.parse(document).fillDefaultPorts();
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
@@ -330,8 +330,8 @@ public class ISPDBTest {
 
         Document document = Jsoup.parse(xml);
 
-        AutoconfigureISPDB autoconfigureISPDB = new AutoconfigureISPDB();
-        ProviderInfo actual = autoconfigureISPDB.parse(document);
+        AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
+        ProviderInfo actual = autoconfigureMozilla.parse(document);
 
         Assert.assertNull(actual);
     }
@@ -361,8 +361,8 @@ public class ISPDBTest {
 
         Document document = Jsoup.parse(xml);
 
-        AutoconfigureISPDB autoconfigureISPDB = new AutoconfigureISPDB();
-        ProviderInfo actual = autoconfigureISPDB.parse(document);
+        AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
+        ProviderInfo actual = autoconfigureMozilla.parse(document);
 
         Assert.assertNull(actual);
     }
