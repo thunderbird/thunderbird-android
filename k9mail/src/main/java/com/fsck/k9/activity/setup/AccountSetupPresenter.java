@@ -30,6 +30,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.OAuth2NeedUserPromptException;
 import com.fsck.k9.mail.ServerSettings;
@@ -42,6 +43,7 @@ import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigureAutodiscover;
 import com.fsck.k9.mail.autoconfiguration.AutoconfigureMozilla;
 import com.fsck.k9.mail.autoconfiguration.AutoconfigureSrv;
+import com.fsck.k9.mail.autoconfiguration.DNSHelper;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
@@ -52,6 +54,7 @@ import com.fsck.k9.service.MailService;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
@@ -64,6 +67,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.fsck.k9.setup.ServerNameSuggester;
+import org.xbill.DNS.TextParseException;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.ServerSettings.Type.IMAP;
@@ -84,6 +88,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     private Provider provider;
 
     private boolean autoconfiguration;
+    private boolean incomingReady;
+    private boolean outgoingReady;
 
     private static final int REQUEST_CODE_GMAIL = 1;
 
@@ -104,6 +110,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
     private View view;
 
+    private AsyncTask findProviderTask;
     private CheckDirection currentDirection;
     private CheckDirection direction;
 
@@ -126,6 +133,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     private AccountConfig accountConfig;
 
     private Handler handler;
+
+    private boolean canceled;
+    private boolean destroyed;
 
     public AccountSetupPresenter(Context context, Preferences preferences, View view) {
         this.context = context;
@@ -216,17 +226,44 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
 
     private void autoConfiguration() {
-        view.setMessage(R.string.account_setup_check_settings_retr_info_msg);
-
         findProvider(accountConfig.getEmail());
     }
 
     private void findProvider(final String email) {
-        new AsyncTask<Void, Void, ProviderInfo>() {
+        findProviderTask = new AsyncTask<Void, Integer, ProviderInfo>() {
             @Override
             protected ProviderInfo doInBackground(Void... params) {
-                String[] emailParts = EmailHelper.splitEmail(email);
-                final String domain = emailParts[1];
+                publishProgress(R.string.account_setup_check_settings_retr_info_msg);
+
+                incomingReady = false;
+                outgoingReady = false;
+
+                final String domain = EmailHelper.getDomainFromEmailAddress(email);
+                ProviderInfo providerInfo = autoconfigureDomain(domain);
+
+                if (providerInfo != null || (incomingReady && outgoingReady)) {
+                    return providerInfo;
+                }
+
+                incomingReady = false;
+                outgoingReady = false;
+                try {
+                    String mxDomain = DNSHelper.getMXDomain(domain);
+
+                    if (mxDomain == null) return providerInfo;
+
+                    publishProgress(R.string.account_setup_check_settings_retr_info_msg);
+                    providerInfo = autoconfigureDomain(mxDomain);
+
+                } catch (TextParseException | UnknownHostException e) {
+                    Timber.e(e, "Error while trying to run MX lookup");
+                }
+
+                return providerInfo;
+            }
+
+            @Nullable
+            private ProviderInfo autoconfigureDomain(String domain) {
                 ProviderInfo providerInfo;
                 AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
                 AutoconfigureSrv autoconfigureSrv = new AutoconfigureSrv();
@@ -243,14 +280,89 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 if (providerInfo != null) return providerInfo;
 
                 providerInfo = autodiscover.findProviderInfo(email);
+                if (providerInfo != null) return providerInfo;
 
-                return providerInfo;
+                testDomain(domain);
+
+                return null;
+            }
+
+            private void testDomain(String domain) {
+                publishProgress(R.string.account_setup_check_settings_guessing_msg);
+
+                String guessedDomainForMailPrefix;
+                //noinspection ConstantConditions
+                if (domain.startsWith("mail.")) {
+                    guessedDomainForMailPrefix = domain;
+                } else {
+                    guessedDomainForMailPrefix = "mail." + domain;
+                }
+
+                testIncoming(guessedDomainForMailPrefix);
+
+                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.STARTTLS_REQUIRED);
+
+                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.SSL_TLS_REQUIRED);
+
+                testIncoming("imap." + domain);
+
+                testOutgoing("smtp." + domain, ConnectionSecurity.STARTTLS_REQUIRED);
+
+                testOutgoing("smtp." + domain, ConnectionSecurity.SSL_TLS_REQUIRED);
+            }
+
+            private void testIncoming(String domain) {
+                if (!incomingReady) {
+                    try {
+                        accountConfig.setStoreUri(getDefaultStoreURI(email, password, domain).toString());
+                        accountConfig.getRemoteStore().checkSettings();
+                        incomingReady = true;
+                    } catch (URISyntaxException | MessagingException ignored) {
+                    }
+                }
+            }
+
+            private void testOutgoing(String domain, ConnectionSecurity connectionSecurity) {
+                if (!outgoingReady) {
+                    try {
+                        accountConfig.setTransportUri(getDefaultTransportURI(email, password, domain,
+                                connectionSecurity).toString());
+                        Transport transport = TransportProvider.getInstance().getTransport(context, accountConfig,
+                                Globals.getOAuth2TokenProvider());
+                        transport.close();
+                        try {
+                            transport.open();
+                        } finally {
+                            transport.close();
+                        }
+                        outgoingReady = true;
+                    } catch (URISyntaxException | MessagingException ignored) {
+                    }
+                }
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values) {
+                super.onProgressUpdate(values);
+                view.setMessage(values[0]);
             }
 
             @Override
             protected void onPostExecute(ProviderInfo providerInfo) {
                 super.onPostExecute(providerInfo);
 
+                if (canceled) {
+                    return;
+                }
+
+                if (incomingReady && outgoingReady) {
+                    accountConfig.setDescription(accountConfig.getEmail());
+                    view.goToAccountNames();
+                    return;
+                } else if (incomingReady) {
+                    view.goToOutgoing();
+                    return;
+                }
                 try {
                     if (providerInfo != null) {
                         provider = Provider.newInstanceFromProviderInfo(providerInfo);
@@ -301,6 +413,11 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     updateAccount();
                     view.end();
                 } else {
+                    if (outgoingReady) {
+                        accountConfig.setDescription(accountConfig.getEmail());
+                        view.goToAccountNames();
+                        return;
+                    }
                     try {
                         String password = null;
                         String clientCertificateAlias = null;
@@ -340,9 +457,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 if (!editSettings) {
                     //We've successfully checked outgoing as well.
                     accountConfig.setDescription(accountConfig.getEmail());
-                    // account.save(preferences);
-
-                    // K9.setServicesEnabled(context);
 
                     view.goToAccountNames();
                 } else {
@@ -432,6 +546,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
         @Override
         void checkSettings() throws Exception {
+            checkIncomingSettings();
+        }
+
+        private void checkIncomingSettings() throws MessagingException {
             Store store;
 
             if (editSettings) {
@@ -499,13 +617,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                  * so relying on InterruptedException is not enough. Instead, check after
                  * each potentially long-running operation.
                  */
-                if (cancelled()) {
+                if (canceled) {
                     return false;
                 }
 
                 checkSettings();
 
-                if (cancelled()) {
+                if (canceled) {
                     return false;
                 }
 
@@ -548,10 +666,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         void clearCertificateErrorNotifications(CheckDirection direction) {
             final MessagingController ctrl = MessagingController.getInstance(context);
             ctrl.clearCertificateErrorNotifications(account, direction);
-        }
-
-        private boolean cancelled() {
-            return view.canceled();
         }
 
         @Override
@@ -606,6 +720,25 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             Timber.e(e, "Error while trying to load provider settings.");
         }
         return null;
+    }
+
+    private URI getDefaultStoreURI(String username, String password, String server) throws URISyntaxException {
+        String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
+        String userInfo = username + ":" + passwordEnc;
+
+        return new URI("imap+ssl+", userInfo, server, 993, null, null, null);
+    }
+
+    private URI getDefaultTransportURI(String username, String password, String server,
+            ConnectionSecurity connectionSecurity) throws URISyntaxException {
+        String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
+        String userInfo = username + ":" + passwordEnc;
+
+        if (connectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
+            return new URI("smtp+tls+", userInfo, server, 587, null, null, null);
+        } else {
+            return new URI("smtp+ssl+", userInfo, server, 465, null, null, null);
+        }
     }
 
     private void modifyAccount(String email, String password, @NonNull Provider provider,
@@ -1522,6 +1655,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
     @Override
     public void onBackPressed() {
+        if (findProviderTask != null && !findProviderTask.isCancelled()) {
+            findProviderTask.cancel(true);
+        }
         switch (stage) {
             case AUTOCONFIGURATION:
             case AUTOCONFIGURATION_INCOMING_CHECKING:
@@ -1709,6 +1845,28 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             view.goToBasics();
             view.showErrorDialog("Please connect us with Gmail"); // TODO: 8/18/17 A better error message?
         }
+    }
+
+    @Override
+    public void onPause() {
+        canceled = true;
+    }
+
+    @Override
+    public void onStop() {
+        canceled = true;
+    }
+
+    @Override
+    public void onDestroy() {
+        canceled = true;
+        destroyed = true;
+    }
+
+    @Override
+    public void onResume() {
+        canceled = false;
+        destroyed = false;
     }
 
     static class AccountSetupStatus {

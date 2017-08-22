@@ -8,7 +8,6 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 
-import com.fsck.k9.activity.setup.AccountSetupPresenter;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.OAuth2NeedUserPromptException;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
