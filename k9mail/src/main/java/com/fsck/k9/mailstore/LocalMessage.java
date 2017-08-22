@@ -10,11 +10,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.VisibleForTesting;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.BuildConfig;
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -25,6 +23,7 @@ import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
+import timber.log.Timber;
 
 
 public class LocalMessage extends MimeMessage {
@@ -322,7 +321,7 @@ public class LocalMessage extends MimeMessage {
                         throw new WrappedException(e);
                     }
 
-                    deleteFulltextIndexEntry(db, mId);
+                    getFolder().deleteFulltextIndexEntry(db, mId);
 
                     return null;
                 }
@@ -374,146 +373,7 @@ public class LocalMessage extends MimeMessage {
      */
     @Override
     public void destroy() throws MessagingException {
-        try {
-            this.localStore.database.execute(true, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
-                    UnavailableStorageException {
-                    try {
-                        LocalFolder localFolder = (LocalFolder) mFolder;
-
-                        localFolder.deleteMessagePartsAndDataFromDisk(messagePartId);
-
-                        deleteFulltextIndexEntry(db, mId);
-
-                        if (hasThreadChildren(db, mId)) {
-                            // This message has children in the thread structure so we need to
-                            // make it an empty message.
-                            ContentValues cv = new ContentValues();
-                            cv.put("id", mId);
-                            cv.put("folder_id", localFolder.getId());
-                            cv.put("deleted", 0);
-                            cv.put("message_id", getMessageId());
-                            cv.put("empty", 1);
-
-                            db.replace("messages", null, cv);
-
-                            // Nothing else to do
-                            return null;
-                        }
-
-                        // Get the message ID of the parent message if it's empty
-                        long currentId = getEmptyThreadParent(db, mId);
-
-                        // Delete the placeholder message
-                        deleteMessageRow(db, mId);
-
-                        /*
-                         * Walk the thread tree to delete all empty parents without children
-                         */
-
-                        while (currentId != -1) {
-                            if (hasThreadChildren(db, currentId)) {
-                                // We made sure there are no empty leaf nodes and can stop now.
-                                break;
-                            }
-
-                            // Get ID of the (empty) parent for the next iteration
-                            long newId = getEmptyThreadParent(db, currentId);
-
-                            // Delete the empty message
-                            deleteMessageRow(db, currentId);
-
-                            currentId = newId;
-                        }
-
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
-                    return null;
-                }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
-
-        this.localStore.notifyChange();
-    }
-
-    /**
-     * Get ID of the the given message's parent if the parent is an empty message.
-     *
-     * @param db
-     *         {@link SQLiteDatabase} instance to access the database.
-     * @param messageId
-     *         The database ID of the message to get the parent for.
-     *
-     * @return Message ID of the parent message if there exists a parent and it is empty.
-     *         Otherwise {@code -1}.
-     */
-    private long getEmptyThreadParent(SQLiteDatabase db, long messageId) {
-        Cursor cursor = db.rawQuery(
-                "SELECT m.id " +
-                "FROM threads t1 " +
-                "JOIN threads t2 ON (t1.parent = t2.id) " +
-                "LEFT JOIN messages m ON (t2.message_id = m.id) " +
-                "WHERE t1.message_id = ? AND m.empty = 1",
-                new String[] { Long.toString(messageId) });
-
-        try {
-            return (cursor.moveToFirst() && !cursor.isNull(0)) ? cursor.getLong(0) : -1;
-        } finally {
-            cursor.close();
-        }
-    }
-
-    /**
-     * Check whether or not a message has child messages in the thread structure.
-     *
-     * @param db
-     *         {@link SQLiteDatabase} instance to access the database.
-     * @param messageId
-     *         The database ID of the message to get the children for.
-     *
-     * @return {@code true} if the message has children. {@code false} otherwise.
-     */
-    private boolean hasThreadChildren(SQLiteDatabase db, long messageId) {
-        Cursor cursor = db.rawQuery(
-                "SELECT COUNT(t2.id) " +
-                "FROM threads t1 " +
-                "JOIN threads t2 ON (t2.parent = t1.id) " +
-                "WHERE t1.message_id = ?",
-                new String[] { Long.toString(messageId) });
-
-        try {
-            return (cursor.moveToFirst() && !cursor.isNull(0) && cursor.getLong(0) > 0L);
-        } finally {
-            cursor.close();
-        }
-    }
-
-    private void deleteFulltextIndexEntry(SQLiteDatabase db, long messageId) {
-        String[] idArg = { Long.toString(messageId) };
-        db.delete("messages_fulltext", "docid = ?", idArg);
-    }
-
-    /**
-     * Delete a message from the 'messages' and 'threads' tables.
-     *
-     * @param db
-     *         {@link SQLiteDatabase} instance to access the database.
-     * @param messageId
-     *         The database ID of the message to delete.
-     */
-    private void deleteMessageRow(SQLiteDatabase db, long messageId) {
-        String[] idArg = { Long.toString(messageId) };
-
-        // Delete the message
-        db.delete("messages", "id = ?", idArg);
-
-        // Delete row in 'threads' table
-        // TODO: create trigger for 'messages' table to get rid of the row in 'threads' table
-        db.delete("threads", "message_id = ?", idArg);
+        getFolder().destroyMessage(this);
     }
 
     @Override
