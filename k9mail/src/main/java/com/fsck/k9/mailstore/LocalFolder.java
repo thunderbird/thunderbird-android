@@ -9,7 +9,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -69,8 +68,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 import timber.log.Timber;
 
 
-public class LocalFolder extends Folder<LocalMessage> implements Serializable {
-    private static final long serialVersionUID = -1973296520918624767L;
+public class LocalFolder extends Folder<LocalMessage> {
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
     private static final long INVALID_MESSAGE_PART_ID = -1;
 

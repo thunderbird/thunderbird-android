@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,9 +74,7 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
  * Implements a SQLite database backed local store for Messages.
  * </pre>
  */
-public class LocalStore extends Store implements Serializable {
-    private static final long serialVersionUID = -5142141896809423072L;
-
+public class LocalStore extends Store {
     static final String[] EMPTY_STRING_ARRAY = new String[0];
     static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
