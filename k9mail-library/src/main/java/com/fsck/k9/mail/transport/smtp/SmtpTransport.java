@@ -58,26 +58,30 @@ public class SmtpTransport extends Transport {
     private static final int SMTP_CONTINUE_REQUEST = 334;
     private static final int SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535;
 
-    private TrustedSocketFactory mTrustedSocketFactory;
-    private OAuth2TokenProvider oauthTokenProvider;
 
-    private String mHost;
-    private int mPort;
-    private String mUsername;
-    private String mPassword;
-    private String mClientCertificateAlias;
-    private AuthType mAuthType;
-    private ConnectionSecurity mConnectionSecurity;
-    private Socket mSocket;
-    private PeekableInputStream mIn;
-    private OutputStream mOut;
-    private boolean m8bitEncodingAllowed;
-    private boolean mEnhancedStatusCodesProvided;
-    private int mLargestAcceptableMessage;
+    private final TrustedSocketFactory trustedSocketFactory;
+    private final OAuth2TokenProvider oauthTokenProvider;
+
+    private final String host;
+    private final int port;
+    private final String username;
+    private final String password;
+    private final String clientCertificateAlias;
+    private final AuthType authType;
+    private final ConnectionSecurity connectionSecurity;
+
+
+    private Socket socket;
+    private PeekableInputStream inputStream;
+    private OutputStream outputStream;
+    private boolean is8bitEncodingAllowed;
+    private boolean isEnhancedStatusCodesProvided;
+    private int largestAcceptableMessage;
     private boolean retryXoauthWithNewToken;
 
+
     public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-            OAuth2TokenProvider oauth2TokenProvider) throws MessagingException {
+            OAuth2TokenProvider oauthTokenProvider) throws MessagingException {
         ServerSettings settings;
         try {
             settings = TransportUris.decodeTransportUri(storeConfig.getTransportUri());
@@ -85,38 +89,39 @@ public class SmtpTransport extends Transport {
             throw new MessagingException("Error while decoding transport URI", e);
         }
 
-        if (settings.type == Type.SMTP) {
+        if (settings.type != Type.SMTP) {
             throw new IllegalArgumentException("Expected SMTP StoreConfig!");
         }
 
-        mHost = settings.host;
-        mPort = settings.port;
+        host = settings.host;
+        port = settings.port;
 
-        mConnectionSecurity = settings.connectionSecurity;
+        connectionSecurity = settings.connectionSecurity;
 
-        mAuthType = settings.authenticationType;
-        mUsername = settings.username;
-        mPassword = settings.password;
-        mClientCertificateAlias = settings.clientCertificateAlias;
-        mTrustedSocketFactory = trustedSocketFactory;
-        oauthTokenProvider = oauth2TokenProvider;
+        authType = settings.authenticationType;
+        username = settings.username;
+        password = settings.password;
+        clientCertificateAlias = settings.clientCertificateAlias;
+
+        this.trustedSocketFactory = trustedSocketFactory;
+        this.oauthTokenProvider = oauthTokenProvider;
     }
 
     @Override
     public void open() throws MessagingException {
         try {
             boolean secureConnection = false;
-            InetAddress[] addresses = InetAddress.getAllByName(mHost);
+            InetAddress[] addresses = InetAddress.getAllByName(host);
             for (int i = 0; i < addresses.length; i++) {
                 try {
-                    SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
-                    if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        mSocket = mTrustedSocketFactory.createSocket(null, mHost, mPort, mClientCertificateAlias);
-                        mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                    SocketAddress socketAddress = new InetSocketAddress(addresses[i], port);
+                    if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
+                        socket = trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias);
+                        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                         secureConnection = true;
                     } else {
-                        mSocket = new Socket();
-                        mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                        socket = new Socket();
+                        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                     }
                 } catch (SocketException e) {
                     if (i < (addresses.length - 1)) {
@@ -129,15 +134,15 @@ public class SmtpTransport extends Transport {
             }
 
             // RFC 1047
-            mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
+            socket.setSoTimeout(SOCKET_READ_TIMEOUT);
 
-            mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(), 1024));
-            mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
+            inputStream = new PeekableInputStream(new BufferedInputStream(socket.getInputStream(), 1024));
+            outputStream = new BufferedOutputStream(socket.getOutputStream(), 1024);
 
             // Eat the banner
             executeCommand(null);
 
-            InetAddress localAddress = mSocket.getLocalAddress();
+            InetAddress localAddress = socket.getLocalAddress();
             String localHost = getCanonicalHostName(localAddress);
             String ipAddr = localAddress.getHostAddress();
 
@@ -158,22 +163,22 @@ public class SmtpTransport extends Transport {
 
             Map<String, String> extensions = sendHello(localHost);
 
-            m8bitEncodingAllowed = extensions.containsKey("8BITMIME");
-            mEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES");
+            is8bitEncodingAllowed = extensions.containsKey("8BITMIME");
+            isEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES");
 
-            if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
+            if (connectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                 if (extensions.containsKey("STARTTLS")) {
                     executeCommand("STARTTLS");
 
-                    mSocket = mTrustedSocketFactory.createSocket(
-                            mSocket,
-                            mHost,
-                            mPort,
-                            mClientCertificateAlias);
+                    socket = trustedSocketFactory.createSocket(
+                            socket,
+                            host,
+                            port,
+                            clientCertificateAlias);
 
-                    mIn = new PeekableInputStream(new BufferedInputStream(mSocket.getInputStream(),
+                    inputStream = new PeekableInputStream(new BufferedInputStream(socket.getInputStream(),
                             1024));
-                    mOut = new BufferedOutputStream(mSocket.getOutputStream(), 1024);
+                    outputStream = new BufferedOutputStream(socket.getOutputStream(), 1024);
                     /*
                      * Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically,
                      * Exim.
@@ -208,12 +213,12 @@ public class SmtpTransport extends Transport {
             }
             parseOptionalSizeValue(extensions);
 
-            if (!TextUtils.isEmpty(mUsername)
-                    && (!TextUtils.isEmpty(mPassword) ||
-                    AuthType.EXTERNAL == mAuthType ||
-                    AuthType.XOAUTH2 == mAuthType)) {
+            if (!TextUtils.isEmpty(username)
+                    && (!TextUtils.isEmpty(password) ||
+                    AuthType.EXTERNAL == authType ||
+                    AuthType.XOAUTH2 == authType)) {
 
-                switch (mAuthType) {
+                switch (authType) {
 
                 /*
                  * LOGIN is an obsolete option which is unavailable to users,
@@ -224,9 +229,9 @@ public class SmtpTransport extends Transport {
                     case PLAIN:
                         // try saslAuthPlain first, because it supports UTF-8 explicitly
                         if (authPlainSupported) {
-                            saslAuthPlain(mUsername, mPassword);
+                            saslAuthPlain();
                         } else if (authLoginSupported) {
-                            saslAuthLogin(mUsername, mPassword);
+                            saslAuthLogin();
                         } else {
                             throw new MessagingException(
                                     "Authentication methods SASL PLAIN and LOGIN are unavailable.");
@@ -235,21 +240,21 @@ public class SmtpTransport extends Transport {
 
                     case CRAM_MD5:
                         if (authCramMD5Supported) {
-                            saslAuthCramMD5(mUsername, mPassword);
+                            saslAuthCramMD5();
                         } else {
                             throw new MessagingException("Authentication method CRAM-MD5 is unavailable.");
                         }
                         break;
                     case XOAUTH2:
                         if (authXoauth2Supported && oauthTokenProvider != null) {
-                            saslXoauth2(mUsername);
+                            saslXoauth2();
                         } else {
                             throw new MessagingException("Authentication method XOAUTH2 is unavailable.");
                         }
                         break;
                     case EXTERNAL:
                         if (authExternalSupported) {
-                            saslAuthExternal(mUsername);
+                            saslAuthExternal();
                         } else {
                         /*
                          * Some SMTP servers are known to provide no error
@@ -274,17 +279,17 @@ public class SmtpTransport extends Transport {
                         if (secureConnection) {
                             // try saslAuthPlain first, because it supports UTF-8 explicitly
                             if (authPlainSupported) {
-                                saslAuthPlain(mUsername, mPassword);
+                                saslAuthPlain();
                             } else if (authLoginSupported) {
-                                saslAuthLogin(mUsername, mPassword);
+                                saslAuthLogin();
                             } else if (authCramMD5Supported) {
-                                saslAuthCramMD5(mUsername, mPassword);
+                                saslAuthCramMD5();
                             } else {
                                 throw new MessagingException("No supported authentication methods available.");
                             }
                         } else {
                             if (authCramMD5Supported) {
-                                saslAuthCramMD5(mUsername, mPassword);
+                                saslAuthCramMD5();
                             } else {
                             /*
                              * We refuse to insecurely transmit the password
@@ -322,9 +327,9 @@ public class SmtpTransport extends Transport {
     private void parseOptionalSizeValue(Map<String, String> extensions) {
         if (extensions.containsKey("SIZE")) {
             String optionalsizeValue = extensions.get("SIZE");
-            if (optionalsizeValue != null && optionalsizeValue != "") {
+            if (optionalsizeValue != null && !"".equals(optionalsizeValue)) {
                 try {
-                    mLargestAcceptableMessage = Integer.parseInt(optionalsizeValue);
+                    largestAcceptableMessage = Integer.parseInt(optionalsizeValue);
                 } catch (NumberFormatException e) {
                     if (K9MailLib.isDebug() && DEBUG_PROTOCOL_SMTP) {
                         Timber.d(e, "Tried to parse %s and get an int", optionalsizeValue);
@@ -355,7 +360,7 @@ public class SmtpTransport extends Transport {
      *          In case of a malformed response.
      */
     private Map<String, String> sendHello(String host) throws IOException, MessagingException {
-        Map<String, String> extensions = new HashMap<String, String>();
+        Map<String, String> extensions = new HashMap<>();
         try {
             List<String> results = executeCommand("EHLO %s", host).results;
             // Remove the EHLO greeting response
@@ -380,7 +385,7 @@ public class SmtpTransport extends Transport {
 
     @Override
     public void sendMessage(Message message) throws MessagingException {
-        List<Address> addresses = new ArrayList<Address>();
+        List<Address> addresses = new ArrayList<>();
         {
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.TO)));
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.CC)));
@@ -388,14 +393,13 @@ public class SmtpTransport extends Transport {
         }
         message.setRecipients(RecipientType.BCC, null);
 
-        Map<String, List<String>> charsetAddressesMap =
-            new HashMap<String, List<String>>();
+        Map<String, List<String>> charsetAddressesMap = new HashMap<>();
         for (Address address : addresses) {
             String addressString = address.getAddress();
             String charset = CharsetSupport.getCharsetFromAddress(addressString);
             List<String> addressesOfCharset = charsetAddressesMap.get(charset);
             if (addressesOfCharset == null) {
-                addressesOfCharset = new ArrayList<String>();
+                addressesOfCharset = new ArrayList<>();
                 charsetAddressesMap.put(charset, addressesOfCharset);
             }
             addressesOfCharset.add(addressString);
@@ -415,13 +419,13 @@ public class SmtpTransport extends Transport {
         close();
         open();
 
-        if (!m8bitEncodingAllowed) {
+        if (!is8bitEncodingAllowed) {
             Timber.d("Server does not support 8bit transfer encoding");
         }
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it
-        if (mLargestAcceptableMessage > 0 && message.hasAttachments()) {
-            if (message.calculateSize() > mLargestAcceptableMessage) {
+        if (largestAcceptableMessage > 0 && message.hasAttachments()) {
+            if (message.calculateSize() > largestAcceptableMessage) {
                 throw new MessagingException("Message too large for server", true);
             }
         }
@@ -430,7 +434,7 @@ public class SmtpTransport extends Transport {
         Address[] from = message.getFrom();
         try {
             String fromAddress = from[0].getAddress();
-            if (m8bitEncodingAllowed) {
+            if (is8bitEncodingAllowed) {
                 executeCommand("MAIL FROM:<%s> BODY=8BITMIME", fromAddress);
             } else {
                 executeCommand("MAIL FROM:<%s>", fromAddress);
@@ -443,7 +447,7 @@ public class SmtpTransport extends Transport {
             executeCommand("DATA");
 
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                    new LineWrapOutputStream(new SmtpDataStuffing(mOut), 1000));
+                    new LineWrapOutputStream(new SmtpDataStuffing(outputStream), 1000));
 
             message.writeTo(msgOut);
             msgOut.endWithCrLfAndFlush();
@@ -468,26 +472,25 @@ public class SmtpTransport extends Transport {
         try {
             executeCommand("QUIT");
         } catch (Exception e) {
-
+            // don't care
         }
-        IOUtils.closeQuietly(mIn);
-        IOUtils.closeQuietly(mOut);
-        IOUtils.closeQuietly(mSocket);
-        mIn = null;
-        mOut = null;
-        mSocket = null;
+        IOUtils.closeQuietly(inputStream);
+        IOUtils.closeQuietly(outputStream);
+        IOUtils.closeQuietly(socket);
+        inputStream = null;
+        outputStream = null;
+        socket = null;
     }
 
     private String readLine() throws IOException {
         StringBuilder sb = new StringBuilder();
         int d;
-        while ((d = mIn.read()) != -1) {
-            if (((char)d) == '\r') {
-                continue;
-            } else if (((char)d) == '\n') {
+        while ((d = inputStream.read()) != -1) {
+            char c = (char) d;
+            if (c == '\n') {
                 break;
-            } else {
-                sb.append((char)d);
+            } else if (c != '\r') {
+                sb.append(c);
             }
         }
         String ret = sb.toString();
@@ -516,8 +519,8 @@ public class SmtpTransport extends Transport {
          * SMTP servers misbehave if CR and LF arrive in separate pakets.
          * See issue 799.
          */
-        mOut.write(data);
-        mOut.flush();
+        outputStream.write(data);
+        outputStream.flush();
     }
 
     private static class CommandResponse {
@@ -525,7 +528,7 @@ public class SmtpTransport extends Transport {
         private final int replyCode;
         private final List<String> results;
 
-        public CommandResponse(int replyCode, List<String> results) {
+        CommandResponse(int replyCode, List<String> results) {
             this.replyCode = replyCode;
             this.results = results;
         }
@@ -565,7 +568,7 @@ public class SmtpTransport extends Transport {
         char replyCodeCategory = line.charAt(0);
         boolean isReplyCodeErrorCategory = (replyCodeCategory == '4') || (replyCodeCategory == '5');
         if (isReplyCodeErrorCategory) {
-            if (mEnhancedStatusCodesProvided) {
+            if (isEnhancedStatusCodesProvided) {
                 throw buildEnhancedNegativeSmtpReplyException(replyCode, results);
             } else {
                 String replyText = TextUtils.join(" ", results);
@@ -620,48 +623,26 @@ public class SmtpTransport extends Transport {
     }
 
 
-//    C: AUTH LOGIN
-//    S: 334 VXNlcm5hbWU6
-//    C: d2VsZG9u
-//    S: 334 UGFzc3dvcmQ6
-//    C: dzNsZDBu
-//    S: 235 2.0.0 OK Authenticated
-//
-//    Lines 2-5 of the conversation contain base64-encoded information. The same conversation, with base64 strings decoded, reads:
-//
-//
-//    C: AUTH LOGIN
-//    S: 334 Username:
-//    C: weldon
-//    S: 334 Password:
-//    C: w3ld0n
-//    S: 235 2.0.0 OK Authenticated
-
-    private void saslAuthLogin(String username, String password) throws MessagingException,
-        AuthenticationFailedException, IOException {
+    private void saslAuthLogin() throws MessagingException, IOException {
         try {
             executeCommand("AUTH LOGIN");
             executeSensitiveCommand(Base64.encode(username));
             executeSensitiveCommand(Base64.encode(password));
         } catch (NegativeSmtpReplyException exception) {
             if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
-                // Authentication credentials invalid
-                throw new AuthenticationFailedException("AUTH LOGIN failed ("
-                        + exception.getMessage() + ")");
+                throw new AuthenticationFailedException("AUTH LOGIN failed (" + exception.getMessage() + ")");
             } else {
                 throw exception;
             }
         }
     }
 
-    private void saslAuthPlain(String username, String password) throws MessagingException,
-        AuthenticationFailedException, IOException {
+    private void saslAuthPlain() throws MessagingException, IOException {
         String data = Base64.encode("\000" + username + "\000" + password);
         try {
             executeSensitiveCommand("AUTH PLAIN %s", data);
         } catch (NegativeSmtpReplyException exception) {
             if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
-                // Authentication credentials invalid
                 throw new AuthenticationFailedException("AUTH PLAIN failed ("
                         + exception.getMessage() + ")");
             } else {
@@ -670,8 +651,7 @@ public class SmtpTransport extends Transport {
         }
     }
 
-    private void saslAuthCramMD5(String username, String password) throws MessagingException,
-        AuthenticationFailedException, IOException {
+    private void saslAuthCramMD5() throws MessagingException, IOException {
 
         List<String> respList = executeCommand("AUTH CRAM-MD5").results;
         if (respList.size() != 1) {
@@ -679,13 +659,12 @@ public class SmtpTransport extends Transport {
         }
 
         String b64Nonce = respList.get(0);
-        String b64CRAMString = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
+        String b64CRAMString = Authentication.computeCramMd5(username, password, b64Nonce);
 
         try {
             executeSensitiveCommand(b64CRAMString);
         } catch (NegativeSmtpReplyException exception) {
             if (exception.getReplyCode() == SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
-                // Authentication credentials invalid
                 throw new AuthenticationFailedException(exception.getMessage(), exception);
             } else {
                 throw exception;
@@ -693,7 +672,7 @@ public class SmtpTransport extends Transport {
         }
     }
 
-    private void saslXoauth2(String username) throws MessagingException, IOException {
+    private void saslXoauth2() throws MessagingException, IOException {
         retryXoauthWithNewToken = true;
         try {
             attemptXoauth2(username);
@@ -749,14 +728,14 @@ public class SmtpTransport extends Transport {
 
         if (response.replyCode == SMTP_CONTINUE_REQUEST) {
             String replyText = TextUtils.join("", response.results);
-            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(replyText, mHost);
+            retryXoauthWithNewToken = XOAuth2ChallengeParser.shouldRetry(replyText, host);
 
             //Per Google spec, respond to challenge with empty response
             executeCommand("");
         }
     }
 
-    private void saslAuthExternal(String username) throws MessagingException, IOException {
+    private void saslAuthExternal() throws MessagingException, IOException {
         executeCommand("AUTH EXTERNAL %s", Base64.encode(username));
     }
 
