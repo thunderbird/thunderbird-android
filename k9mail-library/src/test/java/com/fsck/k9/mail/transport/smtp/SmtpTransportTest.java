@@ -13,6 +13,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
+import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.XOAuth2ChallengeParserTest;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.helpers.TestMessageBuilder;
@@ -718,7 +719,7 @@ public class SmtpTransportTest {
                 USERNAME,
                 password,
                 CLIENT_CERTIFICATE_ALIAS);
-        String uri = SmtpTransport.createUri(serverSettings);
+        String uri = TransportUris.createTransportUri(serverSettings);
         StoreConfig storeConfig = createStoreConfigWithTransportUri(uri);
 
         return new TestSmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider);

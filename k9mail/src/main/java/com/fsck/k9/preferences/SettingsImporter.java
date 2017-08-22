@@ -15,6 +15,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
+
+import com.fsck.k9.mail.TransportUris;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
@@ -361,7 +363,7 @@ public class SettingsImporter {
         if (account.outgoing != null) {
             // Write outgoing server settings (transportUri)
             ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
-            String transportUri = Transport.createTransportUri(outgoing);
+            String transportUri = TransportUris.createTransportUri(outgoing);
             putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Base64.encode(transportUri));
 
             /*
