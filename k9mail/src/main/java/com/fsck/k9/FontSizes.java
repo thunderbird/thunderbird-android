@@ -24,6 +24,7 @@ public class FontSizes {
     private static final String MESSAGE_VIEW_SENDER = "fontSizeMessageViewSender";
     private static final String MESSAGE_VIEW_TO = "fontSizeMessageViewTo";
     private static final String MESSAGE_VIEW_CC = "fontSizeMessageViewCC";
+    private static final String MESSAGE_VIEW_BCC = "fontSizeMessageViewBCC";
     private static final String MESSAGE_VIEW_ADDITIONAL_HEADERS = "fontSizeMessageViewAdditionalHeaders";
     private static final String MESSAGE_VIEW_SUBJECT = "fontSizeMessageViewSubject";
     private static final String MESSAGE_VIEW_DATE = "fontSizeMessageViewDate";
@@ -53,6 +54,7 @@ public class FontSizes {
     private int messageViewSender;
     private int messageViewTo;
     private int messageViewCC;
+    private int messageViewBCC;
     private int messageViewAdditionalHeaders;
     private int messageViewSubject;
     private int messageViewDate;
@@ -75,6 +77,7 @@ public class FontSizes {
         messageViewSender = FONT_DEFAULT;
         messageViewTo = FONT_DEFAULT;
         messageViewCC = FONT_DEFAULT;
+        messageViewBCC = FONT_DEFAULT;
         messageViewAdditionalHeaders = FONT_DEFAULT;
         messageViewSubject = FONT_DEFAULT;
         messageViewDate = FONT_DEFAULT;
@@ -98,6 +101,7 @@ public class FontSizes {
         editor.putInt(MESSAGE_VIEW_SENDER, messageViewSender);
         editor.putInt(MESSAGE_VIEW_TO, messageViewTo);
         editor.putInt(MESSAGE_VIEW_CC, messageViewCC);
+        editor.putInt(MESSAGE_VIEW_BCC, messageViewBCC);
         editor.putInt(MESSAGE_VIEW_ADDITIONAL_HEADERS, messageViewAdditionalHeaders);
         editor.putInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         editor.putInt(MESSAGE_VIEW_DATE, messageViewDate);
@@ -121,6 +125,7 @@ public class FontSizes {
         messageViewSender = storage.getInt(MESSAGE_VIEW_SENDER, messageViewSender);
         messageViewTo = storage.getInt(MESSAGE_VIEW_TO, messageViewTo);
         messageViewCC = storage.getInt(MESSAGE_VIEW_CC, messageViewCC);
+        messageViewBCC = storage.getInt(MESSAGE_VIEW_BCC, messageViewBCC);
         messageViewAdditionalHeaders = storage.getInt(MESSAGE_VIEW_ADDITIONAL_HEADERS, messageViewAdditionalHeaders);
         messageViewSubject = storage.getInt(MESSAGE_VIEW_SUBJECT, messageViewSubject);
         messageViewDate = storage.getInt(MESSAGE_VIEW_DATE, messageViewDate);
@@ -226,6 +231,14 @@ public class FontSizes {
 
     public void setMessageViewCC(int messageViewCC) {
         this.messageViewCC = messageViewCC;
+    }
+
+    public int getMessageViewBCC() {
+        return messageViewBCC;
+    }
+
+    public void setMessageViewBCC(int messageViewBCC) {
+        this.messageViewBCC = messageViewBCC;
     }
 
     public int getMessageViewAdditionalHeaders() {

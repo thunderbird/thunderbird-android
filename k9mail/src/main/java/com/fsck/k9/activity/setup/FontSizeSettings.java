@@ -31,6 +31,7 @@ public class FontSizeSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGE_VIEW_SENDER_FONT = "message_view_sender_font";
     private static final String PREFERENCE_MESSAGE_VIEW_TO_FONT = "message_view_to_font";
     private static final String PREFERENCE_MESSAGE_VIEW_CC_FONT = "message_view_cc_font";
+    private static final String PREFERENCE_MESSAGE_VIEW_BCC_FONT = "message_view_bcc_font";
     private static final String PREFERENCE_MESSAGE_VIEW_ADDITIONAL_HEADERS_FONT = "message_view_additional_headers_font";
     private static final String PREFERENCE_MESSAGE_VIEW_SUBJECT_FONT = "message_view_subject_font";
     private static final String PREFERENCE_MESSAGE_VIEW_DATE_FONT = "message_view_date_font";
@@ -48,6 +49,7 @@ public class FontSizeSettings extends K9PreferenceActivity {
     private ListPreference mMessageViewSender;
     private ListPreference mMessageViewTo;
     private ListPreference mMessageViewCC;
+    private ListPreference mMessageViewBCC;
     private ListPreference mMessageViewAdditionalHeaders;
     private ListPreference mMessageViewSubject;
     private ListPreference mMessageViewDate;
@@ -110,6 +112,9 @@ public class FontSizeSettings extends K9PreferenceActivity {
         mMessageViewCC = setupListPreference(
                              PREFERENCE_MESSAGE_VIEW_CC_FONT,
                              Integer.toString(fontSizes.getMessageViewCC()));
+        mMessageViewBCC = setupListPreference(
+                             PREFERENCE_MESSAGE_VIEW_BCC_FONT,
+                             Integer.toString(fontSizes.getMessageViewBCC()));
         mMessageViewAdditionalHeaders = setupListPreference(
                                             PREFERENCE_MESSAGE_VIEW_ADDITIONAL_HEADERS_FONT,
                                             Integer.toString(fontSizes.getMessageViewAdditionalHeaders()));
@@ -172,6 +177,7 @@ public class FontSizeSettings extends K9PreferenceActivity {
         fontSizes.setMessageViewSender(Integer.parseInt(mMessageViewSender.getValue()));
         fontSizes.setMessageViewTo(Integer.parseInt(mMessageViewTo.getValue()));
         fontSizes.setMessageViewCC(Integer.parseInt(mMessageViewCC.getValue()));
+        fontSizes.setMessageViewBCC(Integer.parseInt(mMessageViewBCC.getValue()));
         fontSizes.setMessageViewAdditionalHeaders(Integer.parseInt(mMessageViewAdditionalHeaders.getValue()));
         fontSizes.setMessageViewSubject(Integer.parseInt(mMessageViewSubject.getValue()));
         fontSizes.setMessageViewDate(Integer.parseInt(mMessageViewDate.getValue()));
