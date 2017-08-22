@@ -27,18 +27,16 @@ import timber.log.Timber;
 
 
 public class LocalMessage extends MimeMessage {
-    protected MessageReference mReference;
     private final LocalStore localStore;
 
-    private long mId;
-    private int mAttachmentCount;
-    private String mSubject;
-
-    private String mPreview = "";
-
-    private long mThreadId;
-    private long mRootId;
+    private long id;
+    private long rootId;
+    private long threadId;
     private long messagePartId;
+    private MessageReference messageReference;
+    private int attachmentCount;
+    private String subject;
+    private String preview = "";
     private String mimeType;
     private PreviewType previewType;
     private boolean headerNeedsUpdating = false;
@@ -81,13 +79,13 @@ public class LocalMessage extends MimeMessage {
                 }
             }
         }
-        this.mId = cursor.getLong(5);
+        this.id = cursor.getLong(5);
         this.setRecipients(RecipientType.TO, Address.unpack(cursor.getString(6)));
         this.setRecipients(RecipientType.CC, Address.unpack(cursor.getString(7)));
         this.setRecipients(RecipientType.BCC, Address.unpack(cursor.getString(8)));
         this.setReplyTo(Address.unpack(cursor.getString(9)));
 
-        this.mAttachmentCount = cursor.getInt(10);
+        this.attachmentCount = cursor.getInt(10);
         this.setInternalDate(new Date(cursor.getLong(11)));
         this.setMessageId(cursor.getString(12));
 
@@ -95,9 +93,9 @@ public class LocalMessage extends MimeMessage {
         DatabasePreviewType databasePreviewType = DatabasePreviewType.fromDatabaseValue(previewTypeString);
         previewType = databasePreviewType.getPreviewType();
         if (previewType == PreviewType.TEXT) {
-            mPreview = cursor.getString(14);
+            preview = cursor.getString(14);
         } else {
-            mPreview = "";
+            preview = "";
         }
 
         if (this.mFolder == null) {
@@ -106,8 +104,8 @@ public class LocalMessage extends MimeMessage {
             this.mFolder = f;
         }
 
-        mThreadId = (cursor.isNull(15)) ? -1 : cursor.getLong(15);
-        mRootId = (cursor.isNull(16)) ? -1 : cursor.getLong(16);
+        threadId = (cursor.isNull(15)) ? -1 : cursor.getLong(15);
+        rootId = (cursor.isNull(16)) ? -1 : cursor.getLong(16);
 
         boolean deleted = (cursor.getInt(17) == 1);
         boolean read = (cursor.getInt(18) == 1);
@@ -157,18 +155,18 @@ public class LocalMessage extends MimeMessage {
     }
 
     public String getPreview() {
-        return mPreview;
+        return preview;
     }
 
     @Override
     public String getSubject() {
-        return mSubject;
+        return subject;
     }
 
 
     @Override
     public void setSubject(String subject) {
-        mSubject = subject;
+        this.subject = subject;
         headerNeedsUpdating = true;
     }
 
@@ -182,16 +180,16 @@ public class LocalMessage extends MimeMessage {
     @Override
     public void setUid(String uid) {
         super.setUid(uid);
-        this.mReference = null;
+        this.messageReference = null;
     }
 
     @Override
     public boolean hasAttachments() {
-        return (mAttachmentCount > 0);
+        return (attachmentCount > 0);
     }
 
-    public int getAttachmentCount() {
-        return mAttachmentCount;
+    int getAttachmentCount() {
+        return attachmentCount;
     }
 
     @Override
@@ -250,7 +248,7 @@ public class LocalMessage extends MimeMessage {
 
     @Override
     public long getId() {
-        return mId;
+        return id;
     }
 
     @Override
@@ -273,13 +271,13 @@ public class LocalMessage extends MimeMessage {
                      * Set the flags on the message.
                      */
                     ContentValues cv = new ContentValues();
-                    cv.put("flags", LocalMessage.this.localStore.serializeFlags(getFlags()));
+                    cv.put("flags", LocalStore.serializeFlags(getFlags()));
                     cv.put("read", isSet(Flag.SEEN) ? 1 : 0);
                     cv.put("flagged", isSet(Flag.FLAGGED) ? 1 : 0);
                     cv.put("answered", isSet(Flag.ANSWERED) ? 1 : 0);
                     cv.put("forwarded", isSet(Flag.FORWARDED) ? 1 : 0);
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(mId) });
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(id) });
 
                     return null;
                 }
@@ -313,7 +311,7 @@ public class LocalMessage extends MimeMessage {
                     cv.putNull("reply_to_list");
                     cv.putNull("message_part_id");
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(mId) });
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(id) });
 
                     try {
                         ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
@@ -321,7 +319,7 @@ public class LocalMessage extends MimeMessage {
                         throw new WrappedException(e);
                     }
 
-                    getFolder().deleteFulltextIndexEntry(db, mId);
+                    getFolder().deleteFulltextIndexEntry(db, id);
 
                     return null;
                 }
@@ -345,7 +343,7 @@ public class LocalMessage extends MimeMessage {
                     ContentValues cv = new ContentValues();
                     cv.putNull("message_part_id");
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(mId) });
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(id) });
 
                     try {
                         ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
@@ -381,13 +379,13 @@ public class LocalMessage extends MimeMessage {
         LocalMessage message = new LocalMessage(localStore);
         super.copy(message);
 
-        message.mReference = mReference;
-        message.mId = mId;
-        message.mAttachmentCount = mAttachmentCount;
-        message.mSubject = mSubject;
-        message.mPreview = mPreview;
-        message.mThreadId = mThreadId;
-        message.mRootId = mRootId;
+        message.messageReference = messageReference;
+        message.id = id;
+        message.attachmentCount = attachmentCount;
+        message.subject = subject;
+        message.preview = preview;
+        message.threadId = threadId;
+        message.rootId = rootId;
         message.messagePartId = messagePartId;
         message.mimeType = mimeType;
         message.previewType = previewType;
@@ -397,11 +395,11 @@ public class LocalMessage extends MimeMessage {
     }
 
     public long getThreadId() {
-        return mThreadId;
+        return threadId;
     }
 
     public long getRootId() {
-        return mRootId;
+        return rootId;
     }
 
     public Account getAccount() {
@@ -409,10 +407,10 @@ public class LocalMessage extends MimeMessage {
     }
 
     public MessageReference makeMessageReference() {
-        if (mReference == null) {
-            mReference = new MessageReference(getFolder().getAccountUuid(), getFolder().getName(), mUid, null);
+        if (messageReference == null) {
+            messageReference = new MessageReference(getFolder().getAccountUuid(), getFolder().getName(), mUid, null);
         }
-        return mReference;
+        return messageReference;
     }
 
     @Override
@@ -434,7 +432,7 @@ public class LocalMessage extends MimeMessage {
     }
 
     private void updateHeader() {
-        super.setSubject(mSubject);
+        super.setSubject(subject);
         super.setReplyTo(mReplyTo);
         super.setRecipients(RecipientType.TO, mTo);
         super.setRecipients(RecipientType.CC, mCc);
@@ -478,9 +476,5 @@ public class LocalMessage extends MimeMessage {
 
     private String getAccountUuid() {
         return getAccount().getUuid();
-    }
-
-    public boolean isBodyMissing() {
-        return getBody() == null;
     }
 }
