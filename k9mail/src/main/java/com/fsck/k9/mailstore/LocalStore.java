@@ -756,7 +756,7 @@ public class LocalStore extends Store implements Serializable {
 
             if (part instanceof LocalPart) {
                 LocalPart localBodyPart = (LocalPart) part;
-                if (localBodyPart.getId() == partId) {
+                if (localBodyPart.getPartId() == partId) {
                     return part;
                 }
             }

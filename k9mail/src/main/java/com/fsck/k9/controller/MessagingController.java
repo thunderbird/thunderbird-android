@@ -305,7 +305,7 @@ public class MessagingController {
     }
 
     private boolean isMessageSuppressed(LocalMessage message) {
-        long messageId = message.getId();
+        long messageId = message.getDatabaseId();
         long folderId = message.getFolder().getId();
 
         EmailProviderCache cache = EmailProviderCache.getCache(message.getFolder().getAccountUuid(), context);
@@ -2511,7 +2511,7 @@ public class MessagingController {
         localFolder.open(Folder.OPEN_MODE_RW);
 
         LocalMessage message = localFolder.getMessage(uid);
-        if (message == null || message.getId() == 0) {
+        if (message == null || message.getDatabaseId() == 0) {
             throw new IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid);
         }
 
@@ -2530,7 +2530,7 @@ public class MessagingController {
             throws MessagingException {
 
         if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
-            List<Long> messageIds = Collections.singletonList(message.getId());
+            List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
             setFlag(account, messageIds, Flag.SEEN, true);
 
             message.setFlagInternal(Flag.SEEN, true);
@@ -3996,7 +3996,7 @@ public class MessagingController {
     public long getId(Message message) {
         long id;
         if (message instanceof LocalMessage) {
-            id = message.getId();
+            id = ((LocalMessage) message).getDatabaseId();
         } else {
             Timber.w("MessagingController.getId() called without a LocalMessage");
             id = INVALID_MESSAGE_ID;

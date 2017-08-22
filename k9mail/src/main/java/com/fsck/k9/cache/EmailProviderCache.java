@@ -126,7 +126,7 @@ public class EmailProviderCache {
     public void hideMessages(List<LocalMessage> messages) {
         synchronized (mHiddenMessageCache) {
             for (LocalMessage message : messages) {
-                long messageId = message.getId();
+                long messageId = message.getDatabaseId();
                 mHiddenMessageCache.put(messageId, message.getFolder().getId());
             }
         }
@@ -145,7 +145,7 @@ public class EmailProviderCache {
         synchronized (mHiddenMessageCache) {
             for (Message message : messages) {
                 LocalMessage localMessage = (LocalMessage) message;
-                long messageId = localMessage.getId();
+                long messageId = localMessage.getDatabaseId();
                 long folderId = ((LocalFolder) localMessage.getFolder()).getId();
                 Long hiddenInFolder = mHiddenMessageCache.get(messageId);
 

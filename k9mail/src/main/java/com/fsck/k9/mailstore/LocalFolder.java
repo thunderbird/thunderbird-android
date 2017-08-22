@@ -1046,7 +1046,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                                     "id %d currently in folder %s",
                                     lDestFolder.getId(),
                                     message.getUid(),
-                                    lMessage.getId(),
+                                    lMessage.getDatabaseId(),
                                     getName());
 
                             String newUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
@@ -1060,7 +1060,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
                             /*
                              * "Move" the message into the new folder
                              */
-                            long msgId = lMessage.getId();
+                            long msgId = lMessage.getDatabaseId();
                             String[] idArg = new String[] { Long.toString(msgId) };
 
                             ContentValues cv = new ContentValues();
@@ -1309,7 +1309,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             LocalMessage oldMessage = getMessage(uid);
 
             if (oldMessage != null) {
-                oldMessageId = oldMessage.getId();
+                oldMessageId = oldMessage.getDatabaseId();
 
                 long oldRootMessagePartId = oldMessage.getMessagePartId();
                 deleteMessagePartsAndDataFromDisk(oldRootMessagePartId);
@@ -1689,7 +1689,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 db.update("messages", cv, "id = ?", new String[]
-                        { Long.toString(message.getId()) });
+                        { Long.toString(message.getDatabaseId()) });
                 return null;
             }
         });
@@ -1844,7 +1844,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     void destroyMessage(LocalMessage localMessage) throws MessagingException {
-        destroyMessage(localMessage.getId(), localMessage.getMessagePartId(), localMessage.getMessageId());
+        destroyMessage(localMessage.getDatabaseId(), localMessage.getMessagePartId(), localMessage.getMessageId());
     }
 
     private void destroyMessage(final long messageId, final long messagePartId, final String messageIdHeader)

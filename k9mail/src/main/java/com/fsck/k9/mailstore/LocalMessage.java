@@ -29,7 +29,7 @@ import timber.log.Timber;
 public class LocalMessage extends MimeMessage {
     private final LocalStore localStore;
 
-    private long id;
+    private long databaseId;
     private long rootId;
     private long threadId;
     private long messagePartId;
@@ -79,7 +79,7 @@ public class LocalMessage extends MimeMessage {
                 }
             }
         }
-        this.id = cursor.getLong(5);
+        this.databaseId = cursor.getLong(5);
         this.setRecipients(RecipientType.TO, Address.unpack(cursor.getString(6)));
         this.setRecipients(RecipientType.CC, Address.unpack(cursor.getString(7)));
         this.setRecipients(RecipientType.BCC, Address.unpack(cursor.getString(8)));
@@ -246,9 +246,8 @@ public class LocalMessage extends MimeMessage {
         super.setFlag(flag, set);
     }
 
-    @Override
-    public long getId() {
-        return id;
+    public long getDatabaseId() {
+        return databaseId;
     }
 
     @Override
@@ -277,7 +276,7 @@ public class LocalMessage extends MimeMessage {
                     cv.put("answered", isSet(Flag.ANSWERED) ? 1 : 0);
                     cv.put("forwarded", isSet(Flag.FORWARDED) ? 1 : 0);
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(id) });
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
 
                     return null;
                 }
@@ -311,7 +310,7 @@ public class LocalMessage extends MimeMessage {
                     cv.putNull("reply_to_list");
                     cv.putNull("message_part_id");
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(id) });
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
 
                     try {
                         ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
@@ -319,7 +318,7 @@ public class LocalMessage extends MimeMessage {
                         throw new WrappedException(e);
                     }
 
-                    getFolder().deleteFulltextIndexEntry(db, id);
+                    getFolder().deleteFulltextIndexEntry(db, databaseId);
 
                     return null;
                 }
@@ -343,7 +342,7 @@ public class LocalMessage extends MimeMessage {
                     ContentValues cv = new ContentValues();
                     cv.putNull("message_part_id");
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(id) });
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
 
                     try {
                         ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
@@ -380,7 +379,7 @@ public class LocalMessage extends MimeMessage {
         super.copy(message);
 
         message.messageReference = messageReference;
-        message.id = id;
+        message.databaseId = databaseId;
         message.attachmentCount = attachmentCount;
         message.subject = subject;
         message.preview = preview;

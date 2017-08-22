@@ -40,7 +40,7 @@ public class EmailProviderCacheTest {
         MockitoAnnotations.initMocks(this);
 
         cache = EmailProviderCache.getCache(UUID.randomUUID().toString(), RuntimeEnvironment.application);
-        when(mockLocalMessage.getId()).thenReturn(localMessageId);
+        when(mockLocalMessage.getDatabaseId()).thenReturn(localMessageId);
         when(mockLocalMessage.getFolder()).thenReturn(mockLocalMessageFolder);
         when(mockLocalMessageFolder.getId()).thenReturn(localMessageFolderId);
     }

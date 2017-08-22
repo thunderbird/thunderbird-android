@@ -14,7 +14,6 @@ import timber.log.Timber;
 import android.support.annotation.WorkerThread;
 
 import com.fsck.k9.Globals;
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -64,7 +63,7 @@ public class AttachmentInfoExtractor {
         if (part instanceof LocalPart) {
             LocalPart localPart = (LocalPart) part;
             String accountUuid = localPart.getAccountUuid();
-            long messagePartId = localPart.getId();
+            long messagePartId = localPart.getPartId();
             size = localPart.getSize();
             isContentAvailable = part.getBody() != null;
             uri = AttachmentProvider.getAttachmentUri(accountUuid, messagePartId);

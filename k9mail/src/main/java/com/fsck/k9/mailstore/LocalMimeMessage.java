@@ -24,7 +24,7 @@ public class LocalMimeMessage extends MimeMessage implements LocalPart {
     }
 
     @Override
-    public long getId() {
+    public long getPartId() {
         return messagePartId;
     }
 
