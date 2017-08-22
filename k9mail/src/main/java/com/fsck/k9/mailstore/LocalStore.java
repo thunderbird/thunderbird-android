@@ -188,7 +188,6 @@ public class LocalStore extends Store {
     private final AttachmentInfoExtractor attachmentInfoExtractor;
 
     private final Account account;
-    private final String uUid;
     private final LockableDatabase database;
 
     /**
@@ -207,7 +206,6 @@ public class LocalStore extends Store {
         attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
 
         this.account = account;
-        this.uUid = account.getUuid();
 
         database = new LockableDatabase(context, account.getUuid(), new StoreSchemaDefinition(this));
         database.setStorageProviderId(account.getLocalStorageProviderId());
@@ -270,10 +268,6 @@ public class LocalStore extends Store {
         return account;
     }
 
-    String getUUid() {
-        return uUid;
-    }
-
     protected Storage getStorage() {
         return Preferences.getPreferences(context).getStorage();
     }
@@ -282,7 +276,7 @@ public class LocalStore extends Store {
 
         final StorageManager storageManager = StorageManager.getInstance(context);
 
-        final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid,
+        final File attachmentDirectory = storageManager.getAttachmentDirectory(account.getUuid(),
                                          database.getStorageProviderId());
 
         return database.execute(false, new DbCallback<Long>() {
@@ -298,7 +292,7 @@ public class LocalStore extends Store {
                     }
                 }
 
-                final File dbFile = storageManager.getDatabase(uUid, database.getStorageProviderId());
+                final File dbFile = storageManager.getDatabase(account.getUuid(), database.getStorageProviderId());
                 return dbFile.length() + attachmentLength;
             }
         });
@@ -468,7 +462,8 @@ public class LocalStore extends Store {
 
     private void deleteAllMessagePartsDataFromDisk() {
         final StorageManager storageManager = StorageManager.getInstance(context);
-        File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId());
+        File attachmentDirectory = storageManager.getAttachmentDirectory(
+                account.getUuid(), database.getStorageProviderId());
         File[] files = attachmentDirectory.listFiles();
         if (files == null) {
             return;
@@ -897,7 +892,8 @@ public class LocalStore extends Store {
 
     File getAttachmentFile(String attachmentId) {
         final StorageManager storageManager = StorageManager.getInstance(context);
-        final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId());
+        final File attachmentDirectory = storageManager.getAttachmentDirectory(
+                account.getUuid(), database.getStorageProviderId());
         return new File(attachmentDirectory, attachmentId);
     }
 
@@ -999,7 +995,7 @@ public class LocalStore extends Store {
     }
 
     void notifyChange() {
-        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + uUid + "/messages");
+        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + account.getUuid() + "/messages");
         contentResolver.notifyChange(uri, null);
     }
 

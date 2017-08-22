@@ -543,7 +543,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     private String getPrefId(String name) {
         if (prefId == null) {
-            prefId = this.localStore.getUUid() + "." + name;
+            prefId = getAccount().getUuid() + "." + name;
         }
 
         return prefId;
