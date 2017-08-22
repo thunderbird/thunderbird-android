@@ -116,8 +116,12 @@ public class AttachmentPresenter {
     }
 
     public void onClickAddAttachment(RecipientPresenter recipientPresenter) {
-        AttachErrorState maybeAttachErrorState =
-                recipientPresenter.getCurrentCryptoStatus().getAttachErrorStateOrNull();
+        ComposeCryptoStatus currentCachedCryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
+        if (currentCachedCryptoStatus == null) {
+            return;
+        }
+
+        AttachErrorState maybeAttachErrorState = currentCachedCryptoStatus.getAttachErrorStateOrNull();
         if (maybeAttachErrorState != null) {
             recipientPresenter.showPgpAttachError(maybeAttachErrorState);
             return;

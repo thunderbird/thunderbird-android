@@ -320,6 +320,10 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         Toast.makeText(activity, R.string.error_contact_address_not_found, Toast.LENGTH_LONG).show();
     }
 
+    public void showErrorOpenPgpRetrieveStatus() {
+        Toast.makeText(activity, R.string.error_recipient_crypto_retrieve, Toast.LENGTH_LONG).show();
+    }
+
     public void showErrorOpenPgpConnection() {
         Toast.makeText(activity, R.string.error_crypto_provider_connect, Toast.LENGTH_LONG).show();
     }
