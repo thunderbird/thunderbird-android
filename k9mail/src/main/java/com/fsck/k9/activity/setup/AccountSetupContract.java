@@ -35,7 +35,6 @@ interface AccountSetupContract {
                 X509Certificate certificate);
         void showErrorDialog(final int msgResId, final Object... args);
         void showErrorDialog(String string);
-        boolean canceled();
         void setMessage(@StringRes int id);
 
         void goToBasics();
@@ -197,5 +196,10 @@ interface AccountSetupContract {
         AccountSetupPresenter.AccountSetupStatus getStatus();
         AccountConfig getAccountConfig();
         void onWebViewDismiss();
+
+        void onPause();
+        void onStop();
+        void onDestroy();
+        void onResume();
     }
 }

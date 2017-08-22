@@ -78,7 +78,7 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
     private ProviderInfo findProviderInfoByUrl(String url, String email, boolean followRedirects) {
         ProviderInfo providerInfo = null;
         try {
-            Document document = Jsoup.connect(url).requestBody(String.format(AUTODISCOVER_POST_BODY, email))
+            Document document = Jsoup.connect(url).timeout(5000).requestBody(String.format(AUTODISCOVER_POST_BODY, email))
                     .followRedirects(followRedirects).post();
             Element account = document.select("Account").first();
             if (account == null) {

@@ -16,6 +16,7 @@ import timber.log.Timber;
  */
 abstract class OAuth2WebViewClient extends WebViewClient {
     private Oauth2PromptRequestHandler requestHandler;
+    private OAuth2ErrorHandler errorHandler;
 
     public OAuth2WebViewClient(Oauth2PromptRequestHandler requestHandler) {
         this.requestHandler = requestHandler;
@@ -30,9 +31,11 @@ abstract class OAuth2WebViewClient extends WebViewClient {
         Uri uri = Uri.parse(url);
 
         if (arrivedAtRedirectUri(uri)) {
-            if (uri.getQueryParameter("error") != null) {
-                Timber.i("got oauth error: " + uri.getQueryParameter("error"));
-                requestHandler.onErrorWhenGettingOAuthCode(uri.getQueryParameter("error"));
+            final String error = uri.getQueryParameter("error");
+            if (error != null) {
+                Timber.i("got oauth error: " + error);
+                errorHandler.onError(error);
+                requestHandler.onErrorWhenGettingOAuthCode(error);
                 return true;
             }
 

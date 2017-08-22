@@ -1262,4 +1262,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="xoauth2_no_account">No account provided</string>
     <string name="linked_webview_title_gmail">Gmail Authorization</string>
     <string name="linked_webview_title_outlook">Outlook Authorization</string>
+    <string name="account_setup_check_settings_guessing_msg">Guessing server settings...</string>
 </resources>

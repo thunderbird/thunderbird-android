@@ -83,9 +83,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private static final String STATE_EDIT_SETTINGS = "state_edit_settings";
     private static final String STATE_MAKE_DEFAULT = "state_make_default";
 
-    private boolean canceled;
-    private boolean destroyed;
-
     private AccountSetupPresenter presenter;
 
     private TextView messageView;
@@ -448,11 +445,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     @Override
-    public boolean canceled() {
-        return canceled;
-    }
-
-    @Override
     public void setMessage(@StringRes int id) {
         messageView.setText(getString(id));
     }
@@ -460,41 +452,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public Context getContext() {
         return this;
-    }
-
-    private void showDialogFragment(int dialogId, String customMessage) {
-        if (destroyed) {
-            return;
-        }
-
-        DialogFragment fragment;
-        switch (dialogId) {
-            case R.id.dialog_account_setup_error: {
-                fragment = ConfirmationDialogFragment.newInstance(dialogId,
-                        getString(R.string.account_setup_failed_dlg_title),
-                        customMessage,
-                        getString(R.string.account_setup_failed_dlg_edit_details_action),
-                        getString(R.string.account_setup_failed_dlg_continue_action),
-                        this
-                );
-                break;
-            }
-            default: {
-                throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
-            }
-        }
-
-        FragmentTransaction ta = getFragmentManager().beginTransaction();
-        ta.add(fragment, getDialogTag(dialogId));
-        ta.commitAllowingStateLoss();
-
-        // TODO: commitAllowingStateLoss() is used to prevent https://code.google.com/p/android/issues/detail?id=23761
-        // but is a bad...
-        //fragment.show(ta, getDialogTag(dialogId));
-    }
-
-    private String getDialogTag(int dialogId) {
-        return String.format(Locale.US, "dialog-%d", dialogId);
     }
 
     @Override
@@ -1336,33 +1293,30 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        canceled = false;
         presenter.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        canceled = false;
-        destroyed = false;
+        presenter.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        canceled = true;
+        presenter.onPause();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        canceled = true;
+        presenter.onStop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        canceled = true;
-        destroyed = true;
+        presenter.onDestroy();
     }
 }
