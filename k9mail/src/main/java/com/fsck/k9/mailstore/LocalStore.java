@@ -103,6 +103,33 @@ public class LocalStore extends Store implements Serializable {
         "folder_id, preview, threads.id, threads.root, deleted, read, flagged, answered, " +
         "forwarded, message_part_id, messages.mime_type, preview_type, header ";
 
+    static final int MSG_INDEX_SUBJECT = 0;
+    static final int MSG_INDEX_SENDER_LIST = 1;
+    static final int MSG_INDEX_DATE = 2;
+    static final int MSG_INDEX_UID = 3;
+    static final int MSG_INDEX_FLAGS = 4;
+    static final int MSG_INDEX_ID = 5;
+    static final int MSG_INDEX_TO = 6;
+    static final int MSG_INDEX_CC = 7;
+    static final int MSG_INDEX_BCC = 8;
+    static final int MSG_INDEX_REPLY_TO = 9;
+    static final int MSG_INDEX_ATTACHMENT_COUNT = 10;
+    static final int MSG_INDEX_INTERNAL_DATE = 11;
+    static final int MSG_INDEX_MESSAGE_ID_HEADER = 12;
+    static final int MSG_INDEX_FOLDER_ID = 13;
+    static final int MSG_INDEX_PREVIEW = 14;
+    static final int MSG_INDEX_THREAD_ID = 15;
+    static final int MSG_INDEX_THREAD_ROOT_ID = 16;
+    static final int MSG_INDEX_FLAG_DELETED = 17;
+    static final int MSG_INDEX_FLAG_READ = 18;
+    static final int MSG_INDEX_FLAG_FLAGGED = 19;
+    static final int MSG_INDEX_FLAG_ANSWERED = 20;
+    static final int MSG_INDEX_FLAG_FORWARDED = 21;
+    static final int MSG_INDEX_MESSAGE_PART_ID = 22;
+    static final int MSG_INDEX_MIME_TYPE = 23;
+    static final int MSG_INDEX_PREVIEW_TYPE = 24;
+    static final int MSG_INDEX_HEADER_DATA = 25;
+
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
         "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages";
