@@ -903,6 +903,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_message_view_sender">Sender</string>
     <string name="font_size_message_view_to">To</string>
     <string name="font_size_message_view_cc">Cc</string>
+    <string name="font_size_message_view_bcc">Bcc</string>
     <string name="font_size_message_view_additional_headers">Additional headers</string>
     <string name="font_size_message_view_subject">Subject</string>
     <string name="font_size_message_view_date">Time and date</string>
