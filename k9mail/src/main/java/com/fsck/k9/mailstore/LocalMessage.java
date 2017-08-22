@@ -257,7 +257,7 @@ public class LocalMessage extends MimeMessage {
     public void setFlag(final Flag flag, final boolean set) throws MessagingException {
 
         try {
-            this.localStore.database.execute(true, new DbCallback<Void>() {
+            this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
@@ -297,7 +297,7 @@ public class LocalMessage extends MimeMessage {
      */
     private void delete() throws MessagingException {
         try {
-            localStore.database.execute(true, new DbCallback<Void>() {
+            localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     ContentValues cv = new ContentValues();
@@ -339,7 +339,7 @@ public class LocalMessage extends MimeMessage {
         }
 
         try {
-            localStore.database.execute(true, new DbCallback<Void>() {
+            localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, MessagingException {
                     ContentValues cv = new ContentValues();

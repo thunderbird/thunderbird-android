@@ -103,7 +103,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         super();
         this.localStore = localStore;
         this.folderName = name;
-        attachmentInfoExtractor = localStore.attachmentInfoExtractor;
+        attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
 
         if (getAccount().getInboxFolderName().equals(getName())) {
             syncClass =  FolderClass.FIRST_CLASS;
@@ -116,7 +116,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         super();
         this.localStore = localStore;
         this.folderId = id;
-        attachmentInfoExtractor = localStore.attachmentInfoExtractor;
+        attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
     }
 
     public long getId() {
@@ -152,7 +152,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
 
         try {
-            this.localStore.database.execute(false, new DbCallback<Void>() {
+            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                     Cursor cursor = null;
@@ -231,7 +231,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     @Override
     public boolean exists() throws MessagingException {
-        return this.localStore.database.execute(false, new DbCallback<Boolean>() {
+        return this.localStore.getDatabase().execute(false, new DbCallback<Boolean>() {
             @Override
             public Boolean doDbWork(final SQLiteDatabase db) throws WrappedException {
                 Cursor cursor = null;
@@ -285,7 +285,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     @Override
     public int getMessageCount() throws MessagingException {
         try {
-            return this.localStore.database.execute(false, new DbCallback<Integer>() {
+            return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
                 @Override
                 public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
@@ -318,7 +318,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
 
         try {
-            return this.localStore.database.execute(false, new DbCallback<Integer>() {
+            return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
                 @Override
                 public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                     int unreadMessageCount = 0;
@@ -349,7 +349,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         }
 
         try {
-            return this.localStore.database.execute(false, new DbCallback<Integer>() {
+            return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
                 @Override
                 public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                     int flaggedMessageCount = 0;
@@ -449,7 +449,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private void updateFolderColumn(final String column, final Object value) throws MessagingException {
         try {
-            this.localStore.database.execute(false, new DbCallback<Void>() {
+            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
@@ -545,7 +545,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     private String getPrefId(String name) {
         if (prefId == null) {
-            prefId = this.localStore.uUid + "." + name;
+            prefId = this.localStore.getUUid() + "." + name;
         }
 
         return prefId;
@@ -662,7 +662,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     public void fetch(final List<LocalMessage> messages, final FetchProfile fp, final MessageRetrievalListener<LocalMessage> listener)
     throws MessagingException {
         try {
-            this.localStore.database.execute(false, new DbCallback<Void>() {
+            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
@@ -806,7 +806,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     public String getMessageUidById(final long id) throws MessagingException {
         try {
-            return this.localStore.database.execute(false, new DbCallback<String>() {
+            return this.localStore.getDatabase().execute(false, new DbCallback<String>() {
                 @Override
                 public String doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
@@ -837,7 +837,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     @Override
     public LocalMessage getMessage(final String uid) throws MessagingException {
         try {
-            return this.localStore.database.execute(false, new DbCallback<LocalMessage>() {
+            return this.localStore.getDatabase().execute(false, new DbCallback<LocalMessage>() {
                 @Override
                 public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
@@ -875,7 +875,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     public Map<String,Long> getAllMessagesAndEffectiveDates() throws MessagingException {
         try {
-            return  localStore.database.execute(false, new DbCallback<Map<String, Long>>() {
+            return  localStore.getDatabase().execute(false, new DbCallback<Map<String, Long>>() {
                 @Override
                 public Map<String, Long> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     Cursor cursor = null;
@@ -917,7 +917,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     public List<LocalMessage> getMessages(final MessageRetrievalListener<LocalMessage> listener,
             final boolean includeDeleted) throws MessagingException {
         try {
-            return  localStore.database.execute(false, new DbCallback<List<LocalMessage>>() {
+            return  localStore.getDatabase().execute(false, new DbCallback<List<LocalMessage>>() {
                 @Override
                 public List<LocalMessage> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
@@ -943,7 +943,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     public List<String> getAllMessageUids() throws MessagingException {
         try {
-            return  localStore.database.execute(false, new DbCallback<List<String>>() {
+            return  localStore.getDatabase().execute(false, new DbCallback<List<String>>() {
                 @Override
                 public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     Cursor cursor = null;
@@ -1032,7 +1032,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         final Map<String, String> uidMap = new HashMap<>();
 
         try {
-            this.localStore.database.execute(false, new DbCallback<Void>() {
+            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
@@ -1157,7 +1157,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
      * @return The local version of the message. Never <code>null</code>.
      */
     public LocalMessage storeSmallMessage(final Message message, final Runnable runnable) throws MessagingException {
-        return this.localStore.database.execute(true, new DbCallback<LocalMessage>() {
+        return this.localStore.getDatabase().execute(true, new DbCallback<LocalMessage>() {
             @Override
             public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 try {
@@ -1193,7 +1193,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
     public void destroyMessages(final List<? extends Message> messages) {
         try {
-            this.localStore.database.execute(true, new DbCallback<Void>() {
+            this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     for (Message message : messages) {
@@ -1261,7 +1261,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         open(OPEN_MODE_RW);
         try {
             final Map<String, String> uidMap = new HashMap<>();
-            this.localStore.database.execute(true, new DbCallback<Void>() {
+            this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
@@ -1646,7 +1646,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     public void addPartToMessage(final LocalMessage message, final Part part) throws MessagingException {
         open(OPEN_MODE_RW);
 
-        localStore.database.execute(false, new DbCallback<Void>() {
+        localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 long messagePartId;
@@ -1685,7 +1685,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         open(OPEN_MODE_RW);
         final ContentValues cv = new ContentValues();
         cv.put("uid", message.getUid());
-        this.localStore.database.execute(false, new DbCallback<Void>() {
+        this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 db.update("messages", cv, "id = ?", new String[]
@@ -1705,7 +1705,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
 
         // Use one transaction to set all flags
         try {
-            this.localStore.database.execute(true, new DbCallback<Void>() {
+            this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
                         UnavailableStorageException {
@@ -1764,7 +1764,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
         open(OPEN_MODE_RO);
 
         try {
-            this.localStore.database.execute(false, new DbCallback<Void>() {
+            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
@@ -1807,7 +1807,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     @Override
     public void delete(final boolean recurse) throws MessagingException {
         try {
-            this.localStore.database.execute(false, new DbCallback<Void>() {
+            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
@@ -1850,7 +1850,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     private void destroyMessage(final long messageId, final long messagePartId, final String messageIdHeader)
             throws MessagingException {
         try {
-            localStore.database.execute(true, new DbCallback<Void>() {
+            localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
                         UnavailableStorageException {
@@ -1995,7 +1995,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private void deleteMessageParts(final long rootMessagePartId) throws MessagingException {
-        localStore.database.execute(false, new DbCallback<Void>() {
+        localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 db.delete("message_parts", "root = ?", new String[] { Long.toString(rootMessagePartId) });
@@ -2005,7 +2005,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     private void deleteMessageDataFromDisk(final long rootMessagePartId) throws MessagingException {
-        localStore.database.execute(false, new DbCallback<Void>() {
+        localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 deleteMessagePartsFromDisk(db, rootMessagePartId);
@@ -2063,7 +2063,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
      * framework to examine send date in lieu of internal date.</p>
      */
     public void updateLastUid() throws MessagingException {
-        Integer lastUid = this.localStore.database.execute(false, new DbCallback<Integer>() {
+        Integer lastUid = this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
             @Override
             public Integer doDbWork(final SQLiteDatabase db) {
                 Cursor cursor = null;
@@ -2089,7 +2089,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
     }
 
     public Long getOldestMessageDate() throws MessagingException {
-        return this.localStore.database.execute(false, new DbCallback<Long>() {
+        return this.localStore.getDatabase().execute(false, new DbCallback<Long>() {
             @Override
             public Long doDbWork(final SQLiteDatabase db) {
                 Cursor cursor = null;
@@ -2218,7 +2218,7 @@ public class LocalFolder extends Folder<LocalMessage> implements Serializable {
             throws MessagingException {
 
         try {
-            return this.localStore.database.execute(false, new DbCallback<List<Message>>() {
+            return this.localStore.getDatabase().execute(false, new DbCallback<List<Message>>() {
                 @Override
                 public List<Message> doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
