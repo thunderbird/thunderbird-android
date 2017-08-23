@@ -20,6 +20,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
 
+import com.fsck.k9.mail.TransportUris;
 import timber.log.Timber;
 import android.util.Xml;
 
@@ -266,7 +267,7 @@ public class SettingsExporter {
 
 
         // Write outgoing server settings
-        ServerSettings outgoing = Transport.decodeTransportUri(account.getTransportUri());
+        ServerSettings outgoing = TransportUris.decodeTransportUri(account.getTransportUri());
         serializer.startTag(null, OUTGOING_SERVER_ELEMENT);
         serializer.attribute(null, TYPE_ATTRIBUTE, outgoing.type.name());
 

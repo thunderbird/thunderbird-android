@@ -1,6 +1,7 @@
 
 package com.fsck.k9.activity;
 
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +35,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import timber.log.Timber;
 import android.util.SparseBooleanArray;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -79,7 +79,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.SettingsExporter;
@@ -94,8 +94,8 @@ import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.view.ColorChip;
-
 import de.cketti.library.changelog.ChangeLog;
+import timber.log.Timber;
 
 
 public class Accounts extends K9ListActivity implements OnItemClickListener {
@@ -771,7 +771,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         private void show(final Accounts activity, boolean restore) {
             ServerSettings incoming = RemoteStore.decodeStoreUri(mAccount.getStoreUri());
-            ServerSettings outgoing = Transport.decodeTransportUri(mAccount.getTransportUri());
+            ServerSettings outgoing = TransportUris.decodeTransportUri(mAccount.getTransportUri());
 
             /*
              * Don't ask for the password to the outgoing server for WebDAV
@@ -996,9 +996,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 if (mOutgoingPassword != null) {
                     // Set outgoing server password
                     String transportUri = mAccount.getTransportUri();
-                    ServerSettings outgoing = Transport.decodeTransportUri(transportUri);
+                    ServerSettings outgoing = TransportUris.decodeTransportUri(transportUri);
                     ServerSettings newOutgoing = outgoing.newPassword(mOutgoingPassword);
-                    String newTransportUri = Transport.createTransportUri(newOutgoing);
+                    String newTransportUri = TransportUris.createTransportUri(newOutgoing);
                     mAccount.setTransportUri(newTransportUri);
                 }
 
