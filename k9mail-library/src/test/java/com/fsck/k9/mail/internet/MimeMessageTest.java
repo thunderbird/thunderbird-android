@@ -1,4 +1,4 @@
-package com.fsck.k9.mail;
+package com.fsck.k9.mail.internet;
 
 
 import java.io.ByteArrayInputStream;
@@ -7,11 +7,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.ListIterator;
 import java.util.TimeZone;
 
 import android.content.Context;
 
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.K9LibRobolectricTestRunner;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.BinaryTempFileMessageBody;
 import com.fsck.k9.mail.internet.CharsetSupport;
@@ -22,6 +28,9 @@ import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
 import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.io.EOLConvertingInputStream;
+import org.apache.james.mime4j.parser.MimeStreamParser;
+import org.apache.james.mime4j.stream.MimeConfig;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +42,7 @@ import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(K9LibRobolectricTestRunner.class)
-public class MessageTest {
+public class MimeMessageTest {
 
     private Context context;
 
@@ -351,5 +360,49 @@ public class MessageTest {
         MimeBodyPart bodyPart = message.toBodyPart();
         bodyPart.writeTo(out);
         assertEquals(TO_BODY_PART_RESULT, out.toString());
+    }
+
+    @Test
+    public void testLongHeader() throws MessagingException, IOException {
+        MimeMessage message = new MimeMessage();
+        MimeMessage result = new MimeMessage();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Address[] ccs = new Address[36];
+        Address[] recipients = null;
+        StringBuilder subject = new StringBuilder();
+        Address from = new Address("test.from@example.com", "Test From");
+        Address to = new Address("test.to@example.com", "Test To");
+
+        for (int i = 0; i < ccs.length; i++) {
+            ccs[i] = new Address(
+                String.format("test.user%d@example.com", i+1),
+                String.format("Test User%d", i+1)
+            );
+        }
+
+        for (int i = 0; i < 2000; i++) {
+            if (i % 5 == 0 && i > 0) {
+                subject.append(" ");
+            } else {
+                subject.append("a");
+            }
+        }
+
+        message.setFrom(from);
+        message.setRecipients(RecipientType.CC, ccs);
+        message.setRecipient(RecipientType.TO, to);
+        message.setSubject(subject.toString());
+        message.setBody(new TextBody("Test body"));
+        message.setEncoding(MimeUtil.ENC_QUOTED_PRINTABLE);
+        message.writeTo(out);
+
+        MimeConfig parserConfig  = new MimeConfig();
+        result.parse(new ByteArrayInputStream(out.toByteArray()), false, parserConfig);
+        recipients = result.getRecipients(RecipientType.CC);
+        for (int i = 0; i < recipients.length; i++) {
+            assertEquals(recipients[i].toString(), ccs[i].toString());
+        }
+        assertEquals(result.getSubject(), subject.toString());
+        assertEquals(result.getFrom()[0].toString(), from.toString());
     }
 }
