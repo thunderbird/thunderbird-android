@@ -1,4 +1,4 @@
-package com.fsck.k9.mail;
+package com.fsck.k9.mail.internet;
 
 
 import java.io.ByteArrayInputStream;
@@ -12,7 +12,12 @@ import java.util.TimeZone;
 
 import android.content.Context;
 
+import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.K9LibRobolectricTestRunner;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.BinaryTempFileMessageBody;
 import com.fsck.k9.mail.internet.CharsetSupport;
@@ -37,7 +42,7 @@ import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(K9LibRobolectricTestRunner.class)
-public class MessageTest {
+public class MimeMessageTest {
 
     private Context context;
 

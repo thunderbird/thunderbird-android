@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -83,7 +84,7 @@ public class MimeMessage extends Message {
         parse(in, false);
     }
 
-    public final void parse(InputStream in, boolean recurse) throws IOException, MessagingException {
+    private void parse(InputStream in, boolean recurse) throws IOException, MessagingException {
         MimeConfig parserConfig  = new MimeConfig();
         parserConfig.setMaxHeaderLen(-1); // The default is a mere 10k
         parserConfig.setMaxLineLen(-1); // The default is 1000 characters. Some MUAs generate
@@ -92,7 +93,8 @@ public class MimeMessage extends Message {
         parse(in, recurse, parserConfig);
     }
 
-    public void parse(InputStream in, boolean recurse, MimeConfig parserConfig) throws IOException, MessagingException {
+    @VisibleForTesting
+    void parse(InputStream in, boolean recurse, MimeConfig parserConfig) throws IOException, MessagingException {
         mHeader.clear();
         mFrom = null;
         mTo = null;
