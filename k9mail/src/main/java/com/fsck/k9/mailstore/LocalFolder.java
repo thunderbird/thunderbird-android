@@ -78,7 +78,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
 
     private String name = null;
-    private long id = -1;
+    private long databaseId = -1;
     private int visibleLimit = -1;
     private String prefId = null;
 
@@ -110,15 +110,15 @@ public class LocalFolder extends Folder<LocalMessage> {
         }
     }
 
-    public LocalFolder(LocalStore localStore, long id) {
+    public LocalFolder(LocalStore localStore, long databaseId) {
         super();
         this.localStore = localStore;
-        this.id = id;
+        this.databaseId = databaseId;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
     }
 
-    public long getId() {
-        return id;
+    public long getDatabaseId() {
+        return databaseId;
     }
 
     public String getAccountUuid()
@@ -161,7 +161,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                             cursor = db.rawQuery(baseQuery + "where folders.name = ?", new String[] { name });
                         } else {
                             cursor = db.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(
-                                    id) });
+                                    databaseId) });
                         }
 
                         if (cursor.moveToFirst() && !cursor.isNull(LocalStore.FOLDER_ID_INDEX)) {
@@ -170,7 +170,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                                 open(cursor);
                             }
                         } else {
-                            Timber.w("Creating folder %s with existing id %d", getName(), getId());
+                            Timber.w("Creating folder %s with existing id %d", getName(), getDatabaseId());
                             create(FolderType.HOLDS_MESSAGES);
                             open(mode);
                         }
@@ -188,7 +188,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     void open(Cursor cursor) throws MessagingException {
-        id = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
+        databaseId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
         name = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
         visibleLimit = cursor.getInt(LocalStore.FOLDER_VISIBLE_LIMIT_INDEX);
         pushState = cursor.getString(LocalStore.FOLDER_PUSH_STATE_INDEX);
@@ -214,7 +214,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     @Override
     public boolean isOpen() {
-        return (id != -1 && name != null);
+        return (databaseId != -1 && name != null);
     }
 
     @Override
@@ -277,7 +277,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     @Override
     public void close() {
-        id = -1;
+        databaseId = -1;
     }
 
     @Override
@@ -296,7 +296,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                         cursor = db.rawQuery(
                                 "SELECT COUNT(id) FROM messages " +
                                 "WHERE empty = 0 AND deleted = 0 and folder_id = ?",
-                                new String[] { Long.toString(id) });
+                                new String[] { Long.toString(databaseId) });
                         cursor.moveToFirst();
                         return cursor.getInt(0);   //messagecount
                     } finally {
@@ -311,7 +311,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     @Override
     public int getUnreadMessageCount() throws MessagingException {
-        if (id == -1) {
+        if (databaseId == -1) {
             open(OPEN_MODE_RW);
         }
 
@@ -322,7 +322,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                     int unreadMessageCount = 0;
                     Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
                             "folder_id = ? AND empty = 0 AND deleted = 0 AND read=0",
-                            new String[] { Long.toString(id) }, null, null, null);
+                            new String[] { Long.toString(databaseId) }, null, null, null);
 
                     try {
                         if (cursor.moveToFirst()) {
@@ -342,7 +342,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     @Override
     public int getFlaggedMessageCount() throws MessagingException {
-        if (id == -1) {
+        if (databaseId == -1) {
             open(OPEN_MODE_RW);
         }
 
@@ -353,7 +353,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                     int flaggedMessageCount = 0;
                     Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
                             "folder_id = ? AND empty = 0 AND deleted = 0 AND flagged = 1",
-                            new String[] { Long.toString(id) }, null, null, null);
+                            new String[] { Long.toString(databaseId) }, null, null, null);
 
                     try {
                         if (cursor.moveToFirst()) {
@@ -455,7 +455,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
-                    db.execSQL("UPDATE folders SET " + column + " = ? WHERE id = ?", new Object[] { value, id });
+                    db.execSQL("UPDATE folders SET " + column + " = ? WHERE id = ?", new Object[] { value, databaseId });
                     return null;
                 }
             });
@@ -814,7 +814,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                         try {
                             cursor = db.rawQuery(
                                     "SELECT uid FROM messages WHERE id = ? AND folder_id = ?",
-                                    new String[] { Long.toString(id), Long.toString(LocalFolder.this.id) });
+                                    new String[] { Long.toString(id), Long.toString(LocalFolder.this.databaseId) });
                             if (!cursor.moveToNext()) {
                                 return null;
                             }
@@ -851,7 +851,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                                     "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
                                     "LEFT JOIN threads ON (threads.message_id = messages.id) " +
                                     "WHERE uid = ? AND folder_id = ?",
-                                    new String[] { message.getUid(), Long.toString(id) });
+                                    new String[] { message.getUid(), Long.toString(databaseId) });
 
                             if (!cursor.moveToNext()) {
                                 return null;
@@ -887,7 +887,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                                         "FROM messages " +
                                         "WHERE empty = 0 AND deleted = 0 AND " +
                                         "folder_id = ? ORDER BY date DESC",
-                                new String[] { Long.toString(id) });
+                                new String[] { Long.toString(databaseId) });
 
                         while (cursor.moveToNext()) {
                             String uid = cursor.getString(0);
@@ -928,7 +928,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                                 "WHERE empty = 0 AND " +
                                 (includeDeleted ? "" : "deleted = 0 AND ") +
                                 "folder_id = ? ORDER BY date DESC",
-                                new String[] { Long.toString(id) });
+                                new String[] { Long.toString(databaseId) });
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
@@ -955,7 +955,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                                     "FROM messages " +
                                         "WHERE empty = 0 AND deleted = 0 AND " +
                                         "folder_id = ? ORDER BY date DESC",
-                                new String[] { Long.toString(id) });
+                                new String[] { Long.toString(databaseId) });
 
                         while (cursor.moveToNext()) {
                             String uid = cursor.getString(0);
@@ -1042,7 +1042,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
                             Timber.d("Updating folder_id to %s for message with UID %s, " +
                                     "id %d currently in folder %s",
-                                    lDestFolder.getId(),
+                                    lDestFolder.getDatabaseId(),
                                     message.getUid(),
                                     lMessage.getDatabaseId(),
                                     getName());
@@ -1062,7 +1062,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                             String[] idArg = new String[] { Long.toString(msgId) };
 
                             ContentValues cv = new ContentValues();
-                            cv.put("folder_id", lDestFolder.getId());
+                            cv.put("folder_id", lDestFolder.getDatabaseId());
                             cv.put("uid", newUid);
 
                             db.update("messages", cv, "id = ?", idArg);
@@ -1100,7 +1100,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                             cv.putNull("flags");
                             cv.put("read", 1);
                             cv.put("deleted", 1);
-                            cv.put("folder_id", id);
+                            cv.put("folder_id", databaseId);
                             cv.put("empty", 0);
 
                             String messageId = message.getMessageId();
@@ -1220,7 +1220,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                 "WHERE m.folder_id = ? AND m.message_id = ? " +
                 ((onlyEmpty) ? "AND m.empty = 1 " : "") +
                 "ORDER BY m.id LIMIT 1";
-        String[] selectionArgs = { Long.toString(id), messageId };
+        String[] selectionArgs = { Long.toString(databaseId), messageId };
         Cursor cursor = db.rawQuery(sql, selectionArgs);
 
         if (cursor != null) {
@@ -1353,7 +1353,7 @@ public class LocalFolder extends Folder<LocalMessage> {
             cv.put("flagged", message.isSet(Flag.FLAGGED) ? 1 : 0);
             cv.put("answered", message.isSet(Flag.ANSWERED) ? 1 : 0);
             cv.put("forwarded", message.isSet(Flag.FORWARDED) ? 1 : 0);
-            cv.put("folder_id", id);
+            cv.put("folder_id", databaseId);
             cv.put("to_list", Address.pack(message.getRecipients(RecipientType.TO)));
             cv.put("cc_list", Address.pack(message.getRecipients(RecipientType.CC)));
             cv.put("bcc_list", Address.pack(message.getRecipients(RecipientType.BCC)));
@@ -1747,7 +1747,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                 "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
                 "LEFT JOIN threads ON (threads.message_id = messages.id) " +
                 "WHERE empty = 0 AND (folder_id = ? and date < ?)",
-                new String[] { Long.toString(id), Long.toString(cutoff) });
+                new String[] { Long.toString(databaseId), Long.toString(cutoff) });
 
         for (Message message : messages) {
             message.destroy();
@@ -1757,7 +1757,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     public void clearAllMessages() throws MessagingException {
-        final String[] folderIdArg = new String[] { Long.toString(id) };
+        final String[] folderIdArg = new String[] { Long.toString(databaseId) };
 
         open(OPEN_MODE_RO);
 
@@ -1819,7 +1819,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                         throw new WrappedException(e);
                     }
                     db.execSQL("DELETE FROM folders WHERE id = ?", new Object[]
-                               { Long.toString(id), });
+                               { Long.toString(databaseId), });
                     return null;
                 }
             });
@@ -1862,7 +1862,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                             // make it an empty message.
                             ContentValues cv = new ContentValues();
                             cv.put("id", messageId);
-                            cv.put("folder_id", getId());
+                            cv.put("folder_id", getDatabaseId());
                             cv.put("deleted", 0);
                             cv.put("message_id", messageIdHeader);
                             cv.put("empty", 1);
@@ -2068,7 +2068,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                 try {
                     open(OPEN_MODE_RO);
                     cursor = db.rawQuery("SELECT MAX(uid) FROM messages WHERE folder_id=?", new String[] { Long.toString(
-                            id) });
+                            databaseId) });
                     if (cursor.getCount() > 0) {
                         cursor.moveToFirst();
                         return cursor.getInt(0);
@@ -2094,7 +2094,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                 try {
                     open(OPEN_MODE_RO);
                     cursor = db.rawQuery("SELECT MIN(date) FROM messages WHERE folder_id=?", new String[] { Long.toString(
-                            id) });
+                            databaseId) });
                     if (cursor.getCount() > 0) {
                         cursor.moveToFirst();
                         return cursor.getLong(0);
@@ -2154,7 +2154,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                 // Create placeholder message in 'messages' table
                 ContentValues cv = new ContentValues();
                 cv.put("message_id", reference);
-                cv.put("folder_id", id);
+                cv.put("folder_id", databaseId);
                 cv.put("empty", 1);
 
                 long newMsgId = db.insert("messages", null, cv);
@@ -2235,7 +2235,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                         StringBuilder selection = new StringBuilder();
 
                         selection.append("folder_id = ? AND UID IN (");
-                        selectionArgs.add(Long.toString(id));
+                        selectionArgs.add(Long.toString(databaseId));
 
                         int count = Math.min(messages.size() - start, LocalStore.UID_CHECK_BATCH_SIZE);
 

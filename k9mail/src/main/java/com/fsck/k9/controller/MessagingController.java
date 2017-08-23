@@ -306,7 +306,7 @@ public class MessagingController {
 
     private boolean isMessageSuppressed(LocalMessage message) {
         long messageId = message.getDatabaseId();
-        long folderId = message.getFolder().getId();
+        long folderId = message.getFolder().getDatabaseId();
 
         EmailProviderCache cache = EmailProviderCache.getCache(message.getFolder().getAccountUuid(), context);
         return cache.isMessageHidden(messageId, folderId);
@@ -2721,7 +2721,7 @@ public class MessagingController {
             fp.add(FetchProfile.Item.BODY);
 
             Timber.i("Scanning folder '%s' (%d) for messages to send",
-                    account.getOutboxFolderName(), localFolder.getId());
+                    account.getOutboxFolderName(), localFolder.getDatabaseId());
 
             Transport transport = transportProvider.getTransport(K9.app, account);
 
@@ -2836,11 +2836,11 @@ public class MessagingController {
             message.setFlag(Flag.DELETED, true);
         } else {
             LocalFolder localSentFolder = localStore.getFolder(account.getSentFolderName());
-            Timber.i("Moving sent message to folder '%s' (%d)", account.getSentFolderName(), localSentFolder.getId());
+            Timber.i("Moving sent message to folder '%s' (%d)", account.getSentFolderName(), localSentFolder.getDatabaseId());
 
             localFolder.moveMessages(Collections.singletonList(message), localSentFolder);
 
-            Timber.i("Moved sent message to folder '%s' (%d)", account.getSentFolderName(), localSentFolder.getId());
+            Timber.i("Moved sent message to folder '%s' (%d)", account.getSentFolderName(), localSentFolder.getDatabaseId());
 
             PendingCommand command = PendingAppend.create(localSentFolder.getName(), message.getUid());
             queuePendingCommand(account, command);

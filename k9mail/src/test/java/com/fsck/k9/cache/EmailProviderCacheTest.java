@@ -42,7 +42,7 @@ public class EmailProviderCacheTest {
         cache = EmailProviderCache.getCache(UUID.randomUUID().toString(), RuntimeEnvironment.application);
         when(mockLocalMessage.getDatabaseId()).thenReturn(localMessageId);
         when(mockLocalMessage.getFolder()).thenReturn(mockLocalMessageFolder);
-        when(mockLocalMessageFolder.getId()).thenReturn(localMessageFolderId);
+        when(mockLocalMessageFolder.getDatabaseId()).thenReturn(localMessageFolderId);
     }
 
     @Test
