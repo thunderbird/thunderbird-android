@@ -26,7 +26,7 @@ public class LocalBodyPart extends MimeBodyPart implements LocalPart {
     }
 
     @Override
-    public long getId() {
+    public long getPartId() {
         return messagePartId;
     }
 

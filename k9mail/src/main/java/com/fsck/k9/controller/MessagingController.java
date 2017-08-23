@@ -305,8 +305,8 @@ public class MessagingController {
     }
 
     private boolean isMessageSuppressed(LocalMessage message) {
-        long messageId = message.getId();
-        long folderId = message.getFolder().getId();
+        long messageId = message.getDatabaseId();
+        long folderId = message.getFolder().getDatabaseId();
 
         EmailProviderCache cache = EmailProviderCache.getCache(message.getFolder().getAccountUuid(), context);
         return cache.isMessageHidden(messageId, folderId);
@@ -2511,7 +2511,7 @@ public class MessagingController {
         localFolder.open(Folder.OPEN_MODE_RW);
 
         LocalMessage message = localFolder.getMessage(uid);
-        if (message == null || message.getId() == 0) {
+        if (message == null || message.getDatabaseId() == 0) {
             throw new IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid);
         }
 
@@ -2530,7 +2530,7 @@ public class MessagingController {
             throws MessagingException {
 
         if (account.isMarkMessageAsReadOnView() && !message.isSet(Flag.SEEN)) {
-            List<Long> messageIds = Collections.singletonList(message.getId());
+            List<Long> messageIds = Collections.singletonList(message.getDatabaseId());
             setFlag(account, messageIds, Flag.SEEN, true);
 
             message.setFlagInternal(Flag.SEEN, true);
@@ -2721,7 +2721,7 @@ public class MessagingController {
             fp.add(FetchProfile.Item.BODY);
 
             Timber.i("Scanning folder '%s' (%d) for messages to send",
-                    account.getOutboxFolderName(), localFolder.getId());
+                    account.getOutboxFolderName(), localFolder.getDatabaseId());
 
             Transport transport = transportProvider.getTransport(K9.app, account);
 
@@ -2836,11 +2836,11 @@ public class MessagingController {
             message.setFlag(Flag.DELETED, true);
         } else {
             LocalFolder localSentFolder = localStore.getFolder(account.getSentFolderName());
-            Timber.i("Moving sent message to folder '%s' (%d)", account.getSentFolderName(), localSentFolder.getId());
+            Timber.i("Moving sent message to folder '%s' (%d)", account.getSentFolderName(), localSentFolder.getDatabaseId());
 
             localFolder.moveMessages(Collections.singletonList(message), localSentFolder);
 
-            Timber.i("Moved sent message to folder '%s' (%d)", account.getSentFolderName(), localSentFolder.getId());
+            Timber.i("Moved sent message to folder '%s' (%d)", account.getSentFolderName(), localSentFolder.getDatabaseId());
 
             PendingCommand command = PendingAppend.create(localSentFolder.getName(), message.getUid());
             queuePendingCommand(account, command);
@@ -3996,7 +3996,7 @@ public class MessagingController {
     public long getId(Message message) {
         long id;
         if (message instanceof LocalMessage) {
-            id = message.getId();
+            id = ((LocalMessage) message).getDatabaseId();
         } else {
             Timber.w("MessagingController.getId() called without a LocalMessage");
             id = INVALID_MESSAGE_ID;

@@ -293,7 +293,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         /* We hide the subject by default for each new message, and MessageTitleView might show
          * it later by calling showSubjectLine(). */
-        boolean newMessageShown = mMessage == null || mMessage.getId() != message.getId();
+        boolean newMessageShown = mMessage == null || !mMessage.getUid().equals(message.getUid());
         if (newMessageShown) {
             mSubjectView.setVisibility(GONE);
         }

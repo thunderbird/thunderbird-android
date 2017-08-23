@@ -27,18 +27,16 @@ import timber.log.Timber;
 
 
 public class LocalMessage extends MimeMessage {
-    protected MessageReference mReference;
     private final LocalStore localStore;
 
-    private long mId;
-    private int mAttachmentCount;
-    private String mSubject;
-
-    private String mPreview = "";
-
-    private long mThreadId;
-    private long mRootId;
+    private long databaseId;
+    private long rootId;
+    private long threadId;
     private long messagePartId;
+    private MessageReference messageReference;
+    private int attachmentCount;
+    private String subject;
+    private String preview = "";
     private String mimeType;
     private PreviewType previewType;
     private boolean headerNeedsUpdating = false;
@@ -56,16 +54,16 @@ public class LocalMessage extends MimeMessage {
 
 
     void populateFromGetMessageCursor(Cursor cursor) throws MessagingException {
-        final String subject = cursor.getString(0);
+        final String subject = cursor.getString(LocalStore.MSG_INDEX_SUBJECT);
         this.setSubject(subject == null ? "" : subject);
 
-        Address[] from = Address.unpack(cursor.getString(1));
+        Address[] from = Address.unpack(cursor.getString(LocalStore.MSG_INDEX_SENDER_LIST));
         if (from.length > 0) {
             this.setFrom(from[0]);
         }
-        this.setInternalSentDate(new Date(cursor.getLong(2)));
-        this.setUid(cursor.getString(3));
-        String flagList = cursor.getString(4);
+        this.setInternalSentDate(new Date(cursor.getLong(LocalStore.MSG_INDEX_DATE)));
+        this.setUid(cursor.getString(LocalStore.MSG_INDEX_UID));
+        String flagList = cursor.getString(LocalStore.MSG_INDEX_FLAGS);
         if (flagList != null && flagList.length() > 0) {
             String[] flags = flagList.split(",");
 
@@ -81,39 +79,39 @@ public class LocalMessage extends MimeMessage {
                 }
             }
         }
-        this.mId = cursor.getLong(5);
-        this.setRecipients(RecipientType.TO, Address.unpack(cursor.getString(6)));
-        this.setRecipients(RecipientType.CC, Address.unpack(cursor.getString(7)));
-        this.setRecipients(RecipientType.BCC, Address.unpack(cursor.getString(8)));
-        this.setReplyTo(Address.unpack(cursor.getString(9)));
+        this.databaseId = cursor.getLong(LocalStore.MSG_INDEX_ID);
+        this.setRecipients(RecipientType.TO, Address.unpack(cursor.getString(LocalStore.MSG_INDEX_TO)));
+        this.setRecipients(RecipientType.CC, Address.unpack(cursor.getString(LocalStore.MSG_INDEX_CC)));
+        this.setRecipients(RecipientType.BCC, Address.unpack(cursor.getString(LocalStore.MSG_INDEX_BCC)));
+        this.setReplyTo(Address.unpack(cursor.getString(LocalStore.MSG_INDEX_REPLY_TO)));
 
-        this.mAttachmentCount = cursor.getInt(10);
-        this.setInternalDate(new Date(cursor.getLong(11)));
-        this.setMessageId(cursor.getString(12));
+        this.attachmentCount = cursor.getInt(LocalStore.MSG_INDEX_ATTACHMENT_COUNT);
+        this.setInternalDate(new Date(cursor.getLong(LocalStore.MSG_INDEX_INTERNAL_DATE)));
+        this.setMessageId(cursor.getString(LocalStore.MSG_INDEX_MESSAGE_ID_HEADER));
 
-        String previewTypeString = cursor.getString(24);
+        String previewTypeString = cursor.getString(LocalStore.MSG_INDEX_PREVIEW_TYPE);
         DatabasePreviewType databasePreviewType = DatabasePreviewType.fromDatabaseValue(previewTypeString);
         previewType = databasePreviewType.getPreviewType();
         if (previewType == PreviewType.TEXT) {
-            mPreview = cursor.getString(14);
+            preview = cursor.getString(LocalStore.MSG_INDEX_PREVIEW);
         } else {
-            mPreview = "";
+            preview = "";
         }
 
         if (this.mFolder == null) {
-            LocalFolder f = new LocalFolder(this.localStore, cursor.getInt(13));
+            LocalFolder f = new LocalFolder(this.localStore, cursor.getInt(LocalStore.MSG_INDEX_FOLDER_ID));
             f.open(LocalFolder.OPEN_MODE_RW);
             this.mFolder = f;
         }
 
-        mThreadId = (cursor.isNull(15)) ? -1 : cursor.getLong(15);
-        mRootId = (cursor.isNull(16)) ? -1 : cursor.getLong(16);
+        threadId = (cursor.isNull(LocalStore.MSG_INDEX_THREAD_ID)) ? -1 : cursor.getLong(LocalStore.MSG_INDEX_THREAD_ID);
+        rootId = (cursor.isNull(LocalStore.MSG_INDEX_THREAD_ROOT_ID)) ? -1 : cursor.getLong(LocalStore.MSG_INDEX_THREAD_ROOT_ID);
 
-        boolean deleted = (cursor.getInt(17) == 1);
-        boolean read = (cursor.getInt(18) == 1);
-        boolean flagged = (cursor.getInt(19) == 1);
-        boolean answered = (cursor.getInt(20) == 1);
-        boolean forwarded = (cursor.getInt(21) == 1);
+        boolean deleted = (cursor.getInt(LocalStore.MSG_INDEX_FLAG_DELETED) == 1);
+        boolean read = (cursor.getInt(LocalStore.MSG_INDEX_FLAG_READ) == 1);
+        boolean flagged = (cursor.getInt(LocalStore.MSG_INDEX_FLAG_FLAGGED) == 1);
+        boolean answered = (cursor.getInt(LocalStore.MSG_INDEX_FLAG_ANSWERED) == 1);
+        boolean forwarded = (cursor.getInt(LocalStore.MSG_INDEX_FLAG_FORWARDED) == 1);
 
         setFlagInternal(Flag.DELETED, deleted);
         setFlagInternal(Flag.SEEN, read);
@@ -121,10 +119,10 @@ public class LocalMessage extends MimeMessage {
         setFlagInternal(Flag.ANSWERED, answered);
         setFlagInternal(Flag.FORWARDED, forwarded);
 
-        setMessagePartId(cursor.getLong(22));
-        mimeType = cursor.getString(23);
+        setMessagePartId(cursor.getLong(LocalStore.MSG_INDEX_MESSAGE_PART_ID));
+        mimeType = cursor.getString(LocalStore.MSG_INDEX_MIME_TYPE);
 
-        byte[] header = cursor.getBlob(25);
+        byte[] header = cursor.getBlob(LocalStore.MSG_INDEX_HEADER_DATA);
         if (header != null) {
             MessageHeaderParser.parse(this, new ByteArrayInputStream(header));
         } else {
@@ -157,18 +155,18 @@ public class LocalMessage extends MimeMessage {
     }
 
     public String getPreview() {
-        return mPreview;
+        return preview;
     }
 
     @Override
     public String getSubject() {
-        return mSubject;
+        return subject;
     }
 
 
     @Override
     public void setSubject(String subject) {
-        mSubject = subject;
+        this.subject = subject;
         headerNeedsUpdating = true;
     }
 
@@ -182,16 +180,16 @@ public class LocalMessage extends MimeMessage {
     @Override
     public void setUid(String uid) {
         super.setUid(uid);
-        this.mReference = null;
+        this.messageReference = null;
     }
 
     @Override
     public boolean hasAttachments() {
-        return (mAttachmentCount > 0);
+        return (attachmentCount > 0);
     }
 
-    public int getAttachmentCount() {
-        return mAttachmentCount;
+    int getAttachmentCount() {
+        return attachmentCount;
     }
 
     @Override
@@ -248,16 +246,15 @@ public class LocalMessage extends MimeMessage {
         super.setFlag(flag, set);
     }
 
-    @Override
-    public long getId() {
-        return mId;
+    public long getDatabaseId() {
+        return databaseId;
     }
 
     @Override
     public void setFlag(final Flag flag, final boolean set) throws MessagingException {
 
         try {
-            this.localStore.database.execute(true, new DbCallback<Void>() {
+            this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
@@ -273,13 +270,13 @@ public class LocalMessage extends MimeMessage {
                      * Set the flags on the message.
                      */
                     ContentValues cv = new ContentValues();
-                    cv.put("flags", LocalMessage.this.localStore.serializeFlags(getFlags()));
+                    cv.put("flags", LocalStore.serializeFlags(getFlags()));
                     cv.put("read", isSet(Flag.SEEN) ? 1 : 0);
                     cv.put("flagged", isSet(Flag.FLAGGED) ? 1 : 0);
                     cv.put("answered", isSet(Flag.ANSWERED) ? 1 : 0);
                     cv.put("forwarded", isSet(Flag.FORWARDED) ? 1 : 0);
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(mId) });
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
 
                     return null;
                 }
@@ -297,7 +294,7 @@ public class LocalMessage extends MimeMessage {
      */
     private void delete() throws MessagingException {
         try {
-            localStore.database.execute(true, new DbCallback<Void>() {
+            localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     ContentValues cv = new ContentValues();
@@ -313,7 +310,7 @@ public class LocalMessage extends MimeMessage {
                     cv.putNull("reply_to_list");
                     cv.putNull("message_part_id");
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(mId) });
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
 
                     try {
                         ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
@@ -321,7 +318,7 @@ public class LocalMessage extends MimeMessage {
                         throw new WrappedException(e);
                     }
 
-                    getFolder().deleteFulltextIndexEntry(db, mId);
+                    getFolder().deleteFulltextIndexEntry(db, databaseId);
 
                     return null;
                 }
@@ -339,13 +336,13 @@ public class LocalMessage extends MimeMessage {
         }
 
         try {
-            localStore.database.execute(true, new DbCallback<Void>() {
+            localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, MessagingException {
                     ContentValues cv = new ContentValues();
                     cv.putNull("message_part_id");
 
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(mId) });
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
 
                     try {
                         ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
@@ -381,13 +378,13 @@ public class LocalMessage extends MimeMessage {
         LocalMessage message = new LocalMessage(localStore);
         super.copy(message);
 
-        message.mReference = mReference;
-        message.mId = mId;
-        message.mAttachmentCount = mAttachmentCount;
-        message.mSubject = mSubject;
-        message.mPreview = mPreview;
-        message.mThreadId = mThreadId;
-        message.mRootId = mRootId;
+        message.messageReference = messageReference;
+        message.databaseId = databaseId;
+        message.attachmentCount = attachmentCount;
+        message.subject = subject;
+        message.preview = preview;
+        message.threadId = threadId;
+        message.rootId = rootId;
         message.messagePartId = messagePartId;
         message.mimeType = mimeType;
         message.previewType = previewType;
@@ -397,11 +394,11 @@ public class LocalMessage extends MimeMessage {
     }
 
     public long getThreadId() {
-        return mThreadId;
+        return threadId;
     }
 
     public long getRootId() {
-        return mRootId;
+        return rootId;
     }
 
     public Account getAccount() {
@@ -409,10 +406,10 @@ public class LocalMessage extends MimeMessage {
     }
 
     public MessageReference makeMessageReference() {
-        if (mReference == null) {
-            mReference = new MessageReference(getFolder().getAccountUuid(), getFolder().getName(), mUid, null);
+        if (messageReference == null) {
+            messageReference = new MessageReference(getFolder().getAccountUuid(), getFolder().getName(), mUid, null);
         }
-        return mReference;
+        return messageReference;
     }
 
     @Override
@@ -434,7 +431,7 @@ public class LocalMessage extends MimeMessage {
     }
 
     private void updateHeader() {
-        super.setSubject(mSubject);
+        super.setSubject(subject);
         super.setReplyTo(mReplyTo);
         super.setRecipients(RecipientType.TO, mTo);
         super.setRecipients(RecipientType.CC, mCc);
@@ -478,9 +475,5 @@ public class LocalMessage extends MimeMessage {
 
     private String getAccountUuid() {
         return getAccount().getUuid();
-    }
-
-    public boolean isBodyMissing() {
-        return getBody() == null;
     }
 }

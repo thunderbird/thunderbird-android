@@ -689,11 +689,6 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public long getId() {
-        return Long.parseLong(mUid); //or maybe .mMessageId?
-    }
-
-    @Override
     public boolean hasAttachments() {
         return false;
     }
