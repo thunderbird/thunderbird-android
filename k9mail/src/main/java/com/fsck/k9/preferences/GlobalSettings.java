@@ -290,6 +290,15 @@ public class GlobalSettings {
         ));
         s.put("openPgpSupportSignOnly", Settings.versions(
                 new V(47, new BooleanSetting(false))
+            ));
+        s.put("useSocksProxy", Settings.versions(
+                new V(41, new BooleanSetting(true))
+        ));
+        s.put("socksProxyHost", Settings.versions(
+                new V(41, new StringSetting("127.0.0.1"))
+        ));
+        s.put("socksProxyPort", Settings.versions(
+                new V(41, new IntegerRangeSetting(0, 65535, 12345))
         ));
         s.put("fontSizeMessageViewBCC", Settings.versions(
                 new V(48, new FontSizeSetting(FontSizes.FONT_DEFAULT))

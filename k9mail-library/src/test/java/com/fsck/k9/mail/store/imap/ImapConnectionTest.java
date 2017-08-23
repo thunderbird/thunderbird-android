@@ -16,6 +16,7 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ProxySettings;
 import com.fsck.k9.mail.XOAuth2ChallengeParserTest;
 import com.fsck.k9.mail.helpers.TestTrustedSocketFactory;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
@@ -620,7 +621,7 @@ public class ImapConnectionTest {
         settings.setHost("127.1.2.3");
         settings.setPort(143);
         ImapConnection imapConnection = createImapConnection(
-                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+                settings, new ProxySettings(false, "127.0.0.1", 12345), socketFactory, connectivityManager, oAuth2TokenProvider);
 
         try {
             imapConnection.open();
@@ -636,7 +637,7 @@ public class ImapConnectionTest {
         settings.setHost("host name");
         settings.setPort(143);
         ImapConnection imapConnection = createImapConnection(
-                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+                settings, new ProxySettings(false, "127.0.0.1", 12345), socketFactory, connectivityManager, oAuth2TokenProvider);
 
         try {
             imapConnection.open();
@@ -803,7 +804,7 @@ public class ImapConnectionTest {
     @Test
     public void isConnected_withoutPreviousOpen_shouldReturnFalse() throws Exception {
         ImapConnection imapConnection = createImapConnection(
-                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+                settings, new ProxySettings(false, "127.0.0.1", 12345), socketFactory, connectivityManager, oAuth2TokenProvider);
 
         boolean result = imapConnection.isConnected();
 
@@ -840,7 +841,7 @@ public class ImapConnectionTest {
     @Test
     public void close_withoutOpen_shouldNotThrow() throws Exception {
         ImapConnection imapConnection = createImapConnection(
-                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+                settings, new ProxySettings(false, "127.0.0.1", 12345), socketFactory, connectivityManager, oAuth2TokenProvider);
 
         imapConnection.close();
     }
@@ -935,9 +936,9 @@ public class ImapConnectionTest {
         server.verifyInteractionCompleted();
     }
 
-    private ImapConnection createImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oAuth2TokenProvider) {
-        return new ImapConnection(settings, socketFactory, connectivityManager, oAuth2TokenProvider,
+    private ImapConnection createImapConnection(ImapSettings settings, ProxySettings proxySettings, TrustedSocketFactory socketFactory,
+                                                ConnectivityManager connectivityManager, OAuth2TokenProvider oAuth2TokenProvider) {
+        return new ImapConnection(settings, proxySettings, socketFactory, connectivityManager, oAuth2TokenProvider,
                 SOCKET_CONNECT_TIMEOUT, SOCKET_READ_TIMEOUT);
     }
 
@@ -945,7 +946,7 @@ public class ImapConnectionTest {
         server.start();
         settings.setHost(server.getHost());
         settings.setPort(server.getPort());
-        return createImapConnection(settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+        return createImapConnection(settings, new ProxySettings(false, "127.0.0.1", 12345), socketFactory, connectivityManager, oAuth2TokenProvider);
     }
 
     private ImapConnection simpleOpen(MockImapServer server) throws Exception {

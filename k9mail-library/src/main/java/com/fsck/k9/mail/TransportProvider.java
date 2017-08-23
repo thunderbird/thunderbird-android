@@ -16,12 +16,12 @@ public class TransportProvider {
         return transportProvider;
     }
 
-    public synchronized Transport getTransport(Context context, StoreConfig storeConfig)
+    public synchronized Transport getTransport(Context context, StoreConfig storeConfig, ProxySettings proxySettings)
             throws MessagingException {
         String uri = storeConfig.getTransportUri();
         if (uri.startsWith("smtp")) {
             OAuth2TokenProvider oauth2TokenProvider = null;
-            return new SmtpTransport(storeConfig, new DefaultTrustedSocketFactory(context),
+            return new SmtpTransport(storeConfig, new DefaultTrustedSocketFactory(context, proxySettings),
                     oauth2TokenProvider);
         } else if (uri.startsWith("webdav")) {
             return new WebDavTransport(storeConfig);

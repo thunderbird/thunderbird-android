@@ -247,7 +247,6 @@ public class SmtpTransport extends Transport {
                     SocketAddress socketAddress = new InetSocketAddress(addresses[i], mPort);
                     if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
                         mSocket = mTrustedSocketFactory.createSocket(null, mHost, mPort, mClientCertificateAlias);
-                        mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
                         secureConnection = true;
                     } else {
                         mSocket = new Socket();

@@ -22,6 +22,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
+import com.fsck.k9.mail.ProxySettings;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.ServerSettings;
@@ -45,6 +46,7 @@ public class ImapStore extends RemoteStore {
 
     private String host;
     private int port;
+    private ProxySettings proxySettings;
     private String username;
     private String password;
     private String clientCertificateAlias;
@@ -74,7 +76,7 @@ public class ImapStore extends RemoteStore {
     }
 
     public ImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) throws MessagingException {
+                     ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider, ProxySettings proxySettings) throws MessagingException {
         super(storeConfig, trustedSocketFactory);
 
         ImapStoreSettings settings;
@@ -90,6 +92,8 @@ public class ImapStore extends RemoteStore {
         connectionSecurity = settings.connectionSecurity;
         this.connectivityManager = connectivityManager;
         this.oauthTokenProvider = oauthTokenProvider;
+
+        this.proxySettings = proxySettings;
 
         authType = settings.authenticationType;
         username = settings.username;
@@ -344,6 +348,7 @@ public class ImapStore extends RemoteStore {
     ImapConnection createImapConnection() {
         return new ImapConnection(
                 new StoreImapSettings(),
+                proxySettings,
                 mTrustedSocketFactory,
                 connectivityManager,
                 oauthTokenProvider);

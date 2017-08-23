@@ -2,6 +2,7 @@ package com.fsck.k9.mail.ssl;
 
 
 import java.io.IOException;
+import java.net.Proxy.Type;
 import java.net.Socket;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -20,7 +21,13 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
+
 import timber.log.Timber;
+
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import com.fsck.k9.mail.ProxySettings;
+import static com.fsck.k9.mail.store.RemoteStore.SOCKET_CONNECT_TIMEOUT;
 
 
 /**
@@ -128,8 +135,9 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
 
     }
 
-    public DefaultTrustedSocketFactory(Context context) {
+    public DefaultTrustedSocketFactory(Context context, ProxySettings proxySettings) {
         this.context = context;
+        this.proxySettings = proxySettings;
     }
 
     private static boolean hasWeakSslImplementation() {
@@ -177,6 +185,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     }
 
     private Context context;
+    private ProxySettings proxySettings;
 
     public Socket createSocket(Socket socket, String host, int port, String clientCertificateAlias)
             throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException {
@@ -192,7 +201,18 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         SSLSocketFactory socketFactory = sslContext.getSocketFactory();
         Socket trustedSocket;
         if (socket == null) {
-            trustedSocket = socketFactory.createSocket();
+            if (proxySettings.enabled) {
+                InetSocketAddress proxyAddress = new InetSocketAddress(proxySettings.host, proxySettings.port);
+                Proxy proxy = new Proxy(Type.SOCKS, proxyAddress);
+
+                Socket underlying = new Socket(proxy);
+                InetSocketAddress serverAddress = new InetSocketAddress(host, port);
+                underlying.connect(serverAddress, SOCKET_CONNECT_TIMEOUT);
+
+                trustedSocket = socketFactory.createSocket(underlying, proxySettings.host, proxySettings.port, true);
+            } else {
+                trustedSocket = socketFactory.createSocket();
+            }
         } else {
             trustedSocket = socketFactory.createSocket(socket, host, port, true);
         }
@@ -202,6 +222,11 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         hardenSocket(sslSocket);
 
         setSniHost(socketFactory, sslSocket, host);
+
+        if (!proxySettings.enabled && socket == null) {
+            InetSocketAddress serverAddress = new InetSocketAddress(host, port);
+            trustedSocket.connect(serverAddress, SOCKET_CONNECT_TIMEOUT);
+        }
 
         return trustedSocket;
     }

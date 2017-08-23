@@ -349,6 +349,30 @@
             android:entryValues="@array/background_ops_values"
             android:dialogTitle="@string/background_ops_label" />
 
+        <CheckBoxPreference
+            android:key="socks_proxy"
+            android:persistent="false"
+            android:title="@string/socks_proxy_label"
+            android:summary="@string/socks_proxy_description"
+            />
+
+        <EditTextPreference
+            android:persistent="false"
+            android:key="socks_proxy_host"
+            android:dependency="socks_proxy"
+            android:singleLine="true"
+            android:title="@string/socks_proxy_host_label"
+            android:summary=""
+            android:dialogTitle="@string/socks_proxy_host_description" />
+
+        <EditTextPreference
+            android:persistent="false"
+            android:key="socks_proxy_port"
+            android:dependency="socks_proxy"
+            android:singleLine="true"
+            android:title="@string/socks_proxy_port_label"
+            android:summary=""
+            android:dialogTitle="@string/socks_proxy_port_description" />
     </PreferenceScreen>
 
     <PreferenceScreen

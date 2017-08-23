@@ -65,6 +65,10 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ProxySettings;
+import com.fsck.k9.mail.power.TracingPowerManager;
+import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.BodyFactory;
@@ -2723,7 +2727,7 @@ public class MessagingController {
             Timber.i("Scanning folder '%s' (%d) for messages to send",
                     account.getOutboxFolderName(), localFolder.getDatabaseId());
 
-            Transport transport = transportProvider.getTransport(K9.app, account);
+            Transport transport = transportProvider.getTransport(K9.app, account, account.getProxySettings());
 
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {

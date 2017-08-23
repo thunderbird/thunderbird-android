@@ -267,6 +267,9 @@ public class K9 extends Application {
     private static int sPgpInlineDialogCounter;
     private static int sPgpSignOnlyDialogCounter;
 
+    private static boolean sUseSocksProxy = false;
+    private static String sSocksProxyHost = "";
+    private static int sSocksProxyPort = 0;
 
     /**
      * @see #areDatabasesUpToDate()
@@ -522,6 +525,10 @@ public class K9 extends Application {
 
         editor.putInt("pgpInlineDialogCounter", sPgpInlineDialogCounter);
         editor.putInt("pgpSignOnlyDialogCounter", sPgpSignOnlyDialogCounter);
+
+        editor.putBoolean("useSocksProxy", sUseSocksProxy);
+        editor.putString("socksProxyHost", sSocksProxyHost);
+        editor.putInt("useSocksPort", sSocksProxyPort);
 
         fontSizes.save(editor);
     }
@@ -789,6 +796,10 @@ public class K9 extends Application {
 
         sPgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0);
         sPgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0);
+
+        sUseSocksProxy = storage.getBoolean("useSocksProxy", false);
+        sSocksProxyHost = storage.getString("socksProxyHost", "127.0.0.1");
+        sSocksProxyPort = storage.getInt("socksProxyPort", 12345);
 
         int themeValue = storage.getInt("theme", Theme.LIGHT.ordinal());
         // We used to save the resource ID of the theme. So convert that to the new format if
@@ -1390,10 +1401,10 @@ public class K9 extends Application {
     public static void setMessageViewSpamActionVisible(boolean visible) {
         sMessageViewSpamActionVisible = visible;
     }
-
     public static int getPgpInlineDialogCounter() {
         return sPgpInlineDialogCounter;
     }
+
 
     public static void setPgpInlineDialogCounter(int pgpInlineDialogCounter) {
         K9.sPgpInlineDialogCounter = pgpInlineDialogCounter;
@@ -1405,6 +1416,30 @@ public class K9 extends Application {
 
     public static void setPgpSignOnlyDialogCounter(int pgpSignOnlyDialogCounter) {
         K9.sPgpSignOnlyDialogCounter = pgpSignOnlyDialogCounter;
+    }
+
+    public static boolean isSocksProxyEnabled() {
+        return sUseSocksProxy;
+    }
+
+    public static void setUseSocksProxy(boolean useSocksProxy) {
+        sUseSocksProxy = useSocksProxy;
+    }
+
+    public static String getSocksProxyHost() {
+        return sSocksProxyHost;
+    }
+
+    public static void setSocksProxyHost(String socksProxyHost) {
+        sSocksProxyHost = socksProxyHost;
+    }
+
+    public static int getSocksProxyPort() {
+        return sSocksProxyPort;
+    }
+
+    public static void setSocksProxyPort(int socksProxyPort) {
+        sSocksProxyPort = socksProxyPort;
     }
 
     /**
