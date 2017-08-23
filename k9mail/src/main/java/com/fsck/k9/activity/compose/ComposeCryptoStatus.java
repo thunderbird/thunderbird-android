@@ -130,8 +130,13 @@ public class ComposeCryptoStatus {
     }
 
     public boolean isEncryptionEnabled() {
-        return cryptoMode == CryptoMode.CHOICE_ENABLED ||
-                canEncryptAndIsMutual() && cryptoMode != CryptoMode.CHOICE_DISABLED;
+        if (cryptoProviderState == CryptoProviderState.UNCONFIGURED) {
+            return false;
+        }
+
+        boolean isExplicitlyEnabled = (cryptoMode == CryptoMode.CHOICE_ENABLED);
+        boolean isMutualAndNotDisabled = (cryptoMode != CryptoMode.CHOICE_DISABLED && canEncryptAndIsMutual());
+        return isExplicitlyEnabled || isMutualAndNotDisabled;
     }
 
     boolean isSignOnly() {

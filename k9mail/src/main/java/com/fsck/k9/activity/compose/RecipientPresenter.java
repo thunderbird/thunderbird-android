@@ -959,7 +959,7 @@ public class RecipientPresenter implements PermissionPingCallback {
 
     public boolean shouldSaveRemotely() {
         // TODO more appropriate logic?
-        return cryptoProviderState == CryptoProviderState.UNCONFIGURED;
+        return cachedCryptoStatus == null || !cachedCryptoStatus.isEncryptionEnabled();
     }
 
     public enum CryptoProviderState {
