@@ -32,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
@@ -50,7 +51,9 @@ import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -1026,13 +1029,42 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void expunge_shouldIssueExpungeCommand() throws Exception {
+    public void expunge_withUidPlusAvailable_shouldIssueUidExpungeCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
+        when(imapConnection.isUidPlusCapable()).thenReturn(true);
 
-        folder.expunge();
+        folder.expunge(singletonList(1L));
 
-        verify(imapConnection).executeSimpleCommand("EXPUNGE");
+        verify(imapConnection).executeSimpleCommand("UID EXPUNGE 1");
+    }
+
+    @Test
+    public void expunge_withUidPlusNotAvailable_shouldMimicUidExpunge() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        when(imapConnection.isUidPlusCapable()).thenReturn(false);
+        List<ImapResponse> searchResponse = singletonList(createImapResponse("* SEARCH 19"));
+        when(imapConnection.executeSimpleCommand("UID SEARCH NOT UID 21 DELETED")).thenReturn(searchResponse);
+
+        folder.expunge(singletonList(21L));
+
+        InOrder inOrder = inOrder(imapConnection);
+        inOrder.verify(imapConnection).executeSimpleCommand("UID SEARCH NOT UID 21 DELETED");
+        inOrder.verify(imapConnection).executeSimpleCommand("UID STORE 19 -FLAGS.SILENT (\\Deleted)");
+        inOrder.verify(imapConnection).executeSimpleCommand("EXPUNGE");
+        inOrder.verify(imapConnection).executeSimpleCommand("UID STORE 19 +FLAGS.SILENT (\\Deleted)");
+    }
+
+    @Test
+    public void expunge_withNoKnownDeletedUids_shouldNotSendExpungeCommand() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        when(imapConnection.isUidPlusCapable()).thenReturn(false);
+
+        folder.expunge(Collections.<Long>emptyList());
+
+        verify(imapConnection, never()).executeSimpleCommand("EXPUNGE");
     }
 
     @Test

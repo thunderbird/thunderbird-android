@@ -18,4 +18,5 @@ public class Commands {
     public static final String UID_STORE = "UID STORE";
     public static final String UID_FETCH = "UID FETCH";
     public static final String UID_COPY = "UID COPY";
+    public static final String UID_EXPUNGE = "UID EXPUNGE";
 }
