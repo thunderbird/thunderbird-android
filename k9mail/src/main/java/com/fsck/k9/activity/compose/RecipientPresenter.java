@@ -896,6 +896,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
         if (enableEncryption) {
             if (!cachedCryptoStatus.canEncrypt()) {
+                onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
                 recipientMvpView.showOpenPgpEnabledErrorDialog(true);
             } else if (cachedCryptoStatus.canEncryptAndIsMutual()) {
                 onCryptoModeChanged(CryptoMode.NO_CHOICE);

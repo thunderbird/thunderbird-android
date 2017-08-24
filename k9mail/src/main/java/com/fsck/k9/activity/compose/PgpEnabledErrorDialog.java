@@ -42,33 +42,25 @@ public class PgpEnabledErrorDialog extends HighlightDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setView(view);
 
-        if (isGotItDialog) {
-            builder.setNeutralButton(R.string.openpgp_enabled_error_gotit, new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+        builder.setNegativeButton(isGotItDialog ? R.string.openpgp_enabled_error_gotit :
+                R.string.openpgp_enabled_error_back, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(R.string.openpgp_enabled_error_disable, new OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Activity activity = getActivity();
+                if (activity == null) {
+                    return;
                 }
-            });
-        } else {
-            builder.setNegativeButton(R.string.openpgp_enabled_error_back, new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            builder.setPositiveButton(R.string.openpgp_enabled_error_disable, new OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Activity activity = getActivity();
-                    if (activity == null) {
-                        return;
-                    }
 
-                    ((OnOpenPgpDisableListener) activity).onOpenPgpClickDisable();
-                    dialog.dismiss();
-                }
-            });
-        }
+                ((OnOpenPgpDisableListener) activity).onOpenPgpClickDisable();
+                dialog.dismiss();
+            }
+        });
 
         return builder.create();
     }

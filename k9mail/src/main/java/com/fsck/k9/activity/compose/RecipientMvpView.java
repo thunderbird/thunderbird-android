@@ -418,13 +418,13 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         dialog.show(activity.getFragmentManager(), "openpgp_signonly");
     }
 
-    public void showOpenPgpEnabledErrorDialog(boolean isGotItDialog) {
-        PgpEnabledErrorDialog dialog = PgpEnabledErrorDialog.newInstance(isGotItDialog, R.id.crypto_status);
+    public void showOpenPgpEnabledErrorDialog(final boolean isGotItDialog) {
+        PgpEnabledErrorDialog dialog = PgpEnabledErrorDialog.newInstance(isGotItDialog, R.id.crypto_status_anchor);
         dialog.show(activity.getFragmentManager(), "openpgp_error");
     }
 
     public void showOpenPgpEncryptExplanationDialog() {
-        PgpEncryptDescriptionDialog dialog = PgpEncryptDescriptionDialog.newInstance(R.id.crypto_status);
+        PgpEncryptDescriptionDialog dialog = PgpEncryptDescriptionDialog.newInstance(R.id.crypto_status_anchor);
         dialog.show(activity.getFragmentManager(), "openpgp_description");
     }
 
