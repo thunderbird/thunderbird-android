@@ -296,35 +296,42 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     guessedDomainForMailPrefix = "mail." + domain;
                 }
 
-                testIncoming(guessedDomainForMailPrefix);
+                testIncoming(guessedDomainForMailPrefix, false);
 
-                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.STARTTLS_REQUIRED);
+                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.STARTTLS_REQUIRED, false);
 
-                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.SSL_TLS_REQUIRED);
+                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.SSL_TLS_REQUIRED, false);
 
-                testIncoming("imap." + domain);
+                testIncoming("imap." + domain, false);
 
-                testOutgoing("smtp." + domain, ConnectionSecurity.STARTTLS_REQUIRED);
+                testOutgoing("smtp." + domain, ConnectionSecurity.STARTTLS_REQUIRED, false);
 
-                testOutgoing("smtp." + domain, ConnectionSecurity.SSL_TLS_REQUIRED);
+                testOutgoing("smtp." + domain, ConnectionSecurity.SSL_TLS_REQUIRED, false);
             }
 
-            private void testIncoming(String domain) {
+            private void testIncoming(String domain, boolean useLocalPart) {
                 if (!incomingReady) {
                     try {
-                        accountConfig.setStoreUri(getDefaultStoreURI(email, password, domain).toString());
+                        accountConfig.setStoreUri(getDefaultStoreURI(
+                                useLocalPart ? EmailHelper.getLocalPartFromEmailAddress(email) : email,
+                                password, domain).toString());
                         accountConfig.getRemoteStore().checkSettings();
                         incomingReady = true;
+                    } catch (AuthenticationFailedException afe) {
+                        if (!useLocalPart) {
+                            testIncoming(domain, true);
+                        }
                     } catch (URISyntaxException | MessagingException ignored) {
                     }
                 }
             }
 
-            private void testOutgoing(String domain, ConnectionSecurity connectionSecurity) {
+            private void testOutgoing(String domain, ConnectionSecurity connectionSecurity, boolean useLocalPart) {
                 if (!outgoingReady) {
                     try {
-                        accountConfig.setTransportUri(getDefaultTransportURI(email, password, domain,
-                                connectionSecurity).toString());
+                        accountConfig.setTransportUri(getDefaultTransportURI(
+                                useLocalPart ? EmailHelper.getLocalPartFromEmailAddress(email) : email,
+                                password, domain, connectionSecurity).toString());
                         Transport transport = TransportProvider.getInstance().getTransport(context, accountConfig,
                                 Globals.getOAuth2TokenProvider());
                         transport.close();
@@ -334,6 +341,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                             transport.close();
                         }
                         outgoingReady = true;
+                    } catch (AuthenticationFailedException afe) {
+                        if (!useLocalPart) {
+                            testOutgoing(domain, connectionSecurity, true);
+                        }
                     } catch (URISyntaxException | MessagingException ignored) {
                     }
                 }
