@@ -35,6 +35,7 @@ import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.store.imap.selectedstate.command.UidCopyCommand;
+import com.fsck.k9.mail.store.imap.selectedstate.command.UidExpungeCommand;
 import com.fsck.k9.mail.store.imap.selectedstate.command.UidFetchCommand;
 import com.fsck.k9.mail.store.imap.selectedstate.command.UidSearchCommand;
 import com.fsck.k9.mail.store.imap.selectedstate.command.UidStoreCommand;
@@ -1196,10 +1197,26 @@ public class ImapFolder extends Folder<ImapMessage> {
         checkOpen();
 
         try {
-            executeSimpleCommand("EXPUNGE");
+            if (connection.isUidPlusCapable()) {
+                UidExpungeCommand uidExpungeCommand = new UidExpungeCommand.Builder()
+                        .idSet(getKnownUids())
+                        .build();
+                uidExpungeCommand.execute(connection, this);
+            } else {
+                executeSimpleCommand("EXPUNGE");
+            }
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         }
+    }
+
+    private List<Long> getKnownUids() throws MessagingException {
+        long end = messageCount;
+        long start = end - store.getStoreConfig().getDisplayCount() + 1;
+        UidSearchCommand searchCommand = new UidSearchCommand.Builder()
+                .addIdGroup(start, end)
+                .build();
+        return searchCommand.execute(connection, this).getNumbers();
     }
 
     @Override

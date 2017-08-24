@@ -695,6 +695,10 @@ public class ImapConnection {
         return capabilities.contains(Capabilities.IDLE);
     }
 
+    boolean isUidPlusCapable() {
+        return capabilities.contains(Capabilities.UID_PLUS);
+    }
+
     public void close() {
         open = false;
         stacktraceForClose = new Exception();
