@@ -610,20 +610,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         @Override
         protected Boolean doInBackground(CheckDirection... params) {
             try {
-                /*
-                 * This task could be interrupted at any point, but network operations can block,
-                 * so relying on InterruptedException is not enough. Instead, check after
-                 * each potentially long-running operation.
-                 */
-                if (canceled) {
-                    return false;
-                }
-
                 checkSettings();
-
-                if (canceled) {
-                    return false;
-                }
 
                 return true;
 
@@ -655,6 +642,15 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         @Override
         protected void onPostExecute(Boolean bool) {
             super.onPostExecute(bool);
+
+            /*
+             * This task could be interrupted at any point, but network operations can block,
+             * so relying on InterruptedException is not enough. Instead, check after
+             * each potentially long-running operation.
+             */
+            if (canceled) {
+                return;
+            }
 
             if (bool && callback != null) {
                 callback.onCheckSuccess();
