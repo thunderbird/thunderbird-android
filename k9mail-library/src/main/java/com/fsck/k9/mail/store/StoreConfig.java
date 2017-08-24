@@ -9,6 +9,7 @@ public interface StoreConfig {
 
     boolean subscribedFoldersOnly();
     boolean useCompression(NetworkType type);
+    boolean shouldIdentifyClient();
 
     String getInboxFolderName();
     String getOutboxFolderName();

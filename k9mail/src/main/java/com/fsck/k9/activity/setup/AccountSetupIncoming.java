@@ -81,6 +81,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private CheckBox mCompressionWifi;
     private CheckBox mCompressionOther;
     private CheckBox mSubscribedFoldersOnly;
+    private CheckBox mShouldIdentifyClient;
     private AuthTypeAdapter mAuthTypeAdapter;
     private ConnectionSecurity[] mConnectionSecurityChoices = ConnectionSecurity.values();
 
@@ -127,6 +128,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mCompressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
         mCompressionOther = (CheckBox)findViewById(R.id.compression_other);
         mSubscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
+        mShouldIdentifyClient = (CheckBox)findViewById(R.id.should_identify_client);
 
         mNextButton.setOnClickListener(this);
 
@@ -200,6 +202,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
+                mShouldIdentifyClient.setVisibility(View.GONE);
             } else if (Type.IMAP == settings.type) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
 
@@ -231,6 +234,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
+                mShouldIdentifyClient.setVisibility(View.GONE);
 
                 WebDavStoreSettings webDavSettings = (WebDavStoreSettings) settings;
 
@@ -293,6 +297,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mCurrentPortViewSetting = mPortView.getText().toString();
 
             mSubscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
+            mShouldIdentifyClient.setChecked(mAccount.shouldIdentifyClient());
         } catch (Exception e) {
             failure(e);
         }
@@ -591,6 +596,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAccount.setCompression(NetworkType.WIFI, mCompressionWifi.isChecked());
             mAccount.setCompression(NetworkType.OTHER, mCompressionOther.isChecked());
             mAccount.setSubscribedFoldersOnly(mSubscribedFoldersOnly.isChecked());
+            mAccount.setShouldIdentifyClient(mShouldIdentifyClient.isChecked());
 
             AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
         } catch (Exception e) {

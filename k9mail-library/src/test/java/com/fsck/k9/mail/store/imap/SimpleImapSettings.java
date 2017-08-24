@@ -17,6 +17,7 @@ class SimpleImapSettings implements ImapSettings {
     private String pathDelimiter;
     private String combinedPrefix;
     private boolean useCompression = false;
+    private boolean shouldIdentifyClient;
 
 
     @Override
@@ -57,6 +58,11 @@ class SimpleImapSettings implements ImapSettings {
     @Override
     public boolean useCompression(NetworkType type) {
         return useCompression;
+    }
+
+    @Override
+    public boolean shouldIdentifyClient() {
+        return shouldIdentifyClient;
     }
 
     @Override
@@ -115,5 +121,9 @@ class SimpleImapSettings implements ImapSettings {
 
     void setUseCompression(boolean useCompression) {
         this.useCompression = useCompression;
+    }
+
+    public void setShouldIdentifyClient(boolean shouldIdentifyClient) {
+        this.shouldIdentifyClient = shouldIdentifyClient;
     }
 }

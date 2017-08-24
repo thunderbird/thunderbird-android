@@ -24,6 +24,8 @@ interface ImapSettings {
 
     boolean useCompression(NetworkType type);
 
+    boolean shouldIdentifyClient();
+
     String getPathPrefix();
 
     void setPathPrefix(String prefix);

@@ -7,9 +7,12 @@ import java.util.List;
 
 import android.app.Activity;
 import android.net.ConnectivityManager;
+import android.os.Build;
+import android.os.Build.VERSION;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.BuildConfig;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.CertificateValidationException.Reason;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -75,6 +78,110 @@ public class ImapConnectionTest {
         }
     }
 
+    // Connection
+
+    @Test
+    public void open_withConnectionError_shouldThrow() throws Exception {
+        settings.setHost("127.1.2.3");
+        settings.setPort(143);
+        ImapConnection imapConnection = createImapConnection(
+                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+
+        try {
+            imapConnection.open();
+            fail("Expected exception");
+        } catch (MessagingException e) {
+            assertEquals("Cannot connect to host", e.getMessage());
+            assertTrue(e.getCause() instanceof IOException);
+        }
+    }
+
+    @Test
+    public void open_withInvalidHostname_shouldThrow() throws Exception {
+        settings.setHost("host name");
+        settings.setPort(143);
+        ImapConnection imapConnection = createImapConnection(
+                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+
+        try {
+            imapConnection.open();
+            fail("Expected exception");
+        } catch (UnknownHostException ignored) {
+        }
+
+        assertFalse(imapConnection.isConnected());
+    }
+
+    // STARTTLS
+
+    @Test
+    public void open_withStartTlsCapability_shouldIssueStartTlsCommand() throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        settings.setConnectionSecurity(ConnectionSecurity.STARTTLS_REQUIRED);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server, "STARTTLS LOGINDISABLED");
+        server.expect("2 STARTTLS");
+        server.output("2 OK [CAPABILITY IMAP4REV1 NAMESPACE]");
+        server.startTls();
+        server.expect("3 CAPABILITY");
+        server.output("* CAPABILITY IMAP4 IMAP4REV1");
+        server.output("3 OK");
+        server.expect("4 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
+        server.output("4 OK [CAPABILITY NAMESPACE] LOGIN completed");
+        server.expect("5 NAMESPACE");
+        server.output("* NAMESPACE ((\"\" \"/\")) NIL NIL");
+        server.output("5 OK command completed");
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        imapConnection.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withStartTlsButWithoutStartTlsCapability_shouldThrow() throws Exception {
+        settings.setConnectionSecurity(ConnectionSecurity.STARTTLS_REQUIRED);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server);
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        try {
+            imapConnection.open();
+            fail("Expected exception");
+        } catch (CertificateValidationException e) {
+            //FIXME: CertificateValidationException seems wrong
+            assertEquals("STARTTLS connection security not available", e.getMessage());
+        }
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withNegativeResponseToStartTlsCommand_shouldThrow() throws Exception {
+        settings.setAuthType(AuthType.PLAIN);
+        settings.setConnectionSecurity(ConnectionSecurity.STARTTLS_REQUIRED);
+        MockImapServer server = new MockImapServer();
+        preAuthenticationDialog(server, "STARTTLS");
+        server.expect("2 STARTTLS");
+        server.output("2 NO");
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        try {
+            imapConnection.open();
+            fail("Expected exception");
+        } catch (NegativeImapResponseException e) {
+            assertEquals(e.getMessage(), "Command: STARTTLS; response: #2# [NO]");
+        }
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+
+    //Pre Auth Capabilitites
+
     @Test
     public void open_withNoCapabilitiesInInitialResponse_shouldIssuePreAuthCapabilitiesCommand() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
@@ -113,6 +220,8 @@ public class ImapConnectionTest {
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }
+
+    //Auth Methods
 
     @Test
     public void open_authPlain() throws Exception {
@@ -537,6 +646,8 @@ public class ImapConnectionTest {
         server.verifyInteractionCompleted();
     }
 
+    //Post Auth Capabilities
+
     @Test
     public void open_withNoPostAuthCapabilityResponse_shouldIssueCapabilityCommand() throws Exception {
         settings.setAuthType(AuthType.PLAIN);
@@ -600,12 +711,25 @@ public class ImapConnectionTest {
         assertTrue(imapConnection.isIdleCapable());
     }
 
+    //ID
+
     @Test
-    public void open_withNamespaceCapability_shouldIssueNamespaceCommand() throws Exception {
+    public void open_withIDCapabilityAndShouldIdentifyClient_shouldIssueIDCommand() throws Exception {
+        settings.setShouldIdentifyClient(true);
         MockImapServer server = new MockImapServer();
-        simplePreAuthAndLoginDialog(server, "NAMESPACE");
-        server.expect("3 NAMESPACE");
-        server.output("* NAMESPACE ((\"\" \"/\")) NIL NIL");
+        simplePreAuthAndLoginDialog(server, "ID");
+        server.expect("3 ID (" +
+                "\"name\" \"K-9\" " +
+                "\"version\" \""+BuildConfig.VERSION_NAME+"\" " +
+                "\"vendor\" \"K-9 Dog Walkers\" " +
+                "\"contact\" \"k-9-dev@googlegroups.com\" " +
+                "\"os\" \"Android\" " +
+                "\"os-version\" \""+ VERSION.SDK_INT+"\")");
+        server.output("* ID (" +
+                "\"name\" \"GImap\" " +
+                "\"vendor\" \"Google, Inc.\" " +
+                "\"support-url\" \"http://mail.google.com/support\" " +
+                "\"remote-host\" \"127.0.0.1\")");
         server.output("3 OK command completed");
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
@@ -616,54 +740,24 @@ public class ImapConnectionTest {
     }
 
     @Test
-    public void open_withConnectionError_shouldThrow() throws Exception {
-        settings.setHost("127.1.2.3");
-        settings.setPort(143);
-        ImapConnection imapConnection = createImapConnection(
-                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
-
-        try {
-            imapConnection.open();
-            fail("Expected exception");
-        } catch (MessagingException e) {
-            assertEquals("Cannot connect to host", e.getMessage());
-            assertTrue(e.getCause() instanceof IOException);
-        }
-    }
-
-    @Test
-    public void open_withInvalidHostname_shouldThrow() throws Exception {
-        settings.setHost("host name");
-        settings.setPort(143);
-        ImapConnection imapConnection = createImapConnection(
-                settings, socketFactory, connectivityManager, oAuth2TokenProvider);
-
-        try {
-            imapConnection.open();
-            fail("Expected exception");
-        } catch (UnknownHostException ignored) {
-        }
-
-        assertFalse(imapConnection.isConnected());
-    }
-
-    @Test
-    public void open_withStartTlsCapability_shouldIssueStartTlsCommand() throws Exception {
-        settings.setAuthType(AuthType.PLAIN);
-        settings.setConnectionSecurity(ConnectionSecurity.STARTTLS_REQUIRED);
+    public void open_withNoUntaggedResponse_shouldIssueIDCommand() throws Exception {
+        settings.setShouldIdentifyClient(true);
         MockImapServer server = new MockImapServer();
-        preAuthenticationDialog(server, "STARTTLS LOGINDISABLED");
-        server.expect("2 STARTTLS");
-        server.output("2 OK [CAPABILITY IMAP4REV1 NAMESPACE]");
-        server.startTls();
-        server.expect("3 CAPABILITY");
-        server.output("* CAPABILITY IMAP4 IMAP4REV1");
-        server.output("3 OK");
-        server.expect("4 LOGIN \"" + USERNAME + "\" \"" + PASSWORD + "\"");
-        server.output("4 OK [CAPABILITY NAMESPACE] LOGIN completed");
-        server.expect("5 NAMESPACE");
-        server.output("* NAMESPACE ((\"\" \"/\")) NIL NIL");
-        server.output("5 OK command completed");
+        simplePreAuthAndLoginDialog(server, "ID");
+        server.expect("3 ID (" +
+                "\"name\" \"K-9\" " +
+                "\"version\" \""+BuildConfig.VERSION_NAME+"\" " +
+                "\"vendor\" \"K-9 Dog Walkers\" " +
+                "\"contact\" \"k-9-dev@googlegroups.com\" " +
+                "\"os\" \"Android\" " +
+                "\"os-version\" \"\")");
+        server.output("* ID (\"name\" " +
+                "\"GImap\" \"vendor\" " +
+                "\"Google, Inc.\" " +
+                "\"support-url\" " +
+                "\"http://mail.google.com/support\" " +
+                "\"remote-host\" \"127.0.0.1\")");
+        server.output("3 OK command completed");
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -673,44 +767,80 @@ public class ImapConnectionTest {
     }
 
     @Test
-    public void open_withStartTlsButWithoutStartTlsCapability_shouldThrow() throws Exception {
-        settings.setConnectionSecurity(ConnectionSecurity.STARTTLS_REQUIRED);
+    public void open_withEmptyListToIDCommand_shouldContinue() throws Exception {
+        settings.setShouldIdentifyClient(true);
         MockImapServer server = new MockImapServer();
-        preAuthenticationDialog(server);
+        simplePreAuthAndLoginDialog(server, "ID");
+        server.expect("3 ID (" +
+                "\"name\" \"K-9\" " +
+                "\"version\" \""+BuildConfig.VERSION_NAME+"\" " +
+                "\"vendor\" \"K-9 Dog Walkers\" " +
+                "\"contact\" \"k-9-dev@googlegroups.com\" " +
+                "\"os\" \"Android\" " +
+                "\"os-version\" \"\")");
+        server.output("* ID (\"name\" " +
+                "\"GImap\" \"vendor\" " +
+                "\"Google, Inc.\" " +
+                "\"support-url\" " +
+                "\"http://mail.google.com/support\" " +
+                "\"remote-host\" \"127.0.0.1\")");
+        server.output("3 OK command completed");
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
-        try {
-            imapConnection.open();
-            fail("Expected exception");
-        } catch (CertificateValidationException e) {
-            //FIXME: CertificateValidationException seems wrong
-            assertEquals("STARTTLS connection security not available", e.getMessage());
-        }
+        imapConnection.open();
 
-        server.verifyConnectionClosed();
+        server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }
 
     @Test
-    public void open_withNegativeResponseToStartTlsCommand_shouldThrow() throws Exception {
-        settings.setAuthType(AuthType.PLAIN);
-        settings.setConnectionSecurity(ConnectionSecurity.STARTTLS_REQUIRED);
+    public void open_withNegativeResponseToIDCommand_shouldContinue() throws Exception {
+        settings.setShouldIdentifyClient(true);
         MockImapServer server = new MockImapServer();
-        preAuthenticationDialog(server, "STARTTLS");
-        server.expect("2 STARTTLS");
-        server.output("2 NO");
+        simplePreAuthAndLoginDialog(server, "ID");
+        server.expect("3 ID (" +
+                "\"name\" \"K-9\" " +
+                "\"version\" \""+BuildConfig.VERSION_NAME+"\" " +
+                "\"vendor\" \"K-9 Dog Walkers\" " +
+                "\"contact\" \"k-9-dev@googlegroups.com\" " +
+                "\"os\" \"Android\" " +
+                "\"os-version\" \"\")");
+        server.output("3 BAD Unable to process ID command");
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
-        try {
-            imapConnection.open();
-            fail("Expected exception");
-        } catch (NegativeImapResponseException e) {
-            assertEquals(e.getMessage(), "Command: STARTTLS; response: #2# [NO]");
-        }
+        imapConnection.open();
 
-        server.verifyConnectionClosed();
+        server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }
+
+    @Test
+    public void open_withIDCapabilityAndNotIdentifyClient_shouldIssueIDCommandWithNil() throws Exception {
+        MockImapServer server = new MockImapServer();
+        simplePreAuthAndLoginDialog(server, "ID");
+        server.expect("3 ID NIL");
+        server.output("* ID NIL");
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        imapConnection.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withoutIDCapabilityAndShouldIdentifyClient_shouldNotIssueIDCommand() throws Exception {
+        settings.setShouldIdentifyClient(true);
+        MockImapServer server = new MockImapServer();
+        simplePreAuthAndLoginDialog(server, "");
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        imapConnection.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
 
     @Test
     public void open_withCompressDeflateCapability_shouldEnableCompression() throws Exception {
@@ -765,6 +895,26 @@ public class ImapConnectionTest {
         server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
+
+
+    //Namespace
+
+    @Test
+    public void open_withNamespaceCapability_shouldIssueNamespaceCommand() throws Exception {
+        MockImapServer server = new MockImapServer();
+        simplePreAuthAndLoginDialog(server, "NAMESPACE");
+        server.expect("3 NAMESPACE");
+        server.output("* NAMESPACE ((\"\" \"/\")) NIL NIL");
+        server.output("3 OK command completed");
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        imapConnection.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+
 
     @Test
     public void open_withIoExceptionDuringListCommand_shouldThrow() throws Exception {

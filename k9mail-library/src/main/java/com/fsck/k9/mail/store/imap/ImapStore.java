@@ -440,6 +440,11 @@ public class ImapStore extends RemoteStore {
         }
 
         @Override
+        public boolean shouldIdentifyClient() {
+            return mStoreConfig.shouldIdentifyClient();
+        }
+
+        @Override
         public String getPathPrefix() {
             return pathPrefix;
         }

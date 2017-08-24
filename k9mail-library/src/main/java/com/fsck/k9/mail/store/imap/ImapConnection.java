@@ -28,9 +28,12 @@ import java.util.zip.InflaterInputStream;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.os.Build.VERSION;
 
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.BuildConfig;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.K9MailLib;
@@ -128,6 +131,8 @@ class ImapConnection {
             authSuccess = true;
 
             extractOrRequestCapabilities(responses);
+
+            fetchAndSendIDIfRequested();
 
             enableCompressionIfRequested();
 
@@ -547,6 +552,40 @@ class ImapConnection {
         } else {
             close();
             return e;
+        }
+    }
+
+    private void fetchAndSendIDIfRequested() throws IOException, MessagingException {
+        if (hasCapability(Capabilities.ID)) {
+            fetchAndSendID();
+        }
+    }
+
+    private void fetchAndSendID() throws IOException, MessagingException {
+        try {
+            List<ImapResponse> responses;
+
+            if (settings.shouldIdentifyClient()) {
+                responses = executeSimpleCommand(Commands.ID + " (" +
+                        "\"name\" \"K-9\" " +
+                        "\"version\" \""+ BuildConfig.VERSION_NAME+"\" " +
+                        "\"vendor\" \"K-9 Dog Walkers\" " +
+                        "\"contact\" \"k-9-dev@googlegroups.com\" " +
+                        "\"os\" \"Android\" " +
+                        "\"os-version\" \""+ VERSION.SDK_INT+"\")");
+            } else {
+                responses = executeSimpleCommand(Commands.ID + "NIL");
+            }
+
+            if (responses.size() >= 0) {
+                ImapResponse response = responses.get(0);
+                ImapList idData = response.getKeyedList("ID");
+                Timber.d("Server identified as: " + idData.getKeyedString("name"),
+                        " - support url:" + idData.getKeyedString("support-url"));
+            }
+
+        } catch (NegativeImapResponseException e) {
+            Timber.d(e, "Unable to identify client/server: ");
         }
     }
 

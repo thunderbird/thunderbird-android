@@ -203,6 +203,7 @@ public class Account implements BaseAccount, StoreConfig {
     private int idleRefreshMinutes;
     private boolean goToUnreadMessageSearch;
     private final Map<NetworkType, Boolean> compressionMap = new ConcurrentHashMap<>();
+    private boolean shouldIdentifyClient;
     private Searchable searchableFolders;
     private boolean subscribedFoldersOnly;
     private int maximumPolledMessageAge;
@@ -428,6 +429,7 @@ public class Account implements BaseAccount, StoreConfig {
                                      true);
             compressionMap.put(type, useCompression);
         }
+        shouldIdentifyClient = storage.getBoolean(accountUuid + ".shouldIdentifyClient", false);
 
         autoExpandFolderName = storage.getString(accountUuid + ".autoExpandFolderName", INBOX);
 
@@ -751,6 +753,8 @@ public class Account implements BaseAccount, StoreConfig {
                 editor.putBoolean(accountUuid + ".useCompression." + type, useCompression);
             }
         }
+        editor.putBoolean(accountUuid + ".shouldIdentifyClient", shouldIdentifyClient);
+
         saveIdentities(preferences.getStorage(), editor);
 
         editor.commit();
@@ -1289,6 +1293,7 @@ public class Account implements BaseAccount, StoreConfig {
         compressionMap.put(networkType, useCompression);
     }
 
+    @Override
     public synchronized boolean useCompression(NetworkType networkType) {
         Boolean useCompression = compressionMap.get(networkType);
         if (useCompression == null) {
@@ -1296,6 +1301,15 @@ public class Account implements BaseAccount, StoreConfig {
         }
 
         return useCompression;
+    }
+
+    @Override
+    public synchronized boolean shouldIdentifyClient() {
+        return shouldIdentifyClient;
+    }
+
+    public synchronized void setShouldIdentifyClient(boolean shouldIdentifyClient) {
+        this.shouldIdentifyClient = shouldIdentifyClient;
     }
 
     @Override

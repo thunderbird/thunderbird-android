@@ -139,6 +139,16 @@
                 android:text="@string/account_setup_incoming_subscribed_folders_only_label"
             />
         </LinearLayout>
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:id="@+id/imap_identify_client_section"
+            android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/should_identify_client"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/account_setup_incoming_should_identify_client_label"
+                />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/webdav_advanced_header"
             android:layout_width="fill_parent"

@@ -2,6 +2,7 @@ package com.fsck.k9.mail.store.imap;
 
 
 class Commands {
+    public static final String ID = "ID";
     public static final String IDLE = "IDLE";
     public static final String NAMESPACE = "NAMESPACE";
     public static final String CAPABILITY = "CAPABILITY";
