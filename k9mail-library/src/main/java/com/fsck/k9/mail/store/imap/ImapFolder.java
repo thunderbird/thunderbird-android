@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -516,7 +517,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
         checkOpen();
         UidSearchCommand searchCommand = new UidSearchCommand.Builder()
-                .useUids(false)
+                .useUids(false, false)
                 .addIdGroup((long) start, (long) end)
                 .since(earliestDate)
                 .forbiddenFlags(includeDeleted ? null : Collections.singleton(Flag.DELETED))
@@ -554,7 +555,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             throws MessagingException, IOException {
 
         UidSearchCommand searchCommand = new UidSearchCommand.Builder()
-                .useUids(false)
+                .useUids(false, false)
                 .addIdGroup((long) startIndex, (long) endIndex)
                 .since(earliestDate)
                 .forbiddenFlags(Collections.singleton(Flag.DELETED))
@@ -568,7 +569,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
         checkOpen();
         UidSearchCommand searchCommand = new UidSearchCommand.Builder()
-                .useUids(false)
+                .useUids(false, false)
                 .idSet(mesgSeqs)
                 .forbiddenFlags(includeDeleted ? null : Collections.singleton(Flag.DELETED))
                 .listener(listener)
@@ -585,7 +586,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
 
         UidSearchCommand searchCommand = new UidSearchCommand.Builder()
-                .useUids(true)
+                .useUids(true, false)
                 .idSet(uidSet)
                 .build();
         return getMessages(searchCommand.execute(connection, this), null);
@@ -1192,31 +1193,35 @@ public class ImapFolder extends Folder<ImapMessage> {
     }
 
     @Override
-    public void expunge() throws MessagingException {
+    public void expunge(List<Long> knownDeletedUids) throws MessagingException {
+        if (knownDeletedUids == null || knownDeletedUids.isEmpty()) {
+            return;
+        }
         open(OPEN_MODE_RW);
         checkOpen();
 
         try {
             if (connection.isUidPlusCapable()) {
                 UidExpungeCommand uidExpungeCommand = new UidExpungeCommand.Builder()
-                        .idSet(getKnownUids())
+                        .idSet(knownDeletedUids)
                         .build();
+
                 uidExpungeCommand.execute(connection, this);
             } else {
+                UidSearchCommand searchCommand = new UidSearchCommand.Builder()
+                        .requiredFlags(Collections.singleton(Flag.DELETED))
+                        .useUids(true, true)
+                        .idSet(knownDeletedUids)
+                        .build();
+                List<Long> unknownDeletedUids = searchCommand.execute(connection, this).getNumbers();
+
+                setFlagsInternal(unknownDeletedUids, Collections.singleton(Flag.DELETED), false);
                 executeSimpleCommand("EXPUNGE");
+                setFlagsInternal(unknownDeletedUids, Collections.singleton(Flag.DELETED), true);
             }
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         }
-    }
-
-    private List<Long> getKnownUids() throws MessagingException {
-        long end = messageCount;
-        long start = end - store.getStoreConfig().getDisplayCount() + 1;
-        UidSearchCommand searchCommand = new UidSearchCommand.Builder()
-                .addIdGroup(start, end)
-                .build();
-        return searchCommand.execute(connection, this).getNumbers();
     }
 
     @Override
@@ -1264,6 +1269,15 @@ public class ImapFolder extends Folder<ImapMessage> {
         Set<Long> uids = new HashSet<>(messages.size());
         for (Message message : messages) {
             uids.add(Long.parseLong(message.getUid()));
+        }
+
+        setFlagsInternal(uids, flags, value);
+    }
+
+    private void setFlagsInternal(Collection<Long> uids, final Set<Flag> flags, boolean value)
+            throws MessagingException {
+        if (uids.isEmpty()) {
+            return;
         }
 
         UidStoreCommand command = new UidStoreCommand.Builder()
