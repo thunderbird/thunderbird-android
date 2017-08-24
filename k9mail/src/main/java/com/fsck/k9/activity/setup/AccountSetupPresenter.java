@@ -43,7 +43,7 @@ import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigureAutodiscover;
 import com.fsck.k9.mail.autoconfiguration.AutoconfigureMozilla;
 import com.fsck.k9.mail.autoconfiguration.AutoconfigureSrv;
-import com.fsck.k9.mail.autoconfiguration.DNSHelper;
+import com.fsck.k9.mail.autoconfiguration.DnsHelper;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
@@ -248,14 +248,14 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 incomingReady = false;
                 outgoingReady = false;
                 try {
-                    String mxDomain = DNSHelper.getMXDomain(domain);
+                    String mxDomain = DnsHelper.getMxDomain(domain);
 
-                    if (mxDomain == null) return providerInfo;
+                    if (mxDomain == null) return null;
 
                     publishProgress(R.string.account_setup_check_settings_retr_info_msg);
                     providerInfo = autoconfigureDomain(mxDomain);
 
-                } catch (TextParseException | UnknownHostException e) {
+                } catch (UnknownHostException e) {
                     Timber.e(e, "Error while trying to run MX lookup");
                 }
 
@@ -288,8 +288,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             }
 
             private void testDomain(String domain) {
-                publishProgress(R.string.account_setup_check_settings_guessing_msg);
-
                 String guessedDomainForMailPrefix;
                 //noinspection ConstantConditions
                 if (domain.startsWith("mail.")) {

@@ -33,7 +33,7 @@ abstract class OAuth2WebViewClient extends WebViewClient {
         if (arrivedAtRedirectUri(uri)) {
             final String error = uri.getQueryParameter("error");
             if (error != null) {
-                Timber.i("got oauth error: " + error);
+                Timber.e("got oauth error: " + error);
                 errorHandler.onError(error);
                 requestHandler.onErrorWhenGettingOAuthCode(error);
                 return true;
@@ -44,7 +44,6 @@ abstract class OAuth2WebViewClient extends WebViewClient {
             return true;
         }
 
-        // if (!uri.getHost().contains("google")) {
         if (getOutOfDomain(uri)) {
             requestHandler.onErrorWhenGettingOAuthCode("Don't surf away"); // TODO: 2017/8/19 better error message
             return true;

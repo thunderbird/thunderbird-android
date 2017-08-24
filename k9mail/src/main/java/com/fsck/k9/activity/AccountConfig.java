@@ -40,8 +40,6 @@ public interface AccountConfig extends StoreConfig {
     public void setDescription(String description);
     public void setDeletePolicy(DeletePolicy deletePolicy);
     public void setEmail(String email);
-    public void setStoreUri(String storeUri);
-    public void setTransportUri(String transportUri);
     void setCompression(NetworkType networkType, boolean useCompression);
 
     void addCertificate(CheckDirection direction, X509Certificate certificate) throws CertificateException;

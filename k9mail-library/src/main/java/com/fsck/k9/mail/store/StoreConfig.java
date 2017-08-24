@@ -6,6 +6,8 @@ import com.fsck.k9.mail.NetworkType;
 public interface StoreConfig {
     String getStoreUri();
     String getTransportUri();
+    void setStoreUri(String storeUri);
+    void setTransportUri(String transportUri);
 
     boolean subscribedFoldersOnly();
     boolean useCompression(NetworkType type);
