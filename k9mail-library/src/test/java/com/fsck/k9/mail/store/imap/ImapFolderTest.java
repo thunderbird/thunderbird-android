@@ -32,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
@@ -50,7 +51,9 @@ import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -462,7 +465,7 @@ public class ImapFolderTest {
     public void getUnreadMessageCount_connectionThrowsIOException_shouldThrowMessagingException() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        when(imapConnection.executeSimpleCommand("SEARCH 1:* UNSEEN NOT DELETED")).thenThrow(new IOException());
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT SEEN NOT DELETED")).thenThrow(new IOException());
         folder.open(OPEN_MODE_RW);
 
         try {
@@ -478,7 +481,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 1 2 3"));
-        when(imapConnection.executeSimpleCommand("SEARCH 1:* UNSEEN NOT DELETED")).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* NOT SEEN NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         int unreadMessageCount = folder.getUnreadMessageCount();
@@ -507,7 +510,7 @@ public class ImapFolderTest {
                 createImapResponse("* SEARCH 1 2"),
                 createImapResponse("* SEARCH 23 42")
         );
-        when(imapConnection.executeSimpleCommand("SEARCH 1:* FLAGGED NOT DELETED")).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:* FLAGGED NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         int flaggedMessageCount = folder.getFlaggedMessageCount();
@@ -755,7 +758,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         List<ImapResponse> imapResponses = singletonList(createImapResponse("* SEARCH 42"));
-        when(imapConnection.executeSimpleCommand("SEARCH 1:9 NOT DELETED")).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 1:9 NOT DELETED")).thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
         boolean areMoreMessagesAvailable = folder.areMoreMessagesAvailable(10, null);
@@ -796,8 +799,8 @@ public class ImapFolderTest {
 
         folder.areMoreMessagesAvailable(600, null);
 
-        verify(imapConnection).executeSimpleCommand("SEARCH 100:599 NOT DELETED");
-        verify(imapConnection).executeSimpleCommand("SEARCH 1:99 NOT DELETED");
+        verify(imapConnection).executeSimpleCommand("UID SEARCH 100:599 NOT DELETED");
+        verify(imapConnection).executeSimpleCommand("UID SEARCH 1:99 NOT DELETED");
     }
 
     @Test
@@ -1026,13 +1029,42 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void expunge_shouldIssueExpungeCommand() throws Exception {
+    public void expunge_withUidPlusAvailable_shouldIssueUidExpungeCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
+        when(imapConnection.isUidPlusCapable()).thenReturn(true);
 
-        folder.expunge();
+        folder.expunge(singletonList(1L));
 
-        verify(imapConnection).executeSimpleCommand("EXPUNGE");
+        verify(imapConnection).executeSimpleCommand("UID EXPUNGE 1");
+    }
+
+    @Test
+    public void expunge_withUidPlusNotAvailable_shouldMimicUidExpunge() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        when(imapConnection.isUidPlusCapable()).thenReturn(false);
+        List<ImapResponse> searchResponse = singletonList(createImapResponse("* SEARCH 19"));
+        when(imapConnection.executeSimpleCommand("UID SEARCH NOT UID 21 DELETED")).thenReturn(searchResponse);
+
+        folder.expunge(singletonList(21L));
+
+        InOrder inOrder = inOrder(imapConnection);
+        inOrder.verify(imapConnection).executeSimpleCommand("UID SEARCH NOT UID 21 DELETED");
+        inOrder.verify(imapConnection).executeSimpleCommand("UID STORE 19 -FLAGS.SILENT (\\Deleted)");
+        inOrder.verify(imapConnection).executeSimpleCommand("EXPUNGE");
+        inOrder.verify(imapConnection).executeSimpleCommand("UID STORE 19 +FLAGS.SILENT (\\Deleted)");
+    }
+
+    @Test
+    public void expunge_withNoKnownDeletedUids_shouldNotSendExpungeCommand() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        when(imapConnection.isUidPlusCapable()).thenReturn(false);
+
+        folder.expunge(Collections.<Long>emptyList());
+
+        verify(imapConnection, never()).executeSimpleCommand("EXPUNGE");
     }
 
     @Test
@@ -1076,7 +1108,7 @@ public class ImapFolderTest {
 
         folder.search("query", newSet(Flag.SEEN), Collections.<Flag>emptySet());
 
-        verify(imapConnection).executeSimpleCommand("UID SEARCH SEEN TEXT \"query\"");
+        verify(imapConnection).executeSimpleCommand("UID SEARCH TEXT \"query\" SEEN");
     }
 
     @Test

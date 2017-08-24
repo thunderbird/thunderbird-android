@@ -113,7 +113,7 @@ public abstract class Folder<T extends Message> {
 
     public abstract String getUidFromMessageId(Message message) throws MessagingException;
 
-    public void expunge() throws MessagingException
+    public void expunge(List<Long> knownDeletedUids) throws MessagingException
         {}
 
     /**

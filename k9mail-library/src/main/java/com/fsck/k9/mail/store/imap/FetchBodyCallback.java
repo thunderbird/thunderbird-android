@@ -9,10 +9,10 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 
 
-class FetchBodyCallback implements ImapResponseCallback {
+public class FetchBodyCallback implements ImapResponseCallback {
     private Map<String, Message> mMessageMap;
 
-    FetchBodyCallback(Map<String, Message> messageMap) {
+    public FetchBodyCallback(Map<String, Message> messageMap) {
         mMessageMap = messageMap;
     }
 

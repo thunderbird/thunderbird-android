@@ -817,7 +817,7 @@ public class MessagingController {
                 remoteFolder.open(Folder.OPEN_MODE_RW);
                 if (Expunge.EXPUNGE_ON_POLL == account.getExpungePolicy()) {
                     Timber.d("SYNC: Expunging folder %s:%s", account.getDescription(), folder);
-                    remoteFolder.expunge();
+                    remoteFolder.expunge(localFolder.getDeletedMessageUids());
                 }
 
             }
@@ -1856,7 +1856,7 @@ public class MessagingController {
                     if (remoteDate != null) {
                         remoteMessage.setFlag(Flag.DELETED, true);
                         if (Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
-                            remoteFolder.expunge();
+                            remoteFolder.expunge(localFolder.getDeletedMessageUids());
                         }
                     }
                 }
@@ -1892,7 +1892,8 @@ public class MessagingController {
     void processPendingMoveOrCopy(PendingMoveOrCopy command, Account account) throws MessagingException {
         Folder remoteSrcFolder = null;
         Folder remoteDestFolder = null;
-        LocalFolder localDestFolder;
+        LocalFolder localSrcFolder = null;
+        LocalFolder localDestFolder = null;
         try {
             String srcFolder = command.srcFolder;
             if (account.getErrorFolderName().equals(srcFolder)) {
@@ -1904,8 +1905,9 @@ public class MessagingController {
             Store remoteStore = account.getRemoteStore();
             remoteSrcFolder = remoteStore.getFolder(srcFolder);
 
-            Store localStore = account.getLocalStore();
-            localDestFolder = (LocalFolder) localStore.getFolder(destFolder);
+            LocalStore localStore = account.getLocalStore();
+            localSrcFolder = localStore.getFolder(srcFolder);
+            localDestFolder = localStore.getFolder(destFolder);
             List<Message> messages = new ArrayList<>();
 
             Collection<String> uids = command.newUidMap != null ? command.newUidMap.keySet() : command.uids;
@@ -1949,7 +1951,8 @@ public class MessagingController {
             }
             if (!isCopy && Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
                 Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolder);
-                remoteSrcFolder.expunge();
+                localSrcFolder.open(Folder.OPEN_MODE_RO);
+                remoteSrcFolder.expunge(localSrcFolder.getDeletedMessageUids());
             }
 
             /*
@@ -1965,6 +1968,7 @@ public class MessagingController {
                         continue;
                     }
 
+                    localDestFolder.open(Folder.OPEN_MODE_RW);
                     Message localDestMessage = localDestFolder.getMessage(localDestUid);
                     if (localDestMessage != null) {
                         localDestMessage.setUid(newUid);
@@ -1976,6 +1980,8 @@ public class MessagingController {
                 }
             }
         } finally {
+            closeFolder(localSrcFolder);
+            closeFolder(localDestFolder);
             closeFolder(remoteSrcFolder);
             closeFolder(remoteDestFolder);
         }
@@ -2055,6 +2061,8 @@ public class MessagingController {
 
         Store remoteStore = account.getRemoteStore();
         Folder remoteFolder = remoteStore.getFolder(folder);
+        LocalStore localStore = account.getLocalStore();
+        LocalFolder localFolder = localStore.getFolder(folder);
         try {
             if (!remoteFolder.exists()) {
                 return;
@@ -2063,11 +2071,13 @@ public class MessagingController {
             if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
                 return;
             }
-            remoteFolder.expunge();
+            localFolder.open(Folder.OPEN_MODE_RO);
+            remoteFolder.expunge(localFolder.getDeletedMessageUids());
 
             Timber.d("processPendingExpunge: complete for folder = %s", folder);
         } finally {
             closeFolder(remoteFolder);
+            closeFolder(localFolder);
         }
     }
 
@@ -3424,14 +3434,17 @@ public class MessagingController {
 
     void processPendingEmptyTrash(Account account) throws MessagingException {
         Store remoteStore = account.getRemoteStore();
+        LocalStore localStore = account.getLocalStore();
 
         Folder remoteFolder = remoteStore.getFolder(account.getTrashFolderName());
+        LocalFolder localFolder = localStore.getFolder(account.getTrashFolderName());
         try {
             if (remoteFolder.exists()) {
                 remoteFolder.open(Folder.OPEN_MODE_RW);
+                localFolder.open(Folder.OPEN_MODE_RO);
                 remoteFolder.setFlags(Collections.singleton(Flag.DELETED), true);
                 if (Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
-                    remoteFolder.expunge();
+                    remoteFolder.expunge(localFolder.getDeletedMessageUids());
                 }
 
                 // When we empty trash, we need to actually synchronize the folder
@@ -3443,6 +3456,7 @@ public class MessagingController {
             }
         } finally {
             closeFolder(remoteFolder);
+            closeFolder(localFolder);
         }
     }
 

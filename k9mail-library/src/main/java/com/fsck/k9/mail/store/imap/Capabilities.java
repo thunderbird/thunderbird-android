@@ -3,6 +3,8 @@ package com.fsck.k9.mail.store.imap;
 
 class Capabilities {
     public static final String IDLE = "IDLE";
+    public static final String CONDSTORE = "CONDSTORE";
+    public static final String UID_PLUS = "UIDPLUS";
     public static final String SASL_IR = "SASL-IR";
     public static final String AUTH_XOAUTH2 = "AUTH=XOAUTH2";
     public static final String AUTH_CRAM_MD5 = "AUTH=CRAM-MD5";

@@ -57,7 +57,7 @@ import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 /**
  * A cacheable class that stores the details for a single IMAP connection.
  */
-class ImapConnection {
+public class ImapConnection {
     private static final int BUFFER_SIZE = 1024;
 
 
@@ -683,12 +683,20 @@ class ImapConnection {
         return capabilities.contains(capability.toUpperCase(Locale.US));
     }
 
+    public boolean isCondstoreCapable() throws IOException, MessagingException  {
+        return hasCapability(Capabilities.CONDSTORE);
+    }
+
     protected boolean isIdleCapable() {
         if (K9MailLib.isDebug()) {
             Timber.v("Connection %s has %d capabilities", getLogId(), capabilities.size());
         }
 
         return capabilities.contains(Capabilities.IDLE);
+    }
+
+    boolean isUidPlusCapable() {
+        return capabilities.contains(Capabilities.UID_PLUS);
     }
 
     public void close() {

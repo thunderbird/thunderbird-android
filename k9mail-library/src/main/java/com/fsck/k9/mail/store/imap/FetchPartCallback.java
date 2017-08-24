@@ -9,12 +9,12 @@ import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.internet.MimeHeader;
 
 
-class FetchPartCallback implements ImapResponseCallback {
+public class FetchPartCallback implements ImapResponseCallback {
     private final Part part;
     private final BodyFactory bodyFactory;
 
 
-    FetchPartCallback(Part part, BodyFactory bodyFactory) {
+    public FetchPartCallback(Part part, BodyFactory bodyFactory) {
         this.part = part;
         this.bodyFactory = bodyFactory;
     }

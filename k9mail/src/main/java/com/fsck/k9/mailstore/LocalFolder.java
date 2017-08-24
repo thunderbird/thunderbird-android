@@ -975,6 +975,42 @@ public class LocalFolder extends Folder<LocalMessage> {
         }
     }
 
+    public List<Long> getDeletedMessageUids() throws MessagingException {
+        try {
+            return  localStore.database.execute(false, new DbCallback<List<Long>>() {
+                @Override
+                public List<Long> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    Cursor cursor = null;
+                    ArrayList<Long> result = new ArrayList<>();
+
+                    try {
+                        open(OPEN_MODE_RO);
+
+                        cursor = db.rawQuery(
+                                "SELECT uid " +
+                                        "FROM messages " +
+                                        "WHERE empty = 0 AND deleted = 1 AND " +
+                                        "folder_id = ? ORDER BY date DESC",
+                                new String[] { Long.toString(mFolderId) });
+
+                        while (cursor.moveToNext()) {
+                            Long uid = Long.parseLong(cursor.getString(0));
+                            result.add(uid);
+                        }
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+
+                    return result;
+                }
+            });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
+        }
+    }
+
     public List<LocalMessage> getMessagesByUids(@NonNull List<String> uids) throws MessagingException {
         open(OPEN_MODE_RW);
         List<LocalMessage> messages = new ArrayList<>();
