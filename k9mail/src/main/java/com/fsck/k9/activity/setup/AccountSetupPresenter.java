@@ -43,7 +43,7 @@ import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigureAutodiscover;
 import com.fsck.k9.mail.autoconfiguration.AutoconfigureMozilla;
 import com.fsck.k9.mail.autoconfiguration.AutoconfigureSrv;
-import com.fsck.k9.mail.autoconfiguration.DNSHelper;
+import com.fsck.k9.mail.autoconfiguration.DnsHelper;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
@@ -248,14 +248,14 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 incomingReady = false;
                 outgoingReady = false;
                 try {
-                    String mxDomain = DNSHelper.getMXDomain(domain);
+                    String mxDomain = DnsHelper.getMxDomain(domain);
 
-                    if (mxDomain == null) return providerInfo;
+                    if (mxDomain == null) return null;
 
                     publishProgress(R.string.account_setup_check_settings_retr_info_msg);
                     providerInfo = autoconfigureDomain(mxDomain);
 
-                } catch (TextParseException | UnknownHostException e) {
+                } catch (UnknownHostException e) {
                     Timber.e(e, "Error while trying to run MX lookup");
                 }
 
@@ -288,8 +288,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             }
 
             private void testDomain(String domain) {
-                publishProgress(R.string.account_setup_check_settings_guessing_msg);
-
                 String guessedDomainForMailPrefix;
                 //noinspection ConstantConditions
                 if (domain.startsWith("mail.")) {
@@ -298,35 +296,42 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     guessedDomainForMailPrefix = "mail." + domain;
                 }
 
-                testIncoming(guessedDomainForMailPrefix);
+                testIncoming(guessedDomainForMailPrefix, false);
 
-                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.STARTTLS_REQUIRED);
+                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.STARTTLS_REQUIRED, false);
 
-                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.SSL_TLS_REQUIRED);
+                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.SSL_TLS_REQUIRED, false);
 
-                testIncoming("imap." + domain);
+                testIncoming("imap." + domain, false);
 
-                testOutgoing("smtp." + domain, ConnectionSecurity.STARTTLS_REQUIRED);
+                testOutgoing("smtp." + domain, ConnectionSecurity.STARTTLS_REQUIRED, false);
 
-                testOutgoing("smtp." + domain, ConnectionSecurity.SSL_TLS_REQUIRED);
+                testOutgoing("smtp." + domain, ConnectionSecurity.SSL_TLS_REQUIRED, false);
             }
 
-            private void testIncoming(String domain) {
+            private void testIncoming(String domain, boolean useLocalPart) {
                 if (!incomingReady) {
                     try {
-                        accountConfig.setStoreUri(getDefaultStoreURI(email, password, domain).toString());
+                        accountConfig.setStoreUri(getDefaultStoreURI(
+                                useLocalPart ? EmailHelper.getLocalPartFromEmailAddress(email) : email,
+                                password, domain).toString());
                         accountConfig.getRemoteStore().checkSettings();
                         incomingReady = true;
+                    } catch (AuthenticationFailedException afe) {
+                        if (!useLocalPart) {
+                            testIncoming(domain, true);
+                        }
                     } catch (URISyntaxException | MessagingException ignored) {
                     }
                 }
             }
 
-            private void testOutgoing(String domain, ConnectionSecurity connectionSecurity) {
+            private void testOutgoing(String domain, ConnectionSecurity connectionSecurity, boolean useLocalPart) {
                 if (!outgoingReady) {
                     try {
-                        accountConfig.setTransportUri(getDefaultTransportURI(email, password, domain,
-                                connectionSecurity).toString());
+                        accountConfig.setTransportUri(getDefaultTransportURI(
+                                useLocalPart ? EmailHelper.getLocalPartFromEmailAddress(email) : email,
+                                password, domain, connectionSecurity).toString());
                         Transport transport = TransportProvider.getInstance().getTransport(context, accountConfig,
                                 Globals.getOAuth2TokenProvider());
                         transport.close();
@@ -336,6 +341,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                             transport.close();
                         }
                         outgoingReady = true;
+                    } catch (AuthenticationFailedException afe) {
+                        if (!useLocalPart) {
+                            testOutgoing(domain, connectionSecurity, true);
+                        }
                     } catch (URISyntaxException | MessagingException ignored) {
                     }
                 }
@@ -612,20 +621,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         @Override
         protected Boolean doInBackground(CheckDirection... params) {
             try {
-                /*
-                 * This task could be interrupted at any point, but network operations can block,
-                 * so relying on InterruptedException is not enough. Instead, check after
-                 * each potentially long-running operation.
-                 */
-                if (canceled) {
-                    return false;
-                }
-
                 checkSettings();
-
-                if (canceled) {
-                    return false;
-                }
 
                 return true;
 
@@ -657,6 +653,15 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         @Override
         protected void onPostExecute(Boolean bool) {
             super.onPostExecute(bool);
+
+            /*
+             * This task could be interrupted at any point, but network operations can block,
+             * so relying on InterruptedException is not enough. Instead, check after
+             * each potentially long-running operation.
+             */
+            if (canceled) {
+                return;
+            }
 
             if (bool && callback != null) {
                 callback.onCheckSuccess();
