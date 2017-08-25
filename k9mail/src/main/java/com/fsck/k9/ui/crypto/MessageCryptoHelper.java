@@ -58,7 +58,6 @@ public class MessageCryptoHelper {
     private static final int INVALID_OPENPGP_RESULT_CODE = -1;
     private static final MimeBodyPart NO_REPLACEMENT_PART = null;
     private static final int REQUEST_CODE_USER_INTERACTION = 124;
-    private static final int PROGRESS_SIZE_THRESHOLD = 4096;
 
 
     private final Context context;
@@ -406,10 +405,7 @@ public class MessageCryptoHelper {
                     throw new IllegalStateException("part to stream must be encrypted or inline!");
                 }
                 if (body instanceof SizeAware) {
-                    long bodySize = ((SizeAware) body).getSize();
-                    if (bodySize > PROGRESS_SIZE_THRESHOLD) {
-                        return bodySize;
-                    }
+                    return ((SizeAware) body).getSize();
                 }
                 return null;
             }
