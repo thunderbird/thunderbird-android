@@ -29,11 +29,8 @@ import android.support.annotation.StringRes;
 import com.fsck.k9.Account;
 
 import java.security.cert.X509Certificate;
-import java.util.Locale;
 
 import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -48,7 +45,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.view.ClientCertificateSpinner;
 
@@ -319,10 +315,20 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         return -1;
     }
 
+    private static long mLastClickTime = 0;
+
+    private static boolean isActionValid() {
+        long now = System.currentTimeMillis();
+        boolean valid = (now - mLastClickTime > 1000);
+        mLastClickTime = now;
+        return valid;
+    }
 
     public static void actionNewAccount(Context context) {
-        Intent i = new Intent(context, AccountSetupActivity.class);
-        context.startActivity(i);
+        if (isActionValid()) {
+            Intent i = new Intent(context, AccountSetupActivity.class);
+            context.startActivity(i);
+        }
     }
 
     public void goToBasics() {
