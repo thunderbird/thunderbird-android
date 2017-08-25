@@ -678,9 +678,7 @@ public class ImapConnectionTest {
         server.expect("2 AUTHENTICATE PLAIN");
         server.output("+");
         server.expect(ByteString.encodeUtf8("\000" + USERNAME + "\000" + PASSWORD).base64());
-        server.output("* CAPABILITY IMAP4rev1 UNSELECT IDLE QUOTA ID XLIST CHILDREN X-GM-EXT-1 UIDPLUS " +
-                "ENABLE MOVE CONDSTORE ESEARCH UTF8=ACCEPT LIST-EXTENDED LIST-STATUS LITERAL- SPECIAL-USE " +
-                "APPENDLIMIT=35651584");
+        server.output("* CAPABILITY IMAP4rev1 IDLE");
         server.output("2 OK");
         simplePostAuthenticationDialog(server, 3);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
@@ -731,6 +729,7 @@ public class ImapConnectionTest {
                 "\"support-url\" \"http://mail.google.com/support\" " +
                 "\"remote-host\" \"127.0.0.1\")");
         server.output("3 OK command completed");
+        simplePostAuthenticationDialog(server, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -750,14 +749,9 @@ public class ImapConnectionTest {
                 "\"vendor\" \"K-9 Dog Walkers\" " +
                 "\"contact\" \"k-9-dev@googlegroups.com\" " +
                 "\"os\" \"Android\" " +
-                "\"os-version\" \"\")");
-        server.output("* ID (\"name\" " +
-                "\"GImap\" \"vendor\" " +
-                "\"Google, Inc.\" " +
-                "\"support-url\" " +
-                "\"http://mail.google.com/support\" " +
-                "\"remote-host\" \"127.0.0.1\")");
+                "\"os-version\" \""+VERSION.SDK_INT+"\")");
         server.output("3 OK command completed");
+        simplePostAuthenticationDialog(server, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -777,14 +771,10 @@ public class ImapConnectionTest {
                 "\"vendor\" \"K-9 Dog Walkers\" " +
                 "\"contact\" \"k-9-dev@googlegroups.com\" " +
                 "\"os\" \"Android\" " +
-                "\"os-version\" \"\")");
-        server.output("* ID (\"name\" " +
-                "\"GImap\" \"vendor\" " +
-                "\"Google, Inc.\" " +
-                "\"support-url\" " +
-                "\"http://mail.google.com/support\" " +
-                "\"remote-host\" \"127.0.0.1\")");
+                "\"os-version\" \""+VERSION.SDK_INT+"\")");
+        server.output("* ID NIL");
         server.output("3 OK command completed");
+        simplePostAuthenticationDialog(server, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -804,8 +794,9 @@ public class ImapConnectionTest {
                 "\"vendor\" \"K-9 Dog Walkers\" " +
                 "\"contact\" \"k-9-dev@googlegroups.com\" " +
                 "\"os\" \"Android\" " +
-                "\"os-version\" \"\")");
+                "\"os-version\" \""+VERSION.SDK_INT+"\")");
         server.output("3 BAD Unable to process ID command");
+        simplePostAuthenticationDialog(server, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -820,6 +811,8 @@ public class ImapConnectionTest {
         simplePreAuthAndLoginDialog(server, "ID");
         server.expect("3 ID NIL");
         server.output("* ID NIL");
+        server.output("3 OK");
+        simplePostAuthenticationDialog(server, 4);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();
@@ -833,6 +826,7 @@ public class ImapConnectionTest {
         settings.setShouldIdentifyClient(true);
         MockImapServer server = new MockImapServer();
         simplePreAuthAndLoginDialog(server, "");
+        simplePostAuthenticationDialog(server, 3);
         ImapConnection imapConnection = startServerAndCreateImapConnection(server);
 
         imapConnection.open();

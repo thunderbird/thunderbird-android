@@ -574,14 +574,16 @@ class ImapConnection {
                         "\"os\" \"Android\" " +
                         "\"os-version\" \""+ VERSION.SDK_INT+"\")");
             } else {
-                responses = executeSimpleCommand(Commands.ID + "NIL");
+                responses = executeSimpleCommand(Commands.ID + " NIL");
             }
 
             if (responses.size() >= 0) {
                 ImapResponse response = responses.get(0);
-                ImapList idData = response.getKeyedList("ID");
-                Timber.d("Server identified as: " + idData.getKeyedString("name"),
-                        " - support url:" + idData.getKeyedString("support-url"));
+                if (!response.isTagged() && !"NIL".equals(response.get(1))) {
+                    ImapList idData = response.getKeyedList("ID");
+                    Timber.d("Server identified as: " + idData.getKeyedString("name"),
+                            " - support url:" + idData.getKeyedString("support-url"));
+                }
             }
 
         } catch (NegativeImapResponseException e) {
