@@ -175,20 +175,7 @@ public class MessageListAdapter extends CursorAdapter {
         boolean answered = (cursor.getInt(ANSWERED_COLUMN) == 1);
         boolean forwarded = (cursor.getInt(FORWARDED_COLUMN) == 1);
 
-        Keyword firstTag = null;
-        final String flagList = cursor.getString(FLAGS_COLUMN);
-
-        if (flagList != null && flagList.length() > 0) {
-            final FlagManager flagManager = FlagManager.getFlagManager();
-            final List<Flag> flags = flagManager.parseCodeList(flagList);
-            final List<Keyword> orderedTags =
-                flagManager.getVisibleKeywords(flags);
-            if (orderedTags.size() > 0) {
-                firstTag = orderedTags.get(0);
-            }
-        }
-
-
+        final Keyword firstTag = getFirstTag(cursor.getString(FLAGS_COLUMN));
 
         boolean hasAttachments = (cursor.getInt(ATTACHMENT_COUNT_COLUMN) > 0);
 
@@ -256,6 +243,19 @@ public class MessageListAdapter extends CursorAdapter {
             holder.subject.setText(subject);
         }
         holder.date.setText(displayDate);
+    }
+
+    private Keyword getFirstTag(String flagList) {
+        if (flagList != null && flagList.length() > 0) {
+            final FlagManager flagManager = FlagManager.getFlagManager();
+            final List<Flag> flags = flagManager.parseCodeList(flagList);
+            final List<Keyword> orderedTags =
+                flagManager.getVisibleKeywords(flags);
+            if (orderedTags.size() > 0) {
+                return orderedTags.get(0);
+            }
+        }
+        return null;
     }
 
     private void formatPreviewText(TextView preview, CharSequence beforePreviewText, String sigil) {
