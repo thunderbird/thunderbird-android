@@ -3628,8 +3628,6 @@ public class MessagingController {
                     for (final Account account : accounts) {
                         checkMailForAccount(context, account, ignoreLastCheckedTime, listener);
                     }
-
-                    prefs.saveKeywords();
                 } catch (Exception e) {
                     Timber.e(e, "Unable to synchronize mail");
                     addErrorMessage(account, null, e);

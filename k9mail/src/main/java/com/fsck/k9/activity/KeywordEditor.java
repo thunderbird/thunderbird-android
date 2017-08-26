@@ -79,6 +79,7 @@ public class KeywordEditor extends K9ListActivity implements
         super.onResume();
 
         Preferences.getPreferences(this).loadKeywords();
+        Preferences.getPreferences(this).saveKeywords();
 
         if (adapter == null) {
             initializeActivityView();

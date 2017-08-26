@@ -175,16 +175,11 @@ public class MessageListAdapter extends CursorAdapter {
         boolean forwarded = (cursor.getInt(FORWARDED_COLUMN) == 1);
 
         Keyword firstTag = null;
-        String flagList = cursor.getString(FLAGS_COLUMN);
+        final String flagList = cursor.getString(FLAGS_COLUMN);
 
         if (flagList != null && flagList.length() > 0) {
-            final int preExistingKeywords = Keyword.getKeywords().size();
-            List<Flag> flags = Flag.parseCodeList(flagList);
-            if (preExistingKeywords != Keyword.getKeywords().size()) {
-                Preferences.getPreferences(context).saveKeywords();
-            }
-
-            List<Keyword> orderedTags = Keyword.getVisibleKeywords(flags);
+            final List<Flag> flags = Flag.parseCodeList(flagList);
+            final List<Keyword> orderedTags = Keyword.getVisibleKeywords(flags);
             if (orderedTags.size() > 0) {
                 firstTag = orderedTags.get(0);
             }
