@@ -359,22 +359,22 @@ public class MessageListAdapter extends CursorAdapter {
 
             TypedValue outValue = new TypedValue();
             fragment.getActivity().getTheme().resolveAttribute(res, outValue, true);
-            int backgroundColor = outValue.data;
-
-            if (firstTag != null) {
-                if (K9.getK9Theme() == K9.Theme.LIGHT) {
-                    backgroundColor =
-                        firstTag.blendLightBackgroundColor(backgroundColor);
-                } else {
-                    backgroundColor =
-                        firstTag.blendDarkBackgroundColor(backgroundColor);
-                }
-            }
-
-            view.setBackgroundColor(backgroundColor);
+            view.setBackgroundColor(
+                blendBackgroundWithKeyword(outValue.data, firstTag));
         } else {
             view.setBackgroundColor(Color.TRANSPARENT);
         }
+    }
+
+    private int blendBackgroundWithKeyword(int backgroundColor, Keyword tag) {
+        if (tag != null) {
+            if (K9.getK9Theme() == K9.Theme.LIGHT) {
+                return tag.blendLightBackgroundColor(backgroundColor);
+            } else {
+                return tag.blendDarkBackgroundColor(backgroundColor);
+            }
+        }
+        return backgroundColor;
     }
 
     private void updateWithThreadCount(MessageViewHolder holder, int threadCount) {
