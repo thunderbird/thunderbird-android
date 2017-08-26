@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fsck.k9.helper.KeywordColorUtils;
 import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.R;
@@ -34,6 +35,9 @@ public class TagChoiceDialogFragment extends DialogFragment {
         public void onStoreTags(Set<Keyword> addedTags, Set<Keyword> deletedTags);
         public void onStartKeywordEditor();
     }
+
+    private static final KeywordColorUtils keywordColorUtils =
+        new KeywordColorUtils();
 
     private ArrayList<Keyword> tags;
     private Set<Keyword> preSelectedTags;
@@ -123,7 +127,7 @@ public class TagChoiceDialogFragment extends DialogFragment {
                 android.R.id.text1);
             if (textViewName != null && tag != null) {
                 textViewName.setText(tag.getName());
-                textViewName.setTextColor(tag.getTextColor());
+                textViewName.setTextColor(tag.getTextColor(keywordColorUtils));
             }
 
             ListView parentListView = (ListView) parent;

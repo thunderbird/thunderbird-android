@@ -17,7 +17,6 @@ dependencies {
     compile 'org.apache.james:apache-mime4j-core:0.7.2'
     compile 'org.apache.james:apache-mime4j-dom:0.7.2'
     compile 'commons-io:commons-io:2.4'
-    compile "com.android.support:support-v4:${androidSupportLibraryVersion}"
     compile 'com.jcraft:jzlib:1.0.7'
     compile 'com.beetstra.jutf7:jutf7:1.0.0'
     compile "com.android.support:support-annotations:${androidSupportLibraryVersion}"

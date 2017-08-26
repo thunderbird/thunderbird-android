@@ -37,6 +37,7 @@ import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.KeywordColorUtils;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -51,6 +52,9 @@ import com.fsck.k9.ui.ContactBadge;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
+    private static final KeywordColorUtils keywordColorUtils =
+        new KeywordColorUtils();
+
     private Context mContext;
     private TextView mFromView;
     private TextView mSenderView;
@@ -368,8 +372,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 } else {
                     first = false;
                 }
-                ForegroundColorSpan colorSpan =
-                    new ForegroundColorSpan(keyword.getTextColor());
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(
+                    keyword.getTextColor(keywordColorUtils));
                 SpannableString sp = new SpannableString(keyword.getName());
                 sp.setSpan(colorSpan, 0, sp.length(), 0);
                 sb.append(sp);

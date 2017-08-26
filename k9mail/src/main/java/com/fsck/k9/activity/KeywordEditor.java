@@ -30,6 +30,7 @@ import android.util.TypedValue;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.fragment.KeywordAddDialogFragment;
 import com.fsck.k9.fragment.KeywordEditNameDialogFragment;
+import com.fsck.k9.helper.KeywordColorUtils;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -41,6 +42,9 @@ public class KeywordEditor extends K9ListActivity implements
     KeywordEditNameDialogFragment.KeywordEditNameDialogListener,
     KeywordAddDialogFragment.KeywordAddDialogFragmentDialogListener
 {
+    private static final KeywordColorUtils keywordColorUtils =
+        new KeywordColorUtils();
+
     private KeywordEditorListAdapter adapter;
     private int colorKeywordNotVisible;
     final private FlagManager flagManager = FlagManager.getFlagManager();
@@ -183,7 +187,8 @@ public class KeywordEditor extends K9ListActivity implements
 
             holder.tvName.setText(keyword.getName());
             if (keyword.isVisible()) {
-                holder.tvName.setTextColor(keyword.getTextColor());
+                holder.tvName.setTextColor(
+                    keyword.getTextColor(keywordColorUtils));
             } else {
                 holder.tvName.setTextColor(colorKeywordNotVisible);
             }
@@ -192,7 +197,8 @@ public class KeywordEditor extends K9ListActivity implements
 
             holder.btnColorDialog.setTag(position);
             if (keyword.isVisible()) {
-                holder.btnColorDialog.setColorFilter(keyword.getTextColor());
+                holder.btnColorDialog.setColorFilter(
+                    keyword.getTextColor(keywordColorUtils));
                 holder.btnColorDialog.setOnClickListener(
                     new OnColorDialogListener());
             } else {

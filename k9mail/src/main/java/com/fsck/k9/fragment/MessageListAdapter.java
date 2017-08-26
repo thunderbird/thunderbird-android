@@ -23,6 +23,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.KeywordColorUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -52,6 +53,9 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN;
 import java.util.List;
 
 public class MessageListAdapter extends CursorAdapter {
+
+    private static final KeywordColorUtils keywordColorUtils =
+        new KeywordColorUtils();
 
     private final MessageListFragment fragment;
     private Drawable mAttachmentIcon;
@@ -369,9 +373,11 @@ public class MessageListAdapter extends CursorAdapter {
     private int blendBackgroundWithKeyword(int backgroundColor, Keyword tag) {
         if (tag != null) {
             if (K9.getK9Theme() == K9.Theme.LIGHT) {
-                return tag.blendLightBackgroundColor(backgroundColor);
+                return tag.blendLightBackgroundColor(
+                    keywordColorUtils, backgroundColor);
             } else {
-                return tag.blendDarkBackgroundColor(backgroundColor);
+                return tag.blendDarkBackgroundColor(
+                    keywordColorUtils, backgroundColor);
             }
         }
         return backgroundColor;

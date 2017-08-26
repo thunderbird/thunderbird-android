@@ -5,10 +5,13 @@ import java.util.Random;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.graphics.ColorUtils;
 
 
 public final class Keyword extends Flag implements Parcelable {
+
+    public interface ColorUtils {
+        int blendARGB(int color1, int color2, float ratio);
+    }
 
     private static final ArrayList<Integer> PREDEFINED_COLORS =
         new ArrayList<Integer>() {{
@@ -63,18 +66,22 @@ public final class Keyword extends Flag implements Parcelable {
     }
 
     // Color for text on light background.
-    public int getTextColor() {
-        return ColorUtils.blendARGB(color, 0xFF000000, (float) 0.2);
+    public int getTextColor(ColorUtils colorUtils) {
+        return colorUtils.blendARGB(color, 0xFF000000, (float) 0.2);
     }
 
     // Blend keyword color with background color of light theme.
-    public int blendLightBackgroundColor(int lightBackgroundColor) {
-        return ColorUtils.blendARGB(color, lightBackgroundColor, (float) 0.7);
+    public int blendLightBackgroundColor(
+        ColorUtils colorUtils, int lightBackgroundColor)
+    {
+        return colorUtils.blendARGB(color, lightBackgroundColor, (float) 0.7);
     }
 
     // Blend keyword color with background color of dark theme.
-    public int blendDarkBackgroundColor(int darkBackgroundColor) {
-        return ColorUtils.blendARGB(color, darkBackgroundColor, (float) 0.3);
+    public int blendDarkBackgroundColor(
+        ColorUtils colorUtils, int darkBackgroundColor)
+    {
+        return colorUtils.blendARGB(color, darkBackgroundColor, (float) 0.3);
     }
 
     public int getColor() {
