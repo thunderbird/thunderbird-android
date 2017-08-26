@@ -35,10 +35,10 @@ public class TagChoiceDialogFragment extends DialogFragment {
         public void onStartKeywordEditor();
     }
 
-    ArrayList<Keyword> tags;
-    Set<Keyword> preSelectedTags;
-    Set<Keyword> selectedTags;
-    TagChoiceDialogListener listener;
+    private ArrayList<Keyword> tags;
+    private Set<Keyword> preSelectedTags;
+    private Set<Keyword> selectedTags;
+    private TagChoiceDialogListener listener;
 
     public void setPreSelectedTags(Collection<Keyword> preSelectedTags) {
         this.preSelectedTags = new HashSet<Keyword>(preSelectedTags);
@@ -63,60 +63,33 @@ public class TagChoiceDialogFragment extends DialogFragment {
                 (Keyword[]) savedInstance.getParcelableArray("selectedTags")));
         }
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View tagChoiceListView =
-            inflater.inflate(R.layout.tag_choice_list, null);
-
-        ImageButton buttonTagEditor = (ImageButton)
-            tagChoiceListView.findViewById(R.id.button_keyword_editor);
-        buttonTagEditor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onStartKeywordEditor();
-                dismiss();
-            }
-        });
-
-        tags = FlagManager.getFlagManager().getVisibleKeywords();
-        TagListAdapter adapter = new TagListAdapter(getActivity(), tags);
-        ListView listView = (ListView) tagChoiceListView.findViewById(
-            R.id.tag_choice_list_view);
-
-        listView.setAdapter(adapter);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(
-                AdapterView parent, View view, int position, long id)
-            {
-                ListView parentListView = (ListView) parent;
-                Keyword clickedTag = tags.get(position);
-                if (parentListView.isItemChecked(position)) {
-                    selectedTags.add(clickedTag);
-                } else {
-                    selectedTags.remove(clickedTag);
-                }
-            }
-        });
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.tag_choice_dialog_title)
-            .setView(tagChoiceListView)
-            .setPositiveButton(
-                android.R.string.ok, new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    Set<Keyword> addedTags = new HashSet<Keyword>(selectedTags);
-                    addedTags.removeAll(preSelectedTags);
-                    Set<Keyword> deletedTags = new HashSet<Keyword>(preSelectedTags);
-                    deletedTags.removeAll(selectedTags);
-                    listener.onStoreTags(addedTags, deletedTags);
-                }
-            })
+            .setView(getTagChoiceView())
+            .setPositiveButton(android.R.string.ok, new OkListener())
             .setNegativeButton(android.R.string.cancel, null);
 
         return builder.create();
+    }
+
+    private View getTagChoiceView() {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View tagChoiceView = inflater.inflate(R.layout.tag_choice_list, null);
+
+        ImageButton buttonTagEditor = (ImageButton)
+            tagChoiceView.findViewById(R.id.button_keyword_editor);
+        buttonTagEditor.setOnClickListener(new StartKeywordEditorListener());
+
+        tags = FlagManager.getFlagManager().getVisibleKeywords();
+        TagListAdapter adapter = new TagListAdapter(getActivity(), tags);
+
+        ListView listView = (ListView) tagChoiceView.findViewById(
+            R.id.tag_choice_list_view);
+        listView.setAdapter(adapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listView.setOnItemClickListener(new TagClickListener());
+
+        return tagChoiceView;
     }
 
     @Override
@@ -163,4 +136,37 @@ public class TagChoiceDialogFragment extends DialogFragment {
 
     }
 
+    private class OkListener implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int id) {
+            Set<Keyword> addedTags = new HashSet<Keyword>(selectedTags);
+            addedTags.removeAll(preSelectedTags);
+            Set<Keyword> deletedTags = new HashSet<Keyword>(preSelectedTags);
+            deletedTags.removeAll(selectedTags);
+            listener.onStoreTags(addedTags, deletedTags);
+        }
+    }
+
+    private class StartKeywordEditorListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            listener.onStartKeywordEditor();
+            dismiss();
+        }
+    }
+
+    private class TagClickListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(
+            AdapterView parent, View view, int position, long id)
+        {
+            ListView parentListView = (ListView) parent;
+            Keyword clickedTag = tags.get(position);
+            if (parentListView.isItemChecked(position)) {
+                selectedTags.add(clickedTag);
+            } else {
+                selectedTags.remove(clickedTag);
+            }
+        }
+    }
 }
