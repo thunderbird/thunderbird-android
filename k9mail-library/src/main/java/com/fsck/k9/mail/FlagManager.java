@@ -1,12 +1,15 @@
 package com.fsck.k9.mail;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import timber.log.Timber;
 
@@ -22,6 +25,13 @@ public class FlagManager {
         return flagManager;
     }
 
+
+    private static final Set<Flag> syncFlags =
+        Collections.unmodifiableSet(new HashSet<Flag>(Arrays.asList(
+            Flag.SEEN,
+            Flag.FLAGGED,
+            Flag.ANSWERED,
+            Flag.FORWARDED)));
 
     private static final String KEYWORD_CODE_PREFIX = "KEYWORD_";
 
@@ -56,6 +66,10 @@ public class FlagManager {
             flag = getKeywordByExternalCode(externalCode);
         }
         return flag;
+    }
+
+    public Set<Flag> getSyncFlags() {
+        return syncFlags;
     }
 
     public List<Flag> parseCodeList(String codeList) {

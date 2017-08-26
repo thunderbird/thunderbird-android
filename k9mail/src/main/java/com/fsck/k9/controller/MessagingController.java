@@ -129,14 +129,6 @@ import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
 @SuppressWarnings("unchecked") // TODO change architecture to actually work with generics
 public class MessagingController {
     public static final long INVALID_MESSAGE_ID = -1;
-
-    private static final Set<Flag> PREDEFINED_SYNC_FLAGS =
-        Collections.unmodifiableSet(new HashSet<Flag>(Arrays.asList(
-            Flag.SEEN,
-            Flag.FLAGGED,
-            Flag.ANSWERED,
-            Flag.FORWARDED)));
-
     private static MessagingController inst = null;
 
 
@@ -1613,9 +1605,10 @@ public class MessagingController {
                 messageChanged = true;
             }
         } else {
+            final FlagManager flagManager = FlagManager.getFlagManager();
             HashSet<Flag> syncFlags =
-                new HashSet<Flag>(FlagManager.getFlagManager().getKeywords());
-            syncFlags.addAll(MessagingController.PREDEFINED_SYNC_FLAGS);
+                new HashSet<Flag>(flagManager.getKeywords());
+            syncFlags.addAll(flagManager.getSyncFlags());
             for (Flag flag : syncFlags) {
                 if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
                     localMessage.setFlag(flag, remoteMessage.isSet(flag));
