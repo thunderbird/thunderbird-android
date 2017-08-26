@@ -1,6 +1,12 @@
 
 package com.fsck.k9.activity.setup;
 
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,37 +14,41 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
-import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.fsck.k9.*;
+import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.mail.NetworkType;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
+import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
-import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
+import timber.log.Timber;
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
@@ -521,7 +531,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     URI oldUri = new URI(mAccount.getTransportUri());
                     ServerSettings transportServer = new ServerSettings(Type.SMTP, oldUri.getHost(), oldUri.getPort(),
                             ConnectionSecurity.SSL_TLS_REQUIRED, authType, username, password, clientCertificateAlias);
-                    String transportUri = Transport.createTransportUri(transportServer);
+                    String transportUri = TransportUris.createTransportUri(transportServer);
                     mAccount.setTransportUri(transportUri);
                 } catch (URISyntaxException use) {
                     /*

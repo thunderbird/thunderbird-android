@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -38,13 +37,13 @@ class MigrationTo55 {
 
                     String fulltext = fulltextCreator.createFulltext(localMessage);
                     if (!TextUtils.isEmpty(fulltext)) {
-                        Timber.d("fulltext for msg id %d is %d chars long", localMessage.getId(), fulltext.length());
+                        Timber.d("fulltext for msg id %d is %d chars long", localMessage.getDatabaseId(), fulltext.length());
                         cv.clear();
-                        cv.put("docid", localMessage.getId());
+                        cv.put("docid", localMessage.getDatabaseId());
                         cv.put("fulltext", fulltext);
                         db.insert("messages_fulltext", null, cv);
                     } else {
-                        Timber.d("no fulltext for msg id %d :(", localMessage.getId());
+                        Timber.d("no fulltext for msg id %d :(", localMessage.getDatabaseId());
                     }
                 }
             }

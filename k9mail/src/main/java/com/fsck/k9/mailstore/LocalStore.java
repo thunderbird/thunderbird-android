@@ -9,7 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,9 +74,7 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
  * Implements a SQLite database backed local store for Messages.
  * </pre>
  */
-public class LocalStore extends Store implements Serializable {
-    private static final long serialVersionUID = -5142141896809423072L;
-
+public class LocalStore extends Store {
     static final String[] EMPTY_STRING_ARRAY = new String[0];
     static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
@@ -102,6 +99,33 @@ public class LocalStore extends Store implements Serializable {
         "bcc_list, reply_to_list, attachment_count, internal_date, messages.message_id, " +
         "folder_id, preview, threads.id, threads.root, deleted, read, flagged, answered, " +
         "forwarded, message_part_id, messages.mime_type, preview_type, header ";
+
+    static final int MSG_INDEX_SUBJECT = 0;
+    static final int MSG_INDEX_SENDER_LIST = 1;
+    static final int MSG_INDEX_DATE = 2;
+    static final int MSG_INDEX_UID = 3;
+    static final int MSG_INDEX_FLAGS = 4;
+    static final int MSG_INDEX_ID = 5;
+    static final int MSG_INDEX_TO = 6;
+    static final int MSG_INDEX_CC = 7;
+    static final int MSG_INDEX_BCC = 8;
+    static final int MSG_INDEX_REPLY_TO = 9;
+    static final int MSG_INDEX_ATTACHMENT_COUNT = 10;
+    static final int MSG_INDEX_INTERNAL_DATE = 11;
+    static final int MSG_INDEX_MESSAGE_ID_HEADER = 12;
+    static final int MSG_INDEX_FOLDER_ID = 13;
+    static final int MSG_INDEX_PREVIEW = 14;
+    static final int MSG_INDEX_THREAD_ID = 15;
+    static final int MSG_INDEX_THREAD_ROOT_ID = 16;
+    static final int MSG_INDEX_FLAG_DELETED = 17;
+    static final int MSG_INDEX_FLAG_READ = 18;
+    static final int MSG_INDEX_FLAG_FLAGGED = 19;
+    static final int MSG_INDEX_FLAG_ANSWERED = 20;
+    static final int MSG_INDEX_FLAG_FORWARDED = 21;
+    static final int MSG_INDEX_MESSAGE_PART_ID = 22;
+    static final int MSG_INDEX_MIME_TYPE = 23;
+    static final int MSG_INDEX_PREVIEW_TYPE = 24;
+    static final int MSG_INDEX_HEADER_DATA = 25;
 
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
@@ -155,35 +179,16 @@ public class LocalStore extends Store implements Serializable {
 
     public static final int DB_VERSION = 60;
 
-
-    public static String getColumnNameForFlag(Flag flag) {
-        if (flag == Flag.SEEN) {
-            return MessageColumns.READ;
-        } else if (flag == Flag.FLAGGED) {
-            return MessageColumns.FLAGGED;
-        } else if (flag == Flag.ANSWERED) {
-            return MessageColumns.ANSWERED;
-        } else if (flag == Flag.FORWARDED) {
-            return MessageColumns.FORWARDED;
-        } else {
-            throw new IllegalArgumentException("Flag must be a special column flag");
-        }
-    }
-
-
-    protected String uUid = null;
-
-    final Context context;
-
-    LockableDatabase database;
-
-    private ContentResolver mContentResolver;
-    private final Account mAccount;
+    private final Context context;
+    private final ContentResolver contentResolver;
     private final MessagePreviewCreator messagePreviewCreator;
     private final MessageFulltextCreator messageFulltextCreator;
     private final AttachmentCounter attachmentCounter;
     private final PendingCommandSerializer pendingCommandSerializer;
-    final AttachmentInfoExtractor attachmentInfoExtractor;
+    private final AttachmentInfoExtractor attachmentInfoExtractor;
+
+    private final Account account;
+    private final LockableDatabase database;
 
     /**
      * local://localhost/path/to/database/uuid.db
@@ -191,13 +196,8 @@ public class LocalStore extends Store implements Serializable {
      * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
     private LocalStore(final Account account, final Context context) throws MessagingException {
-        mAccount = account;
-        database = new LockableDatabase(context, account.getUuid(), new StoreSchemaDefinition(this));
-
         this.context = context;
-        mContentResolver = context.getContentResolver();
-        database.setStorageProviderId(account.getLocalStorageProviderId());
-        uUid = account.getUuid();
+        this.contentResolver = context.getContentResolver();
 
         messagePreviewCreator = MessagePreviewCreator.newInstance();
         messageFulltextCreator = MessageFulltextCreator.newInstance();
@@ -205,6 +205,10 @@ public class LocalStore extends Store implements Serializable {
         pendingCommandSerializer = PendingCommandSerializer.getInstance();
         attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
 
+        this.account = account;
+
+        database = new LockableDatabase(context, account.getUuid(), new StoreSchemaDefinition(this));
+        database.setStorageProviderId(account.getLocalStorageProviderId());
         database.open();
     }
 
@@ -260,8 +264,8 @@ public class LocalStore extends Store implements Serializable {
         return context;
     }
 
-    protected Account getAccount() {
-        return mAccount;
+    Account getAccount() {
+        return account;
     }
 
     protected Storage getStorage() {
@@ -272,7 +276,7 @@ public class LocalStore extends Store implements Serializable {
 
         final StorageManager storageManager = StorageManager.getInstance(context);
 
-        final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid,
+        final File attachmentDirectory = storageManager.getAttachmentDirectory(account.getUuid(),
                                          database.getStorageProviderId());
 
         return database.execute(false, new DbCallback<Long>() {
@@ -288,7 +292,7 @@ public class LocalStore extends Store implements Serializable {
                     }
                 }
 
-                final File dbFile = storageManager.getDatabase(uUid, database.getStorageProviderId());
+                final File dbFile = storageManager.getDatabase(account.getUuid(), database.getStorageProviderId());
                 return dbFile.length() + attachmentLength;
             }
         });
@@ -352,7 +356,7 @@ public class LocalStore extends Store implements Serializable {
         }
     }
 
-    public int getMessageCount() throws MessagingException {
+    private int getMessageCount() throws MessagingException {
         return database.execute(false, new DbCallback<Integer>() {
             @Override
             public Integer doDbWork(final SQLiteDatabase db) {
@@ -368,7 +372,7 @@ public class LocalStore extends Store implements Serializable {
         });
     }
 
-    public int getFolderCount() throws MessagingException {
+    private int getFolderCount() throws MessagingException {
         return database.execute(false, new DbCallback<Integer>() {
             @Override
             public Integer doDbWork(final SQLiteDatabase db) {
@@ -458,7 +462,8 @@ public class LocalStore extends Store implements Serializable {
 
     private void deleteAllMessagePartsDataFromDisk() {
         final StorageManager storageManager = StorageManager.getInstance(context);
-        File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId());
+        File attachmentDirectory = storageManager.getAttachmentDirectory(
+                account.getUuid(), database.getStorageProviderId());
         File[] files = attachmentDirectory.listFiles();
         if (files == null) {
             return;
@@ -562,7 +567,7 @@ public class LocalStore extends Store implements Serializable {
 
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
-        SqlQueryBuilder.buildWhereClause(mAccount, search.getConditions(), query, queryArgs);
+        SqlQueryBuilder.buildWhereClause(account, search.getConditions(), query, queryArgs);
 
         // Avoid "ambiguous column name" error by prefixing "id" with the message table name
         String where = SqlQueryBuilder.addPrefixToSelection(new String[] { "id" },
@@ -770,7 +775,7 @@ public class LocalStore extends Store implements Serializable {
 
             if (part instanceof LocalPart) {
                 LocalPart localBodyPart = (LocalPart) part;
-                if (localBodyPart.getId() == partId) {
+                if (localBodyPart.getPartId() == partId) {
                     return part;
                 }
             }
@@ -887,7 +892,8 @@ public class LocalStore extends Store implements Serializable {
 
     File getAttachmentFile(String attachmentId) {
         final StorageManager storageManager = StorageManager.getInstance(context);
-        final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, database.getStorageProviderId());
+        final File attachmentDirectory = storageManager.getAttachmentDirectory(
+                account.getUuid(), database.getStorageProviderId());
         return new File(attachmentDirectory, attachmentId);
     }
 
@@ -908,10 +914,10 @@ public class LocalStore extends Store implements Serializable {
                     // When created, special folders should always be displayed
                     // inbox should be integrated
                     // and the inbox and drafts folders should be syncced by default
-                    if (mAccount.isSpecialFolder(name)) {
+                    if (account.isSpecialFolder(name)) {
                         prefHolder.inTopGroup = true;
                         prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        if (name.equalsIgnoreCase(mAccount.getInboxFolderName())) {
+                        if (name.equalsIgnoreCase(account.getInboxFolderName())) {
                             prefHolder.integrate = true;
                             prefHolder.notifyClass = LocalFolder.FolderClass.FIRST_CLASS;
                             prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
@@ -919,8 +925,8 @@ public class LocalStore extends Store implements Serializable {
                             prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
 
                         }
-                        if (name.equalsIgnoreCase(mAccount.getInboxFolderName()) ||
-                                name.equalsIgnoreCase(mAccount.getDraftsFolderName())) {
+                        if (name.equalsIgnoreCase(account.getInboxFolderName()) ||
+                                name.equalsIgnoreCase(account.getDraftsFolderName())) {
                             prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
                             prefHolder.syncClass = LocalFolder.FolderClass.NO_CLASS;
@@ -969,7 +975,7 @@ public class LocalStore extends Store implements Serializable {
         return database;
     }
 
-    public MessagePreviewCreator getMessagePreviewCreator() {
+    MessagePreviewCreator getMessagePreviewCreator() {
         return messagePreviewCreator;
     }
 
@@ -977,13 +983,17 @@ public class LocalStore extends Store implements Serializable {
         return messageFulltextCreator;
     }
 
-    public AttachmentCounter getAttachmentCounter() {
+    AttachmentCounter getAttachmentCounter() {
         return attachmentCounter;
     }
 
+    AttachmentInfoExtractor getAttachmentInfoExtractor() {
+        return attachmentInfoExtractor;
+    }
+
     void notifyChange() {
-        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + uUid + "/messages");
-        mContentResolver.notifyChange(uri, null);
+        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + account.getUuid() + "/messages");
+        contentResolver.notifyChange(uri, null);
     }
 
     /**
@@ -999,10 +1009,8 @@ public class LocalStore extends Store implements Serializable {
      *         Supplies the argument set and the code to query/update the database.
      * @param batchSize
      *         The maximum size of the selection set in each SQL statement.
-     *
-     * @throws MessagingException
      */
-    public void doBatchSetSelection(final BatchSetSelection selectionCallback, final int batchSize)
+    private void doBatchSetSelection(final BatchSetSelection selectionCallback, final int batchSize)
             throws MessagingException {
 
         final List<String> selectionArgs = new ArrayList<>();
@@ -1054,7 +1062,7 @@ public class LocalStore extends Store implements Serializable {
     /**
      * Defines the behavior of {@link LocalStore#doBatchSetSelection(BatchSetSelection, int)}.
      */
-    public interface BatchSetSelection {
+    interface BatchSetSelection {
         /**
          * @return The size of the argument list.
          */
@@ -1080,7 +1088,6 @@ public class LocalStore extends Store implements Serializable {
          *         {@code " IN (?,?,?)"} (starts with a space).
          * @param selectionArgs
          *         The current subset of the argument list.
-         * @throws UnavailableStorageException
          */
         void doDbWork(SQLiteDatabase db, String selectionSet, String[] selectionArgs)
                 throws UnavailableStorageException;
@@ -1107,7 +1114,6 @@ public class LocalStore extends Store implements Serializable {
      * @param newState
      *         {@code true}, if the flag should be set. {@code false}, otherwise.
      *
-     * @throws MessagingException
      */
     public void setFlag(final List<Long> messageIds, final Flag flag, final boolean newState)
             throws MessagingException {
@@ -1156,7 +1162,6 @@ public class LocalStore extends Store implements Serializable {
      * @param newState
      *         {@code true}, if the flag should be set. {@code false}, otherwise.
      *
-     * @throws MessagingException
      */
     public void setFlagForThreads(final List<Long> threadRootIds, Flag flag, final boolean newState)
             throws MessagingException {
@@ -1208,7 +1213,6 @@ public class LocalStore extends Store implements Serializable {
      *
      * @return The list of UIDs for the messages grouped by folder name.
      *
-     * @throws MessagingException
      */
     public Map<String, List<String>> getFoldersAndUids(final List<Long> messageIds,
             final boolean threadedList) throws MessagingException {
@@ -1279,5 +1283,19 @@ public class LocalStore extends Store implements Serializable {
         }, UID_CHECK_BATCH_SIZE);
 
         return folderMap;
+    }
+
+    public static String getColumnNameForFlag(Flag flag) {
+        if (flag == Flag.SEEN) {
+            return MessageColumns.READ;
+        } else if (flag == Flag.FLAGGED) {
+            return MessageColumns.FLAGGED;
+        } else if (flag == Flag.ANSWERED) {
+            return MessageColumns.ANSWERED;
+        } else if (flag == Flag.FORWARDED) {
+            return MessageColumns.FORWARDED;
+        } else {
+            throw new IllegalArgumentException("Flag must be a special column flag");
+        }
     }
 }

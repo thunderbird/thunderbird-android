@@ -856,7 +856,7 @@ public class MessagingControllerTest {
         when(account.hasSentFolder()).thenReturn(true);
         when(account.getSentFolderName()).thenReturn(SENT_FOLDER_NAME);
         when(localStore.getFolder(SENT_FOLDER_NAME)).thenReturn(sentFolder);
-        when(sentFolder.getId()).thenReturn(1L);
+        when(sentFolder.getDatabaseId()).thenReturn(1L);
         when(localFolder.exists()).thenReturn(true);
         when(transportProvider.getTransport(appContext, account)).thenReturn(transport);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessageToSend1));

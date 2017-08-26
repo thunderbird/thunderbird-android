@@ -144,8 +144,6 @@ public abstract class Message implements Part, Body {
     @Override
     public abstract void setBody(Body body);
 
-    public abstract long getId();
-
     public abstract boolean hasAttachments();
 
     public abstract long getSize();

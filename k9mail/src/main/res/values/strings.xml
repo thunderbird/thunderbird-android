@@ -282,6 +282,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_from_format">From: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">To:</string>
     <string name="message_view_cc_label">Cc:</string>
+    <string name="message_view_bcc_label">Bcc:</string>
     <string name="message_view_no_tags">No tags</string>
     <string name="message_view_attachment_view_action">Open</string>
     <string name="message_view_attachment_download_action">Save</string>
@@ -685,24 +686,24 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="folder_settings_in_top_group_summary">Show near the top of the folder list</string>
 
     <string name="folder_settings_folder_display_mode_label">Folder display class</string>
-    <string name="folder_settings_folder_display_mode_normal">None</string>
+    <string name="folder_settings_folder_display_mode_normal">No Class</string>
     <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
 
     <string name="folder_settings_folder_sync_mode_label">Folder sync class</string>
-    <string name="folder_settings_folder_sync_mode_normal">None</string>
+    <string name="folder_settings_folder_sync_mode_normal">No Class</string>
     <string name="folder_settings_folder_sync_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_sync_mode_inherited">Same as display class</string>
 
     <string name="folder_settings_folder_push_mode_label">Folder push class</string>
-    <string name="folder_settings_folder_push_mode_normal">None</string>
+    <string name="folder_settings_folder_push_mode_normal">No Class</string>
     <string name="folder_settings_folder_push_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_push_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_push_mode_inherited">Same as sync class</string>
 
     <string name="folder_settings_folder_notify_mode_label">Folder notification class</string>
-    <string name="folder_settings_folder_notify_mode_normal">None</string>
+    <string name="folder_settings_folder_notify_mode_normal">No Class</string>
     <string name="folder_settings_folder_notify_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_notify_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_notify_mode_inherited">Same as push class</string>
@@ -920,6 +921,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_message_view_sender">Sender</string>
     <string name="font_size_message_view_to">To</string>
     <string name="font_size_message_view_cc">Cc</string>
+    <string name="font_size_message_view_bcc">Bcc</string>
     <string name="font_size_message_view_tags">Tags</string>
     <string name="font_size_message_view_additional_headers">Additional headers</string>
     <string name="font_size_message_view_subject">Subject</string>
@@ -1077,8 +1079,14 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_remote_search_num_label">Server search limit</string>
     <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>
     <string name="remote_search_sending_query">Sending query to server</string>
-    <string name="remote_search_downloading">Fetching %d results</string>
-    <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>
+    <plurals name="remote_search_downloading">
+        <item quantity="one">Fetching %d result</item>
+        <item quantity="other">Fetching %d results</item>
+    </plurals>
+    <plurals name="remote_search_downloading_limited">
+        <item quantity="one">Fetching %1$d of %2$d results</item>
+        <item quantity="other">Fetching %1$d of %2$d results</item>
+    </plurals>
     <string name="remote_search_error">Remote search failed</string>
 
     <string name="account_settings_search">Search</string>

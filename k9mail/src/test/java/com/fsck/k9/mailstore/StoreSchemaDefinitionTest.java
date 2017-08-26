@@ -336,7 +336,7 @@ public class StoreSchemaDefinitionTest {
         LockableDatabase lockableDatabase = createLockableDatabase();
 
         LocalStore localStore = mock(LocalStore.class);
-        localStore.database = lockableDatabase;
+        when(localStore.getDatabase()).thenReturn(lockableDatabase);
         when(localStore.getContext()).thenReturn(context);
         when(localStore.getAccount()).thenReturn(account);
 

@@ -358,13 +358,13 @@ public class MessageProvider extends ContentProvider {
     }
 
     /**
-     * Extracts the {@link LocalMessage#getId() ID} from the given {@link MessageInfoHolder}. The underlying
+     * Extracts the {@link LocalMessage#getDatabaseId() ID} from the given {@link MessageInfoHolder}. The underlying
      * {@link Message} is expected to be a {@link LocalMessage}.
      */
     public static class IdExtractor implements FieldExtractor<MessageInfoHolder, Long> {
         @Override
         public Long getField(MessageInfoHolder source) {
-            return source.message.getId();
+            return source.message.getDatabaseId();
         }
     }
 

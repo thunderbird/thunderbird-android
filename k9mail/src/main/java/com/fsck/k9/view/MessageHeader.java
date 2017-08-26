@@ -63,6 +63,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView mToLabel;
     private TextView mCcView;
     private TextView mCcLabel;
+    private TextView mBccView;
+    private TextView mBccLabel;
     private TextView mTagsView;
     private TextView mSubjectView;
     private MessageCryptoStatusView mCryptoStatusIcon;
@@ -119,6 +121,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mToLabel = (TextView) findViewById(R.id.to_label);
         mCcView = (TextView) findViewById(R.id.cc);
         mCcLabel = (TextView) findViewById(R.id.cc_label);
+        mBccView = (TextView) findViewById(R.id.bcc);
+        mBccLabel = (TextView) findViewById(R.id.bcc_label);
         mTagsView = (TextView) findViewById(R.id.tags);
 
         mContactBadge = (ContactBadge) findViewById(R.id.contact_badge);
@@ -139,6 +143,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mFontSizes.setViewTextSize(mToLabel, mFontSizes.getMessageViewTo());
         mFontSizes.setViewTextSize(mCcView, mFontSizes.getMessageViewCC());
         mFontSizes.setViewTextSize(mCcLabel, mFontSizes.getMessageViewCC());
+        mFontSizes.setViewTextSize(mBccView, mFontSizes.getMessageViewBCC());
+        mFontSizes.setViewTextSize(mBccLabel, mFontSizes.getMessageViewBCC());
 
         defaultTagsColor = mTagsView.getCurrentTextColor();
         mFontSizes.setViewTextSize(mTagsView, mFontSizes.getMessageViewTags());
@@ -146,11 +152,13 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
+        mBccView.setOnClickListener(this);
         mTagsView.setOnClickListener(this);
 
         mFromView.setOnLongClickListener(this);
         mToView.setOnLongClickListener(this);
         mCcView.setOnLongClickListener(this);
+        mBccView.setOnLongClickListener(this);
 
         mCryptoStatusIcon = (MessageCryptoStatusView) findViewById(R.id.crypto_status_icon);
         mCryptoStatusIcon.setOnClickListener(this);
@@ -168,7 +176,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 break;
             }
             case R.id.to:
-            case R.id.cc: {
+            case R.id.cc:
+            case R.id.bcc: {
                 expand((TextView)view, ((TextView)view).getEllipsize() != null);
                 layoutChanged();
                 break;
@@ -283,6 +292,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         final CharSequence from = MessageHelper.toFriendly(message.getFrom(), contacts);
         final CharSequence to = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
         final CharSequence cc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
+        final CharSequence bcc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.BCC), contacts);
 
         Set<Flag> msgFlags = message.getFlags();
 
@@ -304,7 +314,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         /* We hide the subject by default for each new message, and MessageTitleView might show
          * it later by calling showSubjectLine(). */
-        boolean newMessageShown = mMessage == null || mMessage.getId() != message.getId();
+        boolean newMessageShown = mMessage == null || !mMessage.getUid().equals(message.getUid());
         if (newMessageShown) {
             mSubjectView.setVisibility(GONE);
         }
@@ -357,6 +367,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         updateAddressField(mToView, to, mToLabel);
         updateAddressField(mCcView, cc, mCcLabel);
+        updateAddressField(mBccView, bcc, mBccLabel);
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
