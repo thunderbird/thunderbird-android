@@ -14,6 +14,7 @@ import java.util.Map;
 import android.content.Context;
 import timber.log.Timber;
 
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalStore;
@@ -202,13 +203,14 @@ public class Preferences {
 
         Storage storage = getStorage();
         ArrayList<String> externalCodes = loadKeywordList();
+        final FlagManager flagManager = FlagManager.getFlagManager();
         for (String externalCode : externalCodes) {
             final String baseKey = "keyword." + externalCode + ".";
             final String name = storage.getString(baseKey + "name", null);
             final boolean visible = storage.getBoolean(baseKey + "visible", true);
             final int color = storage.getInt(baseKey + "color", -1);
 
-            Keyword k = Keyword.getKeywordByExternalCode(externalCode);
+            Keyword k = flagManager.getKeywordByExternalCode(externalCode);
             k.setName(name);
             k.setVisible(visible);
             k.setColor(color);
@@ -228,8 +230,9 @@ public class Preferences {
         ArrayList<String> newExternalCodes = new ArrayList<String>();
         HashSet<String> deletedExternalCodes =
             new HashSet<String>(oldExternalCodes);
+        final FlagManager flagManager = FlagManager.getFlagManager();
 
-        for (Keyword keyword : Keyword.getKeywords()) {
+        for (Keyword keyword : flagManager.getKeywords()) {
             if (!saveOnlyKeywordOrder) {
                 updateKeyword(keyword);
             }

@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 
 
 class MigrationTo46 {
@@ -39,7 +40,9 @@ class MigrationTo46 {
 
                     for (String flagStr : flags) {
                         try {
-                            Flag flag = Flag.valueOf(flagStr);
+                            final FlagManager flagManager =
+                                FlagManager.getFlagManager();
+                            Flag flag = flagManager.getFlagByCode(flagStr);
 
                             if (flag == Flag.ANSWERED) {
                                 answered = true;

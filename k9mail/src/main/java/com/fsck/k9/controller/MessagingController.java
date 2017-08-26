@@ -73,9 +73,9 @@ import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.FolderType;
-import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -1613,7 +1613,8 @@ public class MessagingController {
                 messageChanged = true;
             }
         } else {
-            HashSet<Flag> syncFlags = new HashSet<Flag>(Keyword.getKeywords());
+            HashSet<Flag> syncFlags =
+                new HashSet<Flag>(FlagManager.getFlagManager().getKeywords());
             syncFlags.addAll(MessagingController.PREDEFINED_SYNC_FLAGS);
             for (Flag flag : syncFlags) {
                 if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {

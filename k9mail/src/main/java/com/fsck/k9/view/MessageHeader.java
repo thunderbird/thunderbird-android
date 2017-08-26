@@ -41,6 +41,7 @@ import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -357,7 +358,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
 
         SpannableStringBuilder sb = new SpannableStringBuilder();
-        List<Keyword> tags = Keyword.getVisibleKeywords(msgFlags);
+        final FlagManager flagManager = FlagManager.getFlagManager();
+        List<Keyword> tags = flagManager.getVisibleKeywords(msgFlags);
         if (tags.size() != 0) {
             boolean first = true;
             for (Keyword keyword : tags) {

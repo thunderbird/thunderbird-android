@@ -46,6 +46,7 @@ import com.fsck.k9.fragment.TagChoiceDialogFragment;
 import com.fsck.k9.helper.FileBrowserHelper;
 import com.fsck.k9.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -358,8 +359,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public void onTagDialog() {
         try {
             TagChoiceDialogFragment fragment = new TagChoiceDialogFragment();
+            final FlagManager flagManager = FlagManager.getFlagManager();
             fragment.setPreSelectedTags(
-                Keyword.getVisibleKeywords(mMessage.getFlags()));
+                flagManager.getVisibleKeywords(mMessage.getFlags()));
             fragment.show(getFragmentManager(), "tag_choice");
         } catch (Exception e) {
             Timber.e(e, "Cannot show TagChoiceDialogFragment");

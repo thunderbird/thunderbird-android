@@ -22,6 +22,7 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Keyword;
@@ -866,8 +867,9 @@ class ImapFolder extends Folder<ImapMessage> {
         if (fetchList.containsKey("FLAGS")) {
             ImapList flags = fetchList.getKeyedList("FLAGS");
             if (flags != null) {
+                final FlagManager flagManager = FlagManager.getFlagManager();
                 for (int i = 0, count = flags.size(); i < count; i++) {
-                    message.setFlagInternal(Flag.getFlagByExternalCode(
+                    message.setFlagInternal(flagManager.getFlagByExternalCode(
                         flags.getString(i)), true);
                 }
             }

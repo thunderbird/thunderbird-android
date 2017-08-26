@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.R;
 
@@ -76,7 +77,7 @@ public class TagChoiceDialogFragment extends DialogFragment {
             }
         });
 
-        tags = Keyword.getVisibleKeywords();
+        tags = FlagManager.getFlagManager().getVisibleKeywords();
         TagListAdapter adapter = new TagListAdapter(getActivity(), tags);
         ListView listView = (ListView) tagChoiceListView.findViewById(
             R.id.tag_choice_list_view);

@@ -26,6 +26,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mailstore.DatabasePreviewType;
 import com.fsck.k9.Preferences;
@@ -178,8 +179,10 @@ public class MessageListAdapter extends CursorAdapter {
         final String flagList = cursor.getString(FLAGS_COLUMN);
 
         if (flagList != null && flagList.length() > 0) {
-            final List<Flag> flags = Flag.parseCodeList(flagList);
-            final List<Keyword> orderedTags = Keyword.getVisibleKeywords(flags);
+            final FlagManager flagManager = FlagManager.getFlagManager();
+            final List<Flag> flags = flagManager.parseCodeList(flagList);
+            final List<Keyword> orderedTags =
+                flagManager.getVisibleKeywords(flags);
             if (orderedTags.size() > 0) {
                 firstTag = orderedTags.get(0);
             }

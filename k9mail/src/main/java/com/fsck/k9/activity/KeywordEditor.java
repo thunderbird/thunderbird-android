@@ -33,6 +33,7 @@ import com.fsck.k9.fragment.KeywordEditNameDialogFragment;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Keyword;
 
 
@@ -42,6 +43,7 @@ public class KeywordEditor extends K9ListActivity implements
 {
     private KeywordEditorListAdapter adapter;
     private int colorKeywordNotVisible;
+    final private FlagManager flagManager = FlagManager.getFlagManager();
 
 
     @Override
@@ -69,7 +71,7 @@ public class KeywordEditor extends K9ListActivity implements
             R.attr.colorKeywordNotVisible, outValue, true);
         colorKeywordNotVisible = outValue.data;
 
-        ArrayList<Keyword> keywords = Keyword.getKeywords();
+        ArrayList<Keyword> keywords = flagManager.getKeywords();
         adapter = new KeywordEditorListAdapter(this, keywords);
         setListAdapter(adapter);
     }
@@ -277,7 +279,7 @@ public class KeywordEditor extends K9ListActivity implements
                     final int newPos = pos - 1;
                     Keyword keyword = getItem(pos);
                     remove(keyword);
-                    keyword.moveTo(newPos);
+                    flagManager.moveKeyword(keyword, newPos);
                     insert(keyword, newPos);
                     saveChangedKeywordOrder();
                 }
@@ -292,7 +294,7 @@ public class KeywordEditor extends K9ListActivity implements
                     final int newPos = pos + 1;
                     Keyword keyword = getItem(pos);
                     remove(keyword);
-                    keyword.moveTo(newPos);
+                    flagManager.moveKeyword(keyword, newPos);
                     insert(keyword, newPos);
                     saveChangedKeywordOrder();
                 }
@@ -366,7 +368,7 @@ public class KeywordEditor extends K9ListActivity implements
                     public void onClick(
                         DialogInterface dialog, int whichButton) {
                             adapter.remove(keyword);
-                            keyword.delete();
+                            flagManager.deleteKeyword(keyword);
                             saveDeletedKeyword();
                         }
                 })
@@ -392,7 +394,8 @@ public class KeywordEditor extends K9ListActivity implements
     @Override
     public void onKeywordAdded(String externalCode) {
         try {
-            Keyword keyword = Keyword.getKeywordByExternalCode(externalCode);
+            Keyword keyword =
+                flagManager.getKeywordByExternalCode(externalCode);
             keyword.setVisible(true);
             adapter.add(keyword);
             saveChangedKeyword(keyword);

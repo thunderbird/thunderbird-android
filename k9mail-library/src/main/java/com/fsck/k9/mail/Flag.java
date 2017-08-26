@@ -1,11 +1,6 @@
 package com.fsck.k9.mail;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-
-import timber.log.Timber;
 
 
 public class Flag {
@@ -113,43 +108,22 @@ public class Flag {
     }
 
 
-    // Get flag by code; create a new keyword, if needed.
-    public static Flag valueOf(String code) throws IllegalArgumentException {
+    public static Flag getByCode(String code) {
         if (mapCodeToPredefinedFlag.containsKey(code)) {
             return mapCodeToPredefinedFlag.get(code);
         }
-        return Keyword.valueOf(code);
+        return null;
     }
 
-    // Get server flag by external code; create a new keyword, if needed.
-    public static Flag getFlagByExternalCode(String externalCode)
-       throws IllegalArgumentException
-    {
+    public static Flag getByExternalCode(String externalCode) {
         if (mapExternalCodeToSystemFlag.containsKey(externalCode)) {
             return mapExternalCodeToSystemFlag.get(externalCode);
         }
-        return Keyword.getKeywordByExternalCode(externalCode);
+        return null;
     }
 
-    protected static boolean isExternalCodeOfSystemFlag(String externalCode) {
+    public static boolean isExternalCodeOfSystemFlag(String externalCode) {
         return mapExternalCodeToSystemFlag.containsKey(externalCode);
-    }
-
-    public static List<Flag> parseCodeList(String codeList) {
-        LinkedHashSet<Flag> flags = new LinkedHashSet<Flag>();
-        if (codeList != null && codeList.length() > 0) {
-            for (String code : codeList.split(",")) {
-                try {
-                    flags.add(valueOf(code));
-                }
-                catch (Exception e) {
-                    if (!"X_BAD_FLAG".equals(code)) {
-                        Timber.w("Unable to parse flag %s", code);
-                    }
-                }
-            }
-        }
-        return new ArrayList<Flag>(flags);
     }
 
 

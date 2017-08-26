@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.filter.Base64;
 
 import static com.fsck.k9.helper.Preconditions.checkNotNull;
@@ -43,7 +44,8 @@ public class MessageReference {
 
         Flag flag;
         try {
-            flag = Flag.valueOf(tokens.nextToken());
+            flag = FlagManager.getFlagManager().getFlagByCode(
+                tokens.nextToken());
         } catch (IllegalArgumentException e) {
             return null;
         }

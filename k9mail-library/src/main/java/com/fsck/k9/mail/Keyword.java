@@ -1,11 +1,6 @@
 package com.fsck.k9.mail;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.HashSet;
-import java.lang.IndexOutOfBoundsException;
 import java.util.Random;
 
 import android.os.Parcel;
@@ -15,20 +10,11 @@ import android.support.v4.graphics.ColorUtils;
 
 public final class Keyword extends Flag implements Parcelable {
 
-    private static final String KEYWORD_CODE_PREFIX = "KEYWORD_";
-
     private static final ArrayList<Integer> PREDEFINED_COLORS =
         new ArrayList<Integer>() {{
             add(0xFFFF0000); add(0xFFFFAA00); add(0xFFFFFF00); add(0xFFAAFF00);
             add(0xFF00FF00); add(0xFF00FFFF); add(0xFF0000FF); add(0xFFFF00FF);
         }};
-
-
-    private static final ConcurrentHashMap<String, Keyword>
-        mapExternalCodeToKeyword = new ConcurrentHashMap<String, Keyword>();
-
-    private static final CopyOnWriteArrayList<Keyword>
-        orderedKeywords = new CopyOnWriteArrayList<Keyword>();
 
 
     // User-defined keyword name for display as a tag.
@@ -41,7 +27,7 @@ public final class Keyword extends Flag implements Parcelable {
     private static ArrayList<Integer> nextColors = null;
 
 
-    private Keyword(String code, String externalCode, String name) {
+    public Keyword(String code, String externalCode, String name) {
         // The caller has verified that externalCode is valid for an IMAP
         // keyowrd and not yet in use.
         super(code, externalCode);
@@ -49,48 +35,7 @@ public final class Keyword extends Flag implements Parcelable {
         color = randomColor();
     }
 
-    public void delete() {
-        final String externalCode = this.getExternalCode();
-        if (!mapExternalCodeToKeyword.containsKey(externalCode)) {
-            throw new IllegalArgumentException(
-                "deletion of unknown IMAP keyword '" + externalCode + "'");
-        }
-        orderedKeywords.remove(this);
-        mapExternalCodeToKeyword.remove(externalCode);
-    }
-
-
-    public static Keyword getKeywordByExternalCode(String externalCode)
-        throws IllegalArgumentException
-    {
-        if (externalCode == null) {
-            throw new IllegalArgumentException("externalCode is null");
-        }
-
-        if (mapExternalCodeToKeyword.containsKey(externalCode)) {
-            return mapExternalCodeToKeyword.get(externalCode);
-        }
-
-        if (!matchesImapKeywordProduction(externalCode)) {
-            throw new IllegalArgumentException(
-                "invalid IMAP keyword '" + externalCode + "': " +
-                "does not match production");
-        }
-        if (isExternalCodeOfSystemFlag(externalCode)) {
-            throw new IllegalArgumentException(
-                "invalid IMAP keyword '" + externalCode + "': " +
-                "matches system flag");
-        }
-
-        final String code = KEYWORD_CODE_PREFIX + externalCode;
-        final String name = externalCode;
-        final Keyword kw = new Keyword(code, externalCode, name);
-        mapExternalCodeToKeyword.put(externalCode, kw);
-        orderedKeywords.add(kw);
-        return kw;
-    }
-
-    private static boolean matchesImapKeywordProduction(String externalCode) {
+    public static boolean matchesImapKeywordProduction(String externalCode) {
         // Rule 'flag-keyword' in RFC 3501 without comma (used as separator)
         return externalCode.matches(
             "^[\\x20-\\xff&&[^\\\\(){\\s\\x7%*\\],]]+$");
@@ -100,19 +45,6 @@ public final class Keyword extends Flag implements Parcelable {
         return matchesImapKeywordProduction(externalCode) &&
                !isExternalCodeOfSystemFlag(externalCode);
     }
-
-
-    public static Keyword valueOf(String code) throws IllegalArgumentException {
-        if (code.startsWith(KEYWORD_CODE_PREFIX)) {
-            final String externalCode =
-                code.substring(KEYWORD_CODE_PREFIX.length());
-            return getKeywordByExternalCode(externalCode);
-        }
-        throw new IllegalArgumentException(
-            "invalid internal code '" + code + "' for a keyword: " +
-            "missing prefix '" + KEYWORD_CODE_PREFIX + "'");
-    }
-
 
     public String getName() {
         return name;
@@ -169,50 +101,6 @@ public final class Keyword extends Flag implements Parcelable {
         }
     }
 
-    public void moveTo(int newPosition) throws IndexOutOfBoundsException {
-        if (newPosition < 0 || newPosition >= orderedKeywords.size()) {
-            throw new IndexOutOfBoundsException(
-                "position " + newPosition + " is out of bounds.");
-        }
-        final int oldPosition = orderedKeywords.lastIndexOf(this);
-        if (oldPosition == -1) {
-            throw new RuntimeException("internal error: " +
-                "keyword '" + getCode() + "' not found in internal catalog.");
-        }
-        if (newPosition == oldPosition) {
-            return;
-        }
-        orderedKeywords.remove(oldPosition);
-        orderedKeywords.add(newPosition, this);
-    }
-
-
-    public static ArrayList<Keyword> getKeywords() {
-        return new ArrayList<Keyword>(orderedKeywords);
-    }
-
-    public static ArrayList<Keyword> getVisibleKeywords() {
-        ArrayList<Keyword> visibleKeywords = new ArrayList<Keyword>();
-        for (Keyword keyword : orderedKeywords) {
-            if (keyword.isVisible()) {
-                visibleKeywords.add(keyword);
-            }
-        }
-        return visibleKeywords;
-    }
-
-    public static ArrayList<Keyword> getVisibleKeywords(Collection<Flag> flags)
-    {
-        HashSet<Flag> flagSet = new HashSet<Flag>(flags);
-        ArrayList<Keyword> filteredKeywords = new ArrayList<Keyword>();
-        for (Keyword keyword : orderedKeywords) {
-            if (keyword.isVisible() && flagSet.contains(keyword)) {
-                filteredKeywords.add(keyword);
-            }
-        }
-        return filteredKeywords;
-    }
-
 
     // Parcelable interface
 
@@ -227,7 +115,8 @@ public final class Keyword extends Flag implements Parcelable {
     public static final Parcelable.Creator<Keyword> CREATOR
             = new Parcelable.Creator<Keyword>() {
         public Keyword createFromParcel(Parcel in) {
-            return valueOf(in.readString());
+            final FlagManager flagManager = FlagManager.getFlagManager();
+            return flagManager.getKeywordByCode(in.readString());
         }
 
         public Keyword[] newArray(int size) {
