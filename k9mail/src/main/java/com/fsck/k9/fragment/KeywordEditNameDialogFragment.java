@@ -8,9 +8,12 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -28,6 +31,7 @@ public class KeywordEditNameDialogFragment extends DialogFragment {
     private String name;
     private EditText nameEdit;
     private KeywordEditNameDialogListener listener;
+    private Button positiveButton;
 
     public void setKeyword(Keyword keyword, int position) {
         this.keyword = keyword;
@@ -55,6 +59,7 @@ public class KeywordEditNameDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.keyword_edit_name, null);
 
         nameEdit = (EditText) view.findViewById(R.id.keyword_name_edit);
+        nameEdit.addTextChangedListener(new NameWatcher());
         nameEdit.setText(name);
         nameEdit.setSelection(name.length());
         final EditText nameEditFinal = nameEdit;
@@ -84,6 +89,43 @@ public class KeywordEditNameDialogFragment extends DialogFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() +
                 "does not implement KeywordEditNameDialogListener");
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        final AlertDialog dialog = (AlertDialog) getDialog();
+        positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (positiveButton != null) {
+            positiveButton.setEnabled(isInputValid());
+        }
+    }
+
+    private boolean isInputValid() {
+        if (positiveButton == null) {
+            return false;
+        }
+        final String name = nameEdit.getText().toString();
+        return (name.length() != 0);
+    }
+
+    private class NameWatcher implements TextWatcher {
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (positiveButton != null) {
+                positiveButton.setEnabled(isInputValid());
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(
+            CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(
+            CharSequence s, int start, int before, int count) {
         }
     }
 
