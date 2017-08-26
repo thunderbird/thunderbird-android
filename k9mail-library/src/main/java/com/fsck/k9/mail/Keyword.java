@@ -104,9 +104,9 @@ public final class Keyword extends Flag implements Parcelable {
 
     public static Keyword valueOf(String code) throws IllegalArgumentException {
         if (code.startsWith(KEYWORD_CODE_PREFIX)) {
-          final String externalCode =
-              code.substring(KEYWORD_CODE_PREFIX.length());
-          return getKeywordByExternalCode(externalCode);
+            final String externalCode =
+                code.substring(KEYWORD_CODE_PREFIX.length());
+            return getKeywordByExternalCode(externalCode);
         }
         throw new IllegalArgumentException(
             "invalid internal code '" + code + "' for a keyword: " +
