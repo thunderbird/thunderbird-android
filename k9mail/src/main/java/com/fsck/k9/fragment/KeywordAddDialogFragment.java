@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.R;
 
@@ -26,6 +27,8 @@ public class KeywordAddDialogFragment extends DialogFragment {
     public interface KeywordAddDialogFragmentDialogListener {
         public void onKeywordAdded(String externalCode);
     }
+
+    private static FlagManager flagManager = FlagManager.getFlagManager();
 
     private EditText externalCodeEdit;
     private TextView message;
@@ -98,7 +101,8 @@ public class KeywordAddDialogFragment extends DialogFragment {
         }
         final String externalCode = externalCodeEdit.getText().toString();
         return (externalCode.length() != 0) &&
-               Keyword.isValidImapKeyword(externalCode);
+               Keyword.isValidImapKeyword(externalCode) &&
+               !flagManager.externalCodeExists(externalCode);
     }
 
     private class ExternalCodeWatcher implements TextWatcher {

@@ -301,7 +301,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="delete_keyword_confirmation_title">Delete keyword \"%s\"?</string>
     <string name="delete_keyword_confirmation_message" formatted="false">Do you really want to delete the keyword \"%s\" (server keyword: \"%s\")?\n\nIt will be added back automatically, once an email is encountered that still has this keyword set.</string>
     <string name="keyword_add_dialog_title">Add server keyword</string>
-    <string name="keyword_external_code_invalid">Invalid server keyword</string>
+    <string name="keyword_external_code_invalid">Invalid or duplicate server keyword</string>
 
 
     <string name="default_keyword_name_1">Important</string>

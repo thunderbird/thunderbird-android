@@ -68,6 +68,11 @@ public class FlagManager {
         return flag;
     }
 
+    public boolean externalCodeExists(String externalCode) {
+        return Flag.isExternalCodeOfSystemFlag(externalCode) ||
+               mapExternalCodeToKeyword.containsKey(externalCode);
+    }
+
     public Set<Flag> getSyncFlags() {
         return syncFlags;
     }
