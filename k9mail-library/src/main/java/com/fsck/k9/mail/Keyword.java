@@ -2,7 +2,8 @@ package com.fsck.k9.mail;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.HashSet;
 import java.lang.IndexOutOfBoundsException;
 import java.util.Random;
@@ -23,11 +24,11 @@ public final class Keyword extends Flag implements Parcelable {
         }};
 
 
-    private static final HashMap<String, Keyword> mapExternalCodeToKeyword =
-        new HashMap<String, Keyword>();
+    private static final ConcurrentHashMap<String, Keyword>
+        mapExternalCodeToKeyword = new ConcurrentHashMap<String, Keyword>();
 
-    private static final ArrayList<Keyword> orderedKeywords =
-        new ArrayList<Keyword>();
+    private static final CopyOnWriteArrayList<Keyword>
+        orderedKeywords = new CopyOnWriteArrayList<Keyword>();
 
 
     // User-defined keyword name for display as a tag.
@@ -190,8 +191,7 @@ public final class Keyword extends Flag implements Parcelable {
         return new ArrayList<Keyword>(orderedKeywords);
     }
 
-    public static ArrayList<Keyword> getVisibleKeywords()
-    {
+    public static ArrayList<Keyword> getVisibleKeywords() {
         ArrayList<Keyword> visibleKeywords = new ArrayList<Keyword>();
         for (Keyword keyword : orderedKeywords) {
             if (keyword.isVisible()) {
