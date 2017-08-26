@@ -223,7 +223,7 @@ public class Preferences {
         saveKeywords(/*saveOnlyKeywordOrder*/ true);
     }
 
-    public synchronized void saveKeywords(boolean saveOnlyKeywordOrder) {
+    private synchronized void saveKeywords(boolean saveOnlyKeywordOrder) {
         ArrayList<String> oldExternalCodes = loadKeywordList();
         ArrayList<String> newExternalCodes = new ArrayList<String>();
         HashSet<String> deletedExternalCodes =
