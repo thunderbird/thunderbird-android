@@ -8,20 +8,6 @@ import java.util.List;
 import timber.log.Timber;
 
 
-/**
- * Flags that can be applied to Messages.
- *
- * Terminology:
- * - Internal flag: Identified by an internal code; used only by k9; predefined.
- * - Server flag (abstract): Identified by an internal and an external code;
- *   used by k9 and on the mail server.
- *   - (IMAP) system flag: The external code starts with '\' (RFC 3501, 2.3.2);
- *     predefined.
- *   - (IMAP) keyword: May have a display name, a color, etc.; external code
- *     does not start with '\'; defined at runtime; see class Keyword.
- *     - Tag: A keyword assigned to an email.
- */
-
 public class Flag {
 
     private static final HashMap<String, Flag> mapCodeToPredefinedFlag =
