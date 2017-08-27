@@ -26,7 +26,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mail.store.RemoteStore;
 import timber.log.Timber;
@@ -333,7 +333,7 @@ class AccountConfigImpl implements AccountConfig, Parcelable {
         ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
                 ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, user, password, null);
         String storeUri = RemoteStore.createStoreUri(storeServer);
-        String transportUri = Transport.createTransportUri(transportServer);
+        String transportUri = TransportUris.createTransportUri(transportServer);
 
         this.storeUri = storeUri;
         this.transportUri = transportUri;

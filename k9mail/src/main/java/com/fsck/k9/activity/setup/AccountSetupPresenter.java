@@ -38,6 +38,7 @@ import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
+import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigure;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigureAutodiscover;
@@ -441,7 +442,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                                 oldUri.getHost(), oldUri.getPort(),
                                 ConnectionSecurity.SSL_TLS_REQUIRED, currentIncomingAuthType,
                                 incomingSettings.username, password, clientCertificateAlias);
-                        String transportUri = Transport.createTransportUri(transportServer);
+                        String transportUri = TransportUris.createTransportUri(transportServer);
                         accountConfig.setTransportUri(transportUri);
                     } catch (URISyntaxException use) {
                     /*
@@ -1409,7 +1410,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         }
 
         try {
-            outgoingSettings = Transport.decodeTransportUri(accountConfig.getTransportUri());
+            outgoingSettings = TransportUris.decodeTransportUri(accountConfig.getTransportUri());
 
             currentOutgoingAuthType = outgoingSettings.authenticationType;
             setAuthTypeInOutgoing(currentOutgoingAuthType);
@@ -1482,7 +1483,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         accountConfig.deleteCertificate(host, port, CheckDirection.OUTGOING);
         ServerSettings server = new ServerSettings(Type.SMTP, host, port, connectionSecurity,
                 authType, username, password, clientCertificateAlias);
-        String uri = Transport.createTransportUri(server);
+        String uri = TransportUris.createTransportUri(server);
         accountConfig.setTransportUri(uri);
 
         view.goToOutgoingChecking();
