@@ -81,9 +81,7 @@ public class MessageCryptoHelper {
     private CryptoPart currentCryptoPart;
     private Intent currentCryptoResult;
     private Intent userInteractionResultIntent;
-    private boolean firstPassStarted;
-    private boolean secondPassStarted;
-    private boolean thirdPassStarted;
+    private State state;
     private CancelableBackgroundOperation cancelableBackgroundOperation;
     private boolean isCancelled;
 
@@ -116,6 +114,7 @@ public class MessageCryptoHelper {
         }
 
         this.messageAnnotations = new MessageCryptoAnnotations();
+        this.state = State.START;
         this.currentMessage = message;
         this.cachedDecryptionResult = cachedDecryptionResult;
         this.callback = callback;
@@ -123,28 +122,26 @@ public class MessageCryptoHelper {
         nextStep();
     }
 
-    private void findPartsForFirstPass() {
-        firstPassStarted = true;
-
+    private void findPartsForEncryptionPass() {
         List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(currentMessage);
         processFoundEncryptedParts(encryptedParts);
     }
 
-    private void findPartsForSecondPass() {
-        secondPassStarted = true;
-
+    private void findPartsForSignaturePass() {
         List<Part> signedParts = MessageDecryptVerifier.findSignedParts(currentMessage, messageAnnotations);
         processFoundSignedParts(signedParts);
 
         List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(currentMessage);
-        addFoundInlinePgpParts(inlineParts);
+        processFoundInlinePgpParts(inlineParts);
     }
 
-    private void findPartsForThirdPass() {
-        thirdPassStarted = true;
+    private void findPartsForAutocryptPass() {
+        boolean otherCryptoPerformed = !messageAnnotations.isEmpty();
+        if (otherCryptoPerformed) {
+            return;
+        }
 
-        boolean noOtherCryptoPerformed = messageAnnotations.isEmpty();
-        if (noOtherCryptoPerformed && autocryptOperations.hasAutocryptHeader(currentMessage)) {
+        if (autocryptOperations.hasAutocryptHeader(currentMessage)) {
             CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PLAIN_AUTOCRYPT, currentMessage);
             partsToProcess.add(cryptoPart);
         }
@@ -187,7 +184,7 @@ public class MessageCryptoHelper {
         messageAnnotations.put(part, annotation);
     }
 
-    private void addFoundInlinePgpParts(List<Part> foundParts) {
+    private void processFoundInlinePgpParts(List<Part> foundParts) {
         for (Part part : foundParts) {
             if (!currentMessage.getFlags().contains(Flag.X_DOWNLOADED_FULL)) {
                 if (MessageDecryptVerifier.isPartPgpInlineEncrypted(part)) {
@@ -209,13 +206,13 @@ public class MessageCryptoHelper {
             return;
         }
 
-        while (partsToProcess.isEmpty()) {
-            boolean hadNextPass = findPartsForNextPass();
+        while (state != State.FINISHED && partsToProcess.isEmpty()) {
+            findPartsForNextPass();
+        }
 
-            if (!hadNextPass) {
-                callbackReturnResult();
-                return;
-            }
+        if (state == State.FINISHED) {
+            callbackReturnResult();
+            return;
         }
 
         if (!isBoundToCryptoProviderService()) {
@@ -642,21 +639,37 @@ public class MessageCryptoHelper {
         nextStep();
     }
 
-    private boolean findPartsForNextPass() {
-        if (!firstPassStarted) {
-            findPartsForFirstPass();
-            return true;
-        }
-        if (!secondPassStarted) {
-            findPartsForSecondPass();
-            return true;
-        }
-        if (!thirdPassStarted) {
-            findPartsForThirdPass();
-            return true;
-        }
+    private void findPartsForNextPass() {
+        switch (state) {
+            case START: {
+                state = State.ENCRYPTION;
 
-        return false;
+                findPartsForEncryptionPass();
+                return;
+            }
+
+            case ENCRYPTION: {
+                state = State.SIGNATURES;
+
+                findPartsForSignaturePass();
+                return;
+            }
+            case SIGNATURES: {
+                state = State.AUTOCRYPT;
+
+                findPartsForAutocryptPass();
+                return;
+            }
+
+            case AUTOCRYPT: {
+                state = State.FINISHED;
+                return;
+            }
+
+            default: {
+                throw new IllegalStateException("unhandled state");
+            }
+        }
     }
 
     private void cleanupAfterProcessingFinished() {
@@ -779,5 +792,9 @@ public class MessageCryptoHelper {
             Timber.e(e, "failed to create clearsigned text replacement part");
             return NO_REPLACEMENT_PART;
         }
+    }
+
+    private enum State {
+        START, ENCRYPTION, SIGNATURES, AUTOCRYPT, FINISHED
     }
 }
