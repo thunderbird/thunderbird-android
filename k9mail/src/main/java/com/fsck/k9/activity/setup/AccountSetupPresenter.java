@@ -67,7 +67,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.fsck.k9.setup.ServerNameSuggester;
-import org.xbill.DNS.TextParseException;
+
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.ServerSettings.Type.IMAP;
@@ -496,14 +496,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
 
     private class CheckOutgoingTask extends CheckAccountTask {
-        private CheckOutgoingTask(Account account) {
-            super(account);
-        }
-
-        private CheckOutgoingTask(Account account, CheckSettingsSuccessCallback callback) {
-            super(account, callback);
-        }
-
         private CheckOutgoingTask(AccountConfig accountConfig) {
             super(accountConfig);
         }
@@ -537,14 +529,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     private class CheckIncomingTask extends CheckAccountTask {
-        private CheckIncomingTask(Account account) {
-            super(account);
-        }
-
-        private CheckIncomingTask(Account account, CheckSettingsSuccessCallback callback) {
-            super(account, callback);
-        }
-
         private CheckIncomingTask(AccountConfig accountConfig) {
             super(accountConfig);
         }
@@ -593,25 +577,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
      */
     private abstract class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Boolean> {
         private final AccountConfig accountConfig;
-        private final Account account;
         private CheckSettingsSuccessCallback callback;
-
-        private CheckAccountTask(Account account) {
-            this(account, null);
-        }
-
-        private CheckAccountTask(Account account, CheckSettingsSuccessCallback callback) {
-            this.account = account;
-            this.accountConfig = null;
-            this.callback = callback;
-        }
 
         private CheckAccountTask(AccountConfig accountConfig) {
             this(accountConfig, null);
         }
 
         private CheckAccountTask(AccountConfig accountConfig, CheckSettingsSuccessCallback callback) {
-            this.account = null;
             this.accountConfig = accountConfig;
             this.callback = callback;
         }
@@ -628,13 +600,18 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             } catch (OAuth2NeedUserPromptException ignored) {
             } catch (final AuthenticationFailedException afe) {
                 Timber.e(afe, "Error while testing settings");
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.goBack();
-                        view.showErrorDialog(R.string.account_setup_failed_auth_message);
-                    }
-                });
+                if (afe.getMessage().equals(AuthenticationFailedException.OAUTH2_ERROR_INVALID_REFRESH_TOKEN)) {
+                    Globals.getOAuth2TokenProvider().disconnectEmailWithK9(accountConfig.getEmail());
+                    replayChecking();
+                } else {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            view.goBack();
+                            view.showErrorDialog(R.string.account_setup_failed_auth_message);
+                        }
+                    });
+                }
             } catch (CertificateValidationException cve) {
                 handleCertificateValidationException(cve);
             } catch (final Exception e) {
@@ -670,7 +647,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
         void clearCertificateErrorNotifications(CheckDirection direction) {
             final MessagingController ctrl = MessagingController.getInstance(context);
-            ctrl.clearCertificateErrorNotifications(account, direction);
+            ctrl.clearCertificateErrorNotifications((Account) accountConfig, direction);
+
         }
 
         @Override
@@ -1191,7 +1169,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     public void onInputChangedInIncoming(String certificateAlias, String server, String port,
             String username, String password, AuthType authType,
             ConnectionSecurity connectionSecurity) {
-
         revokeInvalidSettingsAndUpdateViewInIncoming(authType, connectionSecurity, port);
         validateFieldInIncoming(certificateAlias, server, currentIncomingPort, username, password,
                 currentIncomingAuthType,
@@ -1246,7 +1223,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             ConnectionSecurity connectionSecurity,
             String port) {
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
-
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
 
         if (isAuthTypeExternal && !hasConnectionSecurity) {
@@ -1293,6 +1269,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
     private void validateFieldInIncoming(String certificateAlias, String server, String port,
             String username, String password, AuthType authType, ConnectionSecurity connectionSecurity) {
+        boolean isAuthTypeOAuth = (AuthType.XOAUTH2 == authType);
+        boolean isOAuthValid = canOAuth2(username);
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
 
@@ -1300,7 +1278,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         boolean hasValidUserName = Utility.requiredFieldValid(username);
 
         boolean hasValidPasswordSettings = hasValidUserName
-                && !isAuthTypeExternal
+                && !isAuthTypeExternal && !isAuthTypeOAuth
                 && Utility.requiredFieldValid(password);
 
         boolean hasValidExternalAuthSettings = hasValidUserName
@@ -1308,11 +1286,25 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 && hasConnectionSecurity
                 && hasValidCertificateAlias;
 
+        boolean hasValidOAuth2Settings = hasValidUserName
+                && isAuthTypeOAuth
+                && isOAuthValid;
+
         final boolean enabled = Utility.domainFieldValid(server)
                 && Utility.requiredFieldValid(port)
-                && (hasValidPasswordSettings || hasValidExternalAuthSettings);
+                && (hasValidPasswordSettings || hasValidExternalAuthSettings
+                || hasValidOAuth2Settings);
 
+        checkInvalidOAuthError(isAuthTypeOAuth, isOAuthValid);
         view.setNextButtonInIncomingEnabled(enabled);
+    }
+
+    private void checkInvalidOAuthError(boolean isAuthTypeOAuth, boolean isOAuthValid) {
+        if (isAuthTypeOAuth && !isOAuthValid) {
+            view.showInvalidOAuthError();
+        } else {
+            view.clearInvalidOAuthError();
+        }
     }
 
     private void updateAccount() {
@@ -1334,6 +1326,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     private void updateViewFromAuthTypeInIncoming(AuthType authType) {
         if (authType == AuthType.EXTERNAL) {
             view.setViewExternalInIncoming();
+        } else if (authType == AuthType.XOAUTH2) {
+            view.setViewOAuth2InIncoming();
         } else {
             view.setViewNotExternalInIncoming();
         }
@@ -1521,6 +1515,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             ConnectionSecurity connectionSecurity,
             boolean requireLogin) {
 
+        boolean isAuthTypeOAuth = (AuthType.XOAUTH2 == authType);
+        boolean isOAuthValid = canOAuth2(username);
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
 
@@ -1536,10 +1532,17 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 && hasConnectionSecurity
                 && hasValidCertificateAlias;
 
+        boolean hasValidOAuth2Settings = hasValidUserName
+                && isAuthTypeOAuth
+                && isOAuthValid;
+
         boolean enabled = Utility.domainFieldValid(server)
                 && Utility.requiredFieldValid(port)
                 && (!requireLogin
-                || hasValidPasswordSettings || hasValidExternalAuthSettings);
+                || hasValidPasswordSettings || hasValidExternalAuthSettings
+                || hasValidOAuth2Settings);
+
+        checkInvalidOAuthError(isAuthTypeOAuth, isOAuthValid);
 
         view.setNextButtonInOutgoingEnabled(enabled);
     }
@@ -1579,6 +1582,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     private void updateViewFromAuthTypeInOutgoing(AuthType authType) {
         if (authType == AuthType.EXTERNAL) {
             view.setViewExternalInOutgoing();
+        } else if (authType == AuthType.XOAUTH2) {
+            view.setViewOAuth2InOutgoing();
         } else {
             view.setViewNotExternalInOutgoing();
         }

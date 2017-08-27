@@ -1262,4 +1262,5 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="xoauth2_no_account">No account provided</string>
     <string name="linked_webview_title_gmail">Gmail Authorization</string>
     <string name="linked_webview_title_outlook">Outlook Authorization</string>
+    <string name="OAuth2_not_supported">OAuth 2.0 is not supported for this email</string>
 </resources>

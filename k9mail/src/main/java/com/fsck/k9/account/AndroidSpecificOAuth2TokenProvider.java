@@ -3,6 +3,7 @@ package com.fsck.k9.account;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.oauth.OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.mail.oauth.SpecificOAuth2TokenProvider;
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
@@ -42,16 +43,39 @@ abstract class AndroidSpecificOAuth2TokenProvider extends SpecificOAuth2TokenPro
 
     public String refreshToken(String username, String refreshToken) throws AuthenticationFailedException {
         Call<RefreshResponse> call = getRefreshTokenCall(refreshToken);
-        RefreshResponse response;
+        Response<RefreshResponse> response;
+        RefreshResponse refreshResponse;
         try {
-            response = call.execute().body();
+            response = call.execute();
+            refreshResponse = response.body();
         } catch (IOException e) {
             throw new AuthenticationFailedException(e.getMessage());
         }
-        if (response == null) {
-            throw new AuthenticationFailedException("Error when getting refresh token");
+        if (refreshResponse == null) {
+            if (response.errorBody() != null) {
+                try {
+                    String errorBody = response.errorBody().string();
+                    OAuth2Error oAuth2Error = new Gson().fromJson(errorBody, OAuth2Error.class);
+                    switch (oAuth2Error.error) {
+                        case "invalid_grant":
+                            throw new AuthenticationFailedException(AuthenticationFailedException.OAUTH2_ERROR_INVALID_REFRESH_TOKEN);
+                        default:
+                            throw new AuthenticationFailedException(AuthenticationFailedException.OAUTH2_ERROR_UNKNOWN);
+                    }
+                } catch (IOException e) {
+                    throw new AuthenticationFailedException(AuthenticationFailedException.OAUTH2_ERROR_UNKNOWN);
+                }
+            } else {
+                throw new AuthenticationFailedException(AuthenticationFailedException.OAUTH2_ERROR_UNKNOWN);
+            }
         }
-        return response.accessToken;
+        return refreshResponse.accessToken;
+    }
+
+    protected static class OAuth2Error {
+        String error;
+        @SerializedName("error_description")
+        String errorDescription;
     }
 
     protected static class ExchangeResponse {

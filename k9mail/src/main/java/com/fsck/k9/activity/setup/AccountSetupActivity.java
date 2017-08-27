@@ -46,6 +46,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fsck.k9.mail.ServerSettings.Type;
+import com.fsck.k9.service.StorageGoneReceiver;
 import com.fsck.k9.view.ClientCertificateSpinner;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
@@ -92,10 +93,12 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     private ClientCertificateSpinner clientCertificateSpinner;
     private TextView clientCertificateLabelView;
+    private TextInputLayout usernameViewLayout;
     private TextInputLayout passwordViewLayout;
     private TextInputLayout serverViewLayout;
     private TextInputEditText serverView;
     private TextInputEditText portView;
+    private TextView securityTypeLabelView;
     private Spinner securityTypeView;
     private Spinner authTypeView;
     private CheckBox imapAutoDetectNamespaceView;
@@ -758,6 +761,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         View incomingView = findViewById(R.id.account_setup_incoming);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.incoming_coordinator_layout);
         usernameView = (EditText) incomingView.findViewById(R.id.incoming_account_username);
+        usernameViewLayout = (TextInputLayout) incomingView.findViewById(R.id.incoming_account_username_layout);
         passwordView = (EditText) incomingView.findViewById(R.id.incoming_account_password);
         clientCertificateSpinner = (ClientCertificateSpinner) incomingView.findViewById(R.id.incoming_account_client_certificate_spinner);
         clientCertificateLabelView = (TextView) incomingView.findViewById(R.id.account_client_certificate_label);
@@ -765,6 +769,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         serverViewLayout = (TextInputLayout)  incomingView.findViewById(R.id.incoming_account_server_layout);
         serverView = (TextInputEditText) incomingView.findViewById(R.id.incoming_account_server);
         portView = (TextInputEditText) incomingView.findViewById(R.id.incoming_account_port);
+        securityTypeLabelView = (TextView) incomingView.findViewById(R.id.account_setup_incoming_security_label);
         securityTypeView = (Spinner) incomingView.findViewById(R.id.incoming_account_security_type);
         authTypeView = (Spinner) incomingView.findViewById(R.id.incoming_account_auth_type);
         imapAutoDetectNamespaceView = (CheckBox) incomingView.findViewById(R.id.imap_autodetect_namespace);
@@ -849,22 +854,36 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     @Override
     public void setViewNotExternalInIncoming() {
-        passwordView.setVisibility(View.VISIBLE);
         passwordViewLayout.setVisibility(View.VISIBLE);
         clientCertificateLabelView.setVisibility(View.GONE);
         clientCertificateSpinner.setVisibility(View.GONE);
+        imapAutoDetectNamespaceView.setEnabled(true);
+        passwordViewLayout.setEnabled(true);
+        securityTypeView.setEnabled(true);
+        portView.setEnabled(true);
 
         passwordView.requestFocus();
     }
 
     @Override
     public void setViewExternalInIncoming() {
-        passwordView.setVisibility(View.GONE);
         passwordViewLayout.setVisibility(View.GONE);
         clientCertificateLabelView.setVisibility(View.VISIBLE);
         clientCertificateSpinner.setVisibility(View.VISIBLE);
+        imapAutoDetectNamespaceView.setEnabled(true);
+        passwordViewLayout.setEnabled(true);
+        securityTypeView.setEnabled(true);
+        portView.setEnabled(true);
 
         clientCertificateSpinner.chooseCertificate();
+    }
+
+    @Override
+    public void setViewOAuth2InIncoming() {
+        imapAutoDetectNamespaceView.setEnabled(false);
+        passwordViewLayout.setEnabled(false);
+        securityTypeView.setEnabled(false);
+        portView.setEnabled(false);
     }
 
     @Override
@@ -900,6 +919,17 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
                 getString(R.string.account_setup_incoming_security_label),
                 ConnectionSecurity.NONE.toString());
         Toast.makeText(this, toastText, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showInvalidOAuthError() {
+        usernameViewLayout.setErrorEnabled(true);
+        usernameViewLayout.setError(getString(R.string.OAuth2_not_supported));
+    }
+
+    @Override
+    public void clearInvalidOAuthError() {
+        usernameViewLayout.setError("");
     }
 
     // names
@@ -1068,6 +1098,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         final View outgoingView = findViewById(R.id.account_setup_outgoing);
         coordinatorLayout = (CoordinatorLayout) outgoingView.findViewById(R.id.outgoing_coordinator_layout);
         usernameView = (EditText) outgoingView.findViewById(R.id.outgoing_account_username);
+        usernameViewLayout = (TextInputLayout) outgoingView.findViewById(R.id.outgoing_account_username_layout);
         passwordView = (EditText) outgoingView.findViewById(R.id.outgoing_account_password);
         passwordViewLayout = (TextInputLayout) outgoingView.findViewById(R.id.outgoing_account_password_layout);
         clientCertificateSpinner = (ClientCertificateSpinner) outgoingView.findViewById(R.id.outgoing_account_client_certificate_spinner);
@@ -1182,6 +1213,9 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         passwordViewLayout.setVisibility(View.VISIBLE);
         clientCertificateLabelView.setVisibility(View.GONE);
         clientCertificateSpinner.setVisibility(View.GONE);
+        passwordViewLayout.setEnabled(true);
+        securityTypeView.setEnabled(true);
+        portView.setEnabled(true);
 
         passwordView.requestFocus();
     }
@@ -1192,9 +1226,19 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         passwordViewLayout.setVisibility(View.GONE);
         clientCertificateLabelView.setVisibility(View.VISIBLE);
         clientCertificateSpinner.setVisibility(View.VISIBLE);
+        passwordViewLayout.setEnabled(true);
+        securityTypeView.setEnabled(true);
+        portView.setEnabled(true);
 
         // This may again invoke onInputChangedInOutgoing()
         clientCertificateSpinner.chooseCertificate();
+    }
+
+    @Override
+    public void setViewOAuth2InOutgoing() {
+        passwordViewLayout.setEnabled(false);
+        securityTypeView.setEnabled(false);
+        portView.setEnabled(false);
     }
 
     public static void actionEditIncomingSettings(Activity context, Account account) {

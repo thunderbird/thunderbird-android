@@ -77,6 +77,7 @@ interface AccountSetupContract {
 
         void setViewNotExternalInIncoming();
         void setViewExternalInIncoming();
+        void setViewOAuth2InIncoming();
 
         void showFailureToast(Exception use);
 
@@ -88,6 +89,8 @@ interface AccountSetupContract {
         void setSubscribedFoldersOnly(boolean subscribedFoldersOnly);
 
         void showInvalidSettingsToast();
+        void showInvalidOAuthError();
+        void clearInvalidOAuthError();
 
         /* --Names-- */
         void setDoneButtonInNamesEnabled(boolean enabled);
@@ -112,10 +115,13 @@ interface AccountSetupContract {
 
         void setViewNotExternalInOutgoing();
         void setViewExternalInOutgoing();
+        void setViewOAuth2InOutgoing();
 
         void goToOutgoingChecking();
 
         void goToAccountNames();
+
+
         // ---
         void goBack();
         void end();
