@@ -938,6 +938,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 updateMenu();
                 return true;
             }
+            case R.id.select_tags: {
+                mMessageViewFragment.onTagDialog();
+                return true;
+            }
         }
 
         if (!mSingleFolderMode) {
@@ -1032,6 +1036,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             menu.findItem(R.id.toggle_message_view_theme).setVisible(false);
             menu.findItem(R.id.show_headers).setVisible(false);
             menu.findItem(R.id.hide_headers).setVisible(false);
+            menu.findItem(R.id.select_tags).setVisible(false);
         } else {
             // hide prev/next buttons in split mode
             if (mDisplayMode != DisplayMode.MESSAGE_VIEW) {
@@ -1115,6 +1120,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             } else {
                 menu.findItem(R.id.hide_headers).setVisible(false);
             }
+
+            menu.findItem(R.id.select_tags).setVisible(true);
         }
 
 
