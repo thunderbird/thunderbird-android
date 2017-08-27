@@ -195,6 +195,12 @@
 
             <CheckBoxPreference
                 android:persistent="false"
+                android:key="messagelist_blend_background_with_tag_color"
+                android:title="@string/global_settings_blend_background_with_tag_color_label"
+                android:summary="@string/global_settings_blend_background_with_tag_color_summary" />
+
+            <CheckBoxPreference
+                android:persistent="false"
                 android:key="threaded_view"
                 android:title="@string/global_settings_threaded_view_label"
                 android:summary="@string/global_settings_threaded_view_summary" />

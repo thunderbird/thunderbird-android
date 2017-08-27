@@ -297,6 +297,9 @@ public class GlobalSettings {
         s.put("fontSizeMessageViewTags", Settings.versions(
                 new V(49, new FontSizeSetting(FontSizes.FONT_DEFAULT))
         ));
+        s.put("blendBackgroundWithTagColor", Settings.versions(
+                new V(49, new BooleanSetting(true))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

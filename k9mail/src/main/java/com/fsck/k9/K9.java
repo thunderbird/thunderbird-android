@@ -254,6 +254,7 @@ public class K9 extends Application {
     private static Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
 
     private static boolean sUseBackgroundAsUnreadIndicator = true;
+    private static boolean sBlendBackgroundWithTagColor= true;
     private static boolean sThreadedViewEnabled = true;
     private static SplitViewMode sSplitViewMode = SplitViewMode.NEVER;
     private static boolean sColorizeMissingContactPictures = true;
@@ -510,6 +511,7 @@ public class K9 extends Application {
 
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
         editor.putBoolean("useBackgroundAsUnreadIndicator", sUseBackgroundAsUnreadIndicator);
+        editor.putBoolean("blendBackgroundWithTagColor", sBlendBackgroundWithTagColor);
         editor.putBoolean("threadedView", sThreadedViewEnabled);
         editor.putString("splitViewMode", sSplitViewMode.name());
         editor.putBoolean("colorizeMissingContactPictures", sColorizeMissingContactPictures);
@@ -768,6 +770,7 @@ public class K9 extends Application {
         mAttachmentDefaultPath = storage.getString("attachmentdefaultpath",
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
         sUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", true);
+        sBlendBackgroundWithTagColor = storage.getBoolean("blendBackgroundWithTagColor", true);
         sThreadedViewEnabled = storage.getBoolean("threadedView", true);
         fontSizes.load(storage);
 
@@ -1317,6 +1320,14 @@ public class K9 extends Application {
 
     public static synchronized void setUseBackgroundAsUnreadIndicator(boolean enabled) {
         sUseBackgroundAsUnreadIndicator = enabled;
+    }
+
+    public static synchronized boolean blendBackgroundWithTagColor() {
+        return sBlendBackgroundWithTagColor;
+    }
+
+    public static synchronized void setBlendBackgroundWithTagColor(boolean enabled) {
+        sBlendBackgroundWithTagColor = enabled;
     }
 
     public static synchronized boolean isThreadedViewEnabled() {

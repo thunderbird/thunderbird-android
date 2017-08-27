@@ -349,7 +349,9 @@ public class MessageListAdapter extends CursorAdapter {
     private void setBackgroundColor(
         View view, boolean selected, boolean read, Keyword firstTag)
     {
-        if (selected || K9.useBackgroundAsUnreadIndicator() || firstTag != null) {
+        if (selected || K9.useBackgroundAsUnreadIndicator() ||
+            (K9.blendBackgroundWithTagColor() && firstTag != null))
+        {
             int res;
             if (selected) {
                 res = R.attr.messageListSelectedBackgroundColor;
@@ -366,7 +368,7 @@ public class MessageListAdapter extends CursorAdapter {
             TypedValue outValue = new TypedValue();
             fragment.getActivity().getTheme().resolveAttribute(res, outValue, true);
             int color = outValue.data;
-            if (!selected) {
+            if (K9.blendBackgroundWithTagColor() && !selected) {
                 color = blendBackgroundWithKeyword(color, firstTag);
             }
             view.setBackgroundColor(color);

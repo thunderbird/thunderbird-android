@@ -1100,6 +1100,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_background_as_unread_indicator_label">Change colour when read</string>
     <string name="global_settings_background_as_unread_indicator_summary">A different background will show that the message has been read</string>
 
+    <string name="global_settings_blend_background_with_tag_color_label">Use colour of message tag</string>
+    <string name="global_settings_blend_background_with_tag_color_summary">Blend background with the colour of the first message tag</string>
+
     <string name="global_settings_threaded_view_label">Threaded view</string>
     <string name="global_settings_threaded_view_summary">Group messages by conversation</string>
 
