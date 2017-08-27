@@ -51,7 +51,7 @@ public class AutocryptPeerUpdate implements Parcelable {
     }
 
 
-    public static AutocryptPeerUpdate createAutocryptPeerUpdate(byte[] keyData, Date timestamp, boolean isMutual) {
+    public static AutocryptPeerUpdate create(byte[] keyData, Date timestamp, boolean isMutual) {
         return new AutocryptPeerUpdate(keyData, timestamp, isMutual ? PreferEncrypt.MUTUAL : PreferEncrypt.NOPREFERENCE);
     }
 

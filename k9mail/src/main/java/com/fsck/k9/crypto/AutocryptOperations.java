@@ -50,7 +50,7 @@ public class AutocryptOperations {
         Date internalDate = currentMessage.getInternalDate();
         Date effectiveDate = messageDate.before(internalDate) ? messageDate : internalDate;
 
-        AutocryptPeerUpdate data = AutocryptPeerUpdate.createAutocryptPeerUpdate(
+        AutocryptPeerUpdate data = AutocryptPeerUpdate.create(
                 autocryptHeader.keyData, effectiveDate, autocryptHeader.isPreferEncryptMutual);
         intent.putExtra(OpenPgpApi.EXTRA_AUTOCRYPT_PEER_ID, messageFromAddress);
         intent.putExtra(OpenPgpApi.EXTRA_AUTOCRYPT_PEER_UPDATE, data);
