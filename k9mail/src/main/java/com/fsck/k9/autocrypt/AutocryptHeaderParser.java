@@ -57,7 +57,7 @@ class AutocryptHeaderParser {
             return null;
         }
 
-        String to = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_TO);
+        String to = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_ADDR);
         if (to == null) {
             Timber.e("autocrypt: no to header!");
             return null;

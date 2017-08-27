@@ -12,7 +12,7 @@ import okio.ByteString;
 class AutocryptHeader {
     static final String AUTOCRYPT_HEADER = "Autocrypt";
 
-    static final String AUTOCRYPT_PARAM_TO = "addr";
+    static final String AUTOCRYPT_PARAM_ADDR = "addr";
     static final String AUTOCRYPT_PARAM_KEY_DATA = "keydata";
 
     static final String AUTOCRYPT_PARAM_TYPE = "type";
@@ -46,7 +46,7 @@ class AutocryptHeader {
         }
 
         String autocryptHeaderString = AutocryptHeader.AUTOCRYPT_HEADER + ": ";
-        autocryptHeaderString += AutocryptHeader.AUTOCRYPT_PARAM_TO + "=" + addr + ";";
+        autocryptHeaderString += AutocryptHeader.AUTOCRYPT_PARAM_ADDR + "=" + addr + ";";
         if (isPreferEncryptMutual) {
             autocryptHeaderString += AutocryptHeader.AUTOCRYPT_PARAM_PREFER_ENCRYPT + "=" +
                     AutocryptHeader.AUTOCRYPT_PREFER_ENCRYPT_MUTUAL + ";";
