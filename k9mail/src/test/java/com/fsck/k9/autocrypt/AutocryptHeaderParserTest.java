@@ -1,4 +1,4 @@
-package com.fsck.k9.crypto;
+package com.fsck.k9.autocrypt;
 
 
 import java.io.FileInputStream;
@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.fsck.k9.crypto.AutocryptOperations.AutocryptHeader;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -24,8 +23,9 @@ import static org.junit.Assert.assertNull;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = Config.NONE, sdk = 21)
-public class AutocryptOperationsTest {
-    AutocryptOperations autocryptOperations = new AutocryptOperations();
+@SuppressWarnings("WeakerAccess")
+public class AutocryptHeaderParserTest {
+    AutocryptHeaderParser autocryptHeaderParser = AutocryptHeaderParser.getInstance();
 
     @Before
     public void setUp() throws Exception {
@@ -38,7 +38,7 @@ public class AutocryptOperationsTest {
     public void getValidAutocryptHeader__withNoHeader__shouldReturnNull() throws Exception {
         MimeMessage message = parseFromResource("autocrypt/no_autocrypt.eml");
 
-        AutocryptHeader autocryptHeader = autocryptOperations.getValidAutocryptHeader(message);
+        AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
 
         assertNull(autocryptHeader);
     }
@@ -47,7 +47,7 @@ public class AutocryptOperationsTest {
     public void getValidAutocryptHeader__withBrokenBase64__shouldReturnNull() throws Exception {
         MimeMessage message = parseFromResource("autocrypt/rsa2048-broken-base64.eml");
 
-        AutocryptHeader autocryptHeader = autocryptOperations.getValidAutocryptHeader(message);
+        AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
 
         assertNull(autocryptHeader);
     }
@@ -56,7 +56,7 @@ public class AutocryptOperationsTest {
     public void getValidAutocryptHeader__withSimpleAutocrypt() throws Exception {
         MimeMessage message = parseFromResource("autocrypt/rsa2048-simple.eml");
 
-        AutocryptHeader autocryptHeader = autocryptOperations.getValidAutocryptHeader(message);
+        AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
 
         assertNotNull(autocryptHeader);
         assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.addr);
@@ -68,7 +68,7 @@ public class AutocryptOperationsTest {
     public void getValidAutocryptHeader__withExplicitType() throws Exception {
         MimeMessage message = parseFromResource("autocrypt/rsa2048-explicit-type.eml");
 
-        AutocryptHeader autocryptHeader = autocryptOperations.getValidAutocryptHeader(message);
+        AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
 
         assertNotNull(autocryptHeader);
         assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.addr);
@@ -79,7 +79,7 @@ public class AutocryptOperationsTest {
     public void getValidAutocryptHeader__withUnknownType__shouldReturnNull() throws Exception {
         MimeMessage message = parseFromResource("autocrypt/unknown-type.eml");
 
-        AutocryptHeader autocryptHeader = autocryptOperations.getValidAutocryptHeader(message);
+        AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
 
         assertNull(autocryptHeader);
     }
@@ -88,7 +88,7 @@ public class AutocryptOperationsTest {
     public void getValidAutocryptHeader__withUnknownCriticalHeader__shouldReturnNull() throws Exception {
         MimeMessage message = parseFromResource("autocrypt/rsa2048-unknown-critical.eml");
 
-        AutocryptHeader autocryptHeader = autocryptOperations.getValidAutocryptHeader(message);
+        AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
 
         assertNull(autocryptHeader);
     }
@@ -97,7 +97,7 @@ public class AutocryptOperationsTest {
     public void getValidAutocryptHeader__withUnknownNonCriticalHeader() throws Exception {
         MimeMessage message = parseFromResource("autocrypt/rsa2048-unknown-non-critical.eml");
 
-        AutocryptHeader autocryptHeader = autocryptOperations.getValidAutocryptHeader(message);
+        AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
 
         assertNotNull(autocryptHeader);
         assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.addr);

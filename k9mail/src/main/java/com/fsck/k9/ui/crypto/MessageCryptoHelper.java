@@ -18,7 +18,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.crypto.AutocryptOperations;
+import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -94,7 +94,7 @@ public class MessageCryptoHelper {
         this.context = context.getApplicationContext();
 
         if (!K9.isOpenPgpProviderConfigured()) {
-            throw new IllegalStateException("MessageCryptoHelper must only be called with a openpgp provider!");
+            throw new IllegalStateException("MessageCryptoHelper must only be called with a OpenPGP provider!");
         }
 
         this.openPgpApiFactory = openPgpApiFactory;
