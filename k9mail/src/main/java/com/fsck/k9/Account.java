@@ -35,6 +35,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.StorageManager;
@@ -1063,17 +1064,17 @@ public class Account implements BaseAccount, AccountConfig {
 
     @Override
     public ConnectionSecurity getOutgoingSecurityType() {
-        return Transport.decodeTransportUri(getTransportUri()).connectionSecurity;
+        return TransportUris.decodeTransportUri(getTransportUri()).connectionSecurity;
     }
 
     @Override
     public AuthType getOutgoingAuthType() {
-        return Transport.decodeTransportUri(getTransportUri()).authenticationType;
+        return TransportUris.decodeTransportUri(getTransportUri()).authenticationType;
     }
 
     @Override
     public String getOutgoingPort() {
-        return String.valueOf(Transport.decodeTransportUri(getTransportUri()).port);
+        return String.valueOf(TransportUris.decodeTransportUri(getTransportUri()).port);
     }
 
     @Override
@@ -1945,7 +1946,7 @@ public class Account implements BaseAccount, AccountConfig {
         ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
                 ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, user, password, null);
         String storeUri = RemoteStore.createStoreUri(storeServer);
-        String transportUri = Transport.createTransportUri(transportServer);
+        String transportUri = TransportUris.createTransportUri(transportServer);
         setStoreUri(storeUri);
         setTransportUri(transportUri);
 
