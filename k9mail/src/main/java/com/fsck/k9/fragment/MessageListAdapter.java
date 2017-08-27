@@ -365,8 +365,11 @@ public class MessageListAdapter extends CursorAdapter {
 
             TypedValue outValue = new TypedValue();
             fragment.getActivity().getTheme().resolveAttribute(res, outValue, true);
-            view.setBackgroundColor(
-                blendBackgroundWithKeyword(outValue.data, firstTag));
+            int color = outValue.data;
+            if (!selected) {
+                color = blendBackgroundWithKeyword(color, firstTag);
+            }
+            view.setBackgroundColor(color);
         } else {
             view.setBackgroundColor(Color.TRANSPARENT);
         }
