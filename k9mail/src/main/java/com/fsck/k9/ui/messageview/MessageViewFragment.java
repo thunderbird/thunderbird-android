@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
@@ -65,6 +66,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
 
+    public static final int PROGRESS_THRESHOLD_MILLIS = 500 * 1000;
+
     public static MessageViewFragment newInstance(MessageReference reference) {
         MessageViewFragment fragment = new MessageViewFragment();
 
@@ -85,6 +88,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private Handler handler = new Handler();
     private MessageLoaderHelper messageLoaderHelper;
     private MessageCryptoPresenter messageCryptoPresenter;
+    private Long showProgressThreshold;
 
     /**
      * Used to temporarily store the destination folder for refile operations if a confirmation
@@ -741,26 +745,35 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
             displayHeaderForLoadingMessage(message);
             mMessageView.setToLoadingState();
+            showProgressThreshold = null;
         }
 
         @Override
         public void onMessageDataLoadFailed() {
             Toast.makeText(getActivity(), R.string.status_loading_error, Toast.LENGTH_LONG).show();
+            showProgressThreshold = null;
         }
 
         @Override
         public void onMessageViewInfoLoadFinished(MessageViewInfo messageViewInfo) {
             showMessage(messageViewInfo);
+            showProgressThreshold = null;
         }
 
         @Override
         public void onMessageViewInfoLoadFailed(MessageViewInfo messageViewInfo) {
             showMessage(messageViewInfo);
+            showProgressThreshold = null;
         }
 
         @Override
         public void setLoadingProgress(int current, int max) {
-            mMessageView.setLoadingProgress(current, max);
+            if (showProgressThreshold == null) {
+                showProgressThreshold = SystemClock.elapsedRealtime() + PROGRESS_THRESHOLD_MILLIS;
+            } else if (showProgressThreshold == 0L || SystemClock.elapsedRealtime() > showProgressThreshold) {
+                showProgressThreshold = 0L;
+                mMessageView.setLoadingProgress(current, max);
+            }
         }
 
         @Override
@@ -788,6 +801,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         @Override
         public void startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
                 int flagsMask, int flagValues, int extraFlags) {
+            showProgressThreshold = null;
             try {
                 requestCode |= REQUEST_MASK_LOADER_HELPER;
                 getActivity().startIntentSenderForResult(
