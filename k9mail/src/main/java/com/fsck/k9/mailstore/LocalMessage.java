@@ -65,7 +65,7 @@ public class LocalMessage extends MimeMessage {
         }
         this.setInternalSentDate(new Date(cursor.getLong(LocalStore.MSG_INDEX_DATE)));
         this.setUid(cursor.getString(LocalStore.MSG_INDEX_UID));
-        String flagList = cursor.getString(LocalStore.MSG_INDEX_FLAGS);
+        final String flagList = cursor.getString(LocalStore.MSG_INDEX_FLAGS);
         final List<Flag> flags =
             FlagManager.getFlagManager().parseCodeList(flagList);
         for (Flag flag : flags) {
