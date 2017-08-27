@@ -375,42 +375,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
-
-        if (K9.showTagNamesMode() != ShowTagNamesMode.NEVER) {
-            SpannableStringBuilder sb = new SpannableStringBuilder();
-            final FlagManager flagManager = FlagManager.getFlagManager();
-            List<Keyword> tags = flagManager.getVisibleKeywords(msgFlags);
-            if (tags.size() != 0) {
-                boolean first = true;
-                for (Keyword keyword : tags) {
-                    if (!first) {
-                        sb.append(", ");
-                    } else {
-                        first = false;
-                    }
-                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(
-                        keyword.getTextColor(keywordColorUtils));
-                    SpannableString sp = new SpannableString(keyword.getName());
-                    sp.setSpan(colorSpan, 0, sp.length(), 0);
-                    sb.append(sp);
-                }
-                mTagsView.setText(sb);
-                mTagsView.setVisibility(View.VISIBLE);
-            } else if (K9.showTagNamesMode() == ShowTagNamesMode.ALWAYS) {
-                ForegroundColorSpan colorSpan =
-                    new ForegroundColorSpan(defaultTagsColor);
-                SpannableString sp = new SpannableString(
-                    getResources().getString(R.string.message_view_no_tags));
-                sp.setSpan(colorSpan, 0, sp.length(), 0);
-                sb.append(sp);
-                mTagsView.setText(sb);
-                mTagsView.setVisibility(View.VISIBLE);
-            } else {
-                mTagsView.setVisibility(View.GONE);
-            }
-        } else {
-            mTagsView.setVisibility(View.GONE);
-        }
+        updateTagNamesField(msgFlags);
 
         mChip.setBackgroundColor(mAccount.getChipColor());
 
@@ -479,6 +444,49 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         v.setText(text);
         v.setVisibility(hasText ? View.VISIBLE : View.GONE);
         label.setVisibility(hasText ? View.VISIBLE : View.GONE);
+    }
+
+    private void updateTagNamesField(Set<Flag> flags) {
+        final ShowTagNamesMode mode = K9.showTagNamesMode();
+        if (mode != ShowTagNamesMode.NEVER) {
+            final List<Keyword> tags =
+                FlagManager.getFlagManager().getVisibleKeywords(flags);
+            if ((tags.size() != 0) || (mode == ShowTagNamesMode.ALWAYS)) {
+                mTagsView.setText(getTagNamesString(tags));
+                mTagsView.setVisibility(View.VISIBLE);
+            } else {
+                mTagsView.setVisibility(View.GONE);
+            }
+        } else {
+            mTagsView.setVisibility(View.GONE);
+        }
+    }
+
+    private SpannableStringBuilder getTagNamesString(List<Keyword> tags) {
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        if (tags.size() != 0) {
+            boolean first = true;
+            for (Keyword keyword : tags) {
+                if (!first) {
+                    sb.append(", ");
+                } else {
+                    first = false;
+                }
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(
+                    keyword.getTextColor(keywordColorUtils));
+                SpannableString sp = new SpannableString(keyword.getName());
+                sp.setSpan(colorSpan, 0, sp.length(), 0);
+                sb.append(sp);
+            }
+        } else {
+            ForegroundColorSpan colorSpan =
+                new ForegroundColorSpan(defaultTagsColor);
+            SpannableString sp = new SpannableString(
+                getResources().getString(R.string.message_view_no_tags));
+            sp.setSpan(colorSpan, 0, sp.length(), 0);
+            sb.append(sp);
+        }
+        return sb;
     }
 
     /**
