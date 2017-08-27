@@ -22,7 +22,7 @@ public class AutocryptOperations {
     private static final String AUTOCRYPT_HEADER = "Autocrypt";
 
     private static final String AUTOCRYPT_PARAM_TO = "addr";
-    private static final String AUTOCRYPT_PARAM_KEY_DATA = "key";
+    private static final String AUTOCRYPT_PARAM_KEY_DATA = "keydata";
 
     private static final String AUTOCRYPT_PARAM_TYPE = "type";
     private static final String AUTOCRYPT_TYPE_1 = "1";

@@ -1,7 +1,7 @@
 From: Alice <alice@testsuite.autocrypt.org>
 To: Bob <bob@testsuite.autocrypt.org>
 Subject: INBOME with invalid type attribute
-Autocrypt: addr=alice@testsuite.autocrypt.org; type=x; key=
+Autocrypt: addr=alice@testsuite.autocrypt.org; type=x; keydata=
  mQENBFhVGA8BCADK+qTRkAfax0LtJ6RiyxzuAFyIohBTwvtcOM2sd/tRmWq1eyNif5AGDnc1+b6X
  zJ6l3BXiYM/8qXU/F04UA5BP05SgIqXjqT5I13blrydjKtUbZFchK7lJU7cyDbar+TH70DZURSQm
  MusCj0+fdx6hx8y4LSOM68rjwVeq7JXAPU78QQsYgMrbtkf5mZWUquDdb7tEoxU+PcNifvtvuHF2

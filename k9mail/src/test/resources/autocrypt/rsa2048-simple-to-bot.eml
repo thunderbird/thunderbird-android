@@ -1,7 +1,7 @@
 From: Alice <alice@testsuite.autocrypt.org>
 To: Autocrypt-Bot <bot@autocrypt.org>
 Subject: an INBOME RSA test
-INBOME: to=alice@testsuite.autocrypt.org; key=
+INBOME: to=alice@testsuite.autocrypt.org; keydata=
  mQENBFhVF+ABCADu17FBUgA3mCemeKbNaBTyWe3VGxjbu7fUyHgdLK7i3tnd7IRtxQy/AEN2t6Vq
  0/xeZEAKYRInsHI/HjvmhqPeWFzipk71jRQ02WUY1pZytFjYNIrTdMk4eLYdC1N0go83PU33V4R8
  fc2fWHD8N5JPsDH2xOB6WNWkMPxgMbtGIa0QTx7TINhDif4/1/VcrX3wz1gZ6xYI+sujbC54iBZo
