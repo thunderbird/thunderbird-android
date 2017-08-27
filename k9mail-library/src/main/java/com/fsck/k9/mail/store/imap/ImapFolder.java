@@ -869,8 +869,18 @@ class ImapFolder extends Folder<ImapMessage> {
             if (flags != null) {
                 final FlagManager flagManager = FlagManager.getFlagManager();
                 for (int i = 0, count = flags.size(); i < count; i++) {
-                    message.setFlagInternal(flagManager.getFlagByExternalCode(
-                        flags.getString(i)), true);
+                    final String externalCode = flags.getString(i);
+                    Flag flag;
+                    try {
+                        flag = flagManager.getFlagByExternalCode(externalCode);
+                    }
+                    catch (IllegalArgumentException e) {
+                        Timber.w(
+                            e, "Parsing flag code '%s' caused exception.",
+                            externalCode);
+                        continue;
+                    }
+                    message.setFlagInternal(flag, true);
                 }
             }
         }
