@@ -349,16 +349,18 @@ public class MessageListAdapter extends CursorAdapter {
     private void setBackgroundColor(
         View view, boolean selected, boolean read, Keyword firstTag)
     {
-        if (selected || K9.useBackgroundAsUnreadIndicator()) {
+        if (selected || K9.useBackgroundAsUnreadIndicator() || firstTag != null) {
             int res;
             if (selected) {
                 res = R.attr.messageListSelectedBackgroundColor;
-            } else {
+            } else if (K9.useBackgroundAsUnreadIndicator()) {
                 if (read) {
                     res = R.attr.messageListReadItemBackgroundColor;
                 } else {
                     res = R.attr.messageListUnreadItemBackgroundColor;
                 }
+            } else {
+                res = R.attr.messageListReadItemBackgroundColor;
             }
 
             TypedValue outValue = new TypedValue();
