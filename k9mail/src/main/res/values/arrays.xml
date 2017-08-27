@@ -564,6 +564,18 @@
         <item>WHEN_IN_LANDSCAPE</item>
     </string-array>
 
+    <string-array name="global_settings_show_tag_names_entries">
+        <item>@string/global_settings_show_tag_names_always</item>
+        <item>@string/global_settings_show_tag_names_never</item>
+        <item>@string/global_settings_show_tag_names_if_set</item>
+    </string-array>
+
+    <string-array name="global_settings_show_tag_names_values" translatable="false">
+        <item>ALWAYS</item>
+        <item>NEVER</item>
+        <item>IF_SET</item>
+    </string-array>
+
     <string-array name="default_keyword_external_codes" translatable="false">
       <item>$label1</item>
       <item>$label2</item>

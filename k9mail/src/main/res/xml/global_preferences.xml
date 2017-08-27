@@ -240,6 +240,15 @@
                 android:title="@string/global_settings_messageview_autofit_width_label"
                 android:summary="@string/global_settings_messageview_autofit_width_summary"/>
 
+            <ListPreference
+                android:persistent="false"
+                android:key="messageview_show_tag_names_mode"
+                android:title="@string/global_settings_show_tag_names_label"
+                android:summary="@string/global_settings_show_tag_names_summary"
+                android:entries="@array/global_settings_show_tag_names_entries"
+                android:entryValues="@array/global_settings_show_tag_names_values"
+                android:dialogTitle="@string/global_settings_show_tag_names_label" />
+
         </PreferenceCategory>
 
     </PreferenceScreen>

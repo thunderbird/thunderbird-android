@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.ShowTagNamesMode;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
@@ -294,7 +295,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         final CharSequence cc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
         final CharSequence bcc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.BCC), contacts);
 
-        Set<Flag> msgFlags = message.getFlags();
+        Set<Flag> msgFlags = null;
+        if (K9.showTagNamesMode() != ShowTagNamesMode.NEVER) {
+            msgFlags = message.getFlags();
+        }
 
         Address[] fromAddrs = message.getFrom();
         Address[] toAddrs = message.getRecipients(Message.RecipientType.TO);
@@ -372,32 +376,41 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
 
-        SpannableStringBuilder sb = new SpannableStringBuilder();
-        final FlagManager flagManager = FlagManager.getFlagManager();
-        List<Keyword> tags = flagManager.getVisibleKeywords(msgFlags);
-        if (tags.size() != 0) {
-            boolean first = true;
-            for (Keyword keyword : tags) {
-                if (!first) {
-                    sb.append(", ");
-                } else {
-                    first = false;
+        if (K9.showTagNamesMode() != ShowTagNamesMode.NEVER) {
+            SpannableStringBuilder sb = new SpannableStringBuilder();
+            final FlagManager flagManager = FlagManager.getFlagManager();
+            List<Keyword> tags = flagManager.getVisibleKeywords(msgFlags);
+            if (tags.size() != 0) {
+                boolean first = true;
+                for (Keyword keyword : tags) {
+                    if (!first) {
+                        sb.append(", ");
+                    } else {
+                        first = false;
+                    }
+                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(
+                        keyword.getTextColor(keywordColorUtils));
+                    SpannableString sp = new SpannableString(keyword.getName());
+                    sp.setSpan(colorSpan, 0, sp.length(), 0);
+                    sb.append(sp);
                 }
-                ForegroundColorSpan colorSpan = new ForegroundColorSpan(
-                    keyword.getTextColor(keywordColorUtils));
-                SpannableString sp = new SpannableString(keyword.getName());
+                mTagsView.setText(sb);
+                mTagsView.setVisibility(View.VISIBLE);
+            } else if (K9.showTagNamesMode() == ShowTagNamesMode.ALWAYS) {
+                ForegroundColorSpan colorSpan =
+                    new ForegroundColorSpan(defaultTagsColor);
+                SpannableString sp = new SpannableString(
+                    getResources().getString(R.string.message_view_no_tags));
                 sp.setSpan(colorSpan, 0, sp.length(), 0);
                 sb.append(sp);
+                mTagsView.setText(sb);
+                mTagsView.setVisibility(View.VISIBLE);
+            } else {
+                mTagsView.setVisibility(View.GONE);
             }
         } else {
-            ForegroundColorSpan colorSpan =
-                new ForegroundColorSpan(defaultTagsColor);
-            SpannableString sp = new SpannableString(
-                getResources().getString(R.string.message_view_no_tags));
-            sp.setSpan(colorSpan, 0, sp.length(), 0);
-            sb.append(sp);
+            mTagsView.setVisibility(View.GONE);
         }
-        mTagsView.setText(sb);
 
         mChip.setBackgroundColor(mAccount.getChipColor());
 

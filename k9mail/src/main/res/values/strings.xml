@@ -1117,6 +1117,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_splitview_never">Never</string>
     <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>
 
+    <string name="global_settings_show_tag_names_label">Show tags</string>
+    <string name="global_settings_show_tag_names_summary">Show list of tags assigned to the message</string>
+    <string name="global_settings_show_tag_names_always">Always</string>
+    <string name="global_settings_show_tag_names_never">Never</string>
+    <string name="global_settings_show_tag_names_if_set">If tags are assigned</string>
+
     <string name="message_view_empty">Please select a message on the left</string>
 
     <string name="global_settings_show_contact_picture_label">Show contact pictures</string>

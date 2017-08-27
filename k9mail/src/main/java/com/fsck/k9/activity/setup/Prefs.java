@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.ShowTagNamesMode;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -91,6 +92,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_OPENPGP_SUPPORT_SIGN_ONLY = "openpgp_support_sign_only";
 
     private static final String PREFERENCE_AUTOFIT_WIDTH = "messageview_autofit_width";
+    private static final String PREFERENCE_SHOW_TAG_NAMES_MODE = "messageview_show_tag_names_mode";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
@@ -141,6 +143,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
     private CheckBoxPreference mAutofitWidth;
+    private ListPreference mShowTagNamesMode;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
@@ -310,6 +313,10 @@ public class Prefs extends K9PreferenceActivity {
 
         mAutofitWidth = (CheckBoxPreference) findPreference(PREFERENCE_AUTOFIT_WIDTH);
         mAutofitWidth.setChecked(K9.autofitWidth());
+
+        mShowTagNamesMode = (ListPreference) findPreference(PREFERENCE_SHOW_TAG_NAMES_MODE);
+        initListPreference(mShowTagNamesMode, K9.showTagNamesMode().name(),
+                mShowTagNamesMode.getEntries(), mShowTagNamesMode.getEntryValues());
 
         mQuietTimeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_ENABLED);
         mQuietTimeEnabled.setChecked(K9.getQuietTimeEnabled());
@@ -507,6 +514,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMessageViewReturnToList(mReturnToList.isChecked());
         K9.setMessageViewShowNext(mShowNext.isChecked());
         K9.setAutofitWidth(mAutofitWidth.isChecked());
+        K9.setShowTagNamesMode(ShowTagNamesMode.valueOf(mShowTagNamesMode.getValue()));
         K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
 
         boolean[] enabledRefileActions = mVisibleRefileActions.getCheckedItems();

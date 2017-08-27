@@ -18,6 +18,7 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.ShowTagNamesMode;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
@@ -299,6 +300,10 @@ public class GlobalSettings {
         ));
         s.put("blendBackgroundWithTagColor", Settings.versions(
                 new V(49, new BooleanSetting(true))
+        ));
+        s.put("showTagNamesMode", Settings.versions(
+                new V(49, new EnumSetting<>(ShowTagNamesMode.class,
+                      ShowTagNamesMode.IF_SET))
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);
