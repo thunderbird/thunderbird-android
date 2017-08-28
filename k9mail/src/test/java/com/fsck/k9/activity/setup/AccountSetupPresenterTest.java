@@ -9,8 +9,10 @@ import android.content.Context;
 import android.test.mock.MockContext;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.GlobalsHelper;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.account.K9OAuth2TokenProvider;
 import com.fsck.k9.activity.setup.AccountSetupPresenter.Stage;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.AuthType;
@@ -53,6 +55,8 @@ public class AccountSetupPresenterTest {
         context = mock(MockContext.class);
 
         Preferences preferences = mock(Preferences.class);
+
+        GlobalsHelper.setOAuth2TokenProvider(new K9OAuth2TokenProvider(view));
 
         presenter = new AccountSetupPresenter(context, preferences, view);
 

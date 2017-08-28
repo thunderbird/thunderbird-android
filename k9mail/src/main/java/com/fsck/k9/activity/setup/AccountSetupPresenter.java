@@ -168,8 +168,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         } else {
             view.setPasswordInBasicsEnabled(false);
             view.setPasswordHintInBasics(context.getString(
-                    R.string.account_setup_basics_password_no_password_needed_hint,
-                    EmailHelper.getProviderNameFromEmailAddress(email))
+                    R.string.account_setup_basics_password_no_password_needed_hint
+                    )
             );
             view.setManualSetupButtonInBasicsVisibility(android.view.View.INVISIBLE);
         }
@@ -297,17 +297,25 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     guessedDomainForMailPrefix = "mail." + domain;
                 }
 
+                Timber.d("Test %s for imap", guessedDomainForMailPrefix);
                 testIncoming(guessedDomainForMailPrefix, false);
 
+                Timber.d("Test %s for smtp and starttls", guessedDomainForMailPrefix);
                 testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.STARTTLS_REQUIRED, false);
 
+                Timber.d("Test %s for smtp and ssl/tls", guessedDomainForMailPrefix);
                 testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.SSL_TLS_REQUIRED, false);
 
-                testIncoming("imap." + domain, false);
+                String domainWithImapPrefix = "imap." + domain;
+                Timber.d("Test %s for imap", domainWithImapPrefix);
+                testIncoming(domainWithImapPrefix, false);
 
-                testOutgoing("smtp." + domain, ConnectionSecurity.STARTTLS_REQUIRED, false);
+                String domainWithSmtpPrefix = "smtp." + domain;
+                Timber.d("Test %s for smtp and starttls", domainWithSmtpPrefix);
+                testOutgoing(domainWithSmtpPrefix, ConnectionSecurity.STARTTLS_REQUIRED, false);
 
-                testOutgoing("smtp." + domain, ConnectionSecurity.SSL_TLS_REQUIRED, false);
+                Timber.d("Test %s for smtp and ssl/tls", domainWithSmtpPrefix);
+                testOutgoing(domainWithSmtpPrefix, ConnectionSecurity.SSL_TLS_REQUIRED, false);
             }
 
             private void testIncoming(String domain, boolean useLocalPart) {
@@ -318,11 +326,16 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                                 password, domain).toString());
                         accountConfig.getRemoteStore().checkSettings();
                         incomingReady = true;
+                        Timber.d("Server %s is right for imap", domain);
                     } catch (AuthenticationFailedException afe) {
                         if (!useLocalPart) {
+                            Timber.d("Server %s is connected, but authentication failed. Use local part as username this time", domain);
                             testIncoming(domain, true);
+                        } else {
+                            Timber.d("Server %s is connected, but authentication failed for both email address and local-part", domain);
                         }
                     } catch (URISyntaxException | MessagingException ignored) {
+                        Timber.d("Unknown error occurred when using OAuth 2.0");
                     }
                 }
             }
@@ -342,11 +355,16 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                             transport.close();
                         }
                         outgoingReady = true;
+                        Timber.d("Server %s is right for smtp and %s", domain, connectionSecurity.toString());
                     } catch (AuthenticationFailedException afe) {
                         if (!useLocalPart) {
+                            Timber.d("Server %s is connected, but authentication failed. Use local part as username this time", domain);
                             testOutgoing(domain, connectionSecurity, true);
+                        } else {
+                            Timber.d("Server %s is connected, but authentication failed for both email address and local-part", domain);
                         }
                     } catch (URISyntaxException | MessagingException ignored) {
+                        Timber.d("Unknown error occurred when using OAuth 2.0");
                     }
                 }
             }
@@ -1517,12 +1535,12 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             boolean requireLogin) {
 
         boolean isAuthTypeOAuth = (AuthType.XOAUTH2 == authType);
-        boolean isOAuthValid = canOAuth2(username);
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
 
         boolean hasValidCertificateAlias = certificateAlias != null;
         boolean hasValidUserName = Utility.requiredFieldValid(username);
+        boolean isOAuthValid = hasValidUserName && canOAuth2(username);
 
         boolean hasValidPasswordSettings = hasValidUserName
                 && !isAuthTypeExternal
