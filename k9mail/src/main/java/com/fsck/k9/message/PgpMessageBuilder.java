@@ -135,12 +135,19 @@ public class PgpMessageBuilder extends MessageBuilder {
     @NonNull
     private Intent buildOpenPgpApiIntent(boolean shouldSign, boolean shouldEncrypt, boolean isPgpInlineMode) {
         Intent pgpApiIntent;
+
+        Long openPgpKeyId = cryptoStatus.getOpenPgpKeyId();
         if (shouldEncrypt) {
             if (!shouldSign) {
                 throw new IllegalStateException("encrypt-only is not supported at this point and should never happen!");
             }
             // pgpApiIntent = new Intent(shouldSign ? OpenPgpApi.ACTION_SIGN_AND_ENCRYPT : OpenPgpApi.ACTION_ENCRYPT);
             pgpApiIntent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
+
+            if (openPgpKeyId != null) {
+                long[] selfEncryptIds = { openPgpKeyId };
+                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, selfEncryptIds);
+            }
 
             if(!isDraft()) {
                 pgpApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.getRecipientAddresses());
@@ -151,7 +158,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         }
 
         if (shouldSign) {
-            pgpApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, cryptoStatus.getSigningKeyId());
+            pgpApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, openPgpKeyId);
         }
 
         pgpApiIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
