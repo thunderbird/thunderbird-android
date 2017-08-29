@@ -13,8 +13,15 @@ import org.openintents.openpgp.util.OpenPgpApi;
 public class AutocryptOperations {
     private final AutocryptHeaderParser autocryptHeaderParser;
 
-    public AutocryptOperations() {
-        this.autocryptHeaderParser = AutocryptHeaderParser.getInstance();
+
+    public static AutocryptOperations getInstance() {
+        AutocryptHeaderParser autocryptHeaderParser = AutocryptHeaderParser.getInstance();
+        return new AutocryptOperations(autocryptHeaderParser);
+    }
+
+
+    private AutocryptOperations(AutocryptHeaderParser autocryptHeaderParser) {
+        this.autocryptHeaderParser = autocryptHeaderParser;
     }
 
     public boolean addAutocryptPeerUpdateToIntentIfPresent(Message currentMessage, Intent intent) {

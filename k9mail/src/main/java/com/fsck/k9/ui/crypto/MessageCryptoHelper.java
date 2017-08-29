@@ -90,15 +90,16 @@ public class MessageCryptoHelper {
     private OpenPgpApiFactory openPgpApiFactory;
 
 
-    public MessageCryptoHelper(Context context, OpenPgpApiFactory openPgpApiFactory) {
+    public MessageCryptoHelper(Context context, OpenPgpApiFactory openPgpApiFactory,
+            AutocryptOperations autocryptOperations) {
         this.context = context.getApplicationContext();
 
         if (!K9.isOpenPgpProviderConfigured()) {
             throw new IllegalStateException("MessageCryptoHelper must only be called with a OpenPGP provider!");
         }
 
+        this.autocryptOperations = autocryptOperations;
         this.openPgpApiFactory = openPgpApiFactory;
-        autocryptOperations = new AutocryptOperations();
         openPgpProviderPackage = K9.getOpenPgpProvider();
     }
 
