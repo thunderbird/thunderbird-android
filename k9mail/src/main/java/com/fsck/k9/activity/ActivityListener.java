@@ -13,18 +13,21 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.service.MailService;
+import net.jcip.annotations.GuardedBy;
 
 
 public class ActivityListener extends SimpleMessagingListener {
-    private Account account = null;
-    private String loadingFolderName = null;
-    private String loadingHeaderFolderName = null;
-    private String loadingAccountDescription = null;
-    private String sendingAccountDescription = null;
-    private int folderCompleted = 0;
-    private int folderTotal = 0;
-    private String processingAccountDescription = null;
-    private String processingCommandTitle = null;
+    private final Object lock = new Object();
+
+    @GuardedBy("lock") private Account account = null;
+    @GuardedBy("lock") private String loadingFolderName = null;
+    @GuardedBy("lock") private String loadingHeaderFolderName = null;
+    @GuardedBy("lock") private String loadingAccountDescription = null;
+    @GuardedBy("lock") private String sendingAccountDescription = null;
+    @GuardedBy("lock") private int folderCompleted = 0;
+    @GuardedBy("lock") private int folderTotal = 0;
+    @GuardedBy("lock") private String processingAccountDescription = null;
+    @GuardedBy("lock") private String processingCommandTitle = null;
 
     private BroadcastReceiver tickReceiver = new BroadcastReceiver() {
         @Override
@@ -35,11 +38,13 @@ public class ActivityListener extends SimpleMessagingListener {
 
 
     public String getOperation(Context context) {
-        if (loadingAccountDescription != null ||
-                sendingAccountDescription != null ||
-                loadingHeaderFolderName != null ||
-                processingAccountDescription != null) {
-            return getActionInProgressOperation(context);
+        synchronized (lock) {
+            if (loadingAccountDescription != null ||
+                    sendingAccountDescription != null ||
+                    loadingHeaderFolderName != null ||
+                    processingAccountDescription != null) {
+                return getActionInProgressOperation(context);
+            }
         }
 
         long nextPollTime = MailService.getNextPollTime();
@@ -66,15 +71,16 @@ public class ActivityListener extends SimpleMessagingListener {
         }
     }
 
+    @GuardedBy("lock")
     private String getActionInProgressOperation(Context context) {
         String progress = folderTotal > 0 ?
                 context.getString(R.string.folder_progress, folderCompleted, folderTotal) : "";
 
         if (loadingFolderName != null || loadingHeaderFolderName != null) {
-            String displayName = null;
+            String displayName;
             if (loadingHeaderFolderName != null) {
                 displayName = loadingHeaderFolderName;
-            } else if (loadingFolderName != null) {
+            } else {
                 displayName = loadingFolderName;
             }
             if (account != null && account.getInboxFolderName() != null &&
@@ -116,101 +122,142 @@ public class ActivityListener extends SimpleMessagingListener {
     @Override
     public void synchronizeMailboxFinished(Account account, String folder, int totalMessagesInMailbox,
             int numNewMessages) {
-        loadingAccountDescription = null;
-        loadingFolderName = null;
-        this.account = null;
+        synchronized (lock) {
+            loadingAccountDescription = null;
+            loadingFolderName = null;
+            this.account = null;
+        }
+
         informUserOfStatus();
     }
 
     @Override
     public void synchronizeMailboxStarted(Account account, String folder) {
-        loadingAccountDescription = account.getDescription();
-        loadingFolderName = folder;
-        this.account = account;
-        folderCompleted = 0;
-        folderTotal = 0;
+        synchronized (lock) {
+            loadingAccountDescription = account.getDescription();
+            loadingFolderName = folder;
+            this.account = account;
+            folderCompleted = 0;
+            folderTotal = 0;
+        }
+
         informUserOfStatus();
     }
 
     @Override
     public void synchronizeMailboxHeadersStarted(Account account, String folder) {
-        loadingAccountDescription = account.getDescription();
-        loadingHeaderFolderName = folder;
+        synchronized (lock) {
+            loadingAccountDescription = account.getDescription();
+            loadingHeaderFolderName = folder;
+        }
+
         informUserOfStatus();
     }
 
     @Override
     public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total) {
-        folderCompleted = completed;
-        folderTotal = total;
+        synchronized (lock) {
+            folderCompleted = completed;
+            folderTotal = total;
+        }
+
         informUserOfStatus();
     }
 
     @Override
     public void synchronizeMailboxHeadersFinished(Account account, String folder, int total, int completed) {
-        loadingHeaderFolderName = null;
-        folderCompleted = 0;
-        folderTotal = 0;
+        synchronized (lock) {
+            loadingHeaderFolderName = null;
+            folderCompleted = 0;
+            folderTotal = 0;
+        }
+
         informUserOfStatus();
     }
 
     @Override
     public void synchronizeMailboxProgress(Account account, String folder, int completed, int total) {
-        folderCompleted = completed;
-        folderTotal = total;
+        synchronized (lock) {
+            folderCompleted = completed;
+            folderTotal = total;
+        }
+
         informUserOfStatus();
     }
 
     @Override
     public void synchronizeMailboxFailed(Account account, String folder, String message) {
-        loadingAccountDescription = null;
-        loadingHeaderFolderName = null;
-        loadingFolderName = null;
-        this.account = null;
+        synchronized (lock) {
+            loadingAccountDescription = null;
+            loadingHeaderFolderName = null;
+            loadingFolderName = null;
+            this.account = null;
+        }
         informUserOfStatus();
     }
 
     @Override
     public void sendPendingMessagesStarted(Account account) {
-        sendingAccountDescription = account.getDescription();
+        synchronized (lock) {
+            sendingAccountDescription = account.getDescription();
+        }
+
         informUserOfStatus();
     }
 
     @Override
     public void sendPendingMessagesCompleted(Account account) {
-        sendingAccountDescription = null;
+        synchronized (lock) {
+            sendingAccountDescription = null;
+        }
+
         informUserOfStatus();
     }
 
     @Override
     public void sendPendingMessagesFailed(Account account) {
-        sendingAccountDescription = null;
+        synchronized (lock) {
+            sendingAccountDescription = null;
+        }
+
         informUserOfStatus();
     }
 
     @Override
     public void pendingCommandsProcessing(Account account) {
-        processingAccountDescription = account.getDescription();
-        folderCompleted = 0;
-        folderTotal = 0;
+        synchronized (lock) {
+            processingAccountDescription = account.getDescription();
+            folderCompleted = 0;
+            folderTotal = 0;
+        }
+
         informUserOfStatus();
     }
 
     @Override
     public void pendingCommandsFinished(Account account) {
-        processingAccountDescription = null;
+        synchronized (lock) {
+            processingAccountDescription = null;
+        }
+
         informUserOfStatus();
     }
 
     @Override
     public void pendingCommandStarted(Account account, String commandTitle) {
-        processingCommandTitle = commandTitle;
+        synchronized (lock) {
+            processingCommandTitle = commandTitle;
+
+        }
         informUserOfStatus();
     }
 
     @Override
     public void pendingCommandCompleted(Account account, String commandTitle) {
-        processingCommandTitle = null;
+        synchronized (lock) {
+            processingCommandTitle = null;
+        }
+
         informUserOfStatus();
     }
 
@@ -230,10 +277,14 @@ public class ActivityListener extends SimpleMessagingListener {
     }
 
     public int getFolderCompleted() {
-        return folderCompleted;
+        synchronized (lock) {
+            return folderCompleted;
+        }
     }
 
     public int getFolderTotal() {
-        return folderTotal;
+        synchronized (lock) {
+            return folderTotal;
+        }
     }
 }
