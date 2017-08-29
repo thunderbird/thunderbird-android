@@ -83,12 +83,13 @@ public class ActivityListener extends SimpleMessagingListener {
             } else {
                 displayName = loadingFolderName;
             }
-            if (account != null && account.getInboxFolderName() != null &&
-                    account.getInboxFolderName().equalsIgnoreCase(displayName)) {
-                displayName = context.getString(R.string.special_mailbox_name_inbox);
-            } else if (account != null && account.getOutboxFolderName() != null &&
-                    account.getOutboxFolderName().equals(displayName)) {
-                displayName = context.getString(R.string.special_mailbox_name_outbox);
+
+            if (account != null) {
+                if (displayName.equalsIgnoreCase(account.getInboxFolderName())) {
+                    displayName = context.getString(R.string.special_mailbox_name_inbox);
+                } else if (displayName.equalsIgnoreCase(account.getOutboxFolderName())) {
+                    displayName = context.getString(R.string.special_mailbox_name_outbox);
+                }
             }
 
             if (loadingHeaderFolderName != null) {
