@@ -905,11 +905,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     mUseIncomingView.setChecked(mUseIncoming);
                 }
             } else {
+                // Trigger afterTextChanged() being called
+                // Work around this bug: https://code.google.com/p/android/issues/detail?id=6360
                 if (configureIncomingServer) {
-                    // Trigger afterTextChanged() being called
-                    // Work around this bug: https://code.google.com/p/android/issues/detail?id=6360
                     mIncomingPasswordView.setText(mIncomingPasswordView.getText());
-                } else {
+                }
+                if (configureOutgoingServer) {
                     mOutgoingPasswordView.setText(mOutgoingPasswordView.getText());
                 }
             }
