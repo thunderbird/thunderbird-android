@@ -48,6 +48,7 @@ class ImapFolder extends Folder<ImapMessage> {
     };
     private static final int MORE_MESSAGES_WINDOW_SIZE = 500;
     private static final int FETCH_WINDOW_SIZE = 100;
+    private static final long APPEND_WINDOW_SIZE = 10000000;
 
 
     protected volatile int messageCount = -1;
@@ -1202,44 +1203,63 @@ class ImapFolder extends Folder<ImapMessage> {
 
     private void appendWithMultiappend(List<? extends Message> messages, Map<String, String> uidMap)
             throws IOException, MessagingException {
-        String escapedFolderName = getEscapedFolderName();
-        Message firstMessage = messages.get(0);
-
-        String command = String.format(Locale.US, "APPEND %s (%s) {%d}", escapedFolderName,
-                combineFlags(firstMessage.getFlags()), firstMessage.calculateSize());
-        connection.sendCommand(command, false);
         EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(connection.getOutputStream());
+        ImapResponse response;
+        int i = 0;
 
-        ImapResponse response = connection.readResponse();
-        handleUntaggedResponse(response);
+        while (i < messages.size()) {
+            boolean firstInBatch = true;
+            Message firstMessageInBatch = messages.get(i);
+            long currentWindowSize = 0;
+            List<Message> appendedMessages = new ArrayList<>();
 
-        if (response.isContinuationRequested()) {
-            for (int i = 0;i < messages.size();i++) {
-                Message message = messages.get(i);
+            String command = String.format(Locale.US, "APPEND %s (%s) {%d}", getEscapedFolderName(),
+                    combineFlags(firstMessageInBatch.getFlags()), firstMessageInBatch.calculateSize());
+            connection.sendCommand(command, false);
 
-                if (i > 0) {
-                    String newMessageContinuation = String.format(Locale.US, "(%s) {%d}",
-                            combineFlags(firstMessage.getFlags()), message.calculateSize());
-                    connection.sendContinuation(newMessageContinuation);
-                }
-
-                message.writeTo(eolOut);
-
-                if (i == messages.size() - 1) {
-                    eolOut.write('\r');
-                    eolOut.write('\n');
-                }
-
-                eolOut.flush();
-            }
-        }
-
-        while (response != null && response.getTag() == null) {
             response = connection.readResponse();
             handleUntaggedResponse(response);
-        }
 
-        findAndSaveNewUids(response, messages, uidMap);
+            if (response.isContinuationRequested()) {
+                while ((currentWindowSize <= APPEND_WINDOW_SIZE || appendedMessages.size() == 0)
+                        && i < messages.size()) {
+                    Message messageToAppend = messages.get(i);
+                    long messageSize = messageToAppend.calculateSize();
+
+                    if (currentWindowSize + messageSize > APPEND_WINDOW_SIZE &&
+                            appendedMessages.size() > 0) {
+                        break;
+                    }
+
+                    if (!firstInBatch) {
+                        String newMessageContinuation = String.format(Locale.US, "(%s) {%d}",
+                                combineFlags(messageToAppend.getFlags()), messageSize);
+                        connection.sendContinuation(newMessageContinuation);
+                    }
+
+                    messageToAppend.writeTo(eolOut);
+                    eolOut.flush();
+
+                    appendedMessages.add(messageToAppend);
+                    currentWindowSize += messageSize;
+                    firstInBatch = false;
+                    i++;
+                }
+
+                eolOut.write('\r');
+                eolOut.write('\n');
+                eolOut.flush();
+            } else {
+                throw new IllegalStateException("Did not get a continuation response to APPEND");
+            }
+
+            while (response != null && response.getTag() == null) {
+                response = connection.readResponse();
+                handleUntaggedResponse(response);
+            }
+
+            findAndSaveNewUids(response, appendedMessages, uidMap);
+        }
     }
 
     private String getEscapedFolderName() throws MessagingException {
