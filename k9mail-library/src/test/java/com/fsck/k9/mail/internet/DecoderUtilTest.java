@@ -109,5 +109,19 @@ public class DecoderUtilTest {
         expect = "=?x?= =?";
         message = null;
         assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+
+        //Multi encoded header
+        body = "=?utf-8?B?5Liq5Lq66YKu566xOkJVRyAjMzAyNDY6OumCruS7tuato+aWh+mZhOS7tuWQ?=\n" +
+                "=?utf-8?B?jeensOecgeeVpeaYvuekuuS8mOWMlg==?=";
+        expect = "个人邮箱:BUG #30246::邮件正文附件��称省略显示优化";
+        message = null;
+        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+
+        //Non utf-8 encoding
+        body = "=?gb2312?B?Obv9t9az6cnu29rHsLqju6rHyLPHSlfN8rrAvsa16qOsuPzT0DIwvNIzOTnU?= " +
+                "=?gb2312?B?qr6r0aG439DHytTLr77Gteq1yMTjwLSjoaOoQUSjqQ?=";
+        expect = "9积分抽深圳前海华侨城JW万豪酒店，更有20家399��精选高星试睡酒店等你来！（AD�";
+        message = null;
+        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
     }
 }
