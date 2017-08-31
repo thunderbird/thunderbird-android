@@ -521,7 +521,8 @@ public class SmtpTransportTest {
             fail("Exception expected");
         } catch (AuthenticationFailedException e) {
             assertEquals(
-                    "Username and Password not accepted. Learn more at http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
+                    "Username and Password not accepted. " +
+                    "Learn more at http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
                     e.getMessage());
         }
 
