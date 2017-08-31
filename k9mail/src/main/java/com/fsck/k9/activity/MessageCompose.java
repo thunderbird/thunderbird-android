@@ -144,6 +144,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int MSG_PROGRESS_OFF = 2;
     public static final int MSG_SAVED_DRAFT = 4;
     private static final int MSG_DISCARDED_DRAFT = 5;
+    public static final int SECURE_MSG_DRAFT_SAVED = 6;
 
     private static final int REQUEST_MASK_RECIPIENT_PRESENTER = (1 << 8);
     private static final int REQUEST_MASK_LOADER_HELPER = (1 << 9);
@@ -1486,9 +1487,28 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             // TODO more appropriate logic here? not sure
-            boolean saveRemotely = !recipientPresenter.getCurrentCryptoStatus().shouldUsePgpMessageBuilder();
+            //boolean saveRemotely = !recipientPresenter.getCurrentCryptoStatus().shouldUsePgpMessageBuilder();
+            recipientPresenter.updateCryptoStatus();
+            ComposeCryptoStatus currentCryptoStatus = recipientPresenter.getCurrentCryptoStatus();
+            CryptoMode currentCryptoMode = currentCryptoStatus.getCryptoMode();
+            Flag cryptoModeFlag = null;
+            switch (currentCryptoMode) {
+                case DISABLE:
+                    cryptoModeFlag = Flag.X_DRAFT_CRYPTO_DISABLED;
+                    break;
+                case OPPORTUNISTIC:
+                    cryptoModeFlag = Flag.X_DRAFT_CRYPTO_OPPORTUNISTIC;
+                    break;
+                case PRIVATE:
+                    cryptoModeFlag = Flag.X_DRAFT_CRYPTO_PRIVATE;
+                    break;
+                case SIGN_ONLY:
+                    cryptoModeFlag = Flag.X_DRAFT_CRYPTO_SIGN_ONLY;
+                    break;
+            }
+
             new SaveMessageTask(getApplicationContext(), account, contacts, internalMessageHandler,
-                    message, draftId, saveRemotely).execute();
+                    message, draftId, cryptoModeFlag).execute();
             if (finishAfterDraftSaved) {
                 finish();
             } else {
@@ -1777,6 +1797,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     Toast.makeText(
                             MessageCompose.this,
                             getString(R.string.message_discarded_toast),
+                            Toast.LENGTH_LONG).show();
+                    break;
+                case SECURE_MSG_DRAFT_SAVED:
+                    draftId = (Long) msg.obj;
+                    Toast.makeText(
+                            MessageCompose.this,
+                            getString(R.string.secure_message_draft_saved_toast),
                             Toast.LENGTH_LONG).show();
                     break;
                 default:

@@ -897,7 +897,10 @@ public class MessagingController {
                 List<String> destroyMessageUids = new ArrayList<>();
                 for (String localMessageUid : localUidMap.keySet()) {
                     if (remoteUidMap.get(localMessageUid) == null) {
-                        destroyMessageUids.add(localMessageUid);
+                        if(localFolder.getMessage(localMessageUid).isSet(Flag.X_DRAFT_CRYPTO_DISABLED) ||
+                                localFolder.getMessage(localMessageUid).isSet(Flag.X_DRAFT_CRYPTO_SIGN_ONLY)) {
+                            destroyMessageUids.add(localMessageUid);
+                        }
                     }
                 }
 
@@ -3962,7 +3965,7 @@ public class MessagingController {
      *
      * @return Message representing the entry in the local store.
      */
-    public Message saveDraft(final Account account, final Message message, long existingDraftId, boolean saveRemotely) {
+    public Message saveDraft(final Account account, final Message message, long existingDraftId, Flag cryptoModeFlag) {
         Message localMessage = null;
         try {
             LocalStore localStore = account.getLocalStore();
@@ -3979,8 +3982,10 @@ public class MessagingController {
             // Fetch the message back from the store.  This is the Message that's returned to the caller.
             localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
+            localMessage.setFlag(cryptoModeFlag, true);
 
-            if (saveRemotely) {
+            if (cryptoModeFlag == Flag.X_DRAFT_CRYPTO_DISABLED ||
+                    cryptoModeFlag == Flag.X_DRAFT_CRYPTO_SIGN_ONLY) {
                 PendingCommand command = PendingAppend.create(localFolder.getName(), localMessage.getUid());
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
