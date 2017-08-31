@@ -287,11 +287,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Rodyti tik prenumeruotus aplankus</string>
   <string name="account_setup_auto_expand_folder">Automatiškai išskleisti aplanką</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA kelias</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Nebūtina</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Nebūtina</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Tapatybės tikrinimo kelias</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Nebūtina</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Nebūtina</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Pašto dėžutės pavadinimas</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Nebūtina</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Nebūtina</string>
   <string name="account_setup_outgoing_title">Siunčiamųjų laiškų serveris</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP serveris</string>
   <string name="account_setup_outgoing_port_label">Prievadas</string>

@@ -364,11 +364,11 @@ Prosimo pošljite poročila o napakah, predloge za nove funkcije in vprašanja n
   <string name="account_setup_incoming_subscribed_folders_only_label">Prikaži samo naročene mape</string>
   <string name="account_setup_auto_expand_folder">Samodejno razširi mape</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Pot OWA</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Neobvezno</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Neobvezno</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Pot za overjanje</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Neobvezno</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Neobvezno</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Vzdevek za nabiralnik</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Neobvezno</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Neobvezno</string>
   <string name="account_setup_outgoing_title">Nastavitve odhodnega strežnika</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP strežnik</string>
   <string name="account_setup_outgoing_port_label">Vrata</string>

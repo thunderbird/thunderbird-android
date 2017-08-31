@@ -287,11 +287,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">فقط پوشه های تصویب شده را نمایش بده</string>
   <string name="account_setup_auto_expand_folder">پوشه توسعه یافته خودکار</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">مسیر او دبلیو ای</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">اختیاری</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">اختیاری</string>
   <string name="account_setup_incoming_webdav_auth_path_label">مسیر احراز هویت</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">اختیاری</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">اختیاری</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">نام مستعار صندوق پستی</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">اختیاری</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">اختیاری</string>
   <string name="account_setup_outgoing_title">تنظیمات سرور خروجی </string>
   <string name="account_setup_outgoing_smtp_server_label">سرور اس ام تی پی</string>
   <string name="account_setup_outgoing_port_label">پورت</string>

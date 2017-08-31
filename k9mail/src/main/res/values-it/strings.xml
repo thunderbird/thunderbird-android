@@ -360,11 +360,11 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_incoming_subscribed_folders_only_label">Mostra solo le cartelle sottoscritte</string>
   <string name="account_setup_auto_expand_folder">Auto-espandi cartella</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Percorso OWA</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Opzionale</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Opzionale</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Percorso di autenticazione</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Opzionale</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Opzionale</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Alias della casella postale</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Opzionale</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Opzionale</string>
   <string name="account_setup_outgoing_title">Impostazioni server della posta in uscita</string>
   <string name="account_setup_outgoing_smtp_server_label">Server SMTP</string>
   <string name="account_setup_outgoing_port_label">Porta</string>

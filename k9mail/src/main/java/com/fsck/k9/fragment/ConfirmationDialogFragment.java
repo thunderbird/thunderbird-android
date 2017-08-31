@@ -11,6 +11,7 @@ import android.os.Bundle;
 import timber.log.Timber;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.mail.ConnectionSecurity;
 
 public class ConfirmationDialogFragment extends DialogFragment implements OnClickListener,
         OnCancelListener {
@@ -22,9 +23,10 @@ public class ConfirmationDialogFragment extends DialogFragment implements OnClic
     private static final String ARG_CONFIRM_TEXT = "confirm";
     private static final String ARG_CANCEL_TEXT = "cancel";
 
-
     public static ConfirmationDialogFragment newInstance(int dialogId, String title, String message,
-            String confirmText, String cancelText) {
+                                                         String confirmText, String cancelText,
+                                                         ConfirmationDialogFragmentListener listener) {
+
         ConfirmationDialogFragment fragment = new ConfirmationDialogFragment();
 
         Bundle args = new Bundle();
@@ -34,13 +36,20 @@ public class ConfirmationDialogFragment extends DialogFragment implements OnClic
         args.putString(ARG_CONFIRM_TEXT, confirmText);
         args.putString(ARG_CANCEL_TEXT, cancelText);
         fragment.setArguments(args);
+        fragment.mListener = listener;
 
         return fragment;
     }
 
     public static ConfirmationDialogFragment newInstance(int dialogId, String title, String message,
+            String confirmText, String cancelText) {
+
+        return newInstance(dialogId, title, message, confirmText, cancelText, null);
+    }
+
+    public static ConfirmationDialogFragment newInstance(int dialogId, String title, String message,
             String cancelText) {
-        return newInstance(dialogId, title, message, null, cancelText);
+        return newInstance(dialogId, title, message, null, cancelText, null);
     }
 
 
@@ -105,10 +114,12 @@ public class ConfirmationDialogFragment extends DialogFragment implements OnClic
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (ConfirmationDialogFragmentListener) activity;
-        } catch (ClassCastException e) {
-            Timber.d("%s did not implement ConfirmationDialogFragmentListener", activity);
+        if (mListener != null) {
+            try {
+                mListener = (ConfirmationDialogFragmentListener) activity;
+            } catch (ClassCastException e) {
+                Timber.d("%s did not implement ConfirmationDialogFragmentListener", activity);
+            }
         }
     }
 

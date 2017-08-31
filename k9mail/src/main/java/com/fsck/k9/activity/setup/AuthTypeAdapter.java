@@ -6,13 +6,13 @@ import android.widget.ArrayAdapter;
 import com.fsck.k9.mail.AuthType;
 
 
-class AuthTypeAdapter extends ArrayAdapter<AuthTypeHolder> {
+public class AuthTypeAdapter extends ArrayAdapter<AuthTypeHolder> {
     public AuthTypeAdapter(Context context, int resource, AuthTypeHolder[] holders) {
         super(context, resource, holders);
     }
 
     public static AuthTypeAdapter get(Context context) {
-        AuthType[] authTypes = new AuthType[]{AuthType.PLAIN, AuthType.CRAM_MD5, AuthType.EXTERNAL};
+        AuthType[] authTypes = new AuthType[]{AuthType.PLAIN, AuthType.CRAM_MD5, AuthType.XOAUTH2, AuthType.EXTERNAL};
         AuthTypeHolder[] holders = new AuthTypeHolder[authTypes.length];
         for (int i = 0; i < authTypes.length; i++) {
             holders[i] = new AuthTypeHolder(authTypes[i], context.getResources());

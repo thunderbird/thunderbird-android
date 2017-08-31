@@ -309,11 +309,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Näita üksnes tellitud kaustu</string>
   <string name="account_setup_auto_expand_folder">Kaustade automaatne laiendamine</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA tee</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Valikuline</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Valikuline</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Autentimise tee</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Valikuline</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Valikuline</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Postkasti hüüdnimin</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Valikuline</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Valikuline</string>
   <string name="account_setup_outgoing_title">Väljuva emaili serveri sätted</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
   <string name="account_setup_outgoing_port_label">Port</string>

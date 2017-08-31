@@ -357,11 +357,11 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_incoming_subscribed_folders_only_label">購読フォルダのみ表示</string>
   <string name="account_setup_auto_expand_folder">自動表示フォルダ</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA パス</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">オプション</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">オプション</string>
   <string name="account_setup_incoming_webdav_auth_path_label">認証パス</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">オプション</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">オプション</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">メールボックスエイリアス</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">オプション</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">オプション</string>
   <string name="account_setup_outgoing_title">送信メールサーバ設定</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP サーバ</string>
   <string name="account_setup_outgoing_port_label">ポート</string>

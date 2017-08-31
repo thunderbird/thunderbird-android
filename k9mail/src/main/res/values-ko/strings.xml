@@ -324,11 +324,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">설정한 폴더만 보기</string>
   <string name="account_setup_auto_expand_folder">폴더 자동 펼치기</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA 경로</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">옵션</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">옵션</string>
   <string name="account_setup_incoming_webdav_auth_path_label">인증 경로</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">옵션</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">옵션</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">편지함 별명</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">옵션</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">옵션</string>
   <string name="account_setup_outgoing_title">보내기 서버 설정</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP 서버</string>
   <string name="account_setup_outgoing_port_label">포트번호</string>

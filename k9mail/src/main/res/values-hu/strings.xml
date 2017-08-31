@@ -349,11 +349,11 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="account_setup_incoming_subscribed_folders_only_label">Csak a megjelölt mappákat</string>
   <string name="account_setup_auto_expand_folder">Minden mappa kibontása</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">OWA útvonal</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Választható</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Választható</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Hitelesítési útvonal</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Választható</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Választható</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Postafiók álnév</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Választható</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Választható</string>
   <string name="account_setup_outgoing_title">Kimenő szerver beállításai</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP szerver</string>
   <string name="account_setup_outgoing_port_label">Port</string>

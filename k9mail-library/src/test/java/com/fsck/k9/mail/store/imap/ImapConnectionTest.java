@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import android.app.Activity;
 import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.AuthType;
@@ -61,8 +60,8 @@ public class ImapConnectionTest {
     @Before
     public void setUp() throws Exception {
         connectivityManager = mock(ConnectivityManager.class);
-        oAuth2TokenProvider = createOAuth2TokenProvider();
         socketFactory = TestTrustedSocketFactory.newInstance();
+        oAuth2TokenProvider = createOAuth2TokenProvider();
 
         settings = new SimpleImapSettings();
         settings.setUsername(USERNAME);
@@ -937,7 +936,8 @@ public class ImapConnectionTest {
 
     private ImapConnection createImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
             ConnectivityManager connectivityManager, OAuth2TokenProvider oAuth2TokenProvider) {
-        return new ImapConnection(settings, socketFactory, connectivityManager, oAuth2TokenProvider,
+        return new ImapConnection(settings, socketFactory, connectivityManager,
+                oAuth2TokenProvider,
                 SOCKET_CONNECT_TIMEOUT, SOCKET_READ_TIMEOUT);
     }
 
@@ -945,7 +945,8 @@ public class ImapConnectionTest {
         server.start();
         settings.setHost(server.getHost());
         settings.setPort(server.getPort());
-        return createImapConnection(settings, socketFactory, connectivityManager, oAuth2TokenProvider);
+        return createImapConnection(settings, socketFactory, connectivityManager,
+                oAuth2TokenProvider);
     }
 
     private ImapConnection simpleOpen(MockImapServer server) throws Exception {
@@ -1010,14 +1011,15 @@ public class ImapConnectionTest {
 
     private OAuth2TokenProvider createOAuth2TokenProvider() throws AuthenticationFailedException {
         return new OAuth2TokenProvider() {
-            private int invalidationCount = 0;
+
+            private int accessTokenInvalidationCount = 0;
 
             @Override
-            public String getToken(String username, long timeoutMillis) throws AuthenticationFailedException {
-                assertEquals(USERNAME, username);
+            public String getToken(String email, long timeoutMillis) throws AuthenticationFailedException {
+                assertEquals(USERNAME, email);
                 assertEquals(OAUTH2_TIMEOUT, timeoutMillis);
 
-                switch (invalidationCount) {
+                switch (accessTokenInvalidationCount) {
                     case 0: {
                         return XOAUTH_TOKEN;
                     }
@@ -1025,26 +1027,22 @@ public class ImapConnectionTest {
                         return XOAUTH_ANOTHER_TOKEN;
                     }
                     default: {
-                        throw new AssertionError("Ran out of auth tokens. invalidateToken() called too often?");
+                        throw new AssertionError("Ran out of auth tokens. invalidateAccessToken() called too often?");
                     }
                 }
             }
 
             @Override
-            public void invalidateToken(String username) {
-                assertEquals(USERNAME, username);
-                invalidationCount++;
+            public void invalidateToken(String email) {
+                assertEquals(USERNAME, email);
+                accessTokenInvalidationCount++;
             }
 
             @Override
-            public List<String> getAccounts() {
-                throw new UnsupportedOperationException();
+            public void disconnectEmailWithK9(String email) {
+                assertEquals(USERNAME, email);
             }
 
-            @Override
-            public void authorizeApi(String username, Activity activity, OAuth2TokenProviderAuthCallback callback) {
-                throw new UnsupportedOperationException();
-            }
         };
     }
 }

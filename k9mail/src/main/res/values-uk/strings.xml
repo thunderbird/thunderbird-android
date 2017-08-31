@@ -361,11 +361,11 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_incoming_subscribed_folders_only_label">Показати лише теки, на які здійснено підписку</string>
   <string name="account_setup_auto_expand_folder">Автоматично відкривати теку</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Шлях для WebDAV (Exchange)</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Необов’язкове</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Необов’язкове</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Шлях для автентифікації</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Необов’язкове</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Необов’язкове</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Шлях поштової скриньки</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Необов’язкове</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Необов’язкове</string>
   <string name="account_setup_outgoing_title">Налаштування сервера вихідної пошти</string>
   <string name="account_setup_outgoing_smtp_server_label">Сервер SMTP</string>
   <string name="account_setup_outgoing_port_label">Порт</string>

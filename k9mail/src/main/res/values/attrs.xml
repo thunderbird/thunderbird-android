@@ -87,5 +87,13 @@
         <attr name="previewInitialChild" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="TextInputLayoutWithHelperText">
+        <attr name="helperText" format="string"/>
+        <attr name="helperTextColor" format="color|reference"/>
+    </declare-styleable>
+
+    <style name="HelperTextAppearance" parent="TextAppearance.Design.Error">
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
 
 </resources>

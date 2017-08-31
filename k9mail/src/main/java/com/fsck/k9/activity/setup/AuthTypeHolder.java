@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import com.fsck.k9.R;
 import com.fsck.k9.mail.AuthType;
 
-class AuthTypeHolder {
+public class AuthTypeHolder {
     final AuthType authType;
     private final Resources resources;
     private boolean insecure;
@@ -39,6 +39,8 @@ class AuthTypeHolder {
                 }
             case CRAM_MD5:
                 return R.string.account_setup_auth_type_encrypted_password;
+            case XOAUTH2:
+                return R.string.account_setup_auth_type_xoauth2;
             case EXTERNAL:
                 return R.string.account_setup_auth_type_tls_client_certificate;
 
@@ -47,5 +49,9 @@ class AuthTypeHolder {
             default:
                 return 0;
         }
+    }
+
+    public AuthType getAuthType() {
+        return authType;
     }
 }

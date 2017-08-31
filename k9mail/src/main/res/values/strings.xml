@@ -372,6 +372,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_basics_title">Set up a new account</string>
     <string name="account_setup_basics_email_hint">Email address</string>
     <string name="account_setup_basics_password_hint">Password</string>
+    <string name="account_setup_basics_password_no_password_needed_hint">Please click next</string>
     <string name="account_setup_basics_show_password">Show password</string>
     <string name="account_setup_basics_manual_setup_action">Manual setup</string>
 
@@ -384,7 +385,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_check_settings_canceling_msg">Canceling\u2026</string>
 
     <string name="account_setup_names_title">You\'re almost done!</string>
-    <string name="account_setup_names_account_name_label">Give this account a name (optional):</string>
+    <string name="account_setup_names_account_name_label">Give this account a name</string>
     <string name="account_setup_names_user_name_label">Type your name (displays on outgoing messages):</string>
 
     <string name="account_setup_account_type_title">Account type</string>
@@ -396,6 +397,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_auth_type_normal_password">Normal password</string>
     <string name="account_setup_auth_type_insecure_password">Password, transmitted insecurely</string>
     <string name="account_setup_auth_type_encrypted_password">Encrypted password</string>
+    <string name="account_setup_auth_type_xoauth2">OAuth 2.0 Token</string>
     <string name="account_setup_auth_type_tls_client_certificate">Client certificate</string>
 
     <string name="account_setup_incoming_title">Incoming server settings</string>
@@ -446,12 +448,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_auto_expand_folder">Auto-expand folder</string>
 
     <string name="account_setup_incoming_webdav_path_prefix_label">OWA path</string>
-    <string name="account_setup_incoming_webdav_path_prefix_hint">Optional</string>
+    <string name="account_setup_incoming_webdav_path_prefix_helper_text">Optional</string>
 
     <string name="account_setup_incoming_webdav_auth_path_label">Authentication path</string>
-    <string name="account_setup_incoming_webdav_auth_path_hint">Optional</string>
+    <string name="account_setup_incoming_webdav_auth_path_helper_text">Optional</string>
     <string name="account_setup_incoming_webdav_mailbox_path_label">Mailbox alias</string>
-    <string name="account_setup_incoming_webdav_mailbox_path_hint">Optional</string>
+    <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Optional</string>
 
     <string name="account_setup_outgoing_title">Outgoing server settings</string>
     <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
@@ -471,6 +473,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="clear_action">Clear messages (danger!)</string>
     <string name="recreate_action">Recreate data (Last Resort!)</string>
 
+    <string name="account_setup_autoconfiguration">Try to detect settings&#8230;</string>
     <string name="account_setup_options_mail_check_frequency_label">Folder poll frequency</string>
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
     <string name="account_setup_options_mail_check_frequency_1min">Every minute</string>
@@ -518,9 +521,11 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronized with the server</string>
 
     <string name="account_setup_failed_dlg_title">Setup could not finish</string>
+    <string name="account_setup_failed_auth_message">Username or password incorrect</string>
     <string name="account_setup_failed_dlg_auth_message_fmt">Username or password incorrect.\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_certificate_message_fmt">The server presented an invalid SSL certificate. Sometimes, this is because of a server misconfiguration. Sometimes it is because someone is trying to attack you or your mail server. If you\'re not sure what\'s up, click Reject and contact the folks who manage your mail server.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
     <string name="account_setup_failed_dlg_server_message_fmt">Cannot connect to server.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_server_message">Cannot connect to server</string>
     <string name="account_setup_failed_dlg_edit_details_action">Edit details</string>
     <string name="account_setup_failed_dlg_continue_action">Continue</string>
 
@@ -1121,6 +1126,7 @@ Please submit bug reports, contribute new features and ask questions at
     
     <!-- === Client certificates specific ================================================================== -->
     <string name="account_setup_basics_client_certificate">Use client certificate</string>
+    <string name="account_setup_basics_oauth2_token">Use OAuth 2.0 token</string>
     <string name="client_certificate_spinner_empty">No client certificate</string>
     <string name="client_certificate_spinner_delete">Remove client certificate selection</string>
     <string name="client_certificate_retrieval_failure">"Failed to retrieve client certificate for alias \"<xliff:g id="alias">%s</xliff:g>\""</string>
@@ -1241,4 +1247,20 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="mail_list_widget_loading">Loading messages…</string>
     <string name="fetching_folders_failed">Fetching folder list failed</string>
     <string name="messageview_crypto_warning_details">Show Details</string>
+    <string name="incoming_settings">Incoming Settings</string>
+    <string name="account_names">Account Names</string>
+    <string name="outgoing_settings">Outgoing settings</string>
+    <string name="account_description_helper_text">Optional</string>
+    <string name="add_email">Add email</string>
+    <string name="manual_setup">Manual Setup</string>
+
+    <string name="xoauth2_auth_cancelled_by_user">Authentication cancelled</string>
+    <string name="xoauth2_unable_to_contact_auth_server">Unable to contact authentication server</string>
+    <string name="xoauth2_error_contacting_auth_server">Error contacting authentication server</string>
+    <string name="xoauth2_account_doesnt_exist">Account doesn\'t exist</string>
+    <string name="xoauth2_incorrect_auth_info_provided">Incorrect auth info provided</string>
+    <string name="xoauth2_no_account">No account provided</string>
+    <string name="linked_webview_title_gmail">Gmail Authorization</string>
+    <string name="linked_webview_title_outlook">Outlook Authorization</string>
+    <string name="OAuth2_not_supported">OAuth 2.0 is not supported for this email</string>
 </resources>

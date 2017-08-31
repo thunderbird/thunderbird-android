@@ -6,7 +6,7 @@ import android.widget.ArrayAdapter;
 import com.fsck.k9.mail.ConnectionSecurity;
 
 
-class ConnectionSecurityAdapter extends ArrayAdapter<ConnectionSecurityHolder> {
+public class ConnectionSecurityAdapter extends ArrayAdapter<ConnectionSecurityHolder> {
     public ConnectionSecurityAdapter(Context context, int resource, ConnectionSecurityHolder[] securityTypes) {
         super(context, resource, securityTypes);
     }

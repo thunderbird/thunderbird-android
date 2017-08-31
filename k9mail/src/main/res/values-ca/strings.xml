@@ -294,11 +294,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Només mostra carpetes subscrites</string>
   <string name="account_setup_auto_expand_folder">Autoexpandeix carpeta</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Camí WebDAV (Exchange)</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Opcional</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Camí d\'autenticació</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Opcional</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Camí de la bústia</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Opcional</string>
   <string name="account_setup_outgoing_title">Configuració del servidor de sortida</string>
   <string name="account_setup_outgoing_smtp_server_label">Servidor SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>

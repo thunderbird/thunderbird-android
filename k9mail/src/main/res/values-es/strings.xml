@@ -358,11 +358,11 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="account_setup_incoming_subscribed_folders_only_label">Ver sólo carpetas suscritas</string>
   <string name="account_setup_auto_expand_folder">Autoexpandir carpeta</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Dirección WebDAV (Exchange)</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Opcional</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Dirección de autentificación</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Opcional</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Alias del buzón</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Opcional</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Opcional</string>
   <string name="account_setup_outgoing_title">Correo saliente</string>
   <string name="account_setup_outgoing_smtp_server_label">Servidor SMTP</string>
   <string name="account_setup_outgoing_port_label">Puerto</string>

@@ -360,11 +360,11 @@
   <string name="account_setup_incoming_subscribed_folders_only_label">Προβολή μόνον φακέλων υπό παρακολούθηση</string>
   <string name="account_setup_auto_expand_folder">Αυτόματη επέκταση φακέλου</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Μονοπάτι OWA</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Προαιρετικό</string>
+  <string name="account_setup_incoming_webdav_path_prefix_helper_text">Προαιρετικό</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Μονοπάτι πιστοποίησης</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Προαιρετικό</string>
+  <string name="account_setup_incoming_webdav_auth_path_helper_text">Προαιρετικό</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Ψευδώνυμο γραμματοκιβωτίου</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Προαιρετικό</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_helper_text">Προαιρετικό</string>
   <string name="account_setup_outgoing_title">Ρυθμίσεις εξερχόμενης αλληλογραφίας</string>
   <string name="account_setup_outgoing_smtp_server_label">Εξυπηρέτης SMTP</string>
   <string name="account_setup_outgoing_port_label">Θύρα</string>

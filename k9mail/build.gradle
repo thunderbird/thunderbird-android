@@ -11,6 +11,10 @@ if (rootProject.testCoverage) {
 
 repositories {
     jcenter()
+
+    maven {
+        url 'https://maven.google.com'
+    }
 }
 
 //noinspection GroovyAssignabilityCheck
@@ -27,6 +31,7 @@ dependencies {
     compile "com.squareup.okio:okio:${okioVersion}"
     compile 'commons-io:commons-io:2.4'
     compile "com.android.support:support-v4:${androidSupportLibraryVersion}"
+    compile "com.android.support:design:${androidSupportLibraryVersion}"
     compile 'org.jsoup:jsoup:1.10.2'
     compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
@@ -34,8 +39,13 @@ dependencies {
     compile 'de.cketti.safecontentresolver:safe-content-resolver-v14:0.9.0'
     compile 'com.github.amlcurran.showcaseview:library:5.4.1'
     compile 'com.squareup.moshi:moshi:1.2.0'
+    compile 'me.zhanghai.android.materialprogressbar:library:1.4.1'
     compile "com.jakewharton.timber:timber:${timberVersion}"
     compile 'net.jcip:jcip-annotations:1.0'
+
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
 

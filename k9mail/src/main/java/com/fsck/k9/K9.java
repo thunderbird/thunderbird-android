@@ -26,8 +26,11 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
+import android.support.annotation.StringRes;
 
 import com.fsck.k9.Account.SortType;
+import com.fsck.k9.account.K9OAuth2AuthorizationCodeFlowTokenProvider;
+import com.fsck.k9.account.K9OAuth2TokenProvider;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.controller.MessagingController;
@@ -537,6 +540,7 @@ public class K9 extends Application {
         super.onCreate();
         app = this;
         Globals.setContext(this);
+        Globals.setOAuth2TokenProvider(new K9OAuth2TokenProvider(this));
 
         K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {
             @Override public boolean enabled() {
@@ -855,6 +859,14 @@ public class K9 extends Application {
         LIGHT,
         DARK,
         USE_GLOBAL
+    }
+
+    public static int getK9MaterialThemeResourceId(Theme themeId) {
+        return (themeId == Theme.LIGHT) ? R.style.Theme_K9_Material_Light : R.style.Theme_K9_Material_Dark;
+    }
+
+    public static int getK9MaterialThemeResourceId() {
+        return getK9MaterialThemeResourceId(theme);
     }
 
     public static int getK9ThemeResourceId(Theme themeId) {
@@ -1463,4 +1475,11 @@ public class K9 extends Application {
         }.execute();
     }
 
+    public static String getK9String(@StringRes int resId) {
+        return app.getString(resId);
+    }
+
+    public static String getK9String(@StringRes int resId, Object... args) {
+        return app.getString(resId, args);
+    }
 }
