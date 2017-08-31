@@ -771,7 +771,7 @@ public class SmtpTransport extends Transport {
                 responseLineToCommandResponse(responseLine, results);
 
             } catch (MessagingException exception) {
-                if (command == "DATA") {
+                if (command.equals("DATA")) {
                     throw exception;
                 }
                 if (command.startsWith("RCPT")) {
