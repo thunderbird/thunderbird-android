@@ -706,8 +706,8 @@ public class FolderList extends K9ListActivity {
             @Override
             public void listFoldersFailed(Account account, String message) {
                 if (account.equals(mAccount)) {
-
                     mHandler.progress(false);
+                    Toast.makeText(context, R.string.fetching_folders_failed, Toast.LENGTH_SHORT).show();
                 }
                 super.listFoldersFailed(account, message);
             }

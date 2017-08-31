@@ -163,7 +163,7 @@ public class MigrationTest {
         localStore.getFolder("dev").fetch(Collections.singletonList(msg), fp, null);
 
         Assert.assertEquals("text/plain", msg.getMimeType());
-        Assert.assertEquals(2, msg.getId());
+        Assert.assertEquals(2, msg.getDatabaseId());
         Assert.assertEquals(13, msg.getHeaderNames().size());
         Assert.assertEquals(0, msg.getAttachmentCount());
 
@@ -229,7 +229,7 @@ public class MigrationTest {
         fp.add(FetchProfile.Item.BODY);
         localStore.getFolder("dev").fetch(Collections.singletonList(msg), fp, null);
 
-        Assert.assertEquals(3, msg.getId());
+        Assert.assertEquals(3, msg.getDatabaseId());
         Assert.assertEquals(8, msg.getHeaderNames().size());
         Assert.assertEquals("multipart/mixed", msg.getMimeType());
         Assert.assertEquals(1, msg.getHeader(MimeHeader.HEADER_CONTENT_TYPE).length);
@@ -301,7 +301,7 @@ public class MigrationTest {
         fp.add(FetchProfile.Item.BODY);
         localStore.getFolder("dev").fetch(Collections.singletonList(msg), fp, null);
 
-        Assert.assertEquals(4, msg.getId());
+        Assert.assertEquals(4, msg.getDatabaseId());
         Assert.assertEquals(8, msg.getHeaderNames().size());
         Assert.assertEquals("multipart/mixed", msg.getMimeType());
         Assert.assertEquals(2, msg.getAttachmentCount());
@@ -360,7 +360,7 @@ public class MigrationTest {
         fp.add(FetchProfile.Item.BODY);
         localStore.getFolder("dev").fetch(Collections.singletonList(msg), fp, null);
 
-        Assert.assertEquals(5, msg.getId());
+        Assert.assertEquals(5, msg.getDatabaseId());
         Assert.assertEquals(13, msg.getHeaderNames().size());
         Assert.assertEquals("multipart/encrypted", msg.getMimeType());
         Assert.assertEquals(2, msg.getAttachmentCount());
@@ -478,7 +478,7 @@ public class MigrationTest {
         fp.add(FetchProfile.Item.BODY);
         localStore.getFolder("dev").fetch(Collections.singletonList(msg), fp, null);
 
-        Assert.assertEquals(6, msg.getId());
+        Assert.assertEquals(6, msg.getDatabaseId());
         Assert.assertEquals(12, msg.getHeaderNames().size());
         Assert.assertEquals("text/plain", msg.getMimeType());
         Assert.assertEquals(0, msg.getAttachmentCount());
@@ -565,7 +565,7 @@ public class MigrationTest {
         fp.add(FetchProfile.Item.BODY);
         localStore.getFolder("dev").fetch(Collections.singletonList(msg), fp, null);
 
-        Assert.assertEquals(7, msg.getId());
+        Assert.assertEquals(7, msg.getDatabaseId());
         Assert.assertEquals(12, msg.getHeaderNames().size());
         Assert.assertEquals("text/plain", msg.getMimeType());
         Assert.assertEquals(0, msg.getAttachmentCount());
@@ -623,7 +623,7 @@ public class MigrationTest {
         fp.add(FetchProfile.Item.BODY);
         localStore.getFolder("dev").fetch(Collections.singletonList(msg), fp, null);
 
-        Assert.assertEquals(8, msg.getId());
+        Assert.assertEquals(8, msg.getDatabaseId());
         Assert.assertEquals(9, msg.getHeaderNames().size());
         Assert.assertEquals("multipart/alternative", msg.getMimeType());
         Assert.assertEquals(0, msg.getAttachmentCount());
@@ -688,7 +688,7 @@ public class MigrationTest {
         fp.add(FetchProfile.Item.BODY);
         localStore.getFolder("dev").fetch(Collections.singletonList(msg), fp, null);
 
-        Assert.assertEquals(9, msg.getId());
+        Assert.assertEquals(9, msg.getDatabaseId());
         Assert.assertEquals(11, msg.getHeaderNames().size());
         Assert.assertEquals("multipart/mixed", msg.getMimeType());
         Assert.assertEquals(1, msg.getAttachmentCount());

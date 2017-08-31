@@ -14,32 +14,6 @@ import timber.log.Timber;
 import java.util.Collections;
 
 public class WebDavTransport extends Transport {
-
-    /**
-     * Decodes a WebDavTransport URI.
-     *
-     * <p>
-     * <b>Note:</b> Everything related to sending messages via WebDAV is handled by
-     * {@link WebDavStore}. So the transport URI is the same as the store URI.
-     * </p>
-     */
-    public static ServerSettings decodeUri(String uri) {
-        return WebDavStore.decodeUri(uri);
-    }
-
-    /**
-     * Creates a WebDavTransport URI.
-     *
-     * <p>
-     * <b>Note:</b> Everything related to sending messages via WebDAV is handled by
-     * {@link WebDavStore}. So the transport URI is the same as the store URI.
-     * </p>
-     */
-    public static String createUri(ServerSettings server) {
-        return WebDavStore.createUri(server);
-    }
-
-
     private WebDavStore store;
 
     public WebDavTransport(StoreConfig storeConfig) throws MessagingException {

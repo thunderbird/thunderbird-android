@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -31,6 +30,7 @@ import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.UrlEncodingHelper;
@@ -38,11 +38,11 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
+import timber.log.Timber;
 
 /**
  * Prompts the user for the email address and password.
@@ -412,7 +412,7 @@ public class AccountSetupBasics extends K9Activity
         ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, user, password, clientCertificateAlias);
         String storeUri = RemoteStore.createStoreUri(storeServer);
-        String transportUri = Transport.createTransportUri(transportServer);
+        String transportUri = TransportUris.createTransportUri(transportServer);
         mAccount.setStoreUri(storeUri);
         mAccount.setTransportUri(transportUri);
 

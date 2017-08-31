@@ -162,7 +162,7 @@ public class AttachmentPresenter {
             if (attachmentViewInfo.inlineAttachment) {
                 continue;
             }
-            if (!attachmentViewInfo.isContentAvailable) {
+            if (!attachmentViewInfo.isContentAvailable()) {
                 allPartsAvailable = false;
                 continue;
             }

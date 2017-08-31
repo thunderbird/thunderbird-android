@@ -4,6 +4,8 @@ package com.fsck.k9;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +21,11 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.StrictMode;
-import android.text.format.Time;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.MessageCompose;
@@ -36,6 +38,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.power.DeviceIdleManager;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.provider.UnreadWidgetProvider;
@@ -351,10 +354,22 @@ public class K9 extends Application {
      * whether any accounts are configured.
      */
     public static void setServicesEnabled(Context context) {
-        int acctLength = Preferences.getPreferences(context).getAvailableAccounts().size();
+        Context appContext = context.getApplicationContext();
+        int acctLength = Preferences.getPreferences(appContext).getAvailableAccounts().size();
+        boolean enable = acctLength > 0;
 
-        setServicesEnabled(context, acctLength > 0, null);
+        setServicesEnabled(appContext, enable, null);
 
+        updateDeviceIdleReceiver(appContext, enable);
+    }
+
+    private static void updateDeviceIdleReceiver(Context context, boolean enable) {
+        DeviceIdleManager deviceIdleManager = DeviceIdleManager.getInstance(context);
+        if (enable) {
+            deviceIdleManager.registerReceiver();
+        } else {
+            deviceIdleManager.unregisterReceiver();
+        }
     }
 
     private static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId) {
@@ -979,14 +994,14 @@ public class K9 extends Application {
             return false;
         }
 
-        Time time = new Time();
-        time.setToNow();
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+
         Integer startHour = Integer.parseInt(mQuietTimeStarts.split(":")[0]);
         Integer startMinute = Integer.parseInt(mQuietTimeStarts.split(":")[1]);
         Integer endHour = Integer.parseInt(mQuietTimeEnds.split(":")[0]);
         Integer endMinute = Integer.parseInt(mQuietTimeEnds.split(":")[1]);
 
-        Integer now = (time.hour * 60) + time.minute;
+        Integer now = (gregorianCalendar.get(Calendar.HOUR) * 60) + gregorianCalendar.get(Calendar.MINUTE);
         Integer quietStarts = startHour * 60 + startMinute;
         Integer quietEnds =  endHour * 60 + endMinute;
 
@@ -1422,7 +1437,7 @@ public class K9 extends Application {
         if (save) {
             Editor editor = sDatabaseVersionCache.edit();
             editor.putInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, LocalStore.DB_VERSION);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -1432,6 +1447,20 @@ public class K9 extends Application {
         if (enableDebugLogging) {
             Timber.plant(new DebugTree());
         }
+    }
+
+    public static void saveSettingsAsync() {
+        new AsyncTask<Void,Void,Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Preferences prefs = Preferences.getPreferences(app);
+                StorageEditor editor = prefs.getStorage().edit();
+                save(editor);
+                editor.commit();
+
+                return null;
+            }
+        }.execute();
     }
 
 }

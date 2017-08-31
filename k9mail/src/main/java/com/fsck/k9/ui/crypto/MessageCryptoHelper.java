@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
-import timber.log.Timber;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.crypto.MessageDecryptVerifier;
@@ -24,6 +23,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
@@ -34,7 +34,6 @@ import com.fsck.k9.mail.internet.SizeAware;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
-import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageHelper;
 import com.fsck.k9.mailstore.MimePartStreamParser;
 import com.fsck.k9.mailstore.util.FileFactory;
@@ -52,13 +51,13 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 import org.openintents.openpgp.util.OpenPgpUtils;
+import timber.log.Timber;
 
 
 public class MessageCryptoHelper {
     private static final int INVALID_OPENPGP_RESULT_CODE = -1;
     private static final MimeBodyPart NO_REPLACEMENT_PART = null;
     private static final int REQUEST_CODE_USER_INTERACTION = 124;
-    private static final int PROGRESS_SIZE_THRESHOLD = 4096;
 
 
     private final Context context;
@@ -69,7 +68,7 @@ public class MessageCryptoHelper {
     @Nullable
     private MessageCryptoCallback callback;
 
-    private LocalMessage currentMessage;
+    private Message currentMessage;
     private OpenPgpDecryptionResult cachedDecryptionResult;
     private MessageCryptoAnnotations queuedResult;
     private PendingIntent queuedPendingIntent;
@@ -85,15 +84,17 @@ public class MessageCryptoHelper {
 
     private OpenPgpApi openPgpApi;
     private OpenPgpServiceConnection openPgpServiceConnection;
+    private OpenPgpApiFactory openPgpApiFactory;
 
 
-    public MessageCryptoHelper(Context context) {
+    public MessageCryptoHelper(Context context, OpenPgpApiFactory openPgpApiFactory) {
         this.context = context.getApplicationContext();
 
         if (!K9.isOpenPgpProviderConfigured()) {
             throw new IllegalStateException("MessageCryptoHelper must only be called with a openpgp provider!");
         }
 
+        this.openPgpApiFactory = openPgpApiFactory;
         openPgpProviderPackage = K9.getOpenPgpProvider();
     }
 
@@ -101,7 +102,7 @@ public class MessageCryptoHelper {
         return !openPgpProviderPackage.equals(K9.getOpenPgpProvider());
     }
 
-    public void asyncStartOrResumeProcessingMessage(LocalMessage message, MessageCryptoCallback callback,
+    public void asyncStartOrResumeProcessingMessage(Message message, MessageCryptoCallback callback,
             OpenPgpDecryptionResult cachedDecryptionResult) {
         if (this.currentMessage != null) {
             reattachCallback(message, callback);
@@ -216,9 +217,10 @@ public class MessageCryptoHelper {
     private void connectToCryptoProviderService() {
         openPgpServiceConnection = new OpenPgpServiceConnection(context, openPgpProviderPackage,
                 new OnBound() {
+
                     @Override
                     public void onBound(IOpenPgpService2 service) {
-                        openPgpApi = new OpenPgpApi(context, service);
+                        openPgpApi = openPgpApiFactory.createOpenPgpApi(context, service);
 
                         decryptOrVerifyNextPart();
                     }
@@ -251,6 +253,7 @@ public class MessageCryptoHelper {
             decryptIntent.putExtra(OpenPgpApi.EXTRA_SENDER_ADDRESS, from[0].getAddress());
         }
 
+        decryptIntent.putExtra(OpenPgpApi.EXTRA_SUPPORT_OVERRIDE_CRYPTO_WARNING, true);
         decryptIntent.putExtra(OpenPgpApi.EXTRA_DECRYPTION_RESULT, cachedDecryptionResult);
 
         return decryptIntent;
@@ -405,10 +408,7 @@ public class MessageCryptoHelper {
                     throw new IllegalStateException("part to stream must be encrypted or inline!");
                 }
                 if (body instanceof SizeAware) {
-                    long bodySize = ((SizeAware) body).getSize();
-                    if (bodySize > PROGRESS_SIZE_THRESHOLD) {
-                        return bodySize;
-                    }
+                    return ((SizeAware) body).getSize();
                 }
                 return null;
             }
@@ -514,9 +514,12 @@ public class MessageCryptoHelper {
         OpenPgpSignatureResult signatureResult =
                 currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
         PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+        PendingIntent insecureWarningPendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INSECURE_DETAIL_INTENT);
+        boolean overrideCryptoWarning = currentCryptoResult.getBooleanExtra(
+                OpenPgpApi.RESULT_OVERRIDE_CRYPTO_WARNING, false);
 
-        CryptoResultAnnotation resultAnnotation = CryptoResultAnnotation.createOpenPgpResultAnnotation(
-                decryptionResult, signatureResult, pendingIntent, outputPart);
+        CryptoResultAnnotation resultAnnotation = CryptoResultAnnotation.createOpenPgpResultAnnotation(decryptionResult,
+                signatureResult, pendingIntent, insecureWarningPendingIntent, outputPart, overrideCryptoWarning);
 
         onCryptoOperationSuccess(resultAnnotation);
     }
@@ -621,7 +624,7 @@ public class MessageCryptoHelper {
         }
     }
 
-    private void reattachCallback(LocalMessage message, MessageCryptoCallback callback) {
+    private void reattachCallback(Message message, MessageCryptoCallback callback) {
         if (!message.equals(currentMessage)) {
             throw new AssertionError("Callback may only be reattached for the same message!");
         }
@@ -726,5 +729,4 @@ public class MessageCryptoHelper {
             return NO_REPLACEMENT_PART;
         }
     }
-
 }

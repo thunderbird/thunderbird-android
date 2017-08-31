@@ -1,6 +1,7 @@
 
 package com.fsck.k9.activity;
 
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +35,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import timber.log.Timber;
 import android.util.SparseBooleanArray;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -79,7 +79,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Transport;
+import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.SettingsExporter;
@@ -94,8 +94,8 @@ import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.view.ColorChip;
-
 import de.cketti.library.changelog.ChangeLog;
+import timber.log.Timber;
 
 
 public class Accounts extends K9ListActivity implements OnItemClickListener {
@@ -771,7 +771,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         private void show(final Accounts activity, boolean restore) {
             ServerSettings incoming = RemoteStore.decodeStoreUri(mAccount.getStoreUri());
-            ServerSettings outgoing = Transport.decodeTransportUri(mAccount.getTransportUri());
+            ServerSettings outgoing = TransportUris.decodeTransportUri(mAccount.getTransportUri());
 
             /*
              * Don't ask for the password to the outgoing server for WebDAV
@@ -905,11 +905,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     mUseIncomingView.setChecked(mUseIncoming);
                 }
             } else {
+                // Trigger afterTextChanged() being called
+                // Work around this bug: https://code.google.com/p/android/issues/detail?id=6360
                 if (configureIncomingServer) {
-                    // Trigger afterTextChanged() being called
-                    // Work around this bug: https://code.google.com/p/android/issues/detail?id=6360
                     mIncomingPasswordView.setText(mIncomingPasswordView.getText());
-                } else {
+                }
+                if (configureOutgoingServer) {
                     mOutgoingPasswordView.setText(mOutgoingPasswordView.getText());
                 }
             }
@@ -996,9 +997,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 if (mOutgoingPassword != null) {
                     // Set outgoing server password
                     String transportUri = mAccount.getTransportUri();
-                    ServerSettings outgoing = Transport.decodeTransportUri(transportUri);
+                    ServerSettings outgoing = TransportUris.decodeTransportUri(transportUri);
                     ServerSettings newOutgoing = outgoing.newPassword(mOutgoingPassword);
-                    String newTransportUri = Transport.createTransportUri(newOutgoing);
+                    String newTransportUri = TransportUris.createTransportUri(newOutgoing);
                     mAccount.setTransportUri(newTransportUri);
                 }
 
@@ -1273,15 +1274,21 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     private static String[][] USED_LIBRARIES = new String[][] {
-        new String[] {"jutf7", "http://jutf7.sourceforge.net/"},
-        new String[] {"JZlib", "http://www.jcraft.com/jzlib/"},
-        new String[] {"Commons IO", "http://commons.apache.org/io/"},
-        new String[] {"Mime4j", "http://james.apache.org/mime4j/"},
-        new String[] {"HtmlCleaner", "http://htmlcleaner.sourceforge.net/"},
-        new String[] {"ckChangeLog", "https://github.com/cketti/ckChangeLog"},
-        new String[] {"HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker"},
-        new String[] {"Glide", "https://github.com/bumptech/glide"},
-        new String[] {"TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/"},
+            new String[] {"Android Support Library", "https://developer.android.com/topic/libraries/support-library/index.html"},
+            new String[] {"ckChangeLog", "https://github.com/cketti/ckChangeLog"},
+            new String[] {"Commons IO", "http://commons.apache.org/io/"},
+            new String[] {"Glide", "https://github.com/bumptech/glide"},
+            new String[] {"HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker"},
+            new String[] {"jsoup", "https://jsoup.org/"},
+            new String[] {"jutf7", "http://jutf7.sourceforge.net/"},
+            new String[] {"JZlib", "http://www.jcraft.com/jzlib/"},
+            new String[] {"Mime4j", "http://james.apache.org/mime4j/"},
+            new String[] {"Moshi", "https://github.com/square/moshi"},
+            new String[] {"Okio", "https://github.com/square/okio"},
+            new String[] {"SafeContentResolver", "https://github.com/cketti/SafeContentResolver"},
+            new String[] {"ShowcaseView", "https://github.com/amlcurran/ShowcaseView"},
+            new String[] {"Timber", "https://github.com/JakeWharton/timber"},
+            new String[] {"TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/"},
     };
 
     private void onAbout() {
@@ -1326,8 +1333,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                               "<div>TypePad \u7d75\u6587\u5b57\u30a2\u30a4\u30b3\u30f3\u753b\u50cf " +
                               "(<a href=\"http://typepad.jp/\">Six Apart Ltd</a>) / " +
                               "<a href=\"http://creativecommons.org/licenses/by/2.1/jp/\">CC BY 2.1</a></div>"))
-        .append("</p><hr/><p>")
-        .append(getString(R.string.app_htmlcleaner_license));
+        .append("</p>");
 
 
         wv.loadDataWithBaseURL("file:///android_res/drawable/", html.toString(), "text/html", "utf-8", null);
@@ -1919,7 +1925,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.setType("application/octet-stream");
-            intent.putExtra(Intent.EXTRA_TITLE, SettingsExporter.EXPORT_FILENAME);
+            intent.putExtra(Intent.EXTRA_TITLE, SettingsExporter.generateDatedExportFileName());
             intent.addCategory(Intent.CATEGORY_OPENABLE);
 
             startActivityForResult(intent, ACTIVITY_REQUEST_SAVE_SETTINGS_FILE);

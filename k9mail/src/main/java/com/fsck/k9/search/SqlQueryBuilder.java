@@ -5,7 +5,6 @@ import java.util.List;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -80,7 +79,7 @@ public class SqlQueryBuilder {
                     if (condition.attribute != Attribute.CONTAINS) {
                         Timber.e("message contents can only be matched!");
                     }
-                    query.append("(EXISTS (SELECT docid FROM messages_fulltext WHERE docid = id AND fulltext MATCH ?))");
+                    query.append("m.id IN (SELECT docid FROM messages_fulltext WHERE fulltext MATCH ?)");
                     selectionArgs.add(fulltextQueryString);
                     break;
                 }
@@ -111,7 +110,7 @@ public class SqlQueryBuilder {
             LocalStore localStore = account.getLocalStore();
             LocalFolder folder = localStore.getFolder(folderName);
             folder.open(Folder.OPEN_MODE_RO);
-            folderId = folder.getId();
+            folderId = folder.getDatabaseId();
         } catch (MessagingException e) {
             //FIXME
             e.printStackTrace();

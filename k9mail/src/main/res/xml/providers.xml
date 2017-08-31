@@ -137,6 +137,10 @@
     	<incoming uri="pop3+ssl+://fencepost.gnu.org" username="$user" />
     	<outgoing uri="smtp+tls+://fencepost.gnu.org" username="$user" />
     </provider>
+    <provider id="riseup" label="Riseup Networks" domain="riseup.net">
+    	<incoming uri="imap+ssl+://mail.riseup.net" username="$user" />
+    	<outgoing uri="smtp+tls+://mail.riseup.net" username="$user" />
+    </provider>	
 
     <!-- Mail.com Variants -->
     <provider id="mail.com" label="Mail.com" domain="mail.com">
@@ -281,16 +285,16 @@
         <outgoing uri="smtp+ssl+://smtp.virginmedia.com" username="$email" />
     </provider>
     <provider id="virgin.net" label="Virgin Media" domain="virgin.net">
-        <incoming uri="imap+ssl+://imap4.virgin.net" username="$email" />
-        <outgoing uri="smtp+ssl+://smtp.virgin.net" username="$email" />
+        <incoming uri="imap+ssl+://imap.virginmedia.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.virginmedia.com" username="$email" />
     </provider>
     <provider id="blueyonder.co.uk" label="Virgin Media" domain="blueyonder.co.uk">
-        <incoming uri="imap+ssl+://imap4.blueyonder.co.uk" username="$email" />
-        <outgoing uri="smtp+ssl+://smtp.blueyonder.co.uk" username="$email" />
+        <incoming uri="imap+ssl+://imap.virginmedia.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.virginmedia.com" username="$email" />
     </provider>
     <provider id="ntlworld.com" label="Virgin Media" domain="ntlworld.com">
-        <incoming uri="imap+ssl+://imap.ntlworld.com" username="$email" />
-        <outgoing uri="smtp+ssl+://smtp.ntlworld.com" username="$email" />
+        <incoming uri="imap+ssl+://imap.virginmedia.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.virginmedia.com" username="$email" />
     </provider>
     
     <!-- Germany -->
@@ -318,6 +322,11 @@
         <incoming uri="imap+tls+://posteo.de" username="$email" />
         <outgoing uri="smtp+tls+://posteo.de" username="$email" />
     </provider>
+    <provider id="systemliorg" label="systemli.org" domain="systemli.org">
+        <incoming uri="imap+ssl+://mail.systemli.org" username="$email" />
+        <outgoing uri="smtp+tls+://mail.systemli.org" username="$email" />
+    </provider>
+
     <!-- GMX variants -->
     <provider id="gmx.net" label="GMX.net" domain="gmx.net">
         <incoming uri="imap+ssl+://imap.gmx.net" username="$email" />
@@ -352,6 +361,14 @@
     <provider id="mycosmos.gr" label="mycosmos" domain="mycosmos.gr">
         <incoming uri="imap+ssl+://mail.mycosmos.gr" username="$email" />
         <outgoing uri="smtp+tls+://mail.mycosmos.gr" username="$email" />
+    </provider>
+    <provider id="espiv" label="Espiv.net" domain="espiv.net">
+        <incoming uri="imap+ssl+://mail.espiv.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.espiv.net" username="$email" />
+    </provider>
+    <provider id="squat" label="Squat.gr" domain="squat.gr">
+        <incoming uri="imap+ssl+://mail.espiv.net" username="$email" />
+        <outgoing uri="smtp+tls+://mail.espiv.net" username="$email" />
     </provider>
 
    <!-- Italy -->

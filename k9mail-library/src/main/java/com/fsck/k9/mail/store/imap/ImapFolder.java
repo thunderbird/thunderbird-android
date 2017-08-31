@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import android.text.TextUtils;
 
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
@@ -779,8 +780,8 @@ class ImapFolder extends Folder<ImapMessage> {
     }
 
     @Override
-    public void fetchPart(Message message, Part part, MessageRetrievalListener<Message> listener)
-            throws MessagingException {
+    public void fetchPart(Message message, Part part, MessageRetrievalListener<Message> listener,
+            BodyFactory bodyFactory) throws MessagingException {
         checkOpen();
 
         String partId = part.getServerExtra();
@@ -800,7 +801,7 @@ class ImapFolder extends Folder<ImapMessage> {
             ImapResponse response;
             int messageNumber = 0;
 
-            ImapResponseCallback callback = new FetchPartCallback(part);
+            ImapResponseCallback callback = new FetchPartCallback(part, bodyFactory);
 
             do {
                 response = connection.readResponse(callback);
@@ -828,7 +829,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
                     if (literal != null) {
                         if (literal instanceof Body) {
-                            // Most of the work was done in FetchAttchmentCallback.foundLiteral()
+                            // Most of the work was done in FetchAttachmentCallback.foundLiteral()
                             MimeMessageHelper.setBody(part, (Body) literal);
                         } else if (literal instanceof String) {
                             String bodyString = (String) literal;
@@ -837,8 +838,8 @@ class ImapFolder extends Folder<ImapMessage> {
                             String contentTransferEncoding =
                                     part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0];
                             String contentType = part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0];
-                            MimeMessageHelper.setBody(part, MimeUtility.createBody(bodyStream, contentTransferEncoding,
-                                    contentType));
+                            Body body = bodyFactory.createBody(contentTransferEncoding, contentType, bodyStream);
+                            MimeMessageHelper.setBody(part, body);
                         } else {
                             // This shouldn't happen
                             throw new MessagingException("Got FETCH response with bogus parameters");

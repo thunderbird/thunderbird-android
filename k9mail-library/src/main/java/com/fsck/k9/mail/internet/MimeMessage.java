@@ -19,7 +19,9 @@ import android.support.annotation.NonNull;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -48,6 +50,9 @@ public class MimeMessage extends Message {
     protected Address[] mCc;
     protected Address[] mBcc;
     protected Address[] mReplyTo;
+    protected Address[] xOriginalTo;
+    protected Address[] deliveredTo;
+    protected Address[] xEnvelopeTo;
 
     protected String mMessageId;
     private String[] mReferences;
@@ -85,6 +90,9 @@ public class MimeMessage extends Message {
         mCc = null;
         mBcc = null;
         mReplyTo = null;
+        xOriginalTo = null;
+        deliveredTo = null;
+        xEnvelopeTo = null;
 
         mMessageId = null;
         mReferences = null;
@@ -100,7 +108,7 @@ public class MimeMessage extends Message {
         // REALLY long References: headers
         parserConfig.setMaxHeaderCount(-1); // Disable the check for header count.
         MimeStreamParser parser = new MimeStreamParser(parserConfig);
-        parser.setContentHandler(new MimeMessageBuilder());
+        parser.setContentHandler(new MimeMessageBuilder(new DefaultBodyFactory()));
         if (recurse) {
             parser.setRecurse();
         }
@@ -212,6 +220,24 @@ public class MimeMessage extends Message {
                 }
                 return mBcc;
             }
+            case X_ORIGINAL_TO: {
+                if (xOriginalTo == null) {
+                    xOriginalTo = Address.parse(MimeUtility.unfold(getFirstHeader("X-Original-To")));
+                }
+                return xOriginalTo;
+            }
+            case DELIVERED_TO: {
+                if (deliveredTo == null) {
+                    deliveredTo = Address.parse(MimeUtility.unfold(getFirstHeader("Delivered-To")));
+                }
+                return deliveredTo;
+            }
+            case X_ENVELOPE_TO: {
+                if (xEnvelopeTo == null) {
+                    xEnvelopeTo = Address.parse(MimeUtility.unfold(getFirstHeader("X-Envelope-To")));
+                }
+                return xEnvelopeTo;
+            }
         }
 
         throw new IllegalArgumentException("Unrecognized recipient type.");
@@ -242,6 +268,30 @@ public class MimeMessage extends Message {
             } else {
                 setHeader("BCC", Address.toEncodedString(addresses));
                 this.mBcc = addresses;
+            }
+        } else if (type == RecipientType.X_ORIGINAL_TO) {
+            if (addresses == null || addresses.length == 0) {
+                removeHeader("X-Original-To");
+                this.xOriginalTo = null;
+            } else {
+                setHeader("X-Original-To", Address.toEncodedString(addresses));
+                this.xOriginalTo = addresses;
+            }
+        } else if (type == RecipientType.DELIVERED_TO) {
+            if (addresses == null || addresses.length == 0) {
+                removeHeader("Delivered-To");
+                this.deliveredTo = null;
+            } else {
+                setHeader("Delivered-To", Address.toEncodedString(addresses));
+                this.deliveredTo = addresses;
+            }
+        } else if (type == RecipientType.X_ENVELOPE_TO) {
+            if (addresses == null || addresses.length == 0) {
+                removeHeader("X-Envelope-To");
+                this.xEnvelopeTo = null;
+            } else {
+                setHeader("X-Envelope-To", Address.toEncodedString(addresses));
+                this.xEnvelopeTo = addresses;
             }
         } else {
             throw new IllegalStateException("Unrecognized recipient type.");
@@ -472,8 +522,10 @@ public class MimeMessage extends Message {
 
     private class MimeMessageBuilder implements ContentHandler {
         private final LinkedList<Object> stack = new LinkedList<>();
+        private final BodyFactory bodyFactory;
 
-        public MimeMessageBuilder() {
+        public MimeMessageBuilder(BodyFactory bodyFactory) {
+            this.bodyFactory = bodyFactory;
         }
 
         private void expect(Class<?> c) {
@@ -528,7 +580,7 @@ public class MimeMessage extends Message {
         @Override
         public void body(BodyDescriptor bd, InputStream in) throws IOException, MimeException {
             expect(Part.class);
-            Body body = MimeUtility.createBody(in, bd.getTransferEncoding(), bd.getMimeType());
+            Body body = bodyFactory.createBody(bd.getTransferEncoding(), bd.getMimeType(), in);
             ((Part)stack.peek()).setBody(body);
         }
 
@@ -624,6 +676,9 @@ public class MimeMessage extends Message {
         destination.mReplyTo = mReplyTo;
         destination.mReferences = mReferences;
         destination.mInReplyTo = mInReplyTo;
+        destination.xOriginalTo = xOriginalTo;
+        destination.deliveredTo = deliveredTo;
+        destination.xEnvelopeTo = xEnvelopeTo;
     }
 
     @Override
@@ -631,11 +686,6 @@ public class MimeMessage extends Message {
         MimeMessage message = new MimeMessage();
         copy(message);
         return message;
-    }
-
-    @Override
-    public long getId() {
-        return Long.parseLong(mUid); //or maybe .mMessageId?
     }
 
     @Override

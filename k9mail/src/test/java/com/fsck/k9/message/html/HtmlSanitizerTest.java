@@ -1,19 +1,16 @@
 package com.fsck.k9.message.html;
 
 
-import org.junit.Before;
+import org.jsoup.nodes.Document;
 import org.junit.Test;
 
+import static com.fsck.k9.message.html.HtmlProcessor.toCompactString;
 import static org.junit.Assert.assertEquals;
 
 
 public class HtmlSanitizerTest {
-    private HtmlSanitizer htmlSanitizer;
+    private HtmlSanitizer htmlSanitizer = new HtmlSanitizer();
 
-    @Before
-    public void setUp() throws Exception {
-        htmlSanitizer = HtmlSanitizer.getInstance();
-    }
 
     @Test
     public void shouldRemoveMetaRefreshInHead() {
@@ -22,9 +19,9 @@ public class HtmlSanitizerTest {
                 "<body>Message</body>" +
                 "</html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body>Message</body></html>", result);
+        assertEquals("<html><head></head><body>Message</body></html>", toCompactString(result));
     }
 
     @Test
@@ -34,9 +31,9 @@ public class HtmlSanitizerTest {
                 "<body>Message</body>" +
                 "</html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body>Message</body></html>", result);
+        assertEquals("<html><head></head><body>Message</body></html>", toCompactString(result));
     }
 
     @Test
@@ -46,9 +43,9 @@ public class HtmlSanitizerTest {
                 "<body><meta http-equiv=\"refresh\" content=\"1; URL=http://example.com/\">Message</body>" +
                 "</html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body>Message</body></html>", result);
+        assertEquals("<html><head></head><body>Message</body></html>", toCompactString(result));
     }
 
     @Test
@@ -58,9 +55,9 @@ public class HtmlSanitizerTest {
                 "<body>Message</body>" +
                 "</html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body>Message</body></html>", result);
+        assertEquals("<html><head></head><body>Message</body></html>", toCompactString(result));
     }
 
     @Test
@@ -70,9 +67,9 @@ public class HtmlSanitizerTest {
                 "<body>Message</body>" +
                 "</html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body>Message</body></html>", result);
+        assertEquals("<html><head></head><body>Message</body></html>", toCompactString(result));
     }
 
     @Test
@@ -82,9 +79,9 @@ public class HtmlSanitizerTest {
                 "<body>Message</body>" +
                 "</html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body>Message</body></html>", result);
+        assertEquals("<html><head></head><body>Message</body></html>", toCompactString(result));
     }
 
     @Test
@@ -94,9 +91,9 @@ public class HtmlSanitizerTest {
                 "<body>Message</body>" +
                 "</html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body>Message</body></html>", result);
+        assertEquals("<html><head></head><body>Message</body></html>", toCompactString(result));
     }
 
     @Test
@@ -106,9 +103,9 @@ public class HtmlSanitizerTest {
                 "<body><meta http-equiv=\"refresh\" content=\"1; URL=http://example.com/\">Message</body>" +
                 "</html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body>Message</body></html>", result);
+        assertEquals("<html><head></head><body>Message</body></html>", toCompactString(result));
     }
 
     @Test
@@ -121,11 +118,11 @@ public class HtmlSanitizerTest {
                 "<body>Message</body>" +
                 "</html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
 
-        assertEquals("<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" /></head>" +
-                "<body>Message</body></html>", result);
+        assertEquals("<html><head><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"></head>" +
+                "<body>Message</body></html>", toCompactString(result));
     }
 
     @Test
@@ -133,20 +130,20 @@ public class HtmlSanitizerTest {
         String html = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
                 "<html><head></head><body></body></html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
-        assertEquals("<html><head></head><body></body></html>", result);
+        assertEquals("<html><head></head><body></body></html>", toCompactString(result));
     }
 
     @Test
     public void shouldNormalizeTables() {
         String html = "<html><head></head><body><table><tr><td></td><td></td></tr></table></body></html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
         assertEquals("<html><head></head><body><table><tbody>" +
                 "<tr><td></td><td></td></tr>" +
-                "</tbody></table></body></html>", result);
+                "</tbody></table></body></html>", toCompactString(result));
     }
 
     @Test
@@ -155,10 +152,10 @@ public class HtmlSanitizerTest {
                 "<tr><td><!==><!==>Hmailserver service shutdown:</td><td><!==><!==>Ok</td></tr>" +
                 "</table></body></html>";
 
-        String result = htmlSanitizer.sanitize(html);
+        Document result = htmlSanitizer.sanitize(html);
 
         assertEquals("<html><head></head><body><table><tbody>" +
-                "<tr><td>&lt;!==&gt;&lt;!==&gt;Hmailserver service shutdown:</td><td>&lt;!==&gt;&lt;!==&gt;Ok</td></tr>" +
-                "</tbody></table></body></html>", result);
+                "<tr><td>Hmailserver service shutdown:</td><td>Ok</td></tr>" +
+                "</tbody></table></body></html>", toCompactString(result));
     }
 }

@@ -220,4 +220,21 @@ public class ServerSettings {
         return new ServerSettings(type, host, port, connectionSecurity, AuthType.EXTERNAL,
                 username, password, newAlias);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (! (obj instanceof ServerSettings)) {
+            return false;
+        }
+        ServerSettings that = (ServerSettings) obj;
+        return type == that.type &&
+                port == that.port &&
+                connectionSecurity == that.connectionSecurity &&
+                authenticationType == that.authenticationType &&
+                (host == null ? that.host == null : host.equals(that.host)) &&
+                (username == null ? that.username == null : username.equals(that.username)) &&
+                (password == null ? that.password == null : password.equals(that.password)) &&
+                (clientCertificateAlias == null ? that.clientCertificateAlias == null :
+                        clientCertificateAlias.equals(that.clientCertificateAlias));
+    }
 }

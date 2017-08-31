@@ -17,7 +17,7 @@ import timber.log.Timber;
 public abstract class Message implements Part, Body {
 
     public enum RecipientType {
-        TO, CC, BCC,
+        TO, CC, BCC, X_ORIGINAL_TO, DELIVERED_TO, X_ENVELOPE_TO
     }
 
     protected String mUid;
@@ -57,7 +57,7 @@ public abstract class Message implements Part, Body {
         final int MULTIPLIER = 31;
 
         int result = 1;
-        result = MULTIPLIER * result + mFolder.getName().hashCode();
+        result = MULTIPLIER * result + (mFolder != null ? mFolder.getName().hashCode() : 0);
         result = MULTIPLIER * result + mUid.hashCode();
         return result;
     }
@@ -143,8 +143,6 @@ public abstract class Message implements Part, Body {
 
     @Override
     public abstract void setBody(Body body);
-
-    public abstract long getId();
 
     public abstract boolean hasAttachments();
 

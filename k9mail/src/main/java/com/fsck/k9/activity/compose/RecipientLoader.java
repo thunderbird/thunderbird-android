@@ -240,7 +240,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                 Cursor cursor = contentResolver
                         .query(queryUri, PROJECTION, selection, new String[] { id }, SORT_ORDER);
 
-                fillContactDataFromCursor(cursor, recipients, recipientMap, nicknameCursor.getString(INDEX_NICKNAME));
+                String contactNickname = nicknameCursor.getString(INDEX_NICKNAME);
+                fillContactDataFromCursor(cursor, recipients, recipientMap, contactNickname);
 
                 hasContact = true;
             }
@@ -281,12 +282,11 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     }
 
     private void fillContactDataFromCursor(Cursor cursor, List<Recipient> recipients,
-            Map<String, Recipient> recipientMap, @Nullable String name) {
+            Map<String, Recipient> recipientMap, @Nullable String prefilledName) {
 
         while (cursor.moveToNext()) {
-            if (name == null) {
-                name = cursor.getString(INDEX_NAME);
-            }
+            String name = prefilledName != null ? prefilledName : cursor.getString(INDEX_NAME);
+
             String email = cursor.getString(INDEX_EMAIL);
             long contactId = cursor.getLong(INDEX_CONTACT_ID);
             String lookupKey = cursor.getString(INDEX_LOOKUP_KEY);

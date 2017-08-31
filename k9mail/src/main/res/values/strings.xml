@@ -282,6 +282,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_from_format">From: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
     <string name="message_to_label">To:</string>
     <string name="message_view_cc_label">Cc:</string>
+    <string name="message_view_bcc_label">Bcc:</string>
     <string name="message_view_attachment_view_action">Open</string>
     <string name="message_view_attachment_download_action">Save</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment to SD card.</string>
@@ -667,24 +668,24 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="folder_settings_in_top_group_summary">Show near the top of the folder list</string>
 
     <string name="folder_settings_folder_display_mode_label">Folder display class</string>
-    <string name="folder_settings_folder_display_mode_normal">None</string>
+    <string name="folder_settings_folder_display_mode_normal">No Class</string>
     <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
 
     <string name="folder_settings_folder_sync_mode_label">Folder sync class</string>
-    <string name="folder_settings_folder_sync_mode_normal">None</string>
+    <string name="folder_settings_folder_sync_mode_normal">No Class</string>
     <string name="folder_settings_folder_sync_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_sync_mode_inherited">Same as display class</string>
 
     <string name="folder_settings_folder_push_mode_label">Folder push class</string>
-    <string name="folder_settings_folder_push_mode_normal">None</string>
+    <string name="folder_settings_folder_push_mode_normal">No Class</string>
     <string name="folder_settings_folder_push_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_push_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_push_mode_inherited">Same as sync class</string>
 
     <string name="folder_settings_folder_notify_mode_label">Folder notification class</string>
-    <string name="folder_settings_folder_notify_mode_normal">None</string>
+    <string name="folder_settings_folder_notify_mode_normal">No Class</string>
     <string name="folder_settings_folder_notify_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_notify_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_notify_mode_inherited">Same as push class</string>
@@ -902,6 +903,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_message_view_sender">Sender</string>
     <string name="font_size_message_view_to">To</string>
     <string name="font_size_message_view_cc">Cc</string>
+    <string name="font_size_message_view_bcc">Bcc</string>
     <string name="font_size_message_view_additional_headers">Additional headers</string>
     <string name="font_size_message_view_subject">Subject</string>
     <string name="font_size_message_view_date">Time and date</string>
@@ -1058,8 +1060,14 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_remote_search_num_label">Server search limit</string>
     <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>
     <string name="remote_search_sending_query">Sending query to server</string>
-    <string name="remote_search_downloading">Fetching %d results</string>
-    <string name="remote_search_downloading_limited">Fetching %1$d of %2$d results</string>
+    <plurals name="remote_search_downloading">
+        <item quantity="one">Fetching %d result</item>
+        <item quantity="other">Fetching %d results</item>
+    </plurals>
+    <plurals name="remote_search_downloading_limited">
+        <item quantity="one">Fetching %1$d of %2$d results</item>
+        <item quantity="other">Fetching %1$d of %2$d results</item>
+    </plurals>
     <string name="remote_search_error">Remote search failed</string>
 
     <string name="account_settings_search">Search</string>
@@ -1070,8 +1078,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>
     <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>
 
-    <string name="global_settings_background_as_unread_indicator_label">Dim messages after reading</string>
-    <string name="global_settings_background_as_unread_indicator_summary">A grey background will show that a message has been read</string>
+    <string name="global_settings_background_as_unread_indicator_label">Change colour when read</string>
+    <string name="global_settings_background_as_unread_indicator_summary">A different background will show that the message has been read</string>
 
     <string name="global_settings_threaded_view_label">Threaded view</string>
     <string name="global_settings_threaded_view_summary">Group messages by conversation</string>
@@ -1167,6 +1175,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_disabled">Message is not encrypted</string>
 
     <string name="crypto_msg_encrypted_error">Message is encrypted, but there was a decryption error.</string>
+    <string name="crypto_msg_encrypted_insecure">Message is encrypted but insecure!</string>
     <string name="crypto_msg_signed_error">Message is signed, but the signature could not be verified.</string>
     <string name="crypto_msg_encrypted_no_provider">Message is encrypted, but no crypto app is configured.</string>
     <string name="crypto_msg_unsupported_encrypted">Message is encrypted, but in an unsupported format.</string>
@@ -1193,6 +1202,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="crypto_info_ok">OK</string>
     <string name="crypto_info_view_key">View Signer</string>
+    <string name="crypto_info_view_security_warning">Details</string>
     <string name="locked_attach_unlock">Unlock</string>
     <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
     <string name="locked_attach_title">Unprotected Attachment</string>
@@ -1229,4 +1239,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="mail_list_widget_text">K-9 Message List</string>
     <string name="mail_list_widget_loading">Loading messages…</string>
+    <string name="fetching_folders_failed">Fetching folder list failed</string>
+    <string name="messageview_crypto_warning_details">Show Details</string>
 </resources>

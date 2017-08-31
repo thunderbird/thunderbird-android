@@ -28,6 +28,7 @@ import com.fsck.k9.view.ThemeUtils;
 
 public class CryptoInfoDialog extends DialogFragment {
     public static final String ARG_DISPLAY_STATUS = "display_status";
+    public static final String ARG_HAS_SECURITY_WARNING = "has_security_warning";
     public static final int ICON_ANIM_DELAY = 400;
     public static final int ICON_ANIM_DURATION = 350;
 
@@ -46,11 +47,12 @@ public class CryptoInfoDialog extends DialogFragment {
     private TextView bottomText;
 
 
-    public static CryptoInfoDialog newInstance(MessageCryptoDisplayStatus displayStatus) {
+    public static CryptoInfoDialog newInstance(MessageCryptoDisplayStatus displayStatus, boolean hasSecurityWarning) {
         CryptoInfoDialog frag = new CryptoInfoDialog();
 
         Bundle args = new Bundle();
         args.putString(ARG_DISPLAY_STATUS, displayStatus.toString());
+        args.putBoolean(ARG_HAS_SECURITY_WARNING, hasSecurityWarning);
         frag.setArguments(args);
 
         return frag;
@@ -85,7 +87,19 @@ public class CryptoInfoDialog extends DialogFragment {
                 dismiss();
             }
         });
-        if (displayStatus.hasAssociatedKey()) {
+        boolean hasSecurityWarning = getArguments().getBoolean(ARG_HAS_SECURITY_WARNING);
+        if (hasSecurityWarning) {
+            b.setNeutralButton(R.string.crypto_info_view_security_warning, new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Fragment frag = getTargetFragment();
+                    if (! (frag instanceof OnClickShowCryptoKeyListener)) {
+                        throw new AssertionError("Displaying activity must implement OnClickShowCryptoKeyListener!");
+                    }
+                    ((OnClickShowCryptoKeyListener) frag).onClickShowSecurityWarning();
+                }
+            });
+        } else if (displayStatus.hasAssociatedKey()) {
             b.setNeutralButton(R.string.crypto_info_view_key, new OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -190,5 +204,6 @@ public class CryptoInfoDialog extends DialogFragment {
 
     public interface OnClickShowCryptoKeyListener {
         void onClickShowCryptoKey();
+        void onClickShowSecurityWarning();
     }
 }

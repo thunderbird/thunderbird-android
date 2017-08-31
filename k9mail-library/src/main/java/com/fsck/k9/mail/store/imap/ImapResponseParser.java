@@ -477,7 +477,7 @@ class ImapResponseParser {
 
     private void checkTokenIsString(Object token) throws IOException {
         if (!(token instanceof String)) {
-            throw new IOException("Unexpected non-string token: " + token);
+            throw new IOException("Unexpected non-string token: " + token.getClass().getSimpleName() + " - " + token);
         }
     }
 }

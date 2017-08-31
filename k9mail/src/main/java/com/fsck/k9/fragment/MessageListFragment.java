@@ -1340,10 +1340,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         public void remoteSearchServerQueryComplete(String folderName, int numResults, int maxResults) {
             handler.progress(true);
             if (maxResults != 0 && numResults > maxResults) {
-                handler.updateFooter(context.getString(R.string.remote_search_downloading_limited,
-                        maxResults, numResults));
+                handler.updateFooter(context.getResources().getQuantityString(R.plurals.remote_search_downloading_limited,
+                        maxResults, maxResults, numResults));
             } else {
-                handler.updateFooter(context.getString(R.string.remote_search_downloading, numResults));
+                handler.updateFooter(context.getResources().getQuantityString(R.plurals.remote_search_downloading, numResults));
             }
             fragmentListener.setMessageListProgress(Window.PROGRESS_START);
         }
@@ -2913,7 +2913,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         return (isRemoteSearchAllowed() || isCheckMailAllowed());
     }
 
-    LayoutInflater getLayoutInflater() {
+    LayoutInflater getK9LayoutInflater() {
         return layoutInflater;
     }
 }

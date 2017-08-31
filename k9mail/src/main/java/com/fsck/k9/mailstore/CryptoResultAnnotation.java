@@ -20,13 +20,18 @@ public final class CryptoResultAnnotation {
     private final OpenPgpSignatureResult openPgpSignatureResult;
     private final OpenPgpError openPgpError;
     private final PendingIntent openPgpPendingIntent;
+    private final PendingIntent openPgpInsecureWarningPendingIntent;
+    private final boolean overrideCryptoWarning;
 
     private final CryptoResultAnnotation encapsulatedResult;
 
     private CryptoResultAnnotation(@NonNull CryptoError errorType, MimeBodyPart replacementData,
             OpenPgpDecryptionResult openPgpDecryptionResult,
             OpenPgpSignatureResult openPgpSignatureResult,
-            PendingIntent openPgpPendingIntent, OpenPgpError openPgpError) {
+            PendingIntent openPgpPendingIntent,
+            PendingIntent openPgpInsecureWarningPendingIntent,
+            OpenPgpError openPgpError,
+            boolean overrideCryptoWarning) {
         this.errorType = errorType;
         this.replacementData = replacementData;
 
@@ -34,6 +39,8 @@ public final class CryptoResultAnnotation {
         this.openPgpSignatureResult = openPgpSignatureResult;
         this.openPgpPendingIntent = openPgpPendingIntent;
         this.openPgpError = openPgpError;
+        this.openPgpInsecureWarningPendingIntent = openPgpInsecureWarningPendingIntent;
+        this.overrideCryptoWarning = overrideCryptoWarning;
 
         this.encapsulatedResult = null;
     }
@@ -49,37 +56,43 @@ public final class CryptoResultAnnotation {
         this.openPgpDecryptionResult = annotation.openPgpDecryptionResult;
         this.openPgpSignatureResult = annotation.openPgpSignatureResult;
         this.openPgpPendingIntent = annotation.openPgpPendingIntent;
+        this.openPgpInsecureWarningPendingIntent = annotation.openPgpInsecureWarningPendingIntent;
         this.openPgpError = annotation.openPgpError;
+        this.overrideCryptoWarning = annotation.overrideCryptoWarning;
 
         this.encapsulatedResult = encapsulatedResult;
     }
 
 
     public static CryptoResultAnnotation createOpenPgpResultAnnotation(OpenPgpDecryptionResult decryptionResult,
-            OpenPgpSignatureResult signatureResult, PendingIntent pendingIntent, MimeBodyPart replacementPart) {
+            OpenPgpSignatureResult signatureResult, PendingIntent pendingIntent,
+            PendingIntent insecureWarningPendingIntent, MimeBodyPart replacementPart,
+            boolean overrideCryptoWarning) {
         return new CryptoResultAnnotation(CryptoError.OPENPGP_OK, replacementPart,
-                decryptionResult, signatureResult, pendingIntent, null);
+                decryptionResult, signatureResult, pendingIntent, insecureWarningPendingIntent, null,
+                overrideCryptoWarning);
     }
 
     public static CryptoResultAnnotation createErrorAnnotation(CryptoError error, MimeBodyPart replacementData) {
         if (error == CryptoError.OPENPGP_OK) {
             throw new AssertionError("CryptoError must be actual error state!");
         }
-        return new CryptoResultAnnotation(error, replacementData, null, null, null, null);
+        return new CryptoResultAnnotation(error, replacementData, null, null, null, null, null, false);
     }
 
     public static CryptoResultAnnotation createOpenPgpCanceledAnnotation() {
-        return new CryptoResultAnnotation(CryptoError.OPENPGP_UI_CANCELED, null, null, null, null, null);
+        return new CryptoResultAnnotation(CryptoError.OPENPGP_UI_CANCELED, null, null, null, null, null, null, false);
     }
 
     public static CryptoResultAnnotation createOpenPgpSignatureErrorAnnotation(
             OpenPgpError error, MimeBodyPart replacementData) {
         return new CryptoResultAnnotation(
-                CryptoError.OPENPGP_SIGNED_API_ERROR, replacementData, null, null, null, error);
+                CryptoError.OPENPGP_SIGNED_API_ERROR, replacementData, null, null, null, null, error, false);
     }
 
     public static CryptoResultAnnotation createOpenPgpEncryptionErrorAnnotation(OpenPgpError error) {
-        return new CryptoResultAnnotation(CryptoError.OPENPGP_ENCRYPTED_API_ERROR, null, null, null, null, error);
+        return new CryptoResultAnnotation(
+                CryptoError.OPENPGP_ENCRYPTED_API_ERROR, null, null, null, null, null, error, false);
     }
 
     public boolean isOpenPgpResult() {
@@ -117,6 +130,15 @@ public final class CryptoResultAnnotation {
         return openPgpPendingIntent;
     }
 
+    public boolean hasOpenPgpInsecureWarningPendingIntent() {
+        return openPgpInsecureWarningPendingIntent != null;
+    }
+
+    @Nullable
+    public PendingIntent getOpenPgpInsecureWarningPendingIntent() {
+        return openPgpInsecureWarningPendingIntent;
+    }
+
     @Nullable
     public OpenPgpError getOpenPgpError() {
         return openPgpError;
@@ -136,6 +158,10 @@ public final class CryptoResultAnnotation {
         return replacementData;
     }
 
+    public boolean isOverrideSecurityWarning() {
+        return overrideCryptoWarning;
+    }
+
     @NonNull
     public CryptoResultAnnotation withEncapsulatedResult(CryptoResultAnnotation resultAnnotation) {
         return new CryptoResultAnnotation(this, resultAnnotation);
@@ -148,7 +174,6 @@ public final class CryptoResultAnnotation {
     public CryptoResultAnnotation getEncapsulatedResult() {
         return encapsulatedResult;
     }
-
 
     public enum CryptoError {
         OPENPGP_OK,

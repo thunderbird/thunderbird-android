@@ -129,10 +129,23 @@ public class MessageTopView extends LinearLayout {
     }
 
     public void showMessageCryptoWarning(final MessageViewInfo messageViewInfo, Drawable providerIcon,
-            @StringRes int warningTextRes) {
+            @StringRes int warningTextRes, boolean showDetailButton) {
         resetAndPrepareMessageView(messageViewInfo);
         View view = mInflater.inflate(R.layout.message_content_crypto_warning, containerView, false);
         setCryptoProviderIcon(providerIcon, view);
+
+        View detailButton = view.findViewById(R.id.crypto_warning_details);
+        if(showDetailButton) {
+            detailButton.setVisibility(View.VISIBLE);
+            detailButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    messageCryptoPresenter.onClickShowCryptoWarningDetails();
+                }
+            });
+        } else {
+            detailButton.setVisibility(View.GONE);
+        }
 
         view.findViewById(R.id.crypto_warning_override).setOnClickListener(new OnClickListener() {
             @Override
