@@ -25,7 +25,6 @@ public class DecoderUtilTest {
 
     @Test
     public void decodeEncodedWords_withAsciiCharset_encoded_data_returns_text() {
-
         body = "=?us-ascii?q?abc?=";
         expect = "abc";
         message = null;
@@ -76,7 +75,6 @@ public class DecoderUtilTest {
     public void decodeEncodedWords_withMissingCharset_returnAsText() {
         body = "=??q??=";
         expect = "=??q??=";
-        ;
         message = null;
         assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
     }
@@ -92,7 +90,6 @@ public class DecoderUtilTest {
 
     @Test
     public void decodeEncodedWords_withNoTextCharsetOrEncoding_returnAsText() {
-
         body = "=??=";
         expect = "=??=";
         message = null;
@@ -101,7 +98,6 @@ public class DecoderUtilTest {
 
     @Test
     public void decodeEncodedWords_with_MissingEncodingAndData_returnAsText() {
-
         body = "=?x?=";
         expect = "=?x?=";
         message = null;
@@ -110,7 +106,6 @@ public class DecoderUtilTest {
 
     @Test
     public void decodeEncodedWords_withMissingEncoding_returnAsText() {
-
         body = "=?x??=";
         expect = "=?x??=";
         message = null;
@@ -119,7 +114,6 @@ public class DecoderUtilTest {
 
     @Test
     public void decodeEncodedWords_with_incompleteEncodingFormat_returnAsText() {
-
         body = "=?x?q?=";
         expect = "=?x?q?=";
         message = null;
@@ -128,7 +122,6 @@ public class DecoderUtilTest {
 
     @Test
     public void decodeEncodedWords_with_unrecognisedEncoding_withEmptyEncodedData_returnAsText() {
-
         body = "=?x?q??=";
         expect = "=?x?q??=";
         message = null;
@@ -137,7 +130,6 @@ public class DecoderUtilTest {
 
     @Test
     public void decodeEncodedWords_withUnrecognisedEncoding_withEncodedData_return_encoded_data() {
-
         body = "=?x?q?X?=";
         expect = "X";
         message = null;
@@ -156,6 +148,14 @@ public class DecoderUtilTest {
     public void decodeEncodedWords_withPartiallyEncoded_returnsBothSections() {
         body = "=?us-ascii?q?abc?= =?";
         expect = "abc =?";
+        message = null;
+        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    }
+
+    @Test
+    public void decodeEncodedWords_withPartiallyEncodedAfter_returnsBothSections() {
+        body = "def=?us-ascii?q?abc?=";
+        expect = "defabc";
         message = null;
         assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
     }
