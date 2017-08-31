@@ -11,10 +11,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import timber.log.Timber;
 
 import com.fsck.k9.Globals;
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -36,6 +34,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
+import timber.log.Timber;
 
 
 public class PgpMessageBuilder extends MessageBuilder {
@@ -154,7 +153,7 @@ public class PgpMessageBuilder extends MessageBuilder {
                     throw new MessagingException("encryption is enabled, but no recipient specified!");
                 }
                 pgpApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, encryptRecipientAddresses);
-                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
+                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_OPPORTUNISTIC_ENCRYPTION, cryptoStatus.isEncryptionOpportunistic());
             }
         } else {
             pgpApiIntent = new Intent(isPgpInlineMode ? OpenPgpApi.ACTION_SIGN : OpenPgpApi.ACTION_DETACHED_SIGN);
