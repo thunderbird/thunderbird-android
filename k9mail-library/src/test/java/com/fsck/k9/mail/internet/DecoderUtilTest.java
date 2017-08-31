@@ -153,7 +153,7 @@ public class DecoderUtilTest {
     }
 
     @Test
-    public void decodeEncodedWords_withBrokenEncoding_returnsEncodedData() {
+    public void decodeEncodedWords_withPartiallyEncoded_returnsBothSections() {
         body = "=?us-ascii?q?abc?= =?";
         expect = "abc =?";
         message = null;
