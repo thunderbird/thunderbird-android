@@ -783,6 +783,7 @@ public class SmtpTransport extends Transport {
         if (negativeRecipient != null) {
             try {
                 executeCommand(".");
+                throw negativeRecipient;
             } catch (NegativeSmtpReplyException e) {
                 throw negativeRecipient;
             }
@@ -793,7 +794,7 @@ public class SmtpTransport extends Transport {
     private CommandResponse responseLineToCommandResponse(String line, List<String> results) throws MessagingException {
         int length = line.length();
         if (length < 1) {
-            throw new MessagingException("SMTP response is 0 length");
+            throw new MessagingException("SMTP response to line is 0 length");
         }
 
         int replyCode = -1;
