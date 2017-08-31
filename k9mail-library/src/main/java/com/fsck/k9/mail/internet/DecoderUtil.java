@@ -158,18 +158,24 @@ class DecoderUtil {
                 if (previousWord != null) {
                     sb.append(decodeEncodedWord(previousWord));
                     sb.append(sep);
+                    sb.append(body.substring(begin, end));
                     previousWord = null;
-                }
-            } else if (previousWord != null) {
-                if (previousWord.encoding.equals(word.encoding) && previousWord.charset.equals(word.charset)) {
-                    previousWord.encodedText += word.encodedText;
                 } else {
-                    sb.append(decodeEncodedWord(previousWord));
+                    sb.append(sep);
+                }
+            } else {
+                if (previousWord != null) {
+                    if (previousWord.encoding.equals(word.encoding) && previousWord.charset.equals(word.charset)) {
+                        previousWord.encodedText += word.encodedText;
+                    } else {
+                        sb.append(decodeEncodedWord(previousWord));
+                        sb.append(sep);
+                        previousWord = word;
+                    }
+                } else {
                     sb.append(sep);
                     previousWord = word;
                 }
-            } else {
-                previousWord = word;
             }
 
             if (previousWord == null) {
