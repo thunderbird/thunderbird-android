@@ -1,0 +1,36 @@
+From: Alice <alice@testsuite.autocrypt.org>
+To: Bob <bob@testsuite.autocrypt.org>
+Subject: INBOME with invalid type attribute
+Autocrypt: addr=alice@testsuite.autocrypt.org; type=x; keydata=
+ mQENBFhVGA8BCADK+qTRkAfax0LtJ6RiyxzuAFyIohBTwvtcOM2sd/tRmWq1eyNif5AGDnc1+b6X
+ zJ6l3BXiYM/8qXU/F04UA5BP05SgIqXjqT5I13blrydjKtUbZFchK7lJU7cyDbar+TH70DZURSQm
+ MusCj0+fdx6hx8y4LSOM68rjwVeq7JXAPU78QQsYgMrbtkf5mZWUquDdb7tEoxU+PcNifvtvuHF2
+ ILv09a4Fi8thJG4i/3LxMFtmMLIiZWLfk5KpXAKrOy436e1LCm3vesALcihPNppb803dgBqpvvEE
+ 9W7sg5NUy3P8+fTEuvI8HYYd+lEvYe2ojm4HVTts4YFHmzaGVzHLABEBAAG0HVRoaXMgc2hvdWxk
+ IG5ldmVyIGJlIGltcG9ydGVkiQFOBBMBCAA4FiEE0uuMX0KSMgVBfC/25MZusLe5gWMFAlhVGA8C
+ GwMFCwkIBwIGFQgJCgsCBBYCAwECHgECF4AACgkQ5MZusLe5gWN9Hwf+PpLCCV7TiGc1nqIxLMTs
+ O84PVLSQZB642/QhLoMYXQ5iqty5H2FqGuK+uWLCnM+yIMDkcJC3ayWfa06fs3JOipVKlMh8hHnU
+ 6/FHJB+3eZrc4lhh5B67Vi8Xg43pTP+I9ct/PlbHvD9kYw+DpcmCz0XILhaUP0R1oQ6M5KI49uLg
+ LAdNczcEtcw3A/hZ5ZTUe3o3gav0XDBXFCgGjkI+CaMjKb/HjgNM9YsrGxUxH1RFMYqTfrmCklHD
+ EboQc1Qtzi5rIwzVR3zSryve9KHH75TCfDApghwUBKSLNh374hjTFj5v5kPAxG3njX6EOqHS/UVX
+ Mn5aEVn0n6S1y+DJZLkBDQRYVRgRAQgAzQgD/CluB1wuBeI8qaqmIxG8epHCPstQ4kee6FuFWi3F
+ Lqtyk1R9tB4UL40gpEkpzB+qYms/zs9SeicuNcXoXA4bMcNGDFz3mZ1d9qG2izgC19e9p50oXiMY
+ cr8GM1Qcb77dmxlk829cBpr+X7NDKJy9VMGsqNYukgFDnNIzty0oMdCLSzpqi3UtXtCGYDqIiltU
+ aT8XdMAvddr6Scgpkz3wrqi/bVagc+q4IdKL0r8iL7o3EnTf/5Dc2XUaCFJLCa3Rk6oat5kTWjan
+ sp/K5k/VzSDcESji8n6xl0OzD2okhmX8iJZg1hhyI8hNmtW3boe51Hkkdlj+wC8Y2Fgh4QARAQAB
+ iQE2BBgBCAAgFiEE0uuMX0KSMgVBfC/25MZusLe5gWMFAlhVGBECGwwACgkQ5MZusLe5gWOn/Qf/
+ aeV7CqZW/YN4/LhXjJG7i+iDJYv/9Lr12dvgjO/sOlmDPHkEzXPMLKalm0biMPN7E1woQzcKt7Qy
+ eF/CRcVKK1TM6wdClOj2jErnWyx85/uZfnG9QRD41rhInk891A8LGebPZ6DJeJR/uwzMniEgNnKN
+ AMuGy95ckwlM3AfwzsKPTUUFnBAmSwWfMLRxjZPNefeo1Ic8mMRAT3d5sfDUx/4wm8tyiNLuOSkm
+ Ej6ONYpESD2sJGMo3ZY96pkzir7ZH++4mH6PwZg1ZT2nO+0PtaB9DHRGfBrzH85d4aLFZD9txx3p
+ ewabrNpYI/cJu9hUTaTM7wZaG5kmfStwihKYUg==
+Date: Sat, 17 Dec 2016 10:51:48 +0100
+Message-ID: <unknown-type@testsuite.autocrypt.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+
+This message contains an INBOME header that claims to be of type "x",
+which is not a specified type.
+
+An agent capable of INBOME level 0 should reject this inbome header
+because of this type.  (it should not try to parse it as a header).

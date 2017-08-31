@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.crypto;
 
 
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.app.PendingIntent;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -27,6 +29,7 @@ import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpSignatureResult;
 import org.openintents.openpgp.util.OpenPgpApi;
+import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpSinkResultCallback;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
@@ -38,6 +41,8 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -54,17 +59,21 @@ public class MessageCryptoHelperTest {
     private Intent capturedApiIntent;
     private IOpenPgpSinkResultCallback capturedCallback;
     private MessageCryptoCallback messageCryptoCallback;
+    private AutocryptOperations autocryptOperations;
 
 
     @Before
     public void setUp() throws Exception {
         openPgpApi = mock(OpenPgpApi.class);
+        autocryptOperations = mock(AutocryptOperations.class);
 
         K9.setOpenPgpProvider("org.example.dummy");
 
         OpenPgpApiFactory openPgpApiFactory = mock(OpenPgpApiFactory.class);
         when(openPgpApiFactory.createOpenPgpApi(any(Context.class), any(IOpenPgpService2.class))).thenReturn(openPgpApi);
-        messageCryptoHelper = new MessageCryptoHelper(RuntimeEnvironment.application, openPgpApiFactory);
+
+        messageCryptoHelper = new MessageCryptoHelper(RuntimeEnvironment.application, openPgpApiFactory,
+                autocryptOperations);
         messageCryptoCallback = mock(MessageCryptoCallback.class);
     }
 
@@ -82,6 +91,35 @@ public class MessageCryptoHelperTest {
         MessageCryptoAnnotations annotations = captor.getValue();
         assertTrue(annotations.isEmpty());
         verifyNoMoreInteractions(messageCryptoCallback);
+
+        verify(autocryptOperations).hasAutocryptHeader(message);
+        verifyNoMoreInteractions(autocryptOperations);
+    }
+
+    @Test
+    public void textPlain_withAutocrypt() throws Exception {
+        MimeMessage message = new MimeMessage();
+        message.setUid("msguid");
+        message.setHeader("Content-Type", "text/plain");
+
+        when(autocryptOperations.hasAutocryptHeader(message)).thenReturn(true);
+        when(autocryptOperations.addAutocryptPeerUpdateToIntentIfPresent(same(message), any(Intent.class))).thenReturn(true);
+
+
+        MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
+
+
+        ArgumentCaptor<MessageCryptoAnnotations> captor = ArgumentCaptor.forClass(MessageCryptoAnnotations.class);
+        verify(messageCryptoCallback).onCryptoOperationsFinished(captor.capture());
+        MessageCryptoAnnotations annotations = captor.getValue();
+        assertTrue(annotations.isEmpty());
+        verifyNoMoreInteractions(messageCryptoCallback);
+
+        ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
+        verify(autocryptOperations).addAutocryptPeerUpdateToIntentIfPresent(same(message), intentCaptor.capture());
+        verify(openPgpApi).executeApiAsync(same(intentCaptor.getValue()), same((InputStream) null),
+                same((OutputStream) null), any(IOpenPgpCallback.class));
     }
 
     @Test
@@ -161,6 +199,9 @@ public class MessageCryptoHelperTest {
 
         assertEquals(OpenPgpApi.ACTION_DECRYPT_VERIFY, capturedApiIntent.getAction());
         assertEquals("test@example.org", capturedApiIntent.getStringExtra(OpenPgpApi.EXTRA_SENDER_ADDRESS));
+
+        verify(autocryptOperations).addAutocryptPeerUpdateToIntentIfPresent(message, capturedApiIntent);
+        verifyNoMoreInteractions(autocryptOperations);
     }
 
     @Test
@@ -201,6 +242,8 @@ public class MessageCryptoHelperTest {
         assertEquals("test@example.org", capturedApiIntent.getStringExtra(OpenPgpApi.EXTRA_SENDER_ADDRESS));
         assertPartAnnotationHasState(message, messageCryptoCallback, CryptoError.OPENPGP_OK, decryptedPart,
                 decryptionResult, signatureResult, pendingIntent);
+        verify(autocryptOperations).addAutocryptPeerUpdateToIntentIfPresent(message, capturedApiIntent);
+        verifyNoMoreInteractions(autocryptOperations);
     }
 
     private void processEncryptedMessageAndCaptureMocks(Message message, Body encryptedBody, OutputStream outputStream)

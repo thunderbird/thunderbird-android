@@ -4,7 +4,9 @@ package com.fsck.k9.mail.internet;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.support.annotation.NonNull;
@@ -15,7 +17,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -952,6 +953,23 @@ public class MimeUtility {
         }
         return null;
     }
+
+    public static Map<String,String> getAllHeaderParameters(String headerValue) {
+        Map<String,String> result = new HashMap<>();
+
+        headerValue = headerValue.replaceAll("\r|\n", "");
+        String[] parts = headerValue.split(";");
+        for (String part : parts) {
+            String[] partParts = part.split("=", 2);
+            if (partParts.length == 2) {
+                String parameterName = partParts[0].trim().toLowerCase(Locale.US);
+                String parameterValue = partParts[1].trim();
+                result.put(parameterName, parameterValue);
+            }
+        }
+        return result;
+    }
+
 
     public static Part findFirstPartByMimeType(Part part, String mimeType) {
         if (part.getBody() instanceof Multipart) {
