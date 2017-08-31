@@ -651,7 +651,7 @@ public class SmtpTransport extends Transport {
     }
 
     private void readPipelinedResponse(Queue<String> pipelinedCommands) throws IOException, MessagingException {
-        String responseLine = null;
+        String responseLine;
         List<String> results = new ArrayList<>();
         NegativeSmtpReplyException negativeRecipient = null;
         for (String command : pipelinedCommands) {
