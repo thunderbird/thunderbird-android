@@ -31,8 +31,8 @@ public class AutocryptHeaderTest {
     public void toRawHeaderString_returnsExpected() throws Exception {
         String autocryptHeaderString = autocryptHeader.toRawHeaderString();
 
-        String expected = "Autocrypt: addr=addr;prefer-encrypt=mutual;keydata=dGhlc2VhcmUxMjBjaGFyYWN0Z\n" +
-                " XJzeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4e\n" +
+        String expected = "Autocrypt: addr=addr;prefer-encrypt=mutual;keydata=dGhlc2VhcmUxMjBjaGFyYWN0Z\r\n" +
+                " XJzeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4e\r\n" +
                 " Hh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4";
         assertEquals(expected, autocryptHeaderString);
     }

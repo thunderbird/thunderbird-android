@@ -57,7 +57,7 @@ class AutocryptHeader {
         int autocryptHeaderLength = autocryptHeaderString.length();
         for (int i = 0; i < autocryptHeaderLength; i += HEADER_LINE_LENGTH) {
             if (i + HEADER_LINE_LENGTH <= autocryptHeaderLength) {
-                headerLines.append(autocryptHeaderString, i, i + HEADER_LINE_LENGTH).append("\n ");
+                headerLines.append(autocryptHeaderString, i, i + HEADER_LINE_LENGTH).append("\r\n ");
             } else {
                 headerLines.append(autocryptHeaderString, i, autocryptHeaderLength);
             }
