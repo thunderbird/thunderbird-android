@@ -41,29 +41,52 @@ class AutocryptHeader {
     }
 
     String toRawHeaderString() {
+        // TODO we don't properly fold lines here. if we want to support parameters, we need to do that somehow
         if (!parameters.isEmpty()) {
             throw new UnsupportedOperationException("arbitrary parameters not supported");
         }
 
-        String autocryptHeaderString = AutocryptHeader.AUTOCRYPT_HEADER + ": ";
-        autocryptHeaderString += AutocryptHeader.AUTOCRYPT_PARAM_ADDR + "=" + addr + ";";
+        StringBuilder builder = new StringBuilder();
+        builder.append(AutocryptHeader.AUTOCRYPT_HEADER).append(": ");
+        builder.append(AutocryptHeader.AUTOCRYPT_PARAM_ADDR).append('=').append(addr).append("; ");
         if (isPreferEncryptMutual) {
-            autocryptHeaderString += AutocryptHeader.AUTOCRYPT_PARAM_PREFER_ENCRYPT + "=" +
-                    AutocryptHeader.AUTOCRYPT_PREFER_ENCRYPT_MUTUAL + ";";
+            builder.append(AutocryptHeader.AUTOCRYPT_PARAM_PREFER_ENCRYPT)
+                    .append('=').append(AutocryptHeader.AUTOCRYPT_PREFER_ENCRYPT_MUTUAL).append("; ");
         }
-        autocryptHeaderString += AutocryptHeader.AUTOCRYPT_PARAM_KEY_DATA + "=" + ByteString.of(keyData).base64();
+        builder.append(AutocryptHeader.AUTOCRYPT_PARAM_KEY_DATA).append("=");
 
-        StringBuilder headerLines = new StringBuilder();
-        int autocryptHeaderLength = autocryptHeaderString.length();
-        for (int i = 0; i < autocryptHeaderLength; i += HEADER_LINE_LENGTH) {
-            if (i + HEADER_LINE_LENGTH <= autocryptHeaderLength) {
-                headerLines.append(autocryptHeaderString, i, i + HEADER_LINE_LENGTH).append("\r\n ");
+        appendBase64KeyData(builder);
+
+        return builder.toString();
+    }
+
+    private void appendBase64KeyData(StringBuilder builder) {
+        String base64KeyData = ByteString.of(keyData).base64();
+
+        int base64Length = base64KeyData.length();
+        int lineLengthBeforeKeyData = builder.length();
+        int dataLengthInFirstLine = HEADER_LINE_LENGTH -lineLengthBeforeKeyData;
+
+        boolean keyDataFitsInFirstLine = dataLengthInFirstLine > 0 && base64Length < dataLengthInFirstLine;
+        if (keyDataFitsInFirstLine) {
+            builder.append(base64KeyData, 0, base64Length);
+            return;
+        }
+
+        if (dataLengthInFirstLine > 0) {
+            builder.append(base64KeyData, 0, dataLengthInFirstLine).append("\r\n ");
+        } else {
+            builder.append("\r\n ");
+            dataLengthInFirstLine = 0;
+        }
+
+        for (int i = dataLengthInFirstLine; i < base64Length; i += HEADER_LINE_LENGTH) {
+            if (i + HEADER_LINE_LENGTH <= base64Length) {
+                builder.append(base64KeyData, i, i + HEADER_LINE_LENGTH).append("\r\n ");
             } else {
-                headerLines.append(autocryptHeaderString, i, autocryptHeaderLength);
+                builder.append(base64KeyData, i, base64Length);
             }
         }
-
-        return headerLines.toString();
     }
 
     @Override
