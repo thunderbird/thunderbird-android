@@ -125,9 +125,8 @@ public class ComposeCryptoStatus {
     }
 
     public boolean shouldUsePgpMessageBuilder() {
-        return cryptoProviderState != CryptoProviderState.UNCONFIGURED &&
-                cryptoProviderState != CryptoProviderState.ERROR &&
-                openPgpKeyId != null;
+        // CryptoProviderState.ERROR will be handled as an actual error, see SendErrorState
+        return cryptoProviderState != CryptoProviderState.UNCONFIGURED && openPgpKeyId != null;
     }
 
     public boolean isEncryptionEnabled() {
