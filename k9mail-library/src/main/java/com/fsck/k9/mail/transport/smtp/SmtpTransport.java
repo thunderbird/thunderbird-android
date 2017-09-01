@@ -419,13 +419,10 @@ public class SmtpTransport extends Transport {
     }
 
     private void sendMessageTo(List<String> addresses, Message message)
-    throws MessagingException {
+            throws MessagingException {
         close();
         open();
 
-        if (!is8bitEncodingAllowed) {
-            Timber.d("Server does not support 8bit transfer encoding");
-        }
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it
         if (largestAcceptableMessage > 0 && message.hasAttachments()) {
@@ -435,16 +432,13 @@ public class SmtpTransport extends Transport {
         }
 
         boolean entireMessageSent = false;
-        Address[] from = message.getFrom();
+
         try {
-            String fromAddress = from[0].getAddress();
+            String mailFrom = constructSmtpMailFromCommand(message.getFrom(), is8bitEncodingAllowed);
+
             if (isPipeliningSupported) {
                 Queue<String> pipelinedCommands = new LinkedList<>();
-                if (is8bitEncodingAllowed) {
-                    pipelinedCommands.add(String.format("MAIL FROM:<%s> BODY=8BITMIME", fromAddress));
-                } else {
-                    pipelinedCommands.add(String.format("MAIL FROM:<%s>", fromAddress));
-                }
+                pipelinedCommands.add(mailFrom);
 
                 for (String address : addresses) {
                     pipelinedCommands.add(String.format("RCPT TO:<%s>", address));
@@ -453,13 +447,8 @@ public class SmtpTransport extends Transport {
                 pipelinedCommands.add("DATA");
                 executePipelinedCommands(pipelinedCommands);
                 readPipelinedResponse(pipelinedCommands);
-
             } else {
-                if (is8bitEncodingAllowed) {
-                    executeCommand("MAIL FROM:<%s> BODY=8BITMIME", fromAddress);
-                } else {
-                    executeCommand("MAIL FROM:<%s>", fromAddress);
-                }
+                executeCommand(mailFrom);
 
                 for (String address : addresses) {
                     executeCommand("RCPT TO:<%s>", address);
@@ -487,6 +476,16 @@ public class SmtpTransport extends Transport {
             close();
         }
 
+    }
+
+    private static String constructSmtpMailFromCommand(Address[] from, boolean is8bitEncodingAllowed) {
+        String fromAddress = from[0].getAddress();
+        if (is8bitEncodingAllowed) {
+            return String.format("MAIL FROM:<%s> BODY=8BITMIME", fromAddress);
+        } else {
+            Timber.d("Server does not support 8bit transfer encoding");
+            return String.format("MAIL FROM:<%s>", fromAddress);
+        }
     }
 
     @Override
