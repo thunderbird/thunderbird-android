@@ -50,9 +50,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED + " DESC, " +
             ContactsContract.Contacts.SORT_KEY_PRIMARY;
 
-    private static final int INDEX_EMAIL_ADDRESS = 0;
-    private static final int INDEX_EMAIL_STATUS = 1;
-
     private static final String[] PROJECTION_NICKNAME = {
             ContactsContract.Data.CONTACT_ID,
             ContactsContract.CommonDataKinds.Nickname.NAME
@@ -62,9 +59,14 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private static final int INDEX_NICKNAME = 1;
 
     private static final String[] PROJECTION_CRYPTO_STATUS = {
-            "email_address",
-            "email_status"
+            "address",
+            "uid_key_status",
+            "autocrypt_key_status"
     };
+
+    private static final int INDEX_EMAIL_ADDRESS = 0;
+    private static final int INDEX_EMAIL_STATUS = 1;
+    private static final int INDEX_AUTOCRYPT_STATUS = 2;
 
     private static final int CRYPTO_PROVIDER_STATUS_UNTRUSTED = 1;
     private static final int CRYPTO_PROVIDER_STATUS_TRUSTED = 2;
@@ -341,7 +343,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         String[] recipientAddresses = recipientList.toArray(new String[recipientList.size()]);
 
         Cursor cursor;
-        Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/email_status");
+        Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/autocrypt_status");
         try {
             cursor = getContext().getContentResolver().query(queryUri, PROJECTION_CRYPTO_STATUS, null,
                     recipientAddresses, null);
@@ -358,13 +360,16 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
         while (cursor.moveToNext()) {
             String email = cursor.getString(INDEX_EMAIL_ADDRESS);
-            int status = cursor.getInt(INDEX_EMAIL_STATUS);
+            int uidStatus = cursor.getInt(INDEX_EMAIL_STATUS);
+            int autocryptStatus = cursor.getInt(INDEX_AUTOCRYPT_STATUS);
+
+            int effectiveStatus = uidStatus > autocryptStatus ? uidStatus : autocryptStatus;
 
             for (Address address : Address.parseUnencoded(email)) {
                 String emailAddress = address.getAddress();
                 if (recipientMap.containsKey(emailAddress)) {
                     Recipient recipient = recipientMap.get(emailAddress);
-                    switch (status) {
+                    switch (effectiveStatus) {
                         case CRYPTO_PROVIDER_STATUS_UNTRUSTED: {
                             if (recipient.getCryptoStatus() == RecipientCryptoStatus.UNAVAILABLE) {
                                 recipient.setCryptoStatus(RecipientCryptoStatus.AVAILABLE_UNTRUSTED);

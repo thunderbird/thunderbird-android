@@ -31,6 +31,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     private final Context context;
     private List<Recipient> recipients;
     private String highlight;
+    private boolean showAdvancedInfo;
 
 
     public RecipientAdapter(Context context) {
@@ -74,7 +75,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         return view;
     }
 
-    public View newView(ViewGroup parent) {
+    private View newView(ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.recipient_dropdown_item, parent, false);
 
         RecipientTokenHolder holder = new RecipientTokenHolder(view);
@@ -83,7 +84,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         return view;
     }
 
-    public void bindView(View view, Recipient recipient) {
+    private void bindView(View view, Recipient recipient) {
         RecipientTokenHolder holder = (RecipientTokenHolder) view.getTag();
 
         holder.name.setText(highlightText(recipient.getDisplayNameOrUnknown(context)));
@@ -92,6 +93,16 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         holder.email.setText(highlightText(address));
 
         setContactPhotoOrPlaceholder(context, holder.photo, recipient);
+
+        if (showAdvancedInfo) {
+            bindCryptoAdvanced(recipient, holder);
+        } else {
+            bindCryptoSimple(recipient, holder);
+        }
+    }
+
+    private void bindCryptoAdvanced(Recipient recipient, RecipientTokenHolder holder) {
+        holder.cryptoStatusSimple.setVisibility(View.GONE);
 
         Integer cryptoStatusRes = null, cryptoStatusColor = null;
         RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
@@ -124,6 +135,23 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         }
     }
 
+    private void bindCryptoSimple(Recipient recipient, RecipientTokenHolder holder) {
+        holder.cryptoStatus.setVisibility(View.GONE);
+
+        RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
+        switch (cryptoStatus) {
+            case AVAILABLE_TRUSTED:
+            case AVAILABLE_UNTRUSTED: {
+                holder.cryptoStatusSimple.setVisibility(View.VISIBLE);
+                break;
+            }
+            case UNAVAILABLE: {
+                holder.cryptoStatusSimple.setVisibility(View.GONE);
+                break;
+            }
+        }
+    }
+
     public static void setContactPhotoOrPlaceholder(Context context, ImageView imageView, Recipient recipient) {
         ContactPicture.getContactPictureLoader(context).loadContactPicture(recipient, imageView);
     }
@@ -151,25 +179,31 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         };
     }
 
+    public void setShowAdvancedInfo(boolean showAdvancedInfo) {
+        this.showAdvancedInfo = showAdvancedInfo;
+    }
+
 
     private static class RecipientTokenHolder {
         public final TextView name;
         public final TextView email;
-        public final ImageView photo;
-        public final View cryptoStatus;
-        public final ImageView cryptoStatusIcon;
+        final ImageView photo;
+        final View cryptoStatus;
+        final ImageView cryptoStatusIcon;
+        final ImageView cryptoStatusSimple;
 
 
-        public RecipientTokenHolder(View view) {
+        RecipientTokenHolder(View view) {
             name = (TextView) view.findViewById(R.id.text1);
             email = (TextView) view.findViewById(R.id.text2);
             photo = (ImageView) view.findViewById(R.id.contact_photo);
             cryptoStatus = view.findViewById(R.id.contact_crypto_status);
             cryptoStatusIcon = (ImageView) view.findViewById(R.id.contact_crypto_status_icon);
+            cryptoStatusSimple = (ImageView) view.findViewById(R.id.contact_crypto_status_icon_simple);
         }
     }
 
-    public Spannable highlightText(String text) {
+    private Spannable highlightText(String text) {
         Spannable highlightedSpannable = Spannable.Factory.getInstance().newSpannable(text);
 
         if (highlight == null) {

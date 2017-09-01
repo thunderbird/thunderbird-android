@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,8 +15,6 @@
         android:orientation="horizontal"
         android:layout_marginLeft="12dip"
         android:layout_marginStart="12dip"
-        android:layout_marginRight="10dip"
-        android:layout_marginEnd="10dip"
         android:minHeight="50dp"
         android:animateLayoutChanges="true">
 
@@ -56,13 +53,14 @@
             tools:visibility="visible"
             android:inAnimation="@anim/fade_in"
             android:outAnimation="@anim/fade_out"
-            custom:previewInitialChild="2">
+            custom:previewInitialChild="1">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
+                android:id="@+id/crypto_special_inline"
                 android:src="@drawable/compatibility"
                 android:tint="@color/light_black"
                 />
@@ -72,13 +70,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
+                android:id="@+id/crypto_special_sign_only"
                 android:src="@drawable/status_signature_verified_cutout"
                 android:tint="?attr/openpgp_blue"
                 />
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/crypto_special_sign_only_inline"
+                >
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -100,153 +101,80 @@
 
         </com.fsck.k9.view.ToolableViewAnimator>
 
-
-        <com.fsck.k9.view.ToolableViewAnimator
-            android:layout_width="36dp"
-            android:layout_height="32dp"
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:id="@+id/crypto_status"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:inAnimation="@anim/fade_in"
-            android:outAnimation="@anim/fade_out"
-            custom:previewInitialChild="2">
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:clipChildren="false"
+            android:id="@+id/crypto_status_anchor"
+            >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/status_lock_disabled"
-                android:tint="?attr/openpgp_dark_grey"
-                />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/status_lock_error"
-                android:tint="?attr/openpgp_red"
-                />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <com.fsck.k9.view.ToolableViewAnimator
+                android:layout_width="36dp"
+                android:layout_height="32dp"
+                android:id="@+id/crypto_status"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:inAnimation="@anim/fade_in"
+                android:outAnimation="@anim/fade_out"
+                custom:previewInitialChild="0">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/status_dots"
-                    android:tint="?attr/openpgp_grey"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/status_lock"
-                    android:tint="?attr/openpgp_grey"
-                    />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/status_dots"
-                    android:tint="?attr/openpgp_grey"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/status_lock_error_dots_1"
-                    android:tint="?attr/openpgp_red"
-                    />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/status_dots"
-                    android:tint="?attr/openpgp_grey"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/status_lock_none_dots_1"
-                    android:tint="?attr/openpgp_red"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
+                    android:layout_gravity="center"
+                    android:id="@+id/crypto_status_disabled"
                     android:src="@drawable/status_lock_disabled"
-                    android:tint="?attr/openpgp_grey"
-                    />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/status_dots"
-                    android:tint="?attr/openpgp_grey"
+                    android:tint="?attr/openpgp_dark_grey"
                     />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/status_lock_dots_2"
-                    android:tint="?attr/openpgp_orange"
-                    />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/status_dots"
-                    android:tint="?attr/openpgp_grey"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/status_lock_dots_3"
+                    android:layout_gravity="center"
+                    android:id="@+id/crypto_status_enabled"
+                    android:src="@drawable/status_lock"
                     android:tint="?attr/openpgp_green"
                     />
 
-            </FrameLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/crypto_status_trusted"
+                    >
 
-        </com.fsck.k9.view.ToolableViewAnimator>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:src="@drawable/status_dots"
+                        android:tint="?attr/openpgp_grey"
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center_vertical"
+                        android:src="@drawable/status_lock_dots_3"
+                        android:tint="?attr/openpgp_green"
+                        />
+
+                </FrameLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/crypto_status_error"
+                    android:src="@drawable/status_lock_error"
+                    android:tint="?attr/openpgp_red"
+                    />
+
+            </com.fsck.k9.view.ToolableViewAnimator>
+
+        </FrameLayout>
 
     </LinearLayout>
 

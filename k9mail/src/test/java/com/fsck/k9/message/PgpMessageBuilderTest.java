@@ -72,13 +72,6 @@ public class PgpMessageBuilderTest {
     private PgpMessageBuilder pgpMessageBuilder = createDefaultPgpMessageBuilder(openPgpApi);
 
 
-    @Test(expected = AssertionError.class)
-    public void build__withDisabledCrypto__shouldError() throws MessagingException {
-        pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.setCryptoMode(CryptoMode.DISABLE).build());
-
-        pgpMessageBuilder.buildAsync(mock(Callback.class));
-    }
-
     @Test
     public void build__withCryptoProviderNotOk__shouldThrow() throws MessagingException {
         cryptoStatusBuilder.setCryptoMode(CryptoMode.SIGN_ONLY);
@@ -238,7 +231,7 @@ public class PgpMessageBuilderTest {
     @Test
     public void buildEncrypt__withoutRecipients__shouldThrow() throws MessagingException {
         cryptoStatusBuilder
-                .setCryptoMode(CryptoMode.OPPORTUNISTIC)
+                .setCryptoMode(CryptoMode.CHOICE_ENABLED)
                 .setRecipients(new ArrayList<Recipient>());
         pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
 
@@ -257,7 +250,7 @@ public class PgpMessageBuilderTest {
     @Test
     public void buildEncrypt__shouldSucceed() throws MessagingException {
         ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
-                .setCryptoMode(CryptoMode.PRIVATE)
+                .setCryptoMode(CryptoMode.CHOICE_ENABLED)
                 .setRecipients(Collections.singletonList(new Recipient("test", "test@example.org", "labru", -1, "key")))
                 .build();
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
@@ -275,9 +268,7 @@ public class PgpMessageBuilderTest {
 
         Intent expectedApiIntent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, TEST_SIGN_KEY_ID);
-        expectedApiIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, new long[] { TEST_SELF_ENCRYPT_KEY_ID });
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-        expectedApiIntent.putExtra(OpenPgpApi.EXTRA_OPPORTUNISTIC_ENCRYPTION, false);
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.getRecipientAddresses());
         assertIntentEqualsActionAndExtras(expectedApiIntent, capturedApiIntent.getValue());
 
@@ -309,7 +300,7 @@ public class PgpMessageBuilderTest {
     @Test
     public void buildEncrypt__withInlineEnabled__shouldSucceed() throws MessagingException {
         ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
-                .setCryptoMode(CryptoMode.PRIVATE)
+                .setCryptoMode(CryptoMode.CHOICE_ENABLED)
                 .setRecipients(Collections.singletonList(new Recipient("test", "test@example.org", "labru", -1, "key")))
                 .setEnablePgpInline(true)
                 .build();
@@ -328,9 +319,7 @@ public class PgpMessageBuilderTest {
 
         Intent expectedApiIntent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, TEST_SIGN_KEY_ID);
-        expectedApiIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, new long[] { TEST_SELF_ENCRYPT_KEY_ID });
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_REQUEST_ASCII_ARMOR, true);
-        expectedApiIntent.putExtra(OpenPgpApi.EXTRA_OPPORTUNISTIC_ENCRYPTION, false);
         expectedApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.getRecipientAddresses());
         assertIntentEqualsActionAndExtras(expectedApiIntent, capturedApiIntent.getValue());
 
@@ -397,7 +386,7 @@ public class PgpMessageBuilderTest {
     @Test
     public void buildEncryptWithAttach__withInlineEnabled__shouldThrow() throws MessagingException {
         ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
-                .setCryptoMode(CryptoMode.OPPORTUNISTIC)
+                .setCryptoMode(CryptoMode.CHOICE_ENABLED)
                 .setEnablePgpInline(true)
                 .build();
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
@@ -415,7 +404,7 @@ public class PgpMessageBuilderTest {
     public void buildOpportunisticEncrypt__withNoKeysAndNoSignOnly__shouldNotBeSigned() throws MessagingException {
         ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
                 .setRecipients(Collections.singletonList(new Recipient("test", "test@example.org", "labru", -1, "key")))
-                .setCryptoMode(CryptoMode.OPPORTUNISTIC)
+                .setCryptoMode(CryptoMode.NO_CHOICE)
                 .build();
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
 

@@ -38,15 +38,15 @@
         android:icon="?attr/iconActionRequestReadReceipt"
     />
     <item
-        android:id="@+id/openpgp_inline_enable"
-        android:alphabeticShortcut="i"
-        android:title="@string/enable_inline_pgp"
+        android:id="@+id/openpgp_encrypt_enable"
+        android:alphabeticShortcut="c"
+        android:title="@string/enable_encryption"
         android:showAsAction="never"
         />
     <item
-        android:id="@+id/openpgp_inline_disable"
-        android:alphabeticShortcut="i"
-        android:title="@string/disable_inline_pgp"
+        android:id="@+id/openpgp_encrypt_disable"
+        android:alphabeticShortcut="c"
+        android:title="@string/disable_encryption"
         android:showAsAction="never"
         />
     <item
@@ -59,6 +59,18 @@
         android:id="@+id/openpgp_sign_only_disable"
         android:alphabeticShortcut="g"
         android:title="@string/disable_sign_only"
+        android:showAsAction="never"
+        />
+    <item
+        android:id="@+id/openpgp_inline_enable"
+        android:alphabeticShortcut="i"
+        android:title="@string/enable_inline_pgp"
+        android:showAsAction="never"
+        />
+    <item
+        android:id="@+id/openpgp_inline_disable"
+        android:alphabeticShortcut="i"
+        android:title="@string/disable_inline_pgp"
         android:showAsAction="never"
         />
 </menu>

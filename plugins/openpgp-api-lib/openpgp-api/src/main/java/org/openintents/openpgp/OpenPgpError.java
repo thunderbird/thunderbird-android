@@ -71,6 +71,10 @@ public class OpenPgpError implements Parcelable {
         return 0;
     }
 
+    public String toString() {
+        return "OpenPGP-Api Error (" + errorId + "): " + message;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         /**
          * NOTE: When adding fields in the process of updating this API, make sure to bump
