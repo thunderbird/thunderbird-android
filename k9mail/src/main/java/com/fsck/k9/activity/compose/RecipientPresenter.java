@@ -400,8 +400,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                 .setCryptoMode(currentCryptoMode)
                 .setEnablePgpInline(cryptoEnablePgpInline)
                 .setRecipients(getAllRecipients())
-                .setSigningKeyId(accountCryptoKey)
-                .setSelfEncryptId(accountCryptoKey)
+                .setOpenPgpKeyId(accountCryptoKey)
                 .build();
 
         final String[] recipientAddresses = composeCryptoStatus.getRecipientAddresses();

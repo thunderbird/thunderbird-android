@@ -105,6 +105,18 @@ public class AutocryptHeaderParserTest {
         assertEquals("ignore", autocryptHeader.parameters.get("_monkey"));
     }
 
+    @Test
+    public void parseAutocryptHeader_toRawHeaderString() throws Exception {
+        MimeMessage message = parseFromResource("autocrypt/rsa2048-simple.eml");
+        AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
+
+        String headerValue = autocryptHeader.toRawHeaderString();
+        headerValue = headerValue.substring("Autocrypt: ".length());
+        AutocryptHeader parsedAutocryptHeader = autocryptHeaderParser.parseAutocryptHeader(headerValue);
+
+        assertEquals(autocryptHeader, parsedAutocryptHeader);
+    }
+
     private MimeMessage parseFromResource(String resourceName) throws IOException, MessagingException {
         InputStream inputStream = readFromResourceFile(resourceName);
         return MimeMessage.parseMimeMessage(inputStream, false);

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -34,7 +35,8 @@ class AutocryptHeaderParser {
     }
 
     @Nullable
-    private AutocryptHeader parseAutocryptHeader(String headerValue) {
+    @VisibleForTesting
+    AutocryptHeader parseAutocryptHeader(String headerValue) {
         Map<String,String> parameters = MimeUtility.getAllHeaderParameters(headerValue);
 
         String type = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_TYPE);
@@ -55,7 +57,7 @@ class AutocryptHeaderParser {
             return null;
         }
 
-        String to = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_TO);
+        String to = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_ADDR);
         if (to == null) {
             Timber.e("autocrypt: no to header!");
             return null;

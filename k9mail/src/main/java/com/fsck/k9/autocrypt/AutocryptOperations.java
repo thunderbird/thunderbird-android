@@ -1,6 +1,7 @@
 package com.fsck.k9.autocrypt;
 
 
+import java.util.Collections;
 import java.util.Date;
 
 import android.content.Intent;
@@ -49,4 +50,14 @@ public class AutocryptOperations {
     public boolean hasAutocryptHeader(Message currentMessage) {
         return currentMessage.getHeader(AutocryptHeader.AUTOCRYPT_HEADER).length > 0;
     }
+
+    public void addAutocryptHeaderToMessage(Message message, byte[] keyData,
+            String autocryptAddress, boolean preferEncryptMutual) {
+        AutocryptHeader autocryptHeader = new AutocryptHeader(
+                Collections.<String,String>emptyMap(), autocryptAddress, keyData, preferEncryptMutual);
+        String rawAutocryptHeader = autocryptHeader.toRawHeaderString();
+
+        message.addRawHeader(AutocryptHeader.AUTOCRYPT_HEADER, rawAutocryptHeader);
+    }
+
 }
