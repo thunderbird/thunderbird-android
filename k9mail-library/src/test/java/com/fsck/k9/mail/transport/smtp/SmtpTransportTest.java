@@ -521,7 +521,8 @@ public class SmtpTransportTest {
             fail("Exception expected");
         } catch (AuthenticationFailedException e) {
             assertEquals(
-                    "Username and Password not accepted. Learn more at http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
+                    "Username and Password not accepted. " +
+                    "Learn more at http://support.google.com/mail/bin/answer.py?answer=14257 hx9sm5317360pbc.68",
                     e.getMessage());
         }
 
@@ -689,6 +690,174 @@ public class SmtpTransportTest {
         server.verifyInteractionCompleted();
     }
 
+    @Test
+    public void sendMessage_withPipelining() throws Exception {
+        Message message = getDefaultMessage();
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
+        server.expect("MAIL FROM:<user@localhost>");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.expect("DATA");
+        server.output("250 OK");
+        server.output("250 OK");
+        server.output("354 End data with <CR><LF>.<CR><LF>");
+        server.expect("[message data]");
+        server.expect(".");
+        server.output("250 OK: queued as 12345");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        transport.sendMessage(message);
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void sendMessage_withoutPipelining() throws Exception {
+        Message message = getDefaultMessage();
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication();
+        server.expect("MAIL FROM:<user@localhost>");
+        server.output("250 OK");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.output("250 OK");
+        server.expect("DATA");
+        server.output("354 End data with <CR><LF>.<CR><LF>");
+        server.expect("[message data]");
+        server.expect(".");
+        server.output("250 OK: queued as 12345");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        transport.sendMessage(message);
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void sendMessagePipelining_withNegativeReply() throws Exception {
+        Message message = getDefaultMessage();
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
+        server.expect("MAIL FROM:<user@localhost>");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.expect("DATA");
+        server.output("250 OK");
+        server.output("550 remote mail to <user2@localhost> not allowed");
+        server.output("354 End data with <CR><LF>.<CR><LF>");
+        server.expect(".");
+        server.output("554 no valid recipients");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        try {
+            transport.sendMessage(message);
+            fail("Expected exception");
+        } catch (NegativeSmtpReplyException e) {
+            assertEquals(550, e.getReplyCode());
+            assertEquals("remote mail to <user2@localhost> not allowed", e.getReplyText());
+        }
+
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void sendMessagePipelining_without354ReplyforData_shouldThrow() throws Exception {
+        Message message = getDefaultMessage();
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
+        server.expect("MAIL FROM:<user@localhost>");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.expect("DATA");
+        server.output("250 OK");
+        server.output("550 remote mail to <user2@localhost> not allowed");
+        server.output("554 no valid recipients given");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        try {
+            transport.sendMessage(message);
+            fail("Expected exception");
+        } catch (NegativeSmtpReplyException e) {
+            assertEquals(554, e.getReplyCode());
+            assertEquals("no valid recipients given", e.getReplyText());
+        }
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void sendMessagePipelining_with250and550ReplyforRecipients_shouldThrow() throws Exception {
+        Message message = getMessageWithTwoRecipients();
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
+        server.expect("MAIL FROM:<user@localhost>");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.expect("RCPT TO:<user3@localhost>");
+        server.expect("DATA");
+        server.output("250 OK");
+        server.output("250 OK");
+        server.output("550 remote mail to <user3@localhost> not allowed");
+        server.output("354 End data with <CR><LF>.<CR><LF>");
+        server.expect(".");
+        server.output("554 no valid recipients given");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        try {
+            transport.sendMessage(message);
+            fail("Expected exception");
+        } catch (NegativeSmtpReplyException e) {
+            assertEquals(550, e.getReplyCode());
+            assertEquals("remote mail to <user3@localhost> not allowed", e.getReplyText());
+        }
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void sendMessagePipelining_with250and550ReplyforRecipientsAnd250ForMessage_shouldThrow() throws Exception {
+        Message message = getMessageWithTwoRecipients();
+        MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
+        server.expect("MAIL FROM:<user@localhost>");
+        server.expect("RCPT TO:<user2@localhost>");
+        server.expect("RCPT TO:<user3@localhost>");
+        server.expect("DATA");
+        server.output("250 OK");
+        server.output("250 OK");
+        server.output("550 remote mail to <user3@localhost> not allowed");
+        server.output("354 End data with <CR><LF>.<CR><LF>");
+        server.expect(".");
+        server.output("250 OK");
+        server.expect("QUIT");
+        server.output("221 BYE");
+        server.closeConnection();
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server);
+
+        try {
+            transport.sendMessage(message);
+            fail("Expected exception");
+        } catch (NegativeSmtpReplyException e) {
+            assertEquals(550, e.getReplyCode());
+            assertEquals("remote mail to <user3@localhost> not allowed", e.getReplyText());
+        }
+
+        server.verifyConnectionClosed();
+        server.verifyInteractionCompleted();
+    }
+
+
     private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server) throws IOException,
             MessagingException {
         return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
@@ -739,6 +908,13 @@ public class SmtpTransportTest {
 
     private Message getDefaultMessage() {
         return getDefaultMessageBuilder().build();
+    }
+
+    private Message getMessageWithTwoRecipients() {
+        return new TestMessageBuilder()
+                .from("user@localhost")
+                .to("user2@localhost", "user3@localhost")
+                .build();
     }
 
     private MockSmtpServer createServerAndSetupForPlainAuthentication(String... extensions) {
