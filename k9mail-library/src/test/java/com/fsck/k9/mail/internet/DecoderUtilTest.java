@@ -194,4 +194,42 @@ public class DecoderUtilTest {
         message = null;
         assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
     }
+
+    @Test
+    public void decodeEncodedWords_withRFC2047examples_decodesCorrectly() {
+        body = "(=?ISO-8859-1?Q?a?=)";
+        expect = "(a)";
+        message = null;
+        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+
+        body = "(=?ISO-8859-1?Q?a?= b)";
+        expect = "(a b)";
+        message = null;
+        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+
+        body = "(=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?=)";
+        expect = "(ab)";
+        message = null;
+        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+
+        body = "(=?ISO-8859-1?Q?a?=  =?ISO-8859-1?Q?b?=)";
+        expect = "(ab)";
+        message = null;
+        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+
+        body = "(=?ISO-8859-1?Q?a?=     \n    =?ISO-8859-1?Q?b?=)";
+        expect = "(ab)";
+        message = null;
+        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+
+        body = "(=?ISO-8859-1?Q?a_b?=)";
+        expect = "(a b)";
+        message = null;
+        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+
+        body = "(=?ISO-8859-1?Q?a?= =?ISO-8859-2?Q?_b?=)";
+        expect = "(a b)";
+        message = null;
+        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    }
 }

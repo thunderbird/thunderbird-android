@@ -161,7 +161,7 @@ class DecoderUtil {
                     sb.append(body.substring(begin, end));
                     previousWord = null;
                 } else {
-                    sb.append(sep);
+//                    sb.append(sep);
                 }
             } else {
                 if (previousWord != null) {
@@ -169,11 +169,11 @@ class DecoderUtil {
                         previousWord.encodedText += word.encodedText;
                     } else {
                         sb.append(decodeEncodedWord(previousWord));
-                        sb.append(sep);
+                        sb.append(sep.trim());
                         previousWord = word;
                     }
                 } else {
-                    sb.append(sep);
+                    sb.append(sep.trim());
                     previousWord = word;
                 }
             }
