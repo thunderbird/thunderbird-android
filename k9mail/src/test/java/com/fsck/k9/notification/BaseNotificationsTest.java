@@ -10,6 +10,7 @@ import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
+import com.fsck.k9.mail.Importance;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -103,7 +104,7 @@ public class BaseNotificationsTest {
 
     private NotificationHolder createNotificationHolder(int notificationId) {
         NotificationContent content = new NotificationContent(null, SENDER, SUBJECT, NOTIFICATION_PREVIEW,
-                NOTIFICATION_SUMMARY, false, false);
+                NOTIFICATION_SUMMARY, false, Importance.NORMAL);
         return new NotificationHolder(notificationId, content);
     }
 

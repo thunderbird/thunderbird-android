@@ -10,6 +10,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+
+import com.fsck.k9.mail.Importance;
 import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
@@ -42,8 +44,6 @@ public abstract class MessageBuilder {
     private final Context context;
     private final MessageIdGenerator messageIdGenerator;
     private final BoundaryGenerator boundaryGenerator;
-    private static final String X_PRIORITY_CONTENT = "priority_high";
-
 
     private String subject;
     private Date sentDate;
@@ -70,7 +70,7 @@ public abstract class MessageBuilder {
     private int cursorPosition;
     private MessageReference messageReference;
     private boolean isDraft;
-    private boolean isHighPriority;
+    private Importance importance;
     private boolean isPgpInlineEnabled;
 
     protected MessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
@@ -113,8 +113,15 @@ public abstract class MessageBuilder {
             message.setHeader("User-Agent", context.getString(R.string.message_header_mua));
         }
 
-        if (isHighPriority) {
-            message.setHeader(MimeHeader.HEADER_HIGH_PRIORITY, X_PRIORITY_CONTENT);
+        switch (importance) {
+            case HIGH:
+                message.setHeader(MimeHeader.HEADER_X_PRIORITY, MimeMessage.X_PRIORITY_HIGH);
+                message.setHeader(MimeHeader.HEADER_IMPORTANCE, MimeMessage.IMPORTANCE_HIGH);
+                break;
+            case LOW:
+                message.setHeader(MimeHeader.HEADER_X_PRIORITY, MimeMessage.X_PRIORITY_LOW);
+                message.setHeader(MimeHeader.HEADER_IMPORTANCE, MimeMessage.IMPORTANCE_LOW);
+                break;
         }
 
         final String replyTo = identity.getReplyTo();
@@ -608,8 +615,9 @@ public abstract class MessageBuilder {
         }
     }
 
-    public void setHighPriority(boolean isHighPriority) {
-        this.isHighPriority = isHighPriority;
+    public MessageBuilder setImportance(Importance importance) {
+        this.importance = importance;
+        return this;
     }
 
     public interface Callback {

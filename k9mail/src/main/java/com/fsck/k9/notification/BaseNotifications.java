@@ -13,6 +13,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.R;
+import com.fsck.k9.mail.Importance;
 
 
 abstract class BaseNotifications {
@@ -37,7 +38,7 @@ abstract class BaseNotifications {
                 .setTicker(content.summary)
                 .setGroup(groupKey)
                 .setContentTitle(content.sender)
-                .setContentText(makeHighPriorityIfRequired(content.subject, content))
+                .setContentText(markImportance(content.subject, content))
                 .setSubText(accountName);
 
         NotificationCompat.BigTextStyle style = createBigTextStyle(builder);
@@ -66,9 +67,9 @@ abstract class BaseNotifications {
         return deleteOption == NotificationQuickDelete.ALWAYS || deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG;
     }
 
-    protected SpannableString makeHighPriorityIfRequired(String subject, NotificationContent content) {
-        if(content.isHighPriority) {
-            return new SpannableString(Html.fromHtml(subject+"<H1><font color=\"#FF0000\">"+ "!" + "</font></H1>"));
+    protected SpannableString markImportance(String subject, NotificationContent content) {
+        if(content.importance.equals(Importance.HIGH)) {
+            return new SpannableString(Html.fromHtml(subject+"<h1><font color=\"#FF0000\">"+ "!" + "</font></h1>"));
         }
        return new SpannableString(subject);
 

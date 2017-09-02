@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private View mChip;
     private CheckBox mFlagged;
+    private ImageView mHighImportance;
+    private ImageView mLowImportance;
     private int defaultSubjectColor;
     private TextView mAdditionalHeadersView;
     private View mAnsweredIcon;
@@ -121,6 +124,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mChip = findViewById(R.id.chip);
         mDateView = (TextView) findViewById(R.id.date);
         mFlagged = (CheckBox) findViewById(R.id.flagged);
+        mHighImportance = (ImageView) findViewById(R.id.importance_high);
+        mLowImportance = (ImageView) findViewById(R.id.importance_low);
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
         mFontSizes.setViewTextSize(mSubjectView, mFontSizes.getMessageViewSubject());
@@ -350,6 +355,19 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
+        switch(message.getImportance()) {
+            case HIGH:
+                mHighImportance.setVisibility(VISIBLE);
+                mLowImportance.setVisibility(GONE);
+                break;
+            case LOW:
+                mHighImportance.setVisibility(GONE);
+                mLowImportance.setVisibility(VISIBLE);
+                break;
+            case NORMAL:
+                mHighImportance.setVisibility(GONE);
+                mLowImportance.setVisibility(GONE);
+        }
 
         mChip.setBackgroundColor(mAccount.getChipColor());
 

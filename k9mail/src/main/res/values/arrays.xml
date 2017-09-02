@@ -563,4 +563,16 @@
         <item>NEVER</item>
         <item>WHEN_IN_LANDSCAPE</item>
     </string-array>
+
+    <string-array name="importance_entries" translatable="false">
+        <item>@string/importance_high</item>
+        <item>@string/importance_normal</item>
+        <item>@string/importance_low</item>
+    </string-array>
+
+    <string-array name="importance_values" translatable="false">
+        <item>HIGH</item>
+        <item>NORMAL</item>
+        <item>LOW</item>
+    </string-array>
 </resources>

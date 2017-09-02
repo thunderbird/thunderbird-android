@@ -18,6 +18,7 @@ import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
+import com.fsck.k9.mail.Importance;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -199,8 +200,10 @@ public class DeviceNotificationsTest {
         when(notificationData.getNewMessagesCount()).thenReturn(NEW_MESSAGE_COUNT);
         when(notificationData.getAccount()).thenReturn(account);
 
-        NotificationContent content = new NotificationContent(null, SENDER, SUBJECT, PREVIEW, SUMMARY, false, false);
-        NotificationContent content2 = new NotificationContent(null, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true, false);
+        NotificationContent content = new NotificationContent(null, SENDER, SUBJECT, PREVIEW, SUMMARY, false,
+                Importance.NORMAL);
+        NotificationContent content2 = new NotificationContent(null, SENDER_2, SUBJECT_2, PREVIEW_2, SUMMARY_2, true,
+                Importance.NORMAL);
         List<NotificationContent> contents = Arrays.asList(content, content2);
         when(notificationData.getContentForSummaryNotification()).thenReturn(contents);
 

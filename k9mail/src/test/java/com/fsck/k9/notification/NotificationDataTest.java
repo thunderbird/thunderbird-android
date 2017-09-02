@@ -7,6 +7,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.MessageReference;
 
+import com.fsck.k9.mail.Importance;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -309,11 +310,11 @@ public class NotificationDataTest {
     }
 
     private NotificationContent createNotificationContent(MessageReference messageReference) {
-        return new NotificationContent(messageReference, "", "", "", "", false, false);
+        return new NotificationContent(messageReference, "", "", "", "", false, Importance.NORMAL);
     }
 
     private NotificationContent createNotificationContentForStarredMessage() {
         MessageReference messageReference = createMessageReference("42");
-        return new NotificationContent(messageReference, "", "", "", "", true, false);
+        return new NotificationContent(messageReference, "", "", "", "", true, Importance.NORMAL);
     }
 }

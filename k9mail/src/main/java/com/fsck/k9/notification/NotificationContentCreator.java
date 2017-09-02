@@ -13,6 +13,7 @@ import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Importance;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
@@ -34,9 +35,10 @@ class NotificationContentCreator {
         CharSequence preview = getMessagePreview(message);
         CharSequence summary = buildMessageSummary(sender, subject);
         boolean starred = message.isSet(Flag.FLAGGED);
-        boolean isHighPriority = message.isHighPriority();
+        Importance importance = message.getImportance();
 
-        return new NotificationContent(messageReference, displaySender, subject, preview, summary, starred, isHighPriority);
+        return new NotificationContent(messageReference, displaySender, subject, preview, summary, starred,
+                importance);
     }
 
     private CharSequence getMessagePreview(LocalMessage message) {

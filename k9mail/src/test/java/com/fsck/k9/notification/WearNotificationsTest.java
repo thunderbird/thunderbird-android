@@ -19,6 +19,7 @@ import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.mail.Importance;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -253,7 +254,7 @@ public class WearNotificationsTest {
     }
 
     private NotificationContent createNotificationContent(MessageReference messageReference) {
-        return new NotificationContent(messageReference, null, null, null, null, false, false);
+        return new NotificationContent(messageReference, null, null, null, null, false, Importance.NORMAL);
     }
 
     private NotificationHolder createNotificationHolder(int notificationId, NotificationContent content) {

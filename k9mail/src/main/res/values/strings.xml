@@ -1253,6 +1253,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_enabled_error_gotit">Got it</string>
     <string name="openpgp_enabled_error_back">Back</string>
     <string name="openpgp_enabled_error_disable">Disable Encryption</string>
-    <string name="priority_high">Urgent</string>
-    <string name="priority_normal">Normal</string>
+    <string name="set_importance">Set Importance</string>
+    <string name="importance_high">High</string>
+    <string name="importance_normal">Normal</string>
+    <string name="importance_low">Low</string>
 </resources>

@@ -8,6 +8,7 @@ import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Importance;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
@@ -59,6 +60,7 @@ public class NotificationContentCreatorTest {
         assertEquals(SUBJECT + "\n" + PREVIEW, content.preview.toString());
         assertEquals(SENDER_NAME + " " + SUBJECT, content.summary.toString());
         assertEquals(false, content.starred);
+        assertEquals(Importance.NORMAL, content.importance);
     }
 
     @Test

@@ -16,7 +16,8 @@
         <View
             android:id="@+id/chip"
             android:layout_width="8dip"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:background="#3a1943"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -237,6 +238,27 @@
                             android:focusable="false"
                             style="?android:attr/starStyle"
                             android:checked="false" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:id="@+id/importance_high"
+                            android:src="@drawable/ic_priority_high_black_24dp"
+                            android:tint="?attr/openpgp_red"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:id="@+id/importance_low"
+                            android:src="@drawable/ic_low_priority_black_24dp"
+                            android:visibility="gone"
+                            />
+
 
                         <include layout="@layout/message_crypto_status_view" />
 

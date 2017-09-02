@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
+import android.provider.ContactsContract.CommonDataKinds.Im;
 import android.support.annotation.NonNull;
 
 import com.fsck.k9.mail.Address;
@@ -22,6 +23,7 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.DefaultBodyFactory;
+import com.fsck.k9.mail.Importance;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -65,7 +67,10 @@ public class MimeMessage extends Message {
     protected int mSize;
     private String serverExtra;
 
-    private static final String X_PRIORITY_CONTENT = "priority_high";
+    public static final String X_PRIORITY_HIGH = "1";
+    public static final String X_PRIORITY_LOW = "5";
+    public static final String IMPORTANCE_HIGH = "high";
+    public static final String IMPORTANCE_LOW = "low";
 
     public static MimeMessage parseMimeMessage(InputStream in, boolean recurse) throws IOException, MessagingException {
         MimeMessage mimeMessage = new MimeMessage();
@@ -521,8 +526,17 @@ public class MimeMessage extends Message {
         }
     }
 
-    public boolean isHighPriority() {
-        return X_PRIORITY_CONTENT.equals(getFirstHeader(MimeHeader.HEADER_HIGH_PRIORITY));
+    @Override
+    public Importance getImportance() {
+        Importance importance = Importance.NORMAL;
+        if (X_PRIORITY_HIGH.equals(getFirstHeader(MimeHeader.HEADER_X_PRIORITY)) ||
+                IMPORTANCE_HIGH.equalsIgnoreCase(getFirstHeader(MimeHeader.HEADER_IMPORTANCE))) {
+            importance =  Importance.HIGH;
+        } else  if (X_PRIORITY_LOW.equals(getFirstHeader(MimeHeader.HEADER_X_PRIORITY)) ||
+                IMPORTANCE_LOW.equalsIgnoreCase(getFirstHeader(MimeHeader.HEADER_IMPORTANCE))) {
+            importance = Importance.LOW;
+        }
+        return importance;
     }
 
     private class MimeMessageBuilder implements ContentHandler {
