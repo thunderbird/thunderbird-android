@@ -46,6 +46,8 @@ public class MessageWebView extends RigidWebView {
          * Images with content: URIs will not be blocked, nor
          * will network images that are already in the WebView cache.
          *
+         * NB: We clear the cache when we create a WebView.
+         *
          */
         getSettings().setBlockNetworkLoads(shouldBlockNetworkData);
     }
@@ -70,7 +72,9 @@ public class MessageWebView extends RigidWebView {
 
         final WebSettings webSettings = this.getSettings();
 
+        webSettings.setAppCacheEnabled(false);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        clearCache(true);
 
         /* TODO this might improve rendering smoothness when webview is animated into view
         if (VERSION.SDK_INT >= VERSION_CODES.M) {
