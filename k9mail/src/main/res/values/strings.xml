@@ -794,7 +794,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="folder_list_help_key">1 - Display only 1st Class folders\n2 - Display 1st and 2nd Class folders\n3 - Display all except 2nd Class folders\n4 - Display all folders\nQ - Return to Accounts\nS - Edit Account Settings</string>
 
-    <string name="folder_list_filter_hint">folder name contains</string>
+    <string name="folder_list_filter_hint">Folder name contains</string>
 
     <string name="folder_list_display_mode_label">Show folders…</string>
     <string name="folder_list_display_mode_all">All folders</string>
