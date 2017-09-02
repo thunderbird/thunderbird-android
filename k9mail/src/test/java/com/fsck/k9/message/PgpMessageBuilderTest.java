@@ -28,6 +28,7 @@ import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
+import com.fsck.k9.mail.Importance;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
@@ -532,6 +533,7 @@ public class PgpMessageBuilderTest {
                 .setRequestReadReceipt(false)
                 .setIdentity(identity)
                 .setMessageFormat(SimpleMessageFormat.TEXT)
+                .setImportance(Importance.NORMAL)
                 .setText(TEST_MESSAGE_TEXT)
                 .setAttachments(new ArrayList<Attachment>())
                 .setSignature("signature")

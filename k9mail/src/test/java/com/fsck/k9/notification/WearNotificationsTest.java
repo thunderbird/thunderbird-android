@@ -254,7 +254,7 @@ public class WearNotificationsTest {
     }
 
     private NotificationContent createNotificationContent(MessageReference messageReference) {
-        return new NotificationContent(messageReference, null, null, null, null, false, Importance.NORMAL);
+        return new NotificationContent(messageReference, null, "subject", null, null, false, Importance.NORMAL);
     }
 
     private NotificationHolder createNotificationHolder(int notificationId, NotificationContent content) {

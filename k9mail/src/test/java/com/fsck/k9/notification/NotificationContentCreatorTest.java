@@ -177,6 +177,7 @@ public class NotificationContentCreatorTest {
         when(message.getFrom()).thenReturn(new Address[] { new Address(SENDER_ADDRESS, SENDER_NAME) });
         when(message.getRecipients(RecipientType.TO))
                 .thenReturn(new Address[] { new Address(RECIPIENT_ADDRESS, RECIPIENT_NAME) });
+        when(message.getImportance()).thenReturn(Importance.NORMAL);
 
         return message;
     }

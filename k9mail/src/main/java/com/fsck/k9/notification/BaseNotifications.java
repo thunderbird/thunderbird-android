@@ -72,7 +72,6 @@ abstract class BaseNotifications {
             return new SpannableString(Html.fromHtml(subject+"<h1><font color=\"#FF0000\">"+ "!" + "</font></h1>"));
         }
        return new SpannableString(subject);
-
     }
 
     protected BigTextStyle createBigTextStyle(Builder builder) {

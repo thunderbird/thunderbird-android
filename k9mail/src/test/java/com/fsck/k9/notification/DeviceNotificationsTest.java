@@ -22,6 +22,7 @@ import com.fsck.k9.mail.Importance;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
@@ -31,6 +32,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -60,10 +62,12 @@ public class DeviceNotificationsTest {
     private Builder builder;
     private Builder builder2 = mockBuilder(Builder.class);
     private LockScreenNotification lockScreenNotification;
+    private ArgumentCaptor<CharSequence> charSequenceCaptor;
 
 
     @Before
     public void setUp() throws Exception {
+        charSequenceCaptor = ArgumentCaptor.forClass(CharSequence.class);
         account = createFakeAccount();
         notificationData = createFakeNotificationData(account);
 
@@ -101,7 +105,8 @@ public class DeviceNotificationsTest {
         verify(builder).setColor(ACCOUNT_COLOR);
         verify(builder).setAutoCancel(true);
         verify(builder).setTicker(SUMMARY);
-        verify(builder).setContentText(SUBJECT);
+        verify(builder).setContentText(charSequenceCaptor.capture());
+        assertEquals(SUBJECT, charSequenceCaptor.getValue().toString());
         verify(builder).setContentTitle(SENDER);
         verify(builder).setStyle(notifications.bigTextStyle);
         verify(notifications.bigTextStyle).bigText(PREVIEW);
@@ -133,8 +138,9 @@ public class DeviceNotificationsTest {
         verify(builder).setStyle(notifications.inboxStyle);
         verify(notifications.inboxStyle).setBigContentTitle(NEW_MESSAGE_COUNT + " new messages");
         verify(notifications.inboxStyle).setSummaryText(ACCOUNT_NAME);
-        verify(notifications.inboxStyle).addLine(SUMMARY);
-        verify(notifications.inboxStyle).addLine(SUMMARY_2);
+        verify(notifications.inboxStyle, times(2)).addLine(charSequenceCaptor.capture());
+        assertEquals(SUMMARY, charSequenceCaptor.getAllValues().get(0).toString());
+        assertEquals(SUMMARY_2, charSequenceCaptor.getAllValues().get(1).toString());
         verify(builder).addAction(R.drawable.notification_action_mark_as_read, "Mark Read", null);
         verify(builder).addAction(R.drawable.notification_action_delete, "Delete", null);
         verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);

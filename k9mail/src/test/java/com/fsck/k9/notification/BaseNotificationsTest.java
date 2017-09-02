@@ -14,8 +14,10 @@ import com.fsck.k9.mail.Importance;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -37,11 +39,13 @@ public class BaseNotificationsTest {
 
 
     private TestNotifications notifications;
+    private ArgumentCaptor<CharSequence> charSequenceCaptor;
 
 
     @Before
     public void setUp() throws Exception {
         notifications = createTestNotifications();
+        charSequenceCaptor = ArgumentCaptor.forClass(CharSequence.class);
     }
 
     @Test
@@ -93,7 +97,8 @@ public class BaseNotificationsTest {
         verify(builder).setTicker(NOTIFICATION_SUMMARY);
         verify(builder).setGroup("newMailNotifications-" + ACCOUNT_NUMBER);
         verify(builder).setContentTitle(SENDER);
-        verify(builder).setContentText(SUBJECT);
+        verify(builder).setContentText(charSequenceCaptor.capture());
+        assertEquals(SUBJECT, charSequenceCaptor.getValue().toString());
         verify(builder).setSubText(ACCOUNT_NAME);
 
         BigTextStyle bigTextStyle = notifications.bigTextStyle;
