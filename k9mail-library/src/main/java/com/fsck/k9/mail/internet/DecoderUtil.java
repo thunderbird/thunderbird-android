@@ -21,6 +21,13 @@ import timber.log.Timber;
  * it has to be determined with the sender address, the mailer and so on.
  */
 class DecoderUtil {
+
+    private static class EncodedWord {
+        private String charset;
+        private String encoding;
+        private String encodedText;
+    }
+
     /**
      * Decodes an encoded word encoded with the 'B' encoding (described in
      * RFC 2047) found in a header field body.
@@ -93,14 +100,18 @@ class DecoderUtil {
             return body;
         }
 
+        EncodedWord previousWord = null;
         int previousEnd = 0;
-        boolean previousWasEncoded = false;
 
         StringBuilder sb = new StringBuilder();
 
         while (true) {
             int begin = body.indexOf("=?", previousEnd);
             if (begin == -1) {
+                if (previousWord != null) {
+                    sb.append(decodeEncodedWord(previousWord));
+                    previousWord = null;
+                }
                 sb.append(body.substring(previousEnd));
                 return sb.toString();
             }
@@ -110,18 +121,30 @@ class DecoderUtil {
             // to find the two '?' in the "header", before looking for the final "?=".
             int qm1 = body.indexOf('?', begin + 2);
             if (qm1 == -1) {
+                if (previousWord != null) {
+                    sb.append(decodeEncodedWord(previousWord));
+                    previousWord = null;
+                }
                 sb.append(body.substring(previousEnd));
                 return sb.toString();
             }
 
             int qm2 = body.indexOf('?', qm1 + 1);
             if (qm2 == -1) {
+                if (previousWord != null) {
+                    sb.append(decodeEncodedWord(previousWord));
+                    previousWord = null;
+                }
                 sb.append(body.substring(previousEnd));
                 return sb.toString();
             }
 
             int end = body.indexOf("?=", qm2 + 1);
             if (end == -1) {
+                if (previousWord != null) {
+                    sb.append(decodeEncodedWord(previousWord));
+                    previousWord = null;
+                }
                 sb.append(body.substring(previousEnd));
                 return sb.toString();
             }
@@ -129,24 +152,58 @@ class DecoderUtil {
 
             String sep = body.substring(previousEnd, begin);
 
-            String decoded = decodeEncodedWord(body, begin, end, message);
-            if (decoded == null) {
+            EncodedWord word = extractEncodedWord(body, begin, end, message);
+
+            if (word == null) {
+                if (previousWord != null) {
+                    sb.append(decodeEncodedWord(previousWord));
+                    sb.append(sep);
+                    sb.append(body.substring(begin, end));
+                    previousWord = null;
+                } else {
+//                    sb.append(sep);
+                }
+            } else {
+                if (previousWord != null) {
+                    if (previousWord.encoding.equals(word.encoding) && previousWord.charset.equals(word.charset)) {
+                        previousWord.encodedText += word.encodedText;
+                    } else {
+                        sb.append(decodeEncodedWord(previousWord));
+                        sb.append(sep.trim());
+                        previousWord = word;
+                    }
+                } else {
+                    sb.append(sep.trim());
+                    previousWord = word;
+                }
+            }
+
+            if (previousWord == null) {
                 sb.append(sep);
                 sb.append(body.substring(begin, end));
-            } else {
-                if (!previousWasEncoded || !CharsetUtil.isWhitespace(sep)) {
-                    sb.append(sep);
-                }
-                sb.append(decoded);
             }
 
             previousEnd = end;
-            previousWasEncoded = decoded != null;
         }
     }
 
     // return null on error
     private static String decodeEncodedWord(String body, int begin, int end, Message message) {
+        return decodeEncodedWord(extractEncodedWord(body, begin, end, message));
+    }
+
+    private static String decodeEncodedWord(EncodedWord word) {
+        if (word.encoding.equals("Q")) {
+            return decodeQ(word.encodedText, word.charset);
+        } else if (word.encoding.equals("B")) {
+            return DecoderUtil.decodeB(word.encodedText, word.charset);
+        } else {
+            Timber.w("Warning: Unknown encoding '%s'", word.encoding);
+            return null;
+        }
+    }
+
+    private static EncodedWord extractEncodedWord(String body, int begin, int end, Message message) {
         int qm1 = body.indexOf('?', begin + 2);
         if (qm1 == end - 2)
             return null;
@@ -171,13 +228,17 @@ class DecoderUtil {
             return null;
         }
 
+        EncodedWord encodedWord = new EncodedWord();
+        encodedWord.charset = charset;
         if (encoding.equalsIgnoreCase("Q")) {
-            return decodeQ(encodedText, charset);
+            encodedWord.encoding = "Q";
         } else if (encoding.equalsIgnoreCase("B")) {
-            return DecoderUtil.decodeB(encodedText, charset);
+            encodedWord.encoding = "B";
         } else {
             Timber.w("Warning: Unknown encoding in encoded word '%s'", body.substring(begin, end));
             return null;
         }
+        encodedWord.encodedText = encodedText;
+        return encodedWord;
     }
 }
