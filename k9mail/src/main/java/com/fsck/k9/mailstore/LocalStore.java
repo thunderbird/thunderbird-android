@@ -26,6 +26,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import timber.log.Timber;
@@ -389,13 +390,14 @@ public class LocalStore extends Store {
     }
 
     @Override
+    @NonNull
     public LocalFolder getFolder(String name) {
         return new LocalFolder(this, name);
     }
 
     // TODO this takes about 260-300ms, seems slow.
     @Override
-    public List<LocalFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    @NonNull public List<LocalFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         final List<LocalFolder> folders = new LinkedList<>();
         try {
             database.execute(false, new DbCallback < List <? extends Folder >> () {

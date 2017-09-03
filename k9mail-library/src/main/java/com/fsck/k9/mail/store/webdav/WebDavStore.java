@@ -16,6 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import android.support.annotation.NonNull;
+
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
@@ -171,6 +173,7 @@ public class WebDavStore extends RemoteStore {
     }
 
     @Override
+    @NonNull
     public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         List<Folder> folderList = new LinkedList<>();
         /*
@@ -301,7 +304,7 @@ public class WebDavStore extends RemoteStore {
     }
 
     @Override
-    public WebDavFolder getFolder(String name) {
+    @NonNull public WebDavFolder getFolder(String name) {
         WebDavFolder folder = this.folderList.get(name);
 
         if (folder == null) {

@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import android.net.ConnectivityManager;
+import android.support.annotation.NonNull;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -103,7 +104,7 @@ public class ImapStore extends RemoteStore {
     }
 
     @Override
-    public ImapFolder getFolder(String name) {
+    @NonNull public ImapFolder getFolder(String name) {
         ImapFolder folder;
         synchronized (folderCache) {
             folder = folderCache.get(name);
@@ -137,7 +138,7 @@ public class ImapStore extends RemoteStore {
     }
 
     @Override
-    public List<ImapFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    @NonNull public List<ImapFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         ImapConnection connection = getConnection();
 
         try {

@@ -2,6 +2,7 @@
 package com.fsck.k9.mail.store.pop3;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 
 import com.fsck.k9.mail.*;
 import com.fsck.k9.mail.filter.Base64;
@@ -240,6 +241,7 @@ public class Pop3Store extends RemoteStore {
     }
 
     @Override
+    @NonNull
     public Folder getFolder(String name) {
         Folder folder = mFolders.get(name);
         if (folder == null) {
@@ -250,7 +252,7 @@ public class Pop3Store extends RemoteStore {
     }
 
     @Override
-    public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    @NonNull public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         List<Folder> folders = new LinkedList<Folder>();
         folders.add(getFolder(mStoreConfig.getInboxFolderName()));
         return folders;
