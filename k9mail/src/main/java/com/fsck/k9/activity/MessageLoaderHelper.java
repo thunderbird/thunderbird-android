@@ -404,10 +404,10 @@ public class MessageLoaderHelper {
     private void startDownloadingMessageBody(boolean downloadComplete) {
         if (downloadComplete) {
             MessagingController.getInstance(context).loadMessageRemote(
-                    account, messageReference.getFolderName(), messageReference.getUid(), downloadMessageListener);
+                    account, messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
         } else {
             MessagingController.getInstance(context).loadMessageRemotePartial(
-                    account, messageReference.getFolderName(), messageReference.getUid(), downloadMessageListener);
+                    account, messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
         }
     }
 

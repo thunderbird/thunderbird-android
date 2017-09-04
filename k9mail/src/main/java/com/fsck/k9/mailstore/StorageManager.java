@@ -66,7 +66,7 @@ public class StorageManager {
         /**
          * @param context
          *            Never <code>null</code>.
-         * @return A user displayable, localized name for this provider. Never
+         * @return A user displayable, localized id for this provider. Never
          *         <code>null</code>.
          */
         String getName(Context context);

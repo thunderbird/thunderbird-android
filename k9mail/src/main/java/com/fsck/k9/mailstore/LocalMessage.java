@@ -46,14 +46,14 @@ public class LocalMessage extends MimeMessage {
         this.localStore = localStore;
     }
 
-    LocalMessage(LocalStore localStore, String uid, Folder folder) {
+    public LocalMessage(LocalStore localStore, String uid, Folder folder) {
         this.localStore = localStore;
         this.mUid = uid;
         this.mFolder = folder;
     }
 
 
-    void populateFromGetMessageCursor(Cursor cursor) throws MessagingException {
+    public void populateFromGetMessageCursor(Cursor cursor) throws MessagingException {
         final String subject = cursor.getString(LocalStore.MSG_INDEX_SUBJECT);
         this.setSubject(subject == null ? "" : subject);
 
@@ -407,7 +407,7 @@ public class LocalMessage extends MimeMessage {
 
     public MessageReference makeMessageReference() {
         if (messageReference == null) {
-            messageReference = new MessageReference(getFolder().getAccountUuid(), getFolder().getName(), mUid, null);
+            messageReference = new MessageReference(getFolder().getAccountUuid(), getFolder().getId(), mUid, null);
         }
         return messageReference;
     }
@@ -418,7 +418,7 @@ public class LocalMessage extends MimeMessage {
     }
 
     public String getUri() {
-        return "email://messages/" +  getAccount().getAccountNumber() + "/" + getFolder().getName() + "/" + getUid();
+        return "email://messages/" +  getAccount().getAccountNumber() + "/" + getFolder().getId() + "/" + getUid();
     }
 
     @Override

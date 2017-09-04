@@ -69,7 +69,7 @@ public class ImapFolderTest {
         BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.application.getCacheDir());
         imapStore = mock(ImapStore.class);
         storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getInboxFolderName()).thenReturn("INBOX");
+        when(storeConfig.getInboxFolderId()).thenReturn("INBOX");
         when(imapStore.getCombinedPrefix()).thenReturn("");
         when(imapStore.getStoreConfig()).thenReturn(storeConfig);
 

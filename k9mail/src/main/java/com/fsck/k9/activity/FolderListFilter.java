@@ -12,7 +12,7 @@ import com.fsck.k9.K9;
 
 /**
  * Filter to search for occurrences of the search-expression in any place of the
- * folder-name instead of doing just a prefix-search.
+ * folder-id instead of doing just a prefix-search.
  *
  * @author Marcus@Wolschon.biz
  */

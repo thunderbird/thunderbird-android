@@ -177,9 +177,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     int uniqueIdColumn;
 
     /**
-     * Stores the name of the folder that we want to open as soon as possible after load.
+     * Stores the id of the folder that we want to open as soon as possible after load.
      */
-    private String folderName;
+    private String folderId;
 
     private boolean remoteSearchPerformed = false;
     private Future<?> remoteSearchFuture = null;
@@ -278,7 +278,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     void folderLoading(String folder, boolean loading) {
-        if (currentFolder != null && currentFolder.name.equals(folder)) {
+        if (currentFolder != null && currentFolder.id.equals(folder)) {
             currentFolder.loading = loading;
         }
         updateMoreMessagesOfCurrentFolder();
@@ -316,8 +316,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         // regular folder content display
         if (!isManualSearch() && singleFolderMode) {
             Activity activity = getActivity();
-            String displayName = FolderInfoHolder.getDisplayName(activity, account,
-                    folderName);
+            String displayName = currentFolder.displayName;
 
             fragmentListener.setMessageListTitle(displayName);
 
@@ -366,7 +365,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (view == footerView) {
             if (currentFolder != null && !search.isManualSearch() && currentFolder.moreMessages) {
 
-                messagingController.loadMoreMessages(account, folderName, null);
+                messagingController.loadMoreMessages(account, folderId, null);
 
             } else if (currentFolder != null && isRemoteSearch() &&
                     extraSearchResults != null && extraSearchResults.size() > 0) {
@@ -385,7 +384,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     updateFooter(null);
                 }
 
-                messagingController.loadSearchResults(account, currentFolder.name, toProcess, activityListener);
+                messagingController.loadSearchResults(account, currentFolder.id, toProcess, activityListener);
             }
 
             return;
@@ -589,10 +588,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         singleFolderMode = false;
-        if (singleAccountMode && (search.getFolderNames().size() == 1)) {
+        if (singleAccountMode && (search.getFolderIds().size() == 1)) {
             singleFolderMode = true;
-            folderName = search.getFolderNames().get(0);
-            currentFolder = getFolderInfoHolder(folderName, account);
+            folderId = search.getFolderIds().get(0);
+            currentFolder = getFolderInfoHolder(folderId, account);
         }
 
         allAccounts = false;
@@ -623,8 +622,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void initializeMessageList() {
         adapter = new MessageListAdapter(this);
 
-        if (folderName != null) {
-            currentFolder = getFolderInfoHolder(folderName, account);
+        if (folderId != null) {
+            currentFolder = getFolderInfoHolder(folderId, account);
         }
 
         if (singleFolderMode) {
@@ -648,9 +647,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         cacheIntentFilter = new IntentFilter(EmailProviderCache.ACTION_CACHE_UPDATED);
     }
 
-    private FolderInfoHolder getFolderInfoHolder(String folderName, Account account) {
+    private FolderInfoHolder getFolderInfoHolder(String folderId, Account account) {
         try {
-            LocalFolder localFolder = MlfUtils.getOpenFolder(folderName, account);
+            LocalFolder localFolder = MlfUtils.getOpenFolder(folderId, account);
             return new FolderInfoHolder(context, localFolder, account);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
@@ -706,8 +705,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             messagingController.cancelNotificationsForAccount(accountWithNotification);
         }
 
-        if (this.account != null && folderName != null && !search.isManualSearch()) {
-            messagingController.getFolderUnreadMessageCount(this.account, folderName, activityListener);
+        if (this.account != null && folderId != null && !search.isManualSearch()) {
+            messagingController.getFolderUnreadMessageCount(this.account, folderId, activityListener);
         }
 
         updateTitle();
@@ -805,7 +804,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         String searchFolder;
 
         searchAccount = account.getUuid();
-        searchFolder = currentFolder.name;
+        searchFolder = currentFolder.id;
 
         String queryString = search.getRemoteSearchArguments();
 
@@ -959,7 +958,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public void onExpunge() {
         if (currentFolder != null) {
-            onExpunge(account, currentFolder.name);
+            onExpunge(account, currentFolder.id);
         }
     }
 
@@ -1073,7 +1072,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
         case R.id.expunge: {
             if (currentFolder != null) {
-                onExpunge(account, currentFolder.name);
+                onExpunge(account, currentFolder.id);
             }
             return true;
         }
@@ -1354,23 +1353,23 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public void synchronizeMailboxStarted(Account account, String folder) {
-            if (updateForMe(account, folder)) {
+        public void synchronizeMailboxStarted(Account account, String folderId) {
+            if (updateForMe(account, folderId)) {
                 handler.progress(true);
-                handler.folderLoading(folder, true);
+                handler.folderLoading(folderId, true);
             }
-            super.synchronizeMailboxStarted(account, folder);
+            super.synchronizeMailboxStarted(account, folderId);
         }
 
         @Override
-        public void synchronizeMailboxFinished(Account account, String folder,
+        public void synchronizeMailboxFinished(Account account, String folderId,
         int totalMessagesInMailbox, int numNewMessages) {
 
-            if (updateForMe(account, folder)) {
+            if (updateForMe(account, folderId)) {
                 handler.progress(false);
-                handler.folderLoading(folder, false);
+                handler.folderLoading(folderId, false);
             }
-            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
+            super.synchronizeMailboxFinished(account, folderId, totalMessagesInMailbox, numNewMessages);
         }
 
         @Override
@@ -1386,14 +1385,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         @Override
         public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
             if (isSingleAccountMode() && isSingleFolderMode() && MessageListFragment.this.account.equals(account) &&
-                    folderName.equals(folder)) {
+                    folderId.equals(folder)) {
                 MessageListFragment.this.unreadMessageCount = unreadMessageCount;
             }
             super.folderStatusChanged(account, folder, unreadMessageCount);
         }
 
-        private boolean updateForMe(Account account, String folder) {
-            if (account == null || folder == null) {
+        private boolean updateForMe(Account account, String folderId) {
+            if (account == null || folderId == null) {
                 return false;
             }
 
@@ -1401,8 +1400,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 return false;
             }
 
-            List<String> folderNames = search.getFolderNames();
-            return (folderNames.isEmpty() || folderNames.contains(folder));
+            List<String> folderIds = search.getFolderIds();
+            return (folderIds.isEmpty() || folderIds.contains(folderId));
         }
     }
 
@@ -1696,9 +1695,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         String folderName;
         if (isThreadDisplay) {
-            folderName = messages.get(0).getFolderName();
+            folderName = messages.get(0).getFolderId();
         } else if (singleFolderMode) {
-            folderName = currentFolder.folder.getName();
+            folderName = currentFolder.folder.getId();
         } else {
             folderName = null;
         }
@@ -1726,9 +1725,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         String folderName;
         if (isThreadDisplay) {
-            folderName = messages.get(0).getFolderName();
+            folderName = messages.get(0).getFolderId();
         } else if (singleFolderMode) {
-            folderName = currentFolder.folder.getName();
+            folderName = currentFolder.folder.getId();
         } else {
             folderName = null;
         }
@@ -1780,7 +1779,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         for (Entry<Account, List<MessageReference>> entry : messagesByAccount.entrySet()) {
             Account account = entry.getKey();
-            String archiveFolder = account.getArchiveFolderName();
+            String archiveFolder = account.getArchiveFolderId();
 
             if (!K9.FOLDER_NONE.equals(archiveFolder)) {
                 move(entry.getValue(), archiveFolder);
@@ -1829,7 +1828,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         for (Entry<Account, List<MessageReference>> entry : messagesByAccount.entrySet()) {
             Account account = entry.getKey();
-            String spamFolder = account.getSpamFolderName();
+            String spamFolder = account.getSpamFolderId();
 
             if (!K9.FOLDER_NONE.equals(spamFolder)) {
                 move(entry.getValue(), spamFolder);
@@ -1886,7 +1885,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * @param messages
      *         List of messages to copy. Never {@code null}.
      * @param destination
-     *         The name of the destination folder. Never {@code null}.
+     *         The id of the destination folder. Never {@code null}.
      */
     private void copy(List<MessageReference> messages, final String destination) {
         copyOrMove(messages, destination, FolderOperation.COPY);
@@ -1898,7 +1897,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * @param messages
      *         The list of messages to move. Never {@code null}.
      * @param destination
-     *         The name of the destination folder. Never {@code null}.
+     *         The id of the destination folder. Never {@code null}.
      */
     private void move(List<MessageReference> messages, final String destination) {
         copyOrMove(messages, destination, FolderOperation.MOVE);
@@ -1912,7 +1911,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * @param messages
      *         The list of messages to copy or move. Never {@code null}.
      * @param destination
-     *         The name of the destination folder. Never {@code null} or {@link K9#FOLDER_NONE}.
+     *         The id of the destination folder. Never {@code null} or {@link K9#FOLDER_NONE}.
      * @param operation
      *         Specifies what operation to perform. Never {@code null}.
      */
@@ -1934,7 +1933,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 return;
             }
 
-            String folderName = message.getFolderName();
+            String folderName = message.getFolderId();
             if (folderName.equals(destination)) {
                 // Skip messages already in the destination folder
                 continue;
@@ -2221,7 +2220,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public void checkMail() {
         if (isSingleAccountMode() && isSingleFolderMode()) {
-            messagingController.synchronizeMailbox(account, folderName, activityListener, null);
+            messagingController.synchronizeMailbox(account, folderId, activityListener, null);
             messagingController.sendPendingMessages(account, activityListener);
         } else if (allAccounts) {
             messagingController.checkMail(context, null, true, true, activityListener);
@@ -2254,7 +2253,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 remoteFolder.close();
                 // Send a remoteSearchFinished() message for good measure.
                 activityListener
-                        .remoteSearchFinished(currentFolder.name, 0, searchAccount.getRemoteSearchNumResults(), null);
+                        .remoteSearchFinished(currentFolder.id, 0, searchAccount.getRemoteSearchNumResults(), null);
             } catch (Exception e) {
                 // Since the user is going back, log and squash any exceptions.
                 Timber.e(e, "Could not abort remote search before going back");
@@ -2351,7 +2350,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             String uid = cursor.getString(UID_COLUMN);
 
             if (accountUuid.equals(messageReference.getAccountUuid()) &&
-                    folderName.equals(messageReference.getFolderName()) &&
+                    folderName.equals(messageReference.getFolderId()) &&
                     uid.equals(messageReference.getUid())) {
                 return i;
             }
@@ -2490,11 +2489,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public boolean isOutbox() {
-        return (folderName != null && folderName.equals(account.getOutboxFolderName()));
+        return (folderId != null && folderId.equals(account.getOutboxFolderId()));
     }
 
     private boolean isErrorFolder() {
-        return K9.ERROR_FOLDER_NAME.equals(folderName);
+        return K9.ERROR_FOLDER_ID.equals(folderId);
     }
 
     public boolean isRemoteFolder() {
@@ -2504,7 +2503,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         if (!messagingController.isMoveCapable(account)) {
             // For POP3 accounts only the Inbox is a remote folder.
-            return (folderName != null && folderName.equals(account.getInboxFolderName()));
+            return (folderId != null && folderId.equals(account.getInboxFolderId()));
         }
 
         return true;
@@ -2551,7 +2550,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public boolean onSearchRequested() {
-        String folderName = (currentFolder != null) ? currentFolder.name : null;
+        String folderName = (currentFolder != null) ? currentFolder.id : null;
         return fragmentListener.startSearch(account, folderName);
    }
 
@@ -2587,7 +2586,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             if (selectActive) {
                 query.append("(" + MessageColumns.UID + " = ? AND " + SpecialColumns.FOLDER_NAME + " = ?) OR (");
                 queryArgs.add(activeMessage.getUid());
-                queryArgs.add(activeMessage.getFolderName());
+                queryArgs.add(activeMessage.getFolderId());
             }
 
             SqlQueryBuilder.buildWhereClause(account, search.getConditions(), query, queryArgs);
@@ -2718,9 +2717,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void updateMoreMessagesOfCurrentFolder() {
-        if (folderName != null) {
+        if (folderId != null) {
             try {
-                LocalFolder folder = MlfUtils.getOpenFolder(folderName, account);
+                LocalFolder folder = MlfUtils.getOpenFolder(folderId, account);
                 currentFolder.setMoreMessagesFromFolder(folder);
             } catch (MessagingException e) {
                 throw new RuntimeException(e);
@@ -2896,7 +2895,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private void markAllAsRead() {
         if (isMarkAllAsReadSupported()) {
-            messagingController.markAllMessagesRead(account, folderName);
+            messagingController.markAllMessagesRead(account, folderId);
         }
     }
 

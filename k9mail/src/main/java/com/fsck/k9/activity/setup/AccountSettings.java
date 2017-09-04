@@ -792,19 +792,19 @@ public class AccountSettings extends K9PreferenceActivity {
             account.setCryptoKey(Account.NO_OPENPGP_KEY);
         }
 
-        // In webdav account we use the exact folder name also for inbox,
+        // In webdav account we use the exact folder id also for inbox,
         // since it varies because of internationalization
         if (account.getStoreUri().startsWith("webdav"))
-            account.setAutoExpandFolderName(autoExpandFolder.getValue());
+            account.setAutoExpandFolderId(autoExpandFolder.getValue());
         else
-            account.setAutoExpandFolderName(reverseTranslateFolder(autoExpandFolder.getValue()));
+            account.setAutoExpandFolderId(reverseTranslateFolder(autoExpandFolder.getValue()));
 
         if (isMoveCapable) {
-            account.setArchiveFolderName(archiveFolder.getValue());
-            account.setDraftsFolderName(draftsFolder.getValue());
-            account.setSentFolderName(sentFolder.getValue());
-            account.setSpamFolderName(spamFolder.getValue());
-            account.setTrashFolderName(trashFolder.getValue());
+            account.setArchiveFolderId(archiveFolder.getValue());
+            account.setDraftsFolderId(draftsFolder.getValue());
+            account.setSentFolderId(sentFolder.getValue());
+            account.setSpamFolderId(spamFolder.getValue());
+            account.setTrashFolderId(trashFolder.getValue());
         }
 
         //IMAP stuff
@@ -963,7 +963,7 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private String translateFolder(String in) {
-        if (account.getInboxFolderName().equalsIgnoreCase(in)) {
+        if (account.getInboxFolderId().equalsIgnoreCase(in)) {
             return getString(R.string.special_mailbox_name_inbox);
         } else {
             return in;
@@ -972,7 +972,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private String reverseTranslateFolder(String in) {
         if (getString(R.string.special_mailbox_name_inbox).equals(in)) {
-            return account.getInboxFolderName();
+            return account.getInboxFolderId();
         } else {
             return in;
         }
@@ -1019,7 +1019,7 @@ public class AccountSettings extends K9PreferenceActivity {
             Iterator <? extends Folder > iter = folders.iterator();
             while (iter.hasNext()) {
                 Folder folder = iter.next();
-                if (account.getOutboxFolderName().equals(folder.getName())) {
+                if (account.getOutboxFolderId().equals(folder.getId())) {
                     iter.remove();
                 }
             }
@@ -1032,8 +1032,8 @@ public class AccountSettings extends K9PreferenceActivity {
 
             int i = 1;
             for (Folder folder : folders) {
-                allFolderLabels[i] = folder.getName();
-                allFolderValues[i] = folder.getName();
+                allFolderLabels[i] = folder.getId();
+                allFolderValues[i] = folder.getId();
                 i++;
             }
             return null;
@@ -1067,14 +1067,14 @@ public class AccountSettings extends K9PreferenceActivity {
 
         @Override
         protected void onPostExecute(Void res) {
-            initListPreference(autoExpandFolder, account.getAutoExpandFolderName(), allFolderLabels, allFolderValues);
+            initListPreference(autoExpandFolder, account.getAutoExpandFolderId(), allFolderLabels, allFolderValues);
             autoExpandFolder.setEnabled(true);
             if (isMoveCapable) {
-                initListPreference(archiveFolder, account.getArchiveFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(draftsFolder, account.getDraftsFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(sentFolder, account.getSentFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(spamFolder, account.getSpamFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(trashFolder, account.getTrashFolderName(), allFolderLabels, allFolderValues);
+                initListPreference(archiveFolder, account.getArchiveFolderId(), allFolderLabels, allFolderValues);
+                initListPreference(draftsFolder, account.getDraftsFolderId(), allFolderLabels, allFolderValues);
+                initListPreference(sentFolder, account.getSentFolderId(), allFolderLabels, allFolderValues);
+                initListPreference(spamFolder, account.getSpamFolderId(), allFolderLabels, allFolderValues);
+                initListPreference(trashFolder, account.getTrashFolderId(), allFolderLabels, allFolderValues);
                 archiveFolder.setEnabled(true);
                 spamFolder.setEnabled(true);
                 draftsFolder.setEnabled(true);

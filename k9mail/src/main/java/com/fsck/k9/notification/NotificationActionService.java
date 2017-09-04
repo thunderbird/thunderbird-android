@@ -159,7 +159,7 @@ public class NotificationActionService extends CoreService {
         List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
         for (MessageReference messageReference : messageReferences) {
-            String folderName = messageReference.getFolderName();
+            String folderName = messageReference.getFolderId();
             String uid = messageReference.getUid();
             controller.setFlag(account, folderName, uid, Flag.SEEN, true);
         }
@@ -176,9 +176,9 @@ public class NotificationActionService extends CoreService {
     private void archiveMessages(Intent intent, Account account, MessagingController controller) {
         Timber.i("NotificationActionService archiving messages");
 
-        String archiveFolderName = account.getArchiveFolderName();
+        String archiveFolderName = account.getArchiveFolderId();
         if (archiveFolderName == null ||
-                (archiveFolderName.equals(account.getSpamFolderName()) && K9.confirmSpam()) ||
+                (archiveFolderName.equals(account.getSpamFolderId()) && K9.confirmSpam()) ||
                 !isMovePossible(controller, account, archiveFolderName)) {
             Timber.w("Can not archive messages");
             return;
@@ -188,7 +188,7 @@ public class NotificationActionService extends CoreService {
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
         for (MessageReference messageReference : messageReferences) {
             if (controller.isMoveCapable(messageReference)) {
-                String sourceFolderName = messageReference.getFolderName();
+                String sourceFolderName = messageReference.getFolderId();
                 controller.moveMessage(account, sourceFolderName, messageReference, archiveFolderName);
             }
         }
@@ -204,9 +204,9 @@ public class NotificationActionService extends CoreService {
             return;
         }
 
-        String spamFolderName = account.getSpamFolderName();
+        String spamFolderName = account.getSpamFolderId();
         if (spamFolderName != null && !K9.confirmSpam() && isMovePossible(controller, account, spamFolderName)) {
-            String sourceFolderName = messageReference.getFolderName();
+            String sourceFolderName = messageReference.getFolderId();
             controller.moveMessage(account, sourceFolderName, messageReference, spamFolderName);
         }
     }

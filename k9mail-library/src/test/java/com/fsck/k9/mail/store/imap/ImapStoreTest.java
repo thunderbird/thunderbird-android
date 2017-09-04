@@ -113,11 +113,11 @@ public class ImapStoreTest {
 
         imapStore.autoconfigureFolders(imapConnection);
 
-        verify(storeConfig).setDraftsFolderName("[Gmail]/Drafts");
-        verify(storeConfig).setSentFolderName("[Gmail]/Sent Mail");
-        verify(storeConfig).setSpamFolderName("[Gmail]/Spam");
-        verify(storeConfig).setTrashFolderName("[Gmail]/Trash");
-        verify(storeConfig).setArchiveFolderName("[Gmail]/All Mail");
+        verify(storeConfig).setDraftsFolderId("[Gmail]/Drafts");
+        verify(storeConfig).setSentFolderId("[Gmail]/Sent Mail");
+        verify(storeConfig).setSpamFolderId("[Gmail]/Spam");
+        verify(storeConfig).setTrashFolderId("[Gmail]/Trash");
+        verify(storeConfig).setArchiveFolderId("[Gmail]/All Mail");
     }
 
     @Test
@@ -295,7 +295,7 @@ public class ImapStoreTest {
 
     private StoreConfig createStoreConfig() {
         StoreConfig storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getInboxFolderName()).thenReturn("INBOX");
+        when(storeConfig.getInboxFolderId()).thenReturn("INBOX");
         when(storeConfig.getStoreUri()).thenReturn("imap://user:password@imap.example.org");
 
         return storeConfig;
@@ -304,7 +304,7 @@ public class ImapStoreTest {
     private Set<String> extractFolderNames(List<? extends Folder> folders) {
         Set<String> folderNames = new HashSet<>(folders.size());
         for (Folder folder : folders) {
-            folderNames.add(folder.getName());
+            folderNames.add(folder.getId());
         }
 
         return folderNames;

@@ -246,7 +246,7 @@ public class Pop3Store extends RemoteStore {
         Folder folder = mFolders.get(name);
         if (folder == null) {
             folder = new Pop3Folder(name);
-            mFolders.put(folder.getName(), folder);
+            mFolders.put(folder.getId(), folder);
         }
         return folder;
     }
@@ -254,13 +254,13 @@ public class Pop3Store extends RemoteStore {
     @Override
     @NonNull public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         List<Folder> folders = new LinkedList<Folder>();
-        folders.add(getFolder(mStoreConfig.getInboxFolderName()));
+        folders.add(getFolder(mStoreConfig.getInboxFolderId()));
         return folders;
     }
 
     @Override
     public void checkSettings() throws MessagingException {
-        Pop3Folder folder = new Pop3Folder(mStoreConfig.getInboxFolderName());
+        Pop3Folder folder = new Pop3Folder(mStoreConfig.getInboxFolderId());
         try {
             folder.open(Folder.OPEN_MODE_RW);
             if (!mCapabilities.uidl) {
@@ -302,8 +302,8 @@ public class Pop3Store extends RemoteStore {
             super();
             this.mName = name;
 
-            if (mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
-                mName = mStoreConfig.getInboxFolderName();
+            if (mName.equalsIgnoreCase(mStoreConfig.getInboxFolderId())) {
+                mName = mStoreConfig.getInboxFolderId();
             }
         }
 
@@ -313,7 +313,7 @@ public class Pop3Store extends RemoteStore {
                 return;
             }
 
-            if (!mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
+            if (!mName.equalsIgnoreCase(mStoreConfig.getInboxFolderId())) {
                 throw new MessagingException("Folder does not exist");
             }
 
@@ -553,6 +553,11 @@ public class Pop3Store extends RemoteStore {
         }
 
         @Override
+        public String getId() {
+            return mName;
+        }
+
+        @Override
         public String getName() {
             return mName;
         }
@@ -564,7 +569,7 @@ public class Pop3Store extends RemoteStore {
 
         @Override
         public boolean exists() throws MessagingException {
-            return mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName());
+            return mName.equalsIgnoreCase(mStoreConfig.getInboxFolderId());
         }
 
         @Override

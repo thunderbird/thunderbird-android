@@ -40,10 +40,10 @@ public class MessagingControllerPushReceiver implements PushReceiver {
     }
 
     public void syncFolder(Folder folder) {
-        Timber.v("syncFolder(%s)", folder.getName());
+        Timber.v("syncFolder(%s)", folder.getId());
 
         final CountDownLatch latch = new CountDownLatch(1);
-        controller.synchronizeMailbox(account, folder.getName(), new SimpleMessagingListener() {
+        controller.synchronizeMailbox(account, folder.getId(), new SimpleMessagingListener() {
             @Override
             public void synchronizeMailboxFinished(Account account, String folder,
             int totalMessagesInMailbox, int numNewMessages) {
@@ -57,11 +57,11 @@ public class MessagingControllerPushReceiver implements PushReceiver {
             }
         }, folder);
 
-        Timber.v("syncFolder(%s) about to await latch release", folder.getName());
+        Timber.v("syncFolder(%s) about to await latch release", folder.getId());
 
         try {
             latch.await();
-            Timber.v("syncFolder(%s) got latch release", folder.getName());
+            Timber.v("syncFolder(%s) got latch release", folder.getId());
         } catch (Exception e) {
             Timber.e(e, "Interrupted while awaiting latch release");
         }

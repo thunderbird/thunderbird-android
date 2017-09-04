@@ -6,7 +6,6 @@ import android.content.Context;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.MessagingException;
@@ -55,7 +54,7 @@ public class LocalMessageLoader extends AsyncTaskLoader<LocalMessage> {
     }
 
     private LocalMessage loadMessageFromDatabase() throws MessagingException {
-        return controller.loadMessage(account, messageReference.getFolderName(), messageReference.getUid());
+        return controller.loadMessage(account, messageReference.getFolderId(), messageReference.getUid());
     }
 
     public boolean isCreatedFor(MessageReference messageReference) {

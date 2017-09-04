@@ -56,6 +56,7 @@ class ImapFolder extends Folder<ImapMessage> {
     protected ImapStore store = null;
     protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
     private final FolderNameCodec folderNameCodec;
+    private final String id;
     private final String name;
     private int mode;
     private volatile boolean exists;
@@ -63,21 +64,23 @@ class ImapFolder extends Folder<ImapMessage> {
     private boolean canCreateKeywords = false;
 
 
-    public ImapFolder(ImapStore store, String name) {
-        this(store, name, store.getFolderNameCodec());
+    public ImapFolder(ImapStore store, String id) {
+        this(store, id, store.getFolderNameCodec());
     }
 
-    ImapFolder(ImapStore store, String name, FolderNameCodec folderNameCodec) {
+    ImapFolder(ImapStore store, String id, FolderNameCodec folderNameCodec) {
         super();
         this.store = store;
-        this.name = name;
+        this.id = id;
+        this.name = id;
         this.folderNameCodec = folderNameCodec;
     }
 
-    private String getPrefixedName() throws MessagingException {
+    //TODO: Remove this when we support multiple namespaces
+    private String getPrefixedId() throws MessagingException {
         String prefixedName = "";
 
-        if (!store.getStoreConfig().getInboxFolderName().equalsIgnoreCase(name)) {
+        if (!store.getStoreConfig().getInboxFolderId().equalsIgnoreCase(id)) {
             ImapConnection connection;
             synchronized (this) {
                 if (this.connection == null) {
@@ -100,7 +103,7 @@ class ImapFolder extends Folder<ImapMessage> {
             prefixedName = store.getCombinedPrefix();
         }
 
-        prefixedName += name;
+        prefixedName += id;
 
         return prefixedName;
     }
@@ -139,7 +142,7 @@ class ImapFolder extends Folder<ImapMessage> {
             msgSeqUidMap.clear();
 
             String openCommand = mode == OPEN_MODE_RW ? "SELECT" : "EXAMINE";
-            String encodedFolderName = folderNameCodec.encode(getPrefixedName());
+            String encodedFolderName = folderNameCodec.encode(getPrefixedId());
             String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
             String command = String.format("%s %s", openCommand, escapedFolderName);
             List<ImapResponse> responses = executeSimpleCommand(command);
@@ -222,6 +225,11 @@ class ImapFolder extends Folder<ImapMessage> {
     }
 
     @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -261,7 +269,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
 
         try {
-            String encodedFolderName = folderNameCodec.encode(getPrefixedName());
+            String encodedFolderName = folderNameCodec.encode(getPrefixedId());
             String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
             connection.executeSimpleCommand(String.format("STATUS %s (UIDVALIDITY)", escapedFolderName));
 
@@ -296,7 +304,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
 
         try {
-            String encodedFolderName = folderNameCodec.encode(getPrefixedName());
+            String encodedFolderName = folderNameCodec.encode(getPrefixedId());
             String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
             connection.executeSimpleCommand(String.format("CREATE %s", escapedFolderName));
 
@@ -347,7 +355,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
 
         try {
-            String encodedDestinationFolderName = folderNameCodec.encode(imapFolder.getPrefixedName());
+            String encodedDestinationFolderName = folderNameCodec.encode(imapFolder.getPrefixedId());
             String escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName);
 
             //TODO: Try to copy/move the messages first and only create the folder if the
@@ -398,11 +406,11 @@ class ImapFolder extends Folder<ImapMessage> {
             return;
         }
 
-        if (trashFolderName == null || getName().equalsIgnoreCase(trashFolderName)) {
+        if (trashFolderName == null || getId().equalsIgnoreCase(trashFolderName)) {
             setFlags(messages, Collections.singleton(Flag.DELETED), true);
         } else {
             ImapFolder remoteTrashFolder = getStore().getFolder(trashFolderName);
-            String encodedTrashFolderName = folderNameCodec.encode(remoteTrashFolder.getPrefixedName());
+            String encodedTrashFolderName = folderNameCodec.encode(remoteTrashFolder.getPrefixedId());
             String escapedTrashFolderName = ImapUtility.encodeString(encodedTrashFolderName);
 
             if (!exists(escapedTrashFolderName)) {
@@ -1151,7 +1159,7 @@ class ImapFolder extends Folder<ImapMessage> {
             for (Message message : messages) {
                 long messageSize = message.calculateSize();
 
-                String encodeFolderName = folderNameCodec.encode(getPrefixedName());
+                String encodeFolderName = folderNameCodec.encode(getPrefixedId());
                 String escapedFolderName = ImapUtility.encodeString(encodeFolderName);
                 String command = String.format(Locale.US, "APPEND %s (%s) {%d}", escapedFolderName,
                         combineFlags(message.getFlags()), messageSize);
@@ -1273,7 +1281,7 @@ class ImapFolder extends Folder<ImapMessage> {
     }
 
     private String combineFlags(Iterable<Flag> flags) {
-        List<String> flagNames = new ArrayList<String>();
+        List<String> flagNames = new ArrayList<>();
         for (Flag flag : flags) {
             if (flag == Flag.SEEN) {
                 flagNames.add("\\Seen");
@@ -1349,7 +1357,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
     private void checkOpen() throws MessagingException {
         if (!isOpen()) {
-            throw new MessagingException("Folder " + getPrefixedName() + " is not open.");
+            throw new MessagingException("Folder " + getPrefixedId() + " is not open.");
         }
     }
 
@@ -1369,7 +1377,7 @@ class ImapFolder extends Folder<ImapMessage> {
     public boolean equals(Object other) {
         if (other instanceof ImapFolder) {
             ImapFolder otherFolder = (ImapFolder) other;
-            return otherFolder.getName().equalsIgnoreCase(getName());
+            return otherFolder.getId().equalsIgnoreCase(getId());
         }
 
         return super.equals(other);
@@ -1377,7 +1385,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public int hashCode() {
-        return getName().hashCode();
+        return getId().hashCode();
     }
 
     private ImapStore getStore() {
@@ -1385,7 +1393,7 @@ class ImapFolder extends Folder<ImapMessage> {
     }
 
     protected String getLogId() {
-        String id = store.getStoreConfig().toString() + ":" + getName() + "/" + Thread.currentThread().getName();
+        String id = store.getStoreConfig().toString() + ":" + getId() + "/" + Thread.currentThread().getName();
         if (connection != null) {
             id += "/" + connection.getLogId();
         }

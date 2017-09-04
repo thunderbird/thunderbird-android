@@ -856,7 +856,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             recipientPresenter.onSwitchAccount(this.account);
             quotedMessagePresenter.onSwitchAccount(this.account);
 
-            // not sure how to handle mFolder, mSourceMessage?
+            // not sure how to handle mFolderId, mSourceMessage?
         }
 
         switchToIdentity(identity);
@@ -1052,7 +1052,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void openAutoExpandFolder() {
-        String folder = account.getAutoExpandFolderName();
+        String folder = account.getAutoExpandFolderId();
         LocalSearch search = new LocalSearch(folder);
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folder);
@@ -1422,13 +1422,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         private void updateReferencedMessage() {
             if (messageReference != null && messageReference.getFlag() != null) {
                 Timber.d("Setting referenced message (%s, %s) flag to %s",
-                        messageReference.getFolderName(),
+                        messageReference.getFolderId(),
                         messageReference.getUid(),
                         messageReference.getFlag());
 
                 final Account account = Preferences.getPreferences(context)
                         .getAccount(messageReference.getAccountUuid());
-                final String folderName = messageReference.getFolderName();
+                final String folderName = messageReference.getFolderId();
                 final String sourceMessageUid = messageReference.getUid();
                 MessagingController.getInstance(context).setFlag(account, folderName,
                         sourceMessageUid, messageReference.getFlag(), true);
@@ -1654,7 +1654,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             Account sourceAccount = Preferences.getPreferences(MessageCompose.this)
                     .getAccount(relatedMessageReference.getAccountUuid());
-            String sourceFolder = relatedMessageReference.getFolderName();
+            String sourceFolder = relatedMessageReference.getFolderId();
             String sourceMessageUid = relatedMessageReference.getUid();
 
             boolean changedMessageIsCurrent =

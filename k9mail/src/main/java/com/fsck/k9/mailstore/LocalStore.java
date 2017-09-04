@@ -129,23 +129,24 @@ public class LocalStore extends Store {
     static final int MSG_INDEX_HEADER_DATA = 25;
 
     static final String GET_FOLDER_COLS =
-        "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
+        "folders.id, remoteId, name, visible_limit, last_updated, status, push_state, last_pushed, " +
         "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages";
 
     static final int FOLDER_ID_INDEX = 0;
-    static final int FOLDER_NAME_INDEX = 1;
-    static final int FOLDER_VISIBLE_LIMIT_INDEX = 2;
-    static final int FOLDER_LAST_CHECKED_INDEX = 3;
-    static final int FOLDER_STATUS_INDEX = 4;
-    static final int FOLDER_PUSH_STATE_INDEX = 5;
-    static final int FOLDER_LAST_PUSHED_INDEX = 6;
-    static final int FOLDER_INTEGRATE_INDEX = 7;
-    static final int FOLDER_TOP_GROUP_INDEX = 8;
-    static final int FOLDER_SYNC_CLASS_INDEX = 9;
-    static final int FOLDER_PUSH_CLASS_INDEX = 10;
-    static final int FOLDER_DISPLAY_CLASS_INDEX = 11;
-    static final int FOLDER_NOTIFY_CLASS_INDEX = 12;
-    static final int MORE_MESSAGES_INDEX = 13;
+    static final int FOLDER_REMOTE_ID_INDEX = 1;
+    static final int FOLDER_NAME_INDEX = 2;
+    static final int FOLDER_VISIBLE_LIMIT_INDEX = 3;
+    static final int FOLDER_LAST_CHECKED_INDEX = 4;
+    static final int FOLDER_STATUS_INDEX = 5;
+    static final int FOLDER_PUSH_STATE_INDEX = 6;
+    static final int FOLDER_LAST_PUSHED_INDEX = 7;
+    static final int FOLDER_INTEGRATE_INDEX = 8;
+    static final int FOLDER_TOP_GROUP_INDEX = 9;
+    static final int FOLDER_SYNC_CLASS_INDEX = 10;
+    static final int FOLDER_PUSH_CLASS_INDEX = 11;
+    static final int FOLDER_DISPLAY_CLASS_INDEX = 12;
+    static final int FOLDER_NOTIFY_CLASS_INDEX = 13;
+    static final int MORE_MESSAGES_INDEX = 14;
 
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -178,7 +179,7 @@ public class LocalStore extends Store {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 60;
+    public static final int DB_VERSION = 61;
 
     private final Context context;
     private final ContentResolver contentResolver;
@@ -391,8 +392,8 @@ public class LocalStore extends Store {
 
     @Override
     @NonNull
-    public LocalFolder getFolder(String name) {
-        return new LocalFolder(this, name);
+    public LocalFolder getFolder(String folderId) {
+        return new LocalFolder(this, folderId);
     }
 
     // TODO this takes about 260-300ms, seems slow.
@@ -571,7 +572,7 @@ public class LocalStore extends Store {
         List<String> queryArgs = new ArrayList<>();
         SqlQueryBuilder.buildWhereClause(account, search.getConditions(), query, queryArgs);
 
-        // Avoid "ambiguous column name" error by prefixing "id" with the message table name
+        // Avoid "ambiguous column id" error by prefixing "id" with the message table id
         String where = SqlQueryBuilder.addPrefixToSelection(new String[] { "id" },
                 "messages.", query.toString());
 
@@ -892,7 +893,7 @@ public class LocalStore extends Store {
         return rawInputStream;
     }
 
-    File getAttachmentFile(String attachmentId) {
+    public File getAttachmentFile(String attachmentId) {
         final StorageManager storageManager = StorageManager.getInstance(context);
         final File attachmentDirectory = storageManager.getAttachmentDirectory(
                 account.getUuid(), database.getStorageProviderId());
@@ -910,16 +911,17 @@ public class LocalStore extends Store {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                 for (LocalFolder folder : foldersToCreate) {
+                    String id = folder.getId();
                     String name = folder.getName();
                     final  LocalFolder.PreferencesHolder prefHolder = folder.new PreferencesHolder();
 
                     // When created, special folders should always be displayed
                     // inbox should be integrated
                     // and the inbox and drafts folders should be syncced by default
-                    if (account.isSpecialFolder(name)) {
+                    if (account.isSpecialFolder(id)) {
                         prefHolder.inTopGroup = true;
                         prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        if (name.equalsIgnoreCase(account.getInboxFolderName())) {
+                        if (id.equalsIgnoreCase(account.getInboxFolderId())) {
                             prefHolder.integrate = true;
                             prefHolder.notifyClass = LocalFolder.FolderClass.FIRST_CLASS;
                             prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
@@ -927,16 +929,18 @@ public class LocalStore extends Store {
                             prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
 
                         }
-                        if (name.equalsIgnoreCase(account.getInboxFolderName()) ||
-                                name.equalsIgnoreCase(account.getDraftsFolderName())) {
+                        if (id.equalsIgnoreCase(account.getInboxFolderId()) ||
+                                id.equalsIgnoreCase(account.getDraftsFolderId())) {
                             prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
                             prefHolder.syncClass = LocalFolder.FolderClass.NO_CLASS;
                         }
                     }
-                    folder.refresh(name, prefHolder);   // Recover settings from Preferences
+                    folder.refresh(id, prefHolder);   // Recover settings from Preferences
 
-                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
+                    db.execSQL("INSERT INTO folders (remoteId, name, visible_limit, " +
+                            "top_group, display_class, poll_class, notify_class, push_class, integrate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
+                                   id,
                                    name,
                                    visibleLimit,
                                    prefHolder.inTopGroup ? 1 : 0,
@@ -1206,7 +1210,7 @@ public class LocalStore extends Store {
     }
 
     /**
-     * Get folder name and UID for the supplied messages.
+     * Get folder id and UID for the supplied messages.
      *
      * @param messageIds
      *         A list of primary keys in the "messages" table.
@@ -1216,7 +1220,7 @@ public class LocalStore extends Store {
      *         If this is {@code false} only the UIDs for messages in {@code messageIds} are
      *         returned.
      *
-     * @return The list of UIDs for the messages grouped by folder name.
+     * @return The list of UIDs for the messages grouped by folder id.
      *
      */
     public Map<String, List<String>> getFoldersAndUids(final List<Long> messageIds,
@@ -1241,7 +1245,7 @@ public class LocalStore extends Store {
                     throws UnavailableStorageException {
 
                 if (threadedList) {
-                    String sql = "SELECT m.uid, f.name " +
+                    String sql = "SELECT m.uid, f.remoteId " +
                             "FROM threads t " +
                             "LEFT JOIN messages m ON (t.message_id = m.id) " +
                             "LEFT JOIN folders f ON (m.folder_id = f.id) " +
@@ -1252,7 +1256,7 @@ public class LocalStore extends Store {
 
                 } else {
                     String sql =
-                            "SELECT m.uid, f.name " +
+                            "SELECT m.uid, f.remoteId " +
                             "FROM messages m " +
                             "LEFT JOIN folders f ON (m.folder_id = f.id) " +
                             "WHERE m.empty = 0 AND m.id" + selectionSet;

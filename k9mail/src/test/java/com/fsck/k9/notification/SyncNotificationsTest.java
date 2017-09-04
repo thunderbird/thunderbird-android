@@ -140,7 +140,7 @@ public class SyncNotificationsTest {
 
     private Folder createFakeFolder() {
         Folder folder = mock(Folder.class);
-        when(folder.getName()).thenReturn(FOLDER_NAME);
+        when(folder.getId()).thenReturn(FOLDER_NAME);
         return folder;
     }
 }

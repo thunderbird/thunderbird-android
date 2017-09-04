@@ -417,7 +417,7 @@ public class MessageProvider extends ContentProvider {
             return CONTENT_URI.buildUpon()
                     .appendPath("delete_message")
                     .appendPath(Integer.toString(accountNumber))
-                    .appendPath(message.getFolder().getName())
+                    .appendPath(message.getFolder().getId())
                     .appendPath(message.getUid())
                     .build()
                     .toString();

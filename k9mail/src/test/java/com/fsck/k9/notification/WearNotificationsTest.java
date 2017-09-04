@@ -197,11 +197,11 @@ public class WearNotificationsTest {
     }
 
     private void disableArchiveAction() {
-        when(account.getArchiveFolderName()).thenReturn(K9.FOLDER_NONE);
+        when(account.getArchiveFolderId()).thenReturn(K9.FOLDER_NONE);
     }
 
     private void disableSpamAction() {
-        when(account.getSpamFolderName()).thenReturn(K9.FOLDER_NONE);
+        when(account.getSpamFolderId()).thenReturn(K9.FOLDER_NONE);
     }
 
     private void enableDeleteAction() {
@@ -210,11 +210,11 @@ public class WearNotificationsTest {
     }
 
     private void enableArchiveAction() {
-        when(account.getArchiveFolderName()).thenReturn("Archive");
+        when(account.getArchiveFolderId()).thenReturn("Archive");
     }
 
     private void enableSpamAction() {
-        when(account.getSpamFolderName()).thenReturn("Spam");
+        when(account.getSpamFolderId()).thenReturn("Spam");
     }
 
     private void disableOptionalSummaryActions() {

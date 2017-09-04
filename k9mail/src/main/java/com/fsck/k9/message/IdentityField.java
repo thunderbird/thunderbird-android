@@ -2,7 +2,7 @@ package com.fsck.k9.message;
 
 
 // FYI, there's nothing in the code that requires these variables to one letter. They're one
-// letter simply to save space.  This name sucks.  It's too similar to Account.Identity.
+// letter simply to save space.  This id sucks.  It's too similar to Account.Identity.
 public enum IdentityField {
     LENGTH("l"),
     OFFSET("o"),

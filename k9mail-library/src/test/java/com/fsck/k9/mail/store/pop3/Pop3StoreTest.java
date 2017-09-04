@@ -59,7 +59,7 @@ public class Pop3StoreTest {
     public void setUp() throws Exception {
         //Using a SSL socket allows us to mock it
         when(mockStoreConfig.getStoreUri()).thenReturn("pop3+ssl+://PLAIN:user:password@server:12345");
-        when(mockStoreConfig.getInboxFolderName()).thenReturn("Inbox");
+        when(mockStoreConfig.getInboxFolderId()).thenReturn("Inbox");
         when(mockTrustedSocketFactory.createSocket(null, "server", 12345, null)).thenReturn(mockSocket);
         when(mockSocket.isConnected()).thenReturn(true);
         when(mockSocket.isClosed()).thenReturn(false);
@@ -80,7 +80,7 @@ public class Pop3StoreTest {
     public void getFolder_shouldReturnFolderWithCorrectName() throws Exception {
         Folder folder = store.getFolder("TestFolder");
 
-        assertEquals("TestFolder", folder.getName());
+        assertEquals("TestFolder", folder.getId());
     }
 
     @Test
@@ -144,7 +144,7 @@ public class Pop3StoreTest {
         List<? extends Folder> folders = store.getPersonalNamespaces(true);
 
         assertEquals(1, folders.size());
-        assertEquals("Inbox", folders.get(0).getName());
+        assertEquals("Inbox", folders.get(0).getId());
     }
 
     @Test

@@ -451,7 +451,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
      * Set up the additional headers text view with the supplied header data.
      *
      * @param additionalHeaders List of header entries. Each entry consists of a header
-     *                          name and a header value. Header names may appear multiple
+     *                          id and a header value. Header names may appear multiple
      *                          times.
      *                          <p/>
      *                          This method is always called from within the UI thread by

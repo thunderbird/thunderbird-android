@@ -20,8 +20,8 @@ public class ActivityListener extends SimpleMessagingListener {
     private final Object lock = new Object();
 
     @GuardedBy("lock") private Account account = null;
-    @GuardedBy("lock") private String loadingFolderName = null;
-    @GuardedBy("lock") private String loadingHeaderFolderName = null;
+    @GuardedBy("lock") private String loadingFolderId = null;
+    @GuardedBy("lock") private String loadingHeaderFolderId = null;
     @GuardedBy("lock") private String loadingAccountDescription = null;
     @GuardedBy("lock") private String sendingAccountDescription = null;
     @GuardedBy("lock") private int folderCompleted = 0;
@@ -41,7 +41,7 @@ public class ActivityListener extends SimpleMessagingListener {
         synchronized (lock) {
             if (loadingAccountDescription != null ||
                     sendingAccountDescription != null ||
-                    loadingHeaderFolderName != null ||
+                    loadingHeaderFolderId != null ||
                     processingAccountDescription != null) {
                 return getActionInProgressOperation(context);
             }
@@ -76,23 +76,23 @@ public class ActivityListener extends SimpleMessagingListener {
         String progress = folderTotal > 0 ?
                 context.getString(R.string.folder_progress, folderCompleted, folderTotal) : "";
 
-        if (loadingFolderName != null || loadingHeaderFolderName != null) {
-            String displayName;
-            if (loadingHeaderFolderName != null) {
-                displayName = loadingHeaderFolderName;
+        if (loadingFolderId != null || loadingHeaderFolderId != null) {
+            String folderId;
+            if (loadingHeaderFolderId != null) {
+                folderId = loadingHeaderFolderId;
             } else {
-                displayName = loadingFolderName;
+                folderId = loadingFolderId;
             }
-
+            String displayName = folderId;
             if (account != null) {
-                if (displayName.equalsIgnoreCase(account.getInboxFolderName())) {
+                if (folderId.equalsIgnoreCase(account.getInboxFolderId())) {
                     displayName = context.getString(R.string.special_mailbox_name_inbox);
-                } else if (displayName.equalsIgnoreCase(account.getOutboxFolderName())) {
+                } else if (folderId.equalsIgnoreCase(account.getOutboxFolderId())) {
                     displayName = context.getString(R.string.special_mailbox_name_outbox);
                 }
             }
 
-            if (loadingHeaderFolderName != null) {
+            if (loadingHeaderFolderId != null) {
                 return context.getString(R.string.status_loading_account_folder_headers,
                         loadingAccountDescription, displayName, progress);
             } else {
@@ -125,7 +125,7 @@ public class ActivityListener extends SimpleMessagingListener {
             int numNewMessages) {
         synchronized (lock) {
             loadingAccountDescription = null;
-            loadingFolderName = null;
+            loadingFolderId = null;
             this.account = null;
         }
 
@@ -136,7 +136,7 @@ public class ActivityListener extends SimpleMessagingListener {
     public void synchronizeMailboxStarted(Account account, String folder) {
         synchronized (lock) {
             loadingAccountDescription = account.getDescription();
-            loadingFolderName = folder;
+            loadingFolderId = folder;
             this.account = account;
             folderCompleted = 0;
             folderTotal = 0;
@@ -149,7 +149,7 @@ public class ActivityListener extends SimpleMessagingListener {
     public void synchronizeMailboxHeadersStarted(Account account, String folder) {
         synchronized (lock) {
             loadingAccountDescription = account.getDescription();
-            loadingHeaderFolderName = folder;
+            loadingHeaderFolderId = folder;
         }
 
         informUserOfStatus();
@@ -168,7 +168,7 @@ public class ActivityListener extends SimpleMessagingListener {
     @Override
     public void synchronizeMailboxHeadersFinished(Account account, String folder, int total, int completed) {
         synchronized (lock) {
-            loadingHeaderFolderName = null;
+            loadingHeaderFolderId = null;
             folderCompleted = 0;
             folderTotal = 0;
         }
@@ -190,8 +190,8 @@ public class ActivityListener extends SimpleMessagingListener {
     public void synchronizeMailboxFailed(Account account, String folder, String message) {
         synchronized (lock) {
             loadingAccountDescription = null;
-            loadingHeaderFolderName = null;
-            loadingFolderName = null;
+            loadingHeaderFolderId = null;
+            loadingFolderId = null;
             this.account = null;
         }
         informUserOfStatus();

@@ -80,6 +80,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         db.execSQL("DROP TABLE IF EXISTS folders");
         db.execSQL("CREATE TABLE folders (" +
                 "id INTEGER PRIMARY KEY," +
+                "remoteId TEXT, " +
                 "name TEXT, " +
                 "last_updated INTEGER, " +
                 "unread_count INTEGER, " +

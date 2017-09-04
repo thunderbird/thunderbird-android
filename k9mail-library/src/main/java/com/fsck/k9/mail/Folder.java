@@ -165,6 +165,16 @@ public abstract class Folder<T extends Message> {
 
     public abstract void delete(boolean recurse) throws MessagingException;
 
+    /**
+     * The ID should uniquely identify a folder.
+     * @return id
+     */
+    public abstract String getId();
+
+    /**
+     * The name should identify a folder in a human readable form. Use {@link #getId()} for a unique identifier.
+     * @return name
+     */
     public abstract String getName();
 
     /**
@@ -186,7 +196,7 @@ public abstract class Folder<T extends Message> {
 
     @Override
     public String toString() {
-        return getName();
+        return getId();
     }
 
     public long getLastChecked() {
