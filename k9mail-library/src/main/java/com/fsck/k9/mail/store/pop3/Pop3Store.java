@@ -171,7 +171,7 @@ public class Pop3Store extends RemoteStore {
     private final ConnectionSecurity connectionSecurity;
 
     private StoreConfig config;
-    private Map<String, Folder> mFolders = new HashMap<String, Folder>();
+    private Map<String, Pop3Folder> mFolders = new HashMap<String, Pop3Folder>();
 
     public Pop3Store(StoreConfig storeConfig, TrustedSocketFactory socketFactory) throws MessagingException {
         super(storeConfig, socketFactory);
@@ -194,8 +194,8 @@ public class Pop3Store extends RemoteStore {
 
     @Override
     @NonNull
-    public Folder getFolder(String name) {
-        Folder folder = mFolders.get(name);
+    public Pop3Folder getFolder(String name) {
+        Pop3Folder folder = mFolders.get(name);
         if (folder == null) {
             folder = new Pop3Folder(this, name);
             mFolders.put(folder.getId(), folder);
@@ -204,8 +204,8 @@ public class Pop3Store extends RemoteStore {
     }
 
     @Override
-    @NonNull public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
-        List<Folder> folders = new LinkedList<Folder>();
+    @NonNull public List <Pop3Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+        List<Pop3Folder> folders = new LinkedList<>();
         folders.add(getFolder(mStoreConfig.getInboxFolderId()));
         return folders;
     }

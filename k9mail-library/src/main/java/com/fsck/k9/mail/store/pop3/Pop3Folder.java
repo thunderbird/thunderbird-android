@@ -2,9 +2,6 @@ package com.fsck.k9.mail.store.pop3;
 
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -33,18 +30,15 @@ import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
 
 class Pop3Folder extends Folder<Pop3Message> {
     private Pop3Store pop3Store;
-    private Socket mSocket;
-    private InputStream mIn;
-    private OutputStream mOut;
-    private Map<String, Pop3Message> mUidToMsgMap = new HashMap<String, Pop3Message>();
+    private Map<String, Pop3Message> mUidToMsgMap = new HashMap<>();
     @SuppressLint("UseSparseArrays")
-    private Map<Integer, Pop3Message> mMsgNumToMsgMap = new HashMap<Integer, Pop3Message>();
-    private Map<String, Integer> mUidToMsgNumMap = new HashMap<String, Integer>();
+    private Map<Integer, Pop3Message> mMsgNumToMsgMap = new HashMap<>();
+    private Map<String, Integer> mUidToMsgNumMap = new HashMap<>();
     private String mName;
     private int mMessageCount;
     private Pop3Connection connection;
 
-    public Pop3Folder(Pop3Store pop3Store, String name) {
+    Pop3Folder(Pop3Store pop3Store, String name) {
         super();
         this.pop3Store = pop3Store;
         this.mName = name;
@@ -77,7 +71,7 @@ class Pop3Folder extends Folder<Pop3Message> {
 
     @Override
     public boolean isOpen() {
-        return connection.isOpen();
+        return connection != null && connection.isOpen();
     }
 
     @Override
@@ -98,7 +92,10 @@ class Pop3Folder extends Folder<Pop3Message> {
              */
         }
 
-        connection.close();
+        if (connection != null) {
+            connection.close();
+            connection = null;
+        }
     }
 
     @Override
@@ -156,7 +153,7 @@ class Pop3Folder extends Folder<Pop3Message> {
         } catch (IOException ioe) {
             throw new MessagingException("getMessages", ioe);
         }
-        List<Pop3Message> messages = new ArrayList<Pop3Message>();
+        List<Pop3Message> messages = new ArrayList<>();
         int i = 0;
         for (int msgNum = start; msgNum <= end; msgNum++) {
             Pop3Message message = mMsgNumToMsgMap.get(msgNum);
@@ -189,13 +186,8 @@ class Pop3Folder extends Folder<Pop3Message> {
     /**
      * Ensures that the given message set (from start to end inclusive)
      * has been queried so that uids are available in the local cache.
-     * @param start
-     * @param end
-     * @throws MessagingException
-     * @throws IOException
      */
-    private void indexMsgNums(int start, int end)
-    throws MessagingException, IOException {
+    private void indexMsgNums(int start, int end) throws MessagingException, IOException {
         int unindexedMessageCount = 0;
         for (int msgNum = start; msgNum <= end; msgNum++) {
             if (mMsgNumToMsgMap.get(msgNum) == null) {
@@ -226,7 +218,8 @@ class Pop3Folder extends Folder<Pop3Message> {
                 }
             }
         } else {
-            String response = connection.executeSimpleCommand(UIDL_COMMAND);
+            connection.executeSimpleCommand(UIDL_COMMAND);
+            String response;
             while ((response = connection.readLine()) != null) {
                 if (response.equals(".")) {
                     break;
@@ -272,7 +265,7 @@ class Pop3Folder extends Folder<Pop3Message> {
 
     private void indexUids(List<String> uids)
     throws MessagingException, IOException {
-        Set<String> unindexedUids = new HashSet<String>();
+        Set<String> unindexedUids = new HashSet<>();
         for (String uid : uids) {
             if (mUidToMsgMap.get(uid) == null) {
                 if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
@@ -289,7 +282,8 @@ class Pop3Folder extends Folder<Pop3Message> {
          * get them is to do a full UIDL list. A possible optimization
          * would be trying UIDL for the latest X messages and praying.
          */
-        String response = connection.executeSimpleCommand(UIDL_COMMAND);
+        connection.executeSimpleCommand(UIDL_COMMAND);
+        String response;
         while ((response = connection.readLine()) != null) {
             if (response.equals(".")) {
                 break;
@@ -327,17 +321,17 @@ class Pop3Folder extends Folder<Pop3Message> {
     /**
      * Fetch the items contained in the FetchProfile into the given set of
      * Messages in as efficient a manner as possible.
-     * @param messages
-     * @param fp
-     * @throws MessagingException
+     * @param messages Messages to populate
+     * @param fp The contents to populate
      */
     @Override
-    public void fetch(List<Pop3Message> messages, FetchProfile fp, MessageRetrievalListener<Pop3Message> listener)
+    public void fetch(List<Pop3Message> messages, FetchProfile fp,
+            MessageRetrievalListener<Pop3Message> listener)
     throws MessagingException {
         if (messages == null || messages.isEmpty()) {
             return;
         }
-        List<String> uids = new ArrayList<String>();
+        List<String> uids = new ArrayList<>();
         for (Message message : messages) {
             uids.add(message.getUid());
         }
@@ -415,8 +409,9 @@ class Pop3Folder extends Folder<Pop3Message> {
                 if (listener != null) {
                     listener.messageStarted(message.getUid(), i, count);
                 }
-                String response = connection.executeSimpleCommand(String.format(Locale.US, LIST_COMMAND + " %d",
-                                                       mUidToMsgNumMap.get(message.getUid())));
+                String response = connection.executeSimpleCommand(
+                        String.format(Locale.US, LIST_COMMAND + " %d",
+                                mUidToMsgNumMap.get(message.getUid())));
                 String[] listParts = response.split(" ");
                 //int msgNum = Integer.parseInt(listParts[1]);
                 int msgSize = Integer.parseInt(listParts[2]);
@@ -426,12 +421,13 @@ class Pop3Folder extends Folder<Pop3Message> {
                 }
             }
         } else {
-            Set<String> msgUidIndex = new HashSet<String>();
+            Set<String> msgUidIndex = new HashSet<>();
             for (Message message : messages) {
                 msgUidIndex.add(message.getUid());
             }
             int i = 0, count = messages.size();
-            String response = connection.executeSimpleCommand(LIST_COMMAND);
+            connection.executeSimpleCommand(LIST_COMMAND);
+            String response;
             while ((response = connection.readLine()) != null) {
                 if (response.equals(".")) {
                     break;
@@ -474,9 +470,9 @@ class Pop3Folder extends Folder<Pop3Message> {
                           "Checking to see if the TOP command is supported nevertheless.");
                 }
 
-                response = connection.executeSimpleCommand(String.format(Locale.US, TOP_COMMAND + " %d %d",
-                                                mUidToMsgNumMap.get(message.getUid()), lines));
-
+                response = connection.executeSimpleCommand(
+                        String.format(Locale.US, TOP_COMMAND + " %d %d",
+                                mUidToMsgNumMap.get(message.getUid()), lines));
                 // TOP command is supported. Remember this for the next time.
                 connection.setSupportsTop(true);
             } catch (Pop3ErrorResponse e) {
@@ -501,7 +497,7 @@ class Pop3Folder extends Folder<Pop3Message> {
         }
 
         try {
-            message.parse(new Pop3ResponseInputStream(mIn));
+            message.parse(new Pop3ResponseInputStream(connection.getInputStream()));
 
             // TODO: if we've received fewer lines than requested we also have the complete message.
             if (lines == -1 || !connection.supportsTop()) {
@@ -553,7 +549,7 @@ class Pop3Folder extends Folder<Pop3Message> {
              */
             return;
         }
-        List<String> uids = new ArrayList<String>();
+        List<String> uids = new ArrayList<>();
         try {
             for (Message message : messages) {
                 uids.add(message.getUid());

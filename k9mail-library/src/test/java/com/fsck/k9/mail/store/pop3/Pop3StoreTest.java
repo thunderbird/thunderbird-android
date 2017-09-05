@@ -70,78 +70,22 @@ public class Pop3StoreTest {
 
     @Test
     public void getFolder_shouldReturnSameFolderEachTime() {
-        Folder folderOne = store.getFolder("TestFolder");
-        Folder folderTwo = store.getFolder("TestFolder");
+        Pop3Folder folderOne = store.getFolder("TestFolder");
+        Pop3Folder folderTwo = store.getFolder("TestFolder");
 
         assertSame(folderOne, folderTwo);
     }
 
     @Test
     public void getFolder_shouldReturnFolderWithCorrectName() throws Exception {
-        Folder folder = store.getFolder("TestFolder");
+        Pop3Folder folder = store.getFolder("TestFolder");
 
         assertEquals("TestFolder", folder.getId());
     }
 
     @Test
-    public void create_withHoldsFoldersArgument_shouldDoNothing() throws Exception {
-        Folder folder = store.getFolder("TestFolder");
-
-        boolean result = folder.create(FolderType.HOLDS_FOLDERS);
-
-        assertFalse(result);
-        verifyZeroInteractions(mockSocket);
-    }
-
-    @Test
-    public void create_withHoldsMessagesArgument_shouldDoNothing() throws Exception {
-        Folder folder = store.getFolder("TestFolder");
-
-        boolean result = folder.create(FolderType.HOLDS_MESSAGES);
-
-        assertFalse(result);
-        verifyZeroInteractions(mockSocket);
-    }
-
-    @Test
-    public void exists_withInbox_shouldReturnTrue() throws Exception {
-        Folder inbox = store.getFolder("Inbox");
-
-        boolean result = inbox.exists();
-
-        assertTrue(result);
-    }
-
-    @Test
-    public void exists_withNonInboxFolder_shouldReturnFalse() throws Exception {
-        Folder folder = store.getFolder("TestFolder");
-
-        boolean result = folder.exists();
-
-        assertFalse(result);
-    }
-
-    @Test
-    public void getUnreadMessageCount_shouldBeMinusOne() throws Exception {
-        Folder inbox = store.getFolder("Inbox");
-
-        int result = inbox.getUnreadMessageCount();
-
-        assertEquals(-1, result);
-    }
-
-    @Test
-    public void getFlaggedMessageCount_shouldBeMinusOne() throws Exception {
-        Folder inbox = store.getFolder("Inbox");
-
-        int result = inbox.getFlaggedMessageCount();
-
-        assertEquals(-1, result);
-    }
-
-    @Test
     public void getPersonalNamespace_shouldReturnListConsistingOfInbox() throws Exception {
-        List<? extends Folder> folders = store.getPersonalNamespaces(true);
+        List<Pop3Folder> folders = store.getPersonalNamespaces(true);
 
         assertEquals(1, folders.size());
         assertEquals("Inbox", folders.get(0).getId());
@@ -154,12 +98,7 @@ public class Pop3StoreTest {
         assertFalse(result);
     }
 
-    @Test(expected = MessagingException.class)
-    public void open_withoutInboxFolder_shouldThrow() throws Exception {
-        Folder folder = store.getFolder("TestFolder");
-
-        folder.open(Folder.OPEN_MODE_RW);
-    }
+    // Component Level Tests
 
     @Test
     public void open_withAuthResponseUsingAuthPlain_shouldRetrieveMessageCountOnAuthenticatedSocket() throws Exception {
@@ -171,7 +110,7 @@ public class Pop3StoreTest {
         when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(response.getBytes("UTF-8")));
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         when(mockSocket.getOutputStream()).thenReturn(byteArrayOutputStream);
-        Folder folder = store.getFolder("Inbox");
+        Pop3Folder folder = store.getFolder("Inbox");
 
         folder.open(Folder.OPEN_MODE_RW);
 
@@ -186,7 +125,7 @@ public class Pop3StoreTest {
                 CAPA_RESPONSE +
                 AUTH_PLAIN_FAILED_RESPONSE;
         when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(response.getBytes("UTF-8")));
-        Folder folder = store.getFolder("Inbox");
+        Pop3Folder folder = store.getFolder("Inbox");
 
         folder.open(Folder.OPEN_MODE_RW);
     }

@@ -4,6 +4,7 @@ package com.fsck.k9.mail.store.pop3;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -34,7 +35,7 @@ import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
 import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
 
 
-public class Pop3Connection {
+class Pop3Connection {
 
     private final String username;
     private final String password;
@@ -63,25 +64,25 @@ public class Pop3Connection {
             } else {
                 socket = new Socket();
             }
-    
+
             socket.connect(socketAddress, RemoteStore.SOCKET_CONNECT_TIMEOUT);
             in = new BufferedInputStream(socket.getInputStream(), 1024);
             out = new BufferedOutputStream(socket.getOutputStream(), 512);
-    
+
             socket.setSoTimeout(RemoteStore.SOCKET_READ_TIMEOUT);
-    
+
             if (!isOpen()) {
                 throw new MessagingException("Unable to connect socket");
             }
-    
+
             String serverGreeting = executeSimpleCommand(null);
-    
+
             capabilities = getCapabilities();
             if (connectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
-    
+
                 if (capabilities.stls) {
                     executeSimpleCommand(STLS_COMMAND);
-    
+
                     socket = trustedSocketFactory.createSocket(
                             socket,
                             host,
@@ -106,7 +107,7 @@ public class Pop3Connection {
                             "STARTTLS connection security not available");
                 }
             }
-    
+
             switch (authType) {
                 case PLAIN:
                     if (capabilities.authPlain) {
@@ -115,7 +116,7 @@ public class Pop3Connection {
                         login();
                     }
                     break;
-    
+
                 case CRAM_MD5:
                     if (capabilities.cramMD5) {
                         authCramMD5();
@@ -123,7 +124,7 @@ public class Pop3Connection {
                         authAPOP(serverGreeting);
                     }
                     break;
-    
+
                 case EXTERNAL:
                     if (capabilities.external) {
                         authExternal();
@@ -132,7 +133,7 @@ public class Pop3Connection {
                         throw new CertificateValidationException(MissingCapability);
                     }
                     break;
-    
+
                 default:
                     throw new MessagingException(
                             "Unhandled authentication method found in the server settings (bug).");
@@ -149,10 +150,6 @@ public class Pop3Connection {
         } catch (IOException ioe) {
             throw new MessagingException("Unable to open connection to POP server.", ioe);
         }
-    }
-
-    private String executeSimpleCommand(Object o) {
-        return null;
     }
 
     boolean isOpen() {
@@ -174,25 +171,31 @@ public class Pop3Connection {
              * While this never became a standard, there are servers that
              * support it, and Thunderbird includes this check.
              */
-            String response = executeSimpleCommand(AUTH_COMMAND);
+            executeSimpleCommand(AUTH_COMMAND);
+            String response;
             while ((response = readLine()) != null) {
                 if (response.equals(".")) {
                     break;
                 }
                 response = response.toUpperCase(Locale.US);
-                if (response.equals(AUTH_PLAIN_CAPABILITY)) {
-                    capabilities.authPlain = true;
-                } else if (response.equals(AUTH_CRAM_MD5_CAPABILITY)) {
-                    capabilities.cramMD5 = true;
-                } else if (response.equals(AUTH_EXTERNAL_CAPABILITY)) {
-                    capabilities.external = true;
+                switch (response) {
+                    case AUTH_PLAIN_CAPABILITY:
+                        capabilities.authPlain = true;
+                        break;
+                    case AUTH_CRAM_MD5_CAPABILITY:
+                        capabilities.cramMD5 = true;
+                        break;
+                    case AUTH_EXTERNAL_CAPABILITY:
+                        capabilities.external = true;
+                        break;
                 }
             }
-        } catch (MessagingException e) {
+        } catch (MessagingException ignored) {
             // Assume AUTH command with no arguments is not supported.
         }
         try {
-            String response = executeSimpleCommand(CAPA_COMMAND);
+            executeSimpleCommand(CAPA_COMMAND);
+            String response;
             while ((response = readLine()) != null) {
                 if (response.equals(".")) {
                     break;
@@ -321,9 +324,8 @@ public class Pop3Connection {
         return executeSimpleCommand(command, false);
     }
 
-    String executeSimpleCommand(String command, boolean sensitive) throws MessagingException {
+    private String executeSimpleCommand(String command, boolean sensitive) throws MessagingException {
         try {
-
             if (command != null) {
                 if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
                     if (sensitive && !K9MailLib.isDebugSensitive()) {
@@ -358,6 +360,7 @@ public class Pop3Connection {
         }
         do {
             if (((char)d) == '\r') {
+                //noinspection UnnecessaryContinue Makes it easier to follow
                 continue;
             } else if (((char)d) == '\n') {
                 break;
@@ -407,15 +410,19 @@ public class Pop3Connection {
         return topNotAdvertised;
     }
 
-    public void setSupportsTop(boolean supportsTop) {
+    void setSupportsTop(boolean supportsTop) {
         this.capabilities.top = supportsTop;
     }
 
-    public void setTopNotAdvertised(boolean topNotAdvertised) {
+    void setTopNotAdvertised(boolean topNotAdvertised) {
         this.topNotAdvertised = topNotAdvertised;
     }
 
-    public boolean supportsUidl() {
+    boolean supportsUidl() {
         return this.capabilities.uidl;
+    }
+
+    InputStream getInputStream() {
+        return in;
     }
 }
