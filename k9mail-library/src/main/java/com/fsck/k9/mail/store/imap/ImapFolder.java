@@ -39,6 +39,20 @@ import timber.log.Timber;
 import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
+/**
+ * Represents an IMAP 'mailbox' (aka folder).
+ *
+ * A folder is referenced by an ID and a name.
+ *
+ * In the ImapFolder, the ID is currently the non-namespace prefixed path including seperators.
+ * The name is also currently the full path including separators.
+ *
+ * ID: "Folder.Subfolder"
+ * Name: "Folder.Subfolder"
+ *
+ * TODO: Implement multiple namespaces and make the ID the {@link #getPrefixedId()} (e.g. Global/Folder.Subfolder)
+ * TODO: Implement child-parent relationship for folders and make the name just the child name (e.g. Subfolder)
+ */
 class ImapFolder extends Folder<ImapMessage> {
     private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
         @Override

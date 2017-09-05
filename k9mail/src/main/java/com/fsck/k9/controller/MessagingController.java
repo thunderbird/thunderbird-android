@@ -432,7 +432,7 @@ public class MessagingController {
             List<? extends Folder> remoteFolders = store.getPersonalNamespaces(false);
 
             LocalStore localStore = account.getLocalStore();
-            Set<String> remoteFolderIds = new HashSet<>();
+            Map<String, Folder> remoteFolderMap = new HashMap<>();
             List<LocalFolder> foldersToCreate = new LinkedList<>();
 
             localFolders = localStore.getPersonalNamespaces(false);
@@ -446,7 +446,7 @@ public class MessagingController {
                     LocalFolder localFolder = localStore.getFolder(remoteFolder.getId());
                     foldersToCreate.add(localFolder);
                 }
-                remoteFolderIds.add(remoteFolder.getId());
+                remoteFolderMap.put(remoteFolder.getId(), remoteFolder);
             }
             localStore.createFolders(foldersToCreate, account.getDisplayCount());
 
@@ -455,7 +455,7 @@ public class MessagingController {
             /*
              * Clear out any folders that are no longer on the remote store.
              */
-            for (Folder localFolder : localFolders) {
+            for (LocalFolder localFolder : localFolders) {
                 String localFolderId = localFolder.getId();
 
                 // FIXME: This is a hack used to clean up when we accidentally created the
@@ -465,8 +465,12 @@ public class MessagingController {
                 }
 
                 if (!account.isSpecialFolder(localFolderId) &&
-                        !remoteFolderIds.contains(localFolderId)) {
+                        !remoteFolderMap.containsKey(localFolderId)) {
                     localFolder.delete(false);
+                }
+
+                if (remoteFolderMap.containsKey(localFolderId)) {
+                    localFolder.setName(remoteFolderMap.get(localFolderId).getName());
                 }
             }
 

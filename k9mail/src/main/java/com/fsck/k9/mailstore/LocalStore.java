@@ -912,7 +912,6 @@ public class LocalStore extends Store {
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                 for (LocalFolder folder : foldersToCreate) {
                     String id = folder.getId();
-                    String name = folder.getName();
                     final  LocalFolder.PreferencesHolder prefHolder = folder.new PreferencesHolder();
 
                     // When created, special folders should always be displayed
@@ -941,7 +940,7 @@ public class LocalStore extends Store {
                     db.execSQL("INSERT INTO folders (remoteId, name, visible_limit, " +
                             "top_group, display_class, poll_class, notify_class, push_class, integrate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
                                    id,
-                                   name,
+                                   id,
                                    visibleLimit,
                                    prefHolder.inTopGroup ? 1 : 0,
                                    prefHolder.displayClass.name(),

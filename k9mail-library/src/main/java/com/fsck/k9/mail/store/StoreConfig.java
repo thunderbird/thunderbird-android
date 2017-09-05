@@ -14,13 +14,13 @@ public interface StoreConfig {
     String getOutboxFolderId();
     String getDraftsFolderId();
 
-    void setArchiveFolderId(String name);
-    void setDraftsFolderId(String name);
-    void setTrashFolderId(String name);
-    void setSpamFolderId(String name);
-    void setSentFolderId(String name);
-    void setAutoExpandFolderId(String name);
-    void setInboxFolderId(String name);
+    void setArchiveFolderId(String folderId);
+    void setDraftsFolderId(String folderId);
+    void setTrashFolderId(String folderId);
+    void setSpamFolderId(String folderId);
+    void setSentFolderId(String folderId);
+    void setAutoExpandFolderId(String folderId);
+    void setInboxFolderId(String folderId);
 
     int getMaximumAutoDownloadMessageSize();
 

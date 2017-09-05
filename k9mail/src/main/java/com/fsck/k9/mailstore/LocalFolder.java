@@ -380,6 +380,16 @@ public class LocalFolder extends Folder<LocalMessage> {
         }
     }
 
+    public void setName(String name) throws MessagingException {
+        try {
+            open(OPEN_MODE_RW);
+            this.name = name;
+        } catch (MessagingException e) {
+            throw new WrappedException(e);
+        }
+        updateFolderColumn("name", name);
+    }
+
     @Override
     public void setLastChecked(final long lastChecked) throws MessagingException {
         try {
