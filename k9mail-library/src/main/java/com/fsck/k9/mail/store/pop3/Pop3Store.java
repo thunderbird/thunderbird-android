@@ -170,7 +170,6 @@ public class Pop3Store extends RemoteStore {
     private final AuthType authType;
     private final ConnectionSecurity connectionSecurity;
 
-    private StoreConfig config;
     private Map<String, Pop3Folder> mFolders = new HashMap<String, Pop3Folder>();
 
     public Pop3Store(StoreConfig storeConfig, TrustedSocketFactory socketFactory) throws MessagingException {
@@ -234,37 +233,6 @@ public class Pop3Store extends RemoteStore {
     public Pop3Connection createConnection() throws MessagingException {
         return new Pop3Connection(host, port, connectionSecurity, authType, clientCertificateAlias,
                 username, password, mTrustedSocketFactory);
-    }
-
-    static class Pop3Message extends MimeMessage {
-        Pop3Message(String uid, Pop3Folder folder) {
-            mUid = uid;
-            mFolder = folder;
-            mSize = -1;
-        }
-
-        public void setSize(int size) {
-            mSize = size;
-        }
-
-        @Override
-        public void setFlag(Flag flag, boolean set) throws MessagingException {
-            super.setFlag(flag, set);
-            mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
-        }
-
-        @Override
-        public void delete(String trashFolderName) throws MessagingException {
-            //  try
-            //  {
-            //  Poor POP3 users, we can't copy the message to the Trash folder, but they still want a delete
-            setFlag(Flag.DELETED, true);
-            //   }
-//         catch (MessagingException me)
-//         {
-//          Log.w(LOG_TAG, "Could not delete non-existent message", me);
-//         }
-        }
     }
 
 }
