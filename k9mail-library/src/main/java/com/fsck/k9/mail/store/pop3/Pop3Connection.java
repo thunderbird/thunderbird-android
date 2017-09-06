@@ -9,6 +9,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.security.GeneralSecurityException;
+import java.security.KeyManagementException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -78,66 +79,12 @@ class Pop3Connection {
             String serverGreeting = executeSimpleCommand(null);
 
             capabilities = getCapabilities();
+
             if (connectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
-
-                if (capabilities.stls) {
-                    executeSimpleCommand(STLS_COMMAND);
-
-                    socket = trustedSocketFactory.createSocket(
-                            socket,
-                            host,
-                            port,
-                            clientCertificateAlias);
-                    socket.setSoTimeout(RemoteStore.SOCKET_READ_TIMEOUT);
-                    in = new BufferedInputStream(socket.getInputStream(), 1024);
-                    out = new BufferedOutputStream(socket.getOutputStream(), 512);
-                    if (!isOpen()) {
-                        throw new MessagingException("Unable to connect socket");
-                    }
-                    capabilities = getCapabilities();
-                } else {
-                    /*
-                     * This exception triggers a "Certificate error"
-                     * notification that takes the user to the incoming
-                     * server settings for review. This might be needed if
-                     * the account was configured with an obsolete
-                     * "STARTTLS (if available)" setting.
-                     */
-                    throw new CertificateValidationException(
-                            "STARTTLS connection security not available");
-                }
+                performStartTlsUpgrade(trustedSocketFactory, host, port, clientCertificateAlias);
             }
 
-            switch (authType) {
-                case PLAIN:
-                    if (capabilities.authPlain) {
-                        authPlain();
-                    } else {
-                        login();
-                    }
-                    break;
-
-                case CRAM_MD5:
-                    if (capabilities.cramMD5) {
-                        authCramMD5();
-                    } else {
-                        authAPOP(serverGreeting);
-                    }
-                    break;
-
-                case EXTERNAL:
-                    if (capabilities.external) {
-                        authExternal();
-                    } else {
-                        // Provide notification to user of a problem authenticating using client certificates
-                        throw new CertificateValidationException(MissingCapability);
-                    }
-                    break;
-
-                default:
-                    throw new MessagingException(
-                            "Unhandled authentication method found in the server settings (bug).");
-            }
+            performAuthentication(authType, serverGreeting);
         } catch (SSLException e) {
             if (e.getCause() instanceof CertificateException) {
                 throw new CertificateValidationException(e.getMessage(), e);
@@ -150,6 +97,72 @@ class Pop3Connection {
         } catch (IOException ioe) {
             throw new MessagingException("Unable to open connection to POP server.", ioe);
         }
+    }
+
+    /*
+     * If STARTTLS is not available throws a CertificateValidationException which in K-9
+     * triggers a "Certificate error" notification that takes the user to the incoming
+     * server settings for review. This might be needed if the account was configured with an obsolete
+     * "STARTTLS (if available)" setting.
+     */
+    private void performStartTlsUpgrade(TrustedSocketFactory trustedSocketFactory,
+            String host, int port, String clientCertificateAlias)
+            throws MessagingException, NoSuchAlgorithmException, KeyManagementException, IOException {
+        if (capabilities.stls) {
+            executeSimpleCommand(STLS_COMMAND);
+
+            socket = trustedSocketFactory.createSocket(
+                    socket,
+                    host,
+                    port,
+                    clientCertificateAlias);
+            socket.setSoTimeout(RemoteStore.SOCKET_READ_TIMEOUT);
+            in = new BufferedInputStream(socket.getInputStream(), 1024);
+            out = new BufferedOutputStream(socket.getOutputStream(), 512);
+            if (!isOpen()) {
+                throw new MessagingException("Unable to connect socket");
+            }
+            capabilities = getCapabilities();
+        } else {
+            throw new CertificateValidationException(
+                    "STARTTLS connection security not available");
+        }
+
+    }
+
+    private void performAuthentication(AuthType authType, String serverGreeting)
+            throws MessagingException {
+        switch (authType) {
+            case PLAIN:
+                if (capabilities.authPlain) {
+                    authPlain();
+                } else {
+                    login();
+                }
+                break;
+
+            case CRAM_MD5:
+                if (capabilities.cramMD5) {
+                    authCramMD5();
+                } else {
+                    authAPOP(serverGreeting);
+                }
+                break;
+
+            case EXTERNAL:
+                if (capabilities.external) {
+                    authExternal();
+                } else {
+                    // Provide notification to user of a problem authenticating using client certificates
+                    throw new CertificateValidationException(MissingCapability);
+                }
+                break;
+
+            default:
+                throw new MessagingException(
+                        "Unhandled authentication method found in the server settings (bug).");
+        }
+
     }
 
     boolean isOpen() {
