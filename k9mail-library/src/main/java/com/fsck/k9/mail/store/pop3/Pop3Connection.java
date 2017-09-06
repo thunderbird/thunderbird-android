@@ -38,8 +38,7 @@ import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
 
 class Pop3Connection {
 
-    private final String username;
-    private final String password;
+    private final Pop3Settings settings;
     private Socket socket;
     private BufferedInputStream in;
     private BufferedOutputStream out;
@@ -52,16 +51,13 @@ class Pop3Connection {
      */
     private boolean topNotAdvertised;
 
-    Pop3Connection(String host, int port, ConnectionSecurity connectionSecurity, AuthType authType, 
-            String clientCertificateAlias, String username, String password,
+    Pop3Connection(Pop3Settings settings,
             TrustedSocketFactory trustedSocketFactory) throws MessagingException {
-        this.username = username;
-        this.password = password;
-
         try {
-            SocketAddress socketAddress = new InetSocketAddress(host, port);
-            if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                socket = trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias);
+            this.settings = settings;
+            SocketAddress socketAddress = new InetSocketAddress(settings.getHost(), settings.getPort());
+            if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
+                socket = trustedSocketFactory.createSocket(null, settings.getHost(), settings.getPort(), settings.getClientCertificateAlias());
             } else {
                 socket = new Socket();
             }
@@ -80,11 +76,11 @@ class Pop3Connection {
 
             capabilities = getCapabilities();
 
-            if (connectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
-                performStartTlsUpgrade(trustedSocketFactory, host, port, clientCertificateAlias);
+            if (settings.getConnectionSecurity() == ConnectionSecurity.STARTTLS_REQUIRED) {
+                performStartTlsUpgrade(trustedSocketFactory, settings.getHost(), settings.getPort(), settings.getClientCertificateAlias());
             }
 
-            performAuthentication(authType, serverGreeting);
+            performAuthentication(settings.getAuthType(), serverGreeting);
         } catch (SSLException e) {
             if (e.getCause() instanceof CertificateException) {
                 throw new CertificateValidationException(e.getMessage(), e);
@@ -248,9 +244,9 @@ class Pop3Connection {
     }
 
     private void login() throws MessagingException {
-        executeSimpleCommand(USER_COMMAND + " " + username);
+        executeSimpleCommand(USER_COMMAND + " " + settings.getUsername());
         try {
-            executeSimpleCommand(PASS_COMMAND + " " + password, true);
+            executeSimpleCommand(PASS_COMMAND + " " + settings.getPassword(), true);
         } catch (Pop3ErrorResponse e) {
             throw new AuthenticationFailedException(
                     "POP3 login authentication failed: " + e.getMessage(), e);
@@ -260,8 +256,8 @@ class Pop3Connection {
     private void authPlain() throws MessagingException {
         executeSimpleCommand("AUTH PLAIN");
         try {
-            byte[] encodedBytes = Base64.encodeBase64(("\000" + username
-                    + "\000" + password).getBytes());
+            byte[] encodedBytes = Base64.encodeBase64(("\000" + settings.getUsername()
+                    + "\000" + settings.getPassword()).getBytes());
             executeSimpleCommand(new String(encodedBytes), true);
         } catch (Pop3ErrorResponse e) {
             throw new AuthenticationFailedException(
@@ -285,10 +281,10 @@ class Pop3Connection {
             throw new MessagingException(
                     "MD5 failure during POP3 auth APOP", e);
         }
-        byte[] digest = md.digest((timestamp + password).getBytes());
+        byte[] digest = md.digest((timestamp + settings.getPassword()).getBytes());
         String hexDigest = Hex.encodeHex(digest);
         try {
-            executeSimpleCommand("APOP " + username + " " + hexDigest, true);
+            executeSimpleCommand("APOP " + settings.getUsername() + " " + hexDigest, true);
         } catch (Pop3ErrorResponse e) {
             throw new AuthenticationFailedException(
                     "POP3 APOP authentication failed: " + e.getMessage(), e);
@@ -298,7 +294,7 @@ class Pop3Connection {
     private void authCramMD5() throws MessagingException {
         String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
 
-        String b64CRAM = Authentication.computeCramMd5(username, password, b64Nonce);
+        String b64CRAM = Authentication.computeCramMd5(settings.getUsername(), settings.getPassword(), b64Nonce);
         try {
             executeSimpleCommand(b64CRAM, true);
         } catch (Pop3ErrorResponse e) {
@@ -312,7 +308,7 @@ class Pop3Connection {
         try {
             executeSimpleCommand(
                     String.format("AUTH EXTERNAL %s",
-                            Base64.encode(username)), false);
+                            Base64.encode(settings.getUsername())), false);
         } catch (Pop3ErrorResponse e) {
             /*
              * Provide notification to the user of a problem authenticating

@@ -4,15 +4,12 @@ package com.fsck.k9.mail.store.pop3;
 import android.support.annotation.NonNull;
 
 import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
 
-import java.io.*;
 import java.net.*;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.List;
@@ -231,8 +228,44 @@ public class Pop3Store extends RemoteStore {
     }
 
     public Pop3Connection createConnection() throws MessagingException {
-        return new Pop3Connection(host, port, connectionSecurity, authType, clientCertificateAlias,
-                username, password, mTrustedSocketFactory);
+        return new Pop3Connection(new StorePop3Settings(), mTrustedSocketFactory);
+    }
+
+    private class StorePop3Settings implements Pop3Settings {
+        @Override
+        public String getHost() {
+            return host;
+        }
+
+        @Override
+        public int getPort() {
+            return port;
+        }
+
+        @Override
+        public ConnectionSecurity getConnectionSecurity() {
+            return connectionSecurity;
+        }
+
+        @Override
+        public AuthType getAuthType() {
+            return authType;
+        }
+
+        @Override
+        public String getUsername() {
+            return username;
+        }
+
+        @Override
+        public String getPassword() {
+            return password;
+        }
+
+        @Override
+        public String getClientCertificateAlias() {
+            return clientCertificateAlias;
+        }
     }
 
 }
