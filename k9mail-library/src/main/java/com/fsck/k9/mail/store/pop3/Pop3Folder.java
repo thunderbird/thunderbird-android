@@ -27,23 +27,26 @@ import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
 import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
 
 
+/**
+ * POP3 only supports one folder, "Inbox". So the folder name is the ID here.
+ */
 class Pop3Folder extends Folder<Pop3Message> {
     private Pop3Store pop3Store;
-    private Map<String, Pop3Message> mUidToMsgMap = new HashMap<>();
+    private Map<String, Pop3Message> uidToMsgMap = new HashMap<>();
     @SuppressLint("UseSparseArrays")
-    private Map<Integer, Pop3Message> mMsgNumToMsgMap = new HashMap<>();
-    private Map<String, Integer> mUidToMsgNumMap = new HashMap<>();
-    private String mName;
-    private int mMessageCount;
+    private Map<Integer, Pop3Message> msgNumToMsgMap = new HashMap<>();
+    private Map<String, Integer> uidToMsgNumMap = new HashMap<>();
+    private String name;
+    private int messageCount;
     private Pop3Connection connection;
 
     Pop3Folder(Pop3Store pop3Store, String name) {
         super();
         this.pop3Store = pop3Store;
-        this.mName = name;
+        this.name = name;
 
-        if (mName.equalsIgnoreCase(pop3Store.getConfig().getInboxFolderId())) {
-            mName = pop3Store.getConfig().getInboxFolderId();
+        if (this.name.equalsIgnoreCase(pop3Store.getConfig().getInboxFolderId())) {
+            this.name = pop3Store.getConfig().getInboxFolderId();
         }
     }
 
@@ -53,7 +56,7 @@ class Pop3Folder extends Folder<Pop3Message> {
             return;
         }
 
-        if (!mName.equalsIgnoreCase(pop3Store.getConfig().getInboxFolderId())) {
+        if (!name.equalsIgnoreCase(pop3Store.getConfig().getInboxFolderId())) {
             throw new MessagingException("Folder does not exist");
         }
 
@@ -61,11 +64,11 @@ class Pop3Folder extends Folder<Pop3Message> {
 
         String response = connection.executeSimpleCommand(STAT_COMMAND);
         String[] parts = response.split(" ");
-        mMessageCount = Integer.parseInt(parts[1]);
+        messageCount = Integer.parseInt(parts[1]);
 
-        mUidToMsgMap.clear();
-        mMsgNumToMsgMap.clear();
-        mUidToMsgNumMap.clear();
+        uidToMsgMap.clear();
+        msgNumToMsgMap.clear();
+        uidToMsgNumMap.clear();
     }
 
     @Override
@@ -99,12 +102,12 @@ class Pop3Folder extends Folder<Pop3Message> {
 
     @Override
     public String getId() {
-        return mName;
+        return name;
     }
 
     @Override
     public String getName() {
-        return mName;
+        return name;
     }
 
     @Override
@@ -114,12 +117,12 @@ class Pop3Folder extends Folder<Pop3Message> {
 
     @Override
     public boolean exists() throws MessagingException {
-        return mName.equalsIgnoreCase(pop3Store.getConfig().getInboxFolderId());
+        return name.equalsIgnoreCase(pop3Store.getConfig().getInboxFolderId());
     }
 
     @Override
     public int getMessageCount() {
-        return mMessageCount;
+        return messageCount;
     }
 
     @Override
@@ -133,7 +136,7 @@ class Pop3Folder extends Folder<Pop3Message> {
 
     @Override
     public Pop3Message getMessage(String uid) throws MessagingException {
-        Pop3Message message = mUidToMsgMap.get(uid);
+        Pop3Message message = uidToMsgMap.get(uid);
         if (message == null) {
             message = new Pop3Message(uid, this);
         }
@@ -155,11 +158,11 @@ class Pop3Folder extends Folder<Pop3Message> {
         List<Pop3Message> messages = new ArrayList<>();
         int i = 0;
         for (int msgNum = start; msgNum <= end; msgNum++) {
-            Pop3Message message = mMsgNumToMsgMap.get(msgNum);
+            Pop3Message message = msgNumToMsgMap.get(msgNum);
             if (message == null) {
                 /*
                  * There could be gaps in the message numbers or malformed
-                 * responses which lead to "gaps" in mMsgNumToMsgMap.
+                 * responses which lead to "gaps" in msgNumToMsgMap.
                  *
                  * See issue 2252
                  */
@@ -189,20 +192,20 @@ class Pop3Folder extends Folder<Pop3Message> {
     private void indexMsgNums(int start, int end) throws MessagingException, IOException {
         int unindexedMessageCount = 0;
         for (int msgNum = start; msgNum <= end; msgNum++) {
-            if (mMsgNumToMsgMap.get(msgNum) == null) {
+            if (msgNumToMsgMap.get(msgNum) == null) {
                 unindexedMessageCount++;
             }
         }
         if (unindexedMessageCount == 0) {
             return;
         }
-        if (unindexedMessageCount < 50 && mMessageCount > 5000) {
+        if (unindexedMessageCount < 50 && messageCount > 5000) {
             /*
              * In extreme cases we'll do a UIDL command per message instead of a bulk
              * download.
              */
             for (int msgNum = start; msgNum <= end; msgNum++) {
-                Pop3Message message = mMsgNumToMsgMap.get(msgNum);
+                Pop3Message message = msgNumToMsgMap.get(msgNum);
                 if (message == null) {
                     String response = connection.executeSimpleCommand(UIDL_COMMAND + " " + msgNum);
                     // response = "+OK msgNum msgUid"
@@ -251,7 +254,7 @@ class Pop3Folder extends Folder<Pop3Message> {
                     Integer msgNum = Integer.valueOf(uidParts[0]);
                     String msgUid = uidParts[1];
                     if (msgNum >= start && msgNum <= end) {
-                        Pop3Message message = mMsgNumToMsgMap.get(msgNum);
+                        Pop3Message message = msgNumToMsgMap.get(msgNum);
                         if (message == null) {
                             message = new Pop3Message(msgUid, this);
                             indexMessage(msgNum, message);
@@ -266,7 +269,7 @@ class Pop3Folder extends Folder<Pop3Message> {
     throws MessagingException, IOException {
         Set<String> unindexedUids = new HashSet<>();
         for (String uid : uids) {
-            if (mUidToMsgMap.get(uid) == null) {
+            if (uidToMsgMap.get(uid) == null) {
                 if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
                     Timber.d("Need to index UID %s", uid);
                 }
@@ -298,7 +301,7 @@ class Pop3Folder extends Folder<Pop3Message> {
                         Timber.d("Got msgNum %d for UID %s", msgNum, msgUid);
                     }
 
-                    Pop3Message message = mUidToMsgMap.get(msgUid);
+                    Pop3Message message = uidToMsgMap.get(msgUid);
                     if (message == null) {
                         message = new Pop3Message(msgUid, this);
                     }
@@ -312,9 +315,9 @@ class Pop3Folder extends Folder<Pop3Message> {
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
             Timber.d("Adding index for UID %s to msgNum %d", message.getUid(), msgNum);
         }
-        mMsgNumToMsgMap.put(msgNum, message);
-        mUidToMsgMap.put(message.getUid(), message);
-        mUidToMsgNumMap.put(message.getUid(), msgNum);
+        msgNumToMsgMap.put(msgNum, message);
+        uidToMsgMap.put(message.getUid(), message);
+        uidToMsgNumMap.put(message.getUid(), msgNum);
     }
 
     /**
@@ -398,7 +401,7 @@ class Pop3Folder extends Folder<Pop3Message> {
         if (unsizedMessages == 0) {
             return;
         }
-        if (unsizedMessages < 50 && mMessageCount > 5000) {
+        if (unsizedMessages < 50 && messageCount > 5000) {
             /*
              * In extreme cases we'll do a command per message instead of a bulk request
              * to hopefully save some time and bandwidth.
@@ -410,7 +413,7 @@ class Pop3Folder extends Folder<Pop3Message> {
                 }
                 String response = connection.executeSimpleCommand(
                         String.format(Locale.US, LIST_COMMAND + " %d",
-                                mUidToMsgNumMap.get(message.getUid())));
+                                uidToMsgNumMap.get(message.getUid())));
                 String[] listParts = response.split(" ");
                 //int msgNum = Integer.parseInt(listParts[1]);
                 int msgSize = Integer.parseInt(listParts[2]);
@@ -434,7 +437,7 @@ class Pop3Folder extends Folder<Pop3Message> {
                 String[] listParts = response.split(" ");
                 int msgNum = Integer.parseInt(listParts[0]);
                 int msgSize = Integer.parseInt(listParts[1]);
-                Pop3Message pop3Message = mMsgNumToMsgMap.get(msgNum);
+                Pop3Message pop3Message = msgNumToMsgMap.get(msgNum);
                 if (pop3Message != null && msgUidIndex.contains(pop3Message.getUid())) {
                     if (listener != null) {
                         listener.messageStarted(pop3Message.getUid(), i, count);
@@ -471,7 +474,7 @@ class Pop3Folder extends Folder<Pop3Message> {
 
                 response = connection.executeSimpleCommand(
                         String.format(Locale.US, TOP_COMMAND + " %d %d",
-                                mUidToMsgNumMap.get(message.getUid()), lines));
+                                uidToMsgNumMap.get(message.getUid()), lines));
                 // TOP command is supported. Remember this for the next time.
                 connection.setSupportsTop(true);
             } catch (Pop3ErrorResponse e) {
@@ -492,7 +495,7 @@ class Pop3Folder extends Folder<Pop3Message> {
 
         if (response == null) {
             connection.executeSimpleCommand(String.format(Locale.US, RETR_COMMAND + " %d",
-                                 mUidToMsgNumMap.get(message.getUid())));
+                                 uidToMsgNumMap.get(message.getUid())));
         }
 
         try {
@@ -560,7 +563,7 @@ class Pop3Folder extends Folder<Pop3Message> {
         }
         for (Message message : messages) {
 
-            Integer msgNum = mUidToMsgNumMap.get(message.getUid());
+            Integer msgNum = uidToMsgNumMap.get(message.getUid());
             if (msgNum == null) {
                 MessagingException me = new MessagingException("Could not delete message " + message.getUid()
                         + " because no msgNum found; permanent error");
@@ -585,14 +588,14 @@ class Pop3Folder extends Folder<Pop3Message> {
     @Override
     public boolean equals(Object o) {
         if (o instanceof Pop3Folder) {
-            return ((Pop3Folder) o).mName.equals(mName);
+            return ((Pop3Folder) o).name.equals(name);
         }
         return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return mName.hashCode();
+        return name.hashCode();
     }
 
     void requestUidl() throws MessagingException {
