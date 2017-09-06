@@ -1029,23 +1029,23 @@ public class Account implements BaseAccount, StoreConfig {
         this.deletePolicy = deletePolicy;
     }
 
-    public boolean isSpecialFolder(String folderName) {
-        return (folderName != null && (folderName.equalsIgnoreCase(getInboxFolderId()) ||
-                folderName.equals(getTrashFolderId()) ||
-                folderName.equals(getDraftsFolderId()) ||
-                folderName.equals(getArchiveFolderId()) ||
-                folderName.equals(getSpamFolderId()) ||
-                folderName.equals(getOutboxFolderId()) ||
-                folderName.equals(getSentFolderId()) ||
-                folderName.equals(getErrorFolderId())));
+    public boolean isSpecialFolder(String folderId) {
+        return (folderId != null && (folderId.equalsIgnoreCase(getInboxFolderId()) ||
+                folderId.equals(getTrashFolderId()) ||
+                folderId.equals(getDraftsFolderId()) ||
+                folderId.equals(getArchiveFolderId()) ||
+                folderId.equals(getSpamFolderId()) ||
+                folderId.equals(getOutboxFolderId()) ||
+                folderId.equals(getSentFolderId()) ||
+                folderId.equals(getErrorFolderId())));
     }
 
     public synchronized String getDraftsFolderId() {
         return draftsFolderId;
     }
 
-    public synchronized void setDraftsFolderId(String name) {
-        draftsFolderId = name;
+    public synchronized void setDraftsFolderId(String id) {
+        draftsFolderId = id;
     }
 
     /**
@@ -1064,8 +1064,8 @@ public class Account implements BaseAccount, StoreConfig {
         return K9.ERROR_FOLDER_ID;
     }
 
-    public synchronized void setSentFolderId(String name) {
-        sentFolderId = name;
+    public synchronized void setSentFolderId(String id) {
+        sentFolderId = id;
     }
 
     /**
@@ -1113,8 +1113,8 @@ public class Account implements BaseAccount, StoreConfig {
         return spamFolderId;
     }
 
-    public synchronized void setSpamFolderId(String name) {
-        spamFolderId = name;
+    public synchronized void setSpamFolderId(String id) {
+        spamFolderId = id;
     }
 
     /**
@@ -1133,8 +1133,8 @@ public class Account implements BaseAccount, StoreConfig {
         return autoExpandFolderId;
     }
 
-    public synchronized void setAutoExpandFolderId(String name) {
-        autoExpandFolderId = name;
+    public synchronized void setAutoExpandFolderId(String id) {
+        autoExpandFolderId = id;
     }
 
     public synchronized int getAccountNumber() {
@@ -1620,8 +1620,8 @@ public class Account implements BaseAccount, StoreConfig {
         return inboxFolderId;
     }
 
-    public void setInboxFolderId(String name) {
-        this.inboxFolderId = name;
+    public void setInboxFolderId(String id) {
+        this.inboxFolderId = id;
     }
 
     public synchronized boolean syncRemoteDeletions() {
