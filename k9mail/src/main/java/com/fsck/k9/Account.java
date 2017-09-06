@@ -505,7 +505,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(accountUuid + ".storeUri");
         editor.remove(accountUuid + ".transportUri");
         editor.remove(accountUuid + ".description");
-        editor.remove(accountUuid + ".id");
+        editor.remove(accountUuid + ".name");
         editor.remove(accountUuid + ".email");
         editor.remove(accountUuid + ".alwaysBcc");
         editor.remove(accountUuid + ".automaticCheckIntervalMinutes");
