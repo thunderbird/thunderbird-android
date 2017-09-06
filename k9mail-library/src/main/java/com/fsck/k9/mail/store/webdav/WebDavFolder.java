@@ -51,11 +51,11 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 
  */
 class WebDavFolder extends Folder<WebDavMessage> {
-    private String mName;
-    private String mFolderUrl;
+    private String name;
+    private String folderUrl;
     private boolean mIsOpen = false;
-    private int mMessageCount = 0;
-    private int mUnreadMessageCount = 0;
+    private int messageCount = 0;
+    private int unreadMessageCount = 0;
     private WebDavStore store;
 
     protected WebDavStore getStore() {
@@ -65,13 +65,13 @@ class WebDavFolder extends Folder<WebDavMessage> {
     public WebDavFolder(WebDavStore nStore, String name) {
         super();
         store = nStore;
-        this.mName = name;
+        this.name = name;
         buildFolderUrl();
     }
 
     private void buildFolderUrl() {
         String encodedName;
-        String[] urlParts = this.mName.split("/");
+        String[] urlParts = this.name.split("/");
         String url = "";
         for (int i = 0, count = urlParts.length; i < count; i++) {
             if (i != 0) {
@@ -84,16 +84,16 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
         encodedName = encodedName.replaceAll("\\+", "%20");
 
-        this.mFolderUrl = store.getUrl();
+        this.folderUrl = store.getUrl();
         if (!store.getUrl().endsWith("/")) {
-            this.mFolderUrl += "/";
+            this.folderUrl += "/";
         }
-        this.mFolderUrl += encodedName;
+        this.folderUrl += encodedName;
     }
 
     public void setUrl(String url) {
         if (url != null) {
-            this.mFolderUrl = url;
+            this.folderUrl = url;
         }
     }
 
@@ -142,13 +142,13 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
         messageBody = store.getMoveOrCopyMessagesReadXml(urls, isMove);
         WebDavFolder destFolder = (WebDavFolder) store.getFolder(folderName);
-        headers.put("Destination", destFolder.mFolderUrl);
+        headers.put("Destination", destFolder.folderUrl);
         headers.put("Brief", "t");
         headers.put("If-Match", "*");
         String action = (isMove ? "BMOVE" : "BCOPY");
-        Timber.v("Moving %d messages to %s", messages.size(), destFolder.mFolderUrl);
+        Timber.v("Moving %d messages to %s", messages.size(), destFolder.folderUrl);
 
-        store.processRequest(mFolderUrl, action, messageBody, headers, false);
+        store.processRequest(folderUrl, action, messageBody, headers, false);
     }
 
     private int getMessageCount(boolean read) throws MessagingException {
@@ -165,7 +165,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
         messageBody = store.getMessageCountXml(isRead);
         headers.put("Brief", "t");
-        DataSet dataset = store.processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+        DataSet dataset = store.processRequest(this.folderUrl, "SEARCH", messageBody, headers);
         if (dataset != null) {
             messageCount = dataset.getMessageCount();
         }
@@ -179,15 +179,15 @@ class WebDavFolder extends Folder<WebDavMessage> {
     @Override
     public int getMessageCount() throws MessagingException {
         open(Folder.OPEN_MODE_RW);
-        this.mMessageCount = getMessageCount(true);
-        return this.mMessageCount;
+        this.messageCount = getMessageCount(true);
+        return this.messageCount;
     }
 
     @Override
     public int getUnreadMessageCount() throws MessagingException {
         open(Folder.OPEN_MODE_RW);
-        this.mUnreadMessageCount = getMessageCount(false);
-        return this.mUnreadMessageCount;
+        this.unreadMessageCount = getMessageCount(false);
+        return this.unreadMessageCount;
     }
 
     @Override
@@ -207,12 +207,12 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
     @Override
     public String getId() {
-        return this.mName;
+        return this.name;
     }
 
     @Override
     public String getName() {
-        return this.mName;
+        return this.name;
     }
 
     @Override
@@ -222,8 +222,8 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
     @Override
     public void close() {
-        this.mMessageCount = 0;
-        this.mUnreadMessageCount = 0;
+        this.messageCount = 0;
+        this.unreadMessageCount = 0;
         this.mIsOpen = false;
     }
 
@@ -254,7 +254,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
         int prevStart = start;
 
         /** Reverse the message range since 0 index is newest */
-        start = this.mMessageCount - end;
+        start = this.messageCount - end;
         end = start + (end - prevStart);
 
         if (start < 0 || end < 0 || end < start) {
@@ -270,7 +270,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
         headers.put("Brief", "t");
         headers.put("Range", "rows=" + start + "-" + end);
-        DataSet dataset = store.processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+        DataSet dataset = store.processRequest(this.folderUrl, "SEARCH", messageBody, headers);
         uids = dataset.getUids();
         Map<String, String> uidToUrl = dataset.getUidToUrl();
         uidsLength = uids.length;
@@ -304,7 +304,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
         messageBody = store.getMessageUrlsXml(uids);
         headers.put("Brief", "t");
 
-        DataSet dataset = store.processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+        DataSet dataset = store.processRequest(this.folderUrl, "SEARCH", messageBody, headers);
 
         return dataset.getUidToUrl();
     }
@@ -493,7 +493,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
         messageBody = store.getMessageFlagsXml(uids);
         headers.put("Brief", "t");
-        DataSet dataset = store.processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+        DataSet dataset = store.processRequest(this.folderUrl, "SEARCH", messageBody, headers);
 
         if (dataset == null) {
             throw new MessagingException("Data Set from request was null");
@@ -557,7 +557,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
         messageBody = store.getMessageEnvelopeXml(uids);
         headers.put("Brief", "t");
-        DataSet dataset = store.processRequest(this.mFolderUrl, "SEARCH", messageBody, headers);
+        DataSet dataset = store.processRequest(this.folderUrl, "SEARCH", messageBody, headers);
 
         Map<String, ParsedMessageEnvelope> envelopes = dataset.getMessageEnvelopes();
 
@@ -614,7 +614,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
         headers.put("Brief", "t");
         headers.put("If-Match", "*");
 
-        store.processRequest(this.mFolderUrl, "BPROPPATCH", messageBody, headers, false);
+        store.processRequest(this.folderUrl, "BPROPPATCH", messageBody, headers, false);
     }
 
     private void deleteServerMessages(String[] uids) throws MessagingException {
@@ -681,7 +681,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
                 bodyEntity = new StringEntity(out.toString(), "UTF-8");
                 bodyEntity.setContentType("message/rfc822");
 
-                String messageURL = mFolderUrl;
+                String messageURL = folderUrl;
                 if (!messageURL.endsWith("/")) {
                     messageURL += "/";
                 }
@@ -705,7 +705,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
     @Override
     public boolean equals(Object o) {
         if (o instanceof WebDavFolder) {
-            return ((WebDavFolder) o).mName.equals(mName);
+            return ((WebDavFolder) o).name.equals(name);
         }
         return super.equals(o);
     }
@@ -724,6 +724,6 @@ class WebDavFolder extends Folder<WebDavMessage> {
     }
 
     public String getUrl() {
-        return mFolderUrl;
+        return folderUrl;
     }
 }
