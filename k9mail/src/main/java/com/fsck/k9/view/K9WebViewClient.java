@@ -2,6 +2,8 @@ package com.fsck.k9.view;
 
 
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Map;
 
 import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
@@ -20,7 +22,6 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
 
@@ -84,6 +85,8 @@ abstract class K9WebViewClient extends WebViewClient {
 
     protected abstract void addActivityFlags(Intent intent);
 
+    protected abstract void addCacheControlHeader(WebResourceResponse response);
+
     protected WebResourceResponse shouldInterceptRequest(WebView webView, Uri uri) {
         if (!CID_SCHEME.equals(uri.getScheme())) {
             return RESULT_DO_NOT_INTERCEPT;
@@ -109,7 +112,9 @@ abstract class K9WebViewClient extends WebViewClient {
             String mimeType = contentResolver.getType(attachmentUri);
             InputStream inputStream = contentResolver.openInputStream(attachmentUri);
 
-            return new WebResourceResponse(mimeType, null, inputStream);
+            WebResourceResponse webResourceResponse = new WebResourceResponse(mimeType, null, inputStream);
+            addCacheControlHeader(webResourceResponse);
+            return webResourceResponse;
         } catch (Exception e) {
             Timber.e(e, "Error while intercepting URI: %s", uri);
             return RESULT_DUMMY_RESPONSE;
@@ -143,6 +148,11 @@ abstract class K9WebViewClient extends WebViewClient {
         protected void addActivityFlags(Intent intent) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         }
+
+        @Override
+        protected void addCacheControlHeader(WebResourceResponse response) {
+            // Sadly, adding headers is not supported prior to Lollipop
+        }
     }
 
     @TargetApi(VERSION_CODES.LOLLIPOP)
@@ -159,6 +169,12 @@ abstract class K9WebViewClient extends WebViewClient {
         @Override
         protected void addActivityFlags(Intent intent) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        }
+
+        @Override
+        protected void addCacheControlHeader(WebResourceResponse response) {
+            Map<String, String> headers = Collections.singletonMap("Cache-Control", "no-store");
+            response.setResponseHeaders(headers);
         }
     }
 }
