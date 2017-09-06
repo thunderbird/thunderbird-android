@@ -92,7 +92,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
     //TODO: Remove this when we support multiple namespaces
     private String getPrefixedId() throws MessagingException {
-        String prefixedName = "";
+        String prefixedId = "";
 
         if (!store.getStoreConfig().getInboxFolderId().equalsIgnoreCase(id)) {
             ImapConnection connection;
@@ -114,12 +114,12 @@ class ImapFolder extends Folder<ImapMessage> {
                 }
             }
 
-            prefixedName = store.getCombinedPrefix();
+            prefixedId = store.getCombinedPrefix();
         }
 
-        prefixedName += id;
+        prefixedId += id;
 
-        return prefixedName;
+        return prefixedId;
     }
 
     private List<ImapResponse> executeSimpleCommand(String command) throws MessagingException, IOException {
@@ -156,9 +156,9 @@ class ImapFolder extends Folder<ImapMessage> {
             msgSeqUidMap.clear();
 
             String openCommand = mode == OPEN_MODE_RW ? "SELECT" : "EXAMINE";
-            String encodedFolderName = folderNameCodec.encode(getPrefixedId());
-            String escapedFolderName = ImapUtility.encodeString(encodedFolderName);
-            String command = String.format("%s %s", openCommand, escapedFolderName);
+            String encodedFolderId = folderNameCodec.encode(getPrefixedId());
+            String escapedFolderId = ImapUtility.encodeString(encodedFolderId);
+            String command = String.format("%s %s", openCommand, escapedFolderId);
             List<ImapResponse> responses = executeSimpleCommand(command);
 
             /*

@@ -142,17 +142,17 @@ public class ImapStore extends RemoteStore {
         ImapConnection connection = getConnection();
 
         try {
-            Set<String> folderNames = listFolders(connection, false);
+            Set<String> folderIds = listFolders(connection, false);
 
             if (forceListAll || !mStoreConfig.subscribedFoldersOnly()) {
-                return getFolders(folderNames);
+                return getFolders(folderIds);
             }
 
             Set<String> subscribedFolders = listFolders(connection, true);
 
-            folderNames.retainAll(subscribedFolders);
+            folderIds.retainAll(subscribedFolders);
 
-            return getFolders(folderNames);
+            return getFolders(folderIds);
         } catch (IOException | MessagingException ioe) {
             connection.close();
             throw new MessagingException("Unable to get folder list.", ioe);
@@ -172,14 +172,14 @@ public class ImapStore extends RemoteStore {
         List<ListResponse> listResponses = (subscribedOnly) ?
                 ListResponse.parseLsub(responses) : ListResponse.parseList(responses);
 
-        Set<String> folderNames = new HashSet<>(listResponses.size());
+        Set<String> folderIds = new HashSet<>(listResponses.size());
 
         for (ListResponse listResponse : listResponses) {
             boolean includeFolder = true;
 
-            String decodedFolderName;
+            String decodedFolderId;
             try {
-                decodedFolderName = folderNameCodec.decode(listResponse.getName());
+                decodedFolderId = folderNameCodec.decode(listResponse.getName());
             } catch (CharacterCodingException e) {
                 Timber.w(e,
                         "Folder name not correctly encoded with the UTF-7 variant  as defined by RFC 3501: %s",
@@ -192,7 +192,7 @@ public class ImapStore extends RemoteStore {
                 continue;
             }
 
-            String folder = decodedFolderName;
+            String folder = decodedFolderId;
 
             if (pathDelimiter == null) {
                 pathDelimiter = listResponse.getHierarchyDelimiter();
@@ -215,7 +215,7 @@ public class ImapStore extends RemoteStore {
                     if (folder.length() >= prefixLength) {
                         folder = folder.substring(prefixLength);
                     }
-                    if (!decodedFolderName.equalsIgnoreCase(getCombinedPrefix() + folder)) {
+                    if (!decodedFolderId.equalsIgnoreCase(getCombinedPrefix() + folder)) {
                         includeFolder = false;
                     }
                 }
@@ -226,13 +226,13 @@ public class ImapStore extends RemoteStore {
             }
 
             if (includeFolder) {
-                folderNames.add(folder);
+                folderIds.add(folder);
             }
         }
 
-        folderNames.add(mStoreConfig.getInboxFolderId());
+        folderIds.add(mStoreConfig.getInboxFolderId());
 
-        return folderNames;
+        return folderIds;
     }
 
     void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
@@ -354,11 +354,11 @@ public class ImapStore extends RemoteStore {
         return folderNameCodec;
     }
 
-    private List<ImapFolder> getFolders(Collection<String> folderNames) {
-        List<ImapFolder> folders = new ArrayList<>(folderNames.size());
+    private List<ImapFolder> getFolders(Collection<String> folderIds) {
+        List<ImapFolder> folders = new ArrayList<>(folderIds.size());
 
-        for (String folderName : folderNames) {
-            ImapFolder imapFolder = getFolder(folderName);
+        for (String folderId : folderIds) {
+            ImapFolder imapFolder = getFolder(folderId);
             folders.add(imapFolder);
         }
 
