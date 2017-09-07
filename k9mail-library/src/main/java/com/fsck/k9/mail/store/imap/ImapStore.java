@@ -165,9 +165,11 @@ public class ImapStore extends RemoteStore {
             MessagingException {
         String commandResponse = subscribedOnly ? "LSUB" : "LIST";
 
+        String command = String.format("%s \"\" %s", commandResponse,
+                ImapUtility.encodeString(getCombinedPrefix() + "*"));
+
         List<ImapResponse> responses =
-                connection.executeSimpleCommand(String.format("%s \"\" %s", commandResponse,
-                        ImapUtility.encodeString(getCombinedPrefix() + "*")));
+                connection.executeSimpleCommand(command);
 
         List<ListResponse> listResponses = (subscribedOnly) ?
                 ListResponse.parseLsub(responses) : ListResponse.parseList(responses);
@@ -209,13 +211,14 @@ public class ImapStore extends RemoteStore {
                  */
                 continue;
             } else {
-                int prefixLength = getCombinedPrefix().length();
+                String combinedPrefix = getCombinedPrefix();
+                int prefixLength = combinedPrefix.length();
                 if (prefixLength > 0) {
                     // Strip prefix from the folder name
                     if (folder.length() >= prefixLength) {
                         folder = folder.substring(prefixLength);
                     }
-                    if (!decodedFolderId.equalsIgnoreCase(getCombinedPrefix() + folder)) {
+                    if (!decodedFolderId.equalsIgnoreCase(combinedPrefix + folder)) {
                         includeFolder = false;
                     }
                 }
