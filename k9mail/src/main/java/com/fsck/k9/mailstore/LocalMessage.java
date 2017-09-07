@@ -46,14 +46,14 @@ public class LocalMessage extends MimeMessage {
         this.localStore = localStore;
     }
 
-    public LocalMessage(LocalStore localStore, String uid, Folder folder) {
+    LocalMessage(LocalStore localStore, String uid, Folder folder) {
         this.localStore = localStore;
         this.mUid = uid;
         this.mFolder = folder;
     }
 
 
-    public void populateFromGetMessageCursor(Cursor cursor) throws MessagingException {
+    void populateFromGetMessageCursor(Cursor cursor) throws MessagingException {
         final String subject = cursor.getString(LocalStore.MSG_INDEX_SUBJECT);
         this.setSubject(subject == null ? "" : subject);
 

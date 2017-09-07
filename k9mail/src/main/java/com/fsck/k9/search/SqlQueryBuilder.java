@@ -31,14 +31,14 @@ public class SqlQueryBuilder {
             SearchCondition condition = node.mCondition;
             switch (condition.field) {
                 case FOLDER: {
-                    String folderName = condition.value;
-                    long folderId = getFolderDatabaseId(account, folderName);
+                    String folderId = condition.value;
+                    long folderDatabaseId = getFolderDatabaseId(account, folderId);
                     if (condition.attribute == Attribute.EQUALS) {
                         query.append("folder_id = ?");
                     } else {
                         query.append("folder_id != ?");
                     }
-                    selectionArgs.add(Long.toString(folderId));
+                    selectionArgs.add(Long.toString(folderDatabaseId));
                     break;
                 }
                 case SEARCHABLE: {
@@ -112,8 +112,7 @@ public class SqlQueryBuilder {
             folder.open(Folder.OPEN_MODE_RO);
             folderDatabaseId = folder.getDatabaseId();
         } catch (MessagingException e) {
-            //FIXME
-            e.printStackTrace();
+            Timber.w(e, "Unable to fetch database folder id for folder %s in account: %s", folderId, account.getName());
         }
 
         return folderDatabaseId;

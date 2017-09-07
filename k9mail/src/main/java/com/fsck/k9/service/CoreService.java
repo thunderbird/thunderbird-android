@@ -69,7 +69,7 @@ public abstract class CoreService extends Service {
     private ExecutorService mThreadPool = null;
 
     /**
-     * String of the class id used in debug messages.
+     * String of the class name used in debug messages.
      */
     private final String className = getClass().getName();
 

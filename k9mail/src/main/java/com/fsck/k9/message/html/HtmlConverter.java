@@ -1252,7 +1252,7 @@ public class HtmlConverter {
 
     public static String wrapMessageContent(CharSequence messageContent) {
         // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
-        return "<html><head><meta id=\"viewport\" content=\"width=device-width\"/>" +
+        return "<html><head><meta name=\"viewport\" content=\"width=device-width\"/>" +
                 HtmlConverter.cssStyleTheme() +
                 HtmlConverter.cssStylePre() +
                 "</head><body>" +

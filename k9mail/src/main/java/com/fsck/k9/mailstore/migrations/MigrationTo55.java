@@ -31,21 +31,22 @@ import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.BinaryMemoryBody;
 import com.fsck.k9.mailstore.DatabasePreviewType;
 import com.fsck.k9.mailstore.FileBackedBody;
-import com.fsck.k9.mailstore.LocalBodyPart;
-import com.fsck.k9.mailstore.LocalFolder.DataLocation;
-import com.fsck.k9.mailstore.LocalMimeMessage;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 import timber.log.Timber;
 
-import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.message.extractors.MessageFulltextCreator;
 
 
 class MigrationTo55 {
+
+    private static class DataLocation {
+        private static final int MISSING = 0;
+        private static final int IN_DATABASE = 1;
+        private static final int ON_DISK = 2;
+        private static final int CHILD_PART_CONTAINS_DATA = 3;
+    }
 
     private static final int MSG_INDEX_SUBJECT = 0;
     private static final int MSG_INDEX_SENDER_LIST = 1;

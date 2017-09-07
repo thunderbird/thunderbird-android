@@ -17,7 +17,7 @@ import com.fsck.k9.R;
 
 public class FileBrowserHelper {
     /**
-     * A string array that specifies the id of the intent to use, and the scheme to use with it
+     * A string array that specifies the name of the intent to use, and the scheme to use with it
      * when setting the data for the intent.
      */
     private static final String[][] PICK_DIRECTORY_INTENTS = {

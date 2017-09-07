@@ -12,7 +12,7 @@ public interface SearchSpecification extends Parcelable {
     public String[] getAccountUuids();
 
     /**
-     * Returns the search's id if it was named.
+     * Returns the search's name if it was named.
      * @return Name of the search.
      */
     public String getName();

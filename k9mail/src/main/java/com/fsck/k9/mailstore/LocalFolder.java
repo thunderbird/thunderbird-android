@@ -68,6 +68,16 @@ import org.apache.james.mime4j.util.MimeUtil;
 import timber.log.Timber;
 
 
+/**
+ * The {@link LocalStore} has 3 ways of identifying a folder.
+ *
+ * 1. In the database the <code>databaseId</code> uniquely identifies a folder.
+ *      Folders are indexed and relational queries built around this value.
+ * 2. Each folder also has an ID. This uniquely identifies the folder on the corresponding RemoteStore.
+ * 3. Finally each folder has a name. The intention is for this to become the simple normal name of the folder.
+ *
+ * Note that the displayed name may change from the name if the folder is a special folder.
+ */
 public class LocalFolder extends Folder<LocalMessage> {
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
     private static final long INVALID_MESSAGE_PART_ID = -1;
@@ -77,7 +87,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     private final AttachmentInfoExtractor attachmentInfoExtractor;
 
 
-    private String id = null;
+    private String remoteId = null;
     private String name = null;
     private long databaseId = -1;
     private int visibleLimit = -1;
@@ -98,10 +108,10 @@ public class LocalFolder extends Folder<LocalMessage> {
     private MoreMessages moreMessages = MoreMessages.UNKNOWN;
 
 
-    public LocalFolder(LocalStore localStore, String id) {
+    public LocalFolder(LocalStore localStore, String remoteId) {
         super();
         this.localStore = localStore;
-        this.id = id;
+        this.remoteId = remoteId;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
 
         if (getAccount().getInboxFolderId().equals(getId())) {
@@ -158,8 +168,8 @@ public class LocalFolder extends Folder<LocalMessage> {
                     try {
                         String baseQuery = "SELECT " + LocalStore.GET_FOLDER_COLS + " FROM folders ";
 
-                        if (id != null) {
-                            cursor = db.rawQuery(baseQuery + "where folders.remoteId = ?", new String[] { id });
+                        if (remoteId != null) {
+                            cursor = db.rawQuery(baseQuery + "where folders.remoteId = ?", new String[] { remoteId });
                         } else {
                             cursor = db.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(
                                     databaseId) });
@@ -177,8 +187,6 @@ public class LocalFolder extends Folder<LocalMessage> {
                         }
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
-                    } catch (Exception e) {
-                        throw new WrappedException(new MessagingException("", e));
                     } finally {
                         Utility.closeQuietly(cursor);
                     }
@@ -192,7 +200,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     void open(Cursor cursor) throws MessagingException {
         databaseId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
-        id = cursor.getString(LocalStore.FOLDER_REMOTE_ID_INDEX);
+        remoteId = cursor.getString(LocalStore.FOLDER_REMOTE_ID_INDEX);
         name = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
         visibleLimit = cursor.getInt(LocalStore.FOLDER_VISIBLE_LIMIT_INDEX);
         pushState = cursor.getString(LocalStore.FOLDER_PUSH_STATE_INDEX);
@@ -218,7 +226,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     @Override
     public boolean isOpen() {
-        return (databaseId != -1 && id != null);
+        return (databaseId != -1 && remoteId != null);
     }
 
     @Override
@@ -228,7 +236,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     @Override
     public String getId() {
-        return id;
+        return remoteId;
     }
 
     @Override
@@ -266,7 +274,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     @Override
     public boolean create(FolderType type, final int visibleLimit) throws MessagingException {
         if (exists()) {
-            throw new MessagingException("Folder " + id + " already exists.");
+            throw new MessagingException("Folder " + remoteId + " already exists.");
         }
         List<LocalFolder> foldersToCreate = new ArrayList<>(1);
         foldersToCreate.add(this);
@@ -593,7 +601,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     private String getPrefId() throws MessagingException {
         open(OPEN_MODE_RW);
-        return getPrefId(id);
+        return getPrefId(remoteId);
     }
 
     public void delete() throws MessagingException {
@@ -1034,14 +1042,14 @@ public class LocalFolder extends Folder<LocalMessage> {
         open(OPEN_MODE_RW);
 
         String accountUuid = getAccountUuid();
-        String folderName = getId();
+        String folderId = getId();
 
         List<LocalMessage> messages = new ArrayList<>();
         for (MessageReference messageReference : messageReferences) {
             if (!accountUuid.equals(messageReference.getAccountUuid())) {
                 throw new IllegalArgumentException("all message references must belong to this Account!");
             }
-            if (!folderName.equals(messageReference.getFolderId())) {
+            if (!folderId.equals(messageReference.getFolderId())) {
                 throw new IllegalArgumentException("all message references must belong to this LocalFolder!");
             }
 
@@ -1873,14 +1881,14 @@ public class LocalFolder extends Folder<LocalMessage> {
     @Override
     public boolean equals(Object o) {
         if (o instanceof LocalFolder) {
-            return ((LocalFolder)o).id.equals(id);
+            return ((LocalFolder)o).remoteId.equals(remoteId);
         }
         return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return remoteId.hashCode();
     }
 
     void destroyMessage(LocalMessage localMessage) throws MessagingException {
@@ -2124,7 +2132,7 @@ public class LocalFolder extends Folder<LocalMessage> {
             }
         });
 
-        Timber.d("Updated last UID for folder %s to %s", id, lastUid);
+        Timber.d("Updated last UID for folder %s to %s", remoteId, lastUid);
         this.lastUid = lastUid;
     }
 
@@ -2343,7 +2351,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     // Note: The contents of the 'message_parts' table depend on these values.
-    public static class DataLocation {
+    static class DataLocation {
         public static final int MISSING = 0;
         public static final int IN_DATABASE = 1;
         public static final int ON_DISK = 2;

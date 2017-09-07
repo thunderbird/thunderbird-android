@@ -474,7 +474,7 @@ public class Utility {
     /**
      * Assign the contact to the badge.
      *
-     * On 4.3, we pass the address id as extra info so that if the contact doesn't exist
+     * On 4.3, we pass the address name as extra info so that if the contact doesn't exist
      * the id is auto-populated.
      *
      * @param contactBadge the badge to the set the contact for

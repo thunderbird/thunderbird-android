@@ -572,7 +572,7 @@ public class LocalStore extends Store {
         List<String> queryArgs = new ArrayList<>();
         SqlQueryBuilder.buildWhereClause(account, search.getConditions(), query, queryArgs);
 
-        // Avoid "ambiguous column id" error by prefixing "id" with the message table id
+        // Avoid "ambiguous column name" error by prefixing "id" with the message table name
         String where = SqlQueryBuilder.addPrefixToSelection(new String[] { "id" },
                 "messages.", query.toString());
 
@@ -893,6 +893,7 @@ public class LocalStore extends Store {
         return rawInputStream;
     }
 
+    //Visible for migration
     public File getAttachmentFile(String attachmentId) {
         final StorageManager storageManager = StorageManager.getInstance(context);
         final File attachmentDirectory = storageManager.getAttachmentDirectory(

@@ -98,7 +98,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 "more_messages TEXT default \"unknown\"" +
                 ")");
 
-        db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS folder_remoteId ON folders (remoteId)");
         db.execSQL("DROP TABLE IF EXISTS messages");
         db.execSQL("CREATE TABLE messages (" +
                 "id INTEGER PRIMARY KEY, " +
