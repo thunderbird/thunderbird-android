@@ -15,6 +15,6 @@ public interface PushReceiver {
     String getPushState(String folderName);
     void pushError(String errorMessage, Exception e);
     void authenticationFailed();
-    void setPushActive(String folderName, boolean enabled);
+    void setPushActive(String folderId, String folderName, boolean enabled);
     void sleep(TracingWakeLock wakeLock, long millis);
 }

@@ -107,7 +107,8 @@ public class PollService extends CoreService {
         @Override
         public void synchronizeMailboxFinished(
             Account account,
-            String folder,
+            String folderId,
+            String folderName,
             int totalMessagesInMailbox,
             int numNewMessages) {
             if (account.isNotifyNewMail()) {

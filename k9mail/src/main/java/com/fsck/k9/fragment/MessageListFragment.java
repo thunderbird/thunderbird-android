@@ -801,15 +801,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      */
     private void onRemoteSearchRequested() {
         String searchAccount;
-        String searchFolder;
+        String searchFolderId, searchFolderName;
 
         searchAccount = account.getUuid();
-        searchFolder = currentFolder.id;
+        searchFolderId = currentFolder.id;
+        searchFolderName = currentFolder.name;
 
         String queryString = search.getRemoteSearchArguments();
 
         remoteSearchPerformed = true;
-        remoteSearchFuture = messagingController.searchRemoteMessages(searchAccount, searchFolder,
+        remoteSearchFuture = messagingController.searchRemoteMessages(searchAccount, searchFolderId, searchFolderName,
                 queryString, null, null, activityListener);
 
         swipeRefreshLayout.setEnabled(false);
@@ -1297,7 +1298,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     class MessageListActivityListener extends ActivityListener {
         @Override
-        public void remoteSearchFailed(String folder, final String err) {
+        public void remoteSearchFailed(String folderId, String folderName, final String err) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -1311,7 +1312,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public void remoteSearchStarted(String folder) {
+        public void remoteSearchStarted(String folderId, String folderName) {
             handler.progress(true);
             handler.updateFooter(context.getString(R.string.remote_search_sending_query));
         }
@@ -1322,7 +1323,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public void remoteSearchFinished(String folder, int numResults, int maxResults, List<Message> extraResults) {
+        public void remoteSearchFinished(String folderId, String folderName, int numResults, int maxResults, List<Message> extraResults) {
             handler.progress(false);
             handler.remoteSearchFinished();
             extraSearchResults = extraResults;
@@ -1336,7 +1337,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public void remoteSearchServerQueryComplete(String folderName, int numResults, int maxResults) {
+        public void remoteSearchServerQueryComplete(String folderId, String folderName, int numResults, int maxResults) {
             handler.progress(true);
             if (maxResults != 0 && numResults > maxResults) {
                 handler.updateFooter(context.getResources().getQuantityString(R.plurals.remote_search_downloading_limited,
@@ -1353,42 +1354,42 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public void synchronizeMailboxStarted(Account account, String folderId) {
+        public void synchronizeMailboxStarted(Account account, String folderId, String folderName) {
             if (updateForMe(account, folderId)) {
                 handler.progress(true);
                 handler.folderLoading(folderId, true);
             }
-            super.synchronizeMailboxStarted(account, folderId);
+            super.synchronizeMailboxStarted(account, folderId, folderName);
         }
 
         @Override
-        public void synchronizeMailboxFinished(Account account, String folderId,
+        public void synchronizeMailboxFinished(Account account, String folderId, String folderName,
         int totalMessagesInMailbox, int numNewMessages) {
 
             if (updateForMe(account, folderId)) {
                 handler.progress(false);
                 handler.folderLoading(folderId, false);
             }
-            super.synchronizeMailboxFinished(account, folderId, totalMessagesInMailbox, numNewMessages);
+            super.synchronizeMailboxFinished(account, folderId, folderName, totalMessagesInMailbox, numNewMessages);
         }
 
         @Override
-        public void synchronizeMailboxFailed(Account account, String folder, String message) {
+        public void synchronizeMailboxFailed(Account account, String folderId, String folderName, String message) {
 
-            if (updateForMe(account, folder)) {
+            if (updateForMe(account, folderId)) {
                 handler.progress(false);
-                handler.folderLoading(folder, false);
+                handler.folderLoading(folderId, false);
             }
-            super.synchronizeMailboxFailed(account, folder, message);
+            super.synchronizeMailboxFailed(account, folderId, folderName, message);
         }
 
         @Override
-        public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
+        public void folderStatusChanged(Account account, String folderId, String folderName, int unreadMessageCount) {
             if (isSingleAccountMode() && isSingleFolderMode() && MessageListFragment.this.account.equals(account) &&
-                    folderId.equals(folder)) {
+                    folderId.equals(folderId)) {
                 MessageListFragment.this.unreadMessageCount = unreadMessageCount;
             }
-            super.folderStatusChanged(account, folder, unreadMessageCount);
+            super.folderStatusChanged(account, folderId, folderName, unreadMessageCount);
         }
 
         private boolean updateForMe(Account account, String folderId) {
@@ -2220,7 +2221,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public void checkMail() {
         if (isSingleAccountMode() && isSingleFolderMode()) {
-            messagingController.synchronizeMailbox(account, folderId, activityListener, null);
+            messagingController.synchronizeMailbox(account, folderId, folderId, activityListener, null);
             messagingController.sendPendingMessages(account, activityListener);
         } else if (allAccounts) {
             messagingController.checkMail(context, null, true, true, activityListener);
@@ -2253,7 +2254,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 remoteFolder.close();
                 // Send a remoteSearchFinished() message for good measure.
                 activityListener
-                        .remoteSearchFinished(currentFolder.id, 0, searchAccount.getRemoteSearchNumResults(), null);
+                        .remoteSearchFinished(currentFolder.id, currentFolder.name, 0, searchAccount.getRemoteSearchNumResults(), null);
             } catch (Exception e) {
                 // Since the user is going back, log and squash any exceptions.
                 Timber.e(e, "Could not abort remote search before going back");

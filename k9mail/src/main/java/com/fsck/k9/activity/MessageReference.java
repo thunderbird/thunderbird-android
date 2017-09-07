@@ -85,8 +85,8 @@ public class MessageReference {
         return equals(other.accountUuid, other.folderId, other.uid);
     }
 
-    public boolean equals(String accountUuid, String folderName, String uid) {
-        return this.accountUuid.equals(accountUuid) && this.folderId.equals(folderName) && this.uid.equals(uid);
+    public boolean equals(String accountUuid, String folderId, String uid) {
+        return this.accountUuid.equals(accountUuid) && this.folderId.equals(folderId) && this.uid.equals(uid);
     }
 
     @Override

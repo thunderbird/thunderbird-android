@@ -224,7 +224,7 @@ class ImapFolderPusher extends ImapFolder {
                 }
             }
 
-            pushReceiver.setPushActive(getId(), false);
+            pushReceiver.setPushActive(getId(), getName(), false);
 
             try {
                 if (K9MailLib.isDebug()) {
@@ -244,7 +244,7 @@ class ImapFolderPusher extends ImapFolder {
 
             clearStoredUntaggedResponses();
             idling = false;
-            pushReceiver.setPushActive(getId(), false);
+            pushReceiver.setPushActive(getId(), getName(), false);
 
             try {
                 connection.close();
@@ -295,7 +295,7 @@ class ImapFolderPusher extends ImapFolder {
         }
 
         private void prepareForIdle() {
-            pushReceiver.setPushActive(getId(), true);
+            pushReceiver.setPushActive(getId(), getName(), true);
             idling = true;
         }
 

@@ -258,7 +258,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         @Override
-        public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
+        public void folderStatusChanged(Account account, String folderId, String folderName, int unreadMessageCount) {
             try {
                 AccountStats stats = account.getStats(Accounts.this);
                 if (stats == null) {
@@ -305,26 +305,27 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         @Override
         public void synchronizeMailboxFinished(
             Account account,
-            String folder,
+            String folderId,
+            String folderName,
             int totalMessagesInMailbox,
         int numNewMessages) {
             MessagingController.getInstance(getApplication()).getAccountStats(Accounts.this, account, mListener);
-            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
+            super.synchronizeMailboxFinished(account, folderId, folderName, totalMessagesInMailbox, numNewMessages);
 
             mHandler.progress(false);
 
         }
 
         @Override
-        public void synchronizeMailboxStarted(Account account, String folder) {
-            super.synchronizeMailboxStarted(account, folder);
+        public void synchronizeMailboxStarted(Account account, String folderId, String folderName) {
+            super.synchronizeMailboxStarted(account, folderId, folderName);
             mHandler.progress(true);
         }
 
         @Override
-        public void synchronizeMailboxFailed(Account account, String folder,
+        public void synchronizeMailboxFailed(Account account, String folderId, String folderName,
         String message) {
-            super.synchronizeMailboxFailed(account, folder, message);
+            super.synchronizeMailboxFailed(account, folderId, folderName, message);
             mHandler.progress(false);
 
         }

@@ -43,15 +43,15 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         Timber.v("syncFolder(%s)", folder.getId());
 
         final CountDownLatch latch = new CountDownLatch(1);
-        controller.synchronizeMailbox(account, folder.getId(), new SimpleMessagingListener() {
+        controller.synchronizeMailbox(account, folder.getId(), folder.getName(), new SimpleMessagingListener() {
             @Override
-            public void synchronizeMailboxFinished(Account account, String folder,
+            public void synchronizeMailboxFinished(Account account, String folderId, String folderName,
             int totalMessagesInMailbox, int numNewMessages) {
                 latch.countDown();
             }
 
             @Override
-            public void synchronizeMailboxFailed(Account account, String folder,
+            public void synchronizeMailboxFailed(Account account, String folderId, String folderName,
             String message) {
                 latch.countDown();
             }
@@ -104,9 +104,9 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         }
     }
 
-    public void setPushActive(String folderName, boolean enabled) {
+    public void setPushActive(String folderId, String folderName, boolean enabled) {
         for (MessagingListener l : controller.getListeners()) {
-            l.setPushActive(account, folderName, enabled);
+            l.setPushActive(account, folderId, folderName, enabled);
         }
     }
 
