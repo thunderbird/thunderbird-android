@@ -18,12 +18,12 @@ import android.support.annotation.Nullable;
  */
 public abstract class Store {
     /**
-     * Retrieve a Folder by name. This should not perform a network request.
+     * Retrieve a Folder by id. This should not perform a network request.
      *
-     * @param name The folder name
+     * @param folderId The folder id
      * @return A {@link Folder} that may or may not exist.
      */
-    @NonNull public abstract Folder<? extends Message> getFolder(String name);
+    @NonNull public abstract Folder<? extends Message> getFolder(String folderId);
 
     /**
      * Request a list of folders. This can perform a network request.
