@@ -88,7 +88,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     }
 
     /**
-     * Returns the display id for a folder.
+     * Returns the display name for a folder.
      *
      * <p>
      * This will return localized strings for special folders like the Inbox or the Trash folder.
