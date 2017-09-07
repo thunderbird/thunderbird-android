@@ -3,6 +3,7 @@ package com.fsck.k9.preferences;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +19,7 @@ import com.fsck.k9.Account.Searchable;
 import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.R;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
@@ -229,6 +231,7 @@ public class AccountSettings {
 
         // noinspection MismatchedQueryAndUpdateOfCollection, this map intentionally left blank
         Map<Integer, SettingsUpgrader> u = new HashMap<>();
+        u.put(49, new SettingsUpgraderV49());
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
@@ -374,6 +377,33 @@ public class AccountSettings {
             } catch (NumberFormatException e) { /* do nothing */ }
 
             throw new InvalidSettingValueException();
+        }
+    }
+
+    private static class SettingsUpgraderV49 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            Set<String> deletedSettings = new HashSet<>();
+            String[] settingsToRename = new String[]{
+                    "archiveFolder",
+                    "autoExpandFolder",
+                    "draftsFolder",
+                    "sentFolder",
+                    "trashFolder",
+                    "spamFolder",
+                    "inboxFolder",
+            };
+
+            for (String setting : settingsToRename) {
+                String value = (String) settings.get(setting + "Name");
+                if (value != null) {
+                    settings.put(setting+"Id", value);
+                }
+                deletedSettings.add(setting+"Name");
+            }
+
+            return deletedSettings;
         }
     }
 }
