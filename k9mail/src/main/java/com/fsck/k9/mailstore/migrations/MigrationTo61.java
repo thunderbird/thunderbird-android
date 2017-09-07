@@ -11,6 +11,8 @@ class MigrationTo61 {
         if (!columnExists(db, "folders", "remoteId")) {
             db.execSQL("ALTER TABLE folders ADD remoteId TEXT");
             db.execSQL("UPDATE folders SET remoteId = name");
+            db.execSQL("DROP INDEX IF EXISTS folder_name");
+            db.execSQL("CREATE INDEX IF NOT EXISTS folder_remoteId ON folders (remoteId)");
         }
     }
 
