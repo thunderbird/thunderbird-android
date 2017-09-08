@@ -31,7 +31,8 @@ public class Contacts {
     protected static final String PROJECTION[] = {
             ContactsContract.CommonDataKinds.Email._ID,
             ContactsContract.Contacts.DISPLAY_NAME,
-            ContactsContract.CommonDataKinds.Email.CONTACT_ID
+            ContactsContract.CommonDataKinds.Email.CONTACT_ID,
+            Photo.PHOTO_URI
     };
 
     /**
@@ -238,7 +239,10 @@ public class Contacts {
                 if (!c.moveToFirst()) {
                     return null;
                 }
-                final String uriString = c.getString(c.getColumnIndex(Photo.PHOTO_URI));
+                int columnIndex = c.getColumnIndex(Photo.PHOTO_URI);
+                final String uriString = c.getString(columnIndex);
+                if (uriString == null)
+                    return null;
                 return Uri.parse(uriString);
             } catch (IllegalStateException e) {
                 return null;
