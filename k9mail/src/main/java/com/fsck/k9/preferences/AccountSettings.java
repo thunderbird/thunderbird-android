@@ -52,9 +52,6 @@ public class AccountSettings {
         s.put("alwaysShowCcBcc", Settings.versions(
                 new V(13, new BooleanSetting(false))
         ));
-        s.put("archiveFolderName", Settings.versions(
-                new V(1, new StringSetting("Archive"))
-        ));
         s.put("autoExpandFolderName", Settings.versions(
                 new V(1, new StringSetting("INBOX"))
         ));
@@ -73,9 +70,6 @@ public class AccountSettings {
         s.put("displayCount", Settings.versions(
                 new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
                         R.array.account_settings_display_count_values))
-        ));
-        s.put("draftsFolderName", Settings.versions(
-                new V(1, new StringSetting("Drafts"))
         ));
         s.put("expungePolicy", Settings.versions(
                 new V(1, new StringResourceSetting(Expunge.EXPUNGE_IMMEDIATELY.name(),
@@ -98,9 +92,6 @@ public class AccountSettings {
         ));
         s.put("idleRefreshMinutes", Settings.versions(
                 new V(1, new IntegerResourceSetting(24, R.array.idle_refresh_period_values))
-        ));
-        s.put("inboxFolderName", Settings.versions(
-                new V(1, new StringSetting("INBOX"))
         ));
         s.put("led", Settings.versions(
                 new V(1, new BooleanSetting(true))
@@ -165,9 +156,6 @@ public class AccountSettings {
         s.put("searchableFolders", Settings.versions(
                 new V(1, new EnumSetting<>(Searchable.class, Searchable.ALL))
         ));
-        s.put("sentFolderName", Settings.versions(
-                new V(1, new StringSetting("Sent"))
-        ));
         s.put("sortTypeEnum", Settings.versions(
                 new V(9, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
         ));
@@ -180,9 +168,6 @@ public class AccountSettings {
         s.put("signatureBeforeQuotedText", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));
-        s.put("spamFolderName", Settings.versions(
-                new V(1, new StringSetting("Spam"))
-        ));
         s.put("stripSignature", Settings.versions(
                 new V(2, new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE))
         ));
@@ -191,9 +176,6 @@ public class AccountSettings {
         ));
         s.put("syncRemoteDeletions", Settings.versions(
                 new V(1, new BooleanSetting(true))
-        ));
-        s.put("trashFolderName", Settings.versions(
-                new V(1, new StringSetting("Trash"))
         ));
         s.put("useCompression.MOBILE", Settings.versions(
                 new V(1, new BooleanSetting(true))
@@ -225,6 +207,34 @@ public class AccountSettings {
         ));
         s.put("notifyContactsMailOnly", Settings.versions(
                 new V(42, new BooleanSetting(false))
+        ));
+
+        s.put("archiveFolderId", Settings.versions(
+                new V(49, new StringSetting("Archive"))
+        ));
+
+        s.put("autoExpandFolderId", Settings.versions(
+                new V(49, new StringSetting("INBOX"))
+        ));
+
+        s.put("draftsFolderId", Settings.versions(
+                new V(49, new StringSetting("Drafts"))
+        ));
+
+        s.put("sentFolderId", Settings.versions(
+                new V(49, new StringSetting("Sent"))
+        ));
+
+        s.put("trashFolderId", Settings.versions(
+                new V(49, new StringSetting("Trash"))
+        ));
+
+        s.put("spamFolderId", Settings.versions(
+                new V(49, new StringSetting("Spam"))
+        ));
+
+        s.put("inboxFolderId", Settings.versions(
+                new V(49, new StringSetting("INBOX"))
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);
