@@ -509,6 +509,6 @@ public class MessageTest {
 
         boolean result = m1.equals(m2);
 
-        assertFalse(result);
+        assertTrue(result);
     }
 }
