@@ -16,9 +16,11 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Queue;
 
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
@@ -78,6 +80,7 @@ public class SmtpTransport extends Transport {
     private boolean isEnhancedStatusCodesProvided;
     private int largestAcceptableMessage;
     private boolean retryXoauthWithNewToken;
+    private boolean isPipeliningSupported;
 
 
     public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
@@ -165,6 +168,7 @@ public class SmtpTransport extends Transport {
 
             is8bitEncodingAllowed = extensions.containsKey("8BITMIME");
             isEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES");
+            isPipeliningSupported = extensions.containsKey("PIPELINING");
 
             if (connectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
                 if (extensions.containsKey("STARTTLS")) {
@@ -415,13 +419,10 @@ public class SmtpTransport extends Transport {
     }
 
     private void sendMessageTo(List<String> addresses, Message message)
-    throws MessagingException {
+            throws MessagingException {
         close();
         open();
 
-        if (!is8bitEncodingAllowed) {
-            Timber.d("Server does not support 8bit transfer encoding");
-        }
         // If the message has attachments and our server has told us about a limit on
         // the size of messages, count the message's size before sending it
         if (largestAcceptableMessage > 0 && message.hasAttachments()) {
@@ -431,20 +432,30 @@ public class SmtpTransport extends Transport {
         }
 
         boolean entireMessageSent = false;
-        Address[] from = message.getFrom();
+
         try {
-            String fromAddress = from[0].getAddress();
-            if (is8bitEncodingAllowed) {
-                executeCommand("MAIL FROM:<%s> BODY=8BITMIME", fromAddress);
+            String mailFrom = constructSmtpMailFromCommand(message.getFrom(), is8bitEncodingAllowed);
+
+            if (isPipeliningSupported) {
+                Queue<String> pipelinedCommands = new LinkedList<>();
+                pipelinedCommands.add(mailFrom);
+
+                for (String address : addresses) {
+                    pipelinedCommands.add(String.format("RCPT TO:<%s>", address));
+                }
+
+                pipelinedCommands.add("DATA");
+                executePipelinedCommands(pipelinedCommands);
+                readPipelinedResponse(pipelinedCommands);
             } else {
-                executeCommand("MAIL FROM:<%s>", fromAddress);
-            }
+                executeCommand(mailFrom);
 
-            for (String address : addresses) {
-                executeCommand("RCPT TO:<%s>", address);
-            }
+                for (String address : addresses) {
+                    executeCommand("RCPT TO:<%s>", address);
+                }
 
-            executeCommand("DATA");
+                executeCommand("DATA");
+            }
 
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
                     new LineWrapOutputStream(new SmtpDataStuffing(outputStream), 1000));
@@ -465,6 +476,16 @@ public class SmtpTransport extends Transport {
             close();
         }
 
+    }
+
+    private static String constructSmtpMailFromCommand(Address[] from, boolean is8bitEncodingAllowed) {
+        String fromAddress = from[0].getAddress();
+        if (is8bitEncodingAllowed) {
+            return String.format("MAIL FROM:<%s> BODY=8BITMIME", fromAddress);
+        } else {
+            Timber.d("Server does not support 8bit transfer encoding");
+            return String.format("MAIL FROM:<%s>", fromAddress);
+        }
     }
 
     @Override
@@ -620,6 +641,70 @@ public class SmtpTransport extends Transport {
             line = readLine();
         }
         return line;
+    }
+
+    private void executePipelinedCommands(Queue<String> pipelinedCommands) throws IOException {
+        for (String command : pipelinedCommands) {
+            writeLine(command, false);
+        }
+    }
+
+    private void readPipelinedResponse(Queue<String> pipelinedCommands) throws IOException, MessagingException {
+        String responseLine;
+        List<String> results = new ArrayList<>();
+        NegativeSmtpReplyException negativeRecipient = null;
+        for (String command : pipelinedCommands) {
+            results.clear();
+            responseLine = readCommandResponseLine(results);
+            try {
+                responseLineToCommandResponse(responseLine, results);
+
+            } catch (MessagingException exception) {
+                if (command.equals("DATA")) {
+                    throw exception;
+                }
+                if (command.startsWith("RCPT")) {
+                    negativeRecipient = (NegativeSmtpReplyException) exception;
+                }
+            }
+        }
+
+        if (negativeRecipient != null) {
+            try {
+                executeCommand(".");
+                throw negativeRecipient;
+            } catch (NegativeSmtpReplyException e) {
+                throw negativeRecipient;
+            }
+        }
+
+    }
+
+    private CommandResponse responseLineToCommandResponse(String line, List<String> results) throws MessagingException {
+        int length = line.length();
+        if (length < 1) {
+            throw new MessagingException("SMTP response to line is 0 length");
+        }
+
+        int replyCode = -1;
+        if (length >= 3) {
+            try {
+                replyCode = Integer.parseInt(line.substring(0, 3));
+            } catch (NumberFormatException e) { /* ignore */ }
+        }
+
+        char replyCodeCategory = line.charAt(0);
+        boolean isReplyCodeErrorCategory = (replyCodeCategory == '4') || (replyCodeCategory == '5');
+        if (isReplyCodeErrorCategory) {
+            if (isEnhancedStatusCodesProvided) {
+                throw buildEnhancedNegativeSmtpReplyException(replyCode, results);
+            } else {
+                String replyText = TextUtils.join(" ", results);
+                throw new NegativeSmtpReplyException(replyCode, replyText);
+            }
+        }
+
+        return new CommandResponse(replyCode, results);
     }
 
 
