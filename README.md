@@ -14,8 +14,7 @@ K-9 Mail can be downloaded from a couple of sources:
 - [Github Releases](https://github.com/k9mail/k-9/releases)
 - [Amazon Appstore for Android](http://www.amazon.com/dp/B004JK61K0)
 
-You might also be interested in becoming a [beta tester](https://github.com/k9mail/k-9/wiki/BetaTester)
-or an [alpha tester](https://github.com/k9mail/k-9/wiki/AlphaTester) to get an early look at new versions.
+You might also be interested in becoming a [tester](https://play.google.com/apps/testing/com.fsck.k9) to get an early look at new versions.
 
 
 ## Release Notes
