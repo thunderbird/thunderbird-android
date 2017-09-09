@@ -413,8 +413,8 @@ public class LocalStore extends Store {
                             if (cursor.isNull(FOLDER_ID_INDEX)) {
                                 continue;
                             }
-                            String folderName = cursor.getString(FOLDER_NAME_INDEX);
-                            LocalFolder folder = new LocalFolder(LocalStore.this, folderName);
+                            String remoteId = cursor.getString(FOLDER_REMOTE_ID_INDEX);
+                            LocalFolder folder = new LocalFolder(LocalStore.this, remoteId);
                             folder.open(cursor);
 
                             folders.add(folder);
