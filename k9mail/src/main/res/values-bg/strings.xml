@@ -40,7 +40,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
 Моля знайте, че K-9 не подържа повечето безплатни Hotmail профили и, че както повечето имейл приложения има няколко странности, когато говори с Microsoft Exchange.
 </p><p>
 Моля изпращайте доклади за бъгове, допринасяйте за нови функции и задавайте въпроси на
-<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -57,9 +57,9 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="app_revision_fmt">Информация за версиите: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Използваме следните библиотеки от трети страни: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Емот икони: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">виж прикачените файлове</string>
+  <string name="read_attachment_label">Прочитане на имейл прикачени файлове</string>
   <string name="read_attachment_desc">Позволяване на тази програма да чете вашите прикачени файлове от Писмата.</string>
-  <string name="read_messages_label">Прочети писмата</string>
+  <string name="read_messages_label">Прочитане на имейли</string>
   <string name="read_messages_desc">Позволява на тази праграма да чете вашите Писма.</string>
   <string name="delete_messages_label">Изтрий Писмата</string>
   <string name="delete_messages_desc">Позволи на тази програма да изтрие Писма</string>
@@ -79,6 +79,10 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Следващо обновяване <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_no_network">Синхронизирането e деактивирано - няма връзка с мрежата</string>
+  <string name="status_no_background">Синхронизирането е деактивирано - няма активност в режим фон</string>
+  <string name="status_poll_and_push_disabled">Polling и pushing са деактивирани</string>
+  <string name="status_syncing_blocked">Синхронизирането е блокирано</string>
   <string name="status_syncing_off">Синхронизирането изключено</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> избрани</string>
   <string name="next_action">Следващ</string>
@@ -98,8 +102,8 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="spam_action">Спам</string>
   <string name="forward_action">Напред</string>
   <string name="move_action">Премести</string>
-  <string name="single_message_options_action">Изпрати...</string>
-  <string name="refile_action">Премести...</string>
+  <string name="single_message_options_action">Изпрати…</string>
+  <string name="refile_action">Премести…</string>
   <string name="done_action">Готово</string>
   <string name="discard_action">Отхвърли</string>
   <string name="save_draft_action">Запази като чернова</string>
@@ -226,18 +230,21 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="message_view_from_format">От: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">До:</string>
   <string name="message_view_cc_label">Копие:</string>
+  <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_attachment_view_action">Отвори</string>
   <string name="message_view_attachment_download_action">Запиши</string>
   <string name="message_view_status_attachment_not_saved">Не можа да запише прикаченият файл на SD картата.</string>
+  <string name="message_view_status_no_space">Прикаченият файл не може да бъде запазен, тъй като няма достатъчно свободно място.</string>
   <string name="message_view_show_pictures_action">Покажи картинките</string>
-  <string name="message_view_show_more_attachments_action">Още...</string>
   <string name="message_view_no_viewer">Не можа да намери програма за <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Свали цялото съобщение</string>
   <string name="message_view_toast_unable_to_display_message">Съобщението неможе да бъде показано</string>
+  <string name="message_view_sender_label">през %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Всички header-и са изтеглини, но няма допълнителни header-и за показване.</string>
   <string name="message_additional_headers_retrieval_failed">Извличането на допълнителни header-и от базата данни или имейл сървъра е неуспешно.</string>
   <string name="from_same_sender">Още от този подател</string>
+  <string name="debug_delete_local_body">Дебъгване / Изчистване на тялото на съобщението</string>
   <string name="message_discarded_toast">Съобщението е изтрито</string>
   <string name="message_saved_toast">Съобщението записано като чернова</string>
   <string name="global_settings_flag_label">Покажи звездичките</string>
@@ -270,9 +277,12 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="global_settings_confirm_action_delete_starred">Изтрий тези със звездички (в самото съобщение)</string>
   <string name="global_settings_confirm_action_spam">Спам</string>
   <string name="global_settings_confirm_menu_discard">Изтрийте съобщението</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Отбелязване на всички съобщения като прочетени</string>
   <string name="global_settings_confirm_action_delete_notif">Изтрийте (от лентата с известия)</string>
-  <string name="global_settings_privacy_hide_useragent">Премахни K-9 User-Agent от заглавията на съобщениета</string>
-  <string name="global_settings_privacy_hide_timezone">Използвайте UTC като времева зона в header-ите</string>
+  <string name="global_settings_privacy_hide_useragent">Скриване на имейл програмата</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Премахване на K-9 хедъра за потребителски агент</string>
+  <string name="global_settings_privacy_hide_timezone">Скриване на времевата зона</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Използване на UTC вместо локално време в header-a и reply header-a</string>
   <string name="global_settings_notification_hide_subject_title">Скрий темата в известяванията</string>
   <string name="global_settings_notification_hide_subject_never">Никога</string>
   <string name="global_settings_notification_hide_subject_when_locked">Когато у-вото е заключено</string>
@@ -476,7 +486,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_crypto">Криптография</string>
   <string name="account_settings_crypto_app">OpenPGP приложение</string>
   <string name="account_settings_crypto_key">Моят ключ</string>
-  <string name="account_settings_no_openpgp_provider_configured">Липсва инсталирано OpenPGP приложение</string>
+  <string name="account_settings_no_openpgp_provider_configured">Не е настроено OpenPGP приложение</string>
   <string name="account_settings_mail_check_frequency_label">Честота на проверка на папката</string>
   <string name="account_settings_storage_title">Място</string>
   <string name="account_settings_color_label">Цвят на профила</string>
@@ -541,21 +551,21 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="folder_settings_in_top_group_label">Показвай в основната група</string>
   <string name="folder_settings_in_top_group_summary">Показвай в началото на списъка с папки</string>
   <string name="folder_settings_folder_display_mode_label">Клас на папки за показване</string>
-  <string name="folder_settings_folder_display_mode_normal">Никой</string>
+  <string name="folder_settings_folder_display_mode_normal">Без клас</string>
   <string name="folder_settings_folder_display_mode_first_class">1-ви Клас</string>
   <string name="folder_settings_folder_display_mode_second_class">2-ри Клас</string>
-  <string name="folder_settings_folder_sync_mode_label">Клас на папки за синхронизиране</string>
+  <string name="folder_settings_folder_sync_mode_label">Класът на проверяваните папки</string>
   <string name="folder_settings_folder_sync_mode_normal">Никой</string>
   <string name="folder_settings_folder_sync_mode_first_class">1-ви Клас</string>
   <string name="folder_settings_folder_sync_mode_second_class">2-ри Клас</string>
   <string name="folder_settings_folder_sync_mode_inherited">Същия като класа на показване</string>
   <string name="folder_settings_folder_push_mode_label">Пусх ниво на папките </string>
-  <string name="folder_settings_folder_push_mode_normal">Никой</string>
+  <string name="folder_settings_folder_push_mode_normal">Без клас</string>
   <string name="folder_settings_folder_push_mode_first_class">1-ви Клас</string>
   <string name="folder_settings_folder_push_mode_second_class">2-ри Клас</string>
   <string name="folder_settings_folder_push_mode_inherited">Същия като класа за синхронизация</string>
   <string name="folder_settings_folder_notify_mode_label">Ниво на известия на папките</string>
-  <string name="folder_settings_folder_notify_mode_normal">Никой</string>
+  <string name="folder_settings_folder_notify_mode_normal">Без клас</string>
   <string name="folder_settings_folder_notify_mode_first_class">1-ви Клас</string>
   <string name="folder_settings_folder_notify_mode_second_class">2-ри Клас</string>
   <string name="folder_settings_folder_notify_mode_inherited">Същото като push нивото</string>
@@ -623,7 +633,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="sort_unread_last">Прочетените съобщения първо</string>
   <string name="sort_attach_first">Първо съобщенията с файлове</string>
   <string name="sort_unattached_first">Първо съобщенията без файлове</string>
-  <string name="sort_by">Сортирай по...</string>
+  <string name="sort_by">Сортирай по…</string>
   <string name="sort_by_date">Дата</string>
   <string name="sort_by_arrival">Пристигане</string>
   <string name="sort_by_subject">Тема</string>
@@ -642,8 +652,8 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Отхвърли ключа</string>
   <string name="message_list_help_key">Del (or D) - Изтриване\nR - Отговор\nA - Отговор на всички\nC - Създаване\nF - Препращане\nM - Премесване\nV - Архивиране\nY - Копиране\nZ - Отбелязване като (не)прочетно\nG - Звезда\nO - Сортиране\nI - Приоритет на сортиране\nQ - Обратно към папките\nS - Отбелязване/премахване на отбелязване\nJ или P - Предно съобщение\nK или N - Следващо съобщение</string>
   <string name="folder_list_help_key">1 - Показване само на папки от 1во ниво\n2 - Показване на папки от 1во и 2ро ниво\n3 - Показване на всички папки без 2ро ниво\n4 - Показване на всички папки\nQ - Връщане към Профили\nS - Редактиране на настройките на профила</string>
-  <string name="folder_list_filter_hint">името на папката съдържа</string>
-  <string name="folder_list_display_mode_label">Покажи папките...</string>
+  <string name="folder_list_filter_hint">Името на папката съдържа</string>
+  <string name="folder_list_display_mode_label">Покажи папките…</string>
   <string name="folder_list_display_mode_all">Всички папки</string>
   <string name="folder_list_display_mode_first_class">1-ви Клас папки</string>
   <string name="folder_list_display_mode_first_and_second_class">1-ви &amp; 2-ри Клас папки</string>
@@ -728,6 +738,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="font_size_message_view_sender">Изпращач</string>
   <string name="font_size_message_view_to">До</string>
   <string name="font_size_message_view_cc">Cc</string>
+  <string name="font_size_message_view_bcc">Bcc</string>
   <string name="font_size_message_view_additional_headers">Допълнителни header-и</string>
   <string name="font_size_message_view_subject">Тема</string>
   <string name="font_size_message_view_date">Дата и час</string>
@@ -783,10 +794,11 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="settings_import">Внасяне настройки</string>
   <string name="settings_import_selection">Внесе избраните</string>
   <string name="settings_import_global_settings">Глобални настройки</string>
-  <string name="settings_exporting">Настройки на изнсянето...</string>
-  <string name="settings_importing">Настройки на внасянето...</string>
-  <string name="settings_import_scanning_file">Сканиране на файл...</string>
+  <string name="settings_exporting">Настройки на изнсянето…</string>
+  <string name="settings_importing">Настройки на внасянето…</string>
+  <string name="settings_import_scanning_file">Сканиране на файл…</string>
   <string name="settings_export_success">Изнесенети настройки са запазени като <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">Настройките са успешно изнесени</string>
   <string name="settings_import_global_settings_success">Внесени настройки от <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Внесени <xliff:g id="accounts">%s</xliff:g> от <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
@@ -808,19 +820,19 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="settings_import_incoming_server">Входящ сървър (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Изходящ сървър (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Задаване на парола...</item>
-    <item quantity="other">Задаване на пароли...</item>
+    <item quantity="one">Задаване на парола…</item>
+    <item quantity="other">Задаване на пароли…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Използване на паролата на входящия сървър</string>
   <string name="activate_account_action">Активиране</string>
   <string name="account_unavailable">Профилът \"<xliff:g id="account">%s</xliff:g>\" не е на линия; проверете диска</string>
-  <string name="settings_attachment_default_path">Запазване на прикачени файлове в...</string>
+  <string name="settings_attachment_default_path">Запазване на прикачени файлове в…</string>
   <string name="attachment_save_title">Запазване на прикачени файлове</string>
   <string name="attachment_save_desc">Не е открит браузър. Къде да бъде запазен този прикачен файл?</string>
   <string name="manage_accounts_move_up_action">Премести нагоре</string>
   <string name="manage_accounts_move_down_action">Премести надолу</string>
-  <string name="manage_accounts_moving_message">Престване на профил...</string>
-  <string name="unread_widget_select_account">Показване на непрочетената бройка за...</string>
+  <string name="manage_accounts_moving_message">Престване на профил…</string>
+  <string name="unread_widget_select_account">Показване на непрочетената бройка за…</string>
   <string name="import_dialog_error_title">Не е открито приложение за работа с файлове</string>
   <string name="close">Затваряне</string>
   <string name="webview_empty_message">Няма текст</string>
@@ -855,24 +867,30 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_remote_search_num_label">Лимит на търсенето на сървъра</string>
   <string name="account_settings_remote_search_num_summary">Търсенето ще бъде преустановено, когато бъдят намерени <xliff:g id="num_results">%s</xliff:g> резултата.</string>
   <string name="remote_search_sending_query">Изпращане на заявката към сървъра</string>
-  <string name="remote_search_downloading">Изтегляне на %d резултата</string>
-  <string name="remote_search_downloading_limited">Изтегляне на резултат %1$d от %2$d</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">Изтегляне на %d реултат</item>
+    <item quantity="other">Изтегляне на %d резултата</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">Изтегляне на %1$d от %2$d резултата</item>
+    <item quantity="other">Изтегляне на %1$d от %2$d резултата</item>
+  </plurals>
   <string name="remote_search_error">Търсенето на сървърва е неуспешно</string>
   <string name="account_settings_search">Търсене</string>
   <string name="account_settings_remote_search_enabled">Разреши търсене на сървъра</string>
   <string name="account_settings_remote_search_enabled_summary">Търсене на съобщения на сървъра, в допълнение към тези, на вашето устройство</string>
   <string name="action_remote_search">Търсене на съобщения в сървъра</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Дръпни надолу, за да започне търсене на сървъра...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Пусни, за да започне търсене в сървъра...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Дръпни надолу, за да започне търсене на сървъра…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Пусни, за да започне търсене в сървъра…</string>
   <string name="remote_search_unavailable_no_network">Нужна е връзка с мрежата, за да бъде извършено търсене в сървъра.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Затъмни съобщения след като са прочетени</string>
-  <string name="global_settings_background_as_unread_indicator_summary">Сив фон ще показва, че съобщение е било прочетено</string>
+  <string name="global_settings_background_as_unread_indicator_label">Промяна на цвета след прочитане</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Различвен фон ще показва, че съобщението е било прочетено</string>
   <string name="global_settings_threaded_view_label">Преглед по тема</string>
   <string name="global_settings_threaded_view_summary">Групиране на съобщения по разговор</string>
   <string name="upgrade_databases_title">Обновяване на базите данни</string>
-  <string name="upgrade_databases_unspecified">Обновяване на базите данни...</string>
+  <string name="upgrade_databases_unspecified">Обновяване на базите данни…</string>
   <string name="upgrade_database_format">Обновяване на базата данни на профил \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">Зареждане...</string>
+  <string name="message_list_loading">Зареждане…</string>
   <string name="global_settings_splitview_mode_label">Покзване на разделен екран</string>
   <string name="global_settings_splitview_always">Винаги</string>
   <string name="global_settings_splitview_never">Никога</string>
@@ -888,30 +906,11 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="global_settings_colorize_missing_contact_pictures_summary">Оцветяване на контактите с липсващи снимки</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Действия с видими съобщения</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Показване на избрание действия в менюто на съобщение</string>
-  <string name="loading_attachment">Зареждане на прикачен файл...</string>
+  <string name="loading_attachment">Зареждане на прикачен файл…</string>
   <string name="fetching_attachment_dialog_title_send">Изпращане на съобщение</string>
   <string name="fetching_attachment_dialog_title_save">Запазване в чернови</string>
-  <string name="fetching_attachment_dialog_message">Изтегляне на прикачен файл...</string>
+  <string name="fetching_attachment_dialog_message">Изтегляне на прикачен файл…</string>
   <string name="auth_external_error">Неуспешна идентификация. Сървърът не предлага SASL EXTERNAL. Това може да е поради проблем с сертификатът на клиента (изтекъл,  непознат издател на сертификат) или някакъв друг конфигурационен проблем.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Неуспешно декриптиране: %s</string>
-  <string name="openpgp_unknown_error">Неизвестна OpenPGP грешка</string>
-  <string name="openpgp_canceled_by_user">Отказан от потребителя</string>
-  <string name="openpgp_result_no_signature">Липсва електронен подпис</string>
-  <string name="openpgp_result_invalid_signature">Невалиден електронен подпис!</string>
-  <string name="openpgp_result_signature_uncertified">Подписан от (не сертифициран!)</string>
-  <string name="openpgp_result_signature_certified">Подписан от</string>
-  <string name="openpgp_result_signature_expired_key">Изтекъл ключ!</string>
-  <string name="openpgp_result_signature_revoked_key">Анулиран ключ!</string>
-  <string name="openpgp_result_signature_insecure">Несигурен!</string>
-  <string name="openpgp_result_signature_missing_key">Неизвестен публичен ключ</string>
-  <string name="openpgp_result_encrypted">Криптирано</string>
-  <string name="openpgp_result_not_encrypted">Не криптирано</string>
-  <string name="openpgp_result_decryption_insecure">Несигурен</string>
-  <string name="openpgp_result_action_show">Показване</string>
-  <string name="openpgp_result_action_lookup">Търсене</string>
-  <string name="openpgp_result_no_name">Няма име</string>
-  <string name="openpgp_result_no_email">Няма имейл</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Използвай сертификата на клиента</string>
   <string name="client_certificate_spinner_empty">Няма сертификат на клиента</string>
@@ -919,9 +918,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="client_certificate_retrieval_failure">Неуспешно изтегляне на сертификат на клиента за \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Други настройки</string>
   <string name="client_certificate_expired">Сертификат на клиента \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" е изтекъл или още не станал валиден (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Незавършено съобщение</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Натиснете \"Изтегляне на цялото съобщение\", за да разрешите декриптиране.</string>
   <string name="preview_encrypted">*Крипитиран*</string>
   <string name="add_from_contacts">Добавяне в контакти</string>
   <string name="crypto_settings_cancel">Отказване</string>
@@ -936,18 +933,14 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="address_type_other">Друг</string>
   <string name="address_type_mobile">Мобилен</string>
   <string name="compose_error_no_draft_folder">Липсва папка чернови за този профил!</string>
-  <string name="compose_not_saving_unencrypted">Черновата НЕ е запазена без криптиране!</string>
-  <string name="compose_error_pgp_error">Грешка при OpenPGP. Проверете настройките си!</string>
   <string name="compose_error_no_signing_key">Няма зададен ключ за електронен подпис! Моля, проверете настройките си.</string>
-  <string name="compose_error_private_missing_keys">Личен режим е включен, но някои от получателите не разполагат с ключове!</string>
   <string name="crypto_mode_disabled">Да не се криптира</string>
   <string name="crypto_mode_opportunistic">Криптиране, когато е възможно</string>
   <string name="crypto_mode_private">Криптиране</string>
+  <string name="error_crypto_provider_incompatible">Доставчика на крипто имзползва несъвместима версия.  Моля, прегледайте настройките си!</string>
   <string name="error_crypto_provider_connect">Неуспешна връзка с доставчика на криптиране, проверете настройките си или натиснете иконата за повторен опит!</string>
   <string name="error_crypto_provider_ui_required">Доставчика на криптиране Ви отказа достъп, натиснете иконата за криптиране, за да опитате отново!</string>
   <string name="error_crypto_inline_attach">Режимът PGP/INLINE не поддържа прикачени файлове!</string>
-  <string name="error_crypto_inline_sign_only">PGP/INLINE не поддържа режим, който използва единствено подписване!</string>
-  <string name="error_crypto_sign_only_inline">Режимът само подпис не поддържа PGP/INLINE</string>
   <string name="enable_inline_pgp">Активиране на PGP/INLINE</string>
   <string name="disable_inline_pgp">Деактивиране на PGP/INLINE</string>
   <string name="enable_sign_only">Активиране на PGP само подпис</string>
@@ -971,7 +964,9 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Криптирани съобщения винаги включват подпис.</string>
   <string name="crypto_msg_disabled">Съобщението не е криптирано</string>
   <string name="crypto_msg_encrypted_error">Съобщението е криптирано, но имаше грешка при декриптирането.</string>
+  <string name="crypto_msg_encrypted_insecure">Съобщението е криптирано, но въпреки това не защитено!</string>
   <string name="crypto_msg_signed_error">Съобщението има електронен подпис, но подписът не може да бъде удостоверен.</string>
+  <string name="crypto_msg_encrypted_no_provider">Съобщението е криптирано, но няма настроено приложение за криптиране.</string>
   <string name="crypto_msg_unsupported_encrypted">Съобщението е криптирано, но в неподдържан формат.</string>
   <string name="crypto_msg_unsupported_signed">Съобщението има електронен подпис, но в неподдържан формат.</string>
   <string name="crypto_msg_incomplete_encrypted">Съобщението е криптирано, но трябва да бъде изтеглено изцяло, за да бъде декриптирано.</string>
@@ -991,11 +986,11 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="crypto_msg_unsigned_encrypted">Няма електронен подпис, това съобщение може да е било пресечено от някого.</string>
   <string name="crypto_info_ok">ОК</string>
   <string name="crypto_info_view_key">Разглеждане на подписа</string>
+  <string name="crypto_info_view_security_warning">Информация</string>
   <string name="locked_attach_unlock">Отключване</string>
-  <string name="locked_attach_unsigned">Тази част не е подписана и може да е несигурна.</string>
   <string name="locked_attach_unencrypted">Тази част не криптирана и може да е несигурна.</string>
   <string name="locked_attach_title">Незащитен прикачен файл.</string>
-  <string name="message_progress_text">Зареждане...</string>
+  <string name="message_progress_text">Зареждане…</string>
   <string name="messageview_decrypt_cancelled">Декриптирването е отказано.</string>
   <string name="messageview_decrypt_retry">Повторен опит</string>
   <string name="messageview_decrypt_incomplete">Криптираното съобщение трябва да бъде изтеглено, за да бъде декриптирано.</string>
@@ -1005,8 +1000,38 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="messageview_crypto_warning_expired">Това съобщение е подписано с <b>изтекъл ключ</b>!</string>
   <string name="messageview_crypto_warning_insecure">Това съобщение е подписано с <b>несигурен ключ</b>!</string>
   <string name="messageview_crypto_warning_error">Има <b>проблем в подписа на това съобщение</b>!</string>
+  <string name="messageview_crypto_warning_unsigned">Това съобщение бе криптирано, но не подписане. То не е <b>сигурно от край-до-край</b>!</string>
+  <string name="messageview_crypto_warning_show_anyway">Показване на съобщението въпреки това</string>
   <string name="recipient_error_non_ascii">В момента специални символи не се поддържат!</string>
   <string name="recipient_error_parse_failed">Грешка при обработването на адреса!</string>
   <string name="account_settings_crypto_support_sign_only">Поддържане на електронен подпис на не криптирани съобщения</string>
   <string name="error_sign_only_no_encryption">Криптирането не е възможно, когато се използва режима само подпис! </string>
+  <string name="unsigned_text_divider_label">Неподписан текст</string>
+  <string name="apg_deprecated_title">APG предупреждение за премахване</string>
+  <string name="apg_deprecated_1">APG вече не се поддържа!</string>
+  <string name="apg_deprecated_2">Поради това, поддръжката на APG е премахната от К-9 Mail.</string>
+  <string name="apg_deprecated_bullet_1">Разработването бе преустановено в началото на 2014</string>
+  <string name="apg_deprecated_bullet_2">Съдържа неоправени проблеми по сигурността</string>
+  <string name="apg_learn_more">Може да <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">натиснете тук</a>, за да научите повече.</string>
+  <string name="apg_deprecated_ok">Ясно!</string>
+  <string name="apg">APG</string>
+  <string name="no_crypto_provider_see_global">Не е настроено OpenPGP приложение, Вижте глобалните настройки!</string>
+  <string name="crypto_no_provider_title">Имейлът е криптиран</string>
+  <string name="crypto_no_provider_message">Този имейл е криптиран използвайки OpenPGP.\nЗа да го прочетете, трябва да инсталирате и настроите OpenPGP приложението.</string>
+  <string name="crypto_no_provider_button">Изберете OpenPGP приложение</string>
+  <string name="mail_list_widget_text">K-9 списък със собщения</string>
+  <string name="mail_list_widget_loading">Зареждане на съобщения…</string>
+  <string name="fetching_folders_failed">Неуспешно изтегляне списъка на папки</string>
+  <string name="messageview_crypto_warning_details">Показване на информация</string>
+  <string name="error_recipient_crypto_retrieve">Грешка при изтегляне на статуса на получателя от OpenPGP доставчика!</string>
+  <string name="openpgp_enabled_error_title">Криптирането е невъзможно</string>
+  <string name="openpgp_enabled_error_msg">Някои от избраните получатели не поддържат тази функция!</string>
+  <string name="enable_encryption">Включване на криптирането</string>
+  <string name="disable_encryption">Изключване на криптирането</string>
+  <string name="openpgp_description_text1">Криптирането на съобщения подсигурява, че те могат да бъдат прочетени единствено от получателя им и никой друг.</string>
+  <string name="openpgp_description_text3">Криптирането ще се покаже единствено, когато е поддържано от всички получатели и ако те са Ви изпратили имейл преди.</string>
+  <string name="openpgp_description_text2">Промянана на криптирането след натискане на тази икона.</string>
+  <string name="openpgp_enabled_error_gotit">Ясно</string>
+  <string name="openpgp_enabled_error_back">Назад</string>
+  <string name="openpgp_enabled_error_disable">Изключване на криптирането</string>
 </resources>

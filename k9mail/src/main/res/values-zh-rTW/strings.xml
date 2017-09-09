@@ -130,6 +130,9 @@
   <string name="notification_action_reply">回覆</string>
   <string name="notification_action_mark_as_read">開啟</string>
   <string name="notification_action_delete">刪除</string>
+  <string name="notification_action_archive">歸檔</string>
+  <string name="notification_action_spam">標記為垃圾</string>
+  <string name="notification_certificate_error_title">驗證失敗</string>
   <string name="notification_certificate_error_text">檢查你的伺服器設定</string>
   <string name="notification_bg_sync_ticker">正在檢查郵件：<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">正在檢查郵件</string>
@@ -179,7 +182,6 @@
   <string name="message_view_attachment_download_action">儲存</string>
   <string name="message_view_status_attachment_not_saved">無法將附件儲存到記憶卡。</string>
   <string name="message_view_show_pictures_action">顯示圖片</string>
-  <string name="message_view_show_more_attachments_action">更多…</string>
   <string name="message_view_no_viewer">無法開啟<xliff:g id="mimetype">%s</xliff:g>。找不到可以開啟該附件的程式。</string>
   <string name="message_view_download_remainder">下載完整郵件</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -214,6 +216,7 @@
   <string name="global_settings_messageview_show_next_summary">刪除郵件後自動顯示下一郵件</string>
   <string name="global_settings_confirm_actions_title">確認操作</string>
   <string name="global_settings_confirm_actions_summary">進行選擇操作時總是顯示一個對話框進行確認</string>
+  <string name="global_settings_confirm_action_delete">刪除</string>
   <string name="global_settings_confirm_action_delete_starred">移除星號 (僅檢視郵件時)</string>
   <string name="global_settings_confirm_action_spam">標記為垃圾</string>
   <string name="global_settings_confirm_action_delete_notif">刪除 (從通知欄)</string>
@@ -349,6 +352,11 @@
   <string name="account_settings_default_label">預設帳戶</string>
   <string name="account_settings_default_summary">預設使用這個帳戶寄送郵件</string>
   <string name="account_settings_notify_label">新郵件通知</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">全部</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">僅上層信件匣</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">上層與下層信件匣</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">不包括下層信件匣</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">無</string>
   <string name="account_settings_notify_sync_label">同步通知</string>
   <string name="account_settings_email_label">您的電子郵件地址</string>
   <string name="account_settings_notify_summary">新郵件到達時在通知欄中顯示通知</string>
@@ -450,19 +458,18 @@
   <string name="folder_settings_in_top_group_label">顯示在置頂的組中</string>
   <string name="folder_settings_in_top_group_summary">顯示在置頂的組之後</string>
   <string name="folder_settings_folder_display_mode_label">信件匣顯示層別</string>
-  <string name="folder_settings_folder_display_mode_normal">無</string>
   <string name="folder_settings_folder_display_mode_first_class">上層</string>
   <string name="folder_settings_folder_display_mode_second_class">下層</string>
-  <string name="folder_settings_folder_sync_mode_label">信件匣同步層別</string>
   <string name="folder_settings_folder_sync_mode_normal">無</string>
   <string name="folder_settings_folder_sync_mode_first_class">上層</string>
   <string name="folder_settings_folder_sync_mode_second_class">下層</string>
   <string name="folder_settings_folder_sync_mode_inherited">使用與顯示層別相同的層別</string>
   <string name="folder_settings_folder_push_mode_label">信件匣推送層別</string>
-  <string name="folder_settings_folder_push_mode_normal">無</string>
   <string name="folder_settings_folder_push_mode_first_class">上層</string>
   <string name="folder_settings_folder_push_mode_second_class">下層</string>
   <string name="folder_settings_folder_push_mode_inherited">使用與同步層別相同的層別</string>
+  <string name="folder_settings_folder_notify_mode_first_class">上層</string>
+  <string name="folder_settings_folder_notify_mode_second_class">下層</string>
   <string name="account_settings_incoming_label">內送伺服器</string>
   <string name="account_settings_incoming_summary">配置內送伺服器</string>
   <string name="account_settings_outgoing_label">外寄伺服器</string>
@@ -544,7 +551,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">無法識別的授權認證</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">接收金鑰</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒絕金鑰</string>
-  <string name="folder_list_filter_hint">信件匣名稱包括</string>
   <string name="folder_list_display_mode_label">信件匣</string>
   <string name="folder_list_display_mode_all">顯示全部信件匣</string>
   <string name="folder_list_display_mode_first_class">只顯示上層信件匣</string>
@@ -629,6 +635,7 @@
   <string name="font_size_message_view_sender">寄件人</string>
   <string name="font_size_message_view_to">收件人</string>
   <string name="font_size_message_view_cc">副本</string>
+  <string name="font_size_message_view_bcc">密件副本</string>
   <string name="font_size_message_view_additional_headers">額外的郵件訊息</string>
   <string name="font_size_message_view_subject">主題</string>
   <string name="font_size_message_view_date">日期</string>
@@ -657,6 +664,8 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">刪除</string>
   <string name="dialog_confirm_delete_cancel_button">不要刪除</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">是</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">否</string>
   <string name="dialog_confirm_spam_title">移至垃圾桶時確認</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="other">確定要將選取的 <xliff:g id="message_count">%1$d</xliff:g> 封郵件移至垃圾桶嗎？</item>
@@ -744,8 +753,6 @@
   <string name="account_settings_remote_search_num_label">伺服器搜尋結果項目上限</string>
   <string name="account_settings_remote_search_num_summary">找到 <xliff:g id="num_results">%s</xliff:g> 個符合項目後，搜尋將自動停止。</string>
   <string name="remote_search_sending_query">向伺服器發送查詢</string>
-  <string name="remote_search_downloading">收到 %d 個符合項目</string>
-  <string name="remote_search_downloading_limited">已接收%1$d個項目，共%2$d個符合項目</string>
   <string name="remote_search_error">遠端搜尋失敗</string>
   <string name="account_settings_search">搜尋</string>
   <string name="account_settings_remote_search_enabled">啟用伺服器搜尋</string>
@@ -754,8 +761,6 @@
   <string name="pull_to_refresh_remote_search_from_local_search_pull">往下滑動可搜尋伺服器…</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">放開後開始搜尋伺服器…</string>
   <string name="remote_search_unavailable_no_network">沒有網路連線，無法進行遠端搜尋。</string>
-  <string name="global_settings_background_as_unread_indicator_label">使用背景顏色區分已(未)讀信件</string>
-  <string name="global_settings_background_as_unread_indicator_summary">用不同的背景顏色來顯示已讀與未讀信件</string>
   <string name="global_settings_threaded_view_label">樹狀檢視</string>
   <string name="global_settings_threaded_view_summary">群組訊息交談內容</string>
   <string name="upgrade_databases_title">更新資料庫</string>
@@ -773,7 +778,16 @@
   <string name="last_refresh_time_format_with_push">最後更新 <xliff:g id="time_with_preposition">%s</xliff:g> (啟用推送)</string>
   <string name="preposition_for_date">於 <xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">標記全部為已讀</string>
-  <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
   <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_settings_cancel">取消</string>
+  <string name="recipient_cc">副本</string>
+  <string name="recipient_bcc">密件副本</string>
+  <string name="recipient_to">收件人</string>
+  <string name="address_type_other">其他</string>
+  <string name="address_type_mobile">行動網路</string>
+  <string name="crypto_mode_private">加密</string>
+  <string name="crypto_info_ok">確定</string>
+  <string name="message_progress_text">載入中…</string>
+  <string name="openpgp_enabled_error_back">返回</string>
 </resources>

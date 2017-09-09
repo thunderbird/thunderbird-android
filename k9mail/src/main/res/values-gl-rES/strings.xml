@@ -188,7 +188,6 @@
   <string name="message_view_attachment_download_action">Gardar</string>
   <string name="message_view_status_attachment_not_saved">Non é posible gardar o anexo na tarxeta SD.</string>
   <string name="message_view_show_pictures_action">Mostrar imaxes</string>
-  <string name="message_view_show_more_attachments_action">Máis…</string>
   <string name="message_view_no_viewer">Non é posible atopar un visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaxe completa</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -228,8 +227,7 @@
   <string name="global_settings_confirm_action_spam">Lixo</string>
   <string name="global_settings_confirm_menu_discard">Desbotar mensaxe</string>
   <string name="global_settings_confirm_action_delete_notif">Eliminar (das notificacións)</string>
-  <string name="global_settings_privacy_hide_useragent">Quitar o User-Agent K-9 das cabeceiras do correo</string>
-  <string name="global_settings_privacy_hide_timezone">Utilizar UTC como zona horaria nas cabeceiras das mensaxes</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Quitar o User-Agent K-9 das cabeceiras do correo</string>
   <string name="global_settings_notification_hide_subject_title">Agochar asunto nas notificacións</string>
   <string name="global_settings_notification_hide_subject_never">Nunca</string>
   <string name="global_settings_notification_hide_subject_when_locked">Cando o dispositivo está bloqueado</string>
@@ -427,7 +425,6 @@
   <string name="account_settings_crypto">Cifraxe</string>
   <string name="account_settings_crypto_app">App OpenPGP</string>
   <string name="account_settings_crypto_key">A miña chave</string>
-  <string name="account_settings_no_openpgp_provider_configured">Sen app OpenPGP instalada</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
@@ -492,18 +489,14 @@
   <string name="folder_settings_in_top_group_label">Mostrar ao principio</string>
   <string name="folder_settings_in_top_group_summary">Mostrar preto do principio da listaxe de cartafoles</string>
   <string name="folder_settings_folder_display_mode_label">Clase de cartafol para mostrar</string>
-  <string name="folder_settings_folder_display_mode_normal">Ningún</string>
   <string name="folder_settings_folder_display_mode_first_class">1.ª clase</string>
   <string name="folder_settings_folder_display_mode_second_class">2.ª clase</string>
-  <string name="folder_settings_folder_sync_mode_label">Tipos de cartafol sincronizados</string>
   <string name="folder_settings_folder_sync_mode_normal">Ningún</string>
   <string name="folder_settings_folder_sync_mode_first_class">1.ª clase</string>
   <string name="folder_settings_folder_sync_mode_second_class">2.ª clase</string>
-  <string name="folder_settings_folder_push_mode_normal">Ningún</string>
   <string name="folder_settings_folder_push_mode_first_class">1.ª clase</string>
   <string name="folder_settings_folder_push_mode_second_class">2.ª clase</string>
   <string name="folder_settings_folder_notify_mode_label">Clase para o cartafol de notificación</string>
-  <string name="folder_settings_folder_notify_mode_normal">Ningún</string>
   <string name="folder_settings_folder_notify_mode_first_class">1ª Clase</string>
   <string name="folder_settings_folder_notify_mode_second_class">2ª Clase</string>
   <string name="account_settings_incoming_label">Servidor de entrada</string>
@@ -589,7 +582,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rexeitar chave</string>
   <string name="message_list_help_key">Del (or D) - Eliminar\nR - Respostar\nA - Respostar a todos\nC - Escribir\nF - Reenviar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar (Non)lido\nG - Estrela\nO - Ordenar\nI - Ordenar por\nQ - Voltar a cartafoles\nS - Selecionar/deselecionar\nJ or P - Mensaxe anterior\nK or N - Seguinte mensaxe</string>
   <string name="folder_list_help_key">1 - Mostrar so cartafoles de 1ª clase\n2 - Mostrar cartafoles de 1ª e 2ª clase\n3 - Mostrar todo menos cartafoles de 2ª clase\n4 - Mostrar todos os cartafoles\nQ - Voltar a contas\nS - Editar preferencias da conta</string>
-  <string name="folder_list_filter_hint">o nome do cartafol contén</string>
   <string name="folder_list_display_mode_label">Mostrar cartafoles…</string>
   <string name="folder_list_display_mode_all">Todos os cartafoles</string>
   <string name="folder_list_display_mode_first_class">Cartafoles de 1.ª clase</string>
@@ -674,6 +666,7 @@
   <string name="font_size_message_view_sender">Remitente</string>
   <string name="font_size_message_view_to">Para</string>
   <string name="font_size_message_view_cc">Cc</string>
+  <string name="font_size_message_view_bcc">Bcc</string>
   <string name="font_size_message_view_additional_headers">Cabeceiras adicionais</string>
   <string name="font_size_message_view_subject">Asunto</string>
   <string name="font_size_message_view_date">Hora e data</string>
@@ -705,6 +698,8 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Si</string>
   <string name="dialog_confirm_delete_cancel_button">Non</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Si</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Non</string>
   <string name="dialog_confirm_spam_title">Confirmar a acción de mover ao cartafol do correo lixo</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Realmente queres mover esta mensaxe ao cartafol de correo lixo?</item>
@@ -796,18 +791,14 @@
   <string name="account_settings_remote_search_num_label">Limitar resultados nas procuras no servidor</string>
   <string name="account_settings_remote_search_num_summary">A procura deterase cando se alcancen os <xliff:g id="num_results">%s</xliff:g> resultados.</string>
   <string name="remote_search_sending_query">Enviando consulta ao servidor</string>
-  <string name="remote_search_downloading">Obtendo %d resultados</string>
-  <string name="remote_search_downloading_limited">Obtendo %1$d de %2$d resultados</string>
   <string name="remote_search_error">Erro na procura en remoto</string>
   <string name="account_settings_search">Procurar</string>
   <string name="account_settings_remote_search_enabled">Habilitar procuras no servidor</string>
   <string name="account_settings_remote_search_enabled_summary">Procurar mensaxes no servidor ademais de no teu dispositivo</string>
   <string name="action_remote_search">Procurar mensaxes no servidor</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Toca para buscar servidor...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Liberar para buscar servidor...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Toca para buscar servidor…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Liberar para buscar servidor…</string>
   <string name="remote_search_unavailable_no_network">Requírese unha conexión á rede para procurar no servidor.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Oscurece mensaxes despois de ler</string>
-  <string name="global_settings_background_as_unread_indicator_summary">O fondo gris mostrará que unha mensaxe foi lida</string>
   <string name="global_settings_threaded_view_label">Vistar en conversación</string>
   <string name="global_settings_threaded_view_summary">Mensaxes agrupadas por conversa</string>
   <string name="upgrade_databases_title">Actualizando as bases de datos</string>
@@ -826,7 +817,16 @@
   <string name="fetching_attachment_dialog_title_send">A enviar mensaxe</string>
   <string name="fetching_attachment_dialog_title_save">A gardar borrador</string>
   <string name="fetching_attachment_dialog_message">Obtendo anexo…</string>
-  <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
   <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_settings_cancel">Cancelar</string>
+  <string name="recipient_cc">Cc</string>
+  <string name="recipient_bcc">Bcc</string>
+  <string name="recipient_to">Para</string>
+  <string name="address_type_other">Outras</string>
+  <string name="address_type_mobile">Móbil</string>
+  <string name="crypto_mode_private">Cifrar</string>
+  <string name="crypto_info_ok">Aceptar</string>
+  <string name="message_progress_text">A cargar…</string>
+  <string name="openpgp_enabled_error_back">Volver</string>
 </resources>

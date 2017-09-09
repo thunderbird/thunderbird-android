@@ -28,9 +28,9 @@
   <string name="app_revision_fmt">Informacije Revizije: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Mi koristimo slijedeće biblioteke treće strane: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emoji ikone: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">čitanje privitaka E-Pošte</string>
+  <string name="read_attachment_label">Čitanje privitaka E-Pošte</string>
   <string name="read_attachment_desc">Dopušta ovoj aplikaciji čitanje vaših privitaka E-Pošte.</string>
-  <string name="read_messages_label">čitanje E-Pošte</string>
+  <string name="read_messages_label">Čitanje E-Pošte</string>
   <string name="read_messages_desc">Dopušta ovoj aplikaciji čitanje vaše E-Pošte</string>
   <string name="delete_messages_label">Brisanje E-Pošte</string>
   <string name="delete_messages_desc">Dopušta ovoj aplikaciji brisanje vaše E-Pošte.</string>
@@ -191,7 +191,6 @@
   <string name="message_view_attachment_download_action">Spremi</string>
   <string name="message_view_status_attachment_not_saved">Spremanje privitka na SD karticu nije moguće.</string>
   <string name="message_view_show_pictures_action">Prikaži slike</string>
-  <string name="message_view_show_more_attachments_action">Više…</string>
   <string name="message_view_no_viewer">Ne mogu pronaći preglednik za <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Preuzmi cijelu poruku</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -231,8 +230,7 @@
   <string name="global_settings_confirm_action_spam">Neželjena pošta</string>
   <string name="global_settings_confirm_menu_discard">Odbaci poruku</string>
   <string name="global_settings_confirm_action_delete_notif">Obriši (iz obavijesti)</string>
-  <string name="global_settings_privacy_hide_useragent">Makni K-9 Korisničkog agenta iz zaglavlja pošte</string>
-  <string name="global_settings_privacy_hide_timezone">Koristi KSV kao vremensku zonu u zaglavlju pošte</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Makni K-9 Korisničkog agenta iz zaglavlja pošte</string>
   <string name="global_settings_notification_hide_subject_title">Sakrij subjekt u obavijesti</string>
   <string name="global_settings_notification_hide_subject_never">Nikad</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kad je uređaj zaključan</string>
@@ -434,7 +432,6 @@
   <string name="account_settings_crypto">Šifriranje</string>
   <string name="account_settings_crypto_app">Aplikacija OtvorenogPGP-a</string>
   <string name="account_settings_crypto_key">Moj Ključ</string>
-  <string name="account_settings_no_openpgp_provider_configured">Nema instalirane aplikacije OtvorenogPGP-a</string>
   <string name="account_settings_mail_check_frequency_label">Učestalost provjere mape</string>
   <string name="account_settings_storage_title">Pohrana</string>
   <string name="account_settings_color_label">Boja računa</string>
@@ -499,21 +496,17 @@
   <string name="folder_settings_in_top_group_label">Prikaži na vrhu grupe</string>
   <string name="folder_settings_in_top_group_summary">Prikaži blizu vrha na popisu mapa</string>
   <string name="folder_settings_folder_display_mode_label">Razred prikaza mape</string>
-  <string name="folder_settings_folder_display_mode_normal">Nijedan</string>
   <string name="folder_settings_folder_display_mode_first_class">1. Razreda</string>
   <string name="folder_settings_folder_display_mode_second_class">2. Razreda</string>
-  <string name="folder_settings_folder_sync_mode_label">Razred sinhroniziranja mape</string>
-  <string name="folder_settings_folder_sync_mode_normal">Nijedan</string>
+  <string name="folder_settings_folder_sync_mode_normal">Nijedna</string>
   <string name="folder_settings_folder_sync_mode_first_class">1. Razreda</string>
   <string name="folder_settings_folder_sync_mode_second_class">2. Razreda</string>
   <string name="folder_settings_folder_sync_mode_inherited">Isto kao razred prikaza</string>
   <string name="folder_settings_folder_push_mode_label">Razred guranja mape</string>
-  <string name="folder_settings_folder_push_mode_normal">Nijedan</string>
   <string name="folder_settings_folder_push_mode_first_class">1. Ratreda</string>
   <string name="folder_settings_folder_push_mode_second_class">2. Razreda</string>
   <string name="folder_settings_folder_push_mode_inherited">Isto kao i razred sinhronizacije</string>
   <string name="folder_settings_folder_notify_mode_label">razred obavijesti mape</string>
-  <string name="folder_settings_folder_notify_mode_normal">Nijedan</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. Razreda</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. Razreda</string>
   <string name="folder_settings_folder_notify_mode_inherited">Isto kao i razred guranja</string>
@@ -600,7 +593,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odbij ključ</string>
   <string name="message_list_help_key">Del (or D) - Obriši\nR - Odgovori\nA - Odgovori Svima\nC - Sastavi\nF - Proslijedi\nM - Premjesti\nV - Arhiviraj\nY - Kopiraj\nZ - Označi (Ne)pročitano\nG - Zvjezdica\nO - Sortiranje vrste\nI - Poredak sortiranja\nQ - Povratak na Mape\nS - Označi/odznači\nJ or P - Prethodna Poruka\nK or N - Slijedeća Poruka</string>
   <string name="folder_list_help_key">1 - Prikaži samo mape 1. Razreda\n2 - Prikaži mape 1. i 2. Razreda\n3 - Prikaži sve osim mapa 2. Razreda\n4 - Prikaži sve mape\nQ - Povratak na Račune\nS - Uredi Postavei Računa</string>
-  <string name="folder_list_filter_hint">naziv mape sadrži</string>
   <string name="folder_list_display_mode_label">Prikaži mape…</string>
   <string name="folder_list_display_mode_all">Sve mape</string>
   <string name="folder_list_display_mode_first_class">Mape 1. Razreda</string>
@@ -685,6 +677,7 @@
   <string name="font_size_message_view_sender">Pošiljatelj</string>
   <string name="font_size_message_view_to">Za</string>
   <string name="font_size_message_view_cc">Cc</string>
+  <string name="font_size_message_view_bcc">Bcc</string>
   <string name="font_size_message_view_additional_headers">Dodatna zaglavlja</string>
   <string name="font_size_message_view_subject">Subjekt</string>
   <string name="font_size_message_view_date">Vrijeme i datum</string>
@@ -717,6 +710,8 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Da</string>
   <string name="dialog_confirm_delete_cancel_button">Ne</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Da</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Ne</string>
   <string name="dialog_confirm_spam_title">Potvrda premještanja u mapu neželjena pošta</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Da li stvarno želite premjestiti ovu poruku u mapu otpada?</item>
@@ -812,8 +807,6 @@
   <string name="account_settings_remote_search_num_label">Granica pretrage poslužitelja</string>
   <string name="account_settings_remote_search_num_summary">Traženje će se zaustaviti nakon pronalaska <xliff:g id="num_results">%s</xliff:g> rezultata.</string>
   <string name="remote_search_sending_query">Šaljem upit poslužitelju</string>
-  <string name="remote_search_downloading">Zahvaćam %d rezultate</string>
-  <string name="remote_search_downloading_limited">Dohvaćam  %1$d of %2$d rezultata</string>
   <string name="remote_search_error">Udaljeno pretraživanje nije uspjelo</string>
   <string name="account_settings_search">Pretraga</string>
   <string name="account_settings_remote_search_enabled">Omogući pretraživanje poslužitelja</string>
@@ -822,8 +815,6 @@
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Povuci za pretragu poslužitelja…</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">Otpusti za pretragu poslužitelja…</string>
   <string name="remote_search_unavailable_no_network">Potrebna je mrežna veza za pretragu poslužitelja.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Zamagli poruke nakon čitanja</string>
-  <string name="global_settings_background_as_unread_indicator_summary">Siva pozadina ukazuje da je poruka pročitana</string>
   <string name="global_settings_threaded_view_label">Pregled niza</string>
   <string name="global_settings_threaded_view_summary">Grupiraj poruke po konverzaciji</string>
   <string name="upgrade_databases_title">Nadograđujem baze podataka</string>
@@ -850,24 +841,6 @@
   <string name="fetching_attachment_dialog_title_save">Spremanje skice</string>
   <string name="fetching_attachment_dialog_message">Dohvaćanje privitka…</string>
   <string name="auth_external_error">Ne mogu identificirati. Poslužitelj ne oglašava SASL VANJSKU sposobnost. To može biti problem sa certifikatom klijenta (istekao, nepoznat izdavatelj certifikata) ili neki drugi konfiguracijski problem.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_unknown_error">Nepoznata Greška OvorenogPGP-a</string>
-  <string name="openpgp_canceled_by_user">Otkazano od korisnika</string>
-  <string name="openpgp_result_no_signature">Nije Prijavljen</string>
-  <string name="openpgp_result_invalid_signature">Nevažeći potpis</string>
-  <string name="openpgp_result_signature_uncertified">Potpisno od (nije certificirano)</string>
-  <string name="openpgp_result_signature_certified">Potpisano od</string>
-  <string name="openpgp_result_signature_expired_key">Ključ je istekao!</string>
-  <string name="openpgp_result_signature_revoked_key">Ključ je opozvan</string>
-  <string name="openpgp_result_signature_insecure">Nesigurno!</string>
-  <string name="openpgp_result_signature_missing_key">Nepoznati javni ključ</string>
-  <string name="openpgp_result_encrypted">Enkriptirano</string>
-  <string name="openpgp_result_not_encrypted">Nije enkriptirano</string>
-  <string name="openpgp_result_decryption_insecure">Nesigurno</string>
-  <string name="openpgp_result_action_show">Prikaži</string>
-  <string name="openpgp_result_action_lookup">Potraži</string>
-  <string name="openpgp_result_no_name">Bez naziva</string>
-  <string name="openpgp_result_no_email">Bez e-pošte</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Koristi certifikat klijenta</string>
   <string name="client_certificate_spinner_empty">Nema certifikata klijenta</string>
@@ -875,7 +848,15 @@
   <string name="client_certificate_retrieval_failure">Neuspješno dobivanje certifikata klijenta za alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Napredne Opcije</string>
   <string name="client_certificate_expired">Certifikat klijenta \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" je istekao ili još nije važeći (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Nepotpuna poruka</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Kliknite \'Preuzimanje cijele poruke\' za omogućavanje dekripcije.</string>
+  <string name="crypto_settings_cancel">Otkaži</string>
+  <string name="recipient_cc">Cc</string>
+  <string name="recipient_bcc">Bcc</string>
+  <string name="recipient_to">Za</string>
+  <string name="address_type_other">Ostalo</string>
+  <string name="address_type_mobile">Mobilna</string>
+  <string name="crypto_mode_private">Enkriptiraj</string>
+  <string name="crypto_info_ok">U REDU</string>
+  <string name="message_progress_text">Učitavam…</string>
+  <string name="openpgp_enabled_error_back">Natrag</string>
 </resources>

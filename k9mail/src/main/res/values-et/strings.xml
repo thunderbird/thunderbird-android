@@ -28,7 +28,7 @@
   <string name="app_revision_fmt">Parandusteave: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">me kasutame järgnevaid kolmanda osapoole teeke: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emotikonid: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">loe meili manuseid</string>
+  <string name="read_attachment_label">Loe meili manuseid</string>
   <string name="read_attachment_desc">Luba sellel appil lugeda meili manuseid.</string>
   <string name="read_messages_label">Loe meilisõnumeid</string>
   <string name="read_messages_desc">Luba sellel appil lugeda meilisõnumeid.</string>
@@ -193,7 +193,6 @@
   <string name="message_view_attachment_download_action">Salvesta</string>
   <string name="message_view_status_attachment_not_saved">Ei saanud manust salvestada SD kaardile</string>
   <string name="message_view_show_pictures_action">Näita pilte</string>
-  <string name="message_view_show_more_attachments_action">Veel…</string>
   <string name="message_view_no_viewer">Ei leia <xliff:g id="mimetype">%s</xliff:g> käivitamiseks programmi.</string>
   <string name="message_view_download_remainder">Laadi kogu kiri alla</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -233,7 +232,6 @@
   <string name="global_settings_confirm_action_spam">Rämpspost</string>
   <string name="global_settings_confirm_menu_discard">Eira kirja</string>
   <string name="global_settings_confirm_action_delete_notif">Kustuta (teatistest)</string>
-  <string name="global_settings_privacy_hide_timezone">Kasuta sõnumi päistes UTC ajavööndit</string>
   <string name="global_settings_notification_hide_subject_title">Peida teatistes teema</string>
   <string name="global_settings_notification_hide_subject_never">Mitte kunagi</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kui seade on lukustatud</string>
@@ -476,20 +474,16 @@
   <string name="account_settings_sync_remote_deletetions_summary">Eemalda sõnumid kui need serveris kustutatud</string>
   <string name="folder_settings_title">Kausta sätted</string>
   <string name="folder_settings_folder_display_mode_label">Kausta kuvamise klass</string>
-  <string name="folder_settings_folder_display_mode_normal">Mitte ükski</string>
   <string name="folder_settings_folder_display_mode_first_class">1. klass</string>
   <string name="folder_settings_folder_display_mode_second_class">2. klass</string>
-  <string name="folder_settings_folder_sync_mode_label">Kausta sünkimise klass</string>
   <string name="folder_settings_folder_sync_mode_normal">Mitte ükski</string>
   <string name="folder_settings_folder_sync_mode_first_class">1. klass</string>
   <string name="folder_settings_folder_sync_mode_second_class">2. klass</string>
   <string name="folder_settings_folder_sync_mode_inherited">Sama mis kuvamise klass</string>
   <string name="folder_settings_folder_push_mode_label">Tõukekausta klass</string>
-  <string name="folder_settings_folder_push_mode_normal">Mitte ükski</string>
   <string name="folder_settings_folder_push_mode_first_class">1. klass</string>
   <string name="folder_settings_folder_push_mode_second_class">2. klass</string>
   <string name="folder_settings_folder_push_mode_inherited">Sama kui sünkimise klass</string>
-  <string name="folder_settings_folder_notify_mode_normal">Mitte ükski</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. klass</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. klass</string>
   <string name="folder_settings_folder_notify_mode_inherited">Sama mis tõukekausta klass</string>
@@ -573,7 +567,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnustamata sertifikaat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aktsepteeri võti</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Keeldu võtmest</string>
-  <string name="folder_list_filter_hint">kausta nimi sisaldab</string>
   <string name="folder_list_display_mode_label">Näita kaustu…</string>
   <string name="folder_list_display_mode_all">Kõik kaustad</string>
   <string name="folder_list_display_mode_first_class">1. klassi kaustad</string>
@@ -656,6 +649,7 @@
   <string name="font_size_message_view_sender">Saatja</string>
   <string name="font_size_message_view_to">Kellele</string>
   <string name="font_size_message_view_cc">Cc</string>
+  <string name="font_size_message_view_bcc">Bcc</string>
   <string name="font_size_message_view_additional_headers">Täiendavad pealkirjad</string>
   <string name="font_size_message_view_subject">Teema</string>
   <string name="font_size_message_view_date">Kellaaeg ja kuupäev</string>
@@ -685,6 +679,8 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Jah</string>
   <string name="dialog_confirm_delete_cancel_button">Ei</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Jah</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Ei</string>
   <string name="dialog_confirm_spam_title">Kinnita rämpsposti kausta teisaldamine</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Oled kindel, et tahad seda sõnimit teisaldada rämpsposti kausta?</item>
@@ -766,8 +762,6 @@
   <string name="account_settings_remote_search_num_label">Serverist otsingu limiit</string>
   <string name="account_settings_remote_search_num_summary">Server lõpetad otsingu kui on leidnud <xliff:g id="num_results">%s</xliff:g> tuemust.</string>
   <string name="remote_search_sending_query">Saadab serverile päringut</string>
-  <string name="remote_search_downloading">Toob %d tulemust</string>
-  <string name="remote_search_downloading_limited">Toob %1$d  %2$d -st tulemusest</string>
   <string name="remote_search_error">Kaugotsing ebaõnnestus</string>
   <string name="account_settings_search">Otsi</string>
   <string name="account_settings_remote_search_enabled">Luba serverist otsimine</string>
@@ -796,23 +790,6 @@
   <string name="fetching_attachment_dialog_title_send">Saadab sõnumit</string>
   <string name="fetching_attachment_dialog_title_save">Salvestab mustandit</string>
   <string name="fetching_attachment_dialog_message">Toob manust…</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_canceled_by_user">Kasutaja kustutatud</string>
-  <string name="openpgp_result_no_signature">Ilma allkirjata</string>
-  <string name="openpgp_result_invalid_signature">Vigane allkiri</string>
-  <string name="openpgp_result_signature_uncertified">Allkirjastas (ilma sertifikaadita)</string>
-  <string name="openpgp_result_signature_certified">Allkirjastas</string>
-  <string name="openpgp_result_signature_expired_key">Võti on aegunud!</string>
-  <string name="openpgp_result_signature_revoked_key">Võti on tühistatud</string>
-  <string name="openpgp_result_signature_insecure">Ebaturvaline!</string>
-  <string name="openpgp_result_signature_missing_key">Tundmatu avalik võti</string>
-  <string name="openpgp_result_encrypted">Krüpeeritud</string>
-  <string name="openpgp_result_not_encrypted">Krüpteerimata</string>
-  <string name="openpgp_result_decryption_insecure">Ebaturvaline</string>
-  <string name="openpgp_result_action_show">Näita</string>
-  <string name="openpgp_result_action_lookup">Otsing</string>
-  <string name="openpgp_result_no_name">Ima nimeta</string>
-  <string name="openpgp_result_no_email">Ima ekirjata</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Kasuta kliendi sertifikaati</string>
   <string name="client_certificate_spinner_empty">Kliendi sertifikaati ei ole</string>
@@ -820,11 +797,10 @@
   <string name="client_certificate_retrieval_failure">Sertifikaadi ei õnnestunud saada aliasele \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Täpsemad valikud</string>
   <string name="client_certificate_expired">Kliendi sertifikaat \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ei ole veel kehtiv või on aegunud (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Mittetäielik sõnum</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Dekrüpteerimiseks klikka \'Laadi kogu meilisõnim alla\'.</string>
   <string name="preview_encrypted">*Krüpeeritud*</string>
   <string name="add_from_contacts">Lisa kontaktide hulgast</string>
+  <string name="crypto_settings_cancel">Tühista</string>
   <string name="crypto_settings_ok">Jätka</string>
   <string name="recipient_cc">Cc</string>
   <string name="recipient_bcc">Bcc</string>
@@ -835,4 +811,8 @@
   <string name="address_type_work">Töö</string>
   <string name="address_type_other">Muu</string>
   <string name="address_type_mobile">Mobiilne</string>
+  <string name="crypto_mode_private">Krüpteeri</string>
+  <string name="crypto_info_ok">OK</string>
+  <string name="message_progress_text">Laeb…</string>
+  <string name="openpgp_enabled_error_back">Tagasi</string>
 </resources>

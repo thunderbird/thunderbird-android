@@ -70,7 +70,7 @@
   <string name="forward_action">קדימה</string>
   <string name="move_action">העבר</string>
   <string name="single_message_options_action">שלח</string>
-  <string name="refile_action">תייק מחדש...</string>
+  <string name="refile_action">תייק מחדש…</string>
   <string name="done_action">סיום</string>
   <string name="discard_action">השלך</string>
   <string name="save_draft_action">שמור כטיוטה</string>
@@ -129,6 +129,7 @@
   <string name="abbrev_kilobytes">KB</string>
   <string name="abbrev_bytes">B</string>
   <string name="account_size_changed">החשבון \"<xliff:g id="account">%s</xliff:g>\" כווץ מ- <xliff:g id="oldSize">%s</xliff:g> אל-<xliff:g id="newSize">%s</xliff:g></string>
+  <string name="compacting_account">דחיסת חשבון</string>
   <string name="clearing_account">מנקה חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">יוצר מחדש חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">מייל חדש</string>
@@ -198,7 +199,6 @@
   <string name="message_view_attachment_download_action">שמור</string>
   <string name="message_view_status_attachment_not_saved">אין אפשרות לשמור את הקובץ המצורף לכרטיס ה SD.</string>
   <string name="message_view_show_pictures_action">הצג תמונות</string>
-  <string name="message_view_show_more_attachments_action">עוד...</string>
   <string name="message_view_no_viewer">לא ניתן למצוא את מציג בשביל <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">הורד את ההודעה המלאה</string>
   <string name="message_view_toast_unable_to_display_message">לא ניתן להציג את ההודעה</string>
@@ -356,6 +356,8 @@
   <string name="account_settings_default_label">חשבון ברירת מחדל</string>
   <string name="account_settings_default_summary">לשלוח דואר מחשבון זה כברירת מחדל</string>
   <string name="account_settings_notify_label">התראות על הודעה חדשה</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">הכל</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">כלום</string>
   <string name="account_settings_notify_sync_label">סינכרון התראות</string>
   <string name="account_settings_email_label">כתובת הדוא\"ל שלך</string>
   <string name="account_settings_notify_summary">נא הודע לי בשורת מצב כאשר מגיע דואר</string>
@@ -436,7 +438,6 @@
   <string name="folder_settings_in_top_group_label">הצג בקבוצה העליונה</string>
   <string name="folder_settings_in_top_group_summary">הצג בחלק העליון של רשימת התיקיות</string>
   <string name="folder_settings_folder_sync_mode_normal">כלום</string>
-  <string name="folder_settings_folder_push_mode_normal">כלום</string>
   <string name="account_settings_incoming_label">שרת הודעות נכנסות</string>
   <string name="account_settings_incoming_summary">הגדר את שרת הדואר הנכנס</string>
   <string name="account_settings_outgoing_label">שרת דואר יוצא</string>
@@ -502,6 +503,7 @@
   <string name="sort_by">מיון לפי …</string>
   <string name="sort_by_date">תאריך</string>
   <string name="sort_by_subject">נושא</string>
+  <string name="sort_by_sender">שולח</string>
   <string name="sort_by_flag">כוכב</string>
   <string name="sort_by_unread">נקרא/לא נקרא</string>
   <string name="sort_by_attach">קבצים מצורפים</string>
@@ -528,6 +530,7 @@
   <string name="accountlist_preferences">רשימת חשבונות</string>
   <string name="messagelist_preferences">רשימת הודעות</string>
   <string name="messageview_preferences">הודעות</string>
+  <string name="folderlist_preferences">רשימת תיקיות</string>
   <string name="settings_theme_label">ערכת נושא</string>
   <string name="background_ops_label">סנכרון ברקע</string>
   <string name="background_ops_never">אף פעם</string>
@@ -585,6 +588,7 @@
   <string name="font_size_message_view_sender">שולח</string>
   <string name="font_size_message_view_to">ל</string>
   <string name="font_size_message_view_cc">עותק</string>
+  <string name="font_size_message_view_bcc">עותק מוסתר</string>
   <string name="font_size_message_view_additional_headers">כותרות נוספות</string>
   <string name="font_size_message_view_subject">כותרת</string>
   <string name="font_size_message_view_date">שעה ותאריך</string>
@@ -605,6 +609,8 @@
   <string name="dialog_confirm_delete_message">אתה בטוח שאתה רוצה למחוק את ההודעה הזאת?</string>
   <string name="dialog_confirm_delete_confirm_button">מחק</string>
   <string name="dialog_confirm_delete_cancel_button">אל תמחק!</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">כן</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">לא</string>
   <string name="dialog_confirm_spam_title">אשר העברה לתיקיית דואר זבל</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">אתה בטוח שאתה רוצה להעביר את ההודעות האלו לתיקיית דואר הזבל?</item>
@@ -654,7 +660,19 @@
   <string name="manage_accounts_move_up_action">העבר למעלה</string>
   <string name="manage_accounts_move_down_action">העבר למטה</string>
   <string name="manage_accounts_moving_message">מעביר חשבון…</string>
-  <!--=== OpenPGP specific ==================================================================-->
+  <string name="webview_contextmenu_email_clipboard_label">כתובת דוא\"ל</string>
+  <string name="account_settings_remote_search_num_results_entries_all">הכל</string>
+  <string name="account_settings_search">חפש</string>
+  <string name="global_settings_splitview_always">תמיד</string>
+  <string name="global_settings_splitview_never">אף פעם</string>
   <!--=== Client certificates specific ==================================================================-->
   <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_settings_cancel">ביטול</string>
+  <string name="recipient_cc">עותק</string>
+  <string name="recipient_bcc">עותק מוסתר</string>
+  <string name="recipient_to">ל</string>
+  <string name="address_type_other">אחר</string>
+  <string name="address_type_mobile">סלולרי</string>
+  <string name="crypto_mode_private">הצפן</string>
+  <string name="crypto_info_ok">אישור</string>
 </resources>

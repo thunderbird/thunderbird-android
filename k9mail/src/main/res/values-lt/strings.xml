@@ -27,9 +27,9 @@
   <string name="app_revision_fmt">Laidos informacija: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Mes naudojame šias trečiųjų šalių bibliotekas: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emoji piktogramos: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">žiūrėti el. pašto priedus</string>
+  <string name="read_attachment_label">Žiūrėti el. pašto priedus</string>
   <string name="read_attachment_desc">Leidžia šiai programai peržiūrėti jūsų laiškų priedus.</string>
-  <string name="read_messages_label">skaityti laiškus</string>
+  <string name="read_messages_label">Skaityti laiškus</string>
   <string name="read_messages_desc">Leidžia programai skaityti jūsų laiškus.</string>
   <string name="delete_messages_label">Šalinti laiškus</string>
   <string name="delete_messages_desc">Leidžia programai šalinti jūsų laiškus.</string>
@@ -130,6 +130,8 @@
   <string name="notification_action_reply">Atsakyti</string>
   <string name="notification_action_mark_as_read">Pažymėti kaip skaitytą</string>
   <string name="notification_action_delete">Šalinti</string>
+  <string name="notification_action_archive">Archyvas</string>
+  <string name="notification_action_spam">Brukalas</string>
   <string name="notification_certificate_error_title">Sertifikato klaida <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Patikrinkite serverio nustatymus</string>
   <string name="notification_bg_sync_ticker">Tikrinamas paštas: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -181,7 +183,6 @@
   <string name="message_view_attachment_download_action">Išsaugoti</string>
   <string name="message_view_status_attachment_not_saved">Išsaugoti priedų SD kortelėje nepavyko.</string>
   <string name="message_view_show_pictures_action">Rodyti paveikslėlius</string>
-  <string name="message_view_show_more_attachments_action">Daugiau…</string>
   <string name="message_view_no_viewer">Nepavyko rasto <xliff:g id="mimetype">%s</xliff:g> peržiūros programos.</string>
   <string name="message_view_download_remainder">Parsiųsti visą laišką</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -216,6 +217,7 @@
   <string name="global_settings_messageview_show_next_summary">Pašalinus laišką, pagal nutylėjimą pereiti prie sekančio</string>
   <string name="global_settings_confirm_actions_title">Patvirtinti veiksmus</string>
   <string name="global_settings_confirm_actions_summary">Atliekant pasirinktus veiksmus rodyti dialogą</string>
+  <string name="global_settings_confirm_action_delete">Šalinti</string>
   <string name="global_settings_confirm_action_delete_starred">Pašalinti pažymėtus žvaigždute (pranešimų rodinyje)</string>
   <string name="global_settings_confirm_action_spam">Brukalas</string>
   <string name="global_settings_confirm_action_delete_notif">Pašalinti</string>
@@ -351,6 +353,11 @@
   <string name="account_settings_default_label">Numatytoji paskyra</string>
   <string name="account_settings_default_summary">Pagal nutylėjimą laiškus siųsti iš šios paskyros</string>
   <string name="account_settings_notify_label">Pranešimai apie naujus laiškus</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Visi</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Tik 1 klasės aplankai</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1 ir 2 klasės aplankai</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Visus išskyrus 2 klasės aplankus</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Jokios</string>
   <string name="account_settings_notify_sync_label">Sinchronizuoti pranešimus</string>
   <string name="account_settings_email_label">Jūsų el. pašto adresas</string>
   <string name="account_settings_notify_summary">Gavus laišką pranešti apie tai būsenos juostoje</string>
@@ -452,19 +459,18 @@
   <string name="folder_settings_in_top_group_label">Rodyti viršutinėje grupėje</string>
   <string name="folder_settings_in_top_group_summary">Rodyti aplankų sąrašo viršuje</string>
   <string name="folder_settings_folder_display_mode_label">Rodomos aplankų klasės</string>
-  <string name="folder_settings_folder_display_mode_normal">Jokios</string>
   <string name="folder_settings_folder_display_mode_first_class">1 klasė</string>
   <string name="folder_settings_folder_display_mode_second_class">2 klasė</string>
-  <string name="folder_settings_folder_sync_mode_label">Sinchronizuojamos aplankų klasės</string>
   <string name="folder_settings_folder_sync_mode_normal">Jokios</string>
   <string name="folder_settings_folder_sync_mode_first_class">1 klasė</string>
   <string name="folder_settings_folder_sync_mode_second_class">2 klasė</string>
   <string name="folder_settings_folder_sync_mode_inherited">Tos pačios kaip ir rodymo klasės</string>
   <string name="folder_settings_folder_push_mode_label">Aplankų gavimo klasė</string>
-  <string name="folder_settings_folder_push_mode_normal">Jokios</string>
   <string name="folder_settings_folder_push_mode_first_class">1 klasė</string>
   <string name="folder_settings_folder_push_mode_second_class">2 klasė</string>
   <string name="folder_settings_folder_push_mode_inherited">Taip pat kaip ir sinchronizacijos klasė</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1 klasė</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2 klasė</string>
   <string name="account_settings_incoming_label">Laiškų gavimo serveris</string>
   <string name="account_settings_incoming_summary">Konfigūruoti gaunamųjų laiškų serverį</string>
   <string name="account_settings_outgoing_label">Siuntimo serveris</string>
@@ -546,7 +552,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Neatpažintas sertifikatas</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Priimti raktą</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Atmesti raktą</string>
-  <string name="folder_list_filter_hint">aplanko varde yra</string>
   <string name="folder_list_display_mode_label">Rodyti aplankus…</string>
   <string name="folder_list_display_mode_all">Visus aplankus</string>
   <string name="folder_list_display_mode_first_class">1 klasės aplankus</string>
@@ -631,6 +636,7 @@
   <string name="font_size_message_view_sender">Siuntėjas</string>
   <string name="font_size_message_view_to">Kam</string>
   <string name="font_size_message_view_cc">Cc</string>
+  <string name="font_size_message_view_bcc">Slapta kopija</string>
   <string name="font_size_message_view_additional_headers">Papildomos antraštės</string>
   <string name="font_size_message_view_subject">Tema</string>
   <string name="font_size_message_view_date">Laikas ir data</string>
@@ -656,6 +662,8 @@
   <string name="dialog_confirm_delete_message">Ar tikrai norite pašalinti laišką?</string>
   <string name="dialog_confirm_delete_confirm_button">Taip</string>
   <string name="dialog_confirm_delete_cancel_button">Ne</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Taip</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Ne</string>
   <string name="dialog_confirm_spam_title">Patvirtinti perkėlimą į brukalo aplanką</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Ar tikrai norite perkelti šį laišką į brukalo aplanką?</item>
@@ -746,8 +754,6 @@
   <string name="account_settings_remote_search_num_label">Serverio paieškos limitas</string>
   <string name="account_settings_remote_search_num_summary">Paieška bus nutraukta radus <xliff:g id="num_results">%s</xliff:g> rezultatus.</string>
   <string name="remote_search_sending_query">Užklausiamas serveris</string>
-  <string name="remote_search_downloading">Gaunami %d rezultatai</string>
-  <string name="remote_search_downloading_limited">Gaunamas %1$d rezultatas iš %2$d</string>
   <string name="remote_search_error">Nuotolinė paieška nepavyko</string>
   <string name="account_settings_search">Ieškoti</string>
   <string name="account_settings_remote_search_enabled">Įgalinti paiešką serveryje</string>
@@ -756,8 +762,6 @@
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Perduodama paieškos serveriui…</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">Gaunama iš paieškos serverio…</string>
   <string name="remote_search_unavailable_no_network">Paieškai serveryje reikia interneto ryšio.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Išblukinti perskaitytus laiškus </string>
-  <string name="global_settings_background_as_unread_indicator_summary">Pilkas fonas parodo jog laiškas perskaitytas</string>
   <string name="global_settings_threaded_view_label">Teminis rodinys</string>
   <string name="global_settings_threaded_view_summary">Grupuoti laiškus pagal pokalbį</string>
   <string name="upgrade_databases_title">Atnaujinamos duomenų bazės</string>
@@ -783,7 +787,16 @@
   <string name="fetching_attachment_dialog_title_send">Siunčiamas laiškas</string>
   <string name="fetching_attachment_dialog_title_save">Išsaugomas juodraštis</string>
   <string name="fetching_attachment_dialog_message">Gaunamas priedas…</string>
-  <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
   <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_settings_cancel">Atsisakyti</string>
+  <string name="recipient_cc">Cc</string>
+  <string name="recipient_bcc">Slapta kopija</string>
+  <string name="recipient_to">Kam</string>
+  <string name="address_type_other">Kita</string>
+  <string name="address_type_mobile">Mobilus</string>
+  <string name="crypto_mode_private">Šifruoti</string>
+  <string name="crypto_info_ok">Gerai</string>
+  <string name="message_progress_text">Įkeliama…</string>
+  <string name="openpgp_enabled_error_back">Atgal</string>
 </resources>

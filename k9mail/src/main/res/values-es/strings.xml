@@ -40,7 +40,7 @@ Sus características mejoradas incluyen:
 Por favor tenga en cuenta que K-9 no soporta la mayor parte de las cuentas gratuitas de Hotmail, y como muchos clientes de correo, tiene algunas peculiaridades al comunicarse con Microsoft Exchange.
 </p><p>
 Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a 
-<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -79,6 +79,10 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Próxima sincronización <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_no_network">Sincronización deshabilitada - sin red</string>
+  <string name="status_no_background">Sincronización deshabilitada - sin actividad en segundo plano</string>
+  <string name="status_poll_and_push_disabled">Recolección y envío deshabilitados</string>
+  <string name="status_syncing_blocked">Sincronización bloqueada</string>
   <string name="status_syncing_off">Sincronización deshabilitada</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionados</string>
   <string name="next_action">Siguiente</string>
@@ -229,15 +233,17 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="message_view_attachment_view_action">Abrir</string>
   <string name="message_view_attachment_download_action">Guardar</string>
   <string name="message_view_status_attachment_not_saved">Imposible guardar adjunto en la tarjeta SD.</string>
+  <string name="message_view_status_no_space">No se pudo guardar el adjunto porque no hay espacio suficiente.</string>
   <string name="message_view_show_pictures_action">Mostrar imágenes</string>
-  <string name="message_view_show_more_attachments_action">Más…</string>
   <string name="message_view_no_viewer">Imposible encontrar visor de <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaje completo</string>
   <string name="message_view_toast_unable_to_display_message">No se puede mostrar el mensaje</string>
+  <string name="message_view_sender_label">vía %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Se han descargado todas las cabeceras,  pero no hay cabeceras adicionales que mostrar.</string>
   <string name="message_additional_headers_retrieval_failed">Se ha producido un error al descargar las cabeceras desde la base de datos o el servidor.</string>
   <string name="from_same_sender">Más de este remitente</string>
+  <string name="debug_delete_local_body">Depurar / Limpiar el cuerpo del mensaje</string>
   <string name="message_discarded_toast">Mensaje descartado</string>
   <string name="message_saved_toast">Mensaje guardado como borrador</string>
   <string name="global_settings_flag_label">Mostrar estrellas</string>
@@ -270,9 +276,12 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="global_settings_confirm_action_delete_starred">Borrar destacados (sólo en vista de mensajes)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_menu_discard">Descartar mensaje</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Marcar todos los mensajes como leídos</string>
   <string name="global_settings_confirm_action_delete_notif">Borrar (de notificaciones)</string>
-  <string name="global_settings_privacy_hide_useragent">Eliminar el agente de usuario K-9 de las cabeceras de correo</string>
-  <string name="global_settings_privacy_hide_timezone">Usar UTC como zona horaria en las cabeceras de correo</string>
+  <string name="global_settings_privacy_hide_useragent">Ocultar cliente de correo</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Eliminar el Agente de Usuario K-9 de las cabeceras del mensaje</string>
+  <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Usar UTC en lugar de la zona horaria local en las cabeceras de mensaje y cabeceras de respuesta</string>
   <string name="global_settings_notification_hide_subject_title">Ocultar asunto en notificaciones</string>
   <string name="global_settings_notification_hide_subject_never">Nunca</string>
   <string name="global_settings_notification_hide_subject_when_locked">Cuando el dispositivo está bloqueado</string>
@@ -476,7 +485,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="account_settings_crypto">Cifrado</string>
   <string name="account_settings_crypto_app">Aplicación OpenPGP</string>
   <string name="account_settings_crypto_key">Mi clave</string>
-  <string name="account_settings_no_openpgp_provider_configured">No hay aplicación OpenPGP instalada</string>
+  <string name="account_settings_no_openpgp_provider_configured">No hay aplicación de OpenPGP configurada</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamiento</string>
   <string name="account_settings_color_label">Color de la cuenta</string>
@@ -541,21 +550,17 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="folder_settings_in_top_group_label">Mostrar al principio</string>
   <string name="folder_settings_in_top_group_summary">Mostrar cerca del principio de la lista</string>
   <string name="folder_settings_folder_display_mode_label">Tipos de carpeta mostrados</string>
-  <string name="folder_settings_folder_display_mode_normal">Ninguna</string>
   <string name="folder_settings_folder_display_mode_first_class">1ª Clase</string>
   <string name="folder_settings_folder_display_mode_second_class">2a Clase</string>
-  <string name="folder_settings_folder_sync_mode_label">Tipos de carpeta sincronizados</string>
   <string name="folder_settings_folder_sync_mode_normal">Ninguna</string>
   <string name="folder_settings_folder_sync_mode_first_class">1ª Clase</string>
   <string name="folder_settings_folder_sync_mode_second_class">2a Clase</string>
   <string name="folder_settings_folder_sync_mode_inherited">La misma que la de visualización</string>
   <string name="folder_settings_folder_push_mode_label">Tipos de carpeta con Push</string>
-  <string name="folder_settings_folder_push_mode_normal">Ninguna</string>
   <string name="folder_settings_folder_push_mode_first_class">1ª Clase</string>
   <string name="folder_settings_folder_push_mode_second_class">2a Clase</string>
   <string name="folder_settings_folder_push_mode_inherited">La misma que en sincronización</string>
   <string name="folder_settings_folder_notify_mode_label">Clase de la carpeta de notificaciones</string>
-  <string name="folder_settings_folder_notify_mode_normal">Ninguna</string>
   <string name="folder_settings_folder_notify_mode_first_class">1ª clase</string>
   <string name="folder_settings_folder_notify_mode_second_class">2ª clase</string>
   <string name="folder_settings_folder_notify_mode_inherited">La misma clase que la carpeta \'push\'</string>
@@ -642,7 +647,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rechazar clave</string>
   <string name="message_list_help_key">Del (or D) - Borrar\nR - Responder\nA - Responder a tdos\nC - Redactar\nF - Reenviar\nM - Mover\nV - Archivar\nY - Copiar\nZ - Marcar como (no) leído\nG - Estrella\nO - Tipo de ordenación\nI - Orden de ordenación\nQ - Volver a las carpetas\nS - Seleccionar/deseleccionar\nJ or P - Mensaje anterior\nK or N - Siguiente mensaje</string>
   <string name="folder_list_help_key">1 - Mostrar sólo carpetas de 1ª clase\n2 - Mostrar carpetas de 1ª y 2ª clase\n3 - Mostrar todo excepto las carpetas de 2ª clase\n4 - Mostrar todas las carpetas\nQ - Volver a las cuentas\nS - Editar ajustes de cuenta</string>
-  <string name="folder_list_filter_hint">nombre carpeta contiene</string>
   <string name="folder_list_display_mode_label">Mostrar carpetas…</string>
   <string name="folder_list_display_mode_all">Ver todas las carpetas</string>
   <string name="folder_list_display_mode_first_class">Ver sólo carpetas de 1a Clase</string>
@@ -728,6 +732,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="font_size_message_view_sender">Remitente</string>
   <string name="font_size_message_view_to">Para</string>
   <string name="font_size_message_view_cc">Cc</string>
+  <string name="font_size_message_view_bcc">Cco</string>
   <string name="font_size_message_view_additional_headers">Encabezados adicionales</string>
   <string name="font_size_message_view_subject">Asunto</string>
   <string name="font_size_message_view_date">Hora y Fecha</string>
@@ -787,6 +792,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="settings_importing">Importando ajustes…</string>
   <string name="settings_import_scanning_file">Buscando archivo…</string>
   <string name="settings_export_success">Ajustes guardados en <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">Se han exportado correctamente los ajustes</string>
   <string name="settings_import_global_settings_success">Ajustes globales importados desde <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importado <xliff:g id="accounts">%s</xliff:g> desde <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
@@ -808,7 +814,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="settings_import_incoming_server">Servidor de entrada (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Servidor de salida (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Definir password...</item>
+    <item quantity="one">Definir password…</item>
     <item quantity="other">Estableciendo contraseñas…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Usar la contraseña del Servidor de entrada</string>
@@ -855,8 +861,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="account_settings_remote_search_num_label">Limitar resultados en búsquedas en el servidor</string>
   <string name="account_settings_remote_search_num_summary">La búsqueda se detendrá cuando se obtengan <xliff:g id="num_results">%s</xliff:g> resultados.</string>
   <string name="remote_search_sending_query">Enviar consulta al servidor</string>
-  <string name="remote_search_downloading">Obteniendo %d resultados</string>
-  <string name="remote_search_downloading_limited">Obteniendo resultado %1$d de %2$d</string>
   <string name="remote_search_error">La búsqueda en remoto falló</string>
   <string name="account_settings_search">Buscar</string>
   <string name="account_settings_remote_search_enabled">Habilitar búsqueda en servidor</string>
@@ -865,8 +869,8 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Empujar para buscar en servidor…</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">Soltar para buscar en servidor…</string>
   <string name="remote_search_unavailable_no_network">No se puede buscar en remoto sin conexión de red.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Usar fondo como indicador de (no) leído</string>
-  <string name="global_settings_background_as_unread_indicator_summary">Mostrar mensajes leídos/no leídos con distintos colores de fondo</string>
+  <string name="global_settings_background_as_unread_indicator_label">Cambiar el color al leer</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Un fondo diferente mostrará que el mensaje se ha leído</string>
   <string name="global_settings_threaded_view_label">Vista agrupada por conversación</string>
   <string name="global_settings_threaded_view_summary">Contraer mensajes de la misma conversación</string>
   <string name="upgrade_databases_title">Actualizando bases de datos</string>
@@ -893,25 +897,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="fetching_attachment_dialog_title_save">Guardando borrador</string>
   <string name="fetching_attachment_dialog_message">Recuperando adjunto…</string>
   <string name="auth_external_error">No ha sido posible autenticarse. El servidor no anuncia la capacidad SASL EXTERNAL. Esto puede ser debido a un problema con el certificado de cliente (expirado, autoridad certificadora desconocida) o algún otro problema de configuración.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Fallo al descifrar: %s</string>
-  <string name="openpgp_unknown_error">Error desconocido de OpenPGP</string>
-  <string name="openpgp_canceled_by_user">Cancelado por el usuario</string>
-  <string name="openpgp_result_no_signature">No firmado</string>
-  <string name="openpgp_result_invalid_signature">¡Firma no válida!</string>
-  <string name="openpgp_result_signature_uncertified">Firmado por (¡sin certificar!)</string>
-  <string name="openpgp_result_signature_certified">Firmado por</string>
-  <string name="openpgp_result_signature_expired_key">¡Ha expirado la clave!</string>
-  <string name="openpgp_result_signature_revoked_key">¡La clave ha sido revocada!</string>
-  <string name="openpgp_result_signature_insecure">¡Peligroso!</string>
-  <string name="openpgp_result_signature_missing_key">Clave pública desconocida</string>
-  <string name="openpgp_result_encrypted">Cifrado</string>
-  <string name="openpgp_result_not_encrypted">No cifrado</string>
-  <string name="openpgp_result_decryption_insecure">Peligroso</string>
-  <string name="openpgp_result_action_show">Mostrar</string>
-  <string name="openpgp_result_action_lookup">Buscar</string>
-  <string name="openpgp_result_no_name">Sin nombre</string>
-  <string name="openpgp_result_no_email">Sin correo electrónico</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Usar certificado de cliente</string>
   <string name="client_certificate_spinner_empty">Sin certificado de cliente</string>
@@ -919,9 +904,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="client_certificate_retrieval_failure">Fallo al recuperar certificado de cliente para el alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Opciones avanzadas</string>
   <string name="client_certificate_expired">El certificado de cliente \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" ha expirado o aún no es válido (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Mensaje incompleto</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Pulsa \'Descargar mensaje completo\' para poder descifrarlo.</string>
   <string name="preview_encrypted">*Cifrado*</string>
   <string name="add_from_contacts">Agregar desde los contactos</string>
   <string name="crypto_settings_cancel">Cancelar</string>
@@ -936,15 +919,17 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="address_type_other">Otro</string>
   <string name="address_type_mobile">Móvil</string>
   <string name="compose_error_no_draft_folder">¡No se ha configurado carpeta de borradores para esta cuenta!</string>
-  <string name="compose_not_saving_unencrypted">¡No se guarda el borrador sin cifrado!</string>
-  <string name="compose_error_pgp_error">Error con el proveedor de OpenPGP. ¡Compruebe su configuración!</string>
   <string name="compose_error_no_signing_key">¡No hay clave configurada para firmar! Por favor compruebe su configuración.</string>
-  <string name="compose_error_private_missing_keys">¡Está habilitado el modo privado, pero algunos destinatarios no tienen claves!</string>
+  <string name="crypto_mode_disabled">No cifrar</string>
+  <string name="crypto_mode_opportunistic">Cifrar cuando sea posible</string>
+  <string name="crypto_mode_private">Cifrar</string>
   <string name="error_crypto_provider_connect">¡No se ha podido conectar con el proveedor de cifrado, compruebe su configuración o haga clic en el icono de cifrado para reintentar!</string>
   <string name="error_crypto_provider_ui_required">¡Acceso denegado al proveedor de cifrado, haga clic en el icono de cifrado para reintentar!</string>
   <string name="error_crypto_inline_attach">¡El modo PGP/INLINE no soporta adjuntos!</string>
   <string name="enable_inline_pgp">Habilitar PGP/INLINE</string>
   <string name="disable_inline_pgp">Deshabilitar PGP/INLINE</string>
+  <string name="enable_sign_only">Habilitar solo firma PGP</string>
+  <string name="disable_sign_only">Deshabilitar solo firma PGP</string>
   <string name="openpgp_inline_title">Modo PGP/INLINE</string>
   <string name="openpgp_inline_text">El correo se envía en formato PGP/INLINE.\nEsto solamente debe usarse por compatibilidad:</string>
   <string name="openpgp_inline_plus_compat">Algunos clientes solamente soportan este formato</string>
@@ -953,9 +938,20 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="openpgp_inline_ok">¡De acuerdo!</string>
   <string name="openpgp_inline_disable">Deshabilitar</string>
   <string name="openpgp_inline_keep_enabled">Mantener habilitado</string>
+  <string name="openpgp_sign_only_ok">¡Entendido!</string>
+  <string name="openpgp_sign_only_disable">Deshabilitar</string>
+  <string name="openpgp_sign_only_keep_enabled">Mantener habilitado</string>
+  <string name="openpgp_dialog_sign_only_title">Modo de solo firma PGP</string>
+  <string name="openpgp_dialog_sign_only_text">En este modo, la clave PGP se usará para crear una firma criptográfica en un correo no cifrado.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Esto no cifra el correo, pero permite verificar que fue enviado con esa clave.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Las firmas pueden estropearse al ser enviadas a listas de correo. </string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Algunos clientes de correo mostrarán las firmas como adjuntos \'signature.asc\'.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Los mensajes cifrados siempres incluirán una firma.</string>
   <string name="crypto_msg_disabled">El mensaje no está cifrado</string>
   <string name="crypto_msg_encrypted_error">El mensaje está cifrado, pero ha habido un error al descifrar.</string>
+  <string name="crypto_msg_encrypted_insecure">¡El mensaje está cifrado pero es inseguro!</string>
   <string name="crypto_msg_signed_error">El mensaje está firmado, pero no se ha podido verificar la firma.</string>
+  <string name="crypto_msg_encrypted_no_provider">El mensaje está cifrado, pero no hay aplicación de cifrado instalada.</string>
   <string name="crypto_msg_unsupported_encrypted">El mensaje está cifrado, pero en un formato no soportado.</string>
   <string name="crypto_msg_unsupported_signed">El mensaje está firmado, pero en un formato no soportado.</string>
   <string name="crypto_msg_incomplete_encrypted">El mensaje está cifrado, pero se debe descargar completamente para descifrarlo.</string>
@@ -975,11 +971,11 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="crypto_msg_unsigned_encrypted">No hay firma, este mensaje puede haber sido interceptado.</string>
   <string name="crypto_info_ok">Aceptar</string>
   <string name="crypto_info_view_key">Ver firmante</string>
+  <string name="crypto_info_view_security_warning">Detalles</string>
   <string name="locked_attach_unlock">Desbloquear</string>
-  <string name="locked_attach_unsigned">Esta parte no está firmada, y puede ser insegura.</string>
   <string name="locked_attach_unencrypted">Esta parte no está cifrada, y puede ser insegura.</string>
   <string name="locked_attach_title">Adjunto desprotegido</string>
-  <string name="message_progress_text">Cargando...</string>
+  <string name="message_progress_text">Cargando…</string>
   <string name="messageview_decrypt_cancelled">Se ha cancelado el descifrado.</string>
   <string name="messageview_decrypt_retry">Reintentar</string>
   <string name="messageview_decrypt_incomplete">El mensaje cifrado debe descargarse para descifrarlo.</string>
@@ -989,6 +985,28 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="messageview_crypto_warning_expired">¡Este mensaje fue firmado con una <b>clave caducada</b>!</string>
   <string name="messageview_crypto_warning_insecure">¡Este mensaje fue firmado con una <b>clave insegura</b>!</string>
   <string name="messageview_crypto_warning_error">¡Ha habido un <b>error en la firma de este mensaje</b>!</string>
+  <string name="messageview_crypto_warning_unsigned">Este mensaje estaba cifrado, pero no firmado. ¡<b>No es seguro punto a punto</b>!</string>
+  <string name="messageview_crypto_warning_show_anyway">Mostrar el mensaje igualmente</string>
   <string name="recipient_error_non_ascii">¡Los caracteres especiales aún no están soportados!</string>
   <string name="recipient_error_parse_failed">¡Error al analizar la dirección!</string>
+  <string name="account_settings_crypto_support_sign_only">Soporte para firmado de mensajes no cifrados</string>
+  <string name="error_sign_only_no_encryption">¡El cifrado no está disponible en el modo de solo firma!</string>
+  <string name="unsigned_text_divider_label">Texto sin firmar</string>
+  <string name="apg_deprecated_title">Aviso sobre desuso de APG</string>
+  <string name="apg_deprecated_1">¡APG ya no se mantiene!</string>
+  <string name="apg_deprecated_2">Debido a esto, el soporte para APG se ha eliminado de K-9 Mail.</string>
+  <string name="apg_deprecated_bullet_1">El desarrollo se detuvo a principios de 2014</string>
+  <string name="apg_deprecated_bullet_2">Contiene problemas de seguridad sin arreglar</string>
+  <string name="apg_learn_more">Puede <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">pulsar aquí</a> para saber más.</string>
+  <string name="apg_deprecated_ok">¡Entendido!</string>
+  <string name="apg">APG</string>
+  <string name="no_crypto_provider_see_global">¡No hay aplicación de OpenPGP configurada, consulte los ajustes globales!</string>
+  <string name="crypto_no_provider_title">Este correo está cifrado</string>
+  <string name="crypto_no_provider_message">Este correo ha sido cifrado con OpenPGP.\nPara leerlo, necesita instalar y configurar una aplicación compatible con OpenPGP.</string>
+  <string name="crypto_no_provider_button">Elegir aplicación OpenPGP</string>
+  <string name="mail_list_widget_text">Lista de mensajes de K-9</string>
+  <string name="mail_list_widget_loading">Cargando mensajes…</string>
+  <string name="fetching_folders_failed">Ha fallado la recuperación de la lista de carpetas</string>
+  <string name="messageview_crypto_warning_details">Mostrar detalles</string>
+  <string name="openpgp_enabled_error_back">Atrás</string>
 </resources>

@@ -41,7 +41,7 @@
 όπως οι περισσότερες εφαρμογές ηλεκτρονικού ταχυδρομείου, έχει θεματάκια με το Microsoft Exchange.
 </p><p>
 Παρακαλώ υποβάλετε αναφορές σφαλμάτων, συμβάλλετε νέα χαρακτηριστικά και θέστε ερωτήσεις στο
-<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -232,7 +232,6 @@
   <string name="message_view_attachment_download_action">Αποθήκευση</string>
   <string name="message_view_status_attachment_not_saved">Αδύνατο να αποθηκευτεί το συνημμένο στην κάρτα αποθήκευσης.</string>
   <string name="message_view_show_pictures_action">Προβολή εικόνων</string>
-  <string name="message_view_show_more_attachments_action">Περισσότερα…</string>
   <string name="message_view_no_viewer">Δεν υπάρχει πρόγραμμα προβολής για <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Κατέβασμα πλήρους μηνύματος</string>
   <string name="message_view_toast_unable_to_display_message">Αδυναμία προβολής μηνύματος</string>
@@ -240,6 +239,7 @@
   <string name="message_no_additional_headers_available">Όλες οι επικεφαλίδες έχουν κατεβεί, αλλά δεν υπάρχουν πρόσθετες επικεφαλίδες για να προβληθούν.</string>
   <string name="message_additional_headers_retrieval_failed">Η ανάσυρση πρόσθετων επικεφαλίδων από τη βάση δεδομένων ή τον εξυπηρέτη ταχυδρομείου απέτυχε.</string>
   <string name="from_same_sender">Από τον ίδιο αποστολέα</string>
+  <string name="debug_delete_local_body">Αποσφαλμάτωση / Απαλοιφή του σώματος του μηνύματος</string>
   <string name="message_discarded_toast">Το μήνυμα αγνοήθηκε.</string>
   <string name="message_saved_toast">Το μήνυμα αποθηκεύτηκε στα πρόχειρα.</string>
   <string name="global_settings_flag_label">Προβολή αστεριών</string>
@@ -258,7 +258,7 @@
   <string name="global_settings_registered_name_color_changed">Να χρωματίζονται τα ονόματα στη λίστα επαφών</string>
   <string name="global_settings_folderlist_wrap_folder_names_label">Αναδίπλωση ονομάτων φακέλου</string>
   <string name="global_settings_folderlist_wrap_folder_names_summary">Χρήση πολλαπλών γραμμών για την προβολή μεγάλων ονομάτων φακέλου</string>
-  <string name="global_settings_messageview_fixedwidth_label">Σταθερό πλάτος μηνύματος</string>
+  <string name="global_settings_messageview_fixedwidth_label">Γραμματοσειρά σταθερού πλάτους</string>
   <string name="global_settings_messageview_fixedwidth_summary">Να χρησιμοποιείται γραμματοσειρά σταθερού πλάτους όταν προβάλλονται μηνύματα απλού κειμένου</string>
   <string name="global_settings_messageview_autofit_width_label">Αυτόματη προσαρμογή</string>
   <string name="global_settings_messageview_autofit_width_summary">Ρύθμιση μεγέθους μηνύματος για να χωρά στην οθόνη</string>
@@ -272,9 +272,9 @@
   <string name="global_settings_confirm_action_delete_starred">Διαγραφή με αστέρι (προβολή μηνύματος μόνον)</string>
   <string name="global_settings_confirm_action_spam">Σκουπίδια</string>
   <string name="global_settings_confirm_menu_discard">Απόρριψη μηνύματος</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Μαρκάρισμα όλων των μηνυμάτων ως αναγνωσμένων</string>
   <string name="global_settings_confirm_action_delete_notif">Διαγραφή (από ειδοποίηση)</string>
-  <string name="global_settings_privacy_hide_useragent">Αφαίρεση του User-Agent K-9 από την κεφαλίδα του mail</string>
-  <string name="global_settings_privacy_hide_timezone">Χρήση της UTC σαν ζώνη ώρας στην κεφαλίδα του mail</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Αφαίρεση του User-Agent K-9 από την κεφαλίδα του mail</string>
   <string name="global_settings_notification_hide_subject_title">Απόκρυψη θέματος στις ειδοποιήσεις</string>
   <string name="global_settings_notification_hide_subject_never">Ποτέ</string>
   <string name="global_settings_notification_hide_subject_when_locked">Όταν το τηλέφωνο είναι κλειδωμένο</string>
@@ -395,7 +395,7 @@
   <string name="push_poll_on_connect_label">Ενημέρωση κατά τη σύνδεση για σπρώξιμο</string>
   <string name="account_setup_options_enable_push_label">Ενεργοποίηση σπρωξίματος για αυτό το λογαριασμό</string>
   <string name="account_setup_options_enable_push_summary">Αν το υποστηρίζει ο εξυπηρέτης σας, τα νέα μηνύματα θα εμφανιστούν αμέσως. Αυτή η επιλογή μπορεί να βελτιώσει δραματικά ή να βλάψει τις επιδόσεις.</string>
-  <string name="idle_refresh_period_label">Ενημέρωση ανενεργής σύνδεσης</string>
+  <string name="idle_refresh_period_label">Ανανέωση της σύνδεσης IDLE</string>
   <string name="idle_refresh_period_1min">Κάθε 1 λεπτό</string>
   <string name="idle_refresh_period_2min">Κάθε 2 λεπτά</string>
   <string name="idle_refresh_period_3min">Κάθε 3 λεπτά</string>
@@ -478,7 +478,7 @@
   <string name="account_settings_crypto">Κρυπτογραφία</string>
   <string name="account_settings_crypto_app">OpenPGP εφαρμογή</string>
   <string name="account_settings_crypto_key">Το κλειδί μου</string>
-  <string name="account_settings_no_openpgp_provider_configured">Δεν υπάρχει εγκατεστημένη OpenPGP εφαρμογή</string>
+  <string name="account_settings_no_openpgp_provider_configured">Δεν έχει ρυθμιστεί εφαρμογή OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
   <string name="account_settings_storage_title">Αποθήκευση</string>
   <string name="account_settings_color_label">Χρώμα λογαριασμού</string>
@@ -543,21 +543,17 @@
   <string name="folder_settings_in_top_group_label">Προβολή στην ομάδα κορυφής</string>
   <string name="folder_settings_in_top_group_summary">Προβολή κοντά στην κορυφή της λίστας των φακέλων</string>
   <string name="folder_settings_folder_display_mode_label">Επίπεδο προβολής φακέλου</string>
-  <string name="folder_settings_folder_display_mode_normal">Κανένα</string>
   <string name="folder_settings_folder_display_mode_first_class">Πρώτο επίπεδο</string>
   <string name="folder_settings_folder_display_mode_second_class">Δεύτερο επίπεδο</string>
-  <string name="folder_settings_folder_sync_mode_label">Επίπεδο συγχρονισμού φακέλου</string>
-  <string name="folder_settings_folder_sync_mode_normal">Κανένα</string>
+  <string name="folder_settings_folder_sync_mode_normal">Κανένας</string>
   <string name="folder_settings_folder_sync_mode_first_class">Πρώτο επίπεδο</string>
   <string name="folder_settings_folder_sync_mode_second_class">Δεύτερο επίπεδο</string>
   <string name="folder_settings_folder_sync_mode_inherited">Όπως το επίπεδο προβολής</string>
   <string name="folder_settings_folder_push_mode_label">Επίπεδο σπρωξίματος φακέλου</string>
-  <string name="folder_settings_folder_push_mode_normal">Κανένα</string>
   <string name="folder_settings_folder_push_mode_first_class">Πρώτο επίπεδο</string>
   <string name="folder_settings_folder_push_mode_second_class">Δεύτερο επίπεδο</string>
   <string name="folder_settings_folder_push_mode_inherited">Όπως το επίπεδο συγχρονισμού</string>
   <string name="folder_settings_folder_notify_mode_label">Επίπεδο ειδοποίησης φακέλου</string>
-  <string name="folder_settings_folder_notify_mode_normal">Κανένας</string>
   <string name="folder_settings_folder_notify_mode_first_class">Πρώτο επίπεδο</string>
   <string name="folder_settings_folder_notify_mode_second_class">Δεύτερο επίπεδο</string>
   <string name="folder_settings_folder_notify_mode_inherited">Όπως το επίπεδο σπρωξίματος </string>
@@ -644,7 +640,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Απόρριψη κλειδιού</string>
   <string name="message_list_help_key">Del (ή D) - Διαγραφή\nR - Απάντηση\nA - Απάντηση σε όλους\nC - Σύνθεση\nF - Προώθηση\nM - Μετακίνηση\nV - Αρχείο\nY - Αντιγραφή\nZ - Σημείωσε (Μη)διαβασμένα\nG - Αστέρι\nO - Ταξινόμηση κατά τύπο\nI - Σειρά ταξινόμησης\nQ - Επιστροφή σε φακέλους\nS - Επιλογή/Αποεπιλογή\nJ ή P - Προηγούμενο μήνυμα\nK ή N - Επόμενο μήνυμα</string>
   <string name="folder_list_help_key">1 - Προβολή μόνο φακέλων 1ου επιπέδου\n2 - Προβολή φακέλων 1ου και 2ου επιπέδου\n3 - Προβολή όλων των φακέλων εκτός 2ου επιπέδου\n4 - Προβολή όλων των φακέλων\nQ - Επιστροφή στους λογαριασμούς\nS - Αλλαγή ρυθμίσεων λογαριασμού</string>
-  <string name="folder_list_filter_hint">το όνομα του φακέλου περιέχει</string>
   <string name="folder_list_display_mode_label">Φάκελοι</string>
   <string name="folder_list_display_mode_all">Προβολή όλων</string>
   <string name="folder_list_display_mode_first_class">Προβολή μόνο 1ου επιπέδου</string>
@@ -730,6 +725,7 @@
   <string name="font_size_message_view_sender">Αποστολέας</string>
   <string name="font_size_message_view_to">Προς</string>
   <string name="font_size_message_view_cc">Κοινοποίηση</string>
+  <string name="font_size_message_view_bcc">Κρυφή Κοιν:</string>
   <string name="font_size_message_view_additional_headers">Επιπλέον επικεφαλίδες</string>
   <string name="font_size_message_view_subject">Θέμα</string>
   <string name="font_size_message_view_date">Ώρα και Ημερομηνία</string>
@@ -857,8 +853,6 @@
   <string name="account_settings_remote_search_num_label">Όριο εξυπηρέτη για αναζήτηση αποτελεσμάτων</string>
   <string name="account_settings_remote_search_num_summary">Η αναζήτηση θα διακοπεί όταν βρεθούν <xliff:g id="num_results">%s</xliff:g> αποτελέσματα.</string>
   <string name="remote_search_sending_query">Αποστολή ερωτήματος στον εξυπηρέτη</string>
-  <string name="remote_search_downloading">Ανάκληση %d αποτελεσμάτων</string>
-  <string name="remote_search_downloading_limited">Ανάκληση %1$d από %2$d αποτελέσματα</string>
   <string name="remote_search_error">Η απομακρυσμένη αναζήτηση απέτυχε.</string>
   <string name="account_settings_search">Αναζήτηση</string>
   <string name="account_settings_remote_search_enabled">Ενεργοποίηση αναζήτησης στον εξυπηρέτη</string>
@@ -867,8 +861,6 @@
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Προώθηση στον εξυπηρέτη αναζήτησης</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">Αποδέσμευση στον εξυπηρέτη αναζήτησης</string>
   <string name="remote_search_unavailable_no_network">Η απομακρυσμένη αναζήτηση δεν είναι διαθέσιμη χωρίς σύνδεση δικτύου.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Χρήση φόντου ως ένδειξη (μη) αναγνωσμένου</string>
-  <string name="global_settings_background_as_unread_indicator_summary">Προβολή αναγνωσμένων και μη αναγνωσμένων μηνυμάτων με διαφορετικά χρώματα φόντου</string>
   <string name="global_settings_threaded_view_label">Προβολή συζήτησης</string>
   <string name="global_settings_threaded_view_summary">Σύντμηση μηνυμάτων που ανήκουν στον ίδιο νήμα</string>
   <string name="upgrade_databases_title">Αναβάθμιση βάσεων δεδομένων</string>
@@ -895,25 +887,6 @@
   <string name="fetching_attachment_dialog_title_save">Αποθήκευση πρόχειρου</string>
   <string name="fetching_attachment_dialog_message">Ανάκληση συνημμένων…</string>
   <string name="auth_external_error">Αδύνατη η πιστοποίηση. Ο διακομιστής δεν διαφημίζει την ικανότητα SASL EXTERNAL. Αυτό μπορεί να συμβαίνει λόγω κάποιου προβληματος με το πιστοποιητικό του πελάτη (ληγμένο, άγνωστη αρχή πιστοποίησης) ή κάποιο άλλο πρόβλημα ρυθμίσεων.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Η αποκρυπτογράφηση απέτυχε: %s</string>
-  <string name="openpgp_unknown_error">Άγνωστο OpenPGP Σφάλμα</string>
-  <string name="openpgp_canceled_by_user">Ακυρωμένο από το χρήστη</string>
-  <string name="openpgp_result_no_signature">Δεν υπογράφθηκε</string>
-  <string name="openpgp_result_invalid_signature">Άκυρη υπογραφή</string>
-  <string name="openpgp_result_signature_uncertified">Υπογράφθηκε από (μη πιστοποιημένο!)</string>
-  <string name="openpgp_result_signature_certified">Υπογράφθηκε από</string>
-  <string name="openpgp_result_signature_expired_key">Το κλειδί έχει λήξει!</string>
-  <string name="openpgp_result_signature_revoked_key">Το κλειδί έχει ανακληθεί!</string>
-  <string name="openpgp_result_signature_insecure">Επισφαλές!</string>
-  <string name="openpgp_result_signature_missing_key">Άγνωστο δημόσιο κλειδί</string>
-  <string name="openpgp_result_encrypted">Κρυπτογραφημένο </string>
-  <string name="openpgp_result_not_encrypted">Δεν είναι κρυπτογραφημένο</string>
-  <string name="openpgp_result_decryption_insecure">Επισφαλές</string>
-  <string name="openpgp_result_action_show">Εμφάνιση</string>
-  <string name="openpgp_result_action_lookup">Αναζήτηση</string>
-  <string name="openpgp_result_no_name">Κανενα ονομα</string>
-  <string name="openpgp_result_no_email">Κανενα email</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Χρήση πιστοποιητικού πελάτη</string>
   <string name="client_certificate_spinner_empty">Χωρίς πιστοποιητικό πελάτη</string>
@@ -921,9 +894,7 @@
   <string name="client_certificate_retrieval_failure">Αποτυχία ανάκτησης του πιστοποιητικού πελάτη για το ψευδώνυμο \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Προχωρημένες ρυθμίσεις</string>
   <string name="client_certificate_expired">Το πιστοποιητικό πελάτη \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" έχει λήξει ή δεν είναι ακόμα έγκυρο (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Ημιτελής μήνυμα</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Κάντε κλικ στο \"Λήψη πλήρους μηνύματος» για να επιτραπεί η κρυπτογράφηση.</string>
   <string name="preview_encrypted">*Κρυπτογραφημένο*</string>
   <string name="add_from_contacts">Προσθήκη από τις Επαφές</string>
   <string name="crypto_settings_cancel">Άκυρο</string>
@@ -938,15 +909,17 @@
   <string name="address_type_other">\'Αλλο</string>
   <string name="address_type_mobile">Κινητό</string>
   <string name="compose_error_no_draft_folder">Δεν υπάρχει φάκελος Πρόχειρα για αυτόν τον λογαριασμό!</string>
-  <string name="compose_not_saving_unencrypted">Το πρόχειρο ΔΕΝ αποθηκεύεται χωρίς κρυπτογράφηση!</string>
-  <string name="compose_error_pgp_error">Σφάλμα παρόχου OpenPGP. Ελέγξτε τις ρυθμίσεις!</string>
   <string name="compose_error_no_signing_key">Δεν έχει ρυθμιστεί κλειδί για την Υπογραφή! Παρακαλούμε ελένξτε τι ρυθμίσεις.</string>
-  <string name="compose_error_private_missing_keys">Η ιδιωτική λειτουργία είναι ενεργοποιημένη, αλλά ορισμένοι αποδέκτες δεν έχουν τα κλειδιά!</string>
+  <string name="crypto_mode_disabled">Μην κρυπτογραφήσεις</string>
+  <string name="crypto_mode_opportunistic">Κρυπτογράφηση αν είναι δυνατόν</string>
+  <string name="crypto_mode_private">Κρυπτογράφησε</string>
   <string name="error_crypto_provider_connect">Δεν είναι δυνατή η σύνδεση με τον πάροχο κρυπτογράφησης, ελέγξτε τις ρυθμίσεις σας ή πιέστε το εικονίδιο κρυπτογράφηση για επανάληψη!</string>
   <string name="error_crypto_provider_ui_required">Δεν επιτρέπεται η πρόσβαση στον πάροχο κρυπτογράφησης, πιέστε το εικονίδιο κρυπτογράφηση για επανάληψη!</string>
   <string name="error_crypto_inline_attach">Η λειτουργία σε PGP/INLINE δεν υποστιρίχει συνημμένα αρχεία!</string>
   <string name="enable_inline_pgp">Ενεργοποίηση PGP/INLINE</string>
   <string name="disable_inline_pgp">Απενεργοποίηση PGP/INLINE</string>
+  <string name="enable_sign_only">Ενεργοποίηση PGP υπογραφής μόνο</string>
+  <string name="disable_sign_only">Απενεργοποίηση PGP υπογραφής μόνο</string>
   <string name="openpgp_inline_title">Λειτουργία σε PGP/INLINE</string>
   <string name="openpgp_inline_text">Το μήνυμα αποστέλλεται σε PGP/INLINE μορφοποίηση.\n Αυτό πρέπει να χρησιμοποιείται μόνο για λόγους συμβατότητας:</string>
   <string name="openpgp_inline_plus_compat">Κάποιες εφαρμογές υποστηρίχουν μόνο αυτή τη μπργοποίηση</string>
@@ -955,6 +928,15 @@
   <string name="openpgp_inline_ok">Το\' πιασα!</string>
   <string name="openpgp_inline_disable">Απενεργοποίηση</string>
   <string name="openpgp_inline_keep_enabled">Να μείνει Ενεργοποιημένο</string>
+  <string name="openpgp_sign_only_ok">Το\' πιασα!</string>
+  <string name="openpgp_sign_only_disable">Απενεργοποίηση</string>
+  <string name="openpgp_sign_only_keep_enabled">Να μείνει Ενεργοποιημένο</string>
+  <string name="openpgp_dialog_sign_only_title">Λειτουργία PGP υπογραφής μόνο</string>
+  <string name="openpgp_dialog_sign_only_text">Σε αυτή τη λειτουργία, το PGP κλειδί σας θα χρησιμοποιηθεί για να δημιουργήσει μια κρυπτογραφική υπογραφή ενός μη κρυπτογραφημένου μηνύματος.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Αυτό δεν κρυπτογραφεί το email, αλλά επιβεβαιώνει ότι στάλθηκε από το κλειδί σας.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Οι υπογραφές μπορεί να καταστραφούν όταν στέλνονται σε λίστες αλληλογραφίας.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Οι υπογραφές μπορεί να εμφανίζονται ως συνημμένα «signature.asc» σε μερικά προγράμματα.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Τα κρυπτογραφημένα μηνύματα περιλαμβάνουν πάντα μια υπογραφή.</string>
   <string name="crypto_msg_disabled">Το μήνυμα δεν είναι κρυπτογραφημένο</string>
   <string name="crypto_msg_encrypted_error">Το μήνυμα είναι κρυπτογραφημένο, αλλα υπήρχε σφάλμα κατά την αποκρυπτογράφηση.</string>
   <string name="crypto_msg_signed_error">Το μήνυμα είναι υπογεγραμμένο, αλλά η υπογραφή δεν μπορεί να πιστοποιηθεί.</string>
@@ -978,10 +960,9 @@
   <string name="crypto_info_ok">Εντάξει</string>
   <string name="crypto_info_view_key">Προβολή Υπογράφοντα</string>
   <string name="locked_attach_unlock">Ξεκλείδωσε</string>
-  <string name="locked_attach_unsigned">Αυτό το τμήμα δεν ήταν υπογεγραμμένο και μπορεί να μην είναι ασφαλή.</string>
   <string name="locked_attach_unencrypted">Αυτό το τμήμα δεν ήταν κρυπτογραφημένο και μπορεί να μην είναι ασφαλή.</string>
   <string name="locked_attach_title">Το συνημμένο αρχείο δεν είναι προστατευμένο </string>
-  <string name="message_progress_text">Φόρτωση...</string>
+  <string name="message_progress_text">Φόρτωση…</string>
   <string name="messageview_decrypt_cancelled">Αποκρυπτογράφηση ακυρώθηκε.</string>
   <string name="messageview_decrypt_retry">Επανάληψη</string>
   <string name="messageview_decrypt_incomplete">Το κρυπτογραφημένο μήνυμα πρέπει να έχει κατέβει για να αποκρυπτογραφηθεί.</string>
@@ -991,7 +972,21 @@
   <string name="messageview_crypto_warning_expired">Αυτό το μήνυμα έχει υπογραφεί από <b>κλειδί που έχει λήξει!</b></string>
   <string name="messageview_crypto_warning_insecure">Αυτό το μήνυμα έχει υπογραφεί από <b>κλειδί που δεν είναι σφαλές!</b></string>
   <string name="messageview_crypto_warning_error">Υπήρχε ένα <b>σφάλμα στην υπογραφή του μηνύματος!</b></string>
+  <string name="messageview_crypto_warning_unsigned">Αυτό το μήνυμα κρυπτογραφήθηκε, αλλά δεν έχει υπογραφεί. <b>Δεν είναι ασφαλές από άκρο σε άκρο!</b></string>
+  <string name="messageview_crypto_warning_show_anyway">Εμφάνιση μηνύματος ούτως ή άλλως</string>
   <string name="recipient_error_non_ascii">Δεν υποστηρίζονται ειδικοί χαρακτήρες!</string>
   <string name="recipient_error_parse_failed">Σφάλμα στη διεύθυνση!</string>
   <string name="account_settings_crypto_support_sign_only">Υποστήριξη υπογραφής μη κρυπρογραφημένων μηνυμάτων</string>
+  <string name="error_sign_only_no_encryption">Η κρυπτογράφηση δεν είναι διαθέσιμη στη λειτουργία υπογραφής μόνο!</string>
+  <string name="unsigned_text_divider_label">Ανυπόγραφο κείμενο</string>
+  <string name="apg_deprecated_title">Προειδοποίηση απόρριψης APG</string>
+  <string name="apg_deprecated_1">Το APG δεν διατηρείται πλέον!</string>
+  <string name="apg_deprecated_2">Εξαιτίας αυτού, η υποστήριξη για APG έχει αφαιρεθεί από το K-9 Mail.</string>
+  <string name="apg_deprecated_bullet_1">Η ανάπτυξη σταμάτησε στις αρχές του 2014</string>
+  <string name="apg_deprecated_bullet_2">Περιέχει μη λυμένα θέματα ασφάλειας</string>
+  <string name="apg_learn_more">Μπορείτε να <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">κάνετε κλικ εδώ</a> για να μάθετε περισσότερα.</string>
+  <string name="apg_deprecated_ok">Το\' πιασα!</string>
+  <string name="apg">APG</string>
+  <string name="no_crypto_provider_see_global">Δεν έχει ρυθμιστεί εφαρμογή OpenPGP, δείτε τις γενικές ρυθμίσεις!</string>
+  <string name="openpgp_enabled_error_back">Πίσω</string>
 </resources>
