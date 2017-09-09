@@ -51,6 +51,7 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 
  */
 class WebDavFolder extends Folder<WebDavMessage> {
+    private String id;
     private String name;
     private String folderUrl;
     private boolean mIsOpen = false;
@@ -62,10 +63,10 @@ class WebDavFolder extends Folder<WebDavMessage> {
         return store;
     }
 
-    public WebDavFolder(WebDavStore nStore, String name) {
+    public WebDavFolder(WebDavStore nStore, String id) {
         super();
         store = nStore;
-        this.name = name;
+        this.id = id;
         buildFolderUrl();
     }
 
@@ -207,12 +208,18 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
     @Override
     public String getId() {
-        return this.name;
+        return this.id;
+    }
+
+    @Override
+    public String getParentId() {
+        return id.split("/", 2)[0];
     }
 
     @Override
     public String getName() {
-        return this.name;
+        String[] idParts = id.split("/");
+        return idParts[idParts.length-1];
     }
 
     @Override

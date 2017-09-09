@@ -87,7 +87,7 @@ class ImapFolder extends Folder<ImapMessage> {
         super();
         this.store = store;
         this.id = id;
-        this.parentId = store.getParentId("id");
+        this.parentId = store.getParentId(id);
         this.name = store.getFolderName(id);
         this.folderNameCodec = folderNameCodec;
     }
@@ -247,7 +247,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public String getParentId() {
-        return store.getParentId(id);
+        return parentId;
     }
 
     @Override

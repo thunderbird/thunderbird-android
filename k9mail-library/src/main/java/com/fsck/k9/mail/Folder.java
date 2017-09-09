@@ -17,9 +17,10 @@ public abstract class Folder<T extends Message> {
     public static final int OPEN_MODE_RW=0;
     public static final int OPEN_MODE_RO=1;
 
-    public String getParentId() {
-        return null;
-    }
+    /**
+     * @return The ID of the parent folder.
+     */
+    public abstract String getParentId();
 
     // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
     public enum FolderClass {
