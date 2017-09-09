@@ -8,6 +8,18 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.300" versioncode="23500">
+        <change>New app icon</change>
+        <change>New widget: Message List</change>
+        <change>New OpenPGP flow, adhering to Autocrypt specification</change>
+        <change>Settings export uses Storage Access Framework</change>
+        <change>Better support for multi-window</change>
+        <change>Recipient search now includes nicknames</change>
+        <change>Removed language selection setting</change>
+        <change>Many bugfixes and optimizations</change>
+        <change>Added translations: Esperanto, Gaelic (Scottish), Icelandic, Welsh</change>
+    </release>
+
     <release version="5.208" versioncode="23271">
         <change>Fixed bug where automatic synchronization wouldn't restart after the device exited doze mode</change>
     </release>
