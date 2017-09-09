@@ -5,78 +5,113 @@
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">K-9 kontuak</string>
-  <string name="unread_widget_label">K-9 irakurgabeak</string>
+  <string name="unread_widget_label">Irakurri gabeko K-9 mezua</string>
   <string name="remote_control_label">K-9 urruneko kontrola</string>
-  <string name="remote_control_desc">Aplikazio honi K-9 Mail aktibitate eta ezarpenak kontrolatzea ahalbidetzen du.</string>
+  <string name="remote_control_desc">Aplikazio honek K-9 Mailen jarduerak eta ezarpenak kontrolatzea onartzen du.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Apache lizentziarekin, 2.0 bertsioa</string>
+  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project-en zatiak.</string>
+  <string name="app_license">Lizentziaduna Apache Lizentziarekin, 2.0 Bertsioa</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Ongi etorri K-9 Mail-era</string>
+  <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail Androiderako posta elektroniko bezero libre ahaltsu bat da.
+</p><p>
+Ondorengo eginbide hobetuak ditu:
+</p>
+<ul>
+  <li>\"Push\" posta IMAP IDLE erabiliz</li>
+  <li>Errendimendu hobea</li>
+  <li>Mezu artxibatzea</li>
+  <li>Posta elektronikoen sinadurak</li>
+  <li>Bcc-bere-buruari</li>
+  <li>Harpidetza karpetetara</li>
+  <li>Karpeta guztien sinkronizazioa</li>
+  <li>Erantzuteko helbidearen konfigurazioa</li>
+  <li>Laster-teklak</li>
+  <li>Bateragarritasun hobea IMAPekin</li>
+  <li>Eranskinak SD txartelean gordetzea</li>
+  <li>Hustu Zakarrontzia</li>
+  <li>Mezuen ordenatzea</li>
+  <li>…eta gehiago</li>
+</ul>
+<p>
+Mesedez kontuan hartu K-9 Mail ez dela bateragarria Hotmail-en doako kontu gehienekin eta, posta bezero askok bezala, bitxikeria batzuk ditu Microsoft Exchange-rekin komunikatzerakoan.
+</p><p>
+Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a> erabili.
+</p>
+    ]]></string>
   <!--Default signature-->
+  <string name="default_signature">-- \nNire Android gailutik bidalia, K-9 Mail erabiliz. Mesedez, barka ezazu nire laburtasuna.</string>
   <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua K-9 Mail-etik ezabatuko da.</string>
-  <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontuaren datu guztiak ezabatuko dira, Kontuaren ezarpenak mantenduko dira.</string>
-  <string name="account_clear_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"  kontuaren mezuen kopia lokalak ezabatuko dira. Kontuaren ezarpenak mantenduko dira.</string>
+  <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" kontua K-9 Mail-etik kenduko da.</string>
+  <string name="account_recreate_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"-(r)en datu lokal guztiak kenduko dira. Kontuaren ezarpenak mantenduko dira.</string>
+  <string name="account_clear_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\"-(r)en mezuen kopia lokalak kenduko dira. Kontuaren ezarpenak mantenduko dira.</string>
   <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Inportazioarekin jarraitzeko instalatu fitxategi kudeatzeaile bat, mesedez.</string>
-  <string name="open_market">Play Store-a ireki</string>
+  <string name="import_dialog_error_message">Inportazio honekin jarraitzeko instalatu fitxategi kudeatzaile bat, mesedez.</string>
+  <string name="open_market">Ireki Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Egileak: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Berrikustearen informazioa: <xliff:g id="app_revision_url">%s</xliff:g></string>
-  <string name="app_libraries">Besteen liburutegi hauek erabiltzen ditugu: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Emoji ikonoak: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Eposta eranskinak irakurri</string>
-  <string name="read_attachment_desc">Aplikazio honi zure eposten eranskinak irakurtzeko baimena ematen dio.</string>
-  <string name="read_messages_label">Eposta irakurri</string>
-  <string name="read_messages_desc">Aplikazio honi zure epostak irakurtzeko baimena ematen dio.</string>
-  <string name="delete_messages_label">Epostak ezabatu</string>
-  <string name="delete_messages_desc">Aplikazio honi zure epostak ezabatzeko baimena ematen dio.</string>
-  <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g>-ri buruz</string>
+  <string name="app_revision_fmt">Berrikuspenaren Informazioa: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_libraries">Hirugarrenen liburutegi hauek erabiltzen ari gara: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+  <string name="app_emoji_icons">Emotikonoen ikonoak: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
+  <string name="read_attachment_label">Irakurri postaren eranskinak</string>
+  <string name="read_attachment_desc">Aplikazio honi zure postaren eranskinak irakurtzea onartzen dio.</string>
+  <string name="read_messages_label">Irakurri posta</string>
+  <string name="read_messages_desc">Aplikazio honi zure posta irakurtzea onartzen dio.</string>
+  <string name="delete_messages_label">Ezabatu posta</string>
+  <string name="delete_messages_desc">Aplikazio honi zure posta ezabatzea onartzen dio.</string>
+  <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g>-(r)i buruz</string>
   <string name="accounts_title">Kontuak</string>
   <string name="folders_title">Karpetak</string>
   <string name="advanced">Aurreratua</string>
   <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
   <string name="compose_title_compose">Idatzi</string>
   <string name="compose_title_reply">Erantzun</string>
-  <string name="compose_title_reply_all">Denei erantzun</string>
-  <string name="compose_title_forward">Berbidali</string>
-  <string name="choose_folder_title">Karpeta hautatu</string>
+  <string name="compose_title_reply_all">Erantzun denei</string>
+  <string name="compose_title_forward">Birbidali</string>
+  <string name="choose_folder_title">Aukeratu karpeta</string>
   <string name="status_loading_account_folder"><xliff:g id="account">%s</xliff:g> aztertzen:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers"><xliff:g id="account">%s</xliff:g> goiburuak eskuratzen:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account"><xliff:g id="account">%s</xliff:g> bidaltzen<xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Prozesatzen <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_processing_account"><xliff:g id="account">%s</xliff:g> prozesatzen:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Hurrengo azterketa <xliff:g id="nexttime">%s</xliff:g></string>
-  <string name="status_syncing_off">Sinkronizazioa ezgaituta</string>
+  <string name="status_no_network">Sinkronizazioa desgaituta - Sarerik ez</string>
+  <string name="status_no_background">Sinkronizazioa desgaituta - Jarduerarik ez atzeko planoan</string>
+  <string name="status_poll_and_push_disabled">\"Polling\"a eta \"pushing\"a desgaituta</string>
+  <string name="status_syncing_blocked">Sinkronizazioa blokeatuta</string>
+  <string name="status_syncing_off">Sinkronizazioa desgaituta</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> hautatuta</string>
   <string name="next_action">Hurrengoa</string>
   <string name="previous_action">Aurrekoa</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-  <string name="okay_action">OK</string>
-  <string name="cancel_action">Ezeztatu</string>
+  <string name="okay_action">Ados</string>
+  <string name="cancel_action">Utzi</string>
   <string name="send_action">Bidali</string>
-  <string name="send_again_action">Berriz bidali</string>
+  <string name="send_again_action">Bidali berriro</string>
+  <string name="empty_subject">Gaia hutsik dago, hala ere bidaltzeko klikatu berriro</string>
   <string name="select_action">Hautatu</string>
-  <string name="deselect_action">Ez-hautatu</string>
+  <string name="deselect_action">Desautatu</string>
   <string name="reply_action">Erantzun</string>
-  <string name="reply_all_action">Denei erantzun</string>
+  <string name="reply_all_action">Erantzun denei</string>
   <string name="delete_action">Ezabatu</string>
   <string name="archive_action">Artxibatu</string>
   <string name="spam_action">Spam</string>
-  <string name="forward_action">Berbidali</string>
+  <string name="forward_action">Birbidali</string>
   <string name="move_action">Mugitu</string>
   <string name="single_message_options_action">Bidali…</string>
   <string name="refile_action">Artxibatu…</string>
   <string name="done_action">Eginda</string>
   <string name="discard_action">Baztertu</string>
-  <string name="save_draft_action">Zirriborroetan gorde</string>
-  <string name="check_mail_action">Eposta egiaztatu</string>
-  <string name="send_messages_action">Mezuak bidali</string>
-  <string name="refresh_folders_action">Karpeten zerrenda freskatu</string>
-  <string name="filter_folders_action">Karpeta bilatu</string>
-  <string name="add_account_action">Kontua gehitu</string>
+  <string name="save_draft_action">Gorde zirriborro gisa</string>
+  <string name="check_mail_action">Egiaztatu posta</string>
+  <string name="send_messages_action">Bidali mezuak</string>
+  <string name="refresh_folders_action">Freskatu karpeten zerrenda</string>
+  <string name="filter_folders_action">Bilatu karpeta</string>
+  <string name="add_account_action">Gehitu kontua</string>
   <string name="compose_action">Idatzi</string>
   <string name="search_action">Bilatu</string>
   <string name="search_results">Bilaketaren emaitzak</string>
@@ -84,27 +119,31 @@
   <string name="account_settings_action">Kontu ezarpenak</string>
   <string name="folder_settings_action">Karpeta ezarpenak</string>
   <string name="global_settings_action">Ezarpen orokorrak</string>
-  <string name="remove_account_action">Kontua ezabatu</string>
-  <string name="clear_pending_action">Egiteke dauden ekintzak baztertu (arriskua!)</string>
-  <string name="mark_as_read_action">Irakurri bezala markatu</string>
+  <string name="remove_account_action">Kendu kontua</string>
+  <string name="clear_pending_action">Egiteke dauden ekintzak garbitu (kontuz!)</string>
+  <string name="mark_as_read_action">Markatu irakurritako gisa</string>
   <string name="send_alternate_action">Partekatu</string>
-  <string name="send_alternate_chooser_title">Bidaltzailea aukeratu</string>
-  <string name="flag_action">Izarra gehitu</string>
-  <string name="unflag_action">Izarra kendu</string>
+  <string name="send_alternate_chooser_title">Aukeratu bidaltzailea</string>
+  <string name="flag_action">Gehitu izarra</string>
+  <string name="unflag_action">Kendu izarra</string>
   <string name="copy_action">Kopiatu</string>
-  <string name="select_text_action">Testua hautatu</string>
-  <string name="show_headers_action">Goiburuak erakutsi</string>
-  <string name="hide_headers_action">Goiburuak ezkutatu</string>
-  <string name="message_view_theme_action_dark">Itxura ilunera aldatu</string>
-  <string name="message_view_theme_action_light">Itxura argira aldatu</string>
-  <string name="mark_as_unread_action">Irakurgabe markatu</string>
+  <string name="select_text_action">Hautatu testua</string>
+  <string name="show_headers_action">Erakutsi goiburuak</string>
+  <string name="hide_headers_action">Ezkutatu goiburuak</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Helbidea arbelera kopiatuta</item>
+    <item quantity="other">Helbideak arbelera kopiatuta</item>
+  </plurals>
+  <string name="message_view_theme_action_dark">Aldatu gai ilunera</string>
+  <string name="message_view_theme_action_light">Aldatu gai argira</string>
+  <string name="mark_as_unread_action">Markatu irakurri gabeko gisa</string>
   <string name="read_receipt">Irakurragiria</string>
   <string name="read_receipt_enabled">Irakurragiria eskatuko da</string>
   <string name="read_receipt_disabled">Ez da irakurragiria eskatuko</string>
-  <string name="add_attachment_action">Eranskina gehitu</string>
-  <string name="empty_trash_action">Zakarrontzia hustu</string>
+  <string name="add_attachment_action">Gehitu eranskina</string>
+  <string name="empty_trash_action">Hustu zakarrontzia</string>
   <string name="expunge_action">Suntsitu</string>
-  <string name="clear_local_folder_action">Mezu lokalak garbitu</string>
+  <string name="clear_local_folder_action">Garbitu mezu lokalak</string>
   <string name="about_action">Honi buruz</string>
   <string name="prefs_title">Ezarpenak</string>
   <string name="accounts_context_menu_title">Kontu aukerak</string>
@@ -114,51 +153,64 @@
   <string name="status_loading">Aztertzen</string>
   <string name="status_loading_more">Mezuak kargatzen\u2026</string>
   <string name="status_network_error">Konexio errorea</string>
-  <string name="status_invalid_id_error">Ez da mezua topatu</string>
-  <string name="status_loading_more_failed">Saiatu berriz mezu gehiago kargatzen</string>
+  <string name="status_invalid_id_error">Ez da mezua aurkitu</string>
+  <string name="status_loading_error">Akatsa mezua kargatzean</string>
+  <string name="status_loading_more_failed">Saiatu mezu gehiago kargatzen berriro</string>
   <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g> gehiago kargatu</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
-  <string name="abbrev_kilobytes">KB</string>
+  <string name="abbrev_kilobytes">kB</string>
   <string name="abbrev_bytes">B</string>
-  <string name="account_size_changed">\"<xliff:g id="account">%s</xliff:g>\" kontua <xliff:g id="oldSize">%s</xliff:g>-tik <xliff:g id="newSize">%s</xliff:g>-ra trinkotu da</string>
+  <string name="account_size_changed">\"<xliff:g id="account">%s</xliff:g>\" kontua <xliff:g id="oldSize">%s</xliff:g>-(e)tik <xliff:g id="newSize">%s</xliff:g>-(e)ra txikiagotu da</string>
   <string name="compacting_account">\"<xliff:g id="account">%s</xliff:g>\" kontua trinkotzen</string>
   <string name="clearing_account">\"<xliff:g id="account">%s</xliff:g>\" kontua garbitzen</string>
   <string name="recreating_account">\"<xliff:g id="account">%s</xliff:g>\" kontua birsortzen</string>
-  <string name="notification_new_title">Eposta berria</string>
-  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> irakurgabe (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_new_title">Posta berria</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"> Mezu berri <xliff:g id="new_message_count">%d</xliff:g></item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> mezu berri</item>
+  </plurals>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> irakurri gabeko (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> gehiago <xliff:g id="account">%2$s</xliff:g>-(e)n</string>
   <string name="notification_action_reply">Erantzun</string>
-  <string name="notification_action_mark_as_read">Irakurrita markatu</string>
+  <string name="notification_action_mark_as_read">Markatu irakurritako gisa</string>
+  <string name="notification_action_mark_all_as_read">Markatu denak irakurritako gisa</string>
   <string name="notification_action_delete">Ezabatu</string>
-  <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> konturako ziurtagiri errorea</string>
+  <string name="notification_action_delete_all">Ezabatu denak</string>
+  <string name="notification_action_archive">Artxibatu</string>
+  <string name="notification_action_archive_all">Artxibatu denak</string>
+  <string name="notification_action_spam">Spam</string>
+  <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g>-(r)entzako ziurtagiri errorea</string>
   <string name="notification_certificate_error_text">Egiaztatu zerbitzariaren ezarpenak</string>
-  <string name="notification_bg_sync_ticker">Eposta egiaztatzen: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
-  <string name="notification_bg_sync_title">Eposta egiaztatzen</string>
-  <string name="notification_bg_send_ticker">Eposta bidaltzen: <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_bg_send_title">Eposta bidaltzen</string>
+  <string name="notification_authentication_error_title">Autentifikazioak huts egin du</string>
+  <string name="notification_authentication_error_text">Autentifikazioak huts egin du <xliff:g id="account">%s</xliff:g>-(e)rako. Eguneratu zerbitzariaren ezarpenak.</string>
+  <string name="notification_bg_sync_ticker">Posta egiaztatzen: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_title">Posta egiaztatzen</string>
+  <string name="notification_bg_send_ticker">Posta bidaltzen: <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_bg_send_title">Posta bidaltzen</string>
   <string name="notification_bg_title_separator">:</string>
-  <string name="special_mailbox_name_inbox">Sarrera</string>
-  <string name="special_mailbox_name_outbox">Irteera</string>
+  <string name="special_mailbox_name_inbox">Sarrerako ontzia</string>
+  <string name="special_mailbox_name_outbox">Irteerako ontzia</string>
   <string name="special_mailbox_name_drafts">Zirriborroak</string>
-  <string name="special_mailbox_name_trash">Zaborra</string>
+  <string name="special_mailbox_name_trash">Zakarrontzia</string>
   <string name="special_mailbox_name_sent">Bidalitakoak</string>
   <string name="special_mailbox_name_archive">Artxiboa</string>
   <string name="special_mailbox_name_spam">Spam</string>
   <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Zirriborroak)</string>
-  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Zaborra)</string>
+  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Zakarrontzia)</string>
   <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Bidalitakoak)</string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Artxiboa)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
-  <string name="send_failure_subject">Mezu batzuk bidaltzean errorea</string>
+  <string name="send_failure_subject">Mezu batzuen bidaltzeak huts egin du</string>
   <string name="debug_version_fmt">Bertsioa: <xliff:g id="version">%s</xliff:g></string>
-  <string name="debug_enable_debug_logging_title">Arazketa logak gaitu</string>
-  <string name="debug_enable_debug_logging_summary">Diagnostikorako informazio gehigarria logean</string>
-  <string name="debug_enable_sensitive_logging_title">Informazio mimbera logetan</string>
-  <string name="debug_enable_sensitive_logging_summary">Logetan pasahitzak ikus daitezke.</string>
-  <string name="message_list_load_more_messages_action">Mezu gehiago kargatu</string>
+  <string name="debug_enable_debug_logging_title">Arazketa erregistroa gaitu</string>
+  <string name="debug_enable_debug_logging_summary">Diagnostikorako informazio gehigarria erregistratu</string>
+  <string name="debug_enable_sensitive_logging_title">Bereziki babestutako informazioa erregistratu</string>
+  <string name="debug_enable_sensitive_logging_summary">Saio hasieretan pasahitzak erakuts daitezke.</string>
+  <string name="message_list_load_more_messages_action">Kargatu mezu gehiago</string>
   <string name="message_to_fmt">Nori:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Gaia</string>
-  <string name="message_compose_content_hint">Mezuaren edukia</string>
+  <string name="message_compose_content_hint">Mezuaren testua</string>
   <string name="message_compose_signature_hint">Sinadura</string>
   <string name="message_compose_quote_header_separator">-------- Jatorrizko mezua --------</string>
   <string name="message_compose_quote_header_subject">Gaia:</string>
@@ -166,179 +218,204 @@
   <string name="message_compose_quote_header_from">Nork:</string>
   <string name="message_compose_quote_header_to">Nori:</string>
   <string name="message_compose_quote_header_cc">Cc:</string>
-  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>-ek idatzi du:</string>
-  <string name="message_compose_error_no_recipients">Jasotzaile bat gutxienez adierazi behar duzu.</string>
-  <string name="error_contact_address_not_found">Kontaktu honen eposta helbidea ez da topatu.</string>
-  <string name="message_compose_attachments_skipped_toast">Eranskin batzuk ezin izan dira berbidali deskargatu ez direlako.</string>
-  <string name="message_compose_show_quoted_text_action">Mezua aipatu</string>
-  <string name="message_compose_description_delete_quoted_text">Aipamena ezabatu</string>
-  <string name="message_compose_description_edit_quoted_text">Aipamena editatu</string>
+  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>-(e)k idatzi du:</string>
+  <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>-(e)an, <xliff:g id="sender">%2$s</xliff:g>-(e)k hau idatzi zuen:</string>
+  <string name="message_compose_error_no_recipients">Hartzaile bat gehitu behar duzu gutxienez.</string>
+  <string name="compose_error_incomplete_recipient">Hartzailearen eremua osatu gabea dago!</string>
+  <string name="error_contact_address_not_found">Kontaktu honen posta helbidea ez da aurkitu.</string>
+  <string name="message_compose_attachments_skipped_toast">Eranskin batzuk ezin dira birbidali deskargatu ez direlako.</string>
+  <string name="message_compose_show_quoted_text_action">Aipatu mezua</string>
+  <string name="message_compose_description_delete_quoted_text">Kendu aipua</string>
+  <string name="message_compose_description_edit_quoted_text">Editatu aipua</string>
   <string name="message_view_from_format">Nondik: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Nori:</string>
   <string name="message_view_cc_label">Cc:</string>
+  <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_attachment_view_action">Ireki</string>
   <string name="message_view_attachment_download_action">Gorde</string>
   <string name="message_view_status_attachment_not_saved">Ezin da eranskina SD txartelan gorde.</string>
-  <string name="message_view_show_pictures_action">Irudiak ikusi</string>
-  <string name="message_view_show_more_attachments_action">Gehiago…</string>
-  <string name="message_view_no_viewer">Ez da <xliff:g id="mimetype">%s</xliff:g> ikusteko aplikaziorik topatu.</string>
+  <string name="message_view_status_no_space">Eranskina ezin izan da gorde leku nahikorik ez dagoelako.</string>
+  <string name="message_view_show_pictures_action">Erakutsi irudiak</string>
+  <string name="message_view_no_viewer">Ezin da <xliff:g id="mimetype">%s</xliff:g>-(r)entzako ikustailerik aurkitu.</string>
   <string name="message_view_download_remainder">Mezu osoa deskargatu</string>
+  <string name="message_view_toast_unable_to_display_message">Ezin da mezua bistaratu</string>
+  <string name="message_view_sender_label">%1$s-(r)en bidez</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Goiburu guztiak deskargatu dira, baina ez dago erakusteko goiburu gehiago.</string>
-  <string name="message_additional_headers_retrieval_failed">Datubasetik edo zerbitzaritik goiburu gehiago eskuratzeak errorea eman du.</string>
+  <string name="message_additional_headers_retrieval_failed">Datu basetik edo posta zerbitzaritik goiburu gehiago berreskuratzeak huts egin du.</string>
   <string name="from_same_sender">Bidaltzaile honengandik gehiago</string>
-  <string name="message_discarded_toast">Mezua baztertuta</string>
-  <string name="message_saved_toast">Mezua zirriborroetan gordeta</string>
-  <string name="global_settings_flag_label">Izarrak ikusi</string>
-  <string name="global_settings_flag_summary">Izarrak banderadun mezuak adierazten dute</string>
-  <string name="global_settings_checkbox_label">Aukera anitzeko kontrol laukiak</string>
-  <string name="global_settings_checkbox_summary">Aukera anitzeko kontrol laukiak beti ikusi</string>
-  <string name="global_settings_preview_lines_label">Aurreikuspen lerroak</string>
-  <string name="global_settings_show_correspondent_names_label">Dagokien izena ikusi</string>
-  <string name="global_settings_show_correspondent_names_summary">Eposta helbidearen ordez izena ikusi</string>
+  <string name="debug_delete_local_body">Araztu / Garbitu mezuaren gorputza</string>
+  <string name="message_discarded_toast">Mezu baztertua</string>
+  <string name="message_saved_toast">Mezua zirriborro gisa gordeta</string>
+  <string name="global_settings_flag_label">Erakutsi izarrak</string>
+  <string name="global_settings_flag_summary">Izarrek mezu markadunak adierazten dituzte</string>
+  <string name="global_settings_checkbox_label">Hautapen anizkoitzeko kontrol laukiak</string>
+  <string name="global_settings_checkbox_summary">Erakutsi beti hautapen anizkoitzeko kontrol laukiak</string>
+  <string name="global_settings_preview_lines_label">Aurreikusi lerroak</string>
+  <string name="global_settings_show_correspondent_names_label">Erakutsi dagozkien izenak</string>
+  <string name="global_settings_show_correspondent_names_summary">Erakutsi dagozkien izanak posta helbidearen ordez</string>
   <string name="global_settings_sender_above_subject_label">Izena gaiaren gainean</string>
-  <string name="global_settings_sender_above_subject_summary">Izenak gaiaren gainean jarri, bere azpian jarri ordez</string>
-  <string name="global_settings_show_contact_name_label">Kontaktu izenak ikusi</string>
-  <string name="global_settings_show_contact_name_summary">Jasotzailearen izena kontaktuetaik hartu ahal denean</string>
-  <string name="global_settings_registered_name_color_label">Kontaktuak koloreztatu</string>
+  <string name="global_settings_sender_above_subject_summary">Erakutsi dagozkien izenak gaiaren gainean, honen azpian beharrean</string>
+  <string name="global_settings_show_contact_name_label">Erakutsi kontaktuen izenak</string>
+  <string name="global_settings_show_contact_name_summary">Erabili hartzaileen izenak Kontaktuetatik erabilgarri daudenean</string>
+  <string name="global_settings_registered_name_color_label">Koloreztatu kontaktuak</string>
   <string name="global_settings_registered_name_color_default">Ez koloreztatu izenik kontaktu zerrendan</string>
-  <string name="global_settings_registered_name_color_changed">Kontaktu zerrendan izenak koloreztatu</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Karpeta izen luzeak moztu</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Lerro anitz erabili karpeta izen luzeak ikusteko</string>
+  <string name="global_settings_registered_name_color_changed">Koloreztatu izenak kontaktu zerrendan</string>
+  <string name="global_settings_folderlist_wrap_folder_names_label">Egokitu karpeta izen luzeak</string>
+  <string name="global_settings_folderlist_wrap_folder_names_summary">Erabili lerro anitz karpeta izen luzeak erakusteko</string>
   <string name="global_settings_messageview_fixedwidth_label">Zabalera finkoko letra-tipoak</string>
-  <string name="global_settings_messageview_fixedwidth_summary">Testu soileko mezuak ikustean zabalera finkoko letra-tipoak erabili</string>
-  <string name="global_settings_messageview_autofit_width_label">Mezuak egokitu</string>
-  <string name="global_settings_messageview_autofit_width_summary">Mezuak txikitu pantailan sar daitezen</string>
-  <string name="global_settings_messageview_return_to_list_label">Ezabatu ondoren zerrendara itzuli</string>
-  <string name="global_settings_messageview_return_to_list_summary">Mezu bat ezabatzean mezuen zerrendara itzuli</string>
-  <string name="global_settings_messageview_show_next_label">Ezabatu ondoren hurrengo mezua ikusi</string>
-  <string name="global_settings_messageview_show_next_summary">Mezuak ezabatzerakoan defektuz hurrengo mezua ikusi</string>
-  <string name="global_settings_confirm_actions_title">Baieztatzeko ekintzak</string>
-  <string name="global_settings_confirm_actions_summary">Hautatutako ekintzak egiterakoan elkarrizketa koadroa ikusi</string>
+  <string name="global_settings_messageview_fixedwidth_summary">Erabili zabalera finkoko letra-tipoak testu arrunteko mezuak erakustean</string>
+  <string name="global_settings_messageview_autofit_width_label">Doitu mezuak automatikoki</string>
+  <string name="global_settings_messageview_autofit_width_summary">Txikiagotu mezuak pantailan sar daitezen</string>
+  <string name="global_settings_messageview_return_to_list_label">Itzuli zerrendara ezabatu ondoren</string>
+  <string name="global_settings_messageview_return_to_list_summary">Itzuli mezuen zerrendara mezu bat ezabatzean</string>
+  <string name="global_settings_messageview_show_next_label">Erakutsi hurrengo mezua ezabatu ondoren</string>
+  <string name="global_settings_messageview_show_next_summary">Erakutsi hurrengo mezua lehenespenez mezua ezabatzean</string>
+  <string name="global_settings_confirm_actions_title">Berretsi ekintzak</string>
+  <string name="global_settings_confirm_actions_summary">Erakutsi elkarrizketa bat hautatutako ekintzak egitean</string>
   <string name="global_settings_confirm_action_delete">Ezabatu</string>
-  <string name="global_settings_confirm_action_delete_starred">Izarduna ezabatu (mezu ikuspegian)</string>
+  <string name="global_settings_confirm_action_delete_starred">Ezabatu Izardunak (mezu ikuspegian)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
-  <string name="global_settings_confirm_action_delete_notif">Ezabatu (Jakinarazpenetatik)</string>
-  <string name="global_settings_notification_hide_subject_title">Jakinarazpenetan gaia ezkutatu</string>
+  <string name="global_settings_confirm_menu_discard">Baztertu mezua</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Markatu mezu guztiak irakurritako gisa</string>
+  <string name="global_settings_confirm_action_delete_notif">Ezabatu (jakinarazpenetatik)</string>
+  <string name="global_settings_privacy_hide_useragent">Ezkutatu posta bezeroa</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Kendu K-9 Erabiltzaile-Agentea posta goiburutik</string>
+  <string name="global_settings_privacy_hide_timezone">Ezkutatu ordu-zona</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Erabili UTC tokiko ordu-zonaren ordez posta goiburuetan eta erantzunen goiburuan</string>
+  <string name="global_settings_notification_hide_subject_title">Ezkutatu gaia jakinarazpenetan</string>
   <string name="global_settings_notification_hide_subject_never">Inoiz ez</string>
   <string name="global_settings_notification_hide_subject_when_locked">Gailua blokeatuta dagoenean</string>
   <string name="global_settings_notification_hide_subject_always">Beti</string>
-  <string name="global_settings_notification_quick_delete_title">\'Ezabatu\' botoia erakutsi</string>
+  <string name="global_settings_notification_quick_delete_title">Erakutsi \'Ezabatu\' botoia</string>
   <string name="global_settings_notification_quick_delete_never">Inoiz ez</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Mezu bakarreko jakinarazpenetarako</string>
   <string name="global_settings_notification_quick_delete_always">Beti</string>
-  <string name="global_settings_notification_quick_delete_description">Jakinarazpenetan ezabatze azkarra ahalbidetzen duen botoia ikusi</string>
-  <string name="quiet_time">Tarte isila</string>
-  <string name="quiet_time_description">Timbrea, bibrazioa eta argiak gauez ezgaitu</string>
-  <string name="quiet_time_starts">Tarte isilaren hasiera</string>
-  <string name="quiet_time_ends">Tarte isilaren bukaera</string>
-  <string name="account_setup_basics_title">Kontu berria konfiguratu</string>
-  <string name="account_setup_basics_email_hint">Eposta helbidea</string>
+  <string name="global_settings_notification_quick_delete_description">Erakutsi mezuak azkar ezabatzea ahalbidetzen duen botoi bat jakinarazpenetan</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Jakinarazpenak Blokeatutako Pantailan</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Jakinarazpenik ez blokeatutako pantailan</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Aplikazioaren izena</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Irakurri gabeko mezuen kopurua</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Mezu kopurua eta bidaltzaileak</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Pantaila desblokeatuta dagoenean bezala</string>
+  <string name="quiet_time">Alertarik gabeko aldia</string>
+  <string name="quiet_time_description">Desgaitu soinua, bibrazioa eta argiak gauez</string>
+  <string name="quiet_time_notification">Desgaitu jakinarazpenak</string>
+  <string name="quiet_time_notification_description">Desgaitu guztiz jakinarazpenak alertarik gabeko aldian</string>
+  <string name="quiet_time_starts">Alertarik gabeko aldiaren hasiera</string>
+  <string name="quiet_time_ends">Alertarik gabeko aldiaren amaiera</string>
+  <string name="account_setup_basics_title">Konfiguratu kontu berria</string>
+  <string name="account_setup_basics_email_hint">Posta helbidea</string>
   <string name="account_setup_basics_password_hint">Pasahitza</string>
-  <string name="account_setup_basics_show_password">Pasahitza erakutsi</string>
+  <string name="account_setup_basics_show_password">Erakutsi pasahitza</string>
   <string name="account_setup_basics_manual_setup_action">Eskuzko konfigurazioa</string>
   <string name="account_setup_check_settings_title"/>
-  <string name="account_setup_check_settings_retr_info_msg">Kontuaren informazioa eskuratzen\u2026</string>
+  <string name="account_setup_check_settings_retr_info_msg">Kontuaren informazioa berreskuratzen\u2026</string>
   <string name="account_setup_check_settings_check_incoming_msg">Sarrerako zerbitzariaren ezarpenak egiaztatzen\u2026</string>
   <string name="account_setup_check_settings_check_outgoing_msg">Irteerako zerbitzariaren ezarpenak egiaztatzen\u2026</string>
-  <string name="account_setup_check_settings_authenticate">Kautotzen\u2026</string>
+  <string name="account_setup_check_settings_authenticate">Autentifikatzen\u2026</string>
   <string name="account_setup_check_settings_fetch">Kontuaren ezarpenak eskuratzen\u2026</string>
-  <string name="account_setup_check_settings_canceling_msg">Ezeztatzen\u2026</string>
-  <string name="account_setup_names_title">Ia bukatu duzu!</string>
-  <string name="account_setup_names_account_name_label">Kontu honi izena eman (aukerazkoa):</string>
-  <string name="account_setup_names_user_name_label">Zure izena (bidalitako mezuetan ikusiko da):</string>
+  <string name="account_setup_check_settings_canceling_msg">Bertan behera uzten\u2026</string>
+  <string name="account_setup_names_title">Ia amaitu duzu!</string>
+  <string name="account_setup_names_account_name_label">Eman izen bat kontu honi (aukerakoa):</string>
+  <string name="account_setup_names_user_name_label">Idatzi zure izena (irteerako mezuetan bistaratuko da):</string>
   <string name="account_setup_account_type_title">Kontu mota</string>
-  <string name="account_setup_account_type_instructions">Ze kontu mota da hau?</string>
+  <string name="account_setup_account_type_instructions">Zein kontu mota da hau?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
-  <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
-  <string name="account_setup_auth_type_encrypted_password">Pasahitz zifratua</string>
+  <string name="account_setup_account_type_webdav_action">Partekatu (WebDAV)</string>
+  <string name="account_setup_auth_type_normal_password">Pasahitz normala</string>
+  <string name="account_setup_auth_type_insecure_password">Pasahitza, era ez seguruan transmitituta</string>
+  <string name="account_setup_auth_type_encrypted_password">Pasahitz enkriptatua</string>
   <string name="account_setup_auth_type_tls_client_certificate">Bezero ziurtagiria</string>
   <string name="account_setup_incoming_title">Sarrerako zerbitzariaren ezarpenak</string>
   <string name="account_setup_incoming_username_label">Erabiltzaile izena</string>
   <string name="account_setup_incoming_password_label">Pasahitza</string>
+  <string name="account_setup_incoming_client_certificate_label">Bezero ziurtagiria</string>
   <string name="account_setup_incoming_pop_server_label">POP3 zerbitzaria</string>
   <string name="account_setup_incoming_imap_server_label">IMAP zebitzaria</string>
-  <string name="account_setup_incoming_webdav_server_label">Exchange zerbitzaria</string>
-  <string name="account_setup_incoming_port_label">Portua</string>
+  <string name="account_setup_incoming_webdav_server_label">Partekatze zerbitzaria</string>
+  <string name="account_setup_incoming_port_label">Ataka</string>
   <string name="account_setup_incoming_security_label">Segurtasuna</string>
-  <string name="account_setup_incoming_auth_type_label">Kautotzea</string>
-  <string name="account_setup_incoming_security_none_label">Ezer</string>
+  <string name="account_setup_incoming_auth_type_label">Autentifikazioa</string>
+  <string name="account_setup_incoming_security_none_label">Bat ere ez</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ez da baliozkoa \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"-(r)ekin</string>
   <string name="account_setup_incoming_delete_policy_label">Mezu bat ezabatzen dudanean</string>
   <string name="account_setup_incoming_delete_policy_never_label">Ez ezabatu zerbitzarian</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Zerbitzarian ezabatu</string>
-  <string name="account_setup_incoming_delete_policy_markread_label">Zerbitzarian irakurrita markatu</string>
-  <string name="account_setup_incoming_compression_label">Sare hauetan trinkotzea erabili:</string>
-  <string name="account_setup_incoming_mobile_label">Mobila</string>
+  <string name="account_setup_incoming_delete_policy_markread_label">Zerbitzarian irakurritako gisa markatu</string>
+  <string name="account_setup_incoming_compression_label">Erabili konpresioa sarean:</string>
+  <string name="account_setup_incoming_mobile_label">Mugikorra</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">Bestelakoak</string>
   <string name="local_storage_provider_external_label">Kanpoko biltegia (SD txartela)</string>
-  <string name="local_storage_provider_internal_label">Ohizko barruko biltegia</string>
+  <string name="local_storage_provider_internal_label">Ohiko barruko biltegia</string>
   <string name="local_storage_provider_samsunggalaxy_label">%1$s barneko biltegi gehigarria</string>
   <string name="local_storage_provider_label">Biltegiaren kokapena</string>
-  <string name="account_setup_expunge_policy_label">Ezabatutako mezuak zerbitzaritik kendu</string>
+  <string name="account_setup_expunge_policy_label">Borratu zerbitzaritik ezabatutako mezuak</string>
   <string name="account_setup_expunge_policy_immediately">Berehala</string>
   <string name="account_setup_expunge_policy_on_poll">Aztertzean</string>
   <string name="account_setup_expunge_policy_manual">Eskuz</string>
-  <string name="account_setup_incoming_autodetect_namespace_label">IMAP namespace-a auto-detektatu</string>
-  <string name="account_setup_incoming_imap_path_prefix_label">IMAP bidearen hasiera</string>
+  <string name="account_setup_incoming_autodetect_namespace_label">Auto-detektatu IMAP izen-lekua</string>
+  <string name="account_setup_incoming_imap_path_prefix_label">IMAP bize-izen aurrizkia</string>
   <string name="drafts_folder_label">Zirriborroen karpeta</string>
   <string name="sent_folder_label">Bidalitakoen karpeta</string>
-  <string name="trash_folder_label">Zaborraren karpeta</string>
+  <string name="trash_folder_label">Zakarrontziaren karpeta</string>
   <string name="archive_folder_label">Artxiboaren karpeta</string>
   <string name="spam_folder_label">Spam karpeta</string>
-  <string name="account_setup_incoming_subscribed_folders_only_label">Harpidetutako karpetak bakarrik ikusi</string>
+  <string name="account_setup_incoming_subscribed_folders_only_label">Erakutsi harpidetutako karpetak bakarrik</string>
   <string name="account_setup_auto_expand_folder">Karpetak automatikoki zabaldu</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">OWA bidea</string>
-  <string name="account_setup_incoming_webdav_path_prefix_hint">Aukerazkoa</string>
-  <string name="account_setup_incoming_webdav_auth_path_label">Kautotze bidea</string>
-  <string name="account_setup_incoming_webdav_auth_path_hint">Aukerazkoa</string>
+  <string name="account_setup_incoming_webdav_path_prefix_label">OWA bide-izena</string>
+  <string name="account_setup_incoming_webdav_path_prefix_hint">Aukerakoa</string>
+  <string name="account_setup_incoming_webdav_auth_path_label">Autentifikazio bide-izena</string>
+  <string name="account_setup_incoming_webdav_auth_path_hint">Aukerakoa</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Postontzi aliasa</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_hint">Aukerazkoa</string>
-  <string name="account_setup_outgoing_title">Bidaltzeko zerbitzariaren ezarpenak</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_hint">Aukerakoa</string>
+  <string name="account_setup_outgoing_title">Irteerako zerbitzariaren ezarpenak</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP zerbitzaria</string>
-  <string name="account_setup_outgoing_port_label">Portua</string>
+  <string name="account_setup_outgoing_port_label">Ataka</string>
   <string name="account_setup_outgoing_security_label">Segurtasuna</string>
-  <string name="account_setup_outgoing_require_login_label">Izen ematea behar du.</string>
-  <string name="account_setup_outgoing_username_label">Erabiltzailea</string>
+  <string name="account_setup_outgoing_require_login_label">Saioa hasi behar da.</string>
+  <string name="account_setup_outgoing_username_label">Erabiltzaile izena</string>
   <string name="account_setup_outgoing_password_label">Pasahitza</string>
-  <string name="account_setup_outgoing_authentication_label">Kautotzea</string>
-  <string name="account_setup_bad_uri">Konfigurazio ezegokia: <xliff:g id="err_mess">%s</xliff:g></string>
+  <string name="account_setup_outgoing_authentication_label">Autentifikazioa</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ez da baliozkoa \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"-(r)ekin</string>
+  <string name="account_setup_bad_uri">Konfigurazio baliogabea: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Kontu aukerak</string>
   <string name="compact_action">Kontua trinkotu</string>
-  <string name="clear_action">Mezuak ezabatu (arriskua!)</string>
-  <string name="recreate_action">Datuak birsortu (Azkeneko aukera!)</string>
+  <string name="clear_action">Mezuak garbitu (kontuz!)</string>
+  <string name="recreate_action">Datuak birsortu (Azken Baliabidea!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Karpeta aztertzeko maiztasuna</string>
   <string name="account_setup_options_mail_check_frequency_never">Inoiz ez</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Minutuoro</string>
-  <string name="account_setup_options_mail_check_frequency_5min">5 minutuoro</string>
-  <string name="account_setup_options_mail_check_frequency_10min">10 minutuoro</string>
-  <string name="account_setup_options_mail_check_frequency_15min">15 minutuoro</string>
-  <string name="account_setup_options_mail_check_frequency_30min">30 minutuoro</string>
-  <string name="account_setup_options_mail_check_frequency_1hour">Orduro</string>
-  <string name="account_setup_options_mail_check_frequency_2hour">2 orduro</string>
-  <string name="account_setup_options_mail_check_frequency_3hour">3 orduro</string>
-  <string name="account_setup_options_mail_check_frequency_6hour">6 orduro</string>
-  <string name="account_setup_options_mail_check_frequency_12hour">12 orduro</string>
-  <string name="account_setup_options_mail_check_frequency_24hour">24 orduro</string>
-  <string name="push_poll_on_connect_label">Bidaltzeko konektatzerakoan aztertu</string>
-  <string name="account_setup_options_enable_push_label">Kontu honetarako \"push mail\" gaitu </string>
-  <string name="account_setup_options_enable_push_summary">Zure zerbitzariak onartzen badu, mezu berriak berehala agertuko dira. Aukera honek lan-etekinean eragin handia izan dezake.</string>
-  <string name="idle_refresh_period_label">Zereginik gabeko konexioa freskatu</string>
-  <string name="idle_refresh_period_1min">Minutuoro</string>
-  <string name="idle_refresh_period_2min">2 minutuoro</string>
-  <string name="idle_refresh_period_3min">3 minutuoro</string>
-  <string name="idle_refresh_period_6min">6 minutuoro</string>
-  <string name="idle_refresh_period_12min">12 minutuoro</string>
-  <string name="idle_refresh_period_24min">24 minutuoro</string>
-  <string name="idle_refresh_period_36min">36 minutuoro</string>
-  <string name="idle_refresh_period_48min">48 minutuoro</string>
-  <string name="idle_refresh_period_60min">60 minutuoro</string>
-  <string name="account_setup_options_notify_label">Eposta berria heltzean jakinarazi</string>
-  <string name="account_setup_options_notify_sync_label">Eposta egiaztatzerakoan jakinarazi</string>
-  <string name="account_setup_options_mail_display_count_label">Ikusiko diren mezu kopurua</string>
+  <string name="account_setup_options_mail_check_frequency_1min">Minutuero</string>
+  <string name="account_setup_options_mail_check_frequency_5min">5 minutuero</string>
+  <string name="account_setup_options_mail_check_frequency_10min">10 minutuero</string>
+  <string name="account_setup_options_mail_check_frequency_15min">15 minutuero</string>
+  <string name="account_setup_options_mail_check_frequency_30min">30 minutuero</string>
+  <string name="account_setup_options_mail_check_frequency_1hour">Orduero</string>
+  <string name="account_setup_options_mail_check_frequency_2hour">2 orduero</string>
+  <string name="account_setup_options_mail_check_frequency_3hour">3 orduero</string>
+  <string name="account_setup_options_mail_check_frequency_6hour">6 orduero</string>
+  <string name="account_setup_options_mail_check_frequency_12hour">12 orduero</string>
+  <string name="account_setup_options_mail_check_frequency_24hour">24 orduero</string>
+  <string name="push_poll_on_connect_label">Aztertu bidaltzeko konektatzerakoan</string>
+  <string name="account_setup_options_enable_push_label">Gaitu \"push\" posta kontu honetarako</string>
+  <string name="account_setup_options_enable_push_summary">Zure zerbitzariak onartzen badu, mezu berriak berehala agertuko dira. Aukera honek errendimendua izugarri hobetu edo kaltetu dezake.</string>
+  <string name="idle_refresh_period_label">Freskatu IDLE konexioa</string>
+  <string name="idle_refresh_period_1min">Minutuero</string>
+  <string name="idle_refresh_period_2min">2 minutuero</string>
+  <string name="idle_refresh_period_3min">3 minutuero</string>
+  <string name="idle_refresh_period_6min">6 minutuero</string>
+  <string name="idle_refresh_period_12min">12 minutuero</string>
+  <string name="idle_refresh_period_24min">24 minutuero</string>
+  <string name="idle_refresh_period_36min">36 minutuero</string>
+  <string name="idle_refresh_period_48min">48 minutuero</string>
+  <string name="idle_refresh_period_60min">60 minutuero</string>
+  <string name="account_setup_options_notify_label">Jakinarazi niri posta iristean</string>
+  <string name="account_setup_options_notify_sync_label">Jakinarazi niri posta egiaztatzen denean</string>
+  <string name="account_setup_options_mail_display_count_label">Bistaratuko den mezu kopurua</string>
   <string name="account_setup_options_mail_display_count_10">10 mezu</string>
   <string name="account_setup_options_mail_display_count_25">25 mezu</string>
   <string name="account_setup_options_mail_display_count_50">50 mezu</string>
@@ -351,83 +428,90 @@
   <string name="account_setup_options_mail_display_count_10000">10000 mezu</string>
   <string name="account_setup_options_mail_display_count_all">mezu guztiak</string>
   <string name="move_copy_cannot_copy_unsynced_message">Zerbitzariarekin sinkronizatuta ez dauden mezuak ezin dira kopiatu edo mugitu</string>
-  <string name="account_setup_failed_dlg_title">Konfigurazioak ezin izan du bukatu</string>
+  <string name="account_setup_failed_dlg_title">Konfigurazioak ezin izan du amaitu</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Erabiltzaile izen edo pasahitz okerrak.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Zerbitzariak SSL ziurtagiri baliogabe bat aurkeztu du. Batzuetan, hau zerbitzariak konfigurazio okerra duelako da. Beste batzuetan norbait zu edo zure posta zerbitzaria erasotzen saiatzen ari delako da. Ez bazaude ziur zer ari den gertatzen, klikatu Baztertu eta jarri harremanetan zure posta zerbitzaria kudeatzen duen jendearekin.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Ezin zerbitzarira konektatu.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_edit_details_action">Xehetasunak editatu</string>
+  <string name="account_setup_failed_dlg_edit_details_action">Editatu xehetasunak</string>
   <string name="account_setup_failed_dlg_continue_action">Jarraitu</string>
   <string name="account_settings_push_advanced_title">Aurreratua</string>
   <string name="account_settings_title_fmt">Kontu ezarpenak</string>
-  <string name="account_settings_default_label">Defektuzko kontua</string>
-  <string name="account_settings_default_summary">Eposta defektuz kontu honetatik bidali</string>
-  <string name="account_settings_notify_label">Eposta berriko jakinarazpenak</string>
+  <string name="account_settings_default_label">Kontu lehenetsia</string>
+  <string name="account_settings_default_summary">Bidali posta kontu honetatik era lehenetsian</string>
+  <string name="account_settings_notify_label">Posta berrien jakinarazpenak</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Jakinarazpenen karpeta</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Guztiak</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_class">1.en mailakoak bakarrik</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1.ngo eta 2. mailakoak</string>
-  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Guztiak 2. mailakoak ezik</string>
-  <string name="account_settings_folder_notify_new_mail_mode_none">Batez</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">1. klaseko karpetak bakarrik</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Bat ere ez</string>
   <string name="account_settings_notify_sync_label">Sinkronizazio jakinarazpenak</string>
   <string name="account_settings_email_label">Zure posta helbidea</string>
-  <string name="account_settings_notify_summary">Mezuak heltzean egoera barran jakinarazi</string>
-  <string name="account_settings_notify_sync_summary">Mezuak egiaztatzean egoera barran jakinarazi</string>
-  <string name="account_settings_notify_self_label">Bidalitako mezuak ere bai</string>
-  <string name="account_settings_notify_self_summary">Bidaltzen ditudan mezuetarako jakinarazpena ikusi</string>
-  <string name="account_settings_notification_opens_unread_label">Jakinarazpenak irakurgabeko mezuak irekitzen ditu</string>
+  <string name="account_settings_notify_summary">Jakinarazi egoera barran posta iristean</string>
+  <string name="account_settings_notify_sync_summary">Jakinarazi egoera barran posta egiaztatzean</string>
+  <string name="account_settings_notify_self_label">Gehitu irteerako posta</string>
+  <string name="account_settings_notify_self_summary">Erakutsi jakinarazpen bat bidaltzen ditudan mezuetarako</string>
+  <string name="account_notify_contacts_mail_only_label">Kontaktuak bakarrik</string>
+  <string name="account_notify_contacts_mail_only_summary">Erakutsi kontaktu ezagunen mezuen jakinarazpenak bakarrik</string>
+  <string name="account_settings_notification_opens_unread_label">Jakinarazpenak irakurri gabeko mezuak irekitzen ditu</string>
   <string name="account_settings_notification_opens_unread_summary">Jakinarazpena irekitzean irakurri gabeko mezuak bilatu</string>
-  <string name="account_settings_mark_message_as_read_on_view_label">Irekitzean irakurrita markatu</string>
-  <string name="account_settings_mark_message_as_read_on_view_summary">Mezu bat irekitzerakoan irakurri bezala markatu</string>
-  <string name="account_settings_show_pictures_label">Irudiak beti ikusi</string>
+  <string name="account_settings_mark_message_as_read_on_view_label">Markatu irakurritako gisa irekitzean</string>
+  <string name="account_settings_mark_message_as_read_on_view_summary">Markatu mezua irakurritako gisa ikusteko irekitzerakoan</string>
+  <string name="account_settings_show_pictures_label">Erakutsi beti Irudiak</string>
   <string name="account_settings_show_pictures_never">Ez</string>
   <string name="account_settings_show_pictures_only_from_contacts">Kontaktuetatik</string>
-  <string name="account_settings_show_pictures_always">Edozeinetik</string>
-  <string name="account_settings_composition">Eposta bidaltzen</string>
-  <string name="account_settings_default_quoted_text_shown_label">Erantzuterakoan mezua aipatu</string>
-  <string name="account_settings_default_quoted_text_shown_summary">Erantzunean jatorrizko mezua sartu.</string>
-  <string name="account_settings_reply_after_quote_label">Erantzun aipamenaren ondoren</string>
+  <string name="account_settings_show_pictures_always">Edonorengandik</string>
+  <string name="account_settings_composition">Posta bidaltzen</string>
+  <string name="account_settings_default_quoted_text_shown_label">Aipatu mezua erantzutean</string>
+  <string name="account_settings_default_quoted_text_shown_summary">Sartu jatorrizko mezua zure erantzunean.</string>
+  <string name="account_settings_reply_after_quote_label">Erantzun aipuaren ondoren</string>
   <string name="account_settings_reply_after_quote_summary">Jatorrizko mezua zure erantzunaren gainean agertuko da.</string>
-  <string name="account_settings_strip_signature_label">Erantzuterakoan sinadurak kendu</string>
-  <string name="account_settings_strip_signature_summary">Aipamenetatik sinadurak kenduko dira</string>
+  <string name="account_settings_strip_signature_label">Kendu sinadurak erantzutean</string>
+  <string name="account_settings_strip_signature_summary">Sinadurak kenduko dira aipatutako mezuetatik</string>
   <string name="account_settings_message_format_label">Mezuaren formatua</string>
-  <string name="account_settings_message_format_text">Testu soila (irudiak eta formatua kendu)</string>
-  <string name="account_settings_message_format_html">HTML (irudiak eta formatua mantendu)</string>
+  <string name="account_settings_message_format_text">Testu arrunta (kendu irudiak eta formatua)</string>
+  <string name="account_settings_message_format_html">HTML (mantendu irudiak eta formatua)</string>
   <string name="account_settings_message_format_auto">Automatikoa</string>
-  <string name="account_settings_always_show_cc_bcc_label">Cc/Bcc beti ikusi</string>
+  <string name="account_settings_always_show_cc_bcc_label">Erakutsi beti Cc/Bcc</string>
   <string name="account_settings_message_read_receipt_label">Irakurragiria</string>
-  <string name="account_settings_message_read_receipt_summary">Irakurragiria eskatu beti</string>
-  <string name="account_settings_quote_style_label">Erantzunaren aipamen estiloa</string>
+  <string name="account_settings_message_read_receipt_summary">Eskatu beti irakurragiria</string>
+  <string name="account_settings_quote_style_label">Erantzunaren aipu estiloa</string>
   <string name="account_settings_quote_style_prefix">Aurrizkia (Gmail bezala)</string>
   <string name="account_settings_quote_style_header">Goiburua (Outlook bezala)</string>
   <string name="account_settings_general_title">Ezarpen orokorrak</string>
-  <string name="account_settings_reading_mail">Eposta irakurtzen</string>
-  <string name="account_settings_sync">Eposta jasotzen</string>
+  <string name="account_settings_reading_mail">Posta irakurtzen</string>
+  <string name="account_settings_sync">Posta eskuratzen</string>
   <string name="account_settings_folders">Karpetak</string>
-  <string name="account_settings_quote_prefix_label">Aipamen testuaren aurrizkia</string>
+  <string name="account_settings_quote_prefix_label">Aipuaren aurrizkia</string>
   <string name="account_settings_crypto">Kriptografia</string>
+  <string name="account_settings_crypto_app">OpenPGP aplikazioa</string>
+  <string name="account_settings_crypto_key">Nire Gakoa</string>
+  <string name="account_settings_no_openpgp_provider_configured">Ez dago OpenPGP aplikaziorik konfiguratuta</string>
   <string name="account_settings_mail_check_frequency_label">Karpeta aztertzeko maiztasuna</string>
   <string name="account_settings_storage_title">Biltegia</string>
   <string name="account_settings_color_label">Kontuaren kolorea</string>
-  <string name="account_settings_color_summary">Kontu honen kolorea karpeten zerrendan eta kontu zerrendan erabiliko da</string>
+  <string name="account_settings_color_summary">Kontu honen kolore orokorra karpeta eta kontu zerrendan erabiliko da</string>
   <string name="account_settings_led_color_label">Jakinarazpenetarako LED kolorea</string>
-  <string name="account_settings_led_color_summary">Kontu honetarako LEDaren kolorea</string>
+  <string name="account_settings_led_color_summary">Kontu honetarako zure gailuaren LEDak keinatu beharko lukeen kolorea</string>
   <string name="account_settings_mail_display_count_label">Karpeta lokalaren tamaina</string>
-  <string name="account_settings_autodownload_message_size_label">Honenbeste mezu eskuratu</string>
-  <string name="account_settings_autodownload_message_size_1">1Kb</string>
-  <string name="account_settings_autodownload_message_size_2">2Kb</string>
-  <string name="account_settings_autodownload_message_size_4">4Kb</string>
-  <string name="account_settings_autodownload_message_size_8">8Kb</string>
-  <string name="account_settings_autodownload_message_size_16">16Kb</string>
-  <string name="account_settings_autodownload_message_size_32">32Kb</string>
-  <string name="account_settings_autodownload_message_size_64">64Kb</string>
-  <string name="account_settings_autodownload_message_size_128">128Kb</string>
-  <string name="account_settings_autodownload_message_size_256">256Kb</string>
-  <string name="account_settings_autodownload_message_size_512">512Kb</string>
-  <string name="account_settings_autodownload_message_size_1024">1Mb</string>
-  <string name="account_settings_autodownload_message_size_2048">2Mb</string>
-  <string name="account_settings_autodownload_message_size_5120">5Mb</string>
-  <string name="account_settings_autodownload_message_size_10240">10Mb</string>
-  <string name="account_settings_autodownload_message_size_any">edozen tamaina (mugarik ez)</string>
-  <string name="account_settings_message_age_label">Mezuak hauek sinkronizatu:</string>
-  <string name="account_settings_message_age_any">edozein datakoak (mugarik ez)</string>
+  <string name="account_settings_autodownload_message_size_label">Honenbesterainoko mezuak eskuratu</string>
+  <string name="account_settings_autodownload_message_size_1">1 kb</string>
+  <string name="account_settings_autodownload_message_size_2">2 kb</string>
+  <string name="account_settings_autodownload_message_size_4">4 kb</string>
+  <string name="account_settings_autodownload_message_size_8">8 kb</string>
+  <string name="account_settings_autodownload_message_size_16">16 kb</string>
+  <string name="account_settings_autodownload_message_size_32">32 kb</string>
+  <string name="account_settings_autodownload_message_size_64">64 kb</string>
+  <string name="account_settings_autodownload_message_size_128">128 kb</string>
+  <string name="account_settings_autodownload_message_size_256">256 kb</string>
+  <string name="account_settings_autodownload_message_size_512">512 kb</string>
+  <string name="account_settings_autodownload_message_size_1024">1 Mb</string>
+  <string name="account_settings_autodownload_message_size_2048">2 Mb</string>
+  <string name="account_settings_autodownload_message_size_5120">5 Mb</string>
+  <string name="account_settings_autodownload_message_size_10240">10 Mb</string>
+  <string name="account_settings_autodownload_message_size_any">edozein tamaina (mugarik ez)</string>
+  <string name="account_settings_message_age_label">Mezuak hemendik sinkronizatu</string>
+  <string name="account_settings_message_age_any">edonoizkoak (mugarik ez)</string>
   <string name="account_settings_message_age_0">gaur</string>
   <string name="account_settings_message_age_1">azken 2 egunak</string>
   <string name="account_settings_message_age_2">azken 3 egunak</string>
@@ -439,141 +523,145 @@
   <string name="account_settings_message_age_3_months">azken 3 hilabeteak</string>
   <string name="account_settings_message_age_6_months">azken 6 hilabeteak</string>
   <string name="account_settings_message_age_1_year">azken urtea</string>
-  <string name="account_settings_folder_display_mode_label">Ikusiko direk karpetak</string>
+  <string name="account_settings_folder_display_mode_label">Bistaratuko diren karpetak</string>
   <string name="account_settings_folder_display_mode_all">Guztiak</string>
-  <string name="account_settings_folder_display_mode_first_class">1.go mailakoak bakarrik</string>
-  <string name="account_settings_folder_display_mode_first_and_second_class">1.go eta 2. mailako karpetak</string>
-  <string name="account_settings_folder_display_mode_not_second_class">Guztiak 2. mailakoak ezik</string>
-  <string name="account_settings_folder_sync_mode_label">Karpetak aztertu</string>
+  <string name="account_settings_folder_display_mode_first_class">1. klaseko karpetak bakarrik</string>
+  <string name="account_settings_folder_display_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
+  <string name="account_settings_folder_display_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
+  <string name="account_settings_folder_sync_mode_label">Aztertu karpetak</string>
   <string name="account_settings_folder_sync_mode_all">Guztiak</string>
-  <string name="account_settings_folder_sync_mode_first_class">1.go mailakoak bakarrik</string>
-  <string name="account_settings_folder_sync_mode_first_and_second_class">1.go eta 2. mailako karpetak</string>
-  <string name="account_settings_folder_sync_mode_not_second_class">Guztiak 2. mailakoak ezik</string>
-  <string name="account_settings_folder_sync_mode_none">Batez</string>
+  <string name="account_settings_folder_sync_mode_first_class">1. klaseko karpetak bakarrik</string>
+  <string name="account_settings_folder_sync_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
+  <string name="account_settings_folder_sync_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
+  <string name="account_settings_folder_sync_mode_none">Bat ere ez</string>
   <string name="account_settings_folder_push_mode_label">Karpeten \'Push\'a</string>
   <string name="account_settings_folder_push_mode_all">Guztiak</string>
-  <string name="account_settings_folder_push_mode_first_class">1.go mailakoak bakarrik</string>
-  <string name="account_settings_folder_push_mode_first_and_second_class">1.go eta 2. mailako karpetak</string>
-  <string name="account_settings_folder_push_mode_not_second_class">Guztiak 2. mailakoak ezik</string>
-  <string name="account_settings_folder_push_mode_none">Batez</string>
-  <string name="account_settings_folder_target_mode_label">Helburu karpetak mugitu/kopiatu</string>
+  <string name="account_settings_folder_push_mode_first_class">1. klaseko karpetak bakarrik</string>
+  <string name="account_settings_folder_push_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
+  <string name="account_settings_folder_push_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
+  <string name="account_settings_folder_push_mode_none">Bat ere ez</string>
+  <string name="account_settings_folder_target_mode_label">Mugitu/kopiatu helburu karpetak</string>
   <string name="account_settings_folder_target_mode_all">Guztiak</string>
-  <string name="account_settings_folder_target_mode_first_class">1.go mailakoak bakarrik</string>
-  <string name="account_settings_folder_target_mode_first_and_second_class">1.go eta 2. mailako karpetak</string>
-  <string name="account_settings_folder_target_mode_not_second_class">Guztiak 2. mailakoak ezik</string>
-  <string name="account_settings_sync_remote_deletetions_label">Zerbitzariko ezabaketak sinkronizatu</string>
-  <string name="account_settings_sync_remote_deletetions_summary">Mezuak kendu zerbitzarian ezabatzen direnean</string>
+  <string name="account_settings_folder_target_mode_first_class">1. klaseko karpetak bakarrik</string>
+  <string name="account_settings_folder_target_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
+  <string name="account_settings_folder_target_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
+  <string name="account_settings_sync_remote_deletetions_label">sinkronizatu zerbitzariko ezabatzeak</string>
+  <string name="account_settings_sync_remote_deletetions_summary">Kendu mezuak zerbitzarian ezabatzean</string>
   <string name="folder_settings_title">Karpeta ezarpenak</string>
-  <string name="folder_settings_in_top_group_label">Goiko taldean ikusi</string>
-  <string name="folder_settings_in_top_group_summary">Karpeta zerrendaren goikaldetik hurbil ikusi</string>
-  <string name="folder_settings_folder_display_mode_label">Karpeta bistaratzeko klasea</string>
-  <string name="folder_settings_folder_display_mode_normal">Batez</string>
-  <string name="folder_settings_folder_display_mode_first_class">1.go maila</string>
-  <string name="folder_settings_folder_display_mode_second_class">2. maila</string>
-  <string name="folder_settings_folder_sync_mode_label">Karpeta sinkronizatzeko klasea</string>
-  <string name="folder_settings_folder_sync_mode_normal">Batez</string>
-  <string name="folder_settings_folder_sync_mode_first_class">1.go maila</string>
-  <string name="folder_settings_folder_sync_mode_second_class">2. maila</string>
+  <string name="folder_settings_in_top_group_label">Erakutsi goiko taldean</string>
+  <string name="folder_settings_in_top_group_summary">Erakutsi karpeta zerrendaren goialdetik hurbil</string>
+  <string name="folder_settings_folder_display_mode_label">Bistaratzeko karpeta klaseak</string>
+  <string name="folder_settings_folder_display_mode_normal">Klaserik ez</string>
+  <string name="folder_settings_folder_display_mode_first_class">1. klasea</string>
+  <string name="folder_settings_folder_display_mode_second_class">2. klasea</string>
+  <string name="folder_settings_folder_sync_mode_label">Aztertzeko karpeta klasea</string>
+  <string name="folder_settings_folder_sync_mode_normal">Bat ere ez</string>
+  <string name="folder_settings_folder_sync_mode_first_class">1. klasea</string>
+  <string name="folder_settings_folder_sync_mode_second_class">2. klasea</string>
   <string name="folder_settings_folder_sync_mode_inherited">Bistaratzeko klasearen berdina</string>
-  <string name="folder_settings_folder_push_mode_label">Karpetaren \'push\' klasea</string>
-  <string name="folder_settings_folder_push_mode_normal">Batez</string>
-  <string name="folder_settings_folder_push_mode_first_class">1.go maila</string>
-  <string name="folder_settings_folder_push_mode_second_class">2. maila</string>
+  <string name="folder_settings_folder_push_mode_label">\"Push\" duten karpeta klaseak</string>
+  <string name="folder_settings_folder_push_mode_normal">Klaserik ez</string>
+  <string name="folder_settings_folder_push_mode_first_class">1. klasea</string>
+  <string name="folder_settings_folder_push_mode_second_class">2. klasea</string>
   <string name="folder_settings_folder_push_mode_inherited">Sinkronizatzeko klasearen berdina</string>
-  <string name="folder_settings_folder_notify_mode_normal">Batez</string>
-  <string name="folder_settings_folder_notify_mode_first_class">1.ng maila</string>
-  <string name="folder_settings_folder_notify_mode_second_class">2. maila</string>
+  <string name="folder_settings_folder_notify_mode_label">Jakinarazpenen karpeta klasea</string>
+  <string name="folder_settings_folder_notify_mode_normal">Klaserik ez</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1. klasea</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2. klasea</string>
+  <string name="folder_settings_folder_notify_mode_inherited">\"Push\" duten klasearen berdina</string>
   <string name="account_settings_incoming_label">Sarrerako zerbitzaria</string>
-  <string name="account_settings_incoming_summary">Sarrerako zerbitzaria konfiguratu</string>
-  <string name="account_settings_outgoing_label">Irteera zerbitzaria</string>
-  <string name="account_settings_outgoing_summary">Irteerako zerbitzaria (SMTP) konfiguratu</string>
+  <string name="account_settings_incoming_summary">Konfiguratu sarrerako posta zerbitzaria</string>
+  <string name="account_settings_outgoing_label">Irteerako zerbitzaria</string>
+  <string name="account_settings_outgoing_summary">Irteerako posta zerbitzaria (SMTP) konfiguratu</string>
   <string name="account_settings_description_label">Kontu izena</string>
   <string name="account_settings_name_label">Zure izena</string>
   <string name="notifications_title">Jakinarazpenak</string>
-  <string name="account_settings_vibrate_enable">Dardara</string>
-  <string name="account_settings_vibrate_summary">Dardar egin mezua heltzean</string>
-  <string name="account_settings_vibrate_pattern_label">Dardar ereduak</string>
-  <string name="account_settings_vibrate_pattern_default">defektuzkoa</string>
+  <string name="account_settings_vibrate_enable">Bibratu</string>
+  <string name="account_settings_vibrate_summary">Bibratu posta iristean</string>
+  <string name="account_settings_vibrate_pattern_label">Bibrazio ereduak</string>
+  <string name="account_settings_vibrate_pattern_default">lehenetsia</string>
   <string name="account_settings_vibrate_pattern_1">1 eredua</string>
   <string name="account_settings_vibrate_pattern_2">2 eredua</string>
   <string name="account_settings_vibrate_pattern_3">3 eredua</string>
   <string name="account_settings_vibrate_pattern_4">4 eredua</string>
   <string name="account_settings_vibrate_pattern_5">5 eredua</string>
-  <string name="account_settings_vibrate_times">Dardara errepikatu</string>
-  <string name="account_settings_ringtone">Eposta berrirako timbrea</string>
-  <string name="account_settings_led_label">LED keinukaria</string>
-  <string name="account_settings_led_summary">Eposta heltzean LEDarekin keinu egin</string>
+  <string name="account_settings_vibrate_times">Errepikatu bibrazioa</string>
+  <string name="account_settings_ringtone">Posta berrirako txirrin-tonua</string>
+  <string name="account_settings_led_label">LED keinatzea</string>
+  <string name="account_settings_led_summary">Keinatu LEDa posta iristean</string>
   <string name="account_settings_composition_title">Mezuak idazteko aukerak</string>
   <string name="account_settings_composition_label">Idazterakoan lehenetsiak</string>
-  <string name="account_settings_composition_summary">Nork, Bcc eta sinadura lehenetsiak ezarri</string>
-  <string name="account_settings_identities_label">Identitateak kudeatu</string>
-  <string name="account_settings_identities_summary">Ordezko \'Nork\' helbide eta sinadurak ezarri</string>
-  <string name="manage_identities_title">Identitateak kudeatu</string>
-  <string name="manage_identities_context_menu_title">Identitatea kudeatu</string>
-  <string name="edit_identity_title">Identitatea aldatu</string>
+  <string name="account_settings_composition_summary">Ezarri Nork, Bcc eta sinadura lehenetsiak</string>
+  <string name="account_settings_identities_label">Kudeatu identitateak</string>
+  <string name="account_settings_identities_summary">Konfiguratu ordezko \'Nork\' helbide eta sinadurak</string>
+  <string name="manage_identities_title">Kudeatu identitateak</string>
+  <string name="manage_identities_context_menu_title">Kudeatu identitatea</string>
+  <string name="edit_identity_title">Editatu identitatea</string>
   <string name="new_identity_action">Identitate berria</string>
   <string name="account_settings_always_bcc_label">Mezu guztietarako Bcc</string>
-  <string name="manage_identities_edit_action">Aldatu</string>
-  <string name="manage_identities_move_up_action">Gora mugitu</string>
-  <string name="manage_identities_move_down_action">Behera mugitu</string>
-  <string name="manage_identities_move_top_action">Goraino eraman / defektuzkoa egin</string>
+  <string name="manage_identities_edit_action">Editatu</string>
+  <string name="manage_identities_move_up_action">Mugitu gora</string>
+  <string name="manage_identities_move_down_action">Mugitu behera</string>
+  <string name="manage_identities_move_top_action">Mugitu goraino / egin lehenetsi</string>
   <string name="manage_identities_remove_action">Kendu</string>
-  <string name="edit_identity_description_label">Identitatearen deskribapena</string>
-  <string name="edit_identity_description_hint">(Hautazkoa)</string>
+  <string name="edit_identity_description_label">Identitatearen azalpena</string>
+  <string name="edit_identity_description_hint">(Aukerakoa)</string>
   <string name="edit_identity_name_label">Zure izena</string>
-  <string name="edit_identity_name_hint">(Hautazkoa)</string>
-  <string name="edit_identity_email_label">Eposta helbidea</string>
+  <string name="edit_identity_name_hint">(Aukerakoa)</string>
+  <string name="edit_identity_email_label">Posta helbidea</string>
   <string name="edit_identity_email_hint">(Beharrezkoa)</string>
   <string name="edit_identity_reply_to_label">Erantzuteko helbidea</string>
-  <string name="edit_identity_reply_to_hint">(Hautazkoa)</string>
+  <string name="edit_identity_reply_to_hint">(Aukerakoa)</string>
   <string name="edit_identity_signature_label">Sinadura</string>
-  <string name="edit_identity_signature_hint">(Hautazkoa)</string>
-  <string name="account_settings_signature_use_label">Sinadura erabili</string>
+  <string name="edit_identity_signature_hint">(Aukerakoa)</string>
+  <string name="account_settings_signature_use_label">Erabili sinadura</string>
   <string name="account_settings_signature_label">Sinadura</string>
   <string name="default_identity_description">Hasierako identitatea</string>
-  <string name="choose_identity_title">Identitatea hautatu</string>
-  <string name="send_as">Honela bidali:</string>
-  <string name="no_removable_identity">Ezin duzu zure identitate bakarra ezabatu</string>
-  <string name="identity_has_no_email">Ezin duzu eposta helbiderik gabeko identitatea erabili</string>
-  <string name="sort_earliest_first">Mezu zaharrak lehengo</string>
-  <string name="sort_latest_first">Mezu berriak lehengo</string>
-  <string name="sort_subject_alpha">Gaiaren arabeera alfabetikoki</string>
-  <string name="sort_subject_re_alpha">Gaiaren arabera alderantzizko alfabetikoki</string>
-  <string name="sort_sender_alpha">Bidaltzailearekiko alfabetikoki</string>
-  <string name="sort_sender_re_alpha">Bidaltzailearekiko alderantzizko alfabetikoki</string>
-  <string name="sort_flagged_first">Izardun mezuak lehengo</string>
-  <string name="sort_flagged_last">Izarrik gabeko mezuak lehengo</string>
-  <string name="sort_unread_first">Mezu irakurgabeak lehengo</string>
-  <string name="sort_unread_last">Irakurritako mezuak lehengo</string>
-  <string name="sort_attach_first">Eranskindun mezuak lehengo</string>
-  <string name="sort_unattached_first">Eranskin gabeko mezuak lehengo</string>
-  <string name="sort_by">Ordena…</string>
+  <string name="choose_identity_title">Aukeratu identitatea</string>
+  <string name="send_as">Bidali honela:</string>
+  <string name="no_removable_identity">Ezin duzu kendu zure identitate bakarra</string>
+  <string name="identity_has_no_email">Ezin duzu erabili posta helbiderik gabeko identitaterik</string>
+  <string name="sort_earliest_first">Lehen mezuak lehenengo</string>
+  <string name="sort_latest_first">Azken mezuak lehenengo</string>
+  <string name="sort_subject_alpha">Gaia alfabetikoki</string>
+  <string name="sort_subject_re_alpha">Gaia alfabetikoki alderantzikatuta</string>
+  <string name="sort_sender_alpha">Bidaltzailea alfabetikoki</string>
+  <string name="sort_sender_re_alpha">Bidaltzailea alfabetikoki alderantzikatuta</string>
+  <string name="sort_flagged_first">Izardun mezuak lehenengo</string>
+  <string name="sort_flagged_last">Izarrik gabeko mezuak lehenengo</string>
+  <string name="sort_unread_first">Irakurri gabeko mezuak lehenengo</string>
+  <string name="sort_unread_last">Irakurritako mezuak lehenengo</string>
+  <string name="sort_attach_first">Eranskindun mezuak lehenengo</string>
+  <string name="sort_unattached_first">Eranskin gabeko mezuak lehenengo</string>
+  <string name="sort_by">Ordenatu honen arabera…</string>
   <string name="sort_by_date">Data</string>
-  <string name="sort_by_arrival">Jasoera</string>
+  <string name="sort_by_arrival">Iritsiera</string>
   <string name="sort_by_subject">Gaia</string>
   <string name="sort_by_sender">Bidaltzailea</string>
   <string name="sort_by_flag">Izarra</string>
-  <string name="sort_by_unread">Irakurrita/Irakurgabe</string>
+  <string name="sort_by_unread">Irakurrita/Irakurri gabe</string>
   <string name="sort_by_attach">Eranskinak</string>
-  <string name="account_delete_dlg_title">Kontua ezabatu</string>
-  <string name="account_recreate_dlg_title">Kontua birsortu</string>
-  <string name="account_clear_dlg_title">Kontua garbitu</string>
-  <string name="provider_note_auonejp">Ziurtatu au one epostako ezarpenetan POP3 edo IMAP gaituta duzula.</string>
-  <string name="provider_note_naver">Ziurtatu Naver epostako ezarpenetan POP3 edo IMAP gaituta duzula.</string>
-  <string name="provider_note_hanmail">Ziurtatu Hanmail(Daum) epostako ezarpenetan POP3 edo IMAP gaituta duzula.</string>
+  <string name="account_delete_dlg_title">Kendu kontua</string>
+  <string name="account_recreate_dlg_title">Birsortu kontua</string>
+  <string name="account_clear_dlg_title">Garbitu kontua</string>
+  <string name="provider_note_auonejp">Ziurtatu au one postako ezarpen orrian IMAP edo POP3 gaitzeaz.</string>
+  <string name="provider_note_naver">Ziurtatu Naver postako ezarpen orrian IMAP edo POP3 gaitzeaz.</string>
+  <string name="provider_note_hanmail">Ziurtatu Hanmail(Daum) postako ezarpen orrian IMAP edo POP3 gaitzeaz.</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ziurtagiri ezezaguna</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_accept">Gakoa onartu</string>
-  <string name="account_setup_failed_dlg_invalid_certificate_reject">Gakoa baztertu</string>
-  <string name="folder_list_filter_hint">karpetaren izenak dauka</string>
-  <string name="folder_list_display_mode_label">Karpetak ikusi…</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_accept">Onartu gakoa</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_reject">Baztertu gakoa</string>
+  <string name="message_list_help_key">Del (edo D) - Ezabatu\nR - Erantzun\nA - Erantzun denei\nC - Idatzi\nF - Birbidali\nM - Mugitu\nV - Artxibatu\nY - Kopiatu\nZ - Markatu irakurri (gabe) gisa\nG - Izarra\nO - Ordenatze mota\nI - Ordenatzeko irizpidea\nQ - Itzuli Karpetetara\nS - Hautatu/desautatu\nJ or P - Aurreko Mezua\nK or N - Hurrengo Mezua</string>
+  <string name="folder_list_help_key">1 - Bistaratu 1. klaseko karpetak bakarrik\n2 - Bistaratu 1. eta 2. klaseko karpetak\n3 - Bistaratu denak 2. klaseko karpetak izan ezik\n4 - Bistaratu karpeta guztiak\nQ - Itzuli Kontuetara\nS - Editatu Kontu Ezarpenak</string>
+  <string name="folder_list_filter_hint">Karpetaren izenak dauka</string>
+  <string name="folder_list_display_mode_label">Erakutsi karpetak…</string>
   <string name="folder_list_display_mode_all">Karpeta guztiak</string>
-  <string name="folder_list_display_mode_first_class">1.go mailako karpetak</string>
-  <string name="folder_list_display_mode_first_and_second_class">1.go eta 2. mailako karpetak</string>
-  <string name="folder_list_display_mode_not_second_class">2. mailako karpetak ezkutatu</string>
-  <string name="account_settings_signature__location_label">Zinaduraren kokapena</string>
-  <string name="account_settings_signature__location_before_quoted_text">Aipamena baino lehen</string>
-  <string name="account_settings_signature__location_after_quoted_text">Aipamenaren ondoren</string>
-  <string name="setting_theme_global">Aplikazioaren itxura erabili</string>
+  <string name="folder_list_display_mode_first_class">1. klaseko karpetak</string>
+  <string name="folder_list_display_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
+  <string name="folder_list_display_mode_not_second_class">Ezkutatu 2. klaseko karpetak</string>
+  <string name="account_settings_signature__location_label">Sinaduraren kokapena</string>
+  <string name="account_settings_signature__location_before_quoted_text">Aipua baino lehen</string>
+  <string name="account_settings_signature__location_after_quoted_text">Aipuaren ondoren</string>
+  <string name="setting_theme_global">Erabili aplikazioaren gaia</string>
   <string name="setting_theme_dark">Iluna</string>
   <string name="setting_theme_light">Argia</string>
   <string name="display_preferences">Bistaratzea</string>
@@ -581,23 +669,23 @@
   <string name="debug_preferences">Arazketa</string>
   <string name="privacy_preferences">Pribatutasuna</string>
   <string name="network_preferences">Sarea</string>
-  <string name="interaction_preferences">Elkarrekintza</string>
-  <string name="accountlist_preferences">Kontuen zerrenda</string>
-  <string name="messagelist_preferences">Mezuen zerrenda</string>
+  <string name="interaction_preferences">Interakzioa</string>
+  <string name="accountlist_preferences">Kontu zerrenda</string>
+  <string name="messagelist_preferences">Mezu zerrendak</string>
   <string name="messageview_preferences">Mezuak</string>
-  <string name="folderlist_preferences">Karpeten zerrenda</string>
-  <string name="settings_theme_label">Itxura</string>
-  <string name="settings_message_theme_label">Mezua ikusteko itxura</string>
-  <string name="settings_compose_theme_label">Mezua idazteko itxura</string>
-  <string name="settings_message_theme_selection_label">Mezu finkoaren itxura</string>
-  <string name="settings_message_theme_selection_summary_off">Mezua ikusten deneran itxura hautatu</string>
-  <string name="settings_message_theme_selection_summary_on">Mezua ikusteko itxura finkoa erabili</string>
+  <string name="folderlist_preferences">Karpeta zerrendak</string>
+  <string name="settings_theme_label">Gaia</string>
+  <string name="settings_message_theme_label">Mezua ikusteko gaia</string>
+  <string name="settings_compose_theme_label">Idazte gaia</string>
+  <string name="settings_message_theme_selection_label">Mezu finkoaren gaia</string>
+  <string name="settings_message_theme_selection_summary_off">Hautatu mezua ikusteko gaia mezua ikusi bitartean</string>
+  <string name="settings_message_theme_selection_summary_on">Erabili mezua ikusteko gai finkoa</string>
   <string name="background_ops_label">Atzeko planoko sinkronizazioa</string>
   <string name="background_ops_never">Inoiz ez</string>
   <string name="background_ops_always">Beti</string>
-  <string name="background_ops_auto_sync_only">\'Auto-sinkronizazioa\' gaituta dagoenean</string>
-  <string name="batch_select_all">Guztia hautatu</string>
-  <string name="account_setup_push_limit_label">Push erabiliz egiaztatuko diren karpeta kopuru maximoa</string>
+  <string name="background_ops_auto_sync_only">\'Auto-sinkronizazioa\' hautatuta dagoenean</string>
+  <string name="batch_select_all">Hautatu guztia</string>
+  <string name="account_setup_push_limit_label">\"Push\"ekin egiaztatuko diren karpeta kopuru maximoa</string>
   <string name="account_setup_push_limit_10">10 karpeta</string>
   <string name="account_setup_push_limit_25">25 karpeta</string>
   <string name="account_setup_push_limit_50">50 karpeta</string>
@@ -606,41 +694,42 @@
   <string name="account_setup_push_limit_500">500 karpeta</string>
   <string name="account_setup_push_limit_1000">1000 karpeta</string>
   <string name="animations_title">Animazioak</string>
-  <string name="animations_summary">Bistaratze efektu nabarmenak erabili</string>
-  <string name="gestures_title">Keinuak</string>
-  <string name="gestures_summary">Keinu bidezko kontrola gaitu</string>
+  <string name="animations_summary">Erabili bistaratze efektu nabarmenak</string>
+  <string name="gestures_title">Mugimenduak</string>
+  <string name="gestures_summary">Gaitu mugimendu bidezko kontrola</string>
   <string name="volume_navigation_title">Bolumen teklekin nabigatu</string>
-  <string name="volume_navigation_message">Mezua ikustean</string>
-  <string name="volume_navigation_list">Zerrendetan</string>
-  <string name="start_integrated_inbox_title">Bateratutako sarreran hasi</string>
-  <string name="measure_accounts_title">Kontuaren tamaina ikusi</string>
-  <string name="measure_accounts_summary">Ezgaitu azkarrago bistaratzeko</string>
-  <string name="count_search_title">Bilaketa emaitzak zenbatu</string>
-  <string name="count_search_summary">Ezgaitu azkarrago bistaratzeko</string>
-  <string name="hide_special_accounts_title">Kontu bereziak ezkutatu</string>
-  <string name="hide_special_accounts_summary">Bateratutako sarrera eta mezu guztien kontuak ezkutatu</string>
+  <string name="volume_navigation_message">Mezu barruko ikuspegiak</string>
+  <string name="volume_navigation_list">Zerrenda barruko ikuspegiak</string>
+  <string name="start_integrated_inbox_title">Hasi sarrerako ontzi bateratutan</string>
+  <string name="measure_accounts_title">Erakutsi kontuaren tamaina</string>
+  <string name="measure_accounts_summary">Desaktibatu azkarrago bistaratzeko</string>
+  <string name="count_search_title">Zenbatu bilaketa emaitzak</string>
+  <string name="count_search_summary">Desaktibatu azkarrago bistaratzeko</string>
+  <string name="hide_special_accounts_title">Ezkutatu kontu bereziak</string>
+  <string name="hide_special_accounts_summary">Ezkutatu sarrerako ontzi bateratua eta mezu guztien kontuak</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="flagged_modifier"> - Izardun</string>
-  <string name="unread_modifier"> - Irakurgabe</string>
+  <string name="unread_modifier"> - Irakurri gabe</string>
   <string name="search_all_messages_title">Mezu guztiak</string>
   <string name="search_all_messages_detail">Bilatzeko karpetetako mezu guztiak</string>
-  <string name="integrated_inbox_title">Bateratutako sarrera</string>
-  <string name="integrated_inbox_detail">Bateratutako karpetetako mezu guztiak</string>
+  <string name="integrated_inbox_title">Sarrerako ontzi bateratua</string>
+  <string name="integrated_inbox_detail">Karpeta bateratuetako mezu guztiak</string>
+  <string name="tap_hint">Ukitu zirkulua edo izarra irakurri gabeko edo izardun mezuetarako</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Bateratu</string>
-  <string name="folder_settings_include_in_integrated_inbox_summary">Mezu guztiak bateratutako sarreran ikusten dira</string>
+  <string name="folder_settings_include_in_integrated_inbox_summary">Mezu guztiak sarrerako ontzi bateratutan erakusten dira</string>
   <string name="account_settings_searchable_label">Bilatzeko karpetak</string>
   <string name="account_settings_searchable_all">Guztiak</string>
-  <string name="account_settings_searchable_displayable">Ikusten direnak</string>
-  <string name="account_settings_searchable_none">Batez</string>
-  <string name="font_size_settings_title">Letra-tipo tamaina</string>
-  <string name="font_size_settings_description">Letra-tipo tamaina konfiguratu</string>
+  <string name="account_settings_searchable_displayable">Bistaratu daitezkeenak</string>
+  <string name="account_settings_searchable_none">Bat ere ez</string>
+  <string name="font_size_settings_title">Letra-tamaina</string>
+  <string name="font_size_settings_description">Konfiguratu letra-tamaina</string>
   <string name="font_size_account_list">Kontu zerrenda</string>
   <string name="font_size_account_name">Kontu izena</string>
-  <string name="font_size_account_description">Kontu deskribapena</string>
-  <string name="font_size_folder_list">Karpeten zerrenda</string>
+  <string name="font_size_account_description">Kontu azalpena</string>
+  <string name="font_size_folder_list">Karpeten zerrendak</string>
   <string name="font_size_folder_name">Karpetaren izena</string>
   <string name="font_size_folder_status">Karpetaren egoera</string>
-  <string name="font_size_message_list">Mezu zerrenda</string>
+  <string name="font_size_message_list">Mezu zerrendak</string>
   <string name="font_size_message_list_subject">Gaia</string>
   <string name="font_size_message_list_sender">Bidaltzailea</string>
   <string name="font_size_message_list_date">Data</string>
@@ -649,28 +738,32 @@
   <string name="font_size_message_view_sender">Bidaltzailea</string>
   <string name="font_size_message_view_to">Nori</string>
   <string name="font_size_message_view_cc">Cc</string>
-  <string name="font_size_message_view_additional_headers">Gainerako goiburuak</string>
+  <string name="font_size_message_view_bcc">Bcc</string>
+  <string name="font_size_message_view_additional_headers">Goiburu osagarriak</string>
   <string name="font_size_message_view_subject">Gaia</string>
   <string name="font_size_message_view_date">Ordua eta data</string>
   <string name="font_size_message_view_content">Mezuaren gorputza</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
   <string name="font_size_message_compose">Mezua idaztean</string>
   <string name="font_size_message_compose_input">Testu sarrera eremuak</string>
-  <string name="font_size_default">Defektuz</string>
+  <string name="font_size_default">Lehenetsia</string>
   <string name="font_size_tiniest">Txikiena</string>
-  <string name="font_size_tiny">Txikia</string>
+  <string name="font_size_tiny">Oso txikia</string>
   <string name="font_size_smaller">Txikiagoa</string>
   <string name="font_size_small">Txikia</string>
   <string name="font_size_medium">Ertaina</string>
   <string name="font_size_large">Handia</string>
   <string name="font_size_larger">Handiagoa</string>
-  <string name="miscellaneous_preferences">Bestelakoak</string>
-  <string name="error_activity_not_found">Ez da honetarako aplikaziorik topatu.</string>
-  <string name="save_or_discard_draft_message_dlg_title">Zirriborroa gorde?</string>
-  <string name="save_or_discard_draft_message_instructions_fmt">Mezu hau gorde edo baztertu?</string>
-  <string name="confirm_discard_draft_message_title">Mezua baztertu</string>
+  <string name="miscellaneous_preferences">Hainbat</string>
+  <string name="error_activity_not_found">Ez da ekintza honetarako aplikazio egokirik aurkitu.</string>
+  <string name="send_failed_reason">Bidalketak huts egin du: %s</string>
+  <string name="save_or_discard_draft_message_dlg_title">Gorde zirriborroa?</string>
+  <string name="save_or_discard_draft_message_instructions_fmt">Gorde edo baztertu mezu hau?</string>
+  <string name="confirm_discard_draft_message_title">Baztertu mezua?</string>
   <string name="confirm_discard_draft_message">Ziur mezu hau baztertu nahi duzula?</string>
-  <string name="select_text_now">Kopiatuko den testua hautatu</string>
-  <string name="dialog_confirm_delete_title">Ezabatzea baieztatu</string>
+  <string name="select_text_now">Hautatu kopiatzeko testua.</string>
+  <string name="dialog_confirm_delete_title">Berretsi ezabatzea</string>
   <string name="dialog_confirm_delete_message">Mezu hau ezabatu nahi duzu?</string>
   <plurals name="dialog_confirm_delete_messages">
     <item quantity="one">Benetan mezu hau ezabatu nahi duzu?</item>
@@ -678,86 +771,91 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Bai</string>
   <string name="dialog_confirm_delete_cancel_button">Ez</string>
-  <string name="dialog_confirm_spam_title">Spamera mugitzea baieztatu</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Berretsi denak irakurritako gisa markatzea</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Mezu denak irakurritako gisa markatu nahi dituzu?</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Bai</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Ez</string>
+  <string name="dialog_confirm_spam_title">Berretsi spam karpetara mugitzea</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Benetan mezu hau spamera mugitu nahi duzula?</item>
-    <item quantity="other">Benetan <xliff:g id="message_count">%1$d</xliff:g> mezu spamera mugitu nahi dituzula?</item>
+    <item quantity="other">Benetan <xliff:g id="message_count">%1$d</xliff:g> mezu spam karpetara mugitu nahi dituzula?</item>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">Bai</string>
   <string name="dialog_confirm_spam_cancel_button">Ez</string>
   <string name="dialog_attachment_progress_title">Eranskina deskargatzen</string>
-  <string name="debug_logging_enabled">Arazketa logak gaituta</string>
+  <string name="debug_logging_enabled">Arazketa erregistroak gaituta</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="import_export_action">Ezarpenen inportazio eta esportazioa</string>
-  <string name="settings_export_account">Kontu ezarpenak esportatu</string>
-  <string name="settings_export_all">Ezarpenak eta kontuak esportatu</string>
+  <string name="import_export_action">Ezarpenak inportatu eta esportatu</string>
+  <string name="settings_export_account">Esportatu kontu ezarpenak</string>
+  <string name="settings_export_all">Esportatu ezarpenak eta kontuak</string>
   <string name="settings_import_dialog_title">Inportatu</string>
   <string name="settings_export_dialog_title">Esportatu</string>
-  <string name="settings_import">Inporatzeko ezarpenak</string>
-  <string name="settings_import_selection">Hautapena inportatu</string>
+  <string name="settings_import">Inportatu ezarpenak</string>
+  <string name="settings_import_selection">Inportatu hautapena</string>
   <string name="settings_import_global_settings">Ezarpen orokorrak</string>
   <string name="settings_exporting">Ezarpenak esportatzen…</string>
   <string name="settings_importing">Ezarpenak inportatzen…</string>
   <string name="settings_import_scanning_file">Fitxategia aztertzen…</string>
   <string name="settings_export_success">Esportatutako ezarpenak hemen gorde dira: <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">Ezarpenak ondo esportatu dira</string>
   <string name="settings_import_global_settings_success">Ezarpen orokorran hemendik inportatu dira: <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> inportatuta hemendik: <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> inportatua <xliff:g id="filename">%s</xliff:g>-(e)tik</string>
   <plurals name="settings_import_accounts">
     <item quantity="one">Kontu 1</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> kontu</item>
   </plurals>
-  <string name="settings_export_failure">Ezarpenak esportatzean errorea</string>
+  <string name="settings_export_failure">Ezarpenak esportatzeak huts egin du</string>
   <string name="settings_import_failure">Ez da ezarpenik inportatu hemendik: <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_export_success_header">Esportazio egokia</string>
-  <string name="settings_export_failed_header">Esportazioa errorea</string>
-  <string name="settings_import_success_header">Inportazio egokia</string>
-  <string name="settings_import_failed_header">Inportatzean errorea</string>
-  <string name="settings_import_activate_account_header">Kontua gaitu</string>
+  <string name="settings_export_success_header">Esportazioa behar bezala egin da</string>
+  <string name="settings_export_failed_header">Esportazioak huts egin du</string>
+  <string name="settings_import_success_header">Inportazioa behar bezala egin da</string>
+  <string name="settings_import_failed_header">Inportazioak huts egin du</string>
+  <string name="settings_import_activate_account_header">Aktibatu kontua</string>
   <string name="settings_import_activate_account_intro">\"<xliff:g id="account">%s</xliff:g>\" kontua erabiltzeko <xliff:g id="server_passwords">%s</xliff:g> eman behar duzu.</string>
   <plurals name="settings_import_server_passwords">
     <item quantity="one">zerbitzariko pasahitza</item>
     <item quantity="other">zerbitzariko pasahitzak</item>
   </plurals>
-  <string name="settings_import_incoming_server">Jasotzeko zerbitzaria (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <string name="settings_import_outgoing_server">Bidaltzeko zerbitzaria (<xliff:g id="hostname">%s</xliff:g>):</string>
+  <string name="settings_import_incoming_server">Sarrerako zerbitzaria (<xliff:g id="hostname">%s</xliff:g>):</string>
+  <string name="settings_import_outgoing_server">Irteerako zerbitzaria (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
     <item quantity="one">Pasahitza ezartzen…</item>
     <item quantity="other">Pasahitzak ezartzen…</item>
   </plurals>
-  <string name="settings_import_use_incoming_server_password">Sarrerako zerbitzariko pasahitza erabili</string>
-  <string name="activate_account_action">Gaitu</string>
-  <string name="account_unavailable">\"<xliff:g id="account">%s</xliff:g>\" kontua ez dago eskuragarri; biltegia egiaztatu</string>
-  <string name="settings_attachment_default_path">Eranskinak hemen gorde…</string>
-  <string name="attachment_save_title">Eranskina gorde</string>
-  <string name="attachment_save_desc">Fitxategi kudeatzailerik ez da topatu. Non gorde nahi duzu eranskina?</string>
-  <string name="manage_accounts_move_up_action">Gora mugitu</string>
-  <string name="manage_accounts_move_down_action">Behera mugitu</string>
+  <string name="settings_import_use_incoming_server_password">Erabili sarrerako zerbitzariko pasahitza</string>
+  <string name="activate_account_action">Aktibatu</string>
+  <string name="account_unavailable">\"<xliff:g id="account">%s</xliff:g>\" kontua ez dago erabilgarri; biltegia egiaztatu</string>
+  <string name="settings_attachment_default_path">Gorde eranskinak hemen…</string>
+  <string name="attachment_save_title">Gorde eranskina</string>
+  <string name="attachment_save_desc">Ez da fitxategi arakatzailerik aurkitu. Non gorde nahi duzu eranskin hau?</string>
+  <string name="manage_accounts_move_up_action">Mugitu gora</string>
+  <string name="manage_accounts_move_down_action">Mugitu behera</string>
   <string name="manage_accounts_moving_message">Kontua mugitzen…</string>
-  <string name="unread_widget_select_account">Honen irakurgabe kopurua ikusi…</string>
-  <string name="import_dialog_error_title">Fitxategi kudeatzailerik ez da topatu</string>
+  <string name="unread_widget_select_account">Erakutsi honen irakurri gabe kopurua…</string>
+  <string name="import_dialog_error_title">Fitxategiak arakatzeko aplikazioa falta da</string>
   <string name="close">Itxi</string>
   <string name="webview_empty_message">Testurik ez</string>
-  <string name="webview_contextmenu_link_view_action">Esteka ireki</string>
-  <string name="webview_contextmenu_link_share_action">Esteka partekatu</string>
-  <string name="webview_contextmenu_link_copy_action">Esteka arbelera kopiatu</string>
+  <string name="webview_contextmenu_link_view_action">Ireki esteka</string>
+  <string name="webview_contextmenu_link_share_action">Partekatu esteka</string>
+  <string name="webview_contextmenu_link_copy_action">Kopiatu esteka arbelera</string>
   <string name="webview_contextmenu_link_clipboard_label">Esteka</string>
   <string name="webview_contextmenu_image_title">Irudia</string>
-  <string name="webview_contextmenu_image_view_action">Irudia ikusi</string>
-  <string name="webview_contextmenu_image_save_action">Irudia gorde</string>
-  <string name="webview_contextmenu_image_download_action">Irudia deskargatu</string>
-  <string name="webview_contextmenu_image_copy_action">Irudiaren URLa arbelera kopiatu</string>
+  <string name="webview_contextmenu_image_view_action">Ikusi irudia</string>
+  <string name="webview_contextmenu_image_save_action">Gorde irudia</string>
+  <string name="webview_contextmenu_image_download_action">Deskargatu irudia</string>
+  <string name="webview_contextmenu_image_copy_action">Kopiatu irudiaren URLa arbelera</string>
   <string name="webview_contextmenu_image_clipboard_label">Irudiaren URLa</string>
-  <string name="webview_contextmenu_phone_call_action">Deitu</string>
-  <string name="webview_contextmenu_phone_save_action">Kontaktuetan gorde</string>
-  <string name="webview_contextmenu_phone_copy_action">Zenbakia arbelera kopiatu</string>
+  <string name="webview_contextmenu_phone_call_action">Dei zenbakia</string>
+  <string name="webview_contextmenu_phone_save_action">Gorde Kontaktuetan</string>
+  <string name="webview_contextmenu_phone_copy_action">Kopiatu zenbakia arbelera</string>
   <string name="webview_contextmenu_phone_clipboard_label">Telefono zenbakia</string>
-  <string name="webview_contextmenu_email_send_action">Eposta bidali</string>
-  <string name="webview_contextmenu_email_save_action">Kontaktuetan gorde</string>
-  <string name="webview_contextmenu_email_copy_action">Helbidea arbelera kopiatu</string>
-  <string name="webview_contextmenu_email_clipboard_label">Eposta helbidea</string>
-  <string name="image_saved_as">Irudia gordeta: \"<xliff:g id="filename">%s</xliff:g>\"</string>
-  <string name="image_saving_failed">Irudia gordetzean errorea.</string>
+  <string name="webview_contextmenu_email_send_action">Bidali posta</string>
+  <string name="webview_contextmenu_email_save_action">Gorde Kontaktuetan</string>
+  <string name="webview_contextmenu_email_copy_action">Kopiatu helbidea arbelera</string>
+  <string name="webview_contextmenu_email_clipboard_label">Posta helbidea</string>
+  <string name="image_saved_as">Irudia honela gordeta: \"<xliff:g id="filename">%s</xliff:g>\"</string>
+  <string name="image_saving_failed">Irudia gordetzeak huts egin du.</string>
   <string name="account_settings_remote_search_num_results_entries_all">Guztiak</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
   <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -766,48 +864,165 @@
   <string name="account_settings_remote_search_num_results_entries_250">250</string>
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-  <string name="account_settings_remote_search_num_label">Zerbitzarian bilatzeko limitea</string>
+  <string name="account_settings_remote_search_num_label">Zerbitzarian bilatzeko muga</string>
   <string name="account_settings_remote_search_num_summary"><xliff:g id="num_results">%s</xliff:g> emaitza topatzean bilatzeari utzi.</string>
-  <string name="remote_search_sending_query">Galdera zerbitzarira bidaltzen</string>
-  <string name="remote_search_downloading">%d emaitz eskuratzen</string>
-  <string name="remote_search_downloading_limited">%1$d-tik %2$d emaitz eskuratzen</string>
-  <string name="remote_search_error">Hurruneko bilaketa errorea</string>
+  <string name="remote_search_sending_query">Kontsulta zerbitzarira bidaltzen</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">Emaitza %d eskuratzen</item>
+    <item quantity="other">%d emaitza eskuratzen</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">%1$d-(e)tik %2$d emaitza eskuratzen</item>
+    <item quantity="other">%1$d-(e)tik %2$d emaitza eskuratzen</item>
+  </plurals>
+  <string name="remote_search_error">Urruneko bilaketak huts egin du</string>
   <string name="account_settings_search">Bilatu</string>
-  <string name="account_settings_remote_search_enabled">Zerbitzarian bilatzea gaitu</string>
-  <string name="account_settings_remote_search_enabled_summary">Zure gailuan dauden mezuez gain zerbitzarian daudenak bilatu </string>
-  <string name="action_remote_search">Mezuak zerbitzarian bilatu</string>
+  <string name="account_settings_remote_search_enabled">Gaitu zerbitzarian bilatzea</string>
+  <string name="account_settings_remote_search_enabled_summary">Bilatu mezuak zerbitzarian zure gailuan dauden horiez gain</string>
+  <string name="action_remote_search">Bilatu mezuak zerbitzarian</string>
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Tiratu zerbitzarian bilatzeko…</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">Askatu zerbitzarian bilatzeko…</string>
   <string name="remote_search_unavailable_no_network">Zerbitzarian bilatzeko sareko konexioa behar da.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Mezuak ilundu irakurri ondoren</string>
-  <string name="global_settings_background_as_unread_indicator_summary">Atzeko plano gris batek mezua irakurria izan dela adieraziko du</string>
+  <string name="global_settings_background_as_unread_indicator_label">Aldatu kolorea irakurritakoan</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Atzeko plano desberdin batek mezua irakurri dela erakutsiko du</string>
   <string name="global_settings_threaded_view_label">Harien ikuspegia</string>
-  <string name="global_settings_threaded_view_summary">Mezuak elkarrizketen arabera taldekatu</string>
-  <string name="upgrade_databases_title">Datubaseak eguneratzen</string>
-  <string name="upgrade_databases_unspecified">Datubaseak eguneratzen…</string>
-  <string name="upgrade_database_format">\"<xliff:g id="account">%s</xliff:g>\" kontuaren datubasea eguneratzen</string>
+  <string name="global_settings_threaded_view_summary">Elkartu mezuak elkarrizketetan</string>
+  <string name="upgrade_databases_title">Datu-baseak bertsio-berritzen</string>
+  <string name="upgrade_databases_unspecified">Datu-baseak bertsio-berritzen…</string>
+  <string name="upgrade_database_format">\"<xliff:g id="account">%s</xliff:g>\" kontuaren datu-basea bertsio-berritzen</string>
   <string name="message_list_loading">Kargatzen…</string>
-  <string name="global_settings_splitview_mode_label">Pantaila erdibitua ikusi</string>
+  <string name="global_settings_splitview_mode_label">Erakutsi pantaila zatitua</string>
   <string name="global_settings_splitview_always">Beti</string>
   <string name="global_settings_splitview_never">Inoiz ez</string>
-  <string name="global_settings_splitview_when_in_landscape">Horizontalean dagoenean</string>
-  <string name="message_view_empty">Ezkerreko mezu bat hautatu mesedez</string>
-  <string name="global_settings_show_contact_picture_label">Kontaktuen irudiak ikusi</string>
-  <string name="global_settings_show_contact_picture_summary">Mezu zerrendan kontaktuen irudiak ikusi</string>
-  <string name="last_refresh_time_format"><xliff:g id="formatted_time">%s</xliff:g> eguneratuta</string>
-  <string name="last_refresh_time_format_with_push"><xliff:g id="time_with_preposition">%s</xliff:g> eguneratuta (Push gaituta)</string>
-  <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
-  <string name="mark_all_as_read">Guztia irakurrita markatu</string>
-  <string name="global_settings_colorize_missing_contact_pictures_label">Kontaktuen irudiak koloreztatu</string>
-  <string name="global_settings_colorize_missing_contact_pictures_summary">Irudirik ez duten kontaktuak koloreztatu</string>
-  <string name="global_settings_messageview_visible_refile_actions_title">Mezu ekintzak</string>
-  <string name="global_settings_messageview_visible_refile_actions_summary">Mezua ikusteko menuan agertuko diren ekintzak</string>
+  <string name="global_settings_splitview_when_in_landscape">Orientazioa horizontalean dagoenean</string>
+  <string name="message_view_empty">Mesedez ezkerreko mezu bat hautatu</string>
+  <string name="global_settings_show_contact_picture_label">Erakutsi kontaktuen irudiak</string>
+  <string name="global_settings_show_contact_picture_summary">Erakutsi kontaktuen irudiak mezu zerrendan</string>
+  <string name="last_refresh_time_format"><xliff:g id="formatted_time">%s</xliff:g> freskatuta</string>
+  <string name="last_refresh_time_format_with_push"><xliff:g id="time_with_preposition">%s</xliff:g> freskatuta (Push aktibo)</string>
+  <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g>-(e)an</string>
+  <string name="mark_all_as_read">Markatu guztia irakurritako gisa</string>
+  <string name="global_settings_colorize_missing_contact_pictures_label">Koloreztatu kontaktuen irudiak</string>
+  <string name="global_settings_colorize_missing_contact_pictures_summary">Koloreztatu existitzen ez diren kontaktuen irudiak</string>
+  <string name="global_settings_messageview_visible_refile_actions_title">Mezu ikusgaien ekintzak</string>
+  <string name="global_settings_messageview_visible_refile_actions_summary">Erakutsi hautatutako ekintzak mezua ikusteko menuan</string>
   <string name="loading_attachment">Eranskina kargatzen…</string>
   <string name="fetching_attachment_dialog_title_send">Mezua bidaltzen</string>
-  <string name="fetching_attachment_dialog_title_save">Zirriborroa gorde</string>
+  <string name="fetching_attachment_dialog_title_save">Zirriborroa gordetzen</string>
   <string name="fetching_attachment_dialog_message">Eranskina eskuratzen…</string>
-  <!--=== OpenPGP specific ==================================================================-->
+  <string name="auth_external_error">Ezin da autentifikatu. Zerbitzariak ez du iragartzen SASL EXTERNAL gaitasuna. Hau bezero ziurtagiriarekin duzun (iraungita, ziurtagiri-emaile ezezaguna) edo beste konfigurazio arazoren batengatik izan daiteke.</string>
   <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Erabili bezero ziurtagiria</string>
+  <string name="client_certificate_spinner_empty">Ez dago bezero ziurtagiririk</string>
+  <string name="client_certificate_spinner_delete">Kendu bezero ziurtagiri hautapena</string>
+  <string name="client_certificate_retrieval_failure">\"<xliff:g id="alias">%s</xliff:g>\" aliasarentzako bezero ziurtagiria berreskuratzeak huts egin du</string>
   <string name="client_certificate_advanced_options">Aukera aurreratuak</string>
+  <string name="client_certificate_expired">Client certificate \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" bezero ziurtagiria iraungi da edo ez da baliozkoa oraindik (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
+  <string name="preview_encrypted">*Enkriptatuta*</string>
+  <string name="add_from_contacts">Kontaktuetatik gehitu</string>
+  <string name="crypto_settings_cancel">Utzi</string>
+  <string name="crypto_settings_ok">Jarraitu</string>
+  <string name="recipient_cc">Cc</string>
+  <string name="recipient_bcc">Bcc</string>
+  <string name="recipient_to">Nori</string>
+  <string name="recipient_from">Nork</string>
+  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
+  <string name="address_type_home">Etxekoa</string>
+  <string name="address_type_work">Lanekoa</string>
+  <string name="address_type_other">Bestelakoak</string>
+  <string name="address_type_mobile">Mugikorrekoak</string>
+  <string name="compose_error_no_draft_folder">Kontu honek ez du Zirriborroen karpetarik konfiguratuta!</string>
+  <string name="compose_error_no_signing_key">Sinatzeko gakorik ez konfiguratuta! Mesedez egiaztatu zure ezarpenak.</string>
+  <string name="crypto_mode_disabled">Ez enkriptatu</string>
+  <string name="crypto_mode_opportunistic">Enkriptatu posible bada</string>
+  <string name="crypto_mode_private">Enkriptatu</string>
+  <string name="error_crypto_provider_connect">Ezin izan da enkriptatze hornitzailearekin konektatu, egiaztatu zure ezarpenak edo klikatu enkriptatze ikonoan berriro saiatzeko!</string>
+  <string name="error_crypto_provider_ui_required">Enkriptatze hornitzailera sarbidea ukatuta, klikatu enkriptatze ikonoan berriro saiatzeko!</string>
+  <string name="error_crypto_inline_attach">PGP/INLINE moduak ez ditu eranskinak onartzen!</string>
+  <string name="enable_inline_pgp">Gaitu PGP/INLINE</string>
+  <string name="disable_inline_pgp">Desgaitu PGP/INLINE</string>
+  <string name="enable_sign_only">Gaitu PGP sinadura bakarrik</string>
+  <string name="disable_sign_only">Desgaitu PGP sinadura bakarrik</string>
+  <string name="openpgp_inline_title">PGP/INLINE Modua</string>
+  <string name="openpgp_inline_text">Posta PGP/INLINE formatuan bidaltzen da.\nBateragarritasunagatik bakarrik erabili behar da hau:</string>
+  <string name="openpgp_inline_plus_compat">Bezero batzuek formatu hau bakarrik onartzen dute</string>
+  <string name="openpgp_inline_minus_transit">Sinadurak transferentzian hautsi daitezke</string>
+  <string name="openpgp_inline_minus_attach">Ez da eranskinik onartzen</string>
+  <string name="openpgp_inline_ok">Ados!</string>
+  <string name="openpgp_inline_disable">Desgaitu</string>
+  <string name="openpgp_inline_keep_enabled">Mantendu gaituta</string>
+  <string name="openpgp_sign_only_ok">Ados!</string>
+  <string name="openpgp_sign_only_disable">Desgaitu</string>
+  <string name="openpgp_sign_only_keep_enabled">Mantendu gaituta</string>
+  <string name="openpgp_dialog_sign_only_title">PGP sinadura bakarrik Modua</string>
+  <string name="openpgp_dialog_sign_only_text">Modu honetan, zure PGP gakoa enkriptatu gabeko posta batean sinadura kriptografiko bat sortzeko erabiliko da.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Honek ez du posta enkriptatzen, baina zure gakoarekin bidalia izan dela egiaztatzen du.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Sinadurak hautsi daitezke posta zerrendetara bidaltzean.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Sinadurak \'signature.asc\' eranskin gisa bistaratu daitezke bezero batzuetan.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Mezu enkriptatuek beti dute sinadura bat.</string>
+  <string name="crypto_msg_disabled">Mezua ez dago enkriptatuta</string>
+  <string name="crypto_msg_encrypted_error">Mezua enkriptatuta dago, baina desenkriptatze errore bat gertatu da.</string>
+  <string name="crypto_msg_encrypted_insecure">Mezua enkriptatuta dago baina ez da segurua!</string>
+  <string name="crypto_msg_signed_error">Mezua sinatuta dago, baina sinadura ezin izan da egiaztatu.</string>
+  <string name="crypto_msg_encrypted_no_provider">Mezua enkriptatuta dago, baina ez da enkriptatze aplikaziorik konfiguratu.</string>
+  <string name="crypto_msg_unsupported_encrypted">Mezua enkriptatuta dago, baina onartzen ez den formatu batean.</string>
+  <string name="crypto_msg_unsupported_signed">Mezua sinatuta dago, baina onartzen ez den formatu batean.</string>
+  <string name="crypto_msg_incomplete_encrypted">Mezua enkriptatuta dago, baina osorik deskargatu behar da desenkriptatzeko.</string>
+  <string name="crypto_msg_cancelled">Mezua enkriptatuta dago, baina desenkriptatzea bertan behera utzi da.</string>
+  <string name="crypto_msg_signed_unencrypted">Mezua sinatuta dago, baina ez enkriptatuta.</string>
+  <string name="crypto_msg_encrypted_unsigned">Mezua enkriptatuta dago, baina ez sinatuta.</string>
+  <string name="crypto_msg_sign_unknown">Gako ezezagunarekin egindako sinadura.</string>
+  <string name="crypto_msg_sign_verified">Gako fidagarriarekin egindako sinadura.</string>
+  <string name="crypto_msg_sign_unverified">Gako ez-fidagarriarekin egindako sinadura!</string>
+  <string name="crypto_msg_sign_error">Sinadurak errore bat zuen.</string>
+  <string name="crypto_msg_sign_mismatch">Gako okerrarekin egindako sinadura.</string>
+  <string name="crypto_msg_sign_expired">Gako iraungiarekin egindako sinadura.</string>
+  <string name="crypto_msg_sign_revoked">Gako errebokatuarekin egindako sinadura.</string>
+  <string name="crypto_msg_sign_insecure">Segurua ez den gakoarekin egindako sinadura.</string>
+  <string name="crypto_msg_sign_incomplete">Mezua osorik deskargatu behar da bere sinadura egiaztatzeko.</string>
+  <string name="crypto_msg_signed_encrypted">Mezua sinatuta eta enkriptatuta dago.</string>
+  <string name="crypto_msg_unsigned_encrypted">Ez dago sinadurarik, posible da mezu hau bidean atzeman izana.</string>
+  <string name="crypto_info_ok">Ados</string>
+  <string name="crypto_info_view_key">Ikusi Sinatzailea</string>
+  <string name="crypto_info_view_security_warning">Xehetasunak</string>
+  <string name="locked_attach_unlock">Desblokeatu</string>
+  <string name="locked_attach_unencrypted">Zati hau ez zegoen enkriptatuta, eta posible da ez izatea segurua.</string>
+  <string name="locked_attach_title">Babesik gabeko Eranskina</string>
+  <string name="message_progress_text">Kargatzen…</string>
+  <string name="messageview_decrypt_cancelled">Desenkriptatzea bertan behera utzi da.</string>
+  <string name="messageview_decrypt_retry">Saiatu berriro</string>
+  <string name="messageview_decrypt_incomplete">Enkriptatutako mezua deskargatu behar da desenkriptatzeko.</string>
+  <string name="messageview_crypto_error_title">Errorea posta desenkriptatzean</string>
+  <string name="messageview_crypto_warning_title">Segurtasun Abisua</string>
+  <string name="messageview_crypto_warning_revoked">Mezu hau <b>gako errebokatu</b> batekin sinatu zen!</string>
+  <string name="messageview_crypto_warning_expired">Mezu hau <b>gako iraungi</b> batekin sinatu zen!</string>
+  <string name="messageview_crypto_warning_insecure">Mezu hau <b>segurua ez zen gako</b> batekin sinatu zen.</string>
+  <string name="messageview_crypto_warning_error"><b>Mezu honen sinaduran errore</b> bat zegoen!</string>
+  <string name="messageview_crypto_warning_unsigned">Mezu hau enkriptatuta zegoen, baina ez sinatuta. <b>Ez da segurua muturretik muturrera</b>!</string>
+  <string name="messageview_crypto_warning_show_anyway">Erakutsi mezua hala ere</string>
+  <string name="recipient_error_non_ascii">Une honetan karaktere bereziak ez dira onartzen!</string>
+  <string name="recipient_error_parse_failed">Errorea helbidea analizatzean!</string>
+  <string name="account_settings_crypto_support_sign_only">Onartu enkriptatu gabeko mezuen sinatzea</string>
+  <string name="error_sign_only_no_encryption">Enkriptatzea ez dago erabilgarri sinadura bakarrik moduan!</string>
+  <string name="unsigned_text_divider_label">Sinatu gabeko testua</string>
+  <string name="apg_deprecated_title">APG Zaharkitze Abisua</string>
+  <string name="apg_deprecated_1">APG mantentzeari utzi zaio!</string>
+  <string name="apg_deprecated_2">Honengatik, APGren onarpena kendua izan da K-9 Mailetik.</string>
+  <string name="apg_deprecated_bullet_1">Garapena 2014ren hasieran gelditu zen</string>
+  <string name="apg_deprecated_bullet_2">Konpondu gabeko segurtasun arazoak dauzka</string>
+  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Klikatu hemen</a> gehiago ikasteko.</string>
+  <string name="apg_deprecated_ok">Ados!</string>
+  <string name="apg">APG</string>
+  <string name="no_crypto_provider_see_global">OpenPGP aplikazioa ez dago konfiguratuta, ikusi ezarpen orokorrak!</string>
+  <string name="crypto_no_provider_title">Posta hau enkriptatuta dago</string>
+  <string name="crypto_no_provider_message">Posta hau OpenPGPrekin enkriptatua izan da.\nIrakurtzeko, OpenPGPrekin bateragarria den aplikazio bat instalatu eta konfiguratu behar duzu.</string>
+  <string name="crypto_no_provider_button">Aukeratu OpenPGP aplikazioa</string>
+  <string name="mail_list_widget_text">K-9 Mezuen Zerrenda</string>
+  <string name="mail_list_widget_loading">Mezuak kargatzen…</string>
+  <string name="fetching_folders_failed">Karpeten zerrenda eskuratzeak huts egin du</string>
+  <string name="messageview_crypto_warning_details">Erakutsi Xehetasunak</string>
+  <string name="disable_encryption">Desgaitu Enkriptatzea</string>
+  <string name="openpgp_enabled_error_back">Atzera</string>
+  <string name="openpgp_enabled_error_disable">Desgaitu Enkriptatzea</string>
 </resources>

@@ -40,7 +40,7 @@ Sen moniin ominaisuuksiin kuuluu muun muassa:
 Huomioitan ettei K-9 tue useimpia ilmaisia Hotmail-tilejä, ja kuten monet muut sovellukset, saattaa kärsiä pienistä ongelmista Microsoft Exchange -ympäristössä.
 </p><p>
 Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoitteessa
-<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -59,7 +59,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="app_emoji_icons">Emoji-kuvakkeet: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
   <string name="read_attachment_label">Lue sähköpostin liitteet</string>
   <string name="read_attachment_desc">Antaa sovellukselle luvan lukea sähköpostisi liitteet.</string>
-  <string name="read_messages_label">lue sähköpostit</string>
+  <string name="read_messages_label">Lue sähköpostit</string>
   <string name="read_messages_desc">Antaa sovellukselle luvan lukea sähköpostisi.</string>
   <string name="delete_messages_label">Poista sähköpostit</string>
   <string name="delete_messages_desc">Antaa sovellukselle luvan poistaa sähköposteja.</string>
@@ -79,6 +79,10 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="status_processing_account">Käsitellään <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Seuraava tarkistus <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_no_network">Synkronointi ei käytössä - Ei verkkoyhteyttä</string>
+  <string name="status_no_background">Synkronointi ei käytössä - Ei tausta-aktiivisuutta</string>
+  <string name="status_poll_and_push_disabled">Viestien synkronointi ei ole käytössä</string>
+  <string name="status_syncing_blocked">Synkronointi estetty</string>
   <string name="status_syncing_off">Synkronointi pois päältä</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> valittu</string>
   <string name="next_action">Seuraava</string>
@@ -226,18 +230,21 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="message_view_from_format">Lähettäjä: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Vast.ottaja:</string>
   <string name="message_view_cc_label">Kopio:</string>
+  <string name="message_view_bcc_label">Piilokopio:</string>
   <string name="message_view_attachment_view_action">Avaa</string>
   <string name="message_view_attachment_download_action">Tallenna</string>
   <string name="message_view_status_attachment_not_saved">Liitteen tallennus SD-kortille epäonnistui.</string>
+  <string name="message_view_status_no_space">Liitettä ei voitu tallentaa, koska tilaa ei ole riittävästi.</string>
   <string name="message_view_show_pictures_action">Näytä kuvat</string>
-  <string name="message_view_show_more_attachments_action">Lisää…</string>
   <string name="message_view_no_viewer">Tiedostotyypille <xliff:g id="mimetype">%s</xliff:g> ei löydy katseluohjelmaa.</string>
   <string name="message_view_download_remainder">Lataa koko viesti</string>
   <string name="message_view_toast_unable_to_display_message">Viestin näyttäminen ei onnistu</string>
+  <string name="message_view_sender_label">%1$s kautta</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Kaikki otsikkotiedot on ladattu, mutta näytettäviä ei ole enempää.</string>
   <string name="message_additional_headers_retrieval_failed">Lisäotsikkotietojen haku tietokannasta tai postipalvelimelta epäonnistui.</string>
   <string name="from_same_sender">Lisää samalta lähettäjältä</string>
+  <string name="debug_delete_local_body">Vianjäljitys / Tyhjennä viestin sisältö</string>
   <string name="message_discarded_toast">Viesti peruutettu</string>
   <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
   <string name="global_settings_flag_label">Viestin tähdet</string>
@@ -270,9 +277,12 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="global_settings_confirm_action_delete_starred">Poista tähdellä merkityt (viestinäkymässä)</string>
   <string name="global_settings_confirm_action_spam">Roskaposti</string>
   <string name="global_settings_confirm_menu_discard">Hylkää viesti</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Merkitse kaikki viestit luetuiksi</string>
   <string name="global_settings_confirm_action_delete_notif">Poista (ilmoituksessa)</string>
-  <string name="global_settings_privacy_hide_useragent">Poista K-9-käyttötietue sähköpostin otsikoista</string>
-  <string name="global_settings_privacy_hide_timezone">Käytä UTC:tä aikavyöhykkeenä sähköpostin otsikoissa</string>
+  <string name="global_settings_privacy_hide_useragent">Piilota sähköpostisovellus</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Poista K-9-tunnistetiedot viestin otsaketiedoista</string>
+  <string name="global_settings_privacy_hide_timezone">Piilota aikavyöhyke</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Käytä UTC-aikaa paikallisen aikavyöhykkeen sijaan sähköpostin otsakkeissa</string>
   <string name="global_settings_notification_hide_subject_title">Piilota aihe ilmoituksissa</string>
   <string name="global_settings_notification_hide_subject_never">Ei koskaan</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kun laite on lukittu</string>
@@ -476,7 +486,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_settings_crypto">Salausmenetelmä</string>
   <string name="account_settings_crypto_app">OpenPGP-sovellus</string>
   <string name="account_settings_crypto_key">Oma avain</string>
-  <string name="account_settings_no_openpgp_provider_configured">OpenPGP-sovellusta ei ole asennettu</string>
+  <string name="account_settings_no_openpgp_provider_configured">OpenPGP-sovellusta ei ole määritetty</string>
   <string name="account_settings_mail_check_frequency_label">Kansioiden tarkistus</string>
   <string name="account_settings_storage_title">Tallennus</string>
   <string name="account_settings_color_label">Tilin väri</string>
@@ -508,7 +518,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_settings_message_age_7">viime viikko</string>
   <string name="account_settings_message_age_14">viimeiset 2 viikkoa</string>
   <string name="account_settings_message_age_21">viimeiset 3 viikkoa</string>
-  <string name="account_settings_message_age_1_month">viime kuu</string>
+  <string name="account_settings_message_age_1_month">viime kuun</string>
   <string name="account_settings_message_age_2_months">viimeiset 2 kuukautta</string>
   <string name="account_settings_message_age_3_months">viimeiset 3 kuukautta</string>
   <string name="account_settings_message_age_6_months">viimeiset 6 kuukautta</string>
@@ -541,21 +551,20 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="folder_settings_in_top_group_label">Näytä yläryhmässä</string>
   <string name="folder_settings_in_top_group_summary">Näytä yläosassa lähellä kansiolistaa</string>
   <string name="folder_settings_folder_display_mode_label">Näytettävän kansion luokka</string>
-  <string name="folder_settings_folder_display_mode_normal">Ei mitään</string>
+  <string name="folder_settings_folder_display_mode_normal">Ei luokkaa</string>
   <string name="folder_settings_folder_display_mode_first_class">1. luokka</string>
   <string name="folder_settings_folder_display_mode_second_class">2. luokka</string>
-  <string name="folder_settings_folder_sync_mode_label">Kansioiden synkronointiluokka</string>
   <string name="folder_settings_folder_sync_mode_normal">Ei mitään</string>
   <string name="folder_settings_folder_sync_mode_first_class">1. luokka</string>
   <string name="folder_settings_folder_sync_mode_second_class">2. luokka</string>
   <string name="folder_settings_folder_sync_mode_inherited">Sama kuin näytettävällä kansiolla</string>
   <string name="folder_settings_folder_push_mode_label">Push-luokka</string>
-  <string name="folder_settings_folder_push_mode_normal">Ei mitään</string>
+  <string name="folder_settings_folder_push_mode_normal">Ei luokkaa</string>
   <string name="folder_settings_folder_push_mode_first_class">1. Luokka</string>
   <string name="folder_settings_folder_push_mode_second_class">2. Luokka</string>
   <string name="folder_settings_folder_push_mode_inherited">Sama kuin synkronointiluokka</string>
   <string name="folder_settings_folder_notify_mode_label">Kansion ilmoitusluokka</string>
-  <string name="folder_settings_folder_notify_mode_normal">Ei mitään</string>
+  <string name="folder_settings_folder_notify_mode_normal">Ei luokkaa</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. luokka</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. luokka</string>
   <string name="folder_settings_folder_notify_mode_inherited">Sama kuin push-luokka</string>
@@ -642,7 +651,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Hylkää-avain</string>
   <string name="message_list_help_key">Del (tai D) - Poista\nR - Vastaa\nA - Vastaa kaikille\nC - Kirjoita\nF - Välitä\nM - Siirrä\nV - Arkistoi\nY - Kopioi\nZ - Merkitse luetuksi/lukemattomaksi\nG - Merkitse tähdellä\nO - Lajittelun tyyppi\nI - Lajittelujärjestys\nQ - Palaa kansioihin\nS - Valitse/poista valinta\nJ tai P - Edellinen viesti\nK tai N - Seuraava viesti</string>
   <string name="folder_list_help_key">1 - Näytä vain 1. luokan kansiot\n2 - Näytä 1. ja 2. luokan kansiot\n3 - Näytä kaikki paitsi 2. luokan kansiot\n4 - Näytä kaikki kansiot\nQ - Palaa tileihin\nS - Muokkaa tilin asetuksia</string>
-  <string name="folder_list_filter_hint">kansionimi sisältää</string>
+  <string name="folder_list_filter_hint">Kansion nimi sisältää</string>
   <string name="folder_list_display_mode_label">Kansiot</string>
   <string name="folder_list_display_mode_all">Näytä kaikki</string>
   <string name="folder_list_display_mode_first_class">Näytä vain 1. luokan kansiot</string>
@@ -704,6 +713,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="search_all_messages_detail">Kaikki viestit kansioissa, joihin voidaan tehdä hakuja</string>
   <string name="integrated_inbox_title">Yhdistetty Saapuneet-kansio</string>
   <string name="integrated_inbox_detail">Kaikki viestit yhdistetyssä Saapuneet-kansiossa</string>
+  <string name="tap_hint">Näpäytämällä ympyrää lukemattomat viestit tai tähteä tähdelliset viestit</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Yhdistä</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Kaikki viestit näytetään yhdistetyssä Saapuneet-kansiossa</string>
   <string name="account_settings_searchable_label">Etsi kansioista</string>
@@ -727,6 +737,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="font_size_message_view_sender">Lähettäjä</string>
   <string name="font_size_message_view_to">Vastaanottaja</string>
   <string name="font_size_message_view_cc">Kopio</string>
+  <string name="font_size_message_view_bcc">Piilokopio</string>
   <string name="font_size_message_view_additional_headers">Tarkemmat otsikkotiedot</string>
   <string name="font_size_message_view_subject">Viestin aihe</string>
   <string name="font_size_message_view_date">Aika ja päivämäärä</string>
@@ -786,6 +797,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="settings_importing">Tuodaan asetuksia…</string>
   <string name="settings_import_scanning_file">Tarkistetaan tiedostoa…</string>
   <string name="settings_export_success">Viedyt asetukset tallennettu tiedostoon <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">Asetukset vietiin onnistuneesti</string>
   <string name="settings_import_global_settings_success">Yleiset asetukset tuotu tiedostosta <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Tuotu <xliff:g id="accounts">%s</xliff:g> tiedostosta <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
@@ -854,8 +866,14 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_settings_remote_search_num_label">Etähaun tulosten rajoitus</string>
   <string name="account_settings_remote_search_num_summary">Haku päättyy, kun <xliff:g id="num_results">%s</xliff:g> tulosta on löytynyt.</string>
   <string name="remote_search_sending_query">Lähetetään pyyntöä palvelimelle</string>
-  <string name="remote_search_downloading">Noudetaan %d tulosta</string>
-  <string name="remote_search_downloading_limited">Noudetaan tulosta %1$d / %2$d</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">Noudetaan %d tulos</item>
+    <item quantity="other">Noudetaan %d tulosta</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">Noudetaan %1$d / %2$d tulos</item>
+    <item quantity="other">Noudetaan %1$d / %2$d tulosta</item>
+  </plurals>
   <string name="remote_search_error">Etähaku epäonnistui</string>
   <string name="account_settings_search">Hae</string>
   <string name="account_settings_remote_search_enabled">Ota etähaku käyttöön</string>
@@ -864,8 +882,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Edistä etähakua…</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">Vapauta etähaku…</string>
   <string name="remote_search_unavailable_no_network">Etähaku ei ole käytettävissä ilman verkkoyhteyttä.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Käytä taustaa lukemattomien/luettujen ilmaisimena</string>
-  <string name="global_settings_background_as_unread_indicator_summary">Näytä luetut ja lukemattomat viestit eri taustaväreillä</string>
+  <string name="global_settings_background_as_unread_indicator_label">Vaihda väriä kun luettu</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Eri tausta osoittaa viestin olevan luettu</string>
   <string name="global_settings_threaded_view_label">Ketjunäkymä</string>
   <string name="global_settings_threaded_view_summary">Kutista samaan ketjuun kuuluvat viestit</string>
   <string name="upgrade_databases_title">Päivitetään tietokantoja</string>
@@ -892,25 +910,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="fetching_attachment_dialog_title_save">Tallennetaan luonnosta</string>
   <string name="fetching_attachment_dialog_message">Noudetaan liitettä…</string>
   <string name="auth_external_error">Autentikointi ei onnistu.  Palvelin ei ilmoita SASL EXTERNAL -kelpoisuudesta.  Tämä saattaa johtua vanhentuneesta asiakasvarmenteesta, tuntemattomasta varmentajasta tai jostakin muusta asetusongelmasta.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Salauksen purkaminen epäonnistui: %s</string>
-  <string name="openpgp_unknown_error">Tuntematon OpenPGP-virhe</string>
-  <string name="openpgp_canceled_by_user">Peruttu käyttäjän toimesta</string>
-  <string name="openpgp_result_no_signature">Ei allekirjoitettu</string>
-  <string name="openpgp_result_invalid_signature">Virheellinen allekirjoitus</string>
-  <string name="openpgp_result_signature_uncertified">Allekirjoittanut (ei vahvistettu!)</string>
-  <string name="openpgp_result_signature_certified">Allekirjoittanut</string>
-  <string name="openpgp_result_signature_expired_key">Avain on vanhentunut!</string>
-  <string name="openpgp_result_signature_revoked_key">Avain on kumottu!</string>
-  <string name="openpgp_result_signature_insecure">Ei turvallinen!</string>
-  <string name="openpgp_result_signature_missing_key">Tuntematon julkinen avain</string>
-  <string name="openpgp_result_encrypted">Salattu</string>
-  <string name="openpgp_result_not_encrypted">Ei salattu</string>
-  <string name="openpgp_result_decryption_insecure">Ei turvallinen</string>
-  <string name="openpgp_result_action_show">Näytä</string>
-  <string name="openpgp_result_action_lookup">Etsi</string>
-  <string name="openpgp_result_no_name">Ei nimeä</string>
-  <string name="openpgp_result_no_email">Ei sähköpostia</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Käytä asiakasvarmennetta</string>
   <string name="client_certificate_spinner_empty">Ei asiakasvarmennetta</string>
@@ -918,40 +917,54 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="client_certificate_retrieval_failure">Asiakasvarmenteen noutaminen epäonnistui aliakselle \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Lisäasetukset</string>
   <string name="client_certificate_expired">Asiakasvarmenne \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" on vanhentunut tai ei ole vielä voimassa (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Puutteellinen viesti</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Napauta \"Lataa koko viesti\" salliaksesi salauksen purkamisen</string>
   <string name="preview_encrypted">*Salattu*</string>
   <string name="add_from_contacts">Lisää yhteystiedoista</string>
   <string name="crypto_settings_cancel">Peru</string>
   <string name="crypto_settings_ok">Jatka</string>
+  <string name="recipient_cc">Kopio</string>
+  <string name="recipient_bcc">Piilokopio</string>
   <string name="recipient_to">Vastaanottaja</string>
   <string name="recipient_from">Lähettäjä</string>
+  <string name="unknown_recipient"><![CDATA[<Tuntematon vastaanottaja>]]></string>
   <string name="address_type_home">Koti</string>
   <string name="address_type_work">Työ</string>
   <string name="address_type_other">Muu</string>
   <string name="address_type_mobile">Mobiili</string>
   <string name="compose_error_no_draft_folder">Tälle tilille ei ole määritelty luonnoskansiota!</string>
-  <string name="compose_not_saving_unencrypted">Luonnos tallennettu ILMAN salausta!</string>
-  <string name="compose_error_pgp_error">Virhe OpenPGP-tarjoajan kanssa. Tarkista asetukset!</string>
   <string name="compose_error_no_signing_key">Allekirjoitusta varten ei ole määritelty avainta! Tarkista asetukset.</string>
-  <string name="compose_error_private_missing_keys">Yksityinen tila on käytössä, mutta joillain vastaanottajilla ei ole avaimia!</string>
   <string name="crypto_mode_disabled">Älä salaa</string>
   <string name="crypto_mode_opportunistic">Salaa jos mahdollista</string>
   <string name="crypto_mode_private">Salaa</string>
+  <string name="error_crypto_provider_connect">Yhteyttä salaussovellukseen ei voitu muodostaa: tarkista asetukset tai yritä napsauttaa salauskuvaketta uudestaan!</string>
+  <string name="error_crypto_provider_ui_required">Yhteyttä salaussovellukseen ei voitu muodostaa: tarkista asetukset tai yritä napsauttaa salauskuvaketta uudestaan!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE-tila ei tue liitteitä!</string>
   <string name="enable_inline_pgp">Käytä PGP/INLINE-tilaa</string>
   <string name="disable_inline_pgp">Poista PGP/INLINE käytöstä</string>
+  <string name="enable_sign_only">Käytä PGP:n pelkkää allekirjoitusta</string>
+  <string name="disable_sign_only">Poista käytöstä PGP:n pelkkä allekirjoitus</string>
   <string name="openpgp_inline_title">PGP/INLINE-tila</string>
+  <string name="openpgp_inline_text">Viesti lähetetään PGP/INLINE-muodossa.\nTätä tulisi käyttää vain yhteensopivuutta varten:</string>
+  <string name="openpgp_inline_plus_compat">Jotkin sovellukset tukevat vain tätä muotoa</string>
+  <string name="openpgp_inline_minus_transit">Allekirjoitukset saattavat rikkontua siirron aikana</string>
   <string name="openpgp_inline_minus_attach">Liitteet eivät ole tuettuja</string>
   <string name="openpgp_inline_ok">Selvä!</string>
   <string name="openpgp_inline_disable">Poista käytöstä</string>
   <string name="openpgp_inline_keep_enabled">Pidä käytössä</string>
+  <string name="openpgp_sign_only_ok">Selvä!</string>
   <string name="openpgp_sign_only_disable">Poista käytöstä</string>
   <string name="openpgp_sign_only_keep_enabled">Pidä käytössä</string>
+  <string name="openpgp_dialog_sign_only_title">PGP:n pelkkä allekirjoitustila</string>
+  <string name="openpgp_dialog_sign_only_text">Tässä tilassa PGP-avaintasi käytetään salakirjoitetun allekirjoituksen luomiseen, mutta sähköpostiviestiä ei salata.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Tämä ei salaa sähköpostiviestiä, mutta vahvistaa sen olevan lähetetty käyttäen sinun avainta.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Allekirjoitukset saattavat rikkoontua postituslistoille lähettäessä.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Allekirjoitukset saatetaan näyttää \"signature.asc\"-liitteinä joissain sovelluksissa.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Salatut viestit sisältävät aina allekirjoituksen.</string>
   <string name="crypto_msg_disabled">Viesti ei ole salattu</string>
   <string name="crypto_msg_encrypted_error">Viesti on salattu, mutta salauksen purkamisen yhteydessä ilmeni virhe.</string>
+  <string name="crypto_msg_encrypted_insecure">Viesti on salattu mutta turvaton!</string>
   <string name="crypto_msg_signed_error">Viesti on allekirjoitettu, mutta allekirjoitusta ei voitu vahvistaa.</string>
+  <string name="crypto_msg_encrypted_no_provider">Viesti on salattu, mutta salaukseen erikoistunutta sovellusta ei ole määritetty.</string>
   <string name="crypto_msg_unsupported_encrypted">Viesti on salattu, mutta sen muoto ei ole tuettu.</string>
   <string name="crypto_msg_unsupported_signed">Viesti on allekirjoitettu, mutta sen muoto ei ole tuettu.</string>
   <string name="crypto_msg_incomplete_encrypted">Viesti on salattu, mutta se tulee ladata kokonaan jotta sen salaus voidaan purkaa.</string>
@@ -959,6 +972,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="crypto_msg_signed_unencrypted">Viesti on allekirjoitettu, mutta ei salattu.</string>
   <string name="crypto_msg_encrypted_unsigned">Viesti on salattu, mutta ei allekirjoitettu.</string>
   <string name="crypto_msg_sign_unknown">Allekirjoitus on tehty tuntemattomalla avaimella.</string>
+  <string name="crypto_msg_sign_verified">Allekirjoitus tehty luotetulla avaimella.</string>
+  <string name="crypto_msg_sign_unverified">Allekirjoitus tehty avaimella, johon ei luoteta!</string>
   <string name="crypto_msg_sign_error">Allekirjoitus sisälsi virheen.</string>
   <string name="crypto_msg_sign_mismatch">Allekirjoitus on tehty väärällä avaimella.</string>
   <string name="crypto_msg_sign_expired">Allekirjoitus on tehty vanhentuneella avaimella.</string>
@@ -966,9 +981,12 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="crypto_msg_sign_insecure">Allekirjoitus on tehty turvattomalla avaimella.</string>
   <string name="crypto_msg_sign_incomplete">Viesti tulee ladata kokonaan, jotta sen allekirjoitus voidaan vahvistaa.</string>
   <string name="crypto_msg_signed_encrypted">Viesti on allekirjoitettu ja salattu.</string>
+  <string name="crypto_msg_unsigned_encrypted">Ei allekirjoitusta, tämä viesti saattaa olla kaapattu.</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">Näytä allekirjoittaja</string>
+  <string name="crypto_info_view_security_warning">Yksityiskohdat</string>
   <string name="locked_attach_unlock">Avaa lukitus</string>
+  <string name="locked_attach_unencrypted">Tätä osaa ei salattu, joten se saattaa olla epäluotettava.</string>
   <string name="locked_attach_title">Suojaamaton liite</string>
   <string name="message_progress_text">Ladataan…</string>
   <string name="messageview_decrypt_cancelled">Salauksen purkaminen peruttiin.</string>
@@ -980,7 +998,37 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="messageview_crypto_warning_expired">Viesti allekirjoitettiin <b>vanhentuneella avaimella!</b></string>
   <string name="messageview_crypto_warning_insecure">Viesti allekirjoitettiin <b>turvattomalla avaimella!</b></string>
   <string name="messageview_crypto_warning_error">Tämän viestin <b>allekirjoituksessa on virhe!</b></string>
+  <string name="messageview_crypto_warning_unsigned">Tämä viesti salattiin, mutta sitä ei allekirjoitettu. Se ei ole <b>\"end-to-end\"-turvallinen</b>!</string>
+  <string name="messageview_crypto_warning_show_anyway">Näytä viesti silti</string>
   <string name="recipient_error_non_ascii">Erikoismerkit eivät ole tällä hetkellä tuettuja!</string>
   <string name="recipient_error_parse_failed">Virhe osoitetta jäsennettäessä!</string>
   <string name="account_settings_crypto_support_sign_only">Tue salaamattomien viestien allekirjoitusta</string>
+  <string name="error_sign_only_no_encryption">Salaus ei ole käytettävissä pelkässä allekirjoitustilassa!</string>
+  <string name="unsigned_text_divider_label">Allekirjoittamaton teksti</string>
+  <string name="apg_deprecated_title">Varoitus APG:n vanhentamisesta</string>
+  <string name="apg_deprecated_1">APG:tä ei enää ylläpidetä!</string>
+  <string name="apg_deprecated_2">Tämän vuoksi APG on poistettu K-9 Mailista.</string>
+  <string name="apg_deprecated_bullet_1">Kehitys loppui alkuvuodesta 2014.</string>
+  <string name="apg_deprecated_bullet_2">Sisältää korjaamattomia tietoturvaongelmia</string>
+  <string name="apg_learn_more">Lisätietoja saat <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">napsauttamalla tästä</a>.</string>
+  <string name="apg_deprecated_ok">Selvä!</string>
+  <string name="apg">APG</string>
+  <string name="no_crypto_provider_see_global">OpenPGP-sovellusta ei ole määritetty, katso yleiset asetukset!</string>
+  <string name="crypto_no_provider_title">Tämä sähköpostiviesti on salattu</string>
+  <string name="crypto_no_provider_message">Tämä viesti on salattu OpenPGP:llä.\nLukeaksesi viestin sinun tulee asentaa ja määrittää yhteensopiva OpenPGP-sovellus.</string>
+  <string name="crypto_no_provider_button">Valitse OpenPGP-sovellus</string>
+  <string name="mail_list_widget_text">K-9-viestiluettelo</string>
+  <string name="mail_list_widget_loading">Ladataan viestejä…</string>
+  <string name="fetching_folders_failed">Kansioluettelon noutaminen epäonnistui</string>
+  <string name="messageview_crypto_warning_details">Näytä yksityiskohdat</string>
+  <string name="openpgp_enabled_error_title">Salaus ei ole mahdollista</string>
+  <string name="openpgp_enabled_error_msg">Jotkut valitut vastaanottajat eivät tue tätä ominaisuutta!</string>
+  <string name="enable_encryption">Käytä salausta</string>
+  <string name="disable_encryption">Poista salaus käytöstä</string>
+  <string name="openpgp_description_text1">Viestin salaus takaa, ettei niitä voi lukea kukaan muu kuin vastaanottaja.</string>
+  <string name="openpgp_description_text3">Salauksen käytön mahdollisuus näkyy vain, jos se on tuettu kaikkien vastaanottajien toimesta, ja he ovat lähettäneet sinulle sähköpostia aiemmin.</string>
+  <string name="openpgp_description_text2">Ota salaus käyttöön tai poista käytöstä napauttamalla tätä kuvaketta.</string>
+  <string name="openpgp_enabled_error_gotit">Selvä</string>
+  <string name="openpgp_enabled_error_back">Takaisin</string>
+  <string name="openpgp_enabled_error_disable">Poista salaus käytöstä</string>
 </resources>

@@ -33,6 +33,7 @@
   <string name="compose_title_reply_all">پاسخ به همه</string>
   <string name="compose_title_forward">بازارسال</string>
   <string name="choose_folder_title">انتخاب پوشه</string>
+  <string name="status_syncing_blocked">همگام سازی مسدود شد</string>
   <string name="status_syncing_off">همگام‌سازی غیرفعال شد</string>
   <string name="next_action">بعدی</string>
   <string name="previous_action">قبلی</string>
@@ -160,7 +161,6 @@
   <string name="message_view_attachment_download_action">ذخیره</string>
   <string name="message_view_status_attachment_not_saved">ناتوان برای ذخیره پیوست ها در کارت حافظه</string>
   <string name="message_view_show_pictures_action">نمایش تصاویر</string>
-  <string name="message_view_show_more_attachments_action">بیشتر …</string>
   <string name="message_view_no_viewer">نمایش‌دهنده‌ای برای <xliff:g id="mimetype">%s</xliff:g> پیدا نشد.</string>
   <string name="message_view_download_remainder">دانلود پیام کامل</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -200,8 +200,7 @@
   <string name="global_settings_confirm_action_spam">هرزنامه</string>
   <string name="global_settings_confirm_menu_discard">صرف نظر کردن از پیام</string>
   <string name="global_settings_confirm_action_delete_notif">پاک کردن (از اعلامات)</string>
-  <string name="global_settings_privacy_hide_useragent">حذف کاربر ک-9 از سرصفحه نامه</string>
-  <string name="global_settings_privacy_hide_timezone">استفاده از UTC در سرصفحه های نامه به عنوان منطقه زمان</string>
+  <string name="global_settings_privacy_hide_useragent_detail">حذف کاربر ک-9 از سرصفحه نامه</string>
   <string name="global_settings_notification_hide_subject_title">پنهان کردن موضوع در اعلامات</string>
   <string name="global_settings_notification_hide_subject_never">هیچوقت</string>
   <string name="global_settings_notification_hide_subject_when_locked">زمانیکه دستگاه قفل است</string>
@@ -399,7 +398,6 @@
   <string name="account_settings_crypto">رمزنگاری</string>
   <string name="account_settings_crypto_app">باز کردن برنامه پی جی پی</string>
   <string name="account_settings_crypto_key">کلید من</string>
-  <string name="account_settings_no_openpgp_provider_configured">هیچ برنامه باز پی جی پی نصب نشده است</string>
   <string name="account_settings_mail_check_frequency_label">تکرار نظرسنجی پوشه</string>
   <string name="account_settings_storage_title">نگهدارنده</string>
   <string name="account_settings_color_label">رنگ حساب کاربری</string>
@@ -453,21 +451,17 @@
   <string name="folder_settings_in_top_group_label">نمایش در بالای گروه</string>
   <string name="folder_settings_in_top_group_summary">نمایش نزدیک بالای لیست پوشه</string>
   <string name="folder_settings_folder_display_mode_label">سطح نمایش پوشه</string>
-  <string name="folder_settings_folder_display_mode_normal">هیچ کدام</string>
   <string name="folder_settings_folder_display_mode_first_class">اولین سطح</string>
   <string name="folder_settings_folder_display_mode_second_class">دومین سطح</string>
-  <string name="folder_settings_folder_sync_mode_label">سطح همگام سازی پوشه</string>
   <string name="folder_settings_folder_sync_mode_normal">هیچ کدام</string>
   <string name="folder_settings_folder_sync_mode_first_class">اولین سطح</string>
   <string name="folder_settings_folder_sync_mode_second_class">دومین سطح</string>
   <string name="folder_settings_folder_sync_mode_inherited">همانند سطح نمایش</string>
   <string name="folder_settings_folder_push_mode_label">سطح فشار پوشه</string>
-  <string name="folder_settings_folder_push_mode_normal">هیچ کدام</string>
   <string name="folder_settings_folder_push_mode_first_class">اولین سطح</string>
   <string name="folder_settings_folder_push_mode_second_class">دومین سطح</string>
   <string name="folder_settings_folder_push_mode_inherited">همانند سطح همگام سازی</string>
   <string name="folder_settings_folder_notify_mode_label">سطح اعلام پوشه</string>
-  <string name="folder_settings_folder_notify_mode_normal">هیچ کدام</string>
   <string name="folder_settings_folder_notify_mode_first_class">اولین سطح</string>
   <string name="folder_settings_folder_notify_mode_second_class">دومین سطح</string>
   <string name="folder_settings_folder_notify_mode_inherited">همانند سطح فشار</string>
@@ -545,7 +539,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">گواهی شناسایی نشده</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">کلید قبول</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">کلید رد</string>
-  <string name="folder_list_filter_hint">پوشه نام شامل</string>
   <string name="folder_list_display_mode_label">نمایش پوشه ها…</string>
   <string name="folder_list_display_mode_all">همه پوشه ها</string>
   <string name="folder_list_display_mode_first_class">پوشه های سطح یک</string>
@@ -623,6 +616,7 @@
   <string name="font_size_message_view_sender">فرستنده</string>
   <string name="font_size_message_view_to">به</string>
   <string name="font_size_message_view_cc">Carbon Copy (کپی که دیگر دریافت کنندگان می توانند ببینند)</string>
+  <string name="font_size_message_view_bcc">Blind Carbon Copy (کپی که دیگر دریافت کنندگان نمی توانند ببینند)</string>
   <string name="font_size_message_view_additional_headers">سرصفحه های اضافی</string>
   <string name="font_size_message_view_subject">موضوع</string>
   <string name="font_size_message_view_date">زمان و تاریخ</string>
@@ -648,6 +642,8 @@
   <string name="dialog_confirm_delete_message">آیا میخواهید این پیام را پاک کنید؟</string>
   <string name="dialog_confirm_delete_confirm_button">بله</string>
   <string name="dialog_confirm_delete_cancel_button">نه</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">بله</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">نه</string>
   <string name="dialog_confirm_spam_title">تایید حرکت به پوشه هرزنامه</string>
   <string name="dialog_confirm_spam_confirm_button">بله</string>
   <string name="dialog_confirm_spam_cancel_button">نه</string>
@@ -708,6 +704,7 @@
   <string name="webview_contextmenu_email_clipboard_label">آدرس پست الکترونی</string>
   <string name="image_saving_failed">ذخیره تصویر ناموفق بود</string>
   <string name="account_settings_remote_search_num_results_entries_all">همه</string>
+  <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">محدودیت جستجوی سرور</string>
   <string name="remote_search_sending_query">ارسال پرس و جو به سرور</string>
   <string name="remote_search_error">جستجوی از راه دور ناموفق بود</string>
@@ -718,8 +715,6 @@
   <string name="pull_to_refresh_remote_search_from_local_search_pull">جستجو برای سرور</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">ترخیص برای جستجوی سرور</string>
   <string name="remote_search_unavailable_no_network">یک ارتباط شبکه برای جستجوی سرور نیاز است</string>
-  <string name="global_settings_background_as_unread_indicator_label">کم نور شدن پیام ها بعد از خواندن</string>
-  <string name="global_settings_background_as_unread_indicator_summary">یک پس زمینه خاکستری وقتی پیام خوانده شده است نمایش داده خواهد شد</string>
   <string name="global_settings_threaded_view_label">نمایش موضوع</string>
   <string name="global_settings_threaded_view_summary">پیام های گروهی توسط مکالمات</string>
   <string name="upgrade_databases_title">در حال بروزرسانی پایگاه های داده</string>
@@ -742,34 +737,15 @@
   <string name="fetching_attachment_dialog_title_save">ذخیره پیش نویس</string>
   <string name="fetching_attachment_dialog_message">واکشی پیوست</string>
   <string name="auth_external_error">ناتوان برای احراز هویت. سرور توانایی اس ای اس ال خارجی را اعلام نکرد. این ممکن است ناشی از یک مشکل با گواهی مشتری (منقضی شده، اعتبار گواهی) یا دیگر مکشلات پیکربندی باشد.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_unknown_error">خطای پی جی پی باز ناشناخته</string>
-  <string name="openpgp_canceled_by_user">لغو توسط کاربر</string>
-  <string name="openpgp_result_no_signature">وارد نشد</string>
-  <string name="openpgp_result_invalid_signature">امضای نامعتبر</string>
-  <string name="openpgp_result_signature_uncertified">ورود توسط (گواهی نشده)</string>
-  <string name="openpgp_result_signature_certified">ورود توسط</string>
-  <string name="openpgp_result_signature_expired_key">کلید منقضی شده است</string>
-  <string name="openpgp_result_signature_revoked_key">کلید لغو شده است</string>
-  <string name="openpgp_result_signature_insecure">ناامن!</string>
-  <string name="openpgp_result_signature_missing_key">کلید عمومی ناشناس</string>
-  <string name="openpgp_result_encrypted">رمزگذاری شده</string>
-  <string name="openpgp_result_not_encrypted">رمزگذاری نشده</string>
-  <string name="openpgp_result_decryption_insecure">ناامن</string>
-  <string name="openpgp_result_action_show">نمایش</string>
-  <string name="openpgp_result_action_lookup">جستجو</string>
-  <string name="openpgp_result_no_name">هیچ نام</string>
-  <string name="openpgp_result_no_email">هیچ نامه الکترونیکی</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">از گواهی مشتری استفاده کن</string>
   <string name="client_certificate_spinner_empty">هیچ گواهی مشتری نیست</string>
   <string name="client_certificate_spinner_delete">انتخاب گواهی مشتری را حذف کن</string>
   <string name="client_certificate_advanced_options">تنظیمات پیشرفته</string>
-  <string name="crypto_incomplete_message">پیام ناقص</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">برای رمزگشایی روی \"دانلود کامل پیام\" کلیک کنید </string>
   <string name="preview_encrypted">رمزگذاری شد</string>
   <string name="add_from_contacts">اضافه کردن از مرتبطین</string>
+  <string name="crypto_settings_cancel">لغو</string>
   <string name="crypto_settings_ok">ادامه</string>
   <string name="recipient_cc">Carbon Copy (کپی که دیگر دریافت کنندگان می توانند ببینند)</string>
   <string name="recipient_bcc">Blind Carbon Copy (کپی که دیگر دریافت کنندگان نمی توانند ببینند)</string>
@@ -781,4 +757,6 @@
   <string name="address_type_other">دیگر</string>
   <string name="address_type_mobile">متحرک</string>
   <string name="compose_error_no_draft_folder">هیچ پوشه پیش نویسِ برای این حساب کاربری پیکربندی نشده است </string>
+  <string name="crypto_info_ok">قبول</string>
+  <string name="message_progress_text">در حال بارگذاری…</string>
 </resources>

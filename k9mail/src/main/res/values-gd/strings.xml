@@ -1,0 +1,1025 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--=== App-specific strings =============================================================-->
+  <!--This should make it easier for forks to change the branding-->
+  <!--Used in AndroidManifest.xml-->
+  <string name="app_name">Post K-9</string>
+  <string name="shortcuts_title">Cunntasan K-9</string>
+  <string name="unread_widget_label">K-9 – Gun leughadh</string>
+  <string name="remote_control_label">Smachd puist cèin K-9</string>
+  <string name="remote_control_desc">Bheir seo cead dhan aplacaid seo gnìomhan is roghainnean puist K-9 a stiùireadh.</string>
+  <!--Used in the about dialog-->
+  <string name="app_authors">Google, luchd-coiseachd nan con K-9</string>
+  <string name="app_copyright_fmt">Còir-lethbhreac 2008-<xliff:g>%s</xliff:g> Luchd-coiseachd nan con K-9. Cuid dhen chòir-lethbhreac 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
+  <string name="app_license">Fo cheadachas Apache, tionndadh 2.0.</string>
+  <!--Welcome message-->
+  <string name="welcome_message_title">Fàilte gu post K-9</string>
+  <string name="accounts_welcome"><![CDATA[
+<p>
+Tha post K-9 ’na aplacaid shaor agus chumhachdach airson post-d air Android.
+</p><p>
+Chaidh na gleusan a leanas a chur ris o chionn goirid:
+</p>
+<ul>
+  <li>Push Mail slighe IMAP IDLE</li>
+  <li>Dèanadas nas fhearr</li>
+  <li>Ath-fhaidhleadh theachdaireachdan</li>
+  <li>Earr-sgrìobhaidhean puist-d</li>
+  <li>Bcc dhut fhèin</li>
+  <li>Fo-sgrìobhaidhean phasganan</li>
+  <li>Sioncronachadh nam pasgan air fad</li>
+  <li>Rèiteachadh seòladh nam freagairt</li>
+  <li>Ath-ghoiridean a’ mheur-chlàir</li>
+  <li>Taic nas fhearr airson IMAP</li>
+  <li>Sàbhaladh de cheanglaichean air SD</li>
+  <li>Falamhachadh an sgudail</li>
+  <li>Seòrsachadh theachdaireachdan</li>
+  <li>…is mòran a bharrachd</li>
+</ul>
+<p>
+Thoir an aire nach cuir K-9 taic ri cuid mhòr de chunntasan saor Hotmail agus mar iomadh prògram puist-d
+tachraidh rudan neònach nuair a bhruidhneas e ri Microsoft Exchange.
+</p><p>
+Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceistean aig
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
+</p>
+    ]]></string>
+  <!--Default signature-->
+  <string name="default_signature">-- \nAir a chur on uidheam Android agam slighe post K-9.</string>
+  <!--General strings that include the app name-->
+  <string name="account_delete_dlg_instructions_fmt">Thèid an cunntas “<xliff:g id="account">%s</xliff:g>” a thoirt air falbh o phost K-9.</string>
+  <string name="account_recreate_dlg_instructions_fmt">Thèid dàta an sgeama ionadail aig “<xliff:g id="account">%s</xliff:g>” a thoirt air falbh. Thèid roghainnean a’ chunntais a ghlèidheadh.</string>
+  <string name="account_clear_dlg_instructions_fmt">Thèid lethbhreacan ionadail de theachdaireachdan ann an “<xliff:g id="account">%s</xliff:g>” a thoirt air falbh. Thèid roghainnean a’ chunntais a ghlèidheadh.</string>
+  <!--=== App Store-specific strings =======================================================-->
+  <string name="import_dialog_error_message">Stàlaich manaidsear fhaidhlichean mus lean thu air adhart leis an ion-phortadh seo.</string>
+  <string name="open_market">Fosgail Play Store</string>
+  <!--=== General strings ==================================================================-->
+  <string name="app_authors_fmt">Na h-ùghdaran: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="app_revision_fmt">Fiosrachadh mun lèireamhas: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_libraries">Tha sinn a’ cleachdadh na leabhar-lannan a leanas a tha le treas-phàrtaidhean: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+  <string name="app_emoji_icons">Ìomhaigheagan emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
+  <string name="read_attachment_label">Ceanglachan puist-d a leughadh</string>
+  <string name="read_attachment_desc">Leig leis an aplacaid seo ceanglachain nam post-d agad a leughadh.</string>
+  <string name="read_messages_label">Puist-d a leughadh</string>
+  <string name="read_messages_desc">Leig leis an aplacaid seo na puist-d agad a leughadh.</string>
+  <string name="delete_messages_label">Puist-d a sguabadh às</string>
+  <string name="delete_messages_desc">Leig leis an aplacaid seo na puist-d agad a sguabadh às.</string>
+  <string name="about_title_fmt">Mu dhèidhinn <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="accounts_title">Cunntasan</string>
+  <string name="folders_title">Pasganan</string>
+  <string name="advanced">Adhartach</string>
+  <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
+  <string name="compose_title_compose">Sgrìobh</string>
+  <string name="compose_title_reply">Freagair</string>
+  <string name="compose_title_reply_all">Freagair na h-uile</string>
+  <string name="compose_title_forward">Sìn air adhart</string>
+  <string name="choose_folder_title">Tagh pasgan</string>
+  <string name="status_loading_account_folder">Ceasnaich <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_loading_account_folder_headers">A’ faighinn nam bannan-cinn <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_sending_account">A’ cur <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
+  <string name="status_next_poll">An ath-cheasnachadh <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_no_network">Sioncronachadh à comas, chan eil lìonra ann</string>
+  <string name="status_no_background">Sioncronachadh à comas, chan eil gnìomhachd sa chùlaibh</string>
+  <string name="status_poll_and_push_disabled">Tha ceasnachadh is push-igeadh à comas</string>
+  <string name="status_syncing_blocked">Chaidh an sioncronachadh a bhacadh</string>
+  <string name="status_syncing_off">Chaidh an sioncronachadh a chur à comas</string>
+  <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> air a thaghadh</string>
+  <string name="next_action">Air adhart</string>
+  <string name="previous_action">Ais ais</string>
+  <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
+  <string name="okay_action">Ceart ma-thà</string>
+  <string name="cancel_action">Sguir dheth</string>
+  <string name="send_action">Cuir</string>
+  <string name="send_again_action">Cuir a-rithist</string>
+  <string name="empty_subject">Cha do shònraich thu cuspair, thoir gnogag às ùr airson a chur co-dhiù</string>
+  <string name="select_action">Tagh</string>
+  <string name="deselect_action">Dì-thagh</string>
+  <string name="reply_action">Freagair</string>
+  <string name="reply_all_action">Freagair na h-uile</string>
+  <string name="delete_action">Sguab às</string>
+  <string name="archive_action">Tasg-lann</string>
+  <string name="spam_action">Spama</string>
+  <string name="forward_action">Sìn air adhart</string>
+  <string name="move_action">Gluais</string>
+  <string name="single_message_options_action">Cuir…</string>
+  <string name="refile_action">Ath-fhaidhlich…</string>
+  <string name="done_action">Deiseil</string>
+  <string name="discard_action">Tilg air falbh</string>
+  <string name="save_draft_action">Sàbhail mar dhreachd</string>
+  <string name="check_mail_action">Thoir sùil airson post</string>
+  <string name="send_messages_action">Cuir na teachdaireachdan</string>
+  <string name="refresh_folders_action">Ath-nuadhaich liosta nam pasgan</string>
+  <string name="filter_folders_action">Lorg pasgan</string>
+  <string name="add_account_action">Cuir cunntas ris</string>
+  <string name="compose_action">Sgrìobh</string>
+  <string name="search_action">Lorg</string>
+  <string name="search_results">Toraidhean an luirg</string>
+  <string name="preferences_action">Roghainnean</string>
+  <string name="account_settings_action">Roghainnean a’ chunntais</string>
+  <string name="folder_settings_action">Roghainnean a’ phasgain</string>
+  <string name="global_settings_action">Roghainnean uile-choitcheann</string>
+  <string name="remove_account_action">Thoir an cunntas air falbh</string>
+  <string name="clear_pending_action">Falamhaich gnìomhan a tha ri dhèiligeadh (cunnartach!)</string>
+  <string name="mark_as_read_action">Comharraich gun deach a leughadh</string>
+  <string name="send_alternate_action">Co-roinn</string>
+  <string name="send_alternate_chooser_title">Tagh seòladair</string>
+  <string name="flag_action">Cuir rionnag ris</string>
+  <string name="unflag_action">Thoir an rionnag air falbh</string>
+  <string name="copy_action">Lethbhreac</string>
+  <string name="select_text_action">Tagh teacsa</string>
+  <string name="show_headers_action">Seall na bannan-cinn</string>
+  <string name="hide_headers_action">Falaich na bannan-cinn</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Chaidh an seòladh a chur air an stòr-bhòrd</item>
+    <item quantity="two">Chaidh na seòlaidhean a chur air an stòr-bhòrd</item>
+    <item quantity="few">Chaidh na seòlaidhean a chur air an stòr-bhòrd</item>
+    <item quantity="other">Chaidh na seòlaidhean a chur air an stòr-bhòrd</item>
+  </plurals>
+  <string name="message_view_theme_action_dark">Cleachd ùrlar dorcha ’na àite</string>
+  <string name="message_view_theme_action_light">Cleachd ùrlar soilleir ’na àite</string>
+  <string name="mark_as_unread_action">Comharraich nach deach a leughadh</string>
+  <string name="read_receipt">Cuidhteas-leughaidh</string>
+  <string name="read_receipt_enabled">Iarraidh seo cuidhteas-leughaidh</string>
+  <string name="read_receipt_disabled">Chan iarr seo cuidhteas-leughaidh</string>
+  <string name="add_attachment_action">Cuir ceanglachan ris</string>
+  <string name="empty_trash_action">Falamhaich an sgudal</string>
+  <string name="expunge_action">Thoir air falbh gu tur</string>
+  <string name="clear_local_folder_action">Falamhaich na teachdaireachdan ionadail</string>
+  <string name="about_action">Mu dhèidhinn</string>
+  <string name="prefs_title">Roghainnean</string>
+  <string name="accounts_context_menu_title">Roghainnean a’ chunntais</string>
+  <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+  <string name="general_no_subject">(Gun chuspair)</string>
+  <string name="general_no_sender">Gun seòladair</string>
+  <string name="status_loading">Ceasnachadh</string>
+  <string name="status_loading_more">A’ luchdadh nan teachdaireachdan…</string>
+  <string name="status_network_error">Mearachd leis a’ cheangal</string>
+  <string name="status_invalid_id_error">Cha deach an teachdaireachd a lorg</string>
+  <string name="status_loading_error">Mearachd a’ luchdadh na teachdaireachd</string>
+  <string name="status_loading_more_failed">Feuch ri luchdadh a’ chorr dhe na teachdaireachdan a-rithist</string>
+  <string name="load_more_messages_fmt">Luchdaich suas ri
+    to <xliff:g id="messages_to_load">%d</xliff:g> a bharrachd</string>
+  <string name="abbrev_gigabytes">GB</string>
+  <string name="abbrev_megabytes">MB</string>
+  <string name="abbrev_kilobytes">KB</string>
+  <string name="abbrev_bytes">B</string>
+  <string name="account_size_changed">Bha an cunntas “<xliff:g id="account">%s</xliff:g>” <xliff:g id="oldSize">%s</xliff:g> is tha e <xliff:g id="newSize">%s</xliff:g> a-nis</string>
+  <string name="compacting_account">A’ dùmhlachadh a’ chunntais “<xliff:g id="account">%s</xliff:g>”</string>
+  <string name="clearing_account">A’ falamhachadh a’ chunntais “<xliff:g id="account">%s</xliff:g>”</string>
+  <string name="recreating_account">Ag ath-chruthachadh a’ chunntais “<xliff:g id="account">%s</xliff:g>”</string>
+  <string name="notification_new_title">Post ùr</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> teachdaireachd ùr</item>
+    <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> theachdaireachd ùr</item>
+    <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> teachdaireachdan ùra</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> teachdaireachd ùr</item>
+  </plurals>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> gun leughadh (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">⁊ <xliff:g id="additional_messages">%1$d</xliff:g> a bharrachd air <xliff:g id="account">%2$s</xliff:g></string>
+  <string name="notification_action_reply">Freagair</string>
+  <string name="notification_action_mark_as_read">Comharraich gun deach a leughadh</string>
+  <string name="notification_action_mark_all_as_read">Comharraich gun deach iad uile a leughadh</string>
+  <string name="notification_action_delete">Sguab às</string>
+  <string name="notification_action_delete_all">Sguab às na h-uile</string>
+  <string name="notification_action_archive">Tasglannaich</string>
+  <string name="notification_action_archive_all">Tasglannaich na h-uile</string>
+  <string name="notification_action_spam">Spama</string>
+  <string name="notification_certificate_error_title">Mearachd an teisteanais aig <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_certificate_error_text">Thoir sùil air roghainnean an fhrithealaiche agad</string>
+  <string name="notification_authentication_error_title">Dh’fhàillig an dearbhadh</string>
+  <string name="notification_authentication_error_text">Dh’fhàillig dearbhadh a’ chunntais <xliff:g id="account">%s</xliff:g>. Ùraich roghainnean an fhrithealaiche agad.</string>
+  <string name="notification_bg_sync_ticker">A’ toirt sùil airson post: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_title">A’ toirt sùil airson post</string>
+  <string name="notification_bg_send_ticker">A’ cur a’ phuist: <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_bg_send_title">A’ cur a’ phuist</string>
+  <string name="notification_bg_title_separator">:</string>
+  <string name="special_mailbox_name_inbox">A-steach</string>
+  <string name="special_mailbox_name_outbox">A-mach</string>
+  <string name="special_mailbox_name_drafts">Dreachdan</string>
+  <string name="special_mailbox_name_trash">Sgudal</string>
+  <string name="special_mailbox_name_sent">Air a chur</string>
+  <string name="special_mailbox_name_archive">Tasg-lann</string>
+  <string name="special_mailbox_name_spam">Spama</string>
+  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Dreachdan)</string>
+  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Sgudal)</string>
+  <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Air a chur)</string>
+  <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Tasg-lann)</string>
+  <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spama)</string>
+  <string name="send_failure_subject">Cha deach cuid dhe na teachdaireachdan a chur</string>
+  <string name="debug_version_fmt">Tionndadh: <xliff:g id="version">%s</xliff:g></string>
+  <string name="debug_enable_debug_logging_title">Cuir an comas logadh airson dì-bhugachadh</string>
+  <string name="debug_enable_debug_logging_summary">Logaich fiosrachadh diagnosachd a bharrachd</string>
+  <string name="debug_enable_sensitive_logging_title">Logaich fiosrachadh dìomhair</string>
+  <string name="debug_enable_sensitive_logging_summary">Dh’fhaoidte gun leig seo ris faclan-faire sna logaichean.</string>
+  <string name="message_list_load_more_messages_action">Luchdaich barrachd theachdaireachdan</string>
+  <string name="message_to_fmt">Gu:<xliff:g id="counterParty">%s</xliff:g></string>
+  <string name="message_compose_subject_hint">Cuspair</string>
+  <string name="message_compose_content_hint">Teacsa na teachdaireachd</string>
+  <string name="message_compose_signature_hint">An t-earr-sgrìobhadh</string>
+  <string name="message_compose_quote_header_separator">-------- An teachdaireachd thùsail --------</string>
+  <string name="message_compose_quote_header_subject">Cuspair:</string>
+  <string name="message_compose_quote_header_send_date">Air a chur:</string>
+  <string name="message_compose_quote_header_from">O:</string>
+  <string name="message_compose_quote_header_to">Gu:</string>
+  <string name="message_compose_quote_header_cc">Cc:</string>
+  <string name="message_compose_reply_header_fmt">Sgrìobh <xliff:g id="sender">%s</xliff:g>:</string>
+  <string name="message_compose_reply_header_fmt_with_date">Sgrìobh <xliff:g id="sender">%2$s</xliff:g> <xliff:g id="sent_date">%1$s</xliff:g>:</string>
+  <string name="message_compose_error_no_recipients">Feumaidh tu co-dhiù aon neach a chur ris a gheibh e.</string>
+  <string name="compose_error_incomplete_recipient">Tha rud ann an raon nan daoine a gheibh e a tha leth-chrìochnaichte!</string>
+  <string name="error_contact_address_not_found">Cha b’ urrainn dhuinn seòladh puist-d a lorg dhan neach-aithne seo.</string>
+  <string name="message_compose_attachments_skipped_toast">Chan urrainn dhuinn cuid dhe na ceanglachain a shìneadh air adhart oir cha deach an luchdadh a-nuas.</string>
+  <string name="message_compose_show_quoted_text_action">Dèan luaidh air an teachdaireachd</string>
+  <string name="message_compose_description_delete_quoted_text">Thoir an luaidh air falbh</string>
+  <string name="message_compose_description_edit_quoted_text">Crìoch na na luaidhe</string>
+  <string name="message_view_from_format">O: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_to_label">Gu:</string>
+  <string name="message_view_cc_label">Cc:</string>
+  <string name="message_view_bcc_label">Bcc:</string>
+  <string name="message_view_attachment_view_action">Fosgail</string>
+  <string name="message_view_attachment_download_action">Sàbhail</string>
+  <string name="message_view_status_attachment_not_saved">Cha ghabh an ceanglachan a shàbhaladh air a’ chairt SD.</string>
+  <string name="message_view_status_no_space">Cha b’ urrainn dhuinn an ceanglachan a shàbhaladh a chionn ’s nach eil àite gu leòr ann.</string>
+  <string name="message_view_show_pictures_action">Seall na dealbhan</string>
+  <string name="message_view_no_viewer">Chan urrainn dhuinn aplacaid a lorg a sheallas <xliff:g id="mimetype">%s</xliff:g>.</string>
+  <string name="message_view_download_remainder">Luchdaich a-nuas an teachdaireachd shlàn</string>
+  <string name="message_view_toast_unable_to_display_message">Chan urrainn dhuinn an teachdaireachd a shealltainn</string>
+  <string name="message_view_sender_label">slighe %1$s</string>
+  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
+  <string name="message_no_additional_headers_available">Chaidh gach bann-cinn a luchdadh a-nuas ach chan eil bann-cinn eile ann a ghabhas a shealltainn.</string>
+  <string name="message_additional_headers_retrieval_failed">Cha b’ urrainn dhuinn bannan-cinn a bharrachd fhaighinn on stòr-dàta no o fhrithealaiche a’ phuist.</string>
+  <string name="from_same_sender">Barrachd on t-seòladair seo</string>
+  <string name="debug_delete_local_body">Dì-bhugaich / Falamhaich bodhaig na teachdaireachd</string>
+  <string name="message_discarded_toast">Chaidh an teachdaireachd a thilgeil air falbh</string>
+  <string name="message_saved_toast">Chaidh an teachdaireachd a shàbhaladh mar dhreachd</string>
+  <string name="global_settings_flag_label">Seall na rionnagan</string>
+  <string name="global_settings_flag_summary">Tha rionnagan a’ comharradh teachdaireachdan le bratach</string>
+  <string name="global_settings_checkbox_label">Bogsaichean airson ioma-thaghadh</string>
+  <string name="global_settings_checkbox_summary">Seall na bogsaichean airson ioma-thaghadh an-còmhnaidh</string>
+  <string name="global_settings_preview_lines_label">Loidhnichean a ro-shealladh</string>
+  <string name="global_settings_show_correspondent_names_label">Seall ainmean nan seòladairean</string>
+  <string name="global_settings_show_correspondent_names_summary">Seall ainmean nan seòladairean seach na seòlaidhean puist-d aca</string>
+  <string name="global_settings_sender_above_subject_label">An seòladair os cionn a’ chuspair</string>
+  <string name="global_settings_sender_above_subject_summary">Seall ainmean nan seòladairean os cionn a’ chuspair seach foidhe</string>
+  <string name="global_settings_show_contact_name_label">Seall ainmean an luchd-aithne</string>
+  <string name="global_settings_show_contact_name_summary">Cleachd ainmean o luchd-aithne Android ma tha gin ann</string>
+  <string name="global_settings_registered_name_color_label">Cuir dathan air an luchd-aithne</string>
+  <string name="global_settings_registered_name_color_default">Na cuir dathan air ainmean ann an liosta an luchd-aithne agad</string>
+  <string name="global_settings_registered_name_color_changed">Cuir dathan air ainmean ann an liosta an luchd-aithne agad</string>
+  <string name="global_settings_folderlist_wrap_folder_names_label">Paisg ainmean fada phasganan</string>
+  <string name="global_settings_folderlist_wrap_folder_names_summary">Cleachd iomadh loidhne airson ainmean fada phasganan</string>
+  <string name="global_settings_messageview_fixedwidth_label">Cruthan-clò le leud socraichte</string>
+  <string name="global_settings_messageview_fixedwidth_summary">Cleachd cruth-clò le leud socraichte nuair a thèid taisbeanadh ann an teacsa lom a shealltainn</string>
+  <string name="global_settings_messageview_autofit_width_label">Fèin-fhreagair teachdaireachdan</string>
+  <string name="global_settings_messageview_autofit_width_summary">Crùb teachdaireachdan ach am freagair iad ris an sgrìn</string>
+  <string name="global_settings_messageview_return_to_list_label">Till gun liosta an dèidh sguabaidh às</string>
+  <string name="global_settings_messageview_return_to_list_summary">Till gun liosta an dèidh teachdaireachd a sguabadh às</string>
+  <string name="global_settings_messageview_show_next_label">Seall an ath-theachdaireachd an dèidh sguabaidh às</string>
+  <string name="global_settings_messageview_show_next_summary">Seall an ath-theachdaireachd a ghnàth an dèidh teachdaireachd a sguabaidh às</string>
+  <string name="global_settings_confirm_actions_title">Dearbh gnìomhan</string>
+  <string name="global_settings_confirm_actions_summary">Seall còmhradh uair sam bith a nì thu gnìomh sònraichte</string>
+  <string name="global_settings_confirm_action_delete">Sguab às</string>
+  <string name="global_settings_confirm_action_delete_starred">Sguab às an fheadhainn le rionnag (ann an sealladh nan teachdaireachdan)</string>
+  <string name="global_settings_confirm_action_spam">Spama</string>
+  <string name="global_settings_confirm_menu_discard">Tilg an teachdaireachd air falbh</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Comharraich gun deach gach teachdaireachd a leughadh</string>
+  <string name="global_settings_confirm_action_delete_notif">Sguab às (on bhrath)</string>
+  <string name="global_settings_privacy_hide_useragent">Falaich cliant a’ phuist</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Thoir air falbh an raon K-9 User-Agent on bhannan-cinn phost</string>
+  <string name="global_settings_privacy_hide_timezone">Falaich an roinn-tìde</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Cleachd UTC an àite na roinn-tìde ionadail ann am bannan-cinn phost is fhreagairtean</string>
+  <string name="global_settings_notification_hide_subject_title">Falaich an cuspair ann am brathan</string>
+  <string name="global_settings_notification_hide_subject_never">Chan ann idir</string>
+  <string name="global_settings_notification_hide_subject_when_locked">Nuair a bhios an t-uidheam glaiste</string>
+  <string name="global_settings_notification_hide_subject_always">An-còmhnaidh</string>
+  <string name="global_settings_notification_quick_delete_title">Seall am putan “Sguab às”</string>
+  <string name="global_settings_notification_quick_delete_never">Chan ann idir</string>
+  <string name="global_settings_notification_quick_delete_when_single_msg">Airson brath aon teachdaireachd</string>
+  <string name="global_settings_notification_quick_delete_always">An-còmhnaidh</string>
+  <string name="global_settings_notification_quick_delete_description">Seall putan sa bhrath a bheir comas dhut teachdaireachd a sguabadh às gu luath</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Brathan air an sgrìn-ghlasaidh</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Na seall brathan air an sgrìn-ghlasaidh</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Ainm na h-aplacaid</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Co mheud teachdaireachd gun leughadh</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Co mheud teachdaireachd is seòladair</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">An aon rud nuair nach bi an sgrìn glaiste</string>
+  <string name="quiet_time">Amannan sàmhach</string>
+  <string name="quiet_time_description">Cuir seirm, srann is boillsgeadh à comas rè na h-oidhche</string>
+  <string name="quiet_time_notification">Cuir na brathan à comas</string>
+  <string name="quiet_time_notification_description">Cuir na brathan à comas buileach rè nan amannan sàmhach</string>
+  <string name="quiet_time_starts">Tòisichidh an t-àm sàmhach</string>
+  <string name="quiet_time_ends">Thig an t-àm sàmhach gu crìoch</string>
+  <string name="account_setup_basics_title">Suidhich cunntas ùr</string>
+  <string name="account_setup_basics_email_hint">Seòladh puist-d</string>
+  <string name="account_setup_basics_password_hint">Facal-faire</string>
+  <string name="account_setup_basics_show_password">Seall am facal-faire</string>
+  <string name="account_setup_basics_manual_setup_action">Suidheachadh de làimh</string>
+  <string name="account_setup_check_settings_title"/>
+  <string name="account_setup_check_settings_retr_info_msg">A’ faighinn fiosrachadh a’ chunntais…</string>
+  <string name="account_setup_check_settings_check_incoming_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-steach…</string>
+  <string name="account_setup_check_settings_check_outgoing_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-mach…</string>
+  <string name="account_setup_check_settings_authenticate">’Ga dhearbhadh…</string>
+  <string name="account_setup_check_settings_fetch">A’ faighinn roghainnean a’ chunntais…</string>
+  <string name="account_setup_check_settings_canceling_msg">A’ sgur dheth…</string>
+  <string name="account_setup_names_title">Cha mhòr deiseil!</string>
+  <string name="account_setup_names_account_name_label">Thoir ainm air a’ chunntas seo (roghainneil):</string>
+  <string name="account_setup_names_user_name_label">Cuir a-steach d’ ainm (chithear seo ann an teachdaireachdan a thèid a-mach):</string>
+  <string name="account_setup_account_type_title">Seòrsa a’ chunntais</string>
+  <string name="account_setup_account_type_instructions">Dè seòrsa cunntas a tha seo?</string>
+  <string name="account_setup_account_type_pop_action">POP3</string>
+  <string name="account_setup_account_type_imap_action">IMAP</string>
+  <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+  <string name="account_setup_auth_type_normal_password">Facal-faire àbhaisteach</string>
+  <string name="account_setup_auth_type_insecure_password">Facal-faire, ’ga chur gun tèarainteachd</string>
+  <string name="account_setup_auth_type_encrypted_password">Facal-faire crioptaichte</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Teisteanas a’ chliant</string>
+  <string name="account_setup_incoming_title">Roghainnean an fhrithealaiche a-steach</string>
+  <string name="account_setup_incoming_username_label">Ainm-cleachdaiche</string>
+  <string name="account_setup_incoming_password_label">Facal-faire</string>
+  <string name="account_setup_incoming_client_certificate_label">Teisteanas a’ chliant</string>
+  <string name="account_setup_incoming_pop_server_label">Frithealaiche POP3</string>
+  <string name="account_setup_incoming_imap_server_label">Frithealaiche IMAP</string>
+  <string name="account_setup_incoming_webdav_server_label">Frithealaiche Exchange</string>
+  <string name="account_setup_incoming_port_label">Port</string>
+  <string name="account_setup_incoming_security_label">Tèarainteachd</string>
+  <string name="account_setup_incoming_auth_type_label">Dearbhadh</string>
+  <string name="account_setup_incoming_security_none_label">Chan eil gin</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">Chan eil “<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>” dligheach mu choinneamh “<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>”</string>
+  <string name="account_setup_incoming_delete_policy_label">Nuair a sguabas mi teachdaireachd às</string>
+  <string name="account_setup_incoming_delete_policy_never_label">na sguab às an fhrithealaiche e</string>
+  <string name="account_setup_incoming_delete_policy_delete_label">sguab às an fhrithealaiche e</string>
+  <string name="account_setup_incoming_delete_policy_markread_label">comharraich air an fhrithealaiche gun deach a leughadh</string>
+  <string name="account_setup_incoming_compression_label">Cleachd dùmhlachadh air lìonra:</string>
+  <string name="account_setup_incoming_mobile_label">Mobile</string>
+  <string name="account_setup_incoming_wifi_label">WiFi</string>
+  <string name="account_setup_incoming_other_label">Eile</string>
+  <string name="local_storage_provider_external_label">Stòras air an taobh a-muigh (cairt SD)</string>
+  <string name="local_storage_provider_internal_label">Stòras inntearnail àbhaisteach</string>
+  <string name="local_storage_provider_samsunggalaxy_label">%1$s a stòras inntearnail a bharrachd</string>
+  <string name="local_storage_provider_label">Ionad an stòrais</string>
+  <string name="account_setup_expunge_policy_label">Ma sguabas mi às teachdaireachd, sguab às an fhrithealaiche e</string>
+  <string name="account_setup_expunge_policy_immediately">sa bhad</string>
+  <string name="account_setup_expunge_policy_on_poll">aig an ath-cheasnachadh</string>
+  <string name="account_setup_expunge_policy_manual">a làimh</string>
+  <string name="account_setup_incoming_autodetect_namespace_label">Mothaich dha IMAP Namespace gu fèin-obrachail</string>
+  <string name="account_setup_incoming_imap_path_prefix_label">Ro-leasachan slighe IMAP</string>
+  <string name="drafts_folder_label">Pasgan nan dreachdan</string>
+  <string name="sent_folder_label">Pasgan a’ phuist chuirte</string>
+  <string name="trash_folder_label">Pasgan an sgudail</string>
+  <string name="archive_folder_label">Pasgan nan tasg-lann</string>
+  <string name="spam_folder_label">Pasgan an spama</string>
+  <string name="account_setup_incoming_subscribed_folders_only_label">Na seall ach pasganan a tha fo-sgrìobhadh agam aca</string>
+  <string name="account_setup_auto_expand_folder">Leudaich am pasgan gu fèin-obrachail</string>
+  <string name="account_setup_incoming_webdav_path_prefix_label">Slighe OWA</string>
+  <string name="account_setup_incoming_webdav_path_prefix_hint">Roghainneil</string>
+  <string name="account_setup_incoming_webdav_auth_path_label">Slighe an dearbhaidh</string>
+  <string name="account_setup_incoming_webdav_auth_path_hint">Roghainneil</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_label">Alias a’ bhogsa-phuist</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_hint">Roghainneil</string>
+  <string name="account_setup_outgoing_title">Roghainnean an fhrithealaiche a-mach</string>
+  <string name="account_setup_outgoing_smtp_server_label">Frithealaiche SMTP</string>
+  <string name="account_setup_outgoing_port_label">Port</string>
+  <string name="account_setup_outgoing_security_label">Tèarainteachd</string>
+  <string name="account_setup_outgoing_require_login_label">Iarr clàradh a-steach.</string>
+  <string name="account_setup_outgoing_username_label">Ainm-cleachdaiche</string>
+  <string name="account_setup_outgoing_password_label">Facal-faire</string>
+  <string name="account_setup_outgoing_authentication_label">Dearbhadh</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">Chan eil “<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>” dligheach mu choinneamh “<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>”</string>
+  <string name="account_setup_bad_uri">Suidheachadh mì-dhligheach: <xliff:g id="err_mess">%s</xliff:g></string>
+  <string name="account_setup_options_title">Roghainnean a’ chunntais</string>
+  <string name="compact_action">Dùmhlaich an cunntas</string>
+  <string name="clear_action">Falamhaich na teachdaireachdan (cunnartach!)</string>
+  <string name="recreate_action">Ath-chruthaich an dàta (am fuasgladh mu dheireadh)</string>
+  <string name="account_setup_options_mail_check_frequency_label">Dè cho tric ’s a dh’iarras sinn am post?</string>
+  <string name="account_setup_options_mail_check_frequency_never">Chan ann idir</string>
+  <string name="account_setup_options_mail_check_frequency_1min">Gach mionaid</string>
+  <string name="account_setup_options_mail_check_frequency_5min">Gach 5 mionaidean</string>
+  <string name="account_setup_options_mail_check_frequency_10min">Gach 10 mionaidean</string>
+  <string name="account_setup_options_mail_check_frequency_15min">Gach cairteal na h-uarach</string>
+  <string name="account_setup_options_mail_check_frequency_30min">Gach leth-uair a thìde</string>
+  <string name="account_setup_options_mail_check_frequency_1hour">Gach uair a thìde</string>
+  <string name="account_setup_options_mail_check_frequency_2hour">Gach 2 uair a thìde</string>
+  <string name="account_setup_options_mail_check_frequency_3hour">Gach 3 uairean a thìde</string>
+  <string name="account_setup_options_mail_check_frequency_6hour">Gach 6 uairean a thìde</string>
+  <string name="account_setup_options_mail_check_frequency_12hour">Gach 12 uair a thìde</string>
+  <string name="account_setup_options_mail_check_frequency_24hour">Gach 24 uair a thìde</string>
+  <string name="push_poll_on_connect_label">Ceasnaich nuair a nithear ceangal airson push</string>
+  <string name="account_setup_options_enable_push_label">Cuir post push an comas airson a’ chunntais seo</string>
+  <string name="account_setup_options_enable_push_summary">Ma bheir am frithealaiche agad taic dha, nochdaidh teachdaireachdan ùra sa bhad. Faodaidh buaidh mhòr (math no dona) a bhith aig an roghainn seo air dèanadas.</string>
+  <string name="idle_refresh_period_label">Ath-nuadhaich an ceangal IDLE</string>
+  <string name="idle_refresh_period_1min">Gach mionaid</string>
+  <string name="idle_refresh_period_2min">Gach 2 mhionaid</string>
+  <string name="idle_refresh_period_3min">Gach 3 mionaidean</string>
+  <string name="idle_refresh_period_6min">Gach 6 mionaidean</string>
+  <string name="idle_refresh_period_12min">Gach 12 mhionaid</string>
+  <string name="idle_refresh_period_24min">Gach 24 mionaid</string>
+  <string name="idle_refresh_period_36min">Gach 36 mionaid</string>
+  <string name="idle_refresh_period_48min">Gach 48 mionaid</string>
+  <string name="idle_refresh_period_60min">Gach uair a thìde</string>
+  <string name="account_setup_options_notify_label">Innis dhomh nuair a ruigeas post</string>
+  <string name="account_setup_options_notify_sync_label">Innis dhomh nuair a thathar a’ toirt sùil airson post</string>
+  <string name="account_setup_options_mail_display_count_label">Co mheud teachdaireachd a thèid a shealltainn</string>
+  <string name="account_setup_options_mail_display_count_10">10 teachdaireachdan</string>
+  <string name="account_setup_options_mail_display_count_25">25 teachdaireachd</string>
+  <string name="account_setup_options_mail_display_count_50">50 teachdaireachd</string>
+  <string name="account_setup_options_mail_display_count_100">100 teachdaireachd</string>
+  <string name="account_setup_options_mail_display_count_250">250 teachdaireachd</string>
+  <string name="account_setup_options_mail_display_count_500">500 teachdaireachd</string>
+  <string name="account_setup_options_mail_display_count_1000">1,000 teachdaireachd</string>
+  <string name="account_setup_options_mail_display_count_2500">2.500 teachdaireachd</string>
+  <string name="account_setup_options_mail_display_count_5000">5,000 teachdaireachd</string>
+  <string name="account_setup_options_mail_display_count_10000">10,000 teachdaireachd</string>
+  <string name="account_setup_options_mail_display_count_all">na h-uile teachdaireachd</string>
+  <string name="move_copy_cannot_copy_unsynced_message">Chan urrainn dhut lethbhreac a dhèanamh de theachdaireachd, no a ghluasad, mur eil e sioncronaichte leis an fhrithealaiche</string>
+  <string name="account_setup_failed_dlg_title">Cha b’ urrainn dhuinn an suidheachadh a choileanadh</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Tha an t-ainm-cleachdaiche no facal-faire cearr.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Nochd am frithealaiche teisteanas SSL nach eil dligheachd. Tachraidh seo uaireannan ma chaidh am frithealaiche a dhroch-rèiteachadh. Air neo dh’fhaoidte gu bheil cuideigin airson briseadh a-steach ort no air frithealaiche a’ phuist agad. Mur eil thu cinnteach dè tha a’ tachairt, thoir gnogag air “Diùlt” is cuir fios gu na daoine a stiùireas frithealaiche a’ phuist agad.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Chan urrainn dhuinn ceangal ris an fhrithealaiche.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_edit_details_action">Deasaich am fiosrachadh</string>
+  <string name="account_setup_failed_dlg_continue_action">Lean air adhart</string>
+  <string name="account_settings_push_advanced_title">Adhartach</string>
+  <string name="account_settings_title_fmt">Roghainnean a’ chunntais</string>
+  <string name="account_settings_default_label">An cunntas bunaiteach</string>
+  <string name="account_settings_default_summary">Cuir post on chunntas seo a ghnàth</string>
+  <string name="account_settings_notify_label">Brathan mu phost ùr</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Pasganan a chuireas brath</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Na h-uile</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Pasganan na 1ad ìre a-mhàin</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Pasganan na 1ad is na 2na ìre</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Gach aon ach pasganan na 2na ìre</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Chan eil gin</string>
+  <string name="account_settings_notify_sync_label">Brathan sioncronachaidh</string>
+  <string name="account_settings_email_label">An seòladh puist-d agad</string>
+  <string name="account_settings_notify_summary">Innis dhomh air bàr na staide nuair a ruigeas post</string>
+  <string name="account_settings_notify_sync_summary">Innis dhomh air bàr na staide nuair a thathar a’ toirt sùil airson post </string>
+  <string name="account_settings_notify_self_label">Gabh a-staigh post a tha a’ dol a-mach</string>
+  <string name="account_settings_notify_self_summary">Seall brath nuair a bhios mi air teachdaireachd a chur</string>
+  <string name="account_notify_contacts_mail_only_label">Luchd-aithne a-mhàin</string>
+  <string name="account_notify_contacts_mail_only_summary">Na seall brathan ach ma thig teachdaireachd o neach-aithne agam</string>
+  <string name="account_settings_notification_opens_unread_label">Fosglaidh brath na teachdaireachdan gun leughadh</string>
+  <string name="account_settings_notification_opens_unread_summary">Lorgaidh seo teachdaireachdan gun leughadh nuair a dh’fhosglar brath</string>
+  <string name="account_settings_mark_message_as_read_on_view_label">Comharraich gun deach a leughadh nuair a dh’fhosglas mi e</string>
+  <string name="account_settings_mark_message_as_read_on_view_summary">Comharraich gun deach an teachdaireachd a leughadh nuair a dh’fhosglas mi e a choimhead air</string>
+  <string name="account_settings_show_pictures_label">Seall dealbhan an-còmhnaidh</string>
+  <string name="account_settings_show_pictures_never">Chan eil</string>
+  <string name="account_settings_show_pictures_only_from_contacts">On luchd-aithne</string>
+  <string name="account_settings_show_pictures_always">O dhuine sam bith</string>
+  <string name="account_settings_composition">A’ cur a’ phuist</string>
+  <string name="account_settings_default_quoted_text_shown_label">Dèan luaidh air an teachdaireachd ann am freagairt</string>
+  <string name="account_settings_default_quoted_text_shown_summary">Gabh a-staigh an teachdaireachd thùsail ’nad theachdaireachd.</string>
+  <string name="account_settings_reply_after_quote_label">Freagair an dèidh na luaidhe</string>
+  <string name="account_settings_reply_after_quote_summary">Nochdaidh an teachdaireachd thùsail os cionn do fhreagairt.</string>
+  <string name="account_settings_strip_signature_label">Spìon earr-sgrìobhadh sam bith às ann am freagairt</string>
+  <string name="account_settings_strip_signature_summary">Thèid earr-sgrìobhaidhean a thoirt air falbh o theachdaireachd air a bheilear a’ dèanamh luaidh</string>
+  <string name="account_settings_message_format_label">Fòrmat na teachdaireachd</string>
+  <string name="account_settings_message_format_text">Teacsa lom (thoir air falbh dealbhan is fòrmatadh)</string>
+  <string name="account_settings_message_format_html">HTMP (glèidh na dealbhan is am fòrmatadh)</string>
+  <string name="account_settings_message_format_auto">Gu fèin-obrachail</string>
+  <string name="account_settings_always_show_cc_bcc_label">Seall an Cc/Bcc an-còmhnaidh</string>
+  <string name="account_settings_message_read_receipt_label">Cuidhteas-leughaidh</string>
+  <string name="account_settings_message_read_receipt_summary">Iarr cuidhteas-leughaidh an-còmhnaidh</string>
+  <string name="account_settings_quote_style_label">Stoidhle nan luaidhean ann am freagairtean</string>
+  <string name="account_settings_quote_style_prefix">Le ro-leasachan (mar Gmail)</string>
+  <string name="account_settings_quote_style_header">Bann-cinn (mar Outlook)</string>
+  <string name="account_settings_general_title">Roghainnean coitcheann</string>
+  <string name="account_settings_reading_mail">A’ leughadh post</string>
+  <string name="account_settings_sync">A’ faighinn post</string>
+  <string name="account_settings_folders">Pasganan</string>
+  <string name="account_settings_quote_prefix_label">Ro-leasachan teacsa nan luaidh</string>
+  <string name="account_settings_crypto">Crioptografachd</string>
+  <string name="account_settings_crypto_app">Aplacaid OpenPGP</string>
+  <string name="account_settings_crypto_key">An iuchair agam</string>
+  <string name="account_settings_no_openpgp_provider_configured">Cha deach aplacaid OpenPGP a rèiteachadh</string>
+  <string name="account_settings_mail_check_frequency_label">Dè cho tric ’s a dh’iarras sinn am post?</string>
+  <string name="account_settings_storage_title">Stòras</string>
+  <string name="account_settings_color_label">Dath a’ chunntais</string>
+  <string name="account_settings_color_summary">Dath cuideam a’ chunntais seo a chithear ann am pasganan is liosta nan cunntas</string>
+  <string name="account_settings_led_color_label">Dath LED nam brath</string>
+  <string name="account_settings_led_color_summary">An dath a bhios air LED an uidheim agad dhan chunntas seo</string>
+  <string name="account_settings_mail_display_count_label">Meud a’ phasgain ionadail</string>
+  <string name="account_settings_autodownload_message_size_label">Faigh teachdaireachdan suas ri</string>
+  <string name="account_settings_autodownload_message_size_1">1KB</string>
+  <string name="account_settings_autodownload_message_size_2">2KB</string>
+  <string name="account_settings_autodownload_message_size_4">4KB</string>
+  <string name="account_settings_autodownload_message_size_8">8KB</string>
+  <string name="account_settings_autodownload_message_size_16">16KB</string>
+  <string name="account_settings_autodownload_message_size_32">32KB</string>
+  <string name="account_settings_autodownload_message_size_64">64KB</string>
+  <string name="account_settings_autodownload_message_size_128">128KB</string>
+  <string name="account_settings_autodownload_message_size_256">256KB</string>
+  <string name="account_settings_autodownload_message_size_512">512KB</string>
+  <string name="account_settings_autodownload_message_size_1024">1MB</string>
+  <string name="account_settings_autodownload_message_size_2048">2MB</string>
+  <string name="account_settings_autodownload_message_size_5120">5MB</string>
+  <string name="account_settings_autodownload_message_size_10240">10MB</string>
+  <string name="account_settings_autodownload_message_size_any">meud sam bith (gun chrìoch)</string>
+  <string name="account_settings_message_age_label">Sioncronaich teachdaireachdan</string>
+  <string name="account_settings_message_age_any">o àm sam bith (gun chrìoch)</string>
+  <string name="account_settings_message_age_0">on diugh</string>
+  <string name="account_settings_message_age_1">on dè</string>
+  <string name="account_settings_message_age_2">on bhòin-dè</string>
+  <string name="account_settings_message_age_7">on t-seachdain seo chaidh</string>
+  <string name="account_settings_message_age_14">on chola-deug seo chaidh</string>
+  <string name="account_settings_message_age_21">o na 3 seachdainean seo chaidh</string>
+  <string name="account_settings_message_age_1_month">on mhìos seo chaidh</string>
+  <string name="account_settings_message_age_2_months">on 2 mhìos seo chaidh</string>
+  <string name="account_settings_message_age_3_months">o na 3 mìosan seo chaidh</string>
+  <string name="account_settings_message_age_6_months">on na 6 mìosan seo chaidh</string>
+  <string name="account_settings_message_age_1_year">on uraidh</string>
+  <string name="account_settings_folder_display_mode_label">Na pasganan a thèid a shealltainn</string>
+  <string name="account_settings_folder_display_mode_all">Na h-uile</string>
+  <string name="account_settings_folder_display_mode_first_class">Pasganan na 1ad ìre a-mhàin</string>
+  <string name="account_settings_folder_display_mode_first_and_second_class">Pasganan na 1ad is na 2na ìre</string>
+  <string name="account_settings_folder_display_mode_not_second_class">Gach aon ach pasganan na 2na ìre</string>
+  <string name="account_settings_folder_sync_mode_label">Na pasganan a thèid a cheasnachadh</string>
+  <string name="account_settings_folder_sync_mode_all">Na h-uile</string>
+  <string name="account_settings_folder_sync_mode_first_class">Pasganan na 1ad ìre a-mhàin</string>
+  <string name="account_settings_folder_sync_mode_first_and_second_class">Pasganan na 1ad is na 2na ìre</string>
+  <string name="account_settings_folder_sync_mode_not_second_class">Gach aon ach pasganan na 2na ìre</string>
+  <string name="account_settings_folder_sync_mode_none">Chan eil gin</string>
+  <string name="account_settings_folder_push_mode_label">Na pasganan push</string>
+  <string name="account_settings_folder_push_mode_all">Na h-uile</string>
+  <string name="account_settings_folder_push_mode_first_class">Pasganan na 1ad ìre a-mhàin</string>
+  <string name="account_settings_folder_push_mode_first_and_second_class">Pasganan na 1ad is na 2na ìre</string>
+  <string name="account_settings_folder_push_mode_not_second_class">Gach aon ach pasganan na 2na ìre</string>
+  <string name="account_settings_folder_push_mode_none">Chan eil gin</string>
+  <string name="account_settings_folder_target_mode_label">Pasganan dhan a chuirear lethbhreacan/dhan a ghluaisear</string>
+  <string name="account_settings_folder_target_mode_all">Na h-uile</string>
+  <string name="account_settings_folder_target_mode_first_class">Pasganan na 1ad ìre a-mhàin</string>
+  <string name="account_settings_folder_target_mode_first_and_second_class">Pasganan na 1ad is na 2na ìre</string>
+  <string name="account_settings_folder_target_mode_not_second_class">Gach aon ach pasganan na 2na ìre</string>
+  <string name="account_settings_sync_remote_deletetions_label">Sioncronaich sguabadh às air an fhrithealaiche</string>
+  <string name="account_settings_sync_remote_deletetions_summary">Thoir air falbh teachdaireachdan a chaidh a sguabadh às an fhrithealaiche</string>
+  <string name="folder_settings_title">Roghainnean a’ phasgain</string>
+  <string name="folder_settings_in_top_group_label">Seall aig a’ bharr sa bhuidheann</string>
+  <string name="folder_settings_in_top_group_summary">Seall faisg air barr liosta nam pasganan</string>
+  <string name="folder_settings_folder_display_mode_label">Ìre taisbeanadh a’ phasgain</string>
+  <string name="folder_settings_folder_display_mode_normal">Gun chlas</string>
+  <string name="folder_settings_folder_display_mode_first_class">1ad ìre</string>
+  <string name="folder_settings_folder_display_mode_second_class">2na ìre</string>
+  <string name="folder_settings_folder_sync_mode_normal">Chan eil gin</string>
+  <string name="folder_settings_folder_sync_mode_first_class">1ad ìre</string>
+  <string name="folder_settings_folder_sync_mode_second_class">2na ìre</string>
+  <string name="folder_settings_folder_sync_mode_inherited">Co-ionnann ris an ìre taisbeanaidh</string>
+  <string name="folder_settings_folder_push_mode_label">Ìre push a’ phasgain</string>
+  <string name="folder_settings_folder_push_mode_normal">Gun chlas</string>
+  <string name="folder_settings_folder_push_mode_first_class">1ad ìre</string>
+  <string name="folder_settings_folder_push_mode_second_class">2na ìre</string>
+  <string name="folder_settings_folder_push_mode_inherited">Co-ionnann ris an ìre sioncronachaidh</string>
+  <string name="folder_settings_folder_notify_mode_label">Ìre brathan a’ phasgain</string>
+  <string name="folder_settings_folder_notify_mode_normal">Gun chlas</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1ad ìre</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2na ìre</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Co-ionnann ris an ìre push</string>
+  <string name="account_settings_incoming_label">Am frithealaiche a-steach</string>
+  <string name="account_settings_incoming_summary">Rèitich frithealaiche a’ phuist a-steach</string>
+  <string name="account_settings_outgoing_label">Am frithealaiche a-mach</string>
+  <string name="account_settings_outgoing_summary">Rèitich frithealaiche a’ phuist a-mach (SMTP)</string>
+  <string name="account_settings_description_label">Ainm a’ chunntais</string>
+  <string name="account_settings_name_label">D’ ainm</string>
+  <string name="notifications_title">Brathan</string>
+  <string name="account_settings_vibrate_enable">Crith</string>
+  <string name="account_settings_vibrate_summary">Cuir air chrith nuair a ruigeas post</string>
+  <string name="account_settings_vibrate_pattern_label">Pàtranan crith</string>
+  <string name="account_settings_vibrate_pattern_default">bun-roghainn</string>
+  <string name="account_settings_vibrate_pattern_1">pàtran 1</string>
+  <string name="account_settings_vibrate_pattern_2">pàtran 2</string>
+  <string name="account_settings_vibrate_pattern_3">pàtran 3</string>
+  <string name="account_settings_vibrate_pattern_4">pàtran 4</string>
+  <string name="account_settings_vibrate_pattern_5">pàtran 5</string>
+  <string name="account_settings_vibrate_times">Crith a-rithist</string>
+  <string name="account_settings_ringtone">Seirm a’ phuist ùir</string>
+  <string name="account_settings_led_label">Boillsg an LED</string>
+  <string name="account_settings_led_summary">Boillsg an LED nuair a ruigeas post</string>
+  <string name="account_settings_composition_title">Roghainnean sgrìobhadh theachdaireachdan</string>
+  <string name="account_settings_composition_label">Bun-roghainnean sgrìobhaidh</string>
+  <string name="account_settings_composition_summary">Suidhich bun-roghainnean “O”, “Bcc” agus an earr-sgrìobhaidh</string>
+  <string name="account_settings_identities_label">Stiùirich na IDs</string>
+  <string name="account_settings_identities_summary">Suidhich seòlaidhean “O” is earr-sgrìobhaidhean eadar-dhealaichte</string>
+  <string name="manage_identities_title">Stiùirich na IDs</string>
+  <string name="manage_identities_context_menu_title">Stiùirich an ID</string>
+  <string name="edit_identity_title">Deasaich an ID</string>
+  <string name="new_identity_action">ID ùr</string>
+  <string name="account_settings_always_bcc_label">Cuir Bcc de gach teachdaireachd gu</string>
+  <string name="manage_identities_edit_action">Deasaich</string>
+  <string name="manage_identities_move_up_action">Gluais suas</string>
+  <string name="manage_identities_move_down_action">Gluais sìos</string>
+  <string name="manage_identities_move_top_action">Gluais suas / dèan a’ bhun-roghainn dheth</string>
+  <string name="manage_identities_remove_action">Thoir air falbh</string>
+  <string name="edit_identity_description_label">Tuairisgeul na ID</string>
+  <string name="edit_identity_description_hint">(Roghainneil)</string>
+  <string name="edit_identity_name_label">D’ ainm</string>
+  <string name="edit_identity_name_hint">(Roghainneil)</string>
+  <string name="edit_identity_email_label">Seòladh puist-d</string>
+  <string name="edit_identity_email_hint">(Riatanach)</string>
+  <string name="edit_identity_reply_to_label">An seòladh dhan chuirear freagairtean</string>
+  <string name="edit_identity_reply_to_hint">(Roghainneil)</string>
+  <string name="edit_identity_signature_label">An t-earr-sgrìobhadh</string>
+  <string name="edit_identity_signature_hint">(Roghainneil)</string>
+  <string name="account_settings_signature_use_label">Cleachd earr-sgrìobhadh</string>
+  <string name="account_settings_signature_label">An t-earr-sgrìobhadh</string>
+  <string name="default_identity_description">An ID tòiseachail</string>
+  <string name="choose_identity_title">Tagh ID</string>
+  <string name="send_as">Cuir mar</string>
+  <string name="no_removable_identity">Chan urrainn dhut an aon ID agad a thoirt air falbh</string>
+  <string name="identity_has_no_email">Chan urrainn dhut ID a chleachdadh gun seòladh puist-d</string>
+  <string name="sort_earliest_first">Na teachdaireachdan as sine an toiseach</string>
+  <string name="sort_latest_first">Na teachdaireachdan as ùire an toiseach</string>
+  <string name="sort_subject_alpha">Aibidileach a-rèir a’ chuspair</string>
+  <string name="sort_subject_re_alpha">Aibidileach contrarra a-rèir a’ chuspair</string>
+  <string name="sort_sender_alpha">Aibidileach a-rèir an t-seòladair</string>
+  <string name="sort_sender_re_alpha">Aibidileach contrarra a-rèir an t-seòladair</string>
+  <string name="sort_flagged_first">Teachdaireachdan le rionnag an toiseach</string>
+  <string name="sort_flagged_last">Teachdaireachdan gun rionnag an toiseach</string>
+  <string name="sort_unread_first">Teachdaireachdan gun leughadh an toiseach</string>
+  <string name="sort_unread_last">Teachdaireachdan a chaidh an leughadh an toiseach</string>
+  <string name="sort_attach_first">Teachdaireachdan le ceanglachain an toiseach</string>
+  <string name="sort_unattached_first">Teachdaireachdan gun cheanglachain an toiseach</string>
+  <string name="sort_by">Seòrsaich a-rèir…</string>
+  <string name="sort_by_date">Ceann-là</string>
+  <string name="sort_by_arrival">Ruigsinn</string>
+  <string name="sort_by_subject">Cuspair</string>
+  <string name="sort_by_sender">Seòladair</string>
+  <string name="sort_by_flag">Rionnag</string>
+  <string name="sort_by_unread">Air a leughadh/gun leughadh</string>
+  <string name="sort_by_attach">Ceanglachain</string>
+  <string name="account_delete_dlg_title">Thoir an cunntas air falbh</string>
+  <string name="account_recreate_dlg_title">Ath-chruthaich an cunntas</string>
+  <string name="account_clear_dlg_title">Falamhaich an cunntas</string>
+  <string name="provider_note_auonejp">Dèan cinnteach gun cuir thu an comas IMAP no POP3 air duilleag roghainnean post au one.</string>
+  <string name="provider_note_naver">Dèan cinnteach gun cuir thu an comas IMAP no POP3 air duilleag roghainnean post Naver.</string>
+  <string name="provider_note_hanmail">Dèan cinnteach gun cuir thu an comas IMAP no POP3 air duilleag roghainnean post Hanmail(Daum).</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_title">Teisteanas neo-aithnichte</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_accept">Gach ris an iuchair</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_reject">Diùlt an iuchair</string>
+  <string name="message_list_help_key">Del (no D) - Sguab às\nR - Freagair\nA - Freagair na h-uile\nC - Sgrìobh\nF - Sìn air adhart\nM - Gluais\nV - Tasglannaich\nY - Lethbhreac\nZ - Comharraich air/gun leughadh\nG - Rionnag\nO - Seòrsa an t-seòrsachaidh\nI - Òrdugh an t-seòrsachaidh\nQ - Till gu na pasganan\nS - Tagh/dì-thagh\nJ no P - An teachdaireachd roimhpe\nK no N - An ath-theachdaireachd</string>
+  <string name="folder_list_help_key">1 - Na seall ach pasganan na 1ad ìre\n2 - Seall pasganan na 1ad is na 2na ìre\n3 - Seall na h-uile ach pasganan na 2na ìre\n4 - Seall a h-uile pasgan\nQ - Till gu na cunntasan\nS - Deasaich roghainnean a’ chunntais</string>
+  <string name="folder_list_display_mode_label">Seall pasganan…</string>
+  <string name="folder_list_display_mode_all">Na h-uile pasgan</string>
+  <string name="folder_list_display_mode_first_class">Pasganan na 1ad ìre</string>
+  <string name="folder_list_display_mode_first_and_second_class">Pasganan na 1ad ⁊ na 2na ìre</string>
+  <string name="folder_list_display_mode_not_second_class">Falaich pasganan na 2na ìre</string>
+  <string name="account_settings_signature__location_label">Ionad an earr-sgrìobhaidh</string>
+  <string name="account_settings_signature__location_before_quoted_text">Ron luaidh air an teachdaireachd</string>
+  <string name="account_settings_signature__location_after_quoted_text">An dèidh luaidh air an teachdaireachd</string>
+  <string name="setting_theme_global">Cleachd ùrlar na h-aplacaid</string>
+  <string name="setting_theme_dark">Dorcha</string>
+  <string name="setting_theme_light">Soilleir</string>
+  <string name="display_preferences">Taisbeanadh</string>
+  <string name="global_preferences">Uile-choitcheann</string>
+  <string name="debug_preferences">Dì-bhugachadh</string>
+  <string name="privacy_preferences">Prìobhaideachd</string>
+  <string name="network_preferences">Lìonra</string>
+  <string name="interaction_preferences">Eadar-ghabhail</string>
+  <string name="accountlist_preferences">Liosta nan cunntasan</string>
+  <string name="messagelist_preferences">Liosta nan teachdaireachdan</string>
+  <string name="messageview_preferences">Teachdaireachdan</string>
+  <string name="folderlist_preferences">Liosta nam pasganan</string>
+  <string name="settings_theme_label">Ùrlar</string>
+  <string name="settings_message_theme_label">Ùrlar sealladh nan teachdaireachdan</string>
+  <string name="settings_compose_theme_label">Ùrlar an sgrìobhaidh</string>
+  <string name="settings_message_theme_selection_label">Ùrlair socraichte airson teachdaireachdan</string>
+  <string name="settings_message_theme_selection_summary_off">Tagh ùrlar airson na teachdaireachd is tu a’ coimhead air</string>
+  <string name="settings_message_theme_selection_summary_on">Cleachd ùrlair socraichte airson teachdaireachdan</string>
+  <string name="background_ops_label">Sioncronachadh sa chùlaibh</string>
+  <string name="background_ops_never">Chan ann idir</string>
+  <string name="background_ops_always">An-còmhnaidh</string>
+  <string name="background_ops_auto_sync_only">Ma tha cromag ri “Sioncronachadh fèin-obrachail”</string>
+  <string name="batch_select_all">Tagh na h-uile</string>
+  <string name="account_setup_push_limit_label">An àireamh as motha a phasganan air an doirear sùil le push</string>
+  <string name="account_setup_push_limit_10">10 pasganan</string>
+  <string name="account_setup_push_limit_25">25 pasgan</string>
+  <string name="account_setup_push_limit_50">50 pasgan</string>
+  <string name="account_setup_push_limit_100">100 pasgan</string>
+  <string name="account_setup_push_limit_250">250 pasgan</string>
+  <string name="account_setup_push_limit_500">500 pasgan</string>
+  <string name="account_setup_push_limit_1000">1,000 pasgan</string>
+  <string name="animations_title">Beòthachadh</string>
+  <string name="animations_summary">Cleachd èifeachdan lèirsinneach leòmach</string>
+  <string name="gestures_title">Gluasadan</string>
+  <string name="gestures_summary">Cuir an comas stiùireadh slighe ghluasadan</string>
+  <string name="volume_navigation_title">Seòladaireachd slighe putanan àirde na fuaime</string>
+  <string name="volume_navigation_message">Ann an seallaidhean theachdaireachdan</string>
+  <string name="volume_navigation_list">Ann an seallaidhean liostaichean</string>
+  <string name="start_integrated_inbox_title">Tòisich sa bhogsa a-steach cho-aonaichte</string>
+  <string name="measure_accounts_title">Seall meud a’ chunntais</string>
+  <string name="measure_accounts_summary">Cuir dheth airson taisbeanadh nas luaithe</string>
+  <string name="count_search_title">Cunnt toraidhean an luirg</string>
+  <string name="count_search_summary">Cuir dheth airson taisbeanadh nas luaithe</string>
+  <string name="hide_special_accounts_title">Falaich cunntasan sònraichte</string>
+  <string name="hide_special_accounts_summary">Falaich am bogsa a-steach co-aonaichte ’s gach cunntas theachdaireachdan</string>
+  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
+  <string name="flagged_modifier">- le rionnag</string>
+  <string name="unread_modifier">- gun leughadh</string>
+  <string name="search_all_messages_title">Na h-uile teachdaireachd</string>
+  <string name="search_all_messages_detail">Na h-uile teachdaireachd ann am pasgan so-luirg</string>
+  <string name="integrated_inbox_title">Am bogsa a-steach co-aonaichte</string>
+  <string name="integrated_inbox_detail">Na h-uile teachdaireachd ann am pasganan co-aonaichte</string>
+  <string name="tap_hint">Thoir gnogag air a’ chearcall no an rionnag airson teachdaireachdan gun leughadh no feadhainn le rionnag</string>
+  <string name="folder_settings_include_in_integrated_inbox_label">Co-aonaich</string>
+  <string name="folder_settings_include_in_integrated_inbox_summary">Tha gach teachdaireachd ’ga shealltainn sa bhogsa a-steach cho-aonaichte</string>
+  <string name="account_settings_searchable_label">Na pasganan san dèanar lorg</string>
+  <string name="account_settings_searchable_all">Na h-uile</string>
+  <string name="account_settings_searchable_displayable">So-thaisbeanadh</string>
+  <string name="account_settings_searchable_none">Chan eil gin</string>
+  <string name="font_size_settings_title">Meud a’ chrutha-chlò</string>
+  <string name="font_size_settings_description">Rèitich meud a’ chrutha-chlò</string>
+  <string name="font_size_account_list">Liosta nan cunntasan</string>
+  <string name="font_size_account_name">Ainm a’ chunntais</string>
+  <string name="font_size_account_description">Tuairisgeul a’ chunntais</string>
+  <string name="font_size_folder_list">Liosta nam pasganan</string>
+  <string name="font_size_folder_name">Ainm a’ phasgain</string>
+  <string name="font_size_folder_status">Staid a’ phasgain</string>
+  <string name="font_size_message_list">Liosta nan teachdaireachdan</string>
+  <string name="font_size_message_list_subject">Cuspair</string>
+  <string name="font_size_message_list_sender">Seòladair</string>
+  <string name="font_size_message_list_date">Ceann-là</string>
+  <string name="font_size_message_list_preview">Ro-shealladh</string>
+  <string name="font_size_message_view">Teachdaireachdan</string>
+  <string name="font_size_message_view_sender">Seòladair</string>
+  <string name="font_size_message_view_to">Gu</string>
+  <string name="font_size_message_view_cc">Cc</string>
+  <string name="font_size_message_view_bcc">Bcc</string>
+  <string name="font_size_message_view_additional_headers">Bannan-cinn a bharrachd</string>
+  <string name="font_size_message_view_subject">Cuspair</string>
+  <string name="font_size_message_view_date">Ceann-là ’s àm</string>
+  <string name="font_size_message_view_content">Bodhaig na teachdaireachd</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
+  <string name="font_size_message_compose">Sgrìobhadh theachdaireachdan</string>
+  <string name="font_size_message_compose_input">Raointean ion-chur teacsa</string>
+  <string name="font_size_default">Bun-roghainn</string>
+  <string name="font_size_tiniest">As lugha</string>
+  <string name="font_size_tiny">Beag bìodach</string>
+  <string name="font_size_smaller">Nas lugha</string>
+  <string name="font_size_small">Beag</string>
+  <string name="font_size_medium">Meadhanach</string>
+  <string name="font_size_large">Mòr</string>
+  <string name="font_size_larger">Nas motha</string>
+  <string name="miscellaneous_preferences">An corr</string>
+  <string name="error_activity_not_found">Cha deach aplacaid iomchaidh a lorg dhan ghnìomh seo.</string>
+  <string name="send_failed_reason">Dh’fhàillig a chur: %s</string>
+  <string name="save_or_discard_draft_message_dlg_title">A bheil thu airson dreachd na teachdaireachd a shàbhaladh?</string>
+  <string name="save_or_discard_draft_message_instructions_fmt">A bheil thu airson an teachdaireachd seo a shàbhaladh no a thilgeil air falbh?</string>
+  <string name="confirm_discard_draft_message_title">A bheil thu airson an teachdaireachd seo a thilgeil air falbh?</string>
+  <string name="confirm_discard_draft_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a thilgeil air falbh?</string>
+  <string name="select_text_now">Tagh teacsa airson lethbhreac a dhèanamh dheth.</string>
+  <string name="dialog_confirm_delete_title">Dearbh a sguabadh às</string>
+  <string name="dialog_confirm_delete_message">A bheil thu cinnteach gu bheil thu airson an teachdaireachd seo a sguabadh às?</string>
+  <string name="dialog_confirm_delete_confirm_button">Tha</string>
+  <string name="dialog_confirm_delete_cancel_button">Chan eil</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Comharraich gun deach gach teachdaireachd a leughadh</string>
+  <string name="dialog_confirm_mark_all_as_read_message">A bheil thu airson comharradh gun deach na teachdaireachdan uile seo a leughadh?</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Tha</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Chan eil</string>
+  <string name="dialog_confirm_spam_title">Dearbh a ghluasad do phasgan an spama</string>
+  <string name="dialog_confirm_spam_confirm_button">Tha</string>
+  <string name="dialog_confirm_spam_cancel_button">Chan eil</string>
+  <string name="dialog_attachment_progress_title">A’ luchdadh a-nuas a’ cheanglachain</string>
+  <string name="debug_logging_enabled">Tha an logachadh dì-bhugachaidh an comas</string>
+  <string name="messagelist_sent_to_me_sigil">»</string>
+  <string name="messagelist_sent_cc_me_sigil">›</string>
+  <string name="import_export_action">Ion- ⁊ às-phortadh nan roghainnean</string>
+  <string name="settings_export_account">Às-phortaich roghainnean a’ chunntais</string>
+  <string name="settings_export_all">Às-phortaich na roghainnean is cunntasan</string>
+  <string name="settings_import_dialog_title">Ion-phortaich</string>
+  <string name="settings_export_dialog_title">Às-phortaich</string>
+  <string name="settings_import">Ion-phortaich na roghainnean</string>
+  <string name="settings_import_selection">Tagh na thèid ion-phortadh</string>
+  <string name="settings_import_global_settings">Roghainnean uile-choitcheann</string>
+  <string name="settings_exporting">Ag às-phortadh nan roghainnean…</string>
+  <string name="settings_importing">Ag ion-phortadh nan roghainnean…</string>
+  <string name="settings_import_scanning_file">A’ sganadh an fhaidhle…</string>
+  <string name="settings_export_success">Chaidh na roghainnean a shàbhaladh ann an: <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">Chaidh na roghainnean às-phortadh</string>
+  <string name="settings_import_global_settings_success">Chaidh na roghainnean uile-choitcheann ion-phortadh o: <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_success">Chaidh <xliff:g id="accounts">%s</xliff:g> ion-phortadh o: <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_failure">Cha b’ urrainn dhuinn na roghainnean às-phortadh</string>
+  <string name="settings_import_failure">Cha b’ urrainn dhuinn roghainn sam bith ion-phortadh o: <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_header">Chaidh às-phortadh</string>
+  <string name="settings_export_failed_header">Dh’fhàillig an t-às-phortadh</string>
+  <string name="settings_import_success_header">Chaidh ion-phortadh</string>
+  <string name="settings_import_failed_header">Dh’fhàillig an t-ion-phortadh</string>
+  <string name="settings_import_activate_account_header">Cuir an cunntas an gnìomh</string>
+  <string name="settings_import_activate_account_intro">Mus urrainn dhut an cunntas “<xliff:g id="account">%s</xliff:g>” a chleachdadh, feumaidh tu <xliff:g id="server_passwords">%s</xliff:g> a thoirt seachad.</string>
+  <plurals name="settings_import_server_passwords">
+    <item quantity="one">faclan-faire an fhrithealaiche</item>
+    <item quantity="two">faclan-faire an fhrithealaiche</item>
+    <item quantity="few">faclan-faire an fhrithealaiche</item>
+    <item quantity="other">faclan-faire an fhrithealaiche</item>
+  </plurals>
+  <string name="settings_import_incoming_server">Am frithealaiche a-steach (<xliff:g id="hostname">%s</xliff:g>):</string>
+  <string name="settings_import_outgoing_server">Am frithealaiche a-mach (<xliff:g id="hostname">%s</xliff:g>):</string>
+  <plurals name="settings_import_setting_passwords">
+    <item quantity="one">Faclan-faire nan roghainnean...</item>
+    <item quantity="two">Faclan-faire nan roghainnean...</item>
+    <item quantity="few">Faclan-faire nan roghainnean...</item>
+    <item quantity="other">Faclan-faire nan roghainnean…</item>
+  </plurals>
+  <string name="settings_import_use_incoming_server_password">Cleachd facal-faire an fhrithealaiche a-steach</string>
+  <string name="activate_account_action">Cuir an gnìomh</string>
+  <string name="account_unavailable">Cha ruig sinn an cunntas “<xliff:g id="account">%s</xliff:g>”, thoir sùil air an stòras</string>
+  <string name="settings_attachment_default_path">Sàbhail na ceanglachain an-seo…</string>
+  <string name="attachment_save_title">Sàbhail an ceanglachan</string>
+  <string name="attachment_save_desc">Cha deach brabhsair fhaidhlichean a lorg. Càit an sàbhail sinn an ceanglachan seo dhut?</string>
+  <string name="manage_accounts_move_up_action">Gluais suas</string>
+  <string name="manage_accounts_move_down_action">Gluais sìos</string>
+  <string name="manage_accounts_moving_message">A’ gluasad a’ chunntais…</string>
+  <string name="unread_widget_select_account">Seall na tha gun leughadh ann an…</string>
+  <string name="import_dialog_error_title">Aplacaid manaidsear nam faidhle a dhìth</string>
+  <string name="close">Dùin</string>
+  <string name="webview_empty_message">Gun teacsa</string>
+  <string name="webview_contextmenu_link_view_action">Fosgail an ceangal</string>
+  <string name="webview_contextmenu_link_share_action">Co-roinn an ceangal</string>
+  <string name="webview_contextmenu_link_copy_action">Cuir lethbhreac dhen cheangal air an stòr-bhòrd</string>
+  <string name="webview_contextmenu_link_clipboard_label">Ceangal</string>
+  <string name="webview_contextmenu_image_title">Dealbh</string>
+  <string name="webview_contextmenu_image_view_action">Seall an dealbh</string>
+  <string name="webview_contextmenu_image_save_action">Sàbhail an dealbh</string>
+  <string name="webview_contextmenu_image_download_action">Luchdaich a-nuas an dealbh</string>
+  <string name="webview_contextmenu_image_copy_action">Cuir lethbhreac de URL an deilbh air an stòr-bhòrd</string>
+  <string name="webview_contextmenu_image_clipboard_label">URL an deilbh</string>
+  <string name="webview_contextmenu_phone_call_action">Cuir fòn gun àireamh seo</string>
+  <string name="webview_contextmenu_phone_save_action">Sàbhail san luchd-aithne</string>
+  <string name="webview_contextmenu_phone_copy_action">Cuir lethbhreac dhen àireamh air an stòr-bhòrd</string>
+  <string name="webview_contextmenu_phone_clipboard_label">Àireamh fòn</string>
+  <string name="webview_contextmenu_email_send_action">Cuir am post</string>
+  <string name="webview_contextmenu_email_save_action">Sàbhail san luchd-aithne</string>
+  <string name="webview_contextmenu_email_copy_action">Cuir lethbhreac dhen t-seòladh air an stòr-bhòrd</string>
+  <string name="webview_contextmenu_email_clipboard_label">Seòladh puist-d</string>
+  <string name="image_saved_as">Chaidh an dealbh a shàbhaladh mar “<xliff:g id="filename">%s</xliff:g>”</string>
+  <string name="image_saving_failed">Dh’fhàillig sàbhaladh an deilbh.</string>
+  <string name="account_settings_remote_search_num_results_entries_all">Na h-uile</string>
+  <string name="account_settings_remote_search_num_results_entries_10">10</string>
+  <string name="account_settings_remote_search_num_results_entries_25">25</string>
+  <string name="account_settings_remote_search_num_results_entries_50">50</string>
+  <string name="account_settings_remote_search_num_results_entries_100">100</string>
+  <string name="account_settings_remote_search_num_results_entries_250">250</string>
+  <string name="account_settings_remote_search_num_results_entries_500">500</string>
+  <string name="account_settings_remote_search_num_results_entries_1000">1,000</string>
+  <string name="account_settings_remote_search_num_label">Crìoch lorg an fhrithealaiche</string>
+  <string name="account_settings_remote_search_num_summary">Sguiridh an lorg nuair a ruigeas e <xliff:g id="num_results">%s</xliff:g> toradh.</string>
+  <string name="remote_search_sending_query">A’ cur na ceiste dhan fhrithealaiche</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">A’ faighinn %d toradh</item>
+    <item quantity="two">A’ faighinn %d thoradh</item>
+    <item quantity="few">A’ faighinn %d toraidhean</item>
+    <item quantity="other">A’ faighinn %d toradh</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">A’ faighinn %1$d à %2$d toradh</item>
+    <item quantity="two">A’ faighinn %1$d à %2$d thoradh</item>
+    <item quantity="few">A’ faighinn %1$d à %2$d toraidhean</item>
+    <item quantity="other">A’ faighinn %1$d à %2$d toradh</item>
+  </plurals>
+  <string name="remote_search_error">Dh’fhàillig an lorg cèin</string>
+  <string name="account_settings_search">Lorg</string>
+  <string name="account_settings_remote_search_enabled">Cuir an comas lorg air an fhrithealaiche</string>
+  <string name="account_settings_remote_search_enabled_summary">Lorg teachdaireachdan air an fhrithealaiche a bharrachd air an fheadhainn air an uidheam agad</string>
+  <string name="action_remote_search">Lorg teachdaireachdan air an fhrithealaiche</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Grad-shlaighd a-nuas airson lorg air an fhrithealaiche…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Leig às airson lorg air an fhrithealaiche…</string>
+  <string name="remote_search_unavailable_no_network">Feumaidh tu ceangal ris an lìonra mus urrainn dhut lorg a dhèanamh air an fhrithealaiche.</string>
+  <string name="global_settings_background_as_unread_indicator_label">Atharraich an dath nuair a chaidh a leughadh</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Nochdaidh cùlaibh eile a sheallas gun deach an teachdaireachd a leughadh</string>
+  <string name="global_settings_threaded_view_label">Sealladh ann an snàithleanan</string>
+  <string name="global_settings_threaded_view_summary">Buidhnich teachdaireachdan ann an còmhraidhean</string>
+  <string name="upgrade_databases_title">Ag àrdachadh nan stòr-dàta</string>
+  <string name="upgrade_databases_unspecified">Ag àrdachadh nan stòr-dàta…</string>
+  <string name="upgrade_database_format">Ag àrdachadh nan stòr-dàta aig a’ chunntas “<xliff:g id="account">%s</xliff:g>”</string>
+  <string name="message_list_loading">’Ga luchdadh…</string>
+  <string name="global_settings_splitview_mode_label">Seall air sgrìn sgoilte</string>
+  <string name="global_settings_splitview_always">An-còmhnaidh</string>
+  <string name="global_settings_splitview_never">Chan ann idir</string>
+  <string name="global_settings_splitview_when_in_landscape">Nuair a tha e ’ga shealltainn marh dreach-tìre</string>
+  <string name="message_view_empty">Tagh teachdaireachd air an taobh chlì</string>
+  <string name="global_settings_show_contact_picture_label">Seall dealbhan an luchd-aithne</string>
+  <string name="global_settings_show_contact_picture_summary">Seall dealbhan an luchd-aithne ann an liosta nan teachdaireachd</string>
+  <string name="last_refresh_time_format">Chaidh <xliff:g id="formatted_time">%s</xliff:g> ath-nuadhachadh</string>
+  <string name="last_refresh_time_format_with_push">Chaidh <xliff:g id="time_with_preposition">%s</xliff:g> ath-nuadhachadh (Push an gnìomh)</string>
+  <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
+  <string name="mark_all_as_read">Comharraich gun deach iad uile a leughadh</string>
+  <string name="global_settings_colorize_missing_contact_pictures_label">Cuir dathan air dealbhan an luchd-aithne</string>
+  <string name="global_settings_colorize_missing_contact_pictures_summary">Cuir dathan air dealbhan an luchd-aithne a tha a dhìth</string>
+  <string name="global_settings_messageview_visible_refile_actions_title">Gnìomhan theachdaireachdan ri fhaicinn</string>
+  <string name="global_settings_messageview_visible_refile_actions_summary">Seall na gnìomhan a thagh thu ann an clàr-taice sealladh na teachdaireachd</string>
+  <string name="loading_attachment">A’ luchdadh a’ cheanglachain…</string>
+  <string name="fetching_attachment_dialog_title_send">A’ cur na teachdaireachd</string>
+  <string name="fetching_attachment_dialog_title_save">A’ sàbhaladh an dreachd</string>
+  <string name="fetching_attachment_dialog_message">A’ faighinn a’ cheanglachain…</string>
+  <string name="auth_external_error">Cha b’ urrainn dhuinn dearbhadh a dhèanamh. Chan eil am frithealaiche a’ leigeil ris a bheil e comasach air SASL EXTERNAL. Dh’fhaoidte gu bheil duilgheadas le teisteanas a’ chliant (ro aosta, ùghdarras neo-aithnichte) no duilgheadas eile leis an rèiteachadh.</string>
+  <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Cleachd teisteanas a’ chliant</string>
+  <string name="client_certificate_spinner_empty">Chan eil teisteanas aig a’ chliant</string>
+  <string name="client_certificate_spinner_delete">Thoir air falbh taghadh teisteanas a’ chliant</string>
+  <string name="client_certificate_retrieval_failure">Cha b’ urrainn dhuinn teisteanas a’ chliant fhaighinn dhan alias “<xliff:g id="alias">%s</xliff:g>”</string>
+  <string name="client_certificate_advanced_options">Roghainnean adhartach</string>
+  <string name="client_certificate_expired">Dh’fhalbh an ùine air teisteanas a’ chliant “<xliff:g id="certificate_alias">%1$s</xliff:g>” no chan eil e dligheachd fhathast (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="preview_encrypted">*Crioptaiche*</string>
+  <string name="add_from_contacts">Cuir ris on luchd-aithne</string>
+  <string name="crypto_settings_cancel">Sguir dheth</string>
+  <string name="crypto_settings_ok">Air adhart</string>
+  <string name="recipient_cc">Cc</string>
+  <string name="recipient_bcc">Bcc</string>
+  <string name="recipient_to">Gu</string>
+  <string name="recipient_from">O</string>
+  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
+  <string name="address_type_home">Taigh</string>
+  <string name="address_type_work">Obair</string>
+  <string name="address_type_other">Eile</string>
+  <string name="address_type_mobile">Fòn-làimhe</string>
+  <string name="compose_error_no_draft_folder">Cha deach pasgan do dhreachdan a rèiteachadh dhan chunntas seo!</string>
+  <string name="compose_error_no_signing_key">Cha deach iuchair a rèiteachadh airson soidhneadh! Thoir sùil air na roghainnean agad.</string>
+  <string name="crypto_mode_disabled">Na crioptaich</string>
+  <string name="crypto_mode_opportunistic">Crioptaich ma ghabhas sin a dhèanamh</string>
+  <string name="crypto_mode_private">Crioptaich</string>
+  <string name="error_crypto_provider_connect">Chan urrainn dhuinn ceangal ri solaraiche a’ chrioptachaidh, thoir sùil air na roghainnean no thoir gnogag air ìomhaigheag a’ chrioptachaidh airson feuchainn ris a-rithist!</string>
+  <string name="error_crypto_provider_ui_required">Chaidh inntrigeadh do sholaraiche a’ chrioptachaidh a dhiùltadh, thoir gnogag air ìomhaigheag a’ chrioptachaidh airson feuchainn ris a-rithist!</string>
+  <string name="error_crypto_inline_attach">Chan eil taic ri ceanglachain sa mhodh PGP/INLINE!</string>
+  <string name="enable_inline_pgp">Cuir PGP/INLINE an comas</string>
+  <string name="disable_inline_pgp">Cuir PGP/INLINE à comas</string>
+  <string name="enable_sign_only">Cuir PGP Sign-Only an comas</string>
+  <string name="disable_sign_only">Cuir PGP Sign-Only à comas</string>
+  <string name="openpgp_inline_title">Am modh PGP/INLINE</string>
+  <string name="openpgp_inline_text">Tha am post-d seo ’ga chur san fhòrmat PGP/INLINE.\nCha bu chòir dhut seo a dhèanamh ach airson co-chòrdalachd:</string>
+  <string name="openpgp_inline_plus_compat">Tha cuid a chliantan ann nach cuir taic ach ris an fhòrmat seo</string>
+  <string name="openpgp_inline_minus_transit">Dh’fhaoidte gum bris soidhneadh rè an tar-chuir</string>
+  <string name="openpgp_inline_minus_attach">Chan eil taic ri ceanglachain</string>
+  <string name="openpgp_inline_ok">Tha mi agaibh!</string>
+  <string name="openpgp_inline_disable">Cuir à comas</string>
+  <string name="openpgp_inline_keep_enabled">Cum an comas</string>
+  <string name="openpgp_sign_only_ok">Tha mi agaibh!</string>
+  <string name="openpgp_sign_only_disable">Cuir à comas</string>
+  <string name="openpgp_sign_only_keep_enabled">Cum an comas</string>
+  <string name="openpgp_dialog_sign_only_title">Am modh PGP Sign-Only</string>
+  <string name="openpgp_dialog_sign_only_text">Sa mhodh seo, thèid an iuchair PGP agad a chleachdaidh airson soidhneadh crioptografach de phost-d gun chrioptachadh a chruthachadh.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Cha chrioptaich seo am post-d ach dearbhaidh e gun deach a chuir on iuchair agad.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Dh’fhaoidte gum bris soidhneadh nuair a chuireas tu rud gu liosta-phuist.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Dh’fhaoidte gun nochd soidhnidhean mar “signature.asc” ann an cuid a chliantan.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Bidh soidhneadh am broinn teachdaireachd chrioptaichte an-còmhnaidh.</string>
+  <string name="crypto_msg_disabled">Chan eil an teachdaireachd crioptaichte</string>
+  <string name="crypto_msg_encrypted_error">Tha an teachdaireachd crioptaichte ach bha mearachd dì-chrioptachaidh ann.</string>
+  <string name="crypto_msg_encrypted_insecure">Tha an teachdaireachd crioptaichte ach chan eil e tèarainte!</string>
+  <string name="crypto_msg_signed_error">Chaidh an teachdaireachd a shoidhneadh ach cha b’ urrainn dhuinn a dhearbhadh.</string>
+  <string name="crypto_msg_encrypted_no_provider">Tha an teachdaireachd crioptaichte ach cha deach aplacaid crioptachaidh a rèiteachadh.</string>
+  <string name="crypto_msg_unsupported_encrypted">Tha an teachdaireachd crioptaichte ach ann am fòrmat ris nach eil taic.</string>
+  <string name="crypto_msg_unsupported_signed">Chaidh an teachdaireachd a shoidhneadh ach ann am fòrmat ris nach eil taic.</string>
+  <string name="crypto_msg_incomplete_encrypted">Tha an teachdaireachd crioptaichte ach feumaidh tu a luchdadh a-nuas buileach mus gabh a dhì-chrioptachadh.</string>
+  <string name="crypto_msg_cancelled">Tha an teachdaireachd crioptaichte ach cha sguireadh dhen dì-chrioptachadh.</string>
+  <string name="crypto_msg_signed_unencrypted">Chaidh an teachdaireachd a shoidhneadh ach chan eil e crioptaichte.</string>
+  <string name="crypto_msg_encrypted_unsigned">Chaidh an teachdaireachd a chrioptachadh ach cha deach a shoidhneadh.</string>
+  <string name="crypto_msg_sign_unknown">Chaidh an soidhneadh a dhèanamh le iuchair neo-aithnichte.</string>
+  <string name="crypto_msg_sign_verified">Chaidh an soidhneadh a dhèanamh le iuchair earbsach.</string>
+  <string name="crypto_msg_sign_unverified">Chaidh an soidhneadh a dhèanamh le iuchair anns nach eil earbsa!</string>
+  <string name="crypto_msg_sign_error">Bha mearachd san t-soidhneadh.</string>
+  <string name="crypto_msg_sign_mismatch">Chaidh an soidhneadh a dhèanamh le iuchair chearr.</string>
+  <string name="crypto_msg_sign_expired">Chaidh an soidhneadh a dhèanamh le iuchair a dh’fhalbh an ùine air.</string>
+  <string name="crypto_msg_sign_revoked">Chaidh an soidhneadh a dhèanamh le iuchair a chaidh a ghairm air ais.</string>
+  <string name="crypto_msg_sign_insecure">Chaidh an soidhneadh a dhèanamh le iuchair nach eil tèarainte.</string>
+  <string name="crypto_msg_sign_incomplete">Feumaidh tu an teachdaireachd a luchdadh a-nuas buileach mus urrainn dhut an soidhneadh aige a dhearbhadh.</string>
+  <string name="crypto_msg_signed_encrypted">Chaidh an teachdaireachd a shoidhneadh is a chrioptachadh.</string>
+  <string name="crypto_msg_unsigned_encrypted">Chan eil soidhneadh ann, dh’fhaoidte gun do bhris cuideigin a-steach air an teachdaireachd seo.</string>
+  <string name="crypto_info_ok">Ceart ma-thà</string>
+  <string name="crypto_info_view_key">Seall an soidhniche</string>
+  <string name="crypto_info_view_security_warning">Mion-fhiosrachadh</string>
+  <string name="locked_attach_unlock">Thoir a’ ghlas dheth</string>
+  <string name="locked_attach_unencrypted">Cha deach a’ phàirt seo a chrioptachadh is dh’fhaoidte gu bheil e neo-thèarainte.</string>
+  <string name="locked_attach_title">Ceanglachan gun dìon</string>
+  <string name="message_progress_text">’Ga luchdadh…</string>
+  <string name="messageview_decrypt_cancelled">Sguireadh dhen dì-chrioptachadh.</string>
+  <string name="messageview_decrypt_retry">Feuch ris a-rithist</string>
+  <string name="messageview_decrypt_incomplete">Feumaidh tu an teachdaireachd chrioptaichte a luchdadh a-nuas mus gabh a dhì-chrioptachadh.</string>
+  <string name="messageview_crypto_error_title">Mearachd a’ dì-chrioptachadh a’ phuist-d</string>
+  <string name="messageview_crypto_warning_title">Rabhadh tèarainteachd</string>
+  <string name="messageview_crypto_warning_revoked">Chaidh an teachdaireachd seo a shoidhneadh le <b>iuchair a chaidh a ghairm ais ais!</b></string>
+  <string name="messageview_crypto_warning_expired">Chaidh an teachdaireachd seo a shoidhneadh le <b>iuchair a dh’fhalbh an ùine air!</b></string>
+  <string name="messageview_crypto_warning_insecure">Chaidh an teachdaireachd seo a shoidhneadh le <b>iuchair nach eil tèarainte!</b></string>
+  <string name="messageview_crypto_warning_error">Bha <b>mearachd ann an soidhneadh na teachdaireachd seo!</b></string>
+  <string name="messageview_crypto_warning_unsigned">Chaidh an teachdaireachd seo a chrioptachadh ach cha deach a shoidhneadh. Chan eil <b>e tèarainte o cheann gu ceann</b>!</string>
+  <string name="messageview_crypto_warning_show_anyway">Seall an teachdaireachd co-dhiù</string>
+  <string name="recipient_error_non_ascii">Chan eil taic ri caractaran sònraichte aig an àm seo!</string>
+  <string name="recipient_error_parse_failed">Mearachd a’ pàrsadh an t-seòlaidh!</string>
+  <string name="account_settings_crypto_support_sign_only">Taic ri soidhneadh de theachdaireachdan gun chrioptachadh</string>
+  <string name="error_sign_only_no_encryption">Chan eil crioptachadh ri fhaidhinn sa mhodh anns nach dèanar ach soidhneadh!</string>
+  <string name="unsigned_text_divider_label">Teacsa gun soidhneadh</string>
+  <string name="apg_deprecated_title">Rabhadh mu chleachdadh APG</string>
+  <string name="apg_deprecated_1">Chan eilear a’ leasachadh APG tuilleadh!</string>
+  <string name="apg_deprecated_2">Ri linn sin, chan eil taic ri APG aig post K-9 tuilleadh.</string>
+  <string name="apg_deprecated_bullet_1">Sguir daoine dhen obair-leasachaidh aig toiseach 2014</string>
+  <string name="apg_deprecated_bullet_2">Tha duilgheadasa tèarainteachd ann nach deach an càradh</string>
+  <string name="apg_learn_more"><a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">Briog an-seo</a> airson barrachd fiosrachaidh.</string>
+  <string name="apg_deprecated_ok">Tha mi agaibh!</string>
+  <string name="apg">APG</string>
+  <string name="no_crypto_provider_see_global">Cha deach aplacaid OpenPGP a rèiteachadh, thoir sùil air na roghainnean uile-choitcheann!</string>
+  <string name="crypto_no_provider_title">Tha am post-d seo crioptaichte</string>
+  <string name="crypto_no_provider_message">Chaidh am post-d seo a chrioptachadh le OpenPGP.\nFeumaidh tu aplacaid a tha comasach air OpenPGP a stàladh is a rèiteachadh mus urrainn dhut a leughadh.</string>
+  <string name="crypto_no_provider_button">Tagh aplacaid OpenPGP</string>
+  <string name="mail_list_widget_text">Liosta theachdaireachdan L-9</string>
+  <string name="mail_list_widget_loading">A’ luchdadh nan teachdaireachdan…</string>
+  <string name="fetching_folders_failed">Cha b’ urrainn dhuinn liosta nam pasgan fhaighinn</string>
+  <string name="messageview_crypto_warning_details">Seall am mion-fhiosrachadh</string>
+</resources>

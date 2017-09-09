@@ -14,6 +14,7 @@
   <!--Welcome message-->
   <string name="welcome_message_title">Benvido/a a K-9 Mail</string>
   <!--Default signature-->
+  <string name="default_signature">-- \nEnviado dende o meu teléfono Android con K-9 Mail. Desculpa a miña brevedade</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será eliminada de K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Os datos de \"<xliff:g id="account">%s</xliff:g>\" serán eliminados de K-9 Mail, pero manterase a súa Configuración</string>
@@ -40,6 +41,7 @@
   <string name="compose_title_compose">Redactar</string>
   <string name="compose_title_reply">Responder</string>
   <string name="compose_title_reply_all">Responder a todos</string>
+  <string name="compose_title_forward">Reenviar</string>
   <string name="choose_folder_title">Seleccionar carpeta</string>
   <string name="status_loading_account_folder">Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Recuperando encabezados <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -122,6 +124,8 @@
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Sin Ler (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_delete">Eliminar</string>
+  <string name="notification_action_archive">Archivo</string>
+  <string name="notification_action_spam">Spam</string>
   <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Comprobando correo</string>
   <string name="notification_bg_send_ticker">Enviando correo: <xliff:g id="account">%s</xliff:g></string>
@@ -167,7 +171,6 @@
   <string name="message_view_attachment_download_action">Gardar</string>
   <string name="message_view_status_attachment_not_saved">Imposible gardar adxunto na SD</string>
   <string name="message_view_show_pictures_action">Amosar imaxe</string>
-  <string name="message_view_show_more_attachments_action">Máis</string>
   <string name="message_view_no_viewer">Imposible atopar visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaxe completa</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -194,6 +197,7 @@
   <string name="global_settings_messageview_return_to_list_summary">Voltar á lista despois da acción de borrado</string>
   <string name="global_settings_confirm_actions_title">Confirmar acción</string>
   <string name="global_settings_confirm_actions_summary">Amosar un diálogo cuando se realice una de estas acciones</string>
+  <string name="global_settings_confirm_action_delete">Eliminar</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_notification_hide_subject_title">Agochar asunto nas notificacións</string>
   <string name="global_settings_notification_hide_subject_never">Nunca</string>
@@ -323,6 +327,11 @@
   <string name="account_settings_default_label">Conta por defecto</string>
   <string name="account_settings_default_summary">Enviar correo dende esta conta por defecto</string>
   <string name="account_settings_notify_label">Notificar correo novo</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Todas</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">Só 1a clase</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1a e 2a Clase</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Todas agás 1a e 2a clase</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">ningunha</string>
   <string name="account_settings_notify_sync_label">Notificar sincronización</string>
   <string name="account_settings_email_label">O teu entderezo de correo</string>
   <string name="account_settings_notify_summary">Avisarme no estatus cando chegue correo novo</string>
@@ -414,19 +423,18 @@
   <string name="folder_settings_in_top_group_label">Amosar ao principio</string>
   <string name="folder_settings_in_top_group_summary">Amosar cerca do principio da lista</string>
   <string name="folder_settings_folder_display_mode_label">Clase de carpeta</string>
-  <string name="folder_settings_folder_display_mode_normal">ningunha</string>
   <string name="folder_settings_folder_display_mode_first_class">1a Clase</string>
   <string name="folder_settings_folder_display_mode_second_class">2a Clase</string>
-  <string name="folder_settings_folder_sync_mode_label">Clase en sincronización</string>
   <string name="folder_settings_folder_sync_mode_normal">ningunha</string>
   <string name="folder_settings_folder_sync_mode_first_class">1a Clase</string>
   <string name="folder_settings_folder_sync_mode_second_class">2a Clase</string>
   <string name="folder_settings_folder_sync_mode_inherited">Aa mesma que a de visualización</string>
   <string name="folder_settings_folder_push_mode_label">Clase en subscripción</string>
-  <string name="folder_settings_folder_push_mode_normal">ningunha</string>
   <string name="folder_settings_folder_push_mode_first_class">1a Clase</string>
   <string name="folder_settings_folder_push_mode_second_class">2a Clase</string>
   <string name="folder_settings_folder_push_mode_inherited">A mesma que en sincronización</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1a Clase</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2a Clase</string>
   <string name="account_settings_incoming_label">Servidor de entrada</string>
   <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>
   <string name="account_settings_outgoing_label">Servidor de saída</string>
@@ -492,6 +500,7 @@
   <string name="sort_by">Ordeado por…</string>
   <string name="sort_by_date">Data</string>
   <string name="sort_by_subject">Asunto</string>
+  <string name="sort_by_sender">Remitente</string>
   <string name="sort_by_flag">Estrelas</string>
   <string name="sort_by_unread">Lido/Sen Ler</string>
   <string name="sort_by_attach">Adxuntos</string>
@@ -501,7 +510,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado descoñecido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar certificado</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rexeitar certificado</string>
-  <string name="folder_list_filter_hint">o nome do cartafol contén</string>
   <string name="folder_list_display_mode_label">Carpetas</string>
   <string name="folder_list_display_mode_all">Ver todas as carpetas</string>
   <string name="folder_list_display_mode_first_class">Ver só carpetas de 1a Clase</string>
@@ -521,6 +529,7 @@
   <string name="accountlist_preferences">Lista de contas</string>
   <string name="messagelist_preferences">Lista de mensaxes</string>
   <string name="messageview_preferences">mensaxes</string>
+  <string name="folderlist_preferences">Lista de carpetas</string>
   <string name="settings_theme_label">Tema</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
@@ -578,6 +587,7 @@
   <string name="font_size_message_view_sender">Remitente</string>
   <string name="font_size_message_view_to">Para</string>
   <string name="font_size_message_view_cc">Cc</string>
+  <string name="font_size_message_view_bcc">CCo</string>
   <string name="font_size_message_view_additional_headers">Encabezados adicionáis</string>
   <string name="font_size_message_view_subject">Asunto</string>
   <string name="font_size_message_view_date">Data e Hora</string>
@@ -605,6 +615,8 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Borrar</string>
   <string name="dialog_confirm_delete_cancel_button">Non borrar</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Si</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Non</string>
   <string name="dialog_confirm_spam_title">Confirmar antes de mover á carpeta spam</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Queres mover esta mensaxe á carpeta spam?</item>
@@ -627,6 +639,8 @@
   <string name="activate_account_action">Activar</string>
   <string name="account_unavailable">A conta \"<xliff:g id="account">%s</xliff:g>\" non está dispoñible; verifica o almacenamento</string>
   <string name="attachment_save_title">Gardar anexo</string>
+  <string name="manage_accounts_move_up_action">Subir</string>
+  <string name="manage_accounts_move_down_action">Baixar</string>
   <string name="close">Pechar</string>
   <string name="webview_empty_message">Sen texto</string>
   <string name="webview_contextmenu_link_view_action">Abrir ligazón</string>
@@ -648,6 +662,7 @@
   <string name="webview_contextmenu_email_clipboard_label">Enderezo electrónico</string>
   <string name="image_saved_as">Imaxe gardada como \"<xliff:g id="filename">%s</xliff:g>\"</string>
   <string name="image_saving_failed">Erro ao gardar a imaxe.</string>
+  <string name="account_settings_remote_search_num_results_entries_all">Todas</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
   <string name="account_settings_remote_search_num_results_entries_25">25</string>
   <string name="account_settings_remote_search_num_results_entries_50">50</string>
@@ -655,7 +670,6 @@
   <string name="account_settings_remote_search_num_results_entries_250">250</string>
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-  <string name="remote_search_downloading">Obtendo %d resultados</string>
   <string name="account_settings_search">Procurar</string>
   <string name="global_settings_threaded_view_summary">Agrupar mensaxes por conversa</string>
   <string name="upgrade_databases_title">Actualizando bases de datos</string>
@@ -673,7 +687,15 @@
   <string name="fetching_attachment_dialog_title_send">Enviando mensaxe</string>
   <string name="fetching_attachment_dialog_title_save">Gardando borrador</string>
   <string name="fetching_attachment_dialog_message">Obtendo anexo…</string>
-  <!--=== OpenPGP specific ==================================================================-->
   <!--=== Client certificates specific ==================================================================-->
   <!--Note: This references message_view_download_remainder-->
+  <string name="crypto_settings_cancel">Cancelar</string>
+  <string name="recipient_cc">Cc</string>
+  <string name="recipient_bcc">CCo</string>
+  <string name="recipient_to">Para</string>
+  <string name="address_type_other">Outras</string>
+  <string name="address_type_mobile">Móbil</string>
+  <string name="crypto_mode_private">Cifrar</string>
+  <string name="crypto_info_ok">Aceptar</string>
+  <string name="message_progress_text">A cargar…</string>
 </resources>

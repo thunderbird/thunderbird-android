@@ -13,7 +13,7 @@
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="app_license">根据 Apache License 2.0 协议授权。</string>
   <!--Welcome message-->
-  <string name="welcome_message_title">欢迎来到 K-9 Mail</string>
+  <string name="welcome_message_title">欢迎使用 K-9 Mail</string>
   <!--Default signature-->
   <string name="default_signature">-- \n使用 K-9 Mail 发送自我的Android设备。</string>
   <!--General strings that include the app name-->
@@ -50,6 +50,9 @@
   <string name="status_processing_account">正在处理 <xliff:g id="command">%s</xliff:g>: <xliff:g id="progress">%s</xliff:g>: <xliff:g id="account">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">下次接收 <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_no_network">同步已禁用 - 无网络</string>
+  <string name="status_no_background">同步已禁用 - 无后台活动</string>
+  <string name="status_syncing_blocked">同步被阻止</string>
   <string name="status_syncing_off">同步已禁用</string>
   <string name="actionbar_selected">已选择 <xliff:g id="selection_count">%d</xliff:g> 个</string>
   <string name="next_action">前进</string>
@@ -72,7 +75,7 @@
   <string name="single_message_options_action">发送…</string>
   <string name="refile_action">重新归档…</string>
   <string name="done_action">完成</string>
-  <string name="discard_action">忽略</string>
+  <string name="discard_action">丢弃</string>
   <string name="save_draft_action">保存为草稿</string>
   <string name="check_mail_action">检查新邮件</string>
   <string name="send_messages_action">发送消息</string>
@@ -147,6 +150,7 @@
   <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> 认证错误</string>
   <string name="notification_certificate_error_text">请检查您的服务器设置</string>
   <string name="notification_authentication_error_title">身份验证失败</string>
+  <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> 登录失败，请更新设置。</string>
   <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%s</xliff:g>：<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">正在检查邮件</string>
   <string name="notification_bg_send_ticker">正在发送邮件：<xliff:g id="account">%s</xliff:g></string>
@@ -195,15 +199,16 @@
   <string name="message_view_attachment_view_action">打开</string>
   <string name="message_view_attachment_download_action">保存</string>
   <string name="message_view_status_attachment_not_saved">无法将附件保存到SD卡。</string>
+  <string name="message_view_status_no_space">存储空间不足，无法保存附件。</string>
   <string name="message_view_show_pictures_action">显示图片</string>
-  <string name="message_view_show_more_attachments_action">更多…</string>
   <string name="message_view_no_viewer">无法打开<xliff:g id="mimetype">%s</xliff:g>。找不到可以阅读该文件的程序。</string>
   <string name="message_view_download_remainder">下载完整邮件</string>
+  <string name="message_view_toast_unable_to_display_message">无法显示邮件</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">全部邮件的信息都已经下载，但是当前没有额外的邮件信息可以显示。</string>
   <string name="message_additional_headers_retrieval_failed">从数据库或邮件服务器获取额外的邮件信息失败。</string>
   <string name="from_same_sender">来自这个发件人的更多邮件</string>
-  <string name="message_discarded_toast">邮件已忽略</string>
+  <string name="message_discarded_toast">邮件已丢弃</string>
   <string name="message_saved_toast">邮件已保存为草稿</string>
   <string name="global_settings_flag_label">显示星标</string>
   <string name="global_settings_flag_summary">星标指示标记过的邮件</string>
@@ -234,9 +239,11 @@
   <string name="global_settings_confirm_action_delete">删除</string>
   <string name="global_settings_confirm_action_delete_starred">删除加星（仅在邮件视图里）</string>
   <string name="global_settings_confirm_action_spam">标记为垃圾</string>
+  <string name="global_settings_confirm_menu_discard">丢弃邮件</string>
+  <string name="global_settings_confirm_menu_mark_all_read">全部标为已读</string>
   <string name="global_settings_confirm_action_delete_notif">删除(来自通知)</string>
-  <string name="global_settings_privacy_hide_useragent">从邮件头中移除 K-9 User-Agent</string>
-  <string name="global_settings_privacy_hide_timezone">在邮件头中是用 UTC 时区</string>
+  <string name="global_settings_privacy_hide_useragent_detail">从邮件头中移除 K-9 的 User-Agent</string>
+  <string name="global_settings_privacy_hide_timezone">隐藏时区</string>
   <string name="global_settings_notification_hide_subject_title">在通知中隐藏主题</string>
   <string name="global_settings_notification_hide_subject_never">从不</string>
   <string name="global_settings_notification_hide_subject_when_locked">当设备锁定时</string>
@@ -252,10 +259,12 @@
   <string name="global_settings_lock_screen_notification_visibility_message_count">未读消息计数</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">消息计数及发件人</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">与解除屏幕锁定时相同</string>
-  <string name="quiet_time">安静时间</string>
+  <string name="quiet_time">免打扰时间</string>
   <string name="quiet_time_description">禁止铃声，震动以及闪光</string>
-  <string name="quiet_time_starts">安静时间开始</string>
-  <string name="quiet_time_ends">安静时间结束</string>
+  <string name="quiet_time_notification">禁用通知</string>
+  <string name="quiet_time_notification_description">在免打扰时段完全禁用通知</string>
+  <string name="quiet_time_starts">免打扰时间开始</string>
+  <string name="quiet_time_ends">免打扰时间结束</string>
   <string name="account_setup_basics_title">设置新账户</string>
   <string name="account_setup_basics_email_hint">电子邮件地址</string>
   <string name="account_setup_basics_password_hint">密码</string>
@@ -434,6 +443,9 @@
   <string name="account_settings_folders">文件夹</string>
   <string name="account_settings_quote_prefix_label">引用文本前缀</string>
   <string name="account_settings_crypto">加密</string>
+  <string name="account_settings_crypto_app">OpenPGP 应用 </string>
+  <string name="account_settings_crypto_key">我的密钥</string>
+  <string name="account_settings_no_openpgp_provider_configured">没有设置 OpenPGP 应用</string>
   <string name="account_settings_mail_check_frequency_label">文件夹检查频率</string>
   <string name="account_settings_storage_title">存储</string>
   <string name="account_settings_color_label">账户颜色</string>
@@ -498,21 +510,17 @@
   <string name="folder_settings_in_top_group_label">显示在置顶的组中</string>
   <string name="folder_settings_in_top_group_summary">显示在置顶的组之后</string>
   <string name="folder_settings_folder_display_mode_label">文件夹显示级别</string>
-  <string name="folder_settings_folder_display_mode_normal">无</string>
   <string name="folder_settings_folder_display_mode_first_class">初级</string>
   <string name="folder_settings_folder_display_mode_second_class">次级</string>
-  <string name="folder_settings_folder_sync_mode_label">文件夹同步级别</string>
   <string name="folder_settings_folder_sync_mode_normal">无</string>
   <string name="folder_settings_folder_sync_mode_first_class">初级</string>
   <string name="folder_settings_folder_sync_mode_second_class">次级</string>
   <string name="folder_settings_folder_sync_mode_inherited">使用与显示级别相同的级别</string>
   <string name="folder_settings_folder_push_mode_label">文件夹推送级别</string>
-  <string name="folder_settings_folder_push_mode_normal">无</string>
   <string name="folder_settings_folder_push_mode_first_class">初级</string>
   <string name="folder_settings_folder_push_mode_second_class">次级</string>
   <string name="folder_settings_folder_push_mode_inherited">使用与同步级别相同的级别</string>
   <string name="folder_settings_folder_notify_mode_label">文件夹提醒级别</string>
-  <string name="folder_settings_folder_notify_mode_normal">无</string>
   <string name="folder_settings_folder_notify_mode_first_class">1级</string>
   <string name="folder_settings_folder_notify_mode_second_class">2级</string>
   <string name="folder_settings_folder_notify_mode_inherited">与推送级别相同</string>
@@ -599,7 +607,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒绝密钥</string>
   <string name="message_list_help_key">Del (或者 D) - 删除\nR - 回复\nA - 回复所有人\nC - 编写新消息\nF - 转发\nM - 移动\nV - 归档\nY - 复制\nZ - 标记为已读/未读\nG - 加星标\nO - 排序类别\nI - 排序顺序\nQ - 返回文件夹\nS - 选择/取消选择\nJ 或者 P - 上一条消息\nK 或者 N - 下一条消息</string>
   <string name="folder_list_help_key">1 - 仅显示1级文件夹\n2 - 显示1级和2级文件夹\n3 - 显示除2级以外的所有文件夹\n4 - 显示所有文件夹\nQ - 返回帐户\nS - 编辑帐户设置</string>
-  <string name="folder_list_filter_hint">文件夹名字里包含</string>
   <string name="folder_list_display_mode_label">文件夹</string>
   <string name="folder_list_display_mode_all">显示全部文件夹</string>
   <string name="folder_list_display_mode_first_class">只显示初级文件夹</string>
@@ -684,6 +691,7 @@
   <string name="font_size_message_view_sender">发件人</string>
   <string name="font_size_message_view_to">收件人</string>
   <string name="font_size_message_view_cc">抄送</string>
+  <string name="font_size_message_view_bcc">秘送</string>
   <string name="font_size_message_view_additional_headers">额外的邮件信息</string>
   <string name="font_size_message_view_subject">主题</string>
   <string name="font_size_message_view_date">日期</string>
@@ -702,10 +710,11 @@
   <string name="font_size_larger">更大</string>
   <string name="miscellaneous_preferences">杂项</string>
   <string name="error_activity_not_found">没有找到可以用于这一操作的程序。</string>
+  <string name="send_failed_reason">发送失败：%s</string>
   <string name="save_or_discard_draft_message_dlg_title">保存邮件草稿？</string>
-  <string name="save_or_discard_draft_message_instructions_fmt">保存还是忽略这封邮件？</string>
-  <string name="confirm_discard_draft_message_title">舍弃该邮件？</string>
-  <string name="confirm_discard_draft_message">确定舍弃该邮件？</string>
+  <string name="save_or_discard_draft_message_instructions_fmt">保存还是丢弃这封邮件？</string>
+  <string name="confirm_discard_draft_message_title">丢弃该邮件？</string>
+  <string name="confirm_discard_draft_message">确定丢弃该邮件？</string>
   <string name="select_text_now">选择需要拷贝的文本。</string>
   <string name="dialog_confirm_delete_title">删除确认</string>
   <string name="dialog_confirm_delete_message">你确定要删除这封邮件么？</string>
@@ -714,6 +723,8 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">删除</string>
   <string name="dialog_confirm_delete_cancel_button">不要删除</string>
+  <string name="dialog_confirm_mark_all_as_read_title">确认标为已读</string>
+  <string name="dialog_confirm_mark_all_as_read_message">要标记所有邮件为已读吗？</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">是</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">否</string>
   <string name="dialog_confirm_spam_title">确认移动到垃圾邮件文件夹</string>
@@ -738,6 +749,7 @@
   <string name="settings_importing">正在导入设置…</string>
   <string name="settings_import_scanning_file">正在扫描文件…</string>
   <string name="settings_export_success">设置已导出到<xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">设置已成功导出</string>
   <string name="settings_import_global_settings_success">全局设置已自<xliff:g id="filename">%s</xliff:g>导入</string>
   <string name="settings_import_success">账户<xliff:g id="accounts">%s</xliff:g>已自<xliff:g id="filename">%s</xliff:g>导入</string>
   <plurals name="settings_import_accounts">
@@ -803,8 +815,6 @@
   <string name="account_settings_remote_search_num_label">服务器查找限制</string>
   <string name="account_settings_remote_search_num_summary">查找将在找到 <xliff:g id="num_results">%s</xliff:g> 条结果后停止。</string>
   <string name="remote_search_sending_query">正在向服务器发送查询</string>
-  <string name="remote_search_downloading">正在获取 %d 条结果</string>
-  <string name="remote_search_downloading_limited">正在获取 %2$d 个中的 第%1$d 个结果</string>
   <string name="remote_search_error">远程搜索失败</string>
   <string name="account_settings_search">搜索</string>
   <string name="account_settings_remote_search_enabled">启用服务器搜索</string>
@@ -813,8 +823,6 @@
   <string name="pull_to_refresh_remote_search_from_local_search_pull">向搜索服务器发送查询…</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">从搜索服务器释放查询…</string>
   <string name="remote_search_unavailable_no_network">服务器搜索需要网络连接。</string>
-  <string name="global_settings_background_as_unread_indicator_label">已读邮件变暗显示</string>
-  <string name="global_settings_background_as_unread_indicator_summary">灰色背景表示消息已读</string>
   <string name="global_settings_threaded_view_label">按话题显示</string>
   <string name="global_settings_threaded_view_summary">按照话题对消息进行组合</string>
   <string name="upgrade_databases_title">更新数据库</string>
@@ -841,16 +849,6 @@
   <string name="fetching_attachment_dialog_title_save">正在保存草稿</string>
   <string name="fetching_attachment_dialog_message">正在获取附件…</string>
   <string name="auth_external_error">无法认证。服务器未公告SASL EXTERNAL。这可能是由于客户端证书有问题（已过期，或者未知的认证机构），或者是由于其它的配置问题。</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_result_invalid_signature">无效的签名！</string>
-  <string name="openpgp_result_signature_certified">签名由</string>
-  <string name="openpgp_result_signature_insecure">不安全！</string>
-  <string name="openpgp_result_signature_missing_key">未知的公钥</string>
-  <string name="openpgp_result_encrypted">已加密</string>
-  <string name="openpgp_result_not_encrypted">未加密</string>
-  <string name="openpgp_result_decryption_insecure">不安全</string>
-  <string name="openpgp_result_action_show">显示</string>
-  <string name="openpgp_result_action_lookup">查找</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">使用客户端证书</string>
   <string name="client_certificate_spinner_empty">无客户端证书</string>
@@ -860,4 +858,67 @@
   <string name="client_certificate_expired">客户端证书 \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" 已经过期，或者尚未开始生效。 (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*已加密*</string>
+  <string name="crypto_settings_cancel">取消</string>
+  <string name="recipient_cc">抄送</string>
+  <string name="recipient_bcc">秘送</string>
+  <string name="recipient_to">收件人</string>
+  <string name="recipient_from">发件人</string>
+  <string name="address_type_home">住宅</string>
+  <string name="address_type_work">工作</string>
+  <string name="address_type_other">其他</string>
+  <string name="address_type_mobile">手机</string>
+  <string name="compose_error_no_draft_folder">此账户没有设置草稿文件夹！</string>
+  <string name="compose_error_no_signing_key">没有设置用于签名的密钥！请检查设置。</string>
+  <string name="crypto_mode_disabled">不要加密</string>
+  <string name="crypto_mode_opportunistic">在可能时加密</string>
+  <string name="crypto_mode_private">加密</string>
+  <string name="error_crypto_inline_attach">PGP/INLINE 模式不支持附件！</string>
+  <string name="enable_inline_pgp">启用 PGP/INLINE</string>
+  <string name="disable_inline_pgp">禁用 PGP/INLINE</string>
+  <string name="openpgp_inline_title">PGP/INLINE 模式</string>
+  <string name="openpgp_inline_plus_compat">有些软件只支持这种格式</string>
+  <string name="openpgp_inline_minus_transit">签名在传输过程中可能损坏</string>
+  <string name="openpgp_inline_minus_attach">不支持附件</string>
+  <string name="openpgp_inline_ok">知道了</string>
+  <string name="openpgp_inline_disable">禁用</string>
+  <string name="openpgp_inline_keep_enabled">保持启用</string>
+  <string name="openpgp_sign_only_ok">知道了</string>
+  <string name="openpgp_sign_only_disable">禁用</string>
+  <string name="openpgp_sign_only_keep_enabled">保持启用</string>
+  <string name="openpgp_dialog_sign_only_text">在此模式中你的 PGP 密钥将用于给未加密的邮件进行签名。</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">邮件不会被加密，但是可以验证邮件是由你发出的。</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">签名在一些邮件软件中会显示为附件 “signature.asc”。</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">加密邮件总是包含一个签名。</string>
+  <string name="crypto_msg_disabled">邮件没有被加密</string>
+  <string name="crypto_msg_signed_error">邮件已被签名，但是无法验证签名的真实性。</string>
+  <string name="crypto_msg_encrypted_unsigned">邮件已被加密，但是没有签名。</string>
+  <string name="crypto_msg_sign_verified">签名来自可信的公钥。</string>
+  <string name="crypto_msg_sign_expired">签名来自已过期的公钥。</string>
+  <string name="crypto_msg_sign_revoked">签名来自已撤销的公钥。</string>
+  <string name="crypto_msg_signed_encrypted">邮件已签名和加密。</string>
+  <string name="crypto_msg_unsigned_encrypted">没有签名，这封邮件可能已被篡改。</string>
+  <string name="crypto_info_ok">确定</string>
+  <string name="crypto_info_view_key">查看签名者</string>
+  <string name="message_progress_text">加载中…</string>
+  <string name="messageview_decrypt_cancelled">解密被取消了。</string>
+  <string name="messageview_decrypt_retry">重试</string>
+  <string name="messageview_decrypt_incomplete">必须下载加密的邮件才能解密。</string>
+  <string name="messageview_crypto_error_title">邮件解密错误</string>
+  <string name="messageview_crypto_warning_title">安全警告</string>
+  <string name="recipient_error_non_ascii">暂不支持特殊字符！</string>
+  <string name="recipient_error_parse_failed">邮件地址解析错误！</string>
+  <string name="apg_deprecated_title">APG 弃用警告</string>
+  <string name="apg_deprecated_1">APG 已停止维护！</string>
+  <string name="apg_deprecated_2">因此，K-9 Mail 移除了对 APG 的支持。</string>
+  <string name="apg_deprecated_bullet_1">开发在 2014 年早期停止了</string>
+  <string name="apg_deprecated_bullet_2">包含未修复的安全漏洞</string>
+  <string name="apg_learn_more">你可以 <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">点击这里</a> 查看更多信息。</string>
+  <string name="apg_deprecated_ok">知道了</string>
+  <string name="apg">APG</string>
+  <string name="no_crypto_provider_see_global">没有设置 OpenPGP 应用，请检查全局设置！</string>
+  <string name="crypto_no_provider_title">邮件已被加密</string>
+  <string name="crypto_no_provider_message">这份邮件使用 OpenPGP 进行了加密。\n请安装并配置一个兼容 OpenPGP 的应用来查看邮件。</string>
+  <string name="crypto_no_provider_button">选择 OpenPGP 应用</string>
+  <string name="mail_list_widget_loading">正在加载邮件……</string>
+  <string name="openpgp_enabled_error_back">返回</string>
 </resources>

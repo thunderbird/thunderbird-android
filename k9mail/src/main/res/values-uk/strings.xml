@@ -41,7 +41,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
 деякі дивацтва при роботі з Microsoft Exchange.
 </p><p>
 Будь ласка, звітуйте про недоліки, пропонуйте нові можливості та задавайте запитання на
-<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -80,6 +80,8 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="status_processing_account">Опрацювання <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Наступний запит <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_no_network">Синхронізацію відключено - немає зв\'язку</string>
+  <string name="status_syncing_blocked">Синхронізацію заблоковано</string>
   <string name="status_syncing_off">Синхронізація вимкнена</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> вибраний</string>
   <string name="next_action">Наступний</string>
@@ -100,7 +102,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="forward_action">Переслати</string>
   <string name="move_action">Перемістити</string>
   <string name="single_message_options_action">Надіслати</string>
-  <string name="refile_action">Перемістити...</string>
+  <string name="refile_action">Перемістити…</string>
   <string name="done_action">Готово</string>
   <string name="discard_action">Відкинути зміни</string>
   <string name="save_draft_action">Зберегти як чернетку</string>
@@ -173,9 +175,9 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> більше на <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Відповісти</string>
   <string name="notification_action_mark_as_read">Позначити як прочитаний</string>
-  <string name="notification_action_mark_all_as_read">відмітити всі як прочитані</string>
+  <string name="notification_action_mark_all_as_read">Позначити всі як прочитані</string>
   <string name="notification_action_delete">Видалити</string>
-  <string name="notification_action_delete_all">видалити всі</string>
+  <string name="notification_action_delete_all">Видалити всі</string>
   <string name="notification_action_archive">Архівувати</string>
   <string name="notification_action_archive_all">Архівувати всі</string>
   <string name="notification_action_spam">СПАМ</string>
@@ -233,10 +235,10 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="message_view_attachment_download_action">Зберегти</string>
   <string name="message_view_status_attachment_not_saved">Не вдалося зберегти вкладення на карту пам’яті.</string>
   <string name="message_view_show_pictures_action">Показати зображення</string>
-  <string name="message_view_show_more_attachments_action">Більше…</string>
   <string name="message_view_no_viewer">Не знайдено програму для перегляду <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Завантажити усе повідомлення</string>
   <string name="message_view_toast_unable_to_display_message">Не можу відобразити повідомлення</string>
+  <string name="message_view_sender_label">за допомогою %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Всі заголовки завантажено, нема додаткових заголовків для відображення.</string>
   <string name="message_additional_headers_retrieval_failed">Не вдалося завантажити додаткові заголовки з бази даних або поштового сервера.</string>
@@ -259,7 +261,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="global_settings_registered_name_color_changed">Розфарбовувати імена у списку контактів</string>
   <string name="global_settings_folderlist_wrap_folder_names_label">Згорнути довгі імена папок</string>
   <string name="global_settings_folderlist_wrap_folder_names_summary">Використовувати декілька строчок для перегляду довгих імен папок</string>
-  <string name="global_settings_messageview_fixedwidth_label">Шрифти фіксованої щирини</string>
+  <string name="global_settings_messageview_fixedwidth_label">Шрифти фіксованої ширини</string>
   <string name="global_settings_messageview_fixedwidth_summary">Використовувати шрифт фіксованої ширини для відображення звичайних текстових повідомлень</string>
   <string name="global_settings_messageview_autofit_width_label">Автоматична доставка повідомлень</string>
   <string name="global_settings_messageview_autofit_width_summary">Скорочувати повідомлення для відображення на екрані</string>
@@ -273,9 +275,11 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="global_settings_confirm_action_delete_starred">Вилучити позначені зірочкою (лише перегляд повідомлень)</string>
   <string name="global_settings_confirm_action_spam">Спам</string>
   <string name="global_settings_confirm_menu_discard">Відкинути повідомлення</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Позначити всі як прочитані</string>
   <string name="global_settings_confirm_action_delete_notif">Видалити (з сповіщення)</string>
-  <string name="global_settings_privacy_hide_useragent">Прибрати K-9 User-Agent з поштових заголовків</string>
-  <string name="global_settings_privacy_hide_timezone">Використовувати Всесвітньо-координовану часову зону в заголовках листів</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Прибрати K-9 User-Agent з поштових заголовків</string>
+  <string name="global_settings_privacy_hide_timezone">Приховати часову зону</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Використовувати UTC замість місцевого часу в заголовках листів та відповідей</string>
   <string name="global_settings_notification_hide_subject_title">Приховувати тему в повідомленнях</string>
   <string name="global_settings_notification_hide_subject_never">Ніколи</string>
   <string name="global_settings_notification_hide_subject_when_locked">Коли пристрій заблоковано</string>
@@ -479,7 +483,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_settings_crypto">Шифрування</string>
   <string name="account_settings_crypto_app">Програма OpenPGP</string>
   <string name="account_settings_crypto_key">Мій ключ</string>
-  <string name="account_settings_no_openpgp_provider_configured">Не встановлено програми OpenPGP</string>
+  <string name="account_settings_no_openpgp_provider_configured">Не налаштовано додаток OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Частота опитування папок</string>
   <string name="account_settings_storage_title">Пам’ять</string>
   <string name="account_settings_color_label">Колір облікового запису</string>
@@ -544,21 +548,17 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="folder_settings_in_top_group_label">Показувати у верхній групі</string>
   <string name="folder_settings_in_top_group_summary">Показувати у верхній частині списку папок</string>
   <string name="folder_settings_folder_display_mode_label">Клас відображення теки</string>
-  <string name="folder_settings_folder_display_mode_normal">Жодний</string>
   <string name="folder_settings_folder_display_mode_first_class">1-ий клас</string>
   <string name="folder_settings_folder_display_mode_second_class">2-ий клас</string>
-  <string name="folder_settings_folder_sync_mode_label">Клас синхронізації теки</string>
-  <string name="folder_settings_folder_sync_mode_normal">Жодний</string>
+  <string name="folder_settings_folder_sync_mode_normal">Жодної</string>
   <string name="folder_settings_folder_sync_mode_first_class">1-ий клас</string>
   <string name="folder_settings_folder_sync_mode_second_class">2-ий клас</string>
   <string name="folder_settings_folder_sync_mode_inherited">Такий самий як і клас відображення</string>
   <string name="folder_settings_folder_push_mode_label">Клас теки для push</string>
-  <string name="folder_settings_folder_push_mode_normal">Жодний</string>
   <string name="folder_settings_folder_push_mode_first_class">1-ий клас</string>
   <string name="folder_settings_folder_push_mode_second_class">2-ий клас</string>
   <string name="folder_settings_folder_push_mode_inherited">Такий самий як і клас синхронізації</string>
   <string name="folder_settings_folder_notify_mode_label">Клас сповіщення теки</string>
-  <string name="folder_settings_folder_notify_mode_normal">Відсутньо</string>
   <string name="folder_settings_folder_notify_mode_first_class">1-й клас</string>
   <string name="folder_settings_folder_notify_mode_second_class">2-й клас</string>
   <string name="folder_settings_folder_notify_mode_inherited">Так само як для класу push</string>
@@ -645,7 +645,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Відхилити сертифікат</string>
   <string name="message_list_help_key">Del (або D) - Видалити\nR - Відповісти\nA - Відповісти всім\nC - Створити\nF - переслати\nM - Перемістити\nV - Архівувати\nY - Копіювати\nZ - Позначити (не)прочитаним\nG - Поставити зірочку\nO - Ти сортування\nI - Порядок сортування\nQ - Повернутися до тек\nS - Вибрати/зняти вибір\nJ або P - Попереднє повідомлення\nK або N - Наступне повідомлення</string>
   <string name="folder_list_help_key">1 - Відображати лише теки 1-го класу\n2 - Відображати теки 1-го та 2-го класів\n3 - Відображати всі теки, окрім 2-го класу\n4 - Відображати всі теки\nQ - Повернутися до облікових записів\nS - Змінити налаштування облікового запису</string>
-  <string name="folder_list_filter_hint">назва теки містить</string>
   <string name="folder_list_display_mode_label">Показати теки…</string>
   <string name="folder_list_display_mode_all">Відображати усі теки</string>
   <string name="folder_list_display_mode_first_class">Відображати тільки теки 1-го класу</string>
@@ -731,6 +730,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="font_size_message_view_sender">Відправник</string>
   <string name="font_size_message_view_to">Кому</string>
   <string name="font_size_message_view_cc">Копія</string>
+  <string name="font_size_message_view_bcc">Прихована копія</string>
   <string name="font_size_message_view_additional_headers">Додаткові заголовки</string>
   <string name="font_size_message_view_subject">Тема</string>
   <string name="font_size_message_view_date">Час і дата</string>
@@ -792,6 +792,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="settings_importing">Імпортуються налаштування…</string>
   <string name="settings_import_scanning_file">Сканується файл…</string>
   <string name="settings_export_success">Налаштування були експортовані у <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">Налаштування успішно експортовані</string>
   <string name="settings_import_global_settings_success">Глобальні налаштування були імпортовані з <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Імпортовано <xliff:g id="accounts">%s</xliff:g> з <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
@@ -863,8 +864,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_settings_remote_search_num_label">Межа серверу</string>
   <string name="account_settings_remote_search_num_summary">Пошук зупинити після знаходження <xliff:g id="num_results">%s</xliff:g> результатів.</string>
   <string name="remote_search_sending_query">Відправлення запиту до сервера</string>
-  <string name="remote_search_downloading">Відібрано  %d результатів</string>
-  <string name="remote_search_downloading_limited">Відібрано %1$d з %2$d результатів</string>
   <string name="remote_search_error">Віддалений пошук не вдався</string>
   <string name="account_settings_search">Пошук</string>
   <string name="account_settings_remote_search_enabled">Увімкнути пошук серверу</string>
@@ -873,8 +872,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Потягніть для пошуку на сервері</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">Відпустіть для пошуку на сервері</string>
   <string name="remote_search_unavailable_no_network">Для пошуку на сервері необхідно приєднатись до мережі.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Затемнити повідомлення після прочитання</string>
-  <string name="global_settings_background_as_unread_indicator_summary">Затемнити повідомлення після прочитання</string>
+  <string name="global_settings_background_as_unread_indicator_label">Змінювати колір при прочитанні</string>
   <string name="global_settings_threaded_view_label">Режим перегляду</string>
   <string name="global_settings_threaded_view_summary">Групувати повідомлення по розмові</string>
   <string name="upgrade_databases_title">Поновити базу даних</string>
@@ -901,25 +899,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="fetching_attachment_dialog_title_save">Збереження чернетки</string>
   <string name="fetching_attachment_dialog_message">Отримання вкладення…</string>
   <string name="auth_external_error">Автентифікація неможлива. Сервер не пропонує SASL EXTERNAL. Проблема з сертифікатом (сплив строк дії, невідомий центр сертифікації) або інша проблема налаштувань могла це спричинити.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Не вдалося розшифрувати: %s</string>
-  <string name="openpgp_unknown_error">Невідома помилка OpenPGP</string>
-  <string name="openpgp_canceled_by_user">відмовлено користувачем</string>
-  <string name="openpgp_result_no_signature">Не підписано</string>
-  <string name="openpgp_result_invalid_signature">Недійсний підпис!</string>
-  <string name="openpgp_result_signature_uncertified">Підписано (не засвідчено!)</string>
-  <string name="openpgp_result_signature_certified">Підписано</string>
-  <string name="openpgp_result_signature_expired_key">Строк чинності ключа закінчився!</string>
-  <string name="openpgp_result_signature_revoked_key">Ключ було відкликано!</string>
-  <string name="openpgp_result_signature_insecure">Небезпечно!</string>
-  <string name="openpgp_result_signature_missing_key">Невідомий публічний ключ</string>
-  <string name="openpgp_result_encrypted">зашифровано</string>
-  <string name="openpgp_result_not_encrypted">незашифровано</string>
-  <string name="openpgp_result_decryption_insecure">Небезпечно</string>
-  <string name="openpgp_result_action_show">Показати</string>
-  <string name="openpgp_result_action_lookup">Знайти</string>
-  <string name="openpgp_result_no_name">Без імені</string>
-  <string name="openpgp_result_no_email">Без адреси електронної пошти</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Використовувати сертифікат клієнта</string>
   <string name="client_certificate_spinner_empty">Немає сертифіката клієнта</string>
@@ -927,9 +906,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="client_certificate_retrieval_failure">Помилка отримання сертифіката клієнта для \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Розширені налаштування</string>
   <string name="client_certificate_expired">Сертифікат клієнта \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" втратив чинність або ще не набрав чинності (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Неповне повідомлення</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Натисність \'Завантажити повне повідомлення\', щоб його можна було розшифрувати.</string>
   <string name="preview_encrypted">*Зашифровано*</string>
   <string name="add_from_contacts">Додати з контактів</string>
   <string name="crypto_settings_cancel">Скасувати</string>
@@ -944,26 +921,38 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="address_type_other">Інший</string>
   <string name="address_type_mobile">Мобільний</string>
   <string name="compose_error_no_draft_folder">Не вибрано теку чернеток для цього облікового запису!</string>
-  <string name="compose_not_saving_unencrypted">Чернетка НЕ збережена без шифрування!</string>
-  <string name="compose_error_pgp_error">Помилка провайдера OpenPGP. Перевірте ваші налаштування!</string>
   <string name="compose_error_no_signing_key">Не налаштовано ключа для підписування! Перевірте ваші налаштування!</string>
-  <string name="compose_error_private_missing_keys">Задіяно приватний режим, але деякі отримувачі не мають ключів!</string>
+  <string name="crypto_mode_disabled">Не шифрувати</string>
+  <string name="crypto_mode_opportunistic">Шифрувати якщо можливо</string>
+  <string name="crypto_mode_private">Шифрувати</string>
   <string name="error_crypto_provider_connect">Не можу зв\'язатися з провайдером шифрування; перевірте ваші налаштування або натисніть значок шифрування, щоб спробувати знову!</string>
   <string name="error_crypto_provider_ui_required">Провайдер шифрування відмовив у доступі; натисніть значок шифрування, щоб спробувати знову!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE режим не підтримує вкладення!</string>
-  <string name="enable_inline_pgp">увімкнено PGP/INLINE</string>
-  <string name="disable_inline_pgp">вимкнено PGP/INLINE</string>
-  <string name="openpgp_inline_title">PGP/INLINE режим</string>
-  <string name="openpgp_inline_text">лист було відправлено в форматі PGP/INLINE. \n Це може бути використано виключно для сумісності:</string>
+  <string name="enable_inline_pgp">Увімкнути PGP/INLINE</string>
+  <string name="disable_inline_pgp">Вимкнути PGP/INLINE</string>
+  <string name="enable_sign_only">Дозволити PGP Sign-Only</string>
+  <string name="disable_sign_only">Заборонити PGP Sign-Only</string>
+  <string name="openpgp_inline_title">Режим PGP/INLINE</string>
+  <string name="openpgp_inline_text">Лист буде відправлено в форматі PGP/INLINE.\nВикоритовуйте лише в разі проблем з сумісністю:</string>
   <string name="openpgp_inline_plus_compat">Деякі клієнти підтримують лише цей формат</string>
   <string name="openpgp_inline_minus_transit">Підписи можуть ламатися під час передачі</string>
   <string name="openpgp_inline_minus_attach">вкладення не підтримуються</string>
   <string name="openpgp_inline_ok">Зрозуміло!</string>
   <string name="openpgp_inline_disable">вимкнено</string>
   <string name="openpgp_inline_keep_enabled">Залишити увімкненим</string>
+  <string name="openpgp_sign_only_ok">Зрозуміло</string>
+  <string name="openpgp_sign_only_disable">Вимкнути</string>
+  <string name="openpgp_sign_only_keep_enabled">Зрозуміло</string>
+  <string name="openpgp_dialog_sign_only_title">Режим PGP Sign-Only</string>
+  <string name="openpgp_dialog_sign_only_text">Цей режим дозволяє підписати незашифрований лист вашим PGP ключем.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Це гарантує цілісність листа і те що він був відправлений вами, проте лист буде незашифрованим.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Підписи можуть бути пошкоджені при надсиланні листа у списки розсилки.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Деякі клієнти можуть відображати підписи як вкладення \'signature.asc\'.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Зашифровані листи завжди підписані.</string>
   <string name="crypto_msg_disabled">Повідомлення не зашифроване</string>
   <string name="crypto_msg_encrypted_error">Повідомлення зашифроване, але під час розшифровування виникла помилка.</string>
   <string name="crypto_msg_signed_error">Повідомлення підписане, але підпис не може бути перевірено.</string>
+  <string name="crypto_msg_encrypted_no_provider">Лист зашифрований, але кріптографічний додаток не налаштовано</string>
   <string name="crypto_msg_unsupported_encrypted">Повідомлення зашифроване, але це формат не підтримується.</string>
   <string name="crypto_msg_unsupported_signed">Повідомлення підписане, але цей формат не підтримується.</string>
   <string name="crypto_msg_incomplete_encrypted">Повідомлення зашифроване, але має бути повністю завантажене для розшифровування.</string>
@@ -984,10 +973,9 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="crypto_info_ok">Окей</string>
   <string name="crypto_info_view_key">Переглянути підпис</string>
   <string name="locked_attach_unlock">Розблокувати</string>
-  <string name="locked_attach_unsigned">Ця частина не підписана й може бути небезпечною.</string>
   <string name="locked_attach_unencrypted">Ця частина не зашифрована й може бути небезпечною.</string>
   <string name="locked_attach_title">незахищене вкладення</string>
-  <string name="message_progress_text">Завантаження...</string>
+  <string name="message_progress_text">Завантаження…</string>
   <string name="messageview_decrypt_cancelled">Розшифровування скасовано.</string>
   <string name="messageview_decrypt_retry">спробувати знову</string>
   <string name="messageview_decrypt_incomplete">Для розшифровування зашифроване повідомлення потрібно завантажити.</string>
@@ -999,4 +987,13 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="messageview_crypto_warning_error">В <b>підписі цього повідомлення є помилка!</b></string>
   <string name="recipient_error_non_ascii">Спеціальні символи на разі не підтримуються!</string>
   <string name="recipient_error_parse_failed">Помилка розбору адреси!</string>
+  <string name="account_settings_crypto_support_sign_only">Дозволити PGP Sign-Only режим</string>
+  <string name="error_sign_only_no_encryption">Шифрування недоступне у режимі PGP Sign-Only</string>
+  <string name="unsigned_text_divider_label">Непідписаний Текст</string>
+  <string name="apg_deprecated_ok">Зрозуміло!</string>
+  <string name="crypto_no_provider_title">Цей лист зашифровано</string>
+  <string name="crypto_no_provider_button">Обрати додаток OpenPGP </string>
+  <string name="mail_list_widget_text">Список листів K-9 </string>
+  <string name="mail_list_widget_loading">Завантаження листів…</string>
+  <string name="openpgp_enabled_error_back">Назад</string>
 </resources>

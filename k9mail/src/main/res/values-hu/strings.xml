@@ -41,7 +41,7 @@ Vegye figyelembe, hogy a K-9 nem támogatja a legtöbb ingyenes hotmail fiókot 
 ha Microsoft Exchange-el kommunikál.
 </p><p>
 Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél fel kérdéseket itt:
-<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
@@ -80,6 +80,9 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="status_processing_account">Feldolgozás <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Frissítés <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_no_network">Szinkronizációs hiba - nincs hálózat</string>
+  <string name="status_no_background">Szinkronizációs hiba - háttértevékenység letiltva</string>
+  <string name="status_syncing_blocked">Szinkronizálás letiltva</string>
   <string name="status_syncing_off">Szinkronizálás letiltva</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> kiválasztva</string>
   <string name="next_action">Következő</string>
@@ -89,6 +92,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="cancel_action">Mégse</string>
   <string name="send_action">Küldés</string>
   <string name="send_again_action">Újraküldés</string>
+  <string name="empty_subject">A Tárgy mező üres, kattints újra, ha így szeretnéd elküldeni</string>
   <string name="select_action">Kijelölés</string>
   <string name="deselect_action">Kijelölés törlése</string>
   <string name="reply_action">Válasz</string>
@@ -99,7 +103,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="forward_action">Továbbítás</string>
   <string name="move_action">Áthelyezés</string>
   <string name="single_message_options_action">Küldés…</string>
-  <string name="refile_action">Újratöltés…</string>
+  <string name="refile_action">Rendszerezés…</string>
   <string name="done_action">Kész</string>
   <string name="discard_action">Mégse</string>
   <string name="save_draft_action">Mentés piszkozatként</string>
@@ -126,6 +130,10 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="select_text_action">Szöveg kijelölése</string>
   <string name="show_headers_action">Fejlécek megjelenítése</string>
   <string name="hide_headers_action">Fejlécek elrejtése</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Cím a vágólapra másolva</item>
+    <item quantity="other">Címek a vágólapra másolva</item>
+  </plurals>
   <string name="message_view_theme_action_dark">Váltás sötét témára</string>
   <string name="message_view_theme_action_light">Váltás világos témára</string>
   <string name="mark_as_unread_action">Olvasatlannak jelölés</string>
@@ -146,6 +154,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="status_loading_more">Üzenetek betöltése…</string>
   <string name="status_network_error">Kapcsolódási hiba</string>
   <string name="status_invalid_id_error">Nincs ilyen üzenet</string>
+  <string name="status_loading_error">Üzenetbetöltési hiba</string>
   <string name="status_loading_more_failed">Hibás letöltések újratöltése</string>
   <string name="load_more_messages_fmt">Az utolsó <xliff:g id="messages_to_load">%d</xliff:g> levél frissítése</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -173,6 +182,8 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="notification_action_spam">Spam</string>
   <string name="notification_certificate_error_title">Hitelesítései hiba: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Ellenőrizze a kiszolgáló beállításait</string>
+  <string name="notification_authentication_error_title">Nem sikerült a hitelesítés</string>
+  <string name="notification_authentication_error_text">Hitelesítési hiba: <xliff:g id="account">%s</xliff:g>. Frissítsd a szerverbeállításaid!</string>
   <string name="notification_bg_sync_ticker">Levelek ellenőrzése: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Levelek ellenőrzése</string>
   <string name="notification_bg_send_ticker">Küldés a <xliff:g id="account">%s</xliff:g> fiókkal</string>
@@ -210,6 +221,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> írta:</string>
   <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> írta:</string>
   <string name="message_compose_error_no_recipients">Legalább egy címzetted adjon meg.</string>
+  <string name="compose_error_incomplete_recipient">A CÍMZETT input mező hiányos!</string>
   <string name="error_contact_address_not_found">E-mail cím nem található.</string>
   <string name="message_compose_attachments_skipped_toast">Néhány mellékletet nem lehet továbbítani, mert nem lettek letöltve.</string>
   <string name="message_compose_show_quoted_text_action">Idézet</string>
@@ -221,10 +233,11 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="message_view_attachment_view_action">Megnyit</string>
   <string name="message_view_attachment_download_action">Mentés</string>
   <string name="message_view_status_attachment_not_saved">Nem lehet a mellékletet az SD kártyára menteni.</string>
+  <string name="message_view_status_no_space">A csatolmány nem menthető helyhiány miatt.</string>
   <string name="message_view_show_pictures_action">Képek mutatása</string>
-  <string name="message_view_show_more_attachments_action">Egyéb…</string>
   <string name="message_view_no_viewer">%s nincs társítva semmihez.</string>
   <string name="message_view_download_remainder">Teljes üzenet letöltése</string>
+  <string name="message_view_toast_unable_to_display_message">Nem sikerült megjeleníteni az üzenetet</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Minden fejléc letöltve, de nincs mind megjelenítve.</string>
   <string name="message_additional_headers_retrieval_failed">Nem sikerült betölteni az összes fejlécet adatbázishiba, vagy email szerver hiba miatt.</string>
@@ -261,9 +274,12 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="global_settings_confirm_action_delete_starred">Csillagozott törlése (csak olvasható üzenet)</string>
   <string name="global_settings_confirm_action_spam">Levélszemét</string>
   <string name="global_settings_confirm_menu_discard">Üzenet eldobása</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Összes megjelölése olvasottként</string>
   <string name="global_settings_confirm_action_delete_notif">Törlés (az értesítések közül)</string>
-  <string name="global_settings_privacy_hide_useragent">K-9 Ügynök elrejtése a levél fejlécénél</string>
-  <string name="global_settings_privacy_hide_timezone">UTC időzóna használata a levelek fejlécében</string>
+  <string name="global_settings_privacy_hide_useragent">Levelező kliens elrejtése</string>
+  <string name="global_settings_privacy_hide_useragent_detail">K-9 Ügynök elrejtése a levél fejlécénél</string>
+  <string name="global_settings_privacy_hide_timezone">Időzóna elrejtése.</string>
+  <string name="global_settings_privacy_hide_timezone_detail">UTC időzóna használata a levelek fejlécében</string>
   <string name="global_settings_notification_hide_subject_title">Tárgy elrejtése az értesítésekben</string>
   <string name="global_settings_notification_hide_subject_never">Soha</string>
   <string name="global_settings_notification_hide_subject_when_locked">Ha a készülék le van zárva</string>
@@ -432,6 +448,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="account_settings_notify_sync_summary">Értesítés az állapotsoron adatszinkronizálásánál</string>
   <string name="account_settings_notify_self_label">Értesítés küldéskor</string>
   <string name="account_settings_notify_self_summary">Mutassa az állapotsoron ha a küldés sikeres volt</string>
+  <string name="account_notify_contacts_mail_only_label">Csak a névjegyzékből</string>
   <string name="account_settings_notification_opens_unread_label">Értesítés megnyitása</string>
   <string name="account_settings_notification_opens_unread_summary">Értesítésre kattintva megnyitja az olvasatlan üzeneteket</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Üzenet megjelölése olvasottnak megnyitáskor</string>
@@ -530,21 +547,17 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="folder_settings_in_top_group_label">Megjelenítés a fenti csoportban</string>
   <string name="folder_settings_in_top_group_summary">Mutassa a mappa lista tetején</string>
   <string name="folder_settings_folder_display_mode_label">Osztályozott mappanézet</string>
-  <string name="folder_settings_folder_display_mode_normal">Nincs</string>
   <string name="folder_settings_folder_display_mode_first_class">Elsődleges</string>
   <string name="folder_settings_folder_display_mode_second_class">Másodlagos</string>
-  <string name="folder_settings_folder_sync_mode_label">Osztályozott szinkronizálás</string>
   <string name="folder_settings_folder_sync_mode_normal">Nincs</string>
   <string name="folder_settings_folder_sync_mode_first_class">Elsődleges</string>
   <string name="folder_settings_folder_sync_mode_second_class">Másodlagos</string>
   <string name="folder_settings_folder_sync_mode_inherited">Az aktuális osztály</string>
   <string name="folder_settings_folder_push_mode_label">Osztályozott küldés</string>
-  <string name="folder_settings_folder_push_mode_normal">Nincs</string>
   <string name="folder_settings_folder_push_mode_first_class">Elsődleges</string>
   <string name="folder_settings_folder_push_mode_second_class">Másodlagos</string>
   <string name="folder_settings_folder_push_mode_inherited">Mint a szinkronizált osztály</string>
   <string name="folder_settings_folder_notify_mode_label">Értesítési mappa osztály</string>
-  <string name="folder_settings_folder_notify_mode_normal">Nincs</string>
   <string name="folder_settings_folder_notify_mode_first_class">Elsődleges</string>
   <string name="folder_settings_folder_notify_mode_second_class">Másodlagos</string>
   <string name="folder_settings_folder_notify_mode_inherited">Ugyanaz, mint átküldés osztálynál</string>
@@ -631,7 +644,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Kulcs elutasítva</string>
   <string name="message_list_help_key">Del (vagy D) - Törlés\nR - Válasz\nA - Válasz mindenkinek\nC - Írás\nF - Továbbítás\nM - Áthelyezés\nV - Archiválás\nY - Másolás\nZ - Olvasottnak/Olvasatlannak jelölés\nG - Csillagozás\nO - Rendezés típusa\nI - Sorrend\nQ - Visszatérés a mappákhoz\nS - Kijelölés/Kijelölés megszüntetése\nJ or P - Előző üzenet\nK vagy N - Következő üzenet</string>
   <string name="folder_list_help_key">1 - Csak elsődleges mappákat megjelenítése\n2 - Elsődleges és másodlagos mappák megjelenítése\n3 - Az összes megjelenítése, kivéve a másodlagos mappákat\n4 - Az összes mappa megjelenítése\nQ - Visszatérés a Fiókokhoz\nS - Fiókbeállítások szerkesztése</string>
-  <string name="folder_list_filter_hint">mappa neve</string>
   <string name="folder_list_display_mode_label">Mappák megjelenítése</string>
   <string name="folder_list_display_mode_all">Minden mappa</string>
   <string name="folder_list_display_mode_first_class">Elsődleges mappák</string>
@@ -716,6 +728,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="font_size_message_view_sender">Feladó</string>
   <string name="font_size_message_view_to">Címzett</string>
   <string name="font_size_message_view_cc">Másolatot kap</string>
+  <string name="font_size_message_view_bcc">Titkos másolat</string>
   <string name="font_size_message_view_additional_headers">További fejlécek</string>
   <string name="font_size_message_view_subject">Tárgy</string>
   <string name="font_size_message_view_date">Idő és dátum</string>
@@ -734,6 +747,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="font_size_larger">Nagyobb</string>
   <string name="miscellaneous_preferences">Egyéb</string>
   <string name="error_activity_not_found">Nincs megfelelő alkalmazás ehhez a művelethez.</string>
+  <string name="send_failed_reason">A levelet nem sikerült elküldeni: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Menti piszkozatként?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Menti vagy mégsem az üzenetet?</string>
   <string name="confirm_discard_draft_message_title">Üzenet elvetése?</string>
@@ -747,6 +761,10 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Törlés</string>
   <string name="dialog_confirm_delete_cancel_button">Nem törlöm</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Összes megjelölése olvasottként</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Az összes üzenetet olvasottnak jelölöd?</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Igen</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Nem</string>
   <string name="dialog_confirm_spam_title">Levélszemét mappa áthelyezésének jóváhagyása</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Valóban át akarja helyezni ezt a levelet a spam mappába?</item>
@@ -770,6 +788,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="settings_importing">Beállítások importálása…</string>
   <string name="settings_import_scanning_file">Fájl beolvasása…</string>
   <string name="settings_export_success">Exportált beállítások mentve ide: <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">A beállítások exportálásra kerültek.</string>
   <string name="settings_import_global_settings_success">Az általános beállítások importálva innen: <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">A(z) <xliff:g id="accounts">%s</xliff:g> importálva innen: <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
@@ -838,8 +857,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="account_settings_remote_search_num_label">Kiszolgáló keresési határ</string>
   <string name="account_settings_remote_search_num_summary">A keresés <xliff:g id="num_results">%s</xliff:g> találat után véget ér.</string>
   <string name="remote_search_sending_query">Kérés küldése a szerver felé</string>
-  <string name="remote_search_downloading">%d letöltési eredmény</string>
-  <string name="remote_search_downloading_limited">%1$d letöltése a(z) %2$d eredményből</string>
   <string name="remote_search_error">A távoli keresés sikertelen</string>
   <string name="account_settings_search">Keresés</string>
   <string name="account_settings_remote_search_enabled">Keresés a kiszolgálón engedélyezése</string>
@@ -848,8 +865,8 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Húzza el a kereséshez…</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">Engedje a keresést a kiszolgálón…</string>
   <string name="remote_search_unavailable_no_network">Hálózati kapcsolatra van szükség a kereséshez.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Üzenet elhalványítása olvasás után</string>
-  <string name="global_settings_background_as_unread_indicator_summary">Szürke háttere lesz az elolvasott üzenetnek</string>
+  <string name="global_settings_background_as_unread_indicator_label">Elolvasás után változzon az írás színe</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Külöféle háttérszín fogja jelezni az üzenet elolvasását. </string>
   <string name="global_settings_threaded_view_label">Beszélgetés nézet</string>
   <string name="global_settings_threaded_view_summary">Üzenetek beszélgetésbe csoportosítása</string>
   <string name="upgrade_databases_title">Adatbázisok frissítése</string>
@@ -876,25 +893,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="fetching_attachment_dialog_title_save">Piszkozat mentése</string>
   <string name="fetching_attachment_dialog_message">Melléklet letöltése…</string>
   <string name="auth_external_error">Hitelesítés sikertelen. A szerver nem támogatja a SASL EXTERNAL lehetőséget. Ezt okozhatja valamilyen gond a kliens tanúsítványával (lejárt, ismeretlen hitelesítő), vagy bármi más beállítási probléma.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Titkosítás feloldása sikertelen: %s</string>
-  <string name="openpgp_unknown_error">Ismeretlen OpenPGP Hiba</string>
-  <string name="openpgp_canceled_by_user">Felhasználó által megszakítva</string>
-  <string name="openpgp_result_no_signature">Nincs aláírva</string>
-  <string name="openpgp_result_invalid_signature">Érvénytelen aláírás!</string>
-  <string name="openpgp_result_signature_uncertified">Aláírva általa (nem hitelesített!):</string>
-  <string name="openpgp_result_signature_certified">Aláírva általa:</string>
-  <string name="openpgp_result_signature_expired_key">Kulcs lejárt!</string>
-  <string name="openpgp_result_signature_revoked_key">Kulcs visszavonva!</string>
-  <string name="openpgp_result_signature_insecure">Megbízhatatlan!</string>
-  <string name="openpgp_result_signature_missing_key">Ismeretlen nyilvános kulcs</string>
-  <string name="openpgp_result_encrypted">Titkosított</string>
-  <string name="openpgp_result_not_encrypted">Nem Titkosított</string>
-  <string name="openpgp_result_decryption_insecure">Megbízhatatlan</string>
-  <string name="openpgp_result_action_show">Megjelenítés</string>
-  <string name="openpgp_result_action_lookup">Kikeresés</string>
-  <string name="openpgp_result_no_name">Nincs név</string>
-  <string name="openpgp_result_no_email">Nincs email</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Ügyfél tanúsítvány használata</string>
   <string name="client_certificate_spinner_empty">Ügyfél tanúsítvány nem található</string>
@@ -902,11 +900,10 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="client_certificate_retrieval_failure">A klienstanúsítvány letöltése sikertelen a következő alias-nak: \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Haladó beállítások</string>
   <string name="client_certificate_expired">A kliens tanúsítványa \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" lejárt, vagy még nem érvényes (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Befejezetlen üzenet</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Kattintson a \'Teljes üzenet letöltése\'-re a titkosítás feloldásának engedélyezéséhez.</string>
   <string name="preview_encrypted">*Titkosítva*</string>
   <string name="add_from_contacts">Hozzáadás névjegyekből</string>
+  <string name="crypto_settings_cancel">Mégse</string>
   <string name="crypto_settings_ok">Tovább</string>
   <string name="recipient_cc">Másolat</string>
   <string name="recipient_bcc">Titkos másolat</string>
@@ -917,4 +914,18 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="address_type_work">Munka</string>
   <string name="address_type_other">Egyéb</string>
   <string name="address_type_mobile">Mobil</string>
+  <string name="compose_error_no_draft_folder">Ehhez a fiókhoz nincs beállított Piszkozatok mappa!</string>
+  <string name="compose_error_no_signing_key">Nincs beállítva kulcs az aláíráshoz! Ellenőrizd a beállításokat.</string>
+  <string name="crypto_mode_private">Titkosítás</string>
+  <string name="error_crypto_provider_connect">Nem sikerült kapcsolódni a titkosítás szolgáltatóhoz. Ellenőrizd a beállításokat, vagy kattins ismét a titkosítás ikonra.</string>
+  <string name="error_crypto_inline_attach">PGP/INLINE mód nem támogatja a csatolmányokat!</string>
+  <string name="openpgp_inline_text">Ez a levél PGP/INLINE formátumban lett küldve.\nFelhasználható a következővel való kompatibilitáshoz:</string>
+  <string name="crypto_info_ok">OK</string>
+  <string name="locked_attach_unencrypted">Ez a rész nem volt kódolva és lehet, hogy nem biztonságos.</string>
+  <string name="message_progress_text">Töltés…</string>
+  <string name="messageview_decrypt_retry">Újra</string>
+  <string name="messageview_crypto_warning_title">Biztonsági figyelmeztetés</string>
+  <string name="recipient_error_non_ascii">A különleges karakterek jelenleg nem támogatottak!</string>
+  <string name="mail_list_widget_loading">Üzenetek betöltése…</string>
+  <string name="openpgp_enabled_error_back">Vissza</string>
 </resources>

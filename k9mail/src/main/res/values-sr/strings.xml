@@ -9,7 +9,7 @@
   <string name="remote_control_label">К-9 даљинско управљање</string>
   <string name="remote_control_desc">Дозвољава овој апликацији да управља активностима и поставкама К-9 Поште.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">Гугл, К-9 Шетачи паса.</string>
   <string name="app_copyright_fmt">Ауторска права 2008-<xliff:g>%s</xliff:g> „K-9 Dog Walkers“. Део ауторских права 2006-<xliff:g>%s</xliff:g> Андроид пројекат отвореног ко̂да.</string>
   <string name="app_license">Лиценцирано под Апачи лиценцом, издање 2.0.</string>
   <!--Welcome message-->
@@ -40,11 +40,11 @@
 Имајте на уму да К-9 не подржава већину бесплатних Хотмејл налога и, као и многи клијенти, има мушица при контакту са Мајкрософтовом Разменом.
 </p><p>
 Пријављујте грешке, доприносите нове могућности и постављајте питања на
-<a href=\"https://github.com/k9mail/k-9/\">https://github.com/k9mail/k-9/</a>.
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
 ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nПослато К-9 Поштом са мог Андроид уређаја.</string>
+  <string name="default_signature">-- \nПослато К-9 Поштом са мог Андроид уређаја. Извините због сажетости.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Налог „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњен из К-9 Поште.</string>
   <string name="account_recreate_dlg_instructions_fmt">Сви локални подаци за „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњени. Поставке налога ће остати.</string>
@@ -79,6 +79,10 @@
   <string name="status_processing_account">Обрађујем <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Следећа провера <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_no_network">Синхронизација искључена — нема мреже</string>
+  <string name="status_no_background">Синхронизација искључена — нема позадинске активности</string>
+  <string name="status_poll_and_push_disabled">Проверавање и гурање искључено</string>
+  <string name="status_syncing_blocked">Синхронизација блокирана</string>
   <string name="status_syncing_off">Синхронизација онемогућена</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> изабрано</string>
   <string name="next_action">Следеће</string>
@@ -229,18 +233,21 @@
   <string name="message_view_from_format">Од: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">За:</string>
   <string name="message_view_cc_label">Цц:</string>
+  <string name="message_view_bcc_label">Бцц:</string>
   <string name="message_view_attachment_view_action">Отвори</string>
   <string name="message_view_attachment_download_action">Сачувај</string>
   <string name="message_view_status_attachment_not_saved">Не могу да сачувам прилог на СД картицу.</string>
+  <string name="message_view_status_no_space">Прилог није могао бити сачуван јер нема довољно простора.</string>
   <string name="message_view_show_pictures_action">Прикажи слике</string>
-  <string name="message_view_show_more_attachments_action">Још…</string>
   <string name="message_view_no_viewer">Не могу да нађем прегледач за <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Преузми читаву поруку</string>
   <string name="message_view_toast_unable_to_display_message">Не могу да прикажем поруку</string>
+  <string name="message_view_sender_label">преко %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Сва заглавља су преузета, али нема додатних заглавља за приказ.</string>
   <string name="message_additional_headers_retrieval_failed">Добављање додатних заглавља из базе података или са сервера поште није успело.</string>
   <string name="from_same_sender">Још од овог пошиљаоца</string>
+  <string name="debug_delete_local_body">Исправљање грешака/очисти тело поруке</string>
   <string name="message_discarded_toast">Порука одбачена</string>
   <string name="message_saved_toast">Порука сачувана у нацрте</string>
   <string name="global_settings_flag_label">Прикажи звездице</string>
@@ -273,9 +280,12 @@
   <string name="global_settings_confirm_action_delete_starred">Обриши обележено звездицом (у приказу поруке)</string>
   <string name="global_settings_confirm_action_spam">Померања у нежељене</string>
   <string name="global_settings_confirm_menu_discard">Одбаци поруку</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Означи све поруке прочитаним</string>
   <string name="global_settings_confirm_action_delete_notif">Брисања (из обавештења)</string>
-  <string name="global_settings_privacy_hide_useragent">Уклони К-9 идентификацију из заглавља поруке</string>
-  <string name="global_settings_privacy_hide_timezone">Користи УТЦ за временску зону у заглављу поруке</string>
+  <string name="global_settings_privacy_hide_useragent">Сакриј клијента</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Уклања К-9 идентификацију из заглавља поруке</string>
+  <string name="global_settings_privacy_hide_timezone">Сакриј временску зону</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Коришћење УТЦ уместо локалне зоне у заглављима</string>
   <string name="global_settings_notification_hide_subject_title">Сакриј предмет у обавештењима</string>
   <string name="global_settings_notification_hide_subject_never">Никад</string>
   <string name="global_settings_notification_hide_subject_when_locked">Кад је уређај закључан</string>
@@ -479,7 +489,7 @@
   <string name="account_settings_crypto">Криптографија</string>
   <string name="account_settings_crypto_app">ОпенПГП апликација</string>
   <string name="account_settings_crypto_key">Мој кључ</string>
-  <string name="account_settings_no_openpgp_provider_configured">Нема инсталиране апликације за ОпенПГП</string>
+  <string name="account_settings_no_openpgp_provider_configured">Нема подешене апликације за ОпенПГП</string>
   <string name="account_settings_mail_check_frequency_label">Учесталост провере фасцикли</string>
   <string name="account_settings_storage_title">Складиште</string>
   <string name="account_settings_color_label">Боја налога</string>
@@ -547,7 +557,7 @@
   <string name="folder_settings_folder_display_mode_normal">Ниједна</string>
   <string name="folder_settings_folder_display_mode_first_class">1. класа</string>
   <string name="folder_settings_folder_display_mode_second_class">2. класа</string>
-  <string name="folder_settings_folder_sync_mode_label">Класа синх. фасцикле</string>
+  <string name="folder_settings_folder_sync_mode_label">Класа провере фасцикле</string>
   <string name="folder_settings_folder_sync_mode_normal">Ниједна</string>
   <string name="folder_settings_folder_sync_mode_first_class">1. класа</string>
   <string name="folder_settings_folder_sync_mode_second_class">2. класа</string>
@@ -645,7 +655,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Одбиј кључ</string>
   <string name="message_list_help_key">Del (или D) - обриши\nR - одговори\nA - одговори свима\nC - састави\nF - проследи\nM - помери\nV - архивирај\nY - копирај\nZ - означи као (не)прочитано\nG - обележи звездицом\nO - поређај по\nI - ред ређања\nQ - повратак на фасцикле\nS - означи/уклони ознаку\nJ или P - претходна порука\nK или N - следећа порука</string>
   <string name="folder_list_help_key">1 - приказ само фасцикли 1. класе\n2 - приказ фасцикли 1. и 2. класе\n3 - приказ свих осим фасцикли 2. класе\n4 - приказ свих фасцикли\nQ - повратак на налог\nS - уређивање поставки налога</string>
-  <string name="folder_list_filter_hint">име фасцикле садржи</string>
   <string name="folder_list_display_mode_label">Прикажи фасцикле…</string>
   <string name="folder_list_display_mode_all">Све фасцикле</string>
   <string name="folder_list_display_mode_first_class">Фасцикле 1. класе</string>
@@ -731,6 +740,7 @@
   <string name="font_size_message_view_sender">Пошиљалац</string>
   <string name="font_size_message_view_to">За</string>
   <string name="font_size_message_view_cc">Цц</string>
+  <string name="font_size_message_view_bcc">Бцц</string>
   <string name="font_size_message_view_additional_headers">Додатна заглавља</string>
   <string name="font_size_message_view_subject">Предмет</string>
   <string name="font_size_message_view_date">Време и датум</string>
@@ -792,6 +802,7 @@
   <string name="settings_importing">Увозим поставке…</string>
   <string name="settings_import_scanning_file">Очитавам фајл…</string>
   <string name="settings_export_success">Извезене поставке сачуване у <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">Поставке успешно извезене</string>
   <string name="settings_import_global_settings_success">Увезене опште поставке из <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Увезено <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
@@ -863,8 +874,16 @@
   <string name="account_settings_remote_search_num_label">Ограничење претраге сервера</string>
   <string name="account_settings_remote_search_num_summary">Тражење ће стати након <xliff:g id="num_results">%s</xliff:g> нађених ставки.</string>
   <string name="remote_search_sending_query">Шаљем упит серверу</string>
-  <string name="remote_search_downloading">Добављам %d резултата</string>
-  <string name="remote_search_downloading_limited">Добављам %1$d од %2$d резултата</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">Добављам %d резултат</item>
+    <item quantity="few">Добављам %d резултата</item>
+    <item quantity="other">Добављам %d резултата</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">Добављам %1$d од %2$d резултата</item>
+    <item quantity="few">Добављам %1$d од %2$d резултата</item>
+    <item quantity="other">Добављам %1$d од %2$d резултата</item>
+  </plurals>
   <string name="remote_search_error">Претрага сервера није успела</string>
   <string name="account_settings_search">Претрага</string>
   <string name="account_settings_remote_search_enabled">Омогући претрагу сервера</string>
@@ -873,8 +892,8 @@
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Повуците за тражење на серверу…</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">Пустите за тражење на серверу…</string>
   <string name="remote_search_unavailable_no_network">За претрагу сервера потребна је веза са мрежом.</string>
-  <string name="global_settings_background_as_unread_indicator_label">Потамни поруке након читања</string>
-  <string name="global_settings_background_as_unread_indicator_summary">Сива позадина ће показати да је порука прочитана</string>
+  <string name="global_settings_background_as_unread_indicator_label">Промени боју након читања</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Другачија позадина ће показати да је порука прочитана</string>
   <string name="global_settings_threaded_view_label">Приказ нити</string>
   <string name="global_settings_threaded_view_summary">Груписање порука по препискама</string>
   <string name="upgrade_databases_title">Надоградња база података</string>
@@ -901,25 +920,6 @@
   <string name="fetching_attachment_dialog_title_save">Уписујем нацрт</string>
   <string name="fetching_attachment_dialog_message">Добављам прилог…</string>
   <string name="auth_external_error">Не могу да се аутентификујем.  Сервер не оглашава САСЛ ЕКСТЕРНАЛ могућност.  Узрок може да буде проблем са сертификатом клијента (истекао, непознат ауторитет сертификата) или неки други проблем у подешавању.</string>
-  <!--=== OpenPGP specific ==================================================================-->
-  <string name="openpgp_decryption_failed">Дешифровање није успело: %s</string>
-  <string name="openpgp_unknown_error">Непозната ОпенПГП грешка</string>
-  <string name="openpgp_canceled_by_user">Отказао корисник</string>
-  <string name="openpgp_result_no_signature">Није потписана</string>
-  <string name="openpgp_result_invalid_signature">Неисправан потпис!</string>
-  <string name="openpgp_result_signature_uncertified">Потписник (неоверен!)</string>
-  <string name="openpgp_result_signature_certified">Потписник</string>
-  <string name="openpgp_result_signature_expired_key">Кључ је истекао!</string>
-  <string name="openpgp_result_signature_revoked_key">Кључ је опозван!</string>
-  <string name="openpgp_result_signature_insecure">Небезбедан!</string>
-  <string name="openpgp_result_signature_missing_key">Непознат јавни кључ</string>
-  <string name="openpgp_result_encrypted">Шифрована</string>
-  <string name="openpgp_result_not_encrypted">Није шифрована</string>
-  <string name="openpgp_result_decryption_insecure">Небезбедно</string>
-  <string name="openpgp_result_action_show">Прикажи</string>
-  <string name="openpgp_result_action_lookup">Потражи</string>
-  <string name="openpgp_result_no_name">Нема имена</string>
-  <string name="openpgp_result_no_email">Нема е-адресе</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Користи сертификат клијента</string>
   <string name="client_certificate_spinner_empty">Нема сертификата клијента</string>
@@ -927,9 +927,7 @@
   <string name="client_certificate_retrieval_failure">Неуспех добављања сертификата клијента за псеудоним „<xliff:g id="alias">%s</xliff:g>“</string>
   <string name="client_certificate_advanced_options">Напредне поставке</string>
   <string name="client_certificate_expired">Сертификат клијента „<xliff:g id="certificate_alias">%1$s</xliff:g>“ је истекао или још није важећи (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
-  <string name="crypto_incomplete_message">Непотпуна порука</string>
   <!--Note: This references message_view_download_remainder-->
-  <string name="crypto_download_complete_message_to_decrypt">Кликните на „Преузми читаву поруку“ да дозволите дешифровање.</string>
   <string name="preview_encrypted">*Шифровано*</string>
   <string name="add_from_contacts">Додај из контаката</string>
   <string name="crypto_settings_cancel">Одустани</string>
@@ -944,10 +942,7 @@
   <string name="address_type_other">Остало</string>
   <string name="address_type_mobile">Мобилни</string>
   <string name="compose_error_no_draft_folder">Фасцикла за нацрте није подешена за овај налог!</string>
-  <string name="compose_not_saving_unencrypted">Нацрт НИЈЕ сачуван без шифровања!</string>
-  <string name="compose_error_pgp_error">Грешка ОпенПГП снабдевача. Проверите ваше поставке!</string>
   <string name="compose_error_no_signing_key">Ниједан кључ није подешен за потписивање! Проверите ваше поставке.</string>
-  <string name="compose_error_private_missing_keys">Приватни режим је укључен, али неки примаоци немају кључеве!</string>
   <string name="crypto_mode_disabled">Не шифруј.</string>
   <string name="crypto_mode_opportunistic">Шифруј ако је могуће</string>
   <string name="crypto_mode_private">Шифруј</string>
@@ -956,6 +951,8 @@
   <string name="error_crypto_inline_attach">PGP/INLINE режим не подржава прилоге!</string>
   <string name="enable_inline_pgp">Укључи PGP/INLINE</string>
   <string name="disable_inline_pgp">Искључи PGP/INLINE</string>
+  <string name="enable_sign_only">Укључи ПГП само-потпис</string>
+  <string name="disable_sign_only">Искључи ПГП само-потпис</string>
   <string name="openpgp_inline_title">PGP/INLINE режим</string>
   <string name="openpgp_inline_text">Е-порука је послата у PGP/INLINE формату.\nОво треба да се користи само због компатибилности:</string>
   <string name="openpgp_inline_plus_compat">Неки клијенти подржавају само овај формат</string>
@@ -965,9 +962,19 @@
   <string name="openpgp_inline_disable">Искључи</string>
   <string name="openpgp_inline_keep_enabled">Остави укључено</string>
   <string name="openpgp_sign_only_ok">Важи!</string>
+  <string name="openpgp_sign_only_disable">Искључи</string>
+  <string name="openpgp_sign_only_keep_enabled">Остави укључено</string>
+  <string name="openpgp_dialog_sign_only_title">ПГП режим само-потпис</string>
+  <string name="openpgp_dialog_sign_only_text">У овом режиму ваш ПГП кључ се користи за стварање криптографског потписа од нешифроване поруке.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Ово не шифрује поруку већ само потврђује да сте ви пошиљалац.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Потписи могу да се покваре ако се шаље на мејлинг-листе.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Потписи могу бити приказани као „signature.asc“ прилози у неким клијентима.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Шифроване поруке увек укључују потпис.</string>
   <string name="crypto_msg_disabled">Порука није шифрована</string>
   <string name="crypto_msg_encrypted_error">Порука је шифрована али је дошло до грешке приликом дешифровања.</string>
+  <string name="crypto_msg_encrypted_insecure">Порука је шифрована али није обезбеђена!</string>
   <string name="crypto_msg_signed_error">Порука је потписана али потпис није прошао оверу.</string>
+  <string name="crypto_msg_encrypted_no_provider">Порука је шифрована али није постављена апликација за шифровање.</string>
   <string name="crypto_msg_unsupported_encrypted">Порука је шифрована али у неподржаном формату.</string>
   <string name="crypto_msg_unsupported_signed">Порука је потписана али у неподржаном формату.</string>
   <string name="crypto_msg_incomplete_encrypted">Порука је шифрована али мора бити преузета у потпуности ради дешифровања.</string>
@@ -987,8 +994,8 @@
   <string name="crypto_msg_unsigned_encrypted">Нема потписа, ова порука је можда пресретнута.</string>
   <string name="crypto_info_ok">У реду</string>
   <string name="crypto_info_view_key">Прикажи потписника</string>
+  <string name="crypto_info_view_security_warning">Детаљи</string>
   <string name="locked_attach_unlock">Откључај</string>
-  <string name="locked_attach_unsigned">Овај део није шифрован и можда је небезбедан.</string>
   <string name="locked_attach_unencrypted">Овај део није шифрован и може бити небезбедан.</string>
   <string name="locked_attach_title">Незаштићен прилог</string>
   <string name="message_progress_text">Учитавам…</string>
@@ -1001,7 +1008,33 @@
   <string name="messageview_crypto_warning_expired">Ова порука је потписана <b>истеклим кључем!</b></string>
   <string name="messageview_crypto_warning_insecure">Ова порука је потписана <b>небезбедним кључем!</b></string>
   <string name="messageview_crypto_warning_error">Дошло је до <b>грешке у потпису ове поруке!</b></string>
+  <string name="messageview_crypto_warning_unsigned">Порука је шифрована али није потписана. Порука <b>није обезбеђена с-краја-на-крај</b>!</string>
+  <string name="messageview_crypto_warning_show_anyway">Прикажи поруку свеједно</string>
   <string name="recipient_error_non_ascii">Посебни знакови тренутно нису нису подржани!</string>
   <string name="recipient_error_parse_failed">Грешка прослеђивања адресе!</string>
   <string name="account_settings_crypto_support_sign_only">Подржавај потписивање нешифрованих порука</string>
+  <string name="error_sign_only_no_encryption">Шифровање није могуће у само-потпис режиму!</string>
+  <string name="unsigned_text_divider_label">Непотписан текст</string>
+  <string name="apg_deprecated_title">Упозорење о застарењу АПГ-а</string>
+  <string name="apg_deprecated_1">АПГ се више не одржава!</string>
+  <string name="apg_deprecated_2">Због овога, подршка за АПГ је уклоњена из К-9 поште.</string>
+  <string name="apg_deprecated_bullet_1">Развој је заустављен почетком 2014</string>
+  <string name="apg_deprecated_bullet_2">Садржи непоправљене безбедносне пропусте</string>
+  <string name="apg_learn_more">Кликните <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">овде</a> да сазнате више.</string>
+  <string name="apg_deprecated_ok">Важи!</string>
+  <string name="apg">АПГ</string>
+  <string name="no_crypto_provider_see_global">Нема подешене апликације за ОпенПГП, погледајте глобалне поставке!</string>
+  <string name="crypto_no_provider_title">Ова е-порука је шифрована</string>
+  <string name="crypto_no_provider_message">Ова е-порука је шифрована у ОпенПГП-у.\nДа бисте је прочитали, треба да инсталирате и поставите компатибилну ОпенПГП апликацију.</string>
+  <string name="crypto_no_provider_button">Изаберите ОпенПГП апликацију</string>
+  <string name="mail_list_widget_text">К-9 списак порука</string>
+  <string name="mail_list_widget_loading">Учитавам поруке…</string>
+  <string name="fetching_folders_failed">Добављање списка фасцикли није успело</string>
+  <string name="messageview_crypto_warning_details">Прикажи детаље</string>
+  <string name="openpgp_enabled_error_title">Шифровање није могуће</string>
+  <string name="enable_encryption">Укључи шифровање</string>
+  <string name="disable_encryption">Искључи шифровање</string>
+  <string name="openpgp_enabled_error_gotit">Важи</string>
+  <string name="openpgp_enabled_error_back">Назад</string>
+  <string name="openpgp_enabled_error_disable">Искључи шифровање</string>
 </resources>
