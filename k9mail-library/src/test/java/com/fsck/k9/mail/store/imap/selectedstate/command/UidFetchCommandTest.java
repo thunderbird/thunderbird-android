@@ -2,6 +2,7 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
 import java.util.Collections;
+import java.util.Map;
 
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
@@ -33,9 +34,9 @@ public class UidFetchCommandTest {
 
         String commandString = command.createCommandString();
 
-        assertEquals(commandString, "UID FETCH 1 (UID INTERNALDATE RFC822.SIZE BODY.PEEK[HEADER.FIELDS " +
-                "(date subject from content-type to cc reply-to message-id references in-reply-to X-K9mail-Identity)]" +
-                ")");
+        assertEquals(commandString, "UID FETCH 1 (UID INTERNALDATE RFC822.SIZE BODY.PEEK" +
+                "[HEADER.FIELDS (date subject from content-type to cc reply-to message-id " +
+                "references in-reply-to X-K9mail-Identity)])");
     }
 
     @Test
@@ -102,27 +103,20 @@ public class UidFetchCommandTest {
     private UidFetchCommand createUidFetchCommand(int maximumAutoDownloadMessageSize, Long uid, Item... items) {
         FetchProfile fetchProfile = new FetchProfile();
         Collections.addAll(fetchProfile, items);
-
-        return new UidFetchCommand.Builder()
-                .maximumAutoDownloadMessageSize(maximumAutoDownloadMessageSize)
-                .idSet(Collections.singletonList(uid))
-                .messageParams(fetchProfile, Collections.singletonMap(String.valueOf(uid),
-                        (Message) createImapMessage(String.valueOf(uid))))
-                .build();
+        Map<String, Message> messageMap = Collections.singletonMap(String.valueOf(uid),
+                (Message) createImapMessage(String.valueOf(uid)));
+        return UidFetchCommand.createWithMessageParams(Collections.singleton(uid),
+                maximumAutoDownloadMessageSize, messageMap, fetchProfile);
     }
 
     private Part createPart(String serverExtra) {
         Part part = mock(Part.class);
         when(part.getServerExtra()).thenReturn(serverExtra);
-
         return part;
     }
 
     private UidFetchCommand createUidFetchCommand(int maximumAutoDownloadMessageSize, Long uid, Part part) {
-        return new UidFetchCommand.Builder()
-                .maximumAutoDownloadMessageSize(maximumAutoDownloadMessageSize)
-                .idSet(Collections.singletonList(uid))
-                .partParams(part, null)
-                .build();
+        return UidFetchCommand.createWithPartParams(Collections.singleton(uid),
+                maximumAutoDownloadMessageSize, part, null);
     }
 }
