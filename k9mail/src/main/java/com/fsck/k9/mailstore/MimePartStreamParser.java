@@ -31,12 +31,12 @@ public class MimePartStreamParser {
             throws MessagingException, IOException {
         MimeBodyPart parsedRootPart = new MimeBodyPart();
 
-        MimeConfig parserConfig  = new MimeConfig();
+        MimeConfig.Builder parserConfig  = new MimeConfig.Builder();
         parserConfig.setMaxHeaderLen(-1);
         parserConfig.setMaxLineLen(-1);
         parserConfig.setMaxHeaderCount(-1);
 
-        MimeStreamParser parser = new MimeStreamParser(parserConfig);
+        MimeStreamParser parser = new MimeStreamParser(parserConfig.build());
         parser.setContentHandler(new PartBuilder(fileFactory, parsedRootPart));
         parser.setRecurse();
 

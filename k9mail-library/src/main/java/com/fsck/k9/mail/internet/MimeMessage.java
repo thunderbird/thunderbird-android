@@ -36,6 +36,7 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
+import org.apache.james.mime4j.stream.MimeConfig.Builder;
 
 
 /**
@@ -102,12 +103,12 @@ public class MimeMessage extends Message {
 
         mBody = null;
 
-        MimeConfig parserConfig  = new MimeConfig();
-        parserConfig.setMaxHeaderLen(-1); // The default is a mere 10k
-        parserConfig.setMaxLineLen(-1); // The default is 1000 characters. Some MUAs generate
+        MimeConfig.Builder configBuilder = new MimeConfig.Builder();
+        configBuilder.setMaxHeaderLen(-1); // The default is a mere 10k
+        configBuilder.setMaxLineLen(-1); // The default is 1000 characters. Some MUAs generate
         // REALLY long References: headers
-        parserConfig.setMaxHeaderCount(-1); // Disable the check for header count.
-        MimeStreamParser parser = new MimeStreamParser(parserConfig);
+        configBuilder.setMaxHeaderCount(-1); // Disable the check for header count.
+        MimeStreamParser parser = new MimeStreamParser(configBuilder.build());
         parser.setContentHandler(new MimeMessageBuilder(new DefaultBodyFactory()));
         if (recurse) {
             parser.setRecurse();

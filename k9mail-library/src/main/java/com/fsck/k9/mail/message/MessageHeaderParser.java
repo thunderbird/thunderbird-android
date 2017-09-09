@@ -30,11 +30,11 @@ public class MessageHeaderParser {
     }
 
     private static MimeStreamParser getMimeStreamParser() {
-        MimeConfig parserConfig = new MimeConfig();
+        MimeConfig.Builder parserConfig = new MimeConfig.Builder();
         parserConfig.setMaxHeaderLen(-1);
         parserConfig.setMaxLineLen(-1);
         parserConfig.setMaxHeaderCount(-1);
-        return new MimeStreamParser(parserConfig);
+        return new MimeStreamParser(parserConfig.build());
     }
 
     private static class MessageHeaderParserContentHandler implements ContentHandler {
