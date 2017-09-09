@@ -408,9 +408,9 @@ public class AccountSettings {
             for (String setting : settingsToRename) {
                 String value = (String) settings.get(setting + "Name");
                 if (value != null) {
-                    settings.put(setting+"Id", value);
+                    settings.put(setting + "Id", value);
                 }
-                deletedSettings.add(setting+"Name");
+                deletedSettings.add(setting + "Name");
             }
 
             return deletedSettings;
