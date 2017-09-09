@@ -1009,7 +1009,7 @@ public class AccountSettings extends K9PreferenceActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                folders = account.getLocalStore().getPersonalNamespaces(false);
+                folders = account.getLocalStore().getFolders(false);
             } catch (Exception e) {
                 /// this can't be checked in
             }

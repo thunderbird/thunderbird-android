@@ -129,24 +129,25 @@ public class LocalStore extends Store {
     static final int MSG_INDEX_HEADER_DATA = 25;
 
     static final String GET_FOLDER_COLS =
-        "folders.id, remoteId, name, visible_limit, last_updated, status, push_state, last_pushed, " +
-        "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages";
+        "folders.id, folders.remoteId, folders.parentRemoteId, folders.name, folders.visible_limit, folders.last_updated, folders.status, folders.push_state, folders.last_pushed, " +
+        "folders.integrate, folders.top_group, folders.poll_class, folders.push_class, folders.display_class, folders.notify_class, folders.more_messages";
 
     static final int FOLDER_ID_INDEX = 0;
     static final int FOLDER_REMOTE_ID_INDEX = 1;
-    static final int FOLDER_NAME_INDEX = 2;
-    static final int FOLDER_VISIBLE_LIMIT_INDEX = 3;
-    static final int FOLDER_LAST_CHECKED_INDEX = 4;
-    static final int FOLDER_STATUS_INDEX = 5;
-    static final int FOLDER_PUSH_STATE_INDEX = 6;
-    static final int FOLDER_LAST_PUSHED_INDEX = 7;
-    static final int FOLDER_INTEGRATE_INDEX = 8;
-    static final int FOLDER_TOP_GROUP_INDEX = 9;
-    static final int FOLDER_SYNC_CLASS_INDEX = 10;
-    static final int FOLDER_PUSH_CLASS_INDEX = 11;
-    static final int FOLDER_DISPLAY_CLASS_INDEX = 12;
-    static final int FOLDER_NOTIFY_CLASS_INDEX = 13;
-    static final int MORE_MESSAGES_INDEX = 14;
+    static final int FOLDER_PARENT_REMOTE_ID_INDEX = 2;
+    static final int FOLDER_NAME_INDEX = 3;
+    static final int FOLDER_VISIBLE_LIMIT_INDEX = 4;
+    static final int FOLDER_LAST_CHECKED_INDEX = 5;
+    static final int FOLDER_STATUS_INDEX = 6;
+    static final int FOLDER_PUSH_STATE_INDEX = 7;
+    static final int FOLDER_LAST_PUSHED_INDEX = 8;
+    static final int FOLDER_INTEGRATE_INDEX = 9;
+    static final int FOLDER_TOP_GROUP_INDEX = 10;
+    static final int FOLDER_SYNC_CLASS_INDEX = 11;
+    static final int FOLDER_PUSH_CLASS_INDEX = 12;
+    static final int FOLDER_DISPLAY_CLASS_INDEX = 13;
+    static final int FOLDER_NOTIFY_CLASS_INDEX = 14;
+    static final int MORE_MESSAGES_INDEX = 15;
 
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -179,7 +180,7 @@ public class LocalStore extends Store {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 61;
+    public static final int DB_VERSION = 62;
 
     private final Context context;
     private final ContentResolver contentResolver;
@@ -193,7 +194,7 @@ public class LocalStore extends Store {
     private final LockableDatabase database;
 
     private final Map<Long, LocalFolder> foldersByDatabaseId = new HashMap<>();
-    private final Map<String, LocalFolder> foldersByRemoteId = new HashMap<>();
+    private final Map<String, LocalFolder> foldersByRemoteId = new ConcurrentHashMap<>();
 
     /**
      * local://localhost/path/to/database/uuid.db
@@ -398,7 +399,6 @@ public class LocalStore extends Store {
     public LocalFolder getFolder(String remoteId) {
         if (!foldersByRemoteId.containsKey(remoteId)) {
             foldersByRemoteId.put(remoteId, new LocalFolder(this, remoteId));
-            return foldersByRemoteId.get(remoteId);
         }
         return foldersByRemoteId.get(remoteId);
     }
@@ -417,7 +417,7 @@ public class LocalStore extends Store {
 
     // TODO this takes about 260-300ms, seems slow.
     @Override
-    @NonNull public List<LocalFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    @NonNull public List<LocalFolder> getFolders(boolean forceListAll) throws MessagingException {
         final List<LocalFolder> folders = new LinkedList<>();
         try {
             database.execute(false, new DbCallback < List <? extends Folder >> () {
@@ -427,7 +427,46 @@ public class LocalStore extends Store {
 
                     try {
                         cursor = db.rawQuery("SELECT " + GET_FOLDER_COLS + " FROM folders " +
-                                "ORDER BY name ASC", null);
+                                "ORDER BY folders.name ASC", null);
+                        while (cursor.moveToNext()) {
+                            if (cursor.isNull(FOLDER_ID_INDEX)) {
+                                continue;
+                            }
+                            LocalFolder folder = getFolderByDatabaseId(cursor.getLong(FOLDER_ID_INDEX));
+                            if (folder == null) {
+                                folder = getFolder(cursor.getString(FOLDER_REMOTE_ID_INDEX));
+                            }
+                            folder.open(cursor);
+
+                            folders.add(folder);
+                        }
+                        return folders;
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    } finally {
+                        Utility.closeQuietly(cursor);
+                    }
+                }
+            });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
+        }
+        return folders;
+    }
+
+    @Override
+    @NonNull public List<LocalFolder> getSubFolders(final String parentFolderId, boolean forceListAll) throws MessagingException {
+        final List<LocalFolder> folders = new LinkedList<>();
+        try {
+            database.execute(false, new DbCallback < List <? extends Folder >> () {
+                @Override
+                public List <? extends Folder > doDbWork(final SQLiteDatabase db) throws WrappedException {
+                    Cursor cursor = null;
+
+                    try {
+                        cursor = db.rawQuery("SELECT " + GET_FOLDER_COLS + " FROM folders " +
+                                "WHERE folders.parentRemoteId = ? " +
+                                "ORDER BY folders.name ASC", new String[]{parentFolderId});
                         while (cursor.moveToNext()) {
                             if (cursor.isNull(FOLDER_ID_INDEX)) {
                                 continue;

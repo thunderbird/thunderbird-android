@@ -89,6 +89,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     private String remoteId = null;
     private String name = null;
+    private String parentRemoteId = null;
     private long databaseId = -1;
     private int visibleLimit = -1;
     private String prefId = null;
@@ -202,6 +203,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         databaseId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
         localStore.setFolderByDatabaseId(databaseId, this);
         remoteId = cursor.getString(LocalStore.FOLDER_REMOTE_ID_INDEX);
+        parentRemoteId = cursor.getString(LocalStore.FOLDER_PARENT_REMOTE_ID_INDEX);
         localStore.setFolderByRemoteId(remoteId, this);
         name = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
         visibleLimit = cursor.getInt(LocalStore.FOLDER_VISIBLE_LIMIT_INDEX);
@@ -242,6 +244,11 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     @Override
+    public String getParentId() {
+        return parentRemoteId;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -266,6 +273,12 @@ public class LocalFolder extends Folder<LocalMessage> {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean canHaveSubFolders() {
+        //TODO: Update based on the remote folder
+        return true;
     }
 
     @Override
@@ -398,6 +411,16 @@ public class LocalFolder extends Folder<LocalMessage> {
             throw new WrappedException(e);
         }
         updateFolderColumn("name", name);
+    }
+
+    public void setParentId(@NonNull String parentRemoteId) throws MessagingException {
+        try {
+            open(OPEN_MODE_RW);
+            this.parentRemoteId = parentRemoteId;
+        } catch (MessagingException e) {
+            throw new WrappedException(e);
+        }
+        updateFolderColumn("parentRemoteId", parentRemoteId);
     }
 
     @Override

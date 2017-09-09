@@ -365,6 +365,23 @@ public class MessagingController {
     }
 
     /**
+     * Lists subfolders that are available locally and remotely. This method calls
+     * listSubFoldersCallback for local folders before it returns, and then for
+     * remote folders at some later point. If there are no local folders
+     * includeRemote is forced by this method. This method should be called from
+     * a Thread as it may take several seconds to list the local folders.
+     * TODO this needs to cache the remote folder list
+     */
+    public void listSubFolders(final Account account, final String parentFolderId, final boolean refreshRemote, final MessagingListener listener) {
+        threadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                listSubFoldersSynchronous(account, parentFolderId, refreshRemote, listener);
+            }
+        });
+    }
+
+    /**
      * Lists folders that are available locally and remotely. This method calls
      * listFoldersCallback for local folders before it returns, and then for
      * remote folders at some later point. If there are no local folders
@@ -383,7 +400,58 @@ public class MessagingController {
         } else {
             try {
                 LocalStore localStore = account.getLocalStore();
-                localFolders = localStore.getPersonalNamespaces(false);
+                localFolders = localStore.getFolders(false);
+
+                if (refreshRemote || localFolders.isEmpty()) {
+                    doRefreshRemote(account, listener);
+                    return;
+                }
+
+                for (MessagingListener l : getListeners(listener)) {
+                    l.listFolders(account, localFolders);
+                }
+            } catch (Exception e) {
+                for (MessagingListener l : getListeners(listener)) {
+                    Timber.w(e, "Failed to list folders");
+                    l.listFoldersFailed(account, e.getMessage());
+                }
+
+                addErrorMessage(account, null, e);
+                return;
+            } finally {
+                if (localFolders != null) {
+                    for (Folder localFolder : localFolders) {
+                        closeFolder(localFolder);
+                    }
+                }
+            }
+        }
+
+        for (MessagingListener l : getListeners(listener)) {
+            l.listFoldersFinished(account);
+        }
+    }
+
+    /**
+     * Lists subfolders that are available locally and remotely. This method calls
+     * listSubFoldersCallback for local folders before it returns, and then for
+     * remote folders at some later point. If there are no local folders
+     * includeRemote is forced by this method. This method is called in the
+     * foreground.
+     * TODO this needs to cache the remote subfolder list
+     */
+    public void listSubFoldersSynchronous(final Account account, final String parentFolderId, final boolean refreshRemote,
+            final MessagingListener listener) {
+        for (MessagingListener l : getListeners(listener)) {
+            l.listFoldersStarted(account);
+        }
+        List<LocalFolder> localFolders = null;
+        if (!account.isAvailable(context)) {
+            Timber.i("not listing subfolders of unavailable account");
+        } else {
+            try {
+                LocalStore localStore = account.getLocalStore();
+                localFolders = localStore.getSubFolders(parentFolderId, false);
 
                 if (refreshRemote || localFolders.isEmpty()) {
                     doRefreshRemote(account, listener);
@@ -429,13 +497,13 @@ public class MessagingController {
         try {
             Store store = account.getRemoteStore();
 
-            List<? extends Folder> remoteFolders = store.getPersonalNamespaces(false);
+            List<? extends Folder> remoteFolders = store.getFolders(false);
 
             LocalStore localStore = account.getLocalStore();
             Map<String, Folder> remoteFolderMap = new HashMap<>();
             List<LocalFolder> foldersToCreate = new LinkedList<>();
 
-            localFolders = localStore.getPersonalNamespaces(false);
+            localFolders = localStore.getFolders(false);
             Set<String> localFolderIds = new HashSet<>();
             for (Folder localFolder : localFolders) {
                 localFolderIds.add(localFolder.getId());
@@ -450,7 +518,7 @@ public class MessagingController {
             }
             localStore.createFolders(foldersToCreate, account.getDisplayCount());
 
-            localFolders = localStore.getPersonalNamespaces(false);
+            localFolders = localStore.getFolders(false);
 
             /*
              * Clear out any folders that are no longer on the remote store.
@@ -468,13 +536,18 @@ public class MessagingController {
                         !remoteFolderMap.containsKey(localFolderId)) {
                     localFolder.delete(false);
                 }
+            }
+
+            localFolders = localStore.getFolders(false);
+
+            for (LocalFolder localFolder : localFolders) {
+                String localFolderId = localFolder.getId();
 
                 if (remoteFolderMap.containsKey(localFolderId)) {
                     localFolder.setName(remoteFolderMap.get(localFolderId).getName());
+                    localFolder.setParentId(remoteFolderMap.get(localFolderId).getParentId());
                 }
             }
-
-            localFolders = localStore.getPersonalNamespaces(false);
 
             for (MessagingListener l : getListeners(listener)) {
                 l.listFolders(account, localFolders);
@@ -484,6 +557,7 @@ public class MessagingController {
             }
         } catch (Exception e) {
             for (MessagingListener l : getListeners(listener)) {
+                Timber.w(e, "Unable to list folders");
                 l.listFoldersFailed(account, "");
             }
             addErrorMessage(account, null, e);
@@ -3681,7 +3755,7 @@ public class MessagingController {
             Account.FolderMode aSyncMode = account.getFolderSyncMode();
 
             Store localStore = account.getLocalStore();
-            for (final Folder folder : localStore.getPersonalNamespaces(false)) {
+            for (final Folder folder : localStore.getFolders(false)) {
                 folder.open(Folder.OPEN_MODE_RW);
 
                 Folder.FolderClass fDisplayClass = folder.getDisplayClass();
@@ -4085,7 +4159,7 @@ public class MessagingController {
             List<String> names = new ArrayList<>();
 
             Store localStore = account.getLocalStore();
-            for (final Folder folder : localStore.getPersonalNamespaces(false)) {
+            for (final Folder folder : localStore.getFolders(false)) {
                 if (folder.getId().equals(account.getErrorFolderId())
                         || folder.getId().equals(account.getOutboxFolderId())) {
                     /*

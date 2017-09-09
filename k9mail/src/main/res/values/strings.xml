@@ -89,6 +89,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Accounts</string>
     <string name="folders_title">Folders</string>
+    <string name="subfolders_title">Folders - <xliff:g id="parent_folder">%s</xliff:g></string>
     <string name="advanced">Advanced</string>
 
     <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>

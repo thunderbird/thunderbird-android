@@ -71,6 +71,7 @@ class ImapFolder extends Folder<ImapMessage> {
     protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
     private final FolderNameCodec folderNameCodec;
     private final String id;
+    private final String parentId;
     private final String name;
     private int mode;
     private volatile boolean exists;
@@ -86,7 +87,8 @@ class ImapFolder extends Folder<ImapMessage> {
         super();
         this.store = store;
         this.id = id;
-        this.name = id;
+        this.parentId = store.getParentId("id");
+        this.name = store.getFolderName(id);
         this.folderNameCodec = folderNameCodec;
     }
 
@@ -244,6 +246,11 @@ class ImapFolder extends Folder<ImapMessage> {
     }
 
     @Override
+    public String getParentId() {
+        return store.getParentId(id);
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -299,6 +306,12 @@ class ImapFolder extends Folder<ImapMessage> {
                 store.releaseConnection(connection);
             }
         }
+    }
+
+    @Override
+    public boolean canHaveSubFolders() {
+        //TODO: Use the output of LIST/LSUB to define this.
+        return true;
     }
 
     @Override

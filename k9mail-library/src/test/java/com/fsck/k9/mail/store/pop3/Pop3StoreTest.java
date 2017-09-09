@@ -185,7 +185,7 @@ public class Pop3StoreTest {
 
     @Test
     public void getPersonalNamespace_shouldReturnListConsistingOfInbox() throws Exception {
-        List<Pop3Folder> folders = store.getPersonalNamespaces(true);
+        List<Pop3Folder> folders = store.getFolders(true);
 
         assertEquals(1, folders.size());
         assertEquals("Inbox", folders.get(0).getId());

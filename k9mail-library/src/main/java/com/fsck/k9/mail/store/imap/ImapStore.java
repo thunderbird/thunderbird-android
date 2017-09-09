@@ -138,7 +138,28 @@ public class ImapStore extends RemoteStore {
     }
 
     @Override
-    @NonNull public List<ImapFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    @NonNull
+    public List<ImapFolder> getFolders(boolean forceListAll) throws MessagingException {
+        return getPersonalNamespaces(forceListAll);
+    }
+
+    @Override
+    @NonNull
+    public List<ImapFolder> getSubFolders(final String parentFolderId, boolean forceListAll) throws MessagingException {
+        List<ImapFolder> folders = getPersonalNamespaces(forceListAll);
+        List<ImapFolder> subFolders = new ArrayList<>();
+
+        for (ImapFolder folder: folders) {
+            if (!folder.getId().equals(parentFolderId) && folder.getId().startsWith(parentFolderId)) {
+                subFolders.add(folder);
+            }
+        }
+
+        return subFolders;
+    }
+
+    @NonNull
+    public List<ImapFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         ImapConnection connection = getConnection();
 
         try {
@@ -399,6 +420,22 @@ public class ImapStore extends RemoteStore {
     @Override
     public Pusher getPusher(PushReceiver receiver) {
         return new ImapPusher(this, receiver);
+    }
+
+    String getParentId(@NonNull String id) {
+        if (pathDelimiter == null || id.lastIndexOf(pathDelimiter) == -1) {
+            return "";
+        } else {
+            return id.substring(0, id.lastIndexOf(pathDelimiter));
+        }
+    }
+
+    public String getFolderName(String id) {
+        if (pathDelimiter == null || id.lastIndexOf(pathDelimiter) == -1) {
+            return id;
+        } else {
+            return id.substring(id.lastIndexOf(pathDelimiter)+pathDelimiter.length());
+        }
     }
 
 

@@ -42,6 +42,7 @@ public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_SHOW_CURRENT = "com.fsck.k9.ChooseFolder_showcurrent";
     public static final String EXTRA_SHOW_FOLDER_NONE = "com.fsck.k9.ChooseFolder_showOptionNone";
     public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = "com.fsck.k9.ChooseFolder_showDisplayableOnly";
+    public static final String EXTRA_SHOW_AS_TREE_STRUCTURE = "com.fsck.k9.ChooseFolder_showAsTreeStructure";
 
 
     String mFolderId;
@@ -78,6 +79,7 @@ public class ChooseFolder extends K9ListActivity {
     boolean mHideCurrentFolder = true;
     boolean mShowOptionNone = false;
     boolean mShowDisplayableOnly = false;
+    boolean mShowAsTreeStructure = false;
 
     /**
      * What folders to display.<br/>
@@ -123,6 +125,9 @@ public class ChooseFolder extends K9ListActivity {
         if (intent.getStringExtra(EXTRA_SHOW_DISPLAYABLE_ONLY) != null) {
             mShowDisplayableOnly = true;
         }
+        if (intent.getStringExtra(EXTRA_SHOW_AS_TREE_STRUCTURE) != null) {
+            mShowAsTreeStructure = true;
+        }
         if (mFolderId == null)
             mFolderId = "";
 
@@ -163,7 +168,7 @@ public class ChooseFolder extends K9ListActivity {
         });
     }
 
-    class ChooseFolderHandler extends Handler {
+    private class ChooseFolderHandler extends Handler {
         private static final int MSG_PROGRESS = 1;
         private static final int MSG_SET_SELECTED_FOLDER = 2;
 
@@ -188,7 +193,7 @@ public class ChooseFolder extends K9ListActivity {
             sendMessage(msg);
         }
 
-        public void setSelectedFolder(int position) {
+        void setSelectedFolder(int position) {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_SET_SELECTED_FOLDER;
             msg.arg1 = position;

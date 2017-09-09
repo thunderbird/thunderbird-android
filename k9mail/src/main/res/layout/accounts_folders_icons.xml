@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/active_icons"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
@@ -30,7 +31,9 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:ellipsize="end"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="10"
+        />
 
     </LinearLayout>
 
@@ -56,7 +59,42 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:ellipsize="end"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/folder_button_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/new_message_count_wrapper"
+        android:layout_toEndOf="@id/new_message_count_wrapper"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="2dip"
+            android:layout_marginRight="4dip"
+            android:background="?android:attr/dividerVertical" />
+
+        <ImageButton
+            android:id="@+id/folders"
+            android:gravity="center_vertical"
+            android:focusable="false"
+            android:layout_marginRight="43dip"
+            android:src="?attr/iconFolder"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:contentDescription="@string/folders_title"
+            />
 
     </LinearLayout>
 

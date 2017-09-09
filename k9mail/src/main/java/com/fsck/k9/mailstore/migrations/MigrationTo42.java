@@ -22,7 +22,7 @@ class MigrationTo42 {
             long startTime = SystemClock.elapsedRealtime();
             StorageEditor editor = storage.edit();
 
-            List<? extends Folder > folders = localStore.getPersonalNamespaces(true);
+            List<? extends Folder > folders = localStore.getFolders(true);
             for (Folder folder : folders) {
                 if (folder instanceof LocalFolder) {
                     LocalFolder lFolder = (LocalFolder)folder;

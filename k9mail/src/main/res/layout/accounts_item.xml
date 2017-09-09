@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        android:id="@+id/accounts_item_layout"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?android:attr/listPreferredItemHeight"
-        android:orientation="horizontal"
-        android:descendantFocusability="blocksDescendants"
-        android:gravity="center_vertical">
+    android:id="@+id/accounts_item_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants"
+    android:gravity="center_vertical"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <View
             android:id="@+id/chip"
@@ -33,7 +34,9 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                tools:text="Main"
+            />
 
         <TextView
                 android:id="@+id/email"
@@ -42,39 +45,11 @@
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textColor="?android:attr/textColorSecondary"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                tools:text="Email"
+            />
 
     </LinearLayout>
 
     <include layout="@layout/accounts_folders_icons"/>
-
-    <LinearLayout
-            android:id="@+id/folder_button_wrapper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-
-        <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dip"
-                android:layout_marginRight="4dip"
-                android:background="?android:attr/dividerVertical" />
-
-        <ImageButton
-                android:id="@+id/folders"
-                android:gravity="center_vertical"
-                android:focusable="false"
-                android:layout_marginRight="3dip"
-                android:src="?attr/iconFolder"
-                android:background="?android:attr/selectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:padding="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                />
-
-    </LinearLayout>
 </LinearLayout>

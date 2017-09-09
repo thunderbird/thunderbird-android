@@ -221,6 +221,11 @@ class WebDavFolder extends Folder<WebDavMessage> {
     }
 
     @Override
+    public boolean canHaveSubFolders() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
     public void close() {
         this.messageCount = 0;
         this.unreadMessageCount = 0;

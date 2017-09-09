@@ -255,7 +255,7 @@ public class WebDavStoreTest {
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
-        webDavStore.getPersonalNamespaces(true);
+        webDavStore.getFolders(true);
 
         List<HttpGeneric> requests = requestCaptor.getAllValues();
         assertEquals(4, requests.size()); // AUTH + 2
@@ -269,7 +269,7 @@ public class WebDavStoreTest {
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
-        webDavStore.getPersonalNamespaces(true);
+        webDavStore.getFolders(true);
 
         verify(storeConfig).setInboxFolderId("Inbox");
     }
@@ -281,7 +281,7 @@ public class WebDavStoreTest {
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
-        webDavStore.getPersonalNamespaces(true);
+        webDavStore.getFolders(true);
 
         List<HttpGeneric> requests = requestCaptor.getAllValues();
         assertEquals(4, requests.size()); // AUTH + SPECIALFOLDERS + 1
@@ -295,7 +295,7 @@ public class WebDavStoreTest {
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
-        List<? extends Folder> folders = webDavStore.getPersonalNamespaces(true);
+        List<? extends Folder> folders = webDavStore.getFolders(true);
 
         List<HttpGeneric> requests = requestCaptor.getAllValues();
 

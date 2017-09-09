@@ -81,6 +81,7 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
         db.execSQL("CREATE TABLE folders (" +
                 "id INTEGER PRIMARY KEY," +
                 "remoteId TEXT, " +
+                "parentRemoteId TEXT, " +
                 "name TEXT, " +
                 "last_updated INTEGER, " +
                 "unread_count INTEGER, " +

@@ -147,7 +147,7 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"*\"")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<? extends Folder> result = imapStore.getPersonalNamespaces(true);
+        List<? extends Folder> result = imapStore.getFolders(true);
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderIds(result));
@@ -168,7 +168,7 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"pathPrefix/*\"")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<? extends Folder> result = imapStore.getPersonalNamespaces(true);
+        List<? extends Folder> result = imapStore.getFolders(true);
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderIds(result));
@@ -187,7 +187,7 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"*\"")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<? extends Folder> result = imapStore.getPersonalNamespaces(false);
+        List<? extends Folder> result = imapStore.getFolders(false);
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderIds(result));
@@ -215,7 +215,7 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"*\"")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<? extends Folder> result = imapStore.getPersonalNamespaces(false);
+        List<? extends Folder> result = imapStore.getFolders(false);
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderIds(result));
@@ -228,7 +228,7 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand(anyString())).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        imapStore.getPersonalNamespaces(true);
+        imapStore.getFolders(true);
 
         verify(imapConnection, never()).close();
     }
@@ -240,12 +240,19 @@ public class ImapStoreTest {
         imapStore.enqueueImapConnection(imapConnection);
 
         try {
-            imapStore.getPersonalNamespaces(true);
+            imapStore.getFolders(true);
             fail("Expected exception");
         } catch (MessagingException ignored) {
         }
 
         verify(imapConnection).close();
+    }
+
+    @Test
+    public void getParentId_shouldReturnCorrectValue() {
+        String result = imapStore.getParentId("Folder.SubFolder");
+
+        assertEquals("Folder", result);
     }
 
     @Test
@@ -333,7 +340,6 @@ public class ImapStoreTest {
 
         return folderNames;
     }
-
 
     private static class TestImapStore extends ImapStore {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();

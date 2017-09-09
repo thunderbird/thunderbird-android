@@ -17,6 +17,10 @@ public abstract class Folder<T extends Message> {
     public static final int OPEN_MODE_RW=0;
     public static final int OPEN_MODE_RO=1;
 
+    public String getParentId() {
+        return null;
+    }
+
     // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
     public enum FolderClass {
         NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS
@@ -79,6 +83,12 @@ public abstract class Folder<T extends Message> {
      * @return true if the folder exists
      */
     public abstract boolean exists() throws MessagingException;
+
+    /**
+     * This should not perform a network request
+     * @return whether the folder is able to contain subfolders.
+     */
+    public abstract boolean canHaveSubFolders();
 
     /**
      * This should not perform a network request.

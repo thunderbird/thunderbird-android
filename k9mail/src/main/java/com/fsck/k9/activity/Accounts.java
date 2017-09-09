@@ -1841,14 +1841,15 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             if (account instanceof SearchAccount) {
                 holder.folders.setVisibility(View.GONE);
-            } else {
+            } else if (account instanceof Account) {
                 holder.folders.setVisibility(View.VISIBLE);
                 holder.folders.setOnClickListener(new OnClickListener() {
                     public void onClick(View v) {
                         FolderList.actionHandleAccount(Accounts.this, (Account)account);
-
                     }
                 });
+            } else {
+                Timber.e("Unhandled account type:" + account.getClass().getName());
             }
 
             return view;

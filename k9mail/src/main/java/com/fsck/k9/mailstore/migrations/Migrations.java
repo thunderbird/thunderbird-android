@@ -77,6 +77,8 @@ public class Migrations {
                 MigrationTo60.migratePendingCommands(db);
             case 60:
                 MigrationTo61.addFolderRemoteId(db);
+            case 61:
+                MigrationTo62.addFolderParentRemoteId(db);
         }
     }
 }

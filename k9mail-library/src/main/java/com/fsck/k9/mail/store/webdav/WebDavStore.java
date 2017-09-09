@@ -174,7 +174,7 @@ public class WebDavStore extends RemoteStore {
 
     @Override
     @NonNull
-    public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    public List<? extends Folder> getFolders(boolean forceListAll) throws MessagingException {
         List<Folder> folderList = new LinkedList<>();
         /*
          * We have to check authentication here so we have the proper URL stored
@@ -240,6 +240,12 @@ public class WebDavStore extends RemoteStore {
         }
 
         return folderList;
+    }
+
+    @NonNull
+    @Override
+    public List<? extends Folder> getSubFolders(String parentFolderId, boolean forceListAll) throws MessagingException {
+        throw new UnsupportedOperationException();
     }
 
     /**

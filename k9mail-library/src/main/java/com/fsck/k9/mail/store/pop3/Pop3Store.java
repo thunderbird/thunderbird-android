@@ -10,6 +10,7 @@ import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
 
 import java.net.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.List;
@@ -200,10 +201,16 @@ public class Pop3Store extends RemoteStore {
     }
 
     @Override
-    @NonNull public List <Pop3Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    @NonNull public List <Pop3Folder> getFolders(boolean forceListAll) throws MessagingException {
         List<Pop3Folder> folders = new LinkedList<>();
         folders.add(getFolder(mStoreConfig.getInboxFolderId()));
         return folders;
+    }
+
+    @NonNull
+    @Override
+    public List<? extends Folder> getSubFolders(String parentFolderId, boolean forceListAll) throws MessagingException {
+        return new ArrayList<>();
     }
 
     @Override

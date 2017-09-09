@@ -396,6 +396,11 @@ public class MessageTest {
         }
 
         @Override
+        public boolean canHaveSubFolders() {
+            return false;
+        }
+
+        @Override
         public int getMessageCount() throws MessagingException {
             return 0;
         }

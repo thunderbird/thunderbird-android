@@ -121,6 +121,11 @@ class Pop3Folder extends Folder<Pop3Message> {
     }
 
     @Override
+    public boolean canHaveSubFolders() {
+        return false;
+    }
+
+    @Override
     public int getMessageCount() {
         return messageCount;
     }
