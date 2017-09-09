@@ -6,6 +6,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.R;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
+import timber.log.Timber;
 
 
 public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
@@ -128,6 +129,8 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         // FIXME: We really shouldn't do a case-insensitive comparison here
         } else if (id.equalsIgnoreCase(account.getInboxFolderId())) {
             displayName = context.getString(R.string.special_mailbox_name_inbox);
+        } else if (name == null) {
+            displayName = id;
         } else {
             displayName = name;
         }

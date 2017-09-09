@@ -200,7 +200,9 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     void open(Cursor cursor) throws MessagingException {
         databaseId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
+        localStore.setFolderByDatabaseId(databaseId, this);
         remoteId = cursor.getString(LocalStore.FOLDER_REMOTE_ID_INDEX);
+        localStore.setFolderByRemoteId(remoteId, this);
         name = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
         visibleLimit = cursor.getInt(LocalStore.FOLDER_VISIBLE_LIMIT_INDEX);
         pushState = cursor.getString(LocalStore.FOLDER_PUSH_STATE_INDEX);
@@ -388,7 +390,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         }
     }
 
-    public void setName(String name) throws MessagingException {
+    public void setName(@NonNull String name) throws MessagingException {
         try {
             open(OPEN_MODE_RW);
             this.name = name;

@@ -192,6 +192,9 @@ public class LocalStore extends Store {
     private final Account account;
     private final LockableDatabase database;
 
+    private final Map<Long, LocalFolder> foldersByDatabaseId = new HashMap<>();
+    private final Map<String, LocalFolder> foldersByRemoteId = new HashMap<>();
+
     /**
      * local://localhost/path/to/database/uuid.db
      * This constructor is only used by {@link LocalStore#getInstance(Account, Context)}
@@ -392,8 +395,24 @@ public class LocalStore extends Store {
 
     @Override
     @NonNull
-    public LocalFolder getFolder(String folderId) {
-        return new LocalFolder(this, folderId);
+    public LocalFolder getFolder(String remoteId) {
+        if (!foldersByRemoteId.containsKey(remoteId)) {
+            foldersByRemoteId.put(remoteId, new LocalFolder(this, remoteId));
+            return foldersByRemoteId.get(remoteId);
+        }
+        return foldersByRemoteId.get(remoteId);
+    }
+
+    LocalFolder getFolderByDatabaseId(long databaseId) {
+        return foldersByDatabaseId.get(databaseId);
+    }
+
+    void setFolderByDatabaseId(long databaseId, LocalFolder localFolder) {
+        foldersByDatabaseId.put(databaseId, localFolder);
+    }
+
+    void setFolderByRemoteId(String remoteId, LocalFolder localFolder) {
+        foldersByRemoteId.put(remoteId, localFolder);
     }
 
     // TODO this takes about 260-300ms, seems slow.
@@ -413,8 +432,10 @@ public class LocalStore extends Store {
                             if (cursor.isNull(FOLDER_ID_INDEX)) {
                                 continue;
                             }
-                            String remoteId = cursor.getString(FOLDER_REMOTE_ID_INDEX);
-                            LocalFolder folder = new LocalFolder(LocalStore.this, remoteId);
+                            LocalFolder folder = getFolderByDatabaseId(cursor.getLong(FOLDER_ID_INDEX));
+                            if (folder == null) {
+                                folder = getFolder(cursor.getString(FOLDER_REMOTE_ID_INDEX));
+                            }
                             folder.open(cursor);
 
                             folders.add(folder);
