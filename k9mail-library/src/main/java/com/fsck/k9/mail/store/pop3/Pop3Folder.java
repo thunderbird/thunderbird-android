@@ -51,6 +51,11 @@ class Pop3Folder extends Folder<Pop3Message> {
     }
 
     @Override
+    public String getParentId() {
+        return null;
+    }
+
+    @Override
     public synchronized void open(int mode) throws MessagingException {
         if (isOpen()) {
             return;
