@@ -6,8 +6,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.fsck.k9.mail.FetchProfile;
@@ -20,6 +18,8 @@ import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.store.StoreConfig;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -36,18 +36,21 @@ import static org.mockito.Mockito.when;
 
 
 public class Pop3FolderTest {
+
+    @Mock
     private Pop3Store mockStore;
+    @Mock
     private Pop3Connection mockConnection;
+    @Mock
     private StoreConfig mockStoreConfig;
+    @Mock
     private MessageRetrievalListener<Pop3Message> mockListener;
+
     private Pop3Folder folder;
 
     @Before
     public void before() throws MessagingException {
-        mockStore = mock(Pop3Store.class);
-        mockConnection = mock(Pop3Connection.class);
-        mockStoreConfig = mock(StoreConfig.class);
-        mockListener = mock(MessageRetrievalListener.class);
+        MockitoAnnotations.initMocks(this);
         when(mockStore.getConfig()).thenReturn(mockStoreConfig);
         when(mockStoreConfig.getInboxFolderId()).thenReturn("Inbox");
         when(mockStore.createConnection()).thenReturn(mockConnection);

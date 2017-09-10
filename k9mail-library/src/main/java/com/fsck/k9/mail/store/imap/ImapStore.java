@@ -150,7 +150,7 @@ public class ImapStore extends RemoteStore {
         List<ImapFolder> subFolders = new ArrayList<>();
 
         for (ImapFolder folder: folders) {
-            if (!folder.getId().equals(parentFolderId) && folder.getId().startsWith(parentFolderId)) {
+            if (folder.getId().startsWith(parentFolderId) && folder.getId().length() != parentFolderId.length()) {
                 subFolders.add(folder);
             }
         }
@@ -434,7 +434,7 @@ public class ImapStore extends RemoteStore {
         if (pathDelimiter == null || id.lastIndexOf(pathDelimiter) == -1) {
             return id;
         } else {
-            return id.substring(id.lastIndexOf(pathDelimiter)+pathDelimiter.length());
+            return id.substring(id.lastIndexOf(pathDelimiter) + pathDelimiter.length());
         }
     }
 

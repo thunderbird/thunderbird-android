@@ -28,12 +28,12 @@ public abstract class Store {
     /**
      * Request a list of folders. This can perform a network request.
      */
-    @NonNull public abstract List <? extends Folder > getFolders(boolean forceListAll) throws MessagingException;
+    @NonNull public abstract List<? extends Folder> getFolders(boolean forceListAll) throws MessagingException;
 
     /**
      * Request a list of folders. This can perform a network request.
      */
-    @NonNull public abstract List <? extends Folder > getSubFolders(String parentFolderId, boolean forceListAll) throws MessagingException;
+    @NonNull public abstract List<? extends Folder> getSubFolders(String parentFolderId, boolean forceListAll) throws MessagingException;
 
     /**
      * Verify that the settings provided for the store can be used succesfuly.

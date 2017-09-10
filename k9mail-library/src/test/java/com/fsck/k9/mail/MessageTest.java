@@ -370,6 +370,11 @@ public class MessageTest {
         String id;
 
         @Override
+        public String getParentId() {
+            return null;
+        }
+
+        @Override
         public void open(int mode) throws MessagingException {}
 
         @Override
