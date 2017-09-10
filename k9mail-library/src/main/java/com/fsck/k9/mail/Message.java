@@ -49,7 +49,7 @@ public abstract class Message implements Part, Body {
         }
         Message other = (Message)o;
         return (getUid().equals(other.getUid())
-                && getFolder().getName().equals(other.getFolder().getName()));
+                && getFolder().getId().equals(other.getFolder().getId()));
     }
 
     @Override
@@ -57,7 +57,7 @@ public abstract class Message implements Part, Body {
         final int MULTIPLIER = 31;
 
         int result = 1;
-        result = MULTIPLIER * result + (mFolder != null ? mFolder.getName().hashCode() : 0);
+        result = MULTIPLIER * result + (mFolder != null ? mFolder.getId().hashCode() : 0);
         result = MULTIPLIER * result + mUid.hashCode();
         return result;
     }

@@ -44,8 +44,8 @@ class NotificationActionCreator {
         return stack.getPendingIntent(notificationId, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
     }
 
-    public PendingIntent createViewFolderPendingIntent(Account account, String folderName, int notificationId) {
-        TaskStackBuilder stack = buildMessageListBackStack(account, folderName);
+    public PendingIntent createViewFolderPendingIntent(Account account, String folderId, int notificationId) {
+        TaskStackBuilder stack = buildMessageListBackStack(account, folderId);
         return stack.getPendingIntent(notificationId, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
     }
 
@@ -56,12 +56,12 @@ class NotificationActionCreator {
         if (account.goToUnreadMessageSearch()) {
             stack = buildUnreadBackStack(account);
         } else {
-            String folderName = getFolderNameOfAllMessages(messageReferences);
+            String folderId = getFolderIdOfAllMessages(messageReferences);
 
-            if (folderName == null) {
+            if (folderId == null) {
                 stack = buildFolderListBackStack(account);
             } else {
-                stack = buildMessageListBackStack(account, folderName);
+                stack = buildMessageListBackStack(account, folderId);
             }
         }
 
@@ -236,12 +236,12 @@ class NotificationActionCreator {
         return stack;
     }
 
-    private TaskStackBuilder buildMessageListBackStack(Account account, String folderName) {
-        TaskStackBuilder stack = skipFolderListInBackStack(account, folderName) ?
+    private TaskStackBuilder buildMessageListBackStack(Account account, String folderId) {
+        TaskStackBuilder stack = skipFolderListInBackStack(account, folderId) ?
                 buildAccountsBackStack() : buildFolderListBackStack(account);
 
-        LocalSearch search = new LocalSearch(folderName);
-        search.addAllowedFolder(folderName);
+        LocalSearch search = new LocalSearch(folderId);
+        search.addAllowedFolder(folderId);
         search.addAccountUuid(account.getUuid());
         Intent intent = MessageList.intentDisplaySearch(context, search, false, true, true);
 
@@ -252,8 +252,8 @@ class NotificationActionCreator {
 
     private TaskStackBuilder buildMessageViewBackStack(MessageReference message) {
         Account account = Preferences.getPreferences(context).getAccount(message.getAccountUuid());
-        String folderName = message.getFolderName();
-        TaskStackBuilder stack = buildMessageListBackStack(account, folderName);
+        String folderId = message.getFolderId();
+        TaskStackBuilder stack = buildMessageListBackStack(account, folderId);
 
         Intent intent = MessageList.actionDisplayMessageIntent(context, message);
 
@@ -262,21 +262,21 @@ class NotificationActionCreator {
         return stack;
     }
 
-    private String getFolderNameOfAllMessages(List<MessageReference> messageReferences) {
+    private String getFolderIdOfAllMessages(List<MessageReference> messageReferences) {
         MessageReference firstMessage = messageReferences.get(0);
-        String folderName = firstMessage.getFolderName();
+        String folderId = firstMessage.getFolderId();
 
         for (MessageReference messageReference : messageReferences) {
-            if (!TextUtils.equals(folderName, messageReference.getFolderName())) {
+            if (!TextUtils.equals(folderId, messageReference.getFolderId())) {
                 return null;
             }
         }
 
-        return folderName;
+        return folderId;
     }
 
-    private boolean skipFolderListInBackStack(Account account, String folderName) {
-        return folderName != null && folderName.equals(account.getAutoExpandFolderName());
+    private boolean skipFolderListInBackStack(Account account, String folderId) {
+        return folderId != null && folderId.equals(account.getAutoExpandFolderId());
     }
 
     private boolean skipAccountsInBackStack() {

@@ -24,6 +24,6 @@ class MigrationTo50 {
         cv.put("notify_class", Folder.FolderClass.FIRST_CLASS.name());
 
         Account account = migrationsHelper.getAccount();
-        db.update("folders", cv, "name = ?", new String[] { account.getInboxFolderName() });
+        db.update("folders", cv, "name = ?", new String[] { account.getInboxFolderId() });
     }
 }

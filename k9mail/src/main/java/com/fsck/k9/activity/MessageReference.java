@@ -17,7 +17,7 @@ public class MessageReference {
 
 
     private final String accountUuid;
-    private final String folderName;
+    private final String folderId;
     private final String uid;
     private final Flag flag;
 
@@ -34,11 +34,11 @@ public class MessageReference {
         }
 
         String accountUuid = Base64.decode(tokens.nextToken());
-        String folderName = Base64.decode(tokens.nextToken());
+        String folderId = Base64.decode(tokens.nextToken());
         String uid = Base64.decode(tokens.nextToken());
 
         if (!tokens.hasMoreTokens()) {
-            return new MessageReference(accountUuid, folderName, uid, null);
+            return new MessageReference(accountUuid, folderId, uid, null);
         }
 
         Flag flag;
@@ -48,12 +48,12 @@ public class MessageReference {
             return null;
         }
 
-        return new MessageReference(accountUuid, folderName, uid, flag);
+        return new MessageReference(accountUuid, folderId, uid, flag);
     }
 
-    public MessageReference(String accountUuid, String folderName, String uid, Flag flag) {
+    public MessageReference(String accountUuid, String folderId, String uid, Flag flag) {
         this.accountUuid = checkNotNull(accountUuid);
-        this.folderName = checkNotNull(folderName);
+        this.folderId = checkNotNull(folderId);
         this.uid = checkNotNull(uid);
         this.flag = flag;
     }
@@ -65,7 +65,7 @@ public class MessageReference {
         refString.append(IDENTITY_SEPARATOR);
         refString.append(Base64.encode(accountUuid));
         refString.append(IDENTITY_SEPARATOR);
-        refString.append(Base64.encode(folderName));
+        refString.append(Base64.encode(folderId));
         refString.append(IDENTITY_SEPARATOR);
         refString.append(Base64.encode(uid));
         if (flag != null) {
@@ -82,11 +82,11 @@ public class MessageReference {
             return false;
         }
         MessageReference other = (MessageReference) o;
-        return equals(other.accountUuid, other.folderName, other.uid);
+        return equals(other.accountUuid, other.folderId, other.uid);
     }
 
-    public boolean equals(String accountUuid, String folderName, String uid) {
-        return this.accountUuid.equals(accountUuid) && this.folderName.equals(folderName) && this.uid.equals(uid);
+    public boolean equals(String accountUuid, String folderId, String uid) {
+        return this.accountUuid.equals(accountUuid) && this.folderId.equals(folderId) && this.uid.equals(uid);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class MessageReference {
 
         int result = 1;
         result = MULTIPLIER * result + accountUuid.hashCode();
-        result = MULTIPLIER * result + folderName.hashCode();
+        result = MULTIPLIER * result + folderId.hashCode();
         result = MULTIPLIER * result + uid.hashCode();
         return result;
     }
@@ -104,7 +104,7 @@ public class MessageReference {
     public String toString() {
         return "MessageReference{" +
                "accountUuid='" + accountUuid + '\'' +
-               ", folderName='" + folderName + '\'' +
+               ", folderId='" + folderId + '\'' +
                ", uid='" + uid + '\'' +
                ", flag=" + flag +
                '}';
@@ -114,8 +114,8 @@ public class MessageReference {
         return accountUuid;
     }
 
-    public String getFolderName() {
-        return folderName;
+    public String getFolderId() {
+        return folderId;
     }
 
     public String getUid() {
@@ -127,10 +127,10 @@ public class MessageReference {
     }
 
     public MessageReference withModifiedUid(String newUid) {
-        return new MessageReference(accountUuid, folderName, newUid, flag);
+        return new MessageReference(accountUuid, folderId, newUid, flag);
     }
 
     public MessageReference withModifiedFlag(Flag newFlag) {
-        return new MessageReference(accountUuid, folderName, uid, newFlag);
+        return new MessageReference(accountUuid, folderId, uid, newFlag);
     }
 }

@@ -3,6 +3,7 @@ package com.fsck.k9.preferences;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +19,7 @@ import com.fsck.k9.Account.Searchable;
 import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.R;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
@@ -50,9 +52,6 @@ public class AccountSettings {
         s.put("alwaysShowCcBcc", Settings.versions(
                 new V(13, new BooleanSetting(false))
         ));
-        s.put("archiveFolderName", Settings.versions(
-                new V(1, new StringSetting("Archive"))
-        ));
         s.put("autoExpandFolderName", Settings.versions(
                 new V(1, new StringSetting("INBOX"))
         ));
@@ -71,9 +70,6 @@ public class AccountSettings {
         s.put("displayCount", Settings.versions(
                 new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
                         R.array.account_settings_display_count_values))
-        ));
-        s.put("draftsFolderName", Settings.versions(
-                new V(1, new StringSetting("Drafts"))
         ));
         s.put("expungePolicy", Settings.versions(
                 new V(1, new StringResourceSetting(Expunge.EXPUNGE_IMMEDIATELY.name(),
@@ -96,9 +92,6 @@ public class AccountSettings {
         ));
         s.put("idleRefreshMinutes", Settings.versions(
                 new V(1, new IntegerResourceSetting(24, R.array.idle_refresh_period_values))
-        ));
-        s.put("inboxFolderName", Settings.versions(
-                new V(1, new StringSetting("INBOX"))
         ));
         s.put("led", Settings.versions(
                 new V(1, new BooleanSetting(true))
@@ -163,9 +156,6 @@ public class AccountSettings {
         s.put("searchableFolders", Settings.versions(
                 new V(1, new EnumSetting<>(Searchable.class, Searchable.ALL))
         ));
-        s.put("sentFolderName", Settings.versions(
-                new V(1, new StringSetting("Sent"))
-        ));
         s.put("sortTypeEnum", Settings.versions(
                 new V(9, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
         ));
@@ -178,9 +168,6 @@ public class AccountSettings {
         s.put("signatureBeforeQuotedText", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));
-        s.put("spamFolderName", Settings.versions(
-                new V(1, new StringSetting("Spam"))
-        ));
         s.put("stripSignature", Settings.versions(
                 new V(2, new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE))
         ));
@@ -189,9 +176,6 @@ public class AccountSettings {
         ));
         s.put("syncRemoteDeletions", Settings.versions(
                 new V(1, new BooleanSetting(true))
-        ));
-        s.put("trashFolderName", Settings.versions(
-                new V(1, new StringSetting("Trash"))
         ));
         s.put("useCompression.MOBILE", Settings.versions(
                 new V(1, new BooleanSetting(true))
@@ -225,10 +209,39 @@ public class AccountSettings {
                 new V(42, new BooleanSetting(false))
         ));
 
+        s.put("archiveFolderId", Settings.versions(
+                new V(49, new StringSetting("Archive"))
+        ));
+
+        s.put("autoExpandFolderId", Settings.versions(
+                new V(49, new StringSetting("INBOX"))
+        ));
+
+        s.put("draftsFolderId", Settings.versions(
+                new V(49, new StringSetting("Drafts"))
+        ));
+
+        s.put("sentFolderId", Settings.versions(
+                new V(49, new StringSetting("Sent"))
+        ));
+
+        s.put("trashFolderId", Settings.versions(
+                new V(49, new StringSetting("Trash"))
+        ));
+
+        s.put("spamFolderId", Settings.versions(
+                new V(49, new StringSetting("Spam"))
+        ));
+
+        s.put("inboxFolderId", Settings.versions(
+                new V(49, new StringSetting("INBOX"))
+        ));
+
         SETTINGS = Collections.unmodifiableMap(s);
 
         // noinspection MismatchedQueryAndUpdateOfCollection, this map intentionally left blank
         Map<Integer, SettingsUpgrader> u = new HashMap<>();
+        u.put(49, new SettingsUpgraderV49());
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
@@ -374,6 +387,33 @@ public class AccountSettings {
             } catch (NumberFormatException e) { /* do nothing */ }
 
             throw new InvalidSettingValueException();
+        }
+    }
+
+    private static class SettingsUpgraderV49 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            Set<String> deletedSettings = new HashSet<>();
+            String[] settingsToRename = new String[]{
+                    "archiveFolder",
+                    "autoExpandFolder",
+                    "draftsFolder",
+                    "sentFolder",
+                    "trashFolder",
+                    "spamFolder",
+                    "inboxFolder",
+            };
+
+            for (String setting : settingsToRename) {
+                String value = (String) settings.get(setting + "Name");
+                if (value != null) {
+                    settings.put(setting + "Id", value);
+                }
+                deletedSettings.add(setting + "Name");
+            }
+
+            return deletedSettings;
         }
     }
 }

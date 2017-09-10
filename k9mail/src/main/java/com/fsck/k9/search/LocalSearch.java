@@ -249,7 +249,7 @@ public class LocalSearch implements SearchSpecification {
      * This is a temporarely solution that does NOT WORK for
      * real searches because of possible extra conditions to a folder requirement.
      */
-    public List<String> getFolderNames() {
+    public List<String> getFolderIds() {
         List<String> results = new ArrayList<String>();
         for (ConditionsTreeNode node : mLeafSet) {
             if (node.mCondition.field == SearchField.FOLDER &&

@@ -230,12 +230,12 @@ class WearNotifications extends BaseNotifications {
     }
 
     private boolean isArchiveActionAvailableForWear(Account account) {
-        String archiveFolderName = account.getArchiveFolderName();
+        String archiveFolderName = account.getArchiveFolderId();
         return archiveFolderName != null && isMovePossible(account, archiveFolderName);
     }
 
     private boolean isSpamActionAvailableForWear(Account account) {
-        String spamFolderName = account.getSpamFolderName();
+        String spamFolderName = account.getSpamFolderId();
         return spamFolderName != null && !K9.confirmSpam() && isMovePossible(account, spamFolderName);
     }
 

@@ -16,6 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import android.support.annotation.NonNull;
+
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
@@ -171,6 +173,7 @@ public class WebDavStore extends RemoteStore {
     }
 
     @Override
+    @NonNull
     public List<? extends Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         List<Folder> folderList = new LinkedList<>();
         /*
@@ -188,37 +191,37 @@ public class WebDavStore extends RemoteStore {
         DataSet dataset = processRequest(this.baseUrl, "PROPFIND", getSpecialFoldersList(), headers);
 
         Map<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
-        String folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_INBOX_FOLDER));
-        if (folderName != null) {
-            mStoreConfig.setAutoExpandFolderName(folderName);
-            mStoreConfig.setInboxFolderName(folderName);
+        String folderId = getFolderId(specialFoldersMap.get(WebDavConstants.DAV_MAIL_INBOX_FOLDER));
+        if (folderId != null) {
+            mStoreConfig.setAutoExpandFolderId(folderId);
+            mStoreConfig.setInboxFolderId(folderId);
         }
 
-        folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_DRAFTS_FOLDER));
-        if (folderName != null) {
-            mStoreConfig.setDraftsFolderName(folderName);
+        folderId = getFolderId(specialFoldersMap.get(WebDavConstants.DAV_MAIL_DRAFTS_FOLDER));
+        if (folderId != null) {
+            mStoreConfig.setDraftsFolderId(folderId);
         }
 
-        folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_TRASH_FOLDER));
-        if (folderName != null) {
-            mStoreConfig.setTrashFolderName(folderName);
+        folderId = getFolderId(specialFoldersMap.get(WebDavConstants.DAV_MAIL_TRASH_FOLDER));
+        if (folderId != null) {
+            mStoreConfig.setTrashFolderId(folderId);
         }
 
-        folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SPAM_FOLDER));
-        if (folderName != null) {
-            mStoreConfig.setSpamFolderName(folderName);
+        folderId = getFolderId(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SPAM_FOLDER));
+        if (folderId != null) {
+            mStoreConfig.setSpamFolderId(folderId);
         }
 
         // K-9 Mail's outbox is a special local folder and different from Exchange/WebDAV's outbox.
         /*
-        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_OUTBOX_FOLDER));
-        if (folderName != null)
-            mAccount.setOutboxFolderName(folderName);
+        folderId = getFolderId(specialFoldersMap.get(DAV_MAIL_OUTBOX_FOLDER));
+        if (folderId != null)
+            mAccount.setOutboxFolderName(folderId);
         */
 
-        folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SENT_FOLDER));
-        if (folderName != null) {
-            mStoreConfig.setSentFolderName(folderName);
+        folderId = getFolderId(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SENT_FOLDER));
+        if (folderId != null) {
+            mStoreConfig.setSentFolderId(folderId);
         }
 
         /*
@@ -254,9 +257,9 @@ public class WebDavStore extends RemoteStore {
         }
 
         WebDavFolder wdFolder = null;
-        String folderName = getFolderName(folderUrl);
-        if (folderName != null) {
-            wdFolder = getFolder(folderName);
+        String folderId = getFolderId(folderUrl);
+        if (folderId != null) {
+            wdFolder = getFolder(folderId);
             if (wdFolder != null) {
                 wdFolder.setUrl(folderUrl);
             }
@@ -266,7 +269,7 @@ public class WebDavStore extends RemoteStore {
         return wdFolder;
     }
 
-    private String getFolderName(String folderUrl) {
+    private String getFolderId(String folderUrl) {
         if (folderUrl == null) {
             return null;
         }
@@ -301,7 +304,7 @@ public class WebDavStore extends RemoteStore {
     }
 
     @Override
-    public WebDavFolder getFolder(String name) {
+    @NonNull public WebDavFolder getFolder(String name) {
         WebDavFolder folder = this.folderList.get(name);
 
         if (folder == null) {
@@ -983,7 +986,7 @@ public class WebDavStore extends RemoteStore {
 
     @Override
     public void sendMessages(List<? extends Message> messages) throws MessagingException {
-        WebDavFolder tmpFolder = getFolder(mStoreConfig.getDraftsFolderName());
+        WebDavFolder tmpFolder = getFolder(mStoreConfig.getDraftsFolderId());
         try {
             tmpFolder.open(Folder.OPEN_MODE_RW);
             List<? extends Message> retMessages = tmpFolder.appendWebDavMessages(messages);

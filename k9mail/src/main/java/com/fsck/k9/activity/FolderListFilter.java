@@ -12,7 +12,7 @@ import com.fsck.k9.K9;
 
 /**
  * Filter to search for occurrences of the search-expression in any place of the
- * folder-name instead of doing just a prefix-search.
+ * folder-id instead of doing just a prefix-search.
  *
  * @author Marcus@Wolschon.biz
  */
@@ -34,10 +34,10 @@ public class FolderListFilter<T> extends Filter {
     /**
      * Create a filter for a list of folders.
      *
-     * @param folderNames
+     * @param folderIds
      */
-    public FolderListFilter(final ArrayAdapter<T> folderNames) {
-        this.mFolders = folderNames;
+    public FolderListFilter(final ArrayAdapter<T> folderIds) {
+        this.mFolders = folderIds;
     }
 
     /**

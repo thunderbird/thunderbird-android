@@ -39,13 +39,16 @@ import static org.mockito.Mockito.when;
 public class ImapStoreTest {
     private StoreConfig storeConfig;
     private TestImapStore imapStore;
+    private TrustedSocketFactory trustedSocketFactory;
+    private ConnectivityManager connectivityManager;
+    private OAuth2TokenProvider oauth2TokenProvider;
 
     @Before
     public void setUp() throws Exception {
         storeConfig = createStoreConfig();
-        TrustedSocketFactory trustedSocketFactory = mock(TrustedSocketFactory.class);
-        ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
-        OAuth2TokenProvider oauth2TokenProvider = mock(OAuth2TokenProvider.class);
+        trustedSocketFactory = mock(TrustedSocketFactory.class);
+        connectivityManager = mock(ConnectivityManager.class);
+        oauth2TokenProvider = mock(OAuth2TokenProvider.class);
 
         imapStore = new TestImapStore(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
     }
@@ -113,11 +116,11 @@ public class ImapStoreTest {
 
         imapStore.autoconfigureFolders(imapConnection);
 
-        verify(storeConfig).setDraftsFolderName("[Gmail]/Drafts");
-        verify(storeConfig).setSentFolderName("[Gmail]/Sent Mail");
-        verify(storeConfig).setSpamFolderName("[Gmail]/Spam");
-        verify(storeConfig).setTrashFolderName("[Gmail]/Trash");
-        verify(storeConfig).setArchiveFolderName("[Gmail]/All Mail");
+        verify(storeConfig).setDraftsFolderId("[Gmail]/Drafts");
+        verify(storeConfig).setSentFolderId("[Gmail]/Sent Mail");
+        verify(storeConfig).setSpamFolderId("[Gmail]/Spam");
+        verify(storeConfig).setTrashFolderId("[Gmail]/Trash");
+        verify(storeConfig).setArchiveFolderId("[Gmail]/All Mail");
     }
 
     @Test
@@ -147,7 +150,28 @@ public class ImapStoreTest {
         List<? extends Folder> result = imapStore.getPersonalNamespaces(true);
 
         assertNotNull(result);
-        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
+        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderIds(result));
+    }
+
+    @Test
+    public void getPersonalNamespaces_withPathPrefix() throws Exception {
+        when(storeConfig.getStoreUri()).thenReturn("imap://user:password@imap.example.org/0%7CpathPrefix/");
+        imapStore = new TestImapStore(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
+
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        List<ImapResponse> imapResponses = Arrays.asList(
+                createImapResponse("* LIST (\\HasNoChildren) \".\" \"pathPrefix/INBOX\""),
+                createImapResponse("* LIST (\\Noselect \\HasChildren) \".\" \"pathPrefix/.Folder\""),
+                createImapResponse("* LIST (\\HasNoChildren) \".\" \"pathPrefix/.Folder.SubFolder\""),
+                createImapResponse("6 OK Success")
+        );
+        when(imapConnection.executeSimpleCommand("LIST \"\" \"pathPrefix/*\"")).thenReturn(imapResponses);
+        imapStore.enqueueImapConnection(imapConnection);
+
+        List<? extends Folder> result = imapStore.getPersonalNamespaces(true);
+
+        assertNotNull(result);
+        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderIds(result));
     }
 
     @Test
@@ -166,7 +190,7 @@ public class ImapStoreTest {
         List<? extends Folder> result = imapStore.getPersonalNamespaces(false);
 
         assertNotNull(result);
-        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
+        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderIds(result));
     }
 
     @Test
@@ -194,7 +218,7 @@ public class ImapStoreTest {
         List<? extends Folder> result = imapStore.getPersonalNamespaces(false);
 
         assertNotNull(result);
-        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
+        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderIds(result));
     }
 
     @Test
@@ -295,23 +319,23 @@ public class ImapStoreTest {
 
     private StoreConfig createStoreConfig() {
         StoreConfig storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getInboxFolderName()).thenReturn("INBOX");
+        when(storeConfig.getInboxFolderId()).thenReturn("INBOX");
         when(storeConfig.getStoreUri()).thenReturn("imap://user:password@imap.example.org");
 
         return storeConfig;
     }
 
-    private Set<String> extractFolderNames(List<? extends Folder> folders) {
+    private Set<String> extractFolderIds(List<? extends Folder> folders) {
         Set<String> folderNames = new HashSet<>(folders.size());
         for (Folder folder : folders) {
-            folderNames.add(folder.getName());
+            folderNames.add(folder.getId());
         }
 
         return folderNames;
     }
 
 
-    static class TestImapStore extends ImapStore {
+    private static class TestImapStore extends ImapStore {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();
 
         public TestImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,

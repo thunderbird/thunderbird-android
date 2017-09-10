@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteException;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.preferences.Storage;
@@ -58,7 +57,7 @@ class MigrationTo41 {
         Folder.FolderClass pushClass = Folder.FolderClass.SECOND_CLASS;
         boolean inTopGroup = false;
         boolean integrate = false;
-        if (account.getInboxFolderName().equals(name)) {
+        if (account.getInboxFolderId().equals(name)) {
             displayClass = Folder.FolderClass.FIRST_CLASS;
             syncClass =  Folder.FolderClass.FIRST_CLASS;
             pushClass =  Folder.FolderClass.FIRST_CLASS;

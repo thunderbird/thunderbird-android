@@ -170,7 +170,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private int mFirstBackStackId = -1;
 
     private Account mAccount;
-    private String mFolderName;
+    private String mFolderId;
     private LocalSearch mSearch;
     private boolean mSingleFolderMode;
     private boolean mSingleAccountMode;
@@ -261,7 +261,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         mMessageReference = null;
         mSearch = null;
-        mFolderName = null;
+        mFolderId = null;
 
         if (!decodeExtras(intent)) {
             return;
@@ -395,9 +395,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             Collection<Account> accounts = Preferences.getPreferences(this).getAvailableAccounts();
             for (Account account : accounts) {
                 if (String.valueOf(account.getAccountNumber()).equals(accountId)) {
-                    String folderName = segmentList.get(1);
+                    String folderId = segmentList.get(1);
                     String messageUid = segmentList.get(2);
-                    mMessageReference = new MessageReference(account.getUuid(), folderName, messageUid, null);
+                    mMessageReference = new MessageReference(account.getUuid(), folderId, messageUid, null);
                     break;
                 }
             }
@@ -452,18 +452,18 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         if (mMessageReference != null) {
             mSearch = new LocalSearch();
             mSearch.addAccountUuid(mMessageReference.getAccountUuid());
-            mSearch.addAllowedFolder(mMessageReference.getFolderName());
+            mSearch.addAllowedFolder(mMessageReference.getFolderId());
         }
 
         if (mSearch == null) {
             // We've most likely been started by an old unread widget
             String accountUuid = intent.getStringExtra("account");
-            String folderName = intent.getStringExtra("folder");
+            String folderId = intent.getStringExtra("folder");
 
-            mSearch = new LocalSearch(folderName);
+            mSearch = new LocalSearch(folderId);
             mSearch.addAccountUuid((accountUuid == null) ? "invalid" : accountUuid);
-            if (folderName != null) {
-                mSearch.addAllowedFolder(folderName);
+            if (folderId != null) {
+                mSearch.addAllowedFolder(folderId);
             }
         }
 
@@ -482,7 +482,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 mAccount = prefs.getAccount(accountUuids[0]);
             }
         }
-        mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderNames().size() == 1);
+        mSingleFolderMode = mSingleAccountMode && (mSearch.getFolderIds().size() == 1);
 
         if (mSingleAccountMode && (mAccount == null || !mAccount.isAvailable(this))) {
             Timber.i("not opening MessageList of unavailable account");
@@ -491,7 +491,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         if (mSingleFolderMode) {
-            mFolderName = mSearch.getFolderNames().get(0);
+            mFolderId = mSearch.getFolderIds().get(0);
         }
 
         // now we know if we are in single account mode and need a subtitle
@@ -947,8 +947,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 return true;
             }
             case R.id.folder_settings: {
-                if (mFolderName != null) {
-                    FolderSettings.actionSettings(this, mAccount, mFolderName);
+                if (mFolderId != null) {
+                    FolderSettings.actionSettings(this, mAccount, mFolderId);
                 }
                 return true;
             }
@@ -1207,9 +1207,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public void openMessage(MessageReference messageReference) {
         Preferences prefs = Preferences.getPreferences(getApplicationContext());
         Account account = prefs.getAccount(messageReference.getAccountUuid());
-        String folderName = messageReference.getFolderName();
+        String folderId = messageReference.getFolderId();
 
-        if (folderName.equals(account.getDraftsFolderName())) {
+        if (folderId.equals(account.getDraftsFolderId())) {
             MessageActions.actionEditDraft(this, messageReference);
         } else {
             mMessageViewContainer.removeView(mMessageViewPlaceHolder);
@@ -1341,13 +1341,13 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     @Override
-    public boolean startSearch(Account account, String folderName) {
+    public boolean startSearch(Account account, String folderId) {
         // If this search was started from a MessageList of a single folder, pass along that folder info
         // so that we can enable remote search.
-        if (account != null && folderName != null) {
+        if (account != null && folderId != null) {
             final Bundle appData = new Bundle();
             appData.putString(EXTRA_SEARCH_ACCOUNT, account.getUuid());
-            appData.putString(EXTRA_SEARCH_FOLDER, folderName);
+            appData.putString(EXTRA_SEARCH_FOLDER, folderId);
             startSearch(null, false, appData, false);
         } else {
             // TODO Handle the case where we're searching from within a search result.
@@ -1358,7 +1358,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     @Override
-    public void showThread(Account account, String folderName, long threadRootId) {
+    public void showThread(Account account, String folderId, long threadRootId) {
         showMessageViewPlaceHolder();
 
         LocalSearch tmpSearch = new LocalSearch();

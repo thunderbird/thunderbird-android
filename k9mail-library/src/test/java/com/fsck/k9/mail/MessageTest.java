@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 import android.content.Context;
@@ -29,7 +32,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(K9LibRobolectricTestRunner.class)
@@ -351,5 +356,159 @@ public class MessageTest {
         MimeBodyPart bodyPart = message.toBodyPart();
         bodyPart.writeTo(out);
         assertEquals(TO_BODY_PART_RESULT, out.toString());
+    }
+
+    class StoredMimeMessage extends MimeMessage {
+        public StoredMimeMessage(Folder folder, String uid) {
+            mFolder = folder;
+            mUid = uid;
+        }
+    }
+
+    class SimpleFolder extends Folder {
+
+        String id;
+
+        @Override
+        public void open(int mode) throws MessagingException {}
+
+        @Override
+        public void close() {}
+
+        @Override
+        public boolean isOpen() {
+            return false;
+        }
+
+        @Override
+        public int getMode() {
+            return 0;
+        }
+
+        @Override
+        public boolean create(FolderType type) throws MessagingException {
+            return false;
+        }
+
+        @Override
+        public boolean exists() throws MessagingException {
+            return false;
+        }
+
+        @Override
+        public int getMessageCount() throws MessagingException {
+            return 0;
+        }
+
+        @Override
+        public int getUnreadMessageCount() throws MessagingException {
+            return 0;
+        }
+
+        @Override
+        public int getFlaggedMessageCount() throws MessagingException {
+            return 0;
+        }
+
+        @Override
+        public Message getMessage(String uid) throws MessagingException {
+            return null;
+        }
+
+        @Override
+        public List getMessages(int start, int end, Date earliestDate, MessageRetrievalListener listener)
+                throws MessagingException {
+            return null;
+        }
+
+        @Override
+        public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate)
+                throws IOException, MessagingException {
+            return false;
+        }
+
+        @Override
+        public String getUidFromMessageId(Message message) throws MessagingException {
+            return null;
+        }
+
+        @Override
+        public void fetch(List messages, FetchProfile fp, MessageRetrievalListener listener) throws MessagingException {
+
+        }
+
+        @Override
+        public void delete(boolean recurse) throws MessagingException {
+
+        }
+
+        @Override
+        public String getId() {
+            return id;
+        }
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public void setFlags(Set set, boolean value) throws MessagingException {
+
+        }
+
+        @Override
+        public void setFlags(List list, Set set, boolean value) throws MessagingException {
+
+        }
+
+        @Override
+        public Map<String, String> appendMessages(List list) throws MessagingException {
+            return null;
+        }
+    }
+
+    @Test
+    public void equals_whenFolderIdDifferent_isFalse() {
+        SimpleFolder folder1 = new SimpleFolder();
+        folder1.id = "1";
+        SimpleFolder folder2 = new SimpleFolder();
+        folder2.id = "2";
+        String uid = "uid";
+        Message m1 = new StoredMimeMessage(folder1, uid);
+        Message m2 = new StoredMimeMessage(folder2, uid);
+
+        boolean result = m1.equals(m2);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void equals_whenUidDifferent_isFalse() {
+        SimpleFolder folder = new SimpleFolder();
+        folder.id = "1";
+        String uid1 = "uid1";
+        String uid2 = "uid2";
+        Message m1 = new StoredMimeMessage(folder, uid1);
+        Message m2 = new StoredMimeMessage(folder, uid2);
+
+        boolean result = m1.equals(m2);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void equals_whenUidAndFolderSame_isTrue() {
+        SimpleFolder folder1 = new SimpleFolder();
+        folder1.id = "1";
+        SimpleFolder folder2 = new SimpleFolder();
+        folder2.id = "1";
+        String uid = "uid";
+        Message m1 = new StoredMimeMessage(folder1, uid);
+        Message m2 = new StoredMimeMessage(folder2, uid);
+
+        boolean result = m1.equals(m2);
+
+        assertTrue(result);
     }
 }

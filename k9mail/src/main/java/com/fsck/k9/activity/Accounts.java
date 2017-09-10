@@ -103,7 +103,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     /**
      * URL used to open Android Market application
      */
-    private static final String ANDROID_MARKET_URL = "https://play.google.com/store/apps/details?id=org.openintents.filemanager";
+    private static final String ANDROID_MARKET_URL =
+            "https://play.google.com/store/apps/details?id=org.openintents.filemanager";
 
     /**
      * Number of special accounts ('Unified Inbox' and 'All Messages')
@@ -257,7 +258,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         @Override
-        public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
+        public void folderStatusChanged(Account account, String folderId, String folderName, int unreadMessageCount) {
             try {
                 AccountStats stats = account.getStats(Accounts.this);
                 if (stats == null) {
@@ -304,26 +305,27 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         @Override
         public void synchronizeMailboxFinished(
             Account account,
-            String folder,
+            String folderId,
+            String folderName,
             int totalMessagesInMailbox,
         int numNewMessages) {
             MessagingController.getInstance(getApplication()).getAccountStats(Accounts.this, account, mListener);
-            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
+            super.synchronizeMailboxFinished(account, folderId, folderName, totalMessagesInMailbox, numNewMessages);
 
             mHandler.progress(false);
 
         }
 
         @Override
-        public void synchronizeMailboxStarted(Account account, String folder) {
-            super.synchronizeMailboxStarted(account, folder);
+        public void synchronizeMailboxStarted(Account account, String folderId, String folderName) {
+            super.synchronizeMailboxStarted(account, folderId, folderName);
             mHandler.progress(true);
         }
 
         @Override
-        public void synchronizeMailboxFailed(Account account, String folder,
+        public void synchronizeMailboxFailed(Account account, String folderId, String folderName,
         String message) {
-            super.synchronizeMailboxFailed(account, folder, message);
+            super.synchronizeMailboxFailed(account, folderId, folderName, message);
             mHandler.progress(false);
 
         }
@@ -674,11 +676,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 Timber.i("refusing to open account that is not available");
                 return false;
             }
-            if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName())) {
+            if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderId())) {
                 FolderList.actionHandleAccount(this, realAccount);
             } else {
-                LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
-                search.addAllowedFolder(realAccount.getAutoExpandFolderName());
+                LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderId());
+                search.addAllowedFolder(realAccount.getAutoExpandFolderId());
                 search.addAccountUuid(realAccount.getUuid());
                 MessageList.actionDisplaySearch(this, search, false, true);}
         }

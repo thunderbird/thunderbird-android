@@ -18,9 +18,12 @@ class ImapStoreUriDecoder {
      *
      * <p>Possible forms:</p>
      * <pre>
-     * imap://auth:user:password@server:port ConnectionSecurity.NONE
-     * imap+tls+://auth:user:password@server:port ConnectionSecurity.STARTTLS_REQUIRED
-     * imap+ssl+://auth:user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
+     * imap://auth:user:password@server:port/0%7CpathPrefix
+     *      ConnectionSecurity.NONE
+     * imap+tls+://auth:user:password@server:port
+     *      ConnectionSecurity.STARTTLS_REQUIRED
+     * imap+ssl+://auth:user:password@server:port
+     *      ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      *
      * NOTE: this method expects the userinfo part of the uri to be encoded twice, due to a bug in

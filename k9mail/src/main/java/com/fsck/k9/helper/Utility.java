@@ -475,7 +475,7 @@ public class Utility {
      * Assign the contact to the badge.
      *
      * On 4.3, we pass the address name as extra info so that if the contact doesn't exist
-     * the name is auto-populated.
+     * the id is auto-populated.
      *
      * @param contactBadge the badge to the set the contact for
      * @param address the address to look for a contact for.

@@ -19,7 +19,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(K9RobolectricTestRunner.class)
 public class ActivityListenerTest {
-    private static final String FOLDER = "folder";
+    private static final String FOLDER_ID = "folder";
+    private static final String FOLDER_NAME = "folderName";
     private static final String ERROR_MESSAGE = "errorMessage";
     private static final int COUNT = 23;
 
@@ -41,37 +42,37 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenFolderStatusChanged() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.folderStatusChanged(account, FOLDER, COUNT);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_ID, FOLDER_NAME);
+        activityListener.folderStatusChanged(account, FOLDER_ID, FOLDER_NAME, COUNT);
 
         String operation = activityListener.getOperation(context);
 
-        assertEquals("Poll account:folder", operation);
+        assertEquals("Poll account:folderName", operation);
     }
 
     @Test
     public void getOperation__whenSynchronizeMailboxStarted() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_ID, FOLDER_NAME);
 
         String operation = activityListener.getOperation(context);
 
-        assertEquals("Poll account:folder", operation);
+        assertEquals("Poll account:folderName", operation);
     }
 
     @Test
     public void getOperation__whenSynchronizeMailboxProgress_shouldResultInValidStatus() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.synchronizeMailboxProgress(account, FOLDER, 1, 2);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxProgress(account, FOLDER_ID, FOLDER_NAME, 1, 2);
 
         String operation = activityListener.getOperation(context);
 
-        assertEquals("Poll account:folder 1/2", operation);
+        assertEquals("Poll account:folderName 1/2", operation);
     }
 
     @Test
     public void getOperation__whenSynchronizeMailboxFailed_shouldResultInValidStatus() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.synchronizeMailboxFailed(account, FOLDER, ERROR_MESSAGE);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxFailed(account, FOLDER_ID, FOLDER_NAME, ERROR_MESSAGE);
 
         String operation = activityListener.getOperation(context);
 
@@ -84,9 +85,9 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxFailedAfterHeadersStarted_shouldResultInValidStatus() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER);
-        activityListener.synchronizeMailboxFailed(account, FOLDER, ERROR_MESSAGE);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxFailed(account, FOLDER_ID, FOLDER_NAME, ERROR_MESSAGE);
 
         String operation = activityListener.getOperation(context);
 
@@ -99,8 +100,8 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxFinished() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.synchronizeMailboxFinished(account, FOLDER, COUNT, COUNT);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxFinished(account, FOLDER_ID, FOLDER_NAME, COUNT, COUNT);
 
         String operation = activityListener.getOperation(context);
 
@@ -113,27 +114,27 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxHeadersStarted_shouldResultInValidStatus() {
-        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER);
+        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER_ID, FOLDER_NAME);
 
         String operation = activityListener.getOperation(context);
 
-        assertEquals("Fetching headers account:folder", operation);
+        assertEquals("Fetching headers account:folderName", operation);
     }
 
     @Test
     public void getOperation__whenSynchronizeMailboxHeadersProgress() {
-        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER);
-        activityListener.synchronizeMailboxHeadersProgress(account, FOLDER, 2, 3);
+        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxHeadersProgress(account, FOLDER_ID, FOLDER_NAME, 2, 3);
 
         String operation = activityListener.getOperation(context);
 
-        assertEquals("Fetching headers account:folder 2/3", operation);
+        assertEquals("Fetching headers account:folderName 2/3", operation);
     }
 
     @Test
     public void getOperation__whenSynchronizeMailboxHeadersFinished() {
-        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER);
-        activityListener.synchronizeMailboxHeadersFinished(account, FOLDER, COUNT, COUNT);
+        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxHeadersFinished(account, FOLDER_ID, FOLDER_NAME, COUNT, COUNT);
 
         String operation = activityListener.getOperation(context);
 
@@ -142,12 +143,12 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxNewMessage() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.synchronizeMailboxNewMessage(account, FOLDER, message);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxNewMessage(account, FOLDER_ID, FOLDER_NAME, message);
 
         String operation = activityListener.getOperation(context);
 
-        assertEquals("Poll account:folder", operation);
+        assertEquals("Poll account:folderName", operation);
     }
 
     private Account createAccount() {

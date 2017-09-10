@@ -22,7 +22,7 @@ import com.fsck.k9.service.MailService;
 
 public class FolderSettings extends K9PreferenceActivity {
 
-    private static final String EXTRA_FOLDER_NAME = "com.fsck.k9.folderName";
+    private static final String EXTRA_FOLDER_ID = "com.fsck.k9.folderId";
     private static final String EXTRA_ACCOUNT = "com.fsck.k9.account";
 
     private static final String PREFERENCE_TOP_CATERGORY = "folder_settings";
@@ -44,7 +44,7 @@ public class FolderSettings extends K9PreferenceActivity {
 
     public static void actionSettings(Context context, Account account, String folderName) {
         Intent i = new Intent(context, FolderSettings.class);
-        i.putExtra(EXTRA_FOLDER_NAME, folderName);
+        i.putExtra(EXTRA_FOLDER_ID, folderName);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
@@ -53,16 +53,16 @@ public class FolderSettings extends K9PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String folderName = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
+        String folderId = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_ID);
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         Account mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try {
             LocalStore localStore = mAccount.getLocalStore();
-            mFolder = localStore.getFolder(folderName);
+            mFolder = localStore.getFolder(folderId);
             mFolder.open(Folder.OPEN_MODE_RW);
         } catch (MessagingException me) {
-            Timber.e(me, "Unable to edit folder %s preferences", folderName);
+            Timber.e(me, "Unable to edit folder %s preferences", folderId);
             return;
         }
 
@@ -76,7 +76,7 @@ public class FolderSettings extends K9PreferenceActivity {
 
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
-        String displayName = FolderInfoHolder.getDisplayName(this, mAccount, mFolder.getName());
+        String displayName = FolderInfoHolder.getDisplayName(this, mAccount, mFolder.getId(), mFolder.getName());
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
         category.setTitle(displayName);
 

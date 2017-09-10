@@ -30,7 +30,7 @@ public class WebDavMessageTest {
     @Before
     public void before() {
         MockitoAnnotations.initMocks(this);
-        when(mockFolder.getName()).thenReturn("Inbox");
+        when(mockFolder.getId()).thenReturn("Inbox");
         when(mockFolder.getUrl()).thenReturn("http://example.org/Inbox");
         message = new WebDavMessage("message1", mockFolder);
     }

@@ -155,7 +155,7 @@ public class K9 extends Application {
      *
      * Feature is enabled when DEBUG == true
      */
-    public static final String ERROR_FOLDER_NAME = "K9mail-errors";
+    public static final String ERROR_FOLDER_ID = "K9mail-errors";
 
     /**
      * A reference to the {@link SharedPreferences} used for caching the last known database
@@ -330,6 +330,7 @@ public class K9 extends Application {
             public static final String ACTION_REFRESH_OBSERVER = BuildConfig.APPLICATION_ID + ".intent.action.REFRESH_OBSERVER";
             public static final String EXTRA_ACCOUNT = BuildConfig.APPLICATION_ID + ".intent.extra.ACCOUNT";
             public static final String EXTRA_FOLDER = BuildConfig.APPLICATION_ID + ".intent.extra.FOLDER";
+            public static final String EXTRA_FOLDER_NAME = BuildConfig.APPLICATION_ID + ".intent.extra.FOLDER_NAME";
             public static final String EXTRA_SENT_DATE = BuildConfig.APPLICATION_ID + ".intent.extra.SENT_DATE";
             public static final String EXTRA_FROM = BuildConfig.APPLICATION_ID + ".intent.extra.FROM";
             public static final String EXTRA_TO = BuildConfig.APPLICATION_ID + ".intent.extra.TO";
@@ -571,11 +572,12 @@ public class K9 extends Application {
         registerReceivers();
 
         MessagingController.getInstance(this).addListener(new SimpleMessagingListener() {
-            private void broadcastIntent(String action, Account account, String folder, Message message) {
-                Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
+            private void broadcastIntent(String action, Account account, String folderId, String folderName, Message message) {
+                Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folderId) + "/" + Uri.encode(message.getUid()));
                 Intent intent = new Intent(action, uri);
                 intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folder);
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folderId);
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER_NAME, folderName);
                 intent.putExtra(K9.Intents.EmailReceived.EXTRA_SENT_DATE, message.getSentDate());
                 intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM, Address.toString(message.getFrom()));
                 intent.putExtra(K9.Intents.EmailReceived.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)));
@@ -588,7 +590,7 @@ public class K9 extends Application {
                 Timber.d("Broadcasted: action=%s account=%s folder=%s message uid=%s",
                         action,
                         account.getDescription(),
-                        folder,
+                        folderId,
                         message.getUid());
             }
 
@@ -613,28 +615,28 @@ public class K9 extends Application {
             }
 
             @Override
-            public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
+            public void synchronizeMailboxRemovedMessage(Account account, String folderId, String folderName, Message message) {
+                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folderId, folderName, message);
                 updateUnreadWidget();
                 updateMailListWidget();
             }
 
             @Override
-            public void messageDeleted(Account account, String folder, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
+            public void messageDeleted(Account account, String folderId, String folderName, Message message) {
+                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folderId, folderName, message);
                 updateUnreadWidget();
                 updateMailListWidget();
             }
 
             @Override
-            public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folder, message);
+            public void synchronizeMailboxNewMessage(Account account, String folderId, String folderName, Message message) {
+                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folderId, folderName, message);
                 updateUnreadWidget();
                 updateMailListWidget();
             }
 
             @Override
-            public void folderStatusChanged(Account account, String folderName,
+            public void folderStatusChanged(Account account, String folderId, String folderName,
                     int unreadMessageCount) {
 
                 updateUnreadWidget();

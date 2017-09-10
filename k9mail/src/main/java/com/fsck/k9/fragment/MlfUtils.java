@@ -22,9 +22,9 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.SENDER_LIST_COLUMN;
 
 public class MlfUtils {
 
-    static LocalFolder getOpenFolder(String folderName, Account account) throws MessagingException {
+    static LocalFolder getOpenFolder(String folderId, Account account) throws MessagingException {
         LocalStore localStore = account.getLocalStore();
-        LocalFolder localFolder = localStore.getFolder(folderName);
+        LocalFolder localFolder = localStore.getFolder(folderId);
         localFolder.open(Folder.OPEN_MODE_RO);
         return localFolder;
     }
@@ -34,7 +34,7 @@ public class MlfUtils {
         try {
             MessageReference firstMsg = messages.get(0);
             Account account = preferences.getAccount(firstMsg.getAccountUuid());
-            LocalFolder firstMsgFolder = MlfUtils.getOpenFolder(firstMsg.getFolderName(), account);
+            LocalFolder firstMsgFolder = MlfUtils.getOpenFolder(firstMsg.getFolderId(), account);
             firstMsgFolder.setLastSelectedFolderName(destFolderName);
         } catch (MessagingException e) {
             Timber.e(e, "Error getting folder for setLastSelectedFolderName()");

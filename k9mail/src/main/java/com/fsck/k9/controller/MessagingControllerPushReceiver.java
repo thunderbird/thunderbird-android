@@ -40,28 +40,28 @@ public class MessagingControllerPushReceiver implements PushReceiver {
     }
 
     public void syncFolder(Folder folder) {
-        Timber.v("syncFolder(%s)", folder.getName());
+        Timber.v("syncFolder(%s)", folder.getId());
 
         final CountDownLatch latch = new CountDownLatch(1);
-        controller.synchronizeMailbox(account, folder.getName(), new SimpleMessagingListener() {
+        controller.synchronizeMailbox(account, folder.getId(), folder.getName(), new SimpleMessagingListener() {
             @Override
-            public void synchronizeMailboxFinished(Account account, String folder,
+            public void synchronizeMailboxFinished(Account account, String folderId, String folderName,
             int totalMessagesInMailbox, int numNewMessages) {
                 latch.countDown();
             }
 
             @Override
-            public void synchronizeMailboxFailed(Account account, String folder,
+            public void synchronizeMailboxFailed(Account account, String folderId, String folderName,
             String message) {
                 latch.countDown();
             }
         }, folder);
 
-        Timber.v("syncFolder(%s) about to await latch release", folder.getName());
+        Timber.v("syncFolder(%s) about to await latch release", folder.getId());
 
         try {
             latch.await();
-            Timber.v("syncFolder(%s) got latch release", folder.getName());
+            Timber.v("syncFolder(%s) got latch release", folder.getId());
         } catch (Exception e) {
             Timber.e(e, "Interrupted while awaiting latch release");
         }
@@ -104,9 +104,9 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         }
     }
 
-    public void setPushActive(String folderName, boolean enabled) {
+    public void setPushActive(String folderId, String folderName, boolean enabled) {
         for (MessagingListener l : controller.getListeners()) {
-            l.setPushActive(account, folderName, enabled);
+            l.setPushActive(account, folderId, folderName, enabled);
         }
     }
 

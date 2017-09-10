@@ -180,13 +180,13 @@ public class Account implements BaseAccount, StoreConfig {
     private FolderMode folderNotifyNewMailMode;
     private boolean notifySelfNewMail;
     private boolean notifyContactsMailOnly;
-    private String inboxFolderName;
-    private String draftsFolderName;
-    private String sentFolderName;
-    private String trashFolderName;
-    private String archiveFolderName;
-    private String spamFolderName;
-    private String autoExpandFolderName;
+    private String inboxFolderId;
+    private String draftsFolderId;
+    private String sentFolderId;
+    private String trashFolderId;
+    private String archiveFolderId;
+    private String spamFolderId;
+    private String autoExpandFolderId;
     private FolderMode folderDisplayMode;
     private FolderMode folderSyncMode;
     private FolderMode folderPushMode;
@@ -297,8 +297,8 @@ public class Account implements BaseAccount, StoreConfig {
         showPictures = ShowPictures.NEVER;
         isSignatureBeforeQuotedText = false;
         expungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
-        autoExpandFolderName = INBOX;
-        inboxFolderName = INBOX;
+        autoExpandFolderId = INBOX;
+        inboxFolderId = INBOX;
         maxPushFolders = 10;
         chipColor = pickColor(context);
         goToUnreadMessageSearch = false;
@@ -398,12 +398,12 @@ public class Account implements BaseAccount, StoreConfig {
         notifyContactsMailOnly = storage.getBoolean(accountUuid + ".notifyContactsMailOnly", false);
         notifySync = storage.getBoolean(accountUuid + ".notifyMailCheck", false);
         deletePolicy =  DeletePolicy.fromInt(storage.getInt(accountUuid + ".deletePolicy", DeletePolicy.NEVER.setting));
-        inboxFolderName = storage.getString(accountUuid + ".inboxFolderName", INBOX);
-        draftsFolderName = storage.getString(accountUuid + ".draftsFolderName", "Drafts");
-        sentFolderName = storage.getString(accountUuid + ".sentFolderName", "Sent");
-        trashFolderName = storage.getString(accountUuid + ".trashFolderName", "Trash");
-        archiveFolderName = storage.getString(accountUuid + ".archiveFolderName", "Archive");
-        spamFolderName = storage.getString(accountUuid + ".spamFolderName", "Spam");
+        inboxFolderId = storage.getString(accountUuid + ".inboxFolderId", INBOX);
+        draftsFolderId = storage.getString(accountUuid + ".draftsFolderId", "Drafts");
+        sentFolderId = storage.getString(accountUuid + ".sentFolderId", "Sent");
+        trashFolderId = storage.getString(accountUuid + ".trashFolderId", "Trash");
+        archiveFolderId = storage.getString(accountUuid + ".archiveFolderId", "Archive");
+        spamFolderId = storage.getString(accountUuid + ".spamFolderId", "Spam");
         expungePolicy = getEnumStringPref(storage, accountUuid + ".expungePolicy", Expunge.EXPUNGE_IMMEDIATELY);
         syncRemoteDeletions = storage.getBoolean(accountUuid + ".syncRemoteDeletions", true);
 
@@ -429,7 +429,7 @@ public class Account implements BaseAccount, StoreConfig {
             compressionMap.put(type, useCompression);
         }
 
-        autoExpandFolderName = storage.getString(accountUuid + ".autoExpandFolderName", INBOX);
+        autoExpandFolderId = storage.getString(accountUuid + ".autoExpandFolderId", INBOX);
 
         accountNumber = storage.getInt(accountUuid + ".accountNumber", 0);
 
@@ -516,12 +516,12 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(accountUuid + ".notifyNewMail");
         editor.remove(accountUuid + ".notifySelfNewMail");
         editor.remove(accountUuid + ".deletePolicy");
-        editor.remove(accountUuid + ".draftsFolderName");
-        editor.remove(accountUuid + ".sentFolderName");
-        editor.remove(accountUuid + ".trashFolderName");
-        editor.remove(accountUuid + ".archiveFolderName");
-        editor.remove(accountUuid + ".spamFolderName");
-        editor.remove(accountUuid + ".autoExpandFolderName");
+        editor.remove(accountUuid + ".draftsFolderId");
+        editor.remove(accountUuid + ".sentFolderId");
+        editor.remove(accountUuid + ".trashFolderId");
+        editor.remove(accountUuid + ".archiveFolderId");
+        editor.remove(accountUuid + ".spamFolderId");
+        editor.remove(accountUuid + ".autoExpandFolderId");
         editor.remove(accountUuid + ".accountNumber");
         editor.remove(accountUuid + ".vibrate");
         editor.remove(accountUuid + ".vibratePattern");
@@ -566,7 +566,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(accountUuid + ".remoteSearchNumResults");
         editor.remove(accountUuid + ".defaultQuotedTextShown");
         editor.remove(accountUuid + ".displayCount");
-        editor.remove(accountUuid + ".inboxFolderName");
+        editor.remove(accountUuid + ".inboxFolderId");
         editor.remove(accountUuid + ".localStorageProvider");
         editor.remove(accountUuid + ".messageFormat");
         editor.remove(accountUuid + ".messageReadReceipt");
@@ -688,13 +688,13 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(accountUuid + ".notifyContactsMailOnly", notifyContactsMailOnly);
         editor.putBoolean(accountUuid + ".notifyMailCheck", notifySync);
         editor.putInt(accountUuid + ".deletePolicy", deletePolicy.setting);
-        editor.putString(accountUuid + ".inboxFolderName", inboxFolderName);
-        editor.putString(accountUuid + ".draftsFolderName", draftsFolderName);
-        editor.putString(accountUuid + ".sentFolderName", sentFolderName);
-        editor.putString(accountUuid + ".trashFolderName", trashFolderName);
-        editor.putString(accountUuid + ".archiveFolderName", archiveFolderName);
-        editor.putString(accountUuid + ".spamFolderName", spamFolderName);
-        editor.putString(accountUuid + ".autoExpandFolderName", autoExpandFolderName);
+        editor.putString(accountUuid + ".inboxFolderId", inboxFolderId);
+        editor.putString(accountUuid + ".draftsFolderId", draftsFolderId);
+        editor.putString(accountUuid + ".sentFolderId", sentFolderId);
+        editor.putString(accountUuid + ".trashFolderId", trashFolderId);
+        editor.putString(accountUuid + ".archiveFolderId", archiveFolderId);
+        editor.putString(accountUuid + ".spamFolderId", spamFolderId);
+        editor.putString(accountUuid + ".autoExpandFolderId", autoExpandFolderId);
         editor.putInt(accountUuid + ".accountNumber", accountNumber);
         editor.putString(accountUuid + ".sortTypeEnum", sortType.name());
         editor.putBoolean(accountUuid + ".sortAscending", sortAscending.get(sortType));
@@ -1029,23 +1029,23 @@ public class Account implements BaseAccount, StoreConfig {
         this.deletePolicy = deletePolicy;
     }
 
-    public boolean isSpecialFolder(String folderName) {
-        return (folderName != null && (folderName.equalsIgnoreCase(getInboxFolderName()) ||
-                folderName.equals(getTrashFolderName()) ||
-                folderName.equals(getDraftsFolderName()) ||
-                folderName.equals(getArchiveFolderName()) ||
-                folderName.equals(getSpamFolderName()) ||
-                folderName.equals(getOutboxFolderName()) ||
-                folderName.equals(getSentFolderName()) ||
-                folderName.equals(getErrorFolderName())));
+    public boolean isSpecialFolder(String folderId) {
+        return (folderId != null && (folderId.equalsIgnoreCase(getInboxFolderId()) ||
+                folderId.equals(getTrashFolderId()) ||
+                folderId.equals(getDraftsFolderId()) ||
+                folderId.equals(getArchiveFolderId()) ||
+                folderId.equals(getSpamFolderId()) ||
+                folderId.equals(getOutboxFolderId()) ||
+                folderId.equals(getSentFolderId()) ||
+                folderId.equals(getErrorFolderId())));
     }
 
-    public synchronized String getDraftsFolderName() {
-        return draftsFolderName;
+    public synchronized String getDraftsFolderId() {
+        return draftsFolderId;
     }
 
-    public synchronized void setDraftsFolderName(String name) {
-        draftsFolderName = name;
+    public synchronized void setDraftsFolderId(String id) {
+        draftsFolderId = id;
     }
 
     /**
@@ -1053,19 +1053,19 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a drafts folder set.
      */
     public synchronized boolean hasDraftsFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(draftsFolderName);
+        return !K9.FOLDER_NONE.equalsIgnoreCase(draftsFolderId);
     }
 
-    public synchronized String getSentFolderName() {
-        return sentFolderName;
+    public synchronized String getSentFolderId() {
+        return sentFolderId;
     }
 
-    public synchronized String getErrorFolderName() {
-        return K9.ERROR_FOLDER_NAME;
+    public synchronized String getErrorFolderId() {
+        return K9.ERROR_FOLDER_ID;
     }
 
-    public synchronized void setSentFolderName(String name) {
-        sentFolderName = name;
+    public synchronized void setSentFolderId(String id) {
+        sentFolderId = id;
     }
 
     /**
@@ -1073,16 +1073,16 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a sent folder set.
      */
     public synchronized boolean hasSentFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(sentFolderName);
+        return !K9.FOLDER_NONE.equalsIgnoreCase(sentFolderId);
     }
 
 
-    public synchronized String getTrashFolderName() {
-        return trashFolderName;
+    public synchronized String getTrashFolderId() {
+        return trashFolderId;
     }
 
-    public synchronized void setTrashFolderName(String name) {
-        trashFolderName = name;
+    public synchronized void setTrashFolderId(String id) {
+        trashFolderId = id;
     }
 
     /**
@@ -1090,15 +1090,15 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a trash folder set.
      */
     public synchronized boolean hasTrashFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(trashFolderName);
+        return !K9.FOLDER_NONE.equalsIgnoreCase(trashFolderId);
     }
 
-    public synchronized String getArchiveFolderName() {
-        return archiveFolderName;
+    public synchronized String getArchiveFolderId() {
+        return archiveFolderId;
     }
 
-    public synchronized void setArchiveFolderName(String archiveFolderName) {
-        this.archiveFolderName = archiveFolderName;
+    public synchronized void setArchiveFolderId(String archiveFolderId) {
+        this.archiveFolderId = archiveFolderId;
     }
 
     /**
@@ -1106,15 +1106,15 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has an archive folder set.
      */
     public synchronized boolean hasArchiveFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(archiveFolderName);
+        return !K9.FOLDER_NONE.equalsIgnoreCase(archiveFolderId);
     }
 
-    public synchronized String getSpamFolderName() {
-        return spamFolderName;
+    public synchronized String getSpamFolderId() {
+        return spamFolderId;
     }
 
-    public synchronized void setSpamFolderName(String name) {
-        spamFolderName = name;
+    public synchronized void setSpamFolderId(String id) {
+        spamFolderId = id;
     }
 
     /**
@@ -1122,19 +1122,19 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a spam folder set.
      */
     public synchronized boolean hasSpamFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(spamFolderName);
+        return !K9.FOLDER_NONE.equalsIgnoreCase(spamFolderId);
     }
 
-    public synchronized String getOutboxFolderName() {
+    public synchronized String getOutboxFolderId() {
         return OUTBOX;
     }
 
-    public synchronized String getAutoExpandFolderName() {
-        return autoExpandFolderName;
+    public synchronized String getAutoExpandFolderId() {
+        return autoExpandFolderId;
     }
 
-    public synchronized void setAutoExpandFolderName(String name) {
-        autoExpandFolderName = name;
+    public synchronized void setAutoExpandFolderId(String id) {
+        autoExpandFolderId = id;
     }
 
     public synchronized int getAccountNumber() {
@@ -1338,7 +1338,7 @@ public class Account implements BaseAccount, StoreConfig {
         } while (gotOne);
 
         if (newIdentities.isEmpty()) {
-            String name = storage.getString(accountUuid + ".name", null);
+            String name = storage.getString(accountUuid + ".id", null);
             String email = storage.getString(accountUuid + ".email", null);
             boolean signatureUse = storage.getBoolean(accountUuid + ".signatureUse", true);
             String signature = storage.getString(accountUuid + ".signature", null);
@@ -1616,12 +1616,12 @@ public class Account implements BaseAccount, StoreConfig {
         remoteSearchNumResults = (val >= 0 ? val : 0);
     }
 
-    public String getInboxFolderName() {
-        return inboxFolderName;
+    public String getInboxFolderId() {
+        return inboxFolderId;
     }
 
-    public void setInboxFolderName(String name) {
-        this.inboxFolderName = name;
+    public void setInboxFolderId(String id) {
+        this.inboxFolderId = id;
     }
 
     public synchronized boolean syncRemoteDeletions() {
@@ -1758,13 +1758,13 @@ public class Account implements BaseAccount, StoreConfig {
      *         The {@code LocalSearch} instance to modify.
      */
     public void excludeSpecialFolders(LocalSearch search) {
-        excludeSpecialFolder(search, getTrashFolderName());
-        excludeSpecialFolder(search, getDraftsFolderName());
-        excludeSpecialFolder(search, getSpamFolderName());
-        excludeSpecialFolder(search, getOutboxFolderName());
-        excludeSpecialFolder(search, getSentFolderName());
-        excludeSpecialFolder(search, getErrorFolderName());
-        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+        excludeSpecialFolder(search, getTrashFolderId());
+        excludeSpecialFolder(search, getDraftsFolderId());
+        excludeSpecialFolder(search, getSpamFolderId());
+        excludeSpecialFolder(search, getOutboxFolderId());
+        excludeSpecialFolder(search, getSentFolderId());
+        excludeSpecialFolder(search, getErrorFolderId());
+        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolderId()));
     }
 
     /**
@@ -1785,10 +1785,10 @@ public class Account implements BaseAccount, StoreConfig {
      *         The {@code LocalSearch} instance to modify.
      */
     public void excludeUnwantedFolders(LocalSearch search) {
-        excludeSpecialFolder(search, getTrashFolderName());
-        excludeSpecialFolder(search, getSpamFolderName());
-        excludeSpecialFolder(search, getOutboxFolderName());
-        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+        excludeSpecialFolder(search, getTrashFolderId());
+        excludeSpecialFolder(search, getSpamFolderId());
+        excludeSpecialFolder(search, getOutboxFolderId());
+        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolderId()));
     }
 
     private void excludeSpecialFolder(LocalSearch search, String folderName) {

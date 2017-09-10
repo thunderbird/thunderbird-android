@@ -30,6 +30,12 @@ public abstract class Folder<T extends Message> {
      * Forces an open of the MailProvider. If the provider is already open this
      * function returns without doing anything.
      *
+     * This must
+     *
+     * 1) Ensure the connection actually works
+     * 2) Fetches the list of permanent flags
+     * 3) Fetch the number of messages in the folder
+     *
      * @param mode READ_ONLY or READ_WRITE
      */
     public abstract void open(int mode) throws MessagingException;
@@ -47,12 +53,16 @@ public abstract class Folder<T extends Message> {
     public abstract boolean isOpen();
 
     /**
-     * Get the mode the folder was opened with. This may be different than the mode the open
+     * @return the mode the folder was opened with. This may be different than the mode the open
      * was requested with.
-     * @return
      */
     public abstract int getMode();
 
+    /**
+     * @param type The type of folder
+     * @return true if the folder can be created
+     * @throws MessagingException An unexpected failure occurs
+     */
     public abstract boolean create(FolderType type) throws MessagingException;
 
     /**
@@ -63,14 +73,32 @@ public abstract class Folder<T extends Message> {
         return create(type);
     }
 
+    /**
+     * This can perform a network request.
+     *
+     * @return true if the folder exists
+     */
     public abstract boolean exists() throws MessagingException;
 
     /**
+     * This should not perform a network request.
+     *
      * @return A count of the messages in the selected folder.
      */
     public abstract int getMessageCount() throws MessagingException;
 
+    /**
+     * This can perform a network request.
+     *
+     * @return A count of the unread messages in the selected folder.
+     */
     public abstract int getUnreadMessageCount() throws MessagingException;
+
+    /**
+     * This can perform a network request.
+     *
+     * @return A count of the messages in the selected folder.
+     */
     public abstract int getFlaggedMessageCount() throws MessagingException;
 
     public abstract T getMessage(String uid) throws MessagingException;
@@ -82,7 +110,7 @@ public abstract class Folder<T extends Message> {
      * @param earliestDate Date to start on
      * @param listener Listener to notify as we download messages.
      * @return List of messages
-     * @throws MessagingException
+     * @throws MessagingException on failure
      */
     public abstract List<T> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<T> listener) throws MessagingException;
 
@@ -137,6 +165,16 @@ public abstract class Folder<T extends Message> {
 
     public abstract void delete(boolean recurse) throws MessagingException;
 
+    /**
+     * The ID should uniquely identify a folder.
+     * @return id
+     */
+    public abstract String getId();
+
+    /**
+     * The name should identify a folder in a human readable form. Use {@link #getId()} for a unique identifier.
+     * @return name
+     */
     public abstract String getName();
 
     /**
@@ -158,7 +196,7 @@ public abstract class Folder<T extends Message> {
 
     @Override
     public String toString() {
-        return getName();
+        return getId();
     }
 
     public long getLastChecked() {

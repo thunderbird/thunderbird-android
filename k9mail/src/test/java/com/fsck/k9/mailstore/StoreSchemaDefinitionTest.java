@@ -357,7 +357,7 @@ public class StoreSchemaDefinitionTest {
 
     private Account createAccount() {
         Account account = mock(Account.class);
-        when(account.getInboxFolderName()).thenReturn("Inbox");
+        when(account.getInboxFolderId()).thenReturn("Inbox");
         when(account.getLocalStorageProviderId()).thenReturn(StorageManager.InternalStorageProvider.ID);
         return account;
     }

@@ -107,7 +107,7 @@ public class MessageProvider extends ContentProvider {
 
                 MessagingController.getInstance(application).addListener(new SimpleMessagingListener() {
                     @Override
-                    public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
+                    public void folderStatusChanged(Account account, String folderId, String folderName, int unreadMessageCount) {
                         application.getContentResolver().notifyChange(CONTENT_URI, null);
                     }
                 });
@@ -417,7 +417,7 @@ public class MessageProvider extends ContentProvider {
             return CONTENT_URI.buildUpon()
                     .appendPath("delete_message")
                     .appendPath(Integer.toString(accountNumber))
-                    .appendPath(message.getFolder().getName())
+                    .appendPath(message.getFolder().getId())
                     .appendPath(message.getUid())
                     .build()
                     .toString();
@@ -1089,7 +1089,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         @Override
-        public void listLocalMessagesAddMessages(Account account, String folderName, List<LocalMessage> messages) {
+        public void listLocalMessagesAddMessages(Account account, String folderId, String folderName, List<LocalMessage> messages) {
             Context context = getContext();
 
             for (LocalMessage message : messages) {

@@ -404,10 +404,10 @@ public class MessageLoaderHelper {
     private void startDownloadingMessageBody(boolean downloadComplete) {
         if (downloadComplete) {
             MessagingController.getInstance(context).loadMessageRemote(
-                    account, messageReference.getFolderName(), messageReference.getUid(), downloadMessageListener);
+                    account, messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
         } else {
             MessagingController.getInstance(context).loadMessageRemotePartial(
-                    account, messageReference.getFolderName(), messageReference.getUid(), downloadMessageListener);
+                    account, messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
         }
     }
 
@@ -437,15 +437,15 @@ public class MessageLoaderHelper {
 
     MessagingListener downloadMessageListener = new SimpleMessagingListener() {
         @Override
-        public void loadMessageRemoteFinished(Account account, String folder, String uid) {
-            if (!messageReference.equals(account.getUuid(), folder, uid)) {
+        public void loadMessageRemoteFinished(Account account, String folderId, String folderName, String uid) {
+            if (!messageReference.equals(account.getUuid(), folderId, uid)) {
                 return;
             }
             onMessageDownloadFinished();
         }
 
         @Override
-        public void loadMessageRemoteFailed(Account account, String folder, String uid, final Throwable t) {
+        public void loadMessageRemoteFailed(Account account, String folderId, String folderName, String uid, final Throwable t) {
             onDownloadMessageFailed(t);
         }
     };

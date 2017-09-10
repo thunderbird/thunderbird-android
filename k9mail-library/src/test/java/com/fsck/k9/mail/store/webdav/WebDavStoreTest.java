@@ -271,7 +271,7 @@ public class WebDavStoreTest {
 
         webDavStore.getPersonalNamespaces(true);
 
-        verify(storeConfig).setInboxFolderName("Inbox");
+        verify(storeConfig).setInboxFolderId("Inbox");
     }
 
     @Test
@@ -379,7 +379,7 @@ public class WebDavStoreTest {
 
     private StoreConfig createStoreConfig(String storeUri) {
         StoreConfig storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getInboxFolderName()).thenReturn("INBOX");
+        when(storeConfig.getInboxFolderId()).thenReturn("INBOX");
         when(storeConfig.getStoreUri()).thenReturn(storeUri);
         return storeConfig;
     }
