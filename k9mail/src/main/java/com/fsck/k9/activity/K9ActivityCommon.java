@@ -39,7 +39,7 @@ public class K9ActivityCommon {
     public static void setLanguage(Context context, String language) {
         Locale locale;
         if (TextUtils.isEmpty(language)) {
-            locale = Locale.getDefault();
+            locale = Resources.getSystem().getConfiguration().locale;
         } else if (language.length() == 5 && language.charAt(2) == '_') {
             // language is in the form: en_US
             locale = new Locale(language.substring(0, 2), language.substring(3));
