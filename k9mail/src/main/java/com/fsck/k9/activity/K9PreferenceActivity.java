@@ -11,6 +11,7 @@ import com.fsck.k9.K9;
 public abstract class K9PreferenceActivity extends PreferenceActivity {
     @Override
     public void onCreate(Bundle icicle) {
+        K9ActivityCommon.setLanguage(this, K9.getK9Language());
         setTheme(K9.getK9ThemeResourceId());
         super.onCreate(icicle);
     }

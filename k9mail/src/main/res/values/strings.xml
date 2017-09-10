@@ -821,10 +821,14 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_theme_label">Theme</string>
     <string name="settings_message_theme_label">Message view theme</string>
     <string name="settings_compose_theme_label">Composer theme</string>
+    <string name="settings_language_label">Language</string>
 
     <string name="settings_message_theme_selection_label">Fixed message theme</string>
     <string name="settings_message_theme_selection_summary_off">Select the message view theme while viewing the message</string>
     <string name="settings_message_theme_selection_summary_on">Use a fixed message view theme</string>
+
+
+    <string name="setting_language_system">System default</string>
 
     <string name="background_ops_label">Background sync</string>
     <string name="background_ops_never">Never</string>
