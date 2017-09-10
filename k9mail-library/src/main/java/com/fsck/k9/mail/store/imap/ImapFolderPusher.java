@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import android.content.Context;
 import android.os.PowerManager;
@@ -618,7 +620,8 @@ class ImapFolderPusher extends ImapFolder {
 
         private void syncMessages(List<Long> flagSyncMsgSeqs) {
             try {
-                List<? extends Message> messageList = getMessages(flagSyncMsgSeqs, true, null);
+                Set<Long> messageSeqSet = new HashSet<>(flagSyncMsgSeqs);
+                List<? extends Message> messageList = getMessages(messageSeqSet, true, null);
 
                 List<Message> messages = new ArrayList<Message>();
                 messages.addAll(messageList);

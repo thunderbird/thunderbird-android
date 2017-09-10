@@ -195,7 +195,6 @@ public class ImapUtility {
         return sb.toString();
     }
 
-
     static void setMessageFlags(ImapList fetchList, ImapMessage message, ImapStore store) throws MessagingException {
         ImapList flags = fetchList.getKeyedList("FLAGS");
         if (flags != null) {

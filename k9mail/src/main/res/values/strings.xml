@@ -673,24 +673,24 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="folder_settings_in_top_group_summary">Show near the top of the folder list</string>
 
     <string name="folder_settings_folder_display_mode_label">Folder display class</string>
-    <string name="folder_settings_folder_display_mode_normal">None</string>
+    <string name="folder_settings_folder_display_mode_normal">No Class</string>
     <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
 
     <string name="folder_settings_folder_sync_mode_label">Folder sync class</string>
-    <string name="folder_settings_folder_sync_mode_normal">None</string>
+    <string name="folder_settings_folder_sync_mode_normal">No Class</string>
     <string name="folder_settings_folder_sync_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_sync_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_sync_mode_inherited">Same as display class</string>
 
     <string name="folder_settings_folder_push_mode_label">Folder push class</string>
-    <string name="folder_settings_folder_push_mode_normal">None</string>
+    <string name="folder_settings_folder_push_mode_normal">No Class</string>
     <string name="folder_settings_folder_push_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_push_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_push_mode_inherited">Same as sync class</string>
 
     <string name="folder_settings_folder_notify_mode_label">Folder notification class</string>
-    <string name="folder_settings_folder_notify_mode_normal">None</string>
+    <string name="folder_settings_folder_notify_mode_normal">No Class</string>
     <string name="folder_settings_folder_notify_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_notify_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_notify_mode_inherited">Same as push class</string>

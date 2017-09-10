@@ -27,7 +27,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.store.StoreConfig;
-import okio.Buffer;
+
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,11 +37,14 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
 
+import okio.Buffer;
+
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
 import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
 import static com.fsck.k9.mail.store.imap.SelectOrExamineResponseDataFixture.TEST_CURRENT_HIGHEST_MOD_SEQ;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -762,7 +765,7 @@ public class ImapFolderTest {
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
         try {
-            folder.getMessages(asList(1L, 2L, 5L), false, null);
+            folder.getMessages(new HashSet<>(asList(1L, 2L, 5L)), false, null);
             fail("Expected exception");
         } catch (MessagingException e) {
             assertCheckOpenErrorMessage("Folder", e);
@@ -778,10 +781,11 @@ public class ImapFolderTest {
                 createImapResponse("* SEARCH 18"),
                 createImapResponse("* SEARCH 49")
         );
-        when(imapConnection.executeSimpleCommand("UID SEARCH 1,2,5 NOT DELETED")).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("UID SEARCH 5,1:2 NOT DELETED"))
+                .thenReturn(imapResponses);
         folder.open(OPEN_MODE_RW);
 
-        List<ImapMessage> messages = folder.getMessages(asList(1L, 2L, 5L), false, null);
+        List<ImapMessage> messages = folder.getMessages(newSet(1L, 2L, 5L), false, null);
 
         assertNotNull(messages);
         assertEquals(newSet("17", "18", "49"), extractMessageUids(messages));
@@ -796,7 +800,7 @@ public class ImapFolderTest {
         folder.open(OPEN_MODE_RW);
         MessageRetrievalListener<ImapMessage> listener = createMessageRetrievalListener();
 
-        List<ImapMessage> messages = folder.getMessages(singletonList(1L), true, listener);
+        List<ImapMessage> messages = folder.getMessages(singleton(1L), true, listener);
 
         ImapMessage message = messages.get(0);
         verify(listener).messageStarted("99", 0, 1);

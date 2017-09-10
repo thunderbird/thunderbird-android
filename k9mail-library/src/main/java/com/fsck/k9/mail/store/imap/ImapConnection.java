@@ -693,7 +693,7 @@ public class ImapConnection {
         requestCapabilitiesIfNecessary();
         return capabilities.contains(capability.toUpperCase(Locale.US));
     }
-
+  
     public boolean isCondstoreCapable() throws IOException, MessagingException {
         return hasCapability(Capabilities.CONDSTORE);
     }

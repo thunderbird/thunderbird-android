@@ -48,11 +48,7 @@ public class UidStoreCommandTest {
     }
 
     private UidStoreCommand createUidStoreCommand(Long uid, boolean value, Flag flag) {
-        return new UidStoreCommand.Builder()
-                .idSet(Collections.singletonList(uid))
-                .value(value)
-                .flagSet(Collections.singleton(flag))
-                .canCreateForwardedFlag(true)
-                .build();
+        return UidStoreCommand.createWithUids(Collections.singleton(uid), value,
+                Collections.singleton(flag), true);
     }
 }

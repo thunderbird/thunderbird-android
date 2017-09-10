@@ -1,30 +1,30 @@
 package com.fsck.k9.mail.store.imap.selectedstate.command;
 
+import java.util.Collections;
+import java.util.Set;
+
 class TestCommand extends FolderSelectedStateCommand {
 
-    private TestCommand() {
+    private TestCommand(Set<Long> ids) {
+        super(ids);
     }
 
     @Override
     String createCommandString() {
-        return createCombinedIdString().trim();
+        return String.format("TEST %s", createCombinedIdString()).trim();
     }
 
-    @Override
-    Builder newBuilder() {
-        return new Builder();
+    static TestCommand createWithIdSetAndGroup(Set<Long> ids, Long start, Long end) {
+        TestCommand command = new TestCommand(ids);
+        command.addIdGroup(start, end);
+        return command;
     }
 
-    static class Builder extends FolderSelectedStateCommand.Builder<TestCommand, Builder> {
+    static TestCommand createWithIdSet(Set<Long> ids) {
+        return createWithIdSetAndGroup(ids, null, null);
+    }
 
-        @Override
-        TestCommand createCommand() {
-            return new TestCommand();
-        }
-
-        @Override
-        Builder createBuilder() {
-            return this;
-        }
+    static TestCommand createWithIdGroup(long start, long end) {
+        return createWithIdSetAndGroup(Collections.<Long>emptySet(), start, end);
     }
 }

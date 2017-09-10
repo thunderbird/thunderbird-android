@@ -2,6 +2,7 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Set;
 
 import com.fsck.k9.mail.Flag;
@@ -15,16 +16,21 @@ import com.fsck.k9.mail.store.imap.selectedstate.response.SelectedStateResponse;
 
 public class UidStoreCommand extends FolderSelectedStateCommand {
     private boolean value;
-    private Set<Flag> flagSet;
+    private Set<Flag> flags;
     private boolean canCreateForwardedFlag;
 
-    private UidStoreCommand() {
+    private UidStoreCommand(Set<Long> uids, boolean value, Set<Flag> flags,
+                            boolean canCreateForwardedFlag) {
+        super(uids);
+        this.value = value;
+        this.flags = flags;
+        this.canCreateForwardedFlag = canCreateForwardedFlag;
     }
 
     @Override
     String createCommandString() {
         return String.format("%s %s%sFLAGS.SILENT (%s)", Commands.UID_STORE, createCombinedIdString(),
-                value ? "+" : "-", ImapUtility.combineFlags(flagSet, canCreateForwardedFlag));
+                value ? "+" : "-", ImapUtility.combineFlags(flags, canCreateForwardedFlag));
     }
 
     @Override
@@ -39,39 +45,16 @@ public class UidStoreCommand extends FolderSelectedStateCommand {
 
     }
 
-    @Override
-    Builder newBuilder() {
-        return new Builder()
-                .value(value)
-                .flagSet(flagSet)
-                .canCreateForwardedFlag(canCreateForwardedFlag);
+    public static UidStoreCommand createWithUids(Set<Long> uids, boolean value, Set<Flag> flags,
+                                         boolean canCreateForwardedFlag) {
+        return new UidStoreCommand(uids, value, flags, canCreateForwardedFlag);
     }
 
-    public static class Builder extends FolderSelectedStateCommand.Builder<UidStoreCommand, Builder> {
-
-        public Builder value(boolean value) {
-            command.value = value;
-            return builder;
-        }
-
-        public Builder flagSet(Set<Flag> flagSet) {
-            command.flagSet = flagSet;
-            return builder;
-        }
-
-        public Builder canCreateForwardedFlag(boolean canCreateForwardedFlag) {
-            command.canCreateForwardedFlag = canCreateForwardedFlag;
-            return builder;
-        }
-
-        @Override
-        UidStoreCommand createCommand() {
-            return new UidStoreCommand();
-        }
-
-        @Override
-        Builder createBuilder() {
-            return this;
-        }
+    public static UidStoreCommand createWithAllUids(boolean value, Set<Flag> flags,
+                                            boolean canCreateForwardedFlag) {
+        UidStoreCommand command = new UidStoreCommand(Collections.<Long>emptySet(), value, flags,
+                canCreateForwardedFlag);
+        command.useAllIds(true);
+        return command;
     }
 }

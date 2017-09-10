@@ -54,6 +54,7 @@ public class UidSearchResponse extends SelectedStateResponse {
             if (response.get(i) instanceof ImapList) {
                 continue;
             }
+          
             try {
                 long number = response.getLong(i);
                 numbers.add(number);

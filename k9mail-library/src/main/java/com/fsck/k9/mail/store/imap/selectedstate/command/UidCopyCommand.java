@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.Commands;
@@ -15,7 +16,9 @@ import com.fsck.k9.mail.store.imap.selectedstate.response.UidCopyResponse;
 public class UidCopyCommand extends FolderSelectedStateCommand {
     private String destinationFolderName;
 
-    private UidCopyCommand() {
+    private UidCopyCommand(Set<Long> uids, String destinationFolderName) {
+        super(uids);
+        this.destinationFolderName = destinationFolderName;
     }
 
     @Override
@@ -33,27 +36,8 @@ public class UidCopyCommand extends FolderSelectedStateCommand {
         }
     }
 
-    @Override
-    Builder newBuilder() {
-        return new Builder().destinationFolderName(destinationFolderName);
-    }
-
-    public static class Builder extends FolderSelectedStateCommand.Builder<UidCopyCommand, Builder> {
-
-        public Builder destinationFolderName(String destinationFolderName) {
-            command.destinationFolderName = destinationFolderName;
-            return builder;
-        }
-
-        @Override
-        UidCopyCommand createCommand() {
-            return new UidCopyCommand();
-        }
-
-        @Override
-        Builder createBuilder() {
-            return this;
-        }
+    public static UidCopyCommand createWithUids(Set<Long> uids, String destinationFolderName) {
+        return new UidCopyCommand(uids, destinationFolderName);
     }
 }
 

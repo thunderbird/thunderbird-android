@@ -11,10 +11,8 @@ public class UidCopyCommandTest {
 
     @Test
     public void createCommandString_shouldCreateExpectedString() {
-        UidCopyCommand command = new UidCopyCommand.Builder()
-                .idSet(Collections.singletonList(1L))
-                .destinationFolderName("\"Destination\"")
-                .build();
+        UidCopyCommand command = UidCopyCommand.createWithUids(Collections.singleton(1L),
+                "\"Destination\"");
 
         String commandString = command.createCommandString();
 

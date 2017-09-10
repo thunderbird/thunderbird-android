@@ -24,13 +24,15 @@ import com.fsck.k9.mail.store.imap.ImapUtility;
 
 public class UidFetchCommand extends FolderSelectedStateCommand {
     private int maximumAutoDownloadMessageSize;
-    private FetchProfile fetchProfile;
-    private Long changedSince;
     private Map<String, Message> messageMap;
+    private FetchProfile fetchProfile;
     private Part part;
     private BodyFactory bodyFactory;
+    private Long changedSince;
 
-    private UidFetchCommand() {
+    private UidFetchCommand(Set<Long> uids, int maximumAutoDownloadMessageSize) {
+        super(uids);
+        this.maximumAutoDownloadMessageSize = maximumAutoDownloadMessageSize;
     }
 
     @Override
@@ -45,6 +47,7 @@ public class UidFetchCommand extends FolderSelectedStateCommand {
     }
 
     public void send(ImapConnection connection) throws IOException, MessagingException {
+        ImapCommandSplitter.optimizeGroupings(this);
         connection.sendCommand(createCommandString(), false);
     }
 
@@ -107,53 +110,29 @@ public class UidFetchCommand extends FolderSelectedStateCommand {
                 fetch = String.format("BODY.PEEK[%s]", partId);
             }
 
-            builder.append("(UID ").append(fetch).append(") ");
+            builder.append("(UID ").append(fetch).append(")");
         }
     }
 
-    @Override
-    Builder newBuilder() {
-        return new Builder()
-                .maximumAutoDownloadMessageSize(maximumAutoDownloadMessageSize)
-                .changedSince(changedSince)
-                .messageParams(fetchProfile, messageMap)
-                .partParams(part, bodyFactory);
+    public static UidFetchCommand createWithMessageParams(Set<Long> uids,
+                                                          int maximumAutoDownloadMessageSize,
+                                                          Map<String, Message> messageMap,
+                                                          FetchProfile fetchProfile,
+                                                          Long changedSince) {
+        UidFetchCommand command = new UidFetchCommand(uids, maximumAutoDownloadMessageSize);
+        command.messageMap = messageMap;
+        command.fetchProfile = fetchProfile;
+        command.changedSince = changedSince;
+        return command;
     }
 
-    public static class Builder extends FolderSelectedStateCommand.Builder<UidFetchCommand, Builder> {
-
-        public Builder maximumAutoDownloadMessageSize(int maximumAutoDownloadMessageSize) {
-            command.maximumAutoDownloadMessageSize = maximumAutoDownloadMessageSize;
-            return builder;
-        }
-
-        public Builder changedSince(Long changedSince) {
-            if (changedSince != null) {
-                command.changedSince = changedSince;
-            }
-            return builder;
-        }
-
-        public Builder messageParams(FetchProfile fetchProfile, Map<String, Message> messageMap) {
-            command.fetchProfile = fetchProfile;
-            command.messageMap = messageMap;
-            return builder;
-        }
-
-        public Builder partParams(Part part, BodyFactory bodyFactory) {
-            command.part = part;
-            command.bodyFactory = bodyFactory;
-            return builder;
-        }
-
-        @Override
-        UidFetchCommand createCommand() {
-            return new UidFetchCommand();
-        }
-
-        @Override
-        Builder createBuilder() {
-            return this;
-        }
+    public static UidFetchCommand createWithPartParams(Set<Long> uids,
+                                                       int maximumAutoDownloadMessageSize,
+                                                       Part part,
+                                                       BodyFactory bodyFactory) {
+        UidFetchCommand command = new UidFetchCommand(uids, maximumAutoDownloadMessageSize);
+        command.part = part;
+        command.bodyFactory = bodyFactory;
+        return command;
     }
 }

@@ -349,7 +349,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         ImapFolder imapFolder = (ImapFolder) folder;
         checkOpen(); //only need READ access
 
-        List<Long> uids = new ArrayList<>(messages.size());
+        Set<Long> uids = new HashSet<>(messages.size());
         for (int i = 0, count = messages.size(); i < count; i++) {
             uids.add(Long.parseLong(messages.get(i).getUid()));
         }
@@ -368,16 +368,10 @@ public class ImapFolder extends Folder<ImapMessage> {
             imapFolder.create(FolderType.HOLDS_MESSAGES);
         }
 
-        UidCopyCommand command = new UidCopyCommand.Builder()
-                .idSet(uids)
-                .destinationFolderName(escapedDestinationFolderName)
-                .build();
+        UidCopyCommand command = UidCopyCommand.createWithUids(uids, escapedDestinationFolderName);
+        UidCopyResponse response = command.execute(connection, this);
 
-        UidCopyResponse copyUidResponse = command.execute(connection, this);
-        if (copyUidResponse == null) {
-            return null;
-        }
-        return copyUidResponse.getUidMapping();
+        return response == null ? null : response.getUidMapping();
     }
 
     @Override
@@ -460,7 +454,6 @@ public class ImapFolder extends Folder<ImapMessage> {
 
         UidSearchResponse searchResponse = searchCommand.execute(connection, this);
         return searchResponse.getNumbers().size();
-
     }
 
     @Override
@@ -544,17 +537,13 @@ public class ImapFolder extends Folder<ImapMessage> {
 
         for (int windowStart = 0; windowStart < messageMap.size(); windowStart += (FETCH_WINDOW_SIZE)) {
             int windowEnd = Math.min(windowStart + FETCH_WINDOW_SIZE, messageMap.size());
-            List<Long> uidWindow = uids.subList(windowStart, windowEnd);
+            Set<Long> uidWindow = new HashSet<>(uids.subList(windowStart, windowEnd));
+            int maximumAutoDownloadMessageSize = store.getStoreConfig()
+                    .getMaximumAutoDownloadMessageSize();
 
             try {
-
-                UidFetchCommand command = new UidFetchCommand.Builder()
-                        .maximumAutoDownloadMessageSize(store.getStoreConfig().getMaximumAutoDownloadMessageSize())
-                        .idSet(uidWindow)
-                        .changedSince(modseq)
-                        .messageParams(fp, messageMap)
-                        .build();
-
+                UidFetchCommand command = UidFetchCommand.createWithMessageParams(uidWindow,
+                        maximumAutoDownloadMessageSize, messageMap, fp, modseq);
                 sendAndProcessUidFetchCommand(command, messageMap, listener);
             } catch (IOException ioe) {
                 throw ioExceptionHandler(connection, ioe);
@@ -573,11 +562,11 @@ public class ImapFolder extends Folder<ImapMessage> {
         checkOpen();
         UidSearchCommand searchCommand = new UidSearchCommand.Builder()
                 .useUids(false)
-                .addIdGroup((long) start, (long) end)
+                .idGroup((long) start, (long) end)
                 .since(earliestDate)
                 .forbiddenFlags(includeDeleted ? null : Collections.singleton(Flag.DELETED))
-                .listener(listener)
                 .build();
+                
         return getMessages(searchCommand.execute(connection, this), listener);
     }
 
@@ -611,7 +600,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
         UidSearchCommand searchCommand = new UidSearchCommand.Builder()
                 .useUids(false)
-                .addIdGroup((long) startIndex, (long) endIndex)
+                .idGroup((long) startIndex, (long) endIndex)
                 .since(earliestDate)
                 .forbiddenFlags(Collections.singleton(Flag.DELETED))
                 .build();
@@ -619,7 +608,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         return response.getNumbers().size() > 0;
     }
 
-    protected List<ImapMessage> getMessages(final List<Long> mesgSeqs, final boolean includeDeleted,
+    protected List<ImapMessage> getMessages(final Set<Long> mesgSeqs, final boolean includeDeleted,
             final MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
 
         checkOpen();
@@ -627,7 +616,6 @@ public class ImapFolder extends Folder<ImapMessage> {
                 .useUids(false)
                 .idSet(mesgSeqs)
                 .forbiddenFlags(includeDeleted ? null : Collections.singleton(Flag.DELETED))
-                .listener(listener)
                 .build();
         return getMessages(searchCommand.execute(connection, this), listener);
     }
@@ -697,19 +685,17 @@ public class ImapFolder extends Folder<ImapMessage> {
 
         for (int windowStart = 0; windowStart < messages.size(); windowStart += (FETCH_WINDOW_SIZE)) {
             int windowEnd = Math.min(windowStart + FETCH_WINDOW_SIZE, messages.size());
-            List<Long> uidWindow = new ArrayList<>(windowEnd - windowStart);
+            Set<Long> uidSet = new HashSet<>(windowEnd - windowStart);
             for (String uid : uids.subList(windowStart, windowEnd)) {
-                uidWindow.add(Long.parseLong(uid));
+                uidSet.add(Long.parseLong(uid));
             }
 
+            int maximumAutoDownloadMessageSize = store.getStoreConfig()
+                    .getMaximumAutoDownloadMessageSize();
+
             try {
-
-                UidFetchCommand command = new UidFetchCommand.Builder()
-                        .maximumAutoDownloadMessageSize(store.getStoreConfig().getMaximumAutoDownloadMessageSize())
-                        .idSet(uidWindow)
-                        .messageParams(fetchProfile, messageMap)
-                        .build();
-
+                UidFetchCommand command = UidFetchCommand.createWithMessageParams(uidSet,
+                        maximumAutoDownloadMessageSize, messageMap, fetchProfile, null);
                 sendAndProcessUidFetchCommand(command, messageMap, listener);
             } catch (IOException ioe) {
                 throw ioExceptionHandler(connection, ioe);
@@ -719,13 +705,12 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     private void sendAndProcessUidFetchCommand(UidFetchCommand command, HashMap<String, Message> messageMap,
             MessageRetrievalListener<ImapMessage> listener) throws MessagingException, IOException {
-        command.send(connection);
-
         ImapResponse response;
         int messageNumber = 0;
 
-        do {
+        command.send(connection);
 
+        do {
             response = command.readResponse(connection);
 
             if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
@@ -776,7 +761,6 @@ public class ImapFolder extends Folder<ImapMessage> {
             } else {
                 handleUntaggedResponse(response);
             }
-
         } while (response.getTag() == null);
     }
 
@@ -785,12 +769,13 @@ public class ImapFolder extends Folder<ImapMessage> {
             BodyFactory bodyFactory) throws MessagingException {
         checkOpen();
 
+        Set<Long> uids = Collections.singleton(Long.parseLong(message.getUid()));
+        int maximumAutoDownloadMessageSize = store.getStoreConfig()
+                .getMaximumAutoDownloadMessageSize();
+
         try {
-            UidFetchCommand command = new UidFetchCommand.Builder()
-                    .maximumAutoDownloadMessageSize(store.getStoreConfig().getMaximumAutoDownloadMessageSize())
-                    .idSet(Collections.singleton(Long.parseLong(message.getUid())))
-                    .partParams(part, bodyFactory)
-                    .build();
+            UidFetchCommand command = UidFetchCommand.createWithPartParams(uids,
+                    maximumAutoDownloadMessageSize, part, bodyFactory);
             command.send(connection);
 
             ImapResponse response;
@@ -1280,12 +1265,12 @@ public class ImapFolder extends Folder<ImapMessage> {
         open(OPEN_MODE_RW);
         checkOpen();
 
-        UidStoreCommand command = new UidStoreCommand.Builder()
-                .allIds(true)
-                .value(value)
-                .flagSet(flags)
-                .canCreateForwardedFlag(canCreateKeywords || store.getPermanentFlagsIndex().contains(Flag.FORWARDED))
-                .build();
+        boolean canCreateForwardedFlag = canCreateKeywords ||
+                store.getPermanentFlagsIndex().contains(Flag.FORWARDED);
+
+
+        UidStoreCommand command = UidStoreCommand.createWithAllUids(value, flags,
+                canCreateForwardedFlag);
         command.execute(connection, this);
     }
 
@@ -1322,12 +1307,11 @@ public class ImapFolder extends Folder<ImapMessage> {
             uids.add(Long.parseLong(message.getUid()));
         }
 
-        UidStoreCommand command = new UidStoreCommand.Builder()
-                .idSet(uids)
-                .value(value)
-                .flagSet(flags)
-                .canCreateForwardedFlag(canCreateKeywords || store.getPermanentFlagsIndex().contains(Flag.FORWARDED))
-                .build();
+        boolean canCreateForwardedFlag = canCreateKeywords ||
+                store.getPermanentFlagsIndex().contains(Flag.FORWARDED);
+
+        UidStoreCommand command = UidStoreCommand.createWithUids(uids, value, flags,
+                canCreateForwardedFlag);
         command.execute(connection, this);
     }
 

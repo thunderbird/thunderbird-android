@@ -2,13 +2,13 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.Commands;
 import com.fsck.k9.mail.store.imap.ImapConnection;
@@ -27,9 +27,9 @@ public class UidSearchCommand extends FolderSelectedStateCommand {
     private Date since;
     private Set<Flag> requiredFlags;
     private Set<Flag> forbiddenFlags;
-    private MessageRetrievalListener<ImapMessage> listener;
 
     private UidSearchCommand() {
+        super(Collections.<Long>emptySet());
     }
 
     @Override
@@ -123,69 +123,71 @@ public class UidSearchCommand extends FolderSelectedStateCommand {
         }
     }
 
-    @Override
-    Builder newBuilder() {
-        return new Builder()
-                .useUids(useUids)
-                .queryString(queryString)
-                .messageId(messageId)
-                .performFullTextSearch(performFullTextSearch)
-                .since(since)
-                .requiredFlags(requiredFlags)
-                .forbiddenFlags(forbiddenFlags)
-                .listener(listener);
-    }
+    public static class Builder {
 
-    public static class Builder extends FolderSelectedStateCommand.Builder<UidSearchCommand, Builder> {
+        private UidSearchCommand command;
+
+        public Builder() {
+            command = new UidSearchCommand();
+        }
+
+        public Builder idSet(Set<Long> idSet) {
+            command.setIdSet(idSet);
+            return this;
+        }
+
+        public Builder idGroup(long start, long end) {
+            command.addIdGroup(start, end);
+            return this;
+        }
 
         public Builder useUids(boolean useUids) {
             command.useUids = useUids;
-            return builder;
+            return this;
+        }
+
+        public Builder allIds(boolean allIds) {
+            command.useAllIds(allIds);
+            return this;
+        }
+
+        public Builder onlyHighestId(boolean onlyHighestId) {
+            command.useOnlyHighestId(onlyHighestId);
+            return this;
         }
 
         public Builder queryString(String queryString) {
             command.queryString = queryString;
-            return builder;
+            return this;
         }
 
         public Builder messageId(String messageId) {
             command.messageId = messageId;
-            return builder;
+            return this;
         }
 
         public Builder performFullTextSearch(boolean performFullTextSearch) {
             command.performFullTextSearch = performFullTextSearch;
-            return builder;
+            return this;
         }
 
         public Builder since(Date since) {
             command.since = since;
-            return builder;
+            return this;
         }
 
         public Builder requiredFlags(Set<Flag> requiredFlags) {
             command.requiredFlags = requiredFlags;
-            return builder;
+            return this;
         }
 
         public Builder forbiddenFlags(Set<Flag> forbiddenFlags) {
             command.forbiddenFlags = forbiddenFlags;
-            return builder;
-        }
-
-        public Builder listener(MessageRetrievalListener<ImapMessage> listener) {
-            command.listener = listener;
-            return builder;
-        }
-
-        @Override
-        UidSearchCommand createCommand() {
-            return new UidSearchCommand();
-        }
-
-        @Override
-        Builder createBuilder() {
             return this;
+        }
+
+        public UidSearchCommand build() {
+            return command;
         }
     }
 }
