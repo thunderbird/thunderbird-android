@@ -8,6 +8,81 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.300" versioncode="23500">
+        <change>New app icon</change>
+        <change>New widget: Message List</change>
+        <change>New OpenPGP flow, adhering to Autocrypt specification</change>
+        <change>Settings export uses Storage Access Framework</change>
+        <change>Better support for multi-window</change>
+        <change>Recipient search now includes nicknames</change>
+        <change>Many bugfixes and optimizations</change>
+        <change>Added translations: Esperanto, Gaelic (Scottish), Icelandic, Welsh</change>
+    </release>
+
+    <release version="5.208" versioncode="23271">
+        <change>Fixed bug where automatic synchronization wouldn't restart after the device exited doze mode</change>
+    </release>
+    <release version="5.207" versioncode="23270">
+        <change>Improved speed of local message search</change>
+    </release>
+    <release version="5.206" versioncode="23260">
+        <change>Fixed crash when starting the app from the unread widget</change>
+    </release>
+    <release version="5.205" versioncode="23250">
+        <change>Fixed bug where the message body wasn't displayed when no crypto provider was configured</change>
+    </release>
+    <release version="5.204" versioncode="23240">
+        <change>Fixed bug where not all data was removed for deleted messages</change>
+        <change>Improved support for messages that didn't display correctly</change>
+        <change>Fixed bug with notification actions sometimes not working</change>
+        <change>Use "encrypted.asc" as filename for PGP/MIME emails</change>
+        <change>Updated translations</change>
+        <change>Many more bug fixes</change>
+    </release>
+    <release version="5.203" versioncode="23230">
+        <change>Fixed bug with pinch to zoom gesture</change>
+        <change>Added setting for disabling 'mark all as read' confirmation dialog</change>
+        <change>Update full text search index when removing messages</change>
+        <change>Fixed display bug when replying to messages using dark theme</change>
+        <change>Don't hide Cc and Bcc if 'Always show Cc/Bcc' is enabled</change>
+        <change>Allow sending signed-only PGP/INLINE messages</change>
+        <change>Don't save drafts when message could be sent encrypted</change>
+        <change>More bug fixes</change>
+    </release>
+    <release version="5.202" versioncode="23220">
+        <change>Fixed bug where BCC header line was accidentally included in sent messages</change>
+        <change>Fixed problem with getting the list of IMAP folders</change>
+        <change>Always show subject in message header when split mode is active</change>
+        <change>Hide crypto status indicator in contact dropdown when no crypto provider is configured</change>
+        <change>Fixed button to expand CC/BCC recipients in dark theme</change>
+        <change>Fixed various crashes</change>
+    </release>
+    <release version="5.201" versioncode="23210">
+        <change>Fixed crash during database upgrade</change>
+        <change>Fixed various minor bugs</change>
+    </release>
+    <release version="5.200" versioncode="23200">
+        <change>Fixed bug with status display of signed messages</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.200-RC2" versioncode="23191">
+        <change>Fixed crash when opening attached messages</change>
+        <change>Don't crash when message list contains messages for which we couldn't extract a preview</change>
+    </release>
+    <release version="5.200-RC1" versioncode="23190" >
+        <change>Added support for PGP/MIME</change>
+        <change>Added support for bundled notifications on Android 7+ and Android Wear</change>
+        <change>New option: only notify for messages from contacts</change>
+        <change>Ask for confirmation on "mark all as read"</change>
+        <change>Added support for sub-folders (WebDAV)</change>
+        <change>Added support for List-Post header</change>
+        <change>Added support for Server Name Indication</change>
+        <change>Disabled support for SSLv3 protocol/ciphers and all RC4 ciphers</change>
+        <change>Removed support for APG (use OpenKeychain instead)</change>
+        <change>Added server settings for more providers</change>
+        <change>Added translations: Bulgarian, Persian (Farsi), Croatian, Portuguese, Romanian, Slovenian, Serbian</change>
+        <change>Lots of smaller bug fixes and features</change>
+    </release>
     <release version="5.115" versioncode="23114" >
         <change>More user interface tweaks for encryption-related functionality</change>
         <change>Message signing without encryption is now an expert feature that is disabled by default</change>
