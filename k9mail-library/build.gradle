@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 if (!rootProject.optimizeForDevelopment) {
     apply from: '../gradle/plugins/checkstyle-android.gradle'
@@ -25,9 +26,11 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:0.4.1'
     androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
 
+    testCompile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
     testCompile "com.squareup.okio:okio:${okioVersion}"
     testCompile "org.robolectric:robolectric:${robolectricVersion}"
     testCompile "junit:junit:${junitVersion}"
+    testCompile "com.google.truth:truth:${truthVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"
 }
 
