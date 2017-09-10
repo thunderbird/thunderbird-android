@@ -1,8 +1,13 @@
 package com.fsck.k9.activity;
 
+import java.util.Locale;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -31,6 +36,23 @@ public class K9ActivityCommon {
         return new K9ActivityCommon(activity);
     }
 
+    public static void setLanguage(Context context, String language) {
+        Locale locale;
+        if (TextUtils.isEmpty(language)) {
+            locale = Resources.getSystem().getConfiguration().locale;
+        } else if (language.length() == 5 && language.charAt(2) == '_') {
+            // language is in the form: en_US
+            locale = new Locale(language.substring(0, 2), language.substring(3));
+        } else {
+            locale = new Locale(language);
+        }
+
+        Resources resources = context.getResources();
+        Configuration config = resources.getConfiguration();
+        config.locale = locale;
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+    }
+
 
     /**
      * Base activities need to implement this interface.
@@ -49,6 +71,7 @@ public class K9ActivityCommon {
 
     private K9ActivityCommon(Activity activity) {
         mActivity = activity;
+        setLanguage(mActivity, K9.getK9Language());
         mActivity.setTheme(K9.getK9ThemeResourceId());
     }
 
