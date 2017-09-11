@@ -42,17 +42,14 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
  * A folder is referenced by an ID and a name.
  *
  * In the ImapFolder, the ID is the path including / separators.
- * The name is also currently the full path including separators.
+ * The name the final portion of the path.
  *
  * ID: "Folder/Subfolder"
- * Name: "Folder/Subfolder"
+ * Name: "Subfolder"
  *
- * TODO: Implement child-parent relationship for folders and make the name just the child name (e.g. Subfolder)
-
  */
 class WebDavFolder extends Folder<WebDavMessage> {
     private String id;
-    private String name;
     private String folderUrl;
     private boolean mIsOpen = false;
     private int messageCount = 0;
@@ -72,7 +69,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
     private void buildFolderUrl() {
         String encodedName;
-        String[] urlParts = this.name.split("/");
+        String[] urlParts = this.id.split("/");
         String url = "";
         for (int i = 0, count = urlParts.length; i < count; i++) {
             if (i != 0) {
