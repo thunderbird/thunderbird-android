@@ -120,6 +120,8 @@ public abstract class Message implements Part, Body {
 
     public abstract void setReferences(String references);
 
+    public abstract Importance getImportance();
+
     @Override
     public abstract Body getBody();
 

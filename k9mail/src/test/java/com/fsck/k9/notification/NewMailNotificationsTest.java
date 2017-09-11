@@ -9,6 +9,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.mail.Importance;
 import com.fsck.k9.mailstore.LocalMessage;
 import org.junit.Before;
 import org.junit.Test;
@@ -287,7 +288,7 @@ public class NewMailNotificationsTest {
     }
 
     private NotificationContent createNotificationContent() {
-        return new NotificationContent(null, null, null, null, null, false);
+        return new NotificationContent(null, null, null, null, null, false, Importance.NORMAL);
     }
 
     private NotificationHolder createNotificationHolder(NotificationContent content, int index) {

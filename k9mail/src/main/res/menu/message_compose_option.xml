@@ -20,6 +20,11 @@
         android:title="@string/add_from_contacts"
     />
     <item
+        android:id="@+id/set_importance"
+        android:alphabeticShortcut="a"
+        android:title="@string/set_importance"
+        />
+    <item
         android:id="@+id/save"
         android:alphabeticShortcut="d"
         android:title="@string/save_draft_action"

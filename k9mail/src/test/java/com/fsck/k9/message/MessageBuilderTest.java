@@ -20,6 +20,7 @@ import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
+import com.fsck.k9.mail.Importance;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
@@ -295,6 +296,7 @@ public class MessageBuilderTest {
                 .setInReplyTo("inreplyto")
                 .setReferences("references")
                 .setRequestReadReceipt(false)
+                .setImportance(Importance.NORMAL)
                 .setIdentity(identity)
                 .setMessageFormat(SimpleMessageFormat.TEXT)
                 .setText(TEST_MESSAGE_TEXT)

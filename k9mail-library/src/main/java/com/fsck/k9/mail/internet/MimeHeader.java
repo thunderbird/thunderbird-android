@@ -16,6 +16,8 @@ public class MimeHeader implements Cloneable {
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
     public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
     public static final String HEADER_CONTENT_ID = "Content-ID";
+    public static final String HEADER_IMPORTANCE = "Importance";
+    public static final String HEADER_X_PRIORITY = "X-Priority";
 
     private List<Field> mFields = new ArrayList<Field>();
     private String mCharset = null;

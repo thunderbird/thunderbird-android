@@ -79,6 +79,7 @@ import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Importance;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
@@ -200,6 +201,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private Action action;
 
     private boolean requestReadReceipt = false;
+    private Importance importance = Importance.NORMAL;
 
     private TextView chooseIdentityButton;
     private EditText subjectView;
@@ -671,6 +673,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setRequestReadReceipt(requestReadReceipt)
                 .setIdentity(identity)
                 .setMessageFormat(currentMessageFormat)
+                .setImportance(importance)
                 .setText(messageContentView.getCharacters())
                 .setAttachments(attachmentPresenter.createAttachmentList())
                 .setSignature(signatureView.getCharacters())
@@ -775,6 +778,19 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         Context context = getApplicationContext();
         Toast toast = Toast.makeText(context, txt, Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    private void setImportance() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.set_importance)
+                .setItems(R.array.importance_entries, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int index) {
+                        importance =
+                                Importance.valueOf(getApplicationContext().getResources()
+                                        .getStringArray(R.array.importance_values)[index]);
+                    }
+                });
+        builder.show();
     }
 
     public void showContactPicker(int requestCode) {
@@ -989,6 +1005,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 break;
             case R.id.read_receipt:
                 onReadReceipt();
+                break;
+            case R.id.set_importance:
+                setImportance();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
