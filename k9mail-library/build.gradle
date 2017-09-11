@@ -15,8 +15,8 @@ repositories {
 }
 
 dependencies {
-    compile 'org.apache.james:apache-mime4j-core:0.7.2'
-    compile 'org.apache.james:apache-mime4j-dom:0.7.2'
+    compile 'org.apache.james:apache-mime4j-core:0.8.1'
+    compile 'org.apache.james:apache-mime4j-dom:0.8.1'
     compile 'commons-io:commons-io:2.4'
     compile 'com.jcraft:jzlib:1.0.7'
     compile 'com.beetstra.jutf7:jutf7:1.0.0'
