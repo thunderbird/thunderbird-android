@@ -807,7 +807,7 @@ public class ImapFolderTest {
 
         folder.fetch(null, fetchProfile, null);
 
-        verifyNoMoreInteractions(imapStore);
+        verifyNoMoreInteractions(imapConnection);
     }
 
     @Test
@@ -817,7 +817,7 @@ public class ImapFolderTest {
 
         folder.fetch(Collections.<ImapMessage>emptyList(), fetchProfile, null);
 
-        verifyNoMoreInteractions(imapStore);
+        verifyNoMoreInteractions(imapConnection);
     }
 
     @Test
