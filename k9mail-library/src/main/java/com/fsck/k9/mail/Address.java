@@ -19,8 +19,7 @@ import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 
 public class Address implements Serializable {
-    private static final Pattern ATOM = Pattern.compile(
-            "^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");
+    private static final Pattern ATOM = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");
 
     /**
      * Immutable empty {@link Address} array
@@ -145,7 +144,7 @@ public class Address implements Serializable {
         try {
             MailboxList parsedList =  DefaultAddressParser.DEFAULT.parseAddressList(addressList).flatten();
 
-                for (int i = 0, count = parsedList.size(); i < count; i++) {
+            for (int i = 0, count = parsedList.size(); i < count; i++) {
                 Mailbox mailbox = parsedList.get(i);
                 addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName(), false));
             }

@@ -103,11 +103,14 @@ public class MimeMessage extends Message {
 
         mBody = null;
 
-        MimeConfig.Builder configBuilder = new MimeConfig.Builder();
-        configBuilder.setMaxHeaderLen(-1); // The default is a mere 10k
-        configBuilder.setMaxLineLen(-1); // The default is 1000 characters. Some MUAs generate
-        // REALLY long References: headers
-        configBuilder.setMaxHeaderCount(-1); // Disable the check for header count.
+        MimeConfig.Builder configBuilder = new MimeConfig.Builder()
+                // The default is a mere 10k
+                .setMaxHeaderLen(-1)
+                // The default is 1000 characters. Some MUAs generate
+                // REALLY long References: headers
+                .setMaxLineLen(-1)
+                // Disable the check for header count.
+                .setMaxHeaderCount(-1);
         MimeStreamParser parser = new MimeStreamParser(configBuilder.build());
         parser.setContentHandler(new MimeMessageBuilder(new DefaultBodyFactory()));
         if (recurse) {
