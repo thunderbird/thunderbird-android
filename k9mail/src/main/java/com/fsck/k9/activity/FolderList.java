@@ -1124,11 +1124,11 @@ public class FolderList extends K9ListActivity {
             }
             mFontSizes.setViewTextSize(holder.folderStatus, mFontSizes.getFolderStatus());
 
-            final FolderViewHolder viewHolder = holder;
             view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onOpenFolder(viewHolder.folderId);
+                    ListView listView = (ListView) v.getParent();
+                    listView.getOnItemClickListener().onItemClick(listView, v, listView.indexOfChild(v), v.getId());
                 }
             });
             return view;
