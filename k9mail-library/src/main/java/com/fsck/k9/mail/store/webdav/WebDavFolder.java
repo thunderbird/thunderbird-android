@@ -714,7 +714,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
     @Override
     public boolean equals(Object o) {
         if (o instanceof WebDavFolder) {
-            return ((WebDavFolder) o).name.equals(name);
+            return ((WebDavFolder) o).id.equals(id);
         }
         return super.equals(o);
     }
