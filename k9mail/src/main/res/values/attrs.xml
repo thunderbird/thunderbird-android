@@ -12,6 +12,7 @@
         <attr name="iconActionDelete" format="reference" />
         <attr name="iconActionMove" format="reference" />
         <attr name="iconActionCopy" format="reference" />
+        <attr name="iconActionNextStatus" format="reference" />
         <attr name="iconActionNextMessage" format="reference" />
         <attr name="iconActionPreviousMessage" format="reference" />
         <attr name="iconActionRefresh" format="reference" />
