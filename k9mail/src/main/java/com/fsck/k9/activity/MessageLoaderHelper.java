@@ -81,6 +81,7 @@ public class MessageLoaderHelper {
     private LoaderManager loaderManager;
     @Nullable // make this explicitly nullable, make sure to cancel/ignore any operation if this is null
     private MessageLoaderCallbacks callback;
+    private final boolean processSignedOnly;
 
 
     // transient state
@@ -100,6 +101,8 @@ public class MessageLoaderHelper {
         this.loaderManager = loaderManager;
         this.fragmentManager = fragmentManager;
         this.callback = callback;
+
+        processSignedOnly = K9.getOpenPgpSupportSignOnly();
     }
 
 
@@ -276,7 +279,7 @@ public class MessageLoaderHelper {
             retainCryptoHelperFragment.setData(messageCryptoHelper);
         }
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(
-                localMessage, messageCryptoCallback, cachedDecryptionResult);
+                localMessage, messageCryptoCallback, cachedDecryptionResult, processSignedOnly);
     }
 
     private void cancelAndClearCryptoOperation() {

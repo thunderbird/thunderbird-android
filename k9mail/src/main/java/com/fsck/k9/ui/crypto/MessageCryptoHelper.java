@@ -84,6 +84,7 @@ public class MessageCryptoHelper {
     private State state;
     private CancelableBackgroundOperation cancelableBackgroundOperation;
     private boolean isCancelled;
+    private boolean processSignedOnly;
 
     private OpenPgpApi openPgpApi;
     private OpenPgpServiceConnection openPgpServiceConnection;
@@ -108,7 +109,7 @@ public class MessageCryptoHelper {
     }
 
     public void asyncStartOrResumeProcessingMessage(Message message, MessageCryptoCallback callback,
-            OpenPgpDecryptionResult cachedDecryptionResult) {
+            OpenPgpDecryptionResult cachedDecryptionResult, boolean processSignedOnly) {
         if (this.currentMessage != null) {
             reattachCallback(message, callback);
             return;
@@ -119,6 +120,7 @@ public class MessageCryptoHelper {
         this.currentMessage = message;
         this.cachedDecryptionResult = cachedDecryptionResult;
         this.callback = callback;
+        this.processSignedOnly = processSignedOnly;
 
         nextStep();
     }
@@ -143,6 +145,13 @@ public class MessageCryptoHelper {
         List<Part> signedParts = MessageCryptoStructureDetector
                 .findMultipartSignedParts(currentMessage, messageAnnotations);
         for (Part part : signedParts) {
+            if (!processSignedOnly) {
+                boolean isEncapsulatedSignature =
+                        messageAnnotations.findKeyForAnnotationWithReplacementPart(part) != null;
+                if (!isEncapsulatedSignature) {
+                    continue;
+                }
+            }
             if (!MessageHelper.isCompletePartAvailable(part)) {
                 MimeBodyPart replacementPart = getMultipartSignedContentPartIfAvailable(part);
                 addErrorAnnotation(part, CryptoError.OPENPGP_SIGNED_BUT_INCOMPLETE, replacementPart);
@@ -161,12 +170,15 @@ public class MessageCryptoHelper {
     private void findPartsForPgpInlinePass() {
         List<Part> inlineParts = MessageCryptoStructureDetector.findPgpInlineParts(currentMessage);
         for (Part part : inlineParts) {
+            if (!processSignedOnly && !MessageCryptoStructureDetector.isPartPgpInlineEncrypted(part)) {
+                continue;
+            }
+
             if (!currentMessage.getFlags().contains(Flag.X_DOWNLOADED_FULL)) {
                 if (MessageCryptoStructureDetector.isPartPgpInlineEncrypted(part)) {
                     addErrorAnnotation(part, CryptoError.OPENPGP_ENCRYPTED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
                 } else {
-                    MimeBodyPart replacementPart = extractClearsignedTextReplacementPart(part);
-                    addErrorAnnotation(part, CryptoError.OPENPGP_SIGNED_BUT_INCOMPLETE, replacementPart);
+                    addErrorAnnotation(part, CryptoError.OPENPGP_SIGNED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
                 }
                 continue;
             }

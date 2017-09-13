@@ -84,7 +84,7 @@ public class MessageCryptoHelperTest {
         message.setHeader("Content-Type", "text/plain");
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
-        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
 
         ArgumentCaptor<MessageCryptoAnnotations> captor = ArgumentCaptor.forClass(MessageCryptoAnnotations.class);
         verify(messageCryptoCallback).onCryptoOperationsFinished(captor.capture());
@@ -107,7 +107,7 @@ public class MessageCryptoHelperTest {
 
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
-        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
 
 
         ArgumentCaptor<MessageCryptoAnnotations> captor = ArgumentCaptor.forClass(MessageCryptoAnnotations.class);
@@ -132,7 +132,7 @@ public class MessageCryptoHelperTest {
         );
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
-        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, true);
 
         assertPartAnnotationHasState(message, messageCryptoCallback, CryptoError.OPENPGP_SIGNED_BUT_INCOMPLETE, null,
                 null, null, null);
@@ -148,7 +148,7 @@ public class MessageCryptoHelperTest {
         );
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
-        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
 
         assertPartAnnotationHasState(
                 message, messageCryptoCallback, CryptoError.OPENPGP_ENCRYPTED_BUT_INCOMPLETE, null, null, null, null);
@@ -164,7 +164,7 @@ public class MessageCryptoHelperTest {
         );
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
-        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
 
         assertPartAnnotationHasState(message, messageCryptoCallback, CryptoError.ENCRYPTED_BUT_UNSUPPORTED, null, null,
                 null, null);
@@ -180,7 +180,7 @@ public class MessageCryptoHelperTest {
         );
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
-        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, true);
 
         assertPartAnnotationHasState(message, messageCryptoCallback, CryptoError.SIGNED_BUT_UNSUPPORTED, null, null,
                 null, null);
@@ -208,6 +208,36 @@ public class MessageCryptoHelperTest {
 
         verify(autocryptOperations).addAutocryptPeerUpdateToIntentIfPresent(message, capturedApiIntent);
         verifyNoMoreInteractions(autocryptOperations);
+    }
+
+    @Test
+    public void multipartSigned__withSignOnlyDisabled__shouldReturnNothing() throws Exception {
+        Message message = messageFromBody(
+                multipart("signed", "application/pgp-signature",
+                        bodypart("text/plain", "content"),
+                        bodypart("application/pgp-signature", "content")
+                )
+        );
+
+        MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
+
+        assertReturnsWithNoCryptoAnnotations(messageCryptoCallback);
+    }
+
+    @Test
+    public void multipartSigned__withSignOnlyDisabledAndNullBody__shouldReturnNothing() throws Exception {
+        Message message = messageFromBody(
+                multipart("signed", "application/pgp-signature",
+                        bodypart("text/plain"),
+                        bodypart("application/pgp-signature")
+                )
+        );
+
+        MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
+
+        assertReturnsWithNoCryptoAnnotations(messageCryptoCallback);
     }
 
     @Test
@@ -249,7 +279,7 @@ public class MessageCryptoHelperTest {
 
     private void processEncryptedMessageAndCaptureMocks(Message message, Body encryptedBody, OutputStream outputStream)
             throws Exception {
-        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, false);
 
         ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
         ArgumentCaptor<OpenPgpDataSource> dataSourceCaptor = ArgumentCaptor.forClass(OpenPgpDataSource.class);
@@ -267,7 +297,7 @@ public class MessageCryptoHelperTest {
 
     private void processSignedMessageAndCaptureMocks(Message message, BodyPart signedBodyPart,
             OutputStream outputStream) throws Exception {
-        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
+        messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null, true);
 
         ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
         ArgumentCaptor<OpenPgpDataSource> dataSourceCaptor = ArgumentCaptor.forClass(OpenPgpDataSource.class);
@@ -281,6 +311,15 @@ public class MessageCryptoHelperTest {
         OpenPgpDataSource dataSource = dataSourceCaptor.getValue();
         dataSource.writeTo(outputStream);
         verify(signedBodyPart).writeTo(outputStream);
+    }
+
+    private void assertReturnsWithNoCryptoAnnotations(MessageCryptoCallback messageCryptoCallback) {
+        ArgumentCaptor<MessageCryptoAnnotations> captor = ArgumentCaptor.forClass(MessageCryptoAnnotations.class);
+        verify(messageCryptoCallback).onCryptoOperationsFinished(captor.capture());
+        verifyNoMoreInteractions(messageCryptoCallback);
+
+        MessageCryptoAnnotations annotations = captor.getValue();
+        assertTrue(annotations.isEmpty());
     }
 
     private void assertPartAnnotationHasState(Message message, MessageCryptoCallback messageCryptoCallback,
