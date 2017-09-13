@@ -2493,12 +2493,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         return (folderName != null && folderName.equals(account.getOutboxFolderName()));
     }
 
-    private boolean isErrorFolder() {
-        return K9.ERROR_FOLDER_NAME.equals(folderName);
-    }
-
     public boolean isRemoteFolder() {
-        if (search.isManualSearch() || isOutbox() || isErrorFolder()) {
+        if (search.isManualSearch() || isOutbox()) {
             return false;
         }
 

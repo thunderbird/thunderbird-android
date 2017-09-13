@@ -92,8 +92,6 @@ public class MessagingControllerTest {
     @Mock
     private LocalFolder localFolder;
     @Mock
-    private LocalFolder errorFolder;
-    @Mock
     private LocalFolder sentFolder;
     @Mock
     private Folder remoteFolder;
@@ -179,17 +177,6 @@ public class MessagingControllerTest {
         doThrow(new UnavailableStorageException("Test")).when(localFolder).open(Folder.OPEN_MODE_RW);
 
         controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
-    }
-
-    @Test()
-    public void clearFolderSynchronous_whenExceptionThrown_shouldAddErrorMessageInDebug() throws MessagingException {
-        if (K9.isDebug()) {
-            doThrow(new RuntimeException("Test")).when(localFolder).open(Folder.OPEN_MODE_RW);
-
-            controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
-
-            verify(errorFolder).appendMessages(any(List.class));
-        }
     }
 
     @Test()
@@ -926,14 +913,12 @@ public class MessagingControllerTest {
         when(account.getLocalStore()).thenReturn(localStore);
         when(account.getStats(any(Context.class))).thenReturn(accountStats);
         when(account.getMaximumAutoDownloadMessageSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
-        when(account.getErrorFolderName()).thenReturn(K9.ERROR_FOLDER_NAME);
         when(account.getEmail()).thenReturn("user@host.com");
     }
 
     private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
         when(localFolder.getName()).thenReturn(FOLDER_NAME);
-        when(localStore.getFolder(K9.ERROR_FOLDER_NAME)).thenReturn(errorFolder);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
     }
 
