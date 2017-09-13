@@ -182,7 +182,7 @@ public class MessageCryptoStructureDetectorTest {
         Message message = messageFromBody(
                 multipart("encrypted", "application/not-pgp-encrypted",
                         bodypart("application/pgp-encrypted"),
-                        bodypart("application/octet-stream")
+                        bodypart("application/octet-stream", "content")
                 )
         );
 
@@ -192,11 +192,26 @@ public class MessageCryptoStructureDetectorTest {
     }
 
     @Test
-    public void findEncrypted__withEmptyProtocol__shouldReturnEmpty() throws Exception {
+    public void findEncrypted__withBadProtocolAndNoBody__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
                 multipart("encrypted", null,
                         bodypart("application/pgp-encrypted"),
                         bodypart("application/octet-stream")
+                )
+        );
+
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(message);
+
+        assertEquals(1, encryptedParts.size());
+        assertSame(message, encryptedParts.get(0));
+    }
+
+    @Test
+    public void findEncrypted__withEmptyProtocol__shouldReturnEmpty() throws Exception {
+        Message message = messageFromBody(
+                multipart("encrypted", null,
+                        bodypart("application/pgp-encrypted"),
+                        bodypart("application/octet-stream", "content")
                 )
         );
 
@@ -324,10 +339,26 @@ public class MessageCryptoStructureDetectorTest {
     }
 
     @Test
-    public void findSigned__withBadProtocol__shouldReturnRoot() throws Exception {
+    public void findSigned__withNoProtocolAndNoBody__shouldReturnRoot() throws Exception {
+        Message message = messageFromBody(
+                multipart("signed", null,
+                        bodypart("text/plain"),
+                        bodypart("application/pgp-signature")
+                )
+        );
+
+        List<Part> signedParts = MessageCryptoStructureDetector
+                .findMultipartSignedParts(message, messageCryptoAnnotations);
+
+        assertEquals(1, signedParts.size());
+        assertSame(message, signedParts.get(0));
+    }
+
+    @Test
+    public void findSigned__withBadProtocol__shouldReturnNothing() throws Exception {
         Message message = messageFromBody(
                 multipart("signed", "application/not-pgp-signature",
-                        bodypart("text/plain"),
+                        bodypart("text/plain", "content"),
                         bodypart("application/pgp-signature")
                 )
         );
@@ -342,7 +373,7 @@ public class MessageCryptoStructureDetectorTest {
     public void findSigned__withEmptyProtocol__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
                 multipart("signed", null,
-                        bodypart("text/plain"),
+                        bodypart("text/plain", "content"),
                         bodypart("application/pgp-signature")
                 )
         );

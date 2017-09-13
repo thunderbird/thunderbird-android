@@ -227,8 +227,10 @@ public class MessageCryptoStructureDetector {
         }
 
         String protocolParameter = MimeUtility.getHeaderParameter(part.getContentType(), PROTOCOL_PARAMETER);
-        BodyPart signatureBodyPart = mimeMultipart.getBodyPart(1);
-        return isSameMimeType(protocolParameter, signatureBodyPart.getMimeType());
+
+        boolean dataUnavailable = protocolParameter == null && mimeMultipart.getBodyPart(0).getBody() == null;
+        boolean protocolMatches = isSameMimeType(protocolParameter, mimeMultipart.getBodyPart(1).getMimeType());
+        return dataUnavailable || protocolMatches;
     }
 
     private static boolean isPartMultipartEncrypted(Part part) {
@@ -244,8 +246,10 @@ public class MessageCryptoStructureDetector {
         }
 
         String protocolParameter = MimeUtility.getHeaderParameter(part.getContentType(), PROTOCOL_PARAMETER);
-        BodyPart signatureBodyPart = mimeMultipart.getBodyPart(0);
-        return isSameMimeType(protocolParameter, signatureBodyPart.getMimeType());
+
+        boolean dataUnavailable = protocolParameter == null && mimeMultipart.getBodyPart(1).getBody() == null;
+        boolean protocolMatches = isSameMimeType(protocolParameter, mimeMultipart.getBodyPart(0).getMimeType());
+        return dataUnavailable || protocolMatches;
     }
 
     public static boolean isMultipartEncryptedOpenPgpProtocol(Part part) {
