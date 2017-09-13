@@ -80,7 +80,7 @@ public class OpenPgpUtils {
     }
 
     public static String extractClearsignedMessage(String text) {
-        if (!text.startsWith(PGP_MARKER_CLEARSIGN_BEGIN_MESSAGE)) {
+        if (text == null || !text.startsWith(PGP_MARKER_CLEARSIGN_BEGIN_MESSAGE)) {
             return null;
         }
         int endOfHeader = text.indexOf("\r\n\r\n") +4;

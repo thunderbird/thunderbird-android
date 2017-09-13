@@ -28,6 +28,7 @@ import com.fsck.k9.message.html.HtmlProcessor;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import com.fsck.k9.ui.crypto.MessageCryptoSplitter;
 import com.fsck.k9.ui.crypto.MessageCryptoSplitter.CryptoMessageParts;
+import org.openintents.openpgp.util.OpenPgpUtils;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
@@ -227,7 +228,7 @@ public class MessageViewInfoExtractor {
             Part part = ((Textual)viewable).getPart();
             addHtmlDivider(html, part, prependDivider);
 
-            String t = MessageExtractor.getTextFromPart(part);
+            String t = getTextFromPart(part);
             if (t == null) {
                 t = "";
             } else if (viewable instanceof Flowed) {
@@ -264,7 +265,7 @@ public class MessageViewInfoExtractor {
             Part part = ((Textual)viewable).getPart();
             addTextDivider(text, part, prependDivider);
 
-            String t = MessageExtractor.getTextFromPart(part);
+            String t = getTextFromPart(part);
             if (t == null) {
                 t = "";
             } else if (viewable instanceof Html) {
@@ -313,6 +314,17 @@ public class MessageViewInfoExtractor {
             html.append(filename);
             html.append("</p>");
         }
+    }
+
+    private String getTextFromPart(Part part) {
+        String textFromPart = MessageExtractor.getTextFromPart(part);
+
+        String extractedClearsignedMessage = OpenPgpUtils.extractClearsignedMessage(textFromPart);
+        if (extractedClearsignedMessage != null) {
+            textFromPart = extractedClearsignedMessage;
+        }
+
+        return textFromPart;
     }
 
     /**
@@ -504,7 +516,7 @@ public class MessageViewInfoExtractor {
         public final String text;
         public final String html;
 
-        public ViewableExtractedText(String text, String html) {
+        ViewableExtractedText(String text, String html) {
             this.text = text;
             this.html = html;
         }

@@ -52,7 +52,6 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
-import org.openintents.openpgp.util.OpenPgpUtils;
 import timber.log.Timber;
 
 
@@ -783,21 +782,6 @@ public class MessageCryptoHelper {
             }
         }
         return replacementPart;
-    }
-
-    private static MimeBodyPart extractClearsignedTextReplacementPart(Part part) {
-        try {
-            String clearsignedText = MessageExtractor.getTextFromPart(part);
-            String replacementText = OpenPgpUtils.extractClearsignedMessage(clearsignedText);
-            if (replacementText == null) {
-                Timber.e("failed to extract clearsigned text for replacement part");
-                return NO_REPLACEMENT_PART;
-            }
-            return new MimeBodyPart(new TextBody(replacementText), "text/plain");
-        } catch (MessagingException e) {
-            Timber.e(e, "failed to create clearsigned text replacement part");
-            return NO_REPLACEMENT_PART;
-        }
     }
 
     private enum State {
