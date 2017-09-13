@@ -19,7 +19,7 @@ import android.support.annotation.WorkerThread;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.autocrypt.AutocryptOperations;
-import com.fsck.k9.crypto.MessageDecryptVerifier;
+import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -124,13 +124,13 @@ public class MessageCryptoHelper {
     }
 
     private void findPartsForMultipartEncryptionPass() {
-        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(currentMessage);
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(currentMessage);
         for (Part part : encryptedParts) {
             if (!MessageHelper.isCompletePartAvailable(part)) {
                 addErrorAnnotation(part, CryptoError.OPENPGP_ENCRYPTED_BUT_INCOMPLETE, MessageHelper.createEmptyPart());
                 continue;
             }
-            if (MessageDecryptVerifier.isMultipartEncryptedOpenPgpProtocol(part)) {
+            if (MessageCryptoStructureDetector.isMultipartEncryptedOpenPgpProtocol(part)) {
                 CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PGP_ENCRYPTED, part);
                 partsToProcess.add(cryptoPart);
                 continue;
@@ -140,14 +140,15 @@ public class MessageCryptoHelper {
     }
 
     private void findPartsForMultipartSignaturePass() {
-        List<Part> signedParts = MessageDecryptVerifier.findMultipartSignedParts(currentMessage, messageAnnotations);
+        List<Part> signedParts = MessageCryptoStructureDetector
+                .findMultipartSignedParts(currentMessage, messageAnnotations);
         for (Part part : signedParts) {
             if (!MessageHelper.isCompletePartAvailable(part)) {
                 MimeBodyPart replacementPart = getMultipartSignedContentPartIfAvailable(part);
                 addErrorAnnotation(part, CryptoError.OPENPGP_SIGNED_BUT_INCOMPLETE, replacementPart);
                 continue;
             }
-            if (MessageDecryptVerifier.isMultipartSignedOpenPgpProtocol(part)) {
+            if (MessageCryptoStructureDetector.isMultipartSignedOpenPgpProtocol(part)) {
                 CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PGP_SIGNED, part);
                 partsToProcess.add(cryptoPart);
                 continue;
@@ -158,10 +159,10 @@ public class MessageCryptoHelper {
     }
 
     private void findPartsForPgpInlinePass() {
-        List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(currentMessage);
+        List<Part> inlineParts = MessageCryptoStructureDetector.findPgpInlineParts(currentMessage);
         for (Part part : inlineParts) {
             if (!currentMessage.getFlags().contains(Flag.X_DOWNLOADED_FULL)) {
-                if (MessageDecryptVerifier.isPartPgpInlineEncrypted(part)) {
+                if (MessageCryptoStructureDetector.isPartPgpInlineEncrypted(part)) {
                     addErrorAnnotation(part, CryptoError.OPENPGP_ENCRYPTED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
                 } else {
                     MimeBodyPart replacementPart = extractClearsignedTextReplacementPart(part);
@@ -386,7 +387,7 @@ public class MessageCryptoHelper {
     private void callAsyncDetachedVerify(Intent intent) throws IOException, MessagingException {
         OpenPgpDataSource dataSource = getDataSourceForSignedData(currentCryptoPart.part);
 
-        byte[] signatureData = MessageDecryptVerifier.getSignatureData(currentCryptoPart.part);
+        byte[] signatureData = MessageCryptoStructureDetector.getSignatureData(currentCryptoPart.part);
         intent.putExtra(OpenPgpApi.EXTRA_DETACHED_SIGNATURE, signatureData);
 
         openPgpApi.executeApiAsync(intent, dataSource, new IOpenPgpSinkResultCallback<Void>() {

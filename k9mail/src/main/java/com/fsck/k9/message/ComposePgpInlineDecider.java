@@ -3,7 +3,7 @@ package com.fsck.k9.message;
 
 import java.util.List;
 
-import com.fsck.k9.crypto.MessageDecryptVerifier;
+import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 
@@ -15,7 +15,7 @@ public class ComposePgpInlineDecider {
     }
 
     private boolean messageHasPgpInlineParts(Message localMessage) {
-        List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(localMessage);
+        List<Part> inlineParts = MessageCryptoStructureDetector.findPgpInlineParts(localMessage);
         return !inlineParts.isEmpty();
     }
 }

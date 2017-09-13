@@ -3,7 +3,7 @@ package com.fsck.k9.message.extractors;
 
 import android.support.annotation.NonNull;
 
-import com.fsck.k9.crypto.MessageDecryptVerifier;
+import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -31,7 +31,7 @@ class EncryptionDetector {
 
     private boolean containsInlinePgpEncryptedText(Message message) {
         Part textPart = textPartFinder.findFirstTextPart(message);
-        return MessageDecryptVerifier.isPartPgpInlineEncrypted(textPart);
+        return MessageCryptoStructureDetector.isPartPgpInlineEncrypted(textPart);
     }
 
     private boolean containsPartWithMimeType(Part part, String... wantedMimeTypes) {

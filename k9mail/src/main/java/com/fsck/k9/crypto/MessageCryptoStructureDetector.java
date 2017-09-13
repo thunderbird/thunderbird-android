@@ -26,7 +26,7 @@ import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
 
-public class MessageDecryptVerifier {
+public class MessageCryptoStructureDetector {
     private static final String MULTIPART_ENCRYPTED = "multipart/encrypted";
     private static final String MULTIPART_SIGNED = "multipart/signed";
     private static final String PROTOCOL_PARAMETER = "protocol";

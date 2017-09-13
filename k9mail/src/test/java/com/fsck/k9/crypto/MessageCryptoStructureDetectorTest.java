@@ -31,7 +31,7 @@ import static org.mockito.Mockito.mock;
 @SuppressWarnings("WeakerAccess")
 @RunWith(K9RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
-public class MessageDecryptVerifierTest {
+public class MessageCryptoStructureDetectorTest {
     MessageCryptoAnnotations messageCryptoAnnotations = mock(MessageCryptoAnnotations.class);
     static final String PGP_INLINE_DATA = "" +
             "-----BEGIN PGP MESSAGE-----\n" +
@@ -47,7 +47,7 @@ public class MessageDecryptVerifierTest {
         Message message = new MimeMessage();
         MimeMessageHelper.setBody(message, new TextBody(PGP_INLINE_DATA));
 
-        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+        Part cryptoPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
 
         assertSame(message, cryptoPart);
     }
@@ -63,7 +63,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+        Part cryptoPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
 
         assertSame(pgpInlinePart, cryptoPart);
     }
@@ -79,7 +79,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+        Part cryptoPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
 
         assertSame(pgpInlinePart, cryptoPart);
     }
@@ -99,7 +99,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+        Part cryptoPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
 
         assertSame(pgpInlinePart, cryptoPart);
     }
@@ -111,7 +111,7 @@ public class MessageDecryptVerifierTest {
                 multipart("alternative", null)
         );
 
-        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+        Part cryptoPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
 
         assertNull(cryptoPart);
     }
@@ -123,7 +123,7 @@ public class MessageDecryptVerifierTest {
                 multipart("mixed", null)
         );
 
-        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+        Part cryptoPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
 
         assertNull(cryptoPart);
     }
@@ -138,7 +138,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
+        Part cryptoPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
 
         assertNull(cryptoPart);
     }
@@ -147,7 +147,7 @@ public class MessageDecryptVerifierTest {
     public void findEncryptedPartsShouldReturnEmptyListForEmptyMessage() throws Exception {
         MimeMessage emptyMessage = new MimeMessage();
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(emptyMessage);
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(emptyMessage);
 
         assertEquals(0, encryptedParts.size());
     }
@@ -157,7 +157,7 @@ public class MessageDecryptVerifierTest {
         MimeMessage message = new MimeMessage();
         message.setBody(new TextBody("message text"));
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(message);
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(message);
 
         assertEquals(0, encryptedParts.size());
     }
@@ -171,7 +171,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(message);
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(message);
 
         assertEquals(1, encryptedParts.size());
         assertSame(message, encryptedParts.get(0));
@@ -186,7 +186,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(message);
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(message);
 
         assertTrue(encryptedParts.isEmpty());
     }
@@ -213,7 +213,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(message);
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(message);
 
         assertTrue(encryptedParts.isEmpty());
     }
@@ -226,7 +226,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(message);
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(message);
 
         assertTrue(encryptedParts.isEmpty());
     }
@@ -242,7 +242,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(message);
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(message);
 
         assertEquals(1, encryptedParts.size());
         assertSame(getPart(message, 0), encryptedParts.get(0));
@@ -264,7 +264,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(message);
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(message);
 
         assertEquals(2, encryptedParts.size());
         assertSame(getPart(message, 0), encryptedParts.get(0));
@@ -283,7 +283,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(message);
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(message);
 
         assertEquals(1, encryptedParts.size());
         assertSame(getPart(message, 1), encryptedParts.get(0));
@@ -301,7 +301,7 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(message);
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(message);
 
         assertEquals(1, encryptedParts.size());
         assertSame(getPart(message, 0), encryptedParts.get(0));
@@ -316,7 +316,8 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findMultipartSignedParts(message, messageCryptoAnnotations);
+        List<Part> signedParts = MessageCryptoStructureDetector
+                .findMultipartSignedParts(message, messageCryptoAnnotations);
 
         assertEquals(1, signedParts.size());
         assertSame(message, signedParts.get(0));
@@ -331,7 +332,8 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findMultipartSignedParts(message, messageCryptoAnnotations);
+        List<Part> signedParts = MessageCryptoStructureDetector
+                .findMultipartSignedParts(message, messageCryptoAnnotations);
 
         assertTrue(signedParts.isEmpty());
     }
@@ -359,7 +361,8 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findMultipartSignedParts(message, messageCryptoAnnotations);
+        List<Part> signedParts = MessageCryptoStructureDetector
+                .findMultipartSignedParts(message, messageCryptoAnnotations);
 
         assertTrue(signedParts.isEmpty());
     }
@@ -376,7 +379,8 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findMultipartSignedParts(message, messageCryptoAnnotations);
+        List<Part> signedParts = MessageCryptoStructureDetector
+                .findMultipartSignedParts(message, messageCryptoAnnotations);
 
         assertEquals(1, signedParts.size());
         assertSame(message, signedParts.get(0));
@@ -393,7 +397,8 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findMultipartSignedParts(message, messageCryptoAnnotations);
+        List<Part> signedParts = MessageCryptoStructureDetector
+                .findMultipartSignedParts(message, messageCryptoAnnotations);
 
         assertEquals(1, signedParts.size());
         assertSame(getPart(message, 0), signedParts.get(0));
@@ -411,7 +416,8 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findMultipartSignedParts(message, messageCryptoAnnotations);
+        List<Part> signedParts = MessageCryptoStructureDetector
+                .findMultipartSignedParts(message, messageCryptoAnnotations);
 
         assertEquals(1, signedParts.size());
         assertSame(getPart(message, 0), signedParts.get(0));
@@ -429,7 +435,8 @@ public class MessageDecryptVerifierTest {
                 )
         );
 
-        List<Part> signedParts = MessageDecryptVerifier.findMultipartSignedParts(message, messageCryptoAnnotations);
+        List<Part> signedParts = MessageCryptoStructureDetector
+                .findMultipartSignedParts(message, messageCryptoAnnotations);
 
         assertEquals(1, signedParts.size());
         assertSame(getPart(message, 1), signedParts.get(0));
@@ -446,7 +453,7 @@ public class MessageDecryptVerifierTest {
         MimeMessage message = new MimeMessage();
         message.setBody(new TextBody(pgpInlineData));
 
-        assertTrue(MessageDecryptVerifier.isPartPgpInlineEncrypted(message));
+        assertTrue(MessageCryptoStructureDetector.isPartPgpInlineEncrypted(message));
     }
 
     @Test
@@ -461,8 +468,8 @@ public class MessageDecryptVerifierTest {
         MimeMessage message = new MimeMessage();
         message.setBody(new TextBody(pgpInlineData));
 
-        assertTrue(MessageDecryptVerifier.isPartPgpInlineEncryptedOrSigned(message));
-        assertTrue(MessageDecryptVerifier.isPartPgpInlineEncrypted(message));
+        assertTrue(MessageCryptoStructureDetector.isPartPgpInlineEncryptedOrSigned(message));
+        assertTrue(MessageCryptoStructureDetector.isPartPgpInlineEncrypted(message));
     }
 
     @Test
@@ -477,8 +484,8 @@ public class MessageDecryptVerifierTest {
         MimeMessage message = new MimeMessage();
         message.setBody(new TextBody(pgpInlineData));
 
-        assertFalse(MessageDecryptVerifier.isPartPgpInlineEncryptedOrSigned(message));
-        assertFalse(MessageDecryptVerifier.isPartPgpInlineEncrypted(message));
+        assertFalse(MessageCryptoStructureDetector.isPartPgpInlineEncryptedOrSigned(message));
+        assertFalse(MessageCryptoStructureDetector.isPartPgpInlineEncrypted(message));
     }
 
     @Test
@@ -495,7 +502,7 @@ public class MessageDecryptVerifierTest {
         MimeMessage message = new MimeMessage();
         message.setBody(new TextBody(pgpInlineData));
 
-        assertTrue(MessageDecryptVerifier.isPartPgpInlineEncryptedOrSigned(message));
+        assertTrue(MessageCryptoStructureDetector.isPartPgpInlineEncryptedOrSigned(message));
     }
 
     @Test
@@ -512,7 +519,7 @@ public class MessageDecryptVerifierTest {
         MimeMessage message = new MimeMessage();
         message.setBody(new TextBody(pgpInlineData));
 
-        assertFalse(MessageDecryptVerifier.isPartPgpInlineEncrypted(message));
+        assertFalse(MessageCryptoStructureDetector.isPartPgpInlineEncrypted(message));
     }
 
     static Part getPart(Part searchRootPart, int... indexes) {
