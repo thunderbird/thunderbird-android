@@ -14,10 +14,8 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
@@ -37,11 +35,13 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import static com.fsck.k9.message.TestMessageConstructionUtils.bodypart;
+import static com.fsck.k9.message.TestMessageConstructionUtils.messageFromBody;
+import static com.fsck.k9.message.TestMessageConstructionUtils.multipart;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -124,9 +124,12 @@ public class MessageCryptoHelperTest {
 
     @Test
     public void multipartSigned__withNullBody__shouldReturnSignedIncomplete() throws Exception {
-        MimeMessage message = new MimeMessage();
-        message.setUid("msguid");
-        message.setHeader("Content-Type", "multipart/signed");
+        Message message = messageFromBody(
+                multipart("signed", "application/pgp-signature",
+                        bodypart("text/plain"),
+                        bodypart("application/pgp-signature")
+                )
+        );
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
@@ -137,9 +140,12 @@ public class MessageCryptoHelperTest {
 
     @Test
     public void multipartEncrypted__withNullBody__shouldReturnEncryptedIncomplete() throws Exception {
-        MimeMessage message = new MimeMessage();
-        message.setUid("msguid");
-        message.setHeader("Content-Type", "multipart/encrypted");
+        Message message = messageFromBody(
+                multipart("encrypted", "application/pgp-encrypted",
+                        bodypart("application/pgp-encrypted"),
+                        bodypart("application/octet-stream")
+                )
+        );
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
@@ -150,10 +156,12 @@ public class MessageCryptoHelperTest {
 
     @Test
     public void multipartEncrypted__withUnknownProtocol__shouldReturnEncryptedUnsupported() throws Exception {
-        MimeMessage message = new MimeMessage();
-        message.setUid("msguid");
-        message.setHeader("Content-Type", "multipart/encrypted; protocol=\"unknown protocol\"");
-        message.setBody(new MimeMultipart("multipart/encrypted", "--------"));
+        Message message = messageFromBody(
+                multipart("encrypted", "application/bad-protocol",
+                        bodypart("application/bad-protocol", "content"),
+                        bodypart("application/octet-stream", "content")
+                )
+        );
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
@@ -164,10 +172,12 @@ public class MessageCryptoHelperTest {
 
     @Test
     public void multipartSigned__withUnknownProtocol__shouldReturnSignedUnsupported() throws Exception {
-        MimeMessage message = new MimeMessage();
-        message.setUid("msguid");
-        message.setHeader("Content-Type", "multipart/signed; protocol=\"unknown protocol\"");
-        message.setBody(new MimeMultipart("multipart/encrypted", "--------"));
+        Message message = messageFromBody(
+                multipart("signed", "application/bad-protocol",
+                        bodypart("text/plain", "content"),
+                        bodypart("application/bad-protocol", "content")
+                )
+        );
 
         MessageCryptoCallback messageCryptoCallback = mock(MessageCryptoCallback.class);
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(message, messageCryptoCallback, null);
@@ -178,18 +188,14 @@ public class MessageCryptoHelperTest {
 
     @Test
     public void multipartSigned__shouldCallOpenPgpApiAsync() throws Exception {
-        BodyPart signedBodyPart = spy(new MimeBodyPart(new TextBody("text")));
-        BodyPart signatureBodyPart = new MimeBodyPart(new TextBody("text"));
-
-        Multipart messageBody = new MimeMultipart("boundary1");
-        messageBody.addBodyPart(signedBodyPart);
-        messageBody.addBodyPart(signatureBodyPart);
-
-        MimeMessage message = new MimeMessage();
-        message.setUid("msguid");
-        message.setHeader("Content-Type", "multipart/signed; protocol=\"application/pgp-signature\"");
+        BodyPart signedBodyPart;
+        Message message = messageFromBody(
+                multipart("signed", "application/pgp-signature",
+                        signedBodyPart = spy(bodypart("text/plain", "content")),
+                        bodypart("application/pgp-signature", "content")
+                )
+        );
         message.setFrom(Address.parse("Test <test@example.org>")[0]);
-        message.setBody(messageBody);
 
         OutputStream outputStream = mock(OutputStream.class);
 
@@ -206,19 +212,14 @@ public class MessageCryptoHelperTest {
 
     @Test
     public void multipartEncrypted__shouldCallOpenPgpApiAsync() throws Exception {
-        BodyPart dummyBodyPart = new MimeBodyPart(new TextBody("text"));
-        Body encryptedBody = spy(new TextBody("encrypted data"));
-        BodyPart encryptedBodyPart = spy(new MimeBodyPart(encryptedBody));
-
-        Multipart messageBody = new MimeMultipart("boundary1");
-        messageBody.addBodyPart(dummyBodyPart);
-        messageBody.addBodyPart(encryptedBodyPart);
-
-        MimeMessage message = new MimeMessage();
-        message.setUid("msguid");
-        message.setHeader("Content-Type", "multipart/encrypted; protocol=\"application/pgp-encrypted\"");
+        Body encryptedBody;
+        Message message = messageFromBody(
+                multipart("encrypted", "application/pgp-encrypted",
+                        bodypart("application/pgp-encrypted", "content"),
+                        bodypart("application/octet-stream", encryptedBody = spy(new TextBody("encrypted data")))
+                )
+        );
         message.setFrom(Address.parse("Test <test@example.org>")[0]);
-        message.setBody(messageBody);
 
         OutputStream outputStream = mock(OutputStream.class);
 

@@ -123,33 +123,9 @@ public class MessageCryptoHelper {
         nextStep();
     }
 
-    private void findPartsForEncryptionPass() {
-        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(currentMessage);
-        processFoundEncryptedParts(encryptedParts);
-    }
-
-    private void findPartsForSignaturePass() {
-        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(currentMessage, messageAnnotations);
-        processFoundSignedParts(signedParts);
-
-        List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(currentMessage);
-        processFoundInlinePgpParts(inlineParts);
-    }
-
-    private void findPartsForAutocryptPass() {
-        boolean otherCryptoPerformed = !messageAnnotations.isEmpty();
-        if (otherCryptoPerformed) {
-            return;
-        }
-
-        if (autocryptOperations.hasAutocryptHeader(currentMessage)) {
-            CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PLAIN_AUTOCRYPT, currentMessage);
-            partsToProcess.add(cryptoPart);
-        }
-    }
-
-    private void processFoundEncryptedParts(List<Part> foundParts) {
-        for (Part part : foundParts) {
+    private void findPartsForMultipartEncryptionPass() {
+        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(currentMessage);
+        for (Part part : encryptedParts) {
             if (!MessageHelper.isCompletePartAvailable(part)) {
                 addErrorAnnotation(part, CryptoError.OPENPGP_ENCRYPTED_BUT_INCOMPLETE, MessageHelper.createEmptyPart());
                 continue;
@@ -163,8 +139,9 @@ public class MessageCryptoHelper {
         }
     }
 
-    private void processFoundSignedParts(List<Part> foundParts) {
-        for (Part part : foundParts) {
+    private void findPartsForMultipartSignaturePass() {
+        List<Part> signedParts = MessageDecryptVerifier.findMultipartSignedParts(currentMessage, messageAnnotations);
+        for (Part part : signedParts) {
             if (!MessageHelper.isCompletePartAvailable(part)) {
                 MimeBodyPart replacementPart = getMultipartSignedContentPartIfAvailable(part);
                 addErrorAnnotation(part, CryptoError.OPENPGP_SIGNED_BUT_INCOMPLETE, replacementPart);
@@ -180,13 +157,9 @@ public class MessageCryptoHelper {
         }
     }
 
-    private void addErrorAnnotation(Part part, CryptoError error, MimeBodyPart replacementPart) {
-        CryptoResultAnnotation annotation = CryptoResultAnnotation.createErrorAnnotation(error, replacementPart);
-        messageAnnotations.put(part, annotation);
-    }
-
-    private void processFoundInlinePgpParts(List<Part> foundParts) {
-        for (Part part : foundParts) {
+    private void findPartsForPgpInlinePass() {
+        List<Part> inlineParts = MessageDecryptVerifier.findPgpInlineParts(currentMessage);
+        for (Part part : inlineParts) {
             if (!currentMessage.getFlags().contains(Flag.X_DOWNLOADED_FULL)) {
                 if (MessageDecryptVerifier.isPartPgpInlineEncrypted(part)) {
                     addErrorAnnotation(part, CryptoError.OPENPGP_ENCRYPTED_BUT_INCOMPLETE, NO_REPLACEMENT_PART);
@@ -200,6 +173,23 @@ public class MessageCryptoHelper {
             CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PGP_INLINE, part);
             partsToProcess.add(cryptoPart);
         }
+    }
+
+    private void findPartsForAutocryptPass() {
+        boolean otherCryptoPerformed = !messageAnnotations.isEmpty();
+        if (otherCryptoPerformed) {
+            return;
+        }
+
+        if (autocryptOperations.hasAutocryptHeader(currentMessage)) {
+            CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PLAIN_AUTOCRYPT, currentMessage);
+            partsToProcess.add(cryptoPart);
+        }
+    }
+
+    private void addErrorAnnotation(Part part, CryptoError error, MimeBodyPart replacementPart) {
+        CryptoResultAnnotation annotation = CryptoResultAnnotation.createErrorAnnotation(error, replacementPart);
+        messageAnnotations.put(part, annotation);
     }
 
     private void nextStep() {
@@ -645,17 +635,19 @@ public class MessageCryptoHelper {
             case START: {
                 state = State.ENCRYPTION;
 
-                findPartsForEncryptionPass();
+                findPartsForMultipartEncryptionPass();
                 return;
             }
 
             case ENCRYPTION: {
-                state = State.SIGNATURES;
+                state = State.SIGNATURES_AND_INLINE;
 
-                findPartsForSignaturePass();
+                findPartsForMultipartSignaturePass();
+                findPartsForPgpInlinePass();
                 return;
             }
-            case SIGNATURES: {
+
+            case SIGNATURES_AND_INLINE: {
                 state = State.AUTOCRYPT;
 
                 findPartsForAutocryptPass();
@@ -796,6 +788,6 @@ public class MessageCryptoHelper {
     }
 
     private enum State {
-        START, ENCRYPTION, SIGNATURES, AUTOCRYPT, FINISHED
+        START, ENCRYPTION, SIGNATURES_AND_INLINE, AUTOCRYPT, FINISHED
     }
 }

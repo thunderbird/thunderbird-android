@@ -14,7 +14,7 @@ public class ComposePgpEnableByDefaultDecider {
     }
 
     private boolean messageIsEncrypted(Message localMessage) {
-        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(localMessage);
+        List<Part> encryptedParts = MessageDecryptVerifier.findMultipartEncryptedParts(localMessage);
         return !encryptedParts.isEmpty();
     }
 }

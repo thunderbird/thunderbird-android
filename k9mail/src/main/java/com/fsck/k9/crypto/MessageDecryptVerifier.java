@@ -110,7 +110,7 @@ public class MessageDecryptVerifier {
         return null;
     }
 
-    public static List<Part> findEncryptedParts(Part startPart) {
+    public static List<Part> findMultipartEncryptedParts(Part startPart) {
         List<Part> encryptedParts = new ArrayList<>();
         Stack<Part> partsToCheck = new Stack<>();
         partsToCheck.push(startPart);
@@ -136,7 +136,7 @@ public class MessageDecryptVerifier {
         return encryptedParts;
     }
 
-    public static List<Part> findSignedParts(Part startPart, MessageCryptoAnnotations messageCryptoAnnotations) {
+    public static List<Part> findMultipartSignedParts(Part startPart, MessageCryptoAnnotations messageCryptoAnnotations) {
         List<Part> signedParts = new ArrayList<>();
         Stack<Part> partsToCheck = new Stack<>();
         partsToCheck.push(startPart);
