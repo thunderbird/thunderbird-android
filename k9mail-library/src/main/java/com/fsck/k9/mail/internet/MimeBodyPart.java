@@ -30,10 +30,10 @@ public class MimeBodyPart extends BodyPart {
         this(body, null);
     }
 
-    public MimeBodyPart(Body body, String mimeType) throws MessagingException {
+    public MimeBodyPart(Body body, String contentType) throws MessagingException {
         mHeader = new MimeHeader();
-        if (mimeType != null) {
-            addHeader(MimeHeader.HEADER_CONTENT_TYPE, mimeType);
+        if (contentType != null) {
+            addHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
         }
         MimeMessageHelper.setBody(this, body);
     }

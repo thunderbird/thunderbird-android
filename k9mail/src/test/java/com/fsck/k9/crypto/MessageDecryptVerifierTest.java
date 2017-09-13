@@ -29,13 +29,12 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 
+@SuppressWarnings("WeakerAccess")
 @RunWith(K9RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class MessageDecryptVerifierTest {
-    private static final String MIME_TYPE_MULTIPART_ENCRYPTED = "multipart/encrypted";
-    private MessageCryptoAnnotations messageCryptoAnnotations = mock(MessageCryptoAnnotations.class);
-    private static final String PROTCOL_PGP_ENCRYPTED = "application/pgp-encrypted";
-    private static final String PGP_INLINE_DATA = "" +
+    MessageCryptoAnnotations messageCryptoAnnotations = mock(MessageCryptoAnnotations.class);
+    static final String PGP_INLINE_DATA = "" +
             "-----BEGIN PGP MESSAGE-----\n" +
             "Header: Value\n" +
             "\n" +
@@ -59,8 +58,8 @@ public class MessageDecryptVerifierTest {
         List<Part> outputExtraParts = new ArrayList<>();
         BodyPart pgpInlinePart = bodypart("text/plain", PGP_INLINE_DATA);
         Message message = messageFromBody(
-                multipart("alternative",
-                        pgpInlinePart,
+                multipart("alternative", null,
+                    pgpInlinePart,
                         bodypart("text/html")
                 )
         );
@@ -75,7 +74,7 @@ public class MessageDecryptVerifierTest {
         List<Part> outputExtraParts = new ArrayList<>();
         BodyPart pgpInlinePart = bodypart("text/plain", PGP_INLINE_DATA);
         Message message = messageFromBody(
-                multipart("mixed",
+                multipart("mixed", null,
                         pgpInlinePart,
                         bodypart("application/octet-stream")
                 )
@@ -92,8 +91,8 @@ public class MessageDecryptVerifierTest {
         List<Part> outputExtraParts = new ArrayList<>();
         BodyPart pgpInlinePart = bodypart("text/plain", PGP_INLINE_DATA);
         Message message = messageFromBody(
-                multipart("mixed",
-                        multipart("alternative",
+                multipart("mixed", null,
+                        multipart("alternative", null,
                             pgpInlinePart,
                             bodypart("text/html")
                         ),
@@ -110,7 +109,7 @@ public class MessageDecryptVerifierTest {
     public void findPrimaryCryptoPart_withEmptyMultipartAlternative_shouldReturnNull() throws Exception {
         List<Part> outputExtraParts = new ArrayList<>();
         Message message = messageFromBody(
-                multipart("alternative")
+                multipart("alternative", null)
         );
 
         Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
@@ -122,7 +121,7 @@ public class MessageDecryptVerifierTest {
     public void findPrimaryCryptoPart_withEmptyMultipartMixed_shouldReturnNull() throws Exception {
         List<Part> outputExtraParts = new ArrayList<>();
         Message message = messageFromBody(
-                multipart("mixed")
+                multipart("mixed", null)
         );
 
         Part cryptoPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
@@ -135,8 +134,8 @@ public class MessageDecryptVerifierTest {
             throws Exception {
         List<Part> outputExtraParts = new ArrayList<>();
         Message message = messageFromBody(
-                multipart("mixed",
-                        multipart("alternative")
+                multipart("mixed", null,
+                        multipart("alternative", null)
                 )
         );
 
@@ -165,52 +164,9 @@ public class MessageDecryptVerifierTest {
     }
 
     @Test
-    public void findEncryptedPartsShouldReturnEmptyEncryptedPart() throws Exception {
-        MimeMessage message = new MimeMessage();
-        MimeMultipart multipartEncrypted = MimeMultipart.newInstance();
-        multipartEncrypted.setSubType("encrypted");
-        MimeMessageHelper.setBody(message, multipartEncrypted);
-        setContentTypeWithProtocol(message, MIME_TYPE_MULTIPART_ENCRYPTED, PROTCOL_PGP_ENCRYPTED);
-
-        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
-
-        assertEquals(1, encryptedParts.size());
-        assertSame(message, encryptedParts.get(0));
-    }
-
-    @Test
-    public void findEncryptedPartsShouldReturnMultipleEncryptedParts() throws Exception {
-        MimeMessage message = new MimeMessage();
-        MimeMultipart multipartMixed = MimeMultipart.newInstance();
-        multipartMixed.setSubType("mixed");
-        MimeMessageHelper.setBody(message, multipartMixed);
-
-        MimeMultipart multipartEncryptedOne = MimeMultipart.newInstance();
-        multipartEncryptedOne.setSubType("encrypted");
-        MimeBodyPart bodyPartOne = new MimeBodyPart(multipartEncryptedOne);
-        setContentTypeWithProtocol(bodyPartOne, MIME_TYPE_MULTIPART_ENCRYPTED, PROTCOL_PGP_ENCRYPTED);
-        multipartMixed.addBodyPart(bodyPartOne);
-
-        MimeBodyPart bodyPartTwo = new MimeBodyPart(null, "text/plain");
-        multipartMixed.addBodyPart(bodyPartTwo);
-
-        MimeMultipart multipartEncryptedThree = MimeMultipart.newInstance();
-        multipartEncryptedThree.setSubType("encrypted");
-        MimeBodyPart bodyPartThree = new MimeBodyPart(multipartEncryptedThree);
-        setContentTypeWithProtocol(bodyPartThree, MIME_TYPE_MULTIPART_ENCRYPTED, PROTCOL_PGP_ENCRYPTED);
-        multipartMixed.addBodyPart(bodyPartThree);
-
-        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
-
-        assertEquals(2, encryptedParts.size());
-        assertSame(bodyPartOne, encryptedParts.get(0));
-        assertSame(bodyPartThree, encryptedParts.get(1));
-    }
-
-    @Test
     public void findEncrypted__withMultipartEncrypted__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
-                multipart("encrypted",
+                multipart("encrypted", "application/pgp-encrypted",
                         bodypart("application/pgp-encrypted"),
                         bodypart("application/octet-stream")
                 )
@@ -223,10 +179,64 @@ public class MessageDecryptVerifierTest {
     }
 
     @Test
+    public void findEncrypted__withBadProtocol__shouldReturnEmpty() throws Exception {
+        Message message = messageFromBody(
+                multipart("encrypted", "application/not-pgp-encrypted",
+                        bodypart("application/pgp-encrypted"),
+                        bodypart("application/octet-stream")
+                )
+        );
+
+        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
+
+        assertTrue(encryptedParts.isEmpty());
+    }
+
+    @Test
+    public void findEncrypted__withEmptyProtocol__shouldReturnEmpty() throws Exception {
+        Message message = messageFromBody(
+                multipart("encrypted", null,
+                        bodypart("application/pgp-encrypted"),
+                        bodypart("application/octet-stream")
+                )
+        );
+
+        List<Part> encryptedParts = MessageCryptoStructureDetector.findMultipartEncryptedParts(message);
+
+        assertTrue(encryptedParts.isEmpty());
+    }
+
+    @Test
+    public void findEncrypted__withMissingEncryptedBody__shouldReturnEmpty() throws Exception {
+        Message message = messageFromBody(
+                multipart("encrypted", "application/pgp-encrypted",
+                        bodypart("application/pgp-encrypted")
+                )
+        );
+
+        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
+
+        assertTrue(encryptedParts.isEmpty());
+    }
+
+    @Test
+    public void findEncrypted__withBadStructure__shouldReturnEmpty() throws Exception {
+        Message message = messageFromBody(
+                multipart("encrypted", "application/pgp-encrypted",
+                        bodypart("application/octet-stream")
+                )
+        );
+
+        List<Part> encryptedParts = MessageDecryptVerifier.findEncryptedParts(message);
+
+        assertTrue(encryptedParts.isEmpty());
+    }
+
+    @Test
     public void findEncrypted__withMultipartMixedSubEncrypted__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed",
-                        multipart("encrypted",
+                multipart("mixed", null,
+                        multipart("encrypted", "application/pgp-encrypted",
                             bodypart("application/pgp-encrypted"),
                             bodypart("application/octet-stream")
                         )
@@ -243,12 +253,12 @@ public class MessageDecryptVerifierTest {
     public void findEncrypted__withMultipartMixedSubEncryptedAndEncrypted__shouldReturnBoth()
             throws Exception {
         Message message = messageFromBody(
-                multipart("mixed",
-                        multipart("encrypted",
+                multipart("mixed", null,
+                        multipart("encrypted", "application/pgp-encrypted",
                                 bodypart("application/pgp-encrypted"),
                                 bodypart("application/octet-stream")
                         ),
-                        multipart("encrypted",
+                        multipart("encrypted", "application/pgp-encrypted",
                                 bodypart("application/pgp-encrypted"),
                                 bodypart("application/octet-stream")
                         )
@@ -265,9 +275,9 @@ public class MessageDecryptVerifierTest {
     @Test
     public void findEncrypted__withMultipartMixedSubTextAndEncrypted__shouldReturnEncrypted() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed",
+                multipart("mixed", null,
                         bodypart("text/plain"),
-                        multipart("encrypted",
+                        multipart("encrypted", "application/pgp-encrypted",
                                 bodypart("application/pgp-encrypted"),
                                 bodypart("application/octet-stream")
                         )
@@ -283,8 +293,8 @@ public class MessageDecryptVerifierTest {
     @Test
     public void findEncrypted__withMultipartMixedSubEncryptedAndText__shouldReturnEncrypted() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed",
-                        multipart("encrypted",
+                multipart("mixed", null,
+                        multipart("encrypted", "application/pgp-encrypted",
                                 bodypart("application/pgp-encrypted"),
                                 bodypart("application/octet-stream")
                         ),
@@ -301,7 +311,7 @@ public class MessageDecryptVerifierTest {
     @Test
     public void findSigned__withSimpleMultipartSigned__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
-                multipart("signed",
+                multipart("signed", "application/pgp-signature",
                         bodypart("text/plain"),
                         bodypart("application/pgp-signature")
                 )
@@ -314,10 +324,52 @@ public class MessageDecryptVerifierTest {
     }
 
     @Test
+    public void findSigned__withBadProtocol__shouldReturnRoot() throws Exception {
+        Message message = messageFromBody(
+                multipart("signed", "application/not-pgp-signature",
+                        bodypart("text/plain"),
+                        bodypart("application/pgp-signature")
+                )
+        );
+
+        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message, messageCryptoAnnotations);
+
+        assertTrue(signedParts.isEmpty());
+    }
+
+    @Test
+    public void findSigned__withEmptyProtocol__shouldReturnRoot() throws Exception {
+        Message message = messageFromBody(
+                multipart("signed", null,
+                        bodypart("text/plain"),
+                        bodypart("application/pgp-signature")
+                )
+        );
+
+        List<Part> signedParts = MessageCryptoStructureDetector
+                .findMultipartSignedParts(message, messageCryptoAnnotations);
+
+        assertTrue(signedParts.isEmpty());
+    }
+
+    @Test
+    public void findSigned__withMissingSignature__shouldReturnEmpty() throws Exception {
+        Message message = messageFromBody(
+                multipart("signed", "application/pgp-signature",
+                        bodypart("text/plain")
+                )
+        );
+
+        List<Part> signedParts = MessageDecryptVerifier.findSignedParts(message, messageCryptoAnnotations);
+
+        assertTrue(signedParts.isEmpty());
+    }
+
+    @Test
     public void findSigned__withComplexMultipartSigned__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
-                multipart("signed",
-                        multipart("mixed",
+                multipart("signed", "application/pgp-signature",
+                        multipart("mixed", null,
                                 bodypart("text/plain"),
                                 bodypart("application/pdf")
                         ),
@@ -334,10 +386,10 @@ public class MessageDecryptVerifierTest {
     @Test
     public void findEncrypted__withMultipartMixedSubSigned__shouldReturnSigned() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed",
-                    multipart("signed",
-                            bodypart("text/plain"),
-                            bodypart("application/pgp-signature")
+                multipart("mixed", null,
+                        multipart("signed", "application/pgp-signature",
+                                bodypart("text/plain"),
+                                bodypart("application/pgp-signature")
                     )
                 )
         );
@@ -351,8 +403,8 @@ public class MessageDecryptVerifierTest {
     @Test
     public void findEncrypted__withMultipartMixedSubSignedAndText__shouldReturnSigned() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed",
-                        multipart("signed",
+                multipart("mixed", null,
+                        multipart("signed", "application/pgp-signature",
                                 bodypart("text/plain"),
                                 bodypart("application/pgp-signature")
                         ),
@@ -369,9 +421,9 @@ public class MessageDecryptVerifierTest {
     @Test
     public void findEncrypted__withMultipartMixedSubTextAndSigned__shouldReturnSigned() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed",
+                multipart("mixed", null,
                         bodypart("text/plain"),
-                        multipart("signed",
+                        multipart("signed", "application/pgp-signature",
                                 bodypart("text/plain"),
                                 bodypart("application/pgp-signature")
                         )
@@ -467,16 +519,24 @@ public class MessageDecryptVerifierTest {
     MimeMessage messageFromBody(BodyPart bodyPart) throws MessagingException {
         MimeMessage message = new MimeMessage();
         MimeMessageHelper.setBody(message, bodyPart.getBody());
+        if (bodyPart.getContentType() != null) {
+            message.setHeader("Content-Type", bodyPart.getContentType());
+        }
         return message;
     }
 
-    MimeBodyPart multipart(String type, BodyPart... subParts) throws MessagingException {
+    MimeBodyPart multipart(String type, String protocol, BodyPart... subParts) throws MessagingException {
         MimeMultipart multiPart = MimeMultipart.newInstance();
         multiPart.setSubType(type);
         for (BodyPart subPart : subParts) {
             multiPart.addBodyPart(subPart);
         }
-        return new MimeBodyPart(multiPart);
+        MimeBodyPart mimeBodyPart = new MimeBodyPart(multiPart);
+        if (protocol != null) {
+            mimeBodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                    mimeBodyPart.getContentType() + "; protocol=\"" + protocol + "\"");
+        }
+        return mimeBodyPart;
     }
 
     BodyPart bodypart(String type) throws MessagingException {
@@ -488,17 +548,11 @@ public class MessageDecryptVerifierTest {
         return new MimeBodyPart(textBody, type);
     }
 
-    public static Part getPart(Part searchRootPart, int... indexes) {
+    static Part getPart(Part searchRootPart, int... indexes) {
         Part part = searchRootPart;
         for (int index : indexes) {
             part = ((Multipart) part.getBody()).getBodyPart(index);
         }
         return part;
-    }
-
-    //TODO: Find a cleaner way to do this
-    private static void setContentTypeWithProtocol(Part part, String mimeType, String protocol)
-            throws MessagingException {
-        part.setHeader(MimeHeader.HEADER_CONTENT_TYPE, mimeType + "; protocol=\"" + protocol + "\"");
     }
 }

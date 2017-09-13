@@ -154,7 +154,7 @@ public class MessageCryptoHelper {
                 addErrorAnnotation(part, CryptoError.OPENPGP_ENCRYPTED_BUT_INCOMPLETE, MessageHelper.createEmptyPart());
                 continue;
             }
-            if (MessageDecryptVerifier.isPgpMimeEncryptedOrSignedPart(part)) {
+            if (MessageDecryptVerifier.isMultipartEncryptedOpenPgpProtocol(part)) {
                 CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PGP_ENCRYPTED, part);
                 partsToProcess.add(cryptoPart);
                 continue;
@@ -170,7 +170,7 @@ public class MessageCryptoHelper {
                 addErrorAnnotation(part, CryptoError.OPENPGP_SIGNED_BUT_INCOMPLETE, replacementPart);
                 continue;
             }
-            if (MessageDecryptVerifier.isPgpMimeEncryptedOrSignedPart(part)) {
+            if (MessageDecryptVerifier.isMultipartSignedOpenPgpProtocol(part)) {
                 CryptoPart cryptoPart = new CryptoPart(CryptoPartType.PGP_SIGNED, part);
                 partsToProcess.add(cryptoPart);
                 continue;
