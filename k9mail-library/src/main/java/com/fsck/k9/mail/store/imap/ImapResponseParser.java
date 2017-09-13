@@ -441,7 +441,8 @@ class ImapResponseParser {
             }
         }
 
-        throw new IOException("readStringUntil(): end of stream reached");
+        throw new IOException("readStringUntil(): end of stream reached. Read: "
+                + sb.toString() + " while waiting for '"+end+"'");
     }
 
     private String readStringUntilEndOfLine() throws IOException {
