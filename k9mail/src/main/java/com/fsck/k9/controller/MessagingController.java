@@ -1,9 +1,7 @@
 package com.fsck.k9.controller;
 
 
-import java.io.CharArrayWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,17 +24,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
@@ -86,10 +81,7 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.internet.MessageExtractor;
-import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
@@ -398,7 +390,7 @@ public class MessagingController {
                     l.listFoldersFailed(account, e.getMessage());
                 }
 
-                addErrorMessage(account, null, e);
+                Timber.e(e);
                 return;
             } finally {
                 if (localFolders != null) {
@@ -482,7 +474,7 @@ public class MessagingController {
             for (MessagingListener l : getListeners(listener)) {
                 l.listFoldersFailed(account, "");
             }
-            addErrorMessage(account, null, e);
+            Timber.e(e);
         } finally {
             if (localFolders != null) {
                 for (Folder localFolder : localFolders) {
@@ -548,7 +540,7 @@ public class MessagingController {
                 LocalStore localStore = account.getLocalStore();
                 localStore.searchForMessages(retrievalListener, search);
             } catch (Exception e) {
-                addErrorMessage(account, null, e);
+                Timber.e(e);
             }
         }
 
@@ -626,7 +618,7 @@ public class MessagingController {
                 if (listener != null) {
                     listener.remoteSearchFailed(null, e.getMessage());
                 }
-                addErrorMessage(acct, null, e);
+                Timber.e(e);
             }
         } finally {
             if (listener != null) {
@@ -661,7 +653,6 @@ public class MessagingController {
                     loadSearchResultsSynchronous(messages, localFolder, remoteFolder, listener);
                 } catch (MessagingException e) {
                     Timber.e(e, "Exception in loadSearchResults");
-                    addErrorMessage(account, null, e);
                 } finally {
                     if (listener != null) {
                         listener.enableProgressIndicator(false);
@@ -704,8 +695,6 @@ public class MessagingController {
             }
             synchronizeMailbox(account, folder, listener, null);
         } catch (MessagingException me) {
-            addErrorMessage(account, null, me);
-
             throw new RuntimeException("Unable to set visible limit on folder", me);
         }
     }
@@ -741,9 +730,9 @@ public class MessagingController {
             l.synchronizeMailboxStarted(account, folder);
         }
         /*
-         * We don't ever sync the Outbox or errors folder
+         * We don't ever sync the Outbox
          */
-        if (folder.equals(account.getOutboxFolderName()) || folder.equals(account.getErrorFolderName())) {
+        if (folder.equals(account.getOutboxFolderName())) {
             for (MessagingListener l : getListeners(listener)) {
                 l.synchronizeMailboxFinished(account, folder, 0, 0);
             }
@@ -758,8 +747,6 @@ public class MessagingController {
             try {
                 processPendingCommandsSynchronous(account);
             } catch (Exception e) {
-                addErrorMessage(account, null, e);
-
                 Timber.e(e, "Failure processing command, but allow message sync attempt");
                 commandException = e;
             }
@@ -984,7 +971,6 @@ public class MessagingController {
                 l.synchronizeMailboxFailed(account, folder, rootMessage);
             }
             notifyUserIfCertificateProblem(account, e, true);
-            addErrorMessage(account, null, e);
             Timber.e("Failed synchronizing folder %s:%s @ %tc", account.getDescription(), folder,
                     System.currentTimeMillis());
 
@@ -1315,7 +1301,6 @@ public class MessagingController {
                             }
                         } catch (Exception e) {
                             Timber.e(e, "Error while storing downloaded message.");
-                            addErrorMessage(account, null, e);
                         }
                     }
 
@@ -1399,7 +1384,6 @@ public class MessagingController {
                             }
 
                         } catch (MessagingException me) {
-                            addErrorMessage(account, null, me);
                             Timber.e(me, "SYNC: fetch small messages");
                         }
                     }
@@ -1643,8 +1627,6 @@ public class MessagingController {
             LocalStore localStore = account.getLocalStore();
             localStore.addPendingCommand(command);
         } catch (Exception e) {
-            addErrorMessage(account, null, e);
-
             throw new RuntimeException("Unable to enqueue pending command", e);
         }
     }
@@ -1661,8 +1643,6 @@ public class MessagingController {
                     throw new UnavailableAccountException(e);
                 } catch (MessagingException me) {
                     Timber.e(me, "processPendingCommands");
-
-                    addErrorMessage(account, null, me);
 
                     /*
                      * Ignore any exceptions from the commands. Commands will be processed
@@ -1710,7 +1690,6 @@ public class MessagingController {
                     Timber.d("Done processing pending command '%s'", command);
                 } catch (MessagingException me) {
                     if (me.isPermanentFailure()) {
-                        addErrorMessage(account, null, me);
                         Timber.e("Failure of command '%s' was permanent, removing command from queue", command);
                         localStore.removePendingCommand(processingCommand);
                     } else {
@@ -1726,7 +1705,6 @@ public class MessagingController {
             }
         } catch (MessagingException me) {
             notifyUserIfCertificateProblem(account, me, true);
-            addErrorMessage(account, null, me);
             Timber.e(me, "Could not process command '%s'", processingCommand);
             throw me;
         } finally {
@@ -1751,10 +1729,6 @@ public class MessagingController {
 
             String folder = command.folder;
             String uid = command.uid;
-
-            if (account.getErrorFolderName().equals(folder)) {
-                return;
-            }
 
             LocalStore localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folder);
@@ -1869,9 +1843,6 @@ public class MessagingController {
 
     private void queueMoveOrCopy(Account account, String srcFolder, String destFolder, boolean isCopy,
             List<String> uids) {
-        if (account.getErrorFolderName().equals(srcFolder)) {
-            return;
-        }
         PendingCommand command = PendingMoveOrCopy.create(srcFolder, destFolder, isCopy, uids);
         queuePendingCommand(account, command);
     }
@@ -1881,9 +1852,6 @@ public class MessagingController {
         if (uidMap == null || uidMap.isEmpty()) {
             queueMoveOrCopy(account, srcFolder, destFolder, isCopy, uids);
         } else {
-            if (account.getErrorFolderName().equals(srcFolder)) {
-                return;
-            }
             PendingCommand command = PendingMoveOrCopy.create(srcFolder, destFolder, isCopy, uidMap);
             queuePendingCommand(account, command);
         }
@@ -1895,9 +1863,6 @@ public class MessagingController {
         LocalFolder localDestFolder;
         try {
             String srcFolder = command.srcFolder;
-            if (account.getErrorFolderName().equals(srcFolder)) {
-                return;
-            }
             String destFolder = command.destFolder;
             boolean isCopy = command.isCopy;
 
@@ -1999,10 +1964,6 @@ public class MessagingController {
     void processPendingSetFlag(PendingSetFlag command, Account account) throws MessagingException {
         String folder = command.folder;
 
-        if (account.getErrorFolderName().equals(folder) || account.getOutboxFolderName().equals(folder)) {
-            return;
-        }
-
         boolean newState = command.newState;
         Flag flag = command.flag;
 
@@ -2047,10 +2008,6 @@ public class MessagingController {
     void processPendingExpunge(PendingExpunge command, Account account) throws MessagingException {
         String folder = command.folder;
 
-        if (account.getErrorFolderName().equals(folder)) {
-            return;
-        }
-
         Timber.d("processPendingExpunge: folder = %s", folder);
 
         Store remoteStore = account.getRemoteStore();
@@ -2090,11 +2047,6 @@ public class MessagingController {
                 l.folderStatusChanged(account, folder, 0);
             }
 
-
-            if (account.getErrorFolderName().equals(folder)) {
-                return;
-            }
-
             Store remoteStore = account.getRemoteStore();
             remoteFolder = remoteStore.getFolder(folder);
 
@@ -2115,77 +2067,6 @@ public class MessagingController {
             closeFolder(remoteFolder);
         }
     }
-
-    void addErrorMessage(Account account, String subject, Throwable t) {
-        try {
-            if (t == null) {
-                return;
-            }
-
-            CharArrayWriter baos = new CharArrayWriter(t.getStackTrace().length * 10);
-            PrintWriter ps = new PrintWriter(baos);
-            try {
-                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(
-                        context.getPackageName(), 0);
-                ps.format("K9-Mail version: %s\r\n", packageInfo.versionName);
-            } catch (Exception e) {
-                // ignore
-            }
-            ps.format("Device make: %s\r\n", Build.MANUFACTURER);
-            ps.format("Device model: %s\r\n", Build.MODEL);
-            ps.format("Android version: %s\r\n\r\n", Build.VERSION.RELEASE);
-            t.printStackTrace(ps);
-            ps.close();
-
-            if (subject == null) {
-                subject = getRootCauseMessage(t);
-            }
-
-            addErrorMessage(account, subject, baos.toString());
-        } catch (Throwable it) {
-            Timber.e(it, "Could not save error message to %s", account.getErrorFolderName());
-        }
-    }
-
-    private static AtomicBoolean loopCatch = new AtomicBoolean();
-
-    private void addErrorMessage(Account account, String subject, String body) {
-        if (!K9.isDebug()) {
-            return;
-        }
-        if (!loopCatch.compareAndSet(false, true)) {
-            return;
-        }
-        try {
-            if (body == null || body.length() < 1) {
-                return;
-            }
-
-            Store localStore = account.getLocalStore();
-            LocalFolder localFolder = (LocalFolder) localStore.getFolder(account.getErrorFolderName());
-            MimeMessage message = new MimeMessage();
-
-            MimeMessageHelper.setBody(message, new TextBody(body));
-            message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            message.setSubject(subject);
-
-            long nowTime = System.currentTimeMillis();
-            Date nowDate = new Date(nowTime);
-            message.setInternalDate(nowDate);
-            message.addSentDate(nowDate, K9.hideTimeZone());
-            message.setFrom(new Address(account.getEmail(), "K9mail internal"));
-
-            localFolder.appendMessages(Collections.singletonList(message));
-
-            localFolder.clearMessagesOlderThan(nowTime - (15 * 60 * 1000));
-
-        } catch (Throwable it) {
-            Timber.e(it, "Could not save error message to %s", account.getErrorFolderName());
-        } finally {
-            loopCatch.set(false);
-        }
-    }
-
 
     public void markAllMessagesRead(final Account account, final String folder) {
         Timber.i("Marking all messages in %s:%s as read", account.getDescription(), folder);
@@ -2270,11 +2151,7 @@ public class MessagingController {
                 Timber.w(e, "Couldn't get unread count for folder: %s", folderName);
             }
 
-            // The error folder is always a local folder
             // TODO: Skip the remote part for all local-only folders
-            if (account.getErrorFolderName().equals(folderName)) {
-                continue;
-            }
 
             // Send flag change to server
             queueSetFlag(account, folderName, newState, flag, entry.getValue());
@@ -2334,17 +2211,12 @@ public class MessagingController {
              * Handle the remote side
              */
 
-            // The error folder is always a local folder
             // TODO: Skip the remote part for all local-only folders
-            if (account.getErrorFolderName().equals(folderName)) {
-                return;
-            }
 
             List<String> uids = getUidsFromMessages(messages);
             queueSetFlag(account, folderName, newState, flag, uids);
             processPendingCommands(account);
         } catch (MessagingException me) {
-            addErrorMessage(account, null, me);
             throw new RuntimeException(me);
         } finally {
             closeFolder(localFolder);
@@ -2378,7 +2250,6 @@ public class MessagingController {
                 setFlag(account, folderName, Collections.singletonList(message), flag, newState);
             }
         } catch (MessagingException me) {
-            addErrorMessage(account, null, me);
             throw new RuntimeException(me);
         } finally {
             closeFolder(localFolder);
@@ -2392,7 +2263,6 @@ public class MessagingController {
             localStore.removePendingCommands();
         } catch (MessagingException me) {
             Timber.e(me, "Unable to clear pending command");
-            addErrorMessage(account, null, me);
         }
     }
 
@@ -2497,7 +2367,7 @@ public class MessagingController {
                 l.loadMessageRemoteFailed(account, folder, uid, e);
             }
             notifyUserIfCertificateProblem(account, e, true);
-            addErrorMessage(account, null, e);
+            Timber.e(e, "Error while loading remote message");
             return false;
         } finally {
             closeFolder(remoteFolder);
@@ -2579,8 +2449,6 @@ public class MessagingController {
                         l.loadAttachmentFailed(account, message, part, me.getMessage());
                     }
                     notifyUserIfCertificateProblem(account, me, true);
-                    addErrorMessage(account, null, me);
-
                 } finally {
                     closeFolder(localFolder);
                     closeFolder(remoteFolder);
@@ -2612,7 +2480,7 @@ public class MessagingController {
                 // TODO general failed
             }
             */
-            addErrorMessage(account, null, e);
+            Timber.e(e, "Error sending message");
 
         }
     }
@@ -2794,7 +2662,6 @@ public class MessagingController {
                     lastFailure = e;
                     wasPermanentFailure = false;
                     Timber.e(e, "Failed to fetch message for sending");
-                    addErrorMessage(account, "Failed to fetch message for sending", e);
                     notifySynchronizeMailboxFailed(account, localFolder, e);
                 }
             }
@@ -2819,8 +2686,6 @@ public class MessagingController {
             for (MessagingListener l : getListeners()) {
                 l.sendPendingMessagesFailed(account);
             }
-            addErrorMessage(account, null, e);
-
         } finally {
             if (lastFailure == null) {
                 notificationController.clearSendFailedNotification(account);
@@ -2857,7 +2722,6 @@ public class MessagingController {
             moveMessageToDraftsFolder(account, localFolder, localStore, message);
         }
 
-        addErrorMessage(account, "Failed to send message", exception);
         message.setFlag(Flag.X_SEND_FAILED, true);
 
         notifySynchronizeMailboxFailed(account, localFolder, exception);
@@ -3057,7 +2921,7 @@ public class MessagingController {
                             List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
                             moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder, false);
                         } catch (MessagingException e) {
-                            addErrorMessage(account, "Exception while moving messages", e);
+                            Timber.e(e, "Exception while moving messages");
                         }
                     }
                 });
@@ -3098,7 +2962,7 @@ public class MessagingController {
                             moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
                                     true);
                         } catch (MessagingException e) {
-                            addErrorMessage(account, "Exception while copying messages", e);
+                            Timber.e(e, "Exception while copying messages");
                         }
                     }
                 });
@@ -3201,8 +3065,6 @@ public class MessagingController {
             Timber.i("Failed to move/copy message because storage is not available - trying again later.");
             throw new UnavailableAccountException(e);
         } catch (MessagingException me) {
-            addErrorMessage(account, null, me);
-
             throw new RuntimeException("Error moving message", me);
         }
     }
@@ -3229,7 +3091,7 @@ public class MessagingController {
                 deleteMessage(messageReference, null);
             }
         } catch (MessagingException me) {
-            addErrorMessage(account, null, me);
+            Timber.e(me, "Error deleting draft");
         } finally {
             closeFolder(localFolder);
         }
@@ -3405,8 +3267,6 @@ public class MessagingController {
             Timber.i("Failed to delete message because storage is not available - trying again later.");
             throw new UnavailableAccountException(e);
         } catch (MessagingException me) {
-            addErrorMessage(account, null, me);
-
             throw new RuntimeException("Error deleting message from local store.", me);
         } finally {
             closeFolder(localFolder);
@@ -3477,7 +3337,6 @@ public class MessagingController {
                     throw new UnavailableAccountException(e);
                 } catch (Exception e) {
                     Timber.e(e, "emptyTrash failed");
-                    addErrorMessage(account, null, e);
                 } finally {
                     closeFolder(localFolder);
                 }
@@ -3506,7 +3365,6 @@ public class MessagingController {
             throw new UnavailableAccountException(e);
         } catch (Exception e) {
             Timber.e(e, "clearFolder failed");
-            addErrorMessage(account, null, e);
         } finally {
             closeFolder(localFolder);
         }
@@ -3622,7 +3480,6 @@ public class MessagingController {
 
                 } catch (Exception e) {
                     Timber.e(e, "Unable to synchronize mail");
-                    addErrorMessage(account, null, e);
                 }
                 putBackground("finalize sync", null, new Runnable() {
                             @Override
@@ -3702,7 +3559,6 @@ public class MessagingController {
             }
         } catch (MessagingException e) {
             Timber.e(e, "Unable to synchronize account %s", account.getName());
-            addErrorMessage(account, null, e);
         } finally {
             putBackground("clear notification flag for " + account.getDescription(), null, new Runnable() {
                         @Override
@@ -3769,7 +3625,6 @@ public class MessagingController {
                         } catch (Exception e) {
                             Timber.e(e, "Exception while processing folder %s:%s",
                                     account.getDescription(), folder.getName());
-                            addErrorMessage(account, null, e);
                         } finally {
                             closeFolder(tLocalFolder);
                         }
@@ -3988,7 +3843,6 @@ public class MessagingController {
 
         } catch (MessagingException e) {
             Timber.e(e, "Unable to save message as draft.");
-            addErrorMessage(account, null, e);
         }
         return localMessage;
     }
@@ -4074,15 +3928,7 @@ public class MessagingController {
 
             Store localStore = account.getLocalStore();
             for (final Folder folder : localStore.getPersonalNamespaces(false)) {
-                if (folder.getName().equals(account.getErrorFolderName())
-                        || folder.getName().equals(account.getOutboxFolderName())) {
-                    /*
-                    if (K9.DEBUG) {
-                        Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
-                              " which should never be pushed");
-                    }
-                    */
-
+                if (folder.getName().equals(account.getOutboxFolderName())) {
                     continue;
                 }
                 folder.open(Folder.OPEN_MODE_RW);
@@ -4217,7 +4063,7 @@ public class MessagingController {
                     for (MessagingListener l : getListeners()) {
                         l.synchronizeMailboxFailed(account, remoteFolder.getName(), errorMessage);
                     }
-                    addErrorMessage(account, null, e);
+                    Timber.e(e);
                 } finally {
                     closeFolder(localFolder);
                     latch.countDown();

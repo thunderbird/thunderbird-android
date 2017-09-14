@@ -150,14 +150,6 @@ public class K9 extends Application {
     public static boolean DEBUG_SENSITIVE = false;
 
     /**
-     * Can create messages containing stack traces that can be forwarded
-     * to the development team.
-     *
-     * Feature is enabled when DEBUG == true
-     */
-    public static final String ERROR_FOLDER_NAME = "K9mail-errors";
-
-    /**
      * A reference to the {@link SharedPreferences} used for caching the last known database
      * version.
      *
