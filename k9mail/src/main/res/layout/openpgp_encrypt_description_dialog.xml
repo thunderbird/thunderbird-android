@@ -32,7 +32,7 @@
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:textAppearance="?android:textAppearanceMedium"
-            android:text="OpenPGP Encryption"
+            android:text="@string/openpgp_encryption"
             />
 
     </LinearLayout>
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_action_next_message_light"
+            android:src="?attr/iconActionNextStatus"
             />
 
         <ImageView

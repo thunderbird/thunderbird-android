@@ -20,6 +20,7 @@
         <item name="iconActionDelete">@drawable/ic_action_delete_light</item>
         <item name="iconActionMove">@drawable/ic_action_move_light</item>
         <item name="iconActionCopy">@drawable/ic_action_copy_light</item>
+        <item name="iconActionNextStatus">@drawable/ic_action_next_message_light</item>
         <item name="iconActionNextMessage">@drawable/ic_action_next_message_light</item>
         <item name="iconActionPreviousMessage">@drawable/ic_action_previous_message_light</item>
         <item name="iconActionRefresh">@drawable/ic_action_refresh_light</item>
@@ -85,6 +86,7 @@
         <item name="iconActionDelete">@drawable/ic_action_delete_dark</item>
         <item name="iconActionMove">@drawable/ic_action_move_dark</item>
         <item name="iconActionCopy">@drawable/ic_action_copy_dark</item>
+        <item name="iconActionNextStatus">@drawable/ic_action_next_message_dark</item>
         <item name="iconActionNextMessage">@drawable/ic_action_next_message_dark</item>
         <item name="iconActionPreviousMessage">@drawable/ic_action_previous_message_dark</item>
         <item name="iconActionRefresh">@drawable/ic_action_refresh_dark</item>
