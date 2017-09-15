@@ -57,7 +57,7 @@ public class MessageCryptoStructureDetectorTest {
         List<Part> outputExtraParts = new ArrayList<>();
         BodyPart pgpInlinePart = bodypart("text/plain", PGP_INLINE_DATA);
         Message message = messageFromBody(
-                multipart("alternative", null,
+                multipart("alternative",
                     pgpInlinePart,
                         bodypart("text/html")
                 )
@@ -73,7 +73,7 @@ public class MessageCryptoStructureDetectorTest {
         List<Part> outputExtraParts = new ArrayList<>();
         BodyPart pgpInlinePart = bodypart("text/plain", PGP_INLINE_DATA);
         Message message = messageFromBody(
-                multipart("mixed", null,
+                multipart("mixed",
                         pgpInlinePart,
                         bodypart("application/octet-stream")
                 )
@@ -90,8 +90,8 @@ public class MessageCryptoStructureDetectorTest {
         List<Part> outputExtraParts = new ArrayList<>();
         BodyPart pgpInlinePart = bodypart("text/plain", PGP_INLINE_DATA);
         Message message = messageFromBody(
-                multipart("mixed", null,
-                        multipart("alternative", null,
+                multipart("mixed",
+                        multipart("alternative",
                             pgpInlinePart,
                             bodypart("text/html")
                         ),
@@ -108,7 +108,7 @@ public class MessageCryptoStructureDetectorTest {
     public void findPrimaryCryptoPart_withEmptyMultipartAlternative_shouldReturnNull() throws Exception {
         List<Part> outputExtraParts = new ArrayList<>();
         Message message = messageFromBody(
-                multipart("alternative", null)
+                multipart("alternative")
         );
 
         Part cryptoPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
@@ -120,7 +120,7 @@ public class MessageCryptoStructureDetectorTest {
     public void findPrimaryCryptoPart_withEmptyMultipartMixed_shouldReturnNull() throws Exception {
         List<Part> outputExtraParts = new ArrayList<>();
         Message message = messageFromBody(
-                multipart("mixed", null)
+                multipart("mixed")
         );
 
         Part cryptoPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, outputExtraParts);
@@ -133,8 +133,8 @@ public class MessageCryptoStructureDetectorTest {
             throws Exception {
         List<Part> outputExtraParts = new ArrayList<>();
         Message message = messageFromBody(
-                multipart("mixed", null,
-                        multipart("alternative", null)
+                multipart("mixed",
+                        multipart("alternative")
                 )
         );
 
@@ -165,7 +165,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withMultipartEncrypted__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
-                multipart("encrypted", "application/pgp-encrypted",
+                multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
                         bodypart("application/pgp-encrypted"),
                         bodypart("application/octet-stream")
                 )
@@ -180,7 +180,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withBadProtocol__shouldReturnEmpty() throws Exception {
         Message message = messageFromBody(
-                multipart("encrypted", "application/not-pgp-encrypted",
+                multipart("encrypted", "protocol=\"application/not-pgp-encrypted\"",
                         bodypart("application/pgp-encrypted"),
                         bodypart("application/octet-stream", "content")
                 )
@@ -194,7 +194,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withBadProtocolAndNoBody__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
-                multipart("encrypted", null,
+                multipart("encrypted",
                         bodypart("application/pgp-encrypted"),
                         bodypart("application/octet-stream")
                 )
@@ -209,7 +209,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withEmptyProtocol__shouldReturnEmpty() throws Exception {
         Message message = messageFromBody(
-                multipart("encrypted", null,
+                multipart("encrypted",
                         bodypart("application/pgp-encrypted"),
                         bodypart("application/octet-stream", "content")
                 )
@@ -223,7 +223,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withMissingEncryptedBody__shouldReturnEmpty() throws Exception {
         Message message = messageFromBody(
-                multipart("encrypted", "application/pgp-encrypted",
+                multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
                         bodypart("application/pgp-encrypted")
                 )
         );
@@ -236,7 +236,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withBadStructure__shouldReturnEmpty() throws Exception {
         Message message = messageFromBody(
-                multipart("encrypted", "application/pgp-encrypted",
+                multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
                         bodypart("application/octet-stream")
                 )
         );
@@ -249,8 +249,8 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withMultipartMixedSubEncrypted__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed", null,
-                        multipart("encrypted", "application/pgp-encrypted",
+                multipart("mixed",
+                        multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
                             bodypart("application/pgp-encrypted"),
                             bodypart("application/octet-stream")
                         )
@@ -267,12 +267,12 @@ public class MessageCryptoStructureDetectorTest {
     public void findEncrypted__withMultipartMixedSubEncryptedAndEncrypted__shouldReturnBoth()
             throws Exception {
         Message message = messageFromBody(
-                multipart("mixed", null,
-                        multipart("encrypted", "application/pgp-encrypted",
+                multipart("mixed",
+                        multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
                                 bodypart("application/pgp-encrypted"),
                                 bodypart("application/octet-stream")
                         ),
-                        multipart("encrypted", "application/pgp-encrypted",
+                        multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
                                 bodypart("application/pgp-encrypted"),
                                 bodypart("application/octet-stream")
                         )
@@ -289,9 +289,9 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withMultipartMixedSubTextAndEncrypted__shouldReturnEncrypted() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed", null,
+                multipart("mixed",
                         bodypart("text/plain"),
-                        multipart("encrypted", "application/pgp-encrypted",
+                        multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
                                 bodypart("application/pgp-encrypted"),
                                 bodypart("application/octet-stream")
                         )
@@ -307,8 +307,8 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withMultipartMixedSubEncryptedAndText__shouldReturnEncrypted() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed", null,
-                        multipart("encrypted", "application/pgp-encrypted",
+                multipart("mixed",
+                        multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
                                 bodypart("application/pgp-encrypted"),
                                 bodypart("application/octet-stream")
                         ),
@@ -325,7 +325,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findSigned__withSimpleMultipartSigned__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
-                multipart("signed", "application/pgp-signature",
+                multipart("signed", "protocol=\"application/pgp-signature\"",
                         bodypart("text/plain"),
                         bodypart("application/pgp-signature")
                 )
@@ -341,7 +341,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findSigned__withNoProtocolAndNoBody__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
-                multipart("signed", null,
+                multipart("signed",
                         bodypart("text/plain"),
                         bodypart("application/pgp-signature")
                 )
@@ -357,7 +357,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findSigned__withBadProtocol__shouldReturnNothing() throws Exception {
         Message message = messageFromBody(
-                multipart("signed", "application/not-pgp-signature",
+                multipart("signed", "protocol=\"application/not-pgp-signature\"",
                         bodypart("text/plain", "content"),
                         bodypart("application/pgp-signature")
                 )
@@ -372,7 +372,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findSigned__withEmptyProtocol__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
-                multipart("signed", null,
+                multipart("signed",
                         bodypart("text/plain", "content"),
                         bodypart("application/pgp-signature")
                 )
@@ -387,7 +387,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findSigned__withMissingSignature__shouldReturnEmpty() throws Exception {
         Message message = messageFromBody(
-                multipart("signed", "application/pgp-signature",
+                multipart("signed", "protocol=\"application/pgp-signature\"",
                         bodypart("text/plain")
                 )
         );
@@ -401,8 +401,8 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findSigned__withComplexMultipartSigned__shouldReturnRoot() throws Exception {
         Message message = messageFromBody(
-                multipart("signed", "application/pgp-signature",
-                        multipart("mixed", null,
+                multipart("signed", "protocol=\"application/pgp-signature\"",
+                        multipart("mixed",
                                 bodypart("text/plain"),
                                 bodypart("application/pdf")
                         ),
@@ -420,8 +420,8 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withMultipartMixedSubSigned__shouldReturnSigned() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed", null,
-                        multipart("signed", "application/pgp-signature",
+                multipart("mixed",
+                        multipart("signed", "protocol=\"application/pgp-signature\"",
                                 bodypart("text/plain"),
                                 bodypart("application/pgp-signature")
                     )
@@ -438,7 +438,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withMultipartMixedSubSignedAndText__shouldReturnSigned() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed", null,
+                multipart("mixed",
                         multipart("signed", "application/pgp-signature",
                                 bodypart("text/plain"),
                                 bodypart("application/pgp-signature")
@@ -457,7 +457,7 @@ public class MessageCryptoStructureDetectorTest {
     @Test
     public void findEncrypted__withMultipartMixedSubTextAndSigned__shouldReturnSigned() throws Exception {
         Message message = messageFromBody(
-                multipart("mixed", null,
+                multipart("mixed",
                         bodypart("text/plain"),
                         multipart("signed", "application/pgp-signature",
                                 bodypart("text/plain"),

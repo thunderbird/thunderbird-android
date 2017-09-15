@@ -23,16 +23,20 @@ public class TestMessageConstructionUtils {
         return message;
     }
 
-    public static MimeBodyPart multipart(String type, String protocol, BodyPart... subParts) throws MessagingException {
+    public static MimeBodyPart multipart(String type, BodyPart... subParts) throws MessagingException {
+        return multipart(type, null, subParts);
+    }
+
+    public static MimeBodyPart multipart(String type, String typeParameters, BodyPart... subParts) throws MessagingException {
         MimeMultipart multiPart = MimeMultipart.newInstance();
         multiPart.setSubType(type);
         for (BodyPart subPart : subParts) {
             multiPart.addBodyPart(subPart);
         }
         MimeBodyPart mimeBodyPart = new MimeBodyPart(multiPart);
-        if (protocol != null) {
+        if (typeParameters != null) {
             mimeBodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                    mimeBodyPart.getContentType() + "; protocol=\"" + protocol + "\"");
+                    mimeBodyPart.getContentType() + "; " + typeParameters);
         }
         return mimeBodyPart;
     }

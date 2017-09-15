@@ -125,7 +125,7 @@ public class MessageCryptoHelperTest {
     @Test
     public void multipartSigned__withNullBody__shouldReturnSignedIncomplete() throws Exception {
         Message message = messageFromBody(
-                multipart("signed", "application/pgp-signature",
+                multipart("signed", "protocol=\"application/pgp-signature\"",
                         bodypart("text/plain"),
                         bodypart("application/pgp-signature")
                 )
@@ -141,7 +141,7 @@ public class MessageCryptoHelperTest {
     @Test
     public void multipartEncrypted__withNullBody__shouldReturnEncryptedIncomplete() throws Exception {
         Message message = messageFromBody(
-                multipart("encrypted", "application/pgp-encrypted",
+                multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
                         bodypart("application/pgp-encrypted"),
                         bodypart("application/octet-stream")
                 )
@@ -157,7 +157,7 @@ public class MessageCryptoHelperTest {
     @Test
     public void multipartEncrypted__withUnknownProtocol__shouldReturnEncryptedUnsupported() throws Exception {
         Message message = messageFromBody(
-                multipart("encrypted", "application/bad-protocol",
+                multipart("encrypted", "protocol=\"application/bad-protocol\"",
                         bodypart("application/bad-protocol", "content"),
                         bodypart("application/octet-stream", "content")
                 )
@@ -173,7 +173,7 @@ public class MessageCryptoHelperTest {
     @Test
     public void multipartSigned__withUnknownProtocol__shouldReturnSignedUnsupported() throws Exception {
         Message message = messageFromBody(
-                multipart("signed", "application/bad-protocol",
+                multipart("signed", "protocol=\"application/bad-protocol\"",
                         bodypart("text/plain", "content"),
                         bodypart("application/bad-protocol", "content")
                 )
@@ -190,7 +190,7 @@ public class MessageCryptoHelperTest {
     public void multipartSigned__shouldCallOpenPgpApiAsync() throws Exception {
         BodyPart signedBodyPart;
         Message message = messageFromBody(
-                multipart("signed", "application/pgp-signature",
+                multipart("signed", "protocol=\"application/pgp-signature\"",
                         signedBodyPart = spy(bodypart("text/plain", "content")),
                         bodypart("application/pgp-signature", "content")
                 )
@@ -213,7 +213,7 @@ public class MessageCryptoHelperTest {
     @Test
     public void multipartSigned__withSignOnlyDisabled__shouldReturnNothing() throws Exception {
         Message message = messageFromBody(
-                multipart("signed", "application/pgp-signature",
+                multipart("signed", "protocol=\"application/pgp-signature\"",
                         bodypart("text/plain", "content"),
                         bodypart("application/pgp-signature", "content")
                 )
@@ -228,7 +228,7 @@ public class MessageCryptoHelperTest {
     @Test
     public void multipartSigned__withSignOnlyDisabledAndNullBody__shouldReturnNothing() throws Exception {
         Message message = messageFromBody(
-                multipart("signed", "application/pgp-signature",
+                multipart("signed", "protocol=\"application/pgp-signature\"",
                         bodypart("text/plain"),
                         bodypart("application/pgp-signature")
                 )
@@ -244,7 +244,7 @@ public class MessageCryptoHelperTest {
     public void multipartEncrypted__shouldCallOpenPgpApiAsync() throws Exception {
         Body encryptedBody;
         Message message = messageFromBody(
-                multipart("encrypted", "application/pgp-encrypted",
+                multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
                         bodypart("application/pgp-encrypted", "content"),
                         bodypart("application/octet-stream", encryptedBody = spy(new TextBody("encrypted data")))
                 )
