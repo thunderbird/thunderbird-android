@@ -188,10 +188,10 @@ public class MessageCryptoHelperTest {
 
     @Test
     public void multipartSigned__shouldCallOpenPgpApiAsync() throws Exception {
-        BodyPart signedBodyPart;
+        BodyPart signedBodyPart = spy(bodypart("text/plain", "content"));
         Message message = messageFromBody(
                 multipart("signed", "protocol=\"application/pgp-signature\"",
-                        signedBodyPart = spy(bodypart("text/plain", "content")),
+                        signedBodyPart,
                         bodypart("application/pgp-signature", "content")
                 )
         );
@@ -242,11 +242,11 @@ public class MessageCryptoHelperTest {
 
     @Test
     public void multipartEncrypted__shouldCallOpenPgpApiAsync() throws Exception {
-        Body encryptedBody;
+        Body encryptedBody = spy(new TextBody("encrypted data"));
         Message message = messageFromBody(
                 multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
                         bodypart("application/pgp-encrypted", "content"),
-                        bodypart("application/octet-stream", encryptedBody = spy(new TextBody("encrypted data")))
+                        bodypart("application/octet-stream", encryptedBody)
                 )
         );
         message.setFrom(Address.parse("Test <test@example.org>")[0]);
