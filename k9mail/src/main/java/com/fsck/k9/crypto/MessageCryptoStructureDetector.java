@@ -18,6 +18,7 @@ import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
@@ -25,7 +26,7 @@ import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
 
-public class MessageDecryptVerifier {
+public class MessageCryptoStructureDetector {
     private static final String MULTIPART_ENCRYPTED = "multipart/encrypted";
     private static final String MULTIPART_SIGNED = "multipart/signed";
     private static final String PROTOCOL_PARAMETER = "protocol";
@@ -109,7 +110,7 @@ public class MessageDecryptVerifier {
         return null;
     }
 
-    public static List<Part> findEncryptedParts(Part startPart) {
+    public static List<Part> findMultipartEncryptedParts(Part startPart) {
         List<Part> encryptedParts = new ArrayList<>();
         Stack<Part> partsToCheck = new Stack<>();
         partsToCheck.push(startPart);
@@ -135,7 +136,7 @@ public class MessageDecryptVerifier {
         return encryptedParts;
     }
 
-    public static List<Part> findSignedParts(Part startPart, MessageCryptoAnnotations messageCryptoAnnotations) {
+    public static List<Part> findMultipartSignedParts(Part startPart, MessageCryptoAnnotations messageCryptoAnnotations) {
         List<Part> signedParts = new ArrayList<>();
         Stack<Part> partsToCheck = new Stack<>();
         partsToCheck.push(startPart);
@@ -214,24 +215,59 @@ public class MessageDecryptVerifier {
     }
 
     private static boolean isPartMultipartSigned(Part part) {
-        return isSameMimeType(part.getMimeType(), MULTIPART_SIGNED);
+        if (!isSameMimeType(part.getMimeType(), MULTIPART_SIGNED)) {
+            return false;
+        }
+        if (! (part.getBody() instanceof MimeMultipart)) {
+            return false;
+        }
+        MimeMultipart mimeMultipart = (MimeMultipart) part.getBody();
+        if (mimeMultipart.getCount() != 2) {
+            return false;
+        }
+
+        String protocolParameter = MimeUtility.getHeaderParameter(part.getContentType(), PROTOCOL_PARAMETER);
+
+        boolean dataUnavailable = protocolParameter == null && mimeMultipart.getBodyPart(0).getBody() == null;
+        boolean protocolMatches = isSameMimeType(protocolParameter, mimeMultipart.getBodyPart(1).getMimeType());
+        return dataUnavailable || protocolMatches;
     }
 
     private static boolean isPartMultipartEncrypted(Part part) {
-        return isSameMimeType(part.getMimeType(), MULTIPART_ENCRYPTED);
+        if (!isSameMimeType(part.getMimeType(), MULTIPART_ENCRYPTED)) {
+            return false;
+        }
+        if (! (part.getBody() instanceof MimeMultipart)) {
+            return false;
+        }
+        MimeMultipart mimeMultipart = (MimeMultipart) part.getBody();
+        if (mimeMultipart.getCount() != 2) {
+            return false;
+        }
+
+        String protocolParameter = MimeUtility.getHeaderParameter(part.getContentType(), PROTOCOL_PARAMETER);
+
+        boolean dataUnavailable = protocolParameter == null && mimeMultipart.getBodyPart(1).getBody() == null;
+        boolean protocolMatches = isSameMimeType(protocolParameter, mimeMultipart.getBodyPart(0).getMimeType());
+        return dataUnavailable || protocolMatches;
     }
 
-    // TODO also guess by mime-type of contained part?
-    public static boolean isPgpMimeEncryptedOrSignedPart(Part part) {
-        String contentType = part.getContentType();
-        String protocolParameter = MimeUtility.getHeaderParameter(contentType, PROTOCOL_PARAMETER);
+    public static boolean isMultipartEncryptedOpenPgpProtocol(Part part) {
+        if (!isSameMimeType(part.getMimeType(), MULTIPART_ENCRYPTED)) {
+            throw new IllegalArgumentException("Part is not multipart/encrypted!");
+        }
 
-        boolean isPgpEncrypted = isSameMimeType(part.getMimeType(), MULTIPART_ENCRYPTED) &&
-                APPLICATION_PGP_ENCRYPTED.equalsIgnoreCase(protocolParameter);
-        boolean isPgpSigned = isSameMimeType(part.getMimeType(), MULTIPART_SIGNED) &&
-                APPLICATION_PGP_SIGNATURE.equalsIgnoreCase(protocolParameter);
+        String protocolParameter = MimeUtility.getHeaderParameter(part.getContentType(), PROTOCOL_PARAMETER);
+        return APPLICATION_PGP_ENCRYPTED.equalsIgnoreCase(protocolParameter);
+    }
 
-        return isPgpEncrypted || isPgpSigned;
+    public static boolean isMultipartSignedOpenPgpProtocol(Part part) {
+        if (!isSameMimeType(part.getMimeType(), MULTIPART_SIGNED)) {
+            throw new IllegalArgumentException("Part is not multipart/signed!");
+        }
+
+        String protocolParameter = MimeUtility.getHeaderParameter(part.getContentType(), PROTOCOL_PARAMETER);
+        return APPLICATION_PGP_SIGNATURE.equalsIgnoreCase(protocolParameter);
     }
 
     @VisibleForTesting

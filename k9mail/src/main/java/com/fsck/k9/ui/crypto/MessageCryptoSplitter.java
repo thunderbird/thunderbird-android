@@ -8,7 +8,7 @@ import java.util.List;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fsck.k9.crypto.MessageDecryptVerifier;
+import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
@@ -21,7 +21,7 @@ public class MessageCryptoSplitter {
     @Nullable
     public static CryptoMessageParts split(@NonNull Message message, @Nullable MessageCryptoAnnotations annotations) {
         ArrayList<Part> extraParts = new ArrayList<>();
-        Part primaryPart = MessageDecryptVerifier.findPrimaryEncryptedOrSignedPart(message, extraParts);
+        Part primaryPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, extraParts);
         if (primaryPart == null) {
             return null;
         }

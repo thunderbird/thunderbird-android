@@ -162,6 +162,11 @@ public class MessageExtractor {
                     Alternative alternative = new Alternative(text, html);
                     outputViewableParts.add(alternative);
                 }
+            } else if (isSameMimeType(part.getMimeType(), "multipart/signed")) {
+                if (multipart.getCount() > 0) {
+                    BodyPart bodyPart = multipart.getBodyPart(0);
+                    findViewablesAndAttachments(bodyPart, outputViewableParts, outputNonViewableParts);
+                }
             } else {
                 // For all other multipart parts we recurse to grab all viewable children.
                 for (Part bodyPart : multipart.getBodyParts()) {
