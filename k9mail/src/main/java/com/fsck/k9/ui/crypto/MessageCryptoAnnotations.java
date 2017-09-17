@@ -12,11 +12,7 @@ import com.fsck.k9.mailstore.CryptoResultAnnotation;
 public class MessageCryptoAnnotations {
     private HashMap<Part, CryptoResultAnnotation> annotations = new HashMap<>();
 
-    MessageCryptoAnnotations() {
-        // Package-private constructor
-    }
-
-    void put(Part part, CryptoResultAnnotation annotation) {
+    public void put(Part part, CryptoResultAnnotation annotation) {
         annotations.put(part, annotation);
     }
 
