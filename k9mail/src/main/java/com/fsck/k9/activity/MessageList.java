@@ -535,6 +535,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
         mMessageListWasDisplayed = savedInstanceState.getBoolean(STATE_MESSAGE_LIST_WAS_DISPLAYED);
         mFirstBackStackId = savedInstanceState.getInt(STATE_FIRST_BACK_STACK_ID);
     }
