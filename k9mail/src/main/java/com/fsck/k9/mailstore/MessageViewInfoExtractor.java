@@ -83,10 +83,9 @@ public class MessageViewInfoExtractor {
             return extractSimpleMessageForView(message, message);
         }
 
-        boolean isOpenPgpEncrypted =
-                MimeUtility.isSameMimeType(cryptoContentPart.getMimeType(), "multipart/encrypted") &&
-                        MimeUtility.isSameMimeType(getHeaderParameter(cryptoContentPart.getContentType(), "protocol"),
-                                "application/pgp-encrypted");
+        boolean isOpenPgpEncrypted = (MessageCryptoStructureDetector.isPartMultipartEncrypted(cryptoContentPart) &&
+                        MessageCryptoStructureDetector.isMultipartEncryptedOpenPgpProtocol(cryptoContentPart)) ||
+                        MessageCryptoStructureDetector.isPartPgpInlineEncrypted(cryptoContentPart);
         if (!K9.isOpenPgpProviderConfigured() && isOpenPgpEncrypted) {
             CryptoResultAnnotation noProviderAnnotation = CryptoResultAnnotation.createErrorAnnotation(
                     CryptoError.OPENPGP_ENCRYPTED_NO_PROVIDER, null);

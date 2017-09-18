@@ -233,7 +233,7 @@ public class MessageCryptoStructureDetector {
         return dataUnavailable || protocolMatches;
     }
 
-    private static boolean isPartMultipartEncrypted(Part part) {
+    public static boolean isPartMultipartEncrypted(Part part) {
         if (!isSameMimeType(part.getMimeType(), MULTIPART_ENCRYPTED)) {
             return false;
         }
