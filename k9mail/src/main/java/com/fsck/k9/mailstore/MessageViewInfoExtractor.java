@@ -71,29 +71,31 @@ public class MessageViewInfoExtractor {
     }
 
     @WorkerThread
-    public MessageViewInfo extractMessageForView(Message message, @Nullable MessageCryptoAnnotations annotations)
+    public MessageViewInfo extractMessageForView(Message message, @Nullable MessageCryptoAnnotations cryptoAnnotations)
             throws MessagingException {
         ArrayList<Part> extraParts = new ArrayList<>();
         Part cryptoContentPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, extraParts);
 
         if (cryptoContentPart == null) {
-            if (annotations != null && !annotations.isEmpty()) {
-                Timber.e("Got crypto message annotations but no crypto root part!");
+            if (cryptoAnnotations != null && !cryptoAnnotations.isEmpty()) {
+                Timber.e("Got crypto message cryptoContentAnnotations but no crypto root part!");
             }
             return extractSimpleMessageForView(message, message);
         }
 
         boolean isOpenPgpEncrypted =
                 MimeUtility.isSameMimeType(cryptoContentPart.getMimeType(), "multipart/encrypted") &&
-                MimeUtility.isSameMimeType(getHeaderParameter(cryptoContentPart.getContentType(), "protocol"),
-                        "application/pgp-encrypted");
+                        MimeUtility.isSameMimeType(getHeaderParameter(cryptoContentPart.getContentType(), "protocol"),
+                                "application/pgp-encrypted");
         if (!K9.isOpenPgpProviderConfigured() && isOpenPgpEncrypted) {
             CryptoResultAnnotation noProviderAnnotation = CryptoResultAnnotation.createErrorAnnotation(
                     CryptoError.OPENPGP_ENCRYPTED_NO_PROVIDER, null);
-            return MessageViewInfo.createWithErrorState(message, false).withCryptoData(noProviderAnnotation, null, null);
+            return MessageViewInfo.createWithErrorState(message, false)
+                    .withCryptoData(noProviderAnnotation, null, null);
         }
 
-        CryptoResultAnnotation cryptoContentPartAnnotation = annotations != null ? annotations.get(cryptoContentPart) : null;
+        CryptoResultAnnotation cryptoContentPartAnnotation =
+                cryptoAnnotations != null ? cryptoAnnotations.get(cryptoContentPart) : null;
         if (cryptoContentPartAnnotation != null) {
             return extractCryptoMessageForView(message, extraParts, cryptoContentPart, cryptoContentPartAnnotation);
         }
