@@ -371,7 +371,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     }
 
     public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
-            final OnRenderingFinishedListener onRenderingFinishedListener, boolean automaticallyLoadPictures,
+            final OnLoadFinishedListener onLoadFinishedListener, boolean automaticallyLoadPictures,
             boolean hideUnsignedTextDivider, AttachmentViewCallback attachmentCallback) {
 
         this.attachmentCallback = attachmentCallback;
@@ -406,7 +406,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         OnPageFinishedListener onPageFinishedListener = new OnPageFinishedListener() {
             @Override
             public void onPageFinished() {
-                onRenderingFinishedListener.onLoadFinished();
+                onLoadFinishedListener.onLoadFinished();
             }
         };
 
@@ -591,7 +591,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         }
     }
 
-    interface OnRenderingFinishedListener {
+    interface OnLoadFinishedListener {
         void onLoadFinished();
     }
 }

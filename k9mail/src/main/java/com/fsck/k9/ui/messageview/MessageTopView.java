@@ -25,7 +25,7 @@ import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.MessageViewInfo;
-import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListener;
+import com.fsck.k9.ui.messageview.MessageContainerView.OnLoadFinishedListener;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.ThemeUtils;
 import com.fsck.k9.view.ToolableViewAnimator;
@@ -116,7 +116,7 @@ public class MessageTopView extends LinearLayout {
         containerView.addView(view);
 
         boolean hideUnsignedTextDivider = !K9.getOpenPgpSupportSignOnly();
-        view.displayMessageViewContainer(messageViewInfo, new OnRenderingFinishedListener() {
+        view.displayMessageViewContainer(messageViewInfo, new OnLoadFinishedListener() {
             @Override
             public void onLoadFinished() {
                 displayViewOnLoadFinished(true);
