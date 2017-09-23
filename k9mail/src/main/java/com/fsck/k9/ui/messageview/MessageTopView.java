@@ -6,6 +6,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -27,6 +29,8 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.messageview.MessageContainerView.OnLoadFinishedListener;
 import com.fsck.k9.view.MessageHeader;
+import com.fsck.k9.view.MessageWebView.OnRenderingFinishedListener;
+import com.fsck.k9.view.NonLockingScrollView;
 import com.fsck.k9.view.ThemeUtils;
 import com.fsck.k9.view.ToolableViewAnimator;
 import org.openintents.openpgp.OpenPgpError;
@@ -45,11 +49,13 @@ public class MessageTopView extends LinearLayout {
 
     private MessageHeader mHeaderContainer;
     private LayoutInflater mInflater;
+    private NonLockingScrollView scrollView;
     private ViewGroup containerView;
     private Button mDownloadRemainder;
     private AttachmentViewCallback attachmentCallback;
     private Button showPicturesButton;
     private boolean isShowingProgress;
+    private float restoredRelativeScrollY = -1;
 
     private MessageCryptoPresenter messageCryptoPresenter;
 
@@ -76,6 +82,7 @@ public class MessageTopView extends LinearLayout {
         showPicturesButton = (Button) findViewById(R.id.show_pictures);
         setShowPicturesButtonListener();
 
+        scrollView = (NonLockingScrollView) findViewById(R.id.non_locking_scroll_view);
         containerView = (ViewGroup) findViewById(R.id.message_container);
 
         hideHeaderView();
@@ -115,13 +122,26 @@ public class MessageTopView extends LinearLayout {
                 containerView, false);
         containerView.addView(view);
 
+        OnRenderingFinishedListener onRenderingFinishedListener = null;
+        if (restoredRelativeScrollY > 0.0) {
+            onRenderingFinishedListener = new OnRenderingFinishedListener() {
+                @Override
+                public void onRenderingFinished() {
+                    if (restoredRelativeScrollY > 0.0) {
+                        scrollView.setRelativeScrollY(restoredRelativeScrollY);
+                        restoredRelativeScrollY = -1;
+                    }
+                }
+            };
+        }
+
         boolean hideUnsignedTextDivider = !K9.getOpenPgpSupportSignOnly();
         view.displayMessageViewContainer(messageViewInfo, new OnLoadFinishedListener() {
             @Override
             public void onLoadFinished() {
                 displayViewOnLoadFinished(true);
             }
-        }, automaticallyLoadPictures, hideUnsignedTextDivider, attachmentCallback);
+        }, onRenderingFinishedListener, automaticallyLoadPictures, hideUnsignedTextDivider, attachmentCallback);
 
         if (view.hasHiddenExternalImages()) {
             showShowPicturesButton();
@@ -360,6 +380,53 @@ public class MessageTopView extends LinearLayout {
                     .setDuration(PROGRESS_STEP_DURATION).start();
         } else {
             progressBar.setProgress(newPosition);
+        }
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState savedState = new SavedState(superState);
+        savedState.relativeScrollY = scrollView.getRelativeScrollY();
+        return savedState;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        restoredRelativeScrollY = savedState.relativeScrollY;
+    }
+
+    private static class SavedState extends BaseSavedState {
+        float relativeScrollY;
+
+        public static final Parcelable.Creator<SavedState> CREATOR =
+                new Parcelable.Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            this.relativeScrollY = in.readFloat();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeFloat(this.relativeScrollY);
         }
     }
 }

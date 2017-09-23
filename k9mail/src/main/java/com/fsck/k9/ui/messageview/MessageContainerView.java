@@ -39,6 +39,7 @@ import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
+import com.fsck.k9.view.MessageWebView.OnRenderingFinishedListener;
 
 
 public class MessageContainerView extends LinearLayout implements OnLayoutChangedListener, OnCreateContextMenuListener {
@@ -371,7 +372,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     }
 
     public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
-            final OnLoadFinishedListener onLoadFinishedListener, boolean automaticallyLoadPictures,
+            final OnLoadFinishedListener onLoadFinishedListener, final OnRenderingFinishedListener onRenderingFinishedListener, boolean automaticallyLoadPictures,
             boolean hideUnsignedTextDivider, AttachmentViewCallback attachmentCallback) {
 
         this.attachmentCallback = attachmentCallback;
@@ -412,6 +413,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
         displayHtmlContentWithInlineAttachments(
                 textToDisplay, messageViewInfo.attachmentResolver, onPageFinishedListener);
+        mMessageContentView.setOnRenderingFinishedListener(onRenderingFinishedListener);
 
         if (!TextUtils.isEmpty(messageViewInfo.extraText)) {
             unsignedTextContainer.setVisibility(View.VISIBLE);
