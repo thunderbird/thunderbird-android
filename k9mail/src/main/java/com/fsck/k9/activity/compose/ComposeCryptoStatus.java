@@ -117,7 +117,7 @@ public class ComposeCryptoStatus {
             return CryptoSpecialModeDisplayType.SIGN_ONLY;
         }
 
-        if (canEncrypt() && isPgpInlineModeEnabled()) {
+        if (allRecipientsCanEncrypt() && isPgpInlineModeEnabled()) {
             return CryptoSpecialModeDisplayType.PGP_INLINE;
         }
 
@@ -126,7 +126,7 @@ public class ComposeCryptoStatus {
 
     public boolean shouldUsePgpMessageBuilder() {
         // CryptoProviderState.ERROR will be handled as an actual error, see SendErrorState
-        return cryptoProviderState != CryptoProviderState.UNCONFIGURED && openPgpKeyId != null;
+        return cryptoProviderState != CryptoProviderState.UNCONFIGURED;
     }
 
     public boolean isEncryptionEnabled() {
@@ -155,7 +155,7 @@ public class ComposeCryptoStatus {
         return cryptoProviderState == CryptoProviderState.OK;
     }
 
-    boolean canEncrypt() {
+    boolean allRecipientsCanEncrypt() {
         return recipientAutocryptStatus != null && recipientAutocryptStatus.type.canEncrypt();
     }
 
@@ -168,11 +168,7 @@ public class ComposeCryptoStatus {
     }
 
     boolean canEncryptAndIsMutual() {
-        return canEncrypt() && recipientAutocryptStatus.type.isMutual();
-    }
-
-    boolean isEncryptionEnabledError() {
-        return isEncryptionEnabled() && !canEncrypt();
+        return allRecipientsCanEncrypt() && recipientAutocryptStatus.type.isMutual();
     }
 
     boolean hasAutocryptPendingIntent() {
@@ -258,6 +254,7 @@ public class ComposeCryptoStatus {
 
     public enum SendErrorState {
         PROVIDER_ERROR,
+        KEY_CONFIG_ERROR,
         ENABLED_ERROR
     }
 
@@ -267,7 +264,11 @@ public class ComposeCryptoStatus {
             return SendErrorState.PROVIDER_ERROR;
         }
 
-        if (isEncryptionEnabledError()) {
+        if (openPgpKeyId == null && (isEncryptionEnabled() || isSignOnly())) {
+            return SendErrorState.KEY_CONFIG_ERROR;
+        }
+
+        if (isEncryptionEnabled() && !allRecipientsCanEncrypt()) {
             return SendErrorState.ENABLED_ERROR;
         }
 
