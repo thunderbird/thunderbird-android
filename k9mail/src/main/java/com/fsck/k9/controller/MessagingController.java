@@ -2464,7 +2464,7 @@ public class MessagingController {
                 // Get the remote message and fully download it
                 Message remoteMessage = remoteFolder.getMessage(uid);
 
-                if (loadPartialFromSearch) {
+                if (!loadPartialFromSearch) {
                     downloadMessages(account, remoteFolder, localFolder,
                             Collections.singletonList(remoteMessage), false, false);
                 } else {
