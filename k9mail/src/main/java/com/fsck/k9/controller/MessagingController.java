@@ -2322,6 +2322,7 @@ public class MessagingController {
                 } else {
                     FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);
+                    fp.add(FetchProfile.Item.FLAGS);
                     remoteFolder.fetch(Collections.singletonList(remoteMessage), fp, null);
                     localFolder.appendMessages(Collections.singletonList(remoteMessage));
                 }
