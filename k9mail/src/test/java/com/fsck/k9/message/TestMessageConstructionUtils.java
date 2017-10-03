@@ -45,7 +45,7 @@ public class TestMessageConstructionUtils {
         return new MimeBodyPart(null, type);
     }
 
-    public static BodyPart bodypart(String type, String text) throws MessagingException {
+    public static MimeBodyPart bodypart(String type, String text) throws MessagingException {
         TextBody textBody = new TextBody(text);
         return new MimeBodyPart(textBody, type);
     }

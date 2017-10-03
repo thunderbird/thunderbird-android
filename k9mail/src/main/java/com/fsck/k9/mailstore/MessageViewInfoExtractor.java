@@ -12,22 +12,24 @@ import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
 
 import com.fsck.k9.Globals;
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.mail.internet.Viewable.Flowed;
+import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.mailstore.util.FlowedMessageUtils;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.message.html.HtmlProcessor;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
-import com.fsck.k9.ui.crypto.MessageCryptoSplitter;
-import com.fsck.k9.ui.crypto.MessageCryptoSplitter.CryptoMessageParts;
 import org.openintents.openpgp.util.OpenPgpUtils;
 import timber.log.Timber;
 
@@ -69,45 +71,61 @@ public class MessageViewInfoExtractor {
     }
 
     @WorkerThread
-    public MessageViewInfo extractMessageForView(Message message, @Nullable MessageCryptoAnnotations annotations)
+    public MessageViewInfo extractMessageForView(Message message, @Nullable MessageCryptoAnnotations cryptoAnnotations)
             throws MessagingException {
-        Part rootPart;
-        CryptoResultAnnotation cryptoResultAnnotation;
-        List<Part> extraParts;
+        ArrayList<Part> extraParts = new ArrayList<>();
+        Part cryptoContentPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, extraParts);
 
-        CryptoMessageParts cryptoMessageParts = MessageCryptoSplitter.split(message, annotations);
-        if (cryptoMessageParts != null) {
-            rootPart = cryptoMessageParts.contentPart;
-            cryptoResultAnnotation = cryptoMessageParts.contentCryptoAnnotation;
-            extraParts = cryptoMessageParts.extraParts;
-        } else {
-            if (annotations != null && !annotations.isEmpty()) {
-                Timber.e("Got message annotations but no crypto root part!");
+        if (cryptoContentPart == null) {
+            if (cryptoAnnotations != null && !cryptoAnnotations.isEmpty()) {
+                Timber.e("Got crypto message cryptoContentAnnotations but no crypto root part!");
             }
-            rootPart = message;
-            cryptoResultAnnotation = null;
-            extraParts = null;
+            return extractSimpleMessageForView(message, message);
         }
 
-        List<AttachmentViewInfo> attachmentInfos = new ArrayList<>();
-        ViewableExtractedText viewable = extractViewableAndAttachments(
-                Collections.singletonList(rootPart), attachmentInfos);
+        boolean isOpenPgpEncrypted = (MessageCryptoStructureDetector.isPartMultipartEncrypted(cryptoContentPart) &&
+                        MessageCryptoStructureDetector.isMultipartEncryptedOpenPgpProtocol(cryptoContentPart)) ||
+                        MessageCryptoStructureDetector.isPartPgpInlineEncrypted(cryptoContentPart);
+        if (!K9.isOpenPgpProviderConfigured() && isOpenPgpEncrypted) {
+            CryptoResultAnnotation noProviderAnnotation = CryptoResultAnnotation.createErrorAnnotation(
+                    CryptoError.OPENPGP_ENCRYPTED_NO_PROVIDER, null);
+            return MessageViewInfo.createWithErrorState(message, false)
+                    .withCryptoData(noProviderAnnotation, null, null);
+        }
+
+        CryptoResultAnnotation cryptoContentPartAnnotation =
+                cryptoAnnotations != null ? cryptoAnnotations.get(cryptoContentPart) : null;
+        if (cryptoContentPartAnnotation != null) {
+            return extractCryptoMessageForView(message, extraParts, cryptoContentPart, cryptoContentPartAnnotation);
+        }
+
+        return extractSimpleMessageForView(message, message);
+    }
+
+    private MessageViewInfo extractCryptoMessageForView(Message message,
+            ArrayList<Part> extraParts, Part cryptoContentPart, CryptoResultAnnotation cryptoContentPartAnnotation)
+            throws MessagingException {
+        if (cryptoContentPartAnnotation != null && cryptoContentPartAnnotation.hasReplacementData()) {
+            cryptoContentPart = cryptoContentPartAnnotation.getReplacementData();
+        }
 
         List<AttachmentViewInfo> extraAttachmentInfos = new ArrayList<>();
-        String extraViewableText = null;
-        if (extraParts != null) {
-            ViewableExtractedText extraViewable =
-                    extractViewableAndAttachments(extraParts, extraAttachmentInfos);
-            extraViewableText = extraViewable.text;
-        }
+        ViewableExtractedText extraViewable = extractViewableAndAttachments(extraParts, extraAttachmentInfos);
 
-        AttachmentResolver attachmentResolver = AttachmentResolver.createFromPart(rootPart);
+        MessageViewInfo messageViewInfo = extractSimpleMessageForView(message, cryptoContentPart);
+        return messageViewInfo.withCryptoData(cryptoContentPartAnnotation, extraViewable.text, extraAttachmentInfos);
+    }
 
-        boolean isMessageIncomplete = !message.isSet(Flag.X_DOWNLOADED_FULL) ||
-                MessageExtractor.hasMissingParts(message);
+    private MessageViewInfo extractSimpleMessageForView(Message message, Part contentPart) throws MessagingException {
+        List<AttachmentViewInfo> attachmentInfos = new ArrayList<>();
+        ViewableExtractedText viewable = extractViewableAndAttachments(
+                Collections.singletonList(contentPart), attachmentInfos);
+        AttachmentResolver attachmentResolver = AttachmentResolver.createFromPart(contentPart);
+        boolean isMessageIncomplete =
+                !message.isSet(Flag.X_DOWNLOADED_FULL) || MessageExtractor.hasMissingParts(message);
 
-        return MessageViewInfo.createWithExtractedContent(message, isMessageIncomplete, rootPart, viewable.html,
-                attachmentInfos, cryptoResultAnnotation, attachmentResolver, extraViewableText, extraAttachmentInfos);
+        return MessageViewInfo.createWithExtractedContent(
+                message, isMessageIncomplete, viewable.html, attachmentInfos, attachmentResolver);
     }
 
     private ViewableExtractedText extractViewableAndAttachments(List<Part> parts,
