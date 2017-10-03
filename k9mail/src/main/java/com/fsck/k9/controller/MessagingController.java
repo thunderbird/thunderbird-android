@@ -801,11 +801,11 @@ public class MessagingController {
                  */
                 Timber.v("SYNC: About to open remote folder %s", folder);
 
-                remoteFolder.open(Folder.OPEN_MODE_RW);
                 if (Expunge.EXPUNGE_ON_POLL == account.getExpungePolicy()) {
                     Timber.d("SYNC: Expunging folder %s:%s", account.getDescription(), folder);
                     remoteFolder.expunge();
                 }
+                remoteFolder.open(Folder.OPEN_MODE_RO);
 
             }
 
