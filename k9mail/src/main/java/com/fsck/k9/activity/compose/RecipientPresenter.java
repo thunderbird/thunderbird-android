@@ -624,7 +624,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                     return;
                 }
 
-                if (currentCryptoStatus.isEncryptionEnabledError()) {
+                if (currentCryptoStatus.isEncryptionEnabled() && !currentCryptoStatus.allRecipientsCanEncrypt()) {
                     recipientMvpView.showOpenPgpEnabledErrorDialog(false);
                     return;
                 }
@@ -687,6 +687,9 @@ public class RecipientPresenter implements PermissionPingCallback {
                 break;
             case PROVIDER_ERROR:
                 recipientMvpView.showErrorOpenPgpConnection();
+                break;
+            case KEY_CONFIG_ERROR:
+                recipientMvpView.showErrorNoKeyConfigured();
                 break;
             default:
                 throw new AssertionError("not all error states handled, this is a bug!");
@@ -894,7 +897,7 @@ public class RecipientPresenter implements PermissionPingCallback {
             return;
         }
         if (enableEncryption) {
-            if (!cachedCryptoStatus.canEncrypt()) {
+            if (!cachedCryptoStatus.allRecipientsCanEncrypt()) {
                 onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
                 recipientMvpView.showOpenPgpEnabledErrorDialog(true);
             } else if (cachedCryptoStatus.canEncryptAndIsMutual()) {

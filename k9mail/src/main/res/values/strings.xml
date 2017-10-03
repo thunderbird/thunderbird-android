@@ -1146,7 +1146,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="address_type_other">Other</string>
     <string name="address_type_mobile">Mobile</string>
     <string name="compose_error_no_draft_folder">No Drafts folder configured for this account!</string>
-    <string name="compose_error_no_signing_key">No key configured for signing! Please check your settings.</string>
+    <string name="compose_error_no_key_configured">No key configured for this account! Check your settings.</string>
     <string name="crypto_mode_disabled">Don\'t encrypt</string>
     <string name="crypto_mode_opportunistic">Encrypt if possible</string>
     <string name="crypto_mode_private">Encrypt</string>

@@ -87,20 +87,22 @@ public class PgpMessageBuilder extends MessageBuilder {
             throw new IllegalStateException("PgpMessageBuilder must have cryptoStatus set before building!");
         }
 
+        Long openPgpKeyId = cryptoStatus.getOpenPgpKeyId();
         try {
-            if (!cryptoStatus.isProviderStateOk()) {
-                throw new MessagingException("OpenPGP Provider is not ready!");
-            }
-
             currentProcessedMimeMessage = build();
         } catch (MessagingException me) {
             queueMessageBuildException(me);
             return;
         }
 
-        Long openPgpKeyId = cryptoStatus.getOpenPgpKeyId();
         if (openPgpKeyId == null) {
-            throw new IllegalArgumentException("PgpMessageBuilder requires a configured key id!");
+            queueMessageBuildSuccess(currentProcessedMimeMessage);
+            return;
+        }
+
+        if (!cryptoStatus.isProviderStateOk()) {
+            queueMessageBuildException(new MessagingException("OpenPGP Provider is not ready!"));
+            return;
         }
 
         Address address = currentProcessedMimeMessage.getFrom()[0];

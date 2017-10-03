@@ -85,33 +85,76 @@ public class PgpMessageBuilderTest {
     }
 
     @Test
-    public void build__withCryptoProviderNotOk__shouldThrow() throws MessagingException {
-        cryptoStatusBuilder.setCryptoMode(CryptoMode.SIGN_ONLY);
-        CryptoProviderState[] cryptoProviderStates = {
-                CryptoProviderState.LOST_CONNECTION, CryptoProviderState.UNCONFIGURED,
-                CryptoProviderState.UNINITIALIZED, CryptoProviderState.ERROR
-        };
+    public void build__withCryptoProviderUnconfigured__shouldThrow() throws MessagingException {
+        cryptoStatusBuilder.setCryptoMode(CryptoMode.NO_CHOICE);
 
-        for (CryptoProviderState state : cryptoProviderStates) {
-            cryptoStatusBuilder.setCryptoProviderState(state);
-            pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
+        cryptoStatusBuilder.setCryptoProviderState(CryptoProviderState.UNCONFIGURED);
+        pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
 
-            Callback mockCallback = mock(Callback.class);
-            pgpMessageBuilder.buildAsync(mockCallback);
+        Callback mockCallback = mock(Callback.class);
+        pgpMessageBuilder.buildAsync(mockCallback);
 
-            verify(mockCallback).onMessageBuildException(any(MessagingException.class));
-            verifyNoMoreInteractions(mockCallback);
-        }
+        verify(mockCallback).onMessageBuildException(any(MessagingException.class));
+        verifyNoMoreInteractions(mockCallback);
     }
 
-    @Test(expected = RuntimeException.class)
-    public void buildCleartext__withNoSigningKey__shouldThrow() {
+    @Test
+    public void build__withCryptoProviderUninitialized__shouldThrow() throws MessagingException {
+        cryptoStatusBuilder.setCryptoMode(CryptoMode.NO_CHOICE);
+
+        cryptoStatusBuilder.setCryptoProviderState(CryptoProviderState.UNINITIALIZED);
+        pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
+
+        Callback mockCallback = mock(Callback.class);
+        pgpMessageBuilder.buildAsync(mockCallback);
+
+        verify(mockCallback).onMessageBuildException(any(MessagingException.class));
+        verifyNoMoreInteractions(mockCallback);
+    }
+
+    @Test
+    public void build__withCryptoProviderError__shouldThrow() throws MessagingException {
+        cryptoStatusBuilder.setCryptoMode(CryptoMode.NO_CHOICE);
+
+        cryptoStatusBuilder.setCryptoProviderState(CryptoProviderState.ERROR);
+        pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
+
+        Callback mockCallback = mock(Callback.class);
+        pgpMessageBuilder.buildAsync(mockCallback);
+
+        verify(mockCallback).onMessageBuildException(any(MessagingException.class));
+        verifyNoMoreInteractions(mockCallback);
+    }
+
+    @Test
+    public void build__withCryptoProviderLostConnection__shouldThrow() throws MessagingException {
+        cryptoStatusBuilder.setCryptoMode(CryptoMode.NO_CHOICE);
+
+        cryptoStatusBuilder.setCryptoProviderState(CryptoProviderState.LOST_CONNECTION);
+        pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
+
+        Callback mockCallback = mock(Callback.class);
+        pgpMessageBuilder.buildAsync(mockCallback);
+
+        verify(mockCallback).onMessageBuildException(any(MessagingException.class));
+        verifyNoMoreInteractions(mockCallback);
+    }
+
+    @Test
+    public void buildCleartext__withNoSigningKey__shouldBuildTrivialMessage() {
         cryptoStatusBuilder.setCryptoMode(CryptoMode.NO_CHOICE);
         cryptoStatusBuilder.setOpenPgpKeyId(null);
         pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
 
         Callback mockCallback = mock(Callback.class);
         pgpMessageBuilder.buildAsync(mockCallback);
+
+        ArgumentCaptor<MimeMessage> captor = ArgumentCaptor.forClass(MimeMessage.class);
+        verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false));
+        verifyNoMoreInteractions(mockCallback);
+
+        MimeMessage message = captor.getValue();
+        assertEquals("text/plain", message.getMimeType());
     }
 
     @Test
