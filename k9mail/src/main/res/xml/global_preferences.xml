@@ -424,6 +424,8 @@
             android:persistent="false"
             android:key="openpgp_support_sign_only"
             android:title="@string/account_settings_crypto_support_sign_only"
+            android:summaryOn="@string/account_settings_crypto_support_sign_only_on"
+            android:summaryOff="@string/account_settings_crypto_support_sign_only_off"
             />
 
     </PreferenceScreen>
