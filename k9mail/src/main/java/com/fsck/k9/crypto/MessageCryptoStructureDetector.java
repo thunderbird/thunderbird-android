@@ -228,6 +228,7 @@ public class MessageCryptoStructureDetector {
 
         String protocolParameter = MimeUtility.getHeaderParameter(part.getContentType(), PROTOCOL_PARAMETER);
 
+        // for partially downloaded messages the protocol parameter isn't yet available, so we'll just assume it's ok
         boolean dataUnavailable = protocolParameter == null && mimeMultipart.getBodyPart(0).getBody() == null;
         boolean protocolMatches = isSameMimeType(protocolParameter, mimeMultipart.getBodyPart(1).getMimeType());
         return dataUnavailable || protocolMatches;
@@ -247,6 +248,7 @@ public class MessageCryptoStructureDetector {
 
         String protocolParameter = MimeUtility.getHeaderParameter(part.getContentType(), PROTOCOL_PARAMETER);
 
+        // for partially downloaded messages the protocol parameter isn't yet available, so we'll just assume it's ok
         boolean dataUnavailable = protocolParameter == null && mimeMultipart.getBodyPart(1).getBody() == null;
         boolean protocolMatches = isSameMimeType(protocolParameter, mimeMultipart.getBodyPart(0).getMimeType());
         return dataUnavailable || protocolMatches;
