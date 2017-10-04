@@ -21,6 +21,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
+import timber.log.Timber;
 
 
 public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
@@ -57,6 +58,13 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     private static final int INDEX_CONTACT_ID_FOR_NICKNAME = 0;
     private static final int INDEX_NICKNAME = 1;
+
+    private static final String[] PROJECTION_CRYPTO_ADDRESSES = {
+            "address",
+            "uid_address"
+    };
+
+    private static final int INDEX_USER_ID = 1;
 
     private static final String[] PROJECTION_CRYPTO_STATUS = {
             "address",
@@ -120,6 +128,10 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             fillContactDataFromEmailContentUri(contactUri, recipients, recipientMap);
         } else if (query != null) {
             fillContactDataFromQuery(query, recipients, recipientMap);
+
+            if (cryptoProvider != null) {
+                fillContactDataFromCryptoProvider(query, recipients, recipientMap);
+            }
         } else if (lookupKeyUri != null) {
             fillContactDataFromLookupKey(lookupKeyUri, recipients, recipientMap);
         } else {
@@ -135,6 +147,40 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         }
 
         return recipients;
+    }
+
+    private void fillContactDataFromCryptoProvider(String query, List<Recipient> recipients,
+            Map<String, Recipient> recipientMap) {
+        Cursor cursor;
+        try {
+            Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/autocrypt_status");
+            cursor = getContext().getContentResolver().query(queryUri, PROJECTION_CRYPTO_ADDRESSES, null,
+                    new String[] { "%" + query + "%" }, null);
+
+            if (cursor == null) {
+                return;
+            }
+        } catch (SecurityException e) {
+            Timber.e(e, "Couldn't obtain recipients from crypto provider!");
+            return;
+        }
+
+        while (cursor.moveToNext()) {
+            String uid = cursor.getString(INDEX_USER_ID);
+            Address[] addresses = Address.parseUnencoded(uid);
+
+            for (Address address : addresses) {
+                if (recipientMap.containsKey(address.getAddress())) {
+                    continue;
+                }
+
+                Recipient recipient = new Recipient(address);
+                recipients.add(recipient);
+                recipientMap.put(address.getAddress(), recipient);
+            }
+        }
+
+        cursor.close();
     }
 
     private void fillContactDataFromAddresses(Address[] addresses, List<Recipient> recipients,
