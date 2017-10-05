@@ -400,6 +400,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                 .setCryptoProviderState(cryptoProviderState)
                 .setCryptoMode(currentCryptoMode)
                 .setEnablePgpInline(cryptoEnablePgpInline)
+                .setPreferEncryptMutual(false) // TODO introduce a setting
                 .setRecipients(getAllRecipients())
                 .setOpenPgpKeyId(accountCryptoKey)
                 .build();

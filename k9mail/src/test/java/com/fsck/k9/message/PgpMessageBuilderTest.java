@@ -546,6 +546,7 @@ public class PgpMessageBuilderTest {
     private ComposeCryptoStatusBuilder createDefaultComposeCryptoStatusBuilder() {
         return new ComposeCryptoStatusBuilder()
                 .setEnablePgpInline(false)
+                .setPreferEncryptMutual(false)
                 .setOpenPgpKeyId(TEST_KEY_ID)
                 .setRecipients(new ArrayList<Recipient>())
                 .setCryptoProviderState(CryptoProviderState.OK);

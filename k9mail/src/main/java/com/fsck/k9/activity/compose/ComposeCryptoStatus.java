@@ -25,6 +25,7 @@ public class ComposeCryptoStatus {
     private Long openPgpKeyId;
     private String[] recipientAddresses;
     private boolean enablePgpInline;
+    private boolean preferEncryptMutual;
     private CryptoMode cryptoMode;
     private RecipientAutocryptStatus recipientAutocryptStatus;
 
@@ -83,7 +84,7 @@ public class ComposeCryptoStatus {
             case NO_CHOICE:
                 if (recipientAutocryptStatusType == RecipientAutocryptStatusType.NO_RECIPIENTS) {
                     return CryptoStatusDisplayType.NO_CHOICE_EMPTY;
-                } else if (recipientAutocryptStatusType.canEncrypt() && recipientAutocryptStatusType.isMutual()) { // TODO check own "mutual" status
+                } else if (canEncryptAndIsMutual()) {
                     if (recipientAutocryptStatusType.isConfirmed()) {
                         return CryptoStatusDisplayType.NO_CHOICE_MUTUAL_TRUSTED;
                     } else {
@@ -168,7 +169,7 @@ public class ComposeCryptoStatus {
     }
 
     boolean canEncryptAndIsMutual() {
-        return allRecipientsCanEncrypt() && recipientAutocryptStatus.type.isMutual();
+        return allRecipientsCanEncrypt() && preferEncryptMutual && recipientAutocryptStatus.type.isMutual();
     }
 
     boolean hasAutocryptPendingIntent() {
@@ -186,6 +187,7 @@ public class ComposeCryptoStatus {
         private Long openPgpKeyId;
         private List<Recipient> recipients;
         private Boolean enablePgpInline;
+        private Boolean preferEncryptMutual;
 
         public ComposeCryptoStatusBuilder setCryptoProviderState(CryptoProviderState cryptoProviderState) {
             this.cryptoProviderState = cryptoProviderState;
@@ -212,6 +214,11 @@ public class ComposeCryptoStatus {
             return this;
         }
 
+        public ComposeCryptoStatusBuilder setPreferEncryptMutual(boolean preferEncryptMutual) {
+            this.preferEncryptMutual = preferEncryptMutual;
+            return this;
+        }
+
         public ComposeCryptoStatus build() {
             if (cryptoProviderState == null) {
                 throw new AssertionError("cryptoProviderState must be set!");
@@ -225,6 +232,9 @@ public class ComposeCryptoStatus {
             if (enablePgpInline == null) {
                 throw new AssertionError("enablePgpInline must be set!");
             }
+            if (preferEncryptMutual == null) {
+                throw new AssertionError("preferEncryptMutual must be set!");
+            }
 
             ArrayList<String> recipientAddresses = new ArrayList<>();
             for (Recipient recipient : recipients) {
@@ -237,6 +247,7 @@ public class ComposeCryptoStatus {
             result.recipientAddresses = recipientAddresses.toArray(new String[0]);
             result.openPgpKeyId = openPgpKeyId;
             result.enablePgpInline = enablePgpInline;
+            result.preferEncryptMutual = preferEncryptMutual;
             return result;
         }
     }
