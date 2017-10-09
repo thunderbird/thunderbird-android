@@ -2334,11 +2334,6 @@ public class MessagingController {
                 }
             }
 
-            // Mark that this message is now fully synched
-            if (account.isMarkMessageAsReadOnView()) {
-                message.setFlag(Flag.SEEN, true);
-            }
-
             // now that we have the full message, refresh the headers
             for (MessagingListener l : getListeners(listener)) {
                 l.loadMessageRemoteFinished(account, folder, uid);
