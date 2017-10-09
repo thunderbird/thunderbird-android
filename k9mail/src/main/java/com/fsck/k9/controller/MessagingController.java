@@ -2309,16 +2309,6 @@ public class MessagingController {
                 message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                 message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
             }
-            /* commented out because this was pulled from another unmerged branch:
-            } else if (localFolder.isLocalOnly() && !force) {
-                Log.w(K9.LOG_TAG, "Message in local-only folder so cannot download fully.");
-                // ASH move toast
-                android.widget.Toast.makeText(mApplication,
-                        "Message in local-only folder so cannot download fully",
-                        android.widget.Toast.LENGTH_LONG).show();
-                message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
-            }*/
 
             /*if (!message.isSet(Flag.X_DOWNLOADED_FULL)) */
             {
