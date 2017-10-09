@@ -664,6 +664,13 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         localBroadcastManager.unregisterReceiver(cacheBroadcastReceiver);
         activityListener.onPause(getActivity());
         messagingController.removeListener(activityListener);
+
+        // Workaround for Android bug https://issuetracker.google.com/issues/37008170
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(false);
+            swipeRefreshLayout.destroyDrawingCache();
+            swipeRefreshLayout.clearAnimation();
+        }
     }
 
     /**
