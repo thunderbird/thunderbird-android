@@ -2308,15 +2308,7 @@ public class MessagingController {
                 // one we can't download completely. Maybe add a new flag; X_PARTIAL_MESSAGE ?
                 message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                 message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
-            }
-
-            /*if (!message.isSet(Flag.X_DOWNLOADED_FULL)) */
-            {
-                /*
-                 * At this point the message is not available, so we need to download it
-                 * fully if possible.
-                 */
-
+            } else {
                 Store remoteStore = account.getRemoteStore();
                 remoteFolder = remoteStore.getFolder(folder);
                 remoteFolder.open(Folder.OPEN_MODE_RW);
