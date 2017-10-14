@@ -738,7 +738,12 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 return true;
             }*/
             case KeyEvent.KEYCODE_H: {
-                Toast toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
+                Toast toast;
+                if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+                    toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
+                } else {
+                    toast = Toast.makeText(this, R.string.message_view_help_key, Toast.LENGTH_LONG);
+                }
                 toast.show();
                 return true;
             }
