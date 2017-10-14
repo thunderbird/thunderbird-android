@@ -638,7 +638,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Άγνωστο πιστοποιητικό</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Αποδοχή κλειδιού</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Απόρριψη κλειδιού</string>
-  <string name="message_list_help_key">Del (ή D) - Διαγραφή\nR - Απάντηση\nA - Απάντηση σε όλους\nC - Σύνθεση\nF - Προώθηση\nM - Μετακίνηση\nV - Αρχείο\nY - Αντιγραφή\nZ - Σημείωσε (Μη)διαβασμένα\nG - Αστέρι\nO - Ταξινόμηση κατά τύπο\nI - Σειρά ταξινόμησης\nQ - Επιστροφή σε φακέλους\nS - Επιλογή/Αποεπιλογή\nJ ή P - Προηγούμενο μήνυμα\nK ή N - Επόμενο μήνυμα</string>
   <string name="folder_list_help_key">1 - Προβολή μόνο φακέλων 1ου επιπέδου\n2 - Προβολή φακέλων 1ου και 2ου επιπέδου\n3 - Προβολή όλων των φακέλων εκτός 2ου επιπέδου\n4 - Προβολή όλων των φακέλων\nQ - Επιστροφή στους λογαριασμούς\nS - Αλλαγή ρυθμίσεων λογαριασμού</string>
   <string name="folder_list_display_mode_label">Φάκελοι</string>
   <string name="folder_list_display_mode_all">Προβολή όλων</string>
@@ -664,9 +663,11 @@
   <string name="settings_theme_label">Θέμα</string>
   <string name="settings_message_theme_label">Θέμα προβολής μηνύματος</string>
   <string name="settings_compose_theme_label">Θέμα σύνθεσης</string>
+  <string name="settings_language_label">Γλώσσα</string>
   <string name="settings_message_theme_selection_label">Θέμα σταθερού μηνύματος</string>
   <string name="settings_message_theme_selection_summary_off">Επιλογή του θέματος προβολής μηνύματος κατά την προβολή του μηνύματος</string>
   <string name="settings_message_theme_selection_summary_on">Χρήση θέματος σταθερού μηνύματος</string>
+  <string name="setting_language_system">Εξ ορισμού του συστήματος</string>
   <string name="background_ops_label">Συγχρονισμός στο παρασκήνιο</string>
   <string name="background_ops_never">Ποτέ</string>
   <string name="background_ops_always">Πάντοτε</string>
@@ -909,7 +910,6 @@
   <string name="address_type_other">\'Αλλο</string>
   <string name="address_type_mobile">Κινητό</string>
   <string name="compose_error_no_draft_folder">Δεν υπάρχει φάκελος Πρόχειρα για αυτόν τον λογαριασμό!</string>
-  <string name="compose_error_no_signing_key">Δεν έχει ρυθμιστεί κλειδί για την Υπογραφή! Παρακαλούμε ελένξτε τι ρυθμίσεις.</string>
   <string name="crypto_mode_disabled">Μην κρυπτογραφήσεις</string>
   <string name="crypto_mode_opportunistic">Κρυπτογράφηση αν είναι δυνατόν</string>
   <string name="crypto_mode_private">Κρυπτογράφησε</string>
@@ -976,7 +976,6 @@
   <string name="messageview_crypto_warning_show_anyway">Εμφάνιση μηνύματος ούτως ή άλλως</string>
   <string name="recipient_error_non_ascii">Δεν υποστηρίζονται ειδικοί χαρακτήρες!</string>
   <string name="recipient_error_parse_failed">Σφάλμα στη διεύθυνση!</string>
-  <string name="account_settings_crypto_support_sign_only">Υποστήριξη υπογραφής μη κρυπρογραφημένων μηνυμάτων</string>
   <string name="error_sign_only_no_encryption">Η κρυπτογράφηση δεν είναι διαθέσιμη στη λειτουργία υπογραφής μόνο!</string>
   <string name="unsigned_text_divider_label">Ανυπόγραφο κείμενο</string>
   <string name="apg_deprecated_title">Προειδοποίηση απόρριψης APG</string>

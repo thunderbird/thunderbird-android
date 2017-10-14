@@ -639,7 +639,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ukendt certificat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter nøgle</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Afvis nøgle</string>
-  <string name="message_list_help_key">Del (or D) - Slet\nR - Svar\nA - Svar alle\nC - Skriv besked\nF - Videresend\nM - Flyt\nV - Arkiver\nY - Kopier\nZ - Marker (U)læst\nG - Stjernemarker\nO - Sorteringstype\nI - Sortering\nQ - Tilbage til Mapper\nS - Marker/afmarker\nJ or P - Forrige meddelelse\nK or N - Næste Meddelelse</string>
   <string name="folder_list_help_key">1 - Vis kun primære mapper\n2 - Vis primære og sekundære mapper\n3 - Vis alle på nær sekundære mapper\n4 - Vis alle mapper\nQ - Tilbage til Konti\nS - Rediger Kontoindstillinger</string>
   <string name="folder_list_display_mode_label">Mapper</string>
   <string name="folder_list_display_mode_all">Vis alle mapper</string>
@@ -665,9 +664,11 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Meddelelsesvisnings theme</string>
   <string name="settings_compose_theme_label">Editor theme</string>
+  <string name="settings_language_label">Sprog</string>
   <string name="settings_message_theme_selection_label">Fixed meddelelses theme</string>
   <string name="settings_message_theme_selection_summary_off">Benyt meddelelsesvisnings theme når meddelelser læses</string>
   <string name="settings_message_theme_selection_summary_on">Benyt et fixed meddelelsesvisnings theme</string>
+  <string name="setting_language_system">System standard</string>
   <string name="background_ops_label">Baggrundssynkronisering</string>
   <string name="background_ops_never">Aldrig</string>
   <string name="background_ops_always">Altid</string>
@@ -910,7 +911,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="address_type_other">Anden</string>
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Ingen kladde-mappe konfigureret for denne konto!</string>
-  <string name="compose_error_no_signing_key">Ingen nøgle konfigureret til signering! Kontroller venligst indstillingerne.</string>
   <string name="crypto_mode_disabled">Krypter ikke</string>
   <string name="crypto_mode_opportunistic">Krypter hvis muligt</string>
   <string name="crypto_mode_private">Krypter</string>
@@ -978,7 +978,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="messageview_crypto_warning_show_anyway">Vis meddelelse alligevel</string>
   <string name="recipient_error_non_ascii">Specialkarakterer er ikke understøttet endnu!</string>
   <string name="recipient_error_parse_failed">Fejl ved parsing af adresse!</string>
-  <string name="account_settings_crypto_support_sign_only">Understøt signering af ikke-krypteret meddelelser</string>
   <string name="error_sign_only_no_encryption">Kryptering er ikke tilgængelig i \"Signer-Kun\"-tilstand!</string>
   <string name="unsigned_text_divider_label">Ikke-signeret tekst</string>
   <string name="apg_deprecated_title">APG udfasningsadvarsel</string>

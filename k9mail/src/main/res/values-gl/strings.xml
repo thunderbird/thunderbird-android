@@ -531,6 +531,8 @@
   <string name="messageview_preferences">mensaxes</string>
   <string name="folderlist_preferences">Lista de carpetas</string>
   <string name="settings_theme_label">Tema</string>
+  <string name="settings_language_label">Idioma</string>
+  <string name="setting_language_system">Configurado no sistema</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>

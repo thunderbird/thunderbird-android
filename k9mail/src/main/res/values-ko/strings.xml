@@ -622,9 +622,11 @@
   <string name="settings_theme_label">테마</string>
   <string name="settings_message_theme_label">메시지 보기 테마</string>
   <string name="settings_compose_theme_label">메시지 쓰기 테마</string>
+  <string name="settings_language_label">언어</string>
   <string name="settings_message_theme_selection_label">별도의 메시지 보기 테마</string>
   <string name="settings_message_theme_selection_summary_off">메시지 보기에 별도의 테마를 사용</string>
   <string name="settings_message_theme_selection_summary_on">고정 테마 사용</string>
+  <string name="setting_language_system">시스템 기본값</string>
   <string name="background_ops_label">백그라운드 동기화</string>
   <string name="background_ops_never">하지 않음</string>
   <string name="background_ops_always">항상</string>
@@ -857,7 +859,6 @@
   <string name="address_type_other">기타</string>
   <string name="address_type_mobile">모바일</string>
   <string name="compose_error_no_draft_folder">이 계정은 임시보관함 폴더가 없습니다!</string>
-  <string name="compose_error_no_signing_key">서명을 위한 키가 없습니다! 확정자를 확인하십시오.</string>
   <string name="crypto_mode_disabled">서명이나 암호화 하지 않음</string>
   <string name="crypto_mode_opportunistic">가능하면 암호화</string>
   <string name="crypto_mode_private">암호화</string>

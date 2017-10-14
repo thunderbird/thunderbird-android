@@ -650,7 +650,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_failed_dlg_invalid_certificate_title">Неразпознат сертификат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Приеми ключа</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Отхвърли ключа</string>
-  <string name="message_list_help_key">Del (or D) - Изтриване\nR - Отговор\nA - Отговор на всички\nC - Създаване\nF - Препращане\nM - Премесване\nV - Архивиране\nY - Копиране\nZ - Отбелязване като (не)прочетно\nG - Звезда\nO - Сортиране\nI - Приоритет на сортиране\nQ - Обратно към папките\nS - Отбелязване/премахване на отбелязване\nJ или P - Предно съобщение\nK или N - Следващо съобщение</string>
   <string name="folder_list_help_key">1 - Показване само на папки от 1во ниво\n2 - Показване на папки от 1во и 2ро ниво\n3 - Показване на всички папки без 2ро ниво\n4 - Показване на всички папки\nQ - Връщане към Профили\nS - Редактиране на настройките на профила</string>
   <string name="folder_list_filter_hint">Името на папката съдържа</string>
   <string name="folder_list_display_mode_label">Покажи папките…</string>
@@ -677,9 +676,11 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="settings_theme_label">Тема</string>
   <string name="settings_message_theme_label">Тема при преглед на съобщенията</string>
   <string name="settings_compose_theme_label">Тема на композитора</string>
+  <string name="settings_language_label">Език</string>
   <string name="settings_message_theme_selection_label">Тема на фиксирани съобщения</string>
   <string name="settings_message_theme_selection_summary_off">Задава тема за изглед на съобщенията, в режим преглед</string>
   <string name="settings_message_theme_selection_summary_on">Използване на тема с фиксиран размр на съобщението</string>
+  <string name="setting_language_system">Системни настройки</string>
   <string name="background_ops_label">Синхронизиране на заден план</string>
   <string name="background_ops_never">Никога</string>
   <string name="background_ops_always">Винаги</string>
@@ -933,7 +934,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="address_type_other">Друг</string>
   <string name="address_type_mobile">Мобилен</string>
   <string name="compose_error_no_draft_folder">Липсва папка чернови за този профил!</string>
-  <string name="compose_error_no_signing_key">Няма зададен ключ за електронен подпис! Моля, проверете настройките си.</string>
+  <string name="compose_error_no_key_configured">Няма зададен ключ за този профил! Моля, проверете настройките си.</string>
   <string name="crypto_mode_disabled">Да не се криптира</string>
   <string name="crypto_mode_opportunistic">Криптиране, когато е възможно</string>
   <string name="crypto_mode_private">Криптиране</string>
@@ -1004,7 +1005,9 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="messageview_crypto_warning_show_anyway">Показване на съобщението въпреки това</string>
   <string name="recipient_error_non_ascii">В момента специални символи не се поддържат!</string>
   <string name="recipient_error_parse_failed">Грешка при обработването на адреса!</string>
-  <string name="account_settings_crypto_support_sign_only">Поддържане на електронен подпис на не криптирани съобщения</string>
+  <string name="account_settings_crypto_support_sign_only">Показване на некриптирани подписи</string>
+  <string name="account_settings_crypto_support_sign_only_on">Некриптираните подписи ще бъдат показани</string>
+  <string name="account_settings_crypto_support_sign_only_off">Некриптираните подписи ще бъдат игнорирани</string>
   <string name="error_sign_only_no_encryption">Криптирането не е възможно, когато се използва режима само подпис! </string>
   <string name="unsigned_text_divider_label">Неподписан текст</string>
   <string name="apg_deprecated_title">APG предупреждение за премахване</string>
@@ -1034,4 +1037,5 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="openpgp_enabled_error_gotit">Ясно</string>
   <string name="openpgp_enabled_error_back">Назад</string>
   <string name="openpgp_enabled_error_disable">Изключване на криптирането</string>
+  <string name="openpgp_encryption">OpenPGP криптиране</string>
 </resources>

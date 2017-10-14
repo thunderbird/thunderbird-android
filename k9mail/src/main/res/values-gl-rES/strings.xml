@@ -580,7 +580,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado non recoñecido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar chave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rexeitar chave</string>
-  <string name="message_list_help_key">Del (or D) - Eliminar\nR - Respostar\nA - Respostar a todos\nC - Escribir\nF - Reenviar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar (Non)lido\nG - Estrela\nO - Ordenar\nI - Ordenar por\nQ - Voltar a cartafoles\nS - Selecionar/deselecionar\nJ or P - Mensaxe anterior\nK or N - Seguinte mensaxe</string>
   <string name="folder_list_help_key">1 - Mostrar so cartafoles de 1ª clase\n2 - Mostrar cartafoles de 1ª e 2ª clase\n3 - Mostrar todo menos cartafoles de 2ª clase\n4 - Mostrar todos os cartafoles\nQ - Voltar a contas\nS - Editar preferencias da conta</string>
   <string name="folder_list_display_mode_label">Mostrar cartafoles…</string>
   <string name="folder_list_display_mode_all">Todos os cartafoles</string>
@@ -606,9 +605,11 @@
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema de vista de mensaxe</string>
   <string name="settings_compose_theme_label">Tema de redacción</string>
+  <string name="settings_language_label">Idioma</string>
   <string name="settings_message_theme_selection_label">Tema de mensaxe fixo</string>
   <string name="settings_message_theme_selection_summary_off">Seleccionar o tema de vista de mensaxe mentres se mostra a mensaxe</string>
   <string name="settings_message_theme_selection_summary_on">Utilizar un tema de vista de mensaxe fixo</string>
+  <string name="setting_language_system">Sistema predefinido</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>

@@ -655,7 +655,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="account_setup_failed_dlg_invalid_certificate_title">Teisteanas neo-aithnichte</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Gach ris an iuchair</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Diùlt an iuchair</string>
-  <string name="message_list_help_key">Del (no D) - Sguab às\nR - Freagair\nA - Freagair na h-uile\nC - Sgrìobh\nF - Sìn air adhart\nM - Gluais\nV - Tasglannaich\nY - Lethbhreac\nZ - Comharraich air/gun leughadh\nG - Rionnag\nO - Seòrsa an t-seòrsachaidh\nI - Òrdugh an t-seòrsachaidh\nQ - Till gu na pasganan\nS - Tagh/dì-thagh\nJ no P - An teachdaireachd roimhpe\nK no N - An ath-theachdaireachd</string>
   <string name="folder_list_help_key">1 - Na seall ach pasganan na 1ad ìre\n2 - Seall pasganan na 1ad is na 2na ìre\n3 - Seall na h-uile ach pasganan na 2na ìre\n4 - Seall a h-uile pasgan\nQ - Till gu na cunntasan\nS - Deasaich roghainnean a’ chunntais</string>
   <string name="folder_list_display_mode_label">Seall pasganan…</string>
   <string name="folder_list_display_mode_all">Na h-uile pasgan</string>
@@ -933,7 +932,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="address_type_other">Eile</string>
   <string name="address_type_mobile">Fòn-làimhe</string>
   <string name="compose_error_no_draft_folder">Cha deach pasgan do dhreachdan a rèiteachadh dhan chunntas seo!</string>
-  <string name="compose_error_no_signing_key">Cha deach iuchair a rèiteachadh airson soidhneadh! Thoir sùil air na roghainnean agad.</string>
   <string name="crypto_mode_disabled">Na crioptaich</string>
   <string name="crypto_mode_opportunistic">Crioptaich ma ghabhas sin a dhèanamh</string>
   <string name="crypto_mode_private">Crioptaich</string>
@@ -1003,7 +1001,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="messageview_crypto_warning_show_anyway">Seall an teachdaireachd co-dhiù</string>
   <string name="recipient_error_non_ascii">Chan eil taic ri caractaran sònraichte aig an àm seo!</string>
   <string name="recipient_error_parse_failed">Mearachd a’ pàrsadh an t-seòlaidh!</string>
-  <string name="account_settings_crypto_support_sign_only">Taic ri soidhneadh de theachdaireachdan gun chrioptachadh</string>
   <string name="error_sign_only_no_encryption">Chan eil crioptachadh ri fhaidhinn sa mhodh anns nach dèanar ach soidhneadh!</string>
   <string name="unsigned_text_divider_label">Teacsa gun soidhneadh</string>
   <string name="apg_deprecated_title">Rabhadh mu chleachdadh APG</string>

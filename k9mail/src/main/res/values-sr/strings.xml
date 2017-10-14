@@ -653,7 +653,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Непрепознат сертификат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Прихвати кључ</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Одбиј кључ</string>
-  <string name="message_list_help_key">Del (или D) - обриши\nR - одговори\nA - одговори свима\nC - састави\nF - проследи\nM - помери\nV - архивирај\nY - копирај\nZ - означи као (не)прочитано\nG - обележи звездицом\nO - поређај по\nI - ред ређања\nQ - повратак на фасцикле\nS - означи/уклони ознаку\nJ или P - претходна порука\nK или N - следећа порука</string>
   <string name="folder_list_help_key">1 - приказ само фасцикли 1. класе\n2 - приказ фасцикли 1. и 2. класе\n3 - приказ свих осим фасцикли 2. класе\n4 - приказ свих фасцикли\nQ - повратак на налог\nS - уређивање поставки налога</string>
   <string name="folder_list_display_mode_label">Прикажи фасцикле…</string>
   <string name="folder_list_display_mode_all">Све фасцикле</string>
@@ -679,9 +678,11 @@
   <string name="settings_theme_label">Тема</string>
   <string name="settings_message_theme_label">Тема приказа порука</string>
   <string name="settings_compose_theme_label">Тема састављача</string>
+  <string name="settings_language_label">Језик</string>
   <string name="settings_message_theme_selection_label">Фиксна тема поруке</string>
   <string name="settings_message_theme_selection_summary_off">Изаберите тему приказа поруке док је гледате</string>
   <string name="settings_message_theme_selection_summary_on">Користи фиксну тему приказа поруке</string>
+  <string name="setting_language_system">Системски подразумеван</string>
   <string name="background_ops_label">Синхронизација у позадини</string>
   <string name="background_ops_never">Никад</string>
   <string name="background_ops_always">Увек</string>
@@ -942,7 +943,6 @@
   <string name="address_type_other">Остало</string>
   <string name="address_type_mobile">Мобилни</string>
   <string name="compose_error_no_draft_folder">Фасцикла за нацрте није подешена за овај налог!</string>
-  <string name="compose_error_no_signing_key">Ниједан кључ није подешен за потписивање! Проверите ваше поставке.</string>
   <string name="crypto_mode_disabled">Не шифруј.</string>
   <string name="crypto_mode_opportunistic">Шифруј ако је могуће</string>
   <string name="crypto_mode_private">Шифруј</string>
@@ -1012,7 +1012,6 @@
   <string name="messageview_crypto_warning_show_anyway">Прикажи поруку свеједно</string>
   <string name="recipient_error_non_ascii">Посебни знакови тренутно нису нису подржани!</string>
   <string name="recipient_error_parse_failed">Грешка прослеђивања адресе!</string>
-  <string name="account_settings_crypto_support_sign_only">Подржавај потписивање нешифрованих порука</string>
   <string name="error_sign_only_no_encryption">Шифровање није могуће у само-потпис режиму!</string>
   <string name="unsigned_text_divider_label">Непотписан текст</string>
   <string name="apg_deprecated_title">Упозорење о застарењу АПГ-а</string>

@@ -650,7 +650,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ziurtagiri ezezaguna</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Onartu gakoa</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Baztertu gakoa</string>
-  <string name="message_list_help_key">Del (edo D) - Ezabatu\nR - Erantzun\nA - Erantzun denei\nC - Idatzi\nF - Birbidali\nM - Mugitu\nV - Artxibatu\nY - Kopiatu\nZ - Markatu irakurri (gabe) gisa\nG - Izarra\nO - Ordenatze mota\nI - Ordenatzeko irizpidea\nQ - Itzuli Karpetetara\nS - Hautatu/desautatu\nJ or P - Aurreko Mezua\nK or N - Hurrengo Mezua</string>
   <string name="folder_list_help_key">1 - Bistaratu 1. klaseko karpetak bakarrik\n2 - Bistaratu 1. eta 2. klaseko karpetak\n3 - Bistaratu denak 2. klaseko karpetak izan ezik\n4 - Bistaratu karpeta guztiak\nQ - Itzuli Kontuetara\nS - Editatu Kontu Ezarpenak</string>
   <string name="folder_list_filter_hint">Karpetaren izenak dauka</string>
   <string name="folder_list_display_mode_label">Erakutsi karpetak…</string>
@@ -677,9 +676,11 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="settings_theme_label">Gaia</string>
   <string name="settings_message_theme_label">Mezua ikusteko gaia</string>
   <string name="settings_compose_theme_label">Idazte gaia</string>
+  <string name="settings_language_label">Hizkuntza</string>
   <string name="settings_message_theme_selection_label">Mezu finkoaren gaia</string>
   <string name="settings_message_theme_selection_summary_off">Hautatu mezua ikusteko gaia mezua ikusi bitartean</string>
   <string name="settings_message_theme_selection_summary_on">Erabili mezua ikusteko gai finkoa</string>
+  <string name="setting_language_system">Sistemako defektuzkoa</string>
   <string name="background_ops_label">Atzeko planoko sinkronizazioa</string>
   <string name="background_ops_never">Inoiz ez</string>
   <string name="background_ops_always">Beti</string>
@@ -933,10 +934,10 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="address_type_other">Bestelakoak</string>
   <string name="address_type_mobile">Mugikorrekoak</string>
   <string name="compose_error_no_draft_folder">Kontu honek ez du Zirriborroen karpetarik konfiguratuta!</string>
-  <string name="compose_error_no_signing_key">Sinatzeko gakorik ez konfiguratuta! Mesedez egiaztatu zure ezarpenak.</string>
   <string name="crypto_mode_disabled">Ez enkriptatu</string>
   <string name="crypto_mode_opportunistic">Enkriptatu posible bada</string>
   <string name="crypto_mode_private">Enkriptatu</string>
+  <string name="error_crypto_provider_incompatible">Enkriptatze-hornitzaileak bertsio bateraezina darabil. Mesedez egiaztatu zure ezarpenak!</string>
   <string name="error_crypto_provider_connect">Ezin izan da enkriptatze hornitzailearekin konektatu, egiaztatu zure ezarpenak edo klikatu enkriptatze ikonoan berriro saiatzeko!</string>
   <string name="error_crypto_provider_ui_required">Enkriptatze hornitzailera sarbidea ukatuta, klikatu enkriptatze ikonoan berriro saiatzeko!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE moduak ez ditu eranskinak onartzen!</string>
@@ -1003,7 +1004,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="messageview_crypto_warning_show_anyway">Erakutsi mezua hala ere</string>
   <string name="recipient_error_non_ascii">Une honetan karaktere bereziak ez dira onartzen!</string>
   <string name="recipient_error_parse_failed">Errorea helbidea analizatzean!</string>
-  <string name="account_settings_crypto_support_sign_only">Onartu enkriptatu gabeko mezuen sinatzea</string>
   <string name="error_sign_only_no_encryption">Enkriptatzea ez dago erabilgarri sinadura bakarrik moduan!</string>
   <string name="unsigned_text_divider_label">Sinatu gabeko testua</string>
   <string name="apg_deprecated_title">APG Zaharkitze Abisua</string>
@@ -1022,7 +1022,16 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="mail_list_widget_loading">Mezuak kargatzen…</string>
   <string name="fetching_folders_failed">Karpeten zerrenda eskuratzeak huts egin du</string>
   <string name="messageview_crypto_warning_details">Erakutsi Xehetasunak</string>
+  <string name="error_recipient_crypto_retrieve">Errorea hartzailearen egoera OpenPGP hornitzailetik berreskuratzen!</string>
+  <string name="openpgp_enabled_error_title">Enkriptatzea ez da posible</string>
+  <string name="openpgp_enabled_error_msg">Hautatutako hartzaile batzuek ez dute eginbide hau onartzen!</string>
+  <string name="enable_encryption">Gaitu Enkriptatzea</string>
   <string name="disable_encryption">Desgaitu Enkriptatzea</string>
+  <string name="openpgp_description_text1">Mezuak enkriptatzeak hauek hartzaileak irakurtzea ziurtatzen du, eta ez beste inork.</string>
+  <string name="openpgp_description_text3">Enkriptatzeak hartzaile guztiek onartzen badute bakarrik funtzionatzen du, eta mezu bat bidali behar izan dizute lehen.</string>
+  <string name="openpgp_description_text2">Txandakatu enkriptatzea ikono hau klikatuz.</string>
+  <string name="openpgp_enabled_error_gotit">Ados!</string>
   <string name="openpgp_enabled_error_back">Atzera</string>
   <string name="openpgp_enabled_error_disable">Desgaitu Enkriptatzea</string>
+  <string name="openpgp_encryption">OpenPGP Enkriptatzea</string>
 </resources>

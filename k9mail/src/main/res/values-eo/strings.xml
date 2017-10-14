@@ -649,7 +649,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nekonata atestilo</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Akcepti ŝlosilon</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifuzi ŝlosilon</string>
-  <string name="message_list_help_key">Del (aŭ D) - forigi\nR - respondi\nA - respondi al ĉiuj\nC - krei\nF - plusendi\nM - movi\nV - arĥivigi\nY - kopii\nZ - marki kiel (ne)legitan\nG - steletigi\nO - ordiga tipo\nI - ordigo\nQ - reveni al mesaĝujoj\nS - elekti/malelekti\nJ aŭ P -antaŭa mesaĝo\nK aŭ N - sekva mesaĝo</string>
   <string name="folder_list_help_key">1 - vidigi nur mesaĝujojn de klaso 1\n2 - vidigi mesaĝujojn de klasoj 1 kaj 2\n3 - vidigi ĉiujn mesaĝujojn escepte de klaso 2\n4 - vidigi ĉiujn mesaĝujojn\nQ - reveni al kontoj\nS - redakti agordojn de konto</string>
   <string name="folder_list_filter_hint">Nomo de mesaĝujo enhavas</string>
   <string name="folder_list_display_mode_label">Montri mesaĝujojn…</string>
@@ -676,9 +675,11 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="settings_theme_label">Etoso</string>
   <string name="settings_message_theme_label">Etoso de mesaĝa vido</string>
   <string name="settings_compose_theme_label">Etoso de mesaĝ-kreada vido</string>
+  <string name="settings_language_label">Lingvo</string>
   <string name="settings_message_theme_selection_label">Fiksita mesaĝa etoso</string>
   <string name="settings_message_theme_selection_summary_off">Elektu mesaĝan etoson videblan dum montrado de mesaĝo</string>
   <string name="settings_message_theme_selection_summary_on">Uzi fiksitan etoson de mesaĝa vido</string>
+  <string name="setting_language_system">Sistema implicita</string>
   <string name="background_ops_label">Fona samtempigo</string>
   <string name="background_ops_never">Neniam</string>
   <string name="background_ops_always">Ĉiam</string>
@@ -932,7 +933,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="address_type_other">Aliaj</string>
   <string name="address_type_mobile">Poŝtelefonaj</string>
   <string name="compose_error_no_draft_folder">Neniu malnetujo estas agordita por tiu ĉi konto!</string>
-  <string name="compose_error_no_signing_key">Neniu ŝlosilo agordita por subskribo! Bonvolu kontroli viajn agordojn.</string>
+  <string name="compose_error_no_key_configured">Neniu ŝlosilo agordita por tiu ĉi konto! Kontrolu viajn agordojn.</string>
   <string name="crypto_mode_disabled">Ne ĉifri</string>
   <string name="crypto_mode_opportunistic">Ĉifri se eblas</string>
   <string name="crypto_mode_private">Ĉifri</string>
@@ -1003,7 +1004,9 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="messageview_crypto_warning_show_anyway">Montri mesaĝon malgraŭ tio</string>
   <string name="recipient_error_non_ascii">Specialaj signoj ne estas nune subtenataj!</string>
   <string name="recipient_error_parse_failed">Eraro dum analizado de adreso!</string>
-  <string name="account_settings_crypto_support_sign_only">Subteni subskribadon de neĉifritaj retleteroj</string>
+  <string name="account_settings_crypto_support_sign_only">Montri neĉifritajn subskribojn</string>
+  <string name="account_settings_crypto_support_sign_only_on">Neĉifritaj subskriboj montriĝos</string>
+  <string name="account_settings_crypto_support_sign_only_off">Neĉifritaj subskriboj kaŝiĝos</string>
   <string name="error_sign_only_no_encryption">Ĉifrado ne eblas en nur-subskriba reĝimo!</string>
   <string name="unsigned_text_divider_label">Nesubskribita teksto</string>
   <string name="apg_deprecated_title">Averto: APG evitindas</string>
@@ -1033,4 +1036,5 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="openpgp_enabled_error_gotit">Mi komprenas</string>
   <string name="openpgp_enabled_error_back">Antaŭen</string>
   <string name="openpgp_enabled_error_disable">Malaktivigi ĉifradon</string>
+  <string name="openpgp_encryption">OpenPGP-ĉifrado</string>
 </resources>

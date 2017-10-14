@@ -644,7 +644,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tanınmayan Sertifika</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Kabul Tuşu</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Reddetme Tuşu</string>
-  <string name="message_list_help_key">Del (veya D) - Sil\nR - Cevapla\nA - Hepsini Cevapla\nC - Yeni\nF - İlet\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)mış olarak İşaretle\nG - Yıldız\nO - Sıralama tipi\nI - Sıralama sırası\nQ - Klasörlere Dön\nS - Seç/Seçimi iptal et\nK veya P - Önceji Mesaj\nK veya N - Sonraki Mesaj</string>
   <string name="folder_list_help_key">1 - Yalnız 1. sınıf klasörleri göster\n2 - Yalnız 1. ve 2. sınıf klasörleri göster\n3 - 2. Sınıf klasörler hariç hepsini göster\n4 - Bütün klasörleri göster\nQ - Hesaplara dön\nS - Hesap ayarlarını düzenle</string>
   <string name="folder_list_display_mode_label">Klasörleri göster…</string>
   <string name="folder_list_display_mode_all">Bütün klasörleri göster</string>
@@ -670,9 +669,11 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Mesaj teması</string>
   <string name="settings_compose_theme_label">Composer teması</string>
+  <string name="settings_language_label">Dil</string>
   <string name="settings_message_theme_selection_label">Sabit mesaj teması</string>
   <string name="settings_message_theme_selection_summary_off">Mesaj izlerken mesaj görünüm temasını seçin</string>
   <string name="settings_message_theme_selection_summary_on">Sabit mesaj için bir tema kullanın</string>
+  <string name="setting_language_system">Sistem Varsayılanları</string>
   <string name="background_ops_label">Arkaplan eşzamanlaması</string>
   <string name="background_ops_never">Hiçbir zaman</string>
   <string name="background_ops_always">Her zaman</string>
@@ -916,7 +917,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="address_type_other">Diğer</string>
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Bu hesap için Taslak klasörü ayarlanmamış!</string>
-  <string name="compose_error_no_signing_key">İmzalamak için hiçbir anahtar ayarlanmamış! Lütfen ayarlarınızı kontrol edin.</string>
   <string name="crypto_mode_disabled">Şifreleme</string>
   <string name="crypto_mode_opportunistic">Mümkünse şifrele</string>
   <string name="crypto_mode_private">Şifrele</string>
@@ -978,7 +978,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="messageview_crypto_warning_show_anyway">İletileri her durumda göster</string>
   <string name="recipient_error_non_ascii">Var olan özgün karakterler desteklenmiyor!</string>
   <string name="recipient_error_parse_failed">Adres çözümleme hatası!</string>
-  <string name="account_settings_crypto_support_sign_only">Şifrelenmemiş iletileri imzalamayı destekle</string>
   <string name="unsigned_text_divider_label">İmzasız Metin</string>
   <string name="apg_deprecated_title">APG Reddetme Uyarısı</string>
   <string name="apg_deprecated_1">APG artık sürdürülmüyor!</string>

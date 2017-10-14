@@ -230,6 +230,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">CC:</string>
+  <string name="message_view_bcc_label">Cco:</string>
   <string name="message_view_attachment_view_action">Abrir</string>
   <string name="message_view_attachment_download_action">Salvar</string>
   <string name="message_view_status_attachment_not_saved">Não foi possível salvar o anexo no cartão SD.</string>
@@ -645,8 +646,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado não reconhecido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceitar chave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeitar chave</string>
-  <string name="message_list_help_key">Del (ou D) - Excluir\nR - Responder\nA - Responder a todos\nC - Compor\nF - Encaminhar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar como (não) lida\nG - Sinalizar\nO - Tipo de ordenação\nI - Ordem de classificação\nQ - Retornar às pastas\nS - Selecionar/desselecionar\nJ ou P - Mensagem anterior\nK ou N - Próxima Mensagem</string>
   <string name="folder_list_help_key">1 - Exibir apenas pastas de 1ª classe\n2 - Exibir pastas de 1ª e 2ª classes\n3 - Exibir todas, exceto as de 2ª classe\n4 - Exibir todas as pastas\nQ - Retornar para as contas\nS - Editar configurações da conta</string>
+  <string name="folder_list_filter_hint">O nome da pasta contém</string>
   <string name="folder_list_display_mode_label">Exibir pastas…</string>
   <string name="folder_list_display_mode_all">Todas as pastas</string>
   <string name="folder_list_display_mode_first_class">Pastas de 1ª classe</string>
@@ -671,9 +672,11 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema da visualização de mensagens</string>
   <string name="settings_compose_theme_label">Tema do editor</string>
+  <string name="settings_language_label">Idioma</string>
   <string name="settings_message_theme_selection_label">Tema fixo de mensagens</string>
   <string name="settings_message_theme_selection_summary_off">Seleciona o tema de visualização ao ver a mensagem</string>
   <string name="settings_message_theme_selection_summary_on">Usa um tema fixo para visualizar mensagens</string>
+  <string name="setting_language_system">Padrão do sistema</string>
   <string name="background_ops_label">Sincronização em segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>
@@ -861,6 +864,14 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_settings_remote_search_num_label">Limite da pesquisa no servidor</string>
   <string name="account_settings_remote_search_num_summary">A pesquisa será interrompida após <xliff:g id="num_results">%s</xliff:g> resultados.</string>
   <string name="remote_search_sending_query">Enviando a consulta ao servidor</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">Buscando %d resultado</item>
+    <item quantity="other">Buscando %d resultados</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">Buscando %1$d de %2$d resultado</item>
+    <item quantity="other">Buscando %1$d de %2$d resultados</item>
+  </plurals>
   <string name="remote_search_error">Não foi possível efetuar a pesquisa remota</string>
   <string name="account_settings_search">Pesquisar</string>
   <string name="account_settings_remote_search_enabled">Habilitar pesquisa no servidor</string>
@@ -919,7 +930,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="address_type_other">Outro</string>
   <string name="address_type_mobile">Celular</string>
   <string name="compose_error_no_draft_folder">A pasta Rascunhos não foi configurada para esta conta!</string>
-  <string name="compose_error_no_signing_key">Não foi configurada nenhuma chave para assinatura! Por favor verifique suas configurações.</string>
   <string name="crypto_mode_disabled">Não criptografar</string>
   <string name="crypto_mode_opportunistic">Criptografar se possível</string>
   <string name="crypto_mode_private">Criptografar</string>
@@ -989,7 +999,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="messageview_crypto_warning_show_anyway">Exibir a mensagem mesmo assim</string>
   <string name="recipient_error_non_ascii">Atualmente não existe suporte para caracteres especiais!</string>
   <string name="recipient_error_parse_failed">Erro ao analisar o endereço!</string>
-  <string name="account_settings_crypto_support_sign_only">Suporta a assinatura de mensagens não criptografadas</string>
   <string name="error_sign_only_no_encryption">A criptografia não está disponível no modo Somente Assinatura!</string>
   <string name="unsigned_text_divider_label">Texto não assinado</string>
   <string name="apg_deprecated_title">Aviso de obsolescência do APG</string>
@@ -1006,7 +1015,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="crypto_no_provider_button">Selecione o aplicativo OpenPGP</string>
   <string name="mail_list_widget_text">Lista de mensagens do K-9</string>
   <string name="mail_list_widget_loading">Carregando mensagens…</string>
-  <string name="fetching_folders_failed">Não foi possível obter a listagem de pastas</string>
+  <string name="fetching_folders_failed">Não foi possível buscar a listagem de pastas</string>
   <string name="messageview_crypto_warning_details">Exibir detalhes</string>
   <string name="openpgp_enabled_error_back">Voltar</string>
 </resources>

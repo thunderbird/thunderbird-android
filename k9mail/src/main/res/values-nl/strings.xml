@@ -641,7 +641,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_failed_dlg_invalid_certificate_title">Onbekend Certificaat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepteer Sleutel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Verwerp Sleutel</string>
-  <string name="message_list_help_key">Del (or D) - Verwijder\nR - Beantwoorden\nA - Alles Beantwoorden\nC - Opstellen\nF - Doorsturen\nM - Verplaatsen\nV - Archiveren\nY - Kopie\nZ - Markeer (niet)gelezen\nG - Ster\nO - Sorteer type\nI - Sorteer volgorde\nQ - Terug naar mappen\nS - Selecteer/deselecteer\nJ or P - Vorig bericht\nK or N - Volgende Bericht</string>
   <string name="folder_list_help_key">1 - Laat alleen 1e klas mappen zien\n2 - Laat 1e en 2e klas mappen zien\n3 - Laat alles zien behalve 2e klas mappen\n4 - Laat alle mappen zien\nQ - Terug naar Accounts\nS - Aanpassen Account Instellingen</string>
   <string name="folder_list_display_mode_label">Mappen</string>
   <string name="folder_list_display_mode_all">Laat alle mappen zien</string>
@@ -667,9 +666,11 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="settings_theme_label">Thema</string>
   <string name="settings_message_theme_label">Thema om berichten te zien</string>
   <string name="settings_compose_theme_label">Thema om berichten te schrijven</string>
+  <string name="settings_language_label">Taal</string>
   <string name="settings_message_theme_selection_label">Vast berichten thema</string>
   <string name="settings_message_theme_selection_summary_off">Kies het thema tijdens het bekijken van het bericht</string>
   <string name="settings_message_theme_selection_summary_on">Gebruik een vast thema om het bericht te bekijken</string>
+  <string name="setting_language_system">Volgens systeem</string>
   <string name="background_ops_label">Achtergrond sync</string>
   <string name="background_ops_never">Nooit</string>
   <string name="background_ops_always">Altijd</string>
@@ -915,7 +916,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="address_type_other">Anders</string>
   <string name="address_type_mobile">Mobiel</string>
   <string name="compose_error_no_draft_folder">Geen concepten map ingesteld voor dit account!</string>
-  <string name="compose_error_no_signing_key">Geen sleutel ingesteld voor het ondertekenen! Controleer de instellingen.</string>
   <string name="crypto_mode_disabled">Niet versleutelen</string>
   <string name="crypto_mode_opportunistic">Versleutel wanneer mogelijk</string>
   <string name="crypto_mode_private">Versleutel</string>
@@ -985,7 +985,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="messageview_crypto_warning_show_anyway">Bericht toch laten zien</string>
   <string name="recipient_error_non_ascii">Speciale leestekens worden nog niet ondersteund!</string>
   <string name="recipient_error_parse_failed">Fout bij parsen van adres!</string>
-  <string name="account_settings_crypto_support_sign_only">Ondersteun het tekenen van ontsleutelde berichten</string>
   <string name="error_sign_only_no_encryption">Versleuteling niet mogelijk in sign-only mode!</string>
   <string name="unsigned_text_divider_label">niet getekende tekst</string>
   <string name="apg_deprecated_title">APG Deprecation Waarschuwing</string>

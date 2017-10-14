@@ -654,7 +654,6 @@ Anfonwyd o fy nyfais Android gyda K-9 Mail, yr ap ebost cyntaf i fod yn y Gymrae
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tystysgrif Ddiarth</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Derbyn Allwedd</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Gwrthod Allwedd</string>
-  <string name="message_list_help_key">Del (or D) - Dileu\nR - Ateb\nA - Ateb Pawb\nC - Cyfansoddi\nF - Anfon Ymlaen\nM - Symud\nV - Archifo\nY - Copïo\nZ - Nodi Heb/Wedi ei darllen\nG - Seren\nO - Trefnu yn ôl\nI - Trefnu\nQ - Dychwelyd i\'r Ffolderi\nS - Dewis/Dad-ddewis\nJ or P - Neges Blaenorol\nK or N - Neges Nesaf</string>
   <string name="folder_list_help_key">1 - Dangos ffolderi dosbarth 1af yn unig\n2 - Dangos ffolderi Dosbarth 1af ac 2ail\n3 - Dangos pob ffolder ond rhai 2ail Ddosbarth\n4 - Dangos pob ffolder\nQ - Dychwelyd i gyfrifon\nS - Golygu Gosodiadau Cyfrif</string>
   <string name="folder_list_display_mode_label">Dangos ffolderi…</string>
   <string name="folder_list_display_mode_all">Pob ffolder</string>
@@ -950,7 +949,6 @@ Anfonwyd o fy nyfais Android gyda K-9 Mail, yr ap ebost cyntaf i fod yn y Gymrae
   <string name="address_type_other">Arall</string>
   <string name="address_type_mobile">Symudol</string>
   <string name="compose_error_no_draft_folder">Does dim ffolder Drafftiau wedi ei ffurfweddu ar gyfer y cyfrif hwn.</string>
-  <string name="compose_error_no_signing_key">Does dim allwedd wedi ei ffurfweddu ar gyfer llofnodi! Gwiria dy osodiadau.</string>
   <string name="crypto_mode_disabled">Peidio amgryptio</string>
   <string name="crypto_mode_opportunistic">Amgryptio os yn bosib</string>
   <string name="crypto_mode_private">Amgryptio</string>
@@ -1020,7 +1018,6 @@ Anfonwyd o fy nyfais Android gyda K-9 Mail, yr ap ebost cyntaf i fod yn y Gymrae
   <string name="messageview_crypto_warning_show_anyway">Dangos y neges beth bynnag</string>
   <string name="recipient_error_non_ascii">Nid oes modd defnyddio nodau arbennig ar hyn o bryd!</string>
   <string name="recipient_error_parse_failed">Gwall wrth ddosrannu\'r cyfeiriad!</string>
-  <string name="account_settings_crypto_support_sign_only">Cefnogi llofnodi negeseuon heb eu hamgryptio</string>
   <string name="error_sign_only_no_encryption">Dyw amgryptio ddim ar gael yn y modd llofnod-yn-unig!</string>
   <string name="unsigned_text_divider_label">Testun heb ei lofnodi</string>
   <string name="apg_deprecated_title">Rhybudd Anghymeradwyaeth APG</string>

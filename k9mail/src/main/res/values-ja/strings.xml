@@ -649,7 +649,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_failed_dlg_invalid_certificate_title">証明書が無効です</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">許可</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒否</string>
-  <string name="message_list_help_key">Del (または D) - 削除\nR - 返信\nA - 全員に返信\nC - 作成\nF - 転送\nM - 移動\nV - アーカイブ\nY - コピー\nZ - 既(未)読のマーク\nG - スター\nO - ソート種別\nI - ソート順\nQ - フォルダ一覧に戻る\nS - 選択/選択解除\nJ または P - 前のメッセージへ\nK または N - 次のメッセージへ</string>
   <string name="folder_list_help_key">1 - 1st ｸﾗｽﾌｫﾙﾀﾞｰ表示\n2 - 1st と 2nd ｸﾗｽﾌｫﾙﾀﾞｰ表示\n3 - 2nd ｸﾗｽﾌｫﾙﾀﾞｰ以外を表示\n4 - 全ﾌｫﾙﾀﾞｰ表示\nQ - ｱｶｳﾝﾄ設定に戻る\nS - ｱｶｳﾝﾄ設定編集</string>
   <string name="folder_list_filter_hint">フォルダ名が含む</string>
   <string name="folder_list_display_mode_label">フォルダ表示…</string>
@@ -676,9 +675,11 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="settings_theme_label">テーマ</string>
   <string name="settings_message_theme_label">メッセージ表示画面のテーマ</string>
   <string name="settings_compose_theme_label">メッセージ作成画面のテーマ</string>
+  <string name="settings_language_label">言語</string>
   <string name="settings_message_theme_selection_label">メッセージ表示画面のテーマを固定する</string>
   <string name="settings_message_theme_selection_summary_off">メッセージを表示するテーマを選択する</string>
   <string name="settings_message_theme_selection_summary_on">メッセージを表示するテーマを固定する</string>
+  <string name="setting_language_system">システム設定</string>
   <string name="background_ops_label">バックグラウンド同期</string>
   <string name="background_ops_never">使用しない</string>
   <string name="background_ops_always">常時利用</string>
@@ -926,7 +927,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="address_type_other">その他</string>
   <string name="address_type_mobile">携帯端末</string>
   <string name="compose_error_no_draft_folder">このアカウントに下書きフォルダは設定されていません!</string>
-  <string name="compose_error_no_signing_key">署名の鍵が設定されていません。設定を確認してください。</string>
+  <string name="compose_error_no_key_configured">このアカウントの鍵が設定されていません! 設定を確認してください。</string>
   <string name="crypto_mode_disabled">暗号化しない</string>
   <string name="crypto_mode_opportunistic">可能な場合、暗号化する</string>
   <string name="crypto_mode_private">暗号化</string>
@@ -997,7 +998,9 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="messageview_crypto_warning_show_anyway">とにかくメッセージを表示する</string>
   <string name="recipient_error_non_ascii">特殊文字は現在サポートされていません!</string>
   <string name="recipient_error_parse_failed">アドレスの解析時にエラー!</string>
-  <string name="account_settings_crypto_support_sign_only">暗号化されていないメッセージの署名をサポートする</string>
+  <string name="account_settings_crypto_support_sign_only">暗号化されていない署名を表示</string>
+  <string name="account_settings_crypto_support_sign_only_on">暗号化されていない署名を表示します</string>
+  <string name="account_settings_crypto_support_sign_only_off">暗号化されていない署名を無視します</string>
   <string name="error_sign_only_no_encryption">署名専用モードでは暗号化を使用できません!</string>
   <string name="unsigned_text_divider_label">未署名のテキスト</string>
   <string name="apg_deprecated_title">APG廃止の警告</string>
@@ -1027,4 +1030,5 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="openpgp_enabled_error_gotit">了解</string>
   <string name="openpgp_enabled_error_back">戻る</string>
   <string name="openpgp_enabled_error_disable">暗号化を無効にする</string>
+  <string name="openpgp_encryption">OpenPGP 暗号化</string>
 </resources>
