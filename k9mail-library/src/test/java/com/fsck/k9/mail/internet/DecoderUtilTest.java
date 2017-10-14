@@ -11,6 +11,16 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(K9LibRobolectricTestRunner.class)
 public class DecoderUtilTest {
+    private static final String INVALID = "=?utf-8?Q??=";
+
+
+    @Test
+    public void decodeEncodedWords_withInvalidEncodedWord_shouldReturnInputText() {
+        // We use INVALID as instance of an invalid encoded word in tests. If at some point we decide to change the code
+        // to recognize empty encoded text as valid and decode it to an empty string, a lot of tests will break.
+        // Hopefully this test will help the developer figure out why the other tests broke.
+        assertInputDecodesToExpected(INVALID, INVALID);
+    }
 
     @Test
     public void decodeEncodedWords_with_unencoded_data_returns_original_text() {
@@ -28,8 +38,18 @@ public class DecoderUtilTest {
     }
 
     @Test
+    public void decodeEncodedWords_withEncodedWordAndOnlyStartOfEncodedWord_shouldDecodeAndAddSuffix() {
+        assertInputDecodesToExpected("=?utf-8?Q?abc?= =?", "abc =?");
+    }
+
+    @Test
     public void decodeEncodedWords_withStartAndSeparatorOnly_returnAsText() {
         assertInputDecodesToExpected("=??", "=??");
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordAndOnlyStartAndSeparatorOfEncodedWord_shouldDecodeAndAddSuffix() {
+        assertInputDecodesToExpected("=?utf-8?Q?abc?= =??", "abc =??");
     }
 
     @Test
@@ -38,8 +58,18 @@ public class DecoderUtilTest {
     }
 
     @Test
+    public void decodeEncodedWords_withEncodedWordAndOnlyStartAndTwoSeparatorsOfEncodedWord_shouldDecodeAndAddSuffix() {
+        assertInputDecodesToExpected("=?utf-8?Q?abc?= =???", "abc =???");
+    }
+
+    @Test
     public void decodeEncodedWords_withStartAnd3SeparatorOnly_returnAsText() {
         assertInputDecodesToExpected("=????", "=????");
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordAndOnlyStartAndThreeSeparatorsOfEncodedWord_shouldDecodeAndAddSuffix() {
+        assertInputDecodesToExpected("=?utf-8?Q?abc?= =????", "abc =????");
     }
 
     @Test
@@ -117,7 +147,49 @@ public class DecoderUtilTest {
         // Splitting mid-character is RFC2047 non-compliant but seen in practice.
         // "=?utf-8?B?b2hhaSDw?=" individually decodes to "ohai �"
         // "=?utf-8?B?n5Kp==?=" individually decodes to "���"
+        // (invalid bytes in a UTF-8 sequence are replaced with the replacement character)
         assertInputDecodesToExpected("=?utf-8?B?b2hhaSDw?= =?utf-8?B?n5Kp?=", "ohai 💩");
+    }
+
+    @Test
+    public void decodeEncodedWords_withMultipleEncodedSectionsButCharsetAndEncodingDifferingInCase_decodesSequentialSectionTogether() {
+        assertInputDecodesToExpected("=?utf-8?B?b2hhaSDw?= =?UTF-8?b?n5Kp?=", "ohai 💩");
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordWhitespaceInvalidEncodedWord_shouldOnlyDecodeEncodedWord() {
+        assertInputDecodesToExpected("=?utf-8?Q?abc?=   " + INVALID, "abc   " + INVALID);
+    }
+
+    @Test
+    public void decodeEncodedWords_withInvalidEncodedWordWhitespaceInvalidEncodedWord_shouldReturnInputText() {
+        String input = INVALID + "   " + INVALID;
+        assertInputDecodesToExpected(input, input);
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordNonWhitespaceSeparatorEncodedWord_shouldDecodeBothAndKeepSeparator() {
+        assertInputDecodesToExpected("=?utf-8?Q?ab?= -- =?utf-8?Q?cd?=", "ab -- cd");
+    }
+
+    @Test
+    public void decodeEncodedWords_withInvalidEncodedWordWhitespaceEncodedWord_shouldOnlyDecodeEncodedWord() {
+        assertInputDecodesToExpected(INVALID + "   =?utf-8?Q?abc?=", INVALID + "   abc");
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordFollowedByEncodedWordWithDifferentEncoding_shouldDecodeIndividually() {
+        assertInputDecodesToExpected("=?utf-8?Q?ab?= =?utf-8?B?Y2Q=?=", "abcd");
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordSeparatorEncodedWordWithDifferentEncoding_shouldDecodeIndividuallyAndKeepSeparator() {
+        assertInputDecodesToExpected("=?utf-8?Q?ab?= / =?utf-8?B?Y2Q=?=", "ab / cd");
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordFollowedByEncodedWordWithDifferentCharset_shouldDecodeIndividually() {
+        assertInputDecodesToExpected("=?us-ascii?Q?oh_no_?= =?utf-8?Q?=F0=9F=92=A9?=", "oh no 💩");
     }
 
     @Test
