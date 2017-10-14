@@ -8,6 +8,11 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.301" versioncode="23510">
+        <change>Improved OpenPGP support</change>
+        <change>Various bug fixes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.300" versioncode="23500">
         <change>New app icon</change>
         <change>New widget: Message List</change>
