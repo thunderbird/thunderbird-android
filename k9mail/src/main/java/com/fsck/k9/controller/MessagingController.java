@@ -2308,25 +2308,7 @@ public class MessagingController {
                 // one we can't download completely. Maybe add a new flag; X_PARTIAL_MESSAGE ?
                 message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                 message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
-            }
-            /* commented out because this was pulled from another unmerged branch:
-            } else if (localFolder.isLocalOnly() && !force) {
-                Log.w(K9.LOG_TAG, "Message in local-only folder so cannot download fully.");
-                // ASH move toast
-                android.widget.Toast.makeText(mApplication,
-                        "Message in local-only folder so cannot download fully",
-                        android.widget.Toast.LENGTH_LONG).show();
-                message.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
-            }*/
-
-            /*if (!message.isSet(Flag.X_DOWNLOADED_FULL)) */
-            {
-                /*
-                 * At this point the message is not available, so we need to download it
-                 * fully if possible.
-                 */
-
+            } else {
                 Store remoteStore = account.getRemoteStore();
                 remoteFolder = remoteStore.getFolder(folder);
                 remoteFolder.open(Folder.OPEN_MODE_RW);
@@ -2340,6 +2322,7 @@ public class MessagingController {
                 } else {
                     FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);
+                    fp.add(FetchProfile.Item.FLAGS);
                     remoteFolder.fetch(Collections.singletonList(remoteMessage), fp, null);
                     localFolder.appendMessages(Collections.singletonList(remoteMessage));
                 }
@@ -2349,11 +2332,6 @@ public class MessagingController {
                 if (!loadPartialFromSearch) {
                     message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                 }
-            }
-
-            // Mark that this message is now fully synched
-            if (account.isMarkMessageAsReadOnView()) {
-                message.setFlag(Flag.SEEN, true);
             }
 
             // now that we have the full message, refresh the headers
