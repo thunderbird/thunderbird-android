@@ -114,17 +114,10 @@ public class DecoderUtilTest {
 
     @Test
     public void decodeEncodedWords_withMultipleEncodedSections_decodesSequentialSectionTogether() {
-        //Splitting mid-character is RFC2047 non-compliant but seen in practice.
-        String input = "=?utf-8?B?5Liq5Lq66YKu566xOkJVRyAjMzAyNDY6OumCruS7tuato+aWh+mZhOS7tuWQ?=\n" +
-                "=?utf-8?B?jeensOecgeeVpeaYvuekuuS8mOWMlg==?=";
-        assertInputDecodesToExpected(input, "个人邮箱:BUG #30246::邮件正文附件名称省略显示优化");
-    }
-
-    @Test
-    public void decodeEncodedWords_withGB2312_decodes_correctly() {
-        String input = "=?gb2312?B?Obv9t9az6cnu29rHsLqju6rHyLPHSlfN8rrAvsa16qOsuPzT0DIwvNIzOTnU?= " +
-                "=?gb2312?B?qr6r0aG439DHytTLr77Gteq1yMTjwLSjoaOoQUSjqQ?=";
-        assertInputDecodesToExpected(input, "9积分抽深圳前海华侨城JW万豪酒店，更有20家399元精选高星试睡酒店等你来！（AD�");
+        // Splitting mid-character is RFC2047 non-compliant but seen in practice.
+        // "=?utf-8?B?b2hhaSDw?=" individually decodes to "ohai �"
+        // "=?utf-8?B?n5Kp==?=" individually decodes to "���"
+        assertInputDecodesToExpected("=?utf-8?B?b2hhaSDw?= =?utf-8?B?n5Kp?=", "ohai 💩");
     }
 
     @Test
