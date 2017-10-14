@@ -2260,6 +2260,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 Timber.e(e, "Could not abort remote search before going back");
             }
         }
+
+        // Workaround for Android bug https://issuetracker.google.com/issues/37008170
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(false);
+            swipeRefreshLayout.destroyDrawingCache();
+            swipeRefreshLayout.clearAnimation();
+        }
+
         super.onStop();
     }
 
