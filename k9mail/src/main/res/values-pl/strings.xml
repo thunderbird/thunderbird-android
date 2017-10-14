@@ -80,6 +80,10 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="status_processing_account">Przetwarzam: <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Sprawdzę <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_no_network">Synchronizacja wyłączona - Brak sieci</string>
+  <string name="status_no_background">Synchronizacja wyłączona - Wyłączono ssynchronizację w tle</string>
+  <string name="status_poll_and_push_disabled">Pobieranie i wysyłanie wyłączone</string>
+  <string name="status_syncing_blocked">Synchronizacja wstrzymana</string>
   <string name="status_syncing_off">Synchronizacja wyłączona</string>
   <string name="actionbar_selected">Wybrano <xliff:g id="selection_count">%d</xliff:g></string>
   <string name="next_action">Dalej</string>
@@ -231,13 +235,16 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Do:</string>
   <string name="message_view_cc_label">DW:</string>
+  <string name="message_view_bcc_label">Udw:</string>
   <string name="message_view_attachment_view_action">Otwórz</string>
   <string name="message_view_attachment_download_action">Zapisz</string>
   <string name="message_view_status_attachment_not_saved">Zapisywanie załącznika na karcie SD nie powiodło się.</string>
+  <string name="message_view_status_no_space">Załącznik nie mógł zostać zapisany. Brak miejsca.</string>
   <string name="message_view_show_pictures_action">Wyświetl grafikę</string>
   <string name="message_view_no_viewer">Nie moge znaleźć programu do wyświetlenia pliku <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Pobierz całą wiadomość</string>
   <string name="message_view_toast_unable_to_display_message">Nie można wyświetlić wiadomości</string>
+  <string name="message_view_sender_label">przez %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Wszystkie nagłówki pobrano, niemniej nie znaleziono żadnych dodatkowych do wyświetlenia.</string>
   <string name="message_additional_headers_retrieval_failed">Pobieranie nagłówków nie powiodło się.</string>
@@ -277,7 +284,10 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="global_settings_confirm_menu_discard">Odrzuć wiadomość</string>
   <string name="global_settings_confirm_menu_mark_all_read">Oznacz wszystkie wiadomości jako przeczytane</string>
   <string name="global_settings_confirm_action_delete_notif">Usuń (powiadomienie)</string>
+  <string name="global_settings_privacy_hide_useragent">Usuń nagłówek \"User-Agent\"</string>
   <string name="global_settings_privacy_hide_useragent_detail">Usuń User-Agent K-9 z nagłówka wiadomości</string>
+  <string name="global_settings_privacy_hide_timezone">Ukryj strefę czasową</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Używaj czasu UTC zamiast czasu lokalnego w nagłówkach wiadomości i odpowiedzi</string>
   <string name="global_settings_notification_hide_subject_title">Ukryj temat w powiadomieniach</string>
   <string name="global_settings_notification_hide_subject_never">Nigdy</string>
   <string name="global_settings_notification_hide_subject_when_locked">Gdy urządzenie jest zablokowane</string>
@@ -546,17 +556,21 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="folder_settings_in_top_group_label">Umieść na początku</string>
   <string name="folder_settings_in_top_group_summary">Umieść na początku wyświetlanej listy folderów</string>
   <string name="folder_settings_folder_display_mode_label">Klasa wyświetlania</string>
+  <string name="folder_settings_folder_display_mode_normal">Bez klasy</string>
   <string name="folder_settings_folder_display_mode_first_class">Klasa 1</string>
   <string name="folder_settings_folder_display_mode_second_class">Klasa 2</string>
+  <string name="folder_settings_folder_sync_mode_label">Pobieranie katalogów</string>
   <string name="folder_settings_folder_sync_mode_normal">Żadne</string>
   <string name="folder_settings_folder_sync_mode_first_class">Klasa 1</string>
   <string name="folder_settings_folder_sync_mode_second_class">Klasa 2</string>
   <string name="folder_settings_folder_sync_mode_inherited">Taka sama jak klasa wyświetlania</string>
   <string name="folder_settings_folder_push_mode_label">Klasa sprawdzania Push</string>
+  <string name="folder_settings_folder_push_mode_normal">Bez klasy</string>
   <string name="folder_settings_folder_push_mode_first_class">Klasa 1</string>
   <string name="folder_settings_folder_push_mode_second_class">Klasa 2</string>
   <string name="folder_settings_folder_push_mode_inherited">Taka sama jak klasa synchronizacji</string>
   <string name="folder_settings_folder_notify_mode_label">Klasa powiadamiania</string>
+  <string name="folder_settings_folder_notify_mode_normal">Bez klasy</string>
   <string name="folder_settings_folder_notify_mode_first_class">Klasa 1</string>
   <string name="folder_settings_folder_notify_mode_second_class">Klasa 2</string>
   <string name="folder_settings_folder_notify_mode_inherited">Taka jak klasa Push</string>
@@ -641,8 +655,8 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nieznany certyfikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odrzuć</string>
-  <string name="message_list_help_key">Del (lub D) - Usuń\nR - Odpowiedz\nA - Odp. wszystkim\nC - Napisz\nF - Przekaż\nM - Przenieś\nV - Archiwizuj\nY - Skopiuj\nZ - Oznacz (Nie)przeczytane\nG - Gwiazdka\nO - Typ sortowania\nI - Porządek sortowania\nQ - Widok folderów\nS - Zaznacz/odznacz\nJ lub P - Poprzednia wiadomość\nK lub N - Następna wiadomość</string>
   <string name="folder_list_help_key">1 - Wyśw. tylko foldery klasy 1\n2 - Wyśw. foldery klasy 1 oraz 2\n3 - Wyśw. wszystkie foldery poza klasą 2\n4 - Wyświetl wszystkie foldery\nQ - Lista kont\nS - Edytuj ustawienia konta</string>
+  <string name="folder_list_filter_hint">Nazwa katalogu zawiera</string>
   <string name="folder_list_display_mode_label">Wyświetlanie folderów</string>
   <string name="folder_list_display_mode_all">Wszystkie</string>
   <string name="folder_list_display_mode_first_class">Tylko klasy 1</string>
@@ -667,9 +681,11 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="settings_theme_label">Kolorystyka</string>
   <string name="settings_message_theme_label">Kolorystyka widoku wiadomości</string>
   <string name="settings_compose_theme_label">Kolorystyka widoku tworzenia wiadomości</string>
+  <string name="settings_language_label">Język</string>
   <string name="settings_message_theme_selection_label">Stała kolorystyka widoku wiadomości</string>
   <string name="settings_message_theme_selection_summary_off">Wybierz kolorystykę z poziomu widoku wiadomości</string>
   <string name="settings_message_theme_selection_summary_on">Użyj kolorystyki wskazanej w konfiguracji</string>
+  <string name="setting_language_system">Domyślny systemowy</string>
   <string name="background_ops_label">Synchronizacja w tle</string>
   <string name="background_ops_never">Nigdy</string>
   <string name="background_ops_always">Zawsze</string>
@@ -792,6 +808,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="settings_importing">Importowanie ustawień…</string>
   <string name="settings_import_scanning_file">Skanowanie pliku…</string>
   <string name="settings_export_success">Zapisano ustawienia do <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">Eksport ustawień zakończony sukcesem</string>
   <string name="settings_import_global_settings_success">Importowano ustawienia z <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importowano <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
@@ -866,6 +883,18 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_settings_remote_search_num_label">Maksymalna ilość wyników</string>
   <string name="account_settings_remote_search_num_summary">Wyszukiwanie zostanie zatrzymane po odnalezieniu <xliff:g id="num_results">%s</xliff:g> wyników.</string>
   <string name="remote_search_sending_query">Wysyłam żądanie do serwera</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">Pobieram wyniki: %d</item>
+    <item quantity="few">Pobieram wyniki: %d</item>
+    <item quantity="many">Pobieram wyniki: %d</item>
+    <item quantity="other">Pobieram wyniki: %d</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">Pobieram wynik %1$d/%2$d</item>
+    <item quantity="few">Pobieram wynik %1$d/%2$d</item>
+    <item quantity="many">Pobieram wynik %1$d/%2$d</item>
+    <item quantity="other">Pobieram wynik %1$d/%2$d</item>
+  </plurals>
   <string name="remote_search_error">Wyszukiwanie na serwerze nie powiodło się</string>
   <string name="account_settings_search">Wyszukiwanie</string>
   <string name="account_settings_remote_search_enabled">Włącz wyszukiwanie na serwerze</string>
@@ -874,6 +903,8 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Pociągnij…</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">Zwolnij…</string>
   <string name="remote_search_unavailable_no_network">Połączenie sieciowe jest wymagane aby korzystać z wyszukiwania na serwerze.</string>
+  <string name="global_settings_background_as_unread_indicator_label">Zmień kolor przeczytanych</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Inne tło wskazuje, że wiadomość została przeczytana.</string>
   <string name="global_settings_threaded_view_label">Widok wątków</string>
   <string name="global_settings_threaded_view_summary">Grupuj wiadomości według wątków</string>
   <string name="upgrade_databases_title">Aktualizacja baz</string>
@@ -922,10 +953,10 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="address_type_other">Inne</string>
   <string name="address_type_mobile">Mobilny</string>
   <string name="compose_error_no_draft_folder">Folder Szkice nie skonfigurowany dla tego konta.</string>
-  <string name="compose_error_no_signing_key">Brak skonfigurowanego klucza do podpisów! Sprawdź swoje ustawienia.</string>
   <string name="crypto_mode_disabled">Nie szyfruj</string>
   <string name="crypto_mode_opportunistic">Szyfruj, jeśli można</string>
   <string name="crypto_mode_private">Szyfruj</string>
+  <string name="error_crypto_provider_incompatible">Aplikacja szyfrująca w niezgodnej wersji. Sprawdź ustawienia.</string>
   <string name="error_crypto_provider_connect">Nie można połączyć się z dostawcą kryptografii, sprawdź ustawienia lub kliknij ikonę kryptografii, aby spróbować ponownie!</string>
   <string name="error_crypto_provider_ui_required">Odmowa dostępu do dostawcy kryptografii, kliknij ikonę kryptografii, aby spróbować ponownie!</string>
   <string name="error_crypto_inline_attach">Tryb PGP/INLINE nie obsługuje załączników!</string>
@@ -952,6 +983,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Zaszyfrowane wiadomości są zawsze opatrzone podpisem.</string>
   <string name="crypto_msg_disabled">Wiadomość nie jest zaszyfrowana</string>
   <string name="crypto_msg_encrypted_error">Wiadomość jest zaszyfrowana, ale wystąpił błąd deszyfrowana.</string>
+  <string name="crypto_msg_encrypted_insecure">Wiadomość zaszyfrowana, ale nie bezpieczna.</string>
   <string name="crypto_msg_signed_error">Wiadomość jest podpisana, ale podpis nie mógł być zweryfikowany.</string>
   <string name="crypto_msg_encrypted_no_provider">Wiadomość jest zaszyfrowana, ale nie skonfigurowano aplikacji kryptografii.</string>
   <string name="crypto_msg_unsupported_encrypted">Wiadomość jest zaszyfrowana, ale w niewspieranym formacie.</string>
@@ -973,6 +1005,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="crypto_msg_unsigned_encrypted">Brak podpisu, wiadomość mogła zostać przechwycona.</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_key">Pokaż stronę podpisującą</string>
+  <string name="crypto_info_view_security_warning">Szczegóły</string>
   <string name="locked_attach_unlock">Odblokuj</string>
   <string name="locked_attach_unencrypted">Ta część nie została zaszyfrowana i może nie być zabezpieczona.</string>
   <string name="locked_attach_title">Niechroniony załącznik</string>
@@ -990,7 +1023,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="messageview_crypto_warning_show_anyway">Wyświetl wiadomość mimo to</string>
   <string name="recipient_error_non_ascii">Znaki specjalne nie są obecnie obsługiwane!</string>
   <string name="recipient_error_parse_failed">Błąd analizowania adresu!</string>
-  <string name="account_settings_crypto_support_sign_only">Obsługa podpisywania niezaszyfrowanych wiadomości</string>
   <string name="error_sign_only_no_encryption">Szyfrowanie nie jest dostępne w trybie sign-only!</string>
   <string name="unsigned_text_divider_label">Niepodpisany tekst</string>
   <string name="apg_deprecated_title">Ostrzeżenie o przestarzałości APG</string>
@@ -1007,5 +1039,18 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="crypto_no_provider_button">Wybierz aplikację OpenPGP</string>
   <string name="mail_list_widget_text">Lista wiadomości K-9</string>
   <string name="mail_list_widget_loading">Ładowanie wiadomości…</string>
+  <string name="fetching_folders_failed">Pobieranie listy katalogów się nie powiodło.</string>
+  <string name="messageview_crypto_warning_details">Pokaż szczegóły</string>
+  <string name="error_recipient_crypto_retrieve">Błąd pobierania statusu odbiorcy z dostawcy OpenPGP</string>
+  <string name="openpgp_enabled_error_title">Szyfrowanie nie możliwe</string>
+  <string name="openpgp_enabled_error_msg">Część z wybranych odbiorców nie obsługuje tej funkcjonalności.</string>
+  <string name="enable_encryption">Włącz szyfrowanie</string>
+  <string name="disable_encryption">Wyłącz szyfrowanie</string>
+  <string name="openpgp_description_text1">Szyfrowanie gwarantuje, że wiadomości mogą być odczytane tylko przez odbiorcę i nikogo innego.</string>
+  <string name="openpgp_description_text3">Szyfrowanie pokaże się tylko gdy wszyscy odbiorcy wiadomości je obsługują i wcześniej wysłali Ci wiadomość.</string>
+  <string name="openpgp_description_text2">Przełącz szyfrowanie klikając ten przycisk.</string>
+  <string name="openpgp_enabled_error_gotit">Zrozumiano</string>
   <string name="openpgp_enabled_error_back">Cofnij</string>
+  <string name="openpgp_enabled_error_disable">Wyłącz szyfrowanie</string>
+  <string name="openpgp_encryption">Szyfrowanie OpenPGP</string>
 </resources>

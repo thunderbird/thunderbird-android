@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licencelve Apache License, Version 2.0 alatt.</string>
+  <string name="app_license">Apache License, Version 2.0 alatt licencelve.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Üdvözli a K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -230,6 +230,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="message_view_from_format">Feladó: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Címzett:</string>
   <string name="message_view_cc_label">Másolat:</string>
+  <string name="message_view_bcc_label">Titkos másolat:</string>
   <string name="message_view_attachment_view_action">Megnyit</string>
   <string name="message_view_attachment_download_action">Mentés</string>
   <string name="message_view_status_attachment_not_saved">Nem lehet a mellékletet az SD kártyára menteni.</string>
@@ -400,7 +401,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="push_poll_on_connect_label">Küldéskor új levelek letöltése</string>
   <string name="account_setup_options_enable_push_label">Levél átküldés engedélyezése ehhez a fiókhoz</string>
   <string name="account_setup_options_enable_push_summary">Ha a szerver támogatja, azonnal értesítést kapunk az érkező levelekről. Ez az opció csökkenti a telefon teljesítményét.</string>
-  <string name="idle_refresh_period_label">Frissítés tétlen kapcsolatkor</string>
+  <string name="idle_refresh_period_label">IDLE kapcsolat frissítési gyakorisága</string>
   <string name="idle_refresh_period_1min">Percenként</string>
   <string name="idle_refresh_period_2min">2 percenként</string>
   <string name="idle_refresh_period_3min">3 percenként</string>
@@ -642,7 +643,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="account_setup_failed_dlg_invalid_certificate_title">Felismerhetetlen tanúsítvány</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Kulcs elfogadva</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Kulcs elutasítva</string>
-  <string name="message_list_help_key">Del (vagy D) - Törlés\nR - Válasz\nA - Válasz mindenkinek\nC - Írás\nF - Továbbítás\nM - Áthelyezés\nV - Archiválás\nY - Másolás\nZ - Olvasottnak/Olvasatlannak jelölés\nG - Csillagozás\nO - Rendezés típusa\nI - Sorrend\nQ - Visszatérés a mappákhoz\nS - Kijelölés/Kijelölés megszüntetése\nJ or P - Előző üzenet\nK vagy N - Következő üzenet</string>
   <string name="folder_list_help_key">1 - Csak elsődleges mappákat megjelenítése\n2 - Elsődleges és másodlagos mappák megjelenítése\n3 - Az összes megjelenítése, kivéve a másodlagos mappákat\n4 - Az összes mappa megjelenítése\nQ - Visszatérés a Fiókokhoz\nS - Fiókbeállítások szerkesztése</string>
   <string name="folder_list_display_mode_label">Mappák megjelenítése</string>
   <string name="folder_list_display_mode_all">Minden mappa</string>
@@ -668,9 +668,11 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="settings_theme_label">Téma</string>
   <string name="settings_message_theme_label">Üzenetmegjelenítés témája</string>
   <string name="settings_compose_theme_label">Író témája</string>
+  <string name="settings_language_label">Nyelv</string>
   <string name="settings_message_theme_selection_label">Rögzített üzenet téma</string>
   <string name="settings_message_theme_selection_summary_off">Válassza az üzenetmegtekintési témát amikor az üzenetet nézi</string>
   <string name="settings_message_theme_selection_summary_on">Rögzített üzenetmegtekintési téma használata</string>
+  <string name="setting_language_system">Alapértelmezett</string>
   <string name="background_ops_label">Háttérszinkronizálás</string>
   <string name="background_ops_never">Soha</string>
   <string name="background_ops_always">Mindig</string>
@@ -915,17 +917,26 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="address_type_other">Egyéb</string>
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Ehhez a fiókhoz nincs beállított Piszkozatok mappa!</string>
-  <string name="compose_error_no_signing_key">Nincs beállítva kulcs az aláíráshoz! Ellenőrizd a beállításokat.</string>
+  <string name="crypto_mode_disabled">Ne titkosítson</string>
+  <string name="crypto_mode_opportunistic">Titkosítson ha lehetséges</string>
   <string name="crypto_mode_private">Titkosítás</string>
   <string name="error_crypto_provider_connect">Nem sikerült kapcsolódni a titkosítás szolgáltatóhoz. Ellenőrizd a beállításokat, vagy kattins ismét a titkosítás ikonra.</string>
   <string name="error_crypto_inline_attach">PGP/INLINE mód nem támogatja a csatolmányokat!</string>
   <string name="openpgp_inline_text">Ez a levél PGP/INLINE formátumban lett küldve.\nFelhasználható a következővel való kompatibilitáshoz:</string>
+  <string name="openpgp_inline_plus_compat">Néhány kliens csak ezt a formátumot támogatja</string>
+  <string name="openpgp_inline_keep_enabled">Tartsa bekapcsolva</string>
+  <string name="openpgp_sign_only_keep_enabled">Tartsa bekapcsolva</string>
   <string name="crypto_info_ok">OK</string>
+  <string name="crypto_info_view_security_warning">Részletek</string>
   <string name="locked_attach_unencrypted">Ez a rész nem volt kódolva és lehet, hogy nem biztonságos.</string>
   <string name="message_progress_text">Töltés…</string>
+  <string name="messageview_decrypt_cancelled">A kititkosítás megszakadt</string>
   <string name="messageview_decrypt_retry">Újra</string>
+  <string name="messageview_crypto_error_title">Email kititkosítási hiba</string>
   <string name="messageview_crypto_warning_title">Biztonsági figyelmeztetés</string>
+  <string name="messageview_crypto_warning_show_anyway">Mindenképpen mutassa az üzenetet</string>
   <string name="recipient_error_non_ascii">A különleges karakterek jelenleg nem támogatottak!</string>
+  <string name="apg_deprecated_1">Az APG karbantartása megszűnt!</string>
   <string name="mail_list_widget_loading">Üzenetek betöltése…</string>
   <string name="openpgp_enabled_error_back">Vissza</string>
 </resources>

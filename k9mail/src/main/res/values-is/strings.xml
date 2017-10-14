@@ -643,7 +643,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_failed_dlg_invalid_certificate_title">Óþekkjanlegt skilríki</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Samþykkja lykil</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Hafna lykli</string>
-  <string name="message_list_help_key">Del (eða D) - Eyða\nR - Svara\nA - Svara öllum\nC - Skrifa\nF - Forward\nM - Færa\nV - Geymsla\nY - Afrita\nZ - Merkja (ó)lesið\nG - Stjörnumerkja\nO - Gerð röðunar\nI - Röðun\nQ - Fara í möppur\nS - Velja/afvelja\nJ eða P - Fyrri skilaboð\nK eða N - Næstu skilaboð</string>
   <string name="folder_list_help_key">1 - Birta einungis 1. flokks möppur\n2 - Birta 1. og 2. flokks möppur\n3 - Birta allt nema 2. flokks möppur\n4 - Birta allar möppur\nQ - Fara til baka í Aðgangar\nS - Breyta stillingum aðgangs</string>
   <string name="folder_list_display_mode_label">Birta möppur…</string>
   <string name="folder_list_display_mode_all">Allar möppur</string>
@@ -961,7 +960,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="messageview_crypto_warning_show_anyway">Birta skilaboðin samt</string>
   <string name="recipient_error_non_ascii">Ekki er ennþá stuðningur við sérstafi!</string>
   <string name="recipient_error_parse_failed">Villa við að þátta netfang!</string>
-  <string name="account_settings_crypto_support_sign_only">Styðja við undirritun ódulritaðra skilaboða</string>
   <string name="unsigned_text_divider_label">Óundirritaður texti</string>
   <string name="apg_deprecated_title">Aðvörun vegna úreldingar APG</string>
   <string name="apg_deprecated_1">APG er ekki lengur viðhaldið!</string>

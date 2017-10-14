@@ -651,7 +651,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ungültiges Zertifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Zertifikat akzeptieren</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Zertifikat ablehnen</string>
-  <string name="message_list_help_key">Del (oder D) - Löschen\nR - Antworten\nA - Allen Antworten\nC - Verfassen\nF - Weiterleiten\nM - Verschieben\nV - Archivieren\nY - Kopieren\nZ - Als (un)gelesen markieren\nG - Markieren\nO - Sortierung\nI - Sortierungsreihenfolge\nQ - Zurück zur Ordnerliste\nS - Auswählen/abwählen\nJ oder P - Vorherige Nachricht\nK oder N - Nächste Nachricht</string>
   <string name="folder_list_help_key">1 - Nur Hauptordner anzeigen\n2 - Haupt- und Nebenordner anzeigen\n3 - Alle außer Nebenordner anzeigen\n4 - Alle Ordner anzeigen\nQ - Zurück zu den Konten\nS - Kontoeinstellungen bearbeiten</string>
   <string name="folder_list_filter_hint">Ordnername enthält</string>
   <string name="folder_list_display_mode_label">Ordner</string>
@@ -678,9 +677,11 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="settings_theme_label">Design</string>
   <string name="settings_message_theme_label">Nachrichten-Design</string>
   <string name="settings_compose_theme_label">Editor-Design</string>
+  <string name="settings_language_label">Sprache</string>
   <string name="settings_message_theme_selection_label">Festes Nachrichten-Design</string>
   <string name="settings_message_theme_selection_summary_off">Nachrichten-Design während des Ansehens der Nachricht auswählen</string>
   <string name="settings_message_theme_selection_summary_on">Immer das ausgewählte Nachrichten-Design verwenden</string>
+  <string name="setting_language_system">Systemvorgabe</string>
   <string name="background_ops_label">Hintergrund-Synchronisierung</string>
   <string name="background_ops_never">Nie</string>
   <string name="background_ops_always">Immer</string>
@@ -934,7 +935,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="address_type_other">Anderes</string>
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Kein Ordner für Entwürfe für dieses Konto festgelegt!</string>
-  <string name="compose_error_no_signing_key">Kein Schlüssel konfiguriert zum Signieren! Überprüfen Sie die Einstellungen.</string>
+  <string name="compose_error_no_key_configured">Kein Schlüssel für dieses Konto konfiguriert! Überprüfen Sie die Einstellungen.</string>
   <string name="crypto_mode_disabled">Nicht verschlüsseln</string>
   <string name="crypto_mode_opportunistic">Verschlüsseln, wenn möglich</string>
   <string name="crypto_mode_private">Verschlüsseln</string>
@@ -1005,7 +1006,9 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="messageview_crypto_warning_show_anyway">Nachricht trotzdem anzeigen</string>
   <string name="recipient_error_non_ascii">Sonderzeichen werden derzeit nicht unterstützt!</string>
   <string name="recipient_error_parse_failed">Fehler beim Einlesen der Adresse!</string>
-  <string name="account_settings_crypto_support_sign_only">Signatur von unverschlüsselten Nachrichten unterstützen</string>
+  <string name="account_settings_crypto_support_sign_only">Unverschlüsselte Signaturen anzeigen</string>
+  <string name="account_settings_crypto_support_sign_only_on">Unverschlüsselte Signaturen werden angezeigt</string>
+  <string name="account_settings_crypto_support_sign_only_off">Unverschlüsselte Signaturen werden ignoriert</string>
   <string name="error_sign_only_no_encryption">Verschlüsselung ist im Nur-Signieren-Modus nicht verfügbar!</string>
   <string name="unsigned_text_divider_label">Unsignierter Text</string>
   <string name="apg_deprecated_title">APG Veraltungswarnung</string>
@@ -1036,4 +1039,5 @@ Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert w
   <string name="openpgp_enabled_error_gotit">Verstanden</string>
   <string name="openpgp_enabled_error_back">Zurück</string>
   <string name="openpgp_enabled_error_disable">Verschlüsselung deaktivieren</string>
+  <string name="openpgp_encryption">OpenPGP-Verschlüsselung</string>
 </resources>

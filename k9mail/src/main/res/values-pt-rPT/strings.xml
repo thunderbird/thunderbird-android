@@ -646,7 +646,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado não reconhecido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceitar chave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeitar chave</string>
-  <string name="message_list_help_key">Del (ou D) - Eliminar\nR - Responder\nA - Responder a todos\nC - Compor\nF - Reencaminhar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar como (não) lido\nG - Estrela\nO - Tipo de ordenação\nI - Ordem de ordenação\nQ - Voltar às pastas\nS - Selecionar/desselecionar\nJ ou P - Mensagem anterior\nK ou N - Próxima mensagem</string>
   <string name="folder_list_help_key">1 - Exibir apenas pastas de 1ª classe\n2 - Exibir pastas de 1ª e 2ª classe\n3 - Exibir todas excepto pastas de 2ª classe\n4 - Exibir todas as pastas\nQ - Voltar às contas\nS - Editar definições da conta</string>
   <string name="folder_list_display_mode_label">Mostrar pastas…</string>
   <string name="folder_list_display_mode_all">Todas as pastas</string>
@@ -672,9 +671,11 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema da vista de mensagem</string>
   <string name="settings_compose_theme_label">Tema da composição</string>
+  <string name="settings_language_label">Linguagem</string>
   <string name="settings_message_theme_selection_label">Tema de mensagem fixo</string>
   <string name="settings_message_theme_selection_summary_off">Selecionar o tema da vista de mensagem quando visualizar a mensagem</string>
   <string name="settings_message_theme_selection_summary_on">Usar um tema da vista de mensagem fixo</string>
+  <string name="setting_language_system">Predefinições do sistema</string>
   <string name="background_ops_label">Sincronização em segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>
@@ -920,7 +921,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="address_type_other">Outro</string>
   <string name="address_type_mobile">Telemóvel</string>
   <string name="compose_error_no_draft_folder">Não foi configurada uma pasta de rascunhos para esta conta!</string>
-  <string name="compose_error_no_signing_key">Não foi configurada uma chave para assinatura! Por favor verifique as suas definições.</string>
   <string name="crypto_mode_disabled">Não encriptar</string>
   <string name="crypto_mode_opportunistic">Encriptar se possível</string>
   <string name="crypto_mode_private">Encriptar</string>
@@ -990,7 +990,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="messageview_crypto_warning_show_anyway">Mostrar mensagem na mesma</string>
   <string name="recipient_error_non_ascii">Caracteres especiais não são suportados atualmente!</string>
   <string name="recipient_error_parse_failed">Erro ao analisar endereço!</string>
-  <string name="account_settings_crypto_support_sign_only">Suporte a assinatura de mensagens não encriptadas</string>
   <string name="error_sign_only_no_encryption">Encriptação indisponível no modo de apenas assinatura!</string>
   <string name="unsigned_text_divider_label">Texto não assinado</string>
   <string name="apg_deprecated_title">Aviso de descontinuação do APG</string>

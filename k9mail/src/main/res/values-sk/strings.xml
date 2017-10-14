@@ -648,7 +648,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Neznámy certifikát</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Prijať kľúč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmietnuť kľúč</string>
-  <string name="message_list_help_key">Del (alebo D) - Vymazať\nR - Odpovedať\nA - Odpovedať všetkým\nC - Vytvoriť\nF - Preposlať\nM - Presunúť\nV - Archivovať\nY - Kopírovať\nZ - Označiť ako (ne)prečítané\nG - Hviezdička\nO - Typ zoradenia\nI - Poradie zoradenia\nQ - Návrat do priečinkov\nS - Označiť/odznačiť\nJ alebo P - Predchádzajúca správa\nK alebo N - Ďalšia správa</string>
   <string name="folder_list_help_key">1 - Zobraziť len priečinky 1. triedy\n2 - Zobraziť priečinky 1. a 2. triedy\n3 - Zobraziť  všetky okrem priečinkov 2. triedy\n4 - Zobraziť  všetky priečinky\nQ - Návrat do účtov\nS - Upraviť nastavenia účtov</string>
   <string name="folder_list_display_mode_label">Zobraziť priečinky…</string>
   <string name="folder_list_display_mode_all">Všetky priečinky</string>
@@ -674,9 +673,11 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="settings_theme_label">Téma</string>
   <string name="settings_message_theme_label">Téma zobrazenia správy</string>
   <string name="settings_compose_theme_label">Téma pri písaní správy</string>
+  <string name="settings_language_label">Jazyk</string>
   <string name="settings_message_theme_selection_label">Pevná téma správ</string>
   <string name="settings_message_theme_selection_summary_off">Vybrať tému pri prehliadaní správ</string>
   <string name="settings_message_theme_selection_summary_on">Použiť pevnú tému pri prehliadaní správ</string>
+  <string name="setting_language_system">Predvolený systémom</string>
   <string name="background_ops_label">Synchronizácia na pozadí</string>
   <string name="background_ops_never">Nikdy</string>
   <string name="background_ops_always">Vždy</string>
@@ -927,7 +928,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="address_type_other">Iná</string>
   <string name="address_type_mobile">Mobilná</string>
   <string name="compose_error_no_draft_folder">Pre tento účet nie je zadefinovaný priečinok pre koncepty správ.</string>
-  <string name="compose_error_no_signing_key">Nie je nastavený kľúč pre podpis! Prosím, skontroľujte si nastavenia.</string>
   <string name="crypto_mode_disabled">Nešifrovať</string>
   <string name="crypto_mode_opportunistic">Ak je možné, šifrovať</string>
   <string name="crypto_mode_private">Šifrovať</string>
@@ -997,7 +997,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="messageview_crypto_warning_show_anyway">Zobraziť správu aj tak</string>
   <string name="recipient_error_non_ascii">Špeciálne znaky nie sú v súčasnosti podporované!</string>
   <string name="recipient_error_parse_failed">Chyba pri spracovaní adresy!</string>
-  <string name="account_settings_crypto_support_sign_only">Umožniť podpisovanie nešifrovaných správ</string>
   <string name="error_sign_only_no_encryption">V režime \"len podpis\" nie je možné šifrovať.</string>
   <string name="unsigned_text_divider_label">Nepodpísaný text</string>
   <string name="apg_deprecated_title">Varovanie o konci podpory APG</string>

@@ -643,7 +643,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Сертифікат невизнано</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Прийняти сертифікат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Відхилити сертифікат</string>
-  <string name="message_list_help_key">Del (або D) - Видалити\nR - Відповісти\nA - Відповісти всім\nC - Створити\nF - переслати\nM - Перемістити\nV - Архівувати\nY - Копіювати\nZ - Позначити (не)прочитаним\nG - Поставити зірочку\nO - Ти сортування\nI - Порядок сортування\nQ - Повернутися до тек\nS - Вибрати/зняти вибір\nJ або P - Попереднє повідомлення\nK або N - Наступне повідомлення</string>
   <string name="folder_list_help_key">1 - Відображати лише теки 1-го класу\n2 - Відображати теки 1-го та 2-го класів\n3 - Відображати всі теки, окрім 2-го класу\n4 - Відображати всі теки\nQ - Повернутися до облікових записів\nS - Змінити налаштування облікового запису</string>
   <string name="folder_list_display_mode_label">Показати теки…</string>
   <string name="folder_list_display_mode_all">Відображати усі теки</string>
@@ -669,9 +668,11 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="settings_theme_label">Тема</string>
   <string name="settings_message_theme_label">Перегляд теми повідомлень</string>
   <string name="settings_compose_theme_label">Написати тему</string>
+  <string name="settings_language_label">Мова</string>
   <string name="settings_message_theme_selection_label">Встановити тему повідомлення</string>
   <string name="settings_message_theme_selection_summary_off">Виберіть перегляд теми повідомлення під час перегляду повідомлення</string>
   <string name="settings_message_theme_selection_summary_on">Використовувати тему з фіксованою шириною повідомлення</string>
+  <string name="setting_language_system">Системна по замовчуванню</string>
   <string name="background_ops_label">Фонова синхронізація</string>
   <string name="background_ops_never">Ніколи</string>
   <string name="background_ops_always">Завжди</string>
@@ -921,7 +922,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="address_type_other">Інший</string>
   <string name="address_type_mobile">Мобільний</string>
   <string name="compose_error_no_draft_folder">Не вибрано теку чернеток для цього облікового запису!</string>
-  <string name="compose_error_no_signing_key">Не налаштовано ключа для підписування! Перевірте ваші налаштування!</string>
   <string name="crypto_mode_disabled">Не шифрувати</string>
   <string name="crypto_mode_opportunistic">Шифрувати якщо можливо</string>
   <string name="crypto_mode_private">Шифрувати</string>
@@ -987,7 +987,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="messageview_crypto_warning_error">В <b>підписі цього повідомлення є помилка!</b></string>
   <string name="recipient_error_non_ascii">Спеціальні символи на разі не підтримуються!</string>
   <string name="recipient_error_parse_failed">Помилка розбору адреси!</string>
-  <string name="account_settings_crypto_support_sign_only">Дозволити PGP Sign-Only режим</string>
   <string name="error_sign_only_no_encryption">Шифрування недоступне у режимі PGP Sign-Only</string>
   <string name="unsigned_text_divider_label">Непідписаний Текст</string>
   <string name="apg_deprecated_ok">Зрозуміло!</string>

@@ -605,7 +605,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">无法识别的证书信息</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密钥</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒绝密钥</string>
-  <string name="message_list_help_key">Del (或者 D) - 删除\nR - 回复\nA - 回复所有人\nC - 编写新消息\nF - 转发\nM - 移动\nV - 归档\nY - 复制\nZ - 标记为已读/未读\nG - 加星标\nO - 排序类别\nI - 排序顺序\nQ - 返回文件夹\nS - 选择/取消选择\nJ 或者 P - 上一条消息\nK 或者 N - 下一条消息</string>
   <string name="folder_list_help_key">1 - 仅显示1级文件夹\n2 - 显示1级和2级文件夹\n3 - 显示除2级以外的所有文件夹\n4 - 显示所有文件夹\nQ - 返回帐户\nS - 编辑帐户设置</string>
   <string name="folder_list_display_mode_label">文件夹</string>
   <string name="folder_list_display_mode_all">显示全部文件夹</string>
@@ -631,9 +630,11 @@
   <string name="settings_theme_label">主题</string>
   <string name="settings_message_theme_label">消息查看主题</string>
   <string name="settings_compose_theme_label">编辑器主题</string>
+  <string name="settings_language_label">语言</string>
   <string name="settings_message_theme_selection_label">固定消息主题</string>
   <string name="settings_message_theme_selection_summary_off">在查看消息时选择消息查看主题</string>
   <string name="settings_message_theme_selection_summary_on">使用固定消息查看主题</string>
+  <string name="setting_language_system">系统默认值</string>
   <string name="background_ops_label">后台同步</string>
   <string name="background_ops_never">从不</string>
   <string name="background_ops_always">总是</string>
@@ -868,7 +869,6 @@
   <string name="address_type_other">其他</string>
   <string name="address_type_mobile">手机</string>
   <string name="compose_error_no_draft_folder">此账户没有设置草稿文件夹！</string>
-  <string name="compose_error_no_signing_key">没有设置用于签名的密钥！请检查设置。</string>
   <string name="crypto_mode_disabled">不要加密</string>
   <string name="crypto_mode_opportunistic">在可能时加密</string>
   <string name="crypto_mode_private">加密</string>

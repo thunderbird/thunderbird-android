@@ -652,7 +652,8 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificato non riconosciuto</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accetta chiave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifiuta chiave</string>
-  <string name="message_list_help_key">Del (o D) - Elimina\nR - Rispondi\nA - Rispondi a tutti\nC - Componi\nF - Inoltra\nM - Sposta\nV - Archivia\nY - Copia\nZ - Marca come (non) letto\nG - Stella\nO - Tipo di ordinamento\nI - Ordinamento\nQ - Ritorna alle cartelle\nS - Seleziona/deseleziona\nJ o P - Messaggio precedente\nK o N - Messaggio successivo</string>
+  <string name="message_view_help_key">Canc (o D) - Elimina\nR - Rispondi\nA - Rispondi a tutti\nC - Componi\nF - Inoltra\nM - Sposta\nV - Archivia\nY - Copia\nZ - Marca come (non) letto\nG - Stella\nO - Tipo di ordinamento\nI - Ordinamento\nQ - Ritorna alle cartelle\nS - Seleziona/deseleziona\nJ o P - Messaggio precedente\nK o N - Messaggio successivo</string>
+  <string name="message_list_help_key">Canc (o D) - Elimina\nC - Componi\nM - Sposta\nV - Archivia\nY - Copia\nZ - Marca come (non) letto\nG - Stella\nO - Tipo di ordinamento\nI - Ordinamento\nQ - Ritorna alle cartelle\nS - Seleziona/deseleziona</string>
   <string name="folder_list_help_key">1 - Visualizza soltanto cartelle di 1a classe\n2 - Visualizza cartelle di 1a e 2a classe\n3 - Visualizza tutte eccetto le cartelle di 2a classe\n4 - Visualizza tutte le cartelle\nQ - Ritorna agli account\nS - Modifica le impostazioni dell\'account</string>
   <string name="folder_list_filter_hint">Il nome della cartella contiene</string>
   <string name="folder_list_display_mode_label">Mostra cartelle…</string>
@@ -679,9 +680,11 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema della vista dei messaggi</string>
   <string name="settings_compose_theme_label">Tema del compositore</string>
+  <string name="settings_language_label">Lingua</string>
   <string name="settings_message_theme_selection_label">Tema fisso del messaggio</string>
   <string name="settings_message_theme_selection_summary_off">Seleziona il tema della vista dei messaggi durante la visualizzazione del messaggio</string>
   <string name="settings_message_theme_selection_summary_on">Usa un tema fisso nella vista dei messaggi</string>
+  <string name="setting_language_system">Predefinita di sistema</string>
   <string name="background_ops_label">Sincronizzazione in background</string>
   <string name="background_ops_never">Mai</string>
   <string name="background_ops_always">Sempre</string>
@@ -935,7 +938,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="address_type_other">Altro</string>
   <string name="address_type_mobile">Cellulare</string>
   <string name="compose_error_no_draft_folder">Non è stata configurata una cartella Bozze per questo account!</string>
-  <string name="compose_error_no_signing_key">Nessuna chiave configurata per la firma! Controlla le impostazioni.</string>
+  <string name="compose_error_no_key_configured">Nessuna chiave configurata per questo account! Controlla le impostazioni.</string>
   <string name="crypto_mode_disabled">Non cifrare</string>
   <string name="crypto_mode_opportunistic">Cifra se possibile</string>
   <string name="crypto_mode_private">Cifra</string>
@@ -1006,7 +1009,9 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="messageview_crypto_warning_show_anyway">Mostra comunque il messaggio</string>
   <string name="recipient_error_non_ascii">I caratteri speciali al momento non sono supportati!</string>
   <string name="recipient_error_parse_failed">Errore durante l\'analisi dell\'indirizzo!</string>
-  <string name="account_settings_crypto_support_sign_only">Supporta la firma dei messaggi non cifrati</string>
+  <string name="account_settings_crypto_support_sign_only">Mostra le firme non cifrate</string>
+  <string name="account_settings_crypto_support_sign_only_on">Le firme non cifrate saranno visualizzate</string>
+  <string name="account_settings_crypto_support_sign_only_off">Le firme non cifrate saranno ignorate</string>
   <string name="error_sign_only_no_encryption">Cifratura non disponibile in modalità solo firma!</string>
   <string name="unsigned_text_divider_label">Testo non firmato</string>
   <string name="apg_deprecated_title">Avviso di disapprovazione di APG</string>
@@ -1036,4 +1041,5 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="openpgp_enabled_error_gotit">Ricevuto</string>
   <string name="openpgp_enabled_error_back">Indietro</string>
   <string name="openpgp_enabled_error_disable">Disabilita cifratura</string>
+  <string name="openpgp_encryption">Cifratura OpenPGP</string>
 </resources>

@@ -645,7 +645,6 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certifikát nebyl rozeznán</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Přijmout klíč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmítnout klíč</string>
-  <string name="message_list_help_key">Del (or D) - Smazat\nR - Odpovědět\nA - Odpovědět všem\nC - Vytvořit\nF - Přeposlat\nM - Přesunout\nV - Archivovat\nY - Kopírovat\nZ - Označit (Ne)přečtené\nG - Hvězdička\nO - Uspořádat podle typu\nI - Uspořádat podle pořadí\nQ - Zpět k složkám\nS - Označit/odznačit\nJ or P - Předešlá zpráva\nK or N - Další zpráva</string>
   <string name="folder_list_help_key">1 - Zobrazit jen složky 1. třídy\n2 - Zobrazit složky 1. a 2. třídy\n3 - Zobrazit všechny mimo složek 2. třídy\n4 - Zobrazit všechny složky\nQ - Návrat k účtům\nS - Upravit nastavení účtu</string>
   <string name="folder_list_display_mode_label">Zobrazit složky…</string>
   <string name="folder_list_display_mode_all">Všechny složky</string>
@@ -671,9 +670,11 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="settings_theme_label">Vzhled</string>
   <string name="settings_message_theme_label">Vzhled náhledu zprávy</string>
   <string name="settings_compose_theme_label">Vzhled psaní zprávy</string>
+  <string name="settings_language_label">Jazyk</string>
   <string name="settings_message_theme_selection_label">Neměnný vzhled zpráv</string>
   <string name="settings_message_theme_selection_summary_off">Lze vybrat vzhled při prohlížení zprávy</string>
   <string name="settings_message_theme_selection_summary_on">Použít neměnný vzhled při prohlížení zprávy</string>
+  <string name="setting_language_system">Výchozí nastavení systému</string>
   <string name="background_ops_label">Synchronizace na pozadí</string>
   <string name="background_ops_never">Nikdy</string>
   <string name="background_ops_always">Vždy</string>
@@ -924,7 +925,6 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="address_type_other">Ostatní</string>
   <string name="address_type_mobile">Mobilní</string>
   <string name="compose_error_no_draft_folder">Tento účet nemá nastaven žádný adresář pro koncepty!</string>
-  <string name="compose_error_no_signing_key">Není nastaven podpisový klíč! Zkontrolujte prosím své nastavení.</string>
   <string name="crypto_mode_disabled">Nešifrovat</string>
   <string name="crypto_mode_opportunistic">Pokud možno šifrovat</string>
   <string name="crypto_mode_private">Šifrovat</string>
@@ -991,7 +991,6 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="messageview_crypto_warning_show_anyway">Zobrazit zprávu přesto</string>
   <string name="recipient_error_non_ascii">Speciální znaky nejsou momentálně podporovány!</string>
   <string name="recipient_error_parse_failed">Chyba parsování adresy!</string>
-  <string name="account_settings_crypto_support_sign_only">Podpora podepisování nezašifrovaných zpráv</string>
   <string name="error_sign_only_no_encryption">Šifrování nedostupné v podpisovém módu!</string>
   <string name="unsigned_text_divider_label">Nepodepsaný text</string>
   <string name="apg_deprecated_title">Varování o ukončení podpory APG</string>

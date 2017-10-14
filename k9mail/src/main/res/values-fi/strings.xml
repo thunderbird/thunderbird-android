@@ -649,7 +649,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tunnistamaton varmenne</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Hyväksy-avain</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Hylkää-avain</string>
-  <string name="message_list_help_key">Del (tai D) - Poista\nR - Vastaa\nA - Vastaa kaikille\nC - Kirjoita\nF - Välitä\nM - Siirrä\nV - Arkistoi\nY - Kopioi\nZ - Merkitse luetuksi/lukemattomaksi\nG - Merkitse tähdellä\nO - Lajittelun tyyppi\nI - Lajittelujärjestys\nQ - Palaa kansioihin\nS - Valitse/poista valinta\nJ tai P - Edellinen viesti\nK tai N - Seuraava viesti</string>
   <string name="folder_list_help_key">1 - Näytä vain 1. luokan kansiot\n2 - Näytä 1. ja 2. luokan kansiot\n3 - Näytä kaikki paitsi 2. luokan kansiot\n4 - Näytä kaikki kansiot\nQ - Palaa tileihin\nS - Muokkaa tilin asetuksia</string>
   <string name="folder_list_filter_hint">Kansion nimi sisältää</string>
   <string name="folder_list_display_mode_label">Kansiot</string>
@@ -676,9 +675,11 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="settings_theme_label">Teema</string>
   <string name="settings_message_theme_label">Viestinäkymän teema</string>
   <string name="settings_compose_theme_label">Viestimuokkaimen teema</string>
+  <string name="settings_language_label">Kieli</string>
   <string name="settings_message_theme_selection_label">Kiinteä viestiteema</string>
   <string name="settings_message_theme_selection_summary_off">Valitse viestinäkymän teema viestiä luettaessa</string>
   <string name="settings_message_theme_selection_summary_on">Käytä kiinteää viestinäkymän teemaa</string>
+  <string name="setting_language_system">Järjestelmän oletus</string>
   <string name="background_ops_label">Synkronointi taustalla</string>
   <string name="background_ops_never">Ei koskaan</string>
   <string name="background_ops_always">Aina</string>
@@ -932,7 +933,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="address_type_other">Muu</string>
   <string name="address_type_mobile">Mobiili</string>
   <string name="compose_error_no_draft_folder">Tälle tilille ei ole määritelty luonnoskansiota!</string>
-  <string name="compose_error_no_signing_key">Allekirjoitusta varten ei ole määritelty avainta! Tarkista asetukset.</string>
+  <string name="compose_error_no_key_configured">Tälle tilille ei ole määritetty avainta! Tarkista asetukset.</string>
   <string name="crypto_mode_disabled">Älä salaa</string>
   <string name="crypto_mode_opportunistic">Salaa jos mahdollista</string>
   <string name="crypto_mode_private">Salaa</string>
@@ -1002,7 +1003,9 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="messageview_crypto_warning_show_anyway">Näytä viesti silti</string>
   <string name="recipient_error_non_ascii">Erikoismerkit eivät ole tällä hetkellä tuettuja!</string>
   <string name="recipient_error_parse_failed">Virhe osoitetta jäsennettäessä!</string>
-  <string name="account_settings_crypto_support_sign_only">Tue salaamattomien viestien allekirjoitusta</string>
+  <string name="account_settings_crypto_support_sign_only">Näytä salaamattomat allekirjoitukset</string>
+  <string name="account_settings_crypto_support_sign_only_on">Salaamattomat allekirjoitukset näytetään</string>
+  <string name="account_settings_crypto_support_sign_only_off">Salaamattomat allekirjoitukset jätetään huomiotta</string>
   <string name="error_sign_only_no_encryption">Salaus ei ole käytettävissä pelkässä allekirjoitustilassa!</string>
   <string name="unsigned_text_divider_label">Allekirjoittamaton teksti</string>
   <string name="apg_deprecated_title">Varoitus APG:n vanhentamisesta</string>
@@ -1031,4 +1034,5 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="openpgp_enabled_error_gotit">Selvä</string>
   <string name="openpgp_enabled_error_back">Takaisin</string>
   <string name="openpgp_enabled_error_disable">Poista salaus käytöstä</string>
+  <string name="openpgp_encryption">OpenPGP-salaus</string>
 </resources>

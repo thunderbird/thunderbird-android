@@ -654,7 +654,8 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_failed_dlg_invalid_certificate_title">Неверный сертификат сервера</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Принять</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Отклонить</string>
-  <string name="message_list_help_key">Del (или D) - Удалить\nR - Ответить\nA - Ответить всем\nC - Новое\nF - Переслать\nM - Переместить\nV - В архив\nY - Копия\nZ - Прочитано\nG - Важность\nO - Признак сортировки\nI - Порядок сортировки\nQ - Папки\nS - Выделение\nJ или P - Назад\nK или N - Далее</string>
+  <string name="message_view_help_key">Del (или D) - удалить\nR - ответить\nA - ответить всем\nC - создать\nF - переслать\nM - переместить\nV - в архив\nY - копировать\nZ - (не) прочитано\nG - важное\nO - сортировка\nI - порядок\nQ - папки\nS - выбрать\nJ или P - назад\nK или N - далее</string>
+  <string name="message_list_help_key">Del (или D) - удалить\nC - создать\nM - переместить\nV - в архив\nY - копировать\nZ - (не) прочитано\nG - важное\nO - сортировка\nI - порядок\nQ - папки\nS - выбрать</string>
   <string name="folder_list_help_key">1 - 1 класс папок\n2 - 1 и 2 классы папок\n3 - все, кроме 2 класса\n4 - видны все папки\nQ - список ящиков\nS - настройки ящика</string>
   <string name="folder_list_filter_hint">Имя папки содержит</string>
   <string name="folder_list_display_mode_label">Видимость папок</string>
@@ -681,9 +682,11 @@ K-9 Mail — почтовый клиент для Android.
   <string name="settings_theme_label">Тема приложения</string>
   <string name="settings_message_theme_label">Тема просмотра</string>
   <string name="settings_compose_theme_label">Тема редактора</string>
+  <string name="settings_language_label">Язык</string>
   <string name="settings_message_theme_selection_label">Фиксированный просмотр</string>
   <string name="settings_message_theme_selection_summary_off">Разрешить выбор темы при чтении сообщения</string>
   <string name="settings_message_theme_selection_summary_on">Отключить выбор темы при чтении сообщения</string>
+  <string name="setting_language_system">По умолчанию</string>
   <string name="background_ops_label">Фоновая синхронизация</string>
   <string name="background_ops_never">Никогда</string>
   <string name="background_ops_always">Всегда</string>
@@ -951,7 +954,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="address_type_other">Прочее</string>
   <string name="address_type_mobile">Мобильный</string>
   <string name="compose_error_no_draft_folder">Для данного ящика не настроена папка Черновики!</string>
-  <string name="compose_error_no_signing_key">Не найден ключ для подписания. Проверьте настройки.</string>
+  <string name="compose_error_no_key_configured">Для данного ящика не настроены ключи! Проверьте настройки.</string>
   <string name="crypto_mode_disabled">Не шифровать</string>
   <string name="crypto_mode_opportunistic">Шифровать при возможности</string>
   <string name="crypto_mode_private">Шифровать</string>
@@ -1022,7 +1025,9 @@ K-9 Mail — почтовый клиент для Android.
   <string name="messageview_crypto_warning_show_anyway">Всё равно показать сообщение</string>
   <string name="recipient_error_non_ascii">Спецсимволы пока не поддерживаются!</string>
   <string name="recipient_error_parse_failed">Ошибка разбора адреса!</string>
-  <string name="account_settings_crypto_support_sign_only">Поддержка подписи незашифрованных сообщений</string>
+  <string name="account_settings_crypto_support_sign_only">Незашифрованные подписи</string>
+  <string name="account_settings_crypto_support_sign_only_on">Показать незашифрованные подписи</string>
+  <string name="account_settings_crypto_support_sign_only_off">Скрыть незашифрованные подписи</string>
   <string name="error_sign_only_no_encryption">Шифрование недоступно в режиме \"Только подпись\"</string>
   <string name="unsigned_text_divider_label">Неподписанный текст</string>
   <string name="apg_deprecated_title">Прекращение поддержки APG</string>
@@ -1052,4 +1057,5 @@ K-9 Mail — почтовый клиент для Android.
   <string name="openpgp_enabled_error_gotit">Ясно!</string>
   <string name="openpgp_enabled_error_back">Назад</string>
   <string name="openpgp_enabled_error_disable">Отключить шифрование</string>
+  <string name="openpgp_encryption">Шифрование OpenPGP</string>
 </resources>

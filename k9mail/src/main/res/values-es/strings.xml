@@ -645,7 +645,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado desconocido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar clave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rechazar clave</string>
-  <string name="message_list_help_key">Del (or D) - Borrar\nR - Responder\nA - Responder a tdos\nC - Redactar\nF - Reenviar\nM - Mover\nV - Archivar\nY - Copiar\nZ - Marcar como (no) leído\nG - Estrella\nO - Tipo de ordenación\nI - Orden de ordenación\nQ - Volver a las carpetas\nS - Seleccionar/deseleccionar\nJ or P - Mensaje anterior\nK or N - Siguiente mensaje</string>
   <string name="folder_list_help_key">1 - Mostrar sólo carpetas de 1ª clase\n2 - Mostrar carpetas de 1ª y 2ª clase\n3 - Mostrar todo excepto las carpetas de 2ª clase\n4 - Mostrar todas las carpetas\nQ - Volver a las cuentas\nS - Editar ajustes de cuenta</string>
   <string name="folder_list_display_mode_label">Mostrar carpetas…</string>
   <string name="folder_list_display_mode_all">Ver todas las carpetas</string>
@@ -671,9 +670,11 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema de vista de mensaje</string>
   <string name="settings_compose_theme_label">Tema de redacción</string>
+  <string name="settings_language_label">Idioma</string>
   <string name="settings_message_theme_selection_label">Tema de mensaje fijo</string>
   <string name="settings_message_theme_selection_summary_off">Seleccionar el tema de vista de mensaje mientras se muestra el mensaje</string>
   <string name="settings_message_theme_selection_summary_on">Usar un tema de vista de mensaje fijo</string>
+  <string name="setting_language_system">Configurado en el sistema</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Siempre</string>
@@ -919,7 +920,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="address_type_other">Otro</string>
   <string name="address_type_mobile">Móvil</string>
   <string name="compose_error_no_draft_folder">¡No se ha configurado carpeta de borradores para esta cuenta!</string>
-  <string name="compose_error_no_signing_key">¡No hay clave configurada para firmar! Por favor compruebe su configuración.</string>
   <string name="crypto_mode_disabled">No cifrar</string>
   <string name="crypto_mode_opportunistic">Cifrar cuando sea posible</string>
   <string name="crypto_mode_private">Cifrar</string>
@@ -989,7 +989,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="messageview_crypto_warning_show_anyway">Mostrar el mensaje igualmente</string>
   <string name="recipient_error_non_ascii">¡Los caracteres especiales aún no están soportados!</string>
   <string name="recipient_error_parse_failed">¡Error al analizar la dirección!</string>
-  <string name="account_settings_crypto_support_sign_only">Soporte para firmado de mensajes no cifrados</string>
   <string name="error_sign_only_no_encryption">¡El cifrado no está disponible en el modo de solo firma!</string>
   <string name="unsigned_text_divider_label">Texto sin firmar</string>
   <string name="apg_deprecated_title">Aviso sobre desuso de APG</string>

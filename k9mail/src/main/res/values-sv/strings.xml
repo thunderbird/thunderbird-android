@@ -555,6 +555,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="folder_settings_folder_display_mode_normal">Ingen klassning</string>
   <string name="folder_settings_folder_display_mode_first_class">1:a klass</string>
   <string name="folder_settings_folder_display_mode_second_class">2:a klass</string>
+  <string name="folder_settings_folder_sync_mode_label">Mappkontrolleringsklass</string>
   <string name="folder_settings_folder_sync_mode_normal">Inga</string>
   <string name="folder_settings_folder_sync_mode_first_class">1:a klass</string>
   <string name="folder_settings_folder_sync_mode_second_class">2:a klass</string>
@@ -650,7 +651,6 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="account_setup_failed_dlg_invalid_certificate_title">Okänt certifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Neka nyckel</string>
-  <string name="message_list_help_key">Del (eller D) - Ta bort\nR - Svara\nA - Svara alla\nC - Skriv nytt\nF - Vidarebefordra\nM - Flytta\nV - Arkivera\nY - Kopiera\nZ - Markera som (o)läst\nG - Stjärnmärk\nO - Sorteringstyp\nI - Sorteringsordning\nQ - Tillbaka till mappar\nS - Markera/avmarkera\nJ eller P - Föregående meddelande\nK eller N - Nästa meddelande</string>
   <string name="folder_list_help_key">1 - Visa endast första klassens mappar\n2 - Visa första och andra klassens mappar\n3 - Visa alla utom andra klassens mappar\n4 - Visa alla mappar\nQ - Återvänd till konton\nS - Redigera kontoinställningar</string>
   <string name="folder_list_filter_hint">Mappnamn innehåller</string>
   <string name="folder_list_display_mode_label">Visa mappar…</string>
@@ -677,9 +677,11 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema för meddelandelista</string>
   <string name="settings_compose_theme_label">Kompositör tema</string>
+  <string name="settings_language_label">Språk</string>
   <string name="settings_message_theme_selection_label">Fast meddelandetema</string>
   <string name="settings_message_theme_selection_summary_off">Välj tema för meddelandevyn medan meddelandet visas</string>
   <string name="settings_message_theme_selection_summary_on">Använd ett fast meddelandevytema</string>
+  <string name="setting_language_system">Systemstandard</string>
   <string name="background_ops_label">Bakgrundssynkronisering</string>
   <string name="background_ops_never">Aldrig</string>
   <string name="background_ops_always">Alltid</string>
@@ -821,7 +823,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="settings_import_outgoing_server">Utgående server (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
     <item quantity="one">Byt lösenord…</item>
-    <item quantity="other">Byt lösenord…</item>
+    <item quantity="other">Ställer in lösenord...</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Använd lösenordet för inkommande server</string>
   <string name="activate_account_action">Aktivera</string>
@@ -933,7 +935,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="address_type_other">Annat</string>
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Ingen Utkast mapp konfigurerad för detta konto!</string>
-  <string name="compose_error_no_signing_key">Ingen nyckel är konfigurerad för signering! Var god granska dina inställningar.</string>
+  <string name="compose_error_no_key_configured">Ingen nyckel konfigurerad för detta konto! Kontrollera dina inställningar.</string>
   <string name="crypto_mode_disabled">Kryptera inte</string>
   <string name="crypto_mode_opportunistic">Kryptera om möjligt</string>
   <string name="crypto_mode_private">Kryptera</string>
@@ -1004,7 +1006,9 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="messageview_crypto_warning_show_anyway">Visa meddelande ändå</string>
   <string name="recipient_error_non_ascii">Symboler stöds för närvarande inte.</string>
   <string name="recipient_error_parse_failed">Kan inte tolka adressen!</string>
-  <string name="account_settings_crypto_support_sign_only">Stöd signering av okrypterade meddelanden</string>
+  <string name="account_settings_crypto_support_sign_only">Visa okrypterade signaturer</string>
+  <string name="account_settings_crypto_support_sign_only_on">Okrypterade signaturer kommer att visas</string>
+  <string name="account_settings_crypto_support_sign_only_off">Okrypterade signaturer kommer att ignoreras</string>
   <string name="error_sign_only_no_encryption">Kryptering otillgänglig i signera-endast läge!</string>
   <string name="unsigned_text_divider_label">Osignerad text</string>
   <string name="apg_deprecated_title">APG utfasnings varning</string>
@@ -1034,4 +1038,5 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="openpgp_enabled_error_gotit">Uppfattat</string>
   <string name="openpgp_enabled_error_back">Bakåt</string>
   <string name="openpgp_enabled_error_disable">Inaktivera kryptering</string>
+  <string name="openpgp_encryption">OpenPGP-kryptering</string>
 </resources>

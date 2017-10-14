@@ -650,7 +650,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat nerecunoscut</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Tastă Accept</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Tastă Refuz</string>
-  <string name="message_list_help_key">Del (sau D) - Șterge\nR - Răspunde\nA - Răspunde tuturor\nC - Compune\nF - Redirecționează\nM - Mută\nV - Arhivează\nY - Copiază\nZ - Marchează (Ne)citit\nG - Stea\nO - Tip sortare\nI - Ordine sortare\nQ - Întoarcere la dosare\nS - Selectează/deselectează\nJ sau P - Mesaj anterior\nK sau N - Mesaj următor</string>
   <string name="folder_list_help_key">1 - Arată doar dosare de Nivel 1\n2 - Arată dosare de Nivel 1 și 2\n3 - Arată toate mai puțin dosarele de Nivel 2\n4 - Arată toate dosarele\nQ - Înapoi la conturi\nS - Modifică setările contului</string>
   <string name="folder_list_display_mode_label">Afișează dosare…</string>
   <string name="folder_list_display_mode_all">Toate dosarele</string>
@@ -676,6 +675,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="settings_theme_label">Temă</string>
   <string name="settings_message_theme_label">Temă vizualizare mesaje</string>
   <string name="settings_compose_theme_label">Temă compunere</string>
+  <string name="settings_language_label">Limbă</string>
   <string name="settings_message_theme_selection_label">Temă fixă pt. mesaje</string>
   <string name="settings_message_theme_selection_summary_off">Alege tema în timpul vizualizării mesajelor</string>
   <string name="settings_message_theme_selection_summary_on">Folosește o temă fixă pentru vizualizarea mesajelor</string>
@@ -929,7 +929,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="address_type_other">Alta</string>
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Nu este configurat Dosarul de ciorne pentru acest cont</string>
-  <string name="compose_error_no_signing_key">Nici o cheie configurată pentru semnătură! Verificați setările.</string>
   <string name="crypto_mode_disabled">Nu cripta</string>
   <string name="crypto_mode_opportunistic">Criptează daca e posibil</string>
   <string name="crypto_mode_private">Criptează</string>
@@ -999,7 +998,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="messageview_crypto_warning_show_anyway">Arată mesajul totuși</string>
   <string name="recipient_error_non_ascii">Caracterele speciale nu sunt suportate deocamdată!</string>
   <string name="recipient_error_parse_failed">Eroare la citirea adresei!</string>
-  <string name="account_settings_crypto_support_sign_only">Permite semnarea mesajelor necriptate</string>
   <string name="error_sign_only_no_encryption">Criptare indisponibilă în modul „Doar semnare”!</string>
   <string name="unsigned_text_divider_label">Text nesemnat</string>
   <string name="apg_deprecated_title">Avertisment APG</string>

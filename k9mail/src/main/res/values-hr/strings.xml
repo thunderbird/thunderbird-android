@@ -591,7 +591,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nepoznat Certifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Prihvati Ključ</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odbij ključ</string>
-  <string name="message_list_help_key">Del (or D) - Obriši\nR - Odgovori\nA - Odgovori Svima\nC - Sastavi\nF - Proslijedi\nM - Premjesti\nV - Arhiviraj\nY - Kopiraj\nZ - Označi (Ne)pročitano\nG - Zvjezdica\nO - Sortiranje vrste\nI - Poredak sortiranja\nQ - Povratak na Mape\nS - Označi/odznači\nJ or P - Prethodna Poruka\nK or N - Slijedeća Poruka</string>
   <string name="folder_list_help_key">1 - Prikaži samo mape 1. Razreda\n2 - Prikaži mape 1. i 2. Razreda\n3 - Prikaži sve osim mapa 2. Razreda\n4 - Prikaži sve mape\nQ - Povratak na Račune\nS - Uredi Postavei Računa</string>
   <string name="folder_list_display_mode_label">Prikaži mape…</string>
   <string name="folder_list_display_mode_all">Sve mape</string>
@@ -617,9 +616,11 @@
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema pregleda poruke</string>
   <string name="settings_compose_theme_label">Tema sastavljanja poruke</string>
+  <string name="settings_language_label">Jezik</string>
   <string name="settings_message_theme_selection_label">Popravljena tema poruke</string>
   <string name="settings_message_theme_selection_summary_off">Pdaberite temu poruke prilikom pregledavanja poruke</string>
   <string name="settings_message_theme_selection_summary_on">Koristi popravljenu temu pregleda poruke</string>
+  <string name="setting_language_system">Sistemski zadano</string>
   <string name="background_ops_label">Pozadinska sinhronizacija</string>
   <string name="background_ops_never">Nikada</string>
   <string name="background_ops_always">Uvijek</string>
