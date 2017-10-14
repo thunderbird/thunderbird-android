@@ -55,7 +55,7 @@ class DecoderUtil {
      * @param charset the Java charset to use.
      * @return the decoded string.
      */
-    private static String decodeQ(String encodedWord, String charset) {
+    static String decodeQ(String encodedWord, String charset) {
 
         /*
          * Replace _ with =20
@@ -108,11 +108,7 @@ class DecoderUtil {
         while (true) {
             int begin = body.indexOf("=?", previousEnd);
             if (begin == -1) {
-                if (previousWord != null) {
-                    sb.append(decodeEncodedWord(previousWord));
-                    previousWord = null;
-                }
-                sb.append(body.substring(previousEnd));
+                decodePreviousAndAppendSuffix(sb, previousWord, body, previousEnd);
                 return sb.toString();
             }
 
@@ -121,31 +117,19 @@ class DecoderUtil {
             // to find the two '?' in the "header", before looking for the final "?=".
             int qm1 = body.indexOf('?', begin + 2);
             if (qm1 == -1) {
-                if (previousWord != null) {
-                    sb.append(decodeEncodedWord(previousWord));
-                    previousWord = null;
-                }
-                sb.append(body.substring(previousEnd));
+                decodePreviousAndAppendSuffix(sb, previousWord, body, previousEnd);
                 return sb.toString();
             }
 
             int qm2 = body.indexOf('?', qm1 + 1);
             if (qm2 == -1) {
-                if (previousWord != null) {
-                    sb.append(decodeEncodedWord(previousWord));
-                    previousWord = null;
-                }
-                sb.append(body.substring(previousEnd));
+                decodePreviousAndAppendSuffix(sb, previousWord, body, previousEnd);
                 return sb.toString();
             }
 
             int end = body.indexOf("?=", qm2 + 1);
             if (end == -1) {
-                if (previousWord != null) {
-                    sb.append(decodeEncodedWord(previousWord));
-                    previousWord = null;
-                }
-                sb.append(body.substring(previousEnd));
+                decodePreviousAndAppendSuffix(sb, previousWord, body, previousEnd);
                 return sb.toString();
             }
             end += 2;
@@ -154,42 +138,42 @@ class DecoderUtil {
 
             EncodedWord word = extractEncodedWord(body, begin, end, message);
 
-            if (word == null) {
-                if (previousWord != null) {
+            if (previousWord == null) {
+                sb.append(sep);
+                if (word == null) {
+                    sb.append(body.substring(begin, end));
+                }
+            } else {
+                if (word == null) {
                     sb.append(decodeEncodedWord(previousWord));
                     sb.append(sep);
                     sb.append(body.substring(begin, end));
-                    previousWord = null;
                 } else {
-//                    sb.append(sep);
-                }
-            } else {
-                if (previousWord != null) {
-                    if (previousWord.encoding.equals(word.encoding) && previousWord.charset.equals(word.charset)) {
-                        previousWord.encodedText += word.encodedText;
+                    if (!CharsetUtil.isWhitespace(sep)) {
+                        sb.append(decodeEncodedWord(previousWord));
+                        sb.append(sep);
+                    } else if (previousWord.encoding.equals(word.encoding) &&
+                            previousWord.charset.equals(word.charset)) {
+                        word.encodedText = previousWord.encodedText + word.encodedText;
                     } else {
                         sb.append(decodeEncodedWord(previousWord));
-                        sb.append(sep.trim());
-                        previousWord = word;
                     }
-                } else {
-                    sb.append(sep.trim());
-                    previousWord = word;
                 }
             }
 
-            if (previousWord == null) {
-                sb.append(sep);
-                sb.append(body.substring(begin, end));
-            }
-
+            previousWord = word;
             previousEnd = end;
         }
     }
 
-    // return null on error
-    private static String decodeEncodedWord(String body, int begin, int end, Message message) {
-        return decodeEncodedWord(extractEncodedWord(body, begin, end, message));
+    private static void decodePreviousAndAppendSuffix(StringBuilder sb, EncodedWord previousWord, String body,
+            int previousEnd) {
+
+        if (previousWord != null) {
+            sb.append(decodeEncodedWord(previousWord));
+        }
+
+        sb.append(body.substring(previousEnd));
     }
 
     private static String decodeEncodedWord(EncodedWord word) {
