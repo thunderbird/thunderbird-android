@@ -145,6 +145,13 @@
             android:label="@string/account_setup_names_title"/>
 
         <activity
+            android:name=".activity.ChooseAccount"
+            android:configChanges="locale"
+            android:label="@string/choose_account_title"
+            android:noHistory="true"
+            android:theme="@style/Theme.K9Dialog"/>
+
+        <activity
             android:name=".activity.ChooseFolder"
             android:configChanges="locale"
             android:label="@string/choose_folder_title"

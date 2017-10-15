@@ -1,17 +1,8 @@
 package com.fsck.k9.provider;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
-import com.fsck.k9.BaseAccount;
-import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.UnreadWidgetConfiguration;
-import com.fsck.k9.activity.FolderList;
-import com.fsck.k9.activity.MessageList;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchAccount;
+import com.fsck.k9.helper.UnreadWidgetProperties;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -47,73 +38,35 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
     }
 
     public static void updateWidget(Context context, AppWidgetManager appWidgetManager,
-            int appWidgetId, String accountUuid) {
+                                    UnreadWidgetProperties properties) {
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
                 R.layout.unread_widget_layout);
 
-        int unreadCount = 0;
-        String accountName = context.getString(R.string.app_name);
+        int appWidgetId = properties.getAppWidgetId();
         Intent clickIntent = null;
+        int unreadCount = 0;
+
         try {
-            BaseAccount account = null;
-            AccountStats stats = null;
+            clickIntent = properties.getClickIntent(context);
+            unreadCount = properties.getUnreadCount(context);
 
-            SearchAccount searchAccount = null;
-            if (SearchAccount.UNIFIED_INBOX.equals(accountUuid)) {
-                searchAccount = SearchAccount.createUnifiedInboxAccount(context);
-            } else if (SearchAccount.ALL_MESSAGES.equals(accountUuid)) {
-                searchAccount = SearchAccount.createAllMessagesAccount(context);
-            }
-
-            if (searchAccount != null) {
-                account = searchAccount;
-                MessagingController controller = MessagingController.getInstance(context);
-                stats = controller.getSearchAccountStatsSynchronous(searchAccount, null);
-                clickIntent = MessageList.intentDisplaySearch(context,
-                        searchAccount.getRelatedSearch(), false, true, true);
+            if (unreadCount <= 0) {
+                // Hide TextView for unread count if there are no unread messages.
+                remoteViews.setViewVisibility(R.id.unread_count, View.GONE);
             } else {
-                Account realAccount = Preferences.getPreferences(context).getAccount(accountUuid);
-                if (realAccount != null) {
-                    account = realAccount;
-                    stats = realAccount.getStats(context);
+                remoteViews.setViewVisibility(R.id.unread_count, View.VISIBLE);
 
-                    if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName())) {
-                        clickIntent = FolderList.actionHandleAccountIntent(context, realAccount, false);
-                    } else {
-                        LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
-                        search.addAllowedFolder(realAccount.getAutoExpandFolderName());
-                        search.addAccountUuid(account.getUuid());
-                        clickIntent = MessageList.intentDisplaySearch(context, search, false, true,
-                                true);
-                    }
-                    clickIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                }
+                String displayCount = (unreadCount <= MAX_COUNT) ?
+                        String.valueOf(unreadCount) : String.valueOf(MAX_COUNT) + "+";
+                remoteViews.setTextViewText(R.id.unread_count, displayCount);
             }
 
-            if (account != null) {
-                accountName = account.getDescription();
-            }
-
-            if (stats != null) {
-                unreadCount = stats.unreadMessageCount;
-            }
+            remoteViews.setTextViewText(R.id.title, properties.getTitle(context));
         } catch (Exception e) {
             Timber.e(e, "Error getting widget configuration");
         }
 
-        if (unreadCount <= 0) {
-            // Hide TextView for unread count if there are no unread messages.
-            remoteViews.setViewVisibility(R.id.unread_count, View.GONE);
-        } else {
-            remoteViews.setViewVisibility(R.id.unread_count, View.VISIBLE);
-
-            String displayCount = (unreadCount <= MAX_COUNT) ?
-                    String.valueOf(unreadCount) : String.valueOf(MAX_COUNT) + "+";
-            remoteViews.setTextViewText(R.id.unread_count, displayCount);
-        }
-
-        remoteViews.setTextViewText(R.id.account_name, accountName);
 
         if (clickIntent == null) {
             // If the widget configuration couldn't be loaded we open the configuration
@@ -122,7 +75,6 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
             clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         }
         clickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId,
                 clickIntent, 0);
@@ -139,9 +91,8 @@ public class UnreadWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int widgetId : appWidgetIds) {
-            String accountUuid = UnreadWidgetConfiguration.getAccountUuid(context, widgetId);
-
-            updateWidget(context, appWidgetManager, widgetId, accountUuid);
+            UnreadWidgetProperties properties = UnreadWidgetConfiguration.getWidgetProperties(context, widgetId);
+            updateWidget(context, appWidgetManager, properties);
         }
     }
 

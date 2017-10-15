@@ -821,6 +821,50 @@ public class Account implements BaseAccount, StoreConfig {
         return stats;
     }
 
+    public int getFolderUnreadCount(Context context, String folderName) throws MessagingException {
+        if (!isAvailable(context)) {
+            return 0;
+        }
+
+        int unreadMessageCount = 0;
+
+        Cursor cursor = loadUnreadCountForFolder(context, folderName);
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                unreadMessageCount = cursor.getInt(0);
+            }
+        } finally {
+            Utility.closeQuietly(cursor);
+        }
+
+        return unreadMessageCount;
+    }
+
+    private Cursor loadUnreadCountForFolder(Context context, String folderName) {
+        ContentResolver cr = context.getContentResolver();
+
+        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
+                "account/" + getUuid() + "/stats");
+
+        String[] projection = {
+                StatsColumns.UNREAD_COUNT,
+        };
+
+        LocalSearch search = new LocalSearch();
+        search.addAllowedFolder(folderName);
+
+        // Use the LocalSearch instance to create a WHERE clause to query the content provider
+        StringBuilder query = new StringBuilder();
+        List<String> queryArgs = new ArrayList<>();
+        ConditionsTreeNode conditions = search.getConditions();
+        SqlQueryBuilder.buildWhereClause(this, conditions, query, queryArgs);
+
+        String selection = query.toString();
+        String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
+
+        return cr.query(uri, projection, selection, selectionArgs, null);
+    }
+
 
     public synchronized void setChipColor(int color) {
         chipColor = color;

@@ -39,7 +39,7 @@
 
     <TextView
         style="@style/UnreadWidgetTextView"
-        android:id="@+id/account_name"
+        android:id="@+id/title"
         android:text="@string/app_name"
         android:ellipsize="marquee"
         android:maxLines="1"
