@@ -126,7 +126,13 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
     }
 
     private void handleChooseAccount(String accountUuid) {
+        boolean userSelectedSameAccount = accountUuid.equals(selectedAccountUuid);
+        if (userSelectedSameAccount) {
+            return;
+        }
+
         selectedAccountUuid = accountUuid;
+        selectedFolderName = null;
         unreadFolder.setSummary(getString(R.string.unread_widget_folder_summary));
         if (SearchAccount.UNIFIED_INBOX.equals(selectedAccountUuid) ||
                 SearchAccount.ALL_MESSAGES.equals(selectedAccountUuid)) {
