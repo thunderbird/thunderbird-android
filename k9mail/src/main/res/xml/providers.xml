@@ -229,6 +229,10 @@
         <incoming uri="imap+ssl+://imap.mail.yahoo.com" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.mail.yahoo.com" username="$email" />
     </provider>
+    <provider id="yahoo.de" label="Yahoo" domain="yahoo.de">
+        <incoming uri="imap+ssl+://imap.mail.yahoo.com" username="$email" />
+        <outgoing uri="smtp+ssl+://smtp.mail.yahoo.com" username="$email" />
+    </provider>
     <provider id="ymail" label="YMail" domain="ymail.com">
         <incoming uri="imap+ssl+://imap.mail.yahoo.com" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.mail.yahoo.com" username="$email" />
