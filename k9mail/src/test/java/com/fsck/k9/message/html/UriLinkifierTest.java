@@ -136,4 +136,13 @@ public class UriLinkifierTest {
                         "<a href=\"http://uri2.example.org/path\">http://uri2.example.org/path</a> postfix",
                 outputBuffer.toString());
     }
+
+    @Test
+    public void uriSurroundedByHtmlTags() {
+        String text = "<br>http://uri.example.org<hr>";
+
+        UriLinkifier.linkifyText(text, outputBuffer);
+
+        assertEquals("<br><a href=\"http://uri.example.org\">http://uri.example.org</a><hr>", outputBuffer.toString());
+    }
 }
