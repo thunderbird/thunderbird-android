@@ -158,4 +158,13 @@ public class HtmlSanitizerTest {
                 "<tr><td>Hmailserver service shutdown:</td><td>Ok</td></tr>" +
                 "</tbody></table></body></html>", toCompactString(result));
     }
+
+    @Test
+    public void shouldKeepHrTags() throws Exception {
+        String html = "<html><head></head><body>one<hr>two<hr />three</body></html>";
+
+        Document result = htmlSanitizer.sanitize(html);
+
+        assertEquals("<html><head></head><body>one<hr>two<hr>three</body></html>", toCompactString(result));
+    }
 }
