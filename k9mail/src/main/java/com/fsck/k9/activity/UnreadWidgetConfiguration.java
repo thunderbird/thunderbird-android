@@ -178,15 +178,20 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.done:
-                if (validateWidget()) {
-                    updateWidgetAndExit();
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int itemId = item.getItemId();
+        if (R.id.done == itemId)
+        {
+            if (validateWidget())
+            {
+                updateWidgetAndExit();
+            }
+            return true;
+        }
+        else
+        {
+            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -239,4 +244,5 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
         editor.remove(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_NAME_SUFFIX_KEY);
         editor.apply();
     }
+
 }

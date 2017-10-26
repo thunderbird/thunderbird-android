@@ -11,13 +11,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.fsck.k9.*;
+import com.fsck.k9.Account;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
@@ -28,16 +30,19 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
-import com.fsck.k9.mail.store.webdav.WebDavStore;
 import com.fsck.k9.mail.filter.Hex;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.X509Certificate;
-import java.security.NoSuchAlgorithmException;
+import com.fsck.k9.mail.store.webdav.WebDavStore;
+
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+
+import timber.log.Timber;
 
 /**
  * Checks the given settings to make sure that they can be used to send and
@@ -306,11 +311,12 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         finish();
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.cancel:
+    public void onClick(View v)
+    {
+        int id = v.getId();
+        if (R.id.cancel == id)
+        {
             onCancel();
-            break;
         }
     }
 
@@ -322,26 +328,27 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         });
     }
 
-    private void showDialogFragment(int dialogId, String customMessage) {
-        if (mDestroyed) {
+    private void showDialogFragment(int dialogId, String customMessage)
+    {
+        if (mDestroyed)
+        {
             return;
         }
         mProgressBar.setIndeterminate(false);
 
         DialogFragment fragment;
-        switch (dialogId) {
-            case R.id.dialog_account_setup_error: {
-                fragment = ConfirmationDialogFragment.newInstance(dialogId,
-                        getString(R.string.account_setup_failed_dlg_title),
-                        customMessage,
-                        getString(R.string.account_setup_failed_dlg_edit_details_action),
-                        getString(R.string.account_setup_failed_dlg_continue_action)
-                );
-                break;
-            }
-            default: {
-                throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
-            }
+        if (R.id.dialog_account_setup_error == dialogId)
+        {
+            fragment = ConfirmationDialogFragment.newInstance(dialogId,
+                    getString(R.string.account_setup_failed_dlg_title),
+                    customMessage,
+                    getString(R.string.account_setup_failed_dlg_edit_details_action),
+                    getString(R.string.account_setup_failed_dlg_continue_action)
+            );
+        }
+        else
+        {
+            throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
         }
 
         FragmentTransaction ta = getFragmentManager().beginTransaction();
@@ -358,24 +365,22 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     }
 
     @Override
-    public void doPositiveClick(int dialogId) {
-        switch (dialogId) {
-            case R.id.dialog_account_setup_error: {
-                finish();
-                break;
-            }
+    public void doPositiveClick(int dialogId)
+    {
+        if (R.id.dialog_account_setup_error == dialogId)
+        {
+            finish();
         }
     }
 
     @Override
-    public void doNegativeClick(int dialogId) {
-        switch (dialogId) {
-            case R.id.dialog_account_setup_error: {
-                mCanceled = false;
-                setResult(RESULT_OK);
-                finish();
-                break;
-            }
+    public void doNegativeClick(int dialogId)
+    {
+        if (R.id.dialog_account_setup_error == dialogId)
+        {
+            mCanceled = false;
+            setResult(RESULT_OK);
+            finish();
         }
     }
 
@@ -509,4 +514,5 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             setMessage(values[0]);
         }
     }
+
 }

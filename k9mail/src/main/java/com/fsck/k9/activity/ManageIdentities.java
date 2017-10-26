@@ -48,14 +48,17 @@ public class ManageIdentities extends ChooseIdentity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.new_identity:
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int itemId = item.getItemId();
+        if (R.id.new_identity == itemId)
+        {
             Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
             intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
             startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
-            break;
-        default:
+        }
+        else
+        {
             return super.onOptionsItemSelected(item);
         }
         return true;
@@ -69,49 +72,57 @@ public class ManageIdentities extends ChooseIdentity {
     }
 
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
-        switch (item.getItemId()) {
-        case R.id.edit:
+    public boolean onContextItemSelected(android.view.MenuItem item)
+    {
+        AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item.getMenuInfo();
+        int itemId = item.getItemId();
+        if (R.id.edit == itemId)
+        {
             editItem(menuInfo.position);
-            break;
-        case R.id.up:
-            if (menuInfo.position > 0) {
+        }
+        else if (R.id.up == itemId)
+        {
+            if (menuInfo.position > 0)
+            {
                 Identity identity = identities.remove(menuInfo.position);
                 identities.add(menuInfo.position - 1, identity);
                 mIdentitiesChanged = true;
                 refreshView();
             }
-
-            break;
-        case R.id.down:
-            if (menuInfo.position < identities.size() - 1) {
+        }
+        else if (R.id.down == itemId)
+        {
+            if (menuInfo.position < identities.size() - 1)
+            {
                 Identity identity = identities.remove(menuInfo.position);
                 identities.add(menuInfo.position + 1, identity);
                 mIdentitiesChanged = true;
                 refreshView();
             }
-            break;
-        case R.id.top:
+        }
+        else if (R.id.top == itemId)
+        {
             Identity identity = identities.remove(menuInfo.position);
             identities.add(0, identity);
             mIdentitiesChanged = true;
             refreshView();
-            break;
-        case R.id.remove:
-            if (identities.size() > 1) {
+        }
+        else if (R.id.remove == itemId)
+        {
+            if (identities.size() > 1)
+            {
                 identities.remove(menuInfo.position);
                 mIdentitiesChanged = true;
                 refreshView();
-            } else {
-                Toast.makeText(this, getString(R.string.no_removable_identity),
-                               Toast.LENGTH_LONG).show();
             }
-            break;
+            else
+            {
+                Toast.makeText(this, getString(R.string.no_removable_identity),
+                        Toast.LENGTH_LONG).show();
+            }
         }
         return true;
     }
-
 
     @Override
     public void onResume() {
@@ -119,7 +130,6 @@ public class ManageIdentities extends ChooseIdentity {
         //mAccount.refresh(Preferences.getPreferences(getApplication().getApplicationContext()));
         refreshView();
     }
-
 
     @Override
     public void onBackPressed() {
@@ -134,4 +144,5 @@ public class ManageIdentities extends ChooseIdentity {
         }
         finish();
     }
+
 }

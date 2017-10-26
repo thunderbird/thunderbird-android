@@ -9,36 +9,53 @@ import com.fsck.k9.R;
 import com.fsck.k9.ui.ContactBadge;
 
 
-public class MessageViewHolder implements View.OnClickListener {
+public class MessageViewHolder implements View.OnClickListener
+{
+
     private final MessageListFragment fragment;
+
     public TextView subject;
+
     public TextView preview;
+
     public TextView from;
+
     public TextView time;
+
     public TextView date;
+
     public View chip;
+
     public TextView threadCount;
+
     public CheckBox flagged;
+
     public CheckBox selected;
+
     public int position = -1;
+
     public ContactBadge contactBadge;
 
-    public MessageViewHolder(MessageListFragment fragment) {
+    public MessageViewHolder(MessageListFragment fragment)
+    {
         this.fragment = fragment;
     }
 
     @Override
-    public void onClick(View view) {
-        if (position != -1) {
-            switch (view.getId()) {
-                case R.id.selected_checkbox:
-                    fragment.toggleMessageSelectWithAdapterPosition(position);
-                    break;
-                case R.id.flagged_bottom_right:
-                case R.id.flagged_center_right:
-                    fragment.toggleMessageFlagWithAdapterPosition(position);
-                    break;
+    public void onClick(View view)
+    {
+        if (position != -1)
+        {
+            int id = view.getId();
+            if (R.id.selected_checkbox == id)
+            {
+                fragment.toggleMessageSelectWithAdapterPosition(position);
+            }
+            else if (R.id.flagged_bottom_right == id || R.id.flagged_center_right == id)
+            {
+                fragment.toggleMessageFlagWithAdapterPosition(position);
             }
         }
     }
+
 }

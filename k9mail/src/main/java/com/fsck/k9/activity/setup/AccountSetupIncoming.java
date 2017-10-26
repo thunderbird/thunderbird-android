@@ -2,11 +2,6 @@
 package com.fsck.k9.activity.setup;
 
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -48,6 +43,12 @@ import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
 import timber.log.Timber;
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
@@ -599,14 +600,18 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
     }
 
-    public void onClick(View v) {
-        try {
-            switch (v.getId()) {
-            case R.id.next:
+    public void onClick(View v)
+    {
+        try
+        {
+            int id = v.getId();
+            if (R.id.next == id)
+            {
                 onNext();
-                break;
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             failure(e);
         }
     }
@@ -654,4 +659,5 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         ConnectionSecurityHolder holder = (ConnectionSecurityHolder) mSecurityTypeView.getSelectedItem();
         return holder.connectionSecurity;
     }
+
 }
