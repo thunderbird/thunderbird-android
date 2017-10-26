@@ -815,7 +815,7 @@ public class Pop3Store extends RemoteStore {
                 if (fp.contains(FetchProfile.Item.ENVELOPE)) {
                     /*
                      * We pass the listener only if there are other things to do in the
-                     * FetchProfile. Since fetchEnvelop works in bulk and eveything else
+                     * FetchProfile. Since fetchEnvelop works in bulk and everything else
                      * works one at a time if we let fetchEnvelope send events the
                      * event would get sent twice.
                      */

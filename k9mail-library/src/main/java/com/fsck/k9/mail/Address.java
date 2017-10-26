@@ -318,7 +318,7 @@ public class Address implements Serializable {
      * (empty string) -> ""
      * " -> """
      * @param s
-     * @return
+     * @return string guaranteed to be enclosed in double quotes
      */
     @VisibleForTesting
     static String quoteString(String s) {

@@ -107,7 +107,7 @@ public final class TrustManagerFactory {
         }
     }
 
-    private TrustManagerFactory() {
+    private TrustManagerFactory() {  // prevent initialization
     }
 
     public static X509TrustManager get(String host, int port) {

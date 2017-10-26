@@ -37,7 +37,7 @@ public class MessageExtractor {
     public static final long NO_TEXT_SIZE_LIMIT = -1L;
 
 
-    private MessageExtractor() {}
+    private MessageExtractor() {} // prevent class from being instantiated
 
     @Nullable
     public static String getTextFromPart(Part part) {

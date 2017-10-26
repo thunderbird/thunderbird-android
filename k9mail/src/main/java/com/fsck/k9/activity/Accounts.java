@@ -627,7 +627,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
 
-    /*
+    /**
      * This method is called with 'null' for the argument 'account' if
      * all accounts are to be checked. This is handled accordingly in
      * MessagingController.checkMail().
@@ -1186,8 +1186,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
-        // submenus don't actually set the menuInfo, so the "advanced"
-        // submenu wouldn't work.
+        // submenus don't actually set the menuInfo, so the "advanced" submenu wouldn't work.
         if (menuInfo != null) {
             mSelectedContextAccount = (BaseAccount)getListView().getItemAtPosition(menuInfo.position);
         }
