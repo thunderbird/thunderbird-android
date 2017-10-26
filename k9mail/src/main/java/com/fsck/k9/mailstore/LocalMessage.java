@@ -173,7 +173,7 @@ public class LocalMessage extends MimeMessage {
 
     @Override
     public void setMessageId(String messageId) {
-        mMessageId = messageId;
+        this.messageId = messageId;
         headerNeedsUpdating = true;
     }
 
@@ -441,8 +441,8 @@ public class LocalMessage extends MimeMessage {
             super.setFrom(mFrom[0]);
         }
 
-        if (mMessageId != null) {
-            super.setMessageId(mMessageId);
+        if (messageId != null) {
+            super.setMessageId(messageId);
         }
         
         headerNeedsUpdating = false;

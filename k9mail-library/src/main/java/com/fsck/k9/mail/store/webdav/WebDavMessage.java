@@ -71,7 +71,7 @@ class WebDavMessage extends MimeMessage {
     }
 
     public void setSize(int size) {
-        this.mSize = size;
+        this.size = size;
     }
 
     public void setFlagInternal(Flag flag, boolean set) throws MessagingException {

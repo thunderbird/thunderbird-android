@@ -228,7 +228,7 @@ public class QuotedMessagePresenter {
         if (messageFormatString != null) {
             try {
                 messageFormat = MessageFormat.valueOf(messageFormatString);
-            } catch (Exception e) { /* do nothing */ }
+            } catch (Exception e) { Timber.e(e);}
         }
 
         if (messageFormat == null) {

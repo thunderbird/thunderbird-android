@@ -174,8 +174,8 @@ class EncoderUtil {
             return Encoding.Q;
 
         int qEncoded = 0;
-        for (int i = 0; i < bytes.length; i++) {
-            int v = bytes[i] & 0xff;
+        for (byte b : bytes) {
+            int v = b & 0xff;
             if (v != 32 && !Q_RESTRICTED_CHARS.get(v)) {
                 qEncoded++;
             }

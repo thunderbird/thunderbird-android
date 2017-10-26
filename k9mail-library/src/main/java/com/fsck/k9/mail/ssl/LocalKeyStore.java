@@ -121,19 +121,7 @@ public class LocalKeyStore {
         try {
             keyStoreStream = new java.io.FileOutputStream(mKeyStoreFile);
             mKeyStore.store(keyStoreStream, "".toCharArray());
-        } catch (FileNotFoundException e) {
-            throw new CertificateException("Unable to write KeyStore: "
-                    + e.getMessage());
-        } catch (CertificateException e) {
-            throw new CertificateException("Unable to write KeyStore: "
-                    + e.getMessage());
-        } catch (IOException e) {
-            throw new CertificateException("Unable to write KeyStore: "
-                    + e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            throw new CertificateException("Unable to write KeyStore: "
-                    + e.getMessage());
-        } catch (KeyStoreException e) {
+        } catch (CertificateException | IOException | NoSuchAlgorithmException | KeyStoreException e) {
             throw new CertificateException("Unable to write KeyStore: "
                     + e.getMessage());
         } finally {

@@ -55,15 +55,15 @@ public class MimeMessage extends Message {
     private Address[] deliveredTo;
     private Address[] xEnvelopeTo;
 
-    protected String mMessageId;
-    private String[] mReferences;
-    private String[] mInReplyTo;
+    protected String messageId;
+    private String[] references;
+    private String[] inReplyTo;
 
-    private Date mSentDate;
-    private SimpleDateFormat mDateFormat;
+    private Date sentDate;
+    private SimpleDateFormat dateFormat;
 
-    private Body mBody;
-    protected int mSize;
+    private Body body;
+    protected int size;
     private String serverExtra;
 
 
@@ -95,13 +95,13 @@ public class MimeMessage extends Message {
         deliveredTo = null;
         xEnvelopeTo = null;
 
-        mMessageId = null;
-        mReferences = null;
-        mInReplyTo = null;
+        messageId = null;
+        references = null;
+        inReplyTo = null;
 
-        mSentDate = null;
+        sentDate = null;
 
-        mBody = null;
+        body = null;
 
         MimeConfig parserConfig = new MimeConfig.Builder()
                 // The default is a mere 10k
@@ -126,16 +126,16 @@ public class MimeMessage extends Message {
 
     @Override
     public Date getSentDate() {
-        if (mSentDate == null) {
+        if (sentDate == null) {
             try {
                 DateTimeField field = (DateTimeField)DefaultFieldParser.parse("Date: "
                                       + MimeUtility.unfoldAndDecode(getFirstHeader("Date")));
-                mSentDate = field.getDate();
+                sentDate = field.getDate();
             } catch (Exception e) {
 
             }
         }
-        return mSentDate;
+        return sentDate;
     }
 
     /**
@@ -147,15 +147,15 @@ public class MimeMessage extends Message {
      * @throws com.fsck.k9.mail.MessagingException
      */
     public void addSentDate(Date sentDate, boolean hideTimeZone) {
-        if (mDateFormat == null) {
-            mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
+        if (dateFormat == null) {
+            dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
         }
 
         if (hideTimeZone) {
-            mDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         }
 
-        addHeader("Date", mDateFormat.format(sentDate));
+        addHeader("Date", dateFormat.format(sentDate));
         setInternalSentDate(sentDate);
     }
 
@@ -197,7 +197,7 @@ public class MimeMessage extends Message {
 
     @Override
     public long getSize() {
-        return mSize;
+        return size;
     }
 
     /**
@@ -349,11 +349,6 @@ public class MimeMessage extends Message {
     public void setSender(Address sender) {
         if (sender != null) {
             setHeader("Sender", sender.toEncodedString());
-            this.mSender = new Address[] {
-                    sender
-            };
-        } else {
-            this.mSender = null;
         }
     }
 
@@ -378,15 +373,15 @@ public class MimeMessage extends Message {
 
     @Override
     public String getMessageId() {
-        if (mMessageId == null) {
-            mMessageId = getFirstHeader("Message-ID");
+        if (messageId == null) {
+            messageId = getFirstHeader("Message-ID");
         }
-        return mMessageId;
+        return messageId;
     }
 
     public void setMessageId(String messageId) {
         setHeader("Message-ID", messageId);
-        mMessageId = messageId;
+        this.messageId = messageId;
     }
 
     @Override
@@ -396,10 +391,10 @@ public class MimeMessage extends Message {
 
     @Override
     public String[] getReferences() {
-        if (mReferences == null) {
-            mReferences = getHeader("References");
+        if (references == null) {
+            references = getHeader("References");
         }
-        return mReferences;
+        return references;
     }
 
     @Override
@@ -441,12 +436,12 @@ public class MimeMessage extends Message {
 
     @Override
     public Body getBody() {
-        return mBody;
+        return body;
     }
 
     @Override
     public void setBody(Body body) {
-        this.mBody = body;
+        this.body = body;
     }
 
     private String getFirstHeader(String name) {
@@ -491,8 +486,8 @@ public class MimeMessage extends Message {
         mHeader.writeTo(out);
         writer.write("\r\n");
         writer.flush();
-        if (mBody != null) {
-            mBody.writeTo(out);
+        if (body != null) {
+            body.writeTo(out);
         }
     }
 
@@ -509,8 +504,8 @@ public class MimeMessage extends Message {
 
     @Override
     public void setEncoding(String encoding) throws MessagingException {
-        if (mBody != null) {
-            mBody.setEncoding(encoding);
+        if (body != null) {
+            body.setEncoding(encoding);
         }
         setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
     }
@@ -518,11 +513,11 @@ public class MimeMessage extends Message {
     @Override
     public void setCharset(String charset) throws MessagingException {
         mHeader.setCharset(charset);
-        if (mBody instanceof Multipart) {
-            ((Multipart)mBody).setCharset(charset);
-        } else if (mBody instanceof TextBody) {
+        if (body instanceof Multipart) {
+            ((Multipart) body).setCharset(charset);
+        } else if (body instanceof TextBody) {
             CharsetSupport.setCharset(charset, this);
-            ((TextBody)mBody).setCharset(charset);
+            ((TextBody) body).setCharset(charset);
         }
     }
 
@@ -668,11 +663,11 @@ public class MimeMessage extends Message {
 
         destination.mHeader = mHeader.clone();
 
-        destination.mBody = mBody;
-        destination.mMessageId = mMessageId;
-        destination.mSentDate = mSentDate;
-        destination.mDateFormat = mDateFormat;
-        destination.mSize = mSize;
+        destination.body = body;
+        destination.messageId = messageId;
+        destination.sentDate = sentDate;
+        destination.dateFormat = dateFormat;
+        destination.size = size;
 
         // These arrays are not supposed to be modified, so it's okay to reuse the references
         destination.mFrom = mFrom;
@@ -680,8 +675,8 @@ public class MimeMessage extends Message {
         destination.mCc = mCc;
         destination.mBcc = mBcc;
         destination.mReplyTo = mReplyTo;
-        destination.mReferences = mReferences;
-        destination.mInReplyTo = mInReplyTo;
+        destination.references = references;
+        destination.inReplyTo = inReplyTo;
         destination.xOriginalTo = xOriginalTo;
         destination.deliveredTo = deliveredTo;
         destination.xEnvelopeTo = xEnvelopeTo;

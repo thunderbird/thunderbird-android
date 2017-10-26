@@ -171,8 +171,7 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
     class LoadAccounts extends AsyncTask<Void, Void, List<Account>> {
         @Override
         protected List<Account> doInBackground(Void... params) {
-            List<Account> accounts = Preferences.getPreferences(getApplicationContext()).getAccounts();
-            return accounts;
+            return Preferences.getPreferences(getApplicationContext()).getAccounts();
         }
 
         @Override

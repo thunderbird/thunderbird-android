@@ -35,13 +35,13 @@ public class ColorPickerDialog extends AlertDialog {
 
     public ColorPickerDialog(Context context, OnColorChangedListener listener, int color) {
         super(context);
-        mColorChangedListener = listener;
+        colorChangedListener = listener;
 
         @SuppressLint("InflateParams")
         View view = LayoutInflater.from(context).inflate(R.layout.color_picker_dialog, null);
 
-        mColorPicker = (ColorPicker) view.findViewById(R.id.color_picker);
-        mColorPicker.setColor(color);
+        colorPicker = (ColorPicker) view.findViewById(R.id.color_picker);
+        colorPicker.setColor(color);
 
         setView(view);
 
@@ -49,8 +49,8 @@ public class ColorPickerDialog extends AlertDialog {
                 new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (mColorChangedListener != null) {
-                    mColorChangedListener.colorChanged(mColorPicker.getColor());
+                if (colorChangedListener != null) {
+                    colorChangedListener.colorChanged(colorPicker.getColor());
                 }
             }
         });
@@ -66,6 +66,6 @@ public class ColorPickerDialog extends AlertDialog {
      *         The (A)RGB value of a color (the alpha channel will be ignored).
      */
     public void setColor(int color) {
-        mColorPicker.setColor(color);
+        colorPicker.setColor(color);
     }
 }

@@ -20,8 +20,7 @@ public class TransportProvider {
             throws MessagingException {
         String uri = storeConfig.getTransportUri();
         if (uri.startsWith("smtp")) {
-            OAuth2TokenProvider oauth2TokenProvider = null;
-            return new SmtpTransport(storeConfig, new DefaultTrustedSocketFactory(context), oauth2TokenProvider);
+            return new SmtpTransport(storeConfig, new DefaultTrustedSocketFactory(context), null);
         } else if (uri.startsWith("webdav")) {
             return new WebDavTransport(storeConfig);
         } else {

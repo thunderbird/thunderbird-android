@@ -1112,7 +1112,7 @@ public class MimeUtility {
      *            A String representing a MIME content-type
      * @return A String representing a MIME content-transfer-encoding
      */
-    public static String getEncodingforType(String type) {
+    public static String getEncodingForType(String type) {
         if (type == null) {
             return (MimeUtil.ENC_BASE64);
         } else if (MimeUtil.isMessage(type)) {

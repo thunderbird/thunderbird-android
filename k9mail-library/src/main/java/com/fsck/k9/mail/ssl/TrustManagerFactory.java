@@ -56,21 +56,17 @@ public final class TrustManagerFactory {
 
         public void checkServerTrusted(X509Certificate[] chain, String authType)
                 throws CertificateException {
-            String message = null;
+            String message;
             X509Certificate certificate = chain[0];
 
-            Throwable cause = null;
+            Throwable cause;
 
             try {
                 defaultTrustManager.checkServerTrusted(chain, authType);
                 new StrictHostnameVerifier().verify(mHost, certificate);
                 return;
-            } catch (CertificateException e) {
-                // cert. chain can't be validated
-                message = e.getMessage();
-                cause = e;
-            } catch (SSLException e) {
-                // host name doesn't match certificate
+            } catch (CertificateException | SSLException e) {
+                // cert. chain can't be validated or host name doesn't match certificate
                 message = e.getMessage();
                 cause = e;
             }

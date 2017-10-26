@@ -34,14 +34,11 @@ public abstract class Message implements Part, Body {
         if (earliestDate == null) {
             return false;
         }
-        Date myDate = getSentDate();
-        if (myDate == null) {
-            myDate = getInternalDate();
+        Date latestDate = getSentDate();
+        if (latestDate == null) {
+            latestDate = getInternalDate();
         }
-        if (myDate != null) {
-            return myDate.before(earliestDate);
-        }
-        return false;
+        return latestDate != null && latestDate.before(earliestDate);
     }
 
     @Override
@@ -58,8 +55,7 @@ public abstract class Message implements Part, Body {
     public int hashCode() {
         final int MULTIPLIER = 31;
 
-        int result = 1;
-        result = MULTIPLIER * result + (mFolder != null ? mFolder.getName().hashCode() : 0);
+        int result = MULTIPLIER + (mFolder != null ? mFolder.getName().hashCode() : 0);
         result = MULTIPLIER * result + mUid.hashCode();
         return result;
     }
@@ -206,9 +202,7 @@ public abstract class Message implements Part, Body {
             writeTo(eolOut);
             eolOut.flush();
             return out.getCount();
-        } catch (IOException e) {
-            Timber.e(e, "Failed to calculate a message size");
-        } catch (MessagingException e) {
+        } catch (IOException | MessagingException e) {
             Timber.e(e, "Failed to calculate a message size");
         }
         return 0;

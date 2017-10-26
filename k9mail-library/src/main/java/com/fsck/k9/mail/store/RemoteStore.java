@@ -51,12 +51,11 @@ public abstract class RemoteStore extends Store {
         Store store = sStores.get(uri);
         if (store == null) {
             if (uri.startsWith("imap")) {
-                OAuth2TokenProvider oAuth2TokenProvider = null;
                 store = new ImapStore(
                         storeConfig,
                         new DefaultTrustedSocketFactory(context),
                         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE),
-                        oAuth2TokenProvider);
+                        null);
             } else if (uri.startsWith("pop3")) {
                 store = new Pop3Store(storeConfig, new DefaultTrustedSocketFactory(context));
             } else if (uri.startsWith("webdav")) {

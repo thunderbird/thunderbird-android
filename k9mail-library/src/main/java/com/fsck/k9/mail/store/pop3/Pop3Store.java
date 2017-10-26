@@ -670,7 +670,8 @@ public class Pop3Store extends RemoteStore {
                     }
                 }
             } else {
-                String response = executeSimpleCommand(UIDL_COMMAND);
+                String response;
+                executeSimpleCommand(UIDL_COMMAND);
                 while ((response = readLine()) != null) {
                     if (response.equals(".")) {
                         break;
@@ -733,7 +734,8 @@ public class Pop3Store extends RemoteStore {
              * get them is to do a full UIDL list. A possible optimization
              * would be trying UIDL for the latest X messages and praying.
              */
-            String response = executeSimpleCommand(UIDL_COMMAND);
+            String response;
+            executeSimpleCommand(UIDL_COMMAND);
             while ((response = readLine()) != null) {
                 if (response.equals(".")) {
                     break;
@@ -875,7 +877,8 @@ public class Pop3Store extends RemoteStore {
                     msgUidIndex.add(message.getUid());
                 }
                 int i = 0, count = messages.size();
-                String response = executeSimpleCommand(LIST_COMMAND);
+                String response;
+                executeSimpleCommand(LIST_COMMAND);
                 while ((response = readLine()) != null) {
                     if (response.equals(".")) {
                         break;
@@ -1069,19 +1072,24 @@ public class Pop3Store extends RemoteStore {
                         break;
                     }
                     response = response.toUpperCase(Locale.US);
-                    if (response.equals(AUTH_PLAIN_CAPABILITY)) {
-                        capabilities.authPlain = true;
-                    } else if (response.equals(AUTH_CRAM_MD5_CAPABILITY)) {
-                        capabilities.cramMD5 = true;
-                    } else if (response.equals(AUTH_EXTERNAL_CAPABILITY)) {
-                        capabilities.external = true;
+                    switch (response) {
+                        case AUTH_PLAIN_CAPABILITY:
+                            capabilities.authPlain = true;
+                            break;
+                        case AUTH_CRAM_MD5_CAPABILITY:
+                            capabilities.cramMD5 = true;
+                            break;
+                        case AUTH_EXTERNAL_CAPABILITY:
+                            capabilities.external = true;
+                            break;
                     }
                 }
             } catch (MessagingException e) {
                 // Assume AUTH command with no arguments is not supported.
             }
             try {
-                String response = executeSimpleCommand(CAPA_COMMAND);
+                String response;
+                executeSimpleCommand(CAPA_COMMAND);
                 while ((response = readLine()) != null) {
                     if (response.equals(".")) {
                         break;
@@ -1183,11 +1191,11 @@ public class Pop3Store extends RemoteStore {
         Pop3Message(String uid, Pop3Folder folder) {
             mUid = uid;
             mFolder = folder;
-            mSize = -1;
+            size = -1;
         }
 
         public void setSize(int size) {
-            mSize = size;
+            this.size = size;
         }
 
         @Override

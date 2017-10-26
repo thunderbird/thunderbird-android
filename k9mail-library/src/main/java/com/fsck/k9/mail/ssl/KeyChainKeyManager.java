@@ -59,10 +59,8 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
         try {
             mChain = fetchCertificateChain(context, alias);
             mPrivateKey = fetchPrivateKey(context, alias);
-        } catch (KeyChainException e) {
+        } catch (KeyChainException | InterruptedException e) {
             // The certificate was possibly deleted.  Notify user of error.
-            throw new CertificateValidationException(e.getMessage(), RetrievalFailure, alias);
-        } catch (InterruptedException e) {
             throw new CertificateValidationException(e.getMessage(), RetrievalFailure, alias);
         }
     }
