@@ -962,7 +962,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         private List<Account> mRemainingAccounts;
         private Application mApplication;
 
-        protected SetPasswordsAsyncTask(Activity activity, Account account,
+        SetPasswordsAsyncTask(Activity activity, Account account,
                                         String incomingPassword, String outgoingPassword,
                                         List<Account> remainingAccounts) {
             super(activity);

@@ -13,12 +13,12 @@ class NegativeImapResponseException extends MessagingException {
     private final List<ImapResponse> responses;
     private String alertText;
 
-    public NegativeImapResponseException(String message, List<ImapResponse> responses) {
+    NegativeImapResponseException(String message, List<ImapResponse> responses) {
         super(message, true);
         this.responses = responses;
     }
 
-    public String getAlertText() {
+    String getAlertText() {
         if (alertText == null) {
             ImapResponse lastResponse = getLastResponse();
             alertText = AlertResponse.getAlertText(lastResponse);
@@ -27,7 +27,7 @@ class NegativeImapResponseException extends MessagingException {
         return alertText;
     }
 
-    public boolean wasByeResponseReceived() {
+    boolean wasByeResponseReceived() {
         for (ImapResponse response : responses) {
             if (response.getTag() == null && response.size() >= 1 && equalsIgnoreCase(response.get(0), Responses.BYE)) {
                 return true;
@@ -37,7 +37,7 @@ class NegativeImapResponseException extends MessagingException {
         return false;
     }
 
-    public ImapResponse getLastResponse() {
+    ImapResponse getLastResponse() {
         return responses.get(responses.size() - 1);
     }
 }

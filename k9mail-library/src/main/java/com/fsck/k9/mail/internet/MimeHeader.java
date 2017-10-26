@@ -70,7 +70,7 @@ public class MimeHeader implements Cloneable {
         return values.toArray(new String[values.size()]);
     }
 
-    public void removeHeader(String name) {
+    void removeHeader(String name) {
         List<Field> removeFields = new ArrayList<Field>();
         for (Field field : mFields) {
             if (field.getName().equalsIgnoreCase(name)) {
@@ -158,7 +158,7 @@ public class MimeHeader implements Cloneable {
         private final String value;
         private final String raw;
 
-        public static Field newNameValueField(String name, String value) {
+        static Field newNameValueField(String name, String value) {
             if (value == null) {
                 throw new NullPointerException("Argument 'value' cannot be null");
             }
@@ -166,7 +166,7 @@ public class MimeHeader implements Cloneable {
             return new Field(name, value, null);
         }
 
-        public static Field newRawField(String name, String raw) {
+        static Field newRawField(String name, String raw) {
             if (raw == null) {
                 throw new NullPointerException("Argument 'raw' cannot be null");
             }
@@ -205,7 +205,7 @@ public class MimeHeader implements Cloneable {
             return raw;
         }
 
-        public boolean hasRawData() {
+        boolean hasRawData() {
             return raw != null;
         }
 

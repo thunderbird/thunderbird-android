@@ -691,7 +691,7 @@ class ImapFolderPusher extends ImapFolder {
         private ImapConnection imapConnection;
 
 
-        public synchronized void startAcceptingDoneContinuation(ImapConnection connection) {
+        synchronized void startAcceptingDoneContinuation(ImapConnection connection) {
             if (connection == null) {
                 throw new NullPointerException("connection must not be null");
             }
@@ -700,12 +700,12 @@ class ImapFolderPusher extends ImapFolder {
             imapConnection = connection;
         }
 
-        public synchronized void stopAcceptingDoneContinuation() {
+        synchronized void stopAcceptingDoneContinuation() {
             acceptDoneContinuation = false;
             imapConnection = null;
         }
 
-        public synchronized void stopIdle() {
+        synchronized void stopIdle() {
             if (acceptDoneContinuation) {
                 acceptDoneContinuation = false;
                 sendDone();

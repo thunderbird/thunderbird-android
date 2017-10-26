@@ -21,7 +21,7 @@ public interface NonConfigurationInstance {
      *
      * @see Activity#onRetainNonConfigurationInstance()
      */
-    public boolean retain();
+    boolean retain();
 
     /**
      * Connect this retained {@code NonConfigurationInstance} to the new {@link Activity} instance
@@ -34,5 +34,5 @@ public interface NonConfigurationInstance {
      * @param activity
      *         The new {@code Activity} instance. Never {@code null}.
      */
-    public void restore(Activity activity);
+    void restore(Activity activity);
 }

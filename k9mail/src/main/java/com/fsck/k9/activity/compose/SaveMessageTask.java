@@ -11,13 +11,12 @@ import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Message;
 
 public class SaveMessageTask extends AsyncTask<Void, Void, Void> {
-    Context context;
-    Account account;
-    Contacts contacts;
-    Handler handler;
-    Message message;
-    long draftId;
-    boolean saveRemotely;
+    private Context context;
+    private Account account;
+    private Handler handler;
+    private Message message;
+    private long draftId;
+    private boolean saveRemotely;
 
     public SaveMessageTask(Context context, Account account, Contacts contacts,
                            Handler handler, Message message, long draftId, boolean saveRemotely) {

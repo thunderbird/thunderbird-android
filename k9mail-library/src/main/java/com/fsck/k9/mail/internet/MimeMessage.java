@@ -51,9 +51,9 @@ public class MimeMessage extends Message {
     protected Address[] mCc;
     protected Address[] mBcc;
     protected Address[] mReplyTo;
-    protected Address[] xOriginalTo;
-    protected Address[] deliveredTo;
-    protected Address[] xEnvelopeTo;
+    private Address[] xOriginalTo;
+    private Address[] deliveredTo;
+    private Address[] xEnvelopeTo;
 
     protected String mMessageId;
     private String[] mReferences;
@@ -165,8 +165,8 @@ public class MimeMessage extends Message {
         addSentDate(sentDate, hideTimeZone);
     }
 
-    public void setInternalSentDate(Date sentDate) {
-        this.mSentDate = sentDate;
+    protected void setInternalSentDate(Date sentDate) {
+        this.sentDate = sentDate;
     }
 
     @Override
@@ -530,7 +530,7 @@ public class MimeMessage extends Message {
         private final LinkedList<Object> stack = new LinkedList<>();
         private final BodyFactory bodyFactory;
 
-        public MimeMessageBuilder(BodyFactory bodyFactory) {
+        MimeMessageBuilder(BodyFactory bodyFactory) {
             this.bodyFactory = bodyFactory;
         }
 

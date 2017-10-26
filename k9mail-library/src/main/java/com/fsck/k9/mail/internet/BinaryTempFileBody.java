@@ -125,7 +125,7 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
     }
 
     class BinaryTempFileBodyInputStream extends FilterInputStream {
-        public BinaryTempFileBodyInputStream(InputStream in) {
+        BinaryTempFileBodyInputStream(InputStream in) {
             super(in);
         }
 
@@ -142,7 +142,7 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
             }
         }
 
-        public void closeWithoutDeleting() throws IOException {
+        void closeWithoutDeleting() throws IOException {
             super.close();
         }
     }

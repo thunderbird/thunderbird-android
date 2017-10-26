@@ -21,11 +21,11 @@ class ListResponse {
         this.name = name;
     }
 
-    public static List<ListResponse> parseList(List<ImapResponse> responses) {
+    static List<ListResponse> parseList(List<ImapResponse> responses) {
         return parse(responses, Responses.LIST);
     }
 
-    public static List<ListResponse> parseLsub(List<ImapResponse> responses) {
+    static List<ListResponse> parseLsub(List<ImapResponse> responses) {
         return parse(responses, Responses.LSUB);
     }
 
@@ -80,11 +80,11 @@ class ListResponse {
         return attributes;
     }
 
-    public List<String> getAttributes() {
+    List<String> getAttributes() {
         return attributes;
     }
 
-    public boolean hasAttribute(String attribute) {
+    boolean hasAttribute(String attribute) {
         for (String attributeInResponse : attributes) {
             if (attributeInResponse.equalsIgnoreCase(attribute)) {
                 return true;
@@ -95,7 +95,7 @@ class ListResponse {
     }
 
     @Nullable
-    public String getHierarchyDelimiter() {
+    String getHierarchyDelimiter() {
         return hierarchyDelimiter;
     }
 

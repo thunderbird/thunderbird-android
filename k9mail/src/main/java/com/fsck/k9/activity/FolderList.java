@@ -644,7 +644,7 @@ public class FolderList extends K9ListActivity {
         menu.setHeaderTitle(folder.displayName);
     }
 
-    class FolderListAdapter extends BaseAdapter implements Filterable {
+    private class FolderListAdapter extends BaseAdapter implements Filterable {
         private List<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
         private Filter mFilter = new FolderListFilter();

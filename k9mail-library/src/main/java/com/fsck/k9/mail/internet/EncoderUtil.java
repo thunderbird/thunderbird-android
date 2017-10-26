@@ -62,7 +62,7 @@ class EncoderUtil {
      * @return the encoded word (or sequence of encoded words if the given text
      *         does not fit in a single encoded word).
      */
-    public static String encodeEncodedWord(String text, Charset charset) {
+    static String encodeEncodedWord(String text, Charset charset) {
         if (text == null)
             throw new IllegalArgumentException();
 

@@ -14,7 +14,7 @@ class Iso2022JpToShiftJisInputStream extends InputStream {
     private int out;
     private boolean hasOut = false;
 
-    public Iso2022JpToShiftJisInputStream(InputStream in) {
+    Iso2022JpToShiftJisInputStream(InputStream in) {
         mIn = in;
     }
 

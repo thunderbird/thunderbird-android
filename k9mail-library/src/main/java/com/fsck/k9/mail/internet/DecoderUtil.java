@@ -85,7 +85,7 @@ class DecoderUtil {
      * @param message the message which has the string.
      * @return the decoded string.
      */
-    public static String decodeEncodedWords(String body, Message message) {
+    static String decodeEncodedWords(String body, Message message) {
 
         // ANDROID:  Most strings will not include "=?" so a quick test can prevent unneeded
         // object creation.  This could also be handled via lazy creation of the StringBuilder.
