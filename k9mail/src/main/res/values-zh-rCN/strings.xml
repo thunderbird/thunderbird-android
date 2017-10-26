@@ -14,6 +14,36 @@
   <string name="app_license">根据 Apache License 2.0 协议授权。</string>
   <!--Welcome message-->
   <string name="welcome_message_title">欢迎使用 K-9 Mail</string>
+  <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 邮箱是Android 上一个免费而强大的邮件客户端
+</p><p>
+它包括了以下特性：
+</p>
+<ul>
+  <li> 可使用 IMAP 或 IDLE 进行邮件推送</li>
+  <li> 强大的性能表现</li>
+  <li> 邮件归档</li>
+  <li> 电子邮件签名</li>
+  <li> Bcc-to-self 特性</li>
+  <li> 文件夹订阅</li>
+  <li> 全文件夹同步</li>
+  <li> 回信地址设置</li>
+  <li> 快捷键设置</li>
+  <li> 更好的 IMAP 支持</li>
+  <li> 附件可保存到 SD 卡</li>
+  <li> 垃圾箱清空</li>
+  <li> 邮件分类</li>
+  <li> 更多的其他特性…</li>
+</ul>
+<p>
+请注意，K-9 邮箱不支持大多数的免费Hotmail用户，因为我们在与 Microsoft Exchange 进行连接的时候可能会出现一些错误，这一点也与大多数其他的邮件客户端一样
+</p><p>
+如果你想要提交Bug 反馈、提问 或者贡献一些新的功能特性，那么你可以访问
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
+</p>
+    ]]></string>
+
   <!--Default signature-->
   <string name="default_signature">-- \n使用 K-9 Mail 发送自我的Android设备。</string>
   <!--General strings that include the app name-->
@@ -26,7 +56,7 @@
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">作者: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">更新日志: <xliff:g id="app_revision_url">%s</xliff:g></string>
-  <string name="app_libraries">我们是用了以下的第三方库： <xliff:g id="app_libraries_list">%s</xliff:g></string>
+  <string name="app_libraries">我们使用了以下的第三方库： <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="app_emoji_icons">Emoji图标： <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
   <string name="read_attachment_label">阅读邮件附件</string>
   <string name="read_attachment_desc">允许该程序读取邮件附件。</string>
