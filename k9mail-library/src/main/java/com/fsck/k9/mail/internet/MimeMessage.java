@@ -37,6 +37,7 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
+import timber.log.Timber;
 
 
 /**
@@ -132,7 +133,7 @@ public class MimeMessage extends Message {
                                       + MimeUtility.unfoldAndDecode(getFirstHeader("Date")));
                 sentDate = field.getDate();
             } catch (Exception e) {
-
+                Timber.e(e);
             }
         }
         return sentDate;
