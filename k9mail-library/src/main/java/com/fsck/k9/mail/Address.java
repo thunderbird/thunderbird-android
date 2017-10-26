@@ -1,11 +1,15 @@
 
 package com.fsck.k9.mail;
 
-import android.support.annotation.VisibleForTesting;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import android.support.annotation.VisibleForTesting;
+import android.text.TextUtils;
+import android.text.util.Rfc822Token;
+import android.text.util.Rfc822Tokenizer;
 
 import org.apache.james.mime4j.MimeException;
 import org.apache.james.mime4j.codec.EncoderUtil;
@@ -13,10 +17,6 @@ import org.apache.james.mime4j.dom.address.Mailbox;
 import org.apache.james.mime4j.dom.address.MailboxList;
 import org.apache.james.mime4j.field.address.DefaultAddressParser;
 import timber.log.Timber;
-
-import android.text.TextUtils;
-import android.text.util.Rfc822Token;
-import android.text.util.Rfc822Tokenizer;
 
 public class Address implements Serializable {
     private static final Pattern ATOM = Pattern.compile("^(?:[a-zA-Z0-9!#$%&'*+\\-/=?^_`{|}~]|\\s)+$");

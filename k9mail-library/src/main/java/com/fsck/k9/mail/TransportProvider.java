@@ -3,11 +3,10 @@ package com.fsck.k9.mail;
 
 import android.content.Context;
 
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
-import com.fsck.k9.mail.transport.smtp.SmtpTransport;
 import com.fsck.k9.mail.transport.WebDavTransport;
+import com.fsck.k9.mail.transport.smtp.SmtpTransport;
 
 public class TransportProvider {
     private static TransportProvider transportProvider = new TransportProvider();

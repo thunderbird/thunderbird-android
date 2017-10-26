@@ -1,13 +1,13 @@
 package com.fsck.k9.activity;
 
-import com.fsck.k9.R;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.fsck.k9.R;
 import com.larswerkman.colorpicker.ColorPicker;
 
 

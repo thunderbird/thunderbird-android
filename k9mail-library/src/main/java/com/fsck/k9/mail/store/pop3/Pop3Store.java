@@ -1,22 +1,16 @@
 
 package com.fsck.k9.mail.store.pop3;
 
-import android.annotation.SuppressLint;
-
-import com.fsck.k9.mail.*;
-import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mail.filter.Hex;
-import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.StoreConfig;
-
-import javax.net.ssl.SSLException;
-import timber.log.Timber;
-
-import java.io.*;
-import java.net.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -25,16 +19,41 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
+import android.annotation.SuppressLint;
+
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.Authentication;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.ServerSettings.Type;
+import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.filter.Hex;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.StoreConfig;
+import javax.net.ssl.SSLException;
+import timber.log.Timber;
+
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
+import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 

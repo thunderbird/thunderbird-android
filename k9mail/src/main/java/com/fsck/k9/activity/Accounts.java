@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,6 +32,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -138,6 +141,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private TextView mActionBarSubTitle;
     private TextView mActionBarUnread;
 
+    private Locale locale;
     private boolean exportGlobalSettings;
     private ArrayList<String> exportAccountUuids;
 
@@ -159,7 +163,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             if (mUnreadMessageCount == 0) {
                 mActionBarUnread.setVisibility(View.GONE);
             } else {
-                mActionBarUnread.setText(String.format("%d", mUnreadMessageCount));
+                mActionBarUnread.setText(String.format(locale, "%d", mUnreadMessageCount));
                 mActionBarUnread.setVisibility(View.VISIBLE);
             }
 
@@ -386,6 +390,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             createSpecialAccounts();
         }
 
+        if (VERSION.SDK_INT >= VERSION_CODES.N) {
+            locale = getResources().getConfiguration().getLocales().get(0);
+        } else {
+            locale = getResources().getConfiguration().locale;
+        }
         List<Account> accounts = Preferences.getPreferences(this).getAccounts();
         Intent intent = getIntent();
         //onNewIntent(intent);
@@ -1796,10 +1805,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             Integer unreadMessageCount = null;
             if (stats != null) {
                 unreadMessageCount = stats.unreadMessageCount;
-                holder.newMessageCount.setText(String.format("%d", unreadMessageCount));
+                holder.newMessageCount.setText(String.format(locale, "%d", unreadMessageCount));
                 holder.newMessageCountWrapper.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
 
-                holder.flaggedMessageCount.setText(String.format("%d", stats.flaggedMessageCount));
+                holder.flaggedMessageCount.setText(String.format(locale, "%d", stats.flaggedMessageCount));
                 holder.flaggedMessageCountWrapper.setVisibility(K9.messageListStars() && stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
 
                 holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearchListener(account));
@@ -2126,7 +2135,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                             is.close();
                         }
                     } catch (IOException e) {
-                        /* Ignore */
+                        Timber.e(e);
                     }
                 }
             } catch (SettingsImportExportException e) {
