@@ -7,6 +7,7 @@ import java.util.Date;
 import android.content.Intent;
 
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.internet.MimeBodyPart;
 import org.openintents.openpgp.AutocryptPeerUpdate;
 import org.openintents.openpgp.util.OpenPgpApi;
 
@@ -60,4 +61,10 @@ public class AutocryptOperations {
         message.addRawHeader(AutocryptHeader.AUTOCRYPT_HEADER, rawAutocryptHeader);
     }
 
+    public void addAutocryptGossipHeaderToPart(MimeBodyPart part, byte[] keyData, String autocryptAddress) {
+        AutocryptGossipHeader autocryptGossipHeader = new AutocryptGossipHeader(autocryptAddress, keyData);
+        String rawAutocryptHeader = autocryptGossipHeader.toRawHeaderString();
+
+        part.addRawHeader(AutocryptGossipHeader.AUTOCRYPT_GOSSIP_HEADER, rawAutocryptHeader);
+    }
 }
