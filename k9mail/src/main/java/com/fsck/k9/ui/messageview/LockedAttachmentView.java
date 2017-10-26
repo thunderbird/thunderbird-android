@@ -44,12 +44,12 @@ public class LockedAttachmentView extends ToolableViewAnimator implements OnClic
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.locked_button: {
-                showUnlockedView();
-                break;
-            }
+    public void onClick(View view)
+    {
+        int id = view.getId();
+        if (R.id.locked_button == id)
+        {
+            showUnlockedView();
         }
     }
 

@@ -1,9 +1,6 @@
 package com.fsck.k9.ui.messageview;
 
 
-import java.util.Collections;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.DownloadManager;
@@ -51,6 +48,10 @@ import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener;
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import com.fsck.k9.view.MessageHeader;
+
+import java.util.Collections;
+import java.util.Locale;
+
 import timber.log.Timber;
 
 
@@ -513,38 +514,38 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         mController.copyMessage(mAccount, mMessageReference.getFolderName(), reference, destFolderName);
     }
 
-    private void showDialog(int dialogId) {
+    private void showDialog(int dialogId)
+    {
         DialogFragment fragment;
-        switch (dialogId) {
-            case R.id.dialog_confirm_delete: {
-                String title = getString(R.string.dialog_confirm_delete_title);
-                String message = getString(R.string.dialog_confirm_delete_message);
-                String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
-                String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
+        if (R.id.dialog_confirm_delete == dialogId)
+        {
+            String title = getString(R.string.dialog_confirm_delete_title);
+            String message = getString(R.string.dialog_confirm_delete_message);
+            String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
+            String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
 
-                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                        confirmText, cancelText);
-                break;
-            }
-            case R.id.dialog_confirm_spam: {
-                String title = getString(R.string.dialog_confirm_spam_title);
-                String message = getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, 1);
-                String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
-                String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
+            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                    confirmText, cancelText);
+        }
+        else if (R.id.dialog_confirm_spam == dialogId)
+        {
+            String title = getString(R.string.dialog_confirm_spam_title);
+            String message = getResources().getQuantityString(R.plurals.dialog_confirm_spam_message, 1);
+            String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
+            String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
 
-                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                        confirmText, cancelText);
-                break;
-            }
-            case R.id.dialog_attachment_progress: {
-                String message = getString(R.string.dialog_attachment_progress_title);
-                int size = (int) currentAttachmentViewInfo.size;
-                fragment = AttachmentDownloadDialogFragment.newInstance(size, message);
-                break;
-            }
-            default: {
-                throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
-            }
+            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                    confirmText, cancelText);
+        }
+        else if (R.id.dialog_attachment_progress == dialogId)
+        {
+            String message = getString(R.string.dialog_attachment_progress_title);
+            int size = (int) currentAttachmentViewInfo.size;
+            fragment = AttachmentDownloadDialogFragment.newInstance(size, message);
+        }
+        else
+        {
+            throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
         }
 
         fragment.setTargetFragment(this, dialogId);
@@ -579,17 +580,16 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     @Override
-    public void doPositiveClick(int dialogId) {
-        switch (dialogId) {
-            case R.id.dialog_confirm_delete: {
-                delete();
-                break;
-            }
-            case R.id.dialog_confirm_spam: {
-                refileMessage(mDstFolder);
-                mDstFolder = null;
-                break;
-            }
+    public void doPositiveClick(int dialogId)
+    {
+        if (R.id.dialog_confirm_delete == dialogId)
+        {
+            delete();
+        }
+        else if (R.id.dialog_confirm_spam == dialogId)
+        {
+            refileMessage(mDstFolder);
+            mDstFolder = null;
         }
     }
 

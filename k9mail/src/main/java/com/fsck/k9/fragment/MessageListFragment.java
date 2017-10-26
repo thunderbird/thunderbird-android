@@ -1,17 +1,5 @@
 package com.fsck.k9.fragment;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.Future;
-
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -31,7 +19,6 @@ import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import timber.log.Timber;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -93,6 +80,20 @@ import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.Future;
+
+import timber.log.Timber;
 
 import static com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FLAGGED_COLUMN;
@@ -967,51 +968,51 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         messagingController.expunge(account, folderName);
     }
 
-    private void showDialog(int dialogId) {
+    private void showDialog(int dialogId)
+    {
         DialogFragment fragment;
-        switch (dialogId) {
-            case R.id.dialog_confirm_spam: {
-                String title = getString(R.string.dialog_confirm_spam_title);
+        if (R.id.dialog_confirm_spam == dialogId)
+        {
+            String title = getString(R.string.dialog_confirm_spam_title);
 
-                int selectionSize = activeMessages.size();
-                String message = getResources().getQuantityString(
-                        R.plurals.dialog_confirm_spam_message, selectionSize, selectionSize);
+            int selectionSize = activeMessages.size();
+            String message = getResources().getQuantityString(
+                    R.plurals.dialog_confirm_spam_message, selectionSize, selectionSize);
 
-                String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
-                String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
+            String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
+            String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
 
-                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                        confirmText, cancelText);
-                break;
-            }
-            case R.id.dialog_confirm_delete: {
-                String title = getString(R.string.dialog_confirm_delete_title);
+            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                    confirmText, cancelText);
+        }
+        else if (R.id.dialog_confirm_delete == dialogId)
+        {
+            String title = getString(R.string.dialog_confirm_delete_title);
 
-                int selectionSize = activeMessages.size();
-                String message = getResources().getQuantityString(
-                        R.plurals.dialog_confirm_delete_messages, selectionSize,
-                        selectionSize);
+            int selectionSize = activeMessages.size();
+            String message = getResources().getQuantityString(
+                    R.plurals.dialog_confirm_delete_messages, selectionSize,
+                    selectionSize);
 
-                String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
-                String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
+            String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
+            String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
 
-                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                        confirmText, cancelText);
-                break;
-            }
-            case R.id.dialog_confirm_mark_all_as_read: {
-                String title = getString(R.string.dialog_confirm_mark_all_as_read_title);
-                String message = getString(R.string.dialog_confirm_mark_all_as_read_message);
+            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                    confirmText, cancelText);
+        }
+        else if (R.id.dialog_confirm_mark_all_as_read == dialogId)
+        {
+            String title = getString(R.string.dialog_confirm_mark_all_as_read_title);
+            String message = getString(R.string.dialog_confirm_mark_all_as_read_message);
 
-                String confirmText = getString(R.string.dialog_confirm_mark_all_as_read_confirm_button);
-                String cancelText = getString(R.string.dialog_confirm_mark_all_as_read_cancel_button);
+            String confirmText = getString(R.string.dialog_confirm_mark_all_as_read_confirm_button);
+            String cancelText = getString(R.string.dialog_confirm_mark_all_as_read_cancel_button);
 
-                fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText);
-                break;
-            }
-            default: {
-                throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
-            }
+            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText);
+        }
+        else
+        {
+            throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
         }
 
         fragment.setTargetFragment(this, dialogId);
@@ -1023,63 +1024,73 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         int itemId = item.getItemId();
-        switch (itemId) {
-        case R.id.set_sort_date: {
+        if (R.id.set_sort_date == itemId)
+        {
             changeSort(SortType.SORT_DATE);
             return true;
         }
-        case R.id.set_sort_arrival: {
+        else if (R.id.set_sort_arrival == itemId)
+        {
             changeSort(SortType.SORT_ARRIVAL);
             return true;
         }
-        case R.id.set_sort_subject: {
+        else if (R.id.set_sort_subject == itemId)
+        {
             changeSort(SortType.SORT_SUBJECT);
             return true;
         }
-        case R.id.set_sort_sender: {
+        else if (R.id.set_sort_sender == itemId)
+        {
             changeSort(SortType.SORT_SENDER);
             return true;
         }
-        case R.id.set_sort_flag: {
+        else if (R.id.set_sort_flag == itemId)
+        {
             changeSort(SortType.SORT_FLAGGED);
             return true;
         }
-        case R.id.set_sort_unread: {
+        else if (R.id.set_sort_unread == itemId)
+        {
             changeSort(SortType.SORT_UNREAD);
             return true;
         }
-        case R.id.set_sort_attach: {
+        else if (R.id.set_sort_attach == itemId)
+        {
             changeSort(SortType.SORT_ATTACHMENT);
             return true;
         }
-        case R.id.select_all: {
+        else if (R.id.select_all == itemId)
+        {
             selectAll();
             return true;
         }
-        }
 
-        if (!singleAccountMode) {
+        if (!singleAccountMode)
+        {
             // None of the options after this point are "safe" for search results
             //TODO: This is not true for "unread" and "starred" searches in regular folders
             return false;
         }
 
-        switch (itemId) {
-        case R.id.send_messages: {
+        if (R.id.send_messages == itemId)
+        {
             onSendPendingMessages();
             return true;
         }
-        case R.id.expunge: {
-            if (currentFolder != null) {
+        else if (R.id.expunge == itemId)
+        {
+            if (currentFolder != null)
+            {
                 onExpunge(account, currentFolder.name);
             }
             return true;
         }
-        default: {
+        else
+        {
             return super.onOptionsItemSelected(item);
-        }
         }
     }
 
@@ -1088,92 +1099,94 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        if (contextMenuUniqueId == 0) {
+    public boolean onContextItemSelected(android.view.MenuItem item)
+    {
+        if (contextMenuUniqueId == 0)
+        {
             return false;
         }
 
         int adapterPosition = getPositionForUniqueId(contextMenuUniqueId);
-        if (adapterPosition == AdapterView.INVALID_POSITION) {
+        if (adapterPosition == AdapterView.INVALID_POSITION)
+        {
             return false;
         }
 
-        switch (item.getItemId()) {
-            case R.id.deselect:
-            case R.id.select: {
-                toggleMessageSelectWithAdapterPosition(adapterPosition);
-                break;
+        int itemId = item.getItemId();
+        if (R.id.deselect == itemId || R.id.select == itemId)
+        {
+            toggleMessageSelectWithAdapterPosition(adapterPosition);
+        }
+        else if (R.id.reply == itemId)
+        {
+            onReply(getMessageAtPosition(adapterPosition));
+        }
+        else if (R.id.reply_all == itemId)
+        {
+            onReplyAll(getMessageAtPosition(adapterPosition));
+        }
+        else if (R.id.forward == itemId)
+        {
+            onForward(getMessageAtPosition(adapterPosition));
+        }
+        else if (R.id.send_again == itemId)
+        {
+            onResendMessage(getMessageAtPosition(adapterPosition));
+            selectedCount = 0;
+        }
+        else if (R.id.same_sender == itemId)
+        {
+            Cursor cursor = (Cursor) adapter.getItem(adapterPosition);
+            String senderAddress = MlfUtils.getSenderAddressFromCursor(cursor);
+            if (senderAddress != null)
+            {
+                fragmentListener.showMoreFromSameSender(senderAddress);
             }
-            case R.id.reply: {
-                onReply(getMessageAtPosition(adapterPosition));
-                break;
-            }
-            case R.id.reply_all: {
-                onReplyAll(getMessageAtPosition(adapterPosition));
-                break;
-            }
-            case R.id.forward: {
-                onForward(getMessageAtPosition(adapterPosition));
-                break;
-            }
-            case R.id.send_again: {
-                onResendMessage(getMessageAtPosition(adapterPosition));
-                selectedCount = 0;
-                break;
-            }
-            case R.id.same_sender: {
-                Cursor cursor = (Cursor) adapter.getItem(adapterPosition);
-                String senderAddress = MlfUtils.getSenderAddressFromCursor(cursor);
-                if (senderAddress != null) {
-                    fragmentListener.showMoreFromSameSender(senderAddress);
-                }
-                break;
-            }
-            case R.id.delete: {
-                MessageReference message = getMessageAtPosition(adapterPosition);
-                onDelete(message);
-                break;
-            }
-            case R.id.mark_as_read: {
-                setFlag(adapterPosition, Flag.SEEN, true);
-                break;
-            }
-            case R.id.mark_as_unread: {
-                setFlag(adapterPosition, Flag.SEEN, false);
-                break;
-            }
-            case R.id.flag: {
-                setFlag(adapterPosition, Flag.FLAGGED, true);
-                break;
-            }
-            case R.id.unflag: {
-                setFlag(adapterPosition, Flag.FLAGGED, false);
-                break;
-            }
+        }
+        else if (R.id.delete == itemId)
+        {
+            MessageReference message = getMessageAtPosition(adapterPosition);
+            onDelete(message);
+        }
+        else if (R.id.mark_as_read == itemId)
+        {
+            setFlag(adapterPosition, Flag.SEEN, true);
+        }
+        else if (R.id.mark_as_unread == itemId)
+        {
+            setFlag(adapterPosition, Flag.SEEN, false);
+        }
+        else if (R.id.flag == itemId)
+        {
+            setFlag(adapterPosition, Flag.FLAGGED, true);
+        }
+        else if (R.id.unflag == itemId)
+        {
+            setFlag(adapterPosition, Flag.FLAGGED, false);
+        }
 
-            // only if the account supports this
-            case R.id.archive: {
-                onArchive(getMessageAtPosition(adapterPosition));
-                break;
-            }
-            case R.id.spam: {
-                onSpam(getMessageAtPosition(adapterPosition));
-                break;
-            }
-            case R.id.move: {
-                onMove(getMessageAtPosition(adapterPosition));
-                break;
-            }
-            case R.id.copy: {
-                onCopy(getMessageAtPosition(adapterPosition));
-                break;
-            }
+        // only if the account supports this
+        else if (R.id.archive == itemId)
+        {
+            onArchive(getMessageAtPosition(adapterPosition));
+        }
+        else if (R.id.spam == itemId)
+        {
+            onSpam(getMessageAtPosition(adapterPosition));
+        }
+        else if (R.id.move == itemId)
+        {
+            onMove(getMessageAtPosition(adapterPosition));
+        }
+        else if (R.id.copy == itemId)
+        {
+            onCopy(getMessageAtPosition(adapterPosition));
+        }
 
-            // debug options
-            case R.id.debug_delete_locally: {
-                onDebugClearLocally(getMessageAtPosition(adapterPosition));
-                break;
-            }
+        // debug options
+        else if (R.id.debug_delete_locally == itemId)
+        {
+            onDebugClearLocally(getMessageAtPosition(adapterPosition));
         }
 
         contextMenuUniqueId = 0;
@@ -2115,7 +2128,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item)
+        {
             /*
              * In the following we assume that we can't move or copy
              * mails to the same folder. Also that spam isn't available if we are
@@ -2123,94 +2137,93 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
              *
              * This is the case currently so safe assumption.
              */
-            switch (item.getItemId()) {
-            case R.id.delete: {
+            int itemId = item.getItemId();
+            if (R.id.delete == itemId)
+            {
                 List<MessageReference> messages = getCheckedMessages();
                 onDelete(messages);
                 selectedCount = 0;
-                break;
             }
-            case R.id.mark_as_read: {
+            else if (R.id.mark_as_read == itemId)
+            {
                 setFlagForSelected(Flag.SEEN, true);
-                break;
             }
-            case R.id.mark_as_unread: {
+            else if (R.id.mark_as_unread == itemId)
+            {
                 setFlagForSelected(Flag.SEEN, false);
-                break;
             }
-            case R.id.flag: {
+            else if (R.id.flag == itemId)
+            {
                 setFlagForSelected(Flag.FLAGGED, true);
-                break;
             }
-            case R.id.unflag: {
+            else if (R.id.unflag == itemId)
+            {
                 setFlagForSelected(Flag.FLAGGED, false);
-                break;
             }
-            case R.id.select_all: {
+            else if (R.id.select_all == itemId)
+            {
                 selectAll();
-                break;
             }
 
             // only if the account supports this
-            case R.id.archive: {
+            else if (R.id.archive == itemId)
+            {
                 onArchive(getCheckedMessages());
                 selectedCount = 0;
-                break;
             }
-            case R.id.spam: {
+            else if (R.id.spam == itemId)
+            {
                 onSpam(getCheckedMessages());
                 selectedCount = 0;
-                break;
             }
-            case R.id.move: {
+            else if (R.id.move == itemId)
+            {
                 onMove(getCheckedMessages());
                 selectedCount = 0;
-                break;
             }
-            case R.id.copy: {
+            else if (R.id.copy == itemId)
+            {
                 onCopy(getCheckedMessages());
                 selectedCount = 0;
-                break;
             }
-            }
-            if (selectedCount == 0) {
+
+            if (selectedCount == 0)
+            {
                 actionMode.finish();
             }
 
             return true;
         }
+
     }
 
     @Override
-    public void doPositiveClick(int dialogId) {
-        switch (dialogId) {
-            case R.id.dialog_confirm_spam: {
-                onSpamConfirmed(activeMessages);
-                // No further need for this reference
-                activeMessages = null;
-                break;
-            }
-            case R.id.dialog_confirm_delete: {
-                onDeleteConfirmed(activeMessages);
-                activeMessage = null;
-                break;
-            }
-            case R.id.dialog_confirm_mark_all_as_read: {
-                markAllAsRead();
-                break;
-            }
+    public void doPositiveClick(int dialogId)
+    {
+        if (R.id.dialog_confirm_spam == dialogId)
+        {
+            onSpamConfirmed(activeMessages);
+            // No further need for this reference
+            activeMessages = null;
+        }
+        else if (R.id.dialog_confirm_delete == dialogId)
+        {
+            onDeleteConfirmed(activeMessages);
+            activeMessage = null;
+        }
+        else if (R.id.dialog_confirm_mark_all_as_read == dialogId)
+        {
+            markAllAsRead();
         }
     }
 
     @Override
-    public void doNegativeClick(int dialogId) {
-        switch (dialogId) {
-            case R.id.dialog_confirm_spam:
-            case R.id.dialog_confirm_delete: {
-                // No further need for this reference
-                activeMessages = null;
-                break;
-            }
+    public void doNegativeClick(int dialogId)
+    {
+        if (R.id.dialog_confirm_spam == dialogId || R.id.dialog_confirm_delete == dialogId)
+        {
+            // No further need for this reference
+            activeMessages = null;
         }
     }
 
@@ -2920,4 +2933,5 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     LayoutInflater getK9LayoutInflater() {
         return layoutInflater;
     }
+
 }
