@@ -143,9 +143,8 @@ public class MimeMessage extends Message {
      * Sets the sent date object member as well as *adds* the 'Date' header
      * instead of setting it (for performance reasons).
      *
-     * @see #mSentDate
-     * @param sentDate
-     * @throws com.fsck.k9.mail.MessagingException
+     * @see #sentDate
+     * @param sentDate time message was sent, with precision of seconds
      */
     public void addSentDate(Date sentDate, boolean hideTimeZone) {
         if (dateFormat == null) {
@@ -711,7 +710,7 @@ public class MimeMessage extends Message {
      * headers or MIME-VERSION.
      * Both Message and MimeBodyPart might share structures.
      * @return the body part
-     * @throws MessagingException
+     * @throws MessagingException if message is improperly encoded
      */
     @NonNull
     public MimeBodyPart toBodyPart() throws MessagingException {

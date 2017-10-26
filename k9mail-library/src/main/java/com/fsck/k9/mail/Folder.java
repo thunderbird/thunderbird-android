@@ -47,9 +47,8 @@ public abstract class Folder<T extends Message> {
     public abstract boolean isOpen();
 
     /**
-     * Get the mode the folder was opened with. This may be different than the mode the open
+     * @return the mode the folder was opened with. This may be different than the mode the open
      * was requested with.
-     * @return
      */
     public abstract int getMode();
 

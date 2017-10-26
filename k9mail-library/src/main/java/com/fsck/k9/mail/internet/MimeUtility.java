@@ -992,11 +992,10 @@ public class MimeUtility {
     }
 
     /**
-     * Returns true if the given mimeType matches the matchAgainst specification.
+     * @return whether the given mimeType matches the matchAgainst specification.
      * @param mimeType A MIME type to check.
      * @param matchAgainst A MIME type to check against. May include wildcards such as image/* or
-     * * /*.
-     * @return
+     *
      */
     public static boolean mimeTypeMatches(String mimeType, String matchAgainst) {
         Pattern p = Pattern.compile(matchAgainst.replaceAll("\\*", "\\.\\*"), Pattern.CASE_INSENSITIVE);

@@ -29,7 +29,7 @@ public abstract class RemoteStore extends Store {
     /**
      * Remote stores indexed by Uri.
      */
-    private static Map<String, Store> sStores = new HashMap<String, Store>();
+    private static Map<String, Store> sStores = new HashMap<>();
 
 
     public RemoteStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory) {

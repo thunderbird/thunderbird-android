@@ -397,7 +397,7 @@ class ImapConnection {
     }
 
     private List<ImapResponse> handleTemporaryXoauth2Failure(NegativeImapResponseException e) throws IOException, MessagingException {
-        //We got a response indicating a retry might suceed after token refresh
+        //We got a response indicating a retry might succeed after token refresh
         //We could avoid this if we had a reasonable chance of knowing
         //if a token was invalid before use (e.g. due to expiry). But we don't
         //This is the intended behaviour per AccountManager
