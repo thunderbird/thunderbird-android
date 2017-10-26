@@ -63,7 +63,7 @@ public class Address implements Serializable {
                     mPersonal = (personal == null) ? null : personal.trim();
                 }
             } else {
-                // This should be an error
+                Timber.e(new IllegalStateException(), "Bad argument.");
             }
         } else {
             mAddress = address;
