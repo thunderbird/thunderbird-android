@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -24,6 +25,7 @@ public abstract class Message implements Part, Body {
 
     private Set<Flag> mFlags = EnumSet.noneOf(Flag.class);
 
+    @Nullable
     private Date mInternalDate;
 
     protected Folder mFolder;

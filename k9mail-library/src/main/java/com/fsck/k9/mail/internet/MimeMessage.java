@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -501,6 +502,7 @@ public class MimeMessage extends Message {
     }
 
     @Override
+    @NonNull
     public InputStream getInputStream() throws MessagingException {
         throw new UnsupportedOperationException();
     }
@@ -715,6 +717,7 @@ public class MimeMessage extends Message {
      * @return the body part
      * @throws MessagingException
      */
+    @NonNull
     public MimeBodyPart toBodyPart() throws MessagingException {
         MimeHeader contentHeaders = new MimeHeader();
         for (String header : mHeader.getHeaderNames()) {

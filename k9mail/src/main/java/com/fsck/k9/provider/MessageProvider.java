@@ -34,6 +34,8 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.support.annotation.Nullable;
+
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
@@ -195,6 +197,7 @@ public class MessageProvider extends ContentProvider {
     }
 
     @Override
+    @Nullable
     public Uri insert(Uri uri, ContentValues values) {
         if (K9.app == null) {
             return null;

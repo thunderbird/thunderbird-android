@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.support.annotation.Nullable;
+
+
 public interface Body {
     /**
      * Returns the raw data of the body, without transfer encoding etc applied.
@@ -12,6 +15,7 @@ public interface Body {
      *    because it makes no sense for multiparts
      */
     public InputStream getInputStream() throws MessagingException;
+    @Nullable
 
     /**
      * Sets the content transfer encoding (7bit, 8bit, quoted-printable or base64).

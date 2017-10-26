@@ -39,10 +39,12 @@ public class MessageExtractor {
 
     private MessageExtractor() {}
 
+    @Nullable
     public static String getTextFromPart(Part part) {
         return getTextFromPart(part, NO_TEXT_SIZE_LIMIT);
     }
 
+    @Nullable
     public static String getTextFromPart(Part part, long textSizeLimit) {
         try {
             if ((part != null) && (part.getBody() != null)) {

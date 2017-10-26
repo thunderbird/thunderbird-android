@@ -1,5 +1,7 @@
 package com.fsck.k9.mail.internet;
 
+import android.support.annotation.Nullable;
+
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -86,11 +88,13 @@ class JisSupport {
         return null;
     }
 
+    @Nullable
     private static String getAddressFromReceivedHeader(String receivedHeader) {
         // Not implemented yet!  Extract an address from the FOR clause of the given Received header.
         return null;
     }
 
+    @Nullable
     private static String getJisVariantFromFromHeaders(Message message) throws MessagingException {
         Address addresses[] = message.getFrom();
         if (addresses == null || addresses.length == 0) {

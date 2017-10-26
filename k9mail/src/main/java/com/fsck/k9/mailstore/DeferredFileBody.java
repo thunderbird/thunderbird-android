@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import timber.log.Timber;
@@ -67,6 +68,7 @@ public class DeferredFileBody implements RawDataBody, SizeAware {
     }
 
     @Override
+    @NonNull
     public InputStream getInputStream() throws MessagingException {
         try {
             if (file != null) {

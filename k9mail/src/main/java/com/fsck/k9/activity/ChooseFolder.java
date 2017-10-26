@@ -9,6 +9,7 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -105,6 +106,7 @@ public class ChooseFolder extends K9ListActivity {
             private Filter myFilter = null;
 
             @Override
+            @NonNull
             public Filter getFilter() {
                 if (myFilter == null) {
                     myFilter = new FolderListFilter<String>(this);

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -904,10 +905,12 @@ public class MimeUtility {
         }
     }
 
+    @Nullable
     public static String unfoldAndDecode(String s) {
         return unfoldAndDecode(s, null);
     }
 
+    @Nullable
     public static String unfoldAndDecode(String s, Message message) {
         return decode(unfold(s), message);
     }
@@ -927,6 +930,7 @@ public class MimeUtility {
      * @param parameterName the parameter name
      * @return the value. if the parameter cannot be found the method returns null.
      */
+    @Nullable
     public static String getHeaderParameter(String headerValue, String parameterName) {
         if (headerValue == null) {
             return null;
@@ -954,6 +958,7 @@ public class MimeUtility {
         return null;
     }
 
+    @NonNull
     public static Map<String,String> getAllHeaderParameters(String headerValue) {
         Map<String,String> result = new HashMap<>();
 

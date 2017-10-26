@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import com.fsck.k9.mail.MessagingException;
+import android.support.annotation.NonNull;
+
 import com.fsck.k9.mail.internet.SizeAware;
 
 
@@ -21,6 +23,7 @@ public class TempFileBody extends BinaryAttachmentBody implements SizeAware {
     }
 
     @Override
+    @NonNull
     public InputStream getInputStream() {
         try {
             return new FileInputStream(mFile);
