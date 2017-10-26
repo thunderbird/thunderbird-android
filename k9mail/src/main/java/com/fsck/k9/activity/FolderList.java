@@ -1,11 +1,5 @@
 package com.fsck.k9.activity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
@@ -15,7 +9,6 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.text.TextUtils.TruncateAt;
 import android.text.format.DateUtils;
-import timber.log.Timber;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -54,17 +47,24 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.SizeFormatter;
-import com.fsck.k9.mail.power.TracingPowerManager;
-import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.power.TracingPowerManager;
+import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.service.MailService;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+
 import de.cketti.library.changelog.ChangeLog;
+import timber.log.Timber;
 
 /**
  * FolderList is the primary user interface for the program. This
@@ -484,75 +484,81 @@ public class FolderList extends K9ListActivity {
         MessagingController.getInstance(getApplication()).sendPendingMessages(account, mAdapter.mListener);
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
+    @Override public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int itemId = item.getItemId();
+        if (android.R.id.home == itemId)
+        {
             onAccounts();
-
             return true;
-
-        case R.id.search:
+        }
+        else if (R.id.search == itemId)
+        {
             onSearchRequested();
-
             return true;
-
-        case R.id.compose:
+        }
+        else if (R.id.compose == itemId)
+        {
             MessageActions.actionCompose(this, mAccount);
-
             return true;
-
-        case R.id.check_mail:
+        }
+        else if (R.id.check_mail == itemId)
+        {
             MessagingController.getInstance(getApplication()).checkMail(this, mAccount, true, true, mAdapter.mListener);
-
             return true;
-
-        case R.id.send_messages:
+        }
+        else if (R.id.send_messages == itemId)
+        {
             MessagingController.getInstance(getApplication()).sendPendingMessages(mAccount, null);
-
             return true;
-
-        case R.id.list_folders:
+        }
+        else if (R.id.list_folders == itemId)
+        {
             onRefresh(REFRESH_REMOTE);
-
             return true;
-
-        case R.id.account_settings:
+        }
+        else if (R.id.account_settings == itemId)
+        {
             onEditAccount();
-
             return true;
-
-        case R.id.app_settings:
+        }
+        else if (R.id.app_settings == itemId)
+        {
             onEditPrefs();
-
             return true;
-
-        case R.id.empty_trash:
+        }
+        else if (R.id.empty_trash == itemId)
+        {
             onEmptyTrash(mAccount);
-
             return true;
-
-        case R.id.compact:
+        }
+        else if (R.id.compact == itemId)
+        {
             onCompact(mAccount);
-
             return true;
-
-        case R.id.display_1st_class: {
+        }
+        else if (R.id.display_1st_class == itemId)
+        {
             setDisplayMode(FolderMode.FIRST_CLASS);
             return true;
         }
-        case R.id.display_1st_and_2nd_class: {
+        else if (R.id.display_1st_and_2nd_class == itemId)
+        {
             setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS);
             return true;
         }
-        case R.id.display_not_second_class: {
+        else if (R.id.display_not_second_class == itemId)
+        {
             setDisplayMode(FolderMode.NOT_SECOND_CLASS);
             return true;
         }
-        case R.id.display_all: {
+        else if (R.id.display_all == itemId)
+        {
             setDisplayMode(FolderMode.ALL);
             return true;
         }
-        default:
+        else
+        {
             return super.onOptionsItemSelected(item);
         }
     }
@@ -615,20 +621,23 @@ public class FolderList extends K9ListActivity {
         });
     }
 
-    @Override public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item .getMenuInfo();
+    @Override public boolean onContextItemSelected(android.view.MenuItem item)
+    {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         FolderInfoHolder folder = (FolderInfoHolder) mAdapter.getItem(info.position);
 
-        switch (item.getItemId()) {
-        case R.id.clear_local_folder:
+        int itemId = item.getItemId();
+        if (R.id.clear_local_folder == itemId)
+        {
             onClearFolder(mAccount, folder.name);
-            break;
-        case R.id.refresh_folder:
+        }
+        else if (R.id.refresh_folder == itemId)
+        {
             checkMail(folder);
-            break;
-        case R.id.folder_settings:
+        }
+        else if (R.id.folder_settings == itemId)
+        {
             FolderSettings.actionSettings(this, mAccount, folder.name);
-            break;
         }
 
         return super.onContextItemSelected(item);

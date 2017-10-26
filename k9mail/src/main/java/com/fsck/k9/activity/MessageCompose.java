@@ -1,13 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -99,7 +92,16 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
+
 import org.openintents.openpgp.util.OpenPgpApi;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 import timber.log.Timber;
 
 
@@ -886,14 +888,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        switch (v.getId()) {
-            case R.id.message_content:
-            case R.id.subject:
-                if (hasFocus) {
-                    recipientPresenter.onNonRecipientFieldFocused();
-                }
-                break;
+    public void onFocusChange(View v, boolean hasFocus)
+    {
+        int id = v.getId();
+        if (R.id.message_content == id || R.id.subject == id)
+        {
+            if (hasFocus)
+            {
+                recipientPresenter.onNonRecipientFieldFocused();
+            }
         }
     }
 
@@ -928,11 +931,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.identity:
-                showDialog(DIALOG_CHOOSE_IDENTITY);
-                break;
+    public void onClick(View view)
+    {
+        int id = view.getId();
+        if (R.id.identity == id)
+        {
+            showDialog(DIALOG_CHOOSE_IDENTITY);
         }
     }
 
@@ -945,53 +949,68 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                prepareToFinish(true);
-                break;
-            case R.id.send:
-                checkToSendMessage();
-                break;
-            case R.id.save:
-                checkToSaveDraftAndSave();
-                break;
-            case R.id.discard:
-                askBeforeDiscard();
-                break;
-            case R.id.add_from_contacts:
-                recipientPresenter.onMenuAddFromContacts();
-                break;
-            case R.id.openpgp_encrypt_disable:
-                recipientPresenter.onMenuSetEnableEncryption(false);
-                updateMessageFormat();
-                break;
-            case R.id.openpgp_encrypt_enable:
-                recipientPresenter.onMenuSetEnableEncryption(true);
-                updateMessageFormat();
-                break;
-            case R.id.openpgp_inline_enable:
-                recipientPresenter.onMenuSetPgpInline(true);
-                updateMessageFormat();
-                break;
-            case R.id.openpgp_inline_disable:
-                recipientPresenter.onMenuSetPgpInline(false);
-                updateMessageFormat();
-                break;
-            case R.id.openpgp_sign_only:
-                recipientPresenter.onMenuSetSignOnly(true);
-                break;
-            case R.id.openpgp_sign_only_disable:
-                recipientPresenter.onMenuSetSignOnly(false);
-                break;
-            case R.id.add_attachment:
-                attachmentPresenter.onClickAddAttachment(recipientPresenter);
-                break;
-            case R.id.read_receipt:
-                onReadReceipt();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int itemId = item.getItemId();
+        if (android.R.id.home == itemId)
+        {
+            prepareToFinish(true);
+        }
+        else if (R.id.send == itemId)
+        {
+            checkToSendMessage();
+        }
+        else if (R.id.save == itemId)
+        {
+            checkToSaveDraftAndSave();
+        }
+        else if (R.id.discard == itemId)
+        {
+            askBeforeDiscard();
+        }
+        else if (R.id.add_from_contacts == itemId)
+        {
+            recipientPresenter.onMenuAddFromContacts();
+        }
+        else if (R.id.openpgp_encrypt_disable == itemId)
+        {
+            recipientPresenter.onMenuSetEnableEncryption(false);
+            updateMessageFormat();
+        }
+        else if (R.id.openpgp_encrypt_enable == itemId)
+        {
+            recipientPresenter.onMenuSetEnableEncryption(true);
+            updateMessageFormat();
+        }
+        else if (R.id.openpgp_inline_enable == itemId)
+        {
+            recipientPresenter.onMenuSetPgpInline(true);
+            updateMessageFormat();
+        }
+        else if (R.id.openpgp_inline_disable == itemId)
+        {
+            recipientPresenter.onMenuSetPgpInline(false);
+            updateMessageFormat();
+        }
+        else if (R.id.openpgp_sign_only == itemId)
+        {
+            recipientPresenter.onMenuSetSignOnly(true);
+        }
+        else if (R.id.openpgp_sign_only_disable == itemId)
+        {
+            recipientPresenter.onMenuSetSignOnly(false);
+        }
+        else if (R.id.add_attachment == itemId)
+        {
+            attachmentPresenter.onClickAddAttachment(recipientPresenter);
+        }
+        else if (R.id.read_receipt == itemId)
+        {
+            onReadReceipt();
+        }
+        else
+        {
+            return super.onOptionsItemSelected(item);
         }
         return true;
     }
@@ -1825,4 +1844,5 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return titleResource;
         }
     }
+
 }

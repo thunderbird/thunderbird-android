@@ -1,9 +1,6 @@
 package com.fsck.k9.activity.compose;
 
 
-import java.util.Arrays;
-import java.util.List;
-
 import android.app.LoaderManager;
 import android.app.PendingIntent;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
@@ -24,6 +21,9 @@ import com.fsck.k9.view.RecipientSelectView;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.TokenListener;
 import com.fsck.k9.view.ToolableViewAnimator;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class RecipientMvpView implements OnFocusChangeListener, OnClickListener {
@@ -358,53 +358,55 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     }
 
     @Override
-    public void onFocusChange(View view, boolean hasFocus) {
-        if (!hasFocus) {
+    public void onFocusChange(View view, boolean hasFocus)
+    {
+        if (!hasFocus)
+        {
             return;
         }
 
-        switch (view.getId()) {
-            case R.id.to: {
-                presenter.onToFocused();
-                break;
-            }
-            case R.id.cc: {
-                presenter.onCcFocused();
-                break;
-            }
-            case R.id.bcc: {
-                presenter.onBccFocused();
-                break;
-            }
+        int id = view.getId();
+        if (R.id.to == id)
+        {
+            presenter.onToFocused();
+        }
+        else if (R.id.cc == id)
+        {
+            presenter.onCcFocused();
+        }
+        else if (R.id.bcc == id)
+        {
+            presenter.onBccFocused();
         }
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.to_label: {
-                presenter.onClickToLabel();
-                break;
-            }
-            case R.id.cc_label: {
-                presenter.onClickCcLabel();
-                break;
-            }
-            case R.id.bcc_label: {
-                presenter.onClickBccLabel();
-                break;
-            }
-            case R.id.recipient_expander: {
-                presenter.onClickRecipientExpander();
-                break;
-            }
-            case R.id.crypto_status: {
-                presenter.onClickCryptoStatus();
-                break;
-            }
-            case R.id.crypto_special_mode: {
-                presenter.onClickCryptoSpecialModeIndicator();
-            }
+    public void onClick(View view)
+    {
+        int id = view.getId();
+        if (R.id.to_label == id)
+        {
+            presenter.onClickToLabel();
+        }
+        else if (R.id.cc_label == id)
+        {
+            presenter.onClickCcLabel();
+        }
+        else if (R.id.bcc_label == id)
+        {
+            presenter.onClickBccLabel();
+        }
+        else if (R.id.recipient_expander == id)
+        {
+            presenter.onClickRecipientExpander();
+        }
+        else if (R.id.crypto_status == id)
+        {
+            presenter.onClickCryptoStatus();
+        }
+        else if (R.id.crypto_special_mode == id)
+        {
+            presenter.onClickCryptoSpecialModeIndicator();
         }
     }
 
@@ -477,4 +479,5 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             this.childIdToDisplay = childIdToDisplay;
         }
     }
+
 }

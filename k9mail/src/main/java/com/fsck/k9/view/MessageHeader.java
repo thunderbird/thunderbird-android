@@ -1,12 +1,6 @@
 package com.fsck.k9.view;
 
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Parcel;
@@ -17,7 +11,6 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
-import timber.log.Timber;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,8 +35,16 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.ui.messageview.OnCryptoClickListener;
 import com.fsck.k9.ui.ContactBadge;
+import com.fsck.k9.ui.messageview.OnCryptoClickListener;
+
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import timber.log.Timber;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
@@ -154,40 +155,40 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.from: {
-                onAddSenderToContacts();
-                break;
-            }
-            case R.id.to:
-            case R.id.cc:
-            case R.id.bcc: {
-                expand((TextView)view, ((TextView)view).getEllipsize() != null);
-                layoutChanged();
-                break;
-            }
-            case R.id.crypto_status_icon: {
-                onCryptoClickListener.onCryptoClick();
-                break;
-            }
+    public void onClick(View view)
+    {
+        int id = view.getId();
+        if (R.id.from == id)
+        {
+            onAddSenderToContacts();
+        }
+        else if (R.id.to == id || R.id.cc == id || R.id.bcc == id)
+        {
+            expand((TextView) view, ((TextView) view).getEllipsize() != null);
+            layoutChanged();
+        }
+        else if (R.id.crypto_status_icon == id)
+        {
+            onCryptoClickListener.onCryptoClick();
         }
     }
 
     @Override
-    public boolean onLongClick(View view) {
-        switch (view.getId()) {
-            case R.id.from:
-                onAddAddressesToClipboard(mMessage.getFrom());
-                break;
-            case R.id.to:
-                onAddRecipientsToClipboard(Message.RecipientType.TO);
-                break;
-            case R.id.cc:
-                onAddRecipientsToClipboard(Message.RecipientType.CC);
-                break;
+    public boolean onLongClick(View view)
+    {
+        int id = view.getId();
+        if (R.id.from == id)
+        {
+            onAddAddressesToClipboard(mMessage.getFrom());
         }
-
+        else if (R.id.to == id)
+        {
+            onAddRecipientsToClipboard(Message.RecipientType.TO);
+        }
+        else if (R.id.cc == id)
+        {
+            onAddRecipientsToClipboard(Message.RecipientType.CC);
+        }
         return true;
     }
 

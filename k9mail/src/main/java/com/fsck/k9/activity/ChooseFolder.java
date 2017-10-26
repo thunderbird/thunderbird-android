@@ -1,11 +1,6 @@
 
 package com.fsck.k9.activity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +25,11 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 
 public class ChooseFolder extends K9ListActivity {
@@ -200,31 +200,37 @@ public class ChooseFolder extends K9ListActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.display_1st_class: {
-                setDisplayMode(FolderMode.FIRST_CLASS);
-                return true;
-            }
-            case R.id.display_1st_and_2nd_class: {
-                setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS);
-                return true;
-            }
-            case R.id.display_not_second_class: {
-                setDisplayMode(FolderMode.NOT_SECOND_CLASS);
-                return true;
-            }
-            case R.id.display_all: {
-                setDisplayMode(FolderMode.ALL);
-                return true;
-            }
-            case R.id.list_folders: {
-                onRefresh();
-                return true;
-            }
-            default: {
-                return super.onOptionsItemSelected(item);
-            }
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int itemId = item.getItemId();
+        if (R.id.display_1st_class == itemId)
+        {
+            setDisplayMode(FolderMode.FIRST_CLASS);
+            return true;
+        }
+        else if (R.id.display_1st_and_2nd_class == itemId)
+        {
+            setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS);
+            return true;
+        }
+        else if (R.id.display_not_second_class == itemId)
+        {
+            setDisplayMode(FolderMode.NOT_SECOND_CLASS);
+            return true;
+        }
+        else if (R.id.display_all == itemId)
+        {
+            setDisplayMode(FolderMode.ALL);
+            return true;
+        }
+        else if (R.id.list_folders == itemId)
+        {
+            onRefresh();
+            return true;
+        }
+        else
+        {
+            return super.onOptionsItemSelected(item);
         }
     }
 
