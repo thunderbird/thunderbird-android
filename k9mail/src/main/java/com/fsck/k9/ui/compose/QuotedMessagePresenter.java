@@ -246,22 +246,28 @@ public class QuotedMessagePresenter {
         }
 
         if (messageFormat == MessageFormat.HTML) {
+            String bodyText; // defaults to null
             Part part = MimeUtility.findFirstPartByMimeType(messageViewInfo.message, "text/html");
             if (part != null) { // Shouldn't happen if we were the one who saved it.
                 quotedTextFormat = SimpleMessageFormat.HTML;
                 String text = MessageExtractor.getTextFromPart(part);
 
-                Timber.d("Loading message with offset %d, length %d. Text length is %d.",
-                        bodyOffset, bodyLength, text.length());
+                if (text == null) {
+                    Timber.d("Empty message; skipping.");
+                    bodyText = "";
+                } else {
+                    Timber.d("Loading message with offset %d, length %d. Text length is %d.",
+                            bodyOffset, bodyLength, text.length());
 
-                if (bodyOffset + bodyLength > text.length()) {
-                    // The draft was edited outside of K-9 Mail?
-                    Timber.d("The identity field from the draft contains an invalid LENGTH/OFFSET");
-                    bodyOffset = 0;
-                    bodyLength = 0;
+                    if (bodyOffset + bodyLength > text.length()) {
+                        // The draft was edited outside of K-9 Mail?
+                        Timber.d("The identity field from the draft contains an invalid LENGTH/OFFSET");
+                        bodyOffset = 0;
+                        bodyLength = 0;
+                    }
+                    // Grab our reply text.
+                    bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
                 }
-                // Grab our reply text.
-                String bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
                 view.setMessageContentCharacters(HtmlConverter.htmlToText(bodyText));
 
                 // Regenerate the quoted html without our user content in it.
