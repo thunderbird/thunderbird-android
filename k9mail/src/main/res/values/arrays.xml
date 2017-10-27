@@ -346,6 +346,7 @@
         <item>Bahasa indonesia</item>
         <item>Bahasa melayu</item>
         <item>Bamanankan</item>
+        <item>Brezhoneg</item>
         <item>Català</item>
         <item>Čeština</item>
         <item>Cymraeg</item>
@@ -428,6 +429,7 @@
         <item>id</item>
         <item>ms</item>
         <item>bm</item>
+        <item>br</item>
         <item>ca</item>
         <item>cs</item>
         <item>cy</item>
@@ -505,6 +507,7 @@
 
     <string-array name="supported_languages" translatable="false">
         <item></item>
+        <item>br</item>
         <item>ca</item>
         <item>cs</item>
         <item>cy</item>
