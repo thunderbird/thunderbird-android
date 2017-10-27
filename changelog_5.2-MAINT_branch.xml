@@ -5,6 +5,9 @@
      Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.208" versioncode="23280">
+        <change>Fixed bug where automatic synchronization wouldn't restart after the device exited doze mode</change>
+    </release>
     <release version="5.207" versioncode="23270">
         <change>Improved speed of local message search</change>
     </release>
