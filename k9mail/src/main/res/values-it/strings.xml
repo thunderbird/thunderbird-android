@@ -953,7 +953,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="openpgp_inline_title">Modalità PGP/INLINE</string>
   <string name="openpgp_inline_text">Questo messaggio è inviato nel formato PGP/INLINE.\nQuesto formato dovrebbe essere utilizzato solo per compatibilità:</string>
   <string name="openpgp_inline_plus_compat">Alcuni client supportano solo questo formato</string>
-  <string name="openpgp_inline_minus_transit">Le firme potrebbero danneggiarsi durante il translto</string>
+  <string name="openpgp_inline_minus_transit">Le firme potrebbero danneggiarsi durante il transito</string>
   <string name="openpgp_inline_minus_attach">Gli allegati non sono supportati</string>
   <string name="openpgp_inline_ok">Ricevuto!</string>
   <string name="openpgp_inline_disable">Disabilita</string>
