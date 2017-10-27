@@ -8,6 +8,21 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.301" versioncode="23510" >
+        <change>Improved OpenPGP support</change>
+        <change>Various bug fixes</change>
+        <change>Updated translations</change>
+    </release>
+    <release version="5.300" versioncode="23500" >
+        <change>New app icon</change>
+        <change>New widget: Message List</change>
+        <change>New OpenPGP flow, adhering to Autocrypt specification</change>
+        <change>Settings export uses Storage Access Framework</change>
+        <change>Better support for multi-window</change>
+        <change>Recipient search now includes nicknames</change>
+        <change>Many bugfixes and optimizations</change>
+        <change>Added translations: Esperanto, Gaelic (Scottish), Icelandic, Welsh</change>
+    </release>
     <release version="5.115" versioncode="23114" >
         <change>More user interface tweaks for encryption-related functionality</change>
         <change>Message signing without encryption is now an expert feature that is disabled by default</change>
