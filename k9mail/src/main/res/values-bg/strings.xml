@@ -72,6 +72,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="compose_title_reply">Отговори</string>
   <string name="compose_title_reply_all">Отговори до всички</string>
   <string name="compose_title_forward">Напред</string>
+  <string name="choose_account_title">Изберете Профил</string>
   <string name="choose_folder_title">Избери Папка</string>
   <string name="status_loading_account_folder">Обновява <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Получаване на заглавия <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -650,6 +651,8 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_failed_dlg_invalid_certificate_title">Неразпознат сертификат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Приеми ключа</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Отхвърли ключа</string>
+  <string name="message_view_help_key">Del (or D) - Изтриване\nR - Отговор\nA - Отговор на всички\nC - Създаване\nF - Препращане\nM - Премесване\nV - Архивиране\nY - Копиране\nZ - Отбелязване като (не)прочетно\nG - Звезда\nO - Сортиране\nI - Приоритет на сортиране\nQ - Обратно към папките\nS - Отбелязване/премахване на отбелязване\nJ или P - Предно съобщение\nK или N - Следващо съобщение</string>
+  <string name="message_list_help_key">Del (or D) - Изтриване\nC - Създаване\nM - Премесване\nV - Архивиране\nC - Копиране\nZ - Отбелязване като (не)прочетно\nG - Звезда\nO - Сортиране\nI - Приоритет на сортиране\nQ - Обратно към папките\nS - Отбелязване/премахване на отбелязване</string>
   <string name="folder_list_help_key">1 - Показване само на папки от 1во ниво\n2 - Показване на папки от 1во и 2ро ниво\n3 - Показване на всички папки без 2ро ниво\n4 - Показване на всички папки\nQ - Връщане към Профили\nS - Редактиране на настройките на профила</string>
   <string name="folder_list_filter_hint">Името на папката съдържа</string>
   <string name="folder_list_display_mode_label">Покажи папките…</string>
@@ -834,6 +837,18 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="manage_accounts_move_down_action">Премести надолу</string>
   <string name="manage_accounts_moving_message">Престване на профил…</string>
   <string name="unread_widget_select_account">Показване на непрочетената бройка за…</string>
+  <string name="unread_widget_account_title">Профил</string>
+  <string name="unread_widget_account_summary">Профилът, за който да се показва броят непрочетени съобщения</string>
+  <string name="unread_widget_unified_inbox_account_summary">Обща входяща кутия</string>
+  <string name="unread_widget_all_messages_account_summary">Всички съобщения</string>
+  <string name="unread_widget_folder_enabled_title">Брой папки</string>
+  <string name="unread_widget_folder_enabled_summary">Показване на броя непрочетени съобщения само за една папка</string>
+  <string name="unread_widget_folder_title">Папка</string>
+  <string name="unread_widget_folder_summary">Папката, за която да се показва броят непрочетени съобщения</string>
+  <string name="unread_widget_action_done">Готово</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Няма избран профил</string>
+  <string name="unread_widget_folder_not_selected">Няма избрана папка</string>
   <string name="import_dialog_error_title">Не е открито приложение за работа с файлове</string>
   <string name="close">Затваряне</string>
   <string name="webview_empty_message">Няма текст</string>

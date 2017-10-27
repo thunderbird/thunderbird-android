@@ -72,6 +72,7 @@
   <string name="compose_title_reply">Одговори</string>
   <string name="compose_title_reply_all">Одговори свима</string>
   <string name="compose_title_forward">Проследи</string>
+  <string name="choose_account_title">Избор налога</string>
   <string name="choose_folder_title">Одредите фасциклу</string>
   <string name="status_loading_account_folder">Проверавам <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Добављам заглавља <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -653,7 +654,10 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Непрепознат сертификат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Прихвати кључ</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Одбиј кључ</string>
+  <string name="message_view_help_key">Del (или D) - обриши\nR - одговори\nA - одговори свима\nC - састави\nF - проследи\nM - помери\nV - архивирај\nY - копирај\nZ - означи као (не)прочитано\nG - обележи звездицом\nO - поређај по\nI - ред ређања\nQ - повратак на фасцикле\nS - означи/уклони ознаку\nJ или P - претходна порука\nK или N - следећа порука</string>
+  <string name="message_list_help_key">Del (или D) - обриши\nC - састави\nM - помери\nV - архивирај\nY - копирај\nZ - означи као (не)прочитано\nO - поређај по\nI - ред ређања\nQ - повратак на фасцикле\nS - означи/уклони ознаку</string>
   <string name="folder_list_help_key">1 - приказ само фасцикли 1. класе\n2 - приказ фасцикли 1. и 2. класе\n3 - приказ свих осим фасцикли 2. класе\n4 - приказ свих фасцикли\nQ - повратак на налог\nS - уређивање поставки налога</string>
+  <string name="folder_list_filter_hint">Назив фасцикле садржи</string>
   <string name="folder_list_display_mode_label">Прикажи фасцикле…</string>
   <string name="folder_list_display_mode_all">Све фасцикле</string>
   <string name="folder_list_display_mode_first_class">Фасцикле 1. класе</string>
@@ -841,6 +845,12 @@
   <string name="manage_accounts_move_down_action">Помери доле</string>
   <string name="manage_accounts_moving_message">Померам налог…</string>
   <string name="unread_widget_select_account">Прикажи број непрочитаних за…</string>
+  <string name="unread_widget_account_title">Налог</string>
+  <string name="unread_widget_unified_inbox_account_summary">Обједињено пријемно сандуче</string>
+  <string name="unread_widget_all_messages_account_summary">Све поруке</string>
+  <string name="unread_widget_folder_title">Фасцикла</string>
+  <string name="unread_widget_action_done">Заврши</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="import_dialog_error_title">Нема апликације за менаџмент фајлова</string>
   <string name="close">Затвори</string>
   <string name="webview_empty_message">Нема текста</string>
@@ -1012,6 +1022,7 @@
   <string name="messageview_crypto_warning_show_anyway">Прикажи поруку свеједно</string>
   <string name="recipient_error_non_ascii">Посебни знакови тренутно нису нису подржани!</string>
   <string name="recipient_error_parse_failed">Грешка прослеђивања адресе!</string>
+  <string name="account_settings_crypto_support_sign_only">Прикажи нешифроване потписе</string>
   <string name="error_sign_only_no_encryption">Шифровање није могуће у само-потпис режиму!</string>
   <string name="unsigned_text_divider_label">Непотписан текст</string>
   <string name="apg_deprecated_title">Упозорење о застарењу АПГ-а</string>
@@ -1036,4 +1047,5 @@
   <string name="openpgp_enabled_error_gotit">Важи</string>
   <string name="openpgp_enabled_error_back">Назад</string>
   <string name="openpgp_enabled_error_disable">Искључи шифровање</string>
+  <string name="openpgp_encryption">ОпенПГП шифровање</string>
 </resources>

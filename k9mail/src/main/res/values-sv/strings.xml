@@ -72,6 +72,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="compose_title_reply">Svara</string>
   <string name="compose_title_reply_all">Svara alla</string>
   <string name="compose_title_forward">Vidarebefordra</string>
+  <string name="choose_account_title">Välj konto</string>
   <string name="choose_folder_title">Välj mapp</string>
   <string name="status_loading_account_folder">Kontrollerar <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Hämtar brevhuvud <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -651,6 +652,8 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="account_setup_failed_dlg_invalid_certificate_title">Okänt certifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Neka nyckel</string>
+  <string name="message_view_help_key">Del (or D) - Ta bort\nR - Svara\nA - Svara alla\nC - Skriva\nF - Vidarebefordra\nM - Flytta\nV - Arkivera\nY - Kopiera\nZ - Märk (o)lästa\nG - Stjärna\nO - Sorteringstyp\nI - Sorteringsordning\nQ - Återgå till mappar\nS - Markera/avmarkera\nJ or P - Föregående meddelande\nK or N - Nästa meddelande</string>
+  <string name="message_list_help_key">Del (or D) - Ta bort\nC - Skriva\nM - Flytta\nV - Arkivera\nY - Kopiera\nZ - Märk (o)lästa\nG - Stjärna\nO - Sorteringstyp\nI - Sorteringsordning\nQ - Återgå till mappar\nS - Markera/avmarkera</string>
   <string name="folder_list_help_key">1 - Visa endast första klassens mappar\n2 - Visa första och andra klassens mappar\n3 - Visa alla utom andra klassens mappar\n4 - Visa alla mappar\nQ - Återvänd till konton\nS - Redigera kontoinställningar</string>
   <string name="folder_list_filter_hint">Mappnamn innehåller</string>
   <string name="folder_list_display_mode_label">Visa mappar…</string>
@@ -702,23 +705,23 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="volume_navigation_title">Navigering med volymknapp</string>
   <string name="volume_navigation_message">I meddelandelistor</string>
   <string name="volume_navigation_list">I listvyer</string>
-  <string name="start_integrated_inbox_title">Kombinerad inkorg vid start</string>
+  <string name="start_integrated_inbox_title">Sammansatt inkorg vid start</string>
   <string name="measure_accounts_title">Visa kontostorlek</string>
   <string name="measure_accounts_summary">Stäng av för snabbare visning</string>
   <string name="count_search_title">Räkna sökresultat</string>
   <string name="count_search_summary">Stäng av för snabbare visning</string>
   <string name="hide_special_accounts_title">Göm specialkonton</string>
-  <string name="hide_special_accounts_summary">Göm den kombinerade inkorgen och mappen för alla meddelanden</string>
+  <string name="hide_special_accounts_summary">Göm den sammansatta inkorgen och mappen för alla meddelanden</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="flagged_modifier"> - Stjärnmärkta</string>
   <string name="unread_modifier"> - Olästa</string>
   <string name="search_all_messages_title">Alla meddelanden</string>
   <string name="search_all_messages_detail">Alla meddelanden i sökbara mappar</string>
-  <string name="integrated_inbox_title">Kombinerad inkorg</string>
+  <string name="integrated_inbox_title">Sammansatt inkorg</string>
   <string name="integrated_inbox_detail">Alla meddelanden i sammansatta mappar</string>
   <string name="tap_hint">Tryck på cirkel eller stjärna för olästa eller stjärnmärkta meddelanden</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Slå samman</string>
-  <string name="folder_settings_include_in_integrated_inbox_summary">Alla brev visas i kombinerad inkorg</string>
+  <string name="folder_settings_include_in_integrated_inbox_summary">Alla brev visas i Sammansatt inkorg</string>
   <string name="account_settings_searchable_label">Mappar att söka i</string>
   <string name="account_settings_searchable_all">Alla</string>
   <string name="account_settings_searchable_displayable">Visningsbara</string>
@@ -835,6 +838,18 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="manage_accounts_move_down_action">Flytta ner</string>
   <string name="manage_accounts_moving_message">Flyttar konto…</string>
   <string name="unread_widget_select_account">Visa antal olästa för…</string>
+  <string name="unread_widget_account_title">Konto</string>
+  <string name="unread_widget_account_summary">Kontot för vilken olästa räkningen ska visas</string>
+  <string name="unread_widget_unified_inbox_account_summary">Sammansatt inkorg</string>
+  <string name="unread_widget_all_messages_account_summary">Alla meddelanden</string>
+  <string name="unread_widget_folder_enabled_title">Mapp antal</string>
+  <string name="unread_widget_folder_enabled_summary">Visa olästa räkningen av endast en enda mapp</string>
+  <string name="unread_widget_folder_title">Mapp</string>
+  <string name="unread_widget_folder_summary">Den mapp för vilken den olästa räkningen ska visas</string>
+  <string name="unread_widget_action_done">Klar</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Inget konto valt</string>
+  <string name="unread_widget_folder_not_selected">Ingen mapp vald</string>
   <string name="import_dialog_error_title">Saknar filhanterarapp</string>
   <string name="close">Stäng</string>
   <string name="webview_empty_message">Ingen text</string>

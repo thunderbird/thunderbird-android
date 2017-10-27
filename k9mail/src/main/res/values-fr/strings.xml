@@ -72,6 +72,7 @@ Veuillez rapporter les bogues, recommander de nouvelles fonctions et poser vos q
   <string name="compose_title_reply">Répondre</string>
   <string name="compose_title_reply_all">Répondre à tous</string>
   <string name="compose_title_forward">Transférer</string>
+  <string name="choose_account_title">Choisir un  compte</string>
   <string name="choose_folder_title">Choisir un dossier</string>
   <string name="status_loading_account_folder">Récup. <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Récup. entêtes <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -651,6 +652,8 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat non reconnu</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter la clef</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeter la clef</string>
+  <string name="message_view_help_key">Suppr (ou D) - Supprimer\nR - Répondre\nA - Répondre à tous\nC - Rédiger\nF - Transférer\nM - Déplacer\nV - Archiver\nY - Copier\nZ - Marquer comme lu ou non\nG - Étoile\nO - Type de tri\nI - Ordre de tri\nQ - Retourner aux dossiers\nS - Sélectionner/dessélectionner\nJ ou P - Message précédent\nK ou N - Message suivant</string>
+  <string name="message_list_help_key">Suppr (ou D) - Supprimer\nC - Rédiger\nM - Déplacer\nV - Archiver\nY - Copier\nZ - Marquer comme lu ou non\nG - Étoile\nO - Type de tri\nI - Ordre de tri\nQ - Retourner aux dossiers\nS - Sélectionner/dessélectionner</string>
   <string name="folder_list_help_key">1 - Afficher seulement les dossiers de 1re classe\n2 - Afficher les dossiers de 1re et 2e classe\n3 - Afficher tous les dossiers sauf 2e classe\n4 - Afficher tous les dossiers\nQ - Retourner aux Comptes\nS - Modifier les paramètres du compte</string>
   <string name="folder_list_filter_hint">Le nom de dossier comprend</string>
   <string name="folder_list_display_mode_label">Afficher les dossiers…</string>
@@ -835,6 +838,18 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="manage_accounts_move_down_action">Déplacer vers le bas</string>
   <string name="manage_accounts_moving_message">Déplacement du compte…</string>
   <string name="unread_widget_select_account">Afficher le nombre de non lus pour…</string>
+  <string name="unread_widget_account_title">Compte</string>
+  <string name="unread_widget_account_summary">Le compte pour lequel le nombre de messages non lus doit être affiché</string>
+  <string name="unread_widget_unified_inbox_account_summary">Boîte de réception unifiée</string>
+  <string name="unread_widget_all_messages_account_summary">Tous les messages</string>
+  <string name="unread_widget_folder_enabled_title">Nombre de dossiers</string>
+  <string name="unread_widget_folder_enabled_summary">N\'afficher le nombre de messages non lus que d\'un seul dossier</string>
+  <string name="unread_widget_folder_title">Dossier</string>
+  <string name="unread_widget_folder_summary">Le dossier pour lequel le nombre de messages non lus doit être affiché</string>
+  <string name="unread_widget_action_done">Terminé</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Aucun compte n\'est sélectionné</string>
+  <string name="unread_widget_folder_not_selected">Aucun dossier n\'est sélectionné</string>
   <string name="import_dialog_error_title">L\'application de gestion de fichiers est manquante</string>
   <string name="close">Fermer</string>
   <string name="webview_empty_message">Aucun texte</string>

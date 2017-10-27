@@ -21,7 +21,7 @@ K-9 Mail è un potente client di posta libero e gratuito per Android.
 Le sue funzioni migliorate includono:
 </p>
 <ul>
-  <li>Push mail utliizzando IMAP IDLE</li>
+  <li>Push mail utilizzando IMAP IDLE</li>
   <li>Migliori prestazioni</li>
   <li>Ri-archiviazione dei messaggi</li>
   <li>Firme dei messaggi</li>
@@ -73,6 +73,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="compose_title_reply">Rispondi</string>
   <string name="compose_title_reply_all">Rispondi a tutti</string>
   <string name="compose_title_forward">Inoltra</string>
+  <string name="choose_account_title">Scegli account</string>
   <string name="choose_folder_title">Scegli cartella</string>
   <string name="status_loading_account_folder">Verifica di <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Recupero intestazioni <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -236,7 +237,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_view_attachment_view_action">Apri</string>
   <string name="message_view_attachment_download_action">Salva</string>
   <string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato sulla scheda SD.</string>
-  <string name="message_view_status_no_space">L\'allegato non può essere salavato poiché non c\'è spazio sufficiente.</string>
+  <string name="message_view_status_no_space">L\'allegato non può essere salvato poiché non c\'è spazio sufficiente.</string>
   <string name="message_view_show_pictures_action">Mostra immagini</string>
   <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Scarica messaggio completo</string>
@@ -838,6 +839,18 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="manage_accounts_move_down_action">Sposta giù</string>
   <string name="manage_accounts_moving_message">Spostamento account…</string>
   <string name="unread_widget_select_account">Mostra numero messaggi non letti per…</string>
+  <string name="unread_widget_account_title">Account</string>
+  <string name="unread_widget_account_summary">L\'account per il quale dovrebbe essere visualizzato il contatore non letti</string>
+  <string name="unread_widget_unified_inbox_account_summary">Posta in arrivo combinata</string>
+  <string name="unread_widget_all_messages_account_summary">Tutti i messaggi</string>
+  <string name="unread_widget_folder_enabled_title">Conteggio cartella</string>
+  <string name="unread_widget_folder_enabled_summary">Visualizza il contatore non letti solo di una singola cartella</string>
+  <string name="unread_widget_folder_title">Cartella</string>
+  <string name="unread_widget_folder_summary">La cartella per la quale dovrebbe essere visualizzato il contatore non letti</string>
+  <string name="unread_widget_action_done">Fatto</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Nessun account selezionato</string>
+  <string name="unread_widget_folder_not_selected">Nessuna cartella selezionata</string>
   <string name="import_dialog_error_title">Nessun gestore file presente</string>
   <string name="close">Chiudi</string>
   <string name="webview_empty_message">Senza testo</string>
@@ -953,7 +966,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="openpgp_inline_title">Modalità PGP/INLINE</string>
   <string name="openpgp_inline_text">Questo messaggio è inviato nel formato PGP/INLINE.\nQuesto formato dovrebbe essere utilizzato solo per compatibilità:</string>
   <string name="openpgp_inline_plus_compat">Alcuni client supportano solo questo formato</string>
-  <string name="openpgp_inline_minus_transit">Le firme potrebbero danneggiarsi durante il translto</string>
+  <string name="openpgp_inline_minus_transit">Le firme potrebbero danneggiarsi durante il transito</string>
   <string name="openpgp_inline_minus_attach">Gli allegati non sono supportati</string>
   <string name="openpgp_inline_ok">Ricevuto!</string>
   <string name="openpgp_inline_disable">Disabilita</string>

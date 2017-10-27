@@ -72,6 +72,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="compose_title_reply">Erantzun</string>
   <string name="compose_title_reply_all">Erantzun denei</string>
   <string name="compose_title_forward">Birbidali</string>
+  <string name="choose_account_title">Aukeratu Kontua</string>
   <string name="choose_folder_title">Aukeratu karpeta</string>
   <string name="status_loading_account_folder"><xliff:g id="account">%s</xliff:g> aztertzen:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers"><xliff:g id="account">%s</xliff:g> goiburuak eskuratzen:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -650,6 +651,8 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_failed_dlg_invalid_certificate_title">Ziurtagiri ezezaguna</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Onartu gakoa</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Baztertu gakoa</string>
+  <string name="message_view_help_key">Del (edo D) - Ezabatu\nR - Erantzun\nA - Erantzun denei\nC - Idatzi\nF - Birbidali\nM - Mugitu\nV - Artxibatu\nY - Kopiatu\nZ - Markatu irakurri (gabe) gisa\nG - Izarra\nO - Ordenatze mota\nI - Ordenatzeko irizpidea\nQ - Itzuli Karpetetara\nS - Hautatu/desautatu\nJ or P - Aurreko Mezua\nK or N - Hurrengo Mezua</string>
+  <string name="message_list_help_key">Del (edo D) - Ezabatu\nC - Idatzi\nM - Mugitu\nV - Artxibatu\nY - Kopiatu\nZ - Markatu irakurri (gabe) gisa\nG - Izarra\nO - Ordenatze mota\nI - Ordenatzeko irizpidea\nQ - Itzuli Karpetetara\nS - Hautatu/desautatu</string>
   <string name="folder_list_help_key">1 - Bistaratu 1. klaseko karpetak bakarrik\n2 - Bistaratu 1. eta 2. klaseko karpetak\n3 - Bistaratu denak 2. klaseko karpetak izan ezik\n4 - Bistaratu karpeta guztiak\nQ - Itzuli Kontuetara\nS - Editatu Kontu Ezarpenak</string>
   <string name="folder_list_filter_hint">Karpetaren izenak dauka</string>
   <string name="folder_list_display_mode_label">Erakutsi karpetak…</string>
@@ -834,6 +837,18 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="manage_accounts_move_down_action">Mugitu behera</string>
   <string name="manage_accounts_moving_message">Kontua mugitzen…</string>
   <string name="unread_widget_select_account">Erakutsi honen irakurri gabe kopurua…</string>
+  <string name="unread_widget_account_title">Kontua</string>
+  <string name="unread_widget_account_summary">Irakurri gabekoen kopurua bistaratua izan beharko lukeen kontua</string>
+  <string name="unread_widget_unified_inbox_account_summary">Sarrerako ontzi bateratua</string>
+  <string name="unread_widget_all_messages_account_summary">Mezu guztiak</string>
+  <string name="unread_widget_folder_enabled_title">Karpeta kopurua</string>
+  <string name="unread_widget_folder_enabled_summary">Bistaratu karpeta bakarreko irakurri gabeko kontua</string>
+  <string name="unread_widget_folder_title">Karpeta</string>
+  <string name="unread_widget_folder_summary">Irakurri gabekoen kopuruak bistaratua izan beharko lukeen karpeta</string>
+  <string name="unread_widget_action_done">Eginda</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Konturik ez hautatuta</string>
+  <string name="unread_widget_folder_not_selected">Karpetarik ez hautatuta</string>
   <string name="import_dialog_error_title">Fitxategiak arakatzeko aplikazioa falta da</string>
   <string name="close">Itxi</string>
   <string name="webview_empty_message">Testurik ez</string>
@@ -934,6 +949,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="address_type_other">Bestelakoak</string>
   <string name="address_type_mobile">Mugikorrekoak</string>
   <string name="compose_error_no_draft_folder">Kontu honek ez du Zirriborroen karpetarik konfiguratuta!</string>
+  <string name="compose_error_no_key_configured">Gakorik ez konfiguratuta kontu honetarako! Egiaztatu zure ezarpenak.</string>
   <string name="crypto_mode_disabled">Ez enkriptatu</string>
   <string name="crypto_mode_opportunistic">Enkriptatu posible bada</string>
   <string name="crypto_mode_private">Enkriptatu</string>
@@ -1004,6 +1020,9 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="messageview_crypto_warning_show_anyway">Erakutsi mezua hala ere</string>
   <string name="recipient_error_non_ascii">Une honetan karaktere bereziak ez dira onartzen!</string>
   <string name="recipient_error_parse_failed">Errorea helbidea analizatzean!</string>
+  <string name="account_settings_crypto_support_sign_only">Erakutsi enkriptatu gabeko sinatzeak</string>
+  <string name="account_settings_crypto_support_sign_only_on">Enkriptatu gabeko sinatzeak bistaratuak izango dira</string>
+  <string name="account_settings_crypto_support_sign_only_off">Enkriptatu gabeko sinatzeekin ez ikusia egingo da</string>
   <string name="error_sign_only_no_encryption">Enkriptatzea ez dago erabilgarri sinadura bakarrik moduan!</string>
   <string name="unsigned_text_divider_label">Sinatu gabeko testua</string>
   <string name="apg_deprecated_title">APG Zaharkitze Abisua</string>
