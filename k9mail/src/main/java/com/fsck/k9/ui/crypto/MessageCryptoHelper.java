@@ -555,6 +555,9 @@ public class MessageCryptoHelper {
                 currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_DECRYPTION);
         OpenPgpSignatureResult signatureResult =
                 currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_SIGNATURE);
+        if (decryptionResult.getResult() == OpenPgpDecryptionResult.RESULT_ENCRYPTED) {
+            parseAutocryptGossipHeadersFromDecryptedPart(outputPart);
+        }
         PendingIntent pendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
         PendingIntent insecureWarningPendingIntent = currentCryptoResult.getParcelableExtra(OpenPgpApi.RESULT_INSECURE_DETAIL_INTENT);
         boolean overrideCryptoWarning = currentCryptoResult.getBooleanExtra(
@@ -564,6 +567,26 @@ public class MessageCryptoHelper {
                 signatureResult, pendingIntent, insecureWarningPendingIntent, outputPart, overrideCryptoWarning);
 
         onCryptoOperationSuccess(resultAnnotation);
+    }
+
+    private void parseAutocryptGossipHeadersFromDecryptedPart(MimeBodyPart outputPart) {
+        if (!autocryptOperations.hasAutocryptGossipHeader(outputPart)) {
+            return;
+        }
+
+        Intent intent = new Intent(OpenPgpApi.ACTION_UPDATE_AUTOCRYPT_PEER);
+        boolean hasInlineKeyData = autocryptOperations.addAutocryptGossipUpdateToIntentIfPresent(
+                currentMessage, outputPart, intent);
+        if (hasInlineKeyData) {
+            Timber.d("Passing autocrypt data from plain mail to OpenPGP API");
+            // We don't care about the result here, so we just call this fire-and-forget wait to minimize delay
+            openPgpApi.executeApiAsync(intent, null, null, new IOpenPgpCallback() {
+                @Override
+                public void onReturn(Intent result) {
+                    Timber.d("Autocrypt update OK!");
+                }
+            });
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
