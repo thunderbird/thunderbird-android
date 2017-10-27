@@ -73,6 +73,7 @@ Send feilmeldinger, bidra med nye funksjoner og still spørsmål her:
   <string name="compose_title_reply">Svar</string>
   <string name="compose_title_reply_all">Svar alle</string>
   <string name="compose_title_forward">Videresend</string>
+  <string name="choose_account_title">Velg konto</string>
   <string name="choose_folder_title">Velg mappe</string>
   <string name="status_loading_account_folder">Sjekker <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Henter overskrifter <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -838,6 +839,18 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="manage_accounts_move_down_action">Flytt ned</string>
   <string name="manage_accounts_moving_message">Flytter konto …</string>
   <string name="unread_widget_select_account">Vis antall uleste for …</string>
+  <string name="unread_widget_account_title">Konto</string>
+  <string name="unread_widget_account_summary">Kontoen antall uleste meldinger skal vises for</string>
+  <string name="unread_widget_unified_inbox_account_summary">Samlet innboks</string>
+  <string name="unread_widget_all_messages_account_summary">Alle meldinger</string>
+  <string name="unread_widget_folder_enabled_title">Mappeantall</string>
+  <string name="unread_widget_folder_enabled_summary">Vis antall uleste for bare én mappe</string>
+  <string name="unread_widget_folder_title">Mappe</string>
+  <string name="unread_widget_folder_summary">Mappen antall uleste meldinger skal vises for</string>
+  <string name="unread_widget_action_done">Ferdig</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Ingen konto valgt</string>
+  <string name="unread_widget_folder_not_selected">Ingen mappe valgt</string>
   <string name="import_dialog_error_title">Manglende filbehandlerprogram</string>
   <string name="close">Lukk</string>
   <string name="webview_empty_message">Ingen tekst</string>

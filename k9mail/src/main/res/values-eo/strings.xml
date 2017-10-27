@@ -71,6 +71,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="compose_title_reply">Respondi</string>
   <string name="compose_title_reply_all">Respondi al ĉiuj</string>
   <string name="compose_title_forward">Plusendi</string>
+  <string name="choose_account_title">Elektu konton</string>
   <string name="choose_folder_title">Elekti mesaĝujon</string>
   <string name="status_loading_account_folder">Kontrolado: <xliff:g id="account">%s</xliff:g>: <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Ŝargado de kapoj: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -649,6 +650,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nekonata atestilo</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Akcepti ŝlosilon</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifuzi ŝlosilon</string>
+  <string name="message_view_help_key">Del (aŭ D) - forigi\nR - respondi\nA - respondi al ĉiuj\nC - krei\nF - plusendi\nM - movi\nV - arĥivigi\nY - kopii\nZ - marki kiel (ne)legitan\nG - steletigi\nO - ordiga tipo\nI - ordigo\nQ - reveni al mesaĝujoj\nS - (mal)elekti\nJ aŭ P -antaŭa mesaĝo\nK aŭ N - sekva mesaĝo</string>
+  <string name="message_list_help_key">Del (aŭ D) - forigi\nC - krei\nM - movi\nV - arĥivigi\nY - kopii\nZ - marki kiel (ne)legitan\nG - steletigi\nO - ordiga tipo\nI - ordigo\nQ - reveni al mesaĝujoj\nS - (mal)elekti</string>
   <string name="folder_list_help_key">1 - vidigi nur mesaĝujojn de klaso 1\n2 - vidigi mesaĝujojn de klasoj 1 kaj 2\n3 - vidigi ĉiujn mesaĝujojn escepte de klaso 2\n4 - vidigi ĉiujn mesaĝujojn\nQ - reveni al kontoj\nS - redakti agordojn de konto</string>
   <string name="folder_list_filter_hint">Nomo de mesaĝujo enhavas</string>
   <string name="folder_list_display_mode_label">Montri mesaĝujojn…</string>
@@ -833,6 +836,18 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="manage_accounts_move_down_action">Movi suben</string>
   <string name="manage_accounts_moving_message">Movado de konto…</string>
   <string name="unread_widget_select_account">Montri nombron da nelegitaj por…</string>
+  <string name="unread_widget_account_title">Konto</string>
+  <string name="unread_widget_account_summary">La konto por kiu vidigi nombron da nelegitaj</string>
+  <string name="unread_widget_unified_inbox_account_summary">Unuigita ricevujo</string>
+  <string name="unread_widget_all_messages_account_summary">Ĉiuj mesaĝoj</string>
+  <string name="unread_widget_folder_enabled_title">Mesaĝuja nombro</string>
+  <string name="unread_widget_folder_enabled_summary">Vidigi nombron da nelegitaj nur por unu mesaĝujo</string>
+  <string name="unread_widget_folder_title">Mesaĝujo</string>
+  <string name="unread_widget_folder_summary">La mesaĝujo por kiu vidigi nombron da nelegitaj</string>
+  <string name="unread_widget_action_done">Farita</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Neniu konto elektita</string>
+  <string name="unread_widget_folder_not_selected">Neniu mesaĝujo elektita</string>
   <string name="import_dialog_error_title">Dosier-esplorilo mankas</string>
   <string name="close">Fermi</string>
   <string name="webview_empty_message">Nenia teksto</string>

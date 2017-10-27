@@ -31,7 +31,7 @@ Facilitățile sale îmbunătățite includ:
 <li>Adrese de răspuns configurabile</li>
 <li>Scurtături tastatură</li>
 <li>Suport IMAP mai bun</li>
-<li>Salvare anexe pe cardul SD</li>
+<li>Salvare atașamente pe cardul SD</li>
 <li>Golire Coș de gunoi</li>
 <li>Sortare mesaje</li>
 <li>…și multe altele</li>
@@ -39,12 +39,12 @@ Facilitățile sale îmbunătățite includ:
 <p>
 Rețineți, K-9 nu oferă suport pentru mare parte din conturile gratuite de Hotmail și, precum alți clienți de email, poate avea dificultăți cînd se conectează la Microsoft Exchange.
 </p><p>
-Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi sau sa puneți întrebări la
+Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi sau să puneți întrebări la
 <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
 ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nTrimis de pe dispozitiv Android cu K-9 Mail. Rog scuzati mesajul scurt.</string>
+  <string name="default_signature">-- \nTrimis de pe dispozitiv Android cu K-9 Mail. Rog scuzați mesajul scurt.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Contul \"<xliff:g id="account">%s</xliff:g>\" va fi șters din K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Toate datele locale pentru \"<xliff:g id="account">%s</xliff:g>\" vor fi șterse. Preferințele contului vor fi păstrate.</string>
@@ -72,6 +72,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="compose_title_reply">Răspundeți</string>
   <string name="compose_title_reply_all">Răspundeți tuturor</string>
   <string name="compose_title_forward">Redirecționează</string>
+  <string name="choose_account_title">Alege contul</string>
   <string name="choose_folder_title">Alegeți dosar</string>
   <string name="status_loading_account_folder">Interogare <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Se obțin antetele <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -233,6 +234,7 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="message_view_from_format">De la: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">La:</string>
   <string name="message_view_cc_label">Cc:</string>
+  <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_attachment_view_action">Deschide:</string>
   <string name="message_view_attachment_download_action">Salvează</string>
   <string name="message_view_status_attachment_not_saved">Nu se poate salva anexa pe cardul SD.</string>
@@ -555,17 +557,21 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="folder_settings_in_top_group_label">Arată în grupul de sus</string>
   <string name="folder_settings_in_top_group_summary">Arată aproape de partea de sus a listei de dosare</string>
   <string name="folder_settings_folder_display_mode_label">Nivel de afișare dosar</string>
+  <string name="folder_settings_folder_display_mode_normal">Niciunul</string>
   <string name="folder_settings_folder_display_mode_first_class">Nivel 1</string>
   <string name="folder_settings_folder_display_mode_second_class">Nivel 2</string>
+  <string name="folder_settings_folder_sync_mode_label">Nivel sincronizare dosar</string>
   <string name="folder_settings_folder_sync_mode_normal">Niciunul</string>
   <string name="folder_settings_folder_sync_mode_first_class">Nivel 1</string>
   <string name="folder_settings_folder_sync_mode_second_class">Nivel 2</string>
   <string name="folder_settings_folder_sync_mode_inherited">Același cu nivelul afișat</string>
   <string name="folder_settings_folder_push_mode_label">Nivel dosar Push</string>
+  <string name="folder_settings_folder_push_mode_normal">Niciunul</string>
   <string name="folder_settings_folder_push_mode_first_class">Nivel 1</string>
   <string name="folder_settings_folder_push_mode_second_class">Nivel 2</string>
   <string name="folder_settings_folder_push_mode_inherited">Același cu nivelul sincronizat</string>
   <string name="folder_settings_folder_notify_mode_label">Nivel notificare dosar</string>
+  <string name="folder_settings_folder_notify_mode_normal">Niciunul</string>
   <string name="folder_settings_folder_notify_mode_first_class">Nivel 1</string>
   <string name="folder_settings_folder_notify_mode_second_class">Nivel 2</string>
   <string name="folder_settings_folder_notify_mode_inherited">Același cu nivelul Push</string>
@@ -650,7 +656,10 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat nerecunoscut</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Tastă Accept</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Tastă Refuz</string>
+  <string name="message_view_help_key">Del (sau D) - Șterge\nR - Răspunde\nA - Răspunde tuturor\nC - Compune\nF - Redirecționează\nM - Mută\nV - Arhivează\nY - Copiază\nZ - Marchează (Ne)citit\nG - Stea\nO - Tip sortare\nI - Ordine sortare\nQ - Întoarcere la dosare\nS - Selectează/deselectează\nJ sau P - Mesaj anterior\nK sau N - Mesaj următor</string>
+  <string name="message_list_help_key">Del (sau D) - Șterge\nR - Răspunde\nA - Răspunde tuturor\nC - Compune\nF - Forward\nM - Mută\nV - Arhivează\nY - Copiază\nZ - Marchează (Ne)citit\nG - Stea\nO - Tip sortare\nI - Ordine sortare\nQ - Întoarcere la dosare\nS - Selectează/deselectează\nJ sau P - Mesaj anterior\nK sau N - Mesaj următor</string>
   <string name="folder_list_help_key">1 - Arată doar dosare de Nivel 1\n2 - Arată dosare de Nivel 1 și 2\n3 - Arată toate mai puțin dosarele de Nivel 2\n4 - Arată toate dosarele\nQ - Înapoi la conturi\nS - Modifică setările contului</string>
+  <string name="folder_list_filter_hint">Numele dosarului conține</string>
   <string name="folder_list_display_mode_label">Afișează dosare…</string>
   <string name="folder_list_display_mode_all">Toate dosarele</string>
   <string name="folder_list_display_mode_first_class">Dosare de Nivel 1</string>
@@ -679,6 +688,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="settings_message_theme_selection_label">Temă fixă pt. mesaje</string>
   <string name="settings_message_theme_selection_summary_off">Alege tema în timpul vizualizării mesajelor</string>
   <string name="settings_message_theme_selection_summary_on">Folosește o temă fixă pentru vizualizarea mesajelor</string>
+  <string name="setting_language_system">Setări implicite</string>
   <string name="background_ops_label">Sincronizare în fundal</string>
   <string name="background_ops_never">Niciodată</string>
   <string name="background_ops_always">Întotdeauna</string>
@@ -837,6 +847,18 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="manage_accounts_move_down_action">Mută mai jos</string>
   <string name="manage_accounts_moving_message">Se mută contul…</string>
   <string name="unread_widget_select_account">Arată număr necitite pentru…</string>
+  <string name="unread_widget_account_title">Cont</string>
+  <string name="unread_widget_account_summary">Contul pentru care trebuie afișat totalul mesajelor necitite</string>
+  <string name="unread_widget_unified_inbox_account_summary">Inbox unificat</string>
+  <string name="unread_widget_all_messages_account_summary">Toate mesajele</string>
+  <string name="unread_widget_folder_enabled_title">Total dosare</string>
+  <string name="unread_widget_folder_enabled_summary">Afișează total necitite pentru un singur dosar</string>
+  <string name="unread_widget_folder_title">Dosar</string>
+  <string name="unread_widget_folder_summary">Dosarul pentru care trebuie afișat total mesaje necitite</string>
+  <string name="unread_widget_action_done">Realizat</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Nici un cont selectat</string>
+  <string name="unread_widget_folder_not_selected">Nici un dosar selectat</string>
   <string name="import_dialog_error_title">Aplicație Eplorator de fișiere lipsă</string>
   <string name="close">Închide</string>
   <string name="webview_empty_message">Fără text</string>
@@ -929,9 +951,11 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="address_type_other">Alta</string>
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Nu este configurat Dosarul de ciorne pentru acest cont</string>
+  <string name="compose_error_no_key_configured">Nici o cheie configurată pentru acest cont! Verificați setările.</string>
   <string name="crypto_mode_disabled">Nu cripta</string>
   <string name="crypto_mode_opportunistic">Criptează daca e posibil</string>
   <string name="crypto_mode_private">Criptează</string>
+  <string name="error_crypto_provider_incompatible">Furnizorul de criptare folosește o versiune incompatibilă. Vă rugăm verificați setările!</string>
   <string name="error_crypto_provider_connect">Conexiune nereușită la furnizorul criptografic, verificați setările sau apăsați pe Criptare pentru a reîncerca!</string>
   <string name="error_crypto_provider_ui_required">Acces refuzat la furnizorul criptografic, apăsați pe Criptare pentru a reîncerca!</string>
   <string name="error_crypto_inline_attach">Modul PGP/INLINE nu permite anexe!</string>
@@ -998,6 +1022,9 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="messageview_crypto_warning_show_anyway">Arată mesajul totuși</string>
   <string name="recipient_error_non_ascii">Caracterele speciale nu sunt suportate deocamdată!</string>
   <string name="recipient_error_parse_failed">Eroare la citirea adresei!</string>
+  <string name="account_settings_crypto_support_sign_only">Arată semnăturile necriptate</string>
+  <string name="account_settings_crypto_support_sign_only_on">Semnăturile necriptate vor fi afișate</string>
+  <string name="account_settings_crypto_support_sign_only_off">Semnăturile necriptate vor fi ignorate</string>
   <string name="error_sign_only_no_encryption">Criptare indisponibilă în modul „Doar semnare”!</string>
   <string name="unsigned_text_divider_label">Text nesemnat</string>
   <string name="apg_deprecated_title">Avertisment APG</string>
@@ -1016,5 +1043,16 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="mail_list_widget_loading">Se încarcă mesajele…</string>
   <string name="fetching_folders_failed">Preluarea listei de dosare a eșuat</string>
   <string name="messageview_crypto_warning_details">Arată detaliile</string>
+  <string name="error_recipient_crypto_retrieve">Eroare la extragerea stării destinatarului din furnizorul openPGP!</string>
+  <string name="openpgp_enabled_error_title">Criptarea nu este posibilă</string>
+  <string name="openpgp_enabled_error_msg">Unii dintre destinatarii selectați nu suportă această facilitate!</string>
+  <string name="enable_encryption">Activează criptarea</string>
+  <string name="disable_encryption">Dezactivează criptarea</string>
+  <string name="openpgp_description_text1">Criptarea mesajelor asigură că acestea pot fi citite doar de către destinatar, și nimeni altcineva.</string>
+  <string name="openpgp_description_text3">Criptarea va apărea doar dacă este suportată de toți destinatarii, și aceștia trebuie să vă fi trimis un e-mail anterior.</string>
+  <string name="openpgp_description_text2">Schimbă criptarea apăsînd iconița</string>
+  <string name="openpgp_enabled_error_gotit">Am înțeles</string>
   <string name="openpgp_enabled_error_back">Înapoi</string>
+  <string name="openpgp_enabled_error_disable">Dezactivează criptarea</string>
+  <string name="openpgp_encryption">Criptare OpenPGP</string>
 </resources>
