@@ -8,6 +8,10 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.302" versioncode="23520">
+        <change>Fixed display errors of plain text messages</change>
+        <change>Added translations: Indonesian, Breton</change>
+    </release>
     <release version="5.301" versioncode="23510">
         <change>Improved OpenPGP support</change>
         <change>Various bug fixes</change>
