@@ -14,9 +14,9 @@ class AutocryptGossipHeader {
 
 
     @NonNull
-    private final byte[] keyData;
+    final byte[] keyData;
     @NonNull
-    private final String addr;
+    final String addr;
 
     AutocryptGossipHeader(@NonNull String addr, @NonNull byte[] keyData) {
         this.addr = addr;
