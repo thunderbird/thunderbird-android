@@ -3,10 +3,10 @@
   <!--=== App-specific strings =============================================================-->
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
-  <string name="app_name">K-9 Póstur</string>
-  <string name="shortcuts_title">K-9 Aðgangar</string>
-  <string name="unread_widget_label">K-9 Ólesið</string>
-  <string name="remote_control_label">K-9 Póstfjarstýring</string>
+  <string name="app_name">K-9 - Póstur</string>
+  <string name="shortcuts_title">K-9 - Aðgangar</string>
+  <string name="unread_widget_label">K-9 - Ólesið</string>
+  <string name="remote_control_label">K-9 - Póstfjarstýring</string>
   <string name="remote_control_desc">Leyfa þessu forriti að stýra virkni og stillingum K-9 póstsins.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Google, K-9 hundatemjararnir.</string>
@@ -44,7 +44,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nSent úr Android tækinu mínu með K-9 póstforritinu. Afsakið hvað ég stytti mál mitt mikið.</string>
+  <string name="default_signature">-- \nSent úr Android tækinu mínu með K-9 póstforritinu. Afsakaðu hvað ég stytti mál mitt mikið.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Aðgangurinn \"<xliff:g id="account">%s</xliff:g>\" verður fjarlægður úr K-9 póstinum.</string>
   <string name="account_recreate_dlg_instructions_fmt">Öll staðvær gögn fyrir \"<xliff:g id="account">%s</xliff:g>\" verða fjarlægð. Stillingum aðgangs verður haldið eftir.</string>
@@ -72,7 +72,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="compose_title_reply">Svara</string>
   <string name="compose_title_reply_all">Svara öllum</string>
   <string name="compose_title_forward">Framsenda</string>
-  <string name="choose_folder_title">Velja möppu</string>
+  <string name="choose_account_title">Veldu aðgang</string>
+  <string name="choose_folder_title">Veldu möppu</string>
   <string name="status_loading_account_folder">Athuga <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Sæki hausa <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Sendi <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -231,6 +232,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="message_view_from_format">Frá: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Til:</string>
   <string name="message_view_cc_label">Afrit:</string>
+  <string name="message_view_bcc_label">Falið afrit:</string>
   <string name="message_view_attachment_view_action">Opna</string>
   <string name="message_view_attachment_download_action">Vista</string>
   <string name="message_view_status_attachment_not_saved">Tókst ekki að vista viðhengi á SD-minniskort.</string>
@@ -241,6 +243,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="message_view_toast_unable_to_display_message">Náði ekki að birta skilaboð</string>
   <string name="message_view_sender_label">í gegnum %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
+  <string name="message_no_additional_headers_available">Búið er að ná í alla hausa, en það eru engir viðbótarhausar sem hægt er að sækja.</string>
   <string name="message_additional_headers_retrieval_failed">Mistókst að sækja viðbótarhausa úr gagnagrunni eða af póstþjóni.</string>
   <string name="from_same_sender">Fleira frá þessum sendanda</string>
   <string name="debug_delete_local_body">Aflúsa / Hreinsa meginmál skilaboða</string>
@@ -290,6 +293,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_notification_quick_delete_never">Aldrei</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Fyrir tilkynningu um stakan póst</string>
   <string name="global_settings_notification_quick_delete_always">Alltaf</string>
+  <string name="global_settings_notification_quick_delete_description">Birta hnapp í tilkynningu sem gefur kost á að eyða skilaboðunum</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Tilkynningar á skjálæsingu</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Engar tilkynningar á skjálæsingu</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nafn forritsins</string>
@@ -469,7 +473,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_message_format_text">Hreinn texti (fjarlægir myndir og snið)</string>
   <string name="account_settings_message_format_html">HTML (heldur myndum og sniðum)</string>
   <string name="account_settings_message_format_auto">Sjálfvirkt</string>
-  <string name="account_settings_always_show_cc_bcc_label">Alltaf sýna Cc/Bcc</string>
+  <string name="account_settings_always_show_cc_bcc_label">Alltaf sýna Afrit/Falið afrit</string>
   <string name="account_settings_message_read_receipt_label">Leskvittun</string>
   <string name="account_settings_message_read_receipt_summary">Alltaf biðja um leskvittun</string>
   <string name="account_settings_quote_style_label">Stíll tilvitnana í svörum</string>
@@ -548,17 +552,21 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="folder_settings_in_top_group_label">Birta í efsta hópi</string>
   <string name="folder_settings_in_top_group_summary">Sýna nálægt efri enda möppulista</string>
   <string name="folder_settings_folder_display_mode_label">Birtingarflokkur möppu</string>
+  <string name="folder_settings_folder_display_mode_normal">Enginn flokkur</string>
   <string name="folder_settings_folder_display_mode_first_class">1. flokkur</string>
   <string name="folder_settings_folder_display_mode_second_class">2. flokkur</string>
+  <string name="folder_settings_folder_sync_mode_label">Flokkur möppuvöktunar</string>
   <string name="folder_settings_folder_sync_mode_normal">Engin</string>
   <string name="folder_settings_folder_sync_mode_first_class">1. flokkur</string>
   <string name="folder_settings_folder_sync_mode_second_class">2. flokkur</string>
   <string name="folder_settings_folder_sync_mode_inherited">Sami og birtingarflokkur</string>
   <string name="folder_settings_folder_push_mode_label">Ýtingarflokkur möppu</string>
+  <string name="folder_settings_folder_push_mode_normal">Enginn flokkur</string>
   <string name="folder_settings_folder_push_mode_first_class">1. flokkur</string>
   <string name="folder_settings_folder_push_mode_second_class">2. flokkur</string>
   <string name="folder_settings_folder_push_mode_inherited">Sami og samstillingarflokkur</string>
   <string name="folder_settings_folder_notify_mode_label">Tilkynningaflokkur möppu</string>
+  <string name="folder_settings_folder_notify_mode_normal">Enginn flokkur</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. flokkur</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. flokkur</string>
   <string name="folder_settings_folder_notify_mode_inherited">Sami og ýtingarflokkur</string>
@@ -643,7 +651,10 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_failed_dlg_invalid_certificate_title">Óþekkjanlegt skilríki</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Samþykkja lykil</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Hafna lykli</string>
+  <string name="message_view_help_key">Del (eða D) - Eyða\nR - Svara\nA - Svara öllum\nC - Skrifa\nF - Forward\nM - Færa\nV - Geymsla\nY - Afrita\nZ - Merkja (ó)lesið\nG - Stjörnumerkja\nO - Gerð röðunar\nI - Röðun\nQ - Fara í möppur\nS - Velja/afvelja\nJ eða P - Fyrri skilaboð\nK eða N - Næstu skilaboð</string>
+  <string name="message_list_help_key">Del (eða D) - Eyða\nC - Skrifa\nM - Færa\nV - Geymsla\nY - Afrita\nZ - Merkja (ó)lesið\nG - Stjörnumerkja\nO - Gerð röðunar\nQ - Fara í möppur\nS - Velja/afvelja</string>
   <string name="folder_list_help_key">1 - Birta einungis 1. flokks möppur\n2 - Birta 1. og 2. flokks möppur\n3 - Birta allt nema 2. flokks möppur\n4 - Birta allar möppur\nQ - Fara til baka í Aðgangar\nS - Breyta stillingum aðgangs</string>
+  <string name="folder_list_filter_hint">Nafn möppu inniheldur</string>
   <string name="folder_list_display_mode_label">Birta möppur…</string>
   <string name="folder_list_display_mode_all">Allar möppur</string>
   <string name="folder_list_display_mode_first_class">1. flokks möppur</string>
@@ -668,7 +679,11 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="settings_theme_label">Þema</string>
   <string name="settings_message_theme_label">Þema í skilaboðasýn</string>
   <string name="settings_compose_theme_label">Þema við samningu</string>
+  <string name="settings_language_label">Tungumál</string>
   <string name="settings_message_theme_selection_label">Fast þema skilaboða</string>
+  <string name="settings_message_theme_selection_summary_off">Velja þema til skoðunar skilaboða, með skilaboð opin</string>
+  <string name="settings_message_theme_selection_summary_on">Nota fast þema til skoðunar skilaboða</string>
+  <string name="setting_language_system">Sjálfgefið á kerfinu</string>
   <string name="background_ops_label">Samstilling í bakgrunni</string>
   <string name="background_ops_never">Aldrei</string>
   <string name="background_ops_always">Alltaf</string>
@@ -683,6 +698,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_push_limit_500">500 möppur</string>
   <string name="account_setup_push_limit_1000">1000 möppur</string>
   <string name="animations_title">Hreyfingar</string>
+  <string name="animations_summary">Nota skrautlegar sjónbrellur</string>
   <string name="gestures_title">Bendingar</string>
   <string name="gestures_summary">Virkja stýringu með bendingum</string>
   <string name="volume_navigation_title">Flakk með hljóðstyrkshnöppum</string>
@@ -786,6 +802,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="settings_importing">Flytja inn stillingar…</string>
   <string name="settings_import_scanning_file">Skanna skrá…</string>
   <string name="settings_export_success">Vistaði útfluttar stillingar í <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">Tókst að flytja út stillingar</string>
   <string name="settings_import_global_settings_success">Flutti inn víðværar stillingar úr <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Flutti inn <xliff:g id="accounts">%s</xliff:g> frá <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
@@ -820,6 +837,18 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="manage_accounts_move_down_action">Færa niður</string>
   <string name="manage_accounts_moving_message">Færi aðgang…</string>
   <string name="unread_widget_select_account">Sýna fjölda ólesins fyrir…</string>
+  <string name="unread_widget_account_title">Aðgangur</string>
+  <string name="unread_widget_account_summary">Aðgangurinn sem birting fjöldi ólesinna skilaboða tilheyrir</string>
+  <string name="unread_widget_unified_inbox_account_summary">Sameinað innhólf</string>
+  <string name="unread_widget_all_messages_account_summary">Öll skilaboð</string>
+  <string name="unread_widget_folder_enabled_title">Fjöldi mappa</string>
+  <string name="unread_widget_folder_enabled_summary">Birta fjölda ólesinna skilaboða úr einungis einni möppu</string>
+  <string name="unread_widget_folder_title">Mappa</string>
+  <string name="unread_widget_folder_summary">Mappan sem birting fjöldi ólesinna skilaboða tilheyrir</string>
+  <string name="unread_widget_action_done">Búið</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Enginn aðgangur valinn</string>
+  <string name="unread_widget_folder_not_selected">Engin mappa valin</string>
   <string name="import_dialog_error_title">Skráastjórnunarforrit vantar</string>
   <string name="close">Loka</string>
   <string name="webview_empty_message">Enginn texti</string>
@@ -854,13 +883,24 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_remote_search_num_label">Leitartakmörk á póstþjóni</string>
   <string name="account_settings_remote_search_num_summary">Leit mun hætta um leið og <xliff:g id="num_results">%s</xliff:g> niðurstöður hafa fundist.</string>
   <string name="remote_search_sending_query">Sendi fyrirspurn á póstþjón</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">Næ í %d niðurstöðu</item>
+    <item quantity="other">Næ í %d niðurstöður</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">Næ í %1$d af %2$d niðurstöðum</item>
+    <item quantity="other">Næ í %1$d af %2$d niðurstöðum</item>
+  </plurals>
   <string name="remote_search_error">Fjartengd leit mistókst</string>
   <string name="account_settings_search">Leita</string>
   <string name="account_settings_remote_search_enabled">Virkja leit á póstþjóni</string>
   <string name="account_settings_remote_search_enabled_summary">Leita að skilaboðum á póstþjóninum auk þeirra sem eru á tækinu þínu</string>
   <string name="action_remote_search">Leita að skilaboðum á póstþjóni</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Toga til að leita á póstþjóni...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Sleppa til að leita á póstþjóni...</string>
   <string name="remote_search_unavailable_no_network">Nettenging er nauðsynleg til að geta leitað á póstþjóni.</string>
   <string name="global_settings_background_as_unread_indicator_label">Breyta lit þegar búið er að lesa</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Öðruvísi bakgrunnur gefur til kynna að skilaboðin hafi verið lesin</string>
   <string name="global_settings_threaded_view_label">Hópuð sýn</string>
   <string name="global_settings_threaded_view_summary">Hópa skilaboð eftir samtölum</string>
   <string name="upgrade_databases_title">Uppfæri gagnagrunna</string>
@@ -889,6 +929,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_basics_client_certificate">Nota skilríki forritsins</string>
   <string name="client_certificate_spinner_empty">Ekkert skilríki forrits</string>
   <string name="client_certificate_spinner_delete">Fjarlægja valin skilríki forrits</string>
+  <string name="client_certificate_retrieval_failure">Mistókst á ná í skilríki forrits vegna samheitisins \"<xliff:g id="alias">%s</xliff:g>\"</string>
   <string name="client_certificate_advanced_options">Ítarlegir valkostir</string>
   <string name="client_certificate_expired">Skilríki forrits \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" er útrunnið eða hefur ekki tekið gildi (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
@@ -900,17 +941,20 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="recipient_bcc">Falið afrit</string>
   <string name="recipient_to">Til</string>
   <string name="recipient_from">Frá</string>
-  <string name="unknown_recipient"><![CDATA[<Óþekktur viðtakandi>]]></string>
+  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Heima</string>
   <string name="address_type_work">Vinna</string>
   <string name="address_type_other">Annað</string>
   <string name="address_type_mobile">Farsími</string>
   <string name="compose_error_no_draft_folder">Engin mappa fyrir drög er skilgreind fyrir þennan aðgang!</string>
+  <string name="compose_error_no_key_configured">Enginn lykill er skilgreindur fyrir þennan aðgang! Athugaðu stillingarnar þínar.</string>
   <string name="crypto_mode_disabled">Ekki dulrita</string>
   <string name="crypto_mode_opportunistic">Dulrita ef það er hægt</string>
   <string name="crypto_mode_private">Dulrita</string>
   <string name="enable_inline_pgp">Virkja PGP/INLINE</string>
   <string name="disable_inline_pgp">Gera PGP/INLINE óvirkt</string>
+  <string name="enable_sign_only">Virkja PGP Sign-Only</string>
+  <string name="disable_sign_only">Gera PGP Sign-Only óvirkt</string>
   <string name="openpgp_inline_title">PGP/INLINE hamur</string>
   <string name="openpgp_inline_plus_compat">Sum forrit styðja einungis við þetta snið</string>
   <string name="openpgp_inline_minus_attach">Ekki er stuðningur við viðhengi</string>
@@ -977,4 +1021,13 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="mail_list_widget_loading">Hleður skilaboð…</string>
   <string name="fetching_folders_failed">Mistókst að sækja möppulista</string>
   <string name="messageview_crypto_warning_details">Birta ítarlegra</string>
+  <string name="openpgp_enabled_error_title">Dulritun er ekki möguleg</string>
+  <string name="openpgp_enabled_error_msg">Sumir valinna viðtakenda styðja ekki við þennan eiginleika!</string>
+  <string name="enable_encryption">Virkja dulritun</string>
+  <string name="disable_encryption">Gera dulritun óvirka</string>
+  <string name="openpgp_description_text2">Víxla dulritun af/á með því að smella á þetta tákn.</string>
+  <string name="openpgp_enabled_error_gotit">Náði því!</string>
+  <string name="openpgp_enabled_error_back">Til baka</string>
+  <string name="openpgp_enabled_error_disable">Gera dulritun óvirka</string>
+  <string name="openpgp_encryption">OpenPGP dulritun</string>
 </resources>

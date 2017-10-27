@@ -73,6 +73,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="compose_title_reply">Antworten</string>
   <string name="compose_title_reply_all">Allen antworten</string>
   <string name="compose_title_forward">Weiterleiten</string>
+  <string name="choose_account_title">Konto auswählen</string>
   <string name="choose_folder_title">Ordner auswählen</string>
   <string name="status_loading_account_folder">Lade <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Lade Kopfzeilen in <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -835,6 +836,18 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="manage_accounts_move_down_action">Nach unten verschieben</string>
   <string name="manage_accounts_moving_message">Konto verschieben…</string>
   <string name="unread_widget_select_account">Anzahl ungelesener Nachrichten anzeigen für…</string>
+  <string name="unread_widget_account_title">Konto</string>
+  <string name="unread_widget_account_summary">Das Konto, für das der Zähler für ungelesene Nachrichten angezeigt werden soll</string>
+  <string name="unread_widget_unified_inbox_account_summary">Gemeinsamer Posteingang</string>
+  <string name="unread_widget_all_messages_account_summary">Alle Nachrichten</string>
+  <string name="unread_widget_folder_enabled_title">Ordneranzahl</string>
+  <string name="unread_widget_folder_enabled_summary">Den Zähler für ungelesene Nachrichten eines einzelnen Ordners zeigen</string>
+  <string name="unread_widget_folder_title">Ordner</string>
+  <string name="unread_widget_folder_summary">Die Ordnerliste, für die der Zähler für ungelesene Nachrichten angezeigt werden soll</string>
+  <string name="unread_widget_action_done">Fertig</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Kein Konto ausgewählt</string>
+  <string name="unread_widget_folder_not_selected">Kein Ordner ausgewählt</string>
   <string name="import_dialog_error_title">Kein Dateimanager gefunden!</string>
   <string name="close">Schließen</string>
   <string name="webview_empty_message">Kein Nachrichtentext</string>
