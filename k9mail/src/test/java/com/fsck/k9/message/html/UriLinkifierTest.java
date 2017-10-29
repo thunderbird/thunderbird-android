@@ -136,4 +136,13 @@ public class UriLinkifierTest {
                         "<a href=\"http://uri2.example.org/path\">http://uri2.example.org/path</a> postfix",
                 outputBuffer.toString());
     }
+
+    @Test
+    public void urlAtBeginningOfLine() {
+        String text = "http://www.example.org some text more text";
+
+        UriLinkifier.linkifyText(text, outputBuffer);
+
+        assertEquals("<a href=\"http://www.example.org\">http://www.example.org</a> some text more text", outputBuffer.toString());
+    }
 }

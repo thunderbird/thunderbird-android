@@ -180,4 +180,9 @@ public class AddressTest {
 
         assertNull(result);
     }
+
+    @Test
+    public void handlesInvalidBase64Encoding() throws Exception {
+        Address.parse("=?utf-8?b?invalid#?= <oops@example.com>");
+    }
 }
