@@ -43,8 +43,8 @@ public class ConditionsTreeNode implements Parcelable {
      * Used for storing and retrieving the tree to/from the database.
      * The algorithm is called "modified preorder tree traversal".
      */
-    private int leftMPTTMarker;
-    private int rightMPTTMarker;
+    public int leftMPTTMarker;
+    public int rightMPTTMarker;
 
 
     ///////////////////////////////////////////////////////////////

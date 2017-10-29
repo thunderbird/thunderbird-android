@@ -129,7 +129,7 @@ public class LocalKeyStore {
         }
     }
 
-    synchronized boolean isValidCertificate(Certificate certificate, String host, int port) {
+    public synchronized boolean isValidCertificate(Certificate certificate, String host, int port) {
         if (keyStore == null) {
             return false;
         }

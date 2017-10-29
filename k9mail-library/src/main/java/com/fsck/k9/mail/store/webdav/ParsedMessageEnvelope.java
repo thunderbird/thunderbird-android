@@ -41,19 +41,19 @@ class ParsedMessageEnvelope {
         }
     }
 
-    Map<String, String> getMessageHeaders() {
+    public Map<String, String> getMessageHeaders() {
         return this.messageHeaders;
     }
 
-    String[] getHeaderList() {
+    public String[] getHeaderList() {
         return this.headers.toArray(WebDavConstants.EMPTY_STRING_ARRAY);
     }
 
-    void setReadStatus(boolean status) {
+    public void setReadStatus(boolean status) {
         this.readStatus = status;
     }
 
-    boolean getReadStatus() {
+    public boolean getReadStatus() {
         return this.readStatus;
     }
 

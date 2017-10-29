@@ -570,7 +570,7 @@ public class StorageManager {
      *            Never <code>null</code>.
      * @return <code>null</code> if not found.
      */
-    private StorageProvider getProvider(final String providerId) {
+    protected StorageProvider getProvider(final String providerId) {
         return providers.get(providerId);
     }
 
@@ -695,7 +695,7 @@ public class StorageManager {
      *            Never <code>null</code>.
      * @return The corresponding provider. <code>null</code> if no match.
      */
-    private StorageProvider resolveProvider(final String path) {
+    protected StorageProvider resolveProvider(final String path) {
         for (final StorageProvider provider : providers.values()) {
             if (path.equals(provider.getRoot(context).getAbsolutePath())) {
                 return provider;

@@ -957,8 +957,12 @@ public class FolderList extends K9ListActivity {
                 holder.folderName = (TextView) view.findViewById(R.id.folder_name);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
                 holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
+<<<<<<< HEAD
                 holder.newMessageCountWrapper =
                         view.findViewById(R.id.new_message_count_wrapper);
+=======
+                holder.newMessageCountWrapper = view.findViewById(R.id.new_message_count_wrapper);
+>>>>>>> 4755c6317... Renamed many variables of form `mCamelCase` to `camelCase`
                 holder.flaggedMessageCountWrapper = view.findViewById(R.id.flagged_message_count_wrapper);
                 holder.newMessageCountIcon = view.findViewById(R.id.new_message_count_icon);
                 holder.flaggedMessageCountIcon = view.findViewById(R.id.flagged_message_count_icon);

@@ -154,11 +154,11 @@ public class LockableDatabase {
         this.schemaDefinition = schemaDefinition;
     }
 
-    void setStorageProviderId(String mStorageProviderId) {
+    public void setStorageProviderId(String mStorageProviderId) {
         this.storageProviderId = mStorageProviderId;
     }
 
-    String getStorageProviderId() {
+    public String getStorageProviderId() {
         return storageProviderId;
     }
 
@@ -178,7 +178,7 @@ public class LockableDatabase {
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available
      */
-    private void lockRead() throws UnavailableStorageException {
+    protected void lockRead() throws UnavailableStorageException {
         readLock.lock();
         try {
             getStorageManager().lockProvider(storageProviderId);
@@ -188,7 +188,7 @@ public class LockableDatabase {
         }
     }
 
-    private void unlockRead() {
+    protected void unlockRead() {
         getStorageManager().unlockProvider(storageProviderId);
         readLock.unlock();
     }
@@ -205,7 +205,7 @@ public class LockableDatabase {
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available.
      */
-    private void lockWrite() throws UnavailableStorageException {
+    protected void lockWrite() throws UnavailableStorageException {
         lockWrite(storageProviderId);
     }
 
@@ -224,7 +224,11 @@ public class LockableDatabase {
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available.
      */
+<<<<<<< HEAD
     private void lockWrite(final String providerId) throws UnavailableStorageException {
+=======
+    protected void lockWrite(final String providerId) throws UnavailableStorageException {
+>>>>>>> 4755c6317... Renamed many variables of form `mCamelCase` to `camelCase`
         writeLock.lock();
         try {
             getStorageManager().lockProvider(providerId);
@@ -234,7 +238,7 @@ public class LockableDatabase {
         }
     }
 
-    private void unlockWrite() {
+    protected void unlockWrite() {
         unlockWrite(storageProviderId);
     }
 
@@ -306,7 +310,7 @@ public class LockableDatabase {
      *            Never <code>null</code>.
      * @throws MessagingException
      */
-    void switchProvider(final String newProviderId) throws MessagingException {
+    public void switchProvider(final String newProviderId) throws MessagingException {
         if (newProviderId.equals(storageProviderId)) {
             Timber.v("LockableDatabase: Ignoring provider switch request as they are equal: %s", newProviderId);
             return;

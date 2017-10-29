@@ -37,12 +37,16 @@ public class MergeCursor implements Cursor {
     /**
      * List of the cursors combined in this object.
      */
+<<<<<<< HEAD
     private final Cursor[] cursors;
+=======
+    protected final Cursor[] cursors;
+>>>>>>> 4755c6317... Renamed many variables of form `mCamelCase` to `camelCase`
 
     /**
      * The currently active cursor.
      */
-    private Cursor activeCursor;
+    protected Cursor activeCursor;
 
     /**
      * The index of the currently active cursor in {@link #cursors}.

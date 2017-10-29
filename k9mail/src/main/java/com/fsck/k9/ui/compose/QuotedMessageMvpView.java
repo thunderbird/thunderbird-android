@@ -119,26 +119,26 @@ public class QuotedMessageMvpView {
         mFontSizes.setViewTextSize(quotedText, fontSize);
     }
 
-    void setQuotedHtml(String quotedContent, AttachmentResolver attachmentResolver) {
+    public void setQuotedHtml(String quotedContent, AttachmentResolver attachmentResolver) {
         quotedHTML.displayHtmlContentWithInlineAttachments(
                 HtmlConverter.wrapMessageContent(quotedContent),
                 attachmentResolver, null);
     }
 
-    void setQuotedText(String quotedText) {
+    public void setQuotedText(String quotedText) {
         this.quotedText.setCharacters(quotedText);
     }
 
     // TODO we shouldn't have to retrieve the state from the view here
-    String getQuotedText() {
+    public String getQuotedText() {
         return quotedText.getCharacters();
     }
 
-    void setMessageContentCharacters(String text) {
+    public void setMessageContentCharacters(String text) {
         messageContentView.setCharacters(text);
     }
 
-    void setMessageContentCursorPosition(int messageContentCursorPosition) {
+    public void setMessageContentCursorPosition(int messageContentCursorPosition) {
         messageContentView.setSelection(messageContentCursorPosition);
     }
 }
