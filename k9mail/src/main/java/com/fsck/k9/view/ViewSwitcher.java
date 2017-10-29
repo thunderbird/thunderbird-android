@@ -69,24 +69,12 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
         this.firstInAnimation = inAnimation;
     }
 
-    public Animation getFirstOutAnimation() {
-        return firstOutAnimation;
-    }
-
     public void setFirstOutAnimation(Animation outAnimation) {
         firstOutAnimation = outAnimation;
     }
 
-    public Animation getSecondInAnimation() {
-	 return secondInAnimation;
-    }
-
     public void setSecondInAnimation(Animation inAnimation) {
         secondInAnimation = inAnimation;
-    }
-
-    public Animation getSecondOutAnimation() {
-	 return secondOutAnimation;
     }
 
     public void setSecondOutAnimation(Animation outAnimation) {
