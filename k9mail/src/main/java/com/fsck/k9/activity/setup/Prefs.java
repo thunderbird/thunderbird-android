@@ -113,62 +113,62 @@ public class Prefs extends K9PreferenceActivity {
 
     private static final int DIALOG_APG_DEPRECATION_WARNING = 1;
 
-    // Named indices for the mVisibleRefileActions field
+    // Named indices for the visibleRefileActions field
     private static final int VISIBLE_REFILE_ACTIONS_DELETE = 0;
     private static final int VISIBLE_REFILE_ACTIONS_ARCHIVE = 1;
     private static final int VISIBLE_REFILE_ACTIONS_MOVE = 2;
     private static final int VISIBLE_REFILE_ACTIONS_COPY = 3;
     private static final int VISIBLE_REFILE_ACTIONS_SPAM = 4;
 
-    private ListPreference mLanguage;
-    private ListPreference mTheme;
-    private CheckBoxPreference mFixedMessageTheme;
-    private ListPreference mMessageTheme;
-    private ListPreference mComposerTheme;
-    private CheckBoxPreference mAnimations;
-    private CheckBoxPreference mGestures;
-    private CheckBoxListPreference mVolumeNavigation;
-    private CheckBoxPreference mStartIntegratedInbox;
-    private CheckBoxListPreference mConfirmActions;
-    private ListPreference mNotificationHideSubject;
-    private CheckBoxPreference mMeasureAccounts;
-    private CheckBoxPreference mCountSearch;
-    private CheckBoxPreference mHideSpecialAccounts;
-    private ListPreference mPreviewLines;
-    private CheckBoxPreference mSenderAboveSubject;
-    private CheckBoxPreference mCheckboxes;
-    private CheckBoxPreference mStars;
-    private CheckBoxPreference mShowCorrespondentNames;
-    private CheckBoxPreference mShowContactName;
-    private CheckBoxPreference mChangeContactNameColor;
-    private CheckBoxPreference mShowContactPicture;
-    private CheckBoxPreference mColorizeMissingContactPictures;
-    private CheckBoxPreference mFixedWidth;
-    private CheckBoxPreference mReturnToList;
-    private CheckBoxPreference mShowNext;
-    private CheckBoxPreference mAutofitWidth;
-    private ListPreference mBackgroundOps;
-    private CheckBoxPreference mDebugLogging;
-    private CheckBoxPreference mSensitiveLogging;
-    private CheckBoxPreference mHideUserAgent;
-    private CheckBoxPreference mHideTimeZone;
-    private CheckBoxPreference mWrapFolderNames;
-    private CheckBoxListPreference mVisibleRefileActions;
+    private ListPreference language;
+    private ListPreference theme;
+    private CheckBoxPreference fixedMessageTheme;
+    private ListPreference messageTheme;
+    private ListPreference composerTheme;
+    private CheckBoxPreference animations;
+    private CheckBoxPreference gestures;
+    private CheckBoxListPreference volumeNavigation;
+    private CheckBoxPreference startIntegratedInbox;
+    private CheckBoxListPreference confirmActions;
+    private ListPreference notificationHideSubject;
+    private CheckBoxPreference measureAccounts;
+    private CheckBoxPreference countSearch;
+    private CheckBoxPreference hideSpecialAccounts;
+    private ListPreference previewLines;
+    private CheckBoxPreference senderAboveSubject;
+    private CheckBoxPreference checkboxes;
+    private CheckBoxPreference stars;
+    private CheckBoxPreference showCorrespondentNames;
+    private CheckBoxPreference showContactName;
+    private CheckBoxPreference changeContactNameColor;
+    private CheckBoxPreference showContactPicture;
+    private CheckBoxPreference colorizeMissingContactPictures;
+    private CheckBoxPreference fixedWidth;
+    private CheckBoxPreference returnToList;
+    private CheckBoxPreference showNext;
+    private CheckBoxPreference autofitWidth;
+    private ListPreference backgroundOps;
+    private CheckBoxPreference debugLogging;
+    private CheckBoxPreference sensitiveLogging;
+    private CheckBoxPreference hideUserAgent;
+    private CheckBoxPreference hideTimeZone;
+    private CheckBoxPreference wrapFolderNames;
+    private CheckBoxListPreference visibleRefileActions;
 
-    private OpenPgpAppPreference mOpenPgpProvider;
-    private CheckBoxPreference mOpenPgpSupportSignOnly;
+    private OpenPgpAppPreference openPgpProvider;
+    private CheckBoxPreference openPgpSupportSignOnly;
 
-    private CheckBoxPreference mQuietTimeEnabled;
-    private CheckBoxPreference mDisableNotificationDuringQuietTime;
-    private com.fsck.k9.preferences.TimePickerPreference mQuietTimeStarts;
-    private com.fsck.k9.preferences.TimePickerPreference mQuietTimeEnds;
-    private ListPreference mNotificationQuickDelete;
-    private ListPreference mLockScreenNotificationVisibility;
-    private Preference mAttachmentPathPreference;
+    private CheckBoxPreference quietTimeEnabled;
+    private CheckBoxPreference disableNotificationDuringQuietTime;
+    private com.fsck.k9.preferences.TimePickerPreference quietTimeStarts;
+    private com.fsck.k9.preferences.TimePickerPreference quietTimeEnds;
+    private ListPreference notificationQuickDelete;
+    private ListPreference lockScreenNotificationVisibility;
+    private Preference attachmentPathPreference;
 
-    private CheckBoxPreference mBackgroundAsUnreadIndicator;
-    private CheckBoxPreference mThreadedView;
-    private ListPreference mSplitViewMode;
+    private CheckBoxPreference backgroundAsUnreadIndicator;
+    private CheckBoxPreference threadedView;
+    private ListPreference splitViewMode;
 
 
     public static void actionPrefs(Context context) {
@@ -182,9 +182,9 @@ public class Prefs extends K9PreferenceActivity {
 
         addPreferencesFromResource(R.xml.global_preferences);
 
-        mLanguage = (ListPreference) findPreference(PREFERENCE_LANGUAGE);
-        List<CharSequence> entryVector = new ArrayList<CharSequence>(Arrays.asList(mLanguage.getEntries()));
-        List<CharSequence> entryValueVector = new ArrayList<CharSequence>(Arrays.asList(mLanguage.getEntryValues()));
+        language = (ListPreference) findPreference(PREFERENCE_LANGUAGE);
+        List<CharSequence> entryVector = new ArrayList<CharSequence>(Arrays.asList(language.getEntries()));
+        List<CharSequence> entryValueVector = new ArrayList<CharSequence>(Arrays.asList(language.getEntryValues()));
         String supportedLanguages[] = getResources().getStringArray(R.array.supported_languages);
         Set<String> supportedLanguageSet = new HashSet<String>(Arrays.asList(supportedLanguages));
         for (int i = entryVector.size() - 1; i > -1; --i) {
@@ -193,16 +193,16 @@ public class Prefs extends K9PreferenceActivity {
                 entryValueVector.remove(i);
             }
         }
-        initListPreference(mLanguage, K9.getK9Language(),
+        initListPreference(language, K9.getK9Language(),
                            entryVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY),
                            entryValueVector.toArray(EMPTY_CHAR_SEQUENCE_ARRAY));
 
-        mTheme = setupListPreference(PREFERENCE_THEME, themeIdToName(K9.getK9Theme()));
-        mFixedMessageTheme = (CheckBoxPreference) findPreference(PREFERENCE_FIXED_MESSAGE_THEME);
-        mFixedMessageTheme.setChecked(K9.useFixedMessageViewTheme());
-        mMessageTheme = setupListPreference(PREFERENCE_MESSAGE_VIEW_THEME,
+        theme = setupListPreference(PREFERENCE_THEME, themeIdToName(K9.getK9Theme()));
+        fixedMessageTheme = (CheckBoxPreference) findPreference(PREFERENCE_FIXED_MESSAGE_THEME);
+        fixedMessageTheme.setChecked(K9.useFixedMessageViewTheme());
+        messageTheme = setupListPreference(PREFERENCE_MESSAGE_VIEW_THEME,
                 themeIdToName(K9.getK9MessageViewThemeSetting()));
-        mComposerTheme = setupListPreference(PREFERENCE_COMPOSER_THEME,
+        composerTheme = setupListPreference(PREFERENCE_COMPOSER_THEME,
                 themeIdToName(K9.getK9ComposerThemeSetting()));
 
         findPreference(PREFERENCE_FONT_SIZE).setOnPreferenceClickListener(
@@ -213,20 +213,20 @@ public class Prefs extends K9PreferenceActivity {
             }
         });
 
-        mAnimations = (CheckBoxPreference)findPreference(PREFERENCE_ANIMATIONS);
-        mAnimations.setChecked(K9.showAnimations());
+        animations = (CheckBoxPreference)findPreference(PREFERENCE_ANIMATIONS);
+        animations.setChecked(K9.showAnimations());
 
-        mGestures = (CheckBoxPreference)findPreference(PREFERENCE_GESTURES);
-        mGestures.setChecked(K9.gesturesEnabled());
+        gestures = (CheckBoxPreference)findPreference(PREFERENCE_GESTURES);
+        gestures.setChecked(K9.gesturesEnabled());
 
-        mVolumeNavigation = (CheckBoxListPreference)findPreference(PREFERENCE_VOLUME_NAVIGATION);
-        mVolumeNavigation.setItems(new CharSequence[] {getString(R.string.volume_navigation_message), getString(R.string.volume_navigation_list)});
-        mVolumeNavigation.setCheckedItems(new boolean[] {K9.useVolumeKeysForNavigationEnabled(), K9.useVolumeKeysForListNavigationEnabled()});
+        volumeNavigation = (CheckBoxListPreference)findPreference(PREFERENCE_VOLUME_NAVIGATION);
+        volumeNavigation.setItems(new CharSequence[] {getString(R.string.volume_navigation_message), getString(R.string.volume_navigation_list)});
+        volumeNavigation.setCheckedItems(new boolean[] {K9.useVolumeKeysForNavigationEnabled(), K9.useVolumeKeysForListNavigationEnabled()});
 
-        mStartIntegratedInbox = (CheckBoxPreference)findPreference(PREFERENCE_START_INTEGRATED_INBOX);
-        mStartIntegratedInbox.setChecked(K9.startIntegratedInbox());
+        startIntegratedInbox = (CheckBoxPreference)findPreference(PREFERENCE_START_INTEGRATED_INBOX);
+        startIntegratedInbox.setChecked(K9.startIntegratedInbox());
 
-        mConfirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
+        confirmActions = (CheckBoxListPreference) findPreference(PREFERENCE_CONFIRM_ACTIONS);
 
         boolean canDeleteFromNotification = NotificationController.platformSupportsExtendedNotifications();
         CharSequence[] confirmActionEntries = new CharSequence[canDeleteFromNotification ? 6 : 5];
@@ -248,167 +248,167 @@ public class Prefs extends K9PreferenceActivity {
         confirmActionEntries[index] = getString(R.string.global_settings_confirm_menu_mark_all_read);
         confirmActionValues[index++] = K9.confirmMarkAllRead();
 
-        mConfirmActions.setItems(confirmActionEntries);
-        mConfirmActions.setCheckedItems(confirmActionValues);
+        confirmActions.setItems(confirmActionEntries);
+        confirmActions.setCheckedItems(confirmActionValues);
 
-        mNotificationHideSubject = setupListPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT,
+        notificationHideSubject = setupListPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT,
                 K9.getNotificationHideSubject().toString());
 
-        mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
-        mMeasureAccounts.setChecked(K9.measureAccounts());
+        measureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
+        measureAccounts.setChecked(K9.measureAccounts());
 
-        mCountSearch = (CheckBoxPreference)findPreference(PREFERENCE_COUNT_SEARCH);
-        mCountSearch.setChecked(K9.countSearchMessages());
+        countSearch = (CheckBoxPreference)findPreference(PREFERENCE_COUNT_SEARCH);
+        countSearch.setChecked(K9.countSearchMessages());
 
-        mHideSpecialAccounts = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_SPECIAL_ACCOUNTS);
-        mHideSpecialAccounts.setChecked(K9.isHideSpecialAccounts());
+        hideSpecialAccounts = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_SPECIAL_ACCOUNTS);
+        hideSpecialAccounts.setChecked(K9.isHideSpecialAccounts());
 
 
-        mPreviewLines = setupListPreference(PREFERENCE_MESSAGELIST_PREVIEW_LINES,
+        previewLines = setupListPreference(PREFERENCE_MESSAGELIST_PREVIEW_LINES,
                                             Integer.toString(K9.messageListPreviewLines()));
 
-        mSenderAboveSubject = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SENDER_ABOVE_SUBJECT);
-        mSenderAboveSubject.setChecked(K9.messageListSenderAboveSubject());
-        mCheckboxes = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CHECKBOXES);
-        mCheckboxes.setChecked(K9.messageListCheckboxes());
+        senderAboveSubject = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SENDER_ABOVE_SUBJECT);
+        senderAboveSubject.setChecked(K9.messageListSenderAboveSubject());
+        checkboxes = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CHECKBOXES);
+        checkboxes.setChecked(K9.messageListCheckboxes());
 
-        mStars = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_STARS);
-        mStars.setChecked(K9.messageListStars());
+        stars = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_STARS);
+        stars.setChecked(K9.messageListStars());
 
-        mShowCorrespondentNames = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES);
-        mShowCorrespondentNames.setChecked(K9.showCorrespondentNames());
+        showCorrespondentNames = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES);
+        showCorrespondentNames.setChecked(K9.showCorrespondentNames());
 
-        mShowContactName = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME);
-        mShowContactName.setChecked(K9.showContactName());
+        showContactName = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME);
+        showContactName.setChecked(K9.showContactName());
 
-        mShowContactPicture = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_PICTURE);
-        mShowContactPicture.setChecked(K9.showContactPicture());
+        showContactPicture = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CONTACT_PICTURE);
+        showContactPicture.setChecked(K9.showContactPicture());
 
-        mColorizeMissingContactPictures = (CheckBoxPreference)findPreference(
+        colorizeMissingContactPictures = (CheckBoxPreference)findPreference(
                 PREFERENCE_MESSAGELIST_COLORIZE_MISSING_CONTACT_PICTURES);
-        mColorizeMissingContactPictures.setChecked(K9.isColorizeMissingContactPictures());
+        colorizeMissingContactPictures.setChecked(K9.isColorizeMissingContactPictures());
 
-        mBackgroundAsUnreadIndicator = (CheckBoxPreference)findPreference(PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR);
-        mBackgroundAsUnreadIndicator.setChecked(K9.useBackgroundAsUnreadIndicator());
+        backgroundAsUnreadIndicator = (CheckBoxPreference)findPreference(PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR);
+        backgroundAsUnreadIndicator.setChecked(K9.useBackgroundAsUnreadIndicator());
 
-        mChangeContactNameColor = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR);
-        mChangeContactNameColor.setChecked(K9.changeContactNameColor());
+        changeContactNameColor = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR);
+        changeContactNameColor.setChecked(K9.changeContactNameColor());
 
-        mThreadedView = (CheckBoxPreference) findPreference(PREFERENCE_THREADED_VIEW);
-        mThreadedView.setChecked(K9.isThreadedViewEnabled());
+        threadedView = (CheckBoxPreference) findPreference(PREFERENCE_THREADED_VIEW);
+        threadedView.setChecked(K9.isThreadedViewEnabled());
 
         if (K9.changeContactNameColor()) {
-            mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
+            changeContactNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
         } else {
-            mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_default);
+            changeContactNameColor.setSummary(R.string.global_settings_registered_name_color_default);
         }
-        mChangeContactNameColor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        changeContactNameColor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final Boolean checked = (Boolean) newValue;
                 if (checked) {
                     onChooseContactNameColor();
-                    mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
+                    changeContactNameColor.setSummary(R.string.global_settings_registered_name_color_changed);
                 } else {
-                    mChangeContactNameColor.setSummary(R.string.global_settings_registered_name_color_default);
+                    changeContactNameColor.setSummary(R.string.global_settings_registered_name_color_default);
                 }
-                mChangeContactNameColor.setChecked(checked);
+                changeContactNameColor.setChecked(checked);
                 return false;
             }
         });
 
-        mFixedWidth = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGEVIEW_FIXEDWIDTH);
-        mFixedWidth.setChecked(K9.messageViewFixedWidthFont());
+        fixedWidth = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGEVIEW_FIXEDWIDTH);
+        fixedWidth.setChecked(K9.messageViewFixedWidthFont());
 
-        mReturnToList = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST);
-        mReturnToList.setChecked(K9.messageViewReturnToList());
+        returnToList = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_RETURN_TO_LIST);
+        returnToList.setChecked(K9.messageViewReturnToList());
 
-        mShowNext = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_SHOW_NEXT);
-        mShowNext.setChecked(K9.messageViewShowNext());
+        showNext = (CheckBoxPreference) findPreference(PREFERENCE_MESSAGEVIEW_SHOW_NEXT);
+        showNext.setChecked(K9.messageViewShowNext());
 
-        mAutofitWidth = (CheckBoxPreference) findPreference(PREFERENCE_AUTOFIT_WIDTH);
-        mAutofitWidth.setChecked(K9.autofitWidth());
+        autofitWidth = (CheckBoxPreference) findPreference(PREFERENCE_AUTOFIT_WIDTH);
+        autofitWidth.setChecked(K9.autofitWidth());
 
-        mQuietTimeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_ENABLED);
-        mQuietTimeEnabled.setChecked(K9.getQuietTimeEnabled());
+        quietTimeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_ENABLED);
+        quietTimeEnabled.setChecked(K9.getQuietTimeEnabled());
 
-        mDisableNotificationDuringQuietTime = (CheckBoxPreference) findPreference(
+        disableNotificationDuringQuietTime = (CheckBoxPreference) findPreference(
                 PREFERENCE_DISABLE_NOTIFICATION_DURING_QUIET_TIME);
-        mDisableNotificationDuringQuietTime.setChecked(!K9.isNotificationDuringQuietTimeEnabled());
-        mQuietTimeStarts = (TimePickerPreference) findPreference(PREFERENCE_QUIET_TIME_STARTS);
-        mQuietTimeStarts.setDefaultValue(K9.getQuietTimeStarts());
-        mQuietTimeStarts.setSummary(K9.getQuietTimeStarts());
-        mQuietTimeStarts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        disableNotificationDuringQuietTime.setChecked(!K9.isNotificationDuringQuietTimeEnabled());
+        quietTimeStarts = (TimePickerPreference) findPreference(PREFERENCE_QUIET_TIME_STARTS);
+        quietTimeStarts.setDefaultValue(K9.getQuietTimeStarts());
+        quietTimeStarts.setSummary(K9.getQuietTimeStarts());
+        quietTimeStarts.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final String time = (String) newValue;
-                mQuietTimeStarts.setSummary(time);
+                quietTimeStarts.setSummary(time);
                 return false;
             }
         });
 
-        mQuietTimeEnds = (TimePickerPreference) findPreference(PREFERENCE_QUIET_TIME_ENDS);
-        mQuietTimeEnds.setSummary(K9.getQuietTimeEnds());
-        mQuietTimeEnds.setDefaultValue(K9.getQuietTimeEnds());
-        mQuietTimeEnds.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        quietTimeEnds = (TimePickerPreference) findPreference(PREFERENCE_QUIET_TIME_ENDS);
+        quietTimeEnds.setSummary(K9.getQuietTimeEnds());
+        quietTimeEnds.setDefaultValue(K9.getQuietTimeEnds());
+        quietTimeEnds.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 final String time = (String) newValue;
-                mQuietTimeEnds.setSummary(time);
+                quietTimeEnds.setSummary(time);
                 return false;
             }
         });
 
-        mNotificationQuickDelete = setupListPreference(PREFERENCE_NOTIF_QUICK_DELETE,
+        notificationQuickDelete = setupListPreference(PREFERENCE_NOTIF_QUICK_DELETE,
                 K9.getNotificationQuickDeleteBehaviour().toString());
         if (!NotificationController.platformSupportsExtendedNotifications()) {
             PreferenceScreen prefs = (PreferenceScreen) findPreference("notification_preferences");
-            prefs.removePreference(mNotificationQuickDelete);
-            mNotificationQuickDelete = null;
+            prefs.removePreference(notificationQuickDelete);
+            notificationQuickDelete = null;
         }
 
-        mLockScreenNotificationVisibility = setupListPreference(PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY,
+        lockScreenNotificationVisibility = setupListPreference(PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY,
             K9.getLockScreenNotificationVisibility().toString());
         if (!NotificationController.platformSupportsLockScreenNotifications()) {
             ((PreferenceScreen) findPreference("notification_preferences"))
-                .removePreference(mLockScreenNotificationVisibility);
-            mLockScreenNotificationVisibility = null;
+                .removePreference(lockScreenNotificationVisibility);
+            lockScreenNotificationVisibility = null;
         }
 
-        mBackgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().name());
+        backgroundOps = setupListPreference(PREFERENCE_BACKGROUND_OPS, K9.getBackgroundOps().name());
 
-        mDebugLogging = (CheckBoxPreference)findPreference(PREFERENCE_DEBUG_LOGGING);
-        mSensitiveLogging = (CheckBoxPreference)findPreference(PREFERENCE_SENSITIVE_LOGGING);
-        mHideUserAgent = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_USERAGENT);
-        mHideTimeZone = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_TIMEZONE);
+        debugLogging = (CheckBoxPreference)findPreference(PREFERENCE_DEBUG_LOGGING);
+        sensitiveLogging = (CheckBoxPreference)findPreference(PREFERENCE_SENSITIVE_LOGGING);
+        hideUserAgent = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_USERAGENT);
+        hideTimeZone = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_TIMEZONE);
 
-        mDebugLogging.setChecked(K9.isDebug());
-        mSensitiveLogging.setChecked(K9.DEBUG_SENSITIVE);
-        mHideUserAgent.setChecked(K9.hideUserAgent());
-        mHideTimeZone.setChecked(K9.hideTimeZone());
+        debugLogging.setChecked(K9.isDebug());
+        sensitiveLogging.setChecked(K9.DEBUG_SENSITIVE);
+        hideUserAgent.setChecked(K9.hideUserAgent());
+        hideTimeZone.setChecked(K9.hideTimeZone());
 
-        mOpenPgpProvider = (OpenPgpAppPreference) findPreference(PREFERENCE_OPENPGP_PROVIDER);
-        mOpenPgpProvider.setValue(K9.getOpenPgpProvider());
+        openPgpProvider = (OpenPgpAppPreference) findPreference(PREFERENCE_OPENPGP_PROVIDER);
+        openPgpProvider.setValue(K9.getOpenPgpProvider());
         if (OpenPgpAppPreference.isApgInstalled(getApplicationContext())) {
-            mOpenPgpProvider.addLegacyProvider(
+            openPgpProvider.addLegacyProvider(
                     APG_PROVIDER_PLACEHOLDER, getString(R.string.apg), R.drawable.ic_apg_small);
         }
-        mOpenPgpProvider.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        openPgpProvider.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 String value = newValue.toString();
                 if (APG_PROVIDER_PLACEHOLDER.equals(value)) {
-                    mOpenPgpProvider.setValue("");
+                    openPgpProvider.setValue("");
                     showDialog(DIALOG_APG_DEPRECATION_WARNING);
                 } else {
-                    mOpenPgpProvider.setValue(value);
+                    openPgpProvider.setValue(value);
                 }
                 return false;
             }
         });
 
-        mOpenPgpSupportSignOnly = (CheckBoxPreference) findPreference(PREFERENCE_OPENPGP_SUPPORT_SIGN_ONLY);
-        mOpenPgpSupportSignOnly.setChecked(K9.getOpenPgpSupportSignOnly());
+        openPgpSupportSignOnly = (CheckBoxPreference) findPreference(PREFERENCE_OPENPGP_SUPPORT_SIGN_ONLY);
+        openPgpSupportSignOnly.setChecked(K9.getOpenPgpSupportSignOnly());
 
-        mAttachmentPathPreference = findPreference(PREFERENCE_ATTACHMENT_DEF_PATH);
-        mAttachmentPathPreference.setSummary(K9.getAttachmentDefaultPath());
-        mAttachmentPathPreference
+        attachmentPathPreference = findPreference(PREFERENCE_ATTACHMENT_DEF_PATH);
+        attachmentPathPreference.setSummary(K9.getAttachmentDefaultPath());
+        attachmentPathPreference
         .setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -425,7 +425,7 @@ public class Prefs extends K9PreferenceActivity {
 
                 @Override
                 public void onPathEntered(String path) {
-                    mAttachmentPathPreference.setSummary(path);
+                    attachmentPathPreference.setSummary(path);
                     K9.setAttachmentDefaultPath(path);
                 }
 
@@ -436,10 +436,10 @@ public class Prefs extends K9PreferenceActivity {
             };
         });
 
-        mWrapFolderNames = (CheckBoxPreference)findPreference(PREFERENCE_FOLDERLIST_WRAP_NAME);
-        mWrapFolderNames.setChecked(K9.wrapFolderNames());
+        wrapFolderNames = (CheckBoxPreference)findPreference(PREFERENCE_FOLDERLIST_WRAP_NAME);
+        wrapFolderNames.setChecked(K9.wrapFolderNames());
 
-        mVisibleRefileActions = (CheckBoxListPreference) findPreference(PREFERENCE_MESSAGEVIEW_VISIBLE_REFILE_ACTIONS);
+        visibleRefileActions = (CheckBoxListPreference) findPreference(PREFERENCE_MESSAGEVIEW_VISIBLE_REFILE_ACTIONS);
         CharSequence[] visibleRefileActionsEntries = new CharSequence[5];
         visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_DELETE] = getString(R.string.delete_action);
         visibleRefileActionsEntries[VISIBLE_REFILE_ACTIONS_ARCHIVE] = getString(R.string.archive_action);
@@ -454,12 +454,12 @@ public class Prefs extends K9PreferenceActivity {
         visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_COPY] = K9.isMessageViewCopyActionVisible();
         visibleRefileActionsValues[VISIBLE_REFILE_ACTIONS_SPAM] = K9.isMessageViewSpamActionVisible();
 
-        mVisibleRefileActions.setItems(visibleRefileActionsEntries);
-        mVisibleRefileActions.setCheckedItems(visibleRefileActionsValues);
+        visibleRefileActions.setItems(visibleRefileActionsEntries);
+        visibleRefileActions.setCheckedItems(visibleRefileActionsValues);
 
-        mSplitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
-        initListPreference(mSplitViewMode, K9.getSplitViewMode().name(),
-                mSplitViewMode.getEntries(), mSplitViewMode.getEntryValues());
+        splitViewMode = (ListPreference) findPreference(PREFERENCE_SPLITVIEW_MODE);
+        initListPreference(splitViewMode, K9.getSplitViewMode().name(),
+                splitViewMode.getEntries(), splitViewMode.getEntryValues());
     }
 
     private static String themeIdToName(K9.Theme theme) {
@@ -483,86 +483,86 @@ public class Prefs extends K9PreferenceActivity {
     private void saveSettings() {
         Storage storage = Preferences.getPreferences(this).getStorage();
 
-        K9.setK9Language(mLanguage.getValue());
+        K9.setK9Language(language.getValue());
 
-        K9.setK9Theme(themeNameToId(mTheme.getValue()));
-        K9.setUseFixedMessageViewTheme(mFixedMessageTheme.isChecked());
-        K9.setK9MessageViewThemeSetting(themeNameToId(mMessageTheme.getValue()));
-        K9.setK9ComposerThemeSetting(themeNameToId(mComposerTheme.getValue()));
+        K9.setK9Theme(themeNameToId(theme.getValue()));
+        K9.setUseFixedMessageViewTheme(fixedMessageTheme.isChecked());
+        K9.setK9MessageViewThemeSetting(themeNameToId(messageTheme.getValue()));
+        K9.setK9ComposerThemeSetting(themeNameToId(composerTheme.getValue()));
 
-        K9.setAnimations(mAnimations.isChecked());
-        K9.setGesturesEnabled(mGestures.isChecked());
-        K9.setUseVolumeKeysForNavigation(mVolumeNavigation.getCheckedItems()[0]);
-        K9.setUseVolumeKeysForListNavigation(mVolumeNavigation.getCheckedItems()[1]);
-        K9.setStartIntegratedInbox(!mHideSpecialAccounts.isChecked() && mStartIntegratedInbox.isChecked());
-        K9.setNotificationHideSubject(NotificationHideSubject.valueOf(mNotificationHideSubject.getValue()));
+        K9.setAnimations(animations.isChecked());
+        K9.setGesturesEnabled(gestures.isChecked());
+        K9.setUseVolumeKeysForNavigation(volumeNavigation.getCheckedItems()[0]);
+        K9.setUseVolumeKeysForListNavigation(volumeNavigation.getCheckedItems()[1]);
+        K9.setStartIntegratedInbox(!hideSpecialAccounts.isChecked() && startIntegratedInbox.isChecked());
+        K9.setNotificationHideSubject(NotificationHideSubject.valueOf(notificationHideSubject.getValue()));
 
         int index = 0;
-        K9.setConfirmDelete(mConfirmActions.getCheckedItems()[index++]);
-        K9.setConfirmDeleteStarred(mConfirmActions.getCheckedItems()[index++]);
+        K9.setConfirmDelete(confirmActions.getCheckedItems()[index++]);
+        K9.setConfirmDeleteStarred(confirmActions.getCheckedItems()[index++]);
         if (NotificationController.platformSupportsExtendedNotifications()) {
-            K9.setConfirmDeleteFromNotification(mConfirmActions.getCheckedItems()[index++]);
+            K9.setConfirmDeleteFromNotification(confirmActions.getCheckedItems()[index++]);
         }
-        K9.setConfirmSpam(mConfirmActions.getCheckedItems()[index++]);
-        K9.setConfirmDiscardMessage(mConfirmActions.getCheckedItems()[index++]);
-        K9.setConfirmMarkAllRead(mConfirmActions.getCheckedItems()[index++]);
+        K9.setConfirmSpam(confirmActions.getCheckedItems()[index++]);
+        K9.setConfirmDiscardMessage(confirmActions.getCheckedItems()[index++]);
+        K9.setConfirmMarkAllRead(confirmActions.getCheckedItems()[index++]);
 
-        K9.setMeasureAccounts(mMeasureAccounts.isChecked());
-        K9.setCountSearchMessages(mCountSearch.isChecked());
-        K9.setHideSpecialAccounts(mHideSpecialAccounts.isChecked());
-        K9.setMessageListPreviewLines(Integer.parseInt(mPreviewLines.getValue()));
-        K9.setMessageListCheckboxes(mCheckboxes.isChecked());
-        K9.setMessageListStars(mStars.isChecked());
-        K9.setShowCorrespondentNames(mShowCorrespondentNames.isChecked());
-        K9.setMessageListSenderAboveSubject(mSenderAboveSubject.isChecked());
-        K9.setShowContactName(mShowContactName.isChecked());
-        K9.setShowContactPicture(mShowContactPicture.isChecked());
-        K9.setColorizeMissingContactPictures(mColorizeMissingContactPictures.isChecked());
-        K9.setUseBackgroundAsUnreadIndicator(mBackgroundAsUnreadIndicator.isChecked());
-        K9.setThreadedViewEnabled(mThreadedView.isChecked());
-        K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());
-        K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
-        K9.setMessageViewReturnToList(mReturnToList.isChecked());
-        K9.setMessageViewShowNext(mShowNext.isChecked());
-        K9.setAutofitWidth(mAutofitWidth.isChecked());
-        K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
+        K9.setMeasureAccounts(measureAccounts.isChecked());
+        K9.setCountSearchMessages(countSearch.isChecked());
+        K9.setHideSpecialAccounts(hideSpecialAccounts.isChecked());
+        K9.setMessageListPreviewLines(Integer.parseInt(previewLines.getValue()));
+        K9.setMessageListCheckboxes(checkboxes.isChecked());
+        K9.setMessageListStars(stars.isChecked());
+        K9.setShowCorrespondentNames(showCorrespondentNames.isChecked());
+        K9.setMessageListSenderAboveSubject(senderAboveSubject.isChecked());
+        K9.setShowContactName(showContactName.isChecked());
+        K9.setShowContactPicture(showContactPicture.isChecked());
+        K9.setColorizeMissingContactPictures(colorizeMissingContactPictures.isChecked());
+        K9.setUseBackgroundAsUnreadIndicator(backgroundAsUnreadIndicator.isChecked());
+        K9.setThreadedViewEnabled(threadedView.isChecked());
+        K9.setChangeContactNameColor(changeContactNameColor.isChecked());
+        K9.setMessageViewFixedWidthFont(fixedWidth.isChecked());
+        K9.setMessageViewReturnToList(returnToList.isChecked());
+        K9.setMessageViewShowNext(showNext.isChecked());
+        K9.setAutofitWidth(autofitWidth.isChecked());
+        K9.setQuietTimeEnabled(quietTimeEnabled.isChecked());
 
-        boolean[] enabledRefileActions = mVisibleRefileActions.getCheckedItems();
+        boolean[] enabledRefileActions = visibleRefileActions.getCheckedItems();
         K9.setMessageViewDeleteActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_DELETE]);
         K9.setMessageViewArchiveActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_ARCHIVE]);
         K9.setMessageViewMoveActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_MOVE]);
         K9.setMessageViewCopyActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_COPY]);
         K9.setMessageViewSpamActionVisible(enabledRefileActions[VISIBLE_REFILE_ACTIONS_SPAM]);
 
-        K9.setNotificationDuringQuietTimeEnabled(!mDisableNotificationDuringQuietTime.isChecked());
-        K9.setQuietTimeStarts(mQuietTimeStarts.getTime());
-        K9.setQuietTimeEnds(mQuietTimeEnds.getTime());
-        K9.setWrapFolderNames(mWrapFolderNames.isChecked());
+        K9.setNotificationDuringQuietTimeEnabled(!disableNotificationDuringQuietTime.isChecked());
+        K9.setQuietTimeStarts(quietTimeStarts.getTime());
+        K9.setQuietTimeEnds(quietTimeEnds.getTime());
+        K9.setWrapFolderNames(wrapFolderNames.isChecked());
 
-        if (mNotificationQuickDelete != null) {
+        if (notificationQuickDelete != null) {
             K9.setNotificationQuickDeleteBehaviour(
-                    NotificationQuickDelete.valueOf(mNotificationQuickDelete.getValue()));
+                    NotificationQuickDelete.valueOf(notificationQuickDelete.getValue()));
         }
 
-        if(mLockScreenNotificationVisibility != null) {
+        if(lockScreenNotificationVisibility != null) {
             K9.setLockScreenNotificationVisibility(
-                K9.LockScreenNotificationVisibility.valueOf(mLockScreenNotificationVisibility.getValue()));
+                K9.LockScreenNotificationVisibility.valueOf(lockScreenNotificationVisibility.getValue()));
         }
 
-        K9.setSplitViewMode(SplitViewMode.valueOf(mSplitViewMode.getValue()));
-        K9.setAttachmentDefaultPath(mAttachmentPathPreference.getSummary().toString());
-        boolean needsRefresh = K9.setBackgroundOps(mBackgroundOps.getValue());
+        K9.setSplitViewMode(SplitViewMode.valueOf(splitViewMode.getValue()));
+        K9.setAttachmentDefaultPath(attachmentPathPreference.getSummary().toString());
+        boolean needsRefresh = K9.setBackgroundOps(backgroundOps.getValue());
 
-        if (!K9.isDebug() && mDebugLogging.isChecked()) {
+        if (!K9.isDebug() && debugLogging.isChecked()) {
             Toast.makeText(this, R.string.debug_logging_enabled, Toast.LENGTH_LONG).show();
         }
-        K9.setDebug(mDebugLogging.isChecked());
-        K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
-        K9.setHideUserAgent(mHideUserAgent.isChecked());
-        K9.setHideTimeZone(mHideTimeZone.isChecked());
+        K9.setDebug(debugLogging.isChecked());
+        K9.DEBUG_SENSITIVE = sensitiveLogging.isChecked();
+        K9.setHideUserAgent(hideUserAgent.isChecked());
+        K9.setHideTimeZone(hideTimeZone.isChecked());
 
-        K9.setOpenPgpProvider(mOpenPgpProvider.getValue());
-        K9.setOpenPgpSupportSignOnly(mOpenPgpSupportSignOnly.isChecked());
+        K9.setOpenPgpProvider(openPgpProvider.getValue());
+        K9.setOpenPgpSupportSignOnly(openPgpSupportSignOnly.isChecked());
 
         StorageEditor editor = storage.edit();
         K9.save(editor);
@@ -601,7 +601,7 @@ public class Prefs extends K9PreferenceActivity {
                 dialog.setOnCancelListener(new OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        mOpenPgpProvider.show();
+                        openPgpProvider.show();
                     }
                 });
                 break;
@@ -621,7 +621,7 @@ public class Prefs extends K9PreferenceActivity {
                 if (fileUri != null) {
                     String filePath = fileUri.getPath();
                     if (filePath != null) {
-                        mAttachmentPathPreference.setSummary(filePath.toString());
+                        attachmentPathPreference.setSummary(filePath.toString());
                         K9.setAttachmentDefaultPath(filePath.toString());
                     }
                 }

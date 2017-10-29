@@ -59,14 +59,14 @@ public abstract class CoreService extends Service {
 
     public static final String WAKE_LOCK_ID = "com.fsck.k9.service.CoreService.wakeLockId";
 
-    private static ConcurrentHashMap<Integer, TracingWakeLock> sWakeLocks =
-        new ConcurrentHashMap<Integer, TracingWakeLock>();
-    private static AtomicInteger sWakeLockSeq = new AtomicInteger(0);
+    private static ConcurrentHashMap<Integer, TracingWakeLock> wakeLocks =
+            new ConcurrentHashMap<>();
+    private static AtomicInteger wakeLockSeq = new AtomicInteger(0);
 
     /**
      * Threadpool that is used to execute and queue background actions inside the service.
      */
-    private ExecutorService mThreadPool = null;
+    private ExecutorService threadPool = null;
 
     /**
      * String of the class name used in debug messages.
@@ -84,7 +84,7 @@ public abstract class CoreService extends Service {
      * was shut down.
      * </p>
      */
-    private volatile boolean mShutdown = false;
+    private volatile boolean shutdown = false;
 
     /**
      * Controls the auto shutdown mechanism of the service.
@@ -95,13 +95,13 @@ public abstract class CoreService extends Service {
      * {@link #setAutoShutdown(boolean)}.
      * </p>
      */
-    private boolean mAutoShutdown = true;
+    private boolean autoShutdown = true;
 
     /**
      * This variable is part of the auto shutdown feature and determines whether the service has to
      * be shutdown at the end of the {@link #onStart(Intent, int)} method or not.
      */
-    protected boolean mImmediateShutdown = true;
+    protected boolean immediateShutdown = true;
 
 
     /**
@@ -160,10 +160,10 @@ public abstract class CoreService extends Service {
      */
     protected static Integer registerWakeLock(TracingWakeLock wakeLock) {
         // Get a new wake lock ID
-        Integer tmpWakeLockId = sWakeLockSeq.getAndIncrement();
+        Integer tmpWakeLockId = wakeLockSeq.getAndIncrement();
 
         // Store the wake lock in the registry
-        sWakeLocks.put(tmpWakeLockId, wakeLock);
+        wakeLocks.put(tmpWakeLockId, wakeLock);
 
         return tmpWakeLockId;
     }
@@ -192,7 +192,7 @@ public abstract class CoreService extends Service {
     public void onCreate() {
         Timber.i("CoreService: %s.onCreate()", className);
 
-        mThreadPool = Executors.newFixedThreadPool(1);  // Must be single threaded
+        threadPool = Executors.newFixedThreadPool(1);  // Must be single threaded
     }
 
     @Override
@@ -230,7 +230,7 @@ public abstract class CoreService extends Service {
             Timber.d("Got core wake lock id %d", coreWakeLockId);
 
             // Remove wake lock from the registry
-            TracingWakeLock coreWakeLock = sWakeLocks.remove(coreWakeLockId);
+            TracingWakeLock coreWakeLock = wakeLocks.remove(coreWakeLockId);
 
             // Release wake lock
             if (coreWakeLock != null) {
@@ -240,7 +240,7 @@ public abstract class CoreService extends Service {
         }
 
         // Run the actual start-code of the service
-        mImmediateShutdown = true;
+        immediateShutdown = true;
         int startFlag;
         try {
             startFlag = startService(intent, startId);
@@ -253,7 +253,7 @@ public abstract class CoreService extends Service {
             try {
                 // If there is no outstanding work to be done in a background thread we can stop
                 // this service.
-                if (mAutoShutdown && mImmediateShutdown && startId != -1) {
+                if (autoShutdown && immediateShutdown && startId != -1) {
                     stopSelf(startId);
                     startFlag = START_NOT_STICKY;
                 }
@@ -283,7 +283,7 @@ public abstract class CoreService extends Service {
             final Integer startId) {
 
         boolean serviceShutdownScheduled = false;
-        final boolean autoShutdown = mAutoShutdown;
+        final boolean autoShutdown = this.autoShutdown;
 
         // Acquire a new wakelock
         final TracingWakeLock wakeLock = acquireWakeLock(context, "CoreService execute",
@@ -325,7 +325,7 @@ public abstract class CoreService extends Service {
         };
 
         // TODO: remove this. we never set mThreadPool to null
-        if (mThreadPool == null) {
+	 if (threadPool == null) {
             Timber.e("CoreService.execute (%s) called with no thread pool available; " +
                     "running Runnable %d in calling thread", className, runner.hashCode());
 
@@ -337,12 +337,12 @@ public abstract class CoreService extends Service {
             Timber.d("CoreService (%s) queueing Runnable %d with startId %d", className, runner.hashCode(), startId);
 
             try {
-                mThreadPool.execute(myRunner);
+		threadPool.execute(myRunner);
                 serviceShutdownScheduled = startId != null;
             } catch (RejectedExecutionException e) {
                 // Ignore RejectedExecutionException after we shut down the thread pool in
                 // onDestroy(). Still, this should not happen!
-                if (!mShutdown) {
+		 if (!shutdown) {
                     throw e;
                 }
 
@@ -351,7 +351,7 @@ public abstract class CoreService extends Service {
             }
         }
 
-        mImmediateShutdown = !serviceShutdownScheduled;
+        immediateShutdown = !serviceShutdownScheduled;
     }
 
     /**
@@ -386,8 +386,8 @@ public abstract class CoreService extends Service {
         Timber.i("CoreService: %s.onDestroy()", className);
 
         // Shut down thread pool
-        mShutdown = true;
-        mThreadPool.shutdown();
+        shutdown = true;
+        threadPool.shutdown();
     }
 
     /**
@@ -396,7 +396,7 @@ public abstract class CoreService extends Service {
      * @return {@code true} iff auto shutdown is enabled.
      */
     protected boolean isAutoShutdown() {
-        return mAutoShutdown;
+        return autoShutdown;
     }
 
     /**
@@ -405,10 +405,10 @@ public abstract class CoreService extends Service {
      * @param autoShutdown
      *         {@code true} to enable auto shutdown. {@code false} to disable.
      *
-     * @see #mAutoShutdown
+     * @see #autoShutdown
      */
     protected void setAutoShutdown(boolean autoShutdown) {
-        mAutoShutdown = autoShutdown;
+        this.autoShutdown = autoShutdown;
     }
 
     @Override

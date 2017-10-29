@@ -10,10 +10,10 @@ import com.fsck.k9.mail.filter.FixedLengthInputStream;
 
 
 class FetchBodyCallback implements ImapResponseCallback {
-    private Map<String, Message> mMessageMap;
+    private Map<String, Message> messageMap;
 
     FetchBodyCallback(Map<String, Message> messageMap) {
-        mMessageMap = messageMap;
+        this.messageMap = messageMap;
     }
 
     @Override
@@ -24,7 +24,7 @@ class FetchBodyCallback implements ImapResponseCallback {
             ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
             String uid = fetchList.getKeyedString("UID");
 
-            ImapMessage message = (ImapMessage) mMessageMap.get(uid);
+            ImapMessage message = (ImapMessage) messageMap.get(uid);
             message.parse(literal);
 
             // Return placeholder object

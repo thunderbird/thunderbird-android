@@ -14,7 +14,7 @@ import com.fsck.k9.K9;
 
 public class ConfirmationDialogFragment extends DialogFragment implements OnClickListener,
         OnCancelListener {
-    private ConfirmationDialogFragmentListener mListener;
+    private ConfirmationDialogFragmentListener listener;
 
     private static final String ARG_DIALOG_ID = "dialog_id";
     private static final String ARG_TITLE = "title";
@@ -106,15 +106,15 @@ public class ConfirmationDialogFragment extends DialogFragment implements OnClic
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (ConfirmationDialogFragmentListener) activity;
+            listener = (ConfirmationDialogFragmentListener) activity;
         } catch (ClassCastException e) {
             Timber.d("%s did not implement ConfirmationDialogFragmentListener", activity);
         }
     }
 
     private ConfirmationDialogFragmentListener getListener() {
-        if (mListener != null) {
-            return mListener;
+        if (listener != null) {
+            return listener;
         }
 
         // fallback to getTargetFragment...

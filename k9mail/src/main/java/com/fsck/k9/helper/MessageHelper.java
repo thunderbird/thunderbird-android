@@ -32,26 +32,26 @@ public class MessageHelper {
      */
     private static final int TOO_MANY_ADDRESSES = 50;
 
-    private static MessageHelper sInstance;
+    private static MessageHelper instance;
 
     public synchronized static MessageHelper getInstance(final Context context) {
-        if (sInstance == null) {
-            sInstance = new MessageHelper(context);
+        if (instance == null) {
+            instance = new MessageHelper(context);
         }
-        return sInstance;
+        return instance;
     }
 
-    private Context mContext;
+    private Context context;
 
     private MessageHelper(final Context context) {
-        mContext = context;
+        this.context = context;
     }
 
     public void populate(final MessageInfoHolder target,
                          final LocalMessage message,
                          final FolderInfoHolder folder,
                          Account account) {
-        final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(mContext) : null;
+        final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(context) : null;
 
         target.message = message;
         target.compareArrival = message.getInternalDate();
@@ -72,7 +72,7 @@ public class MessageHelper {
         if (addrs.length > 0 &&  account.isAnIdentity(addrs[0])) {
             CharSequence to = toFriendly(message.getRecipients(RecipientType.TO), contactHelper);
             target.compareCounterparty = to.toString();
-            target.sender = new SpannableStringBuilder(mContext.getString(R.string.message_to_label)).append(to);
+            target.sender = new SpannableStringBuilder(context.getString(R.string.message_to_label)).append(to);
         } else {
             target.sender = toFriendly(addrs, contactHelper);
             target.compareCounterparty = target.sender.toString();
@@ -91,13 +91,13 @@ public class MessageHelper {
     }
 
     public CharSequence getDisplayName(Account account, Address[] fromAddrs, Address[] toAddrs) {
-        final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(mContext) : null;
+        final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(context) : null;
 
         CharSequence displayName;
         if (fromAddrs.length > 0 && account.isAnIdentity(fromAddrs[0])) {
             CharSequence to = toFriendly(toAddrs, contactHelper);
             displayName = new SpannableStringBuilder(
-                    mContext.getString(R.string.message_to_label)).append(to);
+                    context.getString(R.string.message_to_label)).append(to);
         } else {
             displayName = toFriendly(fromAddrs, contactHelper);
         }

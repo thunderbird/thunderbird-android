@@ -49,9 +49,9 @@ public class RigidWebView extends WebView {
 
     private static final int MIN_RESIZE_INTERVAL = 200;
     private static final int MAX_RESIZE_INTERVAL = 300;
-    private final Clock mClock = Clock.INSTANCE;
+    private final Clock clock = Clock.INSTANCE;
 
-    private final Throttle mThrottle = new Throttle(getClass().getName(),
+    private final Throttle throttle = new Throttle(getClass().getName(),
             new Runnable() {
                 @Override public void run() {
                     performSizeChangeDelayed();
@@ -59,10 +59,10 @@ public class RigidWebView extends WebView {
             }, Utility.getMainThreadHandler(),
             MIN_RESIZE_INTERVAL, MAX_RESIZE_INTERVAL);
 
-    private int mRealWidth;
-    private int mRealHeight;
-    private boolean mIgnoreNext;
-    private long mLastSizeChangeTime = -1;
+    private int realWidth;
+    private int realHeight;
+    private boolean ignoreNext;
+    private long lastSizeChangeTime = -1;
 
     @Override
     protected void onSizeChanged(int w, int h, int ow, int oh) {
@@ -71,16 +71,16 @@ public class RigidWebView extends WebView {
             return;
         }
 
-        mRealWidth = w;
-        mRealHeight = h;
+        realWidth = w;
+        realHeight = h;
 
-        long now = mClock.getTime();
-        boolean recentlySized = (now - mLastSizeChangeTime < MIN_RESIZE_INTERVAL);
+        long now = clock.getTime();
+        boolean recentlySized = (now - lastSizeChangeTime < MIN_RESIZE_INTERVAL);
 
         // It's known that the previous resize event may cause a resize event immediately. If
         // this happens sufficiently close to the last resize event, drop it on the floor.
-        if (mIgnoreNext) {
-            mIgnoreNext = false;
+        if (ignoreNext) {
+            ignoreNext = false;
             if (recentlySized) {
                 Timber.w("Supressing size change in RigidWebView");
                 return;
@@ -88,7 +88,7 @@ public class RigidWebView extends WebView {
         }
 
         if (recentlySized) {
-            mThrottle.onEvent();
+            throttle.onEvent();
         } else {
             // It's been a sufficiently long time - just perform the resize as normal. This should
             // be the normal code path.
@@ -97,12 +97,12 @@ public class RigidWebView extends WebView {
     }
 
     private void performSizeChange(int ow, int oh) {
-        super.onSizeChanged(mRealWidth, mRealHeight, ow, oh);
-        mLastSizeChangeTime = mClock.getTime();
+        super.onSizeChanged(realWidth, realHeight, ow, oh);
+        lastSizeChangeTime = clock.getTime();
     }
 
     private void performSizeChangeDelayed() {
-        mIgnoreNext = true;
+        ignoreNext = true;
         performSizeChange(getWidth(), getHeight());
     }
 }

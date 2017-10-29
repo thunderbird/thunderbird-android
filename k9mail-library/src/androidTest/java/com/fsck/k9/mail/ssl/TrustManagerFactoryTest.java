@@ -182,23 +182,23 @@ public class TrustManagerFactoryTest {
         "G0h67ElS/klu9rPaZ+vr3iIB56wvk08O2Wq1IND3sN+Ke3UsvuPqDxAv\n" +
         "-----END CERTIFICATE-----\n";
 
-    private File mKeyStoreFile;
-    private LocalKeyStore mKeyStore;
-    private X509Certificate mCert1;
-    private X509Certificate mCert2;
-    private X509Certificate mCaCert;
-    private X509Certificate mCert3;
-    private X509Certificate mLinuxComFirstParentCert;
-    private X509Certificate mLinuxComCert;
+    private File keyStoreFile;
+    private LocalKeyStore keyStore;
+    private X509Certificate cert1;
+    private X509Certificate cert2;
+    private X509Certificate caCert;
+    private X509Certificate cert3;
+    private X509Certificate linuxComFirstParentCert;
+    private X509Certificate linuxComCert;
 
 
     public TrustManagerFactoryTest() throws CertificateException {
-        mCert1 = loadCert(K9_EXAMPLE_COM_CERT1);
-        mCert2 = loadCert(K9_EXAMPLE_COM_CERT2);
-        mCaCert = loadCert(CA_CERT);
-        mCert3 = loadCert(CERT3);
-        mLinuxComFirstParentCert = loadCert(LINUX_COM_FIRST_PARENT_CERT);
-        mLinuxComCert = loadCert(LINUX_COM_CERT);
+        cert1 = loadCert(K9_EXAMPLE_COM_CERT1);
+        cert2 = loadCert(K9_EXAMPLE_COM_CERT2);
+        caCert = loadCert(CA_CERT);
+        cert3 = loadCert(CERT3);
+        linuxComFirstParentCert = loadCert(LINUX_COM_FIRST_PARENT_CERT);
+        linuxComCert = loadCert(LINUX_COM_CERT);
     }
 
     private X509Certificate loadCert(String encodedCert) throws CertificateException {
@@ -209,16 +209,16 @@ public class TrustManagerFactoryTest {
 
     @Before
     public void setUp() throws Exception {
-        mKeyStoreFile = File.createTempFile("localKeyStore", null,
+        keyStoreFile = File.createTempFile("localKeyStore", null,
                 InstrumentationRegistry.getTargetContext().getCacheDir());
-        mKeyStore = LocalKeyStore.getInstance();
-        mKeyStore.setKeyStoreFile(mKeyStoreFile);
+        keyStore = LocalKeyStore.getInstance();
+        keyStore.setKeyStoreFile(keyStoreFile);
     }
 
     @After
     public void tearDown() {
-        if (mKeyStoreFile.exists() && !mKeyStoreFile.delete()) {
-            throw new RuntimeException("Unable to delete key store file: " + mKeyStoreFile.getAbsolutePath());
+        if (keyStoreFile.exists() && !keyStoreFile.delete()) {
+            throw new RuntimeException("Unable to delete key store file: " + keyStoreFile.getAbsolutePath());
         }
     }
 
@@ -236,86 +236,86 @@ public class TrustManagerFactoryTest {
      */
     @Test
     public void testDifferentCertificatesOnSameServer() throws Exception {
-        mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT1, mCert1);
-        mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT2, mCert2);
+        keyStore.addCertificate(NOT_MATCHING_HOST, PORT1, cert1);
+        keyStore.addCertificate(NOT_MATCHING_HOST, PORT2, cert2);
 
         X509TrustManager trustManager1 = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1);
         X509TrustManager trustManager2 = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT2);
-        trustManager2.checkServerTrusted(new X509Certificate[] { mCert2 }, "authType");
-        trustManager1.checkServerTrusted(new X509Certificate[] { mCert1 }, "authType");
+        trustManager2.checkServerTrusted(new X509Certificate[] { cert2 }, "authType");
+        trustManager1.checkServerTrusted(new X509Certificate[] { cert1 }, "authType");
     }
 
     @Test
     public void testSelfSignedCertificateMatchingHost() throws Exception {
-        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
+        keyStore.addCertificate(MATCHING_HOST, PORT1, cert1);
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1);
-        trustManager.checkServerTrusted(new X509Certificate[] { mCert1 }, "authType");
+        trustManager.checkServerTrusted(new X509Certificate[] { cert1 }, "authType");
     }
 
     @Test
     public void testSelfSignedCertificateNotMatchingHost() throws Exception {
-        mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT1, mCert1);
+        keyStore.addCertificate(NOT_MATCHING_HOST, PORT1, cert1);
         X509TrustManager trustManager = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1);
-        trustManager.checkServerTrusted(new X509Certificate[] { mCert1 }, "authType");
+        trustManager.checkServerTrusted(new X509Certificate[] { cert1 }, "authType");
     }
 
     @Test
     public void testWrongCertificate() throws Exception {
-        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
+        keyStore.addCertificate(MATCHING_HOST, PORT1, cert1);
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1);
-        assertCertificateRejection(trustManager, new X509Certificate[] { mCert2 });
+        assertCertificateRejection(trustManager, new X509Certificate[] { cert2 });
     }
 
     @Test
     public void testCertificateOfOtherHost() throws Exception {
-        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
-        mKeyStore.addCertificate(MATCHING_HOST, PORT2, mCert2);
+        keyStore.addCertificate(MATCHING_HOST, PORT1, cert1);
+        keyStore.addCertificate(MATCHING_HOST, PORT2, cert2);
 
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1);
-        assertCertificateRejection(trustManager, new X509Certificate[] { mCert2 });
+        assertCertificateRejection(trustManager, new X509Certificate[] { cert2 });
     }
 
     @Test
     public void testUntrustedCertificateChain() throws Exception {
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1);
-        assertCertificateRejection(trustManager, new X509Certificate[] { mCert3, mCaCert });
+        assertCertificateRejection(trustManager, new X509Certificate[] { cert3, caCert });
     }
 
     @Test
     public void testLocallyTrustedCertificateChain() throws Exception {
-        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert3);
+        keyStore.addCertificate(MATCHING_HOST, PORT1, cert3);
 
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1);
-        trustManager.checkServerTrusted(new X509Certificate[] { mCert3, mCaCert }, "authType");
+        trustManager.checkServerTrusted(new X509Certificate[] { cert3, caCert }, "authType");
     }
 
     @Test
     public void testLocallyTrustedCertificateChainNotMatchingHost() throws Exception {
-        mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT1, mCert3);
+        keyStore.addCertificate(NOT_MATCHING_HOST, PORT1, cert3);
 
         X509TrustManager trustManager = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1);
-        trustManager.checkServerTrusted(new X509Certificate[] { mCert3, mCaCert }, "authType");
+        trustManager.checkServerTrusted(new X509Certificate[] { cert3, caCert }, "authType");
     }
 
     @Test
-    public void testGloballyTrustedCertificateChain() throws Exception {
+    public void testGloballyTrustedCertificateChain() throws Exception { // currently failing
         X509TrustManager trustManager = TrustManagerFactory.get("www.linux.com", PORT1);
-        X509Certificate[] certificates = new X509Certificate[] { mLinuxComCert, mLinuxComFirstParentCert};
+        X509Certificate[] certificates = new X509Certificate[] { linuxComCert, linuxComFirstParentCert };
         trustManager.checkServerTrusted(certificates, "authType");
     }
 
     @Test
     public void testGloballyTrustedCertificateNotMatchingHost() throws Exception {
         X509TrustManager trustManager = TrustManagerFactory.get(NOT_MATCHING_HOST, PORT1);
-        assertCertificateRejection(trustManager, new X509Certificate[] { mLinuxComCert, mLinuxComFirstParentCert});
+        assertCertificateRejection(trustManager, new X509Certificate[] { linuxComCert, linuxComFirstParentCert });
     }
 
     @Test
     public void testGloballyTrustedCertificateNotMatchingHostOverride() throws Exception {
-        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mLinuxComCert);
+        keyStore.addCertificate(MATCHING_HOST, PORT1, linuxComCert);
 
         X509TrustManager trustManager = TrustManagerFactory.get(MATCHING_HOST, PORT1);
-        X509Certificate[] certificates = new X509Certificate[] { mLinuxComCert, mLinuxComFirstParentCert};
+        X509Certificate[] certificates = new X509Certificate[] { linuxComCert, linuxComFirstParentCert };
         trustManager.checkServerTrusted(certificates, "authType");
     }
 
@@ -333,22 +333,22 @@ public class TrustManagerFactoryTest {
 
     @Test
     public void testKeyStoreLoading() throws Exception {
-        mKeyStore.addCertificate(MATCHING_HOST, PORT1, mCert1);
-        mKeyStore.addCertificate(NOT_MATCHING_HOST, PORT2, mCert2);
-        assertTrue(mKeyStore.isValidCertificate(mCert1, MATCHING_HOST, PORT1));
-        assertTrue(mKeyStore.isValidCertificate(mCert2, NOT_MATCHING_HOST, PORT2));
+        keyStore.addCertificate(MATCHING_HOST, PORT1, cert1);
+        keyStore.addCertificate(NOT_MATCHING_HOST, PORT2, cert2);
+        assertTrue(keyStore.isValidCertificate(cert1, MATCHING_HOST, PORT1));
+        assertTrue(keyStore.isValidCertificate(cert2, NOT_MATCHING_HOST, PORT2));
 
         // reload store from same file
-        mKeyStore.setKeyStoreFile(mKeyStoreFile);
-        assertTrue(mKeyStore.isValidCertificate(mCert1, MATCHING_HOST, PORT1));
-        assertTrue(mKeyStore.isValidCertificate(mCert2, NOT_MATCHING_HOST, PORT2));
+        keyStore.setKeyStoreFile(keyStoreFile);
+        assertTrue(keyStore.isValidCertificate(cert1, MATCHING_HOST, PORT1));
+        assertTrue(keyStore.isValidCertificate(cert2, NOT_MATCHING_HOST, PORT2));
 
         // reload store from empty file
-        if (mKeyStoreFile.exists() && !mKeyStoreFile.delete()) {
-            throw new RuntimeException("Unable to delete key store file: " + mKeyStoreFile.getAbsolutePath());
+        if (keyStoreFile.exists() && !keyStoreFile.delete()) {
+            throw new RuntimeException("Unable to delete key store file: " + keyStoreFile.getAbsolutePath());
         }
-        mKeyStore.setKeyStoreFile(mKeyStoreFile);
-        assertFalse(mKeyStore.isValidCertificate(mCert1, MATCHING_HOST, PORT1));
-        assertFalse(mKeyStore.isValidCertificate(mCert2, NOT_MATCHING_HOST, PORT2));
+        keyStore.setKeyStoreFile(keyStoreFile);
+        assertFalse(keyStore.isValidCertificate(cert1, MATCHING_HOST, PORT1));
+        assertFalse(keyStore.isValidCertificate(cert2, NOT_MATCHING_HOST, PORT2));
     }
 }

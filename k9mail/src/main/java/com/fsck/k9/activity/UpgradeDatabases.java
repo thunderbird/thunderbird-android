@@ -92,14 +92,14 @@ public class UpgradeDatabases extends K9Activity {
     }
 
 
-    private Intent mStartIntent;
+    private Intent startIntent;
 
-    private TextView mUpgradeText;
+    private TextView upgradeText;
 
-    private LocalBroadcastManager mLocalBroadcastManager;
-    private UpgradeDatabaseBroadcastReceiver mBroadcastReceiver;
-    private IntentFilter mIntentFilter;
-    private Preferences mPreferences;
+    private LocalBroadcastManager localBroadcastManager;
+    private UpgradeDatabaseBroadcastReceiver broadcastReceiver;
+    private IntentFilter intentFilter;
+    private Preferences preferences;
 
 
     @Override
@@ -114,7 +114,7 @@ public class UpgradeDatabases extends K9Activity {
             return;
         }
 
-        mPreferences = Preferences.getPreferences(getApplicationContext());
+        preferences = Preferences.getPreferences(getApplicationContext());
 
         initializeLayout();
 
@@ -127,7 +127,7 @@ public class UpgradeDatabases extends K9Activity {
     private void initializeLayout() {
         setContentView(R.layout.upgrade_databases);
 
-        mUpgradeText = (TextView) findViewById(R.id.databaseUpgradeText);
+        upgradeText = (TextView) findViewById(R.id.databaseUpgradeText);
     }
 
     /**
@@ -135,7 +135,7 @@ public class UpgradeDatabases extends K9Activity {
      */
     private void decodeExtras() {
         Intent intent = getIntent();
-        mStartIntent = intent.getParcelableExtra(EXTRA_START_INTENT);
+        startIntent = intent.getParcelableExtra(EXTRA_START_INTENT);
     }
 
     /**
@@ -143,11 +143,11 @@ public class UpgradeDatabases extends K9Activity {
      * {@link DatabaseUpgradeService}.
      */
     private void setupBroadcastReceiver() {
-        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
-        mBroadcastReceiver = new UpgradeDatabaseBroadcastReceiver();
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        broadcastReceiver = new UpgradeDatabaseBroadcastReceiver();
 
-        mIntentFilter = new IntentFilter(DatabaseUpgradeService.ACTION_UPGRADE_PROGRESS);
-        mIntentFilter.addAction(DatabaseUpgradeService.ACTION_UPGRADE_COMPLETE);
+        intentFilter = new IntentFilter(DatabaseUpgradeService.ACTION_UPGRADE_PROGRESS);
+        intentFilter.addAction(DatabaseUpgradeService.ACTION_UPGRADE_COMPLETE);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class UpgradeDatabases extends K9Activity {
 
         // Register the broadcast receiver to listen for progress reports from
         // DatabaseUpgradeService.
-        mLocalBroadcastManager.registerReceiver(mBroadcastReceiver, mIntentFilter);
+        localBroadcastManager.registerReceiver(broadcastReceiver, intentFilter);
 
         // Now that the broadcast receiver was registered start DatabaseUpgradeService.
         DatabaseUpgradeService.startService(this);
@@ -172,7 +172,7 @@ public class UpgradeDatabases extends K9Activity {
     public void onPause() {
         // The activity is being paused, so there's no point in listening to the progress of the
         // database upgrade service.
-        mLocalBroadcastManager.unregisterReceiver(mBroadcastReceiver);
+        localBroadcastManager.unregisterReceiver(broadcastReceiver);
 
         super.onPause();
     }
@@ -182,7 +182,7 @@ public class UpgradeDatabases extends K9Activity {
      */
     private void launchOriginalActivity() {
         finish();
-        startActivity(mStartIntent);
+        startActivity(startIntent);
     }
 
     /**
@@ -202,12 +202,12 @@ public class UpgradeDatabases extends K9Activity {
                 String accountUuid = intent.getStringExtra(
                         DatabaseUpgradeService.EXTRA_ACCOUNT_UUID);
 
-                Account account = mPreferences.getAccount(accountUuid);
+                Account account = preferences.getAccount(accountUuid);
 
                 if (account != null) {
                     String formatString = getString(R.string.upgrade_database_format);
                     String upgradeStatus = String.format(formatString, account.getDescription());
-                    mUpgradeText.setText(upgradeStatus);
+                    upgradeText.setText(upgradeStatus);
                 }
 
             } else if (DatabaseUpgradeService.ACTION_UPGRADE_COMPLETE.equals(action)) {

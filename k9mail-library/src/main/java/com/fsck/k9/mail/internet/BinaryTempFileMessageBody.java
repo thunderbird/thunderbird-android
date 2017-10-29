@@ -20,6 +20,6 @@ public class BinaryTempFileMessageBody extends BinaryTempFileBody implements Bod
                 && !MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
             throw new MessagingException("Incompatible content-transfer-encoding for a message/rfc822 body");
         }
-        mEncoding = encoding;
+        this.encoding = encoding;
     }
 }

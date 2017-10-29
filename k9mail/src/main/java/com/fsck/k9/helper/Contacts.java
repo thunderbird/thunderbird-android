@@ -62,8 +62,8 @@ public class Contacts {
     }
 
 
-    protected Context mContext;
-    protected ContentResolver mContentResolver;
+    protected Context context;
+    protected ContentResolver contentResolver;
 
 
     /**
@@ -72,8 +72,8 @@ public class Contacts {
      * @param context A {@link Context} instance.
      */
     protected Contacts(Context context) {
-        mContext = context;
-        mContentResolver = context.getContentResolver();
+        this.context = context;
+        contentResolver = context.getContentResolver();
     }
 
     /**
@@ -102,7 +102,7 @@ public class Contacts {
             contactIntent.putExtra(ContactsContract.Intents.Insert.NAME, senderPersonal);
         }
 
-        mContext.startActivity(contactIntent);
+        context.startActivity(contactIntent);
     }
 
     /**
@@ -116,7 +116,7 @@ public class Contacts {
         addIntent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
         addIntent.putExtra(ContactsContract.Intents.Insert.PHONE, Uri.decode(phoneNumber));
         addIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(addIntent);
+        context.startActivity(addIntent);
     }
 
     /**
@@ -202,7 +202,7 @@ public class Contacts {
                 if (c.getCount() > 0) {
                     c.moveToFirst();
                     final long personId = c.getLong(CONTACT_ID_INDEX);
-                    ContactsContract.Contacts.markAsContacted(mContentResolver, personId);
+                    ContactsContract.Contacts.markAsContacted(contentResolver, personId);
                 }
                 c.close();
             }
@@ -265,7 +265,7 @@ public class Contacts {
      */
     private Cursor getContactByAddress(final String address) {
         final Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_LOOKUP_URI, Uri.encode(address));
-        final Cursor c = mContentResolver.query(
+        final Cursor c = contentResolver.query(
                 uri,
                 PROJECTION,
                 null,

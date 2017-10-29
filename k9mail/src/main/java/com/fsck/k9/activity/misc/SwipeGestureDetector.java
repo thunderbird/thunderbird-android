@@ -13,10 +13,10 @@ public class SwipeGestureDetector extends SimpleOnGestureListener {
     private static final float SWIPE_THRESHOLD_VELOCITY_DIP = 325f;
 
 
-    private final OnSwipeGestureListener mListener;
-    private int mMinVelocity;
-    private int mMaxOffPath;
-    private MotionEvent mLastOnDownEvent = null;
+    private final OnSwipeGestureListener listener;
+    private int minVelocity;
+    private int maxOffPath;
+    private MotionEvent lastOnDownEvent = null;
 
 
     public SwipeGestureDetector(Context context, OnSwipeGestureListener listener) {
@@ -26,18 +26,18 @@ public class SwipeGestureDetector extends SimpleOnGestureListener {
             throw new IllegalArgumentException("'listener' may not be null");
         }
 
-        mListener = listener;
+        this.listener = listener;
 
         // Calculate the minimum distance required for this to count as a swipe.
         // Convert the constant dips to pixels.
         float gestureScale = context.getResources().getDisplayMetrics().density;
-        mMinVelocity = (int) (SWIPE_THRESHOLD_VELOCITY_DIP * gestureScale + 0.5f);
-        mMaxOffPath = (int) (SWIPE_MAX_OFF_PATH_DIP * gestureScale + 0.5f);
+        minVelocity = (int) (SWIPE_THRESHOLD_VELOCITY_DIP * gestureScale + 0.5f);
+        maxOffPath = (int) (SWIPE_MAX_OFF_PATH_DIP * gestureScale + 0.5f);
     }
 
     @Override
     public boolean onDown(MotionEvent e) {
-        mLastOnDownEvent = e;
+        lastOnDownEvent = e;
         return super.onDown(e);
     }
 
@@ -46,7 +46,7 @@ public class SwipeGestureDetector extends SimpleOnGestureListener {
         // Apparently sometimes e1 is null
         // Found a workaround here: http://stackoverflow.com/questions/4151385/
         if (e1 == null) {
-            e1 = mLastOnDownEvent;
+            e1 = lastOnDownEvent;
         }
 
         // Make sure we avoid NullPointerExceptions
@@ -62,14 +62,14 @@ public class SwipeGestureDetector extends SimpleOnGestureListener {
         final int minDistance = (int) Math.abs(deltaY * 4);
 
         try {
-            if (Math.abs(deltaY) > mMaxOffPath || Math.abs(velocityX) < mMinVelocity) {
+            if (Math.abs(deltaY) > maxOffPath || Math.abs(velocityX) < minVelocity) {
                 return false;
             }
 
             if (deltaX < (minDistance * -1)) {
-                mListener.onSwipeRightToLeft(e1, e2);
+                listener.onSwipeRightToLeft(e1, e2);
             } else if (deltaX > minDistance) {
-                mListener.onSwipeLeftToRight(e1, e2);
+                listener.onSwipeLeftToRight(e1, e2);
             } else {
                 return false;
             }

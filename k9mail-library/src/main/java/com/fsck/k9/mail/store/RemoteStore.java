@@ -23,8 +23,8 @@ public abstract class RemoteStore extends Store {
     public static final int SOCKET_CONNECT_TIMEOUT = 30000;
     public static final int SOCKET_READ_TIMEOUT = 60000;
 
-    protected StoreConfig mStoreConfig;
-    protected TrustedSocketFactory mTrustedSocketFactory;
+    protected StoreConfig storeConfig;
+    protected TrustedSocketFactory trustedSocketFactory;
 
     /**
      * Remote stores indexed by Uri.
@@ -33,8 +33,8 @@ public abstract class RemoteStore extends Store {
 
 
     public RemoteStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory) {
-        mStoreConfig = storeConfig;
-        mTrustedSocketFactory = trustedSocketFactory;
+        this.storeConfig = storeConfig;
+        this.trustedSocketFactory = trustedSocketFactory;
     }
 
     /**

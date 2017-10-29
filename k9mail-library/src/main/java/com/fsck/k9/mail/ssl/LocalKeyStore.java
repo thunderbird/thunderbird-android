@@ -33,8 +33,8 @@ public class LocalKeyStore {
     }
 
 
-    private File mKeyStoreFile;
-    private KeyStore mKeyStore;
+    private File keyStoreFile;
+    private KeyStore keyStore;
 
 
     private LocalKeyStore() {
@@ -89,13 +89,13 @@ public class LocalKeyStore {
         try {
             KeyStore store = KeyStore.getInstance(KeyStore.getDefaultType());
             store.load(fis, "".toCharArray());
-            mKeyStore = store;
-            mKeyStoreFile = file;
+            keyStore = store;
+            keyStoreFile = file;
         } catch (Exception e) {
             Timber.e(e, "Failed to initialize local key store");
             // Use of the local key store is effectively disabled.
-            mKeyStore = null;
-            mKeyStoreFile = null;
+            keyStore = null;
+            keyStoreFile = null;
         } finally {
             IOUtils.closeQuietly(fis);
         }
@@ -103,12 +103,12 @@ public class LocalKeyStore {
 
     public synchronized void addCertificate(String host, int port,
             X509Certificate certificate) throws CertificateException {
-        if (mKeyStore == null) {
+        if (keyStore == null) {
             throw new CertificateException(
                     "Certificate not added because key store not initialized");
         }
         try {
-            mKeyStore.setCertificateEntry(getCertKey(host, port), certificate);
+            keyStore.setCertificateEntry(getCertKey(host, port), certificate);
         } catch (KeyStoreException e) {
             throw new CertificateException(
                     "Failed to add certificate to local key store", e);
@@ -119,8 +119,8 @@ public class LocalKeyStore {
     private void writeCertificateFile() throws CertificateException {
         java.io.OutputStream keyStoreStream = null;
         try {
-            keyStoreStream = new java.io.FileOutputStream(mKeyStoreFile);
-            mKeyStore.store(keyStoreStream, "".toCharArray());
+            keyStoreStream = new java.io.FileOutputStream(keyStoreFile);
+            keyStore.store(keyStoreStream, "".toCharArray());
         } catch (CertificateException | IOException | NoSuchAlgorithmException | KeyStoreException e) {
             throw new CertificateException("Unable to write KeyStore: "
                     + e.getMessage());
@@ -129,14 +129,12 @@ public class LocalKeyStore {
         }
     }
 
-    public synchronized boolean isValidCertificate(Certificate certificate,
-            String host, int port) {
-        if (mKeyStore == null) {
+    public synchronized boolean isValidCertificate(Certificate certificate, String host, int port) {
+        if (keyStore == null) {
             return false;
         }
-        Certificate storedCert = null;
         try {
-            storedCert = mKeyStore.getCertificate(getCertKey(host, port));
+            Certificate storedCert = keyStore.getCertificate(getCertKey(host, port));
             return (storedCert != null && storedCert.equals(certificate));
         } catch (KeyStoreException e) {
             return false;
@@ -148,11 +146,11 @@ public class LocalKeyStore {
     }
 
     public synchronized void deleteCertificate(String oldHost, int oldPort) {
-        if (mKeyStore == null) {
+        if (keyStore == null) {
             return;
         }
         try {
-            mKeyStore.deleteEntry(getCertKey(oldHost, oldPort));
+            keyStore.deleteEntry(getCertKey(oldHost, oldPort));
             writeCertificateFile();
         } catch (KeyStoreException e) {
             // Ignore: most likely there was no cert. found

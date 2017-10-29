@@ -24,12 +24,12 @@ public class FolderListFilter<T> extends Filter {
      * changes due to the filtering performed by {@link #performFiltering}.
      * This in turn will change the folders displayed in the ListView.
      */
-    private ArrayAdapter<T> mFolders;
+    private ArrayAdapter<T> folders;
 
     /**
      * All folders.
      */
-    private List<T> mOriginalValues = null;
+    private List<T> originalValues = null;
 
     /**
      * Create a filter for a list of folders.
@@ -37,7 +37,7 @@ public class FolderListFilter<T> extends Filter {
      * @param folderNames
      */
     public FolderListFilter(final ArrayAdapter<T> folderNames) {
-        this.mFolders = folderNames;
+        this.folders = folderNames;
     }
 
     /**
@@ -50,19 +50,19 @@ public class FolderListFilter<T> extends Filter {
     protected FilterResults performFiltering(CharSequence searchTerm) {
         FilterResults results = new FilterResults();
 
-        // Copy the values from mFolders to mOriginalValues if this is the
+        // Copy the values from folders to originalValues if this is the
         // first time this method is called.
-        if (mOriginalValues == null) {
-            int count = mFolders.getCount();
-            mOriginalValues = new ArrayList<T>(count);
+        if (originalValues == null) {
+            int count = folders.getCount();
+            originalValues = new ArrayList<T>(count);
             for (int i = 0; i < count; i++) {
-                mOriginalValues.add(mFolders.getItem(i));
+                originalValues.add(folders.getItem(i));
             }
         }
 
         Locale locale = Locale.getDefault();
         if ((searchTerm == null) || (searchTerm.length() == 0)) {
-            List<T> list = new ArrayList<T>(mOriginalValues);
+            List<T> list = new ArrayList<T>(originalValues);
             results.values = list;
             results.count = list.size();
         } else {
@@ -70,7 +70,7 @@ public class FolderListFilter<T> extends Filter {
             final String[] words = searchTermString.split(" ");
             final int wordCount = words.length;
 
-            final List<T> values = mOriginalValues;
+            final List<T> values = originalValues;
 
             final List<T> newValues = new ArrayList<T>();
 
@@ -100,16 +100,16 @@ public class FolderListFilter<T> extends Filter {
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
         // Don't notify for every change
-        mFolders.setNotifyOnChange(false);
+        folders.setNotifyOnChange(false);
         try {
 
             //noinspection unchecked
             final List<T> folders = (List<T>) results.values;
-            mFolders.clear();
+            this.folders.clear();
             if (folders != null) {
                 for (T folder : folders) {
                     if (folder != null) {
-                        mFolders.add(folder);
+                        this.folders.add(folder);
                     }
                 }
             } else {
@@ -117,14 +117,14 @@ public class FolderListFilter<T> extends Filter {
             }
 
             // Send notification that the data set changed now
-            mFolders.notifyDataSetChanged();
+            this.folders.notifyDataSetChanged();
         } finally {
             // restore notification status
-            mFolders.setNotifyOnChange(true);
+            folders.setNotifyOnChange(true);
         }
     }
 
     public void invalidate() {
-        mOriginalValues = null;
+        originalValues = null;
     }
 }

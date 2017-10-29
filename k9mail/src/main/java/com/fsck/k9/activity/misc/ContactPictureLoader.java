@@ -56,11 +56,10 @@ public class ContactPictureLoader {
     private static final String FALLBACK_CONTACT_LETTER = "?";
 
 
-    private Resources mResources;
-    private Contacts mContactsHelper;
-    private int mPictureSizeInPx;
+    private Contacts contactsHelper;
+    private int pictureSizeInPx;
 
-    private int mDefaultBackgroundColor;
+    private int defaultBackgroundColor;
 
     /**
      * @see <a href="http://developer.android.com/design/style/color.html">Color palette used</a>
@@ -103,18 +102,18 @@ public class ContactPictureLoader {
      */
     public ContactPictureLoader(Context context, int defaultBackgroundColor) {
         Context appContext = context.getApplicationContext();
-        mResources = appContext.getResources();
-        mContactsHelper = Contacts.getInstance(appContext);
+        Resources resources = appContext.getResources();
+        contactsHelper = Contacts.getInstance(appContext);
 
-        float scale = mResources.getDisplayMetrics().density;
-        mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
+        float scale = resources.getDisplayMetrics().density;
+        pictureSizeInPx = (int) (PICTURE_SIZE * scale);
 
-        mDefaultBackgroundColor = defaultBackgroundColor;
+        this.defaultBackgroundColor = defaultBackgroundColor;
 
     }
 
     public void loadContactPicture(final Address address, final ImageView imageView) {
-        Uri photoUri = mContactsHelper.getPhotoUri(address.getAddress());
+        Uri photoUri = contactsHelper.getPhotoUri(address.getAddress());
         loadContactPicture(photoUri, address, imageView);
     }
 
@@ -137,7 +136,7 @@ public class ContactPictureLoader {
                 .load(new FallbackGlideParams(address))
                 // for some reason, following 2 lines fix loading issues.
                 .dontAnimate()
-                .override(mPictureSizeInPx, mPictureSizeInPx)
+                .override(pictureSizeInPx, pictureSizeInPx)
                 .into(imageView);
     }
 
@@ -165,7 +164,7 @@ public class ContactPictureLoader {
                     .listener(noPhotoListener)
                     // for some reason, following 2 lines fix loading issues.
                     .dontAnimate()
-                    .override(mPictureSizeInPx, mPictureSizeInPx)
+                    .override(pictureSizeInPx, pictureSizeInPx)
                     .into(imageView);
         } else {
             loadFallbackPicture(address, imageView);
@@ -173,8 +172,8 @@ public class ContactPictureLoader {
     }
 
     private int calcUnknownContactColor(Address address) {
-        if (mDefaultBackgroundColor != 0) {
-            return mDefaultBackgroundColor;
+        if (defaultBackgroundColor != 0) {
+            return defaultBackgroundColor;
         }
 
         int val = address.hashCode();
@@ -194,13 +193,13 @@ public class ContactPictureLoader {
         paint.setAntiAlias(true);
         paint.setStyle(Style.FILL);
         paint.setARGB(255, 255, 255, 255);
-        paint.setTextSize(mPictureSizeInPx * 3 / 4); // just scale this down a bit
+        paint.setTextSize(pictureSizeInPx * 3 / 4); // just scale this down a bit
         Rect rect = new Rect();
         paint.getTextBounds(letter, 0, 1, rect);
         float width = paint.measureText(letter);
         canvas.drawText(letter,
-                (mPictureSizeInPx / 2f) - (width / 2f),
-                (mPictureSizeInPx / 2f) + (rect.height() / 2f), paint);
+                (pictureSizeInPx / 2f) - (width / 2f),
+                (pictureSizeInPx / 2f) + (rect.height() / 2f), paint);
 
         return bitmap;
     }
@@ -215,9 +214,9 @@ public class ContactPictureLoader {
         @Override
         public Resource<Bitmap> decode(FallbackGlideParams source, int width, int height) throws IOException {
             BitmapPool pool = Glide.get(context).getBitmapPool();
-            Bitmap bitmap = pool.getDirty(mPictureSizeInPx, mPictureSizeInPx, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = pool.getDirty(pictureSizeInPx, pictureSizeInPx, Bitmap.Config.ARGB_8888);
             if (bitmap == null) {
-                bitmap = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx, Bitmap.Config.ARGB_8888);
+                bitmap = Bitmap.createBitmap(pictureSizeInPx, pictureSizeInPx, Bitmap.Config.ARGB_8888);
             }
             drawTextAndBgColorOnBitmap(bitmap, source);
             return BitmapResource.obtain(bitmap, pool);

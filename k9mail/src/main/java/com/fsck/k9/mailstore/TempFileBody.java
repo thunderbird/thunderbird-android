@@ -15,17 +15,17 @@ import com.fsck.k9.mail.internet.SizeAware;
  * An attachment whose contents are contained in a file.
  */
 public class TempFileBody extends BinaryAttachmentBody implements SizeAware {
-    private final File mFile;
+    private final File file;
 
     public TempFileBody(String filename) {
-        mFile = new File(filename);
+        file = new File(filename);
     }
 
     @Override
     @NonNull
     public InputStream getInputStream() {
         try {
-            return new FileInputStream(mFile);
+            return new FileInputStream(file);
         } catch (FileNotFoundException e) {
             return new ByteArrayInputStream(LocalStore.EMPTY_BYTE_ARRAY);
         }
@@ -33,6 +33,6 @@ public class TempFileBody extends BinaryAttachmentBody implements SizeAware {
 
     @Override
     public long getSize() {
-        return mFile.length();
+        return file.length();
     }
 }

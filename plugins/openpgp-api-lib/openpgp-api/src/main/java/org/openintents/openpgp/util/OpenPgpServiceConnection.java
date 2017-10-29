@@ -33,12 +33,12 @@ public class OpenPgpServiceConnection {
         public void onError(Exception e);
     }
 
-    private Context mApplicationContext;
+    private Context applicationContext;
 
-    private IOpenPgpService2 mService;
-    private String mProviderPackageName;
+    private IOpenPgpService2 service;
+    private String providerPackageName;
 
-    private OnBound mOnBoundListener;
+    private OnBound onBoundListener;
 
     /**
      * Create new connection
@@ -48,8 +48,8 @@ public class OpenPgpServiceConnection {
      *                            e.g., "org.sufficientlysecure.keychain"
      */
     public OpenPgpServiceConnection(Context context, String providerPackageName) {
-        this.mApplicationContext = context.getApplicationContext();
-        this.mProviderPackageName = providerPackageName;
+        this.applicationContext = context.getApplicationContext();
+        this.providerPackageName = providerPackageName;
     }
 
     /**
@@ -63,27 +63,27 @@ public class OpenPgpServiceConnection {
     public OpenPgpServiceConnection(Context context, String providerPackageName,
                                     OnBound onBoundListener) {
         this(context, providerPackageName);
-        this.mOnBoundListener = onBoundListener;
+        this.onBoundListener = onBoundListener;
     }
 
     public IOpenPgpService2 getService() {
-        return mService;
+        return service;
     }
 
     public boolean isBound() {
-        return (mService != null);
+        return (service != null);
     }
 
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
+    private ServiceConnection serviceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mService = IOpenPgpService2.Stub.asInterface(service);
-            if (mOnBoundListener != null) {
-                mOnBoundListener.onBound(mService);
+            OpenPgpServiceConnection.this.service = IOpenPgpService2.Stub.asInterface(service);
+            if (onBoundListener != null) {
+                onBoundListener.onBound(OpenPgpServiceConnection.this.service);
             }
         }
 
         public void onServiceDisconnected(ComponentName name) {
-            mService = null;
+            service = null;
         }
     };
 
@@ -94,31 +94,31 @@ public class OpenPgpServiceConnection {
      */
     public void bindToService() {
         // if not already bound...
-        if (mService == null) {
+        if (service == null) {
             try {
                 Intent serviceIntent = new Intent(OpenPgpApi.SERVICE_INTENT_2);
                 // NOTE: setPackage is very important to restrict the intent to this provider only!
-                serviceIntent.setPackage(mProviderPackageName);
-                boolean connect = mApplicationContext.bindService(serviceIntent, mServiceConnection,
+                serviceIntent.setPackage(providerPackageName);
+                boolean connect = applicationContext.bindService(serviceIntent, serviceConnection,
                         Context.BIND_AUTO_CREATE);
                 if (!connect) {
                     throw new Exception("bindService() returned false!");
                 }
             } catch (Exception e) {
-                if (mOnBoundListener != null) {
-                    mOnBoundListener.onError(e);
+                if (onBoundListener != null) {
+                    onBoundListener.onError(e);
                 }
             }
         } else {
             // already bound, but also inform client about it with callback
-            if (mOnBoundListener != null) {
-                mOnBoundListener.onBound(mService);
+            if (onBoundListener != null) {
+                onBoundListener.onBound(service);
             }
         }
     }
 
     public void unbindFromService() {
-        mApplicationContext.unbindService(mServiceConnection);
+        applicationContext.unbindService(serviceConnection);
     }
 
 }

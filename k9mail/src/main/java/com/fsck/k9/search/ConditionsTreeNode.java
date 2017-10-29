@@ -28,23 +28,23 @@ public class ConditionsTreeNode implements Parcelable {
         AND, OR, CONDITION;
     }
 
-    public ConditionsTreeNode mLeft;
-    public ConditionsTreeNode mRight;
-    public ConditionsTreeNode mParent;
+    public ConditionsTreeNode left;
+    public ConditionsTreeNode right;
+    public ConditionsTreeNode parent;
 
     /*
-     * If mValue isn't CONDITION then mCondition contains a real
+     * If value isn't CONDITION then condition contains a real
      * condition, otherwise it's null.
      */
-    public Operator mValue;
-    public SearchCondition mCondition;
+    public Operator value;
+    public SearchCondition condition;
 
     /*
      * Used for storing and retrieving the tree to/from the database.
      * The algorithm is called "modified preorder tree traversal".
      */
-    public int mLeftMPTTMarker;
-    public int mRightMPTTMarker;
+    public int leftMPTTMarker;
+    public int rightMPTTMarker;
 
 
     ///////////////////////////////////////////////////////////////
@@ -71,14 +71,14 @@ public class ConditionsTreeNode implements Parcelable {
         // other nodes
         while (cursor.moveToNext()) {
             tmp = buildNodeFromRow(cursor);
-            if (tmp.mRightMPTTMarker < stack.peek().mRightMPTTMarker) {
-                stack.peek().mLeft = tmp;
+            if (tmp.rightMPTTMarker < stack.peek().rightMPTTMarker) {
+                stack.peek().left = tmp;
                 stack.push(tmp);
             } else {
-                while (stack.peek().mRightMPTTMarker < tmp.mRightMPTTMarker) {
+                while (stack.peek().rightMPTTMarker < tmp.rightMPTTMarker) {
                     stack.pop();
                 }
-                stack.peek().mRight = tmp;
+                stack.peek().right = tmp;
             }
         }
         return tmp;
@@ -102,9 +102,9 @@ public class ConditionsTreeNode implements Parcelable {
         }
 
         result = new ConditionsTreeNode(condition);
-        result.mValue = tmpValue;
-        result.mLeftMPTTMarker = cursor.getInt(3);
-        result.mRightMPTTMarker = cursor.getInt(4);
+        result.value = tmpValue;
+        result.leftMPTTMarker = cursor.getInt(3);
+        result.rightMPTTMarker = cursor.getInt(4);
 
         return result;
     }
@@ -114,43 +114,43 @@ public class ConditionsTreeNode implements Parcelable {
     // Constructors
     ///////////////////////////////////////////////////////////////
     public ConditionsTreeNode(SearchCondition condition) {
-        mParent = null;
-        mCondition = condition;
-        mValue = Operator.CONDITION;
+        parent = null;
+        this.condition = condition;
+        value = Operator.CONDITION;
     }
 
-    public ConditionsTreeNode(ConditionsTreeNode parent, Operator op) {
-        mParent = parent;
-        mValue = op;
-        mCondition = null;
+    private ConditionsTreeNode(ConditionsTreeNode parent, Operator op) {
+        this.parent = parent;
+        value = op;
+        condition = null;
     }
 
 
     /* package */ ConditionsTreeNode cloneTree() {
-        if (mParent != null) {
+        if (parent != null) {
             throw new IllegalStateException("Can't call cloneTree() for a non-root node");
         }
 
-        ConditionsTreeNode copy = new ConditionsTreeNode(mCondition.clone());
+        ConditionsTreeNode copy = new ConditionsTreeNode(condition.clone());
 
-        copy.mLeftMPTTMarker = mLeftMPTTMarker;
-        copy.mRightMPTTMarker = mRightMPTTMarker;
+        copy.leftMPTTMarker = leftMPTTMarker;
+        copy.rightMPTTMarker = rightMPTTMarker;
 
-        copy.mLeft = (mLeft == null) ? null : mLeft.cloneNode(copy);
-        copy.mRight = (mRight == null) ? null : mRight.cloneNode(copy);
+        copy.left = (left == null) ? null : left.cloneNode(copy);
+        copy.right = (right == null) ? null : right.cloneNode(copy);
 
         return copy;
     }
 
     private ConditionsTreeNode cloneNode(ConditionsTreeNode parent) {
-        ConditionsTreeNode copy = new ConditionsTreeNode(parent, mValue);
+        ConditionsTreeNode copy = new ConditionsTreeNode(parent, value);
 
-        copy.mCondition = mCondition.clone();
-        copy.mLeftMPTTMarker = mLeftMPTTMarker;
-        copy.mRightMPTTMarker = mRightMPTTMarker;
+        copy.condition = condition.clone();
+        copy.leftMPTTMarker = leftMPTTMarker;
+        copy.rightMPTTMarker = rightMPTTMarker;
 
-        copy.mLeft = (mLeft == null) ? null : mLeft.cloneNode(copy);
-        copy.mRight = (mRight == null) ? null : mRight.cloneNode(copy);
+        copy.left = (left == null) ? null : left.cloneNode(copy);
+        copy.right = (right == null) ? null : right.cloneNode(copy);
 
         return copy;
     }
@@ -238,7 +238,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @return Condition stored in the node.
      */
     public SearchCondition getCondition() {
-        return mCondition;
+        return condition;
     }
 
     /**
@@ -264,12 +264,12 @@ public class ConditionsTreeNode implements Parcelable {
         while (!stack.isEmpty()) {
             ConditionsTreeNode current = stack.pop();
 
-            if (current.mLeft != null) {
-                stack.push(current.mLeft);
+            if (current.left != null) {
+                stack.push(current.left);
             }
 
-            if (current.mRight != null) {
-                stack.push(current.mRight);
+            if (current.right != null) {
+                stack.push(current.right);
             }
 
             result.add(current);
@@ -298,20 +298,20 @@ public class ConditionsTreeNode implements Parcelable {
      * @throws Exception Throws when the provided new node does not have a null parent.
      */
     private ConditionsTreeNode add(ConditionsTreeNode node, Operator op) throws Exception {
-        if (node.mParent != null) {
+        if (node.parent != null) {
             throw new Exception("Can only add new expressions from root node down.");
         }
 
-        ConditionsTreeNode tmpNode = new ConditionsTreeNode(mParent, op);
-        tmpNode.mLeft = this;
-        tmpNode.mRight = node;
+        ConditionsTreeNode tmpNode = new ConditionsTreeNode(parent, op);
+        tmpNode.left = this;
+        tmpNode.right = node;
 
-        if (mParent != null) {
-            mParent.updateChild(this, tmpNode);
+        if (parent != null) {
+            parent.updateChild(this, tmpNode);
         }
 
-        this.mParent = tmpNode;
-        node.mParent = tmpNode;
+        this.parent = tmpNode;
+        node.parent = tmpNode;
 
         return tmpNode;
     }
@@ -326,10 +326,10 @@ public class ConditionsTreeNode implements Parcelable {
      */
     private void updateChild(ConditionsTreeNode oldChild, ConditionsTreeNode newChild) {
         // we can compare objects id's because this is the desired behaviour in this case
-        if (mLeft == oldChild) {
-            mLeft = newChild;
-        } else if (mRight == oldChild) {
-            mRight = newChild;
+        if (left == oldChild) {
+            left = newChild;
+        } else if (right == oldChild) {
+            right = newChild;
         }
     }
 
@@ -341,19 +341,19 @@ public class ConditionsTreeNode implements Parcelable {
      * @return Set of leaves being completed.
      */
     private Set<ConditionsTreeNode> getLeafSet(Set<ConditionsTreeNode> leafSet) {
-        if (mLeft == null && mRight == null) {
+        if (left == null && right == null) {
             // if we ended up in a leaf, add ourself and return
             leafSet.add(this);
             return leafSet;
         }
 
         // we didn't end up in a leaf
-        if (mLeft != null) {
-            mLeft.getLeafSet(leafSet);
+        if (left != null) {
+            left.getLeafSet(leafSet);
         }
 
-        if (mRight != null) {
-            mRight.getLeafSet(leafSet);
+        if (right != null) {
+            right.getLeafSet(leafSet);
         }
         return leafSet;
     }
@@ -366,18 +366,18 @@ public class ConditionsTreeNode implements Parcelable {
      * http://www.sitepoint.com/hierarchical-data-database-2/
      */
     private int applyMPTTLabel(int label) {
-        mLeftMPTTMarker = label;
+        leftMPTTMarker = label;
 
-        if (mLeft != null) {
-            label = mLeft.applyMPTTLabel(label += 1);
+        if (left != null) {
+            label = left.applyMPTTLabel(label += 1);
         }
 
-        if (mRight != null) {
-            label = mRight.applyMPTTLabel(label += 1);
+        if (right != null) {
+            label = right.applyMPTTLabel(label += 1);
         }
 
         ++label;
-        mRightMPTTMarker = label;
+        rightMPTTMarker = label;
         return label;
     }
 
@@ -395,10 +395,10 @@ public class ConditionsTreeNode implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mValue.ordinal());
-        dest.writeParcelable(mCondition, flags);
-        dest.writeParcelable(mLeft, flags);
-        dest.writeParcelable(mRight, flags);
+        dest.writeInt(value.ordinal());
+        dest.writeParcelable(condition, flags);
+        dest.writeParcelable(left, flags);
+        dest.writeParcelable(right, flags);
     }
 
     public static final Parcelable.Creator<ConditionsTreeNode> CREATOR =
@@ -416,18 +416,18 @@ public class ConditionsTreeNode implements Parcelable {
     };
 
     private ConditionsTreeNode(Parcel in) {
-        mValue = Operator.values()[in.readInt()];
-        mCondition = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
-        mLeft = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
-        mRight = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
-        mParent = null;
+        value = Operator.values()[in.readInt()];
+        condition = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
+        left = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
+        right = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
+        parent = null;
 
-        if (mLeft != null) {
-            mLeft.mParent = this;
+        if (left != null) {
+            left.parent = this;
         }
 
-        if (mRight != null) {
-            mRight.mParent = this;
+        if (right != null) {
+            right.parent = this;
         }
     }
 }

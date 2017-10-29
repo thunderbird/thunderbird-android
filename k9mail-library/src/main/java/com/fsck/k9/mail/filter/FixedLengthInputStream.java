@@ -11,42 +11,42 @@ import java.util.Locale;
  * past where the protocol handler intended the client to read.
  */
 public class FixedLengthInputStream extends InputStream {
-    private final InputStream mIn;
-    private final int mLength;
-    private int mCount = 0;
+    private final InputStream in;
+    private final int length;
+    private int count = 0;
 
     public FixedLengthInputStream(InputStream in, int length) {
-        this.mIn = in;
-        this.mLength = length;
+        this.in = in;
+        this.length = length;
     }
 
     @Override
     public int available() throws IOException {
-        return mLength - mCount;
+        return length - count;
     }
 
     @Override
     public int read() throws IOException {
-        if (mCount >= mLength) {
+        if (count >= length) {
             return -1;
         }
 
-        int d = mIn.read();
+        int d = in.read();
         if (d != -1) {
-            mCount++;
+            count++;
         }
         return d;
     }
 
     @Override
     public int read(byte[] b, int offset, int length) throws IOException {
-        if (mCount >= mLength) {
+        if (count >= this.length) {
             return -1;
         }
 
-        int d = mIn.read(b, offset, Math.min(mLength - mCount, length));
+        int d = in.read(b, offset, Math.min(this.length - count, length));
         if (d != -1) {
-            mCount += d;
+            count += d;
         }
         return d;
     }
@@ -58,16 +58,16 @@ public class FixedLengthInputStream extends InputStream {
 
     @Override
     public long skip(long n) throws IOException {
-        long d = mIn.skip(Math.min(n, available()));
+        long d = in.skip(Math.min(n, available()));
         if (d > 0) {
-            mCount += d;
+            count += d;
         }
         return d;
     }
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "FixedLengthInputStream(in=%s, length=%d)", mIn.toString(), mLength);
+        return String.format(Locale.US, "FixedLengthInputStream(in=%s, length=%d)", in.toString(), length);
     }
 
     public void skipRemaining() throws IOException {

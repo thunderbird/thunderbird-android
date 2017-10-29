@@ -123,7 +123,7 @@ public class Throttle {
      * Timer task called on timeout,
      */
     private class MyTimerTask extends TimerTask {
-        private boolean mCanceled;
+        private boolean canceled;
 
         @Override
         public void run() {
@@ -132,7 +132,7 @@ public class Throttle {
 
         @Override
         public boolean cancel() {
-            mCanceled = true;
+            canceled = true;
             return super.cancel();
         }
 
@@ -140,7 +140,7 @@ public class Throttle {
             @Override
             public void run() {
                 runningTimerTask = null;
-                if (!mCanceled) { // This check has to be done on the UI thread.
+                if (!canceled) { // This check has to be done on the UI thread.
                     Timber.d("Throttle: [%s] Kicking callback", name);
                     callback.run();
                 }

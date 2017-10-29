@@ -15,20 +15,20 @@ public class MessageListFragmentComparators {
      * @param <T>
      */
     public static class ReverseComparator<T> implements Comparator<T> {
-        private Comparator<T> mDelegate;
+        private Comparator<T> delegate;
 
         /**
          * @param delegate
          *         Never {@code null}.
          */
-        public ReverseComparator(final Comparator<T> delegate) {
-            mDelegate = delegate;
+        ReverseComparator(final Comparator<T> delegate) {
+            this.delegate = delegate;
         }
 
         @Override
         public int compare(final T object1, final T object2) {
             // arg1 & 2 are mixed up, this is done on purpose
-            return mDelegate.compare(object2, object1);
+            return delegate.compare(object2, object1);
         }
     }
 
@@ -38,20 +38,20 @@ public class MessageListFragmentComparators {
      * @param <T>
      */
     public static class ComparatorChain<T> implements Comparator<T> {
-        private List<Comparator<T>> mChain;
+        private List<Comparator<T>> chain;
 
         /**
          * @param chain
          *         Comparator chain. Never {@code null}.
          */
-        public ComparatorChain(final List<Comparator<T>> chain) {
-            mChain = chain;
+        ComparatorChain(final List<Comparator<T>> chain) {
+            this.chain = chain;
         }
 
         @Override
         public int compare(T object1, T object2) {
             int result = 0;
-            for (final Comparator<T> comparator : mChain) {
+            for (final Comparator<T> comparator : chain) {
                 result = comparator.compare(object1, object2);
                 if (result != 0) {
                     break;
@@ -62,15 +62,15 @@ public class MessageListFragmentComparators {
     }
 
     public static class ReverseIdComparator implements Comparator<Cursor> {
-        private int mIdColumn = -1;
+        private int idColumn = -1;
 
         @Override
         public int compare(Cursor cursor1, Cursor cursor2) {
-            if (mIdColumn == -1) {
-                mIdColumn = cursor1.getColumnIndex("_id");
+            if (idColumn == -1) {
+                idColumn = cursor1.getColumnIndex("_id");
             }
-            long o1Id = cursor1.getLong(mIdColumn);
-            long o2Id = cursor2.getLong(mIdColumn);
+            long o1Id = cursor1.getLong(idColumn);
+            long o2Id = cursor2.getLong(idColumn);
             return (o1Id > o2Id) ? -1 : 1;
         }
     }

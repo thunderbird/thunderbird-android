@@ -16,7 +16,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 
 public class ManageIdentities extends ChooseIdentity {
-    private boolean mIdentitiesChanged = false;
+    private boolean identitiesChanged = false;
 
     private static final int ACTIVITY_EDIT_IDENTITY = 1;
 
@@ -34,8 +34,8 @@ public class ManageIdentities extends ChooseIdentity {
 
     private void editItem(int i) {
         Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
-        intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(EditIdentity.EXTRA_IDENTITY, mAccount.getIdentity(i));
+        intent.putExtra(EditIdentity.EXTRA_ACCOUNT, account.getUuid());
+        intent.putExtra(EditIdentity.EXTRA_IDENTITY, account.getIdentity(i));
         intent.putExtra(EditIdentity.EXTRA_IDENTITY_INDEX, i);
         startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
     }
@@ -52,7 +52,7 @@ public class ManageIdentities extends ChooseIdentity {
         switch (item.getItemId()) {
         case R.id.new_identity:
             Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
-            intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
+            intent.putExtra(EditIdentity.EXTRA_ACCOUNT, account.getUuid());
             startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
             break;
         default:
@@ -79,7 +79,7 @@ public class ManageIdentities extends ChooseIdentity {
             if (menuInfo.position > 0) {
                 Identity identity = identities.remove(menuInfo.position);
                 identities.add(menuInfo.position - 1, identity);
-                mIdentitiesChanged = true;
+                identitiesChanged = true;
                 refreshView();
             }
 
@@ -88,20 +88,20 @@ public class ManageIdentities extends ChooseIdentity {
             if (menuInfo.position < identities.size() - 1) {
                 Identity identity = identities.remove(menuInfo.position);
                 identities.add(menuInfo.position + 1, identity);
-                mIdentitiesChanged = true;
+                identitiesChanged = true;
                 refreshView();
             }
             break;
         case R.id.top:
             Identity identity = identities.remove(menuInfo.position);
             identities.add(0, identity);
-            mIdentitiesChanged = true;
+            identitiesChanged = true;
             refreshView();
             break;
         case R.id.remove:
             if (identities.size() > 1) {
                 identities.remove(menuInfo.position);
-                mIdentitiesChanged = true;
+                identitiesChanged = true;
                 refreshView();
             } else {
                 Toast.makeText(this, getString(R.string.no_removable_identity),
@@ -116,7 +116,7 @@ public class ManageIdentities extends ChooseIdentity {
     @Override
     public void onResume() {
         super.onResume();
-        //mAccount.refresh(Preferences.getPreferences(getApplication().getApplicationContext()));
+        //account.refresh(Preferences.getPreferences(getApplication().getApplicationContext()));
         refreshView();
     }
 
@@ -128,9 +128,9 @@ public class ManageIdentities extends ChooseIdentity {
     }
 
     private void saveIdentities() {
-        if (mIdentitiesChanged) {
-            mAccount.setIdentities(identities);
-            mAccount.save(Preferences.getPreferences(getApplication().getApplicationContext()));
+        if (identitiesChanged) {
+            account.setIdentities(identities);
+            account.save(Preferences.getPreferences(getApplication().getApplicationContext()));
         }
         finish();
     }

@@ -48,8 +48,8 @@ public class LocalMessage extends MimeMessage {
 
     LocalMessage(LocalStore localStore, String uid, Folder folder) {
         this.localStore = localStore;
-        this.mUid = uid;
-        this.mFolder = folder;
+        this.uid = uid;
+        this.folder = folder;
     }
 
 
@@ -98,10 +98,10 @@ public class LocalMessage extends MimeMessage {
             preview = "";
         }
 
-        if (this.mFolder == null) {
+        if (this.folder == null) {
             LocalFolder f = new LocalFolder(this.localStore, cursor.getInt(LocalStore.MSG_INDEX_FOLDER_ID));
             f.open(LocalFolder.OPEN_MODE_RW);
-            this.mFolder = f;
+            this.folder = f;
         }
 
         threadId = (cursor.isNull(LocalStore.MSG_INDEX_THREAD_ID)) ? -1 : cursor.getLong(LocalStore.MSG_INDEX_THREAD_ID);
@@ -194,7 +194,7 @@ public class LocalMessage extends MimeMessage {
 
     @Override
     public void setFrom(Address from) {
-        this.mFrom = new Address[] { from };
+        this.from = new Address[] { from };
         headerNeedsUpdating = true;
     }
 
@@ -202,9 +202,9 @@ public class LocalMessage extends MimeMessage {
     @Override
     public void setReplyTo(Address[] replyTo) {
         if (replyTo == null || replyTo.length == 0) {
-            mReplyTo = null;
+            this.replyTo = null;
         } else {
-            mReplyTo = replyTo;
+            this.replyTo = replyTo;
         }
 
         headerNeedsUpdating = true;
@@ -219,21 +219,21 @@ public class LocalMessage extends MimeMessage {
     public void setRecipients(RecipientType type, Address[] addresses) {
         if (type == RecipientType.TO) {
             if (addresses == null || addresses.length == 0) {
-                this.mTo = null;
+                this.to = null;
             } else {
-                this.mTo = addresses;
+                this.to = addresses;
             }
         } else if (type == RecipientType.CC) {
             if (addresses == null || addresses.length == 0) {
-                this.mCc = null;
+                this.cc = null;
             } else {
-                this.mCc = addresses;
+                this.cc = addresses;
             }
         } else if (type == RecipientType.BCC) {
             if (addresses == null || addresses.length == 0) {
-                this.mBcc = null;
+                this.bcc = null;
             } else {
-                this.mBcc = addresses;
+                this.bcc = addresses;
             }
         } else {
             throw new IllegalArgumentException("Unrecognized recipient type.");
@@ -313,7 +313,7 @@ public class LocalMessage extends MimeMessage {
                     db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
 
                     try {
-                        ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
+                        ((LocalFolder) folder).deleteMessagePartsAndDataFromDisk(messagePartId);
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
@@ -345,7 +345,7 @@ public class LocalMessage extends MimeMessage {
                     db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
 
                     try {
-                        ((LocalFolder) mFolder).deleteMessagePartsAndDataFromDisk(messagePartId);
+                        ((LocalFolder) folder).deleteMessagePartsAndDataFromDisk(messagePartId);
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
@@ -407,7 +407,7 @@ public class LocalMessage extends MimeMessage {
 
     public MessageReference makeMessageReference() {
         if (messageReference == null) {
-            messageReference = new MessageReference(getFolder().getAccountUuid(), getFolder().getName(), mUid, null);
+            messageReference = new MessageReference(getFolder().getAccountUuid(), getFolder().getName(), uid, null);
         }
         return messageReference;
     }
@@ -432,13 +432,13 @@ public class LocalMessage extends MimeMessage {
 
     private void updateHeader() {
         super.setSubject(subject);
-        super.setReplyTo(mReplyTo);
-        super.setRecipients(RecipientType.TO, mTo);
-        super.setRecipients(RecipientType.CC, mCc);
-        super.setRecipients(RecipientType.BCC, mBcc);
+        super.setReplyTo(replyTo);
+        super.setRecipients(RecipientType.TO, to);
+        super.setRecipients(RecipientType.CC, cc);
+        super.setRecipients(RecipientType.BCC, bcc);
 
-        if (mFrom != null && mFrom.length > 0) {
-            super.setFrom(mFrom[0]);
+        if (from != null && from.length > 0) {
+            super.setFrom(from[0]);
         }
 
         if (messageId != null) {

@@ -46,9 +46,9 @@ public class SliderPreference extends DialogPreference {
 
     protected final static int SEEKBAR_RESOLUTION = 10000;
 
-    protected float mValue;
-    protected int mSeekBarValue;
-    protected CharSequence[] mSummaries;
+    protected float value;
+    protected int seekBarValue;
+    protected CharSequence[] summaries;
 
     /**
      * @param context
@@ -87,28 +87,28 @@ public class SliderPreference extends DialogPreference {
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        setValue(restoreValue ? getPersistedFloat(mValue) : (Float) defaultValue);
+        setValue(restoreValue ? getPersistedFloat(value) : (Float) defaultValue);
     }
 
     @Override
     public CharSequence getSummary() {
-        if (mSummaries != null && mSummaries.length > 0) {
-            int index = (int) (mValue * mSummaries.length);
-            index = Math.min(index, mSummaries.length - 1);
-            return mSummaries[index];
+        if (summaries != null && summaries.length > 0) {
+            int index = (int) (value * summaries.length);
+            index = Math.min(index, summaries.length - 1);
+            return summaries[index];
         } else {
             return super.getSummary();
         }
     }
 
     public void setSummary(CharSequence[] summaries) {
-        mSummaries = summaries;
+        this.summaries = summaries;
     }
 
     @Override
     public void setSummary(CharSequence summary) {
         super.setSummary(summary);
-        mSummaries = null;
+        summaries = null;
     }
 
     @Override
@@ -121,7 +121,7 @@ public class SliderPreference extends DialogPreference {
     }
 
     public float getValue() {
-        return mValue;
+        return value;
     }
 
     public void setValue(float value) {
@@ -129,19 +129,19 @@ public class SliderPreference extends DialogPreference {
         if (shouldPersist()) {
             persistFloat(value);
         }
-        if (value != mValue) {
-            mValue = value;
+        if (value != this.value) {
+            this.value = value;
             notifyChanged();
         }
     }
 
     @Override
     protected View onCreateDialogView() {
-        mSeekBarValue = (int) (mValue * SEEKBAR_RESOLUTION);
+        seekBarValue = (int) (value * SEEKBAR_RESOLUTION);
         View view = super.onCreateDialogView();
         SeekBar seekbar = (SeekBar) view.findViewById(R.id.slider_preference_seekbar);
         seekbar.setMax(SEEKBAR_RESOLUTION);
-        seekbar.setProgress(mSeekBarValue);
+        seekbar.setProgress(seekBarValue);
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -155,8 +155,8 @@ public class SliderPreference extends DialogPreference {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    SliderPreference.this.mSeekBarValue = progress;
-                    callChangeListener((float) SliderPreference.this.mSeekBarValue / SEEKBAR_RESOLUTION);
+                    SliderPreference.this.seekBarValue = progress;
+                    callChangeListener((float) SliderPreference.this.seekBarValue / SEEKBAR_RESOLUTION);
                 }
             }
         });
@@ -165,11 +165,11 @@ public class SliderPreference extends DialogPreference {
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
-        final float newValue = (float) mSeekBarValue / SEEKBAR_RESOLUTION;
+        final float newValue = (float) seekBarValue / SEEKBAR_RESOLUTION;
         if (positiveResult && callChangeListener(newValue)) {
             setValue(newValue);
         } else {
-            callChangeListener(mValue);
+            callChangeListener(value);
         }
         super.onDialogClosed(positiveResult);
     }
@@ -179,7 +179,7 @@ public class SliderPreference extends DialogPreference {
         Parcelable superState = super.onSaveInstanceState();
         Bundle state = new Bundle();
         state.putParcelable(STATE_KEY_SUPER, superState);
-        state.putInt(STATE_KEY_SEEK_BAR_VALUE, mSeekBarValue);
+        state.putInt(STATE_KEY_SEEK_BAR_VALUE, seekBarValue);
 
         return state;
     }
@@ -188,8 +188,8 @@ public class SliderPreference extends DialogPreference {
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle bundle = (Bundle) state;
         super.onRestoreInstanceState(bundle.getParcelable(STATE_KEY_SUPER));
-        mSeekBarValue = bundle.getInt(STATE_KEY_SEEK_BAR_VALUE);
+        seekBarValue = bundle.getInt(STATE_KEY_SEEK_BAR_VALUE);
 
-        callChangeListener((float) mSeekBarValue / SEEKBAR_RESOLUTION);
+        callChangeListener((float) seekBarValue / SEEKBAR_RESOLUTION);
     }
 }

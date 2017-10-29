@@ -11,8 +11,8 @@ import com.fsck.k9.mail.internet.MimeMessage;
 
 class ImapMessage extends MimeMessage {
     ImapMessage(String uid, Folder folder) {
-        this.mUid = uid;
-        this.mFolder = folder;
+        this.uid = uid;
+        this.folder = folder;
     }
 
     public void setSize(int size) {
@@ -26,7 +26,7 @@ class ImapMessage extends MimeMessage {
     @Override
     public void setFlag(Flag flag, boolean set) throws MessagingException {
         super.setFlag(flag, set);
-        mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
+        folder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
     }
 
     @Override

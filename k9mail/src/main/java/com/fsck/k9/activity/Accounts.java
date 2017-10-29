@@ -121,25 +121,25 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     /*
      * Must be serializable hence implementation class used for declaration.
      */
-    private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
+    private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<>();
 
-    private ConcurrentMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<BaseAccount, String>();
+    private ConcurrentMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<>();
 
-    private BaseAccount mSelectedContextAccount;
-    private int mUnreadMessageCount = 0;
+    private BaseAccount selectedContextAccount;
+    private int unreadMessageCount = 0;
 
-    private AccountsHandler mHandler = new AccountsHandler();
-    private AccountsAdapter mAdapter;
-    private SearchAccount mAllMessagesAccount = null;
-    private SearchAccount mUnifiedInboxAccount = null;
-    private FontSizes mFontSizes = K9.getFontSizes();
+    private AccountsHandler handler = new AccountsHandler();
+    private AccountsAdapter adapter;
+    private SearchAccount allMessagesAccount = null;
+    private SearchAccount unifiedInboxAccount = null;
+    private FontSizes fontSizes = K9.getFontSizes();
 
-    private MenuItem mRefreshMenuItem;
-    private ActionBar mActionBar;
+    private MenuItem refreshMenuItem;
+    private ActionBar actionBar;
 
-    private TextView mActionBarTitle;
-    private TextView mActionBarSubTitle;
-    private TextView mActionBarUnread;
+    private TextView actionBarTitle;
+    private TextView actionBarSubTitle;
+    private TextView actionBarUnread;
 
     private Locale locale;
     private boolean exportGlobalSettings;
@@ -150,7 +150,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      *
      * @see #onRetainNonConfigurationInstance()
      */
-    private NonConfigurationInstance mNonConfigurationInstance;
+    private NonConfigurationInstance nonConfigurationInstance;
 
 
     private static final int ACTIVITY_REQUEST_PICK_SETTINGS_FILE = 1;
@@ -158,22 +158,22 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     class AccountsHandler extends Handler {
         private void setViewTitle() {
-            mActionBarTitle.setText(getString(R.string.accounts_title));
+            actionBarTitle.setText(getString(R.string.accounts_title));
 
-            if (mUnreadMessageCount == 0) {
-                mActionBarUnread.setVisibility(View.GONE);
+            if (unreadMessageCount == 0) {
+                actionBarUnread.setVisibility(View.GONE);
             } else {
-                mActionBarUnread.setText(String.format(locale, "%d", mUnreadMessageCount));
-                mActionBarUnread.setVisibility(View.VISIBLE);
+                actionBarUnread.setText(String.format(locale, "%d", unreadMessageCount));
+                actionBarUnread.setVisibility(View.VISIBLE);
             }
 
-            String operation = mListener.getOperation(Accounts.this);
+            String operation = listener.getOperation(Accounts.this);
             operation = operation.trim();
             if (operation.length() < 1) {
-                mActionBarSubTitle.setVisibility(View.GONE);
+                actionBarSubTitle.setVisibility(View.GONE);
             } else {
-                mActionBarSubTitle.setVisibility(View.VISIBLE);
-                mActionBarSubTitle.setText(operation);
+                actionBarSubTitle.setVisibility(View.VISIBLE);
+                actionBarSubTitle.setText(operation);
             }
         }
         public void refreshTitle() {
@@ -187,8 +187,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         public void dataChanged() {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    if (mAdapter != null) {
-                        mAdapter.notifyDataSetChanged();
+                    if (adapter != null) {
+                        adapter.notifyDataSetChanged();
                     }
                 }
             });
@@ -213,34 +213,37 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                         stats.size = newSize;
                     }
                     String toastText = getString(R.string.account_size_changed, account.getDescription(),
-                                                 SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));
+                            SizeFormatter.formatSize(getApplication(), oldSize),
+                            SizeFormatter.formatSize(getApplication(), newSize));
 
                     Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
                     toast.show();
-                    if (mAdapter != null) {
-                        mAdapter.notifyDataSetChanged();
+                    if (adapter != null) {
+                        adapter.notifyDataSetChanged();
                     }
                 }
             });
         }
+
         public void progress(final boolean progress) {
             // Make sure we don't try this before the menu is initialized
             // this could happen while the activity is initialized.
-            if (mRefreshMenuItem == null) {
+            if (refreshMenuItem == null) {
                 return;
             }
 
             runOnUiThread(new Runnable() {
                 public void run() {
                     if (progress) {
-                        mRefreshMenuItem.setActionView(R.layout.actionbar_indeterminate_progress_actionview);
+                        refreshMenuItem.setActionView(R.layout.actionbar_indeterminate_progress_actionview);
                     } else {
-                        mRefreshMenuItem.setActionView(null);
+                        refreshMenuItem.setActionView(null);
                     }
                 }
             });
 
         }
+
         public void progress(final int progress) {
             runOnUiThread(new Runnable() {
                 public void run() {
@@ -251,13 +254,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     public void setProgress(boolean progress) {
-        mHandler.progress(progress);
+        handler.progress(progress);
     }
 
-    ActivityListener mListener = new ActivityListener() {
+    ActivityListener listener = new ActivityListener() {
         @Override
         public void informUserOfStatus() {
-            mHandler.refreshTitle();
+            handler.refreshTitle();
         }
 
         @Override
@@ -286,49 +289,49 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             }
             accountStats.put(account.getUuid(), stats);
             if (account instanceof Account) {
-                mUnreadMessageCount += stats.unreadMessageCount - oldUnreadMessageCount;
+                unreadMessageCount += stats.unreadMessageCount - oldUnreadMessageCount;
             }
-            mHandler.dataChanged();
+            handler.dataChanged();
             pendingWork.remove(account);
 
             if (pendingWork.isEmpty()) {
-                mHandler.progress(Window.PROGRESS_END);
-                mHandler.refreshTitle();
+                handler.progress(Window.PROGRESS_END);
+                handler.refreshTitle();
             } else {
-                int level = (Window.PROGRESS_END / mAdapter.getCount()) * (mAdapter.getCount() - pendingWork.size()) ;
-                mHandler.progress(level);
+                int level = (Window.PROGRESS_END / adapter.getCount()) * (adapter.getCount() - pendingWork.size());
+                handler.progress(level);
             }
         }
 
         @Override
         public void accountSizeChanged(Account account, long oldSize, long newSize) {
-            mHandler.accountSizeChanged(account, oldSize, newSize);
+            handler.accountSizeChanged(account, oldSize, newSize);
         }
 
         @Override
         public void synchronizeMailboxFinished(
-            Account account,
-            String folder,
-            int totalMessagesInMailbox,
-        int numNewMessages) {
-            MessagingController.getInstance(getApplication()).getAccountStats(Accounts.this, account, mListener);
+                Account account,
+                String folder,
+                int totalMessagesInMailbox,
+                int numNewMessages) {
+            MessagingController.getInstance(getApplication()).getAccountStats(Accounts.this, account, listener);
             super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
 
-            mHandler.progress(false);
+            handler.progress(false);
 
         }
 
         @Override
         public void synchronizeMailboxStarted(Account account, String folder) {
             super.synchronizeMailboxStarted(account, folder);
-            mHandler.progress(true);
+            handler.progress(true);
         }
 
         @Override
         public void synchronizeMailboxFailed(Account account, String folder,
-        String message) {
+                String message) {
             super.synchronizeMailboxFailed(account, folder, message);
-            mHandler.progress(false);
+            handler.progress(false);
 
         }
 
@@ -415,7 +418,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         boolean startup = intent.getBooleanExtra(EXTRA_STARTUP, true);
         if (startup && K9.startIntegratedInbox() && !K9.isHideSpecialAccounts()) {
-            onOpenAccount(mUnifiedInboxAccount);
+            onOpenAccount(unifiedInboxAccount);
             finish();
             return;
         } else if (startup && accounts.size() == 1 && onOpenAccount(accounts.get(0))) {
@@ -424,7 +427,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         requestWindowFeature(Window.FEATURE_PROGRESS);
-        mActionBar = getActionBar();
+        actionBar = getActionBar();
         initializeActionBar();
         setContentView(R.layout.accounts);
         ListView listView = getListView();
@@ -436,16 +439,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         if (icicle != null && icicle.containsKey(SELECTED_CONTEXT_ACCOUNT)) {
             String accountUuid = icicle.getString("selectedContextAccount");
-            mSelectedContextAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+            selectedContextAccount = Preferences.getPreferences(this).getAccount(accountUuid);
         }
 
         restoreAccountStats(icicle);
-        mHandler.setViewTitle();
+        handler.setViewTitle();
 
         // Handle activity restarts because of a configuration change (e.g. rotating the screen)
-        mNonConfigurationInstance = (NonConfigurationInstance) getLastNonConfigurationInstance();
-        if (mNonConfigurationInstance != null) {
-            mNonConfigurationInstance.restore(this);
+        nonConfigurationInstance = (NonConfigurationInstance) getLastNonConfigurationInstance();
+        if (nonConfigurationInstance != null) {
+            nonConfigurationInstance.restore(this);
         }
 
         ChangeLog cl = new ChangeLog(this);
@@ -455,43 +458,43 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     private void initializeActionBar() {
-        mActionBar.setDisplayShowCustomEnabled(true);
-        mActionBar.setCustomView(R.layout.actionbar_custom);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.actionbar_custom);
 
-        View customView = mActionBar.getCustomView();
-        mActionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
-        mActionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
-        mActionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
+        View customView = actionBar.getCustomView();
+        actionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
+        actionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
+        actionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
 
-        mActionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
     }
 
     /**
      * Creates and initializes the special accounts ('Unified Inbox' and 'All Messages')
      */
     private void createSpecialAccounts() {
-        mUnifiedInboxAccount = SearchAccount.createUnifiedInboxAccount(this);
-        mAllMessagesAccount = SearchAccount.createAllMessagesAccount(this);
+        unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount(this);
+        allMessagesAccount = SearchAccount.createAllMessagesAccount(this);
     }
 
     @SuppressWarnings("unchecked")
     private void restoreAccountStats(Bundle icicle) {
         if (icicle != null) {
-            Map<String, AccountStats> oldStats = (Map<String, AccountStats>)icicle.get(ACCOUNT_STATS);
+            Map<String, AccountStats> oldStats = (Map<String, AccountStats>) icicle.get(ACCOUNT_STATS);
             if (oldStats != null) {
                 accountStats.putAll(oldStats);
             }
-            mUnreadMessageCount = icicle.getInt(STATE_UNREAD_COUNT);
+            unreadMessageCount = icicle.getInt(STATE_UNREAD_COUNT);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mSelectedContextAccount != null) {
-            outState.putString(SELECTED_CONTEXT_ACCOUNT, mSelectedContextAccount.getUuid());
+        if (selectedContextAccount != null) {
+            outState.putString(SELECTED_CONTEXT_ACCOUNT, selectedContextAccount.getUuid());
         }
-        outState.putSerializable(STATE_UNREAD_COUNT, mUnreadMessageCount);
+        outState.putSerializable(STATE_UNREAD_COUNT, unreadMessageCount);
         outState.putSerializable(ACCOUNT_STATS, accountStats);
 
         outState.putBoolean(STATE_EXPORT_GLOBAL_SETTINGS, exportGlobalSettings);
@@ -524,17 +527,17 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         super.onResume();
 
         refresh();
-        MessagingController.getInstance(getApplication()).addListener(mListener);
+        MessagingController.getInstance(getApplication()).addListener(listener);
         StorageManager.getInstance(getApplication()).addListener(storageListener);
-        mListener.onResume(this);
+        listener.onResume(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        MessagingController.getInstance(getApplication()).removeListener(mListener);
+        MessagingController.getInstance(getApplication()).removeListener(listener);
         StorageManager.getInstance(getApplication()).removeListener(storageListener);
-        mListener.onPause(this);
+        listener.onPause(this);
     }
 
     /**
@@ -542,11 +545,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      */
     @Override
     public Object onRetainNonConfigurationInstance() {
-        Object retain = null;
-        if (mNonConfigurationInstance != null && mNonConfigurationInstance.retain()) {
-            retain = mNonConfigurationInstance;
+        if (nonConfigurationInstance != null && nonConfigurationInstance.retain()) {
+            return nonConfigurationInstance;
         }
-        return retain;
+        return null;
     }
 
     private List<BaseAccount> accounts = new ArrayList<BaseAccount>();
@@ -581,27 +583,27 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         List<BaseAccount> newAccounts;
         if (!K9.isHideSpecialAccounts() && accounts.size() > 0) {
-            if (mUnifiedInboxAccount == null || mAllMessagesAccount == null) {
+            if (unifiedInboxAccount == null || allMessagesAccount == null) {
                 createSpecialAccounts();
             }
 
-            newAccounts = new ArrayList<BaseAccount>(accounts.size() +
+            newAccounts = new ArrayList<>(accounts.size() +
                     SPECIAL_ACCOUNTS_COUNT);
-            newAccounts.add(mUnifiedInboxAccount);
-            newAccounts.add(mAllMessagesAccount);
+            newAccounts.add(unifiedInboxAccount);
+            newAccounts.add(allMessagesAccount);
         } else {
-            newAccounts = new ArrayList<BaseAccount>(accounts.size());
+            newAccounts = new ArrayList<>(accounts.size());
         }
 
         newAccounts.addAll(accounts);
 
-        mAdapter = new AccountsAdapter(newAccounts);
-        getListView().setAdapter(mAdapter);
+        adapter = new AccountsAdapter(newAccounts);
+        getListView().setAdapter(adapter);
         if (!newAccounts.isEmpty()) {
-            mHandler.progress(Window.PROGRESS_START);
+            handler.progress(Window.PROGRESS_START);
         }
         pendingWork.clear();
-        mHandler.refreshTitle();
+        handler.refreshTitle();
 
         MessagingController controller = MessagingController.getInstance(getApplication());
 
@@ -610,10 +612,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             if (account instanceof Account) {
                 Account realAccount = (Account) account;
-                controller.getAccountStats(this, realAccount, mListener);
+                controller.getAccountStats(this, realAccount, listener);
             } else if (K9.countSearchMessages() && account instanceof SearchAccount) {
                 final SearchAccount searchAccount = (SearchAccount) account;
-                controller.getSearchAccountStats(searchAccount, mListener);
+                controller.getSearchAccountStats(searchAccount, listener);
             }
         }
     }
@@ -719,16 +721,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * Ask the user for the incoming/outgoing server passwords.
      */
     private static class PasswordPromptDialog implements NonConfigurationInstance, TextWatcher {
-        private AlertDialog mDialog;
-        private EditText mIncomingPasswordView;
-        private EditText mOutgoingPasswordView;
-        private CheckBox mUseIncomingView;
+        private AlertDialog dialog;
+        private EditText incomingPasswordView;
+        private EditText outgoingPasswordView;
+        private CheckBox useIncomingView;
 
-        private Account mAccount;
-        private List<Account> mRemainingAccounts;
-        private String mIncomingPassword;
-        private String mOutgoingPassword;
-        private boolean mUseIncoming;
+        private Account account;
+        private List<Account> remainingAccounts;
+        private String incomingPassword;
+        private String outgoingPassword;
+        private boolean useIncoming;
 
         /**
          * Constructor
@@ -740,8 +742,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
          *         {@code null}.
          */
         PasswordPromptDialog(Account account, List<Account> accounts) {
-            mAccount = account;
-            mRemainingAccounts = accounts;
+            this.account = account;
+            remainingAccounts = accounts;
         }
 
         @Override
@@ -751,24 +753,24 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         @Override
         public boolean retain() {
-            if (mDialog != null) {
+            if (dialog != null) {
                 // Retain entered passwords and checkbox state
-                if (mIncomingPasswordView != null) {
-                    mIncomingPassword = mIncomingPasswordView.getText().toString();
+                if (incomingPasswordView != null) {
+                    incomingPassword = incomingPasswordView.getText().toString();
                 }
-                if (mOutgoingPasswordView != null) {
-                    mOutgoingPassword = mOutgoingPasswordView.getText().toString();
-                    mUseIncoming = mUseIncomingView.isChecked();
+                if (outgoingPasswordView != null) {
+                    outgoingPassword = outgoingPasswordView.getText().toString();
+                    useIncoming = useIncomingView.isChecked();
                 }
 
                 // Dismiss dialog
-                mDialog.dismiss();
+                dialog.dismiss();
 
                 // Clear all references to UI objects
-                mDialog = null;
-                mIncomingPasswordView = null;
-                mOutgoingPasswordView = null;
-                mUseIncomingView = null;
+                dialog = null;
+                incomingPasswordView = null;
+                outgoingPasswordView = null;
+                useIncomingView = null;
                 return true;
             }
             return false;
@@ -779,8 +781,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         private void show(final Accounts activity, boolean restore) {
-            ServerSettings incoming = RemoteStore.decodeStoreUri(mAccount.getStoreUri());
-            ServerSettings outgoing = TransportUris.decodeTransportUri(mAccount.getTransportUri());
+            ServerSettings incoming = RemoteStore.decodeStoreUri(account.getStoreUri());
+            ServerSettings outgoing = TransportUris.decodeTransportUri(account.getTransportUri());
 
             /*
              * Don't ask for the password to the outgoing server for WebDAV

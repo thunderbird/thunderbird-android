@@ -24,11 +24,11 @@ import java.util.List;
  * </p>
  */
 public class IdentityAdapter extends BaseAdapter {
-    private LayoutInflater mLayoutInflater;
-    private List<Object> mItems;
+    private LayoutInflater layoutInflater;
+    private List<Object> items;
 
     public IdentityAdapter(Context context) {
-        mLayoutInflater = (LayoutInflater) context.getSystemService(
+        layoutInflater = (LayoutInflater) context.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
         List<Object> items = new ArrayList<>();
@@ -41,12 +41,12 @@ public class IdentityAdapter extends BaseAdapter {
                 items.add(new IdentityContainer(identity, account));
             }
         }
-        mItems = items;
+        this.items = items;
     }
 
     @Override
     public int getCount() {
-        return mItems.size();
+        return items.size();
     }
 
     @Override
@@ -56,17 +56,17 @@ public class IdentityAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (mItems.get(position) instanceof Account) ? 0 : 1;
+        return (items.get(position) instanceof Account) ? 0 : 1;
     }
 
     @Override
     public boolean isEnabled(int position) {
-        return (mItems.get(position) instanceof IdentityContainer);
+        return (items.get(position) instanceof IdentityContainer);
     }
 
     @Override
     public Object getItem(int position) {
-        return mItems.get(position);
+        return items.get(position);
     }
 
     @Override
@@ -81,14 +81,14 @@ public class IdentityAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Object item = mItems.get(position);
+        Object item = items.get(position);
 
         View view = null;
         if (item instanceof Account) {
             if (convertView != null && convertView.getTag() instanceof AccountHolder) {
                 view = convertView;
             } else {
-                view = mLayoutInflater.inflate(R.layout.choose_account_item, parent, false);
+                view = layoutInflater.inflate(R.layout.choose_account_item, parent, false);
                 AccountHolder holder = new AccountHolder();
                 holder.name = (TextView) view.findViewById(R.id.name);
                 holder.chip = view.findViewById(R.id.chip);
@@ -103,7 +103,7 @@ public class IdentityAdapter extends BaseAdapter {
             if (convertView != null && convertView.getTag() instanceof IdentityHolder) {
                 view = convertView;
             } else {
-                view = mLayoutInflater.inflate(R.layout.choose_identity_item, parent, false);
+                view = layoutInflater.inflate(R.layout.choose_identity_item, parent, false);
                 IdentityHolder holder = new IdentityHolder();
                 holder.name = (TextView) view.findViewById(R.id.name);
                 holder.description = (TextView) view.findViewById(R.id.description);

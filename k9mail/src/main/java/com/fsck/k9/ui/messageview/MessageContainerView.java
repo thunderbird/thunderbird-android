@@ -58,18 +58,18 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     private static final int MENU_ITEM_EMAIL_SAVE = Menu.FIRST + 1;
     private static final int MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2;
 
-    private MessageWebView mMessageContentView;
-    private LinearLayout mAttachments;
+    private MessageWebView messageContentView;
+    private LinearLayout attachmentsView;
     private View unsignedTextContainer;
     private View unsignedTextDivider;
     private TextView unsignedText;
-    private View mAttachmentsContainer;
+    private View attachmentsContainer;
 
     private boolean showingPictures;
-    private LayoutInflater mInflater;
+    private LayoutInflater inflater;
     private AttachmentViewCallback attachmentCallback;
-    private SavedState mSavedState;
-    private ClipboardManager mClipboardManager;
+    private SavedState savedState;
+    private ClipboardManager clipboardManager;
     private Map<AttachmentViewInfo, AttachmentView> attachmentViewMap = new HashMap<>();
     private Map<Uri, AttachmentViewInfo> attachments = new HashMap<>();
     private boolean hasHiddenExternalImages;
@@ -82,15 +82,15 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     public void onFinishInflate() {
         super.onFinishInflate();
 
-        mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
+        messageContentView = (MessageWebView) findViewById(R.id.message_content);
         if (!isInEditMode()) {
-            mMessageContentView.configure();
+            messageContentView.configure();
         }
-        mMessageContentView.setOnCreateContextMenuListener(this);
-        mMessageContentView.setVisibility(View.VISIBLE);
+        messageContentView.setOnCreateContextMenuListener(this);
+        messageContentView.setVisibility(View.VISIBLE);
 
-        mAttachmentsContainer = findViewById(R.id.attachments_container);
-        mAttachments = (LinearLayout) findViewById(R.id.attachments);
+        attachmentsContainer = findViewById(R.id.attachments_container);
+        attachmentsView = (LinearLayout) findViewById(R.id.attachments);
 
         unsignedTextContainer = findViewById(R.id.message_unsigned_container);
         unsignedTextDivider = findViewById(R.id.message_unsigned_divider);
@@ -99,8 +99,8 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         showingPictures = false;
 
         Context context = getContext();
-        mInflater = LayoutInflater.from(context);
-        mClipboardManager = ClipboardManager.getInstance(context);
+        inflater = LayoutInflater.from(context);
+        clipboardManager = ClipboardManager.getInstance(context);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                             case MENU_ITEM_LINK_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_link_clipboard_label);
-                                mClipboardManager.setText(label, url);
+                                clipboardManager.setText(label, url);
                                 break;
                             }
                         }
@@ -198,7 +198,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                             case MENU_ITEM_IMAGE_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_image_clipboard_label);
-                                mClipboardManager.setText(label, uri.toString());
+                                clipboardManager.setText(label, uri.toString());
                                 break;
                             }
                         }
@@ -247,7 +247,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                             case MENU_ITEM_PHONE_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_phone_clipboard_label);
-                                mClipboardManager.setText(label, phoneNumber);
+                                clipboardManager.setText(label, phoneNumber);
                                 break;
                             }
                         }
@@ -292,7 +292,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                             case MENU_ITEM_EMAIL_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_email_clipboard_label);
-                                mClipboardManager.setText(label, email);
+                                clipboardManager.setText(label, email);
                                 break;
                             }
                         }
@@ -349,7 +349,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     }
 
     private void setLoadPictures(boolean enable) {
-        mMessageContentView.blockNetworkData(!enable);
+        messageContentView.blockNetworkData(!enable);
         showingPictures = enable;
     }
 
@@ -380,12 +380,12 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
         renderAttachments(messageViewInfo);
 
-        if (mSavedState != null) {
-            if (mSavedState.showingPictures) {
+        if (savedState != null) {
+            if (savedState.showingPictures) {
                 setLoadPictures(true);
             }
 
-            mSavedState = null;
+            savedState = null;
         }
 
         String textToDisplay = messageViewInfo.text;
@@ -428,15 +428,15 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
             OnPageFinishedListener onPageFinishedListener) {
         currentHtmlText = htmlText;
         currentAttachmentResolver = attachmentResolver;
-        mMessageContentView.displayHtmlContentWithInlineAttachments(htmlText, attachmentResolver, onPageFinishedListener);
+        messageContentView.displayHtmlContentWithInlineAttachments(htmlText, attachmentResolver, onPageFinishedListener);
     }
 
     private void refreshDisplayedContent() {
-        mMessageContentView.displayHtmlContentWithInlineAttachments(currentHtmlText, currentAttachmentResolver, null);
+        messageContentView.displayHtmlContentWithInlineAttachments(currentHtmlText, currentAttachmentResolver, null);
     }
 
     private void clearDisplayedContent() {
-        mMessageContentView.displayHtmlContentWithInlineAttachments("", null, null);
+        messageContentView.displayHtmlContentWithInlineAttachments("", null, null);
         unsignedTextContainer.setVisibility(View.GONE);
         unsignedText.setText("");
     }
@@ -450,12 +450,12 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                 }
 
                 AttachmentView view =
-                        (AttachmentView) mInflater.inflate(R.layout.message_view_attachment, mAttachments, false);
+                        (AttachmentView) inflater.inflate(R.layout.message_view_attachment, attachmentsView, false);
                 view.setCallback(attachmentCallback);
                 view.setAttachment(attachment);
 
                 attachmentViewMap.put(attachment, view);
-                mAttachments.addView(view);
+                attachmentsView.addView(view);
             }
         }
 
@@ -466,32 +466,32 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                     continue;
                 }
 
-                LockedAttachmentView view = (LockedAttachmentView) mInflater
-                        .inflate(R.layout.message_view_attachment_locked, mAttachments, false);
+                LockedAttachmentView view = (LockedAttachmentView) inflater
+                        .inflate(R.layout.message_view_attachment_locked, attachmentsView, false);
                 view.setCallback(attachmentCallback);
                 view.setAttachment(attachment);
 
                 // attachments.put(attachment, view);
-                mAttachments.addView(view);
+                attachmentsView.addView(view);
             }
         }
     }
 
     public void zoom(KeyEvent event) {
         if (event.isShiftPressed()) {
-            mMessageContentView.zoomIn();
+            messageContentView.zoomIn();
         } else {
-            mMessageContentView.zoomOut();
+            messageContentView.zoomOut();
         }
     }
 
     public void beginSelectingText() {
-        mMessageContentView.emulateShiftHeld();
+        messageContentView.emulateShiftHeld();
     }
 
     public void resetView() {
         setLoadPictures(false);
-        mAttachments.removeAllViews();
+        attachmentsView.removeAllViews();
 
         currentHtmlText = null;
         currentAttachmentResolver = null;
@@ -512,8 +512,8 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
         SavedState savedState = new SavedState(superState);
 
-        savedState.attachmentViewVisible = (mAttachmentsContainer != null &&
-                mAttachmentsContainer.getVisibility() == View.VISIBLE);
+        savedState.attachmentViewVisible = (attachmentsContainer != null &&
+                attachmentsContainer.getVisibility() == View.VISIBLE);
         savedState.showingPictures = showingPictures;
 
         return savedState;
@@ -529,13 +529,13 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         SavedState savedState = (SavedState)state;
         super.onRestoreInstanceState(savedState.getSuperState());
 
-        mSavedState = savedState;
+        this.savedState = savedState;
     }
 
     @Override
     public void onLayoutChanged() {
-        if (mMessageContentView != null) {
-            mMessageContentView.invalidate();
+        if (messageContentView != null) {
+            messageContentView.invalidate();
         }
     }
 

@@ -49,28 +49,28 @@ public class ColorChip {
     }
 
 
-    private ShapeDrawable mDrawable;
+    private ShapeDrawable drawable;
 
     public ColorChip(int color, boolean messageRead, Path shape) {
         if (shape.equals(STAR)) {
-            mDrawable = new ShapeDrawable(new PathShape(shape, 280f, 280f));
+            drawable = new ShapeDrawable(new PathShape(shape, 280f, 280f));
         } else {
-            mDrawable = new ShapeDrawable(new PathShape(shape, 320f, 320f));
+            drawable = new ShapeDrawable(new PathShape(shape, 320f, 320f));
         }
 
         if (messageRead) {
             // Read messages get an outlined circle
-            mDrawable.getPaint().setStyle(Paint.Style.STROKE);
+            drawable.getPaint().setStyle(Paint.Style.STROKE);
         } else {
             // Unread messages get filled, while retaining the outline, so that they stay the same size
-            mDrawable.getPaint().setStyle(Paint.Style.FILL_AND_STROKE);
+            drawable.getPaint().setStyle(Paint.Style.FILL_AND_STROKE);
         }
 
-        mDrawable.getPaint().setStrokeWidth(20);
-        mDrawable.getPaint().setColor(color);
+        drawable.getPaint().setStrokeWidth(20);
+        drawable.getPaint().setColor(color);
     }
 
     public ShapeDrawable drawable() {
-        return mDrawable;
+        return drawable;
     }
 }

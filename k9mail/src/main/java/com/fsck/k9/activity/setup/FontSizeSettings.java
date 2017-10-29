@@ -38,23 +38,23 @@ public class FontSizeSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGE_VIEW_CONTENT_FONT_SLIDER = "message_view_content_font_slider";
     private static final String PREFERENCE_MESSAGE_COMPOSE_INPUT_FONT = "message_compose_input_font";
 
-    private ListPreference mAccountName;
-    private ListPreference mAccountDescription;
-    private ListPreference mFolderName;
-    private ListPreference mFolderStatus;
-    private ListPreference mMessageListSubject;
-    private ListPreference mMessageListSender;
-    private ListPreference mMessageListDate;
-    private ListPreference mMessageListPreview;
-    private ListPreference mMessageViewSender;
-    private ListPreference mMessageViewTo;
-    private ListPreference mMessageViewCC;
-    private ListPreference mMessageViewBCC;
-    private ListPreference mMessageViewAdditionalHeaders;
-    private ListPreference mMessageViewSubject;
-    private ListPreference mMessageViewDate;
-    private SliderPreference mMessageViewContentSlider;
-    private ListPreference mMessageComposeInput;
+    private ListPreference accountName;
+    private ListPreference accountDescription;
+    private ListPreference folderName;
+    private ListPreference folderStatus;
+    private ListPreference messageListSubject;
+    private ListPreference messageListSender;
+    private ListPreference messageListDate;
+    private ListPreference messageListPreview;
+    private ListPreference messageViewSender;
+    private ListPreference messageViewTo;
+    private ListPreference messageViewCC;
+    private ListPreference messageViewBCC;
+    private ListPreference messageViewAdditionalHeaders;
+    private ListPreference messageViewSubject;
+    private ListPreference messageViewDate;
+    private SliderPreference messageViewContentSlider;
+    private ListPreference messageComposeInput;
 
     private static final int FONT_PERCENT_MIN = 40;
     private static final int FONT_PERCENT_MAX = 250;
@@ -76,62 +76,62 @@ public class FontSizeSettings extends K9PreferenceActivity {
         FontSizes fontSizes = K9.getFontSizes();
         addPreferencesFromResource(R.xml.font_preferences);
 
-        mAccountName = setupListPreference(
+        accountName = setupListPreference(
                            PREFERENCE_ACCOUNT_NAME_FONT,
                            Integer.toString(fontSizes.getAccountName()));
-        mAccountDescription = setupListPreference(
+        accountDescription = setupListPreference(
                                   PREFERENCE_ACCOUNT_DESCRIPTION_FONT,
                                   Integer.toString(fontSizes.getAccountDescription()));
 
-        mFolderName = setupListPreference(
+        folderName = setupListPreference(
                           PREFERENCE_FOLDER_NAME_FONT,
                           Integer.toString(fontSizes.getFolderName()));
-        mFolderStatus = setupListPreference(
+        folderStatus = setupListPreference(
                             PREFERENCE_FOLDER_STATUS_FONT,
                             Integer.toString(fontSizes.getFolderStatus()));
 
-        mMessageListSubject = setupListPreference(
+        messageListSubject = setupListPreference(
                                   PREFERENCE_MESSAGE_LIST_SUBJECT_FONT,
                                   Integer.toString(fontSizes.getMessageListSubject()));
-        mMessageListSender = setupListPreference(
+        messageListSender = setupListPreference(
                                  PREFERENCE_MESSAGE_LIST_SENDER_FONT,
                                  Integer.toString(fontSizes.getMessageListSender()));
-        mMessageListDate = setupListPreference(
+        messageListDate = setupListPreference(
                                PREFERENCE_MESSAGE_LIST_DATE_FONT,
                                Integer.toString(fontSizes.getMessageListDate()));
-        mMessageListPreview = setupListPreference(
+        messageListPreview = setupListPreference(
                                   PREFERENCE_MESSAGE_LIST_PREVIEW_FONT,
                                   Integer.toString(fontSizes.getMessageListPreview()));
 
-        mMessageViewSender = setupListPreference(
+        messageViewSender = setupListPreference(
                                  PREFERENCE_MESSAGE_VIEW_SENDER_FONT,
                                  Integer.toString(fontSizes.getMessageViewSender()));
-        mMessageViewTo = setupListPreference(
+        messageViewTo = setupListPreference(
                              PREFERENCE_MESSAGE_VIEW_TO_FONT,
                              Integer.toString(fontSizes.getMessageViewTo()));
-        mMessageViewCC = setupListPreference(
+        messageViewCC = setupListPreference(
                              PREFERENCE_MESSAGE_VIEW_CC_FONT,
                              Integer.toString(fontSizes.getMessageViewCC()));
-        mMessageViewBCC = setupListPreference(
+        messageViewBCC = setupListPreference(
                              PREFERENCE_MESSAGE_VIEW_BCC_FONT,
                              Integer.toString(fontSizes.getMessageViewBCC()));
-        mMessageViewAdditionalHeaders = setupListPreference(
+        messageViewAdditionalHeaders = setupListPreference(
                                             PREFERENCE_MESSAGE_VIEW_ADDITIONAL_HEADERS_FONT,
                                             Integer.toString(fontSizes.getMessageViewAdditionalHeaders()));
-        mMessageViewSubject = setupListPreference(
+        messageViewSubject = setupListPreference(
                                   PREFERENCE_MESSAGE_VIEW_SUBJECT_FONT,
                                   Integer.toString(fontSizes.getMessageViewSubject()));
-        mMessageViewDate = setupListPreference(
+        messageViewDate = setupListPreference(
                                PREFERENCE_MESSAGE_VIEW_DATE_FONT,
                                Integer.toString(fontSizes.getMessageViewDate()));
 
-        mMessageViewContentSlider = (SliderPreference) findPreference(
+        messageViewContentSlider = (SliderPreference) findPreference(
                                   PREFERENCE_MESSAGE_VIEW_CONTENT_FONT_SLIDER);
 
         final String summaryFormat = getString(R.string.font_size_message_view_content_summary);
         final String titleFormat = getString(R.string.font_size_message_view_content_dialog_title);
-        mMessageViewContentSlider.setValue(scaleFromInt(fontSizes.getMessageViewContentAsPercent()));
-        mMessageViewContentSlider.setOnPreferenceChangeListener(
+        messageViewContentSlider.setValue(scaleFromInt(fontSizes.getMessageViewContentAsPercent()));
+        messageViewContentSlider.setOnPreferenceChangeListener(
             new Preference.OnPreferenceChangeListener() {
                 // Show the preference value in the preference summary field.
                 @Override
@@ -148,10 +148,10 @@ public class FontSizeSettings extends K9PreferenceActivity {
                 }
             }
         );
-        mMessageViewContentSlider.getOnPreferenceChangeListener().onPreferenceChange(
-                                  mMessageViewContentSlider, mMessageViewContentSlider.getValue());
+        messageViewContentSlider.getOnPreferenceChangeListener().onPreferenceChange(
+                messageViewContentSlider, messageViewContentSlider.getValue());
 
-        mMessageComposeInput = setupListPreference(
+        messageComposeInput = setupListPreference(
                 PREFERENCE_MESSAGE_COMPOSE_INPUT_FONT,
                 Integer.toString(fontSizes.getMessageComposeInput()));
     }
@@ -163,27 +163,27 @@ public class FontSizeSettings extends K9PreferenceActivity {
     private void saveSettings() {
         FontSizes fontSizes = K9.getFontSizes();
 
-        fontSizes.setAccountName(Integer.parseInt(mAccountName.getValue()));
-        fontSizes.setAccountDescription(Integer.parseInt(mAccountDescription.getValue()));
+        fontSizes.setAccountName(Integer.parseInt(accountName.getValue()));
+        fontSizes.setAccountDescription(Integer.parseInt(accountDescription.getValue()));
 
-        fontSizes.setFolderName(Integer.parseInt(mFolderName.getValue()));
-        fontSizes.setFolderStatus(Integer.parseInt(mFolderStatus.getValue()));
+        fontSizes.setFolderName(Integer.parseInt(folderName.getValue()));
+        fontSizes.setFolderStatus(Integer.parseInt(folderStatus.getValue()));
 
-        fontSizes.setMessageListSubject(Integer.parseInt(mMessageListSubject.getValue()));
-        fontSizes.setMessageListSender(Integer.parseInt(mMessageListSender.getValue()));
-        fontSizes.setMessageListDate(Integer.parseInt(mMessageListDate.getValue()));
-        fontSizes.setMessageListPreview(Integer.parseInt(mMessageListPreview.getValue()));
+        fontSizes.setMessageListSubject(Integer.parseInt(messageListSubject.getValue()));
+        fontSizes.setMessageListSender(Integer.parseInt(messageListSender.getValue()));
+        fontSizes.setMessageListDate(Integer.parseInt(messageListDate.getValue()));
+        fontSizes.setMessageListPreview(Integer.parseInt(messageListPreview.getValue()));
 
-        fontSizes.setMessageViewSender(Integer.parseInt(mMessageViewSender.getValue()));
-        fontSizes.setMessageViewTo(Integer.parseInt(mMessageViewTo.getValue()));
-        fontSizes.setMessageViewCC(Integer.parseInt(mMessageViewCC.getValue()));
-        fontSizes.setMessageViewBCC(Integer.parseInt(mMessageViewBCC.getValue()));
-        fontSizes.setMessageViewAdditionalHeaders(Integer.parseInt(mMessageViewAdditionalHeaders.getValue()));
-        fontSizes.setMessageViewSubject(Integer.parseInt(mMessageViewSubject.getValue()));
-        fontSizes.setMessageViewDate(Integer.parseInt(mMessageViewDate.getValue()));
-        fontSizes.setMessageViewContentAsPercent(scaleToInt(mMessageViewContentSlider.getValue()));
+        fontSizes.setMessageViewSender(Integer.parseInt(messageViewSender.getValue()));
+        fontSizes.setMessageViewTo(Integer.parseInt(messageViewTo.getValue()));
+        fontSizes.setMessageViewCC(Integer.parseInt(messageViewCC.getValue()));
+        fontSizes.setMessageViewBCC(Integer.parseInt(messageViewBCC.getValue()));
+        fontSizes.setMessageViewAdditionalHeaders(Integer.parseInt(messageViewAdditionalHeaders.getValue()));
+        fontSizes.setMessageViewSubject(Integer.parseInt(messageViewSubject.getValue()));
+        fontSizes.setMessageViewDate(Integer.parseInt(messageViewDate.getValue()));
+        fontSizes.setMessageViewContentAsPercent(scaleToInt(messageViewContentSlider.getValue()));
 
-        fontSizes.setMessageComposeInput(Integer.parseInt(mMessageComposeInput.getValue()));
+        fontSizes.setMessageComposeInput(Integer.parseInt(messageComposeInput.getValue()));
 
         Storage storage = Preferences.getPreferences(this).getStorage();
         StorageEditor editor = storage.edit();

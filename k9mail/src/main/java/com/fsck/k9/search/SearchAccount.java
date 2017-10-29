@@ -38,50 +38,50 @@ public class SearchAccount implements BaseAccount {
                 context.getString(R.string.integrated_inbox_detail));
     }
 
-    private String mId;
-    private String mEmail;
-    private String mDescription;
-    private LocalSearch mSearch;
+    private String id;
+    private String email;
+    private String description;
+    private LocalSearch search;
 
-    public SearchAccount(String id, LocalSearch search, String description, String email)
+    private SearchAccount(String id, LocalSearch search, String description, String email)
             throws IllegalArgumentException {
 
         if (search == null) {
             throw new IllegalArgumentException("Provided LocalSearch was null");
         }
 
-        mId = id;
-        mSearch = search;
-        mDescription = description;
-        mEmail = email;
+        this.id = id;
+        this.search = search;
+        this.description = description;
+        this.email = email;
     }
 
     public String getId() {
-        return mId;
+        return id;
     }
 
     @Override
     public synchronized String getEmail() {
-        return mEmail;
+        return email;
     }
 
     @Override
     public synchronized void setEmail(String email) {
-        this.mEmail = email;
+        this.email = email;
     }
 
     @Override
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
     @Override
     public void setDescription(String description) {
-        this.mDescription = description;
+        this.description = description;
     }
 
     public LocalSearch getRelatedSearch() {
-        return mSearch;
+        return search;
     }
 
     /**
@@ -96,6 +96,6 @@ public class SearchAccount implements BaseAccount {
      */
     @Override
     public String getUuid() {
-        return mId;
+        return id;
     }
 }

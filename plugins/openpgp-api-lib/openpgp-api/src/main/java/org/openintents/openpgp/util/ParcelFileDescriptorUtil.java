@@ -58,13 +58,13 @@ public class ParcelFileDescriptorUtil {
     }
 
     static class TransferThread extends Thread {
-        final InputStream mIn;
-        final OutputStream mOut;
+        final InputStream in;
+        final OutputStream out;
 
         TransferThread(InputStream in, OutputStream out) {
             super("IPC Transfer Thread");
-            mIn = in;
-            mOut = out;
+            this.in = in;
+            this.out = out;
             setDaemon(true);
         }
 
@@ -74,18 +74,18 @@ public class ParcelFileDescriptorUtil {
             int len;
 
             try {
-                while ((len = mIn.read(buf)) > 0) {
-                    mOut.write(buf, 0, len);
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
                 }
             } catch (IOException e) {
                 Log.e(OpenPgpApi.TAG, "IOException when writing to out", e);
             } finally {
                 try {
-                    mIn.close();
+                    in.close();
                 } catch (IOException ignored) {
                 }
                 try {
-                    mOut.close();
+                    out.close();
                 } catch (IOException ignored) {
                 }
             }

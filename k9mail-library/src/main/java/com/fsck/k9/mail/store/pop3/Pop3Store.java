@@ -219,22 +219,22 @@ public class Pop3Store extends RemoteStore {
     }
 
 
-    private String mHost;
-    private int mPort;
-    private String mUsername;
-    private String mPassword;
-    private String mClientCertificateAlias;
-    private AuthType mAuthType;
-    private ConnectionSecurity mConnectionSecurity;
-    private Map<String, Folder> mFolders = new HashMap<String, Folder>();
-    private Pop3Capabilities mCapabilities;
+    private String host;
+    private int port;
+    private String username;
+    private String password;
+    private String clientCertificateAlias;
+    private AuthType authType;
+    private ConnectionSecurity connectionSecurity;
+    private Map<String, Folder> folders = new HashMap<>();
+    private Pop3Capabilities capabilities;
 
     /**
      * This value is {@code true} if the server supports the CAPA command but doesn't advertise
      * support for the TOP command OR if the server doesn't support the CAPA command and we
      * already unsuccessfully tried to use the TOP command.
      */
-    private boolean mTopNotSupported;
+    private boolean topNotSupported;
 
 
     public Pop3Store(StoreConfig storeConfig, TrustedSocketFactory socketFactory) throws MessagingException {
@@ -247,40 +247,40 @@ public class Pop3Store extends RemoteStore {
             throw new MessagingException("Error while decoding store URI", e);
         }
 
-        mHost = settings.host;
-        mPort = settings.port;
+        host = settings.host;
+        port = settings.port;
 
-        mConnectionSecurity = settings.connectionSecurity;
+        connectionSecurity = settings.connectionSecurity;
 
-        mUsername = settings.username;
-        mPassword = settings.password;
-        mClientCertificateAlias = settings.clientCertificateAlias;
-        mAuthType = settings.authenticationType;
+        username = settings.username;
+        password = settings.password;
+        clientCertificateAlias = settings.clientCertificateAlias;
+        authType = settings.authenticationType;
     }
 
     @Override
     public Folder getFolder(String name) {
-        Folder folder = mFolders.get(name);
+        Folder folder = folders.get(name);
         if (folder == null) {
             folder = new Pop3Folder(name);
-            mFolders.put(folder.getName(), folder);
+            folders.put(folder.getName(), folder);
         }
         return folder;
     }
 
     @Override
     public List <? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException {
-        List<Folder> folders = new LinkedList<Folder>();
-        folders.add(getFolder(mStoreConfig.getInboxFolderName()));
+        List<Folder> folders = new LinkedList<>();
+        folders.add(getFolder(storeConfig.getInboxFolderName()));
         return folders;
     }
 
     @Override
     public void checkSettings() throws MessagingException {
-        Pop3Folder folder = new Pop3Folder(mStoreConfig.getInboxFolderName());
+        Pop3Folder folder = new Pop3Folder(storeConfig.getInboxFolderName());
         try {
             folder.open(Folder.OPEN_MODE_RW);
-            if (!mCapabilities.uidl) {
+            if (!capabilities.uidl) {
             /*
              * Run an additional test to see if UIDL is supported on the server. If it's not we
              * can't service this account.
@@ -305,22 +305,22 @@ public class Pop3Store extends RemoteStore {
     }
 
     class Pop3Folder extends Folder<Pop3Message> {
-        private Socket mSocket;
-        private InputStream mIn;
-        private OutputStream mOut;
-        private Map<String, Pop3Message> mUidToMsgMap = new HashMap<String, Pop3Message>();
+        private Socket socket;
+        private InputStream in;
+        private OutputStream out;
+        private Map<String, Pop3Message> uidToMsgMap = new HashMap<>();
         @SuppressLint("UseSparseArrays")
-        private Map<Integer, Pop3Message> mMsgNumToMsgMap = new HashMap<Integer, Pop3Message>();
-        private Map<String, Integer> mUidToMsgNumMap = new HashMap<String, Integer>();
-        private String mName;
-        private int mMessageCount;
+        private Map<Integer, Pop3Message> msgNumToMsgMap = new HashMap<>();
+        private Map<String, Integer> uidToMsgNumMap = new HashMap<>();
+        private String name;
+        private int messageCount;
 
         public Pop3Folder(String name) {
             super();
-            this.mName = name;
+            this.name = name;
 
-            if (mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
-                mName = mStoreConfig.getInboxFolderName();
+            if (this.name.equalsIgnoreCase(storeConfig.getInboxFolderName())) {
+                this.name = storeConfig.getInboxFolderName();
             }
         }
 
@@ -330,47 +330,47 @@ public class Pop3Store extends RemoteStore {
                 return;
             }
 
-            if (!mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
+            if (!name.equalsIgnoreCase(storeConfig.getInboxFolderName())) {
                 throw new MessagingException("Folder does not exist");
             }
 
             try {
-                SocketAddress socketAddress = new InetSocketAddress(mHost, mPort);
-                if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                    mSocket = mTrustedSocketFactory.createSocket(null, mHost, mPort, mClientCertificateAlias);
+                SocketAddress socketAddress = new InetSocketAddress(host, port);
+                if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
+                    socket = trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias);
                 } else {
-                    mSocket = new Socket();
+                    socket = new Socket();
                 }
 
-                mSocket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
-                mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
+                socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                in = new BufferedInputStream(socket.getInputStream(), 1024);
+                out = new BufferedOutputStream(socket.getOutputStream(), 512);
 
-                mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
+                socket.setSoTimeout(SOCKET_READ_TIMEOUT);
                 if (!isOpen()) {
                     throw new MessagingException("Unable to connect socket");
                 }
 
                 String serverGreeting = executeSimpleCommand(null);
 
-                mCapabilities = getCapabilities();
-                if (mConnectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
+                capabilities = getCapabilities();
+                if (connectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
 
-                    if (mCapabilities.stls) {
+                    if (capabilities.stls) {
                         executeSimpleCommand(STLS_COMMAND);
 
-                        mSocket = mTrustedSocketFactory.createSocket(
-                                mSocket,
-                                mHost,
-                                mPort,
-                                mClientCertificateAlias);
-                        mSocket.setSoTimeout(SOCKET_READ_TIMEOUT);
-                        mIn = new BufferedInputStream(mSocket.getInputStream(), 1024);
-                        mOut = new BufferedOutputStream(mSocket.getOutputStream(), 512);
+                        socket = trustedSocketFactory.createSocket(
+                                socket,
+                                host,
+                                port,
+                                clientCertificateAlias);
+                        socket.setSoTimeout(SOCKET_READ_TIMEOUT);
+                        in = new BufferedInputStream(socket.getInputStream(), 1024);
+                        out = new BufferedOutputStream(socket.getOutputStream(), 512);
                         if (!isOpen()) {
                             throw new MessagingException("Unable to connect socket");
                         }
-                        mCapabilities = getCapabilities();
+                        capabilities = getCapabilities();
                     } else {
                         /*
                          * This exception triggers a "Certificate error"
@@ -384,9 +384,9 @@ public class Pop3Store extends RemoteStore {
                     }
                 }
 
-                switch (mAuthType) {
+                switch (authType) {
                 case PLAIN:
-                    if (mCapabilities.authPlain) {
+                    if (capabilities.authPlain) {
                         authPlain();
                     } else {
                         login();
@@ -394,7 +394,7 @@ public class Pop3Store extends RemoteStore {
                     break;
 
                 case CRAM_MD5:
-                    if (mCapabilities.cramMD5) {
+                    if (capabilities.cramMD5) {
                         authCramMD5();
                     } else {
                         authAPOP(serverGreeting);
@@ -402,7 +402,7 @@ public class Pop3Store extends RemoteStore {
                     break;
 
                 case EXTERNAL:
-                    if (mCapabilities.external) {
+                    if (capabilities.external) {
                         authExternal();
                     } else {
                         // Provide notification to user of a problem authenticating using client certificates
@@ -429,17 +429,17 @@ public class Pop3Store extends RemoteStore {
 
             String response = executeSimpleCommand(STAT_COMMAND);
             String[] parts = response.split(" ");
-            mMessageCount = Integer.parseInt(parts[1]);
+            messageCount = Integer.parseInt(parts[1]);
 
-            mUidToMsgMap.clear();
-            mMsgNumToMsgMap.clear();
-            mUidToMsgNumMap.clear();
+            uidToMsgMap.clear();
+            msgNumToMsgMap.clear();
+            uidToMsgNumMap.clear();
         }
 
         private void login() throws MessagingException {
-            executeSimpleCommand(USER_COMMAND + " " + mUsername);
+            executeSimpleCommand(USER_COMMAND + " " + username);
             try {
-                executeSimpleCommand(PASS_COMMAND + " " + mPassword, true);
+                executeSimpleCommand(PASS_COMMAND + " " + password, true);
             } catch (Pop3ErrorResponse e) {
                 throw new AuthenticationFailedException(
                         "POP3 login authentication failed: " + e.getMessage(), e);
@@ -449,8 +449,8 @@ public class Pop3Store extends RemoteStore {
         private void authPlain() throws MessagingException {
             executeSimpleCommand("AUTH PLAIN");
             try {
-                byte[] encodedBytes = Base64.encodeBase64(("\000" + mUsername
-                        + "\000" + mPassword).getBytes());
+                byte[] encodedBytes = Base64.encodeBase64(("\000" + username
+                        + "\000" + password).getBytes());
                 executeSimpleCommand(new String(encodedBytes), true);
             } catch (Pop3ErrorResponse e) {
                 throw new AuthenticationFailedException(
@@ -474,10 +474,10 @@ public class Pop3Store extends RemoteStore {
                 throw new MessagingException(
                         "MD5 failure during POP3 auth APOP", e);
             }
-            byte[] digest = md.digest((timestamp + mPassword).getBytes());
+            byte[] digest = md.digest((timestamp + password).getBytes());
             String hexDigest = Hex.encodeHex(digest);
             try {
-                executeSimpleCommand("APOP " + mUsername + " " + hexDigest, true);
+                executeSimpleCommand("APOP " + username + " " + hexDigest, true);
             } catch (Pop3ErrorResponse e) {
                 throw new AuthenticationFailedException(
                         "POP3 APOP authentication failed: " + e.getMessage(), e);
@@ -487,7 +487,7 @@ public class Pop3Store extends RemoteStore {
         private void authCramMD5() throws MessagingException {
             String b64Nonce = executeSimpleCommand("AUTH CRAM-MD5").replace("+ ", "");
 
-            String b64CRAM = Authentication.computeCramMd5(mUsername, mPassword, b64Nonce);
+            String b64CRAM = Authentication.computeCramMd5(username, password, b64Nonce);
             try {
                 executeSimpleCommand(b64CRAM, true);
             } catch (Pop3ErrorResponse e) {
@@ -501,7 +501,7 @@ public class Pop3Store extends RemoteStore {
             try {
                 executeSimpleCommand(
                         String.format("AUTH EXTERNAL %s",
-                                Base64.encode(mUsername)), false);
+                                Base64.encode(username)), false);
             } catch (Pop3ErrorResponse e) {
                 /*
                  * Provide notification to the user of a problem authenticating
@@ -517,8 +517,8 @@ public class Pop3Store extends RemoteStore {
 
         @Override
         public boolean isOpen() {
-            return (mIn != null && mOut != null && mSocket != null
-                    && mSocket.isConnected() && !mSocket.isClosed());
+            return (in != null && out != null && socket != null
+                    && socket.isConnected() && !socket.isClosed());
         }
 
         @Override
@@ -544,34 +544,34 @@ public class Pop3Store extends RemoteStore {
 
         private void closeIO() {
             try {
-                mIn.close();
+                in.close();
             } catch (Exception e) {
                 /*
                  * May fail if the connection is already closed.
                  */
             }
             try {
-                mOut.close();
+                out.close();
             } catch (Exception e) {
                 /*
                  * May fail if the connection is already closed.
                  */
             }
             try {
-                mSocket.close();
+                socket.close();
             } catch (Exception e) {
                 /*
                  * May fail if the connection is already closed.
                  */
             }
-            mIn = null;
-            mOut = null;
-            mSocket = null;
+            in = null;
+            out = null;
+            socket = null;
         }
 
         @Override
         public String getName() {
-            return mName;
+            return name;
         }
 
         @Override
@@ -581,12 +581,12 @@ public class Pop3Store extends RemoteStore {
 
         @Override
         public boolean exists() throws MessagingException {
-            return mName.equalsIgnoreCase(mStoreConfig.getInboxFolderName());
+            return name.equalsIgnoreCase(storeConfig.getInboxFolderName());
         }
 
         @Override
         public int getMessageCount() {
-            return mMessageCount;
+            return messageCount;
         }
 
         @Override
@@ -600,7 +600,7 @@ public class Pop3Store extends RemoteStore {
 
         @Override
         public Pop3Message getMessage(String uid) throws MessagingException {
-            Pop3Message message = mUidToMsgMap.get(uid);
+            Pop3Message message = uidToMsgMap.get(uid);
             if (message == null) {
                 message = new Pop3Message(uid, this);
             }
@@ -619,14 +619,14 @@ public class Pop3Store extends RemoteStore {
             } catch (IOException ioe) {
                 throw new MessagingException("getMessages", ioe);
             }
-            List<Pop3Message> messages = new ArrayList<Pop3Message>();
+            List<Pop3Message> messages = new ArrayList<>();
             int i = 0;
             for (int msgNum = start; msgNum <= end; msgNum++) {
-                Pop3Message message = mMsgNumToMsgMap.get(msgNum);
+                Pop3Message message = msgNumToMsgMap.get(msgNum);
                 if (message == null) {
                     /*
                      * There could be gaps in the message numbers or malformed
-                     * responses which lead to "gaps" in mMsgNumToMsgMap.
+                     * responses which lead to "gaps" in msgNumToMsgMap.
                      *
                      * See issue 2252
                      */
@@ -661,20 +661,20 @@ public class Pop3Store extends RemoteStore {
         throws MessagingException, IOException {
             int unindexedMessageCount = 0;
             for (int msgNum = start; msgNum <= end; msgNum++) {
-                if (mMsgNumToMsgMap.get(msgNum) == null) {
+                if (msgNumToMsgMap.get(msgNum) == null) {
                     unindexedMessageCount++;
                 }
             }
             if (unindexedMessageCount == 0) {
                 return;
             }
-            if (unindexedMessageCount < 50 && mMessageCount > 5000) {
+            if (unindexedMessageCount < 50 && messageCount > 5000) {
                 /*
                  * In extreme cases we'll do a UIDL command per message instead of a bulk
                  * download.
                  */
                 for (int msgNum = start; msgNum <= end; msgNum++) {
-                    Pop3Message message = mMsgNumToMsgMap.get(msgNum);
+                    Pop3Message message = msgNumToMsgMap.get(msgNum);
                     if (message == null) {
                         String response = executeSimpleCommand(UIDL_COMMAND + " " + msgNum);
                         // response = "+OK msgNum msgUid"
@@ -723,7 +723,7 @@ public class Pop3Store extends RemoteStore {
                         Integer msgNum = Integer.valueOf(uidParts[0]);
                         String msgUid = uidParts[1];
                         if (msgNum >= start && msgNum <= end) {
-                            Pop3Message message = mMsgNumToMsgMap.get(msgNum);
+                            Pop3Message message = msgNumToMsgMap.get(msgNum);
                             if (message == null) {
                                 message = new Pop3Message(msgUid, this);
                                 indexMessage(msgNum, message);
@@ -736,9 +736,9 @@ public class Pop3Store extends RemoteStore {
 
         private void indexUids(List<String> uids)
         throws MessagingException, IOException {
-            Set<String> unindexedUids = new HashSet<String>();
+            Set<String> unindexedUids = new HashSet<>();
             for (String uid : uids) {
-                if (mUidToMsgMap.get(uid) == null) {
+                if (uidToMsgMap.get(uid) == null) {
                     if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
                         Timber.d("Need to index UID %s", uid);
                     }
@@ -770,7 +770,7 @@ public class Pop3Store extends RemoteStore {
                             Timber.d("Got msgNum %d for UID %s", msgNum, msgUid);
                         }
 
-                        Pop3Message message = mUidToMsgMap.get(msgUid);
+                        Pop3Message message = uidToMsgMap.get(msgUid);
                         if (message == null) {
                             message = new Pop3Message(msgUid, this);
                         }
@@ -784,9 +784,9 @@ public class Pop3Store extends RemoteStore {
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
                 Timber.d("Adding index for UID %s to msgNum %d", message.getUid(), msgNum);
             }
-            mMsgNumToMsgMap.put(msgNum, message);
-            mUidToMsgMap.put(message.getUid(), message);
-            mUidToMsgNumMap.put(message.getUid(), msgNum);
+            msgNumToMsgMap.put(msgNum, message);
+            uidToMsgMap.put(message.getUid(), message);
+            uidToMsgNumMap.put(message.getUid(), msgNum);
         }
 
         /**
@@ -802,7 +802,7 @@ public class Pop3Store extends RemoteStore {
             if (messages == null || messages.isEmpty()) {
                 return;
             }
-            List<String> uids = new ArrayList<String>();
+            List<String> uids = new ArrayList<>();
             for (Message message : messages) {
                 uids.add(message.getUid());
             }
@@ -837,9 +837,9 @@ public class Pop3Store extends RemoteStore {
                          * To convert the suggested download size we take the size
                          * divided by the maximum line size (76).
                          */
-                        if (mStoreConfig.getMaximumAutoDownloadMessageSize() > 0) {
+                        if (storeConfig.getMaximumAutoDownloadMessageSize() > 0) {
                             fetchBody(pop3Message,
-                                      (mStoreConfig.getMaximumAutoDownloadMessageSize() / 76));
+                                      (storeConfig.getMaximumAutoDownloadMessageSize() / 76));
                         } else {
                             fetchBody(pop3Message, -1);
                         }
@@ -870,7 +870,7 @@ public class Pop3Store extends RemoteStore {
             if (unsizedMessages == 0) {
                 return;
             }
-            if (unsizedMessages < 50 && mMessageCount > 5000) {
+            if (unsizedMessages < 50 && messageCount > 5000) {
                 /*
                  * In extreme cases we'll do a command per message instead of a bulk request
                  * to hopefully save some time and bandwidth.
@@ -881,7 +881,7 @@ public class Pop3Store extends RemoteStore {
                         listener.messageStarted(message.getUid(), i, count);
                     }
                     String response = executeSimpleCommand(String.format(Locale.US, LIST_COMMAND + " %d",
-                                                           mUidToMsgNumMap.get(message.getUid())));
+                                                           uidToMsgNumMap.get(message.getUid())));
                     String[] listParts = response.split(" ");
                     //int msgNum = Integer.parseInt(listParts[1]);
                     int msgSize = Integer.parseInt(listParts[2]);
@@ -891,7 +891,7 @@ public class Pop3Store extends RemoteStore {
                     }
                 }
             } else {
-                Set<String> msgUidIndex = new HashSet<String>();
+                Set<String> msgUidIndex = new HashSet<>();
                 for (Message message : messages) {
                     msgUidIndex.add(message.getUid());
                 }
@@ -905,7 +905,7 @@ public class Pop3Store extends RemoteStore {
                     String[] listParts = response.split(" ");
                     int msgNum = Integer.parseInt(listParts[0]);
                     int msgSize = Integer.parseInt(listParts[1]);
-                    Pop3Message pop3Message = mMsgNumToMsgMap.get(msgNum);
+                    Pop3Message pop3Message = msgNumToMsgMap.get(msgNum);
                     if (pop3Message != null && msgUidIndex.contains(pop3Message.getUid())) {
                         if (listener != null) {
                             listener.messageStarted(pop3Message.getUid(), i, count);
@@ -933,20 +933,20 @@ public class Pop3Store extends RemoteStore {
             String response = null;
 
             // Try hard to use the TOP command if we're not asked to download the whole message.
-            if (lines != -1 && (!mTopNotSupported || mCapabilities.top)) {
+            if (lines != -1 && (!topNotSupported || capabilities.top)) {
                 try {
-                    if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3 && !mCapabilities.top) {
+                    if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3 && !capabilities.top) {
                         Timber.d("This server doesn't support the CAPA command. " +
                               "Checking to see if the TOP command is supported nevertheless.");
                     }
 
                     response = executeSimpleCommand(String.format(Locale.US, TOP_COMMAND + " %d %d",
-                                                    mUidToMsgNumMap.get(message.getUid()), lines));
+                                                    uidToMsgNumMap.get(message.getUid()), lines));
 
                     // TOP command is supported. Remember this for the next time.
-                    mCapabilities.top = true;
+                    capabilities.top = true;
                 } catch (Pop3ErrorResponse e) {
-                    if (mCapabilities.top) {
+                    if (capabilities.top) {
                         // The TOP command should be supported but something went wrong.
                         throw e;
                     } else {
@@ -956,21 +956,21 @@ public class Pop3Store extends RemoteStore {
                         }
 
                         // Don't try to use the TOP command again.
-                        mTopNotSupported = true;
+                        topNotSupported = true;
                     }
                 }
             }
 
             if (response == null) {
                 executeSimpleCommand(String.format(Locale.US, RETR_COMMAND + " %d",
-                                     mUidToMsgNumMap.get(message.getUid())));
+                                     uidToMsgNumMap.get(message.getUid())));
             }
 
             try {
-                message.parse(new Pop3ResponseInputStream(mIn));
+                message.parse(new Pop3ResponseInputStream(in));
 
                 // TODO: if we've received fewer lines than requested we also have the complete message.
-                if (lines == -1 || !mCapabilities.top) {
+                if (lines == -1 || !capabilities.top) {
                     message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                 }
             } catch (MessagingException me) {
@@ -1019,7 +1019,7 @@ public class Pop3Store extends RemoteStore {
                  */
                 return;
             }
-            List<String> uids = new ArrayList<String>();
+            List<String> uids = new ArrayList<>();
             try {
                 for (Message message : messages) {
                     uids.add(message.getUid());
@@ -1031,7 +1031,7 @@ public class Pop3Store extends RemoteStore {
             }
             for (Message message : messages) {
 
-                Integer msgNum = mUidToMsgNumMap.get(message.getUid());
+                Integer msgNum = uidToMsgNumMap.get(message.getUid());
                 if (msgNum == null) {
                     MessagingException me = new MessagingException("Could not delete message " + message.getUid()
                             + " because no msgNum found; permanent error");
@@ -1044,7 +1044,7 @@ public class Pop3Store extends RemoteStore {
 
         private String readLine() throws IOException {
             StringBuilder sb = new StringBuilder();
-            int d = mIn.read();
+            int d = in.read();
             if (d == -1) {
                 throw new IOException("End of stream reached while trying to read line.");
             }
@@ -1056,7 +1056,7 @@ public class Pop3Store extends RemoteStore {
                 } else {
                     sb.append((char)d);
                 }
-            } while ((d = mIn.read()) != -1);
+            } while ((d = in.read()) != -1);
             String ret = sb.toString();
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
                 Timber.d("<<< %s", ret);
@@ -1065,10 +1065,10 @@ public class Pop3Store extends RemoteStore {
         }
 
         private void writeLine(String s) throws IOException {
-            mOut.write(s.getBytes());
-            mOut.write('\r');
-            mOut.write('\n');
-            mOut.flush();
+            out.write(s.getBytes());
+            out.write('\r');
+            out.write('\n');
+            out.flush();
         }
 
         private Pop3Capabilities getCapabilities() throws IOException {
@@ -1085,7 +1085,8 @@ public class Pop3Store extends RemoteStore {
                  * While this never became a standard, there are servers that
                  * support it, and Thunderbird includes this check.
                  */
-                String response = executeSimpleCommand(AUTH_COMMAND);
+                executeSimpleCommand(AUTH_COMMAND);
+                String response;
                 while ((response = readLine()) != null) {
                     if (response.equals(".")) {
                         break;
@@ -1136,7 +1137,7 @@ public class Pop3Store extends RemoteStore {
                      * If the CAPA command is supported but it doesn't advertise support for the
                      * TOP command, we won't check for it manually.
                      */
-                    mTopNotSupported = true;
+                    topNotSupported = true;
                 }
             } catch (MessagingException me) {
                 /*
@@ -1194,22 +1195,22 @@ public class Pop3Store extends RemoteStore {
         @Override
         public boolean equals(Object o) {
             if (o instanceof Pop3Folder) {
-                return ((Pop3Folder) o).mName.equals(mName);
+                return ((Pop3Folder) o).name.equals(name);
             }
             return super.equals(o);
         }
 
         @Override
         public int hashCode() {
-            return mName.hashCode();
+            return name.hashCode();
         }
 
     }//Pop3Folder
 
     static class Pop3Message extends MimeMessage {
         Pop3Message(String uid, Pop3Folder folder) {
-            mUid = uid;
-            mFolder = folder;
+            this.uid = uid;
+            this.folder = folder;
             size = -1;
         }
 
@@ -1220,7 +1221,7 @@ public class Pop3Store extends RemoteStore {
         @Override
         public void setFlag(Flag flag, boolean set) throws MessagingException {
             super.setFlag(flag, set);
-            mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
+            folder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
         }
 
         @Override
@@ -1258,30 +1259,30 @@ public class Pop3Store extends RemoteStore {
     }
 
     static class Pop3ResponseInputStream extends InputStream {
-        private InputStream mIn;
-        private boolean mStartOfLine = true;
-        private boolean mFinished;
+        private InputStream in;
+        private boolean startOffline = true;
+        private boolean finished;
 
         public Pop3ResponseInputStream(InputStream in) {
-            mIn = in;
+            this.in = in;
         }
 
         @Override
         public int read() throws IOException {
-            if (mFinished) {
+            if (finished) {
                 return -1;
             }
-            int d = mIn.read();
-            if (mStartOfLine && d == '.') {
-                d = mIn.read();
+            int d = in.read();
+            if (startOffline && d == '.') {
+                d = in.read();
                 if (d == '\r') {
-                    mFinished = true;
-                    mIn.read();
+                    finished = true;
+                    in.read();
                     return -1;
                 }
             }
 
-            mStartOfLine = (d == '\n');
+            startOffline = (d == '\n');
 
             return d;
         }
