@@ -62,8 +62,8 @@ public class Contacts {
     }
 
 
-    protected Context context;
-    protected ContentResolver contentResolver;
+    private Context context;
+    private ContentResolver contentResolver;
 
 
     /**

@@ -1263,7 +1263,7 @@ public class Pop3Store extends RemoteStore {
         private boolean startOffline = true;
         private boolean finished;
 
-        public Pop3ResponseInputStream(InputStream in) {
+        Pop3ResponseInputStream(InputStream in) {
             this.in = in;
         }
 

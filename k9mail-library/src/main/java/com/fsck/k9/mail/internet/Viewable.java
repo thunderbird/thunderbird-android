@@ -101,7 +101,7 @@ public interface Viewable {
         private List<Viewable> text;
         private List<Viewable> html;
 
-        public Alternative(List<Viewable> text, List<Viewable> html) {
+        Alternative(List<Viewable> text, List<Viewable> html) {
             this.text = text;
             this.html = html;
         }

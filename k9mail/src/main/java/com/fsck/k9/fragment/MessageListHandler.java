@@ -29,7 +29,7 @@ public class MessageListHandler extends Handler {
 
     private WeakReference<MessageListFragment> fragment;
 
-    public MessageListHandler(MessageListFragment fragment) {
+    MessageListHandler(MessageListFragment fragment) {
         this.fragment = new WeakReference<>(fragment);
     }
     void folderLoading(String folder, boolean loading) {
@@ -71,7 +71,7 @@ public class MessageListHandler extends Handler {
         sendMessage(msg);
     }
 
-    public void restoreListPosition() {
+    void restoreListPosition() {
         MessageListFragment fragment = this.fragment.get();
         if (fragment != null) {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION,

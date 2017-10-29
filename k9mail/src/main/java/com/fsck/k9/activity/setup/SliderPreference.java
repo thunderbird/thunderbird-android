@@ -46,9 +46,9 @@ public class SliderPreference extends DialogPreference {
 
     private final static int SEEKBAR_RESOLUTION = 10000;
 
-    protected float value;
-    protected int seekBarValue;
-    protected CharSequence[] summaries;
+    private float value;
+    private int seekBarValue;
+    private CharSequence[] summaries;
 
     /**
      * @param context
