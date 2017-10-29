@@ -536,11 +536,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     private void initializeActionBar() {
         ActionBar actionBar = getActionBar();
-<<<<<<< HEAD
-
-        if (actionBar == null) {
-            return;
-        }
 
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.actionbar_custom);
@@ -554,27 +549,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         actionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
         actionBarProgress = (ProgressBar) customView.findViewById(R.id.actionbar_progress);
         actionButtonIndeterminateProgress = getActionButtonIndeterminateProgress();
-
-=======
-
-        if (actionBar == null) {
-            return;
-        }
-
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.actionbar_custom);
-
-        View customView = actionBar.getCustomView();
-        actionBarMessageList = customView.findViewById(R.id.actionbar_message_list);
-        actionBarMessageView = customView.findViewById(R.id.actionbar_message_view);
-        actionBarSubject = (MessageTitleView) customView.findViewById(R.id.message_title_view);
-        actionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
-        actionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
-        actionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
-        actionBarProgress = (ProgressBar) customView.findViewById(R.id.actionbar_progress);
-        actionButtonIndeterminateProgress = getActionButtonIndeterminateProgress();
-
->>>>>>> 4755c6317... Renamed many variables of form `mCamelCase` to `camelCase`
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 

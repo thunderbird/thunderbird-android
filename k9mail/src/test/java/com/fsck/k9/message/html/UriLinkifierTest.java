@@ -148,7 +148,6 @@ public class UriLinkifierTest {
 
     @Test
     public void uriSurroundedByHtmlTags() {
- 
         String text = "<br>http://uri.example.org<hr>";
 
         UriLinkifier.linkifyText(text, outputBuffer);

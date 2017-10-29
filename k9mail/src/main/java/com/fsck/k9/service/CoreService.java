@@ -338,6 +338,8 @@ public abstract class CoreService extends Service {
             } else {
                 throw e;
             }
+
+
         }
         immediateShutdown = !serviceShutdownScheduled;
     }
