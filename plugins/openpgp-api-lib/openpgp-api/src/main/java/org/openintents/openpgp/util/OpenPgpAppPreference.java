@@ -61,7 +61,7 @@ public class OpenPgpAppPreference extends DialogPreference {
 
     private String selectedPackage;
 
-    public OpenPgpAppPreference(Context context, AttributeSet attrs) {
+    private OpenPgpAppPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         populateAppList();
     }
@@ -246,7 +246,7 @@ public class OpenPgpAppPreference extends DialogPreference {
         }
     }
 
-    public String getEntryByValue(String packageName) {
+    private String getEntryByValue(String packageName) {
         for (OpenPgpProviderEntry app : list) {
             if (app.packageName.equals(packageName) && app.intent == null) {
                 return app.simpleName;

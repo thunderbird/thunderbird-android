@@ -44,7 +44,7 @@ public interface Viewable {
     class Flowed extends Textual {
         private boolean delSp;
 
-        public Flowed(Part part, boolean delSp) {
+        Flowed(Part part, boolean delSp) {
             super(part);
             this.delSp = delSp;
         }
@@ -58,7 +58,7 @@ public interface Viewable {
      * Class representing a {@code text/html} part of a message.
      */
     class Html extends Textual {
-        public Html(Part part) {
+        Html(Part part) {
             super(part);
         }
     }
@@ -101,7 +101,7 @@ public interface Viewable {
         private List<Viewable> text;
         private List<Viewable> html;
 
-        public Alternative(List<Viewable> text, List<Viewable> html) {
+        Alternative(List<Viewable> text, List<Viewable> html) {
             this.text = text;
             this.html = html;
         }

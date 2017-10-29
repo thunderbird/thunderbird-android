@@ -20,7 +20,7 @@ public class Contacts {
      * The order in which the search results are returned by
      * {@link #getContactByAddress(String)}.
      */
-    protected static final String SORT_ORDER =
+    private static final String SORT_ORDER =
             ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED + " DESC, " +
                     ContactsContract.Contacts.DISPLAY_NAME + ", " +
                     ContactsContract.CommonDataKinds.Email._ID;
@@ -28,7 +28,7 @@ public class Contacts {
     /**
      * Array of columns to load from the database.
      */
-    protected static final String PROJECTION[] = {
+    private static final String PROJECTION[] = {
             ContactsContract.CommonDataKinds.Email._ID,
             ContactsContract.Contacts.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Email.CONTACT_ID,
@@ -39,13 +39,13 @@ public class Contacts {
      * Index of the name field in the projection. This must match the order in
      * {@link #PROJECTION}.
      */
-    protected static final int NAME_INDEX = 1;
+    private static final int NAME_INDEX = 1;
 
     /**
      * Index of the contact id field in the projection. This must match the order in
      * {@link #PROJECTION}.
      */
-    protected static final int CONTACT_ID_INDEX = 2;
+    private static final int CONTACT_ID_INDEX = 2;
 
 
     /**
@@ -62,8 +62,8 @@ public class Contacts {
     }
 
 
-    protected Context context;
-    protected ContentResolver contentResolver;
+    private Context context;
+    private ContentResolver contentResolver;
 
 
     /**

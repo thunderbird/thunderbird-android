@@ -78,7 +78,7 @@ public class ContactPictureLoader {
     };
 
     @VisibleForTesting
-    protected static String calcUnknownContactLetter(Address address) {
+    static String calcUnknownContactLetter(Address address) {
         String letter = null;
         String personal = address.getPersonal();
         String str = (personal != null) ? personal : address.getAddress();

@@ -101,7 +101,7 @@ public class FolderList extends K9ListActivity {
 
     class FolderListHandler extends Handler {
 
-        public void refreshTitle() {
+        void refreshTitle() {
             runOnUiThread(new Runnable() {
                 public void run() {
                     actionBarTitle.setText(getString(R.string.folders_title));
@@ -124,7 +124,7 @@ public class FolderList extends K9ListActivity {
         }
 
 
-        public void newFolders(final List<FolderInfoHolder> newFolders) {
+        void newFolders(final List<FolderInfoHolder> newFolders) {
             runOnUiThread(new Runnable() {
                 public void run() {
                     adapter.folders.clear();
@@ -135,7 +135,7 @@ public class FolderList extends K9ListActivity {
             });
         }
 
-        public void workingAccount(final int res) {
+        void workingAccount(final int res) {
             runOnUiThread(new Runnable() {
                 public void run() {
                     String toastText = getString(res, account.getDescription());
@@ -145,7 +145,7 @@ public class FolderList extends K9ListActivity {
             });
         }
 
-        public void accountSizeChanged(final long oldSize, final long newSize) {
+        void accountSizeChanged(final long oldSize, final long newSize) {
             runOnUiThread(new Runnable() {
                 public void run() {
                     String toastText = getString(R.string.account_size_changed, account.getDescription(), SizeFormatter.formatSize(getApplication(), oldSize), SizeFormatter.formatSize(getApplication(), newSize));
@@ -156,7 +156,7 @@ public class FolderList extends K9ListActivity {
             });
         }
 
-        public void folderLoading(final String folder, final boolean loading) {
+        void folderLoading(final String folder, final boolean loading) {
             runOnUiThread(new Runnable() {
                 public void run() {
                     FolderInfoHolder folderHolder = adapter.getFolder(folder);
@@ -189,7 +189,7 @@ public class FolderList extends K9ListActivity {
 
         }
 
-        public void dataChanged() {
+        void dataChanged() {
             runOnUiThread(new Runnable() {
                 public void run() {
                     adapter.notifyDataSetChanged();
@@ -914,7 +914,7 @@ public class FolderList extends K9ListActivity {
         };
 
 
-        public int getFolderIndex(String folder) {
+        int getFolderIndex(String folder) {
             FolderInfoHolder searchHolder = new FolderInfoHolder();
             searchHolder.name = folder;
             return   filteredFolders.indexOf(searchHolder);
@@ -942,7 +942,7 @@ public class FolderList extends K9ListActivity {
             }
         }
 
-        public View getItemView(int itemPosition, View convertView, ViewGroup parent) {
+        View getItemView(int itemPosition, View convertView, ViewGroup parent) {
             FolderInfoHolder folder = (FolderInfoHolder) getItem(itemPosition);
             View view;
             if (convertView != null) {
@@ -1197,19 +1197,19 @@ public class FolderList extends K9ListActivity {
     static class FolderViewHolder {
         public TextView folderName;
 
-        public TextView folderStatus;
+        TextView folderStatus;
 
-        public TextView newMessageCount;
-        public TextView flaggedMessageCount;
-        public View newMessageCountIcon;
-        public View flaggedMessageCountIcon;
-        public View newMessageCountWrapper;
-        public View flaggedMessageCountWrapper;
+        TextView newMessageCount;
+        TextView flaggedMessageCount;
+        View newMessageCountIcon;
+        View flaggedMessageCountIcon;
+        View newMessageCountWrapper;
+        View flaggedMessageCountWrapper;
 
-        public RelativeLayout activeIcons;
-        public String rawFolderName;
+        RelativeLayout activeIcons;
+        String rawFolderName;
         public View chip;
-        public LinearLayout folderListItemLayout;
+        LinearLayout folderListItemLayout;
     }
 
     private class FolderClickListener implements OnClickListener {

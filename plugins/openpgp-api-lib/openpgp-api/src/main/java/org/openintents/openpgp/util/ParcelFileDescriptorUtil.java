@@ -47,7 +47,7 @@ public class ParcelFileDescriptorUtil {
         return readSide;
     }
 
-    public static TransferThread pipeTo(OutputStream outputStream, ParcelFileDescriptor output)
+    static TransferThread pipeTo(OutputStream outputStream, ParcelFileDescriptor output)
             throws IOException {
 
         AutoCloseInputStream InputStream = new AutoCloseInputStream(output);
@@ -92,7 +92,7 @@ public class ParcelFileDescriptorUtil {
         }
     }
 
-    public static <T> DataSinkTransferThread<T> asyncPipeToDataSink(
+    static <T> DataSinkTransferThread<T> asyncPipeToDataSink(
             OpenPgpDataSink<T> dataSink, ParcelFileDescriptor output) throws IOException {
         InputStream inputStream = new BufferedInputStream(new AutoCloseInputStream(output));
         DataSinkTransferThread<T> dataSinkTransferThread =

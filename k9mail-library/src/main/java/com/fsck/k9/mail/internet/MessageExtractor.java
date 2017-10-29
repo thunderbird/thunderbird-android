@@ -34,7 +34,7 @@ import static com.fsck.k9.mail.internet.Viewable.Text;
 import static com.fsck.k9.mail.internet.Viewable.Textual;
 
 public class MessageExtractor {
-    public static final long NO_TEXT_SIZE_LIMIT = -1L;
+    private static final long NO_TEXT_SIZE_LIMIT = -1L;
 
 
     private MessageExtractor() {} // prevent class from being instantiated
@@ -219,7 +219,7 @@ public class MessageExtractor {
         }
     }
 
-    public static Set<Part> getTextParts(Part part) throws MessagingException {
+    private static Set<Part> getTextParts(Part part) throws MessagingException {
         List<Viewable> viewableParts = new ArrayList<>();
         List<Part> nonViewableParts = new ArrayList<>();
         findViewablesAndAttachments(part, viewableParts, nonViewableParts);

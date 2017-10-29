@@ -40,7 +40,7 @@ public class OpenPgpKeyPreference extends Preference {
     private OpenPgpServiceConnection serviceConnection;
     private String defaultUserId;
 
-    public static final int REQUEST_CODE_KEY_PREFERENCE = 9999;
+    private static final int REQUEST_CODE_KEY_PREFERENCE = 9999;
 
     private static final int NO_KEY = 0;
 

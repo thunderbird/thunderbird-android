@@ -176,7 +176,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 actionBarSubTitle.setText(operation);
             }
         }
-        public void refreshTitle() {
+
+        void refreshTitle() {
             runOnUiThread(new Runnable() {
                 public void run() {
                     setViewTitle();
@@ -184,7 +185,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             });
         }
 
-        public void dataChanged() {
+        void dataChanged() {
             runOnUiThread(new Runnable() {
                 public void run() {
                     if (adapter != null) {
@@ -194,7 +195,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             });
         }
 
-        public void workingAccount(final Account account, final int res) {
+        void workingAccount(final Account account, final int res) {
             runOnUiThread(new Runnable() {
                 public void run() {
                     String toastText = getString(res, account.getDescription());
@@ -205,7 +206,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             });
         }
 
-        public void accountSizeChanged(final Account account, final long oldSize, final long newSize) {
+        void accountSizeChanged(final Account account, final long oldSize, final long newSize) {
             runOnUiThread(new Runnable() {
                 public void run() {
                     AccountStats stats = accountStats.get(account.getUuid());

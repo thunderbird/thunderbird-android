@@ -60,7 +60,7 @@ public class LockableDatabase {
          */
         private static final long serialVersionUID = 8184421232587399369L;
 
-        public WrappedException(final Exception cause) {
+        WrappedException(final Exception cause) {
             super(cause);
         }
     }
@@ -148,17 +148,17 @@ public class LockableDatabase {
      * @param schemaDefinition
      *            Never <code>null</code>.
      */
-    public LockableDatabase(final Context context, final String uUid, final SchemaDefinition schemaDefinition) {
+    LockableDatabase(final Context context, final String uUid, final SchemaDefinition schemaDefinition) {
         this.context = context;
         this.uUid = uUid;
         this.schemaDefinition = schemaDefinition;
     }
 
-    public void setStorageProviderId(String mStorageProviderId) {
+    void setStorageProviderId(String mStorageProviderId) {
         this.storageProviderId = mStorageProviderId;
     }
 
-    public String getStorageProviderId() {
+    String getStorageProviderId() {
         return storageProviderId;
     }
 
@@ -178,7 +178,7 @@ public class LockableDatabase {
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available
      */
-    protected void lockRead() throws UnavailableStorageException {
+    private void lockRead() throws UnavailableStorageException {
         readLock.lock();
         try {
             getStorageManager().lockProvider(storageProviderId);
@@ -188,7 +188,7 @@ public class LockableDatabase {
         }
     }
 
-    protected void unlockRead() {
+    private void unlockRead() {
         getStorageManager().unlockProvider(storageProviderId);
         readLock.unlock();
     }
@@ -205,7 +205,7 @@ public class LockableDatabase {
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available.
      */
-    protected void lockWrite() throws UnavailableStorageException {
+    private void lockWrite() throws UnavailableStorageException {
         lockWrite(storageProviderId);
     }
 
@@ -224,7 +224,7 @@ public class LockableDatabase {
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available.
      */
-    protected void lockWrite(final String providerId) throws UnavailableStorageException {
+    private void lockWrite(final String providerId) throws UnavailableStorageException {
         writeLock.lock();
         try {
             getStorageManager().lockProvider(providerId);
@@ -234,11 +234,11 @@ public class LockableDatabase {
         }
     }
 
-    protected void unlockWrite() {
+    private void unlockWrite() {
         unlockWrite(storageProviderId);
     }
 
-    protected void unlockWrite(final String providerId) {
+    private void unlockWrite(final String providerId) {
         getStorageManager().unlockProvider(providerId);
         writeLock.unlock();
     }
@@ -306,7 +306,7 @@ public class LockableDatabase {
      *            Never <code>null</code>.
      * @throws MessagingException
      */
-    public void switchProvider(final String newProviderId) throws MessagingException {
+    void switchProvider(final String newProviderId) throws MessagingException {
         if (newProviderId.equals(storageProviderId)) {
             Timber.v("LockableDatabase: Ignoring provider switch request as they are equal: %s", newProviderId);
             return;
@@ -403,7 +403,7 @@ public class LockableDatabase {
      * @return DB file.
      * @throws UnavailableStorageException
      */
-    protected File prepareStorage(final String providerId) throws UnavailableStorageException {
+    private File prepareStorage(final String providerId) throws UnavailableStorageException {
         final StorageManager storageManager = getStorageManager();
 
         final File databaseFile = storageManager.getDatabase(uUid, providerId);
