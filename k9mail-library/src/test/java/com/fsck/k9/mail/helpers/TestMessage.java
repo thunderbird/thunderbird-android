@@ -13,8 +13,6 @@ import okio.Okio;
 
 class TestMessage extends MimeMessage {
     private final long messageSize;
-    private final Address[] from;
-    private final Address[] to;
     private final boolean hasAttachments;
 
 

@@ -24,33 +24,33 @@ import javax.net.ssl.TrustManager;
  * Using two socket factories looks suspicious.
  */
 public class WebDavSocketFactory implements LayeredSocketFactory {
-    private SSLSocketFactory mSocketFactory;
-    private org.apache.http.conn.ssl.SSLSocketFactory mSchemeSocketFactory;
+    private SSLSocketFactory sslSocketFactory;
+    private org.apache.http.conn.ssl.SSLSocketFactory schemeSocketFactory;
 
-    public WebDavSocketFactory(String host, int port) throws NoSuchAlgorithmException, KeyManagementException {
+    WebDavSocketFactory(String host, int port) throws NoSuchAlgorithmException, KeyManagementException {
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, new TrustManager[] {
                 TrustManagerFactory.get(host, port)
         }, null);
-        mSocketFactory = sslContext.getSocketFactory();
-        mSchemeSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory();
-        mSchemeSocketFactory.setHostnameVerifier(
+        sslSocketFactory = sslContext.getSocketFactory();
+        schemeSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory();
+        schemeSocketFactory.setHostnameVerifier(
                 org.apache.http.conn.ssl.SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
     }
 
     public Socket connectSocket(Socket sock, String host, int port,
             InetAddress localAddress, int localPort, HttpParams params)
-            throws IOException, ConnectTimeoutException {
-        return mSchemeSocketFactory.connectSocket(sock, host, port, localAddress, localPort, params);
+            throws IOException {
+        return schemeSocketFactory.connectSocket(sock, host, port, localAddress, localPort, params);
     }
 
     @Override
     public Socket createSocket() throws IOException {
-        return mSocketFactory.createSocket();
+        return sslSocketFactory.createSocket();
     }
 
     public boolean isSecure(Socket sock) throws IllegalArgumentException {
-        return mSchemeSocketFactory.isSecure(sock);
+        return schemeSocketFactory.isSecure(sock);
     }
     public Socket createSocket(
             final Socket socket,
@@ -58,13 +58,13 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
             final int port,
             final boolean autoClose
     ) throws IOException {
-        SSLSocket sslSocket = (SSLSocket) mSocketFactory.createSocket(
+        SSLSocket sslSocket = (SSLSocket) sslSocketFactory.createSocket(
                 socket,
                 host,
                 port,
                 autoClose
         );
-        DefaultTrustedSocketFactory.setSniHost(mSocketFactory, sslSocket, host);
+        DefaultTrustedSocketFactory.setSniHost(sslSocketFactory, sslSocket, host);
         //hostnameVerifier.verify(host, sslSocket);
         // verifyHostName() didn't blowup - good!
         return sslSocket;

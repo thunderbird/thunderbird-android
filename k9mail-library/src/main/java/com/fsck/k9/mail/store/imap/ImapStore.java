@@ -143,7 +143,7 @@ public class ImapStore extends RemoteStore {
         try {
             Set<String> folderNames = listFolders(connection, false);
 
-            if (forceListAll || !mStoreConfig.subscribedFoldersOnly()) {
+            if (forceListAll || !storeConfig.subscribedFoldersOnly()) {
                 return getFolders(folderNames);
             }
 
@@ -198,9 +198,9 @@ public class ImapStore extends RemoteStore {
                 combinedPrefix = null;
             }
 
-            if (folder.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
+            if (folder.equalsIgnoreCase(storeConfig.getInboxFolderName())) {
                 continue;
-            } else if (folder.equals(mStoreConfig.getOutboxFolderName())) {
+            } else if (folder.equals(storeConfig.getOutboxFolderName())) {
                 /*
                  * There is a folder on the server with the same name as our local
                  * outbox. Until we have a good plan to deal with this situation
@@ -229,7 +229,7 @@ public class ImapStore extends RemoteStore {
             }
         }
 
-        folderNames.add(mStoreConfig.getInboxFolderName());
+        folderNames.add(storeConfig.getInboxFolderName());
 
         return folderNames;
     }
@@ -268,27 +268,27 @@ public class ImapStore extends RemoteStore {
             }
 
             if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
-                mStoreConfig.setArchiveFolderName(decodedFolderName);
+                storeConfig.setArchiveFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Archive folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Drafts")) {
-                mStoreConfig.setDraftsFolderName(decodedFolderName);
+                storeConfig.setDraftsFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Drafts folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Sent")) {
-                mStoreConfig.setSentFolderName(decodedFolderName);
+                storeConfig.setSentFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Sent folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Junk")) {
-                mStoreConfig.setSpamFolderName(decodedFolderName);
+                storeConfig.setSpamFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Spam folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Trash")) {
-                mStoreConfig.setTrashFolderName(decodedFolderName);
+                storeConfig.setTrashFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Trash folder: %s", decodedFolderName);
                 }
@@ -344,7 +344,7 @@ public class ImapStore extends RemoteStore {
     ImapConnection createImapConnection() {
         return new ImapConnection(
                 new StoreImapSettings(),
-                mTrustedSocketFactory,
+                trustedSocketFactory,
                 connectivityManager,
                 oauthTokenProvider);
     }
@@ -385,7 +385,7 @@ public class ImapStore extends RemoteStore {
     }
 
     StoreConfig getStoreConfig() {
-        return mStoreConfig;
+        return storeConfig;
     }
 
     Set<Flag> getPermanentFlagsIndex() {
@@ -436,7 +436,7 @@ public class ImapStore extends RemoteStore {
 
         @Override
         public boolean useCompression(final NetworkType type) {
-            return mStoreConfig.useCompression(type);
+            return storeConfig.useCompression(type);
         }
 
         @Override

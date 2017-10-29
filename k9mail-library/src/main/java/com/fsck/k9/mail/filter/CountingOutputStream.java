@@ -8,27 +8,27 @@ import java.io.OutputStream;
  * makes that count available to callers.
  */
 public class CountingOutputStream extends OutputStream {
-    private long mCount;
+    private long count; // defaults to 0
 
     public CountingOutputStream() {
     }
 
     public long getCount() {
-        return mCount;
+        return count;
     }
 
     @Override
     public void write(int oneByte) throws IOException {
-        mCount++;
+        count++;
     }
 
     @Override
     public void write(byte b[], int offset, int len) throws IOException {
-        mCount += len;
+        count += len;
     }
 
     @Override
     public void write(byte[] b) throws IOException {
-        mCount += b.length;
+        count += b.length;
     }
 }

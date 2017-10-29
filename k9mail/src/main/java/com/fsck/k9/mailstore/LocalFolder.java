@@ -91,7 +91,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     private boolean isInTopGroup = false;
     private boolean isIntegrate = false;
 
-    // mLastUid is used during syncs. It holds the highest UID within the local folder so we
+    // lastUid is used during syncs. It holds the highest UID within the local folder so we
     // know whether or not an unread message added to the local folder is actually "new" or not.
     private Integer lastUid = null;
     private MoreMessages moreMessages = MoreMessages.UNKNOWN;
@@ -139,7 +139,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     @Override
-    public void open(final int mode) throws MessagingException {
+    public synchronized void open(final int mode) throws MessagingException {
 
         if (isOpen() && (getMode() == mode || mode == OPEN_MODE_RO)) {
             return;

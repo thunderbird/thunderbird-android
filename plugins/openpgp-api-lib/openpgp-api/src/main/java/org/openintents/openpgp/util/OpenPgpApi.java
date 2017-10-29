@@ -49,17 +49,17 @@ public class OpenPgpApi {
      */
     public static final int API_VERSION = 12;
 
-    /**
-     * General extras
-     * --------------
-     *
-     * required extras:
-     * int           EXTRA_API_VERSION           (always required)
-     *
-     * returned extras:
-     * int           RESULT_CODE                 (RESULT_CODE_ERROR, RESULT_CODE_SUCCESS or RESULT_CODE_USER_INTERACTION_REQUIRED)
-     * OpenPgpError  RESULT_ERROR                (if RESULT_CODE == RESULT_CODE_ERROR)
-     * PendingIntent RESULT_INTENT               (if RESULT_CODE == RESULT_CODE_USER_INTERACTION_REQUIRED)
+    /*
+      General extras
+      --------------
+
+      required extras:
+      int           EXTRA_API_VERSION           (always required)
+
+      returned extras:
+      int           RESULT_CODE                 (RESULT_CODE_ERROR, RESULT_CODE_SUCCESS or RESULT_CODE_USER_INTERACTION_REQUIRED)
+      OpenPgpError  RESULT_ERROR                (if RESULT_CODE == RESULT_CODE_ERROR)
+      PendingIntent RESULT_INTENT               (if RESULT_CODE == RESULT_CODE_USER_INTERACTION_REQUIRED)
      */
 
     /**
@@ -313,13 +313,13 @@ public class OpenPgpApi {
     public static final String EXTRA_CALL_UUID1 = "call_uuid1";
     public static final String EXTRA_CALL_UUID2 = "call_uuid2";
 
-    IOpenPgpService2 mService;
-    Context mContext;
-    final AtomicInteger mPipeIdGen = new AtomicInteger();
+    private IOpenPgpService2 service;
+    private Context context;
+    private final AtomicInteger pipeIdGen = new AtomicInteger();
 
     public OpenPgpApi(Context context, IOpenPgpService2 service) {
-        this.mContext = context;
-        this.mService = service;
+        this.context = context;
+        this.service = service;
     }
 
     public interface IOpenPgpCallback {
@@ -415,7 +415,7 @@ public class OpenPgpApi {
         return task;
     }
 
-    public AsyncTask executeApiAsync(Intent data, OpenPgpDataSource dataSource, IOpenPgpSinkResultCallback<Void> callback) {
+    public void executeApiAsync(Intent data, OpenPgpDataSource dataSource, IOpenPgpSinkResultCallback<Void> callback) {
         OpenPgpSourceSinkAsyncTask<Void> task = new OpenPgpSourceSinkAsyncTask<>(data, dataSource, null, callback);
 
         // don't serialize async tasks!
@@ -426,7 +426,6 @@ public class OpenPgpApi {
             task.execute((Void[]) null);
         }
 
-        return task;
     }
 
     public void executeApiAsync(Intent data, InputStream is, OutputStream os, IOpenPgpCallback callback) {
@@ -451,7 +450,7 @@ public class OpenPgpApi {
         }
     }
 
-    public <T> OpenPgpDataResult<T> executeApi(Intent data, OpenPgpDataSource dataSource, OpenPgpDataSink<T> dataSink) {
+    private <T> OpenPgpDataResult<T> executeApi(Intent data, OpenPgpDataSource dataSource, OpenPgpDataSink<T> dataSink) {
         ParcelFileDescriptor input = null;
         ParcelFileDescriptor output = null;
         try {
@@ -469,8 +468,8 @@ public class OpenPgpApi {
             int outputPipeId = 0;
 
             if (dataSink != null) {
-                outputPipeId = mPipeIdGen.incrementAndGet();
-                output = mService.createOutputPipe(outputPipeId);
+                outputPipeId = pipeIdGen.incrementAndGet();
+                output = service.createOutputPipe(outputPipeId);
                 pumpThread = ParcelFileDescriptorUtil.asyncPipeToDataSink(dataSink, output);
             }
 
@@ -507,8 +506,8 @@ public class OpenPgpApi {
             int outputPipeId = 0;
 
             if (os != null) {
-                outputPipeId = mPipeIdGen.incrementAndGet();
-                output = mService.createOutputPipe(outputPipeId);
+                outputPipeId = pipeIdGen.incrementAndGet();
+                output = service.createOutputPipe(outputPipeId);
                 pumpThread = ParcelFileDescriptorUtil.pipeTo(os, output);
             }
 
@@ -592,8 +591,8 @@ public class OpenPgpApi {
             int outputPipeId = 0;
 
             if (os != null) {
-                outputPipeId = mPipeIdGen.incrementAndGet();
-                output = mService.createOutputPipe(outputPipeId);
+                outputPipeId = pipeIdGen.incrementAndGet();
+                output = service.createOutputPipe(outputPipeId);
                 pumpThread = ParcelFileDescriptorUtil.pipeTo(os, output);
             }
 
@@ -626,12 +625,12 @@ public class OpenPgpApi {
             Intent result;
 
             // blocks until result is ready
-            result = mService.execute(data, input, outputPipeId);
+            result = service.execute(data, input, outputPipeId);
 
             // set class loader to current context to allow unparcelling
             // of OpenPgpError and OpenPgpSignatureResult
             // http://stackoverflow.com/a/3806769
-            result.setExtrasClassLoader(mContext.getClassLoader());
+            result.setExtrasClassLoader(context.getClassLoader());
 
             return result;
         } catch (Exception e) {

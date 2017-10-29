@@ -9,6 +9,7 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,16 +44,16 @@ public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = "com.fsck.k9.ChooseFolder_showDisplayableOnly";
 
 
-    String mFolder;
-    String mSelectFolder;
-    Account mAccount;
-    MessageReference mMessageReference;
-    ArrayAdapter<String> mAdapter;
-    private ChooseFolderHandler mHandler = new ChooseFolderHandler();
-    String mHeldInbox = null;
-    boolean mHideCurrentFolder = true;
-    boolean mShowOptionNone = false;
-    boolean mShowDisplayableOnly = false;
+    String folder;
+    String selectFolder;
+    Account account;
+    MessageReference messageReference;
+    ArrayAdapter<String> adapter;
+    private ChooseFolderHandler handler = new ChooseFolderHandler();
+    String heldInbox = null;
+    boolean hideCurrentFolder = true;
+    boolean showOptionNone = false;
+    boolean showDisplayableOnly = false;
 
     /**
      * What folders to display.<br/>
@@ -60,14 +61,14 @@ public class ChooseFolder extends K9ListActivity {
      * but can be overridden via {@link #onOptionsItemSelected(MenuItem)}
      * while this activity is showing.
      */
-    private Account.FolderMode mMode;
+    private Account.FolderMode mode;
 
     /**
      * Current filter used by our ArrayAdapter.<br/>
      * Created on the fly and invalidated if a new
      * set of folders is chosen via {@link #onOptionsItemSelected(MenuItem)}
      */
-    private FolderListFilter<String> mMyFilter = null;
+    private FolderListFilter<String> filter = null;
 
 
     @Override
@@ -82,29 +83,30 @@ public class ChooseFolder extends K9ListActivity {
         getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
         Intent intent = getIntent();
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        account = Preferences.getPreferences(this).getAccount(accountUuid);
         if (intent.hasExtra(EXTRA_MESSAGE)) {
             String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE);
-            mMessageReference = MessageReference.parse(messageReferenceString);
+            messageReference = MessageReference.parse(messageReferenceString);
         }
-        mFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
-        mSelectFolder = intent.getStringExtra(EXTRA_SEL_FOLDER);
+        folder = intent.getStringExtra(EXTRA_CUR_FOLDER);
+        selectFolder = intent.getStringExtra(EXTRA_SEL_FOLDER);
         if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null) {
-            mHideCurrentFolder = false;
+            hideCurrentFolder = false;
         }
         if (intent.getStringExtra(EXTRA_SHOW_FOLDER_NONE) != null) {
-            mShowOptionNone = true;
+            showOptionNone = true;
         }
         if (intent.getStringExtra(EXTRA_SHOW_DISPLAYABLE_ONLY) != null) {
-            mShowDisplayableOnly = true;
+            showDisplayableOnly = true;
         }
-        if (mFolder == null)
-            mFolder = "";
+        if (folder == null)
+            folder = "";
 
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1) {
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1) {
             private Filter myFilter = null;
 
             @Override
+            @NonNull
             public Filter getFilter() {
                 if (myFilter == null) {
                     myFilter = new FolderListFilter<String>(this);
@@ -113,24 +115,24 @@ public class ChooseFolder extends K9ListActivity {
             }
         };
 
-        setListAdapter(mAdapter);
+        setListAdapter(adapter);
 
-        mMode = mAccount.getFolderTargetMode();
-        MessagingController.getInstance(getApplication()).listFolders(mAccount, false, mListener);
+        mode = account.getFolderTargetMode();
+        MessagingController.getInstance(getApplication()).listFolders(account, false, listener);
 
         this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent result = new Intent();
-                result.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
-                result.putExtra(EXTRA_CUR_FOLDER, mFolder);
+                result.putExtra(EXTRA_ACCOUNT, account.getUuid());
+                result.putExtra(EXTRA_CUR_FOLDER, folder);
                 String destFolderName = ((TextView)view).getText().toString();
-                if (mHeldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
-                    destFolderName = mHeldInbox;
+                if (heldInbox != null && getString(R.string.special_mailbox_name_inbox).equals(destFolderName)) {
+                    destFolderName = heldInbox;
                 }
                 result.putExtra(EXTRA_NEW_FOLDER, destFolderName);
-                if (mMessageReference != null) {
-                    result.putExtra(EXTRA_MESSAGE, mMessageReference.toIdentityString());
+                if (messageReference != null) {
+                    result.putExtra(EXTRA_MESSAGE, messageReference.toIdentityString());
                 }
                 setResult(RESULT_OK, result);
                 finish();
@@ -163,7 +165,7 @@ public class ChooseFolder extends K9ListActivity {
             sendMessage(msg);
         }
 
-        public void setSelectedFolder(int position) {
+        void setSelectedFolder(int position) {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_SET_SELECTED_FOLDER;
             msg.arg1 = position;
@@ -193,7 +195,7 @@ public class ChooseFolder extends K9ListActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                mAdapter.getFilter().filter(newText);
+                adapter.getFilter().filter(newText);
                 return true;
             }
         });
@@ -229,49 +231,49 @@ public class ChooseFolder extends K9ListActivity {
     }
 
     private void onRefresh() {
-        MessagingController.getInstance(getApplication()).listFolders(mAccount, true, mListener);
+        MessagingController.getInstance(getApplication()).listFolders(account, true, listener);
     }
 
     private void setDisplayMode(FolderMode aMode) {
-        mMode = aMode;
+        mode = aMode;
         // invalidate the current filter as it is working on an inval
-        if (mMyFilter != null) {
-            mMyFilter.invalidate();
+        if (filter != null) {
+            filter.invalidate();
         }
         //re-populate the list
-        MessagingController.getInstance(getApplication()).listFolders(mAccount, false, mListener);
+        MessagingController.getInstance(getApplication()).listFolders(account, false, listener);
     }
 
-    private MessagingListener mListener = new SimpleMessagingListener() {
+    private MessagingListener listener = new SimpleMessagingListener() {
         @Override
         public void listFoldersStarted(Account account) {
-            if (!account.equals(mAccount)) {
+            if (!account.equals(ChooseFolder.this.account)) {
                 return;
             }
-            mHandler.progress(true);
+            handler.progress(true);
         }
 
         @Override
         public void listFoldersFailed(Account account, String message) {
-            if (!account.equals(mAccount)) {
+            if (!account.equals(ChooseFolder.this.account)) {
                 return;
             }
-            mHandler.progress(false);
+            handler.progress(false);
         }
 
         @Override
         public void listFoldersFinished(Account account) {
-            if (!account.equals(mAccount)) {
+            if (!account.equals(ChooseFolder.this.account)) {
                 return;
             }
-            mHandler.progress(false);
+            handler.progress(false);
         }
         @Override
         public void listFolders(Account account, List<LocalFolder> folders) {
-            if (!account.equals(mAccount)) {
+            if (!account.equals(ChooseFolder.this.account)) {
                 return;
             }
-            Account.FolderMode aMode = mMode;
+            Account.FolderMode aMode = mode;
 
             List<String> newFolders = new ArrayList<String>();
             List<String> topFolders = new ArrayList<String>();
@@ -280,9 +282,9 @@ public class ChooseFolder extends K9ListActivity {
                 String name = folder.getName();
 
                 // Inbox needs to be compared case-insensitively
-                if (mHideCurrentFolder && (name.equals(mFolder) || (
-                        mAccount.getInboxFolderName().equalsIgnoreCase(mFolder) &&
-                        mAccount.getInboxFolderName().equalsIgnoreCase(name)))) {
+                if (hideCurrentFolder && (name.equals(ChooseFolder.this.folder) || (
+                        ChooseFolder.this.account.getInboxFolderName().equalsIgnoreCase(ChooseFolder.this.folder) &&
+                        ChooseFolder.this.account.getInboxFolderName().equalsIgnoreCase(name)))) {
                     continue;
                 }
                 Folder.FolderClass fMode = folder.getDisplayClass();
@@ -316,9 +318,9 @@ public class ChooseFolder extends K9ListActivity {
             Collections.sort(newFolders, comparator);
 
             List<String> localFolders = new ArrayList<String>(newFolders.size() +
-                    topFolders.size() + ((mShowOptionNone) ? 1 : 0));
+                    topFolders.size() + ((showOptionNone) ? 1 : 0));
 
-            if (mShowOptionNone) {
+            if (showOptionNone) {
                 localFolders.add(K9.FOLDER_NONE);
             }
 
@@ -335,25 +337,25 @@ public class ChooseFolder extends K9ListActivity {
             try {
                 int position = 0;
                 for (String name : localFolders) {
-                    if (mAccount.getInboxFolderName().equalsIgnoreCase(name)) {
+                    if (ChooseFolder.this.account.getInboxFolderName().equalsIgnoreCase(name)) {
                         folderList.add(getString(R.string.special_mailbox_name_inbox));
-                        mHeldInbox = name;
+                        heldInbox = name;
                     } else if (!account.getOutboxFolderName().equals(name)) {
                         folderList.add(name);
                     }
 
-                    if (mSelectFolder != null) {
+                    if (selectFolder != null) {
                         /*
-                         * Never select EXTRA_CUR_FOLDER (mFolder) if EXTRA_SEL_FOLDER
+                         * Never select EXTRA_CUR_FOLDER (folder) if EXTRA_SEL_FOLDER
                          * (mSelectedFolder) was provided.
                          */
 
-                        if (name.equals(mSelectFolder)) {
+                        if (name.equals(selectFolder)) {
                             selectedFolder = position;
                         }
-                    } else if (name.equals(mFolder) || (
-                            mAccount.getInboxFolderName().equalsIgnoreCase(mFolder) &&
-                            mAccount.getInboxFolderName().equalsIgnoreCase(name))) {
+                    } else if (name.equals(folder) || (
+                            ChooseFolder.this.account.getInboxFolderName().equalsIgnoreCase(folder) &&
+                            ChooseFolder.this.account.getInboxFolderName().equalsIgnoreCase(name))) {
                         selectedFolder = position;
                     }
                     position++;
@@ -363,12 +365,12 @@ public class ChooseFolder extends K9ListActivity {
                     @Override
                     public void run() {
                         // Now we're in the UI-thread, we can safely change the contents of the adapter.
-                        mAdapter.clear();
+                        adapter.clear();
                         for (String folderName: folderList) {
-                            mAdapter.add(folderName);
+                            adapter.add(folderName);
                         }
 
-                        mAdapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
 
                         /*
                          * Only enable the text filter after the list has been
@@ -381,7 +383,7 @@ public class ChooseFolder extends K9ListActivity {
             }
 
             if (selectedFolder != -1) {
-                mHandler.setSelectedFolder(selectedFolder);
+                handler.setSelectedFolder(selectedFolder);
             }
         }
     };

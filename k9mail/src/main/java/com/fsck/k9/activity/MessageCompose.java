@@ -856,7 +856,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             recipientPresenter.onSwitchAccount(this.account);
             quotedMessagePresenter.onSwitchAccount(this.account);
 
-            // not sure how to handle mFolder, mSourceMessage?
+            // not sure how to handle folder, mSourceMessage?
         }
 
         switchToIdentity(identity);

@@ -78,12 +78,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         return fragment;
     }
 
-    private MessageTopView mMessageView;
+    private MessageTopView messageView;
 
-    private Account mAccount;
-    private MessageReference mMessageReference;
-    private LocalMessage mMessage;
-    private MessagingController mController;
+    private Account account;
+    private MessageReference messageReference;
+    private LocalMessage message;
+    private MessagingController controller;
     private DownloadManager downloadManager;
     private Handler handler = new Handler();
     private MessageLoaderHelper messageLoaderHelper;
@@ -94,18 +94,18 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
      * Used to temporarily store the destination folder for refile operations if a confirmation
      * dialog is shown.
      */
-    private String mDstFolder;
+    private String destinationFolder;
 
-    private MessageViewFragmentListener mFragmentListener;
+    private MessageViewFragmentListener fragmentListener;
 
     /**
      * {@code true} after {@link #onCreate(Bundle)} has been executed. This is used by
      * {@code MessageList.configureMenu()} to make sure the fragment has been initialized before
      * it is used.
      */
-    private boolean mInitialized = false;
+    private boolean initialized = false;
 
-    private Context mContext;
+    private Context context;
 
     private AttachmentViewInfo currentAttachmentViewInfo;
 
@@ -113,10 +113,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mContext = activity.getApplicationContext();
+        context = activity.getApplicationContext();
 
         try {
-            mFragmentListener = (MessageViewFragmentListener) activity;
+            fragmentListener = (MessageViewFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.getClass() +
                     " must implement MessageViewFragmentListener");
@@ -131,12 +131,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         setHasOptionsMenu(true);
 
         Context context = getActivity().getApplicationContext();
-        mController = MessagingController.getInstance(context);
+        controller = MessagingController.getInstance(context);
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         messageCryptoPresenter = new MessageCryptoPresenter(savedInstanceState, messageCryptoMvpView);
         messageLoaderHelper =
                 new MessageLoaderHelper(context, getLoaderManager(), getFragmentManager(), messageLoaderCallbacks);
-        mInitialized = true;
+        initialized = true;
     }
 
     @Override
@@ -175,26 +175,26 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.message, container, false);
 
-        mMessageView = (MessageTopView) view.findViewById(R.id.message_view);
-        mMessageView.setAttachmentCallback(this);
-        mMessageView.setMessageCryptoPresenter(messageCryptoPresenter);
+        messageView = (MessageTopView) view.findViewById(R.id.message_view);
+        messageView.setAttachmentCallback(this);
+        messageView.setMessageCryptoPresenter(messageCryptoPresenter);
 
-        mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
+        messageView.setOnToggleFlagClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onToggleFlagged();
             }
         });
 
-        mMessageView.setOnDownloadButtonClickListener(new OnClickListener() {
+        messageView.setOnDownloadButtonClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMessageView.disableDownloadButton();
+                messageView.disableDownloadButton();
                 messageLoaderHelper.downloadCompleteMessage();
             }
         });
 
-        mFragmentListener.messageHeaderViewAvailable(mMessageView.getMessageHeaderView());
+        fragmentListener.messageHeaderViewAvailable(messageView.getMessageHeaderView());
 
         return view;
     }
@@ -211,13 +211,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void displayMessage(MessageReference messageReference) {
-        mMessageReference = messageReference;
-        Timber.d("MessageView displaying message %s", mMessageReference);
+        this.messageReference = messageReference;
+        Timber.d("MessageView displaying message %s", this.messageReference);
 
-        mAccount = Preferences.getPreferences(getApplicationContext()).getAccount(mMessageReference.getAccountUuid());
+        account = Preferences.getPreferences(getApplicationContext()).getAccount(this.messageReference.getAccountUuid());
         messageLoaderHelper.asyncStartOrResumeLoadingMessage(messageReference, null);
 
-        mFragmentListener.updateMenu();
+        fragmentListener.updateMenu();
     }
 
     private void hideKeyboard() {
@@ -241,31 +241,31 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         hideKeyboard();
 
         boolean handledByCryptoPresenter = messageCryptoPresenter.maybeHandleShowMessage(
-                mMessageView, mAccount, messageViewInfo);
+                messageView, account, messageViewInfo);
         if (!handledByCryptoPresenter) {
-            mMessageView.showMessage(mAccount, messageViewInfo);
+            messageView.showMessage(account, messageViewInfo);
             if (K9.isOpenPgpProviderConfigured()) {
-                mMessageView.getMessageHeaderView().setCryptoStatusDisabled();
+                messageView.getMessageHeaderView().setCryptoStatusDisabled();
             } else {
-                mMessageView.getMessageHeaderView().hideCryptoStatus();
+                messageView.getMessageHeaderView().hideCryptoStatus();
             }
         }
     }
 
     private void displayHeaderForLoadingMessage(LocalMessage message) {
-        mMessageView.setHeaders(message, mAccount);
+        messageView.setHeaders(message, account);
         if (K9.isOpenPgpProviderConfigured()) {
-            mMessageView.getMessageHeaderView().setCryptoStatusLoading();
+            messageView.getMessageHeaderView().setCryptoStatusLoading();
         }
         displayMessageSubject(getSubjectForMessage(message));
-        mFragmentListener.updateMenu();
+        fragmentListener.updateMenu();
     }
 
     /**
      * Called from UI thread when user select Delete
      */
     public void onDelete() {
-        if (K9.confirmDelete() || (K9.confirmDeleteStarred() && mMessage.isSet(Flag.FLAGGED))) {
+        if (K9.confirmDelete() || (K9.confirmDeleteStarred() && message.isSet(Flag.FLAGGED))) {
             showDialog(R.id.dialog_confirm_delete);
         } else {
             delete();
@@ -273,29 +273,29 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onToggleAllHeadersView() {
-        mMessageView.getMessageHeaderView().onShowAdditionalHeaders();
+        messageView.getMessageHeaderView().onShowAdditionalHeaders();
     }
 
     public boolean allHeadersVisible() {
-        return mMessageView.getMessageHeaderView().additionalHeadersVisible();
+        return messageView.getMessageHeaderView().additionalHeadersVisible();
     }
 
     private void delete() {
-        if (mMessage != null) {
+        if (message != null) {
             // Disable the delete button after it's tapped (to try to prevent
             // accidental clicks)
-            mFragmentListener.disableDeleteAction();
-            LocalMessage messageToDelete = mMessage;
-            mFragmentListener.showNextMessageOrReturn();
-            mController.deleteMessage(mMessageReference, null);
+            fragmentListener.disableDeleteAction();
+            LocalMessage messageToDelete = message;
+            fragmentListener.showNextMessageOrReturn();
+            controller.deleteMessage(messageReference, null);
         }
     }
 
     public void onRefile(String dstFolder) {
-        if (!mController.isMoveCapable(mAccount)) {
+        if (!controller.isMoveCapable(account)) {
             return;
         }
-        if (!mController.isMoveCapable(mMessageReference)) {
+        if (!controller.isMoveCapable(messageReference)) {
             Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
             return;
@@ -305,8 +305,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        if (mAccount.getSpamFolderName().equals(dstFolder) && K9.confirmSpam()) {
-            mDstFolder = dstFolder;
+        if (account.getSpamFolderName().equals(dstFolder) && K9.confirmSpam()) {
+            this.destinationFolder = dstFolder;
             showDialog(R.id.dialog_confirm_spam);
         } else {
             refileMessage(dstFolder);
@@ -314,45 +314,45 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void refileMessage(String dstFolder) {
-        String srcFolder = mMessageReference.getFolderName();
-        MessageReference messageToMove = mMessageReference;
-        mFragmentListener.showNextMessageOrReturn();
-        mController.moveMessage(mAccount, srcFolder, messageToMove, dstFolder);
+        String srcFolder = messageReference.getFolderName();
+        MessageReference messageToMove = messageReference;
+        fragmentListener.showNextMessageOrReturn();
+        controller.moveMessage(account, srcFolder, messageToMove, dstFolder);
     }
 
     public void onReply() {
-        if (mMessage != null) {
-            mFragmentListener.onReply(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
+        if (message != null) {
+            fragmentListener.onReply(message.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
         }
     }
 
     public void onReplyAll() {
-        if (mMessage != null) {
-            mFragmentListener.onReplyAll(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
+        if (message != null) {
+            fragmentListener.onReplyAll(message.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
         }
     }
 
     public void onForward() {
-        if (mMessage != null) {
-            mFragmentListener.onForward(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
+        if (message != null) {
+            fragmentListener.onForward(message.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
         }
     }
 
     public void onToggleFlagged() {
-        if (mMessage != null) {
-            boolean newState = !mMessage.isSet(Flag.FLAGGED);
-            mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    Collections.singletonList(mMessage), Flag.FLAGGED, newState);
-            mMessageView.setHeaders(mMessage, mAccount);
+        if (message != null) {
+            boolean newState = !message.isSet(Flag.FLAGGED);
+            controller.setFlag(account, message.getFolder().getName(),
+                    Collections.singletonList(message), Flag.FLAGGED, newState);
+            messageView.setHeaders(message, account);
         }
     }
 
     public void onMove() {
-        if ((!mController.isMoveCapable(mAccount))
-                || (mMessage == null)) {
+        if ((!controller.isMoveCapable(account))
+                || (message == null)) {
             return;
         }
-        if (!mController.isMoveCapable(mMessageReference)) {
+        if (!controller.isMoveCapable(messageReference)) {
             Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
             return;
@@ -363,11 +363,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onCopy() {
-        if ((!mController.isCopyCapable(mAccount))
-                || (mMessage == null)) {
+        if ((!controller.isCopyCapable(account))
+                || (message == null)) {
             return;
         }
-        if (!mController.isCopyCapable(mMessageReference)) {
+        if (!controller.isCopyCapable(messageReference)) {
             Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG);
             toast.show();
             return;
@@ -377,24 +377,24 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onArchive() {
-        onRefile(mAccount.getArchiveFolderName());
+        onRefile(account.getArchiveFolderName());
     }
 
     public void onSpam() {
-        onRefile(mAccount.getSpamFolderName());
+        onRefile(account.getSpamFolderName());
     }
 
     public void onSelectText() {
         // FIXME
-        // mMessageView.beginSelectingText();
+        // messageView.beginSelectingText();
     }
 
     private void startRefileActivity(int activity) {
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.getFolderName());
-        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
-        intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference.toIdentityString());
+        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, account.getUuid());
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, messageReference.getFolderName());
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, account.getLastSelectedFolderName());
+        intent.putExtra(ChooseFolder.EXTRA_MESSAGE, messageReference.toIdentityString());
         startActivityForResult(intent, activity);
     }
 
@@ -448,11 +448,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
                 String messageReferenceString = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE);
                 MessageReference ref = MessageReference.parse(messageReferenceString);
-                if (mMessageReference.equals(ref)) {
-                    mAccount.setLastSelectedFolderName(destFolderName);
+                if (messageReference.equals(ref)) {
+                    account.setLastSelectedFolderName(destFolderName);
                     switch (requestCode) {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE: {
-                            mFragmentListener.showNextMessageOrReturn();
+                            fragmentListener.showNextMessageOrReturn();
                             moveMessage(ref, destFolderName);
                             break;
                         }
@@ -468,49 +468,49 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onSendAlternate() {
-        if (mMessage != null) {
-            mController.sendAlternate(getActivity(), mAccount, mMessage);
+        if (message != null) {
+            controller.sendAlternate(getActivity(), account, message);
         }
     }
 
     public void onToggleRead() {
-        if (mMessage != null) {
-            mController.setFlag(mAccount, mMessage.getFolder().getName(),
-                    Collections.singletonList(mMessage), Flag.SEEN, !mMessage.isSet(Flag.SEEN));
-            mMessageView.setHeaders(mMessage, mAccount);
-            String subject = mMessage.getSubject();
+        if (message != null) {
+            controller.setFlag(account, message.getFolder().getName(),
+                    Collections.singletonList(message), Flag.SEEN, !message.isSet(Flag.SEEN));
+            messageView.setHeaders(message, account);
+            String subject = message.getSubject();
             displayMessageSubject(subject);
-            mFragmentListener.updateMenu();
+            fragmentListener.updateMenu();
         }
     }
 
     private void setProgress(boolean enable) {
-        if (mFragmentListener != null) {
-            mFragmentListener.setProgress(enable);
+        if (fragmentListener != null) {
+            fragmentListener.setProgress(enable);
         }
     }
 
     private void displayMessageSubject(String subject) {
-        if (mFragmentListener != null) {
-            mFragmentListener.displayMessageSubject(subject);
+        if (fragmentListener != null) {
+            fragmentListener.displayMessageSubject(subject);
         }
     }
 
     private String getSubjectForMessage(LocalMessage message) {
         String subject = message.getSubject();
         if (TextUtils.isEmpty(subject)) {
-            return mContext.getString(R.string.general_no_subject);
+            return context.getString(R.string.general_no_subject);
         }
 
         return subject;
     }
 
     public void moveMessage(MessageReference reference, String destFolderName) {
-        mController.moveMessage(mAccount, mMessageReference.getFolderName(), reference, destFolderName);
+        controller.moveMessage(account, messageReference.getFolderName(), reference, destFolderName);
     }
 
     public void copyMessage(MessageReference reference, String destFolderName) {
-        mController.copyMessage(mAccount, mMessageReference.getFolderName(), reference, destFolderName);
+        controller.copyMessage(account, messageReference.getFolderName(), reference, destFolderName);
     }
 
     private void showDialog(int dialogId) {
@@ -575,7 +575,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void zoom(KeyEvent event) {
-        // mMessageView.zoom(event);
+        // messageView.zoom(event);
     }
 
     @Override
@@ -586,8 +586,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 break;
             }
             case R.id.dialog_confirm_spam: {
-                refileMessage(mDstFolder);
-                mDstFolder = null;
+                refileMessage(destinationFolder);
+                destinationFolder = null;
                 break;
             }
         }
@@ -607,47 +607,47 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
      * Get the {@link MessageReference} of the currently displayed message.
      */
     public MessageReference getMessageReference() {
-        return mMessageReference;
+        return messageReference;
     }
 
     public boolean isMessageRead() {
-        return (mMessage != null) ? mMessage.isSet(Flag.SEEN) : false;
+        return (message != null) ? message.isSet(Flag.SEEN) : false;
     }
 
     public boolean isCopyCapable() {
-        return mController.isCopyCapable(mAccount);
+        return controller.isCopyCapable(account);
     }
 
     public boolean isMoveCapable() {
-        return mController.isMoveCapable(mAccount);
+        return controller.isMoveCapable(account);
     }
 
     public boolean canMessageBeArchived() {
-        return (!mMessageReference.getFolderName().equals(mAccount.getArchiveFolderName())
-                && mAccount.hasArchiveFolder());
+        return (!messageReference.getFolderName().equals(account.getArchiveFolderName())
+                && account.hasArchiveFolder());
     }
 
     public boolean canMessageBeMovedToSpam() {
-        return (!mMessageReference.getFolderName().equals(mAccount.getSpamFolderName())
-                && mAccount.hasSpamFolder());
+        return (!messageReference.getFolderName().equals(account.getSpamFolderName())
+                && account.hasSpamFolder());
     }
 
     public void updateTitle() {
-        if (mMessage != null) {
-            displayMessageSubject(mMessage.getSubject());
+        if (message != null) {
+            displayMessageSubject(message.getSubject());
         }
     }
 
     public Context getApplicationContext() {
-        return mContext;
+        return context;
     }
 
     public void disableAttachmentButtons(AttachmentViewInfo attachment) {
-        // mMessageView.disableAttachmentButtons(attachment);
+        // messageView.disableAttachmentButtons(attachment);
     }
 
     public void enableAttachmentButtons(AttachmentViewInfo attachment) {
-        // mMessageView.enableAttachmentButtons(attachment);
+        // messageView.enableAttachmentButtons(attachment);
     }
 
     public void runOnMainThread(Runnable runnable) {
@@ -655,7 +655,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void showAttachmentLoadingDialog() {
-        // mMessageView.disableAttachmentButtons();
+        // messageView.disableAttachmentButtons();
         showDialog(R.id.dialog_attachment_progress);
     }
 
@@ -664,13 +664,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             @Override
             public void run() {
                 removeDialog(R.id.dialog_attachment_progress);
-                // mMessageView.enableAttachmentButtons();
+                // messageView.enableAttachmentButtons();
             }
         });
     }
 
     public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
-        // mMessageView.refreshAttachmentThumbnail(attachment);
+        // messageView.refreshAttachmentThumbnail(attachment);
     }
 
     private MessageCryptoMvpView messageCryptoMvpView = new MessageCryptoMvpView() {
@@ -701,7 +701,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         @Override
         public void restartMessageCryptoProcessing() {
-            mMessageView.setToLoadingState();
+            messageView.setToLoadingState();
             messageLoaderHelper.asyncRestartMessageCryptoProcessing();
         }
 
@@ -734,17 +734,17 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public boolean isInitialized() {
-        return mInitialized ;
+        return initialized;
     }
 
 
     private MessageLoaderCallbacks messageLoaderCallbacks = new MessageLoaderCallbacks() {
         @Override
         public void onMessageDataLoadFinished(LocalMessage message) {
-            mMessage = message;
+            MessageViewFragment.this.message = message;
 
             displayHeaderForLoadingMessage(message);
-            mMessageView.setToLoadingState();
+            messageView.setToLoadingState();
             showProgressThreshold = null;
         }
 
@@ -772,13 +772,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 showProgressThreshold = SystemClock.elapsedRealtime() + PROGRESS_THRESHOLD_MILLIS;
             } else if (showProgressThreshold == 0L || SystemClock.elapsedRealtime() > showProgressThreshold) {
                 showProgressThreshold = 0L;
-                mMessageView.setLoadingProgress(current, max);
+                messageView.setLoadingProgress(current, max);
             }
         }
 
         @Override
         public void onDownloadErrorMessageNotFound() {
-            mMessageView.enableDownloadButton();
+            messageView.enableDownloadButton();
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -789,7 +789,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         @Override
         public void onDownloadErrorNetworkError() {
-            mMessageView.enableDownloadButton();
+            messageView.enableDownloadButton();
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -843,6 +843,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
-        return new AttachmentController(mController, downloadManager, this, attachment);
+        return new AttachmentController(controller, downloadManager, this, attachment);
     }
 }

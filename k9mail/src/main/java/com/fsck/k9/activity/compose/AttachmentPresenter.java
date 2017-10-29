@@ -204,7 +204,7 @@ public class AttachmentPresenter {
 
         Bundle bundle = new Bundle();
         bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment.uri);
-        loaderManager.initLoader(attachment.loaderId, bundle, mAttachmentInfoLoaderCallback);
+        loaderManager.initLoader(attachment.loaderId, bundle, attachmentInfoLoaderCallback);
     }
 
     private void initAttachmentContentLoader(Attachment attachment) {
@@ -214,7 +214,7 @@ public class AttachmentPresenter {
 
         Bundle bundle = new Bundle();
         bundle.putParcelable(LOADER_ARG_ATTACHMENT, attachment.uri);
-        loaderManager.initLoader(attachment.loaderId, bundle, mAttachmentContentLoaderCallback);
+        loaderManager.initLoader(attachment.loaderId, bundle, attachmentContentLoaderCallback);
     }
 
     private int getNextFreeLoaderId() {
@@ -224,7 +224,7 @@ public class AttachmentPresenter {
         return LOADER_ID_MASK | nextLoaderId++;
     }
 
-    private LoaderManager.LoaderCallbacks<Attachment> mAttachmentInfoLoaderCallback =
+    private LoaderManager.LoaderCallbacks<Attachment> attachmentInfoLoaderCallback =
             new LoaderManager.LoaderCallbacks<Attachment>() {
                 @Override
                 public Loader<Attachment> onCreateLoader(int id, Bundle args) {
@@ -252,7 +252,7 @@ public class AttachmentPresenter {
                 }
             };
 
-    private LoaderManager.LoaderCallbacks<Attachment> mAttachmentContentLoaderCallback =
+    private LoaderManager.LoaderCallbacks<Attachment> attachmentContentLoaderCallback =
             new LoaderManager.LoaderCallbacks<Attachment>() {
                 @Override
                 public Loader<Attachment> onCreateLoader(int id, Bundle args) {

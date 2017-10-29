@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.support.annotation.NonNull;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -17,9 +19,10 @@ import com.fsck.k9.mail.filter.Base64OutputStream;
  * The source for the data differs for the subclasses.
  */
 abstract class BinaryAttachmentBody implements Body {
-    protected String mEncoding;
+    protected String encoding;
 
     @Override
+    @NonNull
     public abstract InputStream getInputStream();
 
     @Override
@@ -27,10 +30,10 @@ abstract class BinaryAttachmentBody implements Body {
         InputStream in = getInputStream();
         try {
             boolean closeStream = false;
-            if (MimeUtil.isBase64Encoding(mEncoding)) {
+            if (MimeUtil.isBase64Encoding(encoding)) {
                 out = new Base64OutputStream(out);
                 closeStream = true;
-            } else if (MimeUtil.isQuotedPrintableEncoded(mEncoding)){
+            } else if (MimeUtil.isQuotedPrintableEncoded(encoding)){
                 out = new QuotedPrintableOutputStream(out, false);
                 closeStream = true;
             }
@@ -49,10 +52,10 @@ abstract class BinaryAttachmentBody implements Body {
 
     @Override
     public void setEncoding(String encoding) throws MessagingException {
-        mEncoding = encoding;
+        this.encoding = encoding;
     }
 
     public String getEncoding() {
-        return mEncoding;
+        return encoding;
     }
 }

@@ -11,17 +11,14 @@ import java.security.cert.X509Certificate;
 public class CertificateChainException extends CertificateException {
 
     private static final long serialVersionUID = 1103894512106650107L;
-    private X509Certificate[] mCertChain;
+    private X509Certificate[] certChain;
 
     public CertificateChainException(String msg, X509Certificate[] chain, Throwable cause) {
         super(msg, cause);
-        setCertChain(chain);
+        certChain = chain;
     }
 
-    public void setCertChain(X509Certificate[] chain) {
-        mCertChain = chain;
-    }
     public X509Certificate[] getCertChain() {
-        return mCertChain;
+        return certChain;
     }
 }

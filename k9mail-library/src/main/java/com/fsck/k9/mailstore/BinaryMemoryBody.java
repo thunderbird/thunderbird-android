@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.support.annotation.NonNull;
+
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.RawDataBody;
@@ -27,6 +29,7 @@ public class BinaryMemoryBody implements Body, RawDataBody, SizeAware {
     }
 
     @Override
+    @NonNull
     public InputStream getInputStream() throws MessagingException {
         return new ByteArrayInputStream(data);
     }

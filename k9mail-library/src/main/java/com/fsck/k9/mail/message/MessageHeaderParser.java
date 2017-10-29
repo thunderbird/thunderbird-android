@@ -42,7 +42,7 @@ public class MessageHeaderParser {
     private static class MessageHeaderParserContentHandler implements ContentHandler {
         private final Part part;
 
-        public MessageHeaderParserContentHandler(Part part) {
+        MessageHeaderParserContentHandler(Part part) {
             this.part = part;
         }
 

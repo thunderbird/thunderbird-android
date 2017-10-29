@@ -17,7 +17,8 @@ import timber.log.Timber;
 public class TracingPowerManager {
     private final static boolean TRACE = false;
     public static AtomicInteger wakeLockId = new AtomicInteger(0);
-    PowerManager pm = null;
+
+    private PowerManager pm = null;
     private static TracingPowerManager tracingPowerManager;
     private Timer timer = null;
 

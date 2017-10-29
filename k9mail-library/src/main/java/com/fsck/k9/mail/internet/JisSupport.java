@@ -1,14 +1,16 @@
 package com.fsck.k9.mail.internet;
 
+import android.support.annotation.Nullable;
+
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 
 class JisSupport {
-    public static final String SHIFT_JIS = "shift_jis";
+    static final String SHIFT_JIS = "shift_jis";
 
-    public static String getJisVariantFromMessage(Message message) throws MessagingException {
+    static String getJisVariantFromMessage(Message message) throws MessagingException {
         if (message == null) {
             return null;
         }
@@ -30,12 +32,12 @@ class JisSupport {
         return getJisVariantFromMailerHeaders(message);
     }
 
-    public static boolean isShiftJis(String charset) {
+    static boolean isShiftJis(String charset) {
         return charset.length() > 17 && charset.startsWith("x-")
                 && charset.endsWith("-shift_jis-2007");
     }
 
-    public static String getJisVariantFromAddress(String address) {
+    static String getJisVariantFromAddress(String address) {
         if (address == null) {
             return null;
         }
@@ -86,11 +88,13 @@ class JisSupport {
         return null;
     }
 
+    @Nullable
     private static String getAddressFromReceivedHeader(String receivedHeader) {
         // Not implemented yet!  Extract an address from the FOR clause of the given Received header.
         return null;
     }
 
+    @Nullable
     private static String getJisVariantFromFromHeaders(Message message) throws MessagingException {
         Address addresses[] = message.getFrom();
         if (addresses == null || addresses.length == 0) {
@@ -107,10 +111,7 @@ class JisSupport {
         }
 
         char c = address.charAt(index);
-        if (c != '@' && c != '.') {
-            return false;
-        }
+        return (c == '@' || c == '.') && address.endsWith(domain);
 
-        return address.endsWith(domain);
     }
 }

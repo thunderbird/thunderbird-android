@@ -11,19 +11,17 @@ import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Message;
 
 public class SaveMessageTask extends AsyncTask<Void, Void, Void> {
-    Context context;
-    Account account;
-    Contacts contacts;
-    Handler handler;
-    Message message;
-    long draftId;
-    boolean saveRemotely;
+    private final ThreadLocal<Context> context = new ThreadLocal<>();
+    private Account account;
+    private Handler handler;
+    private Message message;
+    private long draftId;
+    private boolean saveRemotely;
 
     public SaveMessageTask(Context context, Account account, Contacts contacts,
                            Handler handler, Message message, long draftId, boolean saveRemotely) {
-        this.context = context;
+        this.context.set(context);
         this.account = account;
-        this.contacts = contacts;
         this.handler = handler;
         this.message = message;
         this.draftId = draftId;
@@ -32,7 +30,7 @@ public class SaveMessageTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        final MessagingController messagingController = MessagingController.getInstance(context);
+        final MessagingController messagingController = MessagingController.getInstance(context.get());
         Message draftMessage = messagingController.saveDraft(account, message, draftId, saveRemotely);
         draftId = messagingController.getId(draftMessage);
 

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.support.annotation.NonNull;
+
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
@@ -24,37 +26,37 @@ import timber.log.Timber;
  * getInputStream is closed the file is deleted and the Body should be considered disposed of.
  */
 public class BinaryTempFileBody implements RawDataBody, SizeAware {
-    private static File mTempDirectory;
+    private static File tempDirectory;
 
-    private File mFile;
+    private File file;
 
-    String mEncoding = null;
+    String encoding = null;
 
     public static void setTempDirectory(File tempDirectory) {
-        mTempDirectory = tempDirectory;
+        BinaryTempFileBody.tempDirectory = tempDirectory;
     }
 
     public static File getTempDirectory() {
-        return mTempDirectory;
+        return tempDirectory;
     }
 
     @Override
     public String getEncoding() {
-        return mEncoding;
+        return encoding;
     }
 
     public void setEncoding(String encoding) throws MessagingException {
-        if (mEncoding != null && mEncoding.equalsIgnoreCase(encoding)) {
+        if (this.encoding != null && this.encoding.equalsIgnoreCase(encoding)) {
             return;
         }
 
         // The encoding changed, so we need to convert the message
-        if (!MimeUtil.ENC_8BIT.equalsIgnoreCase(mEncoding)) {
-            throw new RuntimeException("Can't convert from encoding: " + mEncoding);
+        if (!MimeUtil.ENC_8BIT.equalsIgnoreCase(this.encoding)) {
+            throw new RuntimeException("Can't convert from encoding: " + this.encoding);
         }
 
         try {
-            File newFile = File.createTempFile("body", null, mTempDirectory);
+            File newFile = File.createTempFile("body", null, tempDirectory);
             final OutputStream out = new FileOutputStream(newFile);
             try {
                 OutputStream wrappedOut;
@@ -77,30 +79,31 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
                 IOUtils.closeQuietly(out);
             }
 
-            mFile = newFile;
-            mEncoding = encoding;
+            file = newFile;
+            this.encoding = encoding;
         } catch (IOException e) {
             throw new MessagingException("Unable to convert body", e);
         }
     }
 
     public BinaryTempFileBody(String encoding) {
-        if (mTempDirectory == null) {
+        if (tempDirectory == null) {
             throw new RuntimeException("setTempDirectory has not been called on BinaryTempFileBody!");
         }
 
-        mEncoding = encoding;
+        this.encoding = encoding;
     }
 
     public OutputStream getOutputStream() throws IOException {
-        mFile = File.createTempFile("body", null, mTempDirectory);
-        mFile.deleteOnExit();
-        return new FileOutputStream(mFile);
+        file = File.createTempFile("body", null, tempDirectory);
+        file.deleteOnExit();
+        return new FileOutputStream(file);
     }
 
+    @NonNull
     public InputStream getInputStream() throws MessagingException {
         try {
-            return new BinaryTempFileBodyInputStream(new FileInputStream(mFile));
+            return new BinaryTempFileBodyInputStream(new FileInputStream(file));
         } catch (IOException ioe) {
             throw new MessagingException("Unable to open body", ioe);
         }
@@ -117,15 +120,15 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
 
     @Override
     public long getSize() {
-        return mFile.length();
+        return file.length();
     }
 
     public File getFile() {
-        return mFile;
+        return file;
     }
 
     class BinaryTempFileBodyInputStream extends FilterInputStream {
-        public BinaryTempFileBodyInputStream(InputStream in) {
+        BinaryTempFileBodyInputStream(InputStream in) {
             super(in);
         }
 
@@ -134,15 +137,15 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
             try {
                 super.close();
             } finally {
-                Timber.d("Deleting temporary binary file: %s", mFile.getName());
-                boolean fileSuccessfullyDeleted = mFile.delete();
+                Timber.d("Deleting temporary binary file: %s", file.getName());
+                boolean fileSuccessfullyDeleted = file.delete();
                 if (!fileSuccessfullyDeleted) {
-                    Timber.i("Failed to delete temporary binary file: %s", mFile.getName());
+                    Timber.i("Failed to delete temporary binary file: %s", file.getName());
                 }
             }
         }
 
-        public void closeWithoutDeleting() throws IOException {
+        void closeWithoutDeleting() throws IOException {
             super.close();
         }
     }

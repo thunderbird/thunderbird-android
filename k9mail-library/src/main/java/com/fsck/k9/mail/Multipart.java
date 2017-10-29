@@ -11,21 +11,21 @@ import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.internet.TextBody;
 
 public abstract class Multipart implements Body {
-    private Part mParent;
+    private Part parent;
 
-    private final List<BodyPart> mParts = new ArrayList<BodyPart>();
+    private final List<BodyPart> parts = new ArrayList<BodyPart>();
 
     public void addBodyPart(BodyPart part) {
-        mParts.add(part);
+        parts.add(part);
         part.setParent(this);
     }
 
     public BodyPart getBodyPart(int index) {
-        return mParts.get(index);
+        return parts.get(index);
     }
 
     public List<BodyPart> getBodyParts() {
-        return Collections.unmodifiableList(mParts);
+        return Collections.unmodifiableList(parts);
     }
 
     public abstract String getMimeType();
@@ -33,15 +33,15 @@ public abstract class Multipart implements Body {
     public abstract String getBoundary();
 
     public int getCount() {
-        return mParts.size();
+        return parts.size();
     }
 
     public Part getParent() {
-        return mParent;
+        return parent;
     }
 
     public void setParent(Part parent) {
-        this.mParent = parent;
+        this.parent = parent;
     }
 
     @Override
@@ -55,10 +55,10 @@ public abstract class Multipart implements Body {
     }
 
     public void setCharset(String charset) throws MessagingException {
-        if (mParts.isEmpty())
+        if (parts.isEmpty())
             return;
 
-        BodyPart part = mParts.get(0);
+        BodyPart part = parts.get(0);
         Body body = part.getBody();
         if (body instanceof TextBody) {
             CharsetSupport.setCharset(charset, part);

@@ -15,36 +15,29 @@ import timber.log.Timber;
  * Maintains WebDAV data
  */
 class DataSet {
-    private Map<String, Map<String, String>> mData = new HashMap<String, Map<String, String>>();
-    private StringBuilder mUid = new StringBuilder();
-    private Map<String, String> mTempData = new HashMap<String, String>();
+    private Map<String, Map<String, String>> data = new HashMap<>();
+    private StringBuilder uid = new StringBuilder();
+    private Map<String, String> tempData = new HashMap<String, String>();
 
     public void addValue(String value, String tagName) {
         if (tagName.equals("uid")) {
-            mUid.append(value);
+            uid.append(value);
         }
 
-        if (mTempData.containsKey(tagName)) {
-            mTempData.put(tagName, mTempData.get(tagName) + value);
+        if (tempData.containsKey(tagName)) {
+            tempData.put(tagName, tempData.get(tagName) + value);
         } else {
-            mTempData.put(tagName, value);
+            tempData.put(tagName, value);
         }
     }
 
     public void finish() {
-        String uid = mUid.toString();
-        if (mTempData != null) {
-            mData.put(uid, mTempData);
-        } else if (mTempData != null) {
-            //TODO: This logic is clearly wrong
-                /*
-                 * Lost Data are for requests that don't include a message UID. These requests should only have a depth
-                 * of one for the response so it will never get stomped over.
-                 */
+        if (tempData != null) {
+            data.put(uid.toString(), tempData);
         }
 
-        mUid = new StringBuilder();
-        mTempData = new HashMap<String, String>();
+        this.uid = new StringBuilder();
+        tempData = new HashMap<>();
     }
 
     /**
@@ -52,10 +45,11 @@ class DataSet {
      */
     public Map<String, String> getSpecialFolderToUrl() {
         // We return the first (and only) map
-        for (Map<String, String> folderMap : mData.values()) {
-            return folderMap;
+        if (data.values().isEmpty()) {
+            return new HashMap<>();
+        } else {
+            return data.get(uid.toString());
         }
-        return new HashMap<String, String>();
     }
 
     /**
@@ -64,8 +58,8 @@ class DataSet {
     public Map<String, String> getUidToUrl() {
         Map<String, String> uidToUrl = new HashMap<String, String>();
 
-        for (String uid : mData.keySet()) {
-            Map<String, String> data = mData.get(uid);
+        for (String uid : data.keySet()) {
+            Map<String, String> data = this.data.get(uid);
             String value = data.get("href");
             if (value != null &&
                     !value.equals("")) {
@@ -82,8 +76,8 @@ class DataSet {
     public Map<String, Boolean> getUidToRead() {
         Map<String, Boolean> uidToRead = new HashMap<String, Boolean>();
 
-        for (String uid : mData.keySet()) {
-            Map<String, String> data = mData.get(uid);
+        for (String uid : data.keySet()) {
+            Map<String, String> data = this.data.get(uid);
             String readStatus = data.get("read");
             if (readStatus != null && !readStatus.equals("")) {
                 Boolean value = !readStatus.equals("0");
@@ -105,8 +99,8 @@ class DataSet {
     public String[] getHrefs() {
         List<String> hrefs = new ArrayList<String>();
 
-        for (String uid : mData.keySet()) {
-            Map<String, String> data = mData.get(uid);
+        for (String uid : data.keySet()) {
+            Map<String, String> data = this.data.get(uid);
             String href = data.get("href");
             hrefs.add(href);
         }
@@ -120,9 +114,7 @@ class DataSet {
     public String[] getUids() {
         List<String> uids = new ArrayList<String>();
 
-        for (String uid : mData.keySet()) {
-            uids.add(uid);
-        }
+        uids.addAll(data.keySet());
 
         return uids.toArray(WebDavConstants.EMPTY_STRING_ARRAY);
     }
@@ -138,8 +130,8 @@ class DataSet {
         // -1 is an error condition. Now the default is empty
         int messageCount = 0;
 
-        for (String uid : mData.keySet()) {
-            Map<String, String> data = mData.get(uid);
+        for (String uid : data.keySet()) {
+            Map<String, String> data = this.data.get(uid);
             String count = data.get("visiblecount");
 
             if (count != null &&
@@ -158,40 +150,44 @@ class DataSet {
     public Map<String, ParsedMessageEnvelope> getMessageEnvelopes() {
         Map<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
 
-        for (String uid : mData.keySet()) {
+        for (String uid : data.keySet()) {
             ParsedMessageEnvelope envelope = new ParsedMessageEnvelope();
-            Map<String, String> data = mData.get(uid);
+            Map<String, String> data = this.data.get(uid);
 
             if (data != null) {
                 for (Map.Entry<String, String> entry : data.entrySet()) {
                     String header = entry.getKey();
-                    if (header.equals("read")) {
-                        String read = entry.getValue();
-                        boolean readStatus = !read.equals("0");
+                    switch (header) {
+                        case "read":
+                            String read = entry.getValue();
+                            boolean readStatus = !read.equals("0");
 
-                        envelope.setReadStatus(readStatus);
-                    } else if (header.equals("date")) {
-                        /**
+                            envelope.setReadStatus(readStatus);
+                            break;
+                        case "date":
+                        /*
                          * Exchange doesn't give us rfc822 dates like it claims. The date is in the format:
                          * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances
                          * are Z>
                          */
-                        String date = entry.getValue();
-                        date = date.substring(0, date.length() - 1);
+                            String date = entry.getValue();
+                            date = date.substring(0, date.length() - 1);
 
-                        DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
-                        DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z", Locale.US);
-                        String tempDate = "";
+                            DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+                            DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z", Locale.US);
+                            String tempDate = "";
 
-                        try {
-                            Date parsedDate = dfInput.parse(date);
-                            tempDate = dfOutput.format(parsedDate);
-                        } catch (java.text.ParseException pe) {
-                            Timber.e(pe, "Error parsing date: %s", date);
-                        }
-                        envelope.addHeader(header, tempDate);
-                    } else {
-                        envelope.addHeader(header, entry.getValue());
+                            try {
+                                Date parsedDate = dfInput.parse(date);
+                                tempDate = dfOutput.format(parsedDate);
+                            } catch (java.text.ParseException pe) {
+                                Timber.e(pe, "Error parsing date: %s", date);
+                            }
+                            envelope.addHeader(header, tempDate);
+                            break;
+                        default:
+                            envelope.addHeader(header, entry.getValue());
+                            break;
                     }
                 }
             }

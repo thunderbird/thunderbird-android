@@ -35,12 +35,12 @@ import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.R;
 
 public class OpenPgpKeyPreference extends Preference {
-    private long mKeyId;
-    private String mOpenPgpProvider;
-    private OpenPgpServiceConnection mServiceConnection;
-    private String mDefaultUserId;
+    private long keyId;
+    private String openPgpProvider;
+    private OpenPgpServiceConnection serviceConnection;
+    private String defaultUserId;
 
-    public static final int REQUEST_CODE_KEY_PREFERENCE = 9999;
+    private static final int REQUEST_CODE_KEY_PREFERENCE = 9999;
 
     private static final int NO_KEY = 0;
 
@@ -50,12 +50,12 @@ public class OpenPgpKeyPreference extends Preference {
 
     @Override
     public CharSequence getSummary() {
-        return (mKeyId == NO_KEY) ? getContext().getString(R.string.openpgp_no_key_selected)
+        return (keyId == NO_KEY) ? getContext().getString(R.string.openpgp_no_key_selected)
                 : getContext().getString(R.string.openpgp_key_selected);
     }
 
     private void updateEnabled() {
-        if (TextUtils.isEmpty(mOpenPgpProvider)) {
+        if (TextUtils.isEmpty(openPgpProvider)) {
             setEnabled(false);
         } else {
             setEnabled(true);
@@ -63,20 +63,20 @@ public class OpenPgpKeyPreference extends Preference {
     }
 
     public void setOpenPgpProvider(String packageName) {
-        mOpenPgpProvider = packageName;
+        openPgpProvider = packageName;
         updateEnabled();
     }
 
     public void setDefaultUserId(String userId) {
-        mDefaultUserId = userId;
+        defaultUserId = userId;
     }
 
     @Override
     protected void onClick() {
         // bind to service
-        mServiceConnection = new OpenPgpServiceConnection(
+        serviceConnection = new OpenPgpServiceConnection(
                 getContext().getApplicationContext(),
-                mOpenPgpProvider,
+                openPgpProvider,
                 new OpenPgpServiceConnection.OnBound() {
                     @Override
                     public void onBound(IOpenPgpService2 service) {
@@ -90,14 +90,14 @@ public class OpenPgpKeyPreference extends Preference {
                     }
                 }
         );
-        mServiceConnection.bindToService();
+        serviceConnection.bindToService();
     }
 
     private void getSignKeyId(Intent data) {
         data.setAction(OpenPgpApi.ACTION_GET_SIGN_KEY_ID);
-        data.putExtra(OpenPgpApi.EXTRA_USER_ID, mDefaultUserId);
+        data.putExtra(OpenPgpApi.EXTRA_USER_ID, defaultUserId);
 
-        OpenPgpApi api = new OpenPgpApi(getContext(), mServiceConnection.getService());
+        OpenPgpApi api = new OpenPgpApi(getContext(), serviceConnection.getService());
         api.executeApiAsync(data, null, null, new MyCallback(REQUEST_CODE_KEY_PREFERENCE));
     }
 
@@ -163,15 +163,15 @@ public class OpenPgpKeyPreference extends Preference {
      * Public API
      */
     public long getValue() {
-        return mKeyId;
+        return keyId;
     }
 
     private void setAndPersist(long newValue) {
-        mKeyId = newValue;
+        keyId = newValue;
 
         // Save to persistent storage (this method will make sure this
         // preference should be persistent, along with other useful checks)
-        persistLong(mKeyId);
+        persistLong(keyId);
 
         // Data has changed, notify so UI can be refreshed!
         notifyChanged();
@@ -191,7 +191,7 @@ public class OpenPgpKeyPreference extends Preference {
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
         if (restoreValue) {
             // Restore state
-            mKeyId = getPersistedLong(mKeyId);
+            keyId = getPersistedLong(keyId);
         } else {
             // Set state
             long value = (Long) defaultValue;
@@ -215,9 +215,9 @@ public class OpenPgpKeyPreference extends Preference {
 
         // Save the instance state
         final SavedState myState = new SavedState(superState);
-        myState.keyId = mKeyId;
-        myState.openPgpProvider = mOpenPgpProvider;
-        myState.defaultUserId = mDefaultUserId;
+        myState.keyId = keyId;
+        myState.openPgpProvider = openPgpProvider;
+        myState.defaultUserId = defaultUserId;
         return myState;
     }
 
@@ -232,9 +232,9 @@ public class OpenPgpKeyPreference extends Preference {
         // Restore the instance state
         SavedState myState = (SavedState) state;
         super.onRestoreInstanceState(myState.getSuperState());
-        mKeyId = myState.keyId;
-        mOpenPgpProvider = myState.openPgpProvider;
-        mDefaultUserId = myState.defaultUserId;
+        keyId = myState.keyId;
+        openPgpProvider = myState.openPgpProvider;
+        defaultUserId = myState.defaultUserId;
         notifyChanged();
     }
 

@@ -1,25 +1,25 @@
 package com.fsck.k9.mail.store.webdav;
 
+import java.util.LinkedList;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import java.util.LinkedList;
 
 /**
  * Handler for WebDAV XML events
  */
 class WebDavHandler extends DefaultHandler {
-    private DataSet mDataSet = new DataSet();
-    private final LinkedList<String> mOpenTags = new LinkedList<String>();
+    private DataSet dataSet = new DataSet();
+    private final LinkedList<String> openTags = new LinkedList<String>();
 
     public DataSet getDataSet() {
-        return this.mDataSet;
+        return this.dataSet;
     }
 
     @Override
     public void startDocument() throws SAXException {
-        this.mDataSet = new DataSet();
+        this.dataSet = new DataSet();
     }
 
     @Override
@@ -30,22 +30,22 @@ class WebDavHandler extends DefaultHandler {
     @Override
     public void startElement(String namespaceURI, String localName,
                              String qName, Attributes atts) throws SAXException {
-        mOpenTags.addFirst(localName);
+        openTags.addFirst(localName);
     }
 
     @Override
     public void endElement(String namespaceURI, String localName, String qName) {
-        mOpenTags.removeFirst();
+        openTags.removeFirst();
 
-        /** Reset the hash temp variables */
+        /* Reset the hash temp variables */
         if (localName.equals("response")) {
-            this.mDataSet.finish();
+            this.dataSet.finish();
         }
     }
 
     @Override
     public void characters(char ch[], int start, int length) {
         String value = new String(ch, start, length);
-        mDataSet.addValue(value, mOpenTags.peek());
+        dataSet.addValue(value, openTags.peek());
     }
 }

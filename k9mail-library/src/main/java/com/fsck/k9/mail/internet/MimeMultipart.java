@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import android.support.annotation.NonNull;
+
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
@@ -105,6 +107,7 @@ public class MimeMultipart extends Multipart {
     }
 
     @Override
+    @NonNull
     public InputStream getInputStream() throws MessagingException {
         throw new UnsupportedOperationException();
     }

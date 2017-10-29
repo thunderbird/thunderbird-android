@@ -69,16 +69,14 @@ public class WebDavStore extends RemoteStore {
         return WebDavStoreUriCreator.create(server);
     }
 
-    private ConnectionSecurity mConnectionSecurity;
+    private ConnectionSecurity connectionSecurity;
     private String username;
     private String alias;
     private String password;
     private String baseUrl;
     private String hostname;
     private int port;
-    private String path;
     private String formBasedAuthPath;
-    private String mailboxPath;
 
     private final WebDavHttpClient.WebDavHttpClientFactory httpClientFactory;
     private WebDavHttpClient httpClient = null;
@@ -106,15 +104,15 @@ public class WebDavStore extends RemoteStore {
         hostname = settings.host;
         port = settings.port;
 
-        mConnectionSecurity = settings.connectionSecurity;
+        connectionSecurity = settings.connectionSecurity;
 
         username = settings.username;
         password = settings.password;
         alias = settings.alias;
 
-        path = settings.path;
+        String path = settings.path;
         formBasedAuthPath = settings.authPath;
-        mailboxPath = settings.mailboxPath;
+        String mailboxPath = settings.mailboxPath;
 
 
         if (path == null || path.equals("")) {
@@ -144,7 +142,7 @@ public class WebDavStore extends RemoteStore {
 
     private String getRoot() {
         String root;
-        if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
+        if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
             root = "https";
         } else {
             root = "http";
@@ -162,7 +160,7 @@ public class WebDavStore extends RemoteStore {
     }
 
     StoreConfig getStoreConfig() {
-        return mStoreConfig;
+        return storeConfig;
     }
 
     @Override
@@ -190,23 +188,23 @@ public class WebDavStore extends RemoteStore {
         Map<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
         String folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_INBOX_FOLDER));
         if (folderName != null) {
-            mStoreConfig.setAutoExpandFolderName(folderName);
-            mStoreConfig.setInboxFolderName(folderName);
+            storeConfig.setAutoExpandFolderName(folderName);
+            storeConfig.setInboxFolderName(folderName);
         }
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_DRAFTS_FOLDER));
         if (folderName != null) {
-            mStoreConfig.setDraftsFolderName(folderName);
+            storeConfig.setDraftsFolderName(folderName);
         }
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_TRASH_FOLDER));
         if (folderName != null) {
-            mStoreConfig.setTrashFolderName(folderName);
+            storeConfig.setTrashFolderName(folderName);
         }
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SPAM_FOLDER));
         if (folderName != null) {
-            mStoreConfig.setSpamFolderName(folderName);
+            storeConfig.setSpamFolderName(folderName);
         }
 
         // K-9 Mail's outbox is a special local folder and different from Exchange/WebDAV's outbox.
@@ -218,7 +216,7 @@ public class WebDavStore extends RemoteStore {
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SENT_FOLDER));
         if (folderName != null) {
-            mStoreConfig.setSentFolderName(folderName);
+            storeConfig.setSentFolderName(folderName);
         }
 
         /*
@@ -983,7 +981,7 @@ public class WebDavStore extends RemoteStore {
 
     @Override
     public void sendMessages(List<? extends Message> messages) throws MessagingException {
-        WebDavFolder tmpFolder = getFolder(mStoreConfig.getDraftsFolderName());
+        WebDavFolder tmpFolder = getFolder(storeConfig.getDraftsFolderName());
         try {
             tmpFolder.open(Folder.OPEN_MODE_RW);
             List<? extends Message> retMessages = tmpFolder.appendWebDavMessages(messages);

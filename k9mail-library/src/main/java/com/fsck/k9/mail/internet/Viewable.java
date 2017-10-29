@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Empty marker class interface the class hierarchy used by
- * {@link MessageExtractor#findViewablesAndAttachments(com.fsck.k9.mail.Part, java.util.List)}
+ * {@link MessageExtractor#findViewablesAndAttachments(com.fsck.k9.mail.Part, java.util.List, java.util.List)}
  *
  * @see Viewable.Text
  * @see Viewable.Html
@@ -21,14 +21,14 @@ public interface Viewable {
      * @see com.fsck.k9.mail.internet.MessageExtractor#isPartTextualBody(com.fsck.k9.mail.Part)
      */
     abstract class Textual implements Viewable {
-        private Part mPart;
+        private Part part;
 
-        public Textual(Part part) {
-            mPart = part;
+        Textual(Part part) {
+            this.part = part;
         }
 
         public Part getPart() {
-            return mPart;
+            return part;
         }
     }
 
@@ -44,7 +44,7 @@ public interface Viewable {
     class Flowed extends Textual {
         private boolean delSp;
 
-        public Flowed(Part part, boolean delSp) {
+        Flowed(Part part, boolean delSp) {
             super(part);
             this.delSp = delSp;
         }
@@ -58,7 +58,7 @@ public interface Viewable {
      * Class representing a {@code text/html} part of a message.
      */
     class Html extends Textual {
-        public Html(Part part) {
+        Html(Part part) {
             super(part);
         }
     }
@@ -72,20 +72,20 @@ public interface Viewable {
      * </p>
      */
     class MessageHeader implements Viewable {
-        private Part mContainerPart;
-        private Message mMessage;
+        private Part containerPart;
+        private Message message;
 
         public MessageHeader(Part containerPart, Message message) {
-            mContainerPart = containerPart;
-            mMessage = message;
+            this.containerPart = containerPart;
+            this.message = message;
         }
 
         public Part getContainerPart() {
-            return mContainerPart;
+            return containerPart;
         }
 
         public Message getMessage() {
-            return mMessage;
+            return message;
         }
     }
 
@@ -98,20 +98,20 @@ public interface Viewable {
      * </p>
      */
     class Alternative implements Viewable {
-        private List<Viewable> mText;
-        private List<Viewable> mHtml;
+        private List<Viewable> text;
+        private List<Viewable> html;
 
-        public Alternative(List<Viewable> text, List<Viewable> html) {
-            mText = text;
-            mHtml = html;
+        Alternative(List<Viewable> text, List<Viewable> html) {
+            this.text = text;
+            this.html = html;
         }
 
         public List<Viewable> getText() {
-            return mText;
+            return text;
         }
 
         public List<Viewable> getHtml() {
-            return mHtml;
+            return html;
         }
     }
 }

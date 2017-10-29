@@ -46,7 +46,7 @@ class ImapUtility {
      * @return The list of IDs as strings in this sequence set. If the set is invalid, an empty
      *         list is returned.
      */
-    public static List<String> getImapSequenceValues(String set) {
+    static List<String> getImapSequenceValues(String set) {
         List<String> list = new ArrayList<String>();
         if (set != null) {
             String[] setItems = set.split(",");
@@ -81,7 +81,7 @@ class ImapUtility {
      * @return The list of IDs as strings in this range. If the range is not valid, an empty list
      *         is returned.
      */
-    public static List<String> getImapRangeValues(String range) {
+    static List<String> getImapRangeValues(String range) {
         List<String> list = new ArrayList<String>();
         try {
             if (range != null) {
@@ -144,11 +144,11 @@ class ImapUtility {
      *
      * @return The string encoded as quoted (IMAP) string.
      */
-    public static String encodeString(String str) {
+    static String encodeString(String str) {
         return "\"" + str.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
     }
 
-    public static ImapResponse getLastResponse(List<ImapResponse> responses) {
+    static ImapResponse getLastResponse(List<ImapResponse> responses) {
         int lastIndex = responses.size() - 1;
 
         return responses.get(lastIndex);

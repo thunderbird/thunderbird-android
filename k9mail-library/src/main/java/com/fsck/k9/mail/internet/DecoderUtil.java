@@ -1,12 +1,12 @@
 
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.CharsetUtil;
@@ -85,7 +85,7 @@ class DecoderUtil {
      * @param message the message which has the string.
      * @return the decoded string.
      */
-    public static String decodeEncodedWords(String body, Message message) {
+    static String decodeEncodedWords(String body, Message message) {
 
         // ANDROID:  Most strings will not include "=?" so a quick test can prevent unneeded
         // object creation.  This could also be handled via lazy creation of the StringBuilder.

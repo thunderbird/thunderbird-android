@@ -47,19 +47,19 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN;
 public class MessageListAdapter extends CursorAdapter {
 
     private final MessageListFragment fragment;
-    private Drawable mAttachmentIcon;
-    private Drawable mForwardedIcon;
-    private Drawable mAnsweredIcon;
-    private Drawable mForwardedAnsweredIcon;
+    private Drawable attachmentIcon;
+    private Drawable forwardedIcon;
+    private Drawable answeredIcon;
+    private Drawable forwardedAnsweredIcon;
     private FontSizes fontSizes = K9.getFontSizes();
 
     MessageListAdapter(MessageListFragment fragment) {
         super(fragment.getActivity(), null, 0);
         this.fragment = fragment;
-        mAttachmentIcon = fragment.getResources().getDrawable(R.drawable.ic_email_attachment_small);
-        mAnsweredIcon = fragment.getResources().getDrawable(R.drawable.ic_email_answered_small);
-        mForwardedIcon = fragment.getResources().getDrawable(R.drawable.ic_email_forwarded_small);
-        mForwardedAnsweredIcon = fragment.getResources().getDrawable(R.drawable.ic_email_forwarded_answered_small);
+        attachmentIcon = fragment.getResources().getDrawable(R.drawable.ic_email_attachment_small);
+        answeredIcon = fragment.getResources().getDrawable(R.drawable.ic_email_answered_small);
+        forwardedIcon = fragment.getResources().getDrawable(R.drawable.ic_email_forwarded_small);
+        forwardedAnsweredIcon = fragment.getResources().getDrawable(R.drawable.ic_email_forwarded_answered_small);
     }
 
     private String recipientSigil(boolean toMe, boolean ccMe) {
@@ -213,7 +213,7 @@ public class MessageListAdapter extends CursorAdapter {
                 holder.from.setCompoundDrawablesWithIntrinsicBounds(
                         statusHolder, // left
                         null, // top
-                        hasAttachments ? mAttachmentIcon : null, // right
+                        hasAttachments ? attachmentIcon : null, // right
                         null); // bottom
 
                 holder.from.setText(displayName);
@@ -226,7 +226,7 @@ public class MessageListAdapter extends CursorAdapter {
                 holder.subject.setCompoundDrawablesWithIntrinsicBounds(
                         statusHolder, // left
                         null, // top
-                        hasAttachments ? mAttachmentIcon : null, // right
+                        hasAttachments ? attachmentIcon : null, // right
                         null); // bottom
             }
 
@@ -311,11 +311,11 @@ public class MessageListAdapter extends CursorAdapter {
 
     private Drawable buildStatusHolder(boolean forwarded, boolean answered) {
         if (forwarded && answered) {
-            return mForwardedAnsweredIcon;
+            return forwardedAnsweredIcon;
         } else if (answered) {
-            return mAnsweredIcon;
+            return answeredIcon;
         } else if (forwarded) {
-            return mForwardedIcon;
+            return forwardedIcon;
         }
         return null;
     }

@@ -10,10 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.X509ExtendedKeyManager;
-import javax.security.auth.x500.X500Principal;
-
 import android.content.Context;
 import android.os.Build;
 import android.security.KeyChain;
@@ -21,6 +17,9 @@ import android.security.KeyChainException;
 
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MessagingException;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.X509ExtendedKeyManager;
+import javax.security.auth.x500.X500Principal;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.CertificateValidationException.Reason;
@@ -42,9 +41,9 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
     }
 
 
-    private final String mAlias;
-    private final X509Certificate[] mChain;
-    private final PrivateKey mPrivateKey;
+    private final String alias;
+    private final X509Certificate[] chain;
+    private final PrivateKey privateKey;
 
 
     /**
@@ -54,15 +53,13 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
      *          (likely because the alias is invalid or the certificate was deleted)
      */
     public KeyChainKeyManager(Context context, String alias) throws MessagingException {
-        mAlias = alias;
+        this.alias = alias;
 
         try {
-            mChain = fetchCertificateChain(context, alias);
-            mPrivateKey = fetchPrivateKey(context, alias);
-        } catch (KeyChainException e) {
+            chain = fetchCertificateChain(context, alias);
+            privateKey = fetchPrivateKey(context, alias);
+        } catch (KeyChainException | InterruptedException e) {
             // The certificate was possibly deleted.  Notify user of error.
-            throw new CertificateValidationException(e.getMessage(), RetrievalFailure, alias);
-        } catch (InterruptedException e) {
             throw new CertificateValidationException(e.getMessage(), RetrievalFailure, alias);
         }
     }
@@ -113,12 +110,12 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
 
     @Override
     public X509Certificate[] getCertificateChain(String alias) {
-        return (mAlias.equals(alias) ? mChain : null);
+        return (this.alias.equals(alias) ? chain : null);
     }
 
     @Override
     public PrivateKey getPrivateKey(String alias) {
-        return (mAlias.equals(alias) ? mPrivateKey : null);
+        return (this.alias.equals(alias) ? privateKey : null);
     }
 
     @Override
@@ -152,7 +149,7 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
         if (keyTypes == null || keyTypes.length == 0) {
             return null;
         }
-        final X509Certificate cert = mChain[0];
+        final X509Certificate cert = chain[0];
         final String certKeyAlg = cert.getPublicKey().getAlgorithm();
         final String certSigAlg = cert.getSigAlgName().toUpperCase(Locale.US);
         for (String keyAlgorithm : keyTypes) {
@@ -185,11 +182,11 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
             }
             // no issuers to match
             if (issuers == null || issuers.length == 0) {
-                return mAlias;
+                return alias;
             }
             List<Principal> issuersList = Arrays.asList(issuers);
             // check that a certificate in the chain was issued by one of the specified issuers
-            for (X509Certificate certFromChain : mChain) {
+            for (X509Certificate certFromChain : chain) {
                 /*
                  * Note use of X500Principal from
                  * getIssuerX500Principal as opposed to Principal
@@ -200,13 +197,13 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
                  */
                 X500Principal issuerFromChain = certFromChain.getIssuerX500Principal();
                 if (issuersList.contains(issuerFromChain)) {
-                    return mAlias;
+                    return alias;
                 }
             }
-            Timber.w("Client certificate %s not issued by any of the requested issuers", mAlias);
+            Timber.w("Client certificate %s not issued by any of the requested issuers", alias);
             return null;
         }
-        Timber.w("Client certificate %s does not match any of the requested key types", mAlias);
+        Timber.w("Client certificate %s does not match any of the requested key types", alias);
         return null;
     }
 }

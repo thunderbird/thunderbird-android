@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -904,10 +905,12 @@ public class MimeUtility {
         }
     }
 
+    @Nullable
     public static String unfoldAndDecode(String s) {
         return unfoldAndDecode(s, null);
     }
 
+    @Nullable
     public static String unfoldAndDecode(String s, Message message) {
         return decode(unfold(s), message);
     }
@@ -927,6 +930,7 @@ public class MimeUtility {
      * @param parameterName the parameter name
      * @return the value. if the parameter cannot be found the method returns null.
      */
+    @Nullable
     public static String getHeaderParameter(String headerValue, String parameterName) {
         if (headerValue == null) {
             return null;
@@ -954,6 +958,7 @@ public class MimeUtility {
         return null;
     }
 
+    @NonNull
     public static Map<String,String> getAllHeaderParameters(String headerValue) {
         Map<String,String> result = new HashMap<>();
 
@@ -987,11 +992,10 @@ public class MimeUtility {
     }
 
     /**
-     * Returns true if the given mimeType matches the matchAgainst specification.
+     * @return whether the given mimeType matches the matchAgainst specification.
      * @param mimeType A MIME type to check.
      * @param matchAgainst A MIME type to check against. May include wildcards such as image/* or
-     * * /*.
-     * @return
+     *
      */
     public static boolean mimeTypeMatches(String mimeType, String matchAgainst) {
         Pattern p = Pattern.compile(matchAgainst.replaceAll("\\*", "\\.\\*"), Pattern.CASE_INSENSITIVE);
@@ -1107,7 +1111,7 @@ public class MimeUtility {
      *            A String representing a MIME content-type
      * @return A String representing a MIME content-transfer-encoding
      */
-    public static String getEncodingforType(String type) {
+    public static String getEncodingForType(String type) {
         if (type == null) {
             return (MimeUtil.ENC_BASE64);
         } else if (MimeUtil.isMessage(type)) {

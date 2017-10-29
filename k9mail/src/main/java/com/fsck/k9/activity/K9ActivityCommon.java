@@ -65,22 +65,22 @@ public class K9ActivityCommon {
     }
 
 
-    private Activity mActivity;
-    private GestureDetector mGestureDetector;
+    private Activity activity;
+    private GestureDetector gestureDetector;
 
 
     private K9ActivityCommon(Activity activity) {
-        mActivity = activity;
-        setLanguage(mActivity, K9.getK9Language());
-        mActivity.setTheme(K9.getK9ThemeResourceId());
+        this.activity = activity;
+        setLanguage(this.activity, K9.getK9Language());
+        this.activity.setTheme(K9.getK9ThemeResourceId());
     }
 
     /**
      * Call this before calling {@code super.dispatchTouchEvent(MotionEvent)}.
      */
     public void preDispatchTouchEvent(MotionEvent event) {
-        if (mGestureDetector != null) {
-            mGestureDetector.onTouchEvent(event);
+        if (gestureDetector != null) {
+            gestureDetector.onTouchEvent(event);
         }
     }
 
@@ -90,7 +90,7 @@ public class K9ActivityCommon {
      * @return The background color of the current theme.
      */
     public int getThemeBackgroundColor() {
-        TypedArray array = mActivity.getTheme().obtainStyledAttributes(
+        TypedArray array = activity.getTheme().obtainStyledAttributes(
                 new int[] { android.R.attr.colorBackground });
 
         int backgroundColor = array.getColor(0, 0xFF00FF);
@@ -108,7 +108,7 @@ public class K9ActivityCommon {
      *         detected.
      */
     public void setupGestureDetector(OnSwipeGestureListener listener) {
-        mGestureDetector = new GestureDetector(mActivity,
-                new SwipeGestureDetector(mActivity, listener));
+        gestureDetector = new GestureDetector(activity,
+                new SwipeGestureDetector(activity, listener));
     }
 }

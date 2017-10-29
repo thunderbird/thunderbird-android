@@ -175,12 +175,11 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference syncRemoteDeletions;
     private CheckBoxPreference pushPollOnConnect;
     private ListPreference idleRefreshPeriod;
-    private ListPreference mMaxPushFolders;
+    private ListPreference maxPushFolders;
     private boolean hasPgpCrypto = false;
     private OpenPgpKeyPreference pgpCryptoKey;
     private CheckBoxPreference pgpSupportSignOnly;
 
-    private PreferenceScreen searchScreen;
     private CheckBoxPreference cloudSearchEnabled;
     private ListPreference remoteSearchNumResults;
 
@@ -496,7 +495,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
             localStorageProvider.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    localStorageProvider.setSummary(providers.get(newValue));
+                    localStorageProvider.setSummary(providers.get(newValue.toString()));
                     return true;
                 }
             });
@@ -504,7 +503,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         // IMAP-specific preferences
 
-        searchScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_SEARCH);
+        PreferenceScreen searchScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_SEARCH);
 
         cloudSearchEnabled = (CheckBoxPreference) findPreference(PREFERENCE_CLOUD_SEARCH_ENABLED);
         remoteSearchNumResults = (ListPreference) findPreference(PREFERENCE_REMOTE_SEARCH_NUM_RESULTS);
@@ -520,7 +519,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         pushPollOnConnect = (CheckBoxPreference) findPreference(PREFERENCE_PUSH_POLL_ON_CONNECT);
         idleRefreshPeriod = (ListPreference) findPreference(PREFERENCE_IDLE_REFRESH_PERIOD);
-        mMaxPushFolders = (ListPreference) findPreference(PREFERENCE_MAX_PUSH_FOLDERS);
+        maxPushFolders = (ListPreference) findPreference(PREFERENCE_MAX_PUSH_FOLDERS);
         if (isPushCapable) {
             pushPollOnConnect.setChecked(account.isPushPollOnConnect());
 
@@ -542,14 +541,14 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             });
 
-            mMaxPushFolders.setValue(String.valueOf(account.getMaxPushFolders()));
-            mMaxPushFolders.setSummary(mMaxPushFolders.getEntry());
-            mMaxPushFolders.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            maxPushFolders.setValue(String.valueOf(account.getMaxPushFolders()));
+            maxPushFolders.setSummary(maxPushFolders.getEntry());
+            maxPushFolders.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     final String summary = newValue.toString();
-                    int index = mMaxPushFolders.findIndexOfValue(summary);
-                    mMaxPushFolders.setSummary(mMaxPushFolders.getEntries()[index]);
-                    mMaxPushFolders.setValue(summary);
+                    int index = maxPushFolders.findIndexOfValue(summary);
+                    maxPushFolders.setSummary(maxPushFolders.getEntries()[index]);
+                    maxPushFolders.setValue(summary);
                     return false;
                 }
             });
@@ -811,7 +810,7 @@ public class AccountSettings extends K9PreferenceActivity {
         if (isPushCapable) {
             account.setPushPollOnConnect(pushPollOnConnect.isChecked());
             account.setIdleRefreshMinutes(Integer.parseInt(idleRefreshPeriod.getValue()));
-            account.setMaxPushFolders(Integer.parseInt(mMaxPushFolders.getValue()));
+            account.setMaxPushFolders(Integer.parseInt(maxPushFolders.getValue()));
             account.setAllowRemoteSearch(cloudSearchEnabled.isChecked());
             account.setRemoteSearchNumResults(Integer.parseInt(remoteSearchNumResults.getValue()));
             //account.setRemoteSearchFullText(mRemoteSearchFullText.isChecked());
