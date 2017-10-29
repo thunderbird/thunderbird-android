@@ -52,7 +52,7 @@ public class QuotedMessageMvpView {
         messageContentView = (EolConvertingEditText) messageCompose.findViewById(R.id.message_content);
     }
 
-    public void setOnClickPresenter(final QuotedMessagePresenter presenter) {
+    void setOnClickPresenter(final QuotedMessagePresenter presenter) {
         OnClickListener onClickListener = new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,7 +79,7 @@ public class QuotedMessageMvpView {
         quotedText.addTextChangedListener(draftNeedsChangingTextWatcher);
     }
 
-    public void showOrHideQuotedText(QuotedTextMode mode, SimpleMessageFormat quotedTextFormat) {
+    void showOrHideQuotedText(QuotedTextMode mode, SimpleMessageFormat quotedTextFormat) {
         switch (mode) {
             case NONE: {
                 quotedTextShow.setVisibility(View.GONE);
@@ -119,26 +119,26 @@ public class QuotedMessageMvpView {
         mFontSizes.setViewTextSize(quotedText, fontSize);
     }
 
-    public void setQuotedHtml(String quotedContent, AttachmentResolver attachmentResolver) {
+    void setQuotedHtml(String quotedContent, AttachmentResolver attachmentResolver) {
         quotedHTML.displayHtmlContentWithInlineAttachments(
                 HtmlConverter.wrapMessageContent(quotedContent),
                 attachmentResolver, null);
     }
 
-    public void setQuotedText(String quotedText) {
+    void setQuotedText(String quotedText) {
         this.quotedText.setCharacters(quotedText);
     }
 
     // TODO we shouldn't have to retrieve the state from the view here
-    public String getQuotedText() {
+    String getQuotedText() {
         return quotedText.getCharacters();
     }
 
-    public void setMessageContentCharacters(String text) {
+    void setMessageContentCharacters(String text) {
         messageContentView.setCharacters(text);
     }
 
-    public void setMessageContentCursorPosition(int messageContentCursorPosition) {
+    void setMessageContentCursorPosition(int messageContentCursorPosition) {
         messageContentView.setSelection(messageContentCursorPosition);
     }
 }

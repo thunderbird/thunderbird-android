@@ -462,11 +462,11 @@ public class StorageManager {
          * {@link Lock} has a thread semantic so it can't be released from
          * another thread - this flags act as a holder for the unmount state
          */
-        public boolean unmounting = false;
+        boolean unmounting = false;
 
-        public final Lock readLock;
+        final Lock readLock;
 
-        public final Lock writeLock;
+        final Lock writeLock;
 
         {
             final ReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
@@ -507,7 +507,7 @@ public class StorageManager {
      * @return Whether the specified file matches a filesystem root.
      * @throws IOException
      */
-    public static boolean isMountPoint(final File file) {
+    static boolean isMountPoint(final File file) {
         for (final File root : File.listRoots()) {
             if (root.equals(file)) {
                 return true;
@@ -570,7 +570,7 @@ public class StorageManager {
      *            Never <code>null</code>.
      * @return <code>null</code> if not found.
      */
-    protected StorageProvider getProvider(final String providerId) {
+    private StorageProvider getProvider(final String providerId) {
         return providers.get(providerId);
     }
 
@@ -581,7 +581,7 @@ public class StorageManager {
      *            Never <code>null</code>.
      * @return The resolved database file for the given provider ID.
      */
-    public File getDatabase(final String dbName, final String providerId) {
+    File getDatabase(final String dbName, final String providerId) {
         StorageProvider provider = getProvider(providerId);
         // TODO fallback to internal storage if no provider
         return provider.getDatabase(context, dbName);
@@ -695,7 +695,7 @@ public class StorageManager {
      *            Never <code>null</code>.
      * @return The corresponding provider. <code>null</code> if no match.
      */
-    protected StorageProvider resolveProvider(final String path) {
+    private StorageProvider resolveProvider(final String path) {
         for (final StorageProvider provider : providers.values()) {
             if (path.equals(provider.getRoot(context).getAbsolutePath())) {
                 return provider;
@@ -724,7 +724,7 @@ public class StorageManager {
      * @throws UnavailableStorageException
      *             If the storage can't be locked.
      */
-    public void lockProvider(final String providerId) throws UnavailableStorageException {
+    void lockProvider(final String providerId) throws UnavailableStorageException {
         final StorageProvider provider = getProvider(providerId);
         if (provider == null) {
             throw new UnavailableStorageException("StorageProvider not found: " + providerId);
@@ -732,18 +732,18 @@ public class StorageManager {
         // lock provider
         final SynchronizationAid sync = providerLocks.get(provider);
         final boolean locked = sync.readLock.tryLock();
-        if (!locked || (locked && sync.unmounting)) {
+        if (!locked || sync.unmounting) {
             if (locked) {
                 sync.readLock.unlock();
             }
             throw new UnavailableStorageException("StorageProvider is unmounting");
-        } else if (locked && !provider.isReady(context)) {
+        } else if (!provider.isReady(context)) {
             sync.readLock.unlock();
             throw new UnavailableStorageException("StorageProvider not ready");
         }
     }
 
-    public void unlockProvider(final String providerId) {
+    void unlockProvider(final String providerId) {
         final StorageProvider provider = getProvider(providerId);
         final SynchronizationAid sync = providerLocks.get(provider);
         sync.readLock.unlock();

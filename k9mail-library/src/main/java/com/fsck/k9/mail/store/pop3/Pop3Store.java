@@ -315,7 +315,7 @@ public class Pop3Store extends RemoteStore {
         private String name;
         private int messageCount;
 
-        public Pop3Folder(String name) {
+        Pop3Folder(String name) {
             super();
             this.name = name;
 
@@ -1239,11 +1239,11 @@ public class Pop3Store extends RemoteStore {
     }
 
     static class Pop3Capabilities {
-        public boolean cramMD5;
-        public boolean authPlain;
-        public boolean stls;
+        boolean cramMD5;
+        boolean authPlain;
+        boolean stls;
         public boolean top;
-        public boolean uidl;
+        boolean uidl;
         public boolean external;
 
         @Override
@@ -1263,7 +1263,7 @@ public class Pop3Store extends RemoteStore {
         private boolean startOffline = true;
         private boolean finished;
 
-        public Pop3ResponseInputStream(InputStream in) {
+        Pop3ResponseInputStream(InputStream in) {
             this.in = in;
         }
 
@@ -1294,7 +1294,7 @@ public class Pop3Store extends RemoteStore {
     static class Pop3ErrorResponse extends MessagingException {
         private static final long serialVersionUID = 3672087845857867174L;
 
-        public Pop3ErrorResponse(String message) {
+        Pop3ErrorResponse(String message) {
             super(message, true);
         }
     }

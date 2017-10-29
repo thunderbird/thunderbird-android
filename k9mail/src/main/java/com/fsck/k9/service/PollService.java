@@ -80,7 +80,7 @@ public class PollService extends CoreService {
 
         // wakelock strategy is to be very conservative.  If there is any reason to release, then release
         // don't want to take the chance of running wild
-        public synchronized void wakeLockAcquire() {
+        synchronized void wakeLockAcquire() {
             TracingWakeLock oldWakeLock = wakeLock;
 
             TracingPowerManager pm = TracingPowerManager.getPowerManager(PollService.this);
@@ -93,7 +93,7 @@ public class PollService extends CoreService {
             }
 
         }
-        public synchronized void wakeLockRelease() {
+        synchronized void wakeLockRelease() {
             if (wakeLock != null) {
                 wakeLock.release();
                 wakeLock = null;
@@ -140,7 +140,7 @@ public class PollService extends CoreService {
         public int getStartId() {
             return startId;
         }
-        public void setStartId(int startId) {
+        void setStartId(int startId) {
             this.startId = startId;
         }
     }

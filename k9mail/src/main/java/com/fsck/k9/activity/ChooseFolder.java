@@ -165,7 +165,7 @@ public class ChooseFolder extends K9ListActivity {
             sendMessage(msg);
         }
 
-        public void setSelectedFolder(int position) {
+        void setSelectedFolder(int position) {
             android.os.Message msg = new android.os.Message();
             msg.what = MSG_SET_SELECTED_FOLDER;
             msg.arg1 = position;

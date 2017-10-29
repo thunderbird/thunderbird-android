@@ -28,9 +28,9 @@ public class OpenPgpServiceConnection {
 
     // callback interface
     public interface OnBound {
-        public void onBound(IOpenPgpService2 service);
+        void onBound(IOpenPgpService2 service);
 
-        public void onError(Exception e);
+        void onError(Exception e);
     }
 
     private Context applicationContext;
@@ -47,7 +47,7 @@ public class OpenPgpServiceConnection {
      * @param providerPackageName specify package name of OpenPGP provider,
      *                            e.g., "org.sufficientlysecure.keychain"
      */
-    public OpenPgpServiceConnection(Context context, String providerPackageName) {
+    private OpenPgpServiceConnection(Context context, String providerPackageName) {
         this.applicationContext = context.getApplicationContext();
         this.providerPackageName = providerPackageName;
     }

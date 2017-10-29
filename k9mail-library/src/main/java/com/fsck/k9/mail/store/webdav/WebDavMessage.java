@@ -74,11 +74,11 @@ class WebDavMessage extends MimeMessage {
         this.size = size;
     }
 
-    public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
+    void setFlagInternal(Flag flag, boolean set) throws MessagingException {
         super.setFlag(flag, set);
     }
 
-    public void setNewHeaders(ParsedMessageEnvelope envelope) throws MessagingException {
+    void setNewHeaders(ParsedMessageEnvelope envelope) throws MessagingException {
         String[] headers = envelope.getHeaderList();
         Map<String, String> messageHeaders = envelope.getMessageHeaders();
         for (String header : headers) {

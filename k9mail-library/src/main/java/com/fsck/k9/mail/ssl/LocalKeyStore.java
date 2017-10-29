@@ -64,7 +64,7 @@ public class LocalKeyStore {
      *            Occurs if {@code file == null} and
      *            {@code setKeyStoreLocation(directory)} was not called previously.
      */
-    public synchronized void setKeyStoreFile(File file) throws CertificateException {
+    synchronized void setKeyStoreFile(File file) throws CertificateException {
         if (file == null) {
             file = new File(getKeyStoreFilePath(KEY_STORE_FILE_VERSION));
         }
@@ -129,7 +129,7 @@ public class LocalKeyStore {
         }
     }
 
-    public synchronized boolean isValidCertificate(Certificate certificate, String host, int port) {
+    synchronized boolean isValidCertificate(Certificate certificate, String host, int port) {
         if (keyStore == null) {
             return false;
         }

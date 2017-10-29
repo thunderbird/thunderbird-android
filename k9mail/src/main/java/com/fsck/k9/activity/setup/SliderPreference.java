@@ -44,11 +44,11 @@ public class SliderPreference extends DialogPreference {
     private static final String STATE_KEY_SUPER = "super";
     private static final String STATE_KEY_SEEK_BAR_VALUE = "seek_bar_value";
 
-    protected final static int SEEKBAR_RESOLUTION = 10000;
+    private final static int SEEKBAR_RESOLUTION = 10000;
 
-    protected float value;
-    protected int seekBarValue;
-    protected CharSequence[] summaries;
+    private float value;
+    private int seekBarValue;
+    private CharSequence[] summaries;
 
     /**
      * @param context

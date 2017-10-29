@@ -10,9 +10,9 @@ import android.graphics.drawable.shapes.PathShape;
 
 public class ColorChip {
     public static final Path CIRCULAR = new Path();
-    public static final Path LEFT_POINTING = new Path();
-    public static final Path RIGHT_POINTING = new Path();
-    public static final Path RIGHT_NOTCH = new Path();
+    private static final Path LEFT_POINTING = new Path();
+    private static final Path RIGHT_POINTING = new Path();
+    private static final Path RIGHT_NOTCH = new Path();
     public static final Path STAR = new Path();
 
     static {

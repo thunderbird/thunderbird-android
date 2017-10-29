@@ -313,9 +313,9 @@ public class OpenPgpApi {
     public static final String EXTRA_CALL_UUID1 = "call_uuid1";
     public static final String EXTRA_CALL_UUID2 = "call_uuid2";
 
-    IOpenPgpService2 service;
-    Context context;
-    final AtomicInteger pipeIdGen = new AtomicInteger();
+    private IOpenPgpService2 service;
+    private Context context;
+    private final AtomicInteger pipeIdGen = new AtomicInteger();
 
     public OpenPgpApi(Context context, IOpenPgpService2 service) {
         this.context = context;
@@ -451,7 +451,7 @@ public class OpenPgpApi {
         }
     }
 
-    public <T> OpenPgpDataResult<T> executeApi(Intent data, OpenPgpDataSource dataSource, OpenPgpDataSink<T> dataSink) {
+    private <T> OpenPgpDataResult<T> executeApi(Intent data, OpenPgpDataSource dataSource, OpenPgpDataSink<T> dataSink) {
         ParcelFileDescriptor input = null;
         ParcelFileDescriptor output = null;
         try {
