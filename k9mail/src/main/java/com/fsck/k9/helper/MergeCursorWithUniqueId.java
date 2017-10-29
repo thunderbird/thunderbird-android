@@ -10,8 +10,8 @@ public class MergeCursorWithUniqueId extends MergeCursor {
     private static final long MAX_ID = (1L << SHIFT) - 1;
     private static final long MAX_CURSORS = 1L << (63 - SHIFT);
 
-    private int mColumnCount = -1;
-    private int mIdColumnIndex = -1;
+    private int columnCount = -1;
+    private int idColumnIndex = -1;
 
 
     public MergeCursorWithUniqueId(Cursor[] cursors, Comparator<Cursor> comparator) {
@@ -25,11 +25,11 @@ public class MergeCursorWithUniqueId extends MergeCursor {
 
     @Override
     public int getColumnCount() {
-        if (mColumnCount == -1) {
-            mColumnCount = super.getColumnCount();
+        if (columnCount == -1) {
+            columnCount = super.getColumnCount();
         }
 
-        return mColumnCount + 1;
+        return columnCount + 1;
     }
 
     @Override
@@ -59,25 +59,25 @@ public class MergeCursorWithUniqueId extends MergeCursor {
                         " can only handle '_id' values up to " + SHIFT + " bits.");
             }
 
-            return (((long) mActiveCursorIndex) << SHIFT) + id;
+            return (((long) activeCursorIndex) << SHIFT) + id;
         }
 
         return super.getLong(columnIndex);
     }
 
-    protected int getUniqueIdColumnIndex() {
-        if (mColumnCount == -1) {
-            mColumnCount = super.getColumnCount();
+    private int getUniqueIdColumnIndex() {
+        if (columnCount == -1) {
+            columnCount = super.getColumnCount();
         }
 
-        return mColumnCount;
+        return columnCount;
     }
 
-    protected long getPerCursorId() {
-        if (mIdColumnIndex == -1) {
-            mIdColumnIndex = super.getColumnIndexOrThrow("_id");
+    private long getPerCursorId() {
+        if (idColumnIndex == -1) {
+            idColumnIndex = super.getColumnIndexOrThrow("_id");
         }
 
-        return super.getLong(mIdColumnIndex);
+        return super.getLong(idColumnIndex);
     }
 }

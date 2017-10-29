@@ -25,25 +25,24 @@ public final class TrustManagerFactory {
 
 
     private static class SecureX509TrustManager implements X509TrustManager {
-        private static final Map<String, SecureX509TrustManager> mTrustManager =
-            new HashMap<String, SecureX509TrustManager>();
+        private static final Map<String, SecureX509TrustManager> trustManager = new HashMap<>();
 
-        private final String mHost;
-        private final int mPort;
+        private final String host;
+        private final int port;
 
         private SecureX509TrustManager(String host, int port) {
-            mHost = host;
-            mPort = port;
+            this.host = host;
+            this.port = port;
         }
 
         public synchronized static X509TrustManager getInstance(String host, int port) {
             String key = host + ":" + port;
             SecureX509TrustManager trustManager;
-            if (mTrustManager.containsKey(key)) {
-                trustManager = mTrustManager.get(key);
+            if (SecureX509TrustManager.trustManager.containsKey(key)) {
+                trustManager = SecureX509TrustManager.trustManager.get(key);
             } else {
                 trustManager = new SecureX509TrustManager(host, port);
-                mTrustManager.put(key, trustManager);
+                SecureX509TrustManager.trustManager.put(key, trustManager);
             }
 
             return trustManager;
@@ -63,7 +62,7 @@ public final class TrustManagerFactory {
 
             try {
                 defaultTrustManager.checkServerTrusted(chain, authType);
-                new StrictHostnameVerifier().verify(mHost, certificate);
+                new StrictHostnameVerifier().verify(host, certificate);
                 return;
             } catch (CertificateException | SSLException e) {
                 // cert. chain can't be validated or host name doesn't match certificate
@@ -73,7 +72,7 @@ public final class TrustManagerFactory {
 
             // Check the local key store if we couldn't verify the certificate using the global
             // key store or if the host name doesn't match the certificate name
-            if (!keyStore.isValidCertificate(certificate, mHost, mPort)) {
+            if (!keyStore.isValidCertificate(certificate, host, port)) {
                 throw new CertificateChainException(message, chain, cause);
             }
         }

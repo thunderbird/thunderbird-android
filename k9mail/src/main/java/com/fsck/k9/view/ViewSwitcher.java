@@ -1,23 +1,23 @@
 package com.fsck.k9.view;
 
-import com.fsck.k9.K9;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ViewAnimator;
 
+import com.fsck.k9.K9;
+
 /**
  * A {@link ViewAnimator} that animates between two child views using different animations
  * depending on which view is displayed.
  */
 public class ViewSwitcher extends ViewAnimator implements AnimationListener {
-    private Animation mFirstInAnimation;
-    private Animation mFirstOutAnimation;
-    private Animation mSecondInAnimation;
-    private Animation mSecondOutAnimation;
-    private OnSwitchCompleteListener mListener;
+    private Animation firstInAnimation;
+    private Animation firstOutAnimation;
+    private Animation secondInAnimation;
+    private Animation secondOutAnimation;
+    private OnSwitchCompleteListener listener;
 
 
     public ViewSwitcher(Context context) {
@@ -33,7 +33,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
             return;
         }
 
-        setupAnimations(mFirstInAnimation, mFirstOutAnimation);
+        setupAnimations(firstInAnimation, firstOutAnimation);
         setDisplayedChild(0);
         handleSwitchCompleteCallback();
     }
@@ -43,7 +43,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
             return;
         }
 
-        setupAnimations(mSecondInAnimation, mSecondOutAnimation);
+        setupAnimations(secondInAnimation, secondOutAnimation);
         setDisplayedChild(1);
         handleSwitchCompleteCallback();
     }
@@ -70,41 +70,40 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     }
 
     public void setFirstInAnimation(Animation inAnimation) {
-        this.mFirstInAnimation = inAnimation;
+        this.firstInAnimation = inAnimation;
     }
 
-    public Animation getmFirstOutAnimation() {
-        return mFirstOutAnimation;
+    public Animation getFirstOutAnimation() {
+        return firstOutAnimation;
     }
 
     public void setFirstOutAnimation(Animation outAnimation) {
-        mFirstOutAnimation = outAnimation;
+        firstOutAnimation = outAnimation;
     }
-
     public Animation getSecondInAnimation() {
-        return mSecondInAnimation;
+	 return secondInAnimation;
     }
 
     public void setSecondInAnimation(Animation inAnimation) {
-        mSecondInAnimation = inAnimation;
+        secondInAnimation = inAnimation;
     }
 
     public Animation getSecondOutAnimation() {
-        return mSecondOutAnimation;
+	 return secondOutAnimation;
     }
 
     public void setSecondOutAnimation(Animation outAnimation) {
-        mSecondOutAnimation = outAnimation;
+        secondOutAnimation = outAnimation;
     }
 
     public void setOnSwitchCompleteListener(OnSwitchCompleteListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        if (mListener != null) {
-            mListener.onSwitchComplete(getDisplayedChild());
+        if (listener != null) {
+            listener.onSwitchComplete(getDisplayedChild());
         }
     }
 

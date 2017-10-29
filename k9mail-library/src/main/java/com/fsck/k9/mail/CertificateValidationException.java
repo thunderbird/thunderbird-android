@@ -5,16 +5,16 @@ import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import javax.net.ssl.SSLHandshakeException;
-
 import android.security.KeyChainException;
+
+import javax.net.ssl.SSLHandshakeException;
 
 public class CertificateValidationException extends MessagingException {
     public static final long serialVersionUID = -1;
-    private final Reason mReason;
-    private X509Certificate[] mCertChain;
-    private boolean mNeedsUserAttention = false;
-    private String mAlias;
+    private final Reason reason;
+    private X509Certificate[] certChain;
+    private boolean needsUserAttention = false;
+    private String alias;
 
     public enum Reason {
         Unknown, UseMessage, Expired, MissingCapability, RetrievalFailure
@@ -34,23 +34,23 @@ public class CertificateValidationException extends MessagingException {
          * Instances created without a Throwable parameter as a cause are
          * presumed to need user attention.
          */
-        mNeedsUserAttention = true;
-        mReason = reason;
-        mAlias = alias;
+        needsUserAttention = true;
+        this.reason = reason;
+        this.alias = alias;
     }
 
     public CertificateValidationException(final String message, Throwable throwable) {
         super(message, throwable);
-        mReason = Reason.Unknown;
+        reason = Reason.Unknown;
         scanForCause();
     }
 
     public String getAlias() {
-        return mAlias;
+        return alias;
     }
 
     public Reason getReason() {
-        return mReason;
+        return reason;
     }
 
     private void scanForCause() {
@@ -96,7 +96,7 @@ public class CertificateValidationException extends MessagingException {
         }
 
         if (throwable != null) {
-            mNeedsUserAttention = true;
+            needsUserAttention = true;
 
             // See if there is a server certificate chain attached to the SSLHandshakeException
             if (throwable instanceof SSLHandshakeException) {
@@ -106,13 +106,13 @@ public class CertificateValidationException extends MessagingException {
             }
 
             if (throwable != null && throwable instanceof CertificateChainException) {
-                mCertChain = ((CertificateChainException) throwable).getCertChain();
+                certChain = ((CertificateChainException) throwable).getCertChain();
             }
         }
     }
 
     public boolean needsUserAttention() {
-        return mNeedsUserAttention;
+        return needsUserAttention;
     }
 
     /**
@@ -124,6 +124,6 @@ public class CertificateValidationException extends MessagingException {
      *         chain, or else null.
      */
     public X509Certificate[] getCertChain() {
-        return mCertChain;
+        return certChain;
     }
 }

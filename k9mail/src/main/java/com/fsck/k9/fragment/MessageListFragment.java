@@ -1972,19 +1972,19 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
 
     class ActionModeCallback implements ActionMode.Callback {
-        private MenuItem mSelectAll;
-        private MenuItem mMarkAsRead;
-        private MenuItem mMarkAsUnread;
-        private MenuItem mFlag;
-        private MenuItem mUnflag;
+        private MenuItem selectAll;
+        private MenuItem markAsRead;
+        private MenuItem markAsUnread;
+        private MenuItem flag;
+        private MenuItem unflag;
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            mSelectAll = menu.findItem(R.id.select_all);
-            mMarkAsRead = menu.findItem(R.id.mark_as_read);
-            mMarkAsUnread = menu.findItem(R.id.mark_as_unread);
-            mFlag = menu.findItem(R.id.flag);
-            mUnflag = menu.findItem(R.id.unflag);
+            selectAll = menu.findItem(R.id.select_all);
+            markAsRead = menu.findItem(R.id.mark_as_read);
+            markAsUnread = menu.findItem(R.id.mark_as_unread);
+            flag = menu.findItem(R.id.flag);
+            unflag = menu.findItem(R.id.unflag);
 
             // we don't support cross account actions atm
             if (!singleAccountMode) {
@@ -2034,11 +2034,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             actionMode = null;
-            mSelectAll = null;
-            mMarkAsRead = null;
-            mMarkAsUnread = null;
-            mFlag = null;
-            mUnflag = null;
+            selectAll = null;
+            markAsRead = null;
+            markAsUnread = null;
+            flag = null;
+            unflag = null;
             setSelectionState(false);
         }
 
@@ -2096,21 +2096,21 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         public void showSelectAll(boolean show) {
             if (actionMode != null) {
-                mSelectAll.setVisible(show);
+                selectAll.setVisible(show);
             }
         }
 
         public void showMarkAsRead(boolean show) {
             if (actionMode != null) {
-                mMarkAsRead.setVisible(show);
-                mMarkAsUnread.setVisible(!show);
+                markAsRead.setVisible(show);
+                markAsUnread.setVisible(!show);
             }
         }
 
         public void showFlag(boolean show) {
             if (actionMode != null) {
-                mFlag.setVisible(show);
-                mUnflag.setVisible(!show);
+                flag.setVisible(show);
+                unflag.setVisible(!show);
             }
         }
 
@@ -2612,7 +2612,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private String getThreadId(LocalSearch search) {
         for (ConditionsTreeNode node : search.getLeafSet()) {
-            SearchCondition condition = node.mCondition;
+            SearchCondition condition = node.condition;
             if (condition.field == SearchField.THREAD_ID) {
                 return condition.value;
             }

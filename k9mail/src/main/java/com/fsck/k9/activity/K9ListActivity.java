@@ -14,17 +14,17 @@ import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 
 public abstract class K9ListActivity extends ListActivity implements K9ActivityMagic {
 
-    private K9ActivityCommon mBase;
+    private K9ActivityCommon base;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        mBase = K9ActivityCommon.newInstance(this);
+        base = K9ActivityCommon.newInstance(this);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        mBase.preDispatchTouchEvent(event);
+        base.preDispatchTouchEvent(event);
         return super.dispatchTouchEvent(event);
     }
 
@@ -35,7 +35,7 @@ public abstract class K9ListActivity extends ListActivity implements K9ActivityM
 
     @Override
     public void setupGestureDetector(OnSwipeGestureListener listener) {
-        mBase.setupGestureDetector(listener);
+        base.setupGestureDetector(listener);
     }
 
     @Override

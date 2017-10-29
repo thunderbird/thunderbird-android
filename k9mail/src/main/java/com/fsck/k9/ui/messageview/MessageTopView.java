@@ -41,12 +41,11 @@ public class MessageTopView extends LinearLayout {
 
     private ToolableViewAnimator viewAnimator;
     private ProgressBar progressBar;
-    private TextView progressText;
 
-    private MessageHeader mHeaderContainer;
-    private LayoutInflater mInflater;
+    private MessageHeader headerContainer;
+    private LayoutInflater inflater;
     private ViewGroup containerView;
-    private Button mDownloadRemainder;
+    private Button downloadRemainder;
     private AttachmentViewCallback attachmentCallback;
     private Button showPicturesButton;
     private boolean isShowingProgress;
@@ -62,16 +61,16 @@ public class MessageTopView extends LinearLayout {
     public void onFinishInflate() {
         super.onFinishInflate();
 
-        mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
-        // mHeaderContainer.setOnLayoutChangedListener(this);
-        mInflater = LayoutInflater.from(getContext());
+        headerContainer = (MessageHeader) findViewById(R.id.header_container);
+        // headerContainer.setOnLayoutChangedListener(this);
+        inflater = LayoutInflater.from(getContext());
 
         viewAnimator = (ToolableViewAnimator) findViewById(R.id.message_layout_animator);
         progressBar = (ProgressBar) findViewById(R.id.message_progress);
-        progressText = (TextView) findViewById(R.id.message_progress_text);
+        findViewById(R.id.message_progress_text);
 
-        mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
-        mDownloadRemainder.setVisibility(View.GONE);
+        downloadRemainder = (Button) findViewById(R.id.download_remainder);
+        downloadRemainder.setVisibility(View.GONE);
 
         showPicturesButton = (Button) findViewById(R.id.show_pictures);
         setShowPicturesButtonListener();
@@ -99,7 +98,7 @@ public class MessageTopView extends LinearLayout {
     }
 
     private void resetAndPrepareMessageView(MessageViewInfo messageViewInfo) {
-        mDownloadRemainder.setVisibility(View.GONE);
+        downloadRemainder.setVisibility(View.GONE);
         containerView.removeAllViews();
         setShowDownloadButton(messageViewInfo);
     }
@@ -111,7 +110,7 @@ public class MessageTopView extends LinearLayout {
         boolean automaticallyLoadPictures =
                 shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
 
-        MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container,
+        MessageContainerView view = (MessageContainerView) inflater.inflate(R.layout.message_container,
                 containerView, false);
         containerView.addView(view);
 
@@ -131,7 +130,7 @@ public class MessageTopView extends LinearLayout {
     public void showMessageCryptoWarning(final MessageViewInfo messageViewInfo, Drawable providerIcon,
             @StringRes int warningTextRes, boolean showDetailButton) {
         resetAndPrepareMessageView(messageViewInfo);
-        View view = mInflater.inflate(R.layout.message_content_crypto_warning, containerView, false);
+        View view = inflater.inflate(R.layout.message_content_crypto_warning, containerView, false);
         setCryptoProviderIcon(providerIcon, view);
 
         View detailButton = view.findViewById(R.id.crypto_warning_details);
@@ -163,7 +162,7 @@ public class MessageTopView extends LinearLayout {
 
     public void showMessageEncryptedButIncomplete(MessageViewInfo messageViewInfo, Drawable providerIcon) {
         resetAndPrepareMessageView(messageViewInfo);
-        View view = mInflater.inflate(R.layout.message_content_crypto_incomplete, containerView, false);
+        View view = inflater.inflate(R.layout.message_content_crypto_incomplete, containerView, false);
         setCryptoProviderIcon(providerIcon, view);
 
         containerView.addView(view);
@@ -172,7 +171,7 @@ public class MessageTopView extends LinearLayout {
 
     public void showMessageCryptoErrorView(MessageViewInfo messageViewInfo, Drawable providerIcon) {
         resetAndPrepareMessageView(messageViewInfo);
-        View view = mInflater.inflate(R.layout.message_content_crypto_error, containerView, false);
+        View view = inflater.inflate(R.layout.message_content_crypto_error, containerView, false);
         setCryptoProviderIcon(providerIcon, view);
 
         TextView cryptoErrorText = (TextView) view.findViewById(R.id.crypto_error_text);
@@ -188,7 +187,7 @@ public class MessageTopView extends LinearLayout {
 
     public void showMessageCryptoCancelledView(MessageViewInfo messageViewInfo, Drawable providerIcon) {
         resetAndPrepareMessageView(messageViewInfo);
-        View view = mInflater.inflate(R.layout.message_content_crypto_cancelled, containerView, false);
+        View view = inflater.inflate(R.layout.message_content_crypto_cancelled, containerView, false);
         setCryptoProviderIcon(providerIcon, view);
 
         view.findViewById(R.id.crypto_cancelled_retry).setOnClickListener(new OnClickListener() {
@@ -204,7 +203,7 @@ public class MessageTopView extends LinearLayout {
 
     public void showCryptoProviderNotConfigured(final MessageViewInfo messageViewInfo) {
         resetAndPrepareMessageView(messageViewInfo);
-        View view = mInflater.inflate(R.layout.message_content_crypto_no_provider, containerView, false);
+        View view = inflater.inflate(R.layout.message_content_crypto_no_provider, containerView, false);
 
         view.findViewById(R.id.crypto_settings).setOnClickListener(new OnClickListener() {
             @Override
@@ -233,32 +232,32 @@ public class MessageTopView extends LinearLayout {
      * @return MessageHeader View.
      */
     public MessageHeader getMessageHeaderView() {
-        return mHeaderContainer;
+        return headerContainer;
     }
 
     public void setHeaders(final Message message, Account account) {
-        mHeaderContainer.populate(message, account);
-        mHeaderContainer.setVisibility(View.VISIBLE);
+        headerContainer.populate(message, account);
+        headerContainer.setVisibility(View.VISIBLE);
     }
 
     public void setOnToggleFlagClickListener(OnClickListener listener) {
-        mHeaderContainer.setOnFlagListener(listener);
+        headerContainer.setOnFlagListener(listener);
     }
 
     public void showAllHeaders() {
-        mHeaderContainer.onShowAdditionalHeaders();
+        headerContainer.onShowAdditionalHeaders();
     }
 
     public boolean additionalHeadersVisible() {
-        return mHeaderContainer.additionalHeadersVisible();
+        return headerContainer.additionalHeadersVisible();
     }
 
     private void hideHeaderView() {
-        mHeaderContainer.setVisibility(View.GONE);
+        headerContainer.setVisibility(View.GONE);
     }
 
     public void setOnDownloadButtonClickListener(OnClickListener listener) {
-        mDownloadRemainder.setOnClickListener(listener);
+        downloadRemainder.setOnClickListener(listener);
     }
 
     public void setAttachmentCallback(AttachmentViewCallback callback) {
@@ -267,23 +266,23 @@ public class MessageTopView extends LinearLayout {
 
     public void setMessageCryptoPresenter(MessageCryptoPresenter messageCryptoPresenter) {
         this.messageCryptoPresenter = messageCryptoPresenter;
-        mHeaderContainer.setOnCryptoClickListener(messageCryptoPresenter);
+        headerContainer.setOnCryptoClickListener(messageCryptoPresenter);
     }
 
     public void enableDownloadButton() {
-        mDownloadRemainder.setEnabled(true);
+        downloadRemainder.setEnabled(true);
     }
 
     public void disableDownloadButton() {
-        mDownloadRemainder.setEnabled(false);
+        downloadRemainder.setEnabled(false);
     }
 
     private void setShowDownloadButton(MessageViewInfo messageViewInfo) {
         if (messageViewInfo.isMessageIncomplete) {
-            mDownloadRemainder.setEnabled(true);
-            mDownloadRemainder.setVisibility(View.VISIBLE);
+            downloadRemainder.setEnabled(true);
+            downloadRemainder.setVisibility(View.VISIBLE);
         } else {
-            mDownloadRemainder.setVisibility(View.GONE);
+            downloadRemainder.setVisibility(View.GONE);
         }
     }
 

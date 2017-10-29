@@ -8,18 +8,14 @@ import android.util.AttributeSet;
 
 public class CheckBoxListPreference extends DialogPreference {
 
-    private CharSequence[] mItems;
+    private CharSequence[] items;
 
-    private boolean[] mCheckedItems;
+    private boolean[] checkedItems;
 
     /**
      * checkboxes state when the dialog is displayed
      */
-    private boolean[] mPendingItems;
-
-    public CheckBoxListPreference(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
+    private boolean[] pendingItems;
 
     public CheckBoxListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -27,16 +23,16 @@ public class CheckBoxListPreference extends DialogPreference {
 
     @Override
     protected void onPrepareDialogBuilder(final Builder builder) {
-        mPendingItems = new boolean[mItems.length];
+        pendingItems = new boolean[items.length];
 
-        System.arraycopy(mCheckedItems, 0, mPendingItems, 0, mCheckedItems.length);
+        System.arraycopy(checkedItems, 0, pendingItems, 0, checkedItems.length);
 
-        builder.setMultiChoiceItems(mItems, mPendingItems,
+        builder.setMultiChoiceItems(items, pendingItems,
         new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(final DialogInterface dialog, final int which,
             final boolean isChecked) {
-                mPendingItems[which] = isChecked;
+                pendingItems[which] = isChecked;
             }
         });
     }
@@ -44,21 +40,21 @@ public class CheckBoxListPreference extends DialogPreference {
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
-            System.arraycopy(mPendingItems, 0, mCheckedItems, 0, mPendingItems.length);
+            System.arraycopy(pendingItems, 0, checkedItems, 0, pendingItems.length);
         }
-        mPendingItems = null;
+        pendingItems = null;
     }
 
     public void setItems(final CharSequence[] items) {
-        mItems = items;
+        this.items = items;
     }
 
     public void setCheckedItems(final boolean[] items) {
-        mCheckedItems = items;
+        checkedItems = items;
     }
 
     public boolean[] getCheckedItems() {
-        return mCheckedItems;
+        return checkedItems;
     }
 
 }

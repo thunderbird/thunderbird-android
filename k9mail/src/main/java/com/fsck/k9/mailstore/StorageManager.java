@@ -175,18 +175,18 @@ public class StorageManager {
         /**
          * The root of the denoted storage. Used for mount points checking.
          */
-        private File mRoot;
+        private File root;
 
         /**
          * Chosen base directory
          */
-        private File mApplicationDir;
+        private File applicationDir;
 
         @Override
         public void init(final Context context) {
-            mRoot = computeRoot(context);
+            root = computeRoot(context);
             // use <STORAGE_ROOT>/k9
-            mApplicationDir = new File(mRoot, "k9");
+            applicationDir = new File(root, "k9");
         }
 
         /**
@@ -200,33 +200,33 @@ public class StorageManager {
         @Override
         public boolean isReady(Context context) {
             try {
-                final File root = mRoot.getCanonicalFile();
+                final File root = this.root.getCanonicalFile();
                 return isMountPoint(root)
                        && Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
             } catch (IOException e) {
-                Timber.w(e, "Specified root isn't ready: %s", mRoot);
+                Timber.w(e, "Specified root isn't ready: %s", root);
                 return false;
             }
         }
 
         @Override
         public final boolean isSupported(Context context) {
-            return mRoot.isDirectory() && supportsVendor();
+            return root.isDirectory() && supportsVendor();
         }
 
         @Override
         public File getDatabase(Context context, String id) {
-            return new File(mApplicationDir, id + ".db");
+            return new File(applicationDir, id + ".db");
         }
 
         @Override
         public File getAttachmentDirectory(Context context, String id) {
-            return new File(mApplicationDir, id + ".db_att");
+            return new File(applicationDir, id + ".db_att");
         }
 
         @Override
         public final File getRoot(Context context) {
-            return mRoot;
+            return root;
         }
 
         /**
@@ -257,7 +257,7 @@ public class StorageManager {
 
         public static final String ID = "InternalStorage";
 
-        private File mRoot;
+        private File root;
 
         @Override
         public String getId() {
@@ -267,7 +267,7 @@ public class StorageManager {
         @Override
         public void init(Context context) {
             // XXX
-            mRoot = new File("/");
+            root = new File("/");
         }
 
         @Override
@@ -298,7 +298,7 @@ public class StorageManager {
 
         @Override
         public File getRoot(Context context) {
-            return mRoot;
+            return root;
         }
     }
 
@@ -327,12 +327,12 @@ public class StorageManager {
         /**
          * Root of the denoted storage.
          */
-        private File mRoot;
+        private File root;
 
         /**
          * Chosen base directory.
          */
-        private File mApplicationDirectory;
+        private File applicationDirectory;
 
         @Override
         public String getId() {
@@ -341,8 +341,8 @@ public class StorageManager {
 
         @Override
         public void init(Context context) {
-            mRoot = Environment.getExternalStorageDirectory();
-            mApplicationDirectory = new File(new File(new File(new File(mRoot, "Android"), "data"),
+            root = Environment.getExternalStorageDirectory();
+            applicationDirectory = new File(new File(new File(new File(root, "Android"), "data"),
                                              context.getPackageName()), "files");
         }
 
@@ -358,12 +358,12 @@ public class StorageManager {
 
         @Override
         public File getDatabase(Context context, String id) {
-            return new File(mApplicationDirectory, id + ".db");
+            return new File(applicationDirectory, id + ".db");
         }
 
         @Override
         public File getAttachmentDirectory(Context context, String id) {
-            return new File(mApplicationDirectory, id + ".db_att");
+            return new File(applicationDirectory, id + ".db_att");
         }
 
         @Override
@@ -373,7 +373,7 @@ public class StorageManager {
 
         @Override
         public File getRoot(Context context) {
-            return mRoot;
+            return root;
         }
     }
 
@@ -478,19 +478,19 @@ public class StorageManager {
     /**
      * The active storage providers.
      */
-    private final Map<String, StorageProvider> mProviders = new LinkedHashMap<String, StorageProvider>();
+    private final Map<String, StorageProvider> providers = new LinkedHashMap<>();
 
     /**
      * Locking data for the active storage providers.
      */
-    private final Map<StorageProvider, SynchronizationAid> mProviderLocks = new IdentityHashMap<StorageProvider, SynchronizationAid>();
+    private final Map<StorageProvider, SynchronizationAid> providerLocks = new IdentityHashMap<>();
 
     protected final Context context;
 
     /**
      * Listener to be notified for storage related events.
      */
-    private List<StorageListener> mListeners = new ArrayList<StorageListener>();
+    private List<StorageListener> listeners = new ArrayList<>();
 
     private static transient StorageManager instance;
 
@@ -550,8 +550,8 @@ public class StorageManager {
                 // provider is compatible! proceeding
 
                 provider.init(context);
-                mProviders.put(provider.getId(), provider);
-                mProviderLocks.put(provider, new SynchronizationAid());
+                providers.put(provider.getId(), provider);
+                providerLocks.put(provider, new SynchronizationAid());
             }
         }
 
@@ -562,7 +562,7 @@ public class StorageManager {
      */
     public String getDefaultProviderId() {
         // assume there is at least 1 provider defined
-        return mProviders.keySet().iterator().next();
+        return providers.keySet().iterator().next();
     }
 
     /**
@@ -571,7 +571,7 @@ public class StorageManager {
      * @return <code>null</code> if not found.
      */
     protected StorageProvider getProvider(final String providerId) {
-        return mProviders.get(providerId);
+        return providers.get(providerId);
     }
 
     /**
@@ -621,8 +621,8 @@ public class StorageManager {
      * @see StorageProvider#isSupported(Context)
      */
     public Map<String, String> getAvailableProviders() {
-        final Map<String, String> result = new LinkedHashMap<String, String>();
-        for (final Map.Entry<String, StorageProvider> entry : mProviders.entrySet()) {
+        final Map<String, String> result = new LinkedHashMap<>();
+        for (final Map.Entry<String, StorageProvider> entry : providers.entrySet()) {
             result.put(entry.getKey(), entry.getValue().getName(context));
         }
         return result;
@@ -637,14 +637,14 @@ public class StorageManager {
         if (provider == null) {
             return;
         }
-        for (final StorageListener listener : mListeners) {
+        for (final StorageListener listener : listeners) {
             try {
                 listener.onUnmount(provider.getId());
             } catch (Exception e) {
                 Timber.w(e, "Error while notifying StorageListener");
             }
         }
-        final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
+        final SynchronizationAid sync = providerLocks.get(resolveProvider(path));
         sync.writeLock.lock();
         sync.unmounting = true;
         sync.writeLock.unlock();
@@ -656,7 +656,7 @@ public class StorageManager {
         if (provider == null) {
             return;
         }
-        final SynchronizationAid sync = mProviderLocks.get(resolveProvider(path));
+        final SynchronizationAid sync = providerLocks.get(resolveProvider(path));
         sync.writeLock.lock();
         sync.unmounting = false;
         sync.writeLock.unlock();
@@ -678,7 +678,7 @@ public class StorageManager {
         if (provider == null) {
             return;
         }
-        for (final StorageListener listener : mListeners) {
+        for (final StorageListener listener : listeners) {
             try {
                 listener.onMount(provider.getId());
             } catch (Exception e) {
@@ -696,7 +696,7 @@ public class StorageManager {
      * @return The corresponding provider. <code>null</code> if no match.
      */
     protected StorageProvider resolveProvider(final String path) {
-        for (final StorageProvider provider : mProviders.values()) {
+        for (final StorageProvider provider : providers.values()) {
             if (path.equals(provider.getRoot(context).getAbsolutePath())) {
                 return provider;
             }
@@ -705,11 +705,11 @@ public class StorageManager {
     }
 
     public void addListener(final StorageListener listener) {
-        mListeners.add(listener);
+        listeners.add(listener);
     }
 
     public void removeListener(final StorageListener listener) {
-        mListeners.remove(listener);
+        listeners.remove(listener);
     }
 
     /**
@@ -730,7 +730,7 @@ public class StorageManager {
             throw new UnavailableStorageException("StorageProvider not found: " + providerId);
         }
         // lock provider
-        final SynchronizationAid sync = mProviderLocks.get(provider);
+        final SynchronizationAid sync = providerLocks.get(provider);
         final boolean locked = sync.readLock.tryLock();
         if (!locked || (locked && sync.unmounting)) {
             if (locked) {
@@ -745,7 +745,7 @@ public class StorageManager {
 
     public void unlockProvider(final String providerId) {
         final StorageProvider provider = getProvider(providerId);
-        final SynchronizationAid sync = mProviderLocks.get(provider);
+        final SynchronizationAid sync = providerLocks.get(provider);
         sync.readLock.unlock();
     }
 }

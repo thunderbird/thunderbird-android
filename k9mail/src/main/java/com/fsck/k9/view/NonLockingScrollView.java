@@ -53,38 +53,38 @@ public class NonLockingScrollView extends ScrollView {
 
     /**
      * Whether or not the contents of this view is being dragged by one of the children in
-     * {@link #mChildrenNeedingAllTouches}.
+     * {@link #childrenNeedingAllTouches}.
      */
-    private boolean mInCustomDrag = false;
+    private boolean inCustomDrag = false;
 
     /**
      * The list of children who should always receive touch events, and not have them intercepted.
      */
-    private final List<View> mChildrenNeedingAllTouches = new ArrayList<View>();
+    private final List<View> childrenNeedingAllTouches = new ArrayList<View>();
 
-    private boolean mSkipWebViewScroll = true;
+    private boolean skipWebViewScroll = true;
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         final int action = getActionMasked(ev);
         final boolean isUp = action == MotionEvent.ACTION_UP;
 
-        if (isUp && mInCustomDrag) {
+        if (isUp && inCustomDrag) {
             // An up event after a drag should be intercepted so that child views don't handle
             // click events falsely after a drag.
-            mInCustomDrag = false;
+            inCustomDrag = false;
             onTouchEvent(ev);
             return true;
         }
 
-        if (!mInCustomDrag && !isEventOverChild(ev, mChildrenNeedingAllTouches)) {
+        if (!inCustomDrag && !isEventOverChild(ev, childrenNeedingAllTouches)) {
             return super.onInterceptTouchEvent(ev);
         }
 
         // Note the normal scrollview implementation is to intercept all touch events after it has
         // detected a drag starting. We will handle this ourselves.
-        mInCustomDrag = super.onInterceptTouchEvent(ev);
-        if (mInCustomDrag) {
+        inCustomDrag = super.onInterceptTouchEvent(ev);
+        if (inCustomDrag) {
             onTouchEvent(ev);
         }
 
@@ -143,10 +143,10 @@ public class NonLockingScrollView extends ScrollView {
          * assuming it already is at least partially in view.
          * 
          */
-        if (mSkipWebViewScroll  &&
+        if (skipWebViewScroll &&
                 focused instanceof MessageWebView &&
                 focused.getGlobalVisibleRect(new Rect())) {
-            mSkipWebViewScroll = false;
+            skipWebViewScroll = false;
             super.requestChildFocus(child, child);
             ViewParent parent = getParent();
             if (parent != null) {
@@ -161,7 +161,7 @@ public class NonLockingScrollView extends ScrollView {
         @Override
         public void onChildViewAdded(View parent, View child) {
             if (child instanceof WebView) {
-                mChildrenNeedingAllTouches.add(child);                
+                childrenNeedingAllTouches.add(child);
             } else if (child instanceof ViewGroup) {
                 ViewGroup childGroup = (ViewGroup) child;
                 childGroup.setOnHierarchyChangeListener(this);
@@ -174,7 +174,7 @@ public class NonLockingScrollView extends ScrollView {
         @Override
         public void onChildViewRemoved(View parent, View child) {
             if (child instanceof WebView) {
-                mChildrenNeedingAllTouches.remove(child);
+                childrenNeedingAllTouches.remove(child);
             } else if (child instanceof ViewGroup) {
                 ViewGroup childGroup = (ViewGroup) child;
                 for (int i = 0, childCount = childGroup.getChildCount(); i < childCount; i++) {

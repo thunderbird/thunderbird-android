@@ -27,10 +27,10 @@ public class MessageListHandler extends Handler {
     private static final int ACTION_RESTORE_LIST_POSITION = 6;
     private static final int ACTION_OPEN_MESSAGE = 7;
 
-    private WeakReference<MessageListFragment> mFragment;
+    private WeakReference<MessageListFragment> fragment;
 
     public MessageListHandler(MessageListFragment fragment) {
-        mFragment = new WeakReference<>(fragment);
+        this.fragment = new WeakReference<>(fragment);
     }
     public void folderLoading(String folder, boolean loading) {
         android.os.Message msg = android.os.Message.obtain(this, ACTION_FOLDER_LOADING,
@@ -58,7 +58,7 @@ public class MessageListHandler extends Handler {
         post(new Runnable() {
             @Override
             public void run() {
-                MessageListFragment fragment = mFragment.get();
+                MessageListFragment fragment = MessageListHandler.this.fragment.get();
                 if (fragment != null) {
                     fragment.updateFooter(message);
                 }
@@ -72,7 +72,7 @@ public class MessageListHandler extends Handler {
     }
 
     public void restoreListPosition() {
-        MessageListFragment fragment = mFragment.get();
+        MessageListFragment fragment = this.fragment.get();
         if (fragment != null) {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION,
                     fragment.savedListState);
@@ -89,7 +89,7 @@ public class MessageListHandler extends Handler {
 
     @Override
     public void handleMessage(android.os.Message msg) {
-        MessageListFragment fragment = mFragment.get();
+        MessageListFragment fragment = this.fragment.get();
         if (fragment == null) {
             return;
         }

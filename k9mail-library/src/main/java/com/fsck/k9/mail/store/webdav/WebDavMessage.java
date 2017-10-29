@@ -17,12 +17,12 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
  * A WebDav Message
  */
 class WebDavMessage extends MimeMessage {
-    private String mUrl = "";
+    private String url = "";
 
 
     WebDavMessage(String uid, Folder folder) {
-        this.mUid = uid;
-        this.mFolder = folder;
+        this.uid = uid;
+        this.folder = folder;
     }
 
     public void setUrl(String url) {
@@ -32,7 +32,7 @@ class WebDavMessage extends MimeMessage {
             if (!(url.startsWith("/"))) {
                 url = "/" + url;
             }
-            url = ((WebDavFolder) mFolder).getUrl() + url;
+            url = ((WebDavFolder) folder).getUrl() + url;
         }
 
         String[] urlParts = url.split("/");
@@ -63,11 +63,11 @@ class WebDavMessage extends MimeMessage {
 
         url = url + "/" + end;
 
-        this.mUrl = url;
+        this.url = url;
     }
 
     public String getUrl() {
-        return this.mUrl;
+        return this.url;
     }
 
     public void setSize(int size) {
@@ -105,6 +105,6 @@ class WebDavMessage extends MimeMessage {
     @Override
     public void setFlag(Flag flag, boolean set) throws MessagingException {
         super.setFlag(flag, set);
-        mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
+        folder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
     }
 }

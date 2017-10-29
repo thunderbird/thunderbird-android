@@ -18,7 +18,7 @@ public class PollService extends CoreService {
     private static String START_SERVICE = "com.fsck.k9.service.PollService.startService";
     private static String STOP_SERVICE = "com.fsck.k9.service.PollService.stopService";
 
-    private Listener mListener = new Listener();
+    private Listener listener = new Listener();
 
     public static void startService(Context context) {
         Intent i = new Intent();
@@ -51,10 +51,10 @@ public class PollService extends CoreService {
             Listener listener = (Listener)controller.getCheckMailListener();
             if (listener == null) {
                 Timber.i("***** PollService *****: starting new check");
-                mListener.setStartId(startId);
-                mListener.wakeLockAcquire();
-                controller.setCheckMailListener(mListener);
-                controller.checkMail(this, null, false, false, mListener);
+                this.listener.setStartId(startId);
+                this.listener.wakeLockAcquire();
+                controller.setCheckMailListener(this.listener);
+                controller.checkMail(this, null, false, false, this.listener);
             } else {
                 Timber.i("***** PollService *****: renewing WakeLock");
                 listener.setStartId(startId);

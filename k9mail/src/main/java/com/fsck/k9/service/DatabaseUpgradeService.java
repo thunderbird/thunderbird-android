@@ -93,15 +93,15 @@ public class DatabaseUpgradeService extends Service {
      * Stores whether or not this service was already running when
      * {@link #onStartCommand(Intent, int, int)} is executed.
      */
-    private AtomicBoolean mRunning = new AtomicBoolean(false);
+    private AtomicBoolean running = new AtomicBoolean(false);
 
-    private LocalBroadcastManager mLocalBroadcastManager;
+    private LocalBroadcastManager localBroadcastManager;
 
-    private String mAccountUuid;
-    private int mProgress;
-    private int mProgressEnd;
+    private String accountUuid;
+    private int progress;
+    private int progressEnd;
 
-    private TracingWakeLock mWakeLock;
+    private TracingWakeLock wakeLock;
 
 
     @Override
@@ -112,12 +112,12 @@ public class DatabaseUpgradeService extends Service {
 
     @Override
     public void onCreate() {
-        mLocalBroadcastManager = LocalBroadcastManager.getInstance(this);
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
     }
 
     @Override
     public final int onStartCommand(Intent intent, int flags, int startId) {
-        boolean success = mRunning.compareAndSet(false, true);
+        boolean success = running.compareAndSet(false, true);
         if (success) {
             // The service wasn't running yet.
             Timber.i("DatabaseUpgradeService started");
@@ -128,7 +128,7 @@ public class DatabaseUpgradeService extends Service {
         } else {
             // We're already running, so don't start the upgrade process again. But send the current
             // progress via broadcast.
-            sendProgressBroadcast(mAccountUuid, mProgress, mProgressEnd);
+            sendProgressBroadcast(accountUuid, progress, progressEnd);
         }
 
         return START_STICKY;
@@ -139,16 +139,16 @@ public class DatabaseUpgradeService extends Service {
      */
     private void acquireWakelock() {
         TracingPowerManager pm = TracingPowerManager.getPowerManager(this);
-        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG);
-        mWakeLock.setReferenceCounted(false);
-        mWakeLock.acquire(WAKELOCK_TIMEOUT);
+        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKELOCK_TAG);
+        wakeLock.setReferenceCounted(false);
+        wakeLock.acquire(WAKELOCK_TIMEOUT);
     }
 
     /**
      * Release the wake lock.
      */
     private void releaseWakelock() {
-        mWakeLock.release();
+        wakeLock.release();
     }
 
     /**
@@ -159,7 +159,7 @@ public class DatabaseUpgradeService extends Service {
         Timber.i("DatabaseUpgradeService stopped");
 
         releaseWakelock();
-        mRunning.set(false);
+        running.set(false);
     }
 
     /**
@@ -182,13 +182,13 @@ public class DatabaseUpgradeService extends Service {
         Preferences preferences = Preferences.getPreferences(this);
 
         List<Account> accounts = preferences.getAccounts();
-        mProgressEnd = accounts.size();
-        mProgress = 0;
+        progressEnd = accounts.size();
+        progress = 0;
 
         for (Account account : accounts) {
-            mAccountUuid = account.getUuid();
+            accountUuid = account.getUuid();
 
-            sendProgressBroadcast(mAccountUuid, mProgress, mProgressEnd);
+            sendProgressBroadcast(accountUuid, progress, progressEnd);
 
             try {
                 // Account.getLocalStore() is blocking and will upgrade the database if necessary
@@ -199,7 +199,7 @@ public class DatabaseUpgradeService extends Service {
                 Timber.e(e, "Error while upgrading database");
             }
 
-            mProgress++;
+            progress++;
         }
 
         K9.setDatabasesUpToDate(true);
@@ -213,13 +213,13 @@ public class DatabaseUpgradeService extends Service {
         intent.putExtra(EXTRA_PROGRESS, progress);
         intent.putExtra(EXTRA_PROGRESS_END, progressEnd);
 
-        mLocalBroadcastManager.sendBroadcast(intent);
+        localBroadcastManager.sendBroadcast(intent);
     }
 
     private void sendUpgradeCompleteBroadcast() {
         Intent intent = new Intent();
         intent.setAction(ACTION_UPGRADE_COMPLETE);
 
-        mLocalBroadcastManager.sendBroadcast(intent);
+        localBroadcastManager.sendBroadcast(intent);
     }
 }

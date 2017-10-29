@@ -41,37 +41,37 @@ public class EmailProviderCache {
     }
 
 
-    private String mAccountUuid;
-    private final Map<Long, Map<String, String>> mMessageCache = new HashMap<Long, Map<String, String>>();
-    private final Map<Long, Map<String, String>> mThreadCache = new HashMap<Long, Map<String, String>>();
-    private final Map<Long, Long> mHiddenMessageCache = new HashMap<Long, Long>();
+    private String accountUuid;
+    private final Map<Long, Map<String, String>> messageCache = new HashMap<Long, Map<String, String>>();
+    private final Map<Long, Map<String, String>> threadCache = new HashMap<Long, Map<String, String>>();
+    private final Map<Long, Long> hiddenMessageCache = new HashMap<Long, Long>();
 
 
     private EmailProviderCache(String accountUuid) {
-        mAccountUuid = accountUuid;
+        this.accountUuid = accountUuid;
     }
 
     public String getValueForMessage(Long messageId, String columnName) {
-        synchronized (mMessageCache) {
-            Map<String, String> map = mMessageCache.get(messageId);
+        synchronized (messageCache) {
+            Map<String, String> map = messageCache.get(messageId);
             return (map == null) ? null : map.get(columnName);
         }
     }
 
     public String getValueForThread(Long threadRootId, String columnName) {
-        synchronized (mThreadCache) {
-            Map<String, String> map = mThreadCache.get(threadRootId);
+        synchronized (threadCache) {
+            Map<String, String> map = threadCache.get(threadRootId);
             return (map == null) ? null : map.get(columnName);
         }
     }
 
     public void setValueForMessages(List<Long> messageIds, String columnName, String value) {
-        synchronized (mMessageCache) {
+        synchronized (messageCache) {
             for (Long messageId : messageIds) {
-                Map<String, String> map = mMessageCache.get(messageId);
+                Map<String, String> map = messageCache.get(messageId);
                 if (map == null) {
                     map = new HashMap<String, String>();
-                    mMessageCache.put(messageId, map);
+                    messageCache.put(messageId, map);
                 }
                 map.put(columnName, value);
             }
@@ -81,12 +81,12 @@ public class EmailProviderCache {
     }
 
     public void setValueForThreads(List<Long> threadRootIds, String columnName, String value) {
-        synchronized (mThreadCache) {
+        synchronized (threadCache) {
             for (Long threadRootId : threadRootIds) {
-                Map<String, String> map = mThreadCache.get(threadRootId);
+                Map<String, String> map = threadCache.get(threadRootId);
                 if (map == null) {
                     map = new HashMap<String, String>();
-                    mThreadCache.put(threadRootId, map);
+                    threadCache.put(threadRootId, map);
                 }
                 map.put(columnName, value);
             }
@@ -96,13 +96,13 @@ public class EmailProviderCache {
     }
 
     public void removeValueForMessages(List<Long> messageIds, String columnName) {
-        synchronized (mMessageCache) {
+        synchronized (messageCache) {
             for (Long messageId : messageIds) {
-                Map<String, String> map = mMessageCache.get(messageId);
+                Map<String, String> map = messageCache.get(messageId);
                 if (map != null) {
                     map.remove(columnName);
                     if (map.isEmpty()) {
-                        mMessageCache.remove(messageId);
+                        messageCache.remove(messageId);
                     }
                 }
             }
@@ -110,13 +110,13 @@ public class EmailProviderCache {
     }
 
     public void removeValueForThreads(List<Long> threadRootIds, String columnName) {
-        synchronized (mThreadCache) {
+        synchronized (threadCache) {
             for (Long threadRootId : threadRootIds) {
-                Map<String, String> map = mThreadCache.get(threadRootId);
+                Map<String, String> map = threadCache.get(threadRootId);
                 if (map != null) {
                     map.remove(columnName);
                     if (map.isEmpty()) {
-                        mThreadCache.remove(threadRootId);
+                        threadCache.remove(threadRootId);
                     }
                 }
             }
@@ -124,10 +124,10 @@ public class EmailProviderCache {
     }
 
     public void hideMessages(List<LocalMessage> messages) {
-        synchronized (mHiddenMessageCache) {
+        synchronized (hiddenMessageCache) {
             for (LocalMessage message : messages) {
                 long messageId = message.getDatabaseId();
-                mHiddenMessageCache.put(messageId, message.getFolder().getDatabaseId());
+                hiddenMessageCache.put(messageId, message.getFolder().getDatabaseId());
             }
         }
 
@@ -135,22 +135,22 @@ public class EmailProviderCache {
     }
 
     public boolean isMessageHidden(Long messageId, long folderId) {
-        synchronized (mHiddenMessageCache) {
-            Long hiddenInFolder = mHiddenMessageCache.get(messageId);
+        synchronized (hiddenMessageCache) {
+            Long hiddenInFolder = hiddenMessageCache.get(messageId);
             return (hiddenInFolder != null && hiddenInFolder.longValue() == folderId);
         }
     }
 
     public void unhideMessages(List<? extends Message> messages) {
-        synchronized (mHiddenMessageCache) {
+        synchronized (hiddenMessageCache) {
             for (Message message : messages) {
                 LocalMessage localMessage = (LocalMessage) message;
                 long messageId = localMessage.getDatabaseId();
                 long folderId = ((LocalFolder) localMessage.getFolder()).getDatabaseId();
-                Long hiddenInFolder = mHiddenMessageCache.get(messageId);
+                Long hiddenInFolder = hiddenMessageCache.get(messageId);
 
                 if (hiddenInFolder != null && hiddenInFolder.longValue() == folderId) {
-                    mHiddenMessageCache.remove(messageId);
+                    hiddenMessageCache.remove(messageId);
                 }
             }
         }
@@ -170,7 +170,7 @@ public class EmailProviderCache {
     private void notifyChange() {
         LocalBroadcastManager.getInstance(sContext).sendBroadcast(new Intent(ACTION_CACHE_UPDATED));
 
-        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + mAccountUuid +
+        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + accountUuid +
                 "/messages");
         sContext.getContentResolver().notifyChange(uri, null);
     }

@@ -194,7 +194,7 @@ public class EmailProvider extends ContentProvider {
     };
 
 
-    private Preferences mPreferences;
+    private Preferences preferences;
 
 
     @Override
@@ -594,12 +594,12 @@ public class EmailProvider extends ContentProvider {
     }
 
     private Account getAccount(String accountUuid) {
-        if (mPreferences == null) {
+        if (preferences == null) {
             Context appContext = getContext().getApplicationContext();
-            mPreferences = Preferences.getPreferences(appContext);
+            preferences = Preferences.getPreferences(appContext);
         }
 
-        Account account = mPreferences.getAccount(accountUuid);
+        Account account = preferences.getAccount(accountUuid);
 
         if (account == null) {
             throw new IllegalArgumentException("Unknown account: " + accountUuid);
@@ -656,35 +656,35 @@ public class EmailProvider extends ContentProvider {
     }
 
     static class SpecialColumnsCursor extends CursorWrapper {
-        private int[] mColumnMapping;
-        private String[] mSpecialColumnValues;
-        private String[] mColumnNames;
+        private int[] columnMapping;
+        private String[] specialColumnValues;
+        private String[] columnNames;
 
         public SpecialColumnsCursor(Cursor cursor, String[] allColumnNames, Map<String, String> specialColumns) {
             super(cursor);
 
-            mColumnNames = allColumnNames;
-            mColumnMapping = new int[allColumnNames.length];
-            mSpecialColumnValues = new String[specialColumns.size()];
+            columnNames = allColumnNames;
+            columnMapping = new int[allColumnNames.length];
+            specialColumnValues = new String[specialColumns.size()];
             for (int i = 0, columnIndex = 0, specialColumnCount = 0, len = allColumnNames.length; i < len; i++) {
                 String columnName = allColumnNames[i];
 
                 if (specialColumns.containsKey(columnName)) {
-                    // This is a special column name, so save the value in mSpecialColumnValues
-                    mSpecialColumnValues[specialColumnCount] = specialColumns.get(columnName);
+                    // This is a special column name, so save the value in specialColumnValues
+                    specialColumnValues[specialColumnCount] = specialColumns.get(columnName);
 
-                    // Write the index into mSpecialColumnValues negated into mColumnMapping
-                    mColumnMapping[i] = -(specialColumnCount + 1);
+                    // Write the index into specialColumnValues negated into columnMapping
+                    columnMapping[i] = -(specialColumnCount + 1);
                     specialColumnCount++;
                 } else {
-                    mColumnMapping[i] = columnIndex++;
+                    columnMapping[i] = columnIndex++;
                 }
             }
         }
 
         @Override
         public byte[] getBlob(int columnIndex) {
-            int realColumnIndex = mColumnMapping[columnIndex];
+            int realColumnIndex = columnMapping[columnIndex];
             if (realColumnIndex < 0) {
                 throw new RuntimeException("Special column can only be retrieved as string.");
             }
@@ -694,13 +694,13 @@ public class EmailProvider extends ContentProvider {
 
         @Override
         public int getColumnCount() {
-            return mColumnMapping.length;
+            return columnMapping.length;
         }
 
         @Override
         public int getColumnIndex(String columnName) {
-            for (int i = 0, len = mColumnNames.length; i < len; i++) {
-                if (mColumnNames[i].equals(columnName)) {
+            for (int i = 0, len = columnNames.length; i < len; i++) {
+                if (columnNames[i].equals(columnName)) {
                     return i;
                 }
             }
@@ -720,17 +720,17 @@ public class EmailProvider extends ContentProvider {
 
         @Override
         public String getColumnName(int columnIndex) {
-            return mColumnNames[columnIndex];
+            return columnNames[columnIndex];
         }
 
         @Override
         public String[] getColumnNames() {
-            return mColumnNames.clone();
+            return columnNames.clone();
         }
 
         @Override
         public double getDouble(int columnIndex) {
-            int realColumnIndex = mColumnMapping[columnIndex];
+            int realColumnIndex = columnMapping[columnIndex];
             if (realColumnIndex < 0) {
                 throw new RuntimeException("Special column can only be retrieved as string.");
             }
@@ -740,7 +740,7 @@ public class EmailProvider extends ContentProvider {
 
         @Override
         public float getFloat(int columnIndex) {
-            int realColumnIndex = mColumnMapping[columnIndex];
+            int realColumnIndex = columnMapping[columnIndex];
             if (realColumnIndex < 0) {
                 throw new RuntimeException("Special column can only be retrieved as string.");
             }
@@ -750,7 +750,7 @@ public class EmailProvider extends ContentProvider {
 
         @Override
         public int getInt(int columnIndex) {
-            int realColumnIndex = mColumnMapping[columnIndex];
+            int realColumnIndex = columnMapping[columnIndex];
             if (realColumnIndex < 0) {
                 throw new RuntimeException("Special column can only be retrieved as string.");
             }
@@ -760,7 +760,7 @@ public class EmailProvider extends ContentProvider {
 
         @Override
         public long getLong(int columnIndex) {
-            int realColumnIndex = mColumnMapping[columnIndex];
+            int realColumnIndex = columnMapping[columnIndex];
             if (realColumnIndex < 0) {
                 throw new RuntimeException("Special column can only be retrieved as string.");
             }
@@ -770,7 +770,7 @@ public class EmailProvider extends ContentProvider {
 
         @Override
         public short getShort(int columnIndex) {
-            int realColumnIndex = mColumnMapping[columnIndex];
+            int realColumnIndex = columnMapping[columnIndex];
             if (realColumnIndex < 0) {
                 throw new RuntimeException("Special column can only be retrieved as string.");
             }
@@ -780,9 +780,9 @@ public class EmailProvider extends ContentProvider {
 
         @Override
         public String getString(int columnIndex) {
-            int realColumnIndex = mColumnMapping[columnIndex];
+            int realColumnIndex = columnMapping[columnIndex];
             if (realColumnIndex < 0) {
-                return mSpecialColumnValues[-realColumnIndex - 1];
+                return specialColumnValues[-realColumnIndex - 1];
             }
 
             return super.getString(realColumnIndex);
@@ -790,7 +790,7 @@ public class EmailProvider extends ContentProvider {
 
         @Override
         public int getType(int columnIndex) {
-            int realColumnIndex = mColumnMapping[columnIndex];
+            int realColumnIndex = columnMapping[columnIndex];
             if (realColumnIndex < 0) {
                 return FIELD_TYPE_STRING;
             }
@@ -800,9 +800,9 @@ public class EmailProvider extends ContentProvider {
 
         @Override
         public boolean isNull(int columnIndex) {
-            int realColumnIndex = mColumnMapping[columnIndex];
+            int realColumnIndex = columnMapping[columnIndex];
             if (realColumnIndex < 0) {
-                return (mSpecialColumnValues[-realColumnIndex - 1] == null);
+                return (specialColumnValues[-realColumnIndex - 1] == null);
             }
 
             return super.isNull(realColumnIndex);

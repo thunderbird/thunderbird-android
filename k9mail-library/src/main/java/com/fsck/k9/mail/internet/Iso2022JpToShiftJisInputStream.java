@@ -9,13 +9,13 @@ class Iso2022JpToShiftJisInputStream extends InputStream {
         ASCII, JISX0201, JISX0208,
     }
 
-    private InputStream mIn;
+    private InputStream in;
     private Charset charset = Charset.ASCII;
     private int out;
     private boolean hasOut = false;
 
     Iso2022JpToShiftJisInputStream(InputStream in) {
-        mIn = in;
+        this.in = in;
     }
 
     @Override
@@ -25,11 +25,11 @@ class Iso2022JpToShiftJisInputStream extends InputStream {
             return out;
         }
 
-        int in1 = mIn.read();
+        int in1 = in.read();
         while (in1 == 0x1b) {
-            in1 = mIn.read();
+            in1 = in.read();
             if (in1 == '(') {
-                in1 = mIn.read();
+                in1 = in.read();
                 if (in1 == 'B' || in1 == 'J')
                     charset = Charset.ASCII;
                 else if (in1 == 'I')  // Not defined in RFC 1468 but in CP50221.
@@ -37,14 +37,14 @@ class Iso2022JpToShiftJisInputStream extends InputStream {
                 else
                     throw new MalformedInputException(0);
             } else if (in1 == '$') {
-                in1 = mIn.read();
+                in1 = in.read();
                 if (in1 == '@' || in1 == 'B')
                     charset = Charset.JISX0208;
                 else
                     throw new MalformedInputException(0);
             } else
                 throw new MalformedInputException(0);
-            in1 = mIn.read();
+            in1 = in.read();
         }
 
         if (in1 == '\n' || in1 == '\r')
@@ -59,7 +59,7 @@ class Iso2022JpToShiftJisInputStream extends InputStream {
         case JISX0201:
             return in1 + 0x80;
         case JISX0208:
-            int in2 = mIn.read();
+            int in2 = in.read();
             if (in2 < 0x21 || in2 >= 0x7f)
                 throw new MalformedInputException(0);
 

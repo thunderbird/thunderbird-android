@@ -3,51 +3,50 @@ package com.fsck.k9.cache;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fsck.k9.provider.EmailProvider.MessageColumns;
-import com.fsck.k9.provider.EmailProvider.ThreadColumns;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorWrapper;
+
+import com.fsck.k9.provider.EmailProvider.MessageColumns;
+import com.fsck.k9.provider.EmailProvider.ThreadColumns;
 
 /**
  * A {@link CursorWrapper} that utilizes {@link EmailProviderCache}.
  */
 public class EmailProviderCacheCursor extends CursorWrapper {
-    private EmailProviderCache mCache;
-    private List<Integer> mHiddenRows = new ArrayList<Integer>();
-    private int mMessageIdColumn;
-    private int mFolderIdColumn;
-    private int mThreadRootColumn;
+    private EmailProviderCache cache;
+    private List<Integer> hiddenRows = new ArrayList<Integer>();
+    private int messageIdColumn;
+    private int threadRootColumn;
 
     /**
      * The cursor's current position.
      *
-     * Note: This is only used when {@link #mHiddenRows} isn't empty.
+     * Note: This is only used when {@link #hiddenRows} isn't empty.
      */
-    private int mPosition;
+    private int position;
 
 
     public EmailProviderCacheCursor(String accountUuid, Cursor cursor, Context context) {
         super(cursor);
 
-        mCache = EmailProviderCache.getCache(accountUuid, context);
+        cache = EmailProviderCache.getCache(accountUuid, context);
 
-        mMessageIdColumn = cursor.getColumnIndex(MessageColumns.ID);
-        mFolderIdColumn = cursor.getColumnIndex(MessageColumns.FOLDER_ID);
-        mThreadRootColumn = cursor.getColumnIndex(ThreadColumns.ROOT);
+        messageIdColumn = cursor.getColumnIndex(MessageColumns.ID);
+        int folderIdColumn = cursor.getColumnIndex(MessageColumns.FOLDER_ID);
+        threadRootColumn = cursor.getColumnIndex(ThreadColumns.ROOT);
 
-        if (mMessageIdColumn == -1 || mFolderIdColumn == -1 || mThreadRootColumn == -1) {
+        if (messageIdColumn == -1 || folderIdColumn == -1 || threadRootColumn == -1) {
             throw new IllegalArgumentException("The supplied cursor needs to contain the " +
                     "following columns: " + MessageColumns.ID + ", " + MessageColumns.FOLDER_ID +
                     ", " + ThreadColumns.ROOT);
         }
 
         while (cursor.moveToNext()) {
-            long messageId = cursor.getLong(mMessageIdColumn);
-            long folderId = cursor.getLong(mFolderIdColumn);
-            if (mCache.isMessageHidden(messageId, folderId)) {
-                mHiddenRows.add(cursor.getPosition());
+            long messageId = cursor.getLong(messageIdColumn);
+            long folderId = cursor.getLong(folderIdColumn);
+            if (cache.isMessageHidden(messageId, folderId)) {
+                hiddenRows.add(cursor.getPosition());
             }
         }
 
@@ -58,17 +57,17 @@ public class EmailProviderCacheCursor extends CursorWrapper {
 
     @Override
     public int getInt(int columnIndex) {
-        long messageId = getLong(mMessageIdColumn);
-        long threadRootId = getLong(mThreadRootColumn);
+        long messageId = getLong(messageIdColumn);
+        long threadRootId = getLong(threadRootColumn);
 
         String columnName = getColumnName(columnIndex);
-        String value = mCache.getValueForMessage(messageId, columnName);
+        String value = cache.getValueForMessage(messageId, columnName);
 
         if (value != null) {
             return Integer.parseInt(value);
         }
 
-        value = mCache.getValueForThread(threadRootId, columnName);
+        value = cache.getValueForThread(threadRootId, columnName);
         if (value != null) {
             return Integer.parseInt(value);
         }
@@ -78,7 +77,7 @@ public class EmailProviderCacheCursor extends CursorWrapper {
 
     @Override
     public int getCount() {
-        return super.getCount() - mHiddenRows.size();
+        return super.getCount() - hiddenRows.size();
     }
 
     @Override
@@ -108,13 +107,13 @@ public class EmailProviderCacheCursor extends CursorWrapper {
 
     @Override
     public boolean moveToPosition(int position) {
-        if (mHiddenRows.isEmpty()) {
+        if (hiddenRows.isEmpty()) {
             return super.moveToPosition(position);
         }
 
-        mPosition = position;
+        this.position = position;
         int newPosition = position;
-        for (int hiddenRow : mHiddenRows) {
+        for (int hiddenRow : hiddenRows) {
             if (hiddenRow > newPosition) {
                 break;
             }
@@ -126,19 +125,19 @@ public class EmailProviderCacheCursor extends CursorWrapper {
 
     @Override
     public int getPosition() {
-        if (mHiddenRows.isEmpty()) {
+        if (hiddenRows.isEmpty()) {
             return super.getPosition();
         }
 
-        return mPosition;
+        return position;
     }
 
     @Override
     public boolean isLast() {
-        if (mHiddenRows.isEmpty()) {
+        if (hiddenRows.isEmpty()) {
             return super.isLast();
         }
 
-        return (mPosition == getCount() - 1);
+        return (position == getCount() - 1);
     }
 }

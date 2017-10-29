@@ -16,7 +16,7 @@ import com.fsck.k9.R;
 import java.util.List;
 
 public class ChooseIdentity extends K9ListActivity {
-    Account mAccount;
+    Account account;
     ArrayAdapter<String> adapter;
 
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseIdentity_account";
@@ -36,7 +36,7 @@ public class ChooseIdentity extends K9ListActivity {
         getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
         Intent intent = getIntent();
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+        account = Preferences.getPreferences(this).getAccount(accountUuid);
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
@@ -56,7 +56,7 @@ public class ChooseIdentity extends K9ListActivity {
         adapter.setNotifyOnChange(false);
         adapter.clear();
 
-        identities = mAccount.getIdentities();
+        identities = account.getIdentities();
         for (Identity identity : identities) {
             String description = identity.getDescription();
             if (description == null || description.trim().isEmpty()) {
@@ -71,12 +71,12 @@ public class ChooseIdentity extends K9ListActivity {
     protected void setupClickListeners() {
         this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Identity identity = mAccount.getIdentity(position);
+                Identity identity = account.getIdentity(position);
                 String email = identity.getEmail();
                 if (email != null && !email.trim().equals("")) {
                     Intent intent = new Intent();
 
-                    intent.putExtra(EXTRA_IDENTITY, mAccount.getIdentity(position));
+                    intent.putExtra(EXTRA_IDENTITY, account.getIdentity(position));
                     setResult(RESULT_OK, intent);
                     finish();
                 } else {

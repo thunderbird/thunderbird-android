@@ -1756,8 +1756,8 @@ public class Account implements BaseAccount, StoreConfig {
                 SearchCondition searchCondition = new SearchCondition(SearchField.DISPLAY_CLASS,
                         Attribute.EQUALS, FolderClass.SECOND_CLASS.name());
                 ConditionsTreeNode root = search.getConditions();
-                if (root.mRight != null) {
-                    root.mRight.or(searchCondition);
+                if (root.right != null) {
+                    root.right.or(searchCondition);
                 } else {
                     search.or(searchCondition);
                 }

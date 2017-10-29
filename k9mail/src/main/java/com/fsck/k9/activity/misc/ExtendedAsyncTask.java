@@ -29,13 +29,13 @@ import android.os.AsyncTask;
  */
 public abstract class ExtendedAsyncTask<Params, Progress, Result>
         extends AsyncTask<Params, Progress, Result> implements NonConfigurationInstance {
-    protected Activity mActivity;
-    protected Context mContext;
-    protected ProgressDialog mProgressDialog;
+    protected Activity activity;
+    protected Context context;
+    protected ProgressDialog progressDialog;
 
     protected ExtendedAsyncTask(Activity activity) {
-        mActivity = activity;
-        mContext = activity.getApplicationContext();
+        this.activity = activity;
+        context = activity.getApplicationContext();
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class ExtendedAsyncTask<Params, Progress, Result>
      */
     @Override
     public void restore(Activity activity) {
-        mActivity = activity;
+        this.activity = activity;
         showProgressDialog();
     }
 
@@ -72,11 +72,11 @@ public abstract class ExtendedAsyncTask<Params, Progress, Result>
     @Override
     public boolean retain() {
         boolean retain = false;
-        if (mProgressDialog != null) {
+        if (progressDialog != null) {
             removeProgressDialog();
             retain = true;
         }
-        mActivity = null;
+        activity = null;
 
         return retain;
     }
@@ -85,15 +85,15 @@ public abstract class ExtendedAsyncTask<Params, Progress, Result>
      * Creates a {@link ProgressDialog} that is shown while the background thread is running.
      *
      * <p>
-     * This needs to store a {@code ProgressDialog} instance in {@link #mProgressDialog} or
+     * This needs to store a {@code ProgressDialog} instance in {@link #progressDialog} or
      * override {@link #removeProgressDialog()}.
      * </p>
      */
     protected abstract void showProgressDialog();
 
     protected void removeProgressDialog() {
-        mProgressDialog.dismiss();
-        mProgressDialog = null;
+        progressDialog.dismiss();
+        progressDialog = null;
     }
 
     /**

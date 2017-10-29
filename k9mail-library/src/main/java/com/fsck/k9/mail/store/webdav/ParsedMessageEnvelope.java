@@ -27,44 +27,44 @@ class ParsedMessageEnvelope {
         HEADER_MAPPINGS = Collections.unmodifiableMap(map);
     }
 
-    private boolean mReadStatus = false;
-    private String mUid = "";
-    private Map<String, String> mMessageHeaders = new HashMap<String, String>();
-    private List<String> mHeaders = new ArrayList<String>();
+    private boolean readStatus = false;
+    private String uid = "";
+    private Map<String, String> messageHeaders = new HashMap<>();
+    private List<String> headers = new ArrayList<>();
 
     public void addHeader(String field, String value) {
         String headerName = HEADER_MAPPINGS.get(field);
 
         if (headerName != null) {
-            this.mMessageHeaders.put(HEADER_MAPPINGS.get(field), value);
-            this.mHeaders.add(HEADER_MAPPINGS.get(field));
+            this.messageHeaders.put(HEADER_MAPPINGS.get(field), value);
+            this.headers.add(HEADER_MAPPINGS.get(field));
         }
     }
 
     public Map<String, String> getMessageHeaders() {
-        return this.mMessageHeaders;
+        return this.messageHeaders;
     }
 
     public String[] getHeaderList() {
-        return this.mHeaders.toArray(WebDavConstants.EMPTY_STRING_ARRAY);
+        return this.headers.toArray(WebDavConstants.EMPTY_STRING_ARRAY);
     }
 
     public void setReadStatus(boolean status) {
-        this.mReadStatus = status;
+        this.readStatus = status;
     }
 
     public boolean getReadStatus() {
-        return this.mReadStatus;
+        return this.readStatus;
     }
 
     public void setUid(String uid) {
         if (uid != null) {
-            this.mUid = uid;
+            this.uid = uid;
         }
     }
 
     public String getUid() {
-        return this.mUid;
+        return this.uid;
     }
 }
 

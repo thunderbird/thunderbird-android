@@ -31,7 +31,7 @@ import com.fsck.k9.search.SearchAccount;
  * </p>
  */
 public abstract class AccountList extends K9ListActivity implements OnItemClickListener {
-    private FontSizes mFontSizes = K9.getFontSizes();
+    private FontSizes fontSizes = K9.getFontSizes();
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -151,8 +151,8 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
 
             holder.chip.getBackground().setAlpha(255);
 
-            mFontSizes.setViewTextSize(holder.description, mFontSizes.getAccountName());
-            mFontSizes.setViewTextSize(holder.email, mFontSizes.getAccountDescription());
+            fontSizes.setViewTextSize(holder.description, fontSizes.getAccountName());
+            fontSizes.setViewTextSize(holder.email, fontSizes.getAccountDescription());
 
 
             return view;

@@ -26,14 +26,14 @@ public class Address implements Serializable {
      */
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
 
-    private String mAddress;
+    private String address;
 
-    private String mPersonal;
+    private String personal;
 
 
     public Address(Address address) {
-        mAddress = address.mAddress;
-        mPersonal = address.mPersonal;
+        this.address = address.address;
+        personal = address.personal;
     }
 
     public Address(String address, String personal) {
@@ -49,7 +49,7 @@ public class Address implements Serializable {
             Rfc822Token[] tokens =  Rfc822Tokenizer.tokenize(address);
             if (tokens.length > 0) {
                 Rfc822Token token = tokens[0];
-                mAddress = token.getAddress();
+                this.address = token.getAddress();
                 String name = token.getName();
                 if (!TextUtils.isEmpty(name)) {
                     /*
@@ -58,43 +58,43 @@ public class Address implements Serializable {
                      *
                      * See issue 2920
                      */
-                    mPersonal = name;
+                    this.personal = name;
                 } else {
-                    mPersonal = (personal == null) ? null : personal.trim();
+                    this.personal = (personal == null) ? null : personal.trim();
                 }
             } else {
                 Timber.e(new IllegalStateException(), "Bad argument.");
             }
         } else {
-            mAddress = address;
-            mPersonal = personal;
+            this.address = address;
+            this.personal = personal;
         }
     }
 
     public String getAddress() {
-        return mAddress;
+        return address;
     }
 
     public String getHostname() {
-        if (mAddress == null) {
+        if (address == null) {
             return null;
         }
 
-        int hostIdx = mAddress.lastIndexOf("@");
+        int hostIdx = address.lastIndexOf("@");
 
         if (hostIdx == -1) {
             return null;
         }
 
-        return mAddress.substring(hostIdx + 1);
+        return address.substring(hostIdx + 1);
     }
 
     public void setAddress(String address) {
-        this.mAddress = address;
+        this.address = address;
     }
 
     public String getPersonal() {
-        return mPersonal;
+        return personal;
     }
 
     public void setPersonal(String newPersonal) {
@@ -105,7 +105,7 @@ public class Address implements Serializable {
         if (personal != null) {
             personal = personal.trim();
         }
-        this.mPersonal = personal;
+        this.personal = personal;
     }
 
     /**
@@ -168,31 +168,31 @@ public class Address implements Serializable {
 
         Address address = (Address) o;
 
-        if (mAddress != null ? !mAddress.equals(address.mAddress) : address.mAddress != null) {
+        if (this.address != null ? !this.address.equals(address.address) : address.address != null) {
             return false;
         }
 
-        return mPersonal != null ? mPersonal.equals(address.mPersonal) : address.mPersonal == null;
+        return personal != null ? personal.equals(address.personal) : address.personal == null;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        if (mAddress != null) {
-            hash += mAddress.hashCode();
+        if (address != null) {
+            hash += address.hashCode();
         }
-        if (mPersonal != null) {
-            hash += 3 * mPersonal.hashCode();
+        if (personal != null) {
+            hash += 3 * personal.hashCode();
         }
         return hash;
     }
 
     @Override
     public String toString() {
-        if (!TextUtils.isEmpty(mPersonal)) {
-            return quoteAtoms(mPersonal) + " <" + mAddress + ">";
+        if (!TextUtils.isEmpty(personal)) {
+            return quoteAtoms(personal) + " <" + address + ">";
         } else {
-            return mAddress;
+            return address;
         }
     }
 
@@ -204,10 +204,10 @@ public class Address implements Serializable {
     }
 
     public String toEncodedString() {
-        if (!TextUtils.isEmpty(mPersonal)) {
-            return EncoderUtil.encodeAddressDisplayName(mPersonal) + " <" + mAddress + ">";
+        if (!TextUtils.isEmpty(personal)) {
+            return EncoderUtil.encodeAddressDisplayName(personal) + " <" + address + ">";
         } else {
-            return mAddress;
+            return address;
         }
     }
 
