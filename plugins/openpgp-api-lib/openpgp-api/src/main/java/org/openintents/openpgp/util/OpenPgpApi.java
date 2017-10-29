@@ -49,17 +49,17 @@ public class OpenPgpApi {
      */
     public static final int API_VERSION = 12;
 
-    /**
-     * General extras
-     * --------------
-     *
-     * required extras:
-     * int           EXTRA_API_VERSION           (always required)
-     *
-     * returned extras:
-     * int           RESULT_CODE                 (RESULT_CODE_ERROR, RESULT_CODE_SUCCESS or RESULT_CODE_USER_INTERACTION_REQUIRED)
-     * OpenPgpError  RESULT_ERROR                (if RESULT_CODE == RESULT_CODE_ERROR)
-     * PendingIntent RESULT_INTENT               (if RESULT_CODE == RESULT_CODE_USER_INTERACTION_REQUIRED)
+    /*
+      General extras
+      --------------
+
+      required extras:
+      int           EXTRA_API_VERSION           (always required)
+
+      returned extras:
+      int           RESULT_CODE                 (RESULT_CODE_ERROR, RESULT_CODE_SUCCESS or RESULT_CODE_USER_INTERACTION_REQUIRED)
+      OpenPgpError  RESULT_ERROR                (if RESULT_CODE == RESULT_CODE_ERROR)
+      PendingIntent RESULT_INTENT               (if RESULT_CODE == RESULT_CODE_USER_INTERACTION_REQUIRED)
      */
 
     /**
@@ -415,7 +415,7 @@ public class OpenPgpApi {
         return task;
     }
 
-    public AsyncTask executeApiAsync(Intent data, OpenPgpDataSource dataSource, IOpenPgpSinkResultCallback<Void> callback) {
+    public void executeApiAsync(Intent data, OpenPgpDataSource dataSource, IOpenPgpSinkResultCallback<Void> callback) {
         OpenPgpSourceSinkAsyncTask<Void> task = new OpenPgpSourceSinkAsyncTask<>(data, dataSource, null, callback);
 
         // don't serialize async tasks!
@@ -426,7 +426,6 @@ public class OpenPgpApi {
             task.execute((Void[]) null);
         }
 
-        return task;
     }
 
     public void executeApiAsync(Intent data, InputStream is, OutputStream os, IOpenPgpCallback callback) {

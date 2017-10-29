@@ -180,7 +180,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private OpenPgpKeyPreference pgpCryptoKey;
     private CheckBoxPreference pgpSupportSignOnly;
 
-    private PreferenceScreen searchScreen;
     private CheckBoxPreference cloudSearchEnabled;
     private ListPreference remoteSearchNumResults;
 
@@ -504,7 +503,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         // IMAP-specific preferences
 
-        searchScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_SEARCH);
+        PreferenceScreen searchScreen = (PreferenceScreen) findPreference(PREFERENCE_SCREEN_SEARCH);
 
         cloudSearchEnabled = (CheckBoxPreference) findPreference(PREFERENCE_CLOUD_SEARCH_ENABLED);
         remoteSearchNumResults = (ListPreference) findPreference(PREFERENCE_REMOTE_SEARCH_NUM_RESULTS);

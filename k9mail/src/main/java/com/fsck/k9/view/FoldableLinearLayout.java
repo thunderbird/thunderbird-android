@@ -165,11 +165,11 @@ public class FoldableLinearLayout extends LinearLayout {
         for (int i = 0; i < childNum; i++) {
             children[i] = getChildAt(i);
         }
-        if (children[0].getId() == R.id.foldableControl) {
-        }
+
         // remove all of them from FoldableLinearLayout
         detachAllViewsFromParent();
         // Inflate the inner foldable_linearlayout.xml
+        // may be null !
         LayoutInflater inflator = (LayoutInflater) getContext().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         if (inflator != null) {

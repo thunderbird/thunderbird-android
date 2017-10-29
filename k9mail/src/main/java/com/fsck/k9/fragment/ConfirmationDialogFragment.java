@@ -10,7 +10,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
 
 public class ConfirmationDialogFragment extends DialogFragment implements OnClickListener,
         OnCancelListener {

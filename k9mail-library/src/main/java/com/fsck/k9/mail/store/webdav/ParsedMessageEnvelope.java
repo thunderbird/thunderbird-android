@@ -12,7 +12,7 @@ import java.util.Map;
 class ParsedMessageEnvelope {
     private static final Map<String, String> HEADER_MAPPINGS;
     static {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("mime-version", "MIME-Version");
         map.put("content-type", "Content-Type");
         map.put("subject", "Subject");

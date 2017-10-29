@@ -144,8 +144,7 @@ public class Address implements Serializable {
         try {
             MailboxList parsedList =  DefaultAddressParser.DEFAULT.parseAddressList(addressList).flatten();
 
-            for (int i = 0, count = parsedList.size(); i < count; i++) {
-                Mailbox mailbox = parsedList.get(i);
+            for (Mailbox mailbox : parsedList) {
                 addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName(), false));
             }
         } catch (MimeException pe) {

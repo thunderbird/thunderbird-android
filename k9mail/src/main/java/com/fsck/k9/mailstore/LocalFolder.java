@@ -139,7 +139,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     @Override
-    public void open(final int mode) throws MessagingException {
+    public synchronized void open(final int mode) throws MessagingException {
 
         if (isOpen() && (getMode() == mode || mode == OPEN_MODE_RO)) {
             return;

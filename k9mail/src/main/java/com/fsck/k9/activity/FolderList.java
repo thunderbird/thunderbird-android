@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.support.annotation.Nullable;
 import android.text.TextUtils.TruncateAt;
 import android.text.format.DateUtils;
 import timber.log.Timber;
@@ -920,17 +921,15 @@ public class FolderList extends K9ListActivity {
             return   filteredFolders.indexOf(searchHolder);
         }
 
+        @Nullable
         public FolderInfoHolder getFolder(String folder) {
             FolderInfoHolder holder = null;
 
             int index = getFolderIndex(folder);
             if (index >= 0) {
                 holder = (FolderInfoHolder) getItem(index);
-                if (holder != null) {
-                    return holder;
-                }
             }
-            return null;
+            return holder;
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -958,7 +957,8 @@ public class FolderList extends K9ListActivity {
                 holder.folderName = (TextView) view.findViewById(R.id.folder_name);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
                 holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
-                holder.newMessageCountWrapper = view.findViewById(R.id.new_message_count_wrapper);
+                holder.newMessageCountWrapper =
+                        view.findViewById(R.id.new_message_count_wrapper);
                 holder.flaggedMessageCountWrapper = view.findViewById(R.id.flagged_message_count_wrapper);
                 holder.newMessageCountIcon = view.findViewById(R.id.new_message_count_icon);
                 holder.flaggedMessageCountIcon = view.findViewById(R.id.flagged_message_count_icon);
@@ -1107,10 +1107,6 @@ public class FolderList extends K9ListActivity {
 
         @Override
         public boolean hasStableIds() {
-            return true;
-        }
-
-        public boolean isItemSelectable(int position) {
             return true;
         }
 

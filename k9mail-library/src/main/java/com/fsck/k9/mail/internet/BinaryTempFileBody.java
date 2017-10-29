@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.support.annotation.NonNull;
+
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64OutputStream;
 import org.apache.commons.io.IOUtils;
@@ -98,6 +100,7 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
         return new FileOutputStream(file);
     }
 
+    @NonNull
     public InputStream getInputStream() throws MessagingException {
         try {
             return new BinaryTempFileBodyInputStream(new FileInputStream(file));

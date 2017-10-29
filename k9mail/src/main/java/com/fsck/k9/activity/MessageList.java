@@ -72,10 +72,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
         OnSwitchCompleteListener {
 
-    @Deprecated
-    //TODO: Remove after 2017-09-11
-    private static final String EXTRA_SEARCH_OLD = "search";
-
     private static final String EXTRA_SEARCH = "search_bytes";
     private static final String EXTRA_NO_THREADING = "no_threading";
 
@@ -432,9 +428,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                     search.addAccountUuid(LocalSearch.ALL_ACCOUNTS);
                 }
             }
-        } else if (intent.hasExtra(EXTRA_SEARCH_OLD)) {
-            mSearch = intent.getParcelableExtra(EXTRA_SEARCH_OLD);
-            mNoThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false);
         } else {
             // regular LocalSearch object was passed
             search = intent.hasExtra(EXTRA_SEARCH) ?

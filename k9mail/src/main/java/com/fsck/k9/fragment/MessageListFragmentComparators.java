@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A set of {@link Comparator} classes used for {@link Cursor} data comparison.
  */
-public class MessageListFragmentComparators {
+class MessageListFragmentComparators {
     /**
      * Reverses the result of a {@link Comparator}.
      *

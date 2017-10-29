@@ -181,7 +181,7 @@ public class ContactPictureLoader {
         return CONTACT_DUMMY_COLORS_ARGB[colorIndex];
     }
 
-    private Bitmap drawTextAndBgColorOnBitmap(Bitmap bitmap, FallbackGlideParams params) {
+    private void drawTextAndBgColorOnBitmap(Bitmap bitmap, FallbackGlideParams params) {
         Canvas canvas = new Canvas(bitmap);
 
         int rgb = calcUnknownContactColor(params.address);
@@ -201,7 +201,6 @@ public class ContactPictureLoader {
                 (pictureSizeInPx / 2f) - (width / 2f),
                 (pictureSizeInPx / 2f) + (rect.height() / 2f), paint);
 
-        return bitmap;
     }
 
     private class FallbackGlideBitmapDecoder implements ResourceDecoder<FallbackGlideParams, Bitmap> {
