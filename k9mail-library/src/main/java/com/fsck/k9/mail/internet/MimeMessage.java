@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;

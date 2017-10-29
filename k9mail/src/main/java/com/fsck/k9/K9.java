@@ -58,13 +58,12 @@ public class K9 extends Application {
      * components') should implement this interface and register using
      * {@link K9#registerApplicationAware(ApplicationAware)}.
      */
-    public static interface ApplicationAware {
+    public interface ApplicationAware {
         /**
          * Called when the Application instance is available and ready.
          *
          * @param application
          *            The application instance. Never <code>null</code>.
-         * @throws Exception
          */
         void initializeComponent(Application application);
     }

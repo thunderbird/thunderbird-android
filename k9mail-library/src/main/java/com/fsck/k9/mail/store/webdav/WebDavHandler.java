@@ -1,10 +1,10 @@
 package com.fsck.k9.mail.store.webdav;
 
+import java.util.LinkedList;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import java.util.LinkedList;
 
 /**
  * Handler for WebDAV XML events

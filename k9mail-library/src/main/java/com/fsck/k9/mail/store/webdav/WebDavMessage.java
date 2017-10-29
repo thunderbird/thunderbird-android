@@ -39,31 +39,26 @@ class WebDavMessage extends MimeMessage {
         int length = urlParts.length;
         String end = urlParts[length - 1];
 
-        this.mUrl = "";
-        url = "";
-
-        /**
-         * We have to decode, then encode the URL because Exchange likes to not properly encode all characters
-         */
+         // We have to decode, then encode the URL because Exchange likes to not properly encode all characters
         try {
-            end = decodeUtf8(end);
-            end = encodeUtf8(end);
-            end = end.replaceAll("\\+", "%20");
+            end = encodeUtf8(decodeUtf8(end)).replaceAll("\\+", "%20");
         } catch (IllegalArgumentException iae) {
             Timber.e(iae, "IllegalArgumentException caught in setUrl: ");
         }
 
+        StringBuilder urlBuilder = new StringBuilder(url);
         for (int i = 0; i < length - 1; i++) {
             if (i != 0) {
-                url = url + "/" + urlParts[i];
+                urlBuilder.append("/").append(urlParts[i]);
             } else {
-                url = urlParts[i];
+                urlBuilder = new StringBuilder(urlParts[i]);
             }
         }
 
-        url = url + "/" + end;
+        urlBuilder.append('/');
+        urlBuilder.append(end);
 
-        this.url = url;
+        this.url = urlBuilder.toString();
     }
 
     public String getUrl() {

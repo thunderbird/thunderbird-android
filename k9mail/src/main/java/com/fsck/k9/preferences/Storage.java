@@ -251,10 +251,12 @@ public class Storage {
     }
 
     public boolean contains(String key) {
-        // TODO this used to be ConcurrentHashMap#contains which is
-        // actually containsValue. But looking at the usage of this method,
-        // it's clear that containsKey is what's intended. Investigate if this
-        // was a bug previously. Looks like it was only used once, when upgrading
+        /*
+        TODO this used to be ConcurrentHashMap#contains which is
+        actually containsValue. But looking at the usage of this method,
+        it's clear that containsKey is what's intended. Investigate if this
+        was a bug previously. Looks like it was only used once, when upgrading
+        */
         return storage.containsKey(key);
     }
 

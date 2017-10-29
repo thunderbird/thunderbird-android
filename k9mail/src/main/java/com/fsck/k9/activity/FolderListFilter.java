@@ -8,7 +8,6 @@ import timber.log.Timber;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
-import com.fsck.k9.K9;
 
 /**
  * Filter to search for occurrences of the search-expression in any place of the
@@ -68,7 +67,6 @@ public class FolderListFilter<T> extends Filter {
         } else {
             final String searchTermString = searchTerm.toString().toLowerCase(locale);
             final String[] words = searchTermString.split(" ");
-            final int wordCount = words.length;
 
             final List<T> values = originalValues;
 
@@ -77,8 +75,8 @@ public class FolderListFilter<T> extends Filter {
             for (final T value : values) {
                 final String valueText = value.toString().toLowerCase(locale);
 
-                for (int k = 0; k < wordCount; k++) {
-                    if (valueText.contains(words[k])) {
+                for (String word : words) {
+                    if (valueText.contains(word)) {
                         newValues.add(value);
                         break;
                     }

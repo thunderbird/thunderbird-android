@@ -2506,12 +2506,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             return false;
         }
 
-        if (!messagingController.isMoveCapable(account)) {
-            // For POP3 accounts only the Inbox is a remote folder.
-            return (folderName != null && folderName.equals(account.getInboxFolderName()));
-        }
+        // For POP3 accounts only the Inbox is a remote folder.
+        return messagingController.isMoveCapable(account) ||
+                (folderName != null && folderName.equals(account.getInboxFolderName()));
 
-        return true;
     }
 
     public boolean isManualSearch() {
