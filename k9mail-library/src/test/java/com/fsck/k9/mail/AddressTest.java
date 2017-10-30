@@ -183,6 +183,7 @@ public class AddressTest {
 
     @Test
     public void handlesInvalidBase64Encoding() throws Exception {
-        Address.parse("=?utf-8?b?invalid#?= <oops@example.com>");
+        Address address = Address.parse("=?utf-8?b?invalid#?= <oops@example.com>")[0];
+        assertEquals("oops@example.com", address.getAddress());
     }
 }

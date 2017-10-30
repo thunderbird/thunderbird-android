@@ -1,6 +1,7 @@
 
 package com.fsck.k9.mail;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import android.text.util.Rfc822Token;
 import android.text.util.Rfc822Tokenizer;
 
 import org.apache.james.mime4j.MimeException;
+import org.apache.james.mime4j.codec.DecodeMonitor;
 import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.dom.address.Mailbox;
 import org.apache.james.mime4j.dom.address.MailboxList;
@@ -29,7 +31,6 @@ public class Address implements Serializable {
     private String address;
 
     private String personal;
-
 
     public Address(Address address) {
         this.address = address.address;
@@ -142,7 +143,7 @@ public class Address implements Serializable {
         }
         List<Address> addresses = new ArrayList<>();
         try {
-            MailboxList parsedList =  DefaultAddressParser.DEFAULT.parseAddressList(addressList).flatten();
+            MailboxList parsedList =  DefaultAddressParser.DEFAULT.parseAddressList(addressList, DecodeMonitor.SILENT).flatten();
 
             for (Mailbox mailbox : parsedList) {
                 addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName(), false));
