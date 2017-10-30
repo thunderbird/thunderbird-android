@@ -324,30 +324,19 @@ public abstract class CoreService extends Service {
             }
         };
 
-        // TODO: remove this. we never set mThreadPool to null
-        if (mThreadPool == null) {
-            Timber.e("CoreService.execute (%s) called with no thread pool available; " +
-                    "running Runnable %d in calling thread", className, runner.hashCode());
+        Timber.d("CoreService (%s) queueing Runnable %d with startId %d", className, runner.hashCode(), startId);
 
-            synchronized (this) {
-                myRunner.run();
-                serviceShutdownScheduled = startId != null;
-            }
-        } else {
-            Timber.d("CoreService (%s) queueing Runnable %d with startId %d", className, runner.hashCode(), startId);
-
-            try {
-                mThreadPool.execute(myRunner);
-                serviceShutdownScheduled = startId != null;
-            } catch (RejectedExecutionException e) {
-                // Ignore RejectedExecutionException after we shut down the thread pool in
-                // onDestroy(). Still, this should not happen!
-                if (!mShutdown) {
-                    throw e;
-                }
-
+        try {
+            mThreadPool.execute(myRunner);
+            serviceShutdownScheduled = startId != null;
+        } catch (RejectedExecutionException e) {
+            // Ignore RejectedExecutionException after we shut down the thread pool in
+            // onDestroy(). Still, this should not happen!
+            if (mShutdown) {
                 Timber.i("CoreService: %s is shutting down, ignoring rejected execution exception: %s",
                         className, e.getMessage());
+            } else {
+                throw e;
             }
         }
 
