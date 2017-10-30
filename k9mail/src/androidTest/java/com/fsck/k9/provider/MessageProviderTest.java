@@ -20,7 +20,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class MessageProviderTest extends ProviderTestCase2 {
 
-    private MockContentResolver mMockResolver;
+    private MockContentResolver mockResolver;
     private Cursor cursor;
 
     public MessageProviderTest() {
@@ -32,7 +32,7 @@ public class MessageProviderTest extends ProviderTestCase2 {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        mMockResolver = getMockContentResolver();
+        mockResolver = getMockContentResolver();
         mContext = K9.app;
         Preferences preferences = Preferences.getPreferences(getMockContext());
         List<Account> accountList = preferences.getAccounts();
@@ -61,7 +61,7 @@ public class MessageProviderTest extends ProviderTestCase2 {
 
     @Test
     public void query_forAccounts_withNoAccounts_returnsEmptyCursor() {
-        cursor = mMockResolver.query(
+        cursor = mockResolver.query(
                 Uri.parse("content://" + MessageProvider.AUTHORITY + "/accounts/"),
                 null, null, null, null);
 
@@ -73,7 +73,7 @@ public class MessageProviderTest extends ProviderTestCase2 {
     @Test
     public void query_forAccounts_withAccount_returnsCursorWithData() {
         createAccount();
-        cursor = mMockResolver.query(
+        cursor = mockResolver.query(
                 Uri.parse("content://" + MessageProvider.AUTHORITY + "/accounts/"),
                 null, null, null, null);
 
@@ -86,7 +86,7 @@ public class MessageProviderTest extends ProviderTestCase2 {
     public void query_forAccounts_withAccount_withNoProjection_returnsNumberAndName() {
         createAccount();
 
-        cursor = mMockResolver.query(
+        cursor = mockResolver.query(
                 Uri.parse("content://" + MessageProvider.AUTHORITY + "/accounts/"),
                 null, null, null, null);
         cursor.moveToFirst();
@@ -101,7 +101,7 @@ public class MessageProviderTest extends ProviderTestCase2 {
 
     @Test
     public void query_forInboxMessages_whenEmpty_returnsEmptyCursor() {
-        cursor = mMockResolver.query(
+        cursor = mockResolver.query(
                 Uri.parse("content://" + MessageProvider.AUTHORITY + "/inbox_messages/"),
                 null, null, null, null);
 
@@ -112,7 +112,7 @@ public class MessageProviderTest extends ProviderTestCase2 {
 
     @Test
     public void query_forAccountUnreadMessages_whenNoAccount_returnsEmptyCursor() {
-        cursor = mMockResolver.query(
+        cursor = mockResolver.query(
                 Uri.parse("content://" + MessageProvider.AUTHORITY + "/account_unread/0"),
                 null, null, null, null);
 
@@ -124,7 +124,7 @@ public class MessageProviderTest extends ProviderTestCase2 {
     @Test
     public void query_forAccountUnreadMessages_whenNoMessages_returns0Unread() {
         createAccount();
-        cursor = mMockResolver.query(
+        cursor = mockResolver.query(
                 Uri.parse("content://" + MessageProvider.AUTHORITY + "/account_unread/0"),
                 null, null, null, null);
         cursor.moveToFirst();

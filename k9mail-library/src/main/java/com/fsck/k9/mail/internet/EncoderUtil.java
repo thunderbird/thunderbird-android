@@ -6,7 +6,6 @@ import java.nio.charset.Charset;
 import java.util.BitSet;
 
 import org.apache.james.mime4j.Charsets;
-import org.apache.james.mime4j.util.CharsetUtil;
 
 /**
  * Static methods for encoding header field values. This includes encoded-words
@@ -62,7 +61,7 @@ class EncoderUtil {
      * @return the encoded word (or sequence of encoded words if the given text
      *         does not fit in a single encoded word).
      */
-    public static String encodeEncodedWord(String text, Charset charset) {
+    static String encodeEncodedWord(String text, Charset charset) {
         if (text == null)
             throw new IllegalArgumentException();
 
@@ -174,8 +173,8 @@ class EncoderUtil {
             return Encoding.Q;
 
         int qEncoded = 0;
-        for (int i = 0; i < bytes.length; i++) {
-            int v = bytes[i] & 0xff;
+        for (byte b : bytes) {
+            int v = b & 0xff;
             if (v != 32 && !Q_RESTRICTED_CHARS.get(v)) {
                 qEncoded++;
             }

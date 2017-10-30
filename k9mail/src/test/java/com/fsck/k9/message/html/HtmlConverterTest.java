@@ -293,4 +293,18 @@ public class HtmlConverterTest {
         String result = HtmlConverter.textToHtml(text);
         assertEquals("<pre class=\"k9mail\">hello<hr>world<br /></pre>", result);
     }
+
+    @Test
+    public void replacementOfLinesStartingWithLinks() {
+        String text = "http://www.example.com some text";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.example.com\">http://www.example.com</a> some text</pre>", result);
+    }
+
+    @Test
+    public void replacementOfLinesStartingAndEndingWithLinks() {
+        String text = "http://www.example.com";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre class=\"k9mail\"><a href=\"http://www.example.com\">http://www.example.com</a></pre>", result);
+    }
 }

@@ -21,36 +21,33 @@ import com.fsck.k9.mail.filter.Base64;
 import timber.log.Timber;
 
 public class Storage {
-    private static ConcurrentMap<Context, Storage> storages =
-        new ConcurrentHashMap<Context, Storage>();
+    private static ConcurrentMap<Context, Storage> storages = new ConcurrentHashMap<>();
 
-    private volatile ConcurrentMap<String, String> storage = new ConcurrentHashMap<String, String>();
+    private volatile ConcurrentMap<String, String> storage = new ConcurrentHashMap<>();
 
-    private int DB_VERSION = 2;
-    private String DB_NAME = "preferences_storage";
+    private final int DB_VERSION = 2;
+    private final String DB_NAME = "preferences_storage";
 
-    private ThreadLocal<ConcurrentMap<String, String>> workingStorage
-    = new ThreadLocal<ConcurrentMap<String, String>>();
-    private ThreadLocal<SQLiteDatabase> workingDB =
-        new ThreadLocal<SQLiteDatabase>();
-    private ThreadLocal<List<String>> workingChangedKeys = new ThreadLocal<List<String>>();
+    private ThreadLocal<ConcurrentMap<String, String>> workingStorage = new ThreadLocal<>();
+    private ThreadLocal<SQLiteDatabase> workingDB = new ThreadLocal<>();
+    private ThreadLocal<List<String>> workingChangedKeys = new ThreadLocal<>();
 
 
     private Context context = null;
 
     private SQLiteDatabase openDB() {
-        SQLiteDatabase mDb = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
+        SQLiteDatabase database = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
 
-        if (mDb.getVersion() == 1) {
+        if (database.getVersion() == 1) {
             Timber.i("Updating preferences to urlencoded username/password");
 
-            String accountUuids = readValue(mDb, "accountUuids");
+            String accountUuids = readValue(database, "accountUuids");
             if (accountUuids != null && accountUuids.length() != 0) {
                 String[] uuids = accountUuids.split(",");
                 for (String uuid : uuids) {
                     try {
-                        String storeUriStr = Base64.decode(readValue(mDb, uuid + ".storeUri"));
-                        String transportUriStr = Base64.decode(readValue(mDb, uuid + ".transportUri"));
+                        String storeUriStr = Base64.decode(readValue(database, uuid + ".storeUri"));
+                        String transportUriStr = Base64.decode(readValue(database, uuid + ".transportUri"));
 
                         URI uri = new URI(transportUriStr);
                         String newUserInfo = null;
@@ -73,7 +70,7 @@ public class Storage {
                         if (newUserInfo != null) {
                             URI newUri = new URI(uri.getScheme(), newUserInfo, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
                             String newTransportUriStr = Base64.encode(newUri.toString());
-                            writeValue(mDb, uuid + ".transportUri", newTransportUriStr);
+                            writeValue(database, uuid + ".transportUri", newTransportUriStr);
                         }
 
                         uri = new URI(storeUriStr);
@@ -117,7 +114,7 @@ public class Storage {
                         if (newUserInfo != null) {
                             URI newUri = new URI(uri.getScheme(), newUserInfo, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
                             String newStoreUriStr = Base64.encode(newUri.toString());
-                            writeValue(mDb, uuid + ".storeUri", newStoreUriStr);
+                            writeValue(database, uuid + ".storeUri", newStoreUriStr);
                         }
                     } catch (Exception e) {
                         Timber.e(e, "ooops");
@@ -125,17 +122,17 @@ public class Storage {
                 }
             }
 
-            mDb.setVersion(DB_VERSION);
+            database.setVersion(DB_VERSION);
         }
 
-        if (mDb.getVersion() != DB_VERSION) {
+        if (database.getVersion() != DB_VERSION) {
             Timber.i("Creating Storage database");
-            mDb.execSQL("DROP TABLE IF EXISTS preferences_storage");
-            mDb.execSQL("CREATE TABLE preferences_storage " +
+            database.execSQL("DROP TABLE IF EXISTS preferences_storage");
+            database.execSQL("CREATE TABLE preferences_storage " +
                         "(primkey TEXT PRIMARY KEY ON CONFLICT REPLACE, value TEXT)");
-            mDb.setVersion(DB_VERSION);
+            database.setVersion(DB_VERSION);
         }
-        return mDb;
+        return database;
     }
 
 
@@ -229,23 +226,23 @@ public class Storage {
         newStorage.putAll(storage);
         workingStorage.set(newStorage);
 
-        SQLiteDatabase mDb = openDB();
-        workingDB.set(mDb);
+        SQLiteDatabase database = openDB();
+        workingDB.set(database);
 
         List<String> changedKeys = new ArrayList<String>();
         workingChangedKeys.set(changedKeys);
 
-        mDb.beginTransaction();
+        database.beginTransaction();
         try {
             dbWork.run();
-            mDb.setTransactionSuccessful();
+            database.setTransactionSuccessful();
             storage = newStorage;
         } finally {
             workingDB.remove();
             workingStorage.remove();
             workingChangedKeys.remove();
-            mDb.endTransaction();
-            mDb.close();
+            database.endTransaction();
+            database.close();
         }
     }
 
@@ -254,10 +251,12 @@ public class Storage {
     }
 
     public boolean contains(String key) {
-        // TODO this used to be ConcurrentHashMap#contains which is
-        // actually containsValue. But looking at the usage of this method,
-        // it's clear that containsKey is what's intended. Investigate if this
-        // was a bug previously. Looks like it was only used once, when upgrading
+        /*
+        TODO this used to be ConcurrentHashMap#contains which is
+        actually containsValue. But looking at the usage of this method,
+        it's clear that containsKey is what's intended. Investigate if this
+        was a bug previously. Looks like it was only used once, when upgrading
+        */
         return storage.containsKey(key);
     }
 
@@ -311,11 +310,11 @@ public class Storage {
         return val;
     }
 
-    private String readValue(SQLiteDatabase mDb, String key) {
+    private String readValue(SQLiteDatabase database, String key) {
         Cursor cursor = null;
         String value = null;
         try {
-            cursor = mDb.query(
+            cursor = database.query(
                          "preferences_storage",
                          new String[] {"value"},
                          "primkey = ?",
@@ -335,12 +334,12 @@ public class Storage {
         return value;
     }
 
-    private void writeValue(SQLiteDatabase mDb, String key, String value) {
+    private void writeValue(SQLiteDatabase database, String key, String value) {
         ContentValues cv = new ContentValues();
         cv.put("primkey", key);
         cv.put("value", value);
 
-        long result = mDb.insert("preferences_storage", "primkey", cv);
+        long result = database.insert("preferences_storage", "primkey", cv);
 
         if (result == -1) {
             Timber.e("Error writing key '%s', value = '%s'", key, value);

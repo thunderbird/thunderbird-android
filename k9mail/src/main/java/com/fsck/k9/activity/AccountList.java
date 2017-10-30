@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,7 +33,7 @@ import com.fsck.k9.search.SearchAccount;
  * </p>
  */
 public abstract class AccountList extends K9ListActivity implements OnItemClickListener {
-    private FontSizes mFontSizes = K9.getFontSizes();
+    private FontSizes fontSizes = K9.getFontSizes();
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -106,7 +108,9 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        @NonNull
+        public View getView(int position, View convertView, @Nullable ViewGroup parent) {
+            // account may be null
             final BaseAccount account = getItem(position);
 
             final View view;
@@ -128,31 +132,33 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
                 view.setTag(holder);
             }
 
-            String description = account.getDescription();
-            if (account.getEmail().equals(description)) {
-                holder.email.setVisibility(View.GONE);
-            } else {
-                holder.email.setVisibility(View.VISIBLE);
-                holder.email.setText(account.getEmail());
-            }
+            if (account != null) {
+                String description = account.getDescription();
+                if (account.getEmail().equals(description)) {
+                    holder.email.setVisibility(View.GONE);
+                } else {
+                    holder.email.setVisibility(View.VISIBLE);
+                    holder.email.setText(account.getEmail());
+                }
 
-            if (description == null || description.isEmpty()) {
-                description = account.getEmail();
-            }
+                if (description == null || description.isEmpty()) {
+                    description = account.getEmail();
+                }
 
-            holder.description.setText(description);
+                holder.description.setText(description);
 
-            if (account instanceof Account) {
-                Account realAccount = (Account) account;
-                holder.chip.setBackgroundColor(realAccount.getChipColor());
-            } else {
-                holder.chip.setBackgroundColor(0xff999999);
+                if (account instanceof Account) {
+                    Account realAccount = (Account) account;
+                    holder.chip.setBackgroundColor(realAccount.getChipColor());
+                } else {
+                    holder.chip.setBackgroundColor(0xff999999);
+                }
             }
 
             holder.chip.getBackground().setAlpha(255);
 
-            mFontSizes.setViewTextSize(holder.description, mFontSizes.getAccountName());
-            mFontSizes.setViewTextSize(holder.email, mFontSizes.getAccountDescription());
+            fontSizes.setViewTextSize(holder.description, fontSizes.getAccountName());
+            fontSizes.setViewTextSize(holder.email, fontSizes.getAccountDescription());
 
 
             return view;
@@ -171,8 +177,7 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
     class LoadAccounts extends AsyncTask<Void, Void, List<Account>> {
         @Override
         protected List<Account> doInBackground(Void... params) {
-            List<Account> accounts = Preferences.getPreferences(getApplicationContext()).getAccounts();
-            return accounts;
+            return Preferences.getPreferences(getApplicationContext()).getAccounts();
         }
 
         @Override

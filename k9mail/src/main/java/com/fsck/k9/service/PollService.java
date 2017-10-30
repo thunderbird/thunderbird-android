@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.PowerManager;
 import timber.log.Timber;
-import com.fsck.k9.*;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.mail.power.TracingPowerManager;
@@ -18,7 +20,7 @@ public class PollService extends CoreService {
     private static String START_SERVICE = "com.fsck.k9.service.PollService.startService";
     private static String STOP_SERVICE = "com.fsck.k9.service.PollService.stopService";
 
-    private Listener mListener = new Listener();
+    private Listener listener = new Listener();
 
     public static void startService(Context context) {
         Intent i = new Intent();
@@ -51,10 +53,10 @@ public class PollService extends CoreService {
             Listener listener = (Listener)controller.getCheckMailListener();
             if (listener == null) {
                 Timber.i("***** PollService *****: starting new check");
-                mListener.setStartId(startId);
-                mListener.wakeLockAcquire();
-                controller.setCheckMailListener(mListener);
-                controller.checkMail(this, null, false, false, mListener);
+                this.listener.setStartId(startId);
+                this.listener.wakeLockAcquire();
+                controller.setCheckMailListener(this.listener);
+                controller.checkMail(this, null, false, false, this.listener);
             } else {
                 Timber.i("***** PollService *****: renewing WakeLock");
                 listener.setStartId(startId);
@@ -80,7 +82,7 @@ public class PollService extends CoreService {
 
         // wakelock strategy is to be very conservative.  If there is any reason to release, then release
         // don't want to take the chance of running wild
-        public synchronized void wakeLockAcquire() {
+        synchronized void wakeLockAcquire() {
             TracingWakeLock oldWakeLock = wakeLock;
 
             TracingPowerManager pm = TracingPowerManager.getPowerManager(PollService.this);
@@ -93,7 +95,7 @@ public class PollService extends CoreService {
             }
 
         }
-        public synchronized void wakeLockRelease() {
+        synchronized void wakeLockRelease() {
             if (wakeLock != null) {
                 wakeLock.release();
                 wakeLock = null;
@@ -140,7 +142,7 @@ public class PollService extends CoreService {
         public int getStartId() {
             return startId;
         }
-        public void setStartId(int startId) {
+        void setStartId(int startId) {
             this.startId = startId;
         }
     }

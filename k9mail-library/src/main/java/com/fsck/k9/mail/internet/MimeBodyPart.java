@@ -1,11 +1,6 @@
 
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.BodyPart;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Multipart;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,14 +8,19 @@ import java.io.OutputStreamWriter;
 
 import android.support.annotation.NonNull;
 
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.Multipart;
+
 
 /**
  * TODO this is a close approximation of Message, need to update along with
  * Message.
  */
 public class MimeBodyPart extends BodyPart {
-    private final MimeHeader mHeader;
-    private Body mBody;
+    private final MimeHeader header;
+    private Body body;
 
     public MimeBodyPart() throws MessagingException {
         this(null);
@@ -31,7 +31,7 @@ public class MimeBodyPart extends BodyPart {
     }
 
     public MimeBodyPart(Body body, String contentType) throws MessagingException {
-        mHeader = new MimeHeader();
+        header = new MimeHeader();
         if (contentType != null) {
             addHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
         }
@@ -39,54 +39,54 @@ public class MimeBodyPart extends BodyPart {
     }
 
     MimeBodyPart(MimeHeader header, Body body)  throws MessagingException {
-        mHeader = header;
+        this.header = header;
         MimeMessageHelper.setBody(this, body);
     }
 
     private String getFirstHeader(String name) {
-        return mHeader.getFirstHeader(name);
+        return header.getFirstHeader(name);
     }
 
     @Override
     public void addHeader(String name, String value) {
-        mHeader.addHeader(name, value);
+        header.addHeader(name, value);
     }
 
     @Override
     public void addRawHeader(String name, String raw) {
-        mHeader.addRawHeader(name, raw);
+        header.addRawHeader(name, raw);
     }
 
     @Override
     public void setHeader(String name, String value) {
-        mHeader.setHeader(name, value);
+        header.setHeader(name, value);
     }
 
     @NonNull
     @Override
     public String[] getHeader(String name) {
-        return mHeader.getHeader(name);
+        return header.getHeader(name);
     }
 
     @Override
     public void removeHeader(String name) {
-        mHeader.removeHeader(name);
+        header.removeHeader(name);
     }
 
     @Override
     public Body getBody() {
-        return mBody;
+        return body;
     }
 
     @Override
     public void setBody(Body body) {
-        this.mBody = body;
+        this.body = body;
     }
 
     @Override
     public void setEncoding(String encoding) throws MessagingException {
-        if (mBody != null) {
-            mBody.setEncoding(encoding);
+        if (body != null) {
+            body.setEncoding(encoding);
         }
         setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
     }
@@ -140,17 +140,17 @@ public class MimeBodyPart extends BodyPart {
     @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
-        mHeader.writeTo(out);
+        header.writeTo(out);
         writer.write("\r\n");
         writer.flush();
-        if (mBody != null) {
-            mBody.writeTo(out);
+        if (body != null) {
+            body.writeTo(out);
         }
     }
 
     @Override
     public void writeHeaderTo(OutputStream out) throws IOException, MessagingException {
-        mHeader.writeTo(out);
+        header.writeTo(out);
     }
 
 }

@@ -27,18 +27,18 @@ public class MessageListHandler extends Handler {
     private static final int ACTION_RESTORE_LIST_POSITION = 6;
     private static final int ACTION_OPEN_MESSAGE = 7;
 
-    private WeakReference<MessageListFragment> mFragment;
+    private WeakReference<MessageListFragment> fragment;
 
-    public MessageListHandler(MessageListFragment fragment) {
-        mFragment = new WeakReference<>(fragment);
+    MessageListHandler(MessageListFragment fragment) {
+        this.fragment = new WeakReference<>(fragment);
     }
-    public void folderLoading(String folder, boolean loading) {
+    void folderLoading(String folder, boolean loading) {
         android.os.Message msg = android.os.Message.obtain(this, ACTION_FOLDER_LOADING,
                 (loading) ? 1 : 0, 0, folder);
         sendMessage(msg);
     }
 
-    public void refreshTitle() {
+    void refreshTitle() {
         android.os.Message msg = android.os.Message.obtain(this, ACTION_REFRESH_TITLE);
         sendMessage(msg);
     }
@@ -49,16 +49,16 @@ public class MessageListHandler extends Handler {
         sendMessage(msg);
     }
 
-    public void remoteSearchFinished() {
+    void remoteSearchFinished() {
         android.os.Message msg = android.os.Message.obtain(this, ACTION_REMOTE_SEARCH_FINISHED);
         sendMessage(msg);
     }
 
-    public void updateFooter(final String message) {
+    void updateFooter(final String message) {
         post(new Runnable() {
             @Override
             public void run() {
-                MessageListFragment fragment = mFragment.get();
+                MessageListFragment fragment = MessageListHandler.this.fragment.get();
                 if (fragment != null) {
                     fragment.updateFooter(message);
                 }
@@ -66,13 +66,13 @@ public class MessageListHandler extends Handler {
         });
     }
 
-    public void goBack() {
+    void goBack() {
         android.os.Message msg = android.os.Message.obtain(this, ACTION_GO_BACK);
         sendMessage(msg);
     }
 
-    public void restoreListPosition() {
-        MessageListFragment fragment = mFragment.get();
+    void restoreListPosition() {
+        MessageListFragment fragment = this.fragment.get();
         if (fragment != null) {
             android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION,
                     fragment.savedListState);
@@ -81,7 +81,7 @@ public class MessageListHandler extends Handler {
         }
     }
 
-    public void openMessage(MessageReference messageReference) {
+    void openMessage(MessageReference messageReference) {
         android.os.Message msg = android.os.Message.obtain(this, ACTION_OPEN_MESSAGE,
                 messageReference);
         sendMessage(msg);
@@ -89,7 +89,7 @@ public class MessageListHandler extends Handler {
 
     @Override
     public void handleMessage(android.os.Message msg) {
-        MessageListFragment fragment = mFragment.get();
+        MessageListFragment fragment = this.fragment.get();
         if (fragment == null) {
             return;
         }

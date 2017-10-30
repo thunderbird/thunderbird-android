@@ -1,7 +1,6 @@
 
 package com.fsck.k9.view;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.R;
 
 import android.app.Activity;
@@ -17,27 +16,27 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class ClientCertificateSpinner extends LinearLayout {
-    Activity mActivity;
-    OnClientCertificateChangedListener mListener;
+    Activity activity;
+    OnClientCertificateChangedListener listener;
 
-    Button mSelection;
-    ImageButton mDeleteButton;
+    Button selection;
+    ImageButton deleteButton;
 
-    String mAlias;
+    String alias;
 
     public interface OnClientCertificateChangedListener {
         void onClientCertificateChanged(String alias);
     }
 
     public void setOnClientCertificateChangedListener(OnClientCertificateChangedListener listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     public ClientCertificateSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         if (context instanceof Activity) {
-            mActivity = (Activity) context;
+            activity = (Activity) context;
         } else {
             Timber.e("ClientCertificateSpinner init failed! Please inflate with Activity!");
         }
@@ -47,16 +46,16 @@ public class ClientCertificateSpinner extends LinearLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.client_certificate_spinner, this, true);
 
-        mSelection = (Button) findViewById(R.id.client_certificate_spinner_button);
-        mSelection.setOnClickListener(new OnClickListener() {
+        selection = (Button) findViewById(R.id.client_certificate_spinner_button);
+        selection.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseCertificate();
             }
         });
 
-        mDeleteButton = (ImageButton) findViewById(R.id.client_certificate_spinner_delete);
-        mDeleteButton.setOnClickListener(new OnClickListener() {
+        deleteButton = (ImageButton) findViewById(R.id.client_certificate_spinner_delete);
+        deleteButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onDelete();
@@ -70,22 +69,22 @@ public class ClientCertificateSpinner extends LinearLayout {
             alias = null;
         }
 
-        mAlias = alias;
+        this.alias = alias;
         // Note: KeyChainAliasCallback is a different thread than the UI
-        mActivity.runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 updateView();
-                if (mListener != null) {
-                    mListener.onClientCertificateChanged(mAlias);
+                if (listener != null) {
+                    listener.onClientCertificateChanged(ClientCertificateSpinner.this.alias);
                 }
             }
         });
     }
 
     public String getAlias() {
-        String alias = mSelection.getText().toString();
-        if (alias.equals(mActivity.getString(R.string.client_certificate_spinner_empty))) {
+        String alias = selection.getText().toString();
+        if (alias.equals(activity.getString(R.string.client_certificate_spinner_empty))) {
             return null;
         } else {
             return alias;
@@ -99,7 +98,7 @@ public class ClientCertificateSpinner extends LinearLayout {
     public void chooseCertificate() {
         // NOTE: keyTypes, issuers, hosts, port are not known before we actually
         // open a connection, thus we cannot set them here!
-        KeyChain.choosePrivateKeyAlias(mActivity, new KeyChainAliasCallback() {
+        KeyChain.choosePrivateKeyAlias(activity, new KeyChainAliasCallback() {
             @Override
             public void alias(String alias) {
                 Timber.d("User has selected client certificate alias: %s", alias);
@@ -110,10 +109,10 @@ public class ClientCertificateSpinner extends LinearLayout {
     }
 
     private void updateView() {
-        if (mAlias != null) {
-            mSelection.setText(mAlias);
+        if (alias != null) {
+            selection.setText(alias);
         } else {
-            mSelection.setText(R.string.client_certificate_spinner_empty);
+            selection.setText(R.string.client_certificate_spinner_empty);
         }
     }
 

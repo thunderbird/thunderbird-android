@@ -60,10 +60,10 @@ public abstract class K9PreferenceActivity extends PreferenceActivity {
      * This class handles value changes of the {@link ListPreference} objects.
      */
     private static class PreferenceChangeListener implements Preference.OnPreferenceChangeListener {
-        private ListPreference mPrefView;
+        private ListPreference prefView;
 
         private PreferenceChangeListener(final ListPreference prefView) {
-            this.mPrefView = prefView;
+            this.prefView = prefView;
         }
 
         /**
@@ -72,9 +72,9 @@ public abstract class K9PreferenceActivity extends PreferenceActivity {
         @Override
         public boolean onPreferenceChange(final Preference preference, final Object newValue) {
             final String summary = newValue.toString();
-            final int index = mPrefView.findIndexOfValue(summary);
-            mPrefView.setSummary(mPrefView.getEntries()[index]);
-            mPrefView.setValue(summary);
+            final int index = prefView.findIndexOfValue(summary);
+            prefView.setSummary(prefView.getEntries()[index]);
+            prefView.setValue(summary);
             return false;
         }
     }

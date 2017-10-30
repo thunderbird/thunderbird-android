@@ -11,7 +11,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.imap.ImapStore;
@@ -24,18 +23,18 @@ public abstract class RemoteStore extends Store {
     public static final int SOCKET_CONNECT_TIMEOUT = 30000;
     public static final int SOCKET_READ_TIMEOUT = 60000;
 
-    protected StoreConfig mStoreConfig;
-    protected TrustedSocketFactory mTrustedSocketFactory;
+    protected StoreConfig storeConfig;
+    protected TrustedSocketFactory trustedSocketFactory;
 
     /**
      * Remote stores indexed by Uri.
      */
-    private static Map<String, Store> sStores = new HashMap<String, Store>();
+    private static Map<String, Store> sStores = new HashMap<>();
 
 
     public RemoteStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory) {
-        mStoreConfig = storeConfig;
-        mTrustedSocketFactory = trustedSocketFactory;
+        this.storeConfig = storeConfig;
+        this.trustedSocketFactory = trustedSocketFactory;
     }
 
     /**
@@ -51,12 +50,11 @@ public abstract class RemoteStore extends Store {
         Store store = sStores.get(uri);
         if (store == null) {
             if (uri.startsWith("imap")) {
-                OAuth2TokenProvider oAuth2TokenProvider = null;
                 store = new ImapStore(
                         storeConfig,
                         new DefaultTrustedSocketFactory(context),
                         (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE),
-                        oAuth2TokenProvider);
+                        null);
             } else if (uri.startsWith("pop3")) {
                 store = new Pop3Store(storeConfig, new DefaultTrustedSocketFactory(context));
             } else if (uri.startsWith("webdav")) {

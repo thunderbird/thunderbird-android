@@ -240,7 +240,7 @@ public abstract class MessageBuilder {
                     EncoderUtil.encodeIfNecessary(attachment.name,
                             EncoderUtil.Usage.WORD_ENTITY, 7)));
 
-            bp.setEncoding(MimeUtility.getEncodingforType(contentType));
+            bp.setEncoding(MimeUtility.getEncodingForType(contentType));
 
             /*
              * TODO: Oh the joys of MIME...

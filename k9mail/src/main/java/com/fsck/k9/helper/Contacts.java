@@ -20,7 +20,7 @@ public class Contacts {
      * The order in which the search results are returned by
      * {@link #getContactByAddress(String)}.
      */
-    protected static final String SORT_ORDER =
+    private static final String SORT_ORDER =
             ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED + " DESC, " +
                     ContactsContract.Contacts.DISPLAY_NAME + ", " +
                     ContactsContract.CommonDataKinds.Email._ID;
@@ -28,7 +28,7 @@ public class Contacts {
     /**
      * Array of columns to load from the database.
      */
-    protected static final String PROJECTION[] = {
+    private static final String PROJECTION[] = {
             ContactsContract.CommonDataKinds.Email._ID,
             ContactsContract.Contacts.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Email.CONTACT_ID,
@@ -39,13 +39,13 @@ public class Contacts {
      * Index of the name field in the projection. This must match the order in
      * {@link #PROJECTION}.
      */
-    protected static final int NAME_INDEX = 1;
+    private static final int NAME_INDEX = 1;
 
     /**
      * Index of the contact id field in the projection. This must match the order in
      * {@link #PROJECTION}.
      */
-    protected static final int CONTACT_ID_INDEX = 2;
+    private static final int CONTACT_ID_INDEX = 2;
 
 
     /**
@@ -62,8 +62,8 @@ public class Contacts {
     }
 
 
-    protected Context mContext;
-    protected ContentResolver mContentResolver;
+    private Context context;
+    private ContentResolver contentResolver;
 
 
     /**
@@ -72,8 +72,8 @@ public class Contacts {
      * @param context A {@link Context} instance.
      */
     protected Contacts(Context context) {
-        mContext = context;
-        mContentResolver = context.getContentResolver();
+        this.context = context;
+        contentResolver = context.getContentResolver();
     }
 
     /**
@@ -102,7 +102,7 @@ public class Contacts {
             contactIntent.putExtra(ContactsContract.Intents.Insert.NAME, senderPersonal);
         }
 
-        mContext.startActivity(contactIntent);
+        context.startActivity(contactIntent);
     }
 
     /**
@@ -116,7 +116,7 @@ public class Contacts {
         addIntent.setType(ContactsContract.Contacts.CONTENT_ITEM_TYPE);
         addIntent.putExtra(ContactsContract.Intents.Insert.PHONE, Uri.decode(phoneNumber));
         addIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(addIntent);
+        context.startActivity(addIntent);
     }
 
     /**
@@ -202,7 +202,7 @@ public class Contacts {
                 if (c.getCount() > 0) {
                     c.moveToFirst();
                     final long personId = c.getLong(CONTACT_ID_INDEX);
-                    ContactsContract.Contacts.markAsContacted(mContentResolver, personId);
+                    ContactsContract.Contacts.markAsContacted(contentResolver, personId);
                 }
                 c.close();
             }
@@ -265,7 +265,7 @@ public class Contacts {
      */
     private Cursor getContactByAddress(final String address) {
         final Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_LOOKUP_URI, Uri.encode(address));
-        final Cursor c = mContentResolver.query(
+        final Cursor c = contentResolver.query(
                 uri,
                 PROJECTION,
                 null,

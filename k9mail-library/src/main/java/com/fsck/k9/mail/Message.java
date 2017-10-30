@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -20,26 +21,24 @@ public abstract class Message implements Part, Body {
         TO, CC, BCC, X_ORIGINAL_TO, DELIVERED_TO, X_ENVELOPE_TO
     }
 
-    protected String mUid;
+    protected String uid;
 
-    private Set<Flag> mFlags = EnumSet.noneOf(Flag.class);
+    private Set<Flag> flags = EnumSet.noneOf(Flag.class);
 
-    private Date mInternalDate;
+    @Nullable
+    private Date internalDate;
 
-    protected Folder mFolder;
+    protected Folder folder;
 
     public boolean olderThan(Date earliestDate) {
         if (earliestDate == null) {
             return false;
         }
-        Date myDate = getSentDate();
-        if (myDate == null) {
-            myDate = getInternalDate();
+        Date latestDate = getSentDate();
+        if (latestDate == null) {
+            latestDate = getInternalDate();
         }
-        if (myDate != null) {
-            return myDate.before(earliestDate);
-        }
-        return false;
+        return latestDate != null && latestDate.before(earliestDate);
     }
 
     @Override
@@ -56,22 +55,21 @@ public abstract class Message implements Part, Body {
     public int hashCode() {
         final int MULTIPLIER = 31;
 
-        int result = 1;
-        result = MULTIPLIER * result + (mFolder != null ? mFolder.getName().hashCode() : 0);
-        result = MULTIPLIER * result + mUid.hashCode();
+        int result = MULTIPLIER + (folder != null ? folder.getName().hashCode() : 0);
+        result = MULTIPLIER * result + uid.hashCode();
         return result;
     }
 
     public String getUid() {
-        return mUid;
+        return uid;
     }
 
     public void setUid(String uid) {
-        this.mUid = uid;
+        this.uid = uid;
     }
 
     public Folder getFolder() {
-        return mFolder;
+        return folder;
     }
 
     public abstract String getSubject();
@@ -79,11 +77,11 @@ public abstract class Message implements Part, Body {
     public abstract void setSubject(String subject);
 
     public Date getInternalDate() {
-        return mInternalDate;
+        return internalDate;
     }
 
     public void setInternalDate(Date internalDate) {
-        this.mInternalDate = internalDate;
+        this.internalDate = internalDate;
     }
 
     public abstract Date getSentDate();
@@ -154,7 +152,7 @@ public abstract class Message implements Part, Body {
      * TODO Refactor Flags at some point to be able to store user defined flags.
      */
     public Set<Flag> getFlags() {
-        return Collections.unmodifiableSet(mFlags);
+        return Collections.unmodifiableSet(flags);
     }
 
     /**
@@ -167,9 +165,9 @@ public abstract class Message implements Part, Body {
      */
     public void setFlag(Flag flag, boolean set) throws MessagingException {
         if (set) {
-            mFlags.add(flag);
+            flags.add(flag);
         } else {
-            mFlags.remove(flag);
+            flags.remove(flag);
         }
     }
 
@@ -185,7 +183,7 @@ public abstract class Message implements Part, Body {
     }
 
     public boolean isSet(Flag flag) {
-        return mFlags.contains(flag);
+        return flags.contains(flag);
     }
 
 
@@ -204,9 +202,7 @@ public abstract class Message implements Part, Body {
             writeTo(eolOut);
             eolOut.flush();
             return out.getCount();
-        } catch (IOException e) {
-            Timber.e(e, "Failed to calculate a message size");
-        } catch (MessagingException e) {
+        } catch (IOException | MessagingException e) {
             Timber.e(e, "Failed to calculate a message size");
         }
         return 0;
@@ -218,12 +214,12 @@ public abstract class Message implements Part, Body {
      * @param destination The {@code Message} object to receive the contents of this instance.
      */
     protected void copy(Message destination) {
-        destination.mUid = mUid;
-        destination.mInternalDate = mInternalDate;
-        destination.mFolder = mFolder;
+        destination.uid = uid;
+        destination.internalDate = internalDate;
+        destination.folder = folder;
 
-        // mFlags contents can change during the object lifetime, so copy the Set
-        destination.mFlags = EnumSet.copyOf(mFlags);
+        // flags contents can change during the object lifetime, so copy the Set
+        destination.flags = EnumSet.copyOf(flags);
     }
 
     /**

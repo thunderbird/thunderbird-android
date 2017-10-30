@@ -138,6 +138,15 @@ public class UriLinkifierTest {
     }
 
     @Test
+    public void urlAtBeginningOfLine() {
+        String text = "http://www.example.org some text more text";
+
+        UriLinkifier.linkifyText(text, outputBuffer);
+
+        assertEquals("<a href=\"http://www.example.org\">http://www.example.org</a> some text more text", outputBuffer.toString());
+    }
+
+    @Test
     public void uriSurroundedByHtmlTags() {
         String text = "<br>http://uri.example.org<hr>";
 

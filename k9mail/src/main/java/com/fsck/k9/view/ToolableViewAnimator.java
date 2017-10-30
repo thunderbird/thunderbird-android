@@ -40,7 +40,7 @@ import com.fsck.k9.R;
 /** This view is essentially identical to ViewAnimator, but allows specifying the initial view
  * for preview as an xml attribute. */
 public class ToolableViewAnimator extends ViewAnimator {
-    private int mInitChild = -1;
+    private int initChild = -1;
 
 
     public ToolableViewAnimator(Context context) {
@@ -52,7 +52,7 @@ public class ToolableViewAnimator extends ViewAnimator {
 
         if (isInEditMode()) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ToolableViewAnimator);
-            mInitChild = a.getInt(R.styleable.ToolableViewAnimator_previewInitialChild, -1);
+            initChild = a.getInt(R.styleable.ToolableViewAnimator_previewInitialChild, -1);
             a.recycle();
         }
     }
@@ -62,14 +62,14 @@ public class ToolableViewAnimator extends ViewAnimator {
 
         if (isInEditMode()) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ToolableViewAnimator, defStyleAttr, 0);
-            mInitChild = a.getInt(R.styleable.ToolableViewAnimator_previewInitialChild, -1);
+            initChild = a.getInt(R.styleable.ToolableViewAnimator_previewInitialChild, -1);
             a.recycle();
         }
     }
 
     @Override
     public void addView(@NonNull View child, int index, ViewGroup.LayoutParams params) {
-        if (isInEditMode() && mInitChild-- > 0) {
+        if (isInEditMode() && initChild-- > 0) {
             return;
         }
         super.addView(child, index, params);

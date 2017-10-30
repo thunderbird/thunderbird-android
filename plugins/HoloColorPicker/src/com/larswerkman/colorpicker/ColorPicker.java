@@ -108,32 +108,27 @@ public class ColorPicker extends View {
 	/**
 	 * {@code Paint} instance used to draw the color wheel.
 	 */
-	private Paint mColorWheelPaint;
+	private Paint colorWheelPaint;
 
 	/**
 	 * {@code Paint} instance used to draw the pointer's "halo".
 	 */
-	private Paint mPointerHaloPaint;
+	private Paint pointerHaloPaint;
 
 	/**
 	 * {@code Paint} instance used to draw the pointer (the selected color).
 	 */
-	private Paint mPointerColor;
-
-	/**
-	 * The stroke width used to paint the color wheel (in pixels).
-	 */
-	private int mColorWheelStrokeWidth;
+	private Paint pointerColor;
 
 	/**
 	 * The radius of the pointer (in pixels).
 	 */
-	private int mPointerRadius;
+	private int pointerRadius;
 
 	/**
 	 * The rectangle enclosing the color wheel.
 	 */
-	private RectF mColorWheelRectangle = new RectF();
+	private RectF colorWheelRectangle = new RectF();
 
 	/**
 	 * {@code true} if the user clicked on the pointer to start the move mode. {@code false} once
@@ -141,7 +136,7 @@ public class ColorPicker extends View {
 	 *
 	 * @see #onTouchEvent(MotionEvent)
 	 */
-	private boolean mUserIsMovingPointer = false;
+	private boolean userIsMovingPointer = false;
 
 	/**
 	 * Number of pixels the origin of this view is moved in X- and Y-direction.
@@ -156,19 +151,19 @@ public class ColorPicker extends View {
 	 *
 	 * @see #onDraw(Canvas)
 	 */
-	private float mTranslationOffset;
+	private float translationOffset;
 
 	/**
 	 * Radius of the color wheel in pixels.
 	 *
 	 * <p>Note: (Re)calculated in {@link #onMeasure(int, int)}.</p>
 	 */
-	private float mColorWheelRadius;
+	private float colorWheelRadius;
 
 	/**
 	 * The pointer's position expressed as angle (in rad).
 	 */
-	private float mAngle;
+	private float angle;
 
 
 	public ColorPicker(Context context) {
@@ -190,47 +185,47 @@ public class ColorPicker extends View {
 		final TypedArray a = getContext().obtainStyledAttributes(attrs,
 				R.styleable.ColorPicker, defStyle, 0);
 
-		mColorWheelStrokeWidth = a.getInteger(R.styleable.ColorPicker_wheel_size, 16);
-		mPointerRadius = a.getInteger(R.styleable.ColorPicker_pointer_size, 48);
+		int mColorWheelStrokeWidth = a.getInteger(R.styleable.ColorPicker_wheel_size, 16);
+		pointerRadius = a.getInteger(R.styleable.ColorPicker_pointer_size, 48);
 
 		a.recycle();
 
 		Shader s = new SweepGradient(0, 0, COLORS, null);
 
-		mColorWheelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mColorWheelPaint.setShader(s);
-		mColorWheelPaint.setStyle(Paint.Style.STROKE);
-		mColorWheelPaint.setStrokeWidth(mColorWheelStrokeWidth);
+		colorWheelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		colorWheelPaint.setShader(s);
+		colorWheelPaint.setStyle(Paint.Style.STROKE);
+		colorWheelPaint.setStrokeWidth(mColorWheelStrokeWidth);
 
-		mPointerHaloPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mPointerHaloPaint.setColor(Color.BLACK);
-		mPointerHaloPaint.setStrokeWidth(5);
-		mPointerHaloPaint.setAlpha(0x60);
+		pointerHaloPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		pointerHaloPaint.setColor(Color.BLACK);
+		pointerHaloPaint.setStrokeWidth(5);
+		pointerHaloPaint.setAlpha(0x60);
 
-		mPointerColor = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mPointerColor.setStrokeWidth(5);
+		pointerColor = new Paint(Paint.ANTI_ALIAS_FLAG);
+		pointerColor.setStrokeWidth(5);
 
-		mAngle = (float) (-Math.PI / 2);
-		mPointerColor.setColor(calculateColor(mAngle));
+		angle = (float) (-Math.PI / 2);
+		pointerColor.setColor(calculateColor(angle));
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// All of our positions are using our internal coordinate system. Instead of translating
 		// them we let Canvas do the work for us.
-		canvas.translate(mTranslationOffset, mTranslationOffset);
+		canvas.translate(translationOffset, translationOffset);
 
 		// Draw the color wheel.
-		canvas.drawOval(mColorWheelRectangle, mColorWheelPaint);
+		canvas.drawOval(colorWheelRectangle, colorWheelPaint);
 
-		float[] pointerPosition = calculatePointerPosition(mAngle);
+		float[] pointerPosition = calculatePointerPosition(angle);
 
 		// Draw the pointer's "halo"
-		canvas.drawCircle(pointerPosition[0], pointerPosition[1], mPointerRadius, mPointerHaloPaint);
+		canvas.drawCircle(pointerPosition[0], pointerPosition[1], pointerRadius, pointerHaloPaint);
 
 		// Draw the pointer (the currently selected color) slightly smaller on top.
 		canvas.drawCircle(pointerPosition[0], pointerPosition[1],
-				(float) (mPointerRadius / 1.2), mPointerColor);
+				(float) (pointerRadius / 1.2), pointerColor);
 	}
 
 	@Override
@@ -241,11 +236,11 @@ public class ColorPicker extends View {
 		int min = Math.min(width, height);
 		setMeasuredDimension(min, min);
 
-		mTranslationOffset = min * 0.5f;
-		mColorWheelRadius = mTranslationOffset - mPointerRadius;
+		translationOffset = min * 0.5f;
+		colorWheelRadius = translationOffset - pointerRadius;
 
-		mColorWheelRectangle.set(-mColorWheelRadius, -mColorWheelRadius, mColorWheelRadius,
-				mColorWheelRadius);
+		colorWheelRectangle.set(-colorWheelRadius, -colorWheelRadius, colorWheelRadius,
+				colorWheelRadius);
 	}
 
 	/**
@@ -254,7 +249,7 @@ public class ColorPicker extends View {
 	 * @return The ARGB value of the currently selected color.
 	 */
 	public int getColor() {
-		return calculateColor(mAngle);
+		return calculateColor(angle);
 	}
 
 	/**
@@ -267,8 +262,8 @@ public class ColorPicker extends View {
 	 *         for shades of grey. You have been warned!
 	 */
 	public void setColor(int color) {
-		mAngle = colorToAngle(color);
-		mPointerColor.setColor(calculateColor(mAngle));
+		angle = colorToAngle(color);
+		pointerColor.setColor(calculateColor(angle));
 		invalidate();
 	}
 
@@ -424,28 +419,28 @@ public class ColorPicker extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// Convert coordinates to our internal coordinate system
-		float x = event.getX() - mTranslationOffset;
-		float y = event.getY() - mTranslationOffset;
+		float x = event.getX() - translationOffset;
+		float y = event.getY() - translationOffset;
 
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			// Check whether the user pressed on (or near) the pointer
-			float[] pointerPosition = calculatePointerPosition(mAngle);
+			float[] pointerPosition = calculatePointerPosition(angle);
 			if (x >= (pointerPosition[0] - 48) && x <= (pointerPosition[0] + 48)
 					&& y >= (pointerPosition[1] - 48) && y <= (pointerPosition[1] + 48)) {
-				mUserIsMovingPointer = true;
+				userIsMovingPointer = true;
 				invalidate();
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:
-			if (mUserIsMovingPointer) {
-				mAngle = (float) java.lang.Math.atan2(y, x);
-				mPointerColor.setColor(calculateColor(mAngle));
+			if (userIsMovingPointer) {
+				angle = (float) java.lang.Math.atan2(y, x);
+				pointerColor.setColor(calculateColor(angle));
 				invalidate();
 			}
 			break;
 		case MotionEvent.ACTION_UP:
-			mUserIsMovingPointer = false;
+			userIsMovingPointer = false;
 			break;
 		}
 		return true;
@@ -460,8 +455,8 @@ public class ColorPicker extends View {
 	 * @return The coordinates of the pointer's center in our internal coordinate system.
 	 */
 	private float[] calculatePointerPosition(float angle) {
-		float x = (float) (mColorWheelRadius * Math.cos(angle));
-		float y = (float) (mColorWheelRadius * Math.sin(angle));
+		float x = (float) (colorWheelRadius * Math.cos(angle));
+		float y = (float) (colorWheelRadius * Math.sin(angle));
 
 		return new float[] { x, y };
 	}
@@ -472,7 +467,7 @@ public class ColorPicker extends View {
 
 		Bundle state = new Bundle();
 		state.putParcelable(STATE_PARENT, superState);
-		state.putFloat(STATE_ANGLE, mAngle);
+		state.putFloat(STATE_ANGLE, angle);
 
 		return state;
 	}
@@ -484,7 +479,7 @@ public class ColorPicker extends View {
 		Parcelable superState = savedState.getParcelable(STATE_PARENT);
 		super.onRestoreInstanceState(superState);
 
-		mAngle = savedState.getFloat(STATE_ANGLE);
-		mPointerColor.setColor(calculateColor(mAngle));
+		angle = savedState.getFloat(STATE_ANGLE);
+		pointerColor.setColor(calculateColor(angle));
 	}
 }

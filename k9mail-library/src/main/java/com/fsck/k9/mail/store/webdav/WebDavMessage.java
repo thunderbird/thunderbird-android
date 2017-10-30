@@ -17,12 +17,12 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
  * A WebDav Message
  */
 class WebDavMessage extends MimeMessage {
-    private String mUrl = "";
+    private String url = "";
 
 
     WebDavMessage(String uid, Folder folder) {
-        this.mUid = uid;
-        this.mFolder = folder;
+        this.uid = uid;
+        this.folder = folder;
     }
 
     public void setUrl(String url) {
@@ -32,53 +32,48 @@ class WebDavMessage extends MimeMessage {
             if (!(url.startsWith("/"))) {
                 url = "/" + url;
             }
-            url = ((WebDavFolder) mFolder).getUrl() + url;
+            url = ((WebDavFolder) folder).getUrl() + url;
         }
 
         String[] urlParts = url.split("/");
         int length = urlParts.length;
         String end = urlParts[length - 1];
 
-        this.mUrl = "";
-        url = "";
-
-        /**
-         * We have to decode, then encode the URL because Exchange likes to not properly encode all characters
-         */
+         // We have to decode, then encode the URL because Exchange likes to not properly encode all characters
         try {
-            end = decodeUtf8(end);
-            end = encodeUtf8(end);
-            end = end.replaceAll("\\+", "%20");
+            end = encodeUtf8(decodeUtf8(end)).replaceAll("\\+", "%20");
         } catch (IllegalArgumentException iae) {
             Timber.e(iae, "IllegalArgumentException caught in setUrl: ");
         }
 
+        StringBuilder urlBuilder = new StringBuilder(url);
         for (int i = 0; i < length - 1; i++) {
             if (i != 0) {
-                url = url + "/" + urlParts[i];
+                urlBuilder.append("/").append(urlParts[i]);
             } else {
-                url = urlParts[i];
+                urlBuilder = new StringBuilder(urlParts[i]);
             }
         }
 
-        url = url + "/" + end;
+        urlBuilder.append('/');
+        urlBuilder.append(end);
 
-        this.mUrl = url;
+        this.url = urlBuilder.toString();
     }
 
     public String getUrl() {
-        return this.mUrl;
+        return this.url;
     }
 
     public void setSize(int size) {
-        this.mSize = size;
+        this.size = size;
     }
 
-    public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
+    void setFlagInternal(Flag flag, boolean set) throws MessagingException {
         super.setFlag(flag, set);
     }
 
-    public void setNewHeaders(ParsedMessageEnvelope envelope) throws MessagingException {
+    void setNewHeaders(ParsedMessageEnvelope envelope) throws MessagingException {
         String[] headers = envelope.getHeaderList();
         Map<String, String> messageHeaders = envelope.getMessageHeaders();
         for (String header : headers) {
@@ -105,6 +100,6 @@ class WebDavMessage extends MimeMessage {
     @Override
     public void setFlag(Flag flag, boolean set) throws MessagingException {
         super.setFlag(flag, set);
-        mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
+        folder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
     }
 }

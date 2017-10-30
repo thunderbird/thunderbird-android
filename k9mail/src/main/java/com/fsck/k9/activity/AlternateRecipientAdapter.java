@@ -232,19 +232,19 @@ public class AlternateRecipientAdapter extends BaseAdapter {
     }
 
     private static class RecipientTokenHolder {
-        public final View layoutHeader, layoutItem;
-        public final TextView headerName;
-        public final TextView headerAddressLabel;
-        public final ContactBadge headerPhoto;
-        public final View headerRemove;
-        public final TextView itemAddress;
-        public final TextView itemAddressLabel;
-        public final View itemCryptoStatus;
-        public final ImageView itemCryptoStatusIcon;
-        public final ImageView itemCryptoStatusSimple;
+        final View layoutHeader, layoutItem;
+        final TextView headerName;
+        final TextView headerAddressLabel;
+        final ContactBadge headerPhoto;
+        final View headerRemove;
+        final TextView itemAddress;
+        final TextView itemAddressLabel;
+        final View itemCryptoStatus;
+        final ImageView itemCryptoStatusIcon;
+        final ImageView itemCryptoStatusSimple;
 
 
-        public RecipientTokenHolder(View view) {
+        RecipientTokenHolder(View view) {
             layoutHeader = view.findViewById(R.id.alternate_container_header);
             layoutItem = view.findViewById(R.id.alternate_container_item);
 
@@ -261,7 +261,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             itemCryptoStatusSimple = (ImageView) view.findViewById(R.id.alternate_crypto_status_simple);
         }
 
-        public void setShowAsHeader(boolean isHeader) {
+        void setShowAsHeader(boolean isHeader) {
             layoutHeader.setVisibility(isHeader ? View.VISIBLE : View.GONE);
             layoutItem.setVisibility(isHeader ? View.GONE : View.VISIBLE);
         }

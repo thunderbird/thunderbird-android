@@ -42,11 +42,11 @@ class SelectOrExamineResponse {
         return new SelectOrExamineResponse(null);
     }
 
-    public boolean hasOpenMode() {
+    boolean hasOpenMode() {
         return readWriteMode != null;
     }
 
-    public int getOpenMode() {
+    int getOpenMode() {
         if (!hasOpenMode()) {
             throw new IllegalStateException("Called getOpenMode() despite hasOpenMode() returning false");
         }

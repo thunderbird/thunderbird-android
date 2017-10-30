@@ -15,8 +15,8 @@ public class MessageTitleView extends TextView {
     private static final int MAX_LINES = 2;
     private static final String ELLIPSIS = "\u2026";
 
-    private MessageHeader mHeader;
-    private boolean mNeedEllipsizeCheck = true;
+    private MessageHeader header;
+    private boolean needEllipsisCheck = true;
 
     public MessageTitleView(Context context) {
         this(context, null);
@@ -34,7 +34,7 @@ public class MessageTitleView extends TextView {
     protected void onTextChanged(CharSequence text, int start,
             int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
-        mNeedEllipsizeCheck = true;
+        needEllipsisCheck = true;
     }
     /**
      * Check to see if we need to hide the subject line in {@link MessageHeader} or not.
@@ -46,26 +46,26 @@ public class MessageTitleView extends TextView {
          * for TextViews. To work around that, check for ourselves whether
          * the text is longer than MAX_LINES, and ellipsize manually.
          */
-        if (mNeedEllipsizeCheck) {
-            if (getLayout() != null && mHeader != null) {
+        if (needEllipsisCheck) {
+            if (getLayout() != null && header != null) {
                 if (getLayout().getLineCount() > MAX_LINES) {
                     int lineEndIndex = getLayout().getLineEnd(MAX_LINES - 1);
                     setText(getText().subSequence(0, lineEndIndex - 2) + ELLIPSIS);
                     showSubjectInMessageHeader();
                 }
-                mNeedEllipsizeCheck = false;
+                needEllipsisCheck = false;
             }
         }
         super.onDraw(canvas);
     }
 
     public void setMessageHeader(final MessageHeader header) {
-        mHeader = header;
+        this.header = header;
     }
     
     public void showSubjectInMessageHeader() {
-        if (mHeader != null) {
-            mHeader.showSubjectLine();
+        if (header != null) {
+            header.showSubjectLine();
         }
     }
 }

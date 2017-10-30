@@ -208,10 +208,10 @@ public class HtmlConverter {
      * @return HTML string.
      */
     public static String textToHtml(String text) {
-        // Our HTMLification code is somewhat memory intensive
+        // Our conversion code is somewhat memory intensive
         // and was causing lots of OOM errors on the market
         // if the message is big and plain text, just do
-        // a trivial htmlification
+        // a trivial conversion
         if (text.length() > MAX_SMART_HTMLIFY_MESSAGE_LENGTH) {
             return simpleTextToHtml(text);
         }

@@ -44,7 +44,7 @@ class SearchResponse {
     /**
      * @return A mutable list of numbers from the SEARCH response(s).
      */
-    public List<Long> getNumbers() {
+    List<Long> getNumbers() {
         return numbers;
     }
 }

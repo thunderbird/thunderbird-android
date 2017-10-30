@@ -27,8 +27,8 @@ public class SqlQueryBuilder {
             return;
         }
 
-        if (node.mLeft == null && node.mRight == null) {
-            SearchCondition condition = node.mCondition;
+        if (node.left == null && node.right == null) {
+            SearchCondition condition = node.condition;
             switch (condition.field) {
                 case FOLDER: {
                     String folderName = condition.value;
@@ -89,11 +89,11 @@ public class SqlQueryBuilder {
             }
         } else {
             query.append("(");
-            buildWhereClauseInternal(account, node.mLeft, query, selectionArgs);
+            buildWhereClauseInternal(account, node.left, query, selectionArgs);
             query.append(") ");
-            query.append(node.mValue.name());
+            query.append(node.value.name());
             query.append(" (");
-            buildWhereClauseInternal(account, node.mRight, query, selectionArgs);
+            buildWhereClauseInternal(account, node.right, query, selectionArgs);
             query.append(")");
         }
     }

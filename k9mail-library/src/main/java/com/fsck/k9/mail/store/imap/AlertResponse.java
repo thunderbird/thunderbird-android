@@ -11,7 +11,7 @@ class AlertResponse {
     private AlertResponse() {
     }
 
-    public static String getAlertText(ImapResponse response) {
+    static String getAlertText(ImapResponse response) {
         if (response.size() < 3 || !response.isList(1)) {
             return null;
         }

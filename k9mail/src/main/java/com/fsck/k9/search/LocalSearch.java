@@ -23,14 +23,14 @@ import android.os.Parcelable;
 
 public class LocalSearch implements SearchSpecification {
 
-    private String mName;
-    private boolean mPredefined;
-    private boolean mManualSearch = false;
+    private String name;
+    private boolean predefined;
+    private boolean manualSearch = false;
 
-    // since the uuid isn't in the message table it's not in the tree neither
-    private Set<String> mAccountUuids = new HashSet<String>();
-    private ConditionsTreeNode mConditions = null;
-    private Set<ConditionsTreeNode> mLeafSet = new HashSet<ConditionsTreeNode>();
+    // since the uuid isn't in the message table it's not in the tree either
+    private Set<String> accountUuids = new HashSet<>();
+    private ConditionsTreeNode conditions = null;
+    private Set<ConditionsTreeNode> leafSet = new HashSet<ConditionsTreeNode>();
 
 
     ///////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ public class LocalSearch implements SearchSpecification {
      * @param name
      */
     public LocalSearch(String name) {
-        this.mName = name;
+        this.name = name;
     }
 
     /**
@@ -62,17 +62,17 @@ public class LocalSearch implements SearchSpecification {
     protected LocalSearch(String name, ConditionsTreeNode searchConditions,
             String accounts, boolean predefined) {
         this(name);
-        mConditions = searchConditions;
-        mPredefined = predefined;
-        mLeafSet = new HashSet<ConditionsTreeNode>();
-        if (mConditions != null) {
-            mLeafSet.addAll(mConditions.getLeafSet());
+        conditions = searchConditions;
+        this.predefined = predefined;
+        leafSet = new HashSet<ConditionsTreeNode>();
+        if (conditions != null) {
+            leafSet.addAll(conditions.getLeafSet());
         }
 
         // initialize accounts
         if (accounts != null) {
             for (String account : accounts.split(",")) {
-                mAccountUuids.add(account);
+                accountUuids.add(account);
             }
         } else {
             // impossible but still not unrecoverable
@@ -81,11 +81,11 @@ public class LocalSearch implements SearchSpecification {
 
     @Override
     public LocalSearch clone() {
-        ConditionsTreeNode conditions = (mConditions == null) ? null : mConditions.cloneTree();
+        ConditionsTreeNode conditions = (this.conditions == null) ? null : this.conditions.cloneTree();
 
-        LocalSearch copy = new LocalSearch(mName, conditions, null, mPredefined);
-        copy.mManualSearch = mManualSearch;
-        copy.mAccountUuids = new HashSet<String>(mAccountUuids);
+        LocalSearch copy = new LocalSearch(name, conditions, null, predefined);
+        copy.manualSearch = manualSearch;
+        copy.accountUuids = new HashSet<String>(accountUuids);
 
         return copy;
     }
@@ -100,7 +100,7 @@ public class LocalSearch implements SearchSpecification {
      * @param name Name to be set.
      */
     public void setName(String name) {
-        this.mName = name;
+        this.name = name;
     }
 
     /**
@@ -111,10 +111,10 @@ public class LocalSearch implements SearchSpecification {
      */
     public void addAccountUuid(String uuid) {
         if (uuid.equals(ALL_ACCOUNTS)) {
-            mAccountUuids.clear();
+            accountUuids.clear();
             return;
         }
-        mAccountUuids.add(uuid);
+        accountUuids.add(uuid);
     }
 
     /**
@@ -136,7 +136,7 @@ public class LocalSearch implements SearchSpecification {
      * @return True if removed, false otherwise.
      */
     public boolean removeAccountUuid(String uuid) {
-        return mAccountUuids.remove(uuid);
+        return accountUuids.remove(uuid);
     }
 
     /**
@@ -177,15 +177,15 @@ public class LocalSearch implements SearchSpecification {
      * @throws Exception
      */
     public ConditionsTreeNode and(ConditionsTreeNode node) throws Exception {
-        mLeafSet.addAll(node.getLeafSet());
+        leafSet.addAll(node.getLeafSet());
 
-        if (mConditions == null) {
-            mConditions = node;
+        if (conditions == null) {
+            conditions = node;
             return node;
         }
 
-        mConditions = mConditions.and(node);
-        return mConditions;
+        conditions = conditions.and(node);
+        return conditions;
     }
 
     /**
@@ -214,15 +214,15 @@ public class LocalSearch implements SearchSpecification {
      * @throws Exception
      */
     public ConditionsTreeNode or(ConditionsTreeNode node) throws Exception {
-        mLeafSet.addAll(node.getLeafSet());
+        leafSet.addAll(node.getLeafSet());
 
-        if (mConditions == null) {
-            mConditions = node;
+        if (conditions == null) {
+            conditions = node;
             return node;
         }
 
-        mConditions = mConditions.or(node);
-        return mConditions;
+        conditions = conditions.or(node);
+        return conditions;
     }
 
     /**
@@ -241,7 +241,7 @@ public class LocalSearch implements SearchSpecification {
          *          - do and on root of it & rest of search
          *          - do or between folder nodes
          */
-        mConditions = and(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, name));
+        conditions = and(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, name));
     }
 
     /*
@@ -251,10 +251,10 @@ public class LocalSearch implements SearchSpecification {
      */
     public List<String> getFolderNames() {
         List<String> results = new ArrayList<String>();
-        for (ConditionsTreeNode node : mLeafSet) {
-            if (node.mCondition.field == SearchField.FOLDER &&
-                    node.mCondition.attribute == Attribute.EQUALS) {
-                results.add(node.mCondition.value);
+        for (ConditionsTreeNode node : leafSet) {
+            if (node.condition.field == SearchField.FOLDER &&
+                    node.condition.attribute == Attribute.EQUALS) {
+                results.add(node.condition.value);
             }
         }
         return results;
@@ -266,7 +266,7 @@ public class LocalSearch implements SearchSpecification {
      * @return All the leaf conditions as a set.
      */
     public Set<ConditionsTreeNode> getLeafSet() {
-        return mLeafSet;
+        return leafSet;
     }
 
     ///////////////////////////////////////////////////////////////
@@ -298,7 +298,7 @@ public class LocalSearch implements SearchSpecification {
      */
     @Override
     public String getName() {
-        return (mName == null) ? "" : mName;
+        return (name == null) ? "" : name;
     }
 
     /**
@@ -307,15 +307,15 @@ public class LocalSearch implements SearchSpecification {
      * @return True is search was shipped with K-9
      */
     public boolean isPredefined() {
-        return mPredefined;
+        return predefined;
     }
 
     public boolean isManualSearch() {
-        return mManualSearch;
+        return manualSearch;
     }
 
     public void setManualSearch(boolean manualSearch) {
-        mManualSearch = manualSearch;
+        this.manualSearch = manualSearch;
     }
 
     /**
@@ -326,12 +326,12 @@ public class LocalSearch implements SearchSpecification {
      */
     @Override
     public String[] getAccountUuids() {
-        if (mAccountUuids.isEmpty()) {
+        if (accountUuids.isEmpty()) {
             return new String[] { SearchSpecification.ALL_ACCOUNTS };
         }
 
-        String[] tmp = new String[mAccountUuids.size()];
-        mAccountUuids.toArray(tmp);
+        String[] tmp = new String[accountUuids.size()];
+        accountUuids.toArray(tmp);
         return tmp;
     }
 
@@ -341,7 +341,7 @@ public class LocalSearch implements SearchSpecification {
      * @return {@code true} if all accounts should be searched.
      */
     public boolean searchAllAccounts() {
-        return (mAccountUuids.isEmpty());
+        return (accountUuids.isEmpty());
     }
 
     /**
@@ -351,7 +351,7 @@ public class LocalSearch implements SearchSpecification {
      */
     @Override
     public ConditionsTreeNode getConditions() {
-        return mConditions;
+        return conditions;
     }
 
     ///////////////////////////////////////////////////////////////
@@ -364,11 +364,11 @@ public class LocalSearch implements SearchSpecification {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mName);
-        dest.writeByte((byte) (mPredefined ? 1 : 0));
-        dest.writeByte((byte) (mManualSearch ? 1 : 0));
-        dest.writeStringList(new ArrayList<String>(mAccountUuids));
-        dest.writeParcelable(mConditions, flags);
+        dest.writeString(name);
+        dest.writeByte((byte) (predefined ? 1 : 0));
+        dest.writeByte((byte) (manualSearch ? 1 : 0));
+        dest.writeStringList(new ArrayList<String>(accountUuids));
+        dest.writeParcelable(conditions, flags);
     }
 
     public static final Parcelable.Creator<LocalSearch> CREATOR =
@@ -386,11 +386,11 @@ public class LocalSearch implements SearchSpecification {
     };
 
     public LocalSearch(Parcel in) {
-        mName = in.readString();
-        mPredefined = (in.readByte() == 1);
-        mManualSearch = (in.readByte() == 1);
-        mAccountUuids.addAll(in.createStringArrayList());
-        mConditions = in.readParcelable(LocalSearch.class.getClassLoader());
-        mLeafSet = (mConditions == null) ? null : mConditions.getLeafSet();
+        name = in.readString();
+        predefined = (in.readByte() == 1);
+        manualSearch = (in.readByte() == 1);
+        accountUuids.addAll(in.createStringArrayList());
+        conditions = in.readParcelable(LocalSearch.class.getClassLoader());
+        leafSet = (conditions == null) ? null : conditions.getLeafSet();
     }
 }

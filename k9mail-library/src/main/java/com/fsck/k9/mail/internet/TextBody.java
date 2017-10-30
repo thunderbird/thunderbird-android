@@ -57,6 +57,7 @@ public class TextBody implements Body, SizeAware {
     }
 
     @Override
+    @Nullable
     public InputStream getInputStream() throws MessagingException {
         try {
             byte[] b;
