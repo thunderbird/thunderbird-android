@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.net.Uri;
@@ -131,12 +132,12 @@ public class AttachmentInfoExtractor {
             name = "noname" + ((extension != null) ? "." + extension : "");
         }
 
-        // Inline parts with a content-id are almost certainly components of an HTML message
-        // not attachments. Only show them if the user pressed the button to show more
-        // attachments.
+        // Inline parts with a Content-Id header and a MIME type of image/* are probably components of an HTML message,
+        // not attachments.
         if (contentDisposition != null &&
                 MimeUtility.getHeaderParameter(contentDisposition, null).matches("^(?i:inline)") &&
-                part.getHeader(MimeHeader.HEADER_CONTENT_ID).length > 0) {
+                part.getHeader(MimeHeader.HEADER_CONTENT_ID).length > 0 &&
+                mimeType != null && mimeType.toLowerCase(Locale.ROOT).startsWith("image/")) {
             inlineAttachment = true;
         }
 
