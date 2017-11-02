@@ -167,4 +167,13 @@ public class HtmlSanitizerTest {
 
         assertEquals("<html><head></head><body>one<hr>two<hr>three</body></html>", toCompactString(result));
     }
+
+    @Test
+    public void shouldKeepInsDelTags() {
+        String html = "<html><head></head><body><ins>Inserted</ins><del>Deleted</del></body></html>";
+
+        Document result = htmlSanitizer.sanitize(html);
+
+        assertEquals(html, toCompactString(result));
+    }
 }

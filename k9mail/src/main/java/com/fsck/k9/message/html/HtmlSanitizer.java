@@ -13,7 +13,7 @@ public class HtmlSanitizer {
 
     HtmlSanitizer() {
         Whitelist whitelist = Whitelist.relaxed()
-                .addTags("font", "hr")
+                .addTags("font", "hr", "ins", "del")
                 .addAttributes("table", "align", "bgcolor", "border", "cellpadding", "cellspacing", "width")
                 .addAttributes(":all", "class", "style", "id")
                 .addProtocols("img", "src", "http", "https", "cid", "data");
