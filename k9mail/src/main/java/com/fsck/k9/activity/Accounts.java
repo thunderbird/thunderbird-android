@@ -1565,12 +1565,18 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         @Override
         protected String generateMessage(Accounts activity) {
-            //TODO: display names of imported accounts (name from file *and* possibly new name)
+            // TODO: localization
 
+            StringBuilder result = new StringBuilder();
+            for (AccountDescriptionPair account : mImportResults.importedAccounts) {
+                result.append("Imported ").append(account.original.name)
+                        .append(" as ").append(account.imported.name).append('\n');
+            }
             int imported = mImportResults.importedAccounts.size();
             String accounts = activity.getResources().getQuantityString(
                                   R.plurals.settings_import_accounts, imported, imported);
-            return activity.getString(R.string.settings_import_success, accounts, mFilename);
+            result.append(activity.getString(R.string.settings_import_success, accounts, mFilename));
+            return result.toString();
         }
 
         @Override
