@@ -250,7 +250,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         mHandler.progress(progress);
     }
 
-    ActivityListener mListener = new ActivityListener() {
+    private ActivityListener mListener = new ActivityListener() {
         @Override
         public void informUserOfStatus() {
             mHandler.refreshTitle();
@@ -339,7 +339,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     public static final String EXTRA_STARTUP = "startup";
 
-    public static final String ACTION_IMPORT_SETTINGS = "importSettings";
+    private static final String ACTION_IMPORT_SETTINGS = "importSettings";
 
 
     public static void listAccounts(Context context) {
@@ -962,9 +962,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         private List<Account> mRemainingAccounts;
         private Application mApplication;
 
-        protected SetPasswordsAsyncTask(Activity activity, Account account,
-                                        String incomingPassword, String outgoingPassword,
-                                        List<Account> remainingAccounts) {
+        SetPasswordsAsyncTask(Activity activity, Account account,
+                              String incomingPassword, String outgoingPassword,
+                              List<Account> remainingAccounts) {
             super(activity);
             mAccount = account;
             mIncomingPassword = incomingPassword;
@@ -1521,7 +1521,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
          *
          * @return The message the dialog should display
          */
-        protected String generateMessage(Accounts activity) {
+        String generateMessage(Accounts activity) {
             return activity.getString(mMessageRes, mArguments);
         }
 
@@ -1531,7 +1531,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
          * @param activity
          *         The {@code Activity} this dialog belongs to.
          */
-        protected void okayAction(Accounts activity) {
+        void okayAction(Accounts activity) {
             // Do nothing
         }
     }
@@ -1911,7 +1911,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     }
 
-    public void onExport(final boolean includeGlobals, final Account account) {
+    private void onExport(final boolean includeGlobals, final Account account) {
         // TODO, prompt to allow a user to choose which accounts to export
         ArrayList<String> accountUuids = null;
         if (account != null) {
@@ -1934,7 +1934,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
     }
 
-    public void onExport(Intent intent) {
+    private void onExport(Intent intent) {
         Uri documentsUri = intent.getData();
         startExport(exportGlobalSettings, exportAccountUuids, documentsUri);
     }
@@ -2161,7 +2161,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         private Account mAccount;
         private boolean mUp;
 
-        protected MoveAccountAsyncTask(Activity activity, Account account, boolean up) {
+        MoveAccountAsyncTask(Activity activity, Account account, boolean up) {
             super(activity);
             mAccount = account;
             mUp = up;

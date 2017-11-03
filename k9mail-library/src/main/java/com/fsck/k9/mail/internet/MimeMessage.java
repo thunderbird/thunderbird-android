@@ -44,17 +44,17 @@ import org.apache.james.mime4j.stream.MimeConfig;
  */
 public class MimeMessage extends Message {
     private MimeHeader mHeader = new MimeHeader();
-    protected Address[] mFrom;
-    protected Address[] mSender;
-    protected Address[] mTo;
-    protected Address[] mCc;
-    protected Address[] mBcc;
-    protected Address[] mReplyTo;
-    protected Address[] xOriginalTo;
-    protected Address[] deliveredTo;
-    protected Address[] xEnvelopeTo;
+    private Address[] mFrom;
+    private Address[] mSender;
+    private Address[] mTo;
+    private Address[] mCc;
+    private Address[] mBcc;
+    private Address[] mReplyTo;
+    private Address[] xOriginalTo;
+    private Address[] deliveredTo;
+    private Address[] xEnvelopeTo;
 
-    protected String mMessageId;
+    private String mMessageId;
     private String[] mReferences;
     private String[] mInReplyTo;
 
@@ -145,7 +145,7 @@ public class MimeMessage extends Message {
      * @param sentDate
      * @throws com.fsck.k9.mail.MessagingException
      */
-    public void addSentDate(Date sentDate, boolean hideTimeZone) {
+    private void addSentDate(Date sentDate, boolean hideTimeZone) {
         if (mDateFormat == null) {
             mDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
         }
@@ -164,7 +164,7 @@ public class MimeMessage extends Message {
         addSentDate(sentDate, hideTimeZone);
     }
 
-    public void setInternalSentDate(Date sentDate) {
+    private void setInternalSentDate(Date sentDate) {
         this.mSentDate = sentDate;
     }
 
@@ -661,7 +661,7 @@ public class MimeMessage extends Message {
      *
      * @param destination The {@code MimeMessage} object to receive the contents of this instance.
      */
-    protected void copy(MimeMessage destination) {
+    private void copy(MimeMessage destination) {
         super.copy(destination);
 
         destination.mHeader = mHeader.clone();

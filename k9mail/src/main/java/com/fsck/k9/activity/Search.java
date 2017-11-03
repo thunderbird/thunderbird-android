@@ -2,7 +2,7 @@ package com.fsck.k9.activity;
 
 
 public class Search extends MessageList {
-    protected static boolean isActive = false;
+    private static boolean isActive = false;
 
     public static boolean isActive() {
         return isActive;

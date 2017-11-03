@@ -113,7 +113,7 @@ public class ToolableViewAnimator extends ViewAnimator {
         throw new IllegalArgumentException("No view with ID " + name);
     }
 
-    public int getDisplayedChildId() {
+    private int getDisplayedChildId() {
         return getChildAt(getDisplayedChild()).getId();
     }
 }

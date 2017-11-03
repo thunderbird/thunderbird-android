@@ -521,7 +521,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
     };
 
-    OnClientCertificateChangedListener clientCertificateChangedListener = new OnClientCertificateChangedListener() {
+    private OnClientCertificateChangedListener clientCertificateChangedListener = new OnClientCertificateChangedListener() {
         @Override
         public void onClientCertificateChanged(String alias) {
             validateFields();

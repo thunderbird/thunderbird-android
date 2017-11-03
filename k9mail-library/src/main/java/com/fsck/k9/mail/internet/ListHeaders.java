@@ -31,8 +31,8 @@ import com.fsck.k9.mail.Message;
  *
  * Currently only provides a utility method for List-Post
  **/
-public class ListHeaders {
-    public static final String LIST_POST_HEADER = "List-Post";
+class ListHeaders {
+    private static final String LIST_POST_HEADER = "List-Post";
     private static final Pattern MAILTO_CONTAINER_PATTERN = Pattern.compile("<(mailto:.+)>");
 
 

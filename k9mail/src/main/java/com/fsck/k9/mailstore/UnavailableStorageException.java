@@ -11,7 +11,7 @@ public class UnavailableStorageException extends MessagingException {
         this(message, true);
     }
 
-    public UnavailableStorageException(String message, boolean perm) {
+    private UnavailableStorageException(String message, boolean perm) {
         super(message, perm);
     }
 
@@ -20,7 +20,7 @@ public class UnavailableStorageException extends MessagingException {
         this(message, true, throwable);
     }
 
-    public UnavailableStorageException(String message, boolean perm, Throwable throwable) {
+    private UnavailableStorageException(String message, boolean perm, Throwable throwable) {
         super(message, perm, throwable);
     }
 

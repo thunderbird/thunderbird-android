@@ -35,7 +35,7 @@ public class ReplyToParserTest {
     private static final Address[] TO_ADDRESSES = Address.parse("to1@example.com, to2@example.com");
     private static final Address[] CC_ADDRESSES = Address.parse("cc1@example.com, cc2@example.com");
     private static final String[] LIST_POST_HEADER_VALUES = new String[] { "<mailto:listPost@example.com>" };
-    public static final Address[] EMPTY_ADDRESSES = new Address[0];
+    private static final Address[] EMPTY_ADDRESSES = new Address[0];
 
 
     private ReplyToParser replyToParser;

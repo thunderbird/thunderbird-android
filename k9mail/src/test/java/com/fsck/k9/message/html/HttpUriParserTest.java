@@ -201,16 +201,16 @@ public class HttpUriParserTest {
     }
 
 
-    int linkify(String uri) {
+    private int linkify(String uri) {
         return parser.linkifyUri(uri, 0, outputBuffer);
     }
 
-    void assertLinkify(String uri) {
+    private void assertLinkify(String uri) {
         linkify(uri);
         assertLinkOnly(uri, outputBuffer);
     }
 
-    void assertLinkIgnored(String uri) {
+    private void assertLinkIgnored(String uri) {
         int endPos = linkify(uri);
 
         assertEquals("", outputBuffer.toString());

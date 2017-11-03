@@ -29,8 +29,8 @@ import static org.mockito.Mockito.when;
 @RunWith(K9RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class AttachmentResolverTest {
-    public static final Uri ATTACHMENT_TEST_URI_1 = Uri.parse("uri://test/1");
-    public static final Uri ATTACHMENT_TEST_URI_2 = Uri.parse("uri://test/2");
+    private static final Uri ATTACHMENT_TEST_URI_1 = Uri.parse("uri://test/1");
+    private static final Uri ATTACHMENT_TEST_URI_2 = Uri.parse("uri://test/2");
 
 
     private AttachmentInfoExtractor attachmentInfoExtractor;

@@ -7,7 +7,7 @@ import android.os.Bundle;
 import timber.log.Timber;
 
 class AccountReceiver extends BroadcastReceiver {
-    K9AccountReceptor receptor = null;
+    private K9AccountReceptor receptor = null;
 
     protected AccountReceiver(K9AccountReceptor nReceptor) {
         receptor = nReceptor;

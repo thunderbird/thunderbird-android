@@ -191,14 +191,14 @@ public class MigrationTo60Test {
         assertEquals(UID, pendingCommand.uid);
     }
 
-    OldPendingCommand queueAppend(String srcFolder, String uid) {
+    private OldPendingCommand queueAppend(String srcFolder, String uid) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_APPEND;
         command.arguments = new String[] { srcFolder, uid };
         return command;
     }
 
-    OldPendingCommand queueMoveOrCopy(String srcFolder, String destFolder, boolean isCopy, String uids[]) {
+    private OldPendingCommand queueMoveOrCopy(String srcFolder, String destFolder, boolean isCopy, String uids[]) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW;
 
@@ -212,7 +212,7 @@ public class MigrationTo60Test {
         return command;
     }
 
-    OldPendingCommand queueMoveOrCopy(String srcFolder, String destFolder, boolean isCopy, Map<String, String> uidMap) {
+    private OldPendingCommand queueMoveOrCopy(String srcFolder, String destFolder, boolean isCopy, Map<String, String> uidMap) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW;
 
@@ -230,7 +230,7 @@ public class MigrationTo60Test {
         return command;
     }
 
-    OldPendingCommand queueMoveOrCopyOld(String srcFolder, String destFolder, boolean isCopy, String uids[]) {
+    private OldPendingCommand queueMoveOrCopyOld(String srcFolder, String destFolder, boolean isCopy, String uids[]) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_MOVE_OR_COPY_BULK;
 
@@ -243,7 +243,7 @@ public class MigrationTo60Test {
         return command;
     }
 
-    OldPendingCommand queueMoveOrCopyEvenOlder(String srcFolder, String destFolder, String uid, boolean isCopy) {
+    private OldPendingCommand queueMoveOrCopyEvenOlder(String srcFolder, String destFolder, String uid, boolean isCopy) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_MOVE_OR_COPY;
 
@@ -255,7 +255,7 @@ public class MigrationTo60Test {
         return command;
     }
 
-    OldPendingCommand queueSetFlagBulk(String folderName, boolean newState, Flag flag, String[] uids) {
+    private OldPendingCommand queueSetFlagBulk(String folderName, boolean newState, Flag flag, String[] uids) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_SET_FLAG_BULK;
         int length = 3 + uids.length;
@@ -267,7 +267,7 @@ public class MigrationTo60Test {
         return command;
     }
 
-    OldPendingCommand queueSetFlagOld(String folderName, boolean newState, Flag flag, String uid) {
+    private OldPendingCommand queueSetFlagOld(String folderName, boolean newState, Flag flag, String uid) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_SET_FLAG;
         command.arguments = new String[4];
@@ -278,7 +278,7 @@ public class MigrationTo60Test {
         return command;
     }
 
-    OldPendingCommand queueExpunge(String folderName) {
+    private OldPendingCommand queueExpunge(String folderName) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_EXPUNGE;
         command.arguments = new String[1];
@@ -286,14 +286,14 @@ public class MigrationTo60Test {
         return command;
     }
 
-    OldPendingCommand queueEmptyTrash() {
+    private OldPendingCommand queueEmptyTrash() {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_EMPTY_TRASH;
         command.arguments = new String[0];
         return command;
     }
 
-    OldPendingCommand queueMarkAllMessagesRead(final String folder) {
+    private OldPendingCommand queueMarkAllMessagesRead(final String folder) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_MARK_ALL_AS_READ;
         command.arguments = new String[] { folder };

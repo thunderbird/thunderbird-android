@@ -409,7 +409,7 @@ public class K9 extends Application {
      * would make K-9 auto-start. We don't want auto-start because the initialization
      * sequence isn't safe while some events occur (SD card unmount).
      */
-    protected void registerReceivers() {
+    private void registerReceivers() {
         final StorageGoneReceiver receiver = new StorageGoneReceiver();
         final IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_MEDIA_EJECT);
@@ -660,7 +660,7 @@ public class K9 extends Application {
      *
      * @see #areDatabasesUpToDate()
      */
-    public void checkCachedDatabaseVersion() {
+    private void checkCachedDatabaseVersion() {
         sDatabaseVersionCache = getSharedPreferences(DATABASE_VERSION_CACHE, MODE_PRIVATE);
 
         int cachedVersion = sDatabaseVersionCache.getInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, 0);
@@ -807,7 +807,7 @@ public class K9 extends Application {
      * other components' onCreate(), here is a way to notify interested
      * component that the application is available and ready
      */
-    protected void notifyObservers() {
+    private void notifyObservers() {
         synchronized (observers) {
             for (final ApplicationAware aware : observers) {
                 Timber.v("Initializing observer: %s", aware);

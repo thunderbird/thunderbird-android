@@ -33,8 +33,8 @@ import static com.fsck.k9.mail.internet.Viewable.MessageHeader;
 import static com.fsck.k9.mail.internet.Viewable.Text;
 import static com.fsck.k9.mail.internet.Viewable.Textual;
 
-public class MessageExtractor {
-    public static final long NO_TEXT_SIZE_LIMIT = -1L;
+class MessageExtractor {
+    private static final long NO_TEXT_SIZE_LIMIT = -1L;
 
 
     private MessageExtractor() {}
@@ -43,7 +43,7 @@ public class MessageExtractor {
         return getTextFromPart(part, NO_TEXT_SIZE_LIMIT);
     }
 
-    public static String getTextFromPart(Part part, long textSizeLimit) {
+    private static String getTextFromPart(Part part, long textSizeLimit) {
         try {
             if ((part != null) && (part.getBody() != null)) {
                 final Body body = part.getBody();
@@ -115,7 +115,7 @@ public class MessageExtractor {
         }
     }
 
-    public static boolean hasMissingParts(Part part) {
+    private static boolean hasMissingParts(Part part) {
         Body body = part.getBody();
         if (body == null) {
             return true;
@@ -133,8 +133,8 @@ public class MessageExtractor {
 
 
     /** Traverse the MIME tree of a message and extract viewable parts. */
-    public static void findViewablesAndAttachments(Part part,
-                @Nullable List<Viewable> outputViewableParts, @Nullable List<Part> outputNonViewableParts)
+    private static void findViewablesAndAttachments(Part part,
+                                                    @Nullable List<Viewable> outputViewableParts, @Nullable List<Part> outputNonViewableParts)
             throws MessagingException {
         boolean skipSavingNonViewableParts = outputNonViewableParts == null;
         boolean skipSavingViewableParts = outputViewableParts == null;
@@ -217,7 +217,7 @@ public class MessageExtractor {
         }
     }
 
-    public static Set<Part> getTextParts(Part part) throws MessagingException {
+    private static Set<Part> getTextParts(Part part) throws MessagingException {
         List<Viewable> viewableParts = new ArrayList<>();
         List<Part> nonViewableParts = new ArrayList<>();
         findViewablesAndAttachments(part, viewableParts, nonViewableParts);

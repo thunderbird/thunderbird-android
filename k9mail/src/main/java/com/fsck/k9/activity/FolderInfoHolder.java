@@ -74,7 +74,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     }
 
 
-    public void populate(Context context, LocalFolder folder, Account account) {
+    private void populate(Context context, LocalFolder folder, Account account) {
         this.folder = folder;
         this.name = folder.getName();
         this.lastChecked = folder.getLastUpdate();

@@ -5,7 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 
-public class ConfirmationDialog {
+class ConfirmationDialog {
 
     /**
      * Creates a customized confirmation dialog ({@link AlertDialog}).

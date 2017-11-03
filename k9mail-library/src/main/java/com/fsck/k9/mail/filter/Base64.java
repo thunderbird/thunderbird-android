@@ -60,14 +60,14 @@ public class Base64 {
      *
      * @see <a href="http://www.ietf.org/rfc/rfc2045.txt">RFC 2045 section 6.8</a>
      */
-    static final int CHUNK_SIZE = 76;
+    private static final int CHUNK_SIZE = 76;
 
     /**
      * Chunk separator per RFC 2045 section 2.1.
      *
      * @see <a href="http://www.ietf.org/rfc/rfc2045.txt">RFC 2045 section 2.1</a>
      */
-    static final byte[] CHUNK_SEPARATOR = {'\r', '\n'};
+    private static final byte[] CHUNK_SEPARATOR = {'\r', '\n'};
 
     /**
      * This array is a lookup table that translates 6-bit positive integer
@@ -208,7 +208,7 @@ public class Base64 {
      * If lineLength <= 0, then the output will not be divided into lines (chunks).
      * Ignored when decoding.
      */
-    public Base64(int lineLength) {
+    private Base64(int lineLength) {
         this(lineLength, CHUNK_SEPARATOR);
     }
 
@@ -319,7 +319,7 @@ public class Base64 {
      * @param outPos Position to start buffering into.
      * @param outAvail Amount of bytes available for direct buffering.
      */
-    void setInitialBuffer(byte[] out, int outPos, int outAvail) {
+    private void setInitialBuffer(byte[] out, int outPos, int outAvail) {
         // We can re-use consumer's original output array under
         // special circumstances, saving on some System.arraycopy().
         if (out != null && out.length == outAvail) {
@@ -475,7 +475,7 @@ public class Base64 {
      *            The value to test
      * @return <code>true</code> if the value is defined in the the base 64 alphabet, <code>false</code> otherwise.
      */
-    public static boolean isBase64(byte octet) {
+    private static boolean isBase64(byte octet) {
         return octet == PAD || (octet >= 0 && octet < base64ToInt.length && base64ToInt[octet] != -1);
     }
 
@@ -559,7 +559,7 @@ public class Base64 {
      *            A byte array containing Base64 character data
      * @return a byte array containing binary data
      */
-    public byte[] decode(byte[] pArray) {
+    private byte[] decode(byte[] pArray) {
         return decodeBase64(pArray);
     }
 
@@ -574,7 +574,7 @@ public class Base64 {
      * @throws IllegalArgumentException
      *             Thrown when the input array needs an output array bigger than {@link Integer#MAX_VALUE}
      */
-    public static byte[] encodeBase64(byte[] binaryData, boolean isChunked) {
+    private static byte[] encodeBase64(byte[] binaryData, boolean isChunked) {
         if (binaryData == null || binaryData.length == 0) {
             return binaryData;
         }
@@ -699,7 +699,7 @@ public class Base64 {
      *            a byte array containing binary data
      * @return A byte array containing only Base64 character data
      */
-    public byte[] encode(byte[] pArray) {
+    private byte[] encode(byte[] pArray) {
         return encodeBase64(pArray, false);
     }
 
@@ -738,7 +738,7 @@ public class Base64 {
      * @param bigInt <code>BigInteger</code> to be converted
      * @return a byte array representation of the BigInteger parameter
      */
-    static byte[] toIntegerBytes(BigInteger bigInt) {
+    private static byte[] toIntegerBytes(BigInteger bigInt) {
         int bitlen = bigInt.bitLength();
         // round bitlen
         bitlen = ((bitlen + 7) >> 3) << 3;

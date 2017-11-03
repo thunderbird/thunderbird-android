@@ -26,7 +26,7 @@ public class K9RemoteControl {
      * Permission that every application sending a broadcast to K-9 for Remote Control purposes should send on every broadcast.
      * Prevent other applications from intercepting the broadcasts.
      */
-    public final static String K9_REMOTE_CONTROL_PERMISSION = BuildConfig.APPLICATION_ID + ".permission.REMOTE_CONTROL";
+    private final static String K9_REMOTE_CONTROL_PERMISSION = BuildConfig.APPLICATION_ID + ".permission.REMOTE_CONTROL";
     /**
      * {@link Intent} Action to be sent to K-9 using {@link ContextWrapper.sendOrderedBroadcast} in order to fetch the list of configured Accounts.
      * The responseData will contain two String[] with keys K9_ACCOUNT_UUIDS and K9_ACCOUNT_DESCRIPTIONS

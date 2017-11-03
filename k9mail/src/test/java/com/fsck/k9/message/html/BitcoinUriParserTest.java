@@ -8,8 +8,8 @@ import static org.junit.Assert.assertEquals;
 
 
 public class BitcoinUriParserTest {
-    BitcoinUriParser parser = new BitcoinUriParser();
-    StringBuffer outputBuffer = new StringBuffer();
+    private BitcoinUriParser parser = new BitcoinUriParser();
+    private StringBuffer outputBuffer = new StringBuffer();
 
 
     @Test
@@ -68,16 +68,16 @@ public class BitcoinUriParserTest {
     }
 
 
-    int linkify(String uri) {
+    private int linkify(String uri) {
         return parser.linkifyUri(uri, 0, outputBuffer);
     }
 
-    void assertLinkify(String uri) {
+    private void assertLinkify(String uri) {
         linkify(uri);
         assertLinkOnly(uri, outputBuffer);
     }
 
-    void assertNotLinkify(String text) {
+    private void assertNotLinkify(String text) {
         int newPos = linkify(text);
         assertEquals(0, newPos);
     }

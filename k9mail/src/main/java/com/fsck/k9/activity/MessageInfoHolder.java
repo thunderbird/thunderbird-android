@@ -21,7 +21,7 @@ public class MessageInfoHolder {
     public boolean dirty;
     public LocalMessage message;
     public FolderInfoHolder folder;
-    public boolean selected;
+    private boolean selected;
     public String account;
     public String uri;
 

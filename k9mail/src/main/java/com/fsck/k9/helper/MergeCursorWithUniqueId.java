@@ -65,7 +65,7 @@ public class MergeCursorWithUniqueId extends MergeCursor {
         return super.getLong(columnIndex);
     }
 
-    protected int getUniqueIdColumnIndex() {
+    private int getUniqueIdColumnIndex() {
         if (mColumnCount == -1) {
             mColumnCount = super.getColumnCount();
         }
@@ -73,7 +73,7 @@ public class MergeCursorWithUniqueId extends MergeCursor {
         return mColumnCount;
     }
 
-    protected long getPerCursorId() {
+    private long getPerCursorId() {
         if (mIdColumnIndex == -1) {
             mIdColumnIndex = super.getColumnIndexOrThrow("_id");
         }

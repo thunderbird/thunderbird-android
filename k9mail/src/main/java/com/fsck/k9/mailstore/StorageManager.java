@@ -485,7 +485,7 @@ public class StorageManager {
      */
     private final Map<StorageProvider, SynchronizationAid> mProviderLocks = new IdentityHashMap<StorageProvider, SynchronizationAid>();
 
-    protected final Context context;
+    private final Context context;
 
     /**
      * Listener to be notified for storage related events.
@@ -507,7 +507,7 @@ public class StorageManager {
      * @return Whether the specified file matches a filesystem root.
      * @throws IOException
      */
-    public static boolean isMountPoint(final File file) {
+    private static boolean isMountPoint(final File file) {
         for (final File root : File.listRoots()) {
             if (root.equals(file)) {
                 return true;
@@ -522,7 +522,7 @@ public class StorageManager {
      * @throws NullPointerException
      *             If <tt>context</tt> is <code>null</code>.
      */
-    protected StorageManager(final Context context) throws NullPointerException {
+    private StorageManager(final Context context) throws NullPointerException {
         if (context == null) {
             throw new NullPointerException("No Context given");
         }
@@ -570,7 +570,7 @@ public class StorageManager {
      *            Never <code>null</code>.
      * @return <code>null</code> if not found.
      */
-    protected StorageProvider getProvider(final String providerId) {
+    private StorageProvider getProvider(final String providerId) {
         return mProviders.get(providerId);
     }
 
@@ -695,7 +695,7 @@ public class StorageManager {
      *            Never <code>null</code>.
      * @return The corresponding provider. <code>null</code> if no match.
      */
-    protected StorageProvider resolveProvider(final String path) {
+    private StorageProvider resolveProvider(final String path) {
         for (final StorageProvider provider : mProviders.values()) {
             if (path.equals(provider.getRoot(context).getAbsolutePath())) {
                 return provider;

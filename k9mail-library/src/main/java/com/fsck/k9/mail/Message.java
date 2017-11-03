@@ -78,7 +78,7 @@ public abstract class Message implements Part, Body {
 
     public abstract void setSubject(String subject);
 
-    public Date getInternalDate() {
+    private Date getInternalDate() {
         return mInternalDate;
     }
 
@@ -86,7 +86,7 @@ public abstract class Message implements Part, Body {
         this.mInternalDate = internalDate;
     }
 
-    public abstract Date getSentDate();
+    protected abstract Date getSentDate();
 
     public abstract void setSentDate(Date sentDate, boolean hideTimeZone);
 

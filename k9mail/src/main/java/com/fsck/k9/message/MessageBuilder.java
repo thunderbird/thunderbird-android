@@ -71,7 +71,7 @@ public abstract class MessageBuilder {
     private boolean isDraft;
     private boolean isPgpInlineEnabled;
 
-    protected MessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
+    MessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
         this.context = context;
         this.messageIdGenerator = messageIdGenerator;
         this.boundaryGenerator = boundaryGenerator;
@@ -81,7 +81,7 @@ public abstract class MessageBuilder {
      * Build the message to be sent (or saved). If there is another message quoted in this one, it will be baked
      * into the message here.
      */
-    protected MimeMessage build() throws MessagingException {
+    MimeMessage build() throws MessagingException {
         //FIXME: check arguments
 
         MimeMessage message = new MimeMessage();
@@ -132,7 +132,7 @@ public abstract class MessageBuilder {
         }
     }
     
-    protected MimeMultipart createMimeMultipart() {
+    MimeMultipart createMimeMultipart() {
         String boundary = boundaryGenerator.generateBoundary();
         return new MimeMultipart(boundary);
     }
@@ -473,7 +473,7 @@ public abstract class MessageBuilder {
         return this;
     }
 
-    public boolean isDraft() {
+    boolean isDraft() {
         return isDraft;
     }
 
@@ -563,26 +563,26 @@ public abstract class MessageBuilder {
         }
     }
 
-    final protected void queueMessageBuildSuccess(MimeMessage message) {
+    final void queueMessageBuildSuccess(MimeMessage message) {
         synchronized (callbackLock) {
             queuedMimeMessage = message;
         }
     }
 
-    final protected void queueMessageBuildException(MessagingException exception) {
+    final void queueMessageBuildException(MessagingException exception) {
         synchronized (callbackLock) {
             queuedException = exception;
         }
     }
 
-    final protected void queueMessageBuildPendingIntent(PendingIntent pendingIntent, int requestCode) {
+    final void queueMessageBuildPendingIntent(PendingIntent pendingIntent, int requestCode) {
         synchronized (callbackLock) {
             queuedPendingIntent = pendingIntent;
             queuedRequestCode = requestCode;
         }
     }
 
-    final protected void deliverResult() {
+    private void deliverResult() {
         synchronized (callbackLock) {
             if (asyncCallback == null) {
                 Timber.d("Keeping message builder result in queue for later delivery");

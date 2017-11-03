@@ -37,7 +37,7 @@ public class WebDavHttpClient extends DefaultHttpClient {
         }
     }
 
-    public static void modifyRequestToAcceptGzipResponse(HttpRequest request) {
+    private static void modifyRequestToAcceptGzipResponse(HttpRequest request) {
         Timber.i("Requesting gzipped data");
         request.addHeader("Accept-Encoding", "gzip");
     }

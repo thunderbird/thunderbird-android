@@ -56,7 +56,7 @@ public class MockSmtpServer {
         this(KeyStoreProvider.getInstance(), new DefaultLogger());
     }
 
-    public MockSmtpServer(KeyStoreProvider keyStoreProvider, Logger logger) {
+    private MockSmtpServer(KeyStoreProvider keyStoreProvider, Logger logger) {
         this.keyStoreProvider = keyStoreProvider;
         this.logger = logger;
     }
@@ -90,7 +90,7 @@ public class MockSmtpServer {
         mockServerThread.start();
     }
 
-    public void shutdown() {
+    private void shutdown() {
         checkServerRunning();
 
         mockServerThread.shouldStop();

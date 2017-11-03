@@ -87,9 +87,9 @@ public class MessageProvider extends ContentProvider {
     /**
      * How many simultaneous cursors we can afford to expose at once
      */
-    Semaphore semaphore = new Semaphore(1);
+    private Semaphore semaphore = new Semaphore(1);
 
-    ScheduledExecutorService scheduledPool = Executors.newScheduledThreadPool(1);
+    private ScheduledExecutorService scheduledPool = Executors.newScheduledThreadPool(1);
 
 
     @Override
@@ -222,7 +222,7 @@ public class MessageProvider extends ContentProvider {
      * Register a {@link QueryHandler} to handle a certain {@link Uri} for
      * {@link #query(Uri, String[], String, String[], String)}
      */
-    protected void registerQueryHandler(QueryHandler handler) {
+    private void registerQueryHandler(QueryHandler handler) {
         if (queryHandlers.contains(handler)) {
             return;
         }

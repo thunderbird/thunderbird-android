@@ -47,23 +47,23 @@ import static org.mockito.Mockito.when;
 
 @RunWith(K9RobolectricTestRunner.class)
 public class MessageBuilderTest {
-    public static final String TEST_MESSAGE_TEXT = "soviet message\r\ntext ☭";
-    public static final String TEST_ATTACHMENT_TEXT = "text data in attachment";
-    public static final String TEST_SUBJECT = "test_subject";
-    public static final Address TEST_IDENTITY_ADDRESS = new Address("test@example.org", "tester");
-    public static final Address[] TEST_TO = new Address[] {
+    private static final String TEST_MESSAGE_TEXT = "soviet message\r\ntext ☭";
+    private static final String TEST_ATTACHMENT_TEXT = "text data in attachment";
+    private static final String TEST_SUBJECT = "test_subject";
+    private static final Address TEST_IDENTITY_ADDRESS = new Address("test@example.org", "tester");
+    private static final Address[] TEST_TO = new Address[] {
             new Address("to1@example.org", "recip 1"), new Address("to2@example.org", "recip 2")
     };
-    public static final Address[] TEST_CC = new Address[] { new Address("cc@example.org", "cc recip") };
-    public static final Address[] TEST_BCC = new Address[] { new Address("bcc@example.org", "bcc recip") };
-    public static final String TEST_MESSAGE_ID = "<00000000-0000-007B-0000-0000000000EA@example.org>";
-    public static final Date SENT_DATE = new Date(10000000000L);
+    private static final Address[] TEST_CC = new Address[] { new Address("cc@example.org", "cc recip") };
+    private static final Address[] TEST_BCC = new Address[] { new Address("bcc@example.org", "bcc recip") };
+    private static final String TEST_MESSAGE_ID = "<00000000-0000-007B-0000-0000000000EA@example.org>";
+    private static final Date SENT_DATE = new Date(10000000000L);
 
-    public static final String BOUNDARY_1 = "----boundary1";
-    public static final String BOUNDARY_2 = "----boundary2";
-    public static final String BOUNDARY_3 = "----boundary3";
+    private static final String BOUNDARY_1 = "----boundary1";
+    private static final String BOUNDARY_2 = "----boundary2";
+    private static final String BOUNDARY_3 = "----boundary3";
 
-    public static final String MESSAGE_HEADERS = "" +
+    private static final String MESSAGE_HEADERS = "" +
             "Date: Sun, 26 Apr 1970 17:46:40 +0000\r\n" +
             "From: tester <test@example.org>\r\n" +
             "To: recip 1 <to1@example.org>,recip 2 <to2@example.org>\r\n" +
@@ -76,7 +76,7 @@ public class MessageBuilderTest {
             "Message-ID: " + TEST_MESSAGE_ID + "\r\n" +
             "MIME-Version: 1.0\r\n";
     
-    public static final String MESSAGE_CONTENT = "" +
+    private static final String MESSAGE_CONTENT = "" +
             "Content-Type: text/plain;\r\n" +
             " charset=utf-8\r\n" +
             "Content-Transfer-Encoding: quoted-printable\r\n" +
@@ -84,7 +84,7 @@ public class MessageBuilderTest {
             "soviet message\r\n" +
             "text =E2=98=AD";
     
-    public static final String MESSAGE_CONTENT_WITH_ATTACH = "" +
+    private static final String MESSAGE_CONTENT_WITH_ATTACH = "" +
             "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
             "Content-Transfer-Encoding: 7bit\r\n" +
             "\r\n" +
@@ -107,7 +107,7 @@ public class MessageBuilderTest {
             "\r\n" +
             "--" + BOUNDARY_1 + "--\r\n";
     
-    public static final String MESSAGE_CONTENT_WITH_MESSAGE_ATTACH = "" +
+    private static final String MESSAGE_CONTENT_WITH_MESSAGE_ATTACH = "" +
             "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
             "Content-Transfer-Encoding: 7bit\r\n" +
             "\r\n" +

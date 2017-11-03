@@ -17,12 +17,12 @@ import java.util.List;
 
 public class ChooseIdentity extends K9ListActivity {
     Account mAccount;
-    ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter;
 
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseIdentity_account";
-    public static final String EXTRA_IDENTITY = "com.fsck.k9.ChooseIdentity_identity";
+    private static final String EXTRA_IDENTITY = "com.fsck.k9.ChooseIdentity_identity";
 
-    protected List<Identity> identities = null;
+    List<Identity> identities = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class ChooseIdentity extends K9ListActivity {
     }
 
 
-    protected void refreshView() {
+    void refreshView() {
         adapter.setNotifyOnChange(false);
         adapter.clear();
 
@@ -68,7 +68,7 @@ public class ChooseIdentity extends K9ListActivity {
         adapter.notifyDataSetChanged();
     }
 
-    protected void setupClickListeners() {
+    void setupClickListeners() {
         this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Identity identity = mAccount.getIdentity(position);

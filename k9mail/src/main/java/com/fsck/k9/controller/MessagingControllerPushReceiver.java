@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class MessagingControllerPushReceiver implements PushReceiver {
-    final Account account;
-    final MessagingController controller;
-    final Context context;
+    private final Account account;
+    private final MessagingController controller;
+    private final Context context;
 
     public MessagingControllerPushReceiver(Context context, Account nAccount, MessagingController nController) {
         account = nAccount;

@@ -4,7 +4,7 @@ package com.fsck.k9.notification;
 import com.fsck.k9.Account;
 
 
-public class NotificationGroupKeys {
+class NotificationGroupKeys {
     private static final String NOTIFICATION_GROUP_KEY_PREFIX = "newMailNotifications-";
     
     

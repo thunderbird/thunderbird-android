@@ -36,8 +36,8 @@ public class OpenPgpAppSelectDialog extends Activity {
     private static final String APG_PROVIDER_PLACEHOLDER = "apg-placeholder";
     private static final String PACKAGE_NAME_APG = "org.thialfihar.android.apg";
 
-    public static final String FRAG_OPENPGP_SELECT = "openpgp_select";
-    public static final String FRAG_APG_DEPRECATE = "apg_deprecate";
+    private static final String FRAG_OPENPGP_SELECT = "openpgp_select";
+    private static final String FRAG_APG_DEPRECATE = "apg_deprecate";
 
     private static final String MARKET_INTENT_URI_BASE = "market://details?id=%s";
     private static final Intent MARKET_INTENT = new Intent(Intent.ACTION_VIEW, Uri.parse(
@@ -229,7 +229,7 @@ public class OpenPgpAppSelectDialog extends Activity {
         }
     }
 
-    public void onSelectProvider(String selectedPackage) {
+    private void onSelectProvider(String selectedPackage) {
         if (APG_PROVIDER_PLACEHOLDER.equals(selectedPackage)) {
             showApgDeprecationDialogFragment();
             return;
@@ -247,7 +247,7 @@ public class OpenPgpAppSelectDialog extends Activity {
         editor.commit();
     }
 
-    public void onDismissApgDialog() {
+    private void onDismissApgDialog() {
         showOpenPgpSelectDialogFragment();
     }
 

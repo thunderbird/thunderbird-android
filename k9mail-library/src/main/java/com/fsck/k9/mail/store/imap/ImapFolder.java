@@ -50,11 +50,11 @@ class ImapFolder extends Folder<ImapMessage> {
     private static final int FETCH_WINDOW_SIZE = 100;
 
 
-    protected volatile int messageCount = -1;
-    protected volatile long uidNext = -1L;
-    protected volatile ImapConnection connection;
-    protected ImapStore store = null;
-    protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
+    volatile int messageCount = -1;
+    volatile long uidNext = -1L;
+    volatile ImapConnection connection;
+    ImapStore store = null;
+    Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
     private final FolderNameCodec folderNameCodec;
     private final String name;
     private int mode;
@@ -118,7 +118,7 @@ class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    protected List<ImapResponse> internalOpen(int mode) throws MessagingException {
+    List<ImapResponse> internalOpen(int mode) throws MessagingException {
         if (isOpen() && this.mode == mode) {
             // Make sure the connection is valid. If it's not we'll close it down and continue
             // on to get a new one.
@@ -464,7 +464,7 @@ class ImapFolder extends Folder<ImapMessage> {
         return getRemoteMessageCount("FLAGGED NOT DELETED");
     }
 
-    protected long getHighestUid() throws MessagingException {
+    long getHighestUid() throws MessagingException {
         try {
             String command = "UID SEARCH *:*";
             List<ImapResponse> responses = executeSimpleCommand(command);
@@ -510,8 +510,8 @@ class ImapFolder extends Folder<ImapMessage> {
         return getMessages(start, end, earliestDate, false, listener);
     }
 
-    protected List<ImapMessage> getMessages(final int start, final int end, Date earliestDate,
-            final boolean includeDeleted, final MessageRetrievalListener<ImapMessage> listener)
+    List<ImapMessage> getMessages(final int start, final int end, Date earliestDate,
+                                  final boolean includeDeleted, final MessageRetrievalListener<ImapMessage> listener)
             throws MessagingException {
 
         if (start < 1 || end < 1 || end < start) {
@@ -584,8 +584,8 @@ class ImapFolder extends Folder<ImapMessage> {
         return false;
     }
 
-    protected List<ImapMessage> getMessages(final List<Long> mesgSeqs, final boolean includeDeleted,
-            final MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
+    List<ImapMessage> getMessages(final List<Long> mesgSeqs, final boolean includeDeleted,
+                                  final MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
         ImapSearcher searcher = new ImapSearcher() {
             @Override
             public List<ImapResponse> search() throws IOException, MessagingException {
@@ -599,7 +599,7 @@ class ImapFolder extends Folder<ImapMessage> {
         return search(searcher, listener);
     }
 
-    protected List<ImapMessage> getMessagesFromUids(final List<String> mesgUids) throws MessagingException {
+    List<ImapMessage> getMessagesFromUids(final List<String> mesgUids) throws MessagingException {
         ImapSearcher searcher = new ImapSearcher() {
             @Override
             public List<ImapResponse> search() throws IOException, MessagingException {
@@ -927,7 +927,7 @@ class ImapFolder extends Folder<ImapMessage> {
         return result;
     }
 
-    protected List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
+    List<ImapResponse> handleUntaggedResponses(List<ImapResponse> responses) {
         for (ImapResponse response : responses) {
             handleUntaggedResponse(response);
         }
@@ -935,7 +935,7 @@ class ImapFolder extends Folder<ImapMessage> {
         return responses;
     }
 
-    protected void handlePossibleUidNext(ImapResponse response) {
+    void handlePossibleUidNext(ImapResponse response) {
         if (ImapResponseParser.equalsIgnoreCase(response.get(0), "OK") && response.size() > 1) {
             Object bracketedObj = response.get(1);
             if (bracketedObj instanceof ImapList) {
@@ -960,7 +960,7 @@ class ImapFolder extends Folder<ImapMessage> {
     /**
      * Handle an untagged response that the caller doesn't care to handle themselves.
      */
-    protected void handleUntaggedResponse(ImapResponse response) {
+    void handleUntaggedResponse(ImapResponse response) {
         if (response.getTag() == null && response.size() > 1) {
             if (ImapResponseParser.equalsIgnoreCase(response.get(1), "EXISTS")) {
                 messageCount = response.getNumber(0);
@@ -1384,7 +1384,7 @@ class ImapFolder extends Folder<ImapMessage> {
         return store;
     }
 
-    protected String getLogId() {
+    String getLogId() {
         String id = store.getStoreConfig().toString() + ":" + getName() + "/" + Thread.currentThread().getName();
         if (connection != null) {
             id += "/" + connection.getLogId();

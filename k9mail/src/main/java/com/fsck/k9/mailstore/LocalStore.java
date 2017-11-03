@@ -268,7 +268,7 @@ public class LocalStore extends Store {
         return account;
     }
 
-    protected Storage getStorage() {
+    Storage getStorage() {
         return Preferences.getPreferences(context).getStorage();
     }
 

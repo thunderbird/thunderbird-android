@@ -17,7 +17,7 @@ import com.fsck.k9.view.HighlightDialogFragment;
 
 
 public class PgpSignOnlyDialog extends HighlightDialogFragment {
-    public static final String ARG_FIRST_TIME = "first_time";
+    private static final String ARG_FIRST_TIME = "first_time";
 
 
     public static PgpSignOnlyDialog newInstance(boolean firstTime, @IdRes int showcaseView) {

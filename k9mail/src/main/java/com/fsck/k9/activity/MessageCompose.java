@@ -740,7 +740,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    public void performSendAfterChecks() {
+    private void performSendAfterChecks() {
         currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
             changesMadeSinceLastSave = false;

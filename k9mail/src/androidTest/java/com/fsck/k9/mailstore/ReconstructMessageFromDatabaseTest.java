@@ -24,7 +24,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 
 public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> {
 
-    public static final String MESSAGE_SOURCE = "From: from@example.com\r\n" +
+    private static final String MESSAGE_SOURCE = "From: from@example.com\r\n" +
             "To: to@example.com\r\n" +
             "Subject: Test Message \r\n" +
             "Date: Thu, 13 Nov 2014 17:09:38 +0100\r\n" +
@@ -125,7 +125,7 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
                 reconstructedMessage);
     }
 
-    protected MimeMessage parseMessage() throws IOException, MessagingException {
+    private MimeMessage parseMessage() throws IOException, MessagingException {
         InputStream messageInputStream = new ByteArrayInputStream(MESSAGE_SOURCE.getBytes());
         try {
             return MimeMessage.parseMimeMessage(messageInputStream, true);
@@ -134,18 +134,18 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
         }
     }
 
-    protected LocalFolder createFolderInDatabase() throws MessagingException {
+    private LocalFolder createFolderInDatabase() throws MessagingException {
         LocalStore localStore = LocalStore.getInstance(account, getApplication());
         LocalFolder inbox = localStore.getFolder("INBOX");
         localStore.createFolders(Collections.singletonList(inbox), 10);
         return inbox;
     }
 
-    protected void saveMessageToDatabase(LocalFolder folder, MimeMessage message) throws MessagingException {
+    private void saveMessageToDatabase(LocalFolder folder, MimeMessage message) throws MessagingException {
         folder.appendMessages(Collections.singletonList(message));
     }
 
-    protected LocalMessage readMessageFromDatabase(LocalFolder folder, MimeMessage message) throws MessagingException {
+    private LocalMessage readMessageFromDatabase(LocalFolder folder, MimeMessage message) throws MessagingException {
         LocalMessage localMessage = folder.getMessage(message.getUid());
 
         FetchProfile fp = new FetchProfile();
@@ -157,7 +157,7 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
         return localMessage;
     }
 
-    protected String writeMessageToString(LocalMessage localMessage) throws IOException, MessagingException {
+    private String writeMessageToString(LocalMessage localMessage) throws IOException, MessagingException {
         ByteArrayOutputStream messageOutputStream = new ByteArrayOutputStream();
         try {
             localMessage.writeTo(messageOutputStream);
@@ -170,7 +170,7 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
 
     static class DummyAccount extends Account {
 
-        protected DummyAccount(Context context) {
+        DummyAccount(Context context) {
             super(context);
         }
     }

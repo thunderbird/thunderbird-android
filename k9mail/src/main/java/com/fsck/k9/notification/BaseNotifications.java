@@ -14,19 +14,19 @@ import com.fsck.k9.R;
 
 
 abstract class BaseNotifications {
-    protected final Context context;
-    protected final NotificationController controller;
-    protected final NotificationActionCreator actionCreator;
+    final Context context;
+    final NotificationController controller;
+    final NotificationActionCreator actionCreator;
 
 
-    protected BaseNotifications(NotificationController controller, NotificationActionCreator actionCreator) {
+    BaseNotifications(NotificationController controller, NotificationActionCreator actionCreator) {
         this.context = controller.getContext();
         this.controller = controller;
         this.actionCreator = actionCreator;
     }
 
-    protected NotificationCompat.Builder createBigTextStyleNotification(Account account, NotificationHolder holder,
-            int notificationId) {
+    NotificationCompat.Builder createBigTextStyleNotification(Account account, NotificationHolder holder,
+                                                              int notificationId) {
         String accountName = controller.getAccountName(account);
         NotificationContent content = holder.content;
         String groupKey = NotificationGroupKeys.getGroupKey(account);
@@ -50,7 +50,7 @@ abstract class BaseNotifications {
         return builder;
     }
 
-    protected NotificationCompat.Builder createAndInitializeNotificationBuilder(Account account) {
+    NotificationCompat.Builder createAndInitializeNotificationBuilder(Account account) {
         return controller.createNotificationBuilder()
                 .setSmallIcon(getNewMailNotificationIcon())
                 .setColor(account.getChipColor())
@@ -59,12 +59,12 @@ abstract class BaseNotifications {
                 .setCategory(NotificationCompat.CATEGORY_EMAIL);
     }
 
-    protected boolean isDeleteActionEnabled() {
+    boolean isDeleteActionEnabled() {
         NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();
         return deleteOption == NotificationQuickDelete.ALWAYS || deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG;
     }
 
-    protected BigTextStyle createBigTextStyle(Builder builder) {
+    BigTextStyle createBigTextStyle(Builder builder) {
         return new BigTextStyle(builder);
     }
 

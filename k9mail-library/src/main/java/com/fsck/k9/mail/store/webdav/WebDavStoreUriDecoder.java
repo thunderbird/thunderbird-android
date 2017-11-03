@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 
-public class WebDavStoreUriDecoder {
+class WebDavStoreUriDecoder {
 
     /**
      * Decodes a WebDavStore URI.

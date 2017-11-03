@@ -48,7 +48,7 @@ public class MimeMessageHelper {
         }
     }
 
-    public static void setEncoding(Part part, String encoding) throws MessagingException {
+    private static void setEncoding(Part part, String encoding) throws MessagingException {
         Body body = part.getBody();
         if (body != null) {
             body.setEncoding(encoding);

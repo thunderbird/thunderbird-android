@@ -23,7 +23,7 @@ package com.fsck.k9;
 public class Clock {
     public static final Clock INSTANCE = new Clock();
 
-    protected Clock() {
+    private Clock() {
     }
 
     public long getTime() {

@@ -92,7 +92,7 @@ public class AttachmentTempFileProvider extends FileProvider {
         return contentUri.buildUpon().appendQueryParameter("mime_type", mimeType).build();
     }
 
-    public static boolean deleteOldTemporaryFiles(Context context) {
+    private static boolean deleteOldTemporaryFiles(Context context) {
         File tempDirectory = getTempFileDirectory(context);
         boolean allFilesDeleted = true;
         long deletionThreshold = System.currentTimeMillis() - FILE_DELETE_THRESHOLD_MILLISECONDS;

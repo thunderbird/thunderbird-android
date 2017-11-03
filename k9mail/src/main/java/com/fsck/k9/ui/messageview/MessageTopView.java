@@ -34,9 +34,9 @@ import org.openintents.openpgp.OpenPgpError;
 
 public class MessageTopView extends LinearLayout {
 
-    public static final int PROGRESS_MAX = 1000;
-    public static final int PROGRESS_MAX_WITH_MARGIN = 950;
-    public static final int PROGRESS_STEP_DURATION = 180;
+    private static final int PROGRESS_MAX = 1000;
+    private static final int PROGRESS_MAX_WITH_MARGIN = 950;
+    private static final int PROGRESS_STEP_DURATION = 180;
 
 
     private ToolableViewAnimator viewAnimator;

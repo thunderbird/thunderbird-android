@@ -10,7 +10,7 @@ import com.fsck.k9.Account;
 
 
 class MemorizingMessagingListener extends SimpleMessagingListener {
-    Map<String, Memory> memories = new HashMap<>(31);
+    private Map<String, Memory> memories = new HashMap<>(31);
 
     synchronized void removeAccount(Account account) {
         Iterator<Entry<String, Memory>> memIt = memories.entrySet().iterator();

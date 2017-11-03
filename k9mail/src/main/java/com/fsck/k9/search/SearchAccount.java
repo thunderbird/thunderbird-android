@@ -43,7 +43,7 @@ public class SearchAccount implements BaseAccount {
     private String mDescription;
     private LocalSearch mSearch;
 
-    public SearchAccount(String id, LocalSearch search, String description, String email)
+    private SearchAccount(String id, LocalSearch search, String description, String email)
             throws IllegalArgumentException {
 
         if (search == null) {

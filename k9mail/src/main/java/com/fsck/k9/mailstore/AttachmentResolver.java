@@ -28,7 +28,7 @@ import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
  * the underlying part structure.
  */
 public class AttachmentResolver {
-    Map<String,Uri> contentIdToAttachmentUriMap;
+    private Map<String,Uri> contentIdToAttachmentUriMap;
 
 
     private AttachmentResolver(Map<String, Uri> contentIdToAttachmentUriMap) {

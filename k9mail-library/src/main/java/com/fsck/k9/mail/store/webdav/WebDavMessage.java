@@ -70,7 +70,7 @@ class WebDavMessage extends MimeMessage {
         return this.mUrl;
     }
 
-    public void setSize(int size) {
+    private void setSize(int size) {
         this.mSize = size;
     }
 

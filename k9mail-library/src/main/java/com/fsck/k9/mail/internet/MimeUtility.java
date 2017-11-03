@@ -24,8 +24,8 @@ import timber.log.Timber;
 
 
 public class MimeUtility {
-    public static final String DEFAULT_ATTACHMENT_MIME_TYPE = "application/octet-stream";
-    public static final String K9_SETTINGS_MIME_TYPE = "application/x-k9settings";
+    private static final String DEFAULT_ATTACHMENT_MIME_TYPE = "application/octet-stream";
+    private static final String K9_SETTINGS_MIME_TYPE = "application/x-k9settings";
 
     /*
      * http://www.w3schools.com/media/media_mimeref.asp
@@ -971,7 +971,7 @@ public class MimeUtility {
     }
 
 
-    public static Part findFirstPartByMimeType(Part part, String mimeType) {
+    private static Part findFirstPartByMimeType(Part part, String mimeType) {
         if (part.getBody() instanceof Multipart) {
             Multipart multipart = (Multipart)part.getBody();
             for (BodyPart bodyPart : multipart.getBodyParts()) {

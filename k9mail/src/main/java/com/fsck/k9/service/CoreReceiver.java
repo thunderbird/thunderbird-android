@@ -16,7 +16,7 @@ import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 
 public class CoreReceiver extends BroadcastReceiver {
 
-    public static final String WAKE_LOCK_RELEASE = "com.fsck.k9.service.CoreReceiver.wakeLockRelease";
+    private static final String WAKE_LOCK_RELEASE = "com.fsck.k9.service.CoreReceiver.wakeLockRelease";
 
     public static final String WAKE_LOCK_ID = "com.fsck.k9.service.CoreReceiver.wakeLockId";
 
@@ -66,7 +66,7 @@ public class CoreReceiver extends BroadcastReceiver {
         }
     }
 
-    public Integer receive(Context context, Intent intent, Integer wakeLockId) {
+    Integer receive(Context context, Intent intent, Integer wakeLockId) {
         return wakeLockId;
     }
 

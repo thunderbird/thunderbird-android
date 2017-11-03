@@ -284,8 +284,8 @@ public class EmailProvider extends ContentProvider {
         throw new RuntimeException("not implemented yet");
     }
 
-    protected Cursor getMessages(String accountUuid, final String[] projection, final String selection,
-            final String[] selectionArgs, final String sortOrder) {
+    private Cursor getMessages(String accountUuid, final String[] projection, final String selection,
+                               final String[] selectionArgs, final String sortOrder) {
 
         Account account = getAccount(accountUuid);
         LockableDatabase database = getDatabase(account);
@@ -349,8 +349,8 @@ public class EmailProvider extends ContentProvider {
         }
     }
 
-    protected Cursor getThreadedMessages(String accountUuid, final String[] projection, final String selection,
-            final String[] selectionArgs, final String sortOrder) {
+    private Cursor getThreadedMessages(String accountUuid, final String[] projection, final String selection,
+                                       final String[] selectionArgs, final String sortOrder) {
 
         Account account = getAccount(accountUuid);
         LockableDatabase database = getDatabase(account);
@@ -476,8 +476,8 @@ public class EmailProvider extends ContentProvider {
         query.append(" GROUP BY t." + ThreadColumns.ROOT);
     }
 
-    protected Cursor getThread(String accountUuid, final String[] projection, final String threadId,
-            final String sortOrder) {
+    private Cursor getThread(String accountUuid, final String[] projection, final String threadId,
+                             final String sortOrder) {
 
         Account account = getAccount(accountUuid);
         LockableDatabase database = getDatabase(account);

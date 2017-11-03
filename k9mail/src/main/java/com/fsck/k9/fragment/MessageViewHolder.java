@@ -9,7 +9,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.ui.ContactBadge;
 
 
-public class MessageViewHolder implements View.OnClickListener {
+class MessageViewHolder implements View.OnClickListener {
     private final MessageListFragment fragment;
     public TextView subject;
     public TextView preview;

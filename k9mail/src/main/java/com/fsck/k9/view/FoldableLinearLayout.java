@@ -197,7 +197,7 @@ public class FoldableLinearLayout extends LinearLayout {
         });
     }
 
-    protected void updateFoldedState(boolean newStateIsFolded, boolean animate) {
+    private void updateFoldedState(boolean newStateIsFolded, boolean animate) {
         if (newStateIsFolded) {
             mFoldableIcon.setImageResource(mIconActionExpandId);
             if (animate) {

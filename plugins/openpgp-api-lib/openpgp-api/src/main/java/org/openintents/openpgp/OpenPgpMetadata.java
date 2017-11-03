@@ -25,13 +25,13 @@ public class OpenPgpMetadata implements Parcelable {
      * old versions of the protocol (and thus old versions of this class), we need a versioning
      * system for the parcels sent between the clients and the providers.
      */
-    public static final int PARCELABLE_VERSION = 2;
+    private static final int PARCELABLE_VERSION = 2;
 
-    String filename;
-    String mimeType;
-    String charset;
-    long modificationTime;
-    long originalSize;
+    private String filename;
+    private String mimeType;
+    private String charset;
+    private long modificationTime;
+    private long originalSize;
 
     public String getFilename() {
         return filename;
@@ -53,7 +53,7 @@ public class OpenPgpMetadata implements Parcelable {
         return charset;
     }
 
-    public OpenPgpMetadata() {
+    private OpenPgpMetadata() {
     }
 
     public OpenPgpMetadata(String filename, String mimeType, long modificationTime,

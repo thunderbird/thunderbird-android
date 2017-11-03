@@ -308,7 +308,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         loaderManager.restartLoader(LOADER_ID_ALTERNATES, null, RecipientSelectView.this);
     }
 
-    public void postShowAlternatesPopup(final List<Recipient> data) {
+    private void postShowAlternatesPopup(final List<Recipient> data) {
         // We delay this call so the soft keyboard is gone by the time the popup is layouted
         new Handler().post(new Runnable() {
             @Override
@@ -318,7 +318,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         });
     }
 
-    public void showAlternatesPopup(List<Recipient> data) {
+    private void showAlternatesPopup(List<Recipient> data) {
         if (loaderManager == null) {
             return;
         }

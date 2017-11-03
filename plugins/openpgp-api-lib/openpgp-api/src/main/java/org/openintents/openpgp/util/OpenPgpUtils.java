@@ -29,18 +29,18 @@ import android.text.TextUtils;
 
 public class OpenPgpUtils {
 
-    public static final Pattern PGP_MESSAGE = Pattern.compile(
+    private static final Pattern PGP_MESSAGE = Pattern.compile(
             "(-----BEGIN PGP MESSAGE-----.*?-----END PGP MESSAGE-----).*",
             Pattern.DOTALL);
 
-    public static final String PGP_MARKER_CLEARSIGN_BEGIN_MESSAGE = "-----BEGIN PGP SIGNED MESSAGE-----";
-    public static final String PGP_MARKER_CLEARSIGN_BEGIN_SIGNATURE = "-----BEGIN PGP SIGNATURE-----";
+    private static final String PGP_MARKER_CLEARSIGN_BEGIN_MESSAGE = "-----BEGIN PGP SIGNED MESSAGE-----";
+    private static final String PGP_MARKER_CLEARSIGN_BEGIN_SIGNATURE = "-----BEGIN PGP SIGNATURE-----";
 
-    public static final Pattern PGP_SIGNED_MESSAGE = Pattern.compile(
+    private static final Pattern PGP_SIGNED_MESSAGE = Pattern.compile(
             "(-----BEGIN PGP SIGNED MESSAGE-----.*?-----BEGIN PGP SIGNATURE-----.*?-----END PGP SIGNATURE-----).*",
             Pattern.DOTALL);
 
-    public static final int PARSE_RESULT_NO_PGP = -1;
+    private static final int PARSE_RESULT_NO_PGP = -1;
     public static final int PARSE_RESULT_MESSAGE = 0;
     public static final int PARSE_RESULT_SIGNED_MESSAGE = 1;
 
@@ -48,7 +48,7 @@ public class OpenPgpUtils {
         return parseMessage(message, false);
     }
 
-    public static int parseMessage(String message, boolean anchorToStart) {
+    private static int parseMessage(String message, boolean anchorToStart) {
         Matcher matcherSigned = PGP_SIGNED_MESSAGE.matcher(message);
         Matcher matcherMessage = PGP_MESSAGE.matcher(message);
 

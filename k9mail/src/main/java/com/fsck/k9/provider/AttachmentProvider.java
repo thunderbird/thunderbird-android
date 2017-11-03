@@ -32,7 +32,7 @@ import org.openintents.openpgp.util.ParcelFileDescriptorUtil;
  */
 public class AttachmentProvider extends ContentProvider {
     private static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".attachmentprovider";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+    private static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     private static final String[] DEFAULT_PROJECTION = new String[] {
             AttachmentProviderColumns._ID,

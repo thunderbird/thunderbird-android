@@ -547,7 +547,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         }
     }
 
-    protected void onNext() {
+    private void onNext() {
         try {
             ConnectionSecurity connectionSecurity = getSelectedSecurity();
 
@@ -624,7 +624,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
      * Calls validateFields() which enables or disables the Next button
      * based on the fields' validity.
      */
-    TextWatcher validationTextWatcher = new TextWatcher() {
+    private TextWatcher validationTextWatcher = new TextWatcher() {
         public void afterTextChanged(Editable s) {
             validateFields();
         }
@@ -638,7 +638,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         }
     };
 
-    OnClientCertificateChangedListener clientCertificateChangedListener = new OnClientCertificateChangedListener() {
+    private OnClientCertificateChangedListener clientCertificateChangedListener = new OnClientCertificateChangedListener() {
         @Override
         public void onClientCertificateChanged(String alias) {
             validateFields();

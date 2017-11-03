@@ -251,7 +251,7 @@ class DeviceNotifications extends BaseNotifications {
         return R.drawable.notification_action_reply;
     }
 
-    protected InboxStyle createInboxStyle(Builder builder) {
+    InboxStyle createInboxStyle(Builder builder) {
         return new InboxStyle(builder);
     }
 }

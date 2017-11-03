@@ -825,7 +825,7 @@ public class SmtpTransport extends Transport {
     }
 
     @VisibleForTesting
-    protected String getCanonicalHostName(InetAddress localAddress) {
+    String getCanonicalHostName(InetAddress localAddress) {
         return localAddress.getCanonicalHostName();
     }
 }

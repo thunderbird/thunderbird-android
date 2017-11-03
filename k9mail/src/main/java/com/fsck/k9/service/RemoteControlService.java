@@ -33,7 +33,7 @@ public class RemoteControlService extends CoreService {
         context.startService(i);
     }
 
-    public static final int REMOTE_CONTROL_SERVICE_WAKE_LOCK_TIMEOUT = 20000;
+    private static final int REMOTE_CONTROL_SERVICE_WAKE_LOCK_TIMEOUT = 20000;
 
     @Override
     public int startService(final Intent intent, final int startId) {

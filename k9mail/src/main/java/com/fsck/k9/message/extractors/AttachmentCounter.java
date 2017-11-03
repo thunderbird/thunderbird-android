@@ -14,7 +14,7 @@ public class AttachmentCounter {
     private final EncryptionDetector encryptionDetector;
 
 
-    AttachmentCounter(EncryptionDetector encryptionDetector) {
+    private AttachmentCounter(EncryptionDetector encryptionDetector) {
         this.encryptionDetector = encryptionDetector;
     }
 

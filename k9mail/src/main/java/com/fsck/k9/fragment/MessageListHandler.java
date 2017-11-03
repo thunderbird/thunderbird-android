@@ -18,7 +18,7 @@ import com.fsck.k9.activity.MessageReference;
  * <p><strong>Note:</strong> If you add a method to this class make sure you don't accidentally
  * perform the operation in the calling thread.</p>
  */
-public class MessageListHandler extends Handler {
+class MessageListHandler extends Handler {
     private static final int ACTION_FOLDER_LOADING = 1;
     private static final int ACTION_REFRESH_TITLE = 2;
     private static final int ACTION_PROGRESS = 3;

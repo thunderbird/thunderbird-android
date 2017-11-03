@@ -103,7 +103,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         return view;
     }
 
-    public View newView(ViewGroup parent) {
+    private View newView(ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.recipient_alternate_item, parent, false);
 
         RecipientTokenHolder holder = new RecipientTokenHolder(view);
@@ -117,7 +117,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         return position != POSITION_HEADER_VIEW;
     }
 
-    public void bindHeaderView(View view, Recipient recipient) {
+    private void bindHeaderView(View view, Recipient recipient) {
         RecipientTokenHolder holder = (RecipientTokenHolder) view.getTag();
         holder.setShowAsHeader(true);
 
@@ -140,7 +140,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         });
     }
 
-    public void bindItemView(View view, final Recipient recipient) {
+    private void bindItemView(View view, final Recipient recipient) {
         RecipientTokenHolder holder = (RecipientTokenHolder) view.getTag();
         holder.setShowAsHeader(false);
 
