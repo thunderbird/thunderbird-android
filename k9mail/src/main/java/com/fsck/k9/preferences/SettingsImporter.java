@@ -128,7 +128,9 @@ public class SettingsImporter {
                 }
             }
 
-            //TODO: throw exception if neither global settings nor account settings could be found
+            if (!globalSettings && imported.accounts == null) {
+                throw new SettingsImportExportException("Could not find settings to import");
+            }
 
             return new ImportContents(globalSettings, accounts);
 
@@ -1010,8 +1012,7 @@ public class SettingsImporter {
     private static ImportedFolder parseFolder(XmlPullParser xpp) throws XmlPullParserException, IOException {
         ImportedFolder folder = new ImportedFolder();
 
-        String name = xpp.getAttributeValue(null, SettingsExporter.NAME_ATTRIBUTE);
-        folder.name = name;
+        folder.name = xpp.getAttributeValue(null, SettingsExporter.NAME_ATTRIBUTE);
 
         folder.settings = parseSettings(xpp, SettingsExporter.FOLDER_ELEMENT);
 
