@@ -6,5 +6,5 @@ package com.fsck.k9.remotecontrol;
  * the accounts configured in K-9 Mail.  Should be passed to fetchAccounts(Context, K9AccountReceptor)
  */
 public interface K9AccountReceptor {
-    public void accounts(String[] uuids, String[] descriptions);
+    void accounts(String[] uuids, String[] descriptions);
 }

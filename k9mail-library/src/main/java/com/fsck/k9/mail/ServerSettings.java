@@ -36,7 +36,7 @@ public class ServerSettings {
          */
         public final int defaultTlsPort;
 
-        private Type(int defaultPort, int defaultTlsPort) {
+        Type(int defaultPort, int defaultTlsPort) {
             this.defaultPort = defaultPort;
             this.defaultTlsPort = defaultTlsPort;
         }
