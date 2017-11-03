@@ -1760,10 +1760,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.email = (TextView) view.findViewById(R.id.email);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
                 holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
-                holder.newMessageCountWrapper = (View) view.findViewById(R.id.new_message_count_wrapper);
-                holder.flaggedMessageCountWrapper = (View) view.findViewById(R.id.flagged_message_count_wrapper);
-                holder.newMessageCountIcon = (View) view.findViewById(R.id.new_message_count_icon);
-                holder.flaggedMessageCountIcon = (View) view.findViewById(R.id.flagged_message_count_icon);
+                holder.newMessageCountWrapper = view.findViewById(R.id.new_message_count_wrapper);
+                holder.flaggedMessageCountWrapper = view.findViewById(R.id.flagged_message_count_wrapper);
+                holder.newMessageCountIcon = view.findViewById(R.id.new_message_count_icon);
+                holder.flaggedMessageCountIcon = view.findViewById(R.id.flagged_message_count_icon);
                 holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
 
                 holder.chip = view.findViewById(R.id.chip);
