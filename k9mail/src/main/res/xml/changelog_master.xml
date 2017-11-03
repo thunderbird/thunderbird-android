@@ -8,6 +8,11 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.303" versioncode="23530">
+        <change>Fixed bug that could lead to attachments not being displayed</change>
+        <change>Fixed bug where HTML messages weren't displayed correctly</change>
+        <change>Fixed crash when encountering invalid email addresses</change>
+    </release>
     <release version="5.302" versioncode="23520">
         <change>Fixed display errors of plain text messages</change>
         <change>Added translations: Indonesian, Breton</change>
