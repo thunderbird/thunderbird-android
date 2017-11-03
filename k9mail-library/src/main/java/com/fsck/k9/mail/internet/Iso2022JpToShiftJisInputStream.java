@@ -64,9 +64,8 @@ class Iso2022JpToShiftJisInputStream extends InputStream {
                 throw new MalformedInputException(0);
 
             int out1 = (in1 + 1) / 2 + (in1 < 0x5f ? 0x70 : 0xb0);
-            int out2 = in2 + (in1 % 2 == 0 ? 0x7e : in2 < 0x60 ? 0x1f : 0x20);
 
-            out = out2;
+            out = in2 + (in1 % 2 == 0 ? 0x7e : in2 < 0x60 ? 0x1f : 0x20);
             hasOut = true;
 
             return out1;

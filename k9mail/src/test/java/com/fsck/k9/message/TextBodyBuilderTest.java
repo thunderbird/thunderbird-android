@@ -133,7 +133,7 @@ public class TextBodyBuilderTest {
     public String makeExpectedHtmlContent(String expectedText, String quotedContent,
             int footerInsertionPoint, boolean isBefore,
             String userContent, String compiledResult) {
-        String expectedHtmlContent = "InsertableHtmlContent{"
+        return "InsertableHtmlContent{"
                 + "headerInsertionPoint=0,"
                 + " footerInsertionPoint=" + footerInsertionPoint + ","
                 + " insertionLocation=" + (isBefore ? "BEFORE_QUOTE" : "AFTER_QUOTE") + ","
@@ -141,7 +141,6 @@ public class TextBodyBuilderTest {
                 + " userContent=" + userContent + ","
                 + " compiledResult=" + compiledResult
                 + "}";
-        return expectedHtmlContent;
     }
 
     @Theory

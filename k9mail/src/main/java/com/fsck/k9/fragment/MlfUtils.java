@@ -48,13 +48,12 @@ public class MlfUtils {
     }
 
     static String buildSubject(String subjectFromCursor, String emptySubject, int threadCount) {
-        String subject = subjectFromCursor;
-        if (TextUtils.isEmpty(subject)) {
+        if (TextUtils.isEmpty(subjectFromCursor)) {
             return emptySubject;
         } else if (threadCount > 1) {
             // If this is a thread, strip the RE/FW from the subject.  "Be like Outlook."
-            return Utility.stripSubject(subject);
+            return Utility.stripSubject(subjectFromCursor);
         }
-        return subject;
+        return subjectFromCursor;
     }
 }

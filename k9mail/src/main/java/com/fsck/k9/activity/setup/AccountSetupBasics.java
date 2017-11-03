@@ -385,7 +385,6 @@ public class AccountSetupBasics extends K9Activity
     private void onManualSetup() {
         String email = mEmailView.getText().toString();
         String[] emailParts = splitEmail(email);
-        String user = email;
         String domain = emailParts[1];
 
         String password = null;
@@ -408,9 +407,9 @@ public class AccountSetupBasics extends K9Activity
         // set default uris
         // NOTE: they will be changed again in AccountSetupAccountType!
         ServerSettings storeServer = new ServerSettings(ServerSettings.Type.IMAP, "mail." + domain, -1,
-                ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, user, password, clientCertificateAlias);
+                ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
         ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
-                ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, user, password, clientCertificateAlias);
+                ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
         String storeUri = RemoteStore.createStoreUri(storeServer);
         String transportUri = TransportUris.createTransportUri(transportServer);
         mAccount.setStoreUri(storeUri);

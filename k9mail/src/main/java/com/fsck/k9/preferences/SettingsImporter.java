@@ -1010,8 +1010,7 @@ public class SettingsImporter {
     private static ImportedFolder parseFolder(XmlPullParser xpp) throws XmlPullParserException, IOException {
         ImportedFolder folder = new ImportedFolder();
 
-        String name = xpp.getAttributeValue(null, SettingsExporter.NAME_ATTRIBUTE);
-        folder.name = name;
+        folder.name = xpp.getAttributeValue(null, SettingsExporter.NAME_ATTRIBUTE);
 
         folder.settings = parseSettings(xpp, SettingsExporter.FOLDER_ELEMENT);
 
