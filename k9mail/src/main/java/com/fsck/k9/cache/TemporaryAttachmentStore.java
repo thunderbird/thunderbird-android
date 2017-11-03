@@ -7,7 +7,6 @@ import java.io.IOException;
 import android.content.Context;
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
 
 

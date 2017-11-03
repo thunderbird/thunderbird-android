@@ -16,13 +16,11 @@ import timber.log.Timber;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.mail.Address;
 
 import org.apache.james.mime4j.util.MimeUtil;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;

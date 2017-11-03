@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteException;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.preferences.Storage;

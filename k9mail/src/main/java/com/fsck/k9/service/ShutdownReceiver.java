@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
-
 /**
  * Capture the system shutdown event in order to properly free resources.
  *

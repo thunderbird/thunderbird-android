@@ -5,8 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
-
 
 class MigrationTo35 {
     public static void updateRemoveXNoSeenInfoFlag(SQLiteDatabase db) {

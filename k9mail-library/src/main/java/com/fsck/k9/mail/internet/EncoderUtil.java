@@ -6,7 +6,6 @@ import java.nio.charset.Charset;
 import java.util.BitSet;
 
 import org.apache.james.mime4j.Charsets;
-import org.apache.james.mime4j.util.CharsetUtil;
 
 /**
  * Static methods for encoding header field values. This includes encoded-words

@@ -6,8 +6,6 @@ import java.util.List;
 
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
-
 
 public class MessageReferenceHelper {
     public static List<MessageReference> toMessageReferenceList(List<String> messageReferenceStrings) {

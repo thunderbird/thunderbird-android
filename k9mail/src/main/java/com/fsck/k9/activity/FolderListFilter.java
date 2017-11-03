@@ -8,8 +8,6 @@ import timber.log.Timber;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
-import com.fsck.k9.K9;
-
 /**
  * Filter to search for occurrences of the search-expression in any place of the
  * folder-name instead of doing just a prefix-search.

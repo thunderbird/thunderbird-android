@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Resources.Theme;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.annotation.UiThread;
 import android.util.TypedValue;
 
