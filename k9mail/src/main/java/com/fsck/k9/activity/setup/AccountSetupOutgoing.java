@@ -2,9 +2,6 @@
 package com.fsck.k9.activity.setup;
 
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,10 +33,13 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import timber.log.Timber;
 
 public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
@@ -484,11 +484,12 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
     }
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.next:
+    public void onClick(View v)
+    {
+        int id = v.getId();
+        if (R.id.next == id)
+        {
             onNext();
-            break;
         }
     }
 
@@ -537,4 +538,5 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         ConnectionSecurityHolder holder = (ConnectionSecurityHolder) mSecurityTypeView.getSelectedItem();
         return holder.connectionSecurity;
     }
+
 }

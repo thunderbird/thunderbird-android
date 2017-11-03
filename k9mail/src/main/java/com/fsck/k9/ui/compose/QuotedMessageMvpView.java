@@ -53,19 +53,23 @@ public class QuotedMessageMvpView {
     }
 
     public void setOnClickPresenter(final QuotedMessagePresenter presenter) {
-        OnClickListener onClickListener = new OnClickListener() {
+        OnClickListener onClickListener = new OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                switch(view.getId()) {
-                    case R.id.quoted_text_show:
-                        presenter.onClickShowQuotedText();
-                        break;
-                    case R.id.quoted_text_delete:
-                        presenter.onClickDeleteQuotedText();
-                        break;
-                    case R.id.quoted_text_edit:
-                        presenter.onClickEditQuotedText();
-                        break;
+            public void onClick(View view)
+            {
+                int id = view.getId();
+                if (R.id.quoted_text_show == id)
+                {
+                    presenter.onClickShowQuotedText();
+                }
+                else if (R.id.quoted_text_delete == id)
+                {
+                    presenter.onClickDeleteQuotedText();
+                }
+                else if (R.id.quoted_text_edit == id)
+                {
+                    presenter.onClickEditQuotedText();
                 }
             }
         };

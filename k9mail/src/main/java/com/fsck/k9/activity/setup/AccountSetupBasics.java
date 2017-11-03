@@ -2,11 +2,6 @@
 package com.fsck.k9.activity.setup;
 
 
-import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Locale;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -42,6 +37,12 @@ import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
+
+import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Locale;
+
 import timber.log.Timber;
 
 /**
@@ -438,14 +439,16 @@ public class AccountSetupBasics extends K9Activity
     }
 
 
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.next:
+    public void onClick(View v)
+    {
+        int id = v.getId();
+        if (R.id.next == id)
+        {
             onNext();
-            break;
-        case R.id.manual_setup:
+        }
+        else if (R.id.manual_setup == id)
+        {
             onManualSetup();
-            break;
         }
     }
 

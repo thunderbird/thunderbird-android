@@ -4,12 +4,11 @@ package com.fsck.k9.activity.setup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
+
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
@@ -19,6 +18,8 @@ import com.fsck.k9.setup.ServerNameSuggester;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import timber.log.Timber;
 
 import static com.fsck.k9.mail.ServerSettings.Type.IMAP;
 import static com.fsck.k9.mail.ServerSettings.Type.POP3;
@@ -100,23 +101,26 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         mAccount.setStoreUri(uri.toString());
     }
 
-    public void onClick(View v) {
-        try {
-            switch (v.getId()) {
-                case R.id.pop: {
-                    setupStoreAndSmtpTransport(POP3, "pop3+ssl+");
-                    break;
-                }
-                case R.id.imap: {
-                    setupStoreAndSmtpTransport(IMAP, "imap+ssl+");
-                    break;
-                }
-                case R.id.webdav: {
-                    setupDav();
-                    break;
-                }
+    public void onClick(View v)
+    {
+        try
+        {
+            int id = v.getId();
+            if (R.id.pop == id)
+            {
+                setupStoreAndSmtpTransport(POP3, "pop3+ssl+");
             }
-        } catch (Exception ex) {
+            else if (R.id.imap == id)
+            {
+                setupStoreAndSmtpTransport(IMAP, "imap+ssl+");
+            }
+            else if (R.id.webdav == id)
+            {
+                setupDav();
+            }
+        }
+        catch (Exception ex)
+        {
             failure(ex);
         }
 
@@ -131,4 +135,5 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
         toast.show();
     }
+
 }

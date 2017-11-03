@@ -1175,52 +1175,62 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo)item.getMenuInfo();
+    public boolean onContextItemSelected(android.view.MenuItem item)
+    {
+        AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item.getMenuInfo();
         // submenus don't actually set the menuInfo, so the "advanced"
         // submenu wouldn't work.
-        if (menuInfo != null) {
-            mSelectedContextAccount = (BaseAccount)getListView().getItemAtPosition(menuInfo.position);
+        if (menuInfo != null)
+        {
+            mSelectedContextAccount = (BaseAccount) getListView().getItemAtPosition(menuInfo.position);
         }
-        if (mSelectedContextAccount instanceof Account) {
-            Account realAccount = (Account)mSelectedContextAccount;
-            switch (item.getItemId()) {
-                case R.id.delete_account:
-                    onDeleteAccount(realAccount);
-                    break;
-                case R.id.account_settings:
-                    onEditAccount(realAccount);
-                    break;
-                case R.id.activate:
-                    onActivateAccount(realAccount);
-                    break;
-                case R.id.clear_pending:
-                    onClearCommands(realAccount);
-                    break;
-                case R.id.empty_trash:
-                    onEmptyTrash(realAccount);
-                    break;
-                case R.id.clear:
-                    onClear(realAccount);
-                    break;
-                case R.id.recreate:
-                    onRecreate(realAccount);
-                    break;
-                case R.id.export:
-                    onExport(false, realAccount);
-                    break;
-                case R.id.move_up:
-                    onMove(realAccount, true);
-                    break;
-                case R.id.move_down:
-                    onMove(realAccount, false);
-                    break;
+        if (mSelectedContextAccount instanceof Account)
+        {
+            Account realAccount = (Account) mSelectedContextAccount;
+            int itemId = item.getItemId();
+            if (R.id.delete_account == itemId)
+            {
+                onDeleteAccount(realAccount);
+            }
+            else if (R.id.account_settings == itemId)
+            {
+                onEditAccount(realAccount);
+            }
+            else if (R.id.activate == itemId)
+            {
+                onActivateAccount(realAccount);
+            }
+            else if (R.id.clear_pending == itemId)
+            {
+                onClearCommands(realAccount);
+            }
+            else if (R.id.empty_trash == itemId)
+            {
+                onEmptyTrash(realAccount);
+            }
+            else if (R.id.clear == itemId)
+            {
+                onClear(realAccount);
+            }
+            else if (R.id.recreate == itemId)
+            {
+                onRecreate(realAccount);
+            }
+            else if (R.id.export == itemId)
+            {
+                onExport(false, realAccount);
+            }
+            else if (R.id.move_up == itemId)
+            {
+                onMove(realAccount, true);
+            }
+            else if (R.id.move_down == itemId)
+            {
+                onMove(realAccount, false);
             }
         }
         return true;
     }
-
-
 
     private void onClear(Account account) {
         showDialog(DIALOG_CLEAR_ACCOUNT);
@@ -1241,33 +1251,43 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.add_new_account:
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int itemId = item.getItemId();
+        if (R.id.add_new_account == itemId)
+        {
             onAddNewAccount();
-            break;
-        case R.id.edit_prefs:
+        }
+        else if (R.id.edit_prefs == itemId)
+        {
             onEditPrefs();
-            break;
-        case R.id.check_mail:
+        }
+        else if (R.id.check_mail == itemId)
+        {
             onCheckMail(null);
-            break;
-        case R.id.compose:
+        }
+        else if (R.id.compose == itemId)
+        {
             onCompose();
-            break;
-        case R.id.about:
+        }
+        else if (R.id.about == itemId)
+        {
             onAbout();
-            break;
-        case R.id.search:
+        }
+        else if (R.id.search == itemId)
+        {
             onSearchRequested();
-            break;
-        case R.id.export_all:
+        }
+        else if (R.id.export_all == itemId)
+        {
             onExport(true, null);
-            break;
-        case R.id.import_settings:
+        }
+        else if (R.id.import_settings == itemId)
+        {
             onImport();
-            break;
-        default:
+        }
+        else
+        {
             return super.onOptionsItemSelected(item);
         }
         return true;

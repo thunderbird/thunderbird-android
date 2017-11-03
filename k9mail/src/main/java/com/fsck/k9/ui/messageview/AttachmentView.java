@@ -90,16 +90,16 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.view: {
-                onViewButtonClick();
-                break;
-            }
-            case R.id.download: {
-                onSaveButtonClick();
-                break;
-            }
+    public void onClick(View view)
+    {
+        int id = view.getId();
+        if (R.id.view == id)
+        {
+            onViewButtonClick();
+        }
+        else if (R.id.download == id)
+        {
+            onSaveButtonClick();
         }
     }
 

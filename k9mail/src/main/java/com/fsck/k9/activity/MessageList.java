@@ -1,9 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.util.Collection;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.FragmentManager;
@@ -19,7 +16,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import timber.log.Timber;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,7 +56,12 @@ import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
+
+import java.util.Collection;
+import java.util.List;
+
 import de.cketti.library.changelog.ChangeLog;
+import timber.log.Timber;
 
 
 /**
@@ -801,171 +802,203 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         int itemId = item.getItemId();
-        switch (itemId) {
-            case android.R.id.home: {
-                goBack();
-                return true;
-            }
-            case R.id.compose: {
-                mMessageListFragment.onCompose();
-                return true;
-            }
-            case R.id.toggle_message_view_theme: {
-                onToggleTheme();
-                return true;
-            }
-            // MessageList
-            case R.id.check_mail: {
-                mMessageListFragment.checkMail();
-                return true;
-            }
-            case R.id.set_sort_date: {
-                mMessageListFragment.changeSort(SortType.SORT_DATE);
-                return true;
-            }
-            case R.id.set_sort_arrival: {
-                mMessageListFragment.changeSort(SortType.SORT_ARRIVAL);
-                return true;
-            }
-            case R.id.set_sort_subject: {
-                mMessageListFragment.changeSort(SortType.SORT_SUBJECT);
-                return true;
-            }
-            case R.id.set_sort_sender: {
-                mMessageListFragment.changeSort(SortType.SORT_SENDER);
-                return true;
-            }
-            case R.id.set_sort_flag: {
-                mMessageListFragment.changeSort(SortType.SORT_FLAGGED);
-                return true;
-            }
-            case R.id.set_sort_unread: {
-                mMessageListFragment.changeSort(SortType.SORT_UNREAD);
-                return true;
-            }
-            case R.id.set_sort_attach: {
-                mMessageListFragment.changeSort(SortType.SORT_ATTACHMENT);
-                return true;
-            }
-            case R.id.select_all: {
-                mMessageListFragment.selectAll();
-                return true;
-            }
-            case R.id.app_settings: {
-                onEditPrefs();
-                return true;
-            }
-            case R.id.account_settings: {
-                onEditAccount();
-                return true;
-            }
-            case R.id.search: {
-                mMessageListFragment.onSearchRequested();
-                return true;
-            }
-            case R.id.search_remote: {
-                mMessageListFragment.onRemoteSearch();
-                return true;
-            }
-            case R.id.mark_all_as_read: {
-                mMessageListFragment.confirmMarkAllAsRead();
-                return true;
-            }
-            case R.id.show_folder_list: {
-                onShowFolderList();
-                return true;
-            }
-            // MessageView
-            case R.id.next_message: {
-                showNextMessage();
-                return true;
-            }
-            case R.id.previous_message: {
-                showPreviousMessage();
-                return true;
-            }
-            case R.id.delete: {
-                mMessageViewFragment.onDelete();
-                return true;
-            }
-            case R.id.reply: {
-                mMessageViewFragment.onReply();
-                return true;
-            }
-            case R.id.reply_all: {
-                mMessageViewFragment.onReplyAll();
-                return true;
-            }
-            case R.id.forward: {
-                mMessageViewFragment.onForward();
-                return true;
-            }
-            case R.id.share: {
-                mMessageViewFragment.onSendAlternate();
-                return true;
-            }
-            case R.id.toggle_unread: {
-                mMessageViewFragment.onToggleRead();
-                return true;
-            }
-            case R.id.archive:
-            case R.id.refile_archive: {
-                mMessageViewFragment.onArchive();
-                return true;
-            }
-            case R.id.spam:
-            case R.id.refile_spam: {
-                mMessageViewFragment.onSpam();
-                return true;
-            }
-            case R.id.move:
-            case R.id.refile_move: {
-                mMessageViewFragment.onMove();
-                return true;
-            }
-            case R.id.copy:
-            case R.id.refile_copy: {
-                mMessageViewFragment.onCopy();
-                return true;
-            }
-            case R.id.select_text: {
-                mMessageViewFragment.onSelectText();
-                return true;
-            }
-            case R.id.show_headers:
-            case R.id.hide_headers: {
-                mMessageViewFragment.onToggleAllHeadersView();
-                updateMenu();
-                return true;
-            }
+        if (android.R.id.home == itemId)
+        {
+            goBack();
+            return true;
+        }
+        else if (R.id.compose == itemId)
+        {
+            mMessageListFragment.onCompose();
+            return true;
+        }
+        else if (R.id.toggle_message_view_theme == itemId)
+        {
+            onToggleTheme();
+            return true;
         }
 
-        if (!mSingleFolderMode) {
+        // MessageList
+        else if (R.id.check_mail == itemId)
+        {
+            mMessageListFragment.checkMail();
+            return true;
+        }
+        else if (R.id.set_sort_date == itemId)
+        {
+            mMessageListFragment.changeSort(SortType.SORT_DATE);
+            return true;
+        }
+        else if (R.id.set_sort_arrival == itemId)
+        {
+            mMessageListFragment.changeSort(SortType.SORT_ARRIVAL);
+            return true;
+        }
+        else if (R.id.set_sort_subject == itemId)
+        {
+            mMessageListFragment.changeSort(SortType.SORT_SUBJECT);
+            return true;
+        }
+        else if (R.id.set_sort_sender == itemId)
+        {
+            mMessageListFragment.changeSort(SortType.SORT_SENDER);
+            return true;
+        }
+        else if (R.id.set_sort_flag == itemId)
+        {
+            mMessageListFragment.changeSort(SortType.SORT_FLAGGED);
+            return true;
+        }
+        else if (R.id.set_sort_unread == itemId)
+        {
+            mMessageListFragment.changeSort(SortType.SORT_UNREAD);
+            return true;
+        }
+        else if (R.id.set_sort_attach == itemId)
+        {
+            mMessageListFragment.changeSort(SortType.SORT_ATTACHMENT);
+            return true;
+        }
+        else if (R.id.select_all == itemId)
+        {
+            mMessageListFragment.selectAll();
+            return true;
+        }
+        else if (R.id.app_settings == itemId)
+        {
+            onEditPrefs();
+            return true;
+        }
+        else if (R.id.account_settings == itemId)
+        {
+            onEditAccount();
+            return true;
+        }
+        else if (R.id.search == itemId)
+        {
+            mMessageListFragment.onSearchRequested();
+            return true;
+        }
+        else if (R.id.search_remote == itemId)
+        {
+            mMessageListFragment.onRemoteSearch();
+            return true;
+        }
+        else if (R.id.mark_all_as_read == itemId)
+        {
+            mMessageListFragment.confirmMarkAllAsRead();
+            return true;
+        }
+        else if (R.id.show_folder_list == itemId)
+        {
+            onShowFolderList();
+            return true;
+        }
+
+        // MessageView
+        else if (R.id.next_message == itemId)
+        {
+            showNextMessage();
+            return true;
+        }
+        else if (R.id.previous_message == itemId)
+        {
+            showPreviousMessage();
+            return true;
+        }
+        else if (R.id.delete == itemId)
+        {
+            mMessageViewFragment.onDelete();
+            return true;
+        }
+        else if (R.id.reply == itemId)
+        {
+            mMessageViewFragment.onReply();
+            return true;
+        }
+        else if (R.id.reply_all == itemId)
+        {
+            mMessageViewFragment.onReplyAll();
+            return true;
+        }
+        else if (R.id.forward == itemId)
+        {
+            mMessageViewFragment.onForward();
+            return true;
+        }
+        else if (R.id.share == itemId)
+        {
+            mMessageViewFragment.onSendAlternate();
+            return true;
+        }
+        else if (R.id.toggle_unread == itemId)
+        {
+            mMessageViewFragment.onToggleRead();
+            return true;
+        }
+        else if (R.id.archive == itemId || R.id.refile_archive == itemId)
+        {
+            mMessageViewFragment.onArchive();
+            return true;
+        }
+        else if (R.id.spam == itemId || R.id.refile_spam == itemId)
+        {
+            mMessageViewFragment.onSpam();
+            return true;
+        }
+        else if (R.id.move == itemId || R.id.refile_move == itemId)
+        {
+            mMessageViewFragment.onMove();
+            return true;
+        }
+        else if (R.id.copy == itemId || R.id.refile_copy == itemId)
+        {
+            mMessageViewFragment.onCopy();
+            return true;
+        }
+        else if (R.id.select_text == itemId)
+        {
+            mMessageViewFragment.onSelectText();
+            return true;
+        }
+        else if (R.id.show_headers == itemId || R.id.hide_headers == itemId)
+        {
+            mMessageViewFragment.onToggleAllHeadersView();
+            updateMenu();
+            return true;
+        }
+
+        if (!mSingleFolderMode)
+        {
             // None of the options after this point are "safe" for search results
             //TODO: This is not true for "unread" and "starred" searches in regular folders
             return false;
         }
 
-        switch (itemId) {
-            case R.id.send_messages: {
-                mMessageListFragment.onSendPendingMessages();
-                return true;
+        if (R.id.send_messages == itemId)
+        {
+            mMessageListFragment.onSendPendingMessages();
+            return true;
+        }
+        else if (R.id.folder_settings == itemId)
+        {
+            if (mFolderName != null)
+            {
+                FolderSettings.actionSettings(this, mAccount, mFolderName);
             }
-            case R.id.folder_settings: {
-                if (mFolderName != null) {
-                    FolderSettings.actionSettings(this, mAccount, mFolderName);
-                }
-                return true;
-            }
-            case R.id.expunge: {
-                mMessageListFragment.onExpunge();
-                return true;
-            }
-            default: {
-                return super.onOptionsItemSelected(item);
-            }
+            return true;
+        }
+        else if (R.id.expunge == itemId)
+        {
+            mMessageListFragment.onExpunge();
+            return true;
+        }
+        else
+        {
+            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -1623,4 +1656,5 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
         }
     }
+
 }
