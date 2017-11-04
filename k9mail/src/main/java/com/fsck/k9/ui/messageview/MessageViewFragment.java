@@ -611,7 +611,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public boolean isMessageRead() {
-        return (mMessage != null) ? mMessage.isSet(Flag.SEEN) : false;
+        return (mMessage != null) && mMessage.isSet(Flag.SEEN);
     }
 
     public boolean isCopyCapable() {

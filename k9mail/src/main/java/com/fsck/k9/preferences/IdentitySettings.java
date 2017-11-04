@@ -111,7 +111,7 @@ class IdentitySettings {
 
         @Override
         public String toString(String value) {
-            return (value != null) ? value : null;
+            return value;
         }
 
         @Override
