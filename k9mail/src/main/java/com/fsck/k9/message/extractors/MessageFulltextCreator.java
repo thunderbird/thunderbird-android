@@ -18,7 +18,7 @@ public class MessageFulltextCreator {
     private final EncryptionDetector encryptionDetector;
 
 
-    MessageFulltextCreator(TextPartFinder textPartFinder, EncryptionDetector encryptionDetector) {
+    private MessageFulltextCreator(TextPartFinder textPartFinder, EncryptionDetector encryptionDetector) {
         this.textPartFinder = textPartFinder;
         this.encryptionDetector = encryptionDetector;
     }

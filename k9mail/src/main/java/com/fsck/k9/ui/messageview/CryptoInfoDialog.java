@@ -27,10 +27,10 @@ import com.fsck.k9.view.ThemeUtils;
 
 
 public class CryptoInfoDialog extends DialogFragment {
-    public static final String ARG_DISPLAY_STATUS = "display_status";
-    public static final String ARG_HAS_SECURITY_WARNING = "has_security_warning";
-    public static final int ICON_ANIM_DELAY = 400;
-    public static final int ICON_ANIM_DURATION = 350;
+    private static final String ARG_DISPLAY_STATUS = "display_status";
+    private static final String ARG_HAS_SECURITY_WARNING = "has_security_warning";
+    private static final int ICON_ANIM_DELAY = 400;
+    private static final int ICON_ANIM_DURATION = 350;
 
 
     private View dialogView;

@@ -23,8 +23,8 @@ import timber.log.Timber;
 
 
 public class MessageCryptoPresenter implements OnCryptoClickListener {
-    public static final int REQUEST_CODE_UNKNOWN_KEY = 123;
-    public static final int REQUEST_CODE_SECURITY_WARNING = 124;
+    private static final int REQUEST_CODE_UNKNOWN_KEY = 123;
+    private static final int REQUEST_CODE_SECURITY_WARNING = 124;
 
 
     // injected state

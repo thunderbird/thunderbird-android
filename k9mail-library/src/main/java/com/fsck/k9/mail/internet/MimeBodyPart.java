@@ -26,11 +26,11 @@ public class MimeBodyPart extends BodyPart {
         this(null);
     }
 
-    public MimeBodyPart(Body body) throws MessagingException {
+    private MimeBodyPart(Body body) throws MessagingException {
         this(body, null);
     }
 
-    public MimeBodyPart(Body body, String contentType) throws MessagingException {
+    private MimeBodyPart(Body body, String contentType) throws MessagingException {
         mHeader = new MimeHeader();
         if (contentType != null) {
             addHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);

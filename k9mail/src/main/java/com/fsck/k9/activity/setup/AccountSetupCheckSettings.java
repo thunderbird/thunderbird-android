@@ -49,7 +49,7 @@ import java.util.Locale;
 public class AccountSetupCheckSettings extends K9Activity implements OnClickListener,
         ConfirmationDialogFragmentListener{
 
-    public static final int ACTIVITY_REQUEST_CODE = 1;
+    private static final int ACTIVITY_REQUEST_CODE = 1;
 
     private static final String EXTRA_ACCOUNT = "account";
 

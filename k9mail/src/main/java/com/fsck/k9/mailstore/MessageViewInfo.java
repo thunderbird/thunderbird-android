@@ -20,7 +20,7 @@ public class MessageViewInfo {
     public final List<AttachmentViewInfo> extraAttachments;
 
 
-    public MessageViewInfo(
+    private MessageViewInfo(
             Message message, boolean isMessageIncomplete, Part rootPart,
             String text, List<AttachmentViewInfo> attachments,
             CryptoResultAnnotation cryptoResultAnnotation,

@@ -15,8 +15,8 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
  * New HTTP Method that allows changing of the method and generic handling Needed for WebDAV custom methods such as
  * SEARCH and PROPFIND
  */
-public class HttpGeneric extends HttpEntityEnclosingRequestBase {
-    public String METHOD_NAME = "POST";
+class HttpGeneric extends HttpEntityEnclosingRequestBase {
+    private String METHOD_NAME = "POST";
 
     public HttpGeneric() {
         super();

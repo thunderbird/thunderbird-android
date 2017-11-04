@@ -63,7 +63,7 @@ public class Base64OutputStream extends FilterOutputStream {
      * @param doEncode true if we should encode all data written to us,
      *                 false if we should decode.
      */
-    public Base64OutputStream(OutputStream out, boolean doEncode) {
+    private Base64OutputStream(OutputStream out, boolean doEncode) {
         super(out);
         this.doEncode = doEncode;
         this.base64 = new Base64();

@@ -39,7 +39,7 @@ import com.fsck.k9.provider.AttachmentTempFileProvider;
 import org.apache.commons.io.IOUtils;
 
 
-public class AttachmentController {
+class AttachmentController {
     private final Context context;
     private final MessagingController controller;
     private final MessageViewFragment messageViewFragment;

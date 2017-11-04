@@ -29,7 +29,7 @@ class ImapPushState {
         return createDefaultImapPushState();
     }
 
-    static ImapPushState createDefaultImapPushState() {
+    private static ImapPushState createDefaultImapPushState() {
         return new ImapPushState(DEFAULT_UID_NEXT);
     }
 

@@ -23,9 +23,9 @@ public class ImapStoreSettings extends ServerSettings {
     public final String pathPrefix;
 
 
-    protected ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
-            AuthType authenticationType, String username, String password, String clientCertificateAlias,
-            boolean autodetectNamespace, String pathPrefix) {
+    ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
+                      AuthType authenticationType, String username, String password, String clientCertificateAlias,
+                      boolean autodetectNamespace, String pathPrefix) {
 
         super(Type.IMAP, host, port, connectionSecurity, authenticationType, username,
                 password, clientCertificateAlias);

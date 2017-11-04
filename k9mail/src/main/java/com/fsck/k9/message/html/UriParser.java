@@ -1,7 +1,7 @@
 package com.fsck.k9.message.html;
 
 
-public interface UriParser {
+interface UriParser {
     /**
      * Parse and linkify scheme specific URI beginning from given position. The result will be written to given buffer.
      *

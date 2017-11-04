@@ -92,7 +92,7 @@ public class AttachmentInfoExtractor {
 
     @Nullable
     @VisibleForTesting
-    protected Uri getDecryptedFileProviderUri(DeferredFileBody decryptedTempFileBody, String mimeType) {
+    Uri getDecryptedFileProviderUri(DeferredFileBody decryptedTempFileBody, String mimeType) {
         Uri uri;
         try {
             File file = decryptedTempFileBody.getFile();

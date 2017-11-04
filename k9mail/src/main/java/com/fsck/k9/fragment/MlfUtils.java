@@ -20,7 +20,7 @@ import timber.log.Timber;
 import static com.fsck.k9.fragment.MLFProjectionInfo.SENDER_LIST_COLUMN;
 
 
-public class MlfUtils {
+class MlfUtils {
 
     static LocalFolder getOpenFolder(String folderName, Account account) throws MessagingException {
         LocalStore localStore = account.getLocalStore();

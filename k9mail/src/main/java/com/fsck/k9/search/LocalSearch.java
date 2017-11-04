@@ -59,8 +59,8 @@ public class LocalSearch implements SearchSpecification {
      * @param accounts Relative Account's uuid's
      * @param predefined Is this a predefined search or a user created one?
      */
-    protected LocalSearch(String name, ConditionsTreeNode searchConditions,
-            String accounts, boolean predefined) {
+    private LocalSearch(String name, ConditionsTreeNode searchConditions,
+                        String accounts, boolean predefined) {
         this(name);
         mConditions = searchConditions;
         mPredefined = predefined;
@@ -158,7 +158,7 @@ public class LocalSearch implements SearchSpecification {
      * @param condition Condition to 'AND' with.
      * @return New top AND node, new root.
      */
-    public ConditionsTreeNode and(SearchCondition condition) {
+    private ConditionsTreeNode and(SearchCondition condition) {
         try {
             ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
             return and(tmp);
@@ -176,7 +176,7 @@ public class LocalSearch implements SearchSpecification {
      * @return New top AND node, new root.
      * @throws Exception
      */
-    public ConditionsTreeNode and(ConditionsTreeNode node) throws Exception {
+    private ConditionsTreeNode and(ConditionsTreeNode node) throws Exception {
         mLeafSet.addAll(node.getLeafSet());
 
         if (mConditions == null) {
@@ -213,7 +213,7 @@ public class LocalSearch implements SearchSpecification {
      * @return New top OR node, new root.
      * @throws Exception
      */
-    public ConditionsTreeNode or(ConditionsTreeNode node) throws Exception {
+    private ConditionsTreeNode or(ConditionsTreeNode node) throws Exception {
         mLeafSet.addAll(node.getLeafSet());
 
         if (mConditions == null) {
@@ -385,7 +385,7 @@ public class LocalSearch implements SearchSpecification {
         }
     };
 
-    public LocalSearch(Parcel in) {
+    private LocalSearch(Parcel in) {
         mName = in.readString();
         mPredefined = (in.readByte() == 1);
         mManualSearch = (in.readByte() == 1);

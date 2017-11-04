@@ -30,12 +30,12 @@ import static org.mockito.Mockito.when;
 @RunWith(K9RobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class AttachmentInfoExtractorTest {
-    public static final Uri TEST_URI = Uri.parse("uri://test");
-    public static final String TEST_MIME_TYPE = "text/plain";
-    public static final long TEST_SIZE = 123L;
-    public static final String TEST_ACCOUNT_UUID = "uuid";
-    public static final long TEST_ID = 234L;
-    public static final String TEST_CONTENT_ID = "test-content-id";
+    private static final Uri TEST_URI = Uri.parse("uri://test");
+    private static final String TEST_MIME_TYPE = "text/plain";
+    private static final long TEST_SIZE = 123L;
+    private static final String TEST_ACCOUNT_UUID = "uuid";
+    private static final long TEST_ID = 234L;
+    private static final String TEST_CONTENT_ID = "test-content-id";
 
 
     private AttachmentInfoExtractor attachmentInfoExtractor;

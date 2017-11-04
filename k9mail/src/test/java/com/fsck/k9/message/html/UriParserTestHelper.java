@@ -10,7 +10,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 
-public class UriParserTestHelper {
+class UriParserTestHelper {
     public static void assertContainsLink(String expected, StringBuffer actual) {
         String linkifiedUri = actual.toString();
         Document document = Jsoup.parseBodyFragment(linkifiedUri);

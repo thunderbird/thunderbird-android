@@ -130,7 +130,7 @@ public class FileHelper {
         throw new IOException("Unable to delete file: " + to.getAbsolutePath());
     }
 
-    public static boolean move(final File from, final File to) {
+    private static boolean move(final File from, final File to) {
         if (to.exists()) {
             if (!to.delete()) {
                 Timber.d("Unable to delete file: %s", to.getAbsolutePath());

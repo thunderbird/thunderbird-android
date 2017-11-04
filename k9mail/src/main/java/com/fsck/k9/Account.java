@@ -480,7 +480,7 @@ public class Account implements BaseAccount, StoreConfig {
         }
     }
 
-    protected synchronized void delete(Preferences preferences) {
+    synchronized void delete(Preferences preferences) {
         deleteCertificates();
 
         // Get the list of account UUIDs

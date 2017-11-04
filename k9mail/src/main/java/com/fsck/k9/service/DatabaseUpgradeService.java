@@ -55,14 +55,14 @@ public class DatabaseUpgradeService extends Service {
      * <p>Integer from {@code 0} (inclusive) to the value in {@link #EXTRA_PROGRESS_END}
      * (exclusive).</p>
      */
-    public static final String EXTRA_PROGRESS = "progress";
+    private static final String EXTRA_PROGRESS = "progress";
 
     /**
      * Number of items that will be upgraded.
      *
      * <p>Currently this is the number of accounts.</p>
      */
-    public static final String EXTRA_PROGRESS_END = "progress_end";
+    private static final String EXTRA_PROGRESS_END = "progress_end";
 
 
     /**

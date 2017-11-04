@@ -31,10 +31,10 @@ import timber.log.Timber;
  * On more modern versions of Android we keep the system configuration.
  */
 public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
-    protected static final String[] ENABLED_CIPHERS;
-    protected static final String[] ENABLED_PROTOCOLS;
+    private static final String[] ENABLED_CIPHERS;
+    private static final String[] ENABLED_PROTOCOLS;
 
-    protected static final String[] ORDERED_KNOWN_CIPHERS = {
+    private static final String[] ORDERED_KNOWN_CIPHERS = {
             "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
             "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
             "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
@@ -61,7 +61,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_RSA_WITH_AES_128_CBC_SHA",
     };
 
-    protected static final String[] BLACKLISTED_CIPHERS = {
+    private static final String[] BLACKLISTED_CIPHERS = {
             "SSL_RSA_WITH_DES_CBC_SHA",
             "SSL_DHE_RSA_WITH_DES_CBC_SHA",
             "SSL_DHE_DSS_WITH_DES_CBC_SHA",
@@ -85,11 +85,11 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_RSA_WITH_NULL_SHA256"
     };
 
-    protected static final String[] ORDERED_KNOWN_PROTOCOLS = {
+    private static final String[] ORDERED_KNOWN_PROTOCOLS = {
             "TLSv1.2", "TLSv1.1", "TLSv1"
     };
 
-    protected static final String[] BLACKLISTED_PROTOCOLS = {
+    private static final String[] BLACKLISTED_PROTOCOLS = {
             "SSLv3"
     };
 
@@ -136,7 +136,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         return android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
     }
 
-    protected static String[] reorder(String[] enabled, String[] known, String[] blacklisted) {
+    private static String[] reorder(String[] enabled, String[] known, String[] blacklisted) {
         List<String> unknown = new ArrayList<String>();
         Collections.addAll(unknown, enabled);
 
@@ -162,7 +162,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         return result.toArray(new String[result.size()]);
     }
 
-    protected static String[] remove(String[] enabled, String[] blacklisted) {
+    private static String[] remove(String[] enabled, String[] blacklisted) {
         List<String> items = new ArrayList<String>();
         Collections.addAll(items, enabled);
 

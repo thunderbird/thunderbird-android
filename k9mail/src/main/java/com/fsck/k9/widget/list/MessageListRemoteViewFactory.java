@@ -23,7 +23,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.provider.MessageProvider;
 
 
-public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
+class MessageListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
     private static String[] MAIL_LIST_PROJECTIONS = {
             MessageProvider.MessageColumns.SENDER,
             MessageProvider.MessageColumns.SEND_DATE,

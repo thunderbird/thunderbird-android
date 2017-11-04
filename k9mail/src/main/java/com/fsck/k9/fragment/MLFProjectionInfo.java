@@ -8,7 +8,7 @@ import com.fsck.k9.provider.EmailProvider.SpecialColumns;
 import com.fsck.k9.provider.EmailProvider.ThreadColumns;
 
 
-public final class MLFProjectionInfo {
+final class MLFProjectionInfo {
 
     static final String[] THREADED_PROJECTION = {
             MessageColumns.ID,

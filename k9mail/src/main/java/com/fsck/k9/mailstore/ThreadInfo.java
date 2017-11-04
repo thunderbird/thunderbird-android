@@ -3,7 +3,7 @@ package com.fsck.k9.mailstore;
 class ThreadInfo {
     public final long threadId;
     public final long msgId;
-    public final String messageId;
+    private final String messageId;
     public final long rootId;
     public final long parentId;
 

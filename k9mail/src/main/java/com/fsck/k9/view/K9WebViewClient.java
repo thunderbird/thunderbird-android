@@ -87,7 +87,7 @@ abstract class K9WebViewClient extends WebViewClient {
 
     protected abstract void addCacheControlHeader(WebResourceResponse response);
 
-    protected WebResourceResponse shouldInterceptRequest(WebView webView, Uri uri) {
+    WebResourceResponse shouldInterceptRequest(WebView webView, Uri uri) {
         if (!CID_SCHEME.equals(uri.getScheme())) {
             return RESULT_DO_NOT_INTERCEPT;
         }
@@ -135,7 +135,7 @@ abstract class K9WebViewClient extends WebViewClient {
 
     @SuppressWarnings("deprecation")
     private static class PreLollipopWebViewClient extends K9WebViewClient {
-        protected PreLollipopWebViewClient(AttachmentResolver attachmentResolver) {
+        PreLollipopWebViewClient(AttachmentResolver attachmentResolver) {
             super(attachmentResolver);
         }
 
@@ -157,7 +157,7 @@ abstract class K9WebViewClient extends WebViewClient {
 
     @TargetApi(VERSION_CODES.LOLLIPOP)
     private static class LollipopWebViewClient extends K9WebViewClient {
-        protected LollipopWebViewClient(AttachmentResolver attachmentResolver) {
+        LollipopWebViewClient(AttachmentResolver attachmentResolver) {
             super(attachmentResolver);
         }
 

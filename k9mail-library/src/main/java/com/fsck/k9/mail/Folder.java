@@ -161,7 +161,7 @@ public abstract class Folder<T extends Message> {
         return getName();
     }
 
-    public long getLastChecked() {
+    private long getLastChecked() {
         return lastChecked;
     }
 
@@ -169,7 +169,7 @@ public abstract class Folder<T extends Message> {
         this.lastChecked = lastChecked;
     }
 
-    public long getLastPush() {
+    private long getLastPush() {
         return lastPush;
     }
 
@@ -181,11 +181,11 @@ public abstract class Folder<T extends Message> {
         return Math.max(getLastChecked(), getLastPush());
     }
 
-    public FolderClass getDisplayClass() {
+    private FolderClass getDisplayClass() {
         return FolderClass.NO_CLASS;
     }
 
-    public FolderClass getSyncClass() {
+    private FolderClass getSyncClass() {
         return getDisplayClass();
     }
     public FolderClass getPushClass() {

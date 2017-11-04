@@ -37,7 +37,7 @@ public class DefaultBodyFactory implements BodyFactory {
         return tempBody;
     }
 
-    protected void copyData(InputStream inputStream, OutputStream outputStream) throws IOException {
+    private void copyData(InputStream inputStream, OutputStream outputStream) throws IOException {
         IOUtils.copy(inputStream, outputStream);
     }
 }

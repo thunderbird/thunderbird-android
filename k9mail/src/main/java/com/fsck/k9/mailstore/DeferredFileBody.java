@@ -27,7 +27,7 @@ import org.apache.commons.io.IOUtils;
  * @see FileFactory
  */
 public class DeferredFileBody implements RawDataBody, SizeAware {
-    public static final int DEFAULT_MEMORY_BACKED_THRESHOLD = 1024 * 8;
+    private static final int DEFAULT_MEMORY_BACKED_THRESHOLD = 1024 * 8;
 
 
     private final FileFactory fileFactory;

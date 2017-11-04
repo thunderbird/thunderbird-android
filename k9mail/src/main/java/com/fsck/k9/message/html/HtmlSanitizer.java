@@ -7,7 +7,7 @@ import org.jsoup.safety.Cleaner;
 import org.jsoup.safety.Whitelist;
 
 
-public class HtmlSanitizer {
+class HtmlSanitizer {
     private final HeadCleaner headCleaner;
     private final Cleaner cleaner;
 

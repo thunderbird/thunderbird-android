@@ -441,7 +441,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         unsignedText.setText("");
     }
 
-    public void renderAttachments(MessageViewInfo messageViewInfo) {
+    private void renderAttachments(MessageViewInfo messageViewInfo) {
         if (messageViewInfo.attachments != null) {
             for (AttachmentViewInfo attachment : messageViewInfo.attachments) {
                 attachments.put(attachment.internalUri, attachment);
@@ -489,7 +489,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         mMessageContentView.emulateShiftHeld();
     }
 
-    public void resetView() {
+    private void resetView() {
         setLoadPictures(false);
         mAttachments.removeAllViews();
 

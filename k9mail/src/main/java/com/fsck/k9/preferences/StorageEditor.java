@@ -17,7 +17,7 @@ public class StorageEditor {
     private Map<String, String> changes = new HashMap<String, String>();
     private List<String> removals = new ArrayList<String>();
 
-    Map<String, String> snapshot = new HashMap<String, String>();
+    private Map<String, String> snapshot = new HashMap<String, String>();
 
 
     StorageEditor(Storage storage) {

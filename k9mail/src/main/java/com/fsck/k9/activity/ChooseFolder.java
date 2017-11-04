@@ -43,16 +43,16 @@ public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = "com.fsck.k9.ChooseFolder_showDisplayableOnly";
 
 
-    String mFolder;
-    String mSelectFolder;
-    Account mAccount;
-    MessageReference mMessageReference;
-    ArrayAdapter<String> mAdapter;
+    private String mFolder;
+    private String mSelectFolder;
+    private Account mAccount;
+    private MessageReference mMessageReference;
+    private ArrayAdapter<String> mAdapter;
     private ChooseFolderHandler mHandler = new ChooseFolderHandler();
-    String mHeldInbox = null;
-    boolean mHideCurrentFolder = true;
-    boolean mShowOptionNone = false;
-    boolean mShowDisplayableOnly = false;
+    private String mHeldInbox = null;
+    private boolean mHideCurrentFolder = true;
+    private boolean mShowOptionNone = false;
+    private boolean mShowDisplayableOnly = false;
 
     /**
      * What folders to display.<br/>

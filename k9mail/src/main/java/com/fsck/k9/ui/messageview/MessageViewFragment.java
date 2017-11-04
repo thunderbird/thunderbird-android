@@ -63,10 +63,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
 
-    public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
-    public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
+    private static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
+    private static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
 
-    public static final int PROGRESS_THRESHOLD_MILLIS = 500 * 1000;
+    private static final int PROGRESS_THRESHOLD_MILLIS = 500 * 1000;
 
     public static MessageViewFragment newInstance(MessageReference reference) {
         MessageViewFragment fragment = new MessageViewFragment();
@@ -291,7 +291,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
-    public void onRefile(String dstFolder) {
+    private void onRefile(String dstFolder) {
         if (!mController.isMoveCapable(mAccount)) {
             return;
         }
@@ -505,11 +505,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         return subject;
     }
 
-    public void moveMessage(MessageReference reference, String destFolderName) {
+    private void moveMessage(MessageReference reference, String destFolderName) {
         mController.moveMessage(mAccount, mMessageReference.getFolderName(), reference, destFolderName);
     }
 
-    public void copyMessage(MessageReference reference, String destFolderName) {
+    private void copyMessage(MessageReference reference, String destFolderName) {
         mController.copyMessage(mAccount, mMessageReference.getFolderName(), reference, destFolderName);
     }
 

@@ -274,7 +274,7 @@ public class MessagingController {
     }
 
 
-    public Set<MessagingListener> getListeners(MessagingListener listener) {
+    private Set<MessagingListener> getListeners(MessagingListener listener) {
         if (listener == null) {
             return listeners;
         }
@@ -2535,7 +2535,7 @@ public class MessagingController {
      * Attempt to send any messages that are sitting in the Outbox.
      */
     @VisibleForTesting
-    protected void sendPendingMessagesSynchronous(final Account account) {
+    void sendPendingMessagesSynchronous(final Account account) {
         LocalFolder localFolder = null;
         Exception lastFailure = null;
         boolean wasPermanentFailure = false;
@@ -3332,7 +3332,7 @@ public class MessagingController {
     }
 
     @VisibleForTesting
-    protected void clearFolderSynchronous(Account account, String folderName, MessagingListener listener) {
+    void clearFolderSynchronous(Account account, String folderName, MessagingListener listener) {
         LocalFolder localFolder = null;
         try {
             localFolder = account.getLocalStore().getFolder(folderName);

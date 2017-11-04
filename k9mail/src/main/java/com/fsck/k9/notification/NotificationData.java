@@ -89,7 +89,7 @@ class NotificationData {
         notificationIdsInUse.delete(notificationId);
     }
 
-    NotificationHolder createNotificationHolder(int notificationId, NotificationContent content) {
+    private NotificationHolder createNotificationHolder(int notificationId, NotificationContent content) {
         return new NotificationHolder(notificationId, content);
     }
 

@@ -56,7 +56,7 @@ public class MockImapServer {
         this(KeyStoreProvider.getInstance(), new DefaultLogger());
     }
 
-    public MockImapServer(KeyStoreProvider keyStoreProvider, Logger logger) {
+    private MockImapServer(KeyStoreProvider keyStoreProvider, Logger logger) {
         this.keyStoreProvider = keyStoreProvider;
         this.logger = logger;
     }

@@ -178,7 +178,7 @@ public class LockableDatabase {
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available
      */
-    protected void lockRead() throws UnavailableStorageException {
+    private void lockRead() throws UnavailableStorageException {
         mReadLock.lock();
         try {
             getStorageManager().lockProvider(mStorageProviderId);
@@ -188,7 +188,7 @@ public class LockableDatabase {
         }
     }
 
-    protected void unlockRead() {
+    private void unlockRead() {
         getStorageManager().unlockProvider(mStorageProviderId);
         mReadLock.unlock();
     }
@@ -205,7 +205,7 @@ public class LockableDatabase {
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available.
      */
-    protected void lockWrite() throws UnavailableStorageException {
+    private void lockWrite() throws UnavailableStorageException {
         lockWrite(mStorageProviderId);
     }
 
@@ -224,7 +224,7 @@ public class LockableDatabase {
      * @throws UnavailableStorageException
      *             If storage can't be locked because it is not available.
      */
-    protected void lockWrite(final String providerId) throws UnavailableStorageException {
+    private void lockWrite(final String providerId) throws UnavailableStorageException {
         mWriteLock.lock();
         try {
             getStorageManager().lockProvider(providerId);
@@ -234,11 +234,11 @@ public class LockableDatabase {
         }
     }
 
-    protected void unlockWrite() {
+    private void unlockWrite() {
         unlockWrite(mStorageProviderId);
     }
 
-    protected void unlockWrite(final String providerId) {
+    private void unlockWrite(final String providerId) {
         getStorageManager().unlockProvider(providerId);
         mWriteLock.unlock();
     }
@@ -403,7 +403,7 @@ public class LockableDatabase {
      * @return DB file.
      * @throws UnavailableStorageException
      */
-    protected File prepareStorage(final String providerId) throws UnavailableStorageException {
+    private File prepareStorage(final String providerId) throws UnavailableStorageException {
         final StorageManager storageManager = getStorageManager();
 
         final File databaseFile = storageManager.getDatabase(uUid, providerId);

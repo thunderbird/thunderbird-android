@@ -24,10 +24,10 @@ import static junit.framework.Assert.assertTrue;
  */
 @RunWith(AndroidJUnit4.class)
 public class TrustManagerFactoryTest {
-    public static final String MATCHING_HOST = "k9.example.com";
-    public static final String NOT_MATCHING_HOST = "bla.example.com";
-    public static final int PORT1 = 993;
-    public static final int PORT2 = 465;
+    private static final String MATCHING_HOST = "k9.example.com";
+    private static final String NOT_MATCHING_HOST = "bla.example.com";
+    private static final int PORT1 = 993;
+    private static final int PORT2 = 465;
 
     private static final String K9_EXAMPLE_COM_CERT1 =
               "-----BEGIN CERTIFICATE-----\n"

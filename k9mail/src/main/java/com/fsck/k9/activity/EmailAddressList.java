@@ -13,8 +13,8 @@ import com.fsck.k9.R;
 import com.fsck.k9.helper.ContactItem;
 
 public class EmailAddressList extends K9ListActivity implements OnItemClickListener {
-    public static final String EXTRA_CONTACT_ITEM = "contact";
-    public static final String EXTRA_EMAIL_ADDRESS = "emailAddress";
+    private static final String EXTRA_CONTACT_ITEM = "contact";
+    private static final String EXTRA_EMAIL_ADDRESS = "emailAddress";
 
 
     @Override

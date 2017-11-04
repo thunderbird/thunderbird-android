@@ -210,7 +210,7 @@ class TextBodyBuilder {
     /**
      * protected for unit-test purposes
      */
-    protected String textToHtmlFragment(String text) {
+    String textToHtmlFragment(String text) {
         return HtmlConverter.textToHtmlFragment(text);
     }
 

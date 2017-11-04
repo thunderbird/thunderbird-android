@@ -9,8 +9,8 @@ import android.os.Bundle;
 
 
 public class ProgressDialogFragment extends DialogFragment {
-    protected static final String ARG_TITLE = "title";
-    protected static final String ARG_MESSAGE = "message";
+    private static final String ARG_TITLE = "title";
+    private static final String ARG_MESSAGE = "message";
 
     public static ProgressDialogFragment newInstance(String title, String message) {
         ProgressDialogFragment fragment = new ProgressDialogFragment();

@@ -5,7 +5,7 @@ package com.fsck.k9.controller;
  * {@link com.fsck.k9.Account#isAvailable(android.content.Context)}.<br/>
  * The operation may be retried later.
  */
-public class UnavailableAccountException extends RuntimeException {
+class UnavailableAccountException extends RuntimeException {
 
     /**
      *

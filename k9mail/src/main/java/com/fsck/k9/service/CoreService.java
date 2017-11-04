@@ -57,7 +57,7 @@ import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
  */
 public abstract class CoreService extends Service {
 
-    public static final String WAKE_LOCK_ID = "com.fsck.k9.service.CoreService.wakeLockId";
+    private static final String WAKE_LOCK_ID = "com.fsck.k9.service.CoreService.wakeLockId";
 
     private static ConcurrentHashMap<Integer, TracingWakeLock> sWakeLocks =
         new ConcurrentHashMap<Integer, TracingWakeLock>();
@@ -101,7 +101,7 @@ public abstract class CoreService extends Service {
      * This variable is part of the auto shutdown feature and determines whether the service has to
      * be shutdown at the end of the {@link #onStart(Intent, int)} method or not.
      */
-    protected boolean mImmediateShutdown = true;
+    private boolean mImmediateShutdown = true;
 
 
     /**
@@ -117,8 +117,8 @@ public abstract class CoreService extends Service {
      *         If {@code wakeLockId} is {@code null} and this parameter is {@code true} a new wake
      *         lock is created, registered, and added to {@code intent}.
      */
-    protected static void addWakeLockId(Context context, Intent intent, Integer wakeLockId,
-            boolean createIfNotExists) {
+    static void addWakeLockId(Context context, Intent intent, Integer wakeLockId,
+                              boolean createIfNotExists) {
 
         if (wakeLockId != null) {
             intent.putExtra(BootReceiver.WAKE_LOCK_ID, wakeLockId);
@@ -142,7 +142,7 @@ public abstract class CoreService extends Service {
      * @param intent
      *         The {@link Intent} to add the wake lock registry ID as extra to. Never {@code null}.
      */
-    protected static void addWakeLock(Context context, Intent intent) {
+    static void addWakeLock(Context context, Intent intent) {
         TracingWakeLock wakeLock = acquireWakeLock(context, "CoreService addWakeLock",
                 K9.MAIL_SERVICE_WAKE_LOCK_TIMEOUT);
         Integer tmpWakeLockId = registerWakeLock(wakeLock);
@@ -158,7 +158,7 @@ public abstract class CoreService extends Service {
      *
      * @return The ID that identifies this wake lock in the registry.
      */
-    protected static Integer registerWakeLock(TracingWakeLock wakeLock) {
+    private static Integer registerWakeLock(TracingWakeLock wakeLock) {
         // Get a new wake lock ID
         Integer tmpWakeLockId = sWakeLockSeq.getAndIncrement();
 
@@ -180,7 +180,7 @@ public abstract class CoreService extends Service {
      *
      * @return A new {@link TracingWakeLock} instance.
      */
-    protected static TracingWakeLock acquireWakeLock(Context context, String tag, long timeout) {
+    private static TracingWakeLock acquireWakeLock(Context context, String tag, long timeout) {
         TracingPowerManager pm = TracingPowerManager.getPowerManager(context);
         TracingWakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag);
         wakeLock.setReferenceCounted(false);
@@ -279,8 +279,8 @@ public abstract class CoreService extends Service {
      *         If this parameter is {@code null} you need to call {@code setAutoShutdown(false)}
      *         otherwise the auto shutdown code will stop the service.
      */
-    public void execute(Context context, final Runnable runner, int wakeLockTime,
-            final Integer startId) {
+    void execute(Context context, final Runnable runner, int wakeLockTime,
+                 final Integer startId) {
 
         boolean serviceShutdownScheduled = false;
         final boolean autoShutdown = mAutoShutdown;
@@ -371,7 +371,7 @@ public abstract class CoreService extends Service {
      *         current started state. It may be one of the constants associated with the
      *         {@link Service#START_CONTINUATION_MASK} bits.
      */
-    public abstract int startService(Intent intent, int startId);
+    protected abstract int startService(Intent intent, int startId);
 
     @Override
     public void onLowMemory() {
@@ -407,7 +407,7 @@ public abstract class CoreService extends Service {
      *
      * @see #mAutoShutdown
      */
-    protected void setAutoShutdown(boolean autoShutdown) {
+    void setAutoShutdown(boolean autoShutdown) {
         mAutoShutdown = autoShutdown;
     }
 

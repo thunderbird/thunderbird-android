@@ -28,9 +28,9 @@ public class OpenPgpServiceConnection {
 
     // callback interface
     public interface OnBound {
-        public void onBound(IOpenPgpService2 service);
+        void onBound(IOpenPgpService2 service);
 
-        public void onError(Exception e);
+        void onError(Exception e);
     }
 
     private Context mApplicationContext;

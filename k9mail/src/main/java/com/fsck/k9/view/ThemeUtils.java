@@ -20,7 +20,7 @@ public class ThemeUtils {
 
     @ColorInt
     @UiThread
-    public static int getStyledColor(Theme theme, @AttrRes int attr) {
+    private static int getStyledColor(Theme theme, @AttrRes int attr) {
         theme.resolveAttribute(attr, TYPED_VALUE, true);
         return TYPED_VALUE.data;
     }

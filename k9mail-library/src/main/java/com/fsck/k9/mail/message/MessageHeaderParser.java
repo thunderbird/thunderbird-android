@@ -14,7 +14,7 @@ import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
 
 
-public class MessageHeaderParser {
+class MessageHeaderParser {
 
     public static void parse(final Part part, InputStream headerInputStream) throws MessagingException {
         MimeStreamParser parser = getMimeStreamParser();

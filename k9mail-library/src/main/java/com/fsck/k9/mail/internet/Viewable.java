@@ -14,7 +14,7 @@ import java.util.List;
  * @see Viewable.MessageHeader
  * @see Viewable.Alternative
  */
-public interface Viewable {
+interface Viewable {
     /**
      * Class representing textual parts of a message that aren't marked as attachments.
      *

@@ -25,7 +25,7 @@ public class OpenPgpError implements Parcelable {
      * old versions of the protocol (and thus old versions of this class), we need a versioning
      * system for the parcels sent between the clients and the providers.
      */
-    public static final int PARCELABLE_VERSION = 1;
+    private static final int PARCELABLE_VERSION = 1;
 
     // possible values for errorId
     public static final int CLIENT_SIDE_ERROR = -1;
@@ -35,10 +35,10 @@ public class OpenPgpError implements Parcelable {
     public static final int NO_USER_IDS = 3;
     public static final int OPPORTUNISTIC_MISSING_KEYS = 4;
 
-    int errorId;
-    String message;
+    private int errorId;
+    private String message;
 
-    public OpenPgpError() {
+    private OpenPgpError() {
     }
 
     public OpenPgpError(int errorId, String message) {

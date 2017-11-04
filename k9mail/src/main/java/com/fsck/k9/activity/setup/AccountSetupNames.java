@@ -80,7 +80,7 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         Utility.setCompoundDrawablesAlpha(mDoneButton, mDoneButton.isEnabled() ? 255 : 128);
     }
 
-    protected void onNext() {
+    private void onNext() {
         if (Utility.requiredFieldValid(mDescription)) {
             mAccount.setDescription(mDescription.getText().toString());
         }

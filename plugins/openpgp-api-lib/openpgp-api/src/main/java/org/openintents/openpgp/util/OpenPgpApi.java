@@ -47,7 +47,7 @@ public class OpenPgpApi {
     /**
      * see CHANGELOG.md
      */
-    public static final int API_VERSION = 12;
+    private static final int API_VERSION = 12;
 
     /**
      * General extras
@@ -69,7 +69,7 @@ public class OpenPgpApi {
      *
      * This action uses no extras.
      */
-    public static final String ACTION_CHECK_PERMISSION = "org.openintents.openpgp.action.CHECK_PERMISSION";
+    private static final String ACTION_CHECK_PERMISSION = "org.openintents.openpgp.action.CHECK_PERMISSION";
 
     @Deprecated
     public static final String ACTION_SIGN = "org.openintents.openpgp.action.SIGN";
@@ -234,7 +234,7 @@ public class OpenPgpApi {
     public static final String ACTION_UPDATE_AUTOCRYPT_PEER = "org.openintents.openpgp.action.UPDATE_AUTOCRYPT_PEER";
 
     /* Intent extras */
-    public static final String EXTRA_API_VERSION = "api_version";
+    private static final String EXTRA_API_VERSION = "api_version";
 
     // ACTION_DETACHED_SIGN, ENCRYPT, SIGN_AND_ENCRYPT, DECRYPT_VERIFY
     // request ASCII Armor for output
@@ -292,8 +292,8 @@ public class OpenPgpApi {
 
     // DECRYPT_VERIFY
     public static final String EXTRA_DETACHED_SIGNATURE = "detached_signature";
-    public static final String EXTRA_PROGRESS_MESSENGER = "progress_messenger";
-    public static final String EXTRA_DATA_LENGTH = "data_length";
+    private static final String EXTRA_PROGRESS_MESSENGER = "progress_messenger";
+    private static final String EXTRA_DATA_LENGTH = "data_length";
     public static final String EXTRA_DECRYPTION_RESULT = "decryption_result";
     public static final String EXTRA_SENDER_ADDRESS = "sender_address";
     public static final String EXTRA_SUPPORT_OVERRIDE_CRYPTO_WARNING = "support_override_crpto_warning";
@@ -313,9 +313,9 @@ public class OpenPgpApi {
     public static final String EXTRA_CALL_UUID1 = "call_uuid1";
     public static final String EXTRA_CALL_UUID2 = "call_uuid2";
 
-    IOpenPgpService2 mService;
-    Context mContext;
-    final AtomicInteger mPipeIdGen = new AtomicInteger();
+    private IOpenPgpService2 mService;
+    private Context mContext;
+    private final AtomicInteger mPipeIdGen = new AtomicInteger();
 
     public OpenPgpApi(Context context, IOpenPgpService2 service) {
         this.mContext = context;
@@ -451,7 +451,7 @@ public class OpenPgpApi {
         }
     }
 
-    public <T> OpenPgpDataResult<T> executeApi(Intent data, OpenPgpDataSource dataSource, OpenPgpDataSink<T> dataSink) {
+    private <T> OpenPgpDataResult<T> executeApi(Intent data, OpenPgpDataSource dataSource, OpenPgpDataSink<T> dataSink) {
         ParcelFileDescriptor input = null;
         ParcelFileDescriptor output = null;
         try {

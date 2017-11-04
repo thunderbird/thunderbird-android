@@ -63,35 +63,35 @@ public class LinearViewAnimator extends ViewAnimator {
         a.recycle();
     }
 
-    public void setUpOutAnimation(Context context, int resourceID) {
+    private void setUpOutAnimation(Context context, int resourceID) {
         setUpOutAnimation(AnimationUtils.loadAnimation(context, resourceID));
     }
 
-    public void setUpOutAnimation(Animation animation) {
+    private void setUpOutAnimation(Animation animation) {
         upOutAnimation = animation;
     }
 
-    public void setUpInAnimation(Context context, int resourceID) {
+    private void setUpInAnimation(Context context, int resourceID) {
         setUpInAnimation(AnimationUtils.loadAnimation(context, resourceID));
     }
 
-    public void setUpInAnimation(Animation animation) {
+    private void setUpInAnimation(Animation animation) {
         upInAnimation = animation;
     }
     
-    public void setDownOutAnimation(Context context, int resourceID) {
+    private void setDownOutAnimation(Context context, int resourceID) {
         setDownOutAnimation(AnimationUtils.loadAnimation(context, resourceID));
     }
 
-    public void setDownOutAnimation(Animation animation) {
+    private void setDownOutAnimation(Animation animation) {
         downOutAnimation = animation;
     }
 
-    public void setDownInAnimation(Context context, int resourceID) {
+    private void setDownInAnimation(Context context, int resourceID) {
         setDownInAnimation(AnimationUtils.loadAnimation(context, resourceID));
     }
 
-    public void setDownInAnimation(Animation animation) {
+    private void setDownInAnimation(Animation animation) {
         downInAnimation = animation;
     }
 
@@ -100,7 +100,7 @@ public class LinearViewAnimator extends ViewAnimator {
         setDisplayedChild(whichChild, true);
     }
 
-    public void setDisplayedChild(int whichChild, boolean animate) {
+    private void setDisplayedChild(int whichChild, boolean animate) {
         int displayedChild = getDisplayedChild();
         if (displayedChild == whichChild) {
             return;

@@ -29,7 +29,7 @@ public class MessageActions {
      * Get intent for composing a new message as a reply to the given message. If replyAll is true
      * the function is reply all instead of simply reply.
      */
-    public static Intent getActionReplyIntent(
+    private static Intent getActionReplyIntent(
             Context context, MessageReference messageReference, boolean replyAll, Parcelable decryptionResult) {
         Intent i = new Intent(context, MessageCompose.class);
         i.putExtra(MessageCompose.EXTRA_MESSAGE_DECRYPTION_RESULT, decryptionResult);

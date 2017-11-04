@@ -679,11 +679,11 @@ class ImapConnection {
         return isListResponse && hierarchyDelimiterValid;
     }
 
-    protected boolean hasCapability(String capability) {
+    boolean hasCapability(String capability) {
         return capabilities.contains(capability.toUpperCase(Locale.US));
     }
 
-    protected boolean isIdleCapable() {
+    boolean isIdleCapable() {
         if (K9MailLib.isDebug()) {
             Timber.v("Connection %s has %d capabilities", getLogId(), capabilities.size());
         }
@@ -708,7 +708,7 @@ class ImapConnection {
         return outputStream;
     }
 
-    protected String getLogId() {
+    String getLogId() {
         return "conn" + hashCode();
     }
 
@@ -716,7 +716,7 @@ class ImapConnection {
         return executeSimpleCommand(command, false);
     }
 
-    public List<ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
+    private List<ImapResponse> executeSimpleCommand(String command, boolean sensitive) throws IOException,
             MessagingException {
         String commandToLog = command;
 
@@ -739,7 +739,7 @@ class ImapConnection {
         return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
     }
 
-    public String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
+    private String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
             throws IOException, MessagingException {
         try {
             open();
@@ -818,7 +818,7 @@ class ImapConnection {
         }
     }
 
-    protected void setReadTimeout(int millis) throws SocketException {
+    void setReadTimeout(int millis) throws SocketException {
         Socket sock = socket;
         if (sock != null) {
             sock.setSoTimeout(millis);

@@ -14,12 +14,12 @@ import static org.junit.Assert.assertEquals;
 
 
 public class PendingCommandSerializerTest {
-    static final int DATABASE_ID = 123;
-    static final String UID = "uid";
-    static final String SOURCE_FOLDER = "source_folder";
-    static final String DEST_FOLDER = "dest_folder";
-    static final HashMap<String, String> UID_MAP = new HashMap<>();
-    public static final boolean IS_COPY = true;
+    private static final int DATABASE_ID = 123;
+    private static final String UID = "uid";
+    private static final String SOURCE_FOLDER = "source_folder";
+    private static final String DEST_FOLDER = "dest_folder";
+    private static final HashMap<String, String> UID_MAP = new HashMap<>();
+    private static final boolean IS_COPY = true;
 
     static {
         UID_MAP.put("uid_1", "uid_other_1");
@@ -27,7 +27,7 @@ public class PendingCommandSerializerTest {
     }
 
 
-    PendingCommandSerializer pendingCommandSerializer = PendingCommandSerializer.getInstance();
+    private PendingCommandSerializer pendingCommandSerializer = PendingCommandSerializer.getInstance();
 
 
     @Test

@@ -6,10 +6,10 @@ package com.fsck.k9.activity.setup;
 
 import android.widget.Spinner;
 
-public class SpinnerOption {
+class SpinnerOption {
     public Object value;
 
-    public String label;
+    private String label;
 
     public static void setSpinnerOptionValue(Spinner spinner, Object value) {
         for (int i = 0, count = spinner.getCount(); i < count; i++) {

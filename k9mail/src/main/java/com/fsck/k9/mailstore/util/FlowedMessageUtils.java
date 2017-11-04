@@ -117,7 +117,7 @@ public final class FlowedMessageUtils {
     /**
      * Decodes a text.
      */
-    public static String flow(String text, boolean delSp, int width) {
+    private static String flow(String text, boolean delSp, int width) {
         StringBuilder result = new StringBuilder();
         String[] lines = text.split("\r\n|\n", -1);
         for (int i = 0; i < lines.length; i ++) {
@@ -180,7 +180,7 @@ public final class FlowedMessageUtils {
      * Checks whether the char is part of a word.
      * <p>RFC assert a word cannot be split (even if the length is greater than the maximum length).
      */
-    public static boolean isAlphaChar(String text, int index) {
+    private static boolean isAlphaChar(String text, int index) {
         // Note: a list of chars is available here:
         // http://www.zvon.org/tmRFC/RFC2646/Output/index.html
         char c = text.charAt(index);

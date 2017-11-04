@@ -33,28 +33,28 @@ import android.os.Bundle;
 /**
  * This class can be used to combine multiple {@link Cursor}s into one.
  */
-public class MergeCursor implements Cursor {
+class MergeCursor implements Cursor {
     /**
      * List of the cursors combined in this object.
      */
-    protected final Cursor[] mCursors;
+    private final Cursor[] mCursors;
 
     /**
      * The currently active cursor.
      */
-    protected Cursor mActiveCursor;
+    private Cursor mActiveCursor;
 
     /**
      * The index of the currently active cursor in {@link #mCursors}.
      *
      * @see #mActiveCursor
      */
-    protected int mActiveCursorIndex;
+    int mActiveCursorIndex;
 
     /**
      * The cursor's current position.
      */
-    protected int mPosition;
+    private int mPosition;
 
     /**
      * Used to cache the value of {@link #getCount()}.
@@ -75,7 +75,7 @@ public class MergeCursor implements Cursor {
      * @param comparator
      *         A comparator that is used to decide in what order the individual cursors are merged.
      */
-    public MergeCursor(Cursor[] cursors, Comparator<Cursor> comparator) {
+    MergeCursor(Cursor[] cursors, Comparator<Cursor> comparator) {
         mCursors = cursors.clone();
         mComparator = comparator;
 

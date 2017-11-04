@@ -343,12 +343,12 @@ public class HtmlConverter {
         }
     }
 
-    protected static final String QUOTE_COLOR_DEFAULT = "#ccc";
-    protected static final String QUOTE_COLOR_LEVEL_1 = "#729fcf";
-    protected static final String QUOTE_COLOR_LEVEL_2 = "#ad7fa8";
-    protected static final String QUOTE_COLOR_LEVEL_3 = "#8ae234";
-    protected static final String QUOTE_COLOR_LEVEL_4 = "#fcaf3e";
-    protected static final String QUOTE_COLOR_LEVEL_5 = "#e9b96e";
+    static final String QUOTE_COLOR_DEFAULT = "#ccc";
+    static final String QUOTE_COLOR_LEVEL_1 = "#729fcf";
+    static final String QUOTE_COLOR_LEVEL_2 = "#ad7fa8";
+    static final String QUOTE_COLOR_LEVEL_3 = "#8ae234";
+    static final String QUOTE_COLOR_LEVEL_4 = "#fcaf3e";
+    static final String QUOTE_COLOR_LEVEL_5 = "#e9b96e";
     private static final String K9MAIL_CSS_CLASS = "k9mail";
 
     /**
@@ -356,7 +356,7 @@ public class HtmlConverter {
      * @param level Quote level
      * @return Hex color string with prepended #.
      */
-    protected static String getQuoteColor(final int level) {
+    static String getQuoteColor(final int level) {
         switch(level) {
             case 1:
                 return QUOTE_COLOR_LEVEL_1;

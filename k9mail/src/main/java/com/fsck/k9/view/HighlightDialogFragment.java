@@ -16,14 +16,14 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 
 public class HighlightDialogFragment extends DialogFragment {
-    public static final String ARG_HIGHLIGHT_VIEW = "highlighted_view";
-    public static final float BACKGROUND_DIM_AMOUNT = 0.25f;
+    protected static final String ARG_HIGHLIGHT_VIEW = "highlighted_view";
+    private static final float BACKGROUND_DIM_AMOUNT = 0.25f;
 
 
     private ShowcaseView showcaseView;
 
 
-    protected void highlightViewInBackground() {
+    private void highlightViewInBackground() {
         if (!getArguments().containsKey(ARG_HIGHLIGHT_VIEW)) {
             return;
         }

@@ -33,7 +33,7 @@ import java.security.Security;
  * Cryptography Architecture primitives. A good place to invoke them is in the
  * application's {@code onCreate}.
  */
-public final class PRNGFixes {
+final class PRNGFixes {
 
     private static final int VERSION_CODE_JELLY_BEAN = 16;
     private static final int VERSION_CODE_JELLY_BEAN_MR2 = 18;

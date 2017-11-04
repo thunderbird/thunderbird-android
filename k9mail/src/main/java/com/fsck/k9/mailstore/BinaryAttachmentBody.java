@@ -17,7 +17,7 @@ import com.fsck.k9.mail.filter.Base64OutputStream;
  * The source for the data differs for the subclasses.
  */
 abstract class BinaryAttachmentBody implements Body {
-    protected String mEncoding;
+    private String mEncoding;
 
     @Override
     public abstract InputStream getInputStream();

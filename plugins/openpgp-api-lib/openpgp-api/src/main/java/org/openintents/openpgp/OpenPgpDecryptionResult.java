@@ -25,7 +25,7 @@ public class OpenPgpDecryptionResult implements Parcelable {
      * old versions of the protocol (and thus old versions of this class), we need a versioning
      * system for the parcels sent between the clients and the providers.
      */
-    public static final int PARCELABLE_VERSION = 2;
+    private static final int PARCELABLE_VERSION = 2;
 
     // content not encrypted
     public static final int RESULT_NOT_ENCRYPTED = -1;
@@ -34,9 +34,9 @@ public class OpenPgpDecryptionResult implements Parcelable {
     // encrypted
     public static final int RESULT_ENCRYPTED = 1;
 
-    public final int result;
-    public final byte[] sessionKey;
-    public final byte[] decryptedSessionKey;
+    private final int result;
+    private final byte[] sessionKey;
+    private final byte[] decryptedSessionKey;
 
     public int getResult() {
         return result;
