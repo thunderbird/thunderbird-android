@@ -52,10 +52,11 @@ class DataSet {
      */
     public Map<String, String> getSpecialFolderToUrl() {
         // We return the first (and only) map
-        for (Map<String, String> folderMap : mData.values()) {
-            return folderMap;
+        if (mData.size() == 1) {
+        return mData.values().iterator().next();
         }
-        return new HashMap<String, String>();
+
+        return new HashMap<>();
     }
 
     /**
