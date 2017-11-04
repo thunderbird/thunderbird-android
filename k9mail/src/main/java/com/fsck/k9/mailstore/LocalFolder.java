@@ -1522,7 +1522,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         }
     }
 
-    private void messageMarkerToContentValues(ContentValues cv) throws MessagingException {
+    private void messageMarkerToContentValues(ContentValues cv) {
         cv.put("data_location", DataLocation.CHILD_PART_CONTAINS_DATA);
     }
 
@@ -1592,7 +1592,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     private long decodeAndCountBytes(File file, String encoding, long fallbackValue)
-            throws MessagingException, IOException {
+            throws IOException {
         InputStream inputStream = new FileInputStream(file);
         try {
             return decodeAndCountBytes(inputStream, encoding, fallbackValue);
@@ -2132,8 +2132,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         });
     }
 
-    private ThreadInfo doMessageThreading(SQLiteDatabase db, Message message)
-            throws MessagingException {
+    private ThreadInfo doMessageThreading(SQLiteDatabase db, Message message) {
         long rootId = -1;
         long parentId = -1;
 

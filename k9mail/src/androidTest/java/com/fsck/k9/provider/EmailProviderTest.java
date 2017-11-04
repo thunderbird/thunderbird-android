@@ -34,7 +34,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
         super(EmailProvider.class, EmailProvider.AUTHORITY);
     }
 
-    private void buildMessages() throws MessagingException {
+    private void buildMessages() {
         message = new MimeMessage();
         message.setSubject("Test Subject");
         message.setSentDate(new GregorianCalendar(2016, 1, 2).getTime(), false);

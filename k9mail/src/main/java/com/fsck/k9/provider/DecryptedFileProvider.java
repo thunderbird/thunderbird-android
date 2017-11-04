@@ -56,7 +56,7 @@ public class DecryptedFileProvider extends FileProvider {
 
     @Nullable
     public static Uri getUriForProvidedFile(@NonNull Context context, File file,
-            @Nullable String encoding, @Nullable String mimeType) throws IOException {
+            @Nullable String encoding, @Nullable String mimeType) {
         try {
             Uri.Builder uriBuilder = FileProvider.getUriForFile(context, AUTHORITY, file).buildUpon();
             if (mimeType != null) {

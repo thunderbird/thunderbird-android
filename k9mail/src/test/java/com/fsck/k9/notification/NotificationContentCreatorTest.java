@@ -165,7 +165,7 @@ public class NotificationContentCreatorTest {
         return new MessageReference(ACCOUNT_UUID, FOLDER_NAME, UID, null);
     }
 
-    private LocalMessage createFakeLocalMessage(MessageReference messageReference) throws Exception {
+    private LocalMessage createFakeLocalMessage(MessageReference messageReference) {
         LocalMessage message = mock(LocalMessage.class);
 
         when(message.makeMessageReference()).thenReturn(messageReference);

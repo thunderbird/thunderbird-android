@@ -417,7 +417,7 @@ public class MessageCryptoHelper {
         });
     }
 
-    private OpenPgpDataSource getDataSourceForSignedData(final Part signedPart) throws IOException {
+    private OpenPgpDataSource getDataSourceForSignedData(final Part signedPart) {
         return new OpenPgpDataSource() {
             @Override
             public void writeTo(OutputStream os) throws IOException {
@@ -433,7 +433,7 @@ public class MessageCryptoHelper {
         };
     }
 
-    private OpenPgpDataSource getDataSourceForEncryptedOrInlineData() throws IOException {
+    private OpenPgpDataSource getDataSourceForEncryptedOrInlineData() {
         return new OpenPgpApi.OpenPgpDataSource() {
             @Override
             public Long getSizeForProgress() {
@@ -479,7 +479,7 @@ public class MessageCryptoHelper {
         };
     }
 
-    private OpenPgpDataSink<MimeBodyPart> getDataSinkForDecryptedData() throws IOException {
+    private OpenPgpDataSink<MimeBodyPart> getDataSinkForDecryptedData() {
         return new OpenPgpDataSink<MimeBodyPart>() {
             @Override
             @WorkerThread

@@ -114,7 +114,7 @@ public class ListHeadersTest {
         assertEquals(emailAddress, result[0].getAddress());
     }
 
-    private MimeMessage buildMimeMessageWithListPostValue(String... values) throws MessagingException {
+    private MimeMessage buildMimeMessageWithListPostValue(String... values) {
         MimeMessage message = new MimeMessage();
         for (String value : values) {
             message.addHeader("List-Post", value);

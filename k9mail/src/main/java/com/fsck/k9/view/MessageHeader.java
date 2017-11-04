@@ -433,8 +433,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
        }
     }
 
-    private List<HeaderEntry> getAdditionalHeaders(final Message message)
-    throws MessagingException {
+    private List<HeaderEntry> getAdditionalHeaders(final Message message) {
         List<HeaderEntry> additionalHeaders = new LinkedList<HeaderEntry>();
 
         Set<String> headerNames = new LinkedHashSet<String>(message.getHeaderNames());

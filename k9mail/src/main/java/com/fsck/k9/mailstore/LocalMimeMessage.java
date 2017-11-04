@@ -1,7 +1,6 @@
 package com.fsck.k9.mailstore;
 
 
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 
 
@@ -10,8 +9,7 @@ public class LocalMimeMessage extends MimeMessage implements LocalPart {
     private final LocalMessage message;
     private final long messagePartId;
 
-    public LocalMimeMessage(String accountUuid, LocalMessage message, long messagePartId)
-            throws MessagingException {
+    public LocalMimeMessage(String accountUuid, LocalMessage message, long messagePartId) {
         super();
         this.accountUuid = accountUuid;
         this.message = message;

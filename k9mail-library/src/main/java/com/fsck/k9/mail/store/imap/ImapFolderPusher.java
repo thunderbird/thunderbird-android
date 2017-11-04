@@ -66,7 +66,7 @@ class ImapFolderPusher extends ImapFolder {
         }
     }
 
-    public void refresh() throws IOException, MessagingException {
+    public void refresh() {
         if (idling) {
             wakeLock.acquire(PUSH_WAKE_LOCK_TIMEOUT);
             idleStopper.stopIdle();

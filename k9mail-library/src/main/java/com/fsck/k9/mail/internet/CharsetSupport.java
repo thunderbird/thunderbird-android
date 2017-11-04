@@ -30,7 +30,7 @@ public class CharsetSupport {
     };
 
 
-    public static void setCharset(String charset, Part part) throws MessagingException {
+    public static void setCharset(String charset, Part part) {
         part.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                 part.getMimeType() + ";\r\n charset=" + getExternalCharset(charset));
     }

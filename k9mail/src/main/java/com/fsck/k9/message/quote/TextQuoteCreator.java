@@ -25,7 +25,7 @@ public class TextQuoteCreator {
      * @return Quoted text.
      * @throws MessagingException
      */
-    public static String quoteOriginalTextMessage(Resources resources, Message originalMessage, String messageBody, QuoteStyle quoteStyle, String prefix) throws MessagingException {
+    public static String quoteOriginalTextMessage(Resources resources, Message originalMessage, String messageBody, QuoteStyle quoteStyle, String prefix) {
         String body = messageBody == null ? "" : messageBody;
         String sentDate = QuoteHelper.getSentDateText(resources, originalMessage);
         if (quoteStyle == QuoteStyle.PREFIX) {
