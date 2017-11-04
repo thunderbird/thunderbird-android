@@ -12,6 +12,10 @@ if (rootProject.testCoverage) {
 
 repositories {
     jcenter()
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
 }
 
 dependencies {
@@ -23,7 +27,7 @@ dependencies {
     compile "com.android.support:support-annotations:${androidSupportLibraryVersion}"
     compile "com.jakewharton.timber:timber:${timberVersion}"
 
-    androidTestCompile 'com.android.support.test:runner:0.4.1'
+    androidTestCompile 'com.android.support.test:runner:1.0.1'
     androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
 
     testCompile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
