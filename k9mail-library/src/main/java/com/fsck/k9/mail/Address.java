@@ -64,7 +64,7 @@ public class Address implements Serializable {
                     mPersonal = (personal == null) ? null : personal.trim();
                 }
             } else {
-                Timber.e(new IllegalArgumentException(), "address " + address + " is invalid");
+                Timber.e("Invalid address: %s", address);
             }
         } else {
             mAddress = address;
