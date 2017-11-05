@@ -447,13 +447,12 @@ public class MessageExtractor {
             dispositionFilename = MimeUtility.getHeaderParameter(disposition, "filename");
         }
 
+        // if part is an attachment disposition
         if ("attachment".equalsIgnoreCase(dispositionType) || dispositionFilename != null) {
             return false;
         }
 
-        return part.isMimeType("text/html")
-                || part.isMimeType("text/plain")
-                || part.isMimeType("application/pgp");
+        return part.isMimeType("text/html") || part.isMimeType("text/plain") || part.isMimeType("application/pgp");
 
     }
 

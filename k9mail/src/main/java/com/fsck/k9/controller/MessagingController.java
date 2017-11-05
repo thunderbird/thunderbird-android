@@ -3773,7 +3773,11 @@ public class MessagingController {
             return false;
         }
 
-        return !account.isNotifyContactsMailOnly() || contacts.isAnyInContacts(message.getFrom());
+        if (account.isNotifyContactsMailOnly() && !contacts.isAnyInContacts(message.getFrom())) {
+            return false;
+        }
+
+        return true;
     }
 
     public void deleteAccount(Account account) {

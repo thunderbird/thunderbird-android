@@ -100,10 +100,8 @@ class AutocryptHeader {
 
         AutocryptHeader that = (AutocryptHeader) o;
 
-        return isPreferEncryptMutual == that.isPreferEncryptMutual
-                && Arrays.equals(keyData, that.keyData)
-                && addr.equals(that.addr)
-                && parameters.equals(that.parameters);
+        return isPreferEncryptMutual == that.isPreferEncryptMutual && Arrays.equals(keyData, that.keyData)
+                && addr.equals(that.addr) && parameters.equals(that.parameters);
     }
 
     @Override
