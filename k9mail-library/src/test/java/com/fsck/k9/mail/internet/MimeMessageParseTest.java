@@ -23,7 +23,6 @@ import com.fsck.k9.mail.Multipart;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 
 @RunWith(K9LibRobolectricTestRunner.class)

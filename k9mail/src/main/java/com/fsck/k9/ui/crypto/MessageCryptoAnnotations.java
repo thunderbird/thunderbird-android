@@ -3,8 +3,6 @@ package com.fsck.k9.ui.crypto;
 
 import java.util.HashMap;
 
-import android.support.annotation.VisibleForTesting;
-
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 

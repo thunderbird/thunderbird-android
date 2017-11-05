@@ -2,7 +2,6 @@ package com.fsck.k9.mailstore;
 
 
 import java.util.List;
-import java.util.Locale;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,7 +9,6 @@ import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.BuildConfig;
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.migrations.Migrations;
@@ -18,8 +16,6 @@ import com.fsck.k9.mailstore.migrations.MigrationsHelper;
 import com.fsck.k9.preferences.Storage;
 
 import static com.fsck.k9.mailstore.LocalStore.DB_VERSION;
-import static java.lang.String.format;
-import static java.util.Locale.US;
 
 
 class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {

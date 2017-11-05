@@ -7,7 +7,6 @@ import android.os.Bundle;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.remotecontrol.K9RemoteControl;
 import com.fsck.k9.Preferences;
 

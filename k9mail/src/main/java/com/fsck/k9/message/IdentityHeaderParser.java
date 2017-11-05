@@ -8,7 +8,6 @@ import java.util.StringTokenizer;
 import android.net.Uri;
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.filter.Base64;
 
 

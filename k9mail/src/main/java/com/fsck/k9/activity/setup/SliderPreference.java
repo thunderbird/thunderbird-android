@@ -30,7 +30,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.DialogPreference;
 import android.support.annotation.ArrayRes;
-import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.SeekBar;
