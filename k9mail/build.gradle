@@ -12,6 +12,10 @@ if (rootProject.testCoverage) {
 
 repositories {
     jcenter()
+	maven{
+		url 'https://maven.google.com/'
+		name 'Google'
+	}
 }
 
 //noinspection GroovyAssignabilityCheck
@@ -28,7 +32,8 @@ dependencies {
     compile "com.squareup.okio:okio:${okioVersion}"
     compile 'commons-io:commons-io:2.4'
     compile "com.android.support:support-v4:${androidSupportLibraryVersion}"
-    compile 'org.jsoup:jsoup:1.10.2'
+	compile "com.android.support:recyclerview-v7:25.2.0"
+	compile 'org.jsoup:jsoup:1.10.2'
     compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.splitwise:tokenautocomplete:2.0.7'
@@ -37,6 +42,7 @@ dependencies {
     compile 'com.squareup.moshi:moshi:1.2.0'
     compile "com.jakewharton.timber:timber:${timberVersion}"
     compile 'net.jcip:jcip-annotations:1.0'
+
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
 

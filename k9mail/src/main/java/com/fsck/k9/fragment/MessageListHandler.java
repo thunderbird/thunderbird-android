@@ -1,13 +1,12 @@
 package com.fsck.k9.fragment;
 
 
-import java.lang.ref.WeakReference;
-
 import android.app.Activity;
 import android.os.Handler;
-import android.os.Parcelable;
 
 import com.fsck.k9.activity.MessageReference;
+
+import java.lang.ref.WeakReference;
 
 /**
  * This class is used to run operations that modify UI elements in the UI thread.
@@ -129,8 +128,10 @@ public class MessageListHandler extends Handler {
                 break;
             }
             case ACTION_RESTORE_LIST_POSITION: {
-                fragment.listView.onRestoreInstanceState((Parcelable) msg.obj);
-                break;
+				throw new UnsupportedOperationException("Not restored yet");
+				//TODO restore
+//                fragment.recyclerView.onRestoreInstanceState((Parcelable) msg.obj);
+//                break;
             }
             case ACTION_OPEN_MESSAGE: {
                 MessageReference messageReference = (MessageReference) msg.obj;
