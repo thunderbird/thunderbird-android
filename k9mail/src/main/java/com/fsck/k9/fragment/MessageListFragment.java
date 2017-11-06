@@ -428,7 +428,7 @@ public class MessageListFragment extends Fragment
 
 	@Override
 	public void onDestroyView(){
-		savedListState = layoutManager.onSaveInstanceState();
+		savedListState=layoutManager.onSaveInstanceState();
 		super.onDestroyView();
 	}
 
@@ -514,7 +514,7 @@ public class MessageListFragment extends Fragment
 			outState.putParcelable(STATE_MESSAGE_LIST,savedListState);
 		}
 		else if(recyclerView!=null){
-			outState.putParcelable(STATE_MESSAGE_LIST, layoutManager.onSaveInstanceState());
+			outState.putParcelable(STATE_MESSAGE_LIST,layoutManager.onSaveInstanceState());
 		}
 	}
 
@@ -582,13 +582,14 @@ public class MessageListFragment extends Fragment
 
 	private void initializeMessageList(){
 		adapter=new MessageRecycleViewAdapter(context,this,new OnMessageClickListener(),this);
-		new ItemTouchHelper(new MessageSwipeReactions(context.getResources(),new IOnDeleteListener(){
-			@Override
-			public void onDelete(final int position){
-				final MessageReference message=getMessageAtPosition(position);
-				MessageListFragment.this.onDelete(message);
-			}
-		})).attachToRecyclerView(recyclerView);
+		new ItemTouchHelper(
+				new MessageSwipeReactions(context.getResources(),new IOnDeleteListener(){
+					@Override
+					public void onDelete(final int position){
+						final MessageReference message=getMessageAtPosition(position);
+						MessageListFragment.this.onDelete(message);
+					}
+				})).attachToRecyclerView(recyclerView);
 
 		if(folderName!=null){
 			currentFolder=getFolderInfoHolder(folderName,account);
@@ -2351,19 +2352,8 @@ public class MessageListFragment extends Fragment
 	}
 
 	private MessageReference getSelectedMessage(){
-		throw new UnsupportedOperationException("Not restored yet");
-		//TODO restore
-		//        final int listViewPosition = recyclerView.getSelectedItemPosition();
-		//        final int adapterPosition = listViewToAdapterPosition(listViewPosition);
-		//
-		//        return getMessageAtPosition(adapterPosition);
-	}
-
-	private int getAdapterPositionForSelectedMessage(){
-		throw new UnsupportedOperationException("Not restored yet");
-		//TODO restore
-		//    final int listViewPosition = recyclerView.getSelectedItemPosition();
-		//        return listViewToAdapterPosition(listViewPosition);
+		final int adapterPosition=adapter.getSelectedItem();
+		return getMessageAtPosition(adapterPosition);
 	}
 
 	private int getPositionForUniqueId(final long uniqueId){
@@ -2416,9 +2406,7 @@ public class MessageListFragment extends Fragment
 	}
 
 	public void toggleMessageSelect(){
-		throw new UnsupportedOperationException("Not restored yet");
-		//TODO restore
-//		        toggleMessageSelect(recyclerView.getSelectedItemPosition());
+		toggleMessageSelect(adapter.getSelectedItem());
 	}
 
 	public void onToggleFlagged(){
@@ -2430,7 +2418,7 @@ public class MessageListFragment extends Fragment
 	}
 
 	private void onToggleFlag(final Flag flag,final int flagColumn){
-		final int adapterPosition=getAdapterPositionForSelectedMessage();
+		final int adapterPosition=adapter.getSelectedItem();
 		if(adapterPosition==ListView.INVALID_POSITION){
 			return;
 		}
