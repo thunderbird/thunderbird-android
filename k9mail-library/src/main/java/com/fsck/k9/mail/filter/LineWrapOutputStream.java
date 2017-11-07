@@ -35,7 +35,7 @@ public class LineWrapOutputStream extends FilterOutputStream {
                 lineLength = buffer.length - endOfLastWord;
                 if (lineLength > 0) {
                     // Copy rest of the buffer to the front
-                    System.arraycopy(buffer, endOfLastWord + 0, buffer, 0, lineLength);
+                    System.arraycopy(buffer, endOfLastWord, buffer, 0, lineLength);
                 }
                 endOfLastWord = 0;
             } else {

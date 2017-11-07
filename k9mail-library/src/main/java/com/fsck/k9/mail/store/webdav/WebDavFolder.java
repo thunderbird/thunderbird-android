@@ -130,7 +130,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
         }
 
         messageBody = store.getMoveOrCopyMessagesReadXml(urls, isMove);
-        WebDavFolder destFolder = (WebDavFolder) store.getFolder(folderName);
+        WebDavFolder destFolder = store.getFolder(folderName);
         headers.put("Destination", destFolder.mFolderUrl);
         headers.put("Brief", "t");
         headers.put("If-Match", "*");
