@@ -367,9 +367,12 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
 
         UidCopyCommand command = UidCopyCommand.createWithUids(uids, escapedDestinationFolderName);
-        UidCopyResponse response = command.execute(connection, this);
-
-        return response == null ? null : response.getUidMapping();
+        try {
+            UidCopyResponse response = connection.executeSelectedStateCommand(command);
+            return response == null ? null : response.getUidMapping();
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
     }
 
     @Override
@@ -434,9 +437,12 @@ public class ImapFolder extends Folder<ImapMessage> {
                 .forbiddenFlags(forbiddenFlags)
                 .build();
 
-        UidSearchResponse searchResponse = searchCommand.execute(connection, this);
-        return searchResponse.getNumbers().size();
-
+        try {
+            UidSearchResponse searchResponse = connection.executeSelectedStateCommand(searchCommand);
+            return searchResponse.getNumbers().size();
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
     }
 
     @Override
@@ -460,11 +466,13 @@ public class ImapFolder extends Folder<ImapMessage> {
                     .onlyHighestId(true)
                     .build();
 
-            UidSearchResponse searchResponse = searchCommand.execute(connection, this);
+            UidSearchResponse searchResponse = connection.executeSelectedStateCommand(searchCommand);
 
             return extractHighestUid(searchResponse);
         } catch (NegativeImapResponseException e) {
             return -1L;
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
         }
     }
 
@@ -514,7 +522,12 @@ public class ImapFolder extends Folder<ImapMessage> {
                 .since(earliestDate)
                 .forbiddenFlags(includeDeleted ? null : Collections.singleton(Flag.DELETED))
                 .build();
-        return getMessages(searchCommand.execute(connection, this), listener);
+        try {
+            UidSearchResponse searchResponse = connection.executeSelectedStateCommand(searchCommand);
+            return getMessages(searchResponse, null);
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
     }
 
     @Override
@@ -551,7 +564,8 @@ public class ImapFolder extends Folder<ImapMessage> {
                 .since(earliestDate)
                 .forbiddenFlags(Collections.singleton(Flag.DELETED))
                 .build();
-        UidSearchResponse response = searchCommand.execute(connection, this);
+
+        UidSearchResponse response = connection.executeSelectedStateCommand(searchCommand);
         return response.getNumbers().size() > 0;
     }
 
@@ -564,7 +578,12 @@ public class ImapFolder extends Folder<ImapMessage> {
                 .idSet(mesgSeqs)
                 .forbiddenFlags(includeDeleted ? null : Collections.singleton(Flag.DELETED))
                 .build();
-        return getMessages(searchCommand.execute(connection, this), listener);
+        try {
+            UidSearchResponse searchResponse = connection.executeSelectedStateCommand(searchCommand);
+            return getMessages(searchResponse, null);
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
     }
 
     protected List<ImapMessage> getMessagesFromUids(final List<String> mesgUids) throws MessagingException {
@@ -579,7 +598,12 @@ public class ImapFolder extends Folder<ImapMessage> {
                 .useUids(true)
                 .idSet(uidSet)
                 .build();
-        return getMessages(searchCommand.execute(connection, this), null);
+        try {
+            UidSearchResponse searchResponse = connection.executeSelectedStateCommand(searchCommand);
+            return getMessages(searchResponse, null);
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
     }
 
     private List<ImapMessage> getMessages(UidSearchResponse searchResponse, MessageRetrievalListener<ImapMessage> listener)
@@ -1176,8 +1200,14 @@ public class ImapFolder extends Folder<ImapMessage> {
         UidSearchCommand searchCommand = new UidSearchCommand.Builder()
                 .messageId(messageId)
                 .build();
+        UidSearchResponse searchResponse;
+        try {
+            searchResponse = connection.executeSelectedStateCommand(searchCommand);
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
 
-        List<Long> uids = searchCommand.execute(connection, this).getNumbers();
+        List<Long> uids = searchResponse.getNumbers();
         if (uids.size() > 0) {
             return Long.toString(uids.get(0));
         }
@@ -1208,7 +1238,11 @@ public class ImapFolder extends Folder<ImapMessage> {
 
         UidStoreCommand command = UidStoreCommand.createWithAllUids(value, flags,
                 canCreateForwardedFlag);
-        command.execute(connection, this);
+        try {
+            connection.executeSelectedStateCommand(command);
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
     }
 
     @Override
@@ -1249,7 +1283,11 @@ public class ImapFolder extends Folder<ImapMessage> {
 
         UidStoreCommand command = UidStoreCommand.createWithUids(uids, value, flags,
                 canCreateForwardedFlag);
-        command.execute(connection, this);
+        try {
+            connection.executeSelectedStateCommand(command);
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
     }
 
     private void checkOpen() throws MessagingException {
@@ -1258,7 +1296,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    public MessagingException ioExceptionHandler(ImapConnection connection, IOException ioe) {
+    private MessagingException ioExceptionHandler(ImapConnection connection, IOException ioe) {
         Timber.e(ioe, "IOException for %s", getLogId());
 
         if (connection != null) {
@@ -1326,7 +1364,13 @@ public class ImapFolder extends Folder<ImapMessage> {
                     .requiredFlags(requiredFlags)
                     .forbiddenFlags(forbiddenFlags)
                     .build();
-            return getMessages(searchCommand.execute(connection, this), null);
+
+            try {
+                UidSearchResponse searchResponse = connection.executeSelectedStateCommand(searchCommand);
+                return getMessages(searchResponse, null);
+            } catch (IOException ioe) {
+                throw ioExceptionHandler(connection, ioe);
+            }
         } finally {
             inSearch = false;
         }

@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -20,6 +21,7 @@ import com.fsck.k9.mail.store.imap.ImapConnection;
 import com.fsck.k9.mail.store.imap.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapResponseCallback;
 import com.fsck.k9.mail.store.imap.ImapUtility;
+import com.fsck.k9.mail.store.imap.selectedstate.response.SelectedStateResponse;
 
 
 public class UidFetchCommand extends FolderSelectedStateCommand {
@@ -40,6 +42,11 @@ public class UidFetchCommand extends FolderSelectedStateCommand {
         builder.append(createCombinedIdString());
         addDataItems(builder);
         return builder.toString().trim();
+    }
+
+    @Override
+    public SelectedStateResponse parseResponses(List unparsedResponses) {
+        return null;
     }
 
     public void send(ImapConnection connection) throws IOException, MessagingException {

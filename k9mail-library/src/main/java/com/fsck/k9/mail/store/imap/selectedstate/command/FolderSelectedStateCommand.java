@@ -1,22 +1,18 @@
 package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.imap.ImapConnection;
-import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.store.imap.selectedstate.response.SelectedStateResponse;
 
 
-abstract class FolderSelectedStateCommand {
+public abstract class FolderSelectedStateCommand<R extends SelectedStateResponse> {
 
     /* The below limits are 20 octets less than the recommended limits, in order to compensate for
     the length of the command tag, the space after the tag and the CRLF at the end of the command
@@ -57,28 +53,22 @@ abstract class FolderSelectedStateCommand {
         return builder.toString();
     }
 
-    public SelectedStateResponse execute(ImapConnection connection, ImapFolder folder) throws MessagingException {
-        return null;
-    }
-
-    List<List<ImapResponse>> executeInternal(ImapConnection connection, ImapFolder folder)
-            throws IOException, MessagingException {
+    public List<String> optimizeAndSplit(boolean condstoreCapable) {
         ImapCommandSplitter.optimizeGroupings(this);
-        List<String> commands;
         String commandString = createCommandString();
 
-        if (commandString.length() > getCommandLengthLimit(connection)) {
-            commands = ImapCommandSplitter.splitCommand(this, getCommandLengthLimit(connection));
+        List<String> commands;
+        if (commandString.length() > getCommandLengthLimit(condstoreCapable)) {
+            commands = ImapCommandSplitter.splitCommand(this,
+                    getCommandLengthLimit(condstoreCapable));
         } else {
             commands = Collections.singletonList(commandString);
         }
 
-        List<List<ImapResponse>> responses = new ArrayList<>();
-        for (String command : commands) {
-            responses.add(folder.executeSimpleCommand(command));
-        }
-        return responses;
+        return commands;
     }
+
+    public abstract R parseResponses(List<List<ImapResponse>> unparsedResponses);
 
     Set<Long> getIdSet() {
         return idSet;
@@ -92,9 +82,8 @@ abstract class FolderSelectedStateCommand {
         return idGroups;
     }
 
-    private int getCommandLengthLimit(ImapConnection connection) throws IOException, MessagingException  {
-        boolean condstoreSupported = connection.isCondstoreCapable();
-        if (condstoreSupported) {
+    private int getCommandLengthLimit(boolean condstoreCapable) {
+        if (condstoreCapable) {
             return LENGTH_LIMIT_WITH_CONDSTORE;
         } else {
             return LENGTH_LIMIT_WITHOUT_CONDSTORE;

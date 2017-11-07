@@ -1,19 +1,15 @@
 package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.Commands;
-import com.fsck.k9.mail.store.imap.ImapConnection;
-import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapResponse;
 import com.fsck.k9.mail.store.imap.selectedstate.response.UidCopyResponse;
 
 
-public class UidCopyCommand extends FolderSelectedStateCommand {
+public class UidCopyCommand extends FolderSelectedStateCommand<UidCopyResponse> {
     private String destinationFolderName;
 
     private UidCopyCommand(Set<Long> uids, String destinationFolderName) {
@@ -27,13 +23,8 @@ public class UidCopyCommand extends FolderSelectedStateCommand {
     }
 
     @Override
-    public UidCopyResponse execute(ImapConnection connection, ImapFolder folder) throws MessagingException {
-        try {
-            List<List<ImapResponse>> responses = executeInternal(connection, folder);
-            return UidCopyResponse.parse(responses);
-        } catch (IOException ioe) {
-            throw folder.ioExceptionHandler(connection, ioe);
-        }
+    public UidCopyResponse parseResponses(List<List<ImapResponse>> unparsedResponses) {
+        return UidCopyResponse.parse(unparsedResponses);
     }
 
     public static UidCopyCommand createWithUids(Set<Long> uids, String destinationFolderName) {

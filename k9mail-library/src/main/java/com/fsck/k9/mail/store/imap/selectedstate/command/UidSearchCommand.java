@@ -1,6 +1,5 @@
 package com.fsck.k9.mail.store.imap.selectedstate.command;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -9,16 +8,13 @@ import java.util.Locale;
 import java.util.Set;
 
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.Commands;
-import com.fsck.k9.mail.store.imap.ImapConnection;
-import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapResponse;
 import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.store.imap.selectedstate.response.UidSearchResponse;
 
 
-public class UidSearchCommand extends FolderSelectedStateCommand {
+public class UidSearchCommand extends FolderSelectedStateCommand<UidSearchResponse> {
     private boolean useUids;
     private String queryString;
     private String messageId;
@@ -47,13 +43,8 @@ public class UidSearchCommand extends FolderSelectedStateCommand {
     }
 
     @Override
-    public UidSearchResponse execute(ImapConnection connection, ImapFolder folder) throws MessagingException {
-        try {
-            List<List<ImapResponse>> responses = executeInternal(connection, folder);
-            return UidSearchResponse.parse(responses);
-        } catch (IOException ioe) {
-            throw folder.ioExceptionHandler(connection, ioe);
-        }
+    public UidSearchResponse parseResponses(List<List<ImapResponse>> unparsedResponses) {
+        return UidSearchResponse.parse(unparsedResponses);
     }
 
     private void addQueryString(StringBuilder builder) {

@@ -1,15 +1,12 @@
 package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
-import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.Commands;
-import com.fsck.k9.mail.store.imap.ImapConnection;
-import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapUtility;
 import com.fsck.k9.mail.store.imap.selectedstate.response.SelectedStateResponse;
 
@@ -34,15 +31,9 @@ public class UidStoreCommand extends FolderSelectedStateCommand {
     }
 
     @Override
-    public SelectedStateResponse execute(ImapConnection connection, ImapFolder folder) throws MessagingException {
-        try {
-            executeInternal(connection, folder);
-            //These results are not important, because of the FLAGS.SILENT option
-            return null;
-        } catch (IOException ioe) {
-            throw folder.ioExceptionHandler(connection, ioe);
-        }
-
+    public SelectedStateResponse parseResponses(List unparsedResponses) {
+        //These results are not important, because of the FLAGS.SILENT option
+        return null;
     }
 
     public static UidStoreCommand createWithUids(Set<Long> uids, boolean value, Set<Flag> flags,
