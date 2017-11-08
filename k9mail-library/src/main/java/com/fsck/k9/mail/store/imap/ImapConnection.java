@@ -17,6 +17,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +42,8 @@ import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.store.imap.selectedstate.command.FolderSelectedStateCommand;
+import com.fsck.k9.mail.store.imap.selectedstate.response.SelectedStateResponse;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 import javax.net.ssl.SSLException;
@@ -57,7 +60,7 @@ import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 /**
  * A cacheable class that stores the details for a single IMAP connection.
  */
-class ImapConnection {
+public class ImapConnection {
     private static final int BUFFER_SIZE = 1024;
 
 
@@ -683,6 +686,10 @@ class ImapConnection {
         return capabilities.contains(capability.toUpperCase(Locale.US));
     }
 
+    public boolean isCondstoreCapable() throws IOException, MessagingException  {
+        return hasCapability(Capabilities.CONDSTORE);
+    }
+
     protected boolean isIdleCapable() {
         if (K9MailLib.isDebug()) {
             Timber.v("Connection %s has %d capabilities", getLogId(), capabilities.size());
@@ -732,6 +739,16 @@ class ImapConnection {
             close();
             throw e;
         }
+    }
+
+    public <R extends SelectedStateResponse> R executeSelectedStateCommand(
+            FolderSelectedStateCommand<R> command) throws IOException, MessagingException {
+        List<String> splitCommands = command.optimizeAndSplit(isCondstoreCapable());
+        List<List<ImapResponse>> responses = new ArrayList<>(splitCommands.size());
+        for (String splitCommand : splitCommands) {
+            responses.add(executeSimpleCommand(splitCommand));
+        }
+        return command.parseResponses(responses);
     }
 
     public List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)

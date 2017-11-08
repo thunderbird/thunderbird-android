@@ -14,7 +14,7 @@ import timber.log.Timber;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
 
 
-class ImapResponseParser {
+public class ImapResponseParser {
     private PeekableInputStream inputStream;
     private ImapResponse response;
     private Exception exception;
@@ -472,7 +472,7 @@ class ImapResponseParser {
                 symbol.equalsIgnoreCase(Responses.BYE);
     }
 
-    static boolean equalsIgnoreCase(Object token, String symbol) {
+    public static boolean equalsIgnoreCase(Object token, String symbol) {
         if (token == null || !(token instanceof String)) {
             return false;
         }

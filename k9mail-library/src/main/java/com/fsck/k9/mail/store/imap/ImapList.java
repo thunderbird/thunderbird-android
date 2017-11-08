@@ -13,7 +13,7 @@ import java.util.Locale;
  * Represents an IMAP list response and is also the base class for the
  * ImapResponse.
  */
-class ImapList extends ArrayList<Object> {
+public class ImapList extends ArrayList<Object> {
     private static final long serialVersionUID = -4067248341419617583L;
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss Z", Locale.US);
     private static final DateFormat BAD_DATE_TIME_FORMAT = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z", Locale.US);
