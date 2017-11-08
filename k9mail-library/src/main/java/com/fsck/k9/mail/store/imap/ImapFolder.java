@@ -524,7 +524,7 @@ public class ImapFolder extends Folder<ImapMessage> {
                 .build();
         try {
             UidSearchResponse searchResponse = connection.executeSelectedStateCommand(searchCommand);
-            return getMessages(searchResponse, null);
+            return getMessages(searchResponse, listener);
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         }
@@ -580,7 +580,7 @@ public class ImapFolder extends Folder<ImapMessage> {
                 .build();
         try {
             UidSearchResponse searchResponse = connection.executeSelectedStateCommand(searchCommand);
-            return getMessages(searchResponse, null);
+            return getMessages(searchResponse, listener);
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         }

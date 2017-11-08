@@ -1,20 +1,17 @@
 package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 
+import java.util.Collections;
+import java.util.List;
+
 import com.fsck.k9.mail.store.imap.ImapConnection;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapResponseHelper;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
-
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.util.collections.Sets.newSet;
 
@@ -80,21 +77,21 @@ public class FolderSelectedStateCommandTest {
     }
 
     @Test
-    public void executeInternal_withShortCommand_shouldNotSplitCommand() throws Exception {
+    public void optimizeAndSplit_withShortCommand_shouldNotSplitCommand() throws Exception {
         TestCommand command = TestCommand.createWithIdSet(newSet(1L, 2L, 3L));
 
-        command.executeInternal(imapConnection, imapFolder);
+        List<String> splitCommands = command.optimizeAndSplit(false);
 
-        verify(imapFolder, times(1)).executeSimpleCommand(anyString());
+        assertEquals(splitCommands.size(), 1);
     }
 
     @Test
-    public void executeInternal_withLongCommand_shouldSplitCommand() throws Exception {
+    public void optimizeAndSplit_withLongCommand_shouldSplitCommand() throws Exception {
         TestCommand command = TestCommand.createWithIdSet(ImapResponseHelper
                 .createNonContiguousIdSet(10000L, 10500L, 2));
 
-        command.executeInternal(imapConnection, imapFolder);
+        List<String> splitCommands = command.optimizeAndSplit(false);
 
-        verify(imapFolder, atLeast(2)).executeSimpleCommand(anyString());
+        assertEquals(splitCommands.size(), 2);
     }
 }

@@ -1,9 +1,13 @@
 package com.fsck.k9.mail.store.imap.selectedstate.command;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
-class TestCommand extends FolderSelectedStateCommand {
+import com.fsck.k9.mail.store.imap.selectedstate.response.SelectedStateResponse;
+
+
+class TestCommand extends FolderSelectedStateCommand<SelectedStateResponse> {
 
     private TestCommand(Set<Long> ids) {
         super(ids);
@@ -12,6 +16,11 @@ class TestCommand extends FolderSelectedStateCommand {
     @Override
     String createCommandString() {
         return String.format("TEST %s", createCombinedIdString()).trim();
+    }
+
+    @Override
+    public SelectedStateResponse parseResponses(List unparsedResponses) {
+        return null;
     }
 
     static TestCommand createWithIdSetAndGroup(Set<Long> ids, Long start, Long end) {
