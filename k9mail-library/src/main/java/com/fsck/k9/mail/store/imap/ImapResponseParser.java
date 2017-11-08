@@ -1,15 +1,14 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import com.fsck.k9.mail.K9MailLib;
-import com.fsck.k9.mail.filter.FixedLengthInputStream;
-import com.fsck.k9.mail.filter.PeekableInputStream;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.filter.FixedLengthInputStream;
+import com.fsck.k9.mail.filter.PeekableInputStream;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;

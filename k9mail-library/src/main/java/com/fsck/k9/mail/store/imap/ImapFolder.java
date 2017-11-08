@@ -111,7 +111,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         return prefixedName;
     }
 
-    public List<ImapResponse> executeSimpleCommand(String command) throws MessagingException, IOException {
+    private List<ImapResponse> executeSimpleCommand(String command) throws MessagingException, IOException {
         return handleUntaggedResponses(connection.executeSimpleCommand(command));
     }
 
