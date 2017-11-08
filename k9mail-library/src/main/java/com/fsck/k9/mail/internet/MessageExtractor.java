@@ -447,8 +447,8 @@ public class MessageExtractor {
             dispositionFilename = MimeUtility.getHeaderParameter(disposition, "filename");
         }
 
-        // if part is an attachment disposition
-        if ("attachment".equalsIgnoreCase(dispositionType) || dispositionFilename != null) {
+        boolean isAttachmentDisposition = "attachment".equalsIgnoreCase(dispositionType) || dispositionFilename != null;
+        if (isAttachmentDisposition) {
             return false;
         }
 
