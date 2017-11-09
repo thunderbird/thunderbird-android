@@ -743,9 +743,9 @@ class ImapConnection {
             throws IOException, MessagingException {
 
         List<String> splitCommands = command.optimizeAndSplit(isCondstoreCapable());
-        List<List<ImapResponse>> responses = new ArrayList<>(splitCommands.size());
+        List<ImapResponse> responses = new ArrayList<>();
         for (String splitCommand : splitCommands) {
-            responses.add(executeSimpleCommand(splitCommand));
+            responses.addAll(executeSimpleCommand(splitCommand));
         }
 
         return command.parseResponses(responses);

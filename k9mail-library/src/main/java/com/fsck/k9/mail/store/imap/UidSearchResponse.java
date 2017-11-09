@@ -14,17 +14,8 @@ class UidSearchResponse extends SelectedStateResponse {
         super(imapResponse);
     }
 
-    public static UidSearchResponse parse(List<List<ImapResponse>> imapResponses) {
-        UidSearchResponse combinedResponse = null;
-        for (List<ImapResponse> imapResponse : imapResponses) {
-            UidSearchResponse searchResponse = new UidSearchResponse(imapResponse);
-            if (combinedResponse == null) {
-                combinedResponse = searchResponse;
-            } else {
-                combinedResponse.combine(searchResponse);
-            }
-        }
-        return combinedResponse;
+    public static UidSearchResponse parse(List<ImapResponse> imapResponses) {
+        return new UidSearchResponse(imapResponses);
     }
 
     @Override

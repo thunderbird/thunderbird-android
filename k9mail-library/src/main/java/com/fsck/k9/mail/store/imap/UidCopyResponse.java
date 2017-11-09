@@ -16,20 +16,9 @@ class UidCopyResponse extends SelectedStateResponse {
         super(imapResponse);
     }
 
-    public static UidCopyResponse parse(List<List<ImapResponse>> imapResponses) {
-        UidCopyResponse combinedResponse = null;
-        for (List<ImapResponse> imapResponse : imapResponses) {
-            UidCopyResponse copyUidResponse = new UidCopyResponse(imapResponse);
-            if (copyUidResponse.uidMapping == null) {
-                copyUidResponse = null;
-            }
-            if (combinedResponse == null) {
-                combinedResponse = copyUidResponse;
-            } else {
-                combinedResponse.combine(copyUidResponse);
-            }
-        }
-        return combinedResponse;
+    public static UidCopyResponse parse(List<ImapResponse> imapResponses) {
+        UidCopyResponse response = new UidCopyResponse(imapResponses);
+        return response.uidMapping == null ? null : response;
     }
 
     @Override

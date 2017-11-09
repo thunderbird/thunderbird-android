@@ -12,17 +12,7 @@ import com.fsck.k9.mail.filter.PeekableInputStream;
 
 
 public class ImapResponseHelper {
-
-    @SafeVarargs
-    public static List<List<ImapResponse>> createMultipleImapResponses(List<String>... responses) throws IOException {
-        List<List<ImapResponse>> imapResponses = new ArrayList<>();
-        for (List<String> response : responses) {
-            imapResponses.add(createImapResponseList(response));
-        }
-        return imapResponses;
-    }
-
-    private static List<ImapResponse> createImapResponseList(List<String> responses) throws IOException {
+    public static List<ImapResponse> createImapResponseList(String... responses) throws IOException {
         List<ImapResponse> imapResponses = new ArrayList<>();
         for (String response : responses) {
             imapResponses.add(createImapResponse(response));

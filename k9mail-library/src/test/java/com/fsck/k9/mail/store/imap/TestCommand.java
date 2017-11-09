@@ -17,7 +17,7 @@ class TestCommand extends FolderSelectedStateCommand<SelectedStateResponse> {
     }
 
     @Override
-    public SelectedStateResponse parseResponses(List unparsedResponses) {
+    public SelectedStateResponse parseResponses(List<ImapResponse> unparsedResponses) {
         return null;
     }
 

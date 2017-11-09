@@ -64,7 +64,7 @@ abstract class FolderSelectedStateCommand<R extends SelectedStateResponse> {
         return commands;
     }
 
-    public abstract R parseResponses(List<List<ImapResponse>> unparsedResponses);
+    public abstract R parseResponses(List<ImapResponse> unparsedResponses);
 
     Set<Long> getIdSet() {
         return idSet;

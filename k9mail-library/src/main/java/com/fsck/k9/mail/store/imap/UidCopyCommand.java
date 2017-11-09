@@ -19,7 +19,7 @@ public class UidCopyCommand extends FolderSelectedStateCommand<UidCopyResponse> 
     }
 
     @Override
-    public UidCopyResponse parseResponses(List<List<ImapResponse>> unparsedResponses) {
+    public UidCopyResponse parseResponses(List<ImapResponse> unparsedResponses) {
         return UidCopyResponse.parse(unparsedResponses);
     }
 

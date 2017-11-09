@@ -40,7 +40,7 @@ public class UidSearchCommand extends FolderSelectedStateCommand<UidSearchRespon
     }
 
     @Override
-    public UidSearchResponse parseResponses(List<List<ImapResponse>> unparsedResponses) {
+    public UidSearchResponse parseResponses(List<ImapResponse> unparsedResponses) {
         return UidSearchResponse.parse(unparsedResponses);
     }
 

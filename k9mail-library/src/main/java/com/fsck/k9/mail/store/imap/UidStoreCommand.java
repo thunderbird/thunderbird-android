@@ -28,7 +28,7 @@ class UidStoreCommand extends FolderSelectedStateCommand<SelectedStateResponse> 
     }
 
     @Override
-    public SelectedStateResponse parseResponses(List<List<ImapResponse>> unparsedResponses) {
+    public SelectedStateResponse parseResponses(List<ImapResponse> unparsedResponses) {
         //These results are not important, because of the FLAGS.SILENT option
         return null;
     }
