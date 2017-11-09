@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-public class UidSearchResponseTest {
+public class SearchResponseTest {
     @Test
     public void parse_withSingleSearchResponse_shouldExtractNumbers() throws Exception {
         List<ImapResponse> imapResponses = createImapResponseList(
@@ -21,7 +21,7 @@ public class UidSearchResponseTest {
                 "* SEARCH 4",
                 "1 OK SEARCH completed");
 
-        UidSearchResponse result = UidSearchResponse.parse(imapResponses);
+        SearchResponse result = SearchResponse.parse(imapResponses);
 
         assertNotNull(result);
         assertEquals(asList(1L, 2L, 3L, 4L), result.getNumbers());
@@ -41,7 +41,7 @@ public class UidSearchResponseTest {
                 "* SEARCH 8",
                 "3 OK SEARCH completed");
 
-        UidSearchResponse result = UidSearchResponse.parse(imapResponses);
+        SearchResponse result = SearchResponse.parse(imapResponses);
 
         assertNotNull(result);
         assertEquals(asList(1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L), result.getNumbers());
@@ -51,7 +51,7 @@ public class UidSearchResponseTest {
     public void parse_withSingleTaggedSearchResponse_shouldReturnEmptyList() throws Exception {
         List<ImapResponse> imapResponses = createImapResponseList("x SEARCH 7 8 9");
 
-        UidSearchResponse result = UidSearchResponse.parse(imapResponses);
+        SearchResponse result = SearchResponse.parse(imapResponses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());
@@ -61,7 +61,7 @@ public class UidSearchResponseTest {
     public void parse_withSingleTooShortResponse_shouldReturnEmptyList() throws Exception {
         List<ImapResponse> imapResponses = createImapResponseList("* SEARCH");
 
-        UidSearchResponse result = UidSearchResponse.parse(imapResponses);
+        SearchResponse result = SearchResponse.parse(imapResponses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());
@@ -71,7 +71,7 @@ public class UidSearchResponseTest {
     public void parse_withSingleNoSearchResponse_shouldReturnEmptyList() throws Exception {
         List<ImapResponse> imapResponses = createImapResponseList("* 23 EXPUNGE");
 
-        UidSearchResponse result = UidSearchResponse.parse(imapResponses);
+        SearchResponse result = SearchResponse.parse(imapResponses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());
@@ -81,7 +81,7 @@ public class UidSearchResponseTest {
     public void parse_withSingleSearchResponseContainingInvalidNumber_shouldReturnEmptyList() throws Exception {
         List<ImapResponse> imapResponses = createImapResponseList("* SEARCH A");
 
-        UidSearchResponse result = UidSearchResponse.parse(imapResponses);
+        SearchResponse result = SearchResponse.parse(imapResponses);
 
         assertNotNull(result);
         assertEquals(Collections.emptyList(), result.getNumbers());

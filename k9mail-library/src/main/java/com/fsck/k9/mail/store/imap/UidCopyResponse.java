@@ -1,7 +1,7 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,22 +9,24 @@ import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 import static com.fsck.k9.mail.store.imap.ImapUtility.getImapSequenceValues;
 
 
-class UidCopyResponse extends SelectedStateResponse {
-    private Map<String, String> uidMapping;
+class UidCopyResponse {
+    private final Map<String, String> uidMapping;
 
-    private UidCopyResponse(List<ImapResponse> imapResponse) {
-        super(imapResponse);
+
+    private UidCopyResponse(Map<String, String> uidMapping) {
+        this.uidMapping = uidMapping;
     }
 
     public static UidCopyResponse parse(List<ImapResponse> imapResponses) {
-        UidCopyResponse response = new UidCopyResponse(imapResponses);
-        return response.uidMapping == null ? null : response;
+        Map<String, String> uidMapping = new LinkedHashMap<>();
+        for (ImapResponse imapResponse : imapResponses) {
+            parseUidCopyResponse(imapResponse, uidMapping);
+        }
+
+        return uidMapping.isEmpty() ? null : new UidCopyResponse(uidMapping);
     }
 
-    @Override
-    void parseResponse(List<ImapResponse> imapResponses) {
-        ImapResponse response = ImapUtility.getLastResponse(imapResponses);
-
+    private static void parseUidCopyResponse(ImapResponse response, Map<String, String> uidMappingOutput) {
         if (!response.isTagged() || response.size() < 2 || !equalsIgnoreCase(response.get(0), Responses.OK) ||
                 !response.isList(1)) {
             return;
@@ -44,21 +46,11 @@ class UidCopyResponse extends SelectedStateResponse {
             return;
         }
 
-        uidMapping = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
             String sourceUid = sourceUids.get(i);
             String destinationUid = destinationUids.get(i);
-            uidMapping.put(sourceUid, destinationUid);
+            uidMappingOutput.put(sourceUid, destinationUid);
         }
-    }
-
-    @Override
-    void combine(SelectedStateResponse selectedStateResponse) {
-        if (selectedStateResponse == null) {
-            return;
-        }
-        UidCopyResponse copyUidResponse = (UidCopyResponse) selectedStateResponse;
-        this.uidMapping.putAll(copyUidResponse.getUidMapping());
     }
 
     public Map<String, String> getUidMapping() {

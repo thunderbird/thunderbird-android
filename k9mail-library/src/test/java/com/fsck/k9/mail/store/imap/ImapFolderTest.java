@@ -49,7 +49,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anySetOf;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.startsWith;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -65,7 +68,6 @@ public class ImapFolderTest {
     private ImapStore imapStore;
     private ImapConnection imapConnection;
     private StoreConfig storeConfig;
-    private ArgumentCaptor<? extends FolderSelectedStateCommand> commandCaptor;
 
     @Before
     public void setUp() throws Exception {
@@ -77,7 +79,6 @@ public class ImapFolderTest {
         when(imapStore.getStoreConfig()).thenReturn(storeConfig);
 
         imapConnection = mock(ImapConnection.class);
-        commandCaptor = ArgumentCaptor.forClass(FolderSelectedStateCommand.class);
     }
 
     @Test
@@ -365,7 +366,7 @@ public class ImapFolderTest {
 
         sourceFolder.moveMessages(messages, destinationFolder);
 
-        assertCommandIssued("UID STORE 1 +FLAGS.SILENT (\\Deleted)");
+        assertCommandWithIdsIssued("UID STORE 1 +FLAGS.SILENT (\\Deleted)");
     }
 
     @Test
@@ -398,7 +399,7 @@ public class ImapFolderTest {
 
         folder.delete(messages, "Folder");
 
-        assertCommandIssued("UID STORE 23 +FLAGS.SILENT (\\Deleted)");
+        assertCommandWithIdsIssued("UID STORE 23 +FLAGS.SILENT (\\Deleted)");
     }
 
     @Test
@@ -413,7 +414,7 @@ public class ImapFolderTest {
 
         folder.delete(messages, "Trash");
 
-        assertCommandIssued("UID STORE 2 +FLAGS.SILENT (\\Deleted)");
+        assertCommandWithIdsIssued("UID STORE 2 +FLAGS.SILENT (\\Deleted)");
     }
 
     @Test
@@ -510,7 +511,7 @@ public class ImapFolderTest {
     public void getHighestUid() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        setupSearchResponses("* SEARCH 42");
+        setupUidSearchResponses("* SEARCH 42");
         folder.open(OPEN_MODE_RW);
 
         long highestUid = folder.getHighestUid();
@@ -522,8 +523,7 @@ public class ImapFolderTest {
     public void getHighestUid_imapConnectionThrowsNegativesResponse_shouldReturnMinusOne() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        doThrow(NegativeImapResponseException.class).when(imapConnection)
-                .executeSelectedStateCommand(any(UidSearchCommand.class));
+        doThrow(NegativeImapResponseException.class).when(imapConnection).executeSimpleCommand("UID SEARCH *:*");
         folder.open(OPEN_MODE_RW);
 
         long highestUid = folder.getHighestUid();
@@ -535,7 +535,7 @@ public class ImapFolderTest {
     public void getHighestUid_imapConnectionThrowsIOException_shouldThrowMessagingException() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        doThrow(IOException.class).when(imapConnection).executeSelectedStateCommand(any(UidSearchCommand.class));
+        doThrow(IOException.class).when(imapConnection).executeSimpleCommand("UID SEARCH *:*");
         folder.open(OPEN_MODE_RW);
 
         try {
@@ -550,7 +550,7 @@ public class ImapFolderTest {
     public void getMessages_withoutDateConstraint() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        setupSearchResponses("* SEARCH 3", "* SEARCH 5", "* SEARCH 6");
+        setupUidSearchResponses("* SEARCH 3", "* SEARCH 5", "* SEARCH 6");
         folder.open(OPEN_MODE_RW);
 
         List<ImapMessage> messages = folder.getMessages(1, 10, null, null);
@@ -564,7 +564,7 @@ public class ImapFolderTest {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        setupSearchResponses("* SEARCH 47", "* SEARCH 18");
+        setupUidSearchResponses("* SEARCH 47", "* SEARCH 18");
         folder.open(OPEN_MODE_RW);
 
         List<ImapMessage> messages = folder.getMessages(1, 10, new Date(1454719826000L), null);
@@ -577,7 +577,7 @@ public class ImapFolderTest {
     public void getMessages_withListener_shouldCallListener() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        setupSearchResponses("* SEARCH 99");
+        setupUidSearchResponses("* SEARCH 99");
         folder.open(OPEN_MODE_RW);
         MessageRetrievalListener<ImapMessage> listener = createMessageRetrievalListener();
 
@@ -655,7 +655,7 @@ public class ImapFolderTest {
     public void getMessages_sequenceNumbers() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        setupSearchResponses("* SEARCH 17", "* SEARCH 18", "* SEARCH 49");
+        setupUidSearchResponses("* SEARCH 17", "* SEARCH 18", "* SEARCH 49");
         folder.open(OPEN_MODE_RW);
 
         List<ImapMessage> messages = folder.getMessages(newSet(1L, 2L, 5L), false, null);
@@ -668,7 +668,7 @@ public class ImapFolderTest {
     public void getMessages_sequenceNumbers_withListener_shouldCallListener() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        setupSearchResponses("* SEARCH 99");
+        setupUidSearchResponses("* SEARCH 99");
         folder.open(OPEN_MODE_RW);
         MessageRetrievalListener<ImapMessage> listener = createMessageRetrievalListener();
 
@@ -697,7 +697,7 @@ public class ImapFolderTest {
     public void getMessagesFromUids() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
-        setupSearchResponses("* SEARCH 11", "* SEARCH 22", "* SEARCH 25");
+        setupUidSearchResponses("* SEARCH 11", "* SEARCH 22", "* SEARCH 25");
         folder.open(OPEN_MODE_RW);
 
         List<ImapMessage> messages = folder.getMessagesFromUids(asList("11", "22", "25"));
@@ -766,8 +766,8 @@ public class ImapFolderTest {
 
         folder.areMoreMessagesAvailable(600, null);
 
-        assertCommandIssued("UID SEARCH 100:599 NOT DELETED");
-        assertCommandIssued("UID SEARCH 1:99 NOT DELETED");
+        assertCommandIssued("SEARCH 100:599 NOT DELETED");
+        assertCommandIssued("SEARCH 1:99 NOT DELETED");
     }
 
     @Test
@@ -974,7 +974,7 @@ public class ImapFolderTest {
         folder.open(OPEN_MODE_RW);
         ImapMessage message = createImapMessage("2");
         when(message.getHeader("Message-ID")).thenReturn(new String[] { "<00000000.0000000@example.org>" });
-        setupSearchResponses("1 OK SEARCH Completed");
+        setupUidSearchResponses("1 OK SEARCH Completed");
 
         folder.getUidFromMessageId(message);
 
@@ -988,7 +988,7 @@ public class ImapFolderTest {
         folder.open(OPEN_MODE_RW);
         ImapMessage message = createImapMessage("2");
         when(message.getHeader("Message-ID")).thenReturn(new String[] { "<00000000.0000000@example.org>" });
-        setupSearchResponses("* SEARCH 23");
+        setupUidSearchResponses("* SEARCH 23");
 
         String uid = folder.getUidFromMessageId(message);
 
@@ -1043,7 +1043,7 @@ public class ImapFolderTest {
         prepareImapFolderForOpen(OPEN_MODE_RO);
         when(storeConfig.allowRemoteSearch()).thenReturn(true);
         when(storeConfig.isRemoteSearchFullText()).thenReturn(true);
-        setupSearchResponses("1 OK SEARCH completed");
+        setupUidSearchResponses("1 OK SEARCH completed");
 
         folder.search("query", newSet(Flag.SEEN), Collections.<Flag>emptySet());
 
@@ -1056,7 +1056,7 @@ public class ImapFolderTest {
         prepareImapFolderForOpen(OPEN_MODE_RO);
         when(storeConfig.allowRemoteSearch()).thenReturn(true);
         when(storeConfig.isRemoteSearchFullText()).thenReturn(false);
-        setupSearchResponses("1 OK SEARCH completed");
+        setupUidSearchResponses("1 OK SEARCH completed");
 
         folder.search("query", Collections.<Flag>emptySet(), Collections.<Flag>emptySet());
 
@@ -1213,14 +1213,42 @@ public class ImapFolderTest {
     }
 
     @SuppressWarnings("unchecked")
-    private void assertCommandIssued(String command) throws MessagingException, IOException {
-        verify(imapConnection, atLeastOnce()).executeSelectedStateCommand(commandCaptor.capture());
-        List<? extends FolderSelectedStateCommand> issuedCommands = commandCaptor.getAllValues();
-        List<String> stringCommands = new ArrayList<>(issuedCommands.size());
-        for (FolderSelectedStateCommand issuedCommand : issuedCommands) {
-            stringCommands.addAll(issuedCommand.optimizeAndSplit(false));
+    private void assertCommandWithIdsIssued(String expectedCommand) throws MessagingException, IOException {
+        ArgumentCaptor<String> commandPrefixCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> commandSuffixCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Set> commandUidsCaptor = ArgumentCaptor.forClass(Set.class);
+        verify(imapConnection, atLeastOnce()).executeCommandWithIdSet(
+                commandPrefixCaptor.capture(), commandSuffixCaptor.capture(), commandUidsCaptor.capture());
+
+        List<String> commandPrefixes = commandPrefixCaptor.getAllValues();
+        List<String> commandSuffixes = commandSuffixCaptor.getAllValues();
+        List<Set> commandUids = commandUidsCaptor.getAllValues();
+
+        for (int i = 0, end = commandPrefixes.size(); i < end; i++) {
+            String command = commandPrefixes.get(i) +
+                    " " + ImapUtility.join(",", commandUids.get(i)) + " " +
+                    commandSuffixes.get(i);
+            if (command.equals(expectedCommand)) {
+                return;
+            }
         }
-        assertEquals(stringCommands.contains(command), true);
+
+        fail("Expected IMAP command not issued: " + expectedCommand);
+    }
+
+    private void assertCommandIssued(String expectedCommand) throws MessagingException, IOException {
+        verify(imapConnection, atLeastOnce()).executeSimpleCommand(expectedCommand);
+    }
+
+    private void setupUidSearchResponses(String... responses) throws MessagingException, IOException {
+        List<ImapResponse> imapResponses = new ArrayList<>(responses.length);
+        for (String response : responses) {
+            imapResponses.add(createImapResponse(response));
+        }
+
+        when(imapConnection.executeSimpleCommand(startsWith("UID SEARCH"))).thenReturn(imapResponses);
+        when(imapConnection.executeCommandWithIdSet(startsWith("UID SEARCH"), anyString(), anySetOf(Long.class)))
+                .thenReturn(imapResponses);
     }
 
     private void setupSearchResponses(String... responses) throws MessagingException, IOException {
@@ -1228,13 +1256,13 @@ public class ImapFolderTest {
         for (String response : responses) {
             imapResponses.add(createImapResponse(response));
         }
-        UidSearchResponse searchResponse = UidSearchResponse.parse(imapResponses);
-        when(imapConnection.executeSelectedStateCommand(any(UidSearchCommand.class))).thenReturn(searchResponse);
+
+        when(imapConnection.executeSimpleCommand(startsWith("SEARCH"))).thenReturn(imapResponses);
     }
 
     private void setupCopyResponse(String response) throws MessagingException, IOException {
         List<ImapResponse> imapResponses = singletonList(createImapResponse(response));
-        UidCopyResponse uidCopyResponse = UidCopyResponse.parse(imapResponses);
-        when(imapConnection.executeSelectedStateCommand(any(UidCopyCommand.class))).thenReturn(uidCopyResponse);
+        when(imapConnection.executeCommandWithIdSet(eq(Commands.UID_COPY), anyString(), anySetOf(Long.class)))
+                .thenReturn(imapResponses);
     }
 }

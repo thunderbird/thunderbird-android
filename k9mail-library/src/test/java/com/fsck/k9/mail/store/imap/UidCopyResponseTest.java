@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponseList;
 import static org.junit.Assert.assertEquals;
@@ -15,7 +13,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
 public class UidCopyResponseTest {
     @Test
     public void parse_withCopyUidResponse_shouldCreateUidMapping() throws Exception {
