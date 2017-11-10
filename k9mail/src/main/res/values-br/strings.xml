@@ -187,7 +187,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="notification_authentication_error_title">C’hwiadenn war an dilesa</string>
   <string name="notification_authentication_error_text">C’hwitadenn war an dilesa evit <xliff:g id="account">%s</xliff:g>. Hizivait an arventennoù dafariad.</string>
   <string name="notification_bg_sync_ticker">O kerc’hat ar posteloù: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
-  <string name="notification_bg_sync_title">O kerc’hat ar posteloù</string>
+  <string name="notification_bg_sync_title">Kerc’hat ar posteloù</string>
   <string name="notification_bg_send_ticker">O kas ar postel: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">O kas ar postel</string>
   <string name="notification_bg_title_separator">:</string>
@@ -463,7 +463,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_settings_show_pictures_never">Ket</string>
   <string name="account_settings_show_pictures_only_from_contacts">Digant darempredoù</string>
   <string name="account_settings_show_pictures_always">Digant forzh piv</string>
-  <string name="account_settings_composition">O kas ar postel</string>
+  <string name="account_settings_composition">Kas ar posteloù</string>
   <string name="account_settings_default_quoted_text_shown_label">Enkorfañ ar gemennadenn er respont</string>
   <string name="account_settings_default_quoted_text_shown_summary">Enkorfañ ar gemennadenn orin er respont.</string>
   <string name="account_settings_reply_after_quote_label">Respont goude ar gemennadenn orin</string>
@@ -481,7 +481,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_settings_quote_style_prefix">Rakger (evel Gmail)</string>
   <string name="account_settings_quote_style_header">Talbenn (evel Outlook)</string>
   <string name="account_settings_general_title">Arventennoù hollek</string>
-  <string name="account_settings_reading_mail">O lenn ar postel</string>
+  <string name="account_settings_reading_mail">Lenn ar posteloù</string>
   <string name="account_settings_sync">O kerc’hat ar postel</string>
   <string name="account_settings_folders">Teuliadoù</string>
   <string name="account_settings_quote_prefix_label">Rakger an destenn enkorfet</string>

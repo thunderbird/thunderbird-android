@@ -5,6 +5,7 @@
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">Contas K-9</string>
+  <string name="unread_widget_label">K-9 non lidos</string>
   <string name="remote_control_label">Control remoto K-9 Mail</string>
   <string name="remote_control_desc">Permite a esta aplicación controlar as actividades e Configuración de K-9 Mail</string>
   <!--Used in the about dialog-->
@@ -42,6 +43,7 @@
   <string name="compose_title_reply">Responder</string>
   <string name="compose_title_reply_all">Responder a todos</string>
   <string name="compose_title_forward">Reenviar</string>
+  <string name="choose_account_title">Escolla Conta</string>
   <string name="choose_folder_title">Seleccionar carpeta</string>
   <string name="status_loading_account_folder">Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Recuperando encabezados <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -49,6 +51,10 @@
   <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_next_poll">Próxima comprobación <xliff:g id="nexttime">%s</xliff:g></string>
+  <string name="status_no_network">Sincr deshabilitada - Sen rede</string>
+  <string name="status_no_background">Sincr deshabilitada - Sen actividade en segundo plano</string>
+  <string name="status_poll_and_push_disabled">Obtención e envío deshabilitados</string>
+  <string name="status_syncing_blocked">Sincronización bloqueada</string>
   <string name="status_syncing_off">Comprobación rematada</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seleccionada</string>
   <string name="next_action">Seguinte</string>
@@ -58,6 +64,7 @@
   <string name="cancel_action">Cancelar</string>
   <string name="send_action">Enviar</string>
   <string name="send_again_action">Volver a enviar</string>
+  <string name="empty_subject">O Asunto está baldeiro, pulse de novo e envíe de todos xeitos</string>
   <string name="select_action">Seleccionar</string>
   <string name="deselect_action">Deseleccionar</string>
   <string name="reply_action">Responder</string>
@@ -68,12 +75,14 @@
   <string name="forward_action">Reenviar</string>
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
+  <string name="refile_action">Arquivar...</string>
   <string name="done_action">Feito</string>
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Gardar coma borrador</string>
   <string name="check_mail_action">Sincronizar</string>
   <string name="send_messages_action">Enviar Correo</string>
   <string name="refresh_folders_action">Refrescar Carpetas</string>
+  <string name="filter_folders_action">Buscar cartafol</string>
   <string name="add_account_action">Engadir conta</string>
   <string name="compose_action">Redactar</string>
   <string name="search_action">Buscar</string>
@@ -93,9 +102,16 @@
   <string name="select_text_action">Seleccionar texto</string>
   <string name="show_headers_action">Mostrar cabeceiras</string>
   <string name="hide_headers_action">Agochar cabeceiras</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Enderezo copiado ao portapapeis</item>
+    <item quantity="other">Enderezos copiados ao portapapeis</item>
+  </plurals>
   <string name="message_view_theme_action_dark">Tema escuro</string>
   <string name="message_view_theme_action_light">Tema claro</string>
   <string name="mark_as_unread_action">Marcar Non Lido</string>
+  <string name="read_receipt">Confirmación de recepción</string>
+  <string name="read_receipt_enabled">Pedirá ler confirmación de recepción</string>
+  <string name="read_receipt_disabled">Non pedirá a confirmación de recepción</string>
   <string name="add_attachment_action">Engadir adxunto</string>
   <string name="empty_trash_action">Valeirar Papelera</string>
   <string name="expunge_action">Erradicar</string>
@@ -110,6 +126,7 @@
   <string name="status_loading_more">Cargando mensaxes\u2026</string>
   <string name="status_network_error">Erro en conexión</string>
   <string name="status_invalid_id_error">Mensaxes non atopados</string>
+  <string name="status_loading_error">Fallo ao cargar a mensaxe</string>
   <string name="status_loading_more_failed">Tentando cargar máis mensages</string>
   <string name="load_more_messages_fmt">Cargar <xliff:g id="messages_to_load">%d</xliff:g> máis</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -123,9 +140,17 @@
   <string name="notification_new_title">Correo novo</string>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Sin Ler (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_action_reply">Responder</string>
+  <string name="notification_action_mark_as_read">Marcar Lido</string>
+  <string name="notification_action_mark_all_as_read">Marcar todos lidos</string>
   <string name="notification_action_delete">Eliminar</string>
+  <string name="notification_action_delete_all">Borrar todo</string>
   <string name="notification_action_archive">Archivo</string>
+  <string name="notification_action_archive_all">Arquivar todo</string>
   <string name="notification_action_spam">Spam</string>
+  <string name="notification_certificate_error_title">Fallo no certificado para <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_certificate_error_text">Comprobe os axustes do servidor</string>
+  <string name="notification_authentication_error_title">Fallo de autenticación</string>
+  <string name="notification_authentication_error_text">Fallou a autenticación para <xliff:g id="account">%s</xliff:g>. Actualice os axustes do servidor.</string>
   <string name="notification_bg_sync_ticker">Comprobando correo: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">Comprobando correo</string>
   <string name="notification_bg_send_ticker">Enviando correo: <xliff:g id="account">%s</xliff:g></string>
@@ -162,17 +187,25 @@
   <string name="message_compose_quote_header_cc">CC:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribiu:</string>
   <string name="message_compose_error_no_recipients">Debes engadir un destinatario</string>
+  <string name="compose_error_incomplete_recipient">O campo de destino contén datos incompletos!</string>
   <string name="error_contact_address_not_found">Non atopo enderezo electrónico.</string>
   <string name="message_compose_attachments_skipped_toast">Algúns adxuntos non poden reenviarse porque non foron descargados.</string>
+  <string name="message_compose_show_quoted_text_action">Citar mensaxe</string>
+  <string name="message_compose_description_delete_quoted_text">Eliminar texto citado</string>
+  <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
   <string name="message_view_from_format">Dende: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">Cc:</string>
+  <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_attachment_view_action">Abrir</string>
   <string name="message_view_attachment_download_action">Gardar</string>
   <string name="message_view_status_attachment_not_saved">Imposible gardar adxunto na SD</string>
+  <string name="message_view_status_no_space">Non se puido gardar o anexo porque non hai espazo suficiente.</string>
   <string name="message_view_show_pictures_action">Amosar imaxe</string>
   <string name="message_view_no_viewer">Imposible atopar visor para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Descargar mensaxe completa</string>
+  <string name="message_view_toast_unable_to_display_message">Non se pode mostrar a mensaxe</string>
+  <string name="message_view_sender_label">vía %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Todas as cabeceiras foron descargadas, pero non hai encabezados adicionáis que amosar</string>
   <string name="message_additional_headers_retrieval_failed">Prodúxose un erro ao descargar os encabezados adicionáis dende a base de datos ou o servidor</string>
@@ -191,27 +224,52 @@
   <string name="global_settings_registered_name_color_label">Colorear contactos</string>
   <string name="global_settings_registered_name_color_default">Non colorear os nombres dos contactos</string>
   <string name="global_settings_registered_name_color_changed">Colorear nombres na lista de contactos</string>
+  <string name="global_settings_folderlist_wrap_folder_names_label">Reducir os nomes de cartafol longos</string>
+  <string name="global_settings_folderlist_wrap_folder_names_summary">Utilizar varias liñas para mostrar os nomes de cartafol longos</string>
   <string name="global_settings_messageview_fixedwidth_label">Tamaño fixo de fontes</string>
   <string name="global_settings_messageview_fixedwidth_summary">Usar tamaño fixo de fonte nas mensaxes en texto plano</string>
+  <string name="global_settings_messageview_autofit_width_label">Auto axustar mensaxes</string>
+  <string name="global_settings_messageview_autofit_width_summary">Recortar mensaxes para axustar na pantalla</string>
   <string name="global_settings_messageview_return_to_list_label">Voltar á lista despois de borrar</string>
   <string name="global_settings_messageview_return_to_list_summary">Voltar á lista despois da acción de borrado</string>
+  <string name="global_settings_messageview_show_next_label">Mostrar a seguinte mensaxe tras eliminar</string>
+  <string name="global_settings_messageview_show_next_summary">Por omisión mostrar a seguinte mensaxe tras borrar unha mensaxe</string>
   <string name="global_settings_confirm_actions_title">Confirmar acción</string>
   <string name="global_settings_confirm_actions_summary">Amosar un diálogo cuando se realice una de estas acciones</string>
   <string name="global_settings_confirm_action_delete">Eliminar</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
+  <string name="global_settings_confirm_menu_discard">Descartar mensaxe</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Marcar todas as mensaxes como lidas</string>
+  <string name="global_settings_confirm_action_delete_notif">Borrar (da notificación)</string>
+  <string name="global_settings_privacy_hide_useragent">Ocultar cliente de correo</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Quitar K-9 User-Agent dos cabezallos do correo</string>
+  <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Utilizar UTC no lugar da hora local nos cabezallos do correo e as respostas</string>
   <string name="global_settings_notification_hide_subject_title">Agochar asunto nas notificacións</string>
   <string name="global_settings_notification_hide_subject_never">Nunca</string>
   <string name="global_settings_notification_hide_subject_when_locked">Cando o dispositivo está bloqueado</string>
   <string name="global_settings_notification_hide_subject_always">Sempre</string>
+  <string name="global_settings_notification_quick_delete_title">Mostar botón \'Eliminar\'</string>
   <string name="global_settings_notification_quick_delete_never">Nunca</string>
+  <string name="global_settings_notification_quick_delete_when_single_msg">Para notificacións de mensaxes individuais</string>
   <string name="global_settings_notification_quick_delete_always">Sempre</string>
+  <string name="global_settings_notification_quick_delete_description">Mostrar un botón na notificación que permite eliminar rápidamente a mensaxe</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Notificacións en pantalla de bloqueo</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Sen notificacións na pantalla de bloqueo</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Nome do aplicativo</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Conta de mensaxes non lidas</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Conta de mensaxes e remitentes</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Igual que cando non está bloqueada a pantalla</string>
   <string name="quiet_time">Tempo de Silencio</string>
   <string name="quiet_time_description">Desactivar sons, alertas e luces pola noite</string>
+  <string name="quiet_time_notification">Deshabilitar notificacións</string>
+  <string name="quiet_time_notification_description">Deshabilitar totalmente as notificacións no estado Non Molestar</string>
   <string name="quiet_time_starts">Silencio empeza</string>
   <string name="quiet_time_ends">Silencio remata</string>
   <string name="account_setup_basics_title">Configurar nova conta</string>
   <string name="account_setup_basics_email_hint">Enderezo de correo</string>
   <string name="account_setup_basics_password_hint">Contrasinal</string>
+  <string name="account_setup_basics_show_password">Mostrar contrasinal</string>
   <string name="account_setup_basics_manual_setup_action">Configuración Manual</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Recuperando información da conta\u2026</string>
@@ -228,9 +286,14 @@
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
   <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+  <string name="account_setup_auth_type_normal_password">Contrasinal normal</string>
+  <string name="account_setup_auth_type_insecure_password">Contrasinal, transmitido de xeito non seguro</string>
+  <string name="account_setup_auth_type_encrypted_password">Contrasinal cifrado</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Certificado cliente</string>
   <string name="account_setup_incoming_title">Configuración de Entrada</string>
   <string name="account_setup_incoming_username_label">Usuario</string>
   <string name="account_setup_incoming_password_label">Contrasinal</string>
+  <string name="account_setup_incoming_client_certificate_label">Certificado cliente</string>
   <string name="account_setup_incoming_pop_server_label">Servidor POP3</string>
   <string name="account_setup_incoming_imap_server_label">Servidor IMAP</string>
   <string name="account_setup_incoming_webdav_server_label">Servidor WebDAV (Exchange)</string>
@@ -238,6 +301,8 @@
   <string name="account_setup_incoming_security_label">Tipo de Seguridade</string>
   <string name="account_setup_incoming_auth_type_label">Tipo de autentificación</string>
   <string name="account_setup_incoming_security_none_label">Ningunha</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_delete_policy_label">Borrado de mesaxes</string>
   <string name="account_setup_incoming_delete_policy_never_label">Non borrar do servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Borrar do servidor</string>
@@ -254,6 +319,7 @@
   <string name="account_setup_expunge_policy_immediately">Inmediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante comprobación</string>
   <string name="account_setup_expunge_policy_manual">Sólo manualmente</string>
+  <string name="account_setup_incoming_autodetect_namespace_label">Detección automática parámetros IMAP</string>
   <string name="account_setup_incoming_imap_path_prefix_label">Prefixo do enderezo IMAP</string>
   <string name="drafts_folder_label">Carpeta Borradores</string>
   <string name="sent_folder_label">Carpeta Enviados</string>
@@ -317,9 +383,14 @@
   <string name="account_setup_options_mail_display_count_250">250 mensaxes</string>
   <string name="account_setup_options_mail_display_count_500">500 mensaxes</string>
   <string name="account_setup_options_mail_display_count_1000">1000 mensaxes</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 mensaxes</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 mensaxes</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 mensaxes</string>
   <string name="account_setup_options_mail_display_count_all">Todas as mensaxes</string>
   <string name="move_copy_cannot_copy_unsynced_message">Non se pode copiar/mover unha mensaxe que non foi sincronizada co servidor</string>
   <string name="account_setup_failed_dlg_title">No se puido rematar a Configuración</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Nome de usuaria ou contrasinal incorrectos.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">O servidor presentou un certificado SSL non válido. Esto a veces pasa por estar mal configurado o servidor. Outras porque alguén está tratando de atacala a vostede ou o seu servidor. Se non está segura do que acontece, pulse en Rexeitar e contacte coa administración do servidor de correo.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalles</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avanzado</string>
@@ -351,6 +422,7 @@
   <string name="account_settings_message_format_text">Texto plano (borraránse imaxes e formato)</string>
   <string name="account_settings_message_format_html">HTML (mantéñense imaxes e formato)</string>
   <string name="account_settings_always_show_cc_bcc_label">Mostrar sempre Cc/Bcc</string>
+  <string name="account_settings_message_read_receipt_label">Ler destinatario</string>
   <string name="account_settings_quote_style_label">Responder estilo comentario</string>
   <string name="account_settings_quote_style_prefix">Prefixo (coma Gmail, Pine)</string>
   <string name="account_settings_quote_style_header">Cabeceira (coma Outlook, Yahoo!, Hotmail)</string>

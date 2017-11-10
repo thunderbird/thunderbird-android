@@ -72,6 +72,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="compose_title_reply">Responder</string>
   <string name="compose_title_reply_all">Responder a todos</string>
   <string name="compose_title_forward">Encaminhar</string>
+  <string name="choose_account_title">Escolher Conta</string>
   <string name="choose_folder_title">Escolher a pasta</string>
   <string name="status_loading_account_folder">Verificar <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Buscando os cabeçalhos <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -551,17 +552,21 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="folder_settings_in_top_group_label">Exibir no grupo superior</string>
   <string name="folder_settings_in_top_group_summary">Exibe perto do topo da lista de pastas</string>
   <string name="folder_settings_folder_display_mode_label">Classe de exibição da pasta</string>
+  <string name="folder_settings_folder_display_mode_normal">Sem Classe</string>
   <string name="folder_settings_folder_display_mode_first_class">1ª classe</string>
   <string name="folder_settings_folder_display_mode_second_class">2ª classe</string>
+  <string name="folder_settings_folder_sync_mode_label">Classe de verificação de pasta</string>
   <string name="folder_settings_folder_sync_mode_normal">Nenhuma</string>
   <string name="folder_settings_folder_sync_mode_first_class">1ª classe</string>
   <string name="folder_settings_folder_sync_mode_second_class">2ª classe</string>
   <string name="folder_settings_folder_sync_mode_inherited">Igual à classe de exibição</string>
   <string name="folder_settings_folder_push_mode_label">Classe de sincronização da pasta</string>
+  <string name="folder_settings_folder_push_mode_normal">Sem Classe</string>
   <string name="folder_settings_folder_push_mode_first_class">1ª classe</string>
   <string name="folder_settings_folder_push_mode_second_class">2ª classe</string>
   <string name="folder_settings_folder_push_mode_inherited">Igual à classe de verificação</string>
   <string name="folder_settings_folder_notify_mode_label">Classe de notificação da pasta</string>
+  <string name="folder_settings_folder_notify_mode_normal">Sem Classe</string>
   <string name="folder_settings_folder_notify_mode_first_class">1ª classe</string>
   <string name="folder_settings_folder_notify_mode_second_class">2ª classe</string>
   <string name="folder_settings_folder_notify_mode_inherited">Igual à classe de sincronização</string>
@@ -646,6 +651,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado não reconhecido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceitar chave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeitar chave</string>
+  <string name="message_view_help_key">Del (ou D) - Excluir\nR - Responder\nA - Responder a todos\nC - Escrever\nF - Encaminhar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar como (não) lida\nG - Sinalizar\nO - Tipo de ordenação\nI - Ordem de classificação\nQ - Retornar às pastas\nS - Selecionar/desselecionar\nJ ou P - Mensagem anterior\nK ou N - Próxima Mensagem</string>
+  <string name="message_list_help_key">Del (ou D) - Excluir\nC - Escrever\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar (não) lida\nG - Sinalizar\nO - Tipo de Ordenação\nI - Ordem\nQ - Retornar às pastas\nS - Selecionar/Desselecionar</string>
   <string name="folder_list_help_key">1 - Exibir apenas pastas de 1ª classe\n2 - Exibir pastas de 1ª e 2ª classes\n3 - Exibir todas, exceto as de 2ª classe\n4 - Exibir todas as pastas\nQ - Retornar para as contas\nS - Editar configurações da conta</string>
   <string name="folder_list_filter_hint">O nome da pasta contém</string>
   <string name="folder_list_display_mode_label">Exibir pastas…</string>
@@ -830,6 +837,18 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="manage_accounts_move_down_action">Mover para baixo</string>
   <string name="manage_accounts_moving_message">Movendo a conta…</string>
   <string name="unread_widget_select_account">Exibir contagem de não lidas para…</string>
+  <string name="unread_widget_account_title">Conta</string>
+  <string name="unread_widget_account_summary">A conta para qual o número de mensagens não lidas deve ser mostrado</string>
+  <string name="unread_widget_unified_inbox_account_summary">Caixa de Entrada Unificada</string>
+  <string name="unread_widget_all_messages_account_summary">Todas as mensagens</string>
+  <string name="unread_widget_folder_enabled_title">Contagem de pastas</string>
+  <string name="unread_widget_folder_enabled_summary">Mostrar o número de mensagens não lidas de apenas uma pasta</string>
+  <string name="unread_widget_folder_title">Pasta</string>
+  <string name="unread_widget_folder_summary">A pasta para qual o número de mensagens não lidas deve ser mostrado</string>
+  <string name="unread_widget_action_done">Concluído</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Nenhuma conta selecionada</string>
+  <string name="unread_widget_folder_not_selected">Nenhuma pasta selecionada</string>
   <string name="import_dialog_error_title">Gerenciador de arquivos não encontrado</string>
   <string name="close">Fechar</string>
   <string name="webview_empty_message">Nenhum texto</string>
@@ -930,9 +949,11 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="address_type_other">Outro</string>
   <string name="address_type_mobile">Celular</string>
   <string name="compose_error_no_draft_folder">A pasta Rascunhos não foi configurada para esta conta!</string>
+  <string name="compose_error_no_key_configured">Nenhuma chave foi configurada pra essa conta! Verifique suas configurações.</string>
   <string name="crypto_mode_disabled">Não criptografar</string>
   <string name="crypto_mode_opportunistic">Criptografar se possível</string>
   <string name="crypto_mode_private">Criptografar</string>
+  <string name="error_crypto_provider_incompatible">Provedor de criptografia usa uma versão incompatível. Verifique suas configurações!</string>
   <string name="error_crypto_provider_connect">Não foi possível conectar ao provedor de criptografia. Verifique suas configurações ou clique no ícone de criptografia para tentar novamente!</string>
   <string name="error_crypto_provider_ui_required">Acesso negado ao provedor de criptografia. Clique no ícone de criptografia para tentar novamente!</string>
   <string name="error_crypto_inline_attach">O modo PGP/INLINE não suporta anexos!</string>
@@ -999,6 +1020,9 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="messageview_crypto_warning_show_anyway">Exibir a mensagem mesmo assim</string>
   <string name="recipient_error_non_ascii">Atualmente não existe suporte para caracteres especiais!</string>
   <string name="recipient_error_parse_failed">Erro ao analisar o endereço!</string>
+  <string name="account_settings_crypto_support_sign_only">Exibir assinaturas não criptografadas</string>
+  <string name="account_settings_crypto_support_sign_only_on">Assinaturas não critografadas serão mostradas</string>
+  <string name="account_settings_crypto_support_sign_only_off">Assinaturas não criptografadas serão ignoradas</string>
   <string name="error_sign_only_no_encryption">A criptografia não está disponível no modo Somente Assinatura!</string>
   <string name="unsigned_text_divider_label">Texto não assinado</string>
   <string name="apg_deprecated_title">Aviso de obsolescência do APG</string>
@@ -1017,5 +1041,16 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="mail_list_widget_loading">Carregando mensagens…</string>
   <string name="fetching_folders_failed">Não foi possível buscar a listagem de pastas</string>
   <string name="messageview_crypto_warning_details">Exibir detalhes</string>
+  <string name="error_recipient_crypto_retrieve">Erro ao obter o status do destinarário no provedor OpenPGP</string>
+  <string name="openpgp_enabled_error_title">Não é possível criptografar</string>
+  <string name="openpgp_enabled_error_msg">Alguns dos destinatários selecionados não suportam esse recurso!</string>
+  <string name="enable_encryption">Ativar criptografia</string>
+  <string name="disable_encryption">Desativar criptografia</string>
+  <string name="openpgp_description_text1">Criptografar mensagens garante que elas podem ser lidas somente pelo destinatário.</string>
+  <string name="openpgp_description_text3">Criptografia só será exibida se suportada por todos os destinatários, e eles devem ter enviado um e-mail para você antes.</string>
+  <string name="openpgp_description_text2">Ative e desative a criptografia clicando nesse icone.</string>
+  <string name="openpgp_enabled_error_gotit">Entendi</string>
   <string name="openpgp_enabled_error_back">Voltar</string>
+  <string name="openpgp_enabled_error_disable">Desativar criptografia</string>
+  <string name="openpgp_encryption">Criptografia OpenPGP</string>
 </resources>
