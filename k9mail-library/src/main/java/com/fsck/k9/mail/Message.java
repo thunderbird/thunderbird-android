@@ -4,8 +4,8 @@ package com.fsck.k9.mail;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.Set;
+import java.util.HashSet;
 
 import android.support.annotation.NonNull;
 
@@ -22,7 +22,7 @@ public abstract class Message implements Part, Body {
 
     protected String mUid;
 
-    private Set<Flag> mFlags = EnumSet.noneOf(Flag.class);
+    private Set<Flag> mFlags = new HashSet<Flag>();
 
     private Date mInternalDate;
 
@@ -223,7 +223,7 @@ public abstract class Message implements Part, Body {
         destination.mFolder = mFolder;
 
         // mFlags contents can change during the object lifetime, so copy the Set
-        destination.mFlags = EnumSet.copyOf(mFlags);
+        destination.mFlags = new HashSet<Flag>(mFlags);
     }
 
     /**

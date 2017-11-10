@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 
 
 class MigrationTo46 {
@@ -39,40 +40,31 @@ class MigrationTo46 {
 
                     for (String flagStr : flags) {
                         try {
-                            Flag flag = Flag.valueOf(flagStr);
+                            final FlagManager flagManager =
+                                FlagManager.getFlagManager();
+                            Flag flag = flagManager.getFlagByCode(flagStr);
 
-                            switch (flag) {
-                                case ANSWERED: {
-                                    answered = true;
-                                    break;
-                                }
-                                case DELETED: {
-                                    // Don't store this in column 'flags'
-                                    break;
-                                }
-                                case FLAGGED: {
-                                    flagged = true;
-                                    break;
-                                }
-                                case FORWARDED: {
-                                    forwarded = true;
-                                    break;
-                                }
-                                case SEEN: {
-                                    read = true;
-                                    break;
-                                }
-                                case DRAFT:
-                                case RECENT:
-                                case X_DESTROYED:
-                                case X_DOWNLOADED_FULL:
-                                case X_DOWNLOADED_PARTIAL:
-                                case X_REMOTE_COPY_STARTED:
-                                case X_SEND_FAILED:
-                                case X_SEND_IN_PROGRESS: {
-                                    extraFlags.add(flag);
-                                    break;
-                                }
+                            if (flag == Flag.ANSWERED) {
+                                answered = true;
+                            } else if (flag == Flag.DELETED) {
+                                // Don't store this in column 'flags'
+                            } else if (flag == Flag.FLAGGED) {
+                                flagged = true;
+                            } else if (flag == Flag.FORWARDED) {
+                                forwarded = true;
+                            } else if (flag == Flag.SEEN) {
+                                read = true;
+                            } else if (
+                                    flag == Flag.DRAFT ||
+                                    flag == Flag.RECENT ||
+                                    flag == Flag.X_DESTROYED ||
+                                    flag == Flag.X_DOWNLOADED_FULL ||
+                                    flag == Flag.X_DOWNLOADED_PARTIAL ||
+                                    flag == Flag.X_GOT_ALL_HEADERS ||
+                                    flag == Flag.X_REMOTE_COPY_STARTED ||
+                                    flag == Flag.X_SEND_FAILED ||
+                                    flag == Flag.X_SEND_IN_PROGRESS) {
+                                extraFlags.add(flag);
                             }
                         } catch (Exception e) {
                             // Ignore bad flags

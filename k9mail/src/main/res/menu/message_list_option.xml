@@ -145,6 +145,10 @@
           android:showAsAction="never"
           android:title="@string/hide_headers_action"/>
 
+    <item android:id="@+id/select_tags"
+          android:showAsAction="never"
+          android:title="@string/select_tags_action"/>
+
     <!-- MessageList -->
     <item
         android:id="@+id/set_sort"

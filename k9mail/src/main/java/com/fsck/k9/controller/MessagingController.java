@@ -68,6 +68,7 @@ import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.Message;
@@ -120,10 +121,6 @@ import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
 @SuppressWarnings("unchecked") // TODO change architecture to actually work with generics
 public class MessagingController {
     public static final long INVALID_MESSAGE_ID = -1;
-
-    private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
-
-
     private static MessagingController inst = null;
 
 
@@ -1592,7 +1589,11 @@ public class MessagingController {
                 messageChanged = true;
             }
         } else {
-            for (Flag flag : MessagingController.SYNC_FLAGS) {
+            final FlagManager flagManager = FlagManager.getFlagManager();
+            HashSet<Flag> syncFlags =
+                new HashSet<Flag>(flagManager.getKeywords());
+            syncFlags.addAll(flagManager.getSyncFlags());
+            for (Flag flag : syncFlags) {
                 if (remoteMessage.isSet(flag) != localMessage.isSet(flag)) {
                     localMessage.setFlag(flag, remoteMessage.isSet(flag));
                     messageChanged = true;
@@ -3452,10 +3453,11 @@ public class MessagingController {
                         accounts = prefs.getAvailableAccounts();
                     }
 
+                    prefs.loadKeywords();
+
                     for (final Account account : accounts) {
                         checkMailForAccount(context, account, ignoreLastCheckedTime, listener);
                     }
-
                 } catch (Exception e) {
                     Timber.e(e, "Unable to synchronize mail");
                 }

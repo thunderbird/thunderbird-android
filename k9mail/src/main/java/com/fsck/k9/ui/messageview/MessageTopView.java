@@ -245,6 +245,10 @@ public class MessageTopView extends LinearLayout {
         mHeaderContainer.setOnFlagListener(listener);
     }
 
+    public void setOnTagsClickListener(OnClickListener listener) {
+        mHeaderContainer.setOnTagsListener(listener);
+    }
+
     public void showAllHeaders() {
         mHeaderContainer.onShowAdditionalHeaders();
     }

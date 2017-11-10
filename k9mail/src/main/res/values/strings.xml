@@ -162,6 +162,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="select_text_action">Select text</string>
     <string name="show_headers_action">Show headers</string>
     <string name="hide_headers_action">Hide headers</string>
+    <string name="select_tags_action">Select tags</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Address copied to clipboard</item>
         <item quantity="other">Addresses copied to clipboard</item>
@@ -284,6 +285,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_to_label">To:</string>
     <string name="message_view_cc_label">Cc:</string>
     <string name="message_view_bcc_label">Bcc:</string>
+    <string name="message_view_no_tags">No tags</string>
     <string name="message_view_attachment_view_action">Open</string>
     <string name="message_view_attachment_download_action">Save</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment to SD card.</string>
@@ -293,6 +295,23 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_download_remainder">Download complete message</string>
     <string name="message_view_toast_unable_to_display_message">Unable to display message</string>
     <string name="message_view_sender_label">via %1$s</string>
+
+    <string name="tag_choice_dialog_title">Select tags</string>
+    <string name="keyword_edit_name_dialog_title">Edit tag name</string>
+    <string name="keyword_external_code_title">Server keyword:</string>
+    <string name="add_keyword_action">Add keyword</string>
+    <string name="delete_keyword_action">Delete keyword</string>
+    <string name="delete_keyword_confirmation_title">Delete keyword \"%s\"?</string>
+    <string name="delete_keyword_confirmation_message" formatted="false">Do you really want to delete the keyword \"%s\" (server keyword: \"%s\")?\n\nIt will be added back automatically, once an email is encountered that still has this keyword set.</string>
+    <string name="keyword_add_dialog_title">Add server keyword</string>
+    <string name="keyword_external_code_invalid">Invalid or duplicate server keyword</string>
+
+
+    <string name="default_keyword_name_1">Important</string>
+    <string name="default_keyword_name_2">Work</string>
+    <string name="default_keyword_name_3">Personal</string>
+    <string name="default_keyword_name_4">To Do</string>
+    <string name="default_keyword_name_5">Later</string>
 
     <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>
@@ -910,6 +929,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_message_view_to">To</string>
     <string name="font_size_message_view_cc">Cc</string>
     <string name="font_size_message_view_bcc">Bcc</string>
+    <string name="font_size_message_view_tags">Tags</string>
     <string name="font_size_message_view_additional_headers">Additional headers</string>
     <string name="font_size_message_view_subject">Subject</string>
     <string name="font_size_message_view_date">Time and date</string>
@@ -1099,6 +1119,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_background_as_unread_indicator_label">Change colour when read</string>
     <string name="global_settings_background_as_unread_indicator_summary">A different background will show that the message has been read</string>
 
+    <string name="global_settings_blend_background_with_tag_color_label">Use colour of message tag</string>
+    <string name="global_settings_blend_background_with_tag_color_summary">Blend background with the colour of the first message tag</string>
+
     <string name="global_settings_threaded_view_label">Threaded view</string>
     <string name="global_settings_threaded_view_summary">Group messages by conversation</string>
 
@@ -1112,6 +1135,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_splitview_always">Always</string>
     <string name="global_settings_splitview_never">Never</string>
     <string name="global_settings_splitview_when_in_landscape">When in Landscape orientation</string>
+
+    <string name="global_settings_show_tag_names_label">Show tags</string>
+    <string name="global_settings_show_tag_names_summary">Show list of tags assigned to the message</string>
+    <string name="global_settings_show_tag_names_always">Always</string>
+    <string name="global_settings_show_tag_names_never">Never</string>
+    <string name="global_settings_show_tag_names_if_set">If tags are assigned</string>
 
     <string name="message_view_empty">Please select a message on the left</string>
 

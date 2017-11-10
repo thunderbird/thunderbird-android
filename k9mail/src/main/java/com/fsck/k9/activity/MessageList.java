@@ -3,6 +3,7 @@ package com.fsck.k9.activity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -45,7 +46,9 @@ import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
+import com.fsck.k9.fragment.TagChoiceDialogFragment;
 import com.fsck.k9.helper.ParcelableUtil;
+import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.search.LocalSearch;
@@ -70,7 +73,7 @@ import de.cketti.library.changelog.ChangeLog;
  */
 public class MessageList extends K9Activity implements MessageListFragmentListener,
         MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
-        OnSwitchCompleteListener {
+        OnSwitchCompleteListener, TagChoiceDialogFragment.TagChoiceDialogListener {
 
     @Deprecated
     //TODO: Remove after 2017-09-11
@@ -207,6 +210,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             finish();
             return;
         }
+
+        Preferences.getPreferences(this).loadKeywords();
 
         if (useSplitView()) {
             setContentView(R.layout.split_message_list);
@@ -940,6 +945,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 updateMenu();
                 return true;
             }
+            case R.id.select_tags: {
+                mMessageViewFragment.onTagDialog();
+                return true;
+            }
         }
 
         if (!mSingleFolderMode) {
@@ -1034,6 +1043,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             menu.findItem(R.id.toggle_message_view_theme).setVisible(false);
             menu.findItem(R.id.show_headers).setVisible(false);
             menu.findItem(R.id.hide_headers).setVisible(false);
+            menu.findItem(R.id.select_tags).setVisible(false);
         } else {
             // hide prev/next buttons in split mode
             if (mDisplayMode != DisplayMode.MESSAGE_VIEW) {
@@ -1117,6 +1127,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             } else {
                 menu.findItem(R.id.hide_headers).setVisible(false);
             }
+
+            menu.findItem(R.id.select_tags).setVisible(true);
         }
 
 
@@ -1275,6 +1287,24 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void onCompose(Account account) {
         MessageActions.actionCompose(this, account);
+    }
+
+    @Override
+    public void onStoreTags(Set<Keyword> addedTags, Set<Keyword> deletedTags) {
+        if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+            // mMessageListFragment.onStoreTags(addedTags, deletedTags);
+        } else if (mMessageViewFragment != null) {
+            mMessageViewFragment.onStoreTags(addedTags, deletedTags);
+        }
+    }
+
+    @Override
+    public void onStartKeywordEditor() {
+        if (mDisplayMode == DisplayMode.MESSAGE_LIST) {
+            // mMessageListFragment.onStartKeywordEditor();
+        } else if (mMessageViewFragment != null) {
+            mMessageViewFragment.onStartKeywordEditor();
+        }
     }
 
     @Override

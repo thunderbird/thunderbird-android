@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/keyword_editor_list_item_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:paddingLeft="8dip"
+    android:paddingRight="4dip"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <CheckBox
+        android:id="@+id/checkbox_keyword_visibility"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:paddingRight="4dip"
+        android:gravity="center"
+        android:button="@drawable/checkbox_visibility"
+        android:buttonTint="?attr/colorKeywordEditorEye"/>
+
+    <LinearLayout
+        android:id="@+id/keyword_name_and_external_code"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingBottom="2dip"
+        android:paddingLeft="6dip">
+
+        <TextView
+            android:id="@+id/keyword_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <TextView
+            android:id="@+id/keyword_external_code"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/button_keyword_color_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="1dip"
+        android:backgroundTint="@android:color/transparent"
+        android:src="?attr/iconTag"/>
+
+    <ImageButton
+        android:id="@+id/button_keyword_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="1dip"
+        android:paddingRight="1dip"
+        android:backgroundTint="@android:color/transparent"
+        android:src="?attr/iconActionCollapse"/>
+
+    <ImageButton
+        android:id="@+id/button_keyword_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="1dip"
+        android:backgroundTint="@android:color/transparent"
+        android:src="?attr/iconActionExpand"/>
+
+</LinearLayout>

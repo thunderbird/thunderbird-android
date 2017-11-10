@@ -18,6 +18,7 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.ShowTagNamesMode;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
@@ -298,6 +299,16 @@ public class GlobalSettings {
         ));
         s.put("fontSizeMessageViewBCC", Settings.versions(
                 new V(48, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+        ));
+        s.put("fontSizeMessageViewTags", Settings.versions(
+                new V(49, new FontSizeSetting(FontSizes.FONT_DEFAULT))
+        ));
+        s.put("blendBackgroundWithTagColor", Settings.versions(
+                new V(49, new BooleanSetting(true))
+        ));
+        s.put("showTagNamesMode", Settings.versions(
+                new V(49, new EnumSetting<>(ShowTagNamesMode.class,
+                      ShowTagNamesMode.IF_SET))
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);

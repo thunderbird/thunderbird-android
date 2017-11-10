@@ -18,13 +18,19 @@ import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.helper.KeywordColorUtils;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
+import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mailstore.DatabasePreviewType;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.ContactBadge;
 
 import static com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN;
@@ -32,6 +38,7 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.CC_LIST_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.DATE_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FLAGGED_COLUMN;
+import static com.fsck.k9.fragment.MLFProjectionInfo.FLAGS_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_NAME_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FORWARDED_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_COLUMN;
@@ -43,8 +50,12 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN;
 
+import java.util.List;
 
 public class MessageListAdapter extends CursorAdapter {
+
+    private static final KeywordColorUtils keywordColorUtils =
+        new KeywordColorUtils();
 
     private final MessageListFragment fragment;
     private Drawable mAttachmentIcon;
@@ -168,6 +179,8 @@ public class MessageListAdapter extends CursorAdapter {
         boolean answered = (cursor.getInt(ANSWERED_COLUMN) == 1);
         boolean forwarded = (cursor.getInt(FORWARDED_COLUMN) == 1);
 
+        final Keyword firstTag = getFirstTag(cursor.getString(FLAGS_COLUMN));
+
         boolean hasAttachments = (cursor.getInt(ATTACHMENT_COUNT_COLUMN) > 0);
 
         MessageViewHolder holder = (MessageViewHolder) view.getTag();
@@ -188,7 +201,7 @@ public class MessageListAdapter extends CursorAdapter {
         if (holder.contactBadge != null) {
             updateContactBadge(holder, counterpartyAddress);
         }
-        setBackgroundColor(view, selected, read);
+        setBackgroundColor(view, selected, read, firstTag);
         if (fragment.activeMessage != null) {
             changeBackgroundColorIfActiveMessage(cursor, account, view);
         }
@@ -234,6 +247,19 @@ public class MessageListAdapter extends CursorAdapter {
             holder.subject.setText(subject);
         }
         holder.date.setText(displayDate);
+    }
+
+    private Keyword getFirstTag(String flagList) {
+        if (flagList != null && flagList.length() > 0) {
+            final FlagManager flagManager = FlagManager.getFlagManager();
+            final List<Flag> flags = flagManager.parseCodeList(flagList);
+            final List<Keyword> orderedTags =
+                flagManager.getVisibleKeywords(flags);
+            if (orderedTags.size() > 0) {
+                return orderedTags.get(0);
+            }
+        }
+        return null;
     }
 
     private void formatPreviewText(TextView preview, CharSequence beforePreviewText, String sigil) {
@@ -320,23 +346,48 @@ public class MessageListAdapter extends CursorAdapter {
         return null;
     }
 
-    private void setBackgroundColor(View view, boolean selected, boolean read) {
-        if (selected || K9.useBackgroundAsUnreadIndicator()) {
+    private void setBackgroundColor(
+        View view, boolean selected, boolean read, Keyword firstTag)
+    {
+        if (selected || K9.useBackgroundAsUnreadIndicator() ||
+            (K9.blendBackgroundWithTagColor() && firstTag != null))
+        {
             int res;
             if (selected) {
                 res = R.attr.messageListSelectedBackgroundColor;
-            } else if (read) {
-                res = R.attr.messageListReadItemBackgroundColor;
+            } else if (K9.useBackgroundAsUnreadIndicator()) {
+                if (read) {
+                    res = R.attr.messageListReadItemBackgroundColor;
+                } else {
+                    res = R.attr.messageListUnreadItemBackgroundColor;
+                }
             } else {
-                res = R.attr.messageListUnreadItemBackgroundColor;
+                res = R.attr.messageListReadItemBackgroundColor;
             }
 
             TypedValue outValue = new TypedValue();
             fragment.getActivity().getTheme().resolveAttribute(res, outValue, true);
-            view.setBackgroundColor(outValue.data);
+            int color = outValue.data;
+            if (K9.blendBackgroundWithTagColor() && !selected) {
+                color = blendBackgroundWithKeyword(color, firstTag);
+            }
+            view.setBackgroundColor(color);
         } else {
             view.setBackgroundColor(Color.TRANSPARENT);
         }
+    }
+
+    private int blendBackgroundWithKeyword(int backgroundColor, Keyword tag) {
+        if (tag != null) {
+            if (K9.getK9Theme() == K9.Theme.LIGHT) {
+                return tag.blendLightBackgroundColor(
+                    keywordColorUtils, backgroundColor);
+            } else {
+                return tag.blendDarkBackgroundColor(
+                    keywordColorUtils, backgroundColor);
+            }
+        }
+        return backgroundColor;
     }
 
     private void updateWithThreadCount(MessageViewHolder holder, int threadCount) {

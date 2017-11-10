@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.ShowTagNamesMode;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -97,12 +98,14 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_OPENPGP_SUPPORT_SIGN_ONLY = "openpgp_support_sign_only";
 
     private static final String PREFERENCE_AUTOFIT_WIDTH = "messageview_autofit_width";
+    private static final String PREFERENCE_SHOW_TAG_NAMES_MODE = "messageview_show_tag_names_mode";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
     private static final String PREFERENCE_SENSITIVE_LOGGING = "sensitive_logging";
 
     private static final String PREFERENCE_ATTACHMENT_DEF_PATH = "attachment_default_path";
     private static final String PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR = "messagelist_background_as_unread_indicator";
+    private static final String PREFERENCE_BLEND_BACKGROUND_WITH_TAG_COLOR = "messagelist_blend_background_with_tag_color";
     private static final String PREFERENCE_THREADED_VIEW = "threaded_view";
     private static final String PREFERENCE_FOLDERLIST_WRAP_NAME = "folderlist_wrap_folder_name";
     private static final String PREFERENCE_SPLITVIEW_MODE = "splitview_mode";
@@ -147,6 +150,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mReturnToList;
     private CheckBoxPreference mShowNext;
     private CheckBoxPreference mAutofitWidth;
+    private ListPreference mShowTagNamesMode;
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
@@ -167,6 +171,7 @@ public class Prefs extends K9PreferenceActivity {
     private Preference mAttachmentPathPreference;
 
     private CheckBoxPreference mBackgroundAsUnreadIndicator;
+    private CheckBoxPreference mBlendBackgroundWithTagColor;
     private CheckBoxPreference mThreadedView;
     private ListPreference mSplitViewMode;
 
@@ -291,6 +296,9 @@ public class Prefs extends K9PreferenceActivity {
         mBackgroundAsUnreadIndicator = (CheckBoxPreference)findPreference(PREFERENCE_BACKGROUND_AS_UNREAD_INDICATOR);
         mBackgroundAsUnreadIndicator.setChecked(K9.useBackgroundAsUnreadIndicator());
 
+        mBlendBackgroundWithTagColor = (CheckBoxPreference)findPreference(PREFERENCE_BLEND_BACKGROUND_WITH_TAG_COLOR);
+        mBlendBackgroundWithTagColor.setChecked(K9.blendBackgroundWithTagColor());
+
         mChangeContactNameColor = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR);
         mChangeContactNameColor.setChecked(K9.changeContactNameColor());
 
@@ -327,6 +335,10 @@ public class Prefs extends K9PreferenceActivity {
 
         mAutofitWidth = (CheckBoxPreference) findPreference(PREFERENCE_AUTOFIT_WIDTH);
         mAutofitWidth.setChecked(K9.autofitWidth());
+
+        mShowTagNamesMode = (ListPreference) findPreference(PREFERENCE_SHOW_TAG_NAMES_MODE);
+        initListPreference(mShowTagNamesMode, K9.showTagNamesMode().name(),
+                mShowTagNamesMode.getEntries(), mShowTagNamesMode.getEntryValues());
 
         mQuietTimeEnabled = (CheckBoxPreference) findPreference(PREFERENCE_QUIET_TIME_ENABLED);
         mQuietTimeEnabled.setChecked(K9.getQuietTimeEnabled());
@@ -519,12 +531,14 @@ public class Prefs extends K9PreferenceActivity {
         K9.setShowContactPicture(mShowContactPicture.isChecked());
         K9.setColorizeMissingContactPictures(mColorizeMissingContactPictures.isChecked());
         K9.setUseBackgroundAsUnreadIndicator(mBackgroundAsUnreadIndicator.isChecked());
+        K9.setBlendBackgroundWithTagColor(mBlendBackgroundWithTagColor.isChecked());
         K9.setThreadedViewEnabled(mThreadedView.isChecked());
         K9.setChangeContactNameColor(mChangeContactNameColor.isChecked());
         K9.setMessageViewFixedWidthFont(mFixedWidth.isChecked());
         K9.setMessageViewReturnToList(mReturnToList.isChecked());
         K9.setMessageViewShowNext(mShowNext.isChecked());
         K9.setAutofitWidth(mAutofitWidth.isChecked());
+        K9.setShowTagNamesMode(ShowTagNamesMode.valueOf(mShowTagNamesMode.getValue()));
         K9.setQuietTimeEnabled(mQuietTimeEnabled.isChecked());
 
         boolean[] enabledRefileActions = mVisibleRefileActions.getCheckedItems();

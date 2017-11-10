@@ -209,6 +209,12 @@ public class K9 extends Application {
         WHEN_IN_LANDSCAPE
     }
 
+    public enum ShowTagNamesMode {
+        ALWAYS,
+        NEVER,
+        IF_SET
+    }
+
     private static boolean mMessageListCheckboxes = true;
     private static boolean mMessageListStars = true;
     private static int mMessageListPreviewLines = 2;
@@ -231,6 +237,7 @@ public class K9 extends Application {
     private static boolean mCountSearchMessages = true;
     private static boolean mHideSpecialAccounts = false;
     private static boolean mAutofitWidth;
+    private static ShowTagNamesMode mShowTagNamesMode = ShowTagNamesMode.IF_SET;
     private static boolean mQuietTimeEnabled = false;
     private static boolean mNotificationDuringQuietTimeEnabled = true;
     private static String mQuietTimeStarts = null;
@@ -247,6 +254,7 @@ public class K9 extends Application {
     private static Map<SortType, Boolean> mSortAscending = new HashMap<SortType, Boolean>();
 
     private static boolean sUseBackgroundAsUnreadIndicator = true;
+    private static boolean sBlendBackgroundWithTagColor= true;
     private static boolean sThreadedViewEnabled = true;
     private static SplitViewMode sSplitViewMode = SplitViewMode.NEVER;
     private static boolean sColorizeMissingContactPictures = true;
@@ -454,6 +462,7 @@ public class K9 extends Application {
         editor.putBoolean("useVolumeKeysForNavigation", mUseVolumeKeysForNavigation);
         editor.putBoolean("useVolumeKeysForListNavigation", mUseVolumeKeysForListNavigation);
         editor.putBoolean("autofitWidth", mAutofitWidth);
+        editor.putString("showTagNamesMode", mShowTagNamesMode.name());
         editor.putBoolean("quietTimeEnabled", mQuietTimeEnabled);
         editor.putBoolean("notificationDuringQuietTimeEnabled", mNotificationDuringQuietTimeEnabled);
         editor.putString("quietTimeStarts", mQuietTimeStarts);
@@ -504,6 +513,7 @@ public class K9 extends Application {
 
         editor.putString("attachmentdefaultpath", mAttachmentDefaultPath);
         editor.putBoolean("useBackgroundAsUnreadIndicator", sUseBackgroundAsUnreadIndicator);
+        editor.putBoolean("blendBackgroundWithTagColor", sBlendBackgroundWithTagColor);
         editor.putBoolean("threadedView", sThreadedViewEnabled);
         editor.putString("splitViewMode", sSplitViewMode.name());
         editor.putBoolean("colorizeMissingContactPictures", sColorizeMissingContactPictures);
@@ -697,6 +707,11 @@ public class K9 extends Application {
 
         mAutofitWidth = storage.getBoolean("autofitWidth", true);
 
+        final String showTagNamesMode = storage.getString("showTagNamesMode", null);
+        if (showTagNamesMode != null) {
+            mShowTagNamesMode = ShowTagNamesMode.valueOf(showTagNamesMode);
+        }
+
         mQuietTimeEnabled = storage.getBoolean("quietTimeEnabled", false);
         mNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true);
         mQuietTimeStarts = storage.getString("quietTimeStarts", "21:00");
@@ -762,6 +777,7 @@ public class K9 extends Application {
         mAttachmentDefaultPath = storage.getString("attachmentdefaultpath",
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
         sUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", true);
+        sBlendBackgroundWithTagColor = storage.getBoolean("blendBackgroundWithTagColor", true);
         sThreadedViewEnabled = storage.getBoolean("threadedView", true);
         fontSizes.load(storage);
 
@@ -958,6 +974,14 @@ public class K9 extends Application {
 
     public static void setAutofitWidth(boolean autofitWidth) {
         mAutofitWidth = autofitWidth;
+    }
+
+    public static ShowTagNamesMode showTagNamesMode() {
+        return mShowTagNamesMode;
+    }
+
+    public static void setShowTagNamesMode(ShowTagNamesMode mode) {
+        mShowTagNamesMode = mode;
     }
 
     public static boolean getQuietTimeEnabled() {
@@ -1321,6 +1345,14 @@ public class K9 extends Application {
 
     public static synchronized void setUseBackgroundAsUnreadIndicator(boolean enabled) {
         sUseBackgroundAsUnreadIndicator = enabled;
+    }
+
+    public static synchronized boolean blendBackgroundWithTagColor() {
+        return sBlendBackgroundWithTagColor;
+    }
+
+    public static synchronized void setBlendBackgroundWithTagColor(boolean enabled) {
+        sBlendBackgroundWithTagColor = enabled;
     }
 
     public static synchronized boolean isThreadedViewEnabled() {

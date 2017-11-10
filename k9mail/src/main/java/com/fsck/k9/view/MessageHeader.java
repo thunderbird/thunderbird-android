@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -15,6 +16,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import timber.log.Timber;
@@ -30,15 +32,19 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.ShowTagNamesMode;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.KeywordColorUtils;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
+import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -47,6 +53,9 @@ import com.fsck.k9.ui.ContactBadge;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
+    private static final KeywordColorUtils keywordColorUtils =
+        new KeywordColorUtils();
+
     private Context mContext;
     private TextView mFromView;
     private TextView mSenderView;
@@ -57,12 +66,14 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView mCcLabel;
     private TextView mBccView;
     private TextView mBccLabel;
+    private TextView mTagsView;
     private TextView mSubjectView;
     private MessageCryptoStatusView mCryptoStatusIcon;
 
     private View mChip;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
+    private int defaultTagsColor;
     private TextView mAdditionalHeadersView;
     private View mAnsweredIcon;
     private View mForwardedIcon;
@@ -113,6 +124,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mCcLabel = (TextView) findViewById(R.id.cc_label);
         mBccView = (TextView) findViewById(R.id.bcc);
         mBccLabel = (TextView) findViewById(R.id.bcc_label);
+        mTagsView = (TextView) findViewById(R.id.tags);
 
         mContactBadge = (ContactBadge) findViewById(R.id.contact_badge);
 
@@ -135,10 +147,14 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mFontSizes.setViewTextSize(mBccView, mFontSizes.getMessageViewBCC());
         mFontSizes.setViewTextSize(mBccLabel, mFontSizes.getMessageViewBCC());
 
+        defaultTagsColor = mTagsView.getCurrentTextColor();
+        mFontSizes.setViewTextSize(mTagsView, mFontSizes.getMessageViewTags());
+
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
         mBccView.setOnClickListener(this);
+        mTagsView.setOnClickListener(this);
 
         mFromView.setOnLongClickListener(this);
         mToView.setOnLongClickListener(this);
@@ -223,6 +239,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mFlagged.setOnClickListener(listener);
     }
 
+    public void setOnTagsListener(OnClickListener listener) {
+        mTagsView.setOnClickListener(listener);
+    }
+
     public boolean additionalHeadersVisible() {
         return (mAdditionalHeadersView != null &&
                 mAdditionalHeadersView.getVisibility() == View.VISIBLE);
@@ -274,6 +294,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         final CharSequence to = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
         final CharSequence cc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
         final CharSequence bcc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.BCC), contacts);
+
+        Set<Flag> msgFlags = null;
+        if (K9.showTagNamesMode() != ShowTagNamesMode.NEVER) {
+            msgFlags = message.getFlags();
+        }
 
         Address[] fromAddrs = message.getFrom();
         Address[] toAddrs = message.getRecipients(Message.RecipientType.TO);
@@ -350,6 +375,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
+        updateTagNamesField(msgFlags);
 
         mChip.setBackgroundColor(mAccount.getChipColor());
 
@@ -418,6 +444,49 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         v.setText(text);
         v.setVisibility(hasText ? View.VISIBLE : View.GONE);
         label.setVisibility(hasText ? View.VISIBLE : View.GONE);
+    }
+
+    private void updateTagNamesField(Set<Flag> flags) {
+        final ShowTagNamesMode mode = K9.showTagNamesMode();
+        if (mode != ShowTagNamesMode.NEVER) {
+            final List<Keyword> tags =
+                FlagManager.getFlagManager().getVisibleKeywords(flags);
+            if ((tags.size() != 0) || (mode == ShowTagNamesMode.ALWAYS)) {
+                mTagsView.setText(getTagNamesString(tags));
+                mTagsView.setVisibility(View.VISIBLE);
+            } else {
+                mTagsView.setVisibility(View.GONE);
+            }
+        } else {
+            mTagsView.setVisibility(View.GONE);
+        }
+    }
+
+    private SpannableStringBuilder getTagNamesString(List<Keyword> tags) {
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        if (tags.size() != 0) {
+            boolean first = true;
+            for (Keyword keyword : tags) {
+                if (!first) {
+                    sb.append(", ");
+                } else {
+                    first = false;
+                }
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(
+                    keyword.getTextColor(keywordColorUtils));
+                SpannableString sp = new SpannableString(keyword.getName());
+                sp.setSpan(colorSpan, 0, sp.length(), 0);
+                sb.append(sp);
+            }
+        } else {
+            ForegroundColorSpan colorSpan =
+                new ForegroundColorSpan(defaultTagsColor);
+            SpannableString sp = new SpannableString(
+                getResources().getString(R.string.message_view_no_tags));
+            sp.setSpan(colorSpan, 0, sp.length(), 0);
+            sb.append(sp);
+        }
+        return sb;
     }
 
     /**

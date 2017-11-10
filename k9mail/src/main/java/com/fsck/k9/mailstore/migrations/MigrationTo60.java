@@ -23,6 +23,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.PendingCommandSerializer;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 
 import static java.util.Collections.singletonList;
 
@@ -178,7 +179,7 @@ class MigrationTo60 {
         String folder = command.arguments[0];
         String uid = command.arguments[1];
         boolean newState = Boolean.parseBoolean(command.arguments[2]);
-        Flag flag = Flag.valueOf(command.arguments[3]);
+        Flag flag = FlagManager.getFlagManager().getFlagByCode(command.arguments[3]);
 
         return PendingSetFlag.create(folder, newState, flag, singletonList(uid));
     }
@@ -186,7 +187,7 @@ class MigrationTo60 {
     private static PendingCommand migrateCommandSetFlagBulk(OldPendingCommand command) {
         String folder = command.arguments[0];
         boolean newState = Boolean.parseBoolean(command.arguments[1]);
-        Flag flag = Flag.valueOf(command.arguments[2]);
+        Flag flag = FlagManager.getFlagManager().getFlagByCode(command.arguments[2]);
 
         List<String> uids = new ArrayList<>(command.arguments.length - 3);
         uids.addAll(Arrays.asList(command.arguments).subList(3, command.arguments.length));

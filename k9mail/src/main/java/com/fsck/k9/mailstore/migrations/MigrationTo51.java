@@ -23,6 +23,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.StorageManager;
@@ -537,10 +538,11 @@ class MigrationTo51 {
         List<Flag> extraFlags = new ArrayList<>();
         if (messageFlags != null && messageFlags.length() > 0) {
             String[] flags = messageFlags.split(",");
+            final FlagManager flagManager = FlagManager.getFlagManager();
 
             for (String flagStr : flags) {
                 try {
-                    Flag flag = Flag.valueOf(flagStr);
+                    Flag flag = flagManager.getFlagByCode(flagStr);
                     extraFlags.add(flag);
                 } catch (Exception e) {
                     // Ignore bad flags

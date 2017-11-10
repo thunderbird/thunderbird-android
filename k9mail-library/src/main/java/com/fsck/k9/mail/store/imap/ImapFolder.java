@@ -22,8 +22,10 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.FlagManager;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.Keyword;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
@@ -865,21 +867,20 @@ class ImapFolder extends Folder<ImapMessage> {
         if (fetchList.containsKey("FLAGS")) {
             ImapList flags = fetchList.getKeyedList("FLAGS");
             if (flags != null) {
+                final FlagManager flagManager = FlagManager.getFlagManager();
                 for (int i = 0, count = flags.size(); i < count; i++) {
-                    String flag = flags.getString(i);
-                    if (flag.equalsIgnoreCase("\\Deleted")) {
-                        message.setFlagInternal(Flag.DELETED, true);
-                    } else if (flag.equalsIgnoreCase("\\Answered")) {
-                        message.setFlagInternal(Flag.ANSWERED, true);
-                    } else if (flag.equalsIgnoreCase("\\Seen")) {
-                        message.setFlagInternal(Flag.SEEN, true);
-                    } else if (flag.equalsIgnoreCase("\\Flagged")) {
-                        message.setFlagInternal(Flag.FLAGGED, true);
-                    } else if (flag.equalsIgnoreCase("$Forwarded")) {
-                        message.setFlagInternal(Flag.FORWARDED, true);
-                        /* a message contains FORWARDED FLAG -> so we can also create them */
-                        store.getPermanentFlagsIndex().add(Flag.FORWARDED);
+                    final String externalCode = flags.getString(i);
+                    Flag flag;
+                    try {
+                        flag = flagManager.getFlagByExternalCode(externalCode);
                     }
+                    catch (IllegalArgumentException e) {
+                        Timber.w(
+                            e, "Parsing flag code '%s' caused exception.",
+                            externalCode);
+                        continue;
+                    }
+                    message.setFlagInternal(flag, true);
                 }
             }
         }
@@ -1275,17 +1276,9 @@ class ImapFolder extends Folder<ImapMessage> {
     private String combineFlags(Iterable<Flag> flags) {
         List<String> flagNames = new ArrayList<String>();
         for (Flag flag : flags) {
-            if (flag == Flag.SEEN) {
-                flagNames.add("\\Seen");
-            } else if (flag == Flag.DELETED) {
-                flagNames.add("\\Deleted");
-            } else if (flag == Flag.ANSWERED) {
-                flagNames.add("\\Answered");
-            } else if (flag == Flag.FLAGGED) {
-                flagNames.add("\\Flagged");
-            } else if (flag == Flag.FORWARDED
-                    && (canCreateKeywords || store.getPermanentFlagsIndex().contains(Flag.FORWARDED))) {
-                flagNames.add("$Forwarded");
+            // clients can't add the RECENT flag!
+            if (!flag.equals(Flag.RECENT)) {
+                flagNames.add(flag.getExternalCode());
             }
         }
 
@@ -1416,68 +1409,14 @@ class ImapFolder extends Folder<ImapMessage> {
                 String imapQuery = "UID SEARCH ";
                 if (requiredFlags != null) {
                     for (Flag flag : requiredFlags) {
-                        switch (flag) {
-                            case DELETED: {
-                                imapQuery += "DELETED ";
-                                break;
-                            }
-                            case SEEN: {
-                                imapQuery += "SEEN ";
-                                break;
-                            }
-                            case ANSWERED: {
-                                imapQuery += "ANSWERED ";
-                                break;
-                            }
-                            case FLAGGED: {
-                                imapQuery += "FLAGGED ";
-                                break;
-                            }
-                            case DRAFT: {
-                                imapQuery += "DRAFT ";
-                                break;
-                            }
-                            case RECENT: {
-                                imapQuery += "RECENT ";
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
-                        }
+                        imapQuery += flag.getCode() + " ";
                     }
                 }
 
                 if (forbiddenFlags != null) {
                     for (Flag flag : forbiddenFlags) {
-                        switch (flag) {
-                            case DELETED: {
-                                imapQuery += "UNDELETED ";
-                                break;
-                            }
-                            case SEEN: {
-                                imapQuery += "UNSEEN ";
-                                break;
-                            }
-                            case ANSWERED: {
-                                imapQuery += "UNANSWERED ";
-                                break;
-                            }
-                            case FLAGGED: {
-                                imapQuery += "UNFLAGGED ";
-                                break;
-                            }
-                            case DRAFT: {
-                                imapQuery += "UNDRAFT ";
-                                break;
-                            }
-                            case RECENT: {
-                                imapQuery += "UNRECENT ";
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
+                        if (!(flag instanceof Keyword)) {
+                            imapQuery += "UN" + flag.getCode() + " ";
                         }
                     }
                 }

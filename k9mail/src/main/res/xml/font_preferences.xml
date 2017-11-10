@@ -131,6 +131,14 @@
 
         <ListPreference
             android:persistent="false"
+            android:key="message_view_tags_font"
+            android:title="@string/font_size_message_view_tags"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:dialogTitle="@string/font_size_message_view_tags" />
+
+        <ListPreference
+            android:persistent="false"
             android:key="message_view_subject_font"
             android:title="@string/font_size_message_view_subject"
             android:entries="@array/font_entries"
