@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store.webdav;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,11 +52,8 @@ class DataSet {
      * Returns a hashmap of special folder name => special folder url
      */
     public Map<String, String> getSpecialFolderToUrl() {
-        // We return the first (and only) map
-        for (Map<String, String> folderMap : mData.values()) {
-            return folderMap;
-        }
-        return new HashMap<String, String>();
+        // We return the first (and only) map, creating one if not present
+        return mData.isEmpty() ? Collections.<String, String>emptyMap() : mData.values().iterator().next();
     }
 
     /**

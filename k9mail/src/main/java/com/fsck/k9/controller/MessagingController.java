@@ -3838,18 +3838,14 @@ public class MessagingController {
     }
 
     private boolean modeMismatch(Account.FolderMode aMode, Folder.FolderClass fMode) {
-        if (aMode == Account.FolderMode.NONE
+        return aMode == Account.FolderMode.NONE
                 || (aMode == Account.FolderMode.FIRST_CLASS &&
                 fMode != Folder.FolderClass.FIRST_CLASS)
                 || (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
                 fMode != Folder.FolderClass.FIRST_CLASS &&
                 fMode != Folder.FolderClass.SECOND_CLASS)
                 || (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
-                fMode == Folder.FolderClass.SECOND_CLASS)) {
-            return true;
-        } else {
-            return false;
-        }
+                fMode == Folder.FolderClass.SECOND_CLASS);
     }
 
     private static AtomicInteger sequencing = new AtomicInteger(0);

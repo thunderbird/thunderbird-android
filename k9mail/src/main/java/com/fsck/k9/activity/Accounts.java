@@ -1690,7 +1690,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     ListView listView = ((AlertDialog) dialog).getListView();
                     SparseBooleanArray pos = listView.getCheckedItemPositions();
 
-                    boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
+                    boolean includeGlobals = mImportContents.globalSettings && pos.get(0);
                     List<String> accountUuids = new ArrayList<String>();
                     int start = mImportContents.globalSettings ? 1 : 0;
                     for (int i = start, end = listView.getCount(); i < end; i++) {
