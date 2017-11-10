@@ -42,9 +42,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
 </p><p>Lütfen yeni özelliklere katkıda bulunmak ve soru sormak için hata raporu bildiriniz
 <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
-]]>
-
-</string>
+ ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nAndroid için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
   <!--General strings that include the app name-->
@@ -74,6 +72,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="compose_title_reply">Yanıtla</string>
   <string name="compose_title_reply_all">Tümünü Yanıtla</string>
   <string name="compose_title_forward">İlet</string>
+  <string name="choose_account_title">Hesap Seçin</string>
   <string name="choose_folder_title">Klasör Seç</string>
   <string name="status_loading_account_folder">Alınan <xliff:g id="account">%s</xliff:g><xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Başlıklar alınıyor <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -231,6 +230,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="message_view_from_format">Kimden: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Kime:</string>
   <string name="message_view_cc_label">Bilgi:</string>
+  <string name="message_view_bcc_label">Gizli Kopya:</string>
   <string name="message_view_attachment_view_action">Aç</string>
   <string name="message_view_attachment_download_action">Kaydet</string>
   <string name="message_view_status_attachment_not_saved">Eklenti SD karta kaydedilemedi.</string>
@@ -239,6 +239,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> için görüntüleyici bulunamadı.</string>
   <string name="message_view_download_remainder">Mesajın tamamını indir</string>
   <string name="message_view_toast_unable_to_display_message">Mesaj görüntülemedi</string>
+  <string name="message_view_sender_label">%1$skanalıyla</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Bütün başlıklar indirildi, fakat gösterilecek ek başlık yok.</string>
   <string name="message_additional_headers_retrieval_failed">Veritabanından veya posta suncucundan ek başlıkların alımı başarısız.</string>
@@ -549,6 +550,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="folder_settings_in_top_group_label">Üst grupta göster</string>
   <string name="folder_settings_in_top_group_summary">Klasör listesinin üstüne yakın göster</string>
   <string name="folder_settings_folder_display_mode_label">Klasör Görüntüleme Sınıfı</string>
+  <string name="folder_settings_folder_display_mode_normal">Sınıflama yok</string>
   <string name="folder_settings_folder_display_mode_first_class">1. Sınıf</string>
   <string name="folder_settings_folder_display_mode_second_class">2. Sınıf</string>
   <string name="folder_settings_folder_sync_mode_normal">Hiçbiri</string>
@@ -556,10 +558,12 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="folder_settings_folder_sync_mode_second_class">2. Sınıf</string>
   <string name="folder_settings_folder_sync_mode_inherited">Aynı görünüleme sınıfı</string>
   <string name="folder_settings_folder_push_mode_label">Klasör itme sınıfı</string>
+  <string name="folder_settings_folder_push_mode_normal">Sınıflama yok</string>
   <string name="folder_settings_folder_push_mode_first_class">1. Sınıf</string>
   <string name="folder_settings_folder_push_mode_second_class">2. Sınıf</string>
   <string name="folder_settings_folder_push_mode_inherited">Aynı senkranizayon sınıfı</string>
   <string name="folder_settings_folder_notify_mode_label">Klasör bildirim sınıfı</string>
+  <string name="folder_settings_folder_notify_mode_normal">Sınıflama yok</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. Sınıf</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. Sınıf</string>
   <string name="folder_settings_folder_notify_mode_inherited">İtme sınıfıyla aynı</string>
@@ -644,6 +648,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tanınmayan Sertifika</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Kabul Tuşu</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Reddetme Tuşu</string>
+  <string name="message_view_help_key">Del (veya D) - Sil\nR - Yanıtla\nA - Hepsini yanıtla\nC - Oluştur\nF - İlet\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)mış olarak İşaretle\nG - Yıldız\nO - Sıralama türü\nI - Sıralama düzeni\nQ - Klasörlere Geri Dön\nS - Seç/Seçimi kaldır\nK veya P - Önceki İleti\nK veya N - Sonraki İleti</string>
+  <string name="message_list_help_key">Del (veya D) - Sil\nC - Oluştur\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)dı\nG - Yıldız\nO - Sıralama türü\nI - Sıralama düzeni\nQ - Klasörlere Geri Dön\nS - Seç/seçimi kaldır</string>
   <string name="folder_list_help_key">1 - Yalnız 1. sınıf klasörleri göster\n2 - Yalnız 1. ve 2. sınıf klasörleri göster\n3 - 2. Sınıf klasörler hariç hepsini göster\n4 - Bütün klasörleri göster\nQ - Hesaplara dön\nS - Hesap ayarlarını düzenle</string>
   <string name="folder_list_display_mode_label">Klasörleri göster…</string>
   <string name="folder_list_display_mode_all">Bütün klasörleri göster</string>
@@ -826,6 +832,14 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="manage_accounts_move_down_action">Aşağı taşı</string>
   <string name="manage_accounts_moving_message">Hesap taşınıyor…</string>
   <string name="unread_widget_select_account">Şunun için okunmadı sayısını göster…</string>
+  <string name="unread_widget_account_title">Hesap</string>
+  <string name="unread_widget_unified_inbox_account_summary">Birleşik Gelen Kutusu</string>
+  <string name="unread_widget_all_messages_account_summary">Tüm iletiler</string>
+  <string name="unread_widget_folder_enabled_title">Klasör sayısı</string>
+  <string name="unread_widget_folder_title">Klasör</string>
+  <string name="unread_widget_action_done">Tamam</string>
+  <string name="unread_widget_account_not_selected">Seçili hesap yok</string>
+  <string name="unread_widget_folder_not_selected">Seçili klasör yok</string>
   <string name="import_dialog_error_title">Dosya Yöneticisi uygulaması eksik</string>
   <string name="close">Kapat</string>
   <string name="webview_empty_message">Metin yok</string>
@@ -925,6 +939,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="error_crypto_inline_attach">PGP/INLINE modu eklenti desteklemez!</string>
   <string name="enable_inline_pgp">PGP/INLINE modu aç</string>
   <string name="disable_inline_pgp">PGP/INLINE modu kapat</string>
+  <string name="enable_sign_only">PGP sadece imza etkin</string>
+  <string name="disable_sign_only">PGP sadece imza devre dışı</string>
   <string name="openpgp_inline_title">PGP/INLINE modu</string>
   <string name="openpgp_inline_plus_compat">Bazı istemciler sadece bu biçimi destekler.</string>
   <string name="openpgp_inline_minus_transit">Geçiş sırasında imzalar bozulabilir</string>
@@ -978,6 +994,9 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="messageview_crypto_warning_show_anyway">İletileri her durumda göster</string>
   <string name="recipient_error_non_ascii">Var olan özgün karakterler desteklenmiyor!</string>
   <string name="recipient_error_parse_failed">Adres çözümleme hatası!</string>
+  <string name="account_settings_crypto_support_sign_only">Şifresiz imzaları göster</string>
+  <string name="account_settings_crypto_support_sign_only_on">Şifresiz imzalar görüntülenir</string>
+  <string name="error_sign_only_no_encryption">Sadece imza kipinde şifreleme kullanılamaz!</string>
   <string name="unsigned_text_divider_label">İmzasız Metin</string>
   <string name="apg_deprecated_title">APG Reddetme Uyarısı</string>
   <string name="apg_deprecated_1">APG artık sürdürülmüyor!</string>
@@ -994,5 +1013,11 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="mail_list_widget_loading">İletiler Yükleniyor…</string>
   <string name="fetching_folders_failed">Klasör listesi alınırken başarısız oldu</string>
   <string name="messageview_crypto_warning_details">Ayrıntıları Göster</string>
+  <string name="openpgp_enabled_error_title">Şifreleme yapılamaz</string>
+  <string name="enable_encryption">Şifreleme etkin</string>
+  <string name="disable_encryption">şifreleme devre dışı</string>
+  <string name="openpgp_enabled_error_gotit">Anladım</string>
   <string name="openpgp_enabled_error_back">Geri</string>
+  <string name="openpgp_enabled_error_disable">şifreleme devre dışı</string>
+  <string name="openpgp_encryption">OpenPGP Şifreleme</string>
 </resources>

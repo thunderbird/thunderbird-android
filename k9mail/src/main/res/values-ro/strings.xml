@@ -893,6 +893,16 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_settings_remote_search_num_label">Limită căutare server</string>
   <string name="account_settings_remote_search_num_summary">Căutarea se va opri după găsirea a <xliff:g id="num_results">%s</xliff:g> rezultate.</string>
   <string name="remote_search_sending_query">Se trimite cererea la server</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">Preluare %d rezultat</item>
+    <item quantity="few">Preluare %d rezultate</item>
+    <item quantity="other">Preluare %d rezultate</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">Preluare %1$d din %2$d rezultate</item>
+    <item quantity="few">Preluare %1$d din %2$d rezultate</item>
+    <item quantity="other">Preluare %1$d din %2$d rezultate</item>
+  </plurals>
   <string name="remote_search_error">Căutare la distanță eșuată</string>
   <string name="account_settings_search">Cautare</string>
   <string name="account_settings_remote_search_enabled">Activează căutarea pe server</string>
