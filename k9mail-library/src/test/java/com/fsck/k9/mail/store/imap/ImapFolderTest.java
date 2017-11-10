@@ -1006,6 +1006,28 @@ public class ImapFolderTest {
     }
 
     @Test
+    public void expungeUids_withUidPlus_shouldIssueUidExpungeCommand() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        when(imapConnection.isUidPlusCapable()).thenReturn(true);
+
+        folder.expungeUids(singletonList("1"));
+
+        assertCommandWithIdsIssued("UID EXPUNGE 1");
+    }
+
+    @Test
+    public void expungeUids_withoutUidPlus_shouldIssueExpungeCommand() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RW);
+        when(imapConnection.isUidPlusCapable()).thenReturn(false);
+
+        folder.expungeUids(singletonList("1"));
+
+        verify(imapConnection).executeSimpleCommand("EXPUNGE");
+    }
+
+    @Test
     public void setFlags_shouldIssueUidStoreCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
@@ -1226,8 +1248,8 @@ public class ImapFolderTest {
 
         for (int i = 0, end = commandPrefixes.size(); i < end; i++) {
             String command = commandPrefixes.get(i) +
-                    " " + ImapUtility.join(",", commandUids.get(i)) + " " +
-                    commandSuffixes.get(i);
+                    " " + ImapUtility.join(",", commandUids.get(i)) +
+                    ((commandSuffixes.get(i).length() == 0) ? "" : " " + commandSuffixes.get(i));
             if (command.equals(expectedCommand)) {
                 return;
             }

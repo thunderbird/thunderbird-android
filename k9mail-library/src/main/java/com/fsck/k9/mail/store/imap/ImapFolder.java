@@ -1260,6 +1260,30 @@ class ImapFolder extends Folder<ImapMessage> {
     }
 
     @Override
+    public void expungeUids(List<String> uids) throws MessagingException {
+        if (uids == null || uids.isEmpty()) {
+            throw new IllegalArgumentException("expungeUids() must be called with a non-empty set of UIDs");
+        }
+
+        open(OPEN_MODE_RW);
+        checkOpen();
+
+        try {
+            if (connection.isUidPlusCapable()) {
+                Set<Long> longUids = new HashSet<>(uids.size());
+                for (String uid : uids) {
+                    longUids.add(Long.parseLong(uid));
+                }
+                connection.executeCommandWithIdSet(Commands.UID_EXPUNGE, "", longUids);
+            } else {
+                executeSimpleCommand("EXPUNGE");
+            }
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
+    }
+
+    @Override
     public void setFlags(Set<Flag> flags, boolean value) throws MessagingException {
         open(OPEN_MODE_RW);
         checkOpen();

@@ -1830,7 +1830,7 @@ public class MessagingController {
                     if (remoteDate != null) {
                         remoteMessage.setFlag(Flag.DELETED, true);
                         if (Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
-                            remoteFolder.expunge();
+                            remoteFolder.expungeUids(Collections.singletonList(remoteMessage.getUid()));
                         }
                     }
                 }
@@ -1914,7 +1914,11 @@ public class MessagingController {
             }
             if (!isCopy && Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
                 Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolder);
-                remoteSrcFolder.expunge();
+                List<String> movedUids = new ArrayList<>(messages.size());
+                for (Message message : messages) {
+                    movedUids.add(message.getUid());
+                }
+                remoteSrcFolder.expungeUids(movedUids);
             }
 
             /*
