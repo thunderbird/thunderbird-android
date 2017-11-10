@@ -17,6 +17,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +42,7 @@ import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import com.fsck.k9.mail.store.imap.IdGrouper.GroupedIds;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 import javax.net.ssl.SSLException;
@@ -60,6 +62,18 @@ import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 class ImapConnection {
     private static final int BUFFER_SIZE = 1024;
 
+    /* The below limits are 20 octets less than the recommended limits, in order to compensate for
+     * the length of the command tag, the space after the tag and the CRLF at the end of the command
+     * (these are not taken into account when calculating the length of the command). For more
+     * information, refer to section 4 of RFC 7162.
+     *
+     * The length limit for servers supporting the CONDSTORE extension is large in order to support
+     * the QRESYNC parameter to the SELECT/EXAMINE commands, which accept a list of known message
+     * sequence numbers as well as their corresponding UIDs.
+     */
+    private static final int LENGTH_LIMIT_WITHOUT_CONDSTORE = 980;
+    private static final int LENGTH_LIMIT_WITH_CONDSTORE = 8172;
+
 
     private final ConnectivityManager connectivityManager;
     private final OAuth2TokenProvider oauthTokenProvider;
@@ -77,6 +91,7 @@ class ImapConnection {
     private Exception stacktraceForClose;
     private boolean open = false;
     private boolean retryXoauth2WithNewToken = true;
+    private int lineLengthLimit;
 
 
     public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
@@ -683,6 +698,10 @@ class ImapConnection {
         return capabilities.contains(capability.toUpperCase(Locale.US));
     }
 
+    public boolean isCondstoreCapable()  {
+        return hasCapability(Capabilities.CONDSTORE);
+    }
+
     protected boolean isIdleCapable() {
         if (K9MailLib.isDebug()) {
             Timber.v("Connection %s has %d capabilities", getLogId(), capabilities.size());
@@ -732,6 +751,21 @@ class ImapConnection {
             close();
             throw e;
         }
+    }
+
+    List<ImapResponse> executeCommandWithIdSet(String commandPrefix, String commandSuffix, Set<Long> ids)
+            throws IOException, MessagingException {
+
+        GroupedIds groupedIds = IdGrouper.groupIds(ids);
+        List<String> splitCommands = ImapCommandSplitter.splitCommand(
+                commandPrefix, commandSuffix, groupedIds, getLineLengthLimit());
+
+        List<ImapResponse> responses = new ArrayList<>();
+        for (String splitCommand : splitCommands) {
+            responses.addAll(executeSimpleCommand(splitCommand));
+        }
+
+        return responses;
     }
 
     public List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
@@ -842,5 +876,9 @@ class ImapConnection {
         } while (!response.isContinuationRequested());
 
         return response;
+    }
+
+    int getLineLengthLimit() {
+        return isCondstoreCapable() ? LENGTH_LIMIT_WITH_CONDSTORE : LENGTH_LIMIT_WITHOUT_CONDSTORE;
     }
 }

@@ -472,7 +472,7 @@ class ImapResponseParser {
                 symbol.equalsIgnoreCase(Responses.BYE);
     }
 
-    static boolean equalsIgnoreCase(Object token, String symbol) {
+    public static boolean equalsIgnoreCase(Object token, String symbol) {
         if (token == null || !(token instanceof String)) {
             return false;
         }

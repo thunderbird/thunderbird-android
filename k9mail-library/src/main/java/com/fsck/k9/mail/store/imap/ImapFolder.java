@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -341,39 +342,31 @@ class ImapFolder extends Folder<ImapMessage> {
         ImapFolder imapFolder = (ImapFolder) folder;
         checkOpen(); //only need READ access
 
-        String[] uids = new String[messages.size()];
+        Set<Long> uids = new HashSet<>(messages.size());
         for (int i = 0, count = messages.size(); i < count; i++) {
-            uids[i] = messages.get(i).getUid();
+            uids.add(Long.parseLong(messages.get(i).getUid()));
+        }
+
+        String encodedDestinationFolderName = folderNameCodec.encode(imapFolder.getPrefixedName());
+        String escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName);
+
+        //TODO: Try to copy/move the messages first and only create the folder if the
+        //      operation fails. This will save a roundtrip if the folder already exists.
+        if (!exists(escapedDestinationFolderName)) {
+            if (K9MailLib.isDebug()) {
+                Timber.i("ImapFolder.copyMessages: attempting to create remote folder '%s' for %s",
+                        escapedDestinationFolderName, getLogId());
+            }
+
+            imapFolder.create(FolderType.HOLDS_MESSAGES);
         }
 
         try {
-            String encodedDestinationFolderName = folderNameCodec.encode(imapFolder.getPrefixedName());
-            String escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName);
+            List<ImapResponse> imapResponses = connection.executeCommandWithIdSet(Commands.UID_COPY,
+                    escapedDestinationFolderName, uids);
 
-            //TODO: Try to copy/move the messages first and only create the folder if the
-            //      operation fails. This will save a roundtrip if the folder already exists.
-            if (!exists(escapedDestinationFolderName)) {
-                if (K9MailLib.isDebug()) {
-                    Timber.i("ImapFolder.copyMessages: attempting to create remote folder '%s' for %s",
-                            escapedDestinationFolderName, getLogId());
-                }
-
-                imapFolder.create(FolderType.HOLDS_MESSAGES);
-            }
-
-            //TODO: Split this into multiple commands if the command exceeds a certain length.
-            List<ImapResponse> responses = executeSimpleCommand(String.format("UID COPY %s %s",
-                    combine(uids, ','), escapedDestinationFolderName));
-
-            // Get the tagged response for the UID COPY command
-            ImapResponse response = getLastResponse(responses);
-
-            CopyUidResponse copyUidResponse = CopyUidResponse.parse(response);
-            if (copyUidResponse == null) {
-                return null;
-            }
-
-            return copyUidResponse.getUidMapping();
+            UidCopyResponse response = UidCopyResponse.parse(imapResponses);
+            return response == null ? null : response.getUidMapping();
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         }
@@ -466,11 +459,9 @@ class ImapFolder extends Folder<ImapMessage> {
 
     protected long getHighestUid() throws MessagingException {
         try {
-            String command = "UID SEARCH *:*";
-            List<ImapResponse> responses = executeSimpleCommand(command);
+            List<ImapResponse> responses = executeSimpleCommand("UID SEARCH *:*");
 
             SearchResponse searchResponse = SearchResponse.parse(responses);
-
             return extractHighestUid(searchResponse);
         } catch (NegativeImapResponseException e) {
             return -1L;
@@ -518,19 +509,19 @@ class ImapFolder extends Folder<ImapMessage> {
             throw new MessagingException(String.format(Locale.US, "Invalid message set %d %d", start, end));
         }
 
-        final String dateSearchString = getDateSearchString(earliestDate);
+        checkOpen();
 
-        ImapSearcher searcher = new ImapSearcher() {
-            @Override
-            public List<ImapResponse> search() throws IOException, MessagingException {
-                String command = String.format(Locale.US, "UID SEARCH %d:%d%s%s", start, end, dateSearchString,
-                        includeDeleted ? "" : " NOT DELETED");
+        String dateSearchString = getDateSearchString(earliestDate);
+        String command = String.format(Locale.US, "UID SEARCH %d:%d%s%s", start, end, dateSearchString,
+                includeDeleted ? "" : " NOT DELETED");
 
-                return executeSimpleCommand(command);
-            }
-        };
-
-        return search(searcher, listener);
+        try {
+            List<ImapResponse> imapResponses = connection.executeSimpleCommand(command);
+            SearchResponse searchResponse = SearchResponse.parse(imapResponses);
+            return getMessages(searchResponse, listener);
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
     }
 
     private String getDateSearchString(Date earliestDate) {
@@ -551,8 +542,8 @@ class ImapFolder extends Folder<ImapMessage> {
             return false;
         }
 
-        String dateSearchString = getDateSearchString(earliestDate);
         int endIndex = indexOfOldestMessage - 1;
+        String dateSearchString = getDateSearchString(earliestDate);
 
         while (endIndex > 0) {
             int startIndex = Math.max(0, endIndex - MORE_MESSAGES_WINDOW_SIZE) + 1;
@@ -570,80 +561,73 @@ class ImapFolder extends Folder<ImapMessage> {
     private boolean existsNonDeletedMessageInRange(int startIndex, int endIndex, String dateSearchString)
             throws MessagingException, IOException {
 
-        String command = String.format(Locale.US, "SEARCH %d:%d%s NOT DELETED", startIndex, endIndex, dateSearchString);
-        List<ImapResponse> responses = executeSimpleCommand(command);
+        String command = String.format(Locale.US, "SEARCH %d:%d%s NOT DELETED",
+                startIndex, endIndex, dateSearchString);
+        List<ImapResponse> imapResponses = executeSimpleCommand(command);
 
-        for (ImapResponse response : responses) {
-            if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")) {
-                if (response.size() > 1) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        SearchResponse response = SearchResponse.parse(imapResponses);
+        return response.getNumbers().size() > 0;
     }
 
-    protected List<ImapMessage> getMessages(final List<Long> mesgSeqs, final boolean includeDeleted,
+    protected List<ImapMessage> getMessages(final Set<Long> mesgSeqs, final boolean includeDeleted,
             final MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
-        ImapSearcher searcher = new ImapSearcher() {
-            @Override
-            public List<ImapResponse> search() throws IOException, MessagingException {
-                String command = String.format("UID SEARCH %s%s", combine(mesgSeqs.toArray(), ','),
-                        includeDeleted ? "" : " NOT DELETED");
 
-                return executeSimpleCommand(command);
-            }
-        };
+        checkOpen();
 
-        return search(searcher, listener);
+        try {
+            String commandSuffix = includeDeleted ? "" : " NOT DELETED";
+            List<ImapResponse> imapResponses = connection.executeCommandWithIdSet(Commands.UID_SEARCH,
+                    commandSuffix, mesgSeqs);
+
+            SearchResponse searchResponse = SearchResponse.parse(imapResponses);
+            return getMessages(searchResponse, listener);
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
     }
 
     protected List<ImapMessage> getMessagesFromUids(final List<String> mesgUids) throws MessagingException {
-        ImapSearcher searcher = new ImapSearcher() {
-            @Override
-            public List<ImapResponse> search() throws IOException, MessagingException {
-                String command = String.format("UID SEARCH UID %s", combine(mesgUids.toArray(), ','));
 
-                return executeSimpleCommand(command);
-            }
-        };
-
-        return search(searcher, null);
-    }
-
-    private List<ImapMessage> search(ImapSearcher searcher, MessageRetrievalListener<ImapMessage> listener)
-            throws MessagingException {
         checkOpen();
+        Set<Long> uidSet = new HashSet<>();
+        for (String uid : mesgUids) {
+            uidSet.add(Long.parseLong(uid));
+        }
 
-        List<ImapMessage> messages = new ArrayList<>();
         try {
-            List<ImapResponse> responses = searcher.search();
+            List<ImapResponse> imapResponses = connection.executeCommandWithIdSet("UID SEARCH UID", "", uidSet);
 
-            SearchResponse searchResponse = SearchResponse.parse(responses);
-            List<Long> uids = searchResponse.getNumbers();
-
-            // Sort the uids in numerically decreasing order
-            // By doing it in decreasing order, we ensure newest messages are dealt with first
-            // This makes the most sense when a limit is imposed, and also prevents UI from going
-            // crazy adding stuff at the top.
-            Collections.sort(uids, Collections.reverseOrder());
-
-            for (int i = 0, count = uids.size(); i < count; i++) {
-                String uid = uids.get(i).toString();
-                if (listener != null) {
-                    listener.messageStarted(uid, i, count);
-                }
-
-                ImapMessage message = new ImapMessage(uid, this);
-                messages.add(message);
-
-                if (listener != null) {
-                    listener.messageFinished(message, i, count);
-                }
-            }
+            SearchResponse searchResponse = SearchResponse.parse(imapResponses);
+            return getMessages(searchResponse, null);
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
+        }
+    }
+
+    private List<ImapMessage> getMessages(SearchResponse searchResponse, MessageRetrievalListener<ImapMessage> listener)
+            throws MessagingException {
+
+        List<ImapMessage> messages = new ArrayList<>();
+        List<Long> uids = searchResponse.getNumbers();
+
+        // Sort the uids in numerically decreasing order
+        // By doing it in decreasing order, we ensure newest messages are dealt with first
+        // This makes the most sense when a limit is imposed, and also prevents UI from going
+        // crazy adding stuff at the top.
+        Collections.sort(uids, Collections.reverseOrder());
+
+        for (int i = 0, count = uids.size(); i < count; i++) {
+            String uid = uids.get(i).toString();
+            if (listener != null) {
+                listener.messageStarted(uid, i, count);
+            }
+
+            ImapMessage message = new ImapMessage(uid, this);
+            messages.add(message);
+
+            if (listener != null) {
+                listener.messageFinished(message, i, count);
+            }
         }
 
         return messages;
@@ -697,14 +681,14 @@ class ImapFolder extends Folder<ImapMessage> {
             fetchFields.add("BODY.PEEK[]");
         }
 
-        String spaceSeparatedFetchFields = combine(fetchFields.toArray(new String[fetchFields.size()]), ' ');
+        String spaceSeparatedFetchFields = ImapUtility.join(" ", fetchFields);
 
         for (int windowStart = 0; windowStart < messages.size(); windowStart += (FETCH_WINDOW_SIZE)) {
             int windowEnd = Math.min(windowStart + FETCH_WINDOW_SIZE, messages.size());
             List<String> uidWindow = uids.subList(windowStart, windowEnd);
 
             try {
-                String commaSeparatedUids = combine(uidWindow.toArray(new String[uidWindow.size()]), ',');
+                String commaSeparatedUids = ImapUtility.join(",", uidWindow);
                 String command = String.format("UID FETCH %s (%s)", commaSeparatedUids, spaceSeparatedFetchFields);
                 connection.sendCommand(command, false);
 
@@ -1153,8 +1137,10 @@ class ImapFolder extends Folder<ImapMessage> {
 
                 String encodeFolderName = folderNameCodec.encode(getPrefixedName());
                 String escapedFolderName = ImapUtility.encodeString(encodeFolderName);
+                String combinedFlags = ImapUtility.combineFlags(message.getFlags(),
+                        canCreateKeywords || store.getPermanentFlagsIndex().contains(Flag.FORWARDED));
                 String command = String.format(Locale.US, "APPEND %s (%s) {%d}", escapedFolderName,
-                        combineFlags(message.getFlags()), messageSize);
+                        combinedFlags, messageSize);
                 connection.sendCommand(command, false);
 
                 ImapResponse response;
@@ -1225,39 +1211,40 @@ class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public String getUidFromMessageId(Message message) throws MessagingException {
-        try {
-            /*
-            * Try to find the UID of the message we just appended using the
-            * Message-ID header.
-            */
-            String[] messageIdHeader = message.getHeader("Message-ID");
+        /*
+        * Try to find the UID of the message we just appended using the
+        * Message-ID header.
+        */
+        String[] messageIdHeader = message.getHeader("Message-ID");
 
-            if (messageIdHeader.length == 0) {
-                if (K9MailLib.isDebug()) {
-                    Timber.d("Did not get a message-id in order to search for UID  for %s", getLogId());
-                }
-                return null;
-            }
-
-            String messageId = messageIdHeader[0];
+        if (messageIdHeader.length == 0) {
             if (K9MailLib.isDebug()) {
-                Timber.d("Looking for UID for message with message-id %s for %s", messageId, getLogId());
+                Timber.d("Did not get a message-id in order to search for UID  for %s", getLogId());
             }
-
-            String command = String.format("UID SEARCH HEADER MESSAGE-ID %s", ImapUtility.encodeString(messageId));
-            List<ImapResponse> responses = executeSimpleCommand(command);
-
-            for (ImapResponse response : responses) {
-                if (response.getTag() == null && ImapResponseParser.equalsIgnoreCase(response.get(0), "SEARCH")
-                        && response.size() > 1) {
-                    return response.getString(1);
-                }
-            }
-
             return null;
-        } catch (IOException ioe) {
-            throw new MessagingException("Could not find UID for message based on Message-ID", ioe);
         }
+
+        String messageId = messageIdHeader[0];
+        if (K9MailLib.isDebug()) {
+            Timber.d("Looking for UID for message with message-id %s for %s", messageId, getLogId());
+        }
+
+        String command = String.format("UID SEARCH HEADER MESSAGE-ID %s", ImapUtility.encodeString(messageId));
+
+        List<ImapResponse> imapResponses;
+        try {
+            imapResponses = executeSimpleCommand(command);
+        } catch (IOException ioe) {
+            throw ioExceptionHandler(connection, ioe);
+        }
+
+        SearchResponse searchResponse = SearchResponse.parse(imapResponses);
+        List<Long> uids = searchResponse.getNumbers();
+        if (uids.size() > 0) {
+            return Long.toString(uids.get(0));
+        }
+
+        return null;
     }
 
     @Override
@@ -1272,33 +1259,18 @@ class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    private String combineFlags(Iterable<Flag> flags) {
-        List<String> flagNames = new ArrayList<String>();
-        for (Flag flag : flags) {
-            if (flag == Flag.SEEN) {
-                flagNames.add("\\Seen");
-            } else if (flag == Flag.DELETED) {
-                flagNames.add("\\Deleted");
-            } else if (flag == Flag.ANSWERED) {
-                flagNames.add("\\Answered");
-            } else if (flag == Flag.FLAGGED) {
-                flagNames.add("\\Flagged");
-            } else if (flag == Flag.FORWARDED
-                    && (canCreateKeywords || store.getPermanentFlagsIndex().contains(Flag.FORWARDED))) {
-                flagNames.add("$Forwarded");
-            }
-        }
-
-        return combine(flagNames.toArray(new String[flagNames.size()]), ' ');
-    }
-
     @Override
     public void setFlags(Set<Flag> flags, boolean value) throws MessagingException {
         open(OPEN_MODE_RW);
         checkOpen();
 
+        boolean canCreateForwardedFlag = canCreateKeywords ||
+                store.getPermanentFlagsIndex().contains(Flag.FORWARDED);
+
         try {
-            String command = String.format("UID STORE 1:* %sFLAGS.SILENT (%s)", value ? "+" : "-", combineFlags(flags));
+            String combinedFlags = ImapUtility.combineFlags(flags, canCreateForwardedFlag);
+            String command = String.format("%s 1:* %sFLAGS.SILENT (%s)",
+                    Commands.UID_STORE, value ? "+" : "-", combinedFlags);
             executeSimpleCommand(command);
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
@@ -1333,15 +1305,19 @@ class ImapFolder extends Folder<ImapMessage> {
         open(OPEN_MODE_RW);
         checkOpen();
 
-        String[] uids = new String[messages.size()];
-        for (int i = 0, count = messages.size(); i < count; i++) {
-            uids[i] = messages.get(i).getUid();
+        Set<Long> uids = new HashSet<>(messages.size());
+        for (Message message : messages) {
+            uids.add(Long.parseLong(message.getUid()));
         }
 
+        boolean canCreateForwardedFlag = canCreateKeywords ||
+                store.getPermanentFlagsIndex().contains(Flag.FORWARDED);
+
+        String combinedFlags = ImapUtility.combineFlags(flags, canCreateForwardedFlag);
+        String commandSuffix = String.format("%sFLAGS.SILENT (%s)", value ? "+" : "-", combinedFlags);
+
         try {
-            String command = String.format("UID STORE %s %sFLAGS.SILENT (%s)", combine(uids, ','), value ? "+" : "-",
-                    combineFlags(flags));
-            executeSimpleCommand(command);
+            connection.executeCommandWithIdSet(Commands.UID_STORE, commandSuffix, uids);
         } catch (IOException ioe) {
             throw ioExceptionHandler(connection, ioe);
         }
@@ -1409,107 +1385,28 @@ class ImapFolder extends Folder<ImapMessage> {
             throw new MessagingException("Your settings do not allow remote searching of this account");
         }
 
-        // Setup the searcher
-        final ImapSearcher searcher = new ImapSearcher() {
-            @Override
-            public List<ImapResponse> search() throws IOException, MessagingException {
-                String imapQuery = "UID SEARCH ";
-                if (requiredFlags != null) {
-                    for (Flag flag : requiredFlags) {
-                        switch (flag) {
-                            case DELETED: {
-                                imapQuery += "DELETED ";
-                                break;
-                            }
-                            case SEEN: {
-                                imapQuery += "SEEN ";
-                                break;
-                            }
-                            case ANSWERED: {
-                                imapQuery += "ANSWERED ";
-                                break;
-                            }
-                            case FLAGGED: {
-                                imapQuery += "FLAGGED ";
-                                break;
-                            }
-                            case DRAFT: {
-                                imapQuery += "DRAFT ";
-                                break;
-                            }
-                            case RECENT: {
-                                imapQuery += "RECENT ";
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (forbiddenFlags != null) {
-                    for (Flag flag : forbiddenFlags) {
-                        switch (flag) {
-                            case DELETED: {
-                                imapQuery += "UNDELETED ";
-                                break;
-                            }
-                            case SEEN: {
-                                imapQuery += "UNSEEN ";
-                                break;
-                            }
-                            case ANSWERED: {
-                                imapQuery += "UNANSWERED ";
-                                break;
-                            }
-                            case FLAGGED: {
-                                imapQuery += "UNFLAGGED ";
-                                break;
-                            }
-                            case DRAFT: {
-                                imapQuery += "UNDRAFT ";
-                                break;
-                            }
-                            case RECENT: {
-                                imapQuery += "UNRECENT ";
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                String encodedQuery = ImapUtility.encodeString(queryString);
-                if (store.getStoreConfig().isRemoteSearchFullText()) {
-                    imapQuery += "TEXT " + encodedQuery;
-                } else {
-                    imapQuery += "OR SUBJECT " + encodedQuery + " FROM " + encodedQuery;
-                }
-
-                return executeSimpleCommand(imapQuery);
-            }
-        };
-
         try {
             open(OPEN_MODE_RO);
             checkOpen();
 
             inSearch = true;
 
-            return search(searcher, null);
+            String searchCommand = new UidSearchCommandBuilder()
+                    .queryString(queryString)
+                    .performFullTextSearch(store.getStoreConfig().isRemoteSearchFullText())
+                    .requiredFlags(requiredFlags)
+                    .forbiddenFlags(forbiddenFlags)
+                    .build();
+
+            try {
+                List<ImapResponse> imapResponses = executeSimpleCommand(searchCommand);
+                SearchResponse searchResponse = SearchResponse.parse(imapResponses);
+                return getMessages(searchResponse, null);
+            } catch (IOException ioe) {
+                throw ioExceptionHandler(connection, ioe);
+            }
         } finally {
             inSearch = false;
         }
-    }
-
-    private static String combine(Object[] parts, char separator) {
-        if (parts == null) {
-            return null;
-        }
-
-        return TextUtils.join(String.valueOf(separator), parts);
     }
 }

@@ -1,27 +1,24 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
+import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponseList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
-public class CopyUidResponseTest {
+public class UidCopyResponseTest {
     @Test
     public void parse_withCopyUidResponse_shouldCreateUidMapping() throws Exception {
-        ImapResponse imapResponse = createImapResponse("x OK [COPYUID 1 1,3:5 7:10] Success");
+        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID 1 1,3:5 7:10] Success");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
 
         assertNotNull(result);
         assertEquals(createUidMapping("1=7", "3=8", "4=9", "5=10"), result.getUidMapping());
@@ -29,102 +26,103 @@ public class CopyUidResponseTest {
 
     @Test
     public void parse_withUntaggedResponse_shouldReturnNull() throws Exception {
-        ImapResponse imapResponse = createImapResponse("* OK [COPYUID 1 1,3:5 7:10] Success");
+        List<ImapResponse> imapResponse = createImapResponseList("* OK [COPYUID 1 1,3:5 7:10] Success");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponse);
 
         assertNull(result);
     }
 
     @Test
     public void parse_withTooShortResponse_shouldReturnNull() throws Exception {
-        ImapResponse imapResponse = createImapResponse("x OK");
+        List<ImapResponse> imapResponses = createImapResponseList("x OK");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
 
         assertNull(result);
     }
 
     @Test
     public void parse_withoutOkResponse_shouldReturnNull() throws Exception {
-        ImapResponse imapResponse = createImapResponse("x BYE Logout");
+        List<ImapResponse> imapResponses = createImapResponseList("x BYE Logout");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
 
         assertNull(result);
     }
 
     @Test
     public void parse_withoutResponseTextList_shouldReturnNull() throws Exception {
-        ImapResponse imapResponse = createImapResponse("x OK Success");
+        List<ImapResponse> imapResponses = createImapResponseList("x OK Success");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
 
         assertNull(result);
     }
 
     @Test
     public void parse_withResponseTextListTooShort_shouldReturnNull() throws Exception {
-        ImapResponse imapResponse = createImapResponse("x OK [A B C] Success");
+        List<ImapResponse> imapResponses = createImapResponseList("x OK [A B C] Success");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
 
         assertNull(result);
     }
 
     @Test
     public void parse_withoutCopyUidResponse_shouldReturnNull() throws Exception {
-        ImapResponse imapResponse = createImapResponse("x OK [A B C D] Success");
+        List<ImapResponse> imapResponses = createImapResponseList("x OK [A B C D] Success");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
 
         assertNull(result);
     }
 
     @Test
     public void parse_withNonStringCopyUidArgumentOne_shouldReturnNull() throws Exception {
-        ImapResponse imapResponse = createImapResponse("x OK [COPYUID () C D] Success");
+        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID () C D] Success");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
 
         assertNull(result);
     }
 
     @Test
     public void parse_withNonStringCopyUidArgumentTwo_shouldReturnNull() throws Exception {
-        ImapResponse imapResponse = createImapResponse("x OK [COPYUID B () D] Success");
+        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID B () D] Success");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
 
         assertNull(result);
     }
 
     @Test
     public void parse_withNonStringCopyUidArgumentThree_shouldReturnNull() throws Exception {
-        ImapResponse imapResponse = createImapResponse("x OK [COPYUID B C ()] Success");
+        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID B C ()] Success");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
 
         assertNull(result);
     }
 
     @Test
     public void parse_withNonNumberCopyUidArguments_shouldReturnNull() throws Exception {
-        ImapResponse imapResponse = createImapResponse("x OK [COPYUID B C D] Success");
+        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID B C D] Success");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
 
         assertNull(result);
     }
 
     @Test
     public void parse_withUnbalancedCopyUidArguments_shouldReturnNull() throws Exception {
-        ImapResponse imapResponse = createImapResponse("x OK [COPYUID B 1 1,2] Success");
+        List<ImapResponse> imapResponses = createImapResponseList("x OK [COPYUID B 1 1,2] Success");
 
-        CopyUidResponse result = CopyUidResponse.parse(imapResponse);
+        UidCopyResponse result = UidCopyResponse.parse(imapResponses);
 
         assertNull(result);
     }
+
 
     private Map<String, String> createUidMapping(String... values) {
         Map<String, String> mapping = new HashMap<>(values.length);
