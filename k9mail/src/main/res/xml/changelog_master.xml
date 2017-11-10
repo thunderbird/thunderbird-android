@@ -8,6 +8,10 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.304" versioncode="23540">
+        <change>Fixed bug that could cause OpenPGP signature verification to fail when it shouldn't</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.303" versioncode="23530">
         <change>Fixed bug that could lead to attachments not being displayed</change>
         <change>Fixed bug where HTML messages weren't displayed correctly</change>
