@@ -1,8 +1,6 @@
 package com.fsck.k9.activity.compose;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
@@ -26,7 +25,9 @@ import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.activity.misc.Attachment.LoadingState;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
+import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.provider.RawMessageProvider;
 
 
 public class AttachmentPresenter {
@@ -164,10 +165,6 @@ public class AttachmentPresenter {
     }
 
     public boolean loadNonInlineAttachments(MessageViewInfo messageViewInfo) {
-        return allPartsAvailable(messageViewInfo, true);
-    }
-
-    private boolean allPartsAvailable(MessageViewInfo messageViewInfo, boolean loadNonInlineAttachments) {
         boolean allPartsAvailable = true;
 
         for (AttachmentViewInfo attachmentViewInfo : messageViewInfo.attachments) {
@@ -178,9 +175,7 @@ public class AttachmentPresenter {
                 allPartsAvailable = false;
                 continue;
             }
-            if (loadNonInlineAttachments) {
-                addAttachment(attachmentViewInfo);
-            }
+            addAttachment(attachmentViewInfo);
         }
 
         return allPartsAvailable;
@@ -194,23 +189,14 @@ public class AttachmentPresenter {
     }
 
     public void processMessageToForwardAsAttachment(MessageViewInfo messageViewInfo) throws IOException, MessagingException {
-        boolean isMissingParts = !allPartsAvailable(messageViewInfo, false);
-        if (isMissingParts) {
+        if (messageViewInfo.isMessageIncomplete) {
             attachmentMvpView.showMissingAttachmentsPartialMessageForwardWarning();
         } else {
-            File tempFile = File.createTempFile("pre", ".tmp");
-            tempFile.deleteOnExit();
-            FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
-            messageViewInfo.message.writeTo(fileOutputStream);
-            fileOutputStream.close();
+            LocalMessage localMessage = (LocalMessage) messageViewInfo.message;
+            MessageReference messageReference = localMessage.makeMessageReference();
+            Uri rawMessageUri = RawMessageProvider.getRawMessageUri(messageReference);
 
-            int loaderId = getNextFreeLoaderId();
-            Attachment attachment = Attachment.createAttachment(null, loaderId, "message/rfc822")
-                    .deriveWithMetadataLoaded("message/rfc822", messageViewInfo.message.getSubject(), tempFile.length())
-                    .deriveWithLoadComplete(tempFile.getAbsolutePath());
-
-            attachments.put(attachment.uri, attachment);
-            attachmentMvpView.addAttachmentView(attachment);
+            addAttachment(rawMessageUri, "message/rfc822");
         }
     }
 

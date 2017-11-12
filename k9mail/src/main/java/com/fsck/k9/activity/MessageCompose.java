@@ -398,8 +398,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         messageLoaderCallbacks);
                 internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_ON);
 
-                Parcelable cachedDecryptionResult = intent.getParcelableExtra(EXTRA_MESSAGE_DECRYPTION_RESULT);
-                messageLoaderHelper.asyncStartOrResumeLoadingMessage(relatedMessageReference, cachedDecryptionResult);
+                if (action == Action.FORWARD_AS_ATTACHMENT) {
+                    messageLoaderHelper.asyncStartOrResumeLoadingMessageMetadata(relatedMessageReference);
+                } else {
+                    Parcelable cachedDecryptionResult = intent.getParcelableExtra(EXTRA_MESSAGE_DECRYPTION_RESULT);
+                    messageLoaderHelper.asyncStartOrResumeLoadingMessage(
+                            relatedMessageReference, cachedDecryptionResult);
+                }
             }
 
             if (action != Action.EDIT_DRAFT) {

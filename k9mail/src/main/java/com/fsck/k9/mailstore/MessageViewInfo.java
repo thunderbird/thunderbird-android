@@ -48,6 +48,10 @@ public class MessageViewInfo {
         return new MessageViewInfo(message, isMessageIncomplete, null, null, null, null, null, null, null);
     }
 
+    public static MessageViewInfo createForMetadataOnly(Message message, boolean isMessageIncomplete) {
+        return new MessageViewInfo(message, isMessageIncomplete, null, null, null, null, null, null, null);
+    }
+
     MessageViewInfo withCryptoData(CryptoResultAnnotation rootPartAnnotation, String extraViewableText,
             List<AttachmentViewInfo> extraAttachmentInfos) {
         return new MessageViewInfo(
