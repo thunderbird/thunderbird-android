@@ -116,6 +116,9 @@ public abstract class Folder<T extends Message> {
     public void expunge() throws MessagingException
         {}
 
+    public void expungeUids(List<String> uids) throws MessagingException {
+    }
+
     /**
      * Populate a list of messages based upon a FetchProfile.  See {@link FetchProfile} for the things that can
      * be fetched.
