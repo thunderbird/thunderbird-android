@@ -294,6 +294,17 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_toast_unable_to_display_message">Unable to display message</string>
     <string name="message_view_sender_label">via %1$s</string>
 
+    <!-- Date separators -->
+    <string name="message_list_separator_today">today</string>
+    <string name="message_list_separator_yesterday">yesterday</string>
+    <string name="message_list_separator_day_before_yesterday">day before yesterday</string>
+    <string name="message_list_separator_last_week">last week</string>
+    <string name="message_list_separator_two_weeks">two weeks ago</string>
+    <string name="message_list_separator_three_weeks">three weeks ago</string>
+    <string name="message_list_separator_earlier_this_month">earlier this month</string>
+    <string name="message_list_separator_last_month">last month</string>
+    <string name="message_list_separator_older">older</string>
+
     <!-- NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title -->
     <string name="message_no_additional_headers_available">All headers have been downloaded, but there are no additional headers to show.</string>
     <string name="message_additional_headers_retrieval_failed">The retrieval of additional headers from the database or mail server failed.</string>

@@ -210,6 +210,17 @@ jusqu\'à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="debug_enable_sensitive_logging_title">Journaliser les informations délicates</string>
   <string name="debug_enable_sensitive_logging_summary">Pourrait inclure les mots de passe dans les journaux.</string>
   <string name="message_list_load_more_messages_action">Charger plus de messages</string>
+
+  <!-- Date separators -->
+  <string name="message_list_separator_today">aujourd\'hui</string>
+  <string name="message_list_separator_yesterday">hier</string>
+  <string name="message_list_separator_day_before_yesterday">avant-hier</string>
+  <string name="message_list_separator_last_week">semaine dernière</string>
+  <string name="message_list_separator_two_weeks">deux semaines avant</string>
+  <string name="message_list_separator_three_weeks">trois semaines avant</string>
+  <string name="message_list_separator_last_month">mois dernier</string>
+  <string name="message_list_separator_older">plus tôt</string>
+
   <string name="message_to_fmt">À\u00A0: <xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Objet</string>
   <string name="message_compose_content_hint">Texte du message</string>

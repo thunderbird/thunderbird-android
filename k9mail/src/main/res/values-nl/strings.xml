@@ -205,6 +205,17 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="debug_enable_sensitive_logging_title">Log gevoelige informatie</string>
   <string name="debug_enable_sensitive_logging_summary">Kan wachtwoorden laten zien in logs.</string>
   <string name="message_list_load_more_messages_action">Laad meer berichten</string>
+
+  <!-- Date separators -->
+  <string name="message_list_separator_today">vandaag</string>
+  <string name="message_list_separator_yesterday">gisteren</string>
+  <string name="message_list_separator_day_before_yesterday">eergisteren</string>
+  <string name="message_list_separator_last_week">vorige week</string>
+  <string name="message_list_separator_two_weeks">twee weken geleden</string>
+  <string name="message_list_separator_three_weeks">drie weken geleden</string>
+  <string name="message_list_separator_last_month">vorige maand</string>
+  <string name="message_list_separator_older">ouder</string>
+
   <string name="message_to_fmt">Aan:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Onderwerp</string>
   <string name="message_compose_content_hint">Bericht tekst</string>

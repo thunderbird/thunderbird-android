@@ -56,6 +56,8 @@
         <item name="messageListActiveItemBackgroundColor">#ff2ea7d1</item>
         <item name="messageListDividerColor">#ffcccccc</item>
         <item name="messageListCheckbox">@drawable/btn_check_message_list_light</item>
+        <item name="messageListSeparatorForegroundColor">#f9f7f7</item>
+        <item name="messageListSeparatorBackgroundColor">#4d4d4d</item>
         <item name="messageViewBackgroundColor">#ffffffff</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_light</item>
         <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_light</item>
@@ -122,6 +124,8 @@
         <item name="messageListActiveItemBackgroundColor">#ff33b5e5</item>
         <item name="messageListDividerColor">#ff333333</item>
         <item name="messageListCheckbox">@drawable/btn_check_message_list_dark</item>
+        <item name="messageListSeparatorForegroundColor">#f9f9f9</item>
+        <item name="messageListSeparatorBackgroundColor">#FF606060</item>
         <item name="messageViewBackgroundColor">#000000</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_dark</item>
         <item name="messageComposeAddContactImage">@drawable/ic_button_add_contact_dark</item>

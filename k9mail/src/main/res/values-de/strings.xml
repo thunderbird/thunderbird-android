@@ -210,6 +210,17 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="debug_enable_sensitive_logging_title">Vertrauliche Informationen protokollieren</string>
   <string name="debug_enable_sensitive_logging_summary">Anmeldepasswörter bei Verbindungsaufbau protokollieren.</string>
   <string name="message_list_load_more_messages_action">Weitere Nachrichten laden</string>
+
+  <!-- Date separators -->
+  <string name="message_list_separator_today">Heute</string>
+  <string name="message_list_separator_yesterday">Gestern</string>
+  <string name="message_list_separator_day_before_yesterday">Vorgestern</string>
+  <string name="message_list_separator_last_week">Letzte Woche</string>
+  <string name="message_list_separator_two_weeks">Vor Zwei Wochen</string>
+  <string name="message_list_separator_three_weeks">Vor Drei Wochen</string>
+  <string name="message_list_separator_last_month">last month</string>
+  <string name="message_list_separator_older">Älter</string>
+
   <string name="message_to_fmt">An:<xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Betreff</string>
   <string name="message_compose_content_hint">Nachrichtentext</string>
