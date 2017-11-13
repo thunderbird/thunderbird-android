@@ -62,23 +62,7 @@ public class LocalMessage extends MimeMessage {
             this.setFrom(from[0]);
         }
         this.setInternalSentDate(new Date(cursor.getLong(LocalStore.MSG_INDEX_DATE)));
-        this.setUid(cursor.getString(LocalStore.MSG_INDEX_UID));
-        String flagList = cursor.getString(LocalStore.MSG_INDEX_FLAGS);
-        if (flagList != null && flagList.length() > 0) {
-            String[] flags = flagList.split(",");
-
-            for (String flag : flags) {
-                try {
-                    this.setFlagInternal(Flag.valueOf(flag), true);
-                }
-
-                catch (Exception e) {
-                    if (!"X_BAD_FLAG".equals(flag)) {
-                        Timber.w("Unable to parse flag %s", flag);
-                    }
-                }
-            }
-        }
+        populateUidAndFlags(cursor);
         this.databaseId = cursor.getLong(LocalStore.MSG_INDEX_ID);
         this.setRecipients(RecipientType.TO, Address.unpack(cursor.getString(LocalStore.MSG_INDEX_TO)));
         this.setRecipients(RecipientType.CC, Address.unpack(cursor.getString(LocalStore.MSG_INDEX_CC)));
@@ -107,18 +91,6 @@ public class LocalMessage extends MimeMessage {
         threadId = (cursor.isNull(LocalStore.MSG_INDEX_THREAD_ID)) ? -1 : cursor.getLong(LocalStore.MSG_INDEX_THREAD_ID);
         rootId = (cursor.isNull(LocalStore.MSG_INDEX_THREAD_ROOT_ID)) ? -1 : cursor.getLong(LocalStore.MSG_INDEX_THREAD_ROOT_ID);
 
-        boolean deleted = (cursor.getInt(LocalStore.MSG_INDEX_FLAG_DELETED) == 1);
-        boolean read = (cursor.getInt(LocalStore.MSG_INDEX_FLAG_READ) == 1);
-        boolean flagged = (cursor.getInt(LocalStore.MSG_INDEX_FLAG_FLAGGED) == 1);
-        boolean answered = (cursor.getInt(LocalStore.MSG_INDEX_FLAG_ANSWERED) == 1);
-        boolean forwarded = (cursor.getInt(LocalStore.MSG_INDEX_FLAG_FORWARDED) == 1);
-
-        setFlagInternal(Flag.DELETED, deleted);
-        setFlagInternal(Flag.SEEN, read);
-        setFlagInternal(Flag.FLAGGED, flagged);
-        setFlagInternal(Flag.ANSWERED, answered);
-        setFlagInternal(Flag.FORWARDED, forwarded);
-
         setMessagePartId(cursor.getLong(LocalStore.MSG_INDEX_MESSAGE_PART_ID));
         mimeType = cursor.getString(LocalStore.MSG_INDEX_MIME_TYPE);
 
@@ -130,6 +102,38 @@ public class LocalMessage extends MimeMessage {
         }
         
         headerNeedsUpdating = false;
+    }
+
+    void populateUidAndFlags(Cursor cursor) throws MessagingException {
+        setUid(cursor.getString(cursor.getColumnIndex("uid")));
+        String flagList = cursor.getString(cursor.getColumnIndex("flags"));
+        if (flagList != null && flagList.length() > 0) {
+            String[] flags = flagList.split(",");
+
+            for (String flag : flags) {
+                try {
+                    this.setFlagInternal(Flag.valueOf(flag), true);
+                }
+
+                catch (Exception e) {
+                    if (!"X_BAD_FLAG".equals(flag)) {
+                        Timber.w("Unable to parse flag %s", flag);
+                    }
+                }
+            }
+        }
+
+        boolean deleted = (cursor.getInt(cursor.getColumnIndex("deleted")) == 1);
+        boolean read = (cursor.getInt(cursor.getColumnIndex("read")) == 1);
+        boolean flagged = (cursor.getInt(cursor.getColumnIndex("flagged")) == 1);
+        boolean answered = (cursor.getInt(cursor.getColumnIndex("answered")) == 1);
+        boolean forwarded = (cursor.getInt(cursor.getColumnIndex("forwarded")) == 1);
+
+        setFlagInternal(Flag.DELETED, deleted);
+        setFlagInternal(Flag.SEEN, read);
+        setFlagInternal(Flag.FLAGGED, flagged);
+        setFlagInternal(Flag.ANSWERED, answered);
+        setFlagInternal(Flag.FORWARDED, forwarded);
     }
 
     @VisibleForTesting
