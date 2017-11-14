@@ -62,7 +62,8 @@ class ImapSyncInteractor {
             } else {
                 imapFolder = getImapFolder(account, folderName);
 
-                if (!syncHelper.verifyOrCreateRemoteSpecialFolder(account, folderName, imapFolder, listener, controller)) {
+                if (!syncHelper.verifyOrCreateRemoteSpecialFolder(account, folderName, imapFolder, listener,
+                        controller)) {
                     return;
                 }
 
@@ -126,12 +127,12 @@ class ImapSyncInteractor {
             }
         } catch (Exception e) {
             Timber.e(e, "synchronizeMailbox");
-            // If we don't set the last checked, it can try too often during
-            // failure conditions
             String rootMessage = MessagingController.getRootCauseMessage(e);
             if (localFolder != null) {
                 try {
                     localFolder.setStatus(rootMessage);
+                    // If we don't set the last checked, it can try too often during
+                    // failure conditions
                     localFolder.setLastChecked(System.currentTimeMillis());
                 } catch (MessagingException me) {
                     Timber.e(e, "Could not set last checked on folder %s:%s",

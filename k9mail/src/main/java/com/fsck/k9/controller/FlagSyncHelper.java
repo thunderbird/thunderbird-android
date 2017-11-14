@@ -109,7 +109,7 @@ class FlagSyncHelper<T extends Message> {
 
     private boolean syncFlags(LocalMessage localMessage, Message remoteMessage) throws MessagingException {
         boolean messageChanged = false;
-        if (localMessage == null || localMessage.isSet(Flag.DELETED)) {
+        if (localMessage == null) {
             return false;
         }
         if (remoteMessage.isSet(Flag.DELETED)) {

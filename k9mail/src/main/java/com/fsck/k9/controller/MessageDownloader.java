@@ -228,8 +228,6 @@ class MessageDownloader {
             final AtomicInteger progress,
             final int todo,
             FetchProfile fp) throws MessagingException {
-        final String folder = remoteFolder.getName();
-
         final Date earliestDate = account.getEarliestPollDate();
         remoteFolder.fetch(unsyncedMessages, fp,
                 new MessageRetrievalListener<T>() {
@@ -237,21 +235,8 @@ class MessageDownloader {
                     public void messageFinished(T message, int number, int ofTotal) {
                         try {
                             if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
-                                if (K9.isDebug()) {
-                                    if (message.isSet(Flag.DELETED)) {
-                                        Timber.v("Newly downloaded message %s:%s:%s was marked deleted on server, " +
-                                                "skipping", account, folder, message.getUid());
-                                    } else {
-                                        Timber.d("Newly downloaded message %s is older than %s, skipping",
-                                                message.getUid(), earliestDate);
-                                    }
-                                }
-                                progress.incrementAndGet();
-                                for (MessagingListener l : controller.getListeners()) {
-                                    //TODO: This might be the source of poll count errors in the UI. Is todo always the
-                                    // same as ofTotal
-                                    l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
-                                }
+                                processDeletedOrOldMessage(message, account, remoteFolder.getName(), earliestDate,
+                                        progress, todo);
                                 return;
                             }
 
@@ -276,6 +261,25 @@ class MessageDownloader {
                     }
 
                 });
+    }
+
+    private <T extends Message> void processDeletedOrOldMessage(T message, Account account, String folderName,
+             Date earliestDate, AtomicInteger progress, int todo) {
+        if (K9.isDebug()) {
+            if (message.isSet(Flag.DELETED)) {
+                Timber.v("Newly downloaded message %s:%s:%s was marked deleted on server, " +
+                        "skipping", account, folderName, message.getUid());
+            } else {
+                Timber.d("Newly downloaded message %s is older than %s, skipping",
+                        message.getUid(), earliestDate);
+            }
+        }
+        progress.incrementAndGet();
+        for (MessagingListener l : controller.getListeners()) {
+            //TODO: This might be the source of poll count errors in the UI. Is todo always the
+            // same as ofTotal
+            l.synchronizeMailboxProgress(account, folderName, progress.get(), todo);
+        }
     }
 
     private boolean shouldImportMessage(final Account account, final Message message,

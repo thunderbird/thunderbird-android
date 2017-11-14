@@ -25,7 +25,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -119,19 +118,6 @@ public class FlagSyncHelperTest {
         flagSyncHelper.processDownloadedFlags(account, localFolder, remoteMessage);
 
         verify(localMessage).setFlag(Flag.SEEN, true);
-    }
-
-    @Test
-    public void processDownloadedFlags_withDeletedLocalMessage_shouldNotUpdateLocalMessage() throws Exception {
-        Message remoteMessage = createMessage(false);
-        LocalMessage localMessage = createLocalMessageInFolder(false);
-        when(remoteMessage.isSet(Flag.SEEN)).thenReturn(true);
-        when(localMessage.isSet(Flag.SEEN)).thenReturn(false);
-        when(localMessage.isSet(Flag.DELETED)).thenReturn(true);
-
-        flagSyncHelper.processDownloadedFlags(account, localFolder, remoteMessage);
-
-        verify(localMessage, never()).setFlag(any(Flag.class), anyBoolean());
     }
 
     @Test

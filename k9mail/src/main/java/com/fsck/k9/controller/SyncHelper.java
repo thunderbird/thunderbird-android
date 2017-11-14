@@ -114,35 +114,35 @@ class SyncHelper {
                 fMode == Folder.FolderClass.SECOND_CLASS);
     }
 
-    void evaluateMessageForDownload(final Message message, final String folderName, final LocalFolder localFolder,
+    void evaluateMessageForDownload(final Message remoteMessage, final String folderName, final LocalFolder localFolder,
             final Folder remoteFolder, final Account account, final List<Message> unsyncedMessages,
             final List< Message> syncFlagMessages, boolean flagSyncOnly, MessagingController controller)
             throws MessagingException {
-        if (message.isSet(Flag.DELETED)) {
-            Timber.v("Message with uid %s is marked as deleted", message.getUid());
+        if (remoteMessage.isSet(Flag.DELETED)) {
+            Timber.v("Message with uid %s is marked as deleted", remoteMessage.getUid());
 
-            syncFlagMessages.add(message);
+            syncFlagMessages.add(remoteMessage);
             return;
         }
 
-        Message localMessage = localFolder.getMessageUidAndFlags(message.getUid());
+        Message localMessage = localFolder.getMessageUidAndFlags(remoteMessage.getUid());
 
         if (localMessage == null) {
             if (!flagSyncOnly) {
-                if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                    Timber.v("Message with uid %s has not yet been downloaded", message.getUid());
+                if (!remoteMessage.isSet(Flag.X_DOWNLOADED_FULL) && !remoteMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
+                    Timber.v("Message with uid %s has not yet been downloaded", remoteMessage.getUid());
 
-                    unsyncedMessages.add(message);
+                    unsyncedMessages.add(remoteMessage);
                 } else {
-                    Timber.v("Message with uid %s is partially or fully downloaded", message.getUid());
+                    Timber.v("Message with uid %s is partially or fully downloaded", remoteMessage.getUid());
 
                     // Store the updated message locally
-                    localFolder.appendMessages(Collections.singletonList(message));
+                    localFolder.appendMessages(Collections.singletonList(remoteMessage));
 
-                    localMessage = localFolder.getMessage(message.getUid());
+                    localMessage = localFolder.getMessage(remoteMessage.getUid());
 
-                    localMessage.setFlag(Flag.X_DOWNLOADED_FULL, message.isSet(Flag.X_DOWNLOADED_FULL));
-                    localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, message.isSet(Flag.X_DOWNLOADED_PARTIAL));
+                    localMessage.setFlag(Flag.X_DOWNLOADED_FULL, remoteMessage.isSet(Flag.X_DOWNLOADED_FULL));
+                    localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, remoteMessage.isSet(Flag.X_DOWNLOADED_PARTIAL));
 
                     for (MessagingListener l : controller.getListeners()) {
                         if (!localMessage.isSet(Flag.SEEN)) {
@@ -152,21 +152,21 @@ class SyncHelper {
                 }
             }
         } else if (!localMessage.isSet(Flag.DELETED)) {
-            Timber.v("Message with uid %s is present in the local store", message.getUid());
+            Timber.v("Message with uid %s is present in the local store", remoteMessage.getUid());
 
             if (!localMessage.isSet(Flag.X_DOWNLOADED_FULL) && !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                Timber.v("Message with uid %s is not downloaded, even partially; trying again", message.getUid());
+                Timber.v("Message with uid %s is not downloaded, even partially; trying again", remoteMessage.getUid());
 
-                unsyncedMessages.add(message);
+                unsyncedMessages.add(remoteMessage);
             } else {
-                String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), message);
+                String newPushState = remoteFolder.getNewPushState(localFolder.getPushState(), remoteMessage);
                 if (newPushState != null) {
                     localFolder.setPushState(newPushState);
                 }
-                syncFlagMessages.add(message);
+                syncFlagMessages.add(remoteMessage);
             }
         } else {
-            Timber.v("Local copy of message with uid %s is marked as deleted", message.getUid());
+            Timber.v("Local copy of message with uid %s is marked as deleted", remoteMessage.getUid());
         }
     }
 
