@@ -988,6 +988,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_export_success_generic">Settings successfully exported</string>
     <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_account_imported_as">Imported <xliff:g id="original_account_name">%s</xliff:g> as <xliff:g id="account_name_after_import">%s</xliff:g></string>
     <plurals name="settings_import_accounts">
         <item quantity="one">1 account</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
