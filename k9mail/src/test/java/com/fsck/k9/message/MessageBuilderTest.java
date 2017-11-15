@@ -274,7 +274,7 @@ public class MessageBuilderTest {
         fileOutputStream.write(bytes);
         fileOutputStream.close();
 
-        return Attachment.createAttachment(null, 0, mimeType)
+        return Attachment.createAttachment(null, 0, mimeType, true)
                 .deriveWithMetadataLoaded(mimeType, filename, bytes.length)
                 .deriveWithLoadComplete(tempFile.getAbsolutePath());
     }

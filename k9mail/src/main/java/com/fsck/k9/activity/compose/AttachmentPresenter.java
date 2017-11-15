@@ -146,7 +146,7 @@ public class AttachmentPresenter {
 
         int loaderId = getNextFreeLoaderId();
         Attachment attachment = Attachment.createAttachment(
-                attachmentViewInfo.internalUri, loaderId, attachmentViewInfo.mimeType);
+                attachmentViewInfo.internalUri, loaderId, attachmentViewInfo.mimeType, true);
         attachment = attachment.deriveWithMetadataLoaded(
                 attachmentViewInfo.mimeType, attachmentViewInfo.displayName, attachmentViewInfo.size);
 
@@ -154,12 +154,16 @@ public class AttachmentPresenter {
     }
 
     public void addAttachment(Uri uri, String contentType) {
+        addAttachment(uri, contentType, false);
+    }
+
+    private void addAttachment(Uri uri, String contentType, boolean allowMessageType) {
         if (attachments.containsKey(uri)) {
             return;
         }
 
         int loaderId = getNextFreeLoaderId();
-        Attachment attachment = Attachment.createAttachment(uri, loaderId, contentType);
+        Attachment attachment = Attachment.createAttachment(uri, loaderId, contentType, allowMessageType);
 
         addAttachmentAndStartLoader(attachment);
     }
@@ -188,7 +192,9 @@ public class AttachmentPresenter {
         }
     }
 
-    public void processMessageToForwardAsAttachment(MessageViewInfo messageViewInfo) throws IOException, MessagingException {
+    public void processMessageToForwardAsAttachment(MessageViewInfo messageViewInfo) throws IOException,
+            MessagingException {
+
         if (messageViewInfo.isMessageIncomplete) {
             attachmentMvpView.showMissingAttachmentsPartialMessageForwardWarning();
         } else {
@@ -196,7 +202,7 @@ public class AttachmentPresenter {
             MessageReference messageReference = localMessage.makeMessageReference();
             Uri rawMessageUri = RawMessageProvider.getRawMessageUri(messageReference);
 
-            addAttachment(rawMessageUri, "message/rfc822");
+            addAttachment(rawMessageUri, "message/rfc822", true);
         }
     }
 
