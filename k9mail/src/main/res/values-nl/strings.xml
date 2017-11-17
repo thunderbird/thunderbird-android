@@ -257,6 +257,8 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="message_saved_toast">Bericht opgeslagen als concept</string>
   <string name="global_settings_flag_label">Bericht sterren</string>
   <string name="global_settings_flag_summary">Sterren geven gemarkeerde berichten aan</string>
+  <string name="global_settings_groups_label">Toon datumgroepen</string>
+  <string name="global_settings_groups_summary">Groepeer berichten op datum (bijv. gisteren, vorige week) als de berichten gesorteerd zijn op datum</string>
   <string name="global_settings_checkbox_label">Multi-selecteer selectieboxen</string>
   <string name="global_settings_checkbox_summary">Laat altijd multi-selecteer selectieboxen zien</string>
   <string name="global_settings_preview_lines_label">Preview regels</string>

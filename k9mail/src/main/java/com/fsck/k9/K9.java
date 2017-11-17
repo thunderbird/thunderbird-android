@@ -211,6 +211,7 @@ public class K9 extends Application {
 
     private static boolean mMessageListCheckboxes = true;
     private static boolean mMessageListStars = true;
+    private static boolean mMessageListGroups = true;
     private static int mMessageListPreviewLines = 2;
 
     private static boolean mShowCorrespondentNames = true;
@@ -465,6 +466,7 @@ public class K9 extends Application {
         editor.putBoolean("messageListSenderAboveSubject", mMessageListSenderAboveSubject);
         editor.putBoolean("hideSpecialAccounts", mHideSpecialAccounts);
         editor.putBoolean("messageListStars", mMessageListStars);
+        editor.putBoolean("messageListGroups", mMessageListGroups);
         editor.putInt("messageListPreviewLines", mMessageListPreviewLines);
         editor.putBoolean("messageListCheckboxes", mMessageListCheckboxes);
         editor.putBoolean("showCorrespondentNames", mShowCorrespondentNames);
@@ -693,6 +695,7 @@ public class K9 extends Application {
         mMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false);
         mMessageListCheckboxes = storage.getBoolean("messageListCheckboxes", false);
         mMessageListStars = storage.getBoolean("messageListStars", true);
+        mMessageListGroups = storage.getBoolean("messageListGroups", true);
         mMessageListPreviewLines = storage.getInt("messageListPreviewLines", 2);
 
         mAutofitWidth = storage.getBoolean("autofitWidth", true);
@@ -1082,6 +1085,14 @@ public class K9 extends Application {
 
     public static void setMessageListStars(boolean stars) {
         mMessageListStars = stars;
+    }
+
+    public static boolean messageListGroups() {
+        return mMessageListGroups;
+    }
+
+    public static void setMessageListGroups(boolean groups) {
+        mMessageListGroups = groups;
     }
 
     public static boolean showCorrespondentNames() {

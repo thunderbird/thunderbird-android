@@ -1,7 +1,6 @@
 package com.fsck.k9.fragment;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -204,7 +203,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     boolean checkboxes = true;
     boolean stars = true;
 
-    private int[] categorizedMessages = null;
+    DateGroups dateGroup = null;
 
     private int selectedCount = 0;
     Set<Long> selected = new HashSet<>();
@@ -293,10 +292,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public SortType getSortType() {
         return sortType;
-    }
-
-    public int[] getCategorizedMessages() {
-        return categorizedMessages;
     }
 
     public void updateTitle() {
@@ -2734,94 +2729,20 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             fragmentListener.updateMenu();
         }
 
-        categorizedMessages = getMessageCategories();
+        dateGroup = new DateGroups( context, adapter, sortType );
+        dateGroup.addDateGroups( getDateGroupIds() );
     }
 
-    int getDateCategory(long date) {
-        /*
-         * Outlook descriptions "Today", "Yesterday", the previous days of the
-         * week ending with Sunday, "Last Week", "Two Weeks Ago",
-         * "Three Weeks Ago", "Earlier this Month", "Last Month", "Older"
-         */
+    public int[] getDateGroupIds() {
+        int group = -1;
+        int lastGroup = -1;
 
-        if (date != 0) {
-            int category = 0;
-            Calendar calendar = Calendar.getInstance();
+        CursorAdapter cursorAdapter = adapter;
 
-            int sundayOffset = 0;
-            int thisMonth = calendar.get(calendar.MONTH);
-            for (int j = 0; j < 7; j++) {
-                calendar.add(Calendar.DATE, -1);
-                if (calendar.get(calendar.DAY_OF_WEEK) == calendar.SUNDAY) {
-                    sundayOffset = j + 1;
-                    break;
-                }
-            }
+        int[] groups = new int[cursorAdapter.getCount()];
 
-            Calendar messageDate = Calendar.getInstance();
-            messageDate.setTimeInMillis(date);
-
-            // calendar.setTime( compareDate );
-            long difference = daysBetween(messageDate, Calendar.getInstance());
-
-            // dateDifference( millisCompare, millisNow );
-            if (difference == 0) {
-                category = 1;
-            } else if (difference == 1) {
-                category = 2;
-            } else if (difference == 2) {
-                category = 3;
-            } else if ((sundayOffset > 1) && (difference <= sundayOffset)) {
-                category = messageDate.get(Calendar.DAY_OF_WEEK) + 3;
-            } else if ((difference - sundayOffset) < 7) {
-                category = 11;
-            } else if ((difference - sundayOffset) < 14) {
-                category = 12;
-            } else if ((difference - sundayOffset) < 21) {
-                category = 13;
-            } else {
-                category = 14;
-            }
-
-            return category;
-        }
-        return 0;
-    }
-
-    private final static long MILLISECS_PER_DAY = 24 * 60 * 60 * 1000;
-
-    private long daysBetween(Calendar a, Calendar b) {
-
-        // Optional: avoid cloning objects if it is the same day
-        if (a.get(Calendar.ERA) == b.get(Calendar.ERA) && a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
-                && a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR)) {
-            return 0;
-        }
-        Calendar a2 = (Calendar) a.clone();
-        Calendar b2 = (Calendar) b.clone();
-        a2.set(Calendar.HOUR_OF_DAY, 0);
-        a2.set(Calendar.MINUTE, 0);
-        a2.set(Calendar.SECOND, 0);
-        a2.set(Calendar.MILLISECOND, 0);
-        b2.set(Calendar.HOUR_OF_DAY, 0);
-        b2.set(Calendar.MINUTE, 0);
-        b2.set(Calendar.SECOND, 0);
-        b2.set(Calendar.MILLISECOND, 0);
-        long diff = a2.getTimeInMillis() - b2.getTimeInMillis();
-        long days = diff / MILLISECS_PER_DAY;
-        return Math.abs(days);
-    }
-
-    public int[] getMessageCategories() {
-        int category = -1;
-        int lastCategory = -1;
-
-        CursorAdapter hop = adapter;
-
-        int[] categories = new int[hop.getCount()];
-
-        for (int i = 0; i < hop.getCount(); i++) {
-            Cursor cursor = (Cursor) hop.getItem(i);
+        for (int i = 0; i < cursorAdapter.getCount(); i++) {
+            Cursor cursor = (Cursor) cursorAdapter.getItem(i);
 
             long date = 0;
             if (sortType == SortType.SORT_DATE) {
@@ -2830,16 +2751,15 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 date = cursor.getLong(INTERNAL_DATE_COLUMN);
             }
 
-            category = getDateCategory(date);
-            if (category != lastCategory) {
-                categories[i] = category;
-                lastCategory = category;
+            group = dateGroup.getDateGroup(date);
+            if (group != lastGroup) {
+                groups[i] = group;
+                lastGroup = group;
             } else {
-                categories[i] = 0;
+                groups[i] = 0;
             }
         }
-
-        return categories;
+        return groups;
     }
 
     private void updateMoreMessagesOfCurrentFolder() {

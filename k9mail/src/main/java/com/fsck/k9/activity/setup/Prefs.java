@@ -72,6 +72,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_MESSAGELIST_PREVIEW_LINES = "messagelist_preview_lines";
     private static final String PREFERENCE_MESSAGELIST_SENDER_ABOVE_SUBJECT = "messagelist_sender_above_subject";
     private static final String PREFERENCE_MESSAGELIST_STARS = "messagelist_stars";
+    private static final String PREFERENCE_MESSAGELIST_GROUPS = "messagelist_groups";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES = "messagelist_show_correspondent_names";
     private static final String PREFERENCE_MESSAGELIST_SHOW_CONTACT_NAME = "messagelist_show_contact_name";
     private static final String PREFERENCE_MESSAGELIST_CONTACT_NAME_COLOR = "messagelist_contact_name_color";
@@ -138,6 +139,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mSenderAboveSubject;
     private CheckBoxPreference mCheckboxes;
     private CheckBoxPreference mStars;
+    private CheckBoxPreference mGroups;
     private CheckBoxPreference mShowCorrespondentNames;
     private CheckBoxPreference mShowContactName;
     private CheckBoxPreference mChangeContactNameColor;
@@ -274,6 +276,9 @@ public class Prefs extends K9PreferenceActivity {
 
         mStars = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_STARS);
         mStars.setChecked(K9.messageListStars());
+
+        mGroups = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_GROUPS);
+        mGroups.setChecked(K9.messageListGroups());
 
         mShowCorrespondentNames = (CheckBoxPreference)findPreference(PREFERENCE_MESSAGELIST_SHOW_CORRESPONDENT_NAMES);
         mShowCorrespondentNames.setChecked(K9.showCorrespondentNames());
@@ -513,6 +518,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.setMessageListPreviewLines(Integer.parseInt(mPreviewLines.getValue()));
         K9.setMessageListCheckboxes(mCheckboxes.isChecked());
         K9.setMessageListStars(mStars.isChecked());
+        K9.setMessageListGroups(mGroups.isChecked());
         K9.setShowCorrespondentNames(mShowCorrespondentNames.isChecked());
         K9.setMessageListSenderAboveSubject(mSenderAboveSubject.isChecked());
         K9.setShowContactName(mShowContactName.isChecked());

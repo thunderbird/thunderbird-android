@@ -27,6 +27,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mailstore.DatabasePreviewType;
 import com.fsck.k9.ui.ContactBadge;
 
+import static com.fsck.k9.K9.messageListGroups;
 import static com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.CC_LIST_COLUMN;
@@ -54,7 +55,6 @@ public class MessageListAdapter extends CursorAdapter {
     private Drawable mForwardedAnsweredIcon;
     private FontSizes fontSizes = K9.getFontSizes();
     private Account.SortType mSortType;
-    private Context mContext;
 
     MessageListAdapter(MessageListFragment fragment) {
         super(fragment.getActivity(), null, 0);
@@ -83,8 +83,6 @@ public class MessageListAdapter extends CursorAdapter {
         MessageViewHolder holder = new MessageViewHolder(fragment);
         holder.date = (TextView) view.findViewById(R.id.date);
         holder.chip = view.findViewById(R.id.chip);
-
-        mContext = context;
 
         if (fragment.previewLines == 0 && fragment.contactsPictureLoader == null) {
             view.findViewById(R.id.preview).setVisibility(View.GONE);
@@ -174,62 +172,24 @@ public class MessageListAdapter extends CursorAdapter {
         TextView separatorText = (TextView) view.findViewById(R.id.separatorText);
         TextView separatorDate = (TextView) view.findViewById(R.id.separatorDate);
 
-        // MessageInfoHolder message = (MessageInfoHolder) getItem(
-        // cursor.getPosition() );
-
         boolean showSeparators = false;
-
-        if ((mSortType == Account.SortType.SORT_DATE) ||
-                (mSortType == Account.SortType.SORT_ARRIVAL)) {
-            showSeparators = true;
+        if ( messageListGroups() ) {
+            if ((mSortType == Account.SortType.SORT_DATE) ||
+                    (mSortType == Account.SortType.SORT_ARRIVAL)) {
+                showSeparators = true;
+            }
         }
 
         if (showSeparators) {
             int pos = cursor.getPosition();
-            int[] categorizedMessages = fragment.getCategorizedMessages();
-            int dateCategory = categorizedMessages[pos];
 
-            if (mSortType == Account.SortType.SORT_DATE) {
-                displayDate = DateUtils.getRelativeTimeSpanString(context, cursor.getLong(DATE_COLUMN));
-            } else if (mSortType == Account.SortType.SORT_ARRIVAL) {
-                displayDate = DateUtils.getRelativeTimeSpanString(context, cursor.getLong(INTERNAL_DATE_COLUMN));
-            }
+            String describeDate = fragment.dateGroup.getDateGroupName( pos );
 
-            if (!datesDone) {
-                dateCategories[1] = mContext.getString(R.string.message_list_separator_today);
-                dateCategories[2] = mContext.getString(R.string.message_list_separator_yesterday);
-                dateCategories[3] = mContext.getString(R.string.message_list_separator_day_before_yesterday);
-
-                // dateCategories[3] = (String)
-                // android.text.format.DateFormat.format("EEEE",
-                // message.compareDate );
-
-                dateCategories[11] = mContext.getString(R.string.message_list_separator_last_week);
-                dateCategories[12] = mContext.getString(R.string.message_list_separator_two_weeks);
-                dateCategories[13] = mContext.getString(R.string.message_list_separator_three_weeks);
-                dateCategories[14] = mContext.getString(R.string.message_list_separator_older);
-                ;
-
-                datesDone = true;
-            }
-
-            // if ( K9.messageListSeparators() && showSeparators )
-            if (dateCategory > 0) {
-                String describeDate = null;
-
-                if ((dateCategory > 3) && (dateCategory <= 10)) {
-                    if (mSortType == Account.SortType.SORT_ARRIVAL) {
-                        describeDate = (String) android.text.format.DateFormat.format("EEEE", cursor.getLong(INTERNAL_DATE_COLUMN));
-                    } else {
-                        describeDate = (String) android.text.format.DateFormat.format("EEEE", cursor.getLong(DATE_COLUMN));
-                    }
-                } else {
-                    describeDate = dateCategories[dateCategory];
-                }
+            if ( describeDate != null ) {
 
                 java.text.DateFormat df = android.text.format.DateFormat.getDateFormat(context);
 
-                separatorText.setText(describeDate);
+                separatorText.setText( describeDate );
 
                 int res = R.attr.messageListSeparatorBackgroundColor;
                 TypedValue backColor = new TypedValue();
@@ -259,8 +219,6 @@ public class MessageListAdapter extends CursorAdapter {
             separatorText.setVisibility(View.GONE);
             separatorDate.setVisibility(View.GONE);
         }
-
-
 
         boolean read = (cursor.getInt(READ_COLUMN) == 1);
         boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);

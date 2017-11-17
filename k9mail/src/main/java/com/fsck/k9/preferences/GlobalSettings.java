@@ -162,6 +162,9 @@ public class GlobalSettings {
         s.put("messageListStars", Settings.versions(
                 new V(1, new BooleanSetting(true))
         ));
+        s.put("messageListGroups", Settings.versions(
+                new V(1, new BooleanSetting(true))
+        ));
         s.put("messageViewFixedWidthFont", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));

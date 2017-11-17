@@ -147,6 +147,12 @@
 
             <CheckBoxPreference
                 android:persistent="false"
+                android:key="messagelist_groups"
+                android:title="@string/global_settings_groups_label"
+                android:summary="@string/global_settings_groups_summary" />
+
+            <CheckBoxPreference
+                android:persistent="false"
                 android:key="messagelist_checkboxes"
                 android:title="@string/global_settings_checkbox_label"
                 android:summary="@string/global_settings_checkbox_summary" />
