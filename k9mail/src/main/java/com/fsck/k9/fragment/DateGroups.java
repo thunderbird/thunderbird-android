@@ -118,7 +118,8 @@ public class DateGroups {
             messageDate.setTimeInMillis(date);
 
             long dateDifference = daysBetween(messageDate, Calendar.getInstance());
-            int monthDifference = Calendar.getInstance().get( Calendar.MONTH) - messageDate.get( Calendar.MONTH );
+            int monthDifference = ( Calendar.getInstance().get( Calendar.YEAR) + Calendar.getInstance().get( Calendar.MONTH) ) -
+                    ( messageDate.get( Calendar.YEAR ) + messageDate.get( Calendar.MONTH ) );
 
             if (dateDifference == DATE_TODAY) {
                 category = GROUP_TODAY;
