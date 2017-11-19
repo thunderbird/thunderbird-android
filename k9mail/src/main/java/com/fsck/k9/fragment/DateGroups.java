@@ -26,6 +26,7 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.DATE_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.INTERNAL_DATE_COLUMN;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -145,8 +146,6 @@ public class DateGroups {
         return GROUP_NONE;
     }
 
-    private final static long MILLISECS_PER_DAY = 24 * 60 * 60 * 1000;
-
     private long daysBetween(Calendar a, Calendar b) {
         if (a.get(Calendar.ERA) == b.get(Calendar.ERA) && a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
                 && a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR)) {
@@ -163,7 +162,7 @@ public class DateGroups {
         b2.set(Calendar.SECOND, 0);
         b2.set(Calendar.MILLISECOND, 0);
         long diff = a2.getTimeInMillis() - b2.getTimeInMillis();
-        long days = diff / MILLISECS_PER_DAY;
+        long days = TimeUnit.MILLISECONDS.toDays(diff);
         return Math.abs(days);
     }
 
