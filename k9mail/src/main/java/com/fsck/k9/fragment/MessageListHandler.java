@@ -1,8 +1,8 @@
 package com.fsck.k9.fragment;
 
-
 import android.app.Activity;
 import android.os.Handler;
+import android.os.Parcelable;
 
 import com.fsck.k9.activity.MessageReference;
 
@@ -128,10 +128,8 @@ public class MessageListHandler extends Handler {
                 break;
             }
             case ACTION_RESTORE_LIST_POSITION: {
-				throw new UnsupportedOperationException("Not restored yet");
-				//TODO restore
-//                fragment.recyclerView.onRestoreInstanceState((Parcelable) msg.obj);
-//                break;
+				fragment.layoutManager.onRestoreInstanceState((Parcelable) msg.obj);
+                break;
             }
             case ACTION_OPEN_MESSAGE: {
                 MessageReference messageReference = (MessageReference) msg.obj;
