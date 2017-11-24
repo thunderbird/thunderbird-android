@@ -11,117 +11,207 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(K9LibRobolectricTestRunner.class)
 public class DecoderUtilTest {
+    private static final String INVALID = "=?utf-8?Q??=";
+
 
     @Test
-    public void testDecodeEncodedWords() {
-        String body, expect;
-        MimeMessage message;
+    public void decodeEncodedWords_withInvalidEncodedWord_shouldReturnInputText() {
+        // We use INVALID as instance of an invalid encoded word in tests. If at some point we decide to change the code
+        // to recognize empty encoded text as valid and decode it to an empty string, a lot of tests will break.
+        // Hopefully this test will help the developer figure out why the other tests broke.
+        assertInputDecodesToExpected(INVALID, INVALID);
+    }
 
-        body = "abc";
-        expect = "abc";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_with_unencoded_data_returns_original_text() {
+        assertInputDecodesToExpected("abc", "abc");
+    }
 
-        body = "=?us-ascii?q?abc?=";
-        expect = "abc";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withAsciiCharset_encoded_data_returns_text() {
+        assertInputDecodesToExpected("=?us-ascii?q?abc?=", "abc");
+    }
 
-        body = "=?";
-        expect = "=?";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withStartOnly_encoding_format_returnAsText() {
+        assertInputDecodesToExpected("=?", "=?");
+    }
 
-        body = "=??";
-        expect = "=??";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withEncodedWordAndOnlyStartOfEncodedWord_shouldDecodeAndAddSuffix() {
+        assertInputDecodesToExpected("=?utf-8?Q?abc?= =?", "abc =?");
+    }
 
-        body = "=???";
-        expect = "=???";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withStartAndSeparatorOnly_returnAsText() {
+        assertInputDecodesToExpected("=??", "=??");
+    }
 
-        body = "=????";
-        expect = "=????";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withEncodedWordAndOnlyStartAndSeparatorOfEncodedWord_shouldDecodeAndAddSuffix() {
+        assertInputDecodesToExpected("=?utf-8?Q?abc?= =??", "abc =??");
+    }
 
-        body = "=????=";
-        expect = "=????=";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withStartAnd2SeparatorOnly_returnAsText() {
+        assertInputDecodesToExpected("=???", "=???");
+    }
 
-        body = "=??q??=";
-        expect = "=??q??=";
-        ;
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withEncodedWordAndOnlyStartAndTwoSeparatorsOfEncodedWord_shouldDecodeAndAddSuffix() {
+        assertInputDecodesToExpected("=?utf-8?Q?abc?= =???", "abc =???");
+    }
 
-        body = "=??q?a?=";
-        expect = "a";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withStartAnd3SeparatorOnly_returnAsText() {
+        assertInputDecodesToExpected("=????", "=????");
+    }
 
-        body = "=??=";
-        expect = "=??=";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withEncodedWordAndOnlyStartAndThreeSeparatorsOfEncodedWord_shouldDecodeAndAddSuffix() {
+        assertInputDecodesToExpected("=?utf-8?Q?abc?= =????", "abc =????");
+    }
 
-        body = "=?x?=";
-        expect = "=?x?=";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withSeparatorsOnly_returnAsText() {
+        assertInputDecodesToExpected("=????=", "=????=");
+    }
 
-        body = "=?x??=";
-        expect = "=?x??=";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withMissingCharset_returnAsText() {
+        assertInputDecodesToExpected("=??q??=", "=??q??=");
+    }
 
-        body = "=?x?q?=";
-        expect = "=?x?q?=";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withTextAndMissingCharset_returnAsText() {
+        assertInputDecodesToExpected("=??q?a?=", "a");
+    }
 
-        body = "=?x?q??=";
-        expect = "=?x?q??=";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withNoTextCharsetOrEncoding_returnAsText() {
+        assertInputDecodesToExpected("=??=", "=??=");
+    }
 
-        body = "=?x?q?X?=";
-        expect = "X";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_with_MissingEncodingAndData_returnAsText() {
+        assertInputDecodesToExpected("=?x?=", "=?x?=");
+    }
 
-        // invalid base64 string
-        body = "=?us-ascii?b?abc?=";
-        expect = "";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withMissingEncoding_returnAsText() {
+        assertInputDecodesToExpected("=?x??=", "=?x??=");
+    }
 
-        // broken encoded header
-        body = "=?us-ascii?q?abc?= =?";
-        expect = "abc =?";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_with_incompleteEncodingFormat_returnAsText() {
+        assertInputDecodesToExpected("=?x?q?=", "=?x?q?=");
+    }
 
-        body = "=?x?= =?";
-        expect = "=?x?= =?";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_with_unrecognisedEncoding_withEmptyEncodedData_returnAsText() {
+        assertInputDecodesToExpected("=?x?q??=", "=?x?q??=");
+    }
 
-        //Multi encoded header
-        body = "=?utf-8?B?5Liq5Lq66YKu566xOkJVRyAjMzAyNDY6OumCruS7tuato+aWh+mZhOS7tuWQ?=\n" +
-                "=?utf-8?B?jeensOecgeeVpeaYvuekuuS8mOWMlg==?=";
-        expect = "个人邮箱:BUG #30246::邮件正文附件��称省略显示优化";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withUnrecognisedEncoding_withEncodedData_return_encoded_data() {
+        assertInputDecodesToExpected("=?x?q?X?=", "X");
+    }
 
-        //Non utf-8 encoding
-        body = "=?gb2312?B?Obv9t9az6cnu29rHsLqju6rHyLPHSlfN8rrAvsa16qOsuPzT0DIwvNIzOTnU?= " +
-                "=?gb2312?B?qr6r0aG439DHytTLr77Gteq1yMTjwLSjoaOoQUSjqQ?=";
-        expect = "9积分抽深圳前海华侨城JW万豪酒店，更有20家399��精选高星试睡酒店等你来！（AD�";
-        message = null;
-        assertEquals(expect, DecoderUtil.decodeEncodedWords(body, message));
+    @Test
+    public void decodeEncodedWords_withInvalidBase64String_returnsEmptyString() {
+        assertInputDecodesToExpected("=?us-ascii?b?abc?=", "");
+    }
+
+    @Test
+    public void decodeEncodedWords_withPartiallyEncoded_returnsBothSections() {
+        assertInputDecodesToExpected("=?us-ascii?q?abc?= =?", "abc =?");
+    }
+
+    @Test
+    public void decodeEncodedWords_withPartiallyEncodedAfter_returnsBothSections() {
+        assertInputDecodesToExpected("def=?us-ascii?q?abc?=", "defabc");
+    }
+
+    @Test
+    public void decodeEncodedWords_withUnrecognisedCharset_returnsEncodedData() {
+        assertInputDecodesToExpected("=?x?= =?", "=?x?= =?");
+    }
+
+    @Test
+    public void decodeEncodedWords_withMultipleEncodedSections_decodesBoth() {
+        assertInputDecodesToExpected("=?us-ascii?q?abc?= =?us-ascii?q?def?=", "abcdef");
+    }
+
+    @Test
+    public void decodeEncodedWords_withMultipleEncodedSections_decodesSequentialSectionTogether() {
+        // Splitting mid-character is RFC2047 non-compliant but seen in practice.
+        // "=?utf-8?B?b2hhaSDw?=" individually decodes to "ohai �"
+        // "=?utf-8?B?n5Kp==?=" individually decodes to "���"
+        // (invalid bytes in a UTF-8 sequence are replaced with the replacement character)
+        assertInputDecodesToExpected("=?utf-8?B?b2hhaSDw?= =?utf-8?B?n5Kp?=", "ohai 💩");
+    }
+
+    @Test
+    public void decodeEncodedWords_withMultipleEncodedSectionsButCharsetAndEncodingDifferingInCase_decodesSequentialSectionTogether() {
+        assertInputDecodesToExpected("=?utf-8?B?b2hhaSDw?= =?UTF-8?b?n5Kp?=", "ohai 💩");
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordWhitespaceInvalidEncodedWord_shouldOnlyDecodeEncodedWord() {
+        assertInputDecodesToExpected("=?utf-8?Q?abc?=   " + INVALID, "abc   " + INVALID);
+    }
+
+    @Test
+    public void decodeEncodedWords_withInvalidEncodedWordWhitespaceInvalidEncodedWord_shouldReturnInputText() {
+        String input = INVALID + "   " + INVALID;
+        assertInputDecodesToExpected(input, input);
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordNonWhitespaceSeparatorEncodedWord_shouldDecodeBothAndKeepSeparator() {
+        assertInputDecodesToExpected("=?utf-8?Q?ab?= -- =?utf-8?Q?cd?=", "ab -- cd");
+    }
+
+    @Test
+    public void decodeEncodedWords_withInvalidEncodedWordWhitespaceEncodedWord_shouldOnlyDecodeEncodedWord() {
+        assertInputDecodesToExpected(INVALID + "   =?utf-8?Q?abc?=", INVALID + "   abc");
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordFollowedByEncodedWordWithDifferentEncoding_shouldDecodeIndividually() {
+        assertInputDecodesToExpected("=?utf-8?Q?ab?= =?utf-8?B?Y2Q=?=", "abcd");
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordSeparatorEncodedWordWithDifferentEncoding_shouldDecodeIndividuallyAndKeepSeparator() {
+        assertInputDecodesToExpected("=?utf-8?Q?ab?= / =?utf-8?B?Y2Q=?=", "ab / cd");
+    }
+
+    @Test
+    public void decodeEncodedWords_withEncodedWordFollowedByEncodedWordWithDifferentCharset_shouldDecodeIndividually() {
+        assertInputDecodesToExpected("=?us-ascii?Q?oh_no_?= =?utf-8?Q?=F0=9F=92=A9?=", "oh no 💩");
+    }
+
+    @Test
+    public void decodeEncodedWords_withRFC2047examples_decodesCorrectly() {
+        assertInputDecodesToExpected("(=?ISO-8859-1?Q?a?=)", "(a)");
+
+        assertInputDecodesToExpected("(=?ISO-8859-1?Q?a?= b)", "(a b)");
+
+        assertInputDecodesToExpected("(=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?=)", "(ab)");
+
+        assertInputDecodesToExpected("(=?ISO-8859-1?Q?a?=  =?ISO-8859-1?Q?b?=)", "(ab)");
+
+        assertInputDecodesToExpected("(=?ISO-8859-1?Q?a?=     \n    =?ISO-8859-1?Q?b?=)", "(ab)");
+
+        assertInputDecodesToExpected("(=?ISO-8859-1?Q?a_b?=)", "(a b)");
+
+        assertInputDecodesToExpected("(=?ISO-8859-1?Q?a?= =?ISO-8859-2?Q?_b?=)", "(a b)");
+    }
+
+
+    private void assertInputDecodesToExpected(String input, String expected) {
+        String decodedText = DecoderUtil.decodeEncodedWords(input, null);
+        assertEquals(expected, decodedText);
     }
 }

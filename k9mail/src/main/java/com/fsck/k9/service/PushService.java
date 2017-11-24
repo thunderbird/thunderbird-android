@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import timber.log.Timber;
-import com.fsck.k9.K9;
 
 public class PushService extends CoreService {
     private static String START_SERVICE = "com.fsck.k9.service.PushService.startService";

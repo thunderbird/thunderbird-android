@@ -1565,12 +1565,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         @Override
         protected String generateMessage(Accounts activity) {
-            //TODO: display names of imported accounts (name from file *and* possibly new name)
+            StringBuilder result = new StringBuilder();
+            for (AccountDescriptionPair account : mImportResults.importedAccounts) {
+                result.append(activity.getString(R.string.settings_import_account_imported_as,
+                        account.original.name, account.imported.name));
+                result.append('\n');
+            }
+            result.append('\n');
 
             int imported = mImportResults.importedAccounts.size();
             String accounts = activity.getResources().getQuantityString(
                                   R.plurals.settings_import_accounts, imported, imported);
-            return activity.getString(R.string.settings_import_success, accounts, mFilename);
+            result.append(activity.getString(R.string.settings_import_success, accounts, mFilename));
+            return result.toString();
         }
 
         @Override
@@ -1690,7 +1697,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     ListView listView = ((AlertDialog) dialog).getListView();
                     SparseBooleanArray pos = listView.getCheckedItemPositions();
 
-                    boolean includeGlobals = mImportContents.globalSettings ? pos.get(0) : false;
+                    boolean includeGlobals = mImportContents.globalSettings && pos.get(0);
                     List<String> accountUuids = new ArrayList<String>();
                     int start = mImportContents.globalSettings ? 1 : 0;
                     for (int i = start, end = listView.getCount(); i < end; i++) {
@@ -1760,10 +1767,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.email = (TextView) view.findViewById(R.id.email);
                 holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
                 holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
-                holder.newMessageCountWrapper = (View) view.findViewById(R.id.new_message_count_wrapper);
-                holder.flaggedMessageCountWrapper = (View) view.findViewById(R.id.flagged_message_count_wrapper);
-                holder.newMessageCountIcon = (View) view.findViewById(R.id.new_message_count_icon);
-                holder.flaggedMessageCountIcon = (View) view.findViewById(R.id.flagged_message_count_icon);
+                holder.newMessageCountWrapper = view.findViewById(R.id.new_message_count_wrapper);
+                holder.flaggedMessageCountWrapper = view.findViewById(R.id.flagged_message_count_wrapper);
+                holder.newMessageCountIcon = view.findViewById(R.id.new_message_count_icon);
+                holder.flaggedMessageCountIcon = view.findViewById(R.id.flagged_message_count_icon);
                 holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
 
                 holder.chip = view.findViewById(R.id.chip);

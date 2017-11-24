@@ -17,14 +17,12 @@ import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.BuildConfig;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
-import org.openintents.openpgp.util.ParcelFileDescriptorUtil;
 
 
 /**

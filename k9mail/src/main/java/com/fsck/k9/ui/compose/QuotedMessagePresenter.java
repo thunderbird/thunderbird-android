@@ -10,7 +10,6 @@ import timber.log.Timber;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Account.QuoteStyle;
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageCompose.Action;
 import com.fsck.k9.message.extractors.BodyTextExtractor;

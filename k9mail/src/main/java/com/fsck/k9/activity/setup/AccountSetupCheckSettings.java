@@ -186,7 +186,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                                 Integer type = (Integer)subjectAlternativeName.get(0);
                                 Object value = subjectAlternativeName.get(1);
                                 String name;
-                                switch (type.intValue()) {
+                                switch (type) {
                                 case 0:
                                     Timber.w("SubjectAltName of type OtherName not supported.");
                                     continue;

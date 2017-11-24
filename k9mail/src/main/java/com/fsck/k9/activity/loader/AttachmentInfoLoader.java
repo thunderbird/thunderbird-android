@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.provider.OpenableColumns;
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.activity.misc.Attachment.LoadingState;
 import com.fsck.k9.mail.internet.MimeUtility;

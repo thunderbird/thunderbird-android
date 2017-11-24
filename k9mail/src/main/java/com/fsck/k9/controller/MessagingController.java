@@ -1830,7 +1830,7 @@ public class MessagingController {
                     if (remoteDate != null) {
                         remoteMessage.setFlag(Flag.DELETED, true);
                         if (Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
-                            remoteFolder.expunge();
+                            remoteFolder.expungeUids(Collections.singletonList(remoteMessage.getUid()));
                         }
                     }
                 }
@@ -1914,7 +1914,11 @@ public class MessagingController {
             }
             if (!isCopy && Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
                 Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolder);
-                remoteSrcFolder.expunge();
+                List<String> movedUids = new ArrayList<>(messages.size());
+                for (Message message : messages) {
+                    movedUids.add(message.getUid());
+                }
+                remoteSrcFolder.expungeUids(movedUids);
             }
 
             /*
@@ -3838,18 +3842,14 @@ public class MessagingController {
     }
 
     private boolean modeMismatch(Account.FolderMode aMode, Folder.FolderClass fMode) {
-        if (aMode == Account.FolderMode.NONE
+        return aMode == Account.FolderMode.NONE
                 || (aMode == Account.FolderMode.FIRST_CLASS &&
                 fMode != Folder.FolderClass.FIRST_CLASS)
                 || (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
                 fMode != Folder.FolderClass.FIRST_CLASS &&
                 fMode != Folder.FolderClass.SECOND_CLASS)
                 || (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
-                fMode == Folder.FolderClass.SECOND_CLASS)) {
-            return true;
-        } else {
-            return false;
-        }
+                fMode == Folder.FolderClass.SECOND_CLASS);
     }
 
     private static AtomicInteger sequencing = new AtomicInteger(0);

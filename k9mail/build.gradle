@@ -62,8 +62,8 @@ android {
         applicationId "com.fsck.k9"
         testApplicationId "com.fsck.k9.tests"
 
-        versionCode 23531
-        versionName '5.304-SNAPSHOT'
+        versionCode 25000
+        versionName '5.500-SNAPSHOT'
 
         minSdkVersion 15
         targetSdkVersion 22
@@ -82,6 +82,9 @@ android {
             if (project.hasProperty('storeFile')) {
                 signingConfig signingConfigs.release
             }
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "boolean", "DEVELOPER_MODE", "false"
         }

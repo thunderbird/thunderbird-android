@@ -9,7 +9,6 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.Attachment;
 
 import com.fsck.k9.activity.misc.Attachment.LoadingState;

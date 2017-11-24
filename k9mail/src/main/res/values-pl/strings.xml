@@ -73,6 +73,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="compose_title_reply">Odpowiedz</string>
   <string name="compose_title_reply_all">Odpowiedz wszystkim</string>
   <string name="compose_title_forward">Przekaż</string>
+  <string name="choose_account_title">Wybierz konto</string>
   <string name="choose_folder_title">Wybierz folder</string>
   <string name="status_loading_account_folder">Sprawdzam <xliff:g id="account">%s</xliff:g>: <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Nagłówki: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -849,6 +850,16 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="manage_accounts_move_down_action">Przenieś w dół</string>
   <string name="manage_accounts_moving_message">Przenoszenie konta…</string>
   <string name="unread_widget_select_account">Pokaż licznik nieprzeczytanych dla…</string>
+  <string name="unread_widget_account_title">Konto</string>
+  <string name="unread_widget_account_summary">Folder dla którego liczba nie przeczytanych wiadomości powinna być wyświetlana</string>
+  <string name="unread_widget_unified_inbox_account_summary">Zintegrowana skrzynka odbiorcza</string>
+  <string name="unread_widget_all_messages_account_summary">Wszystkie wiadomości</string>
+  <string name="unread_widget_folder_enabled_title">Liczba folderów</string>
+  <string name="unread_widget_folder_title">Folder</string>
+  <string name="unread_widget_folder_summary">Folder dla którego liczba nie przeczytanych wiadomości powinna być wyświetlana</string>
+  <string name="unread_widget_action_done">Wykonano</string>
+  <string name="unread_widget_account_not_selected">Nie wybrano konta</string>
+  <string name="unread_widget_folder_not_selected">Nie wybrano folderu</string>
   <string name="import_dialog_error_title">Brakuje aplikacji zarządania plikami</string>
   <string name="close">Zamknij</string>
   <string name="webview_empty_message">Brak tekstu</string>
@@ -953,6 +964,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="address_type_other">Inne</string>
   <string name="address_type_mobile">Mobilny</string>
   <string name="compose_error_no_draft_folder">Folder Szkice nie skonfigurowany dla tego konta.</string>
+  <string name="compose_error_no_key_configured">Konto nie posiada skonfigurowanego klucza. Sprawdź ustawienia.</string>
   <string name="crypto_mode_disabled">Nie szyfruj</string>
   <string name="crypto_mode_opportunistic">Szyfruj, jeśli można</string>
   <string name="crypto_mode_private">Szyfruj</string>
@@ -1023,6 +1035,9 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="messageview_crypto_warning_show_anyway">Wyświetl wiadomość mimo to</string>
   <string name="recipient_error_non_ascii">Znaki specjalne nie są obecnie obsługiwane!</string>
   <string name="recipient_error_parse_failed">Błąd analizowania adresu!</string>
+  <string name="account_settings_crypto_support_sign_only">Pokaż nie zaszyfrowane podpisy</string>
+  <string name="account_settings_crypto_support_sign_only_on">Nie zaszyfrowane podpisy są wyświetlane</string>
+  <string name="account_settings_crypto_support_sign_only_off">Nie zaszyfrowane podpisy są ignorowane</string>
   <string name="error_sign_only_no_encryption">Szyfrowanie nie jest dostępne w trybie sign-only!</string>
   <string name="unsigned_text_divider_label">Niepodpisany tekst</string>
   <string name="apg_deprecated_title">Ostrzeżenie o przestarzałości APG</string>

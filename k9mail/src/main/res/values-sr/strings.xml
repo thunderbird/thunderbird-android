@@ -848,9 +848,12 @@
   <string name="unread_widget_account_title">Налог</string>
   <string name="unread_widget_unified_inbox_account_summary">Обједињено пријемно сандуче</string>
   <string name="unread_widget_all_messages_account_summary">Све поруке</string>
+  <string name="unread_widget_folder_enabled_title">Број фасцикли</string>
   <string name="unread_widget_folder_title">Фасцикла</string>
   <string name="unread_widget_action_done">Заврши</string>
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Ниједан налог није изабран</string>
+  <string name="unread_widget_folder_not_selected">Ниједна фасцикла није изабрана</string>
   <string name="import_dialog_error_title">Нема апликације за менаџмент фајлова</string>
   <string name="close">Затвори</string>
   <string name="webview_empty_message">Нема текста</string>
@@ -953,6 +956,7 @@
   <string name="address_type_other">Остало</string>
   <string name="address_type_mobile">Мобилни</string>
   <string name="compose_error_no_draft_folder">Фасцикла за нацрте није подешена за овај налог!</string>
+  <string name="compose_error_no_key_configured">Ниједан кључ није постављен за овај налог! Проверите поставке.</string>
   <string name="crypto_mode_disabled">Не шифруј.</string>
   <string name="crypto_mode_opportunistic">Шифруј ако је могуће</string>
   <string name="crypto_mode_private">Шифруј</string>
@@ -1023,6 +1027,8 @@
   <string name="recipient_error_non_ascii">Посебни знакови тренутно нису нису подржани!</string>
   <string name="recipient_error_parse_failed">Грешка прослеђивања адресе!</string>
   <string name="account_settings_crypto_support_sign_only">Прикажи нешифроване потписе</string>
+  <string name="account_settings_crypto_support_sign_only_on">Нешифровани потписи ће бити приказани</string>
+  <string name="account_settings_crypto_support_sign_only_off">Нешифровани потписи ће бити занемарени</string>
   <string name="error_sign_only_no_encryption">Шифровање није могуће у само-потпис режиму!</string>
   <string name="unsigned_text_divider_label">Непотписан текст</string>
   <string name="apg_deprecated_title">Упозорење о застарењу АПГ-а</string>

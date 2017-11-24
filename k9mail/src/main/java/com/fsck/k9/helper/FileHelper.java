@@ -9,7 +9,6 @@ import java.util.Locale;
 
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
 import org.apache.commons.io.IOUtils;
 
 

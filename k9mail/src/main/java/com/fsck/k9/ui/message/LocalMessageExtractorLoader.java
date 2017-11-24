@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfoExtractor;

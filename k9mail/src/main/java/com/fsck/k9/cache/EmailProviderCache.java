@@ -137,7 +137,7 @@ public class EmailProviderCache {
     public boolean isMessageHidden(Long messageId, long folderId) {
         synchronized (mHiddenMessageCache) {
             Long hiddenInFolder = mHiddenMessageCache.get(messageId);
-            return (hiddenInFolder != null && hiddenInFolder.longValue() == folderId);
+            return (hiddenInFolder != null && hiddenInFolder == folderId);
         }
     }
 
@@ -146,10 +146,10 @@ public class EmailProviderCache {
             for (Message message : messages) {
                 LocalMessage localMessage = (LocalMessage) message;
                 long messageId = localMessage.getDatabaseId();
-                long folderId = ((LocalFolder) localMessage.getFolder()).getDatabaseId();
+                long folderId = localMessage.getFolder().getDatabaseId();
                 Long hiddenInFolder = mHiddenMessageCache.get(messageId);
 
-                if (hiddenInFolder != null && hiddenInFolder.longValue() == folderId) {
+                if (hiddenInFolder != null && hiddenInFolder == folderId) {
                     mHiddenMessageCache.remove(messageId);
                 }
             }

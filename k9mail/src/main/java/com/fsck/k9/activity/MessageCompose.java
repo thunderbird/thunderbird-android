@@ -1070,12 +1070,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (subjectView.getText().length() != 0) {
             return true;
         }
-        if (!recipientPresenter.getToAddresses().isEmpty() ||
+        return !recipientPresenter.getToAddresses().isEmpty() ||
                 !recipientPresenter.getCcAddresses().isEmpty() ||
-                !recipientPresenter.getBccAddresses().isEmpty()) {
-            return true;
-        }
-        return false;
+                !recipientPresenter.getBccAddresses().isEmpty();
     }
 
     @Override

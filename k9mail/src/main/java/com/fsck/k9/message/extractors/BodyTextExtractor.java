@@ -3,7 +3,6 @@ package com.fsck.k9.message.extractors;
 
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;

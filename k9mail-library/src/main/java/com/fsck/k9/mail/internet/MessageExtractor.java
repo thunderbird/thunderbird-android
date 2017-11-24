@@ -452,19 +452,8 @@ public class MessageExtractor {
             return false;
         }
 
-        if (part.isMimeType("text/html")) {
-            return true;
-        }
+        return part.isMimeType("text/html") || part.isMimeType("text/plain") || part.isMimeType("application/pgp");
 
-        if (part.isMimeType("text/plain")) {
-            return true;
-        }
-
-        if (part.isMimeType("application/pgp")) {
-            return true;
-        }
-
-        return false;
     }
 
     private static String getContentDisposition(Part part) {
