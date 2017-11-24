@@ -1,4 +1,6 @@
 package com.fsck.k9.fragment;
+
+
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,79 +13,79 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.fsck.k9.R;
-/**
- Created by Kamil Rajtar on 05.11.17. */
-class MessageSwipeReactions extends ItemTouchHelper.Callback{
 
-	private final Resources resources;
-	private final IOnDeleteListener onDeleteListener;
 
-	MessageSwipeReactions(final Resources resources,final IOnDeleteListener onDeleteListener){
-		this.onDeleteListener=onDeleteListener;
-		this.resources=resources;
-	}
+class MessageSwipeReactions extends ItemTouchHelper.Callback {
 
-	@Override
-	public int getMovementFlags(final RecyclerView recyclerView,
-								final RecyclerView.ViewHolder viewHolder){
-		final int dragFlags=0;
-		final int swipeFlags=ItemTouchHelper.END;
-		return ItemTouchHelper.Callback.makeMovementFlags(dragFlags,swipeFlags);
-	}
+    private final Resources resources;
+    private final IOnDeleteListener onDeleteListener;
 
-	@Override
-	public boolean onMove(final RecyclerView recyclerView,final RecyclerView.ViewHolder viewHolder,
-						  final RecyclerView.ViewHolder target){
-		return false;
-	}
+    MessageSwipeReactions(final Resources resources, final IOnDeleteListener onDeleteListener) {
+        this.onDeleteListener = onDeleteListener;
+        this.resources = resources;
+    }
 
-	@Override
-	public void onSwiped(final RecyclerView.ViewHolder viewHolder,final int direction){
-		switch(direction){
-			case ItemTouchHelper.END:
-				onDeleteListener.onDelete(viewHolder.getAdapterPosition());
-		}
-	}
+    @Override
+    public int getMovementFlags(final RecyclerView recyclerView,
+            final RecyclerView.ViewHolder viewHolder) {
+        final int dragFlags = 0;
+        final int swipeFlags = ItemTouchHelper.END;
+        return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags);
+    }
 
-	public void onChildDraw(final Canvas canvas,final RecyclerView recyclerView,
-							final RecyclerView.ViewHolder viewHolder,final float dX,final float dY,
-							final int actionState,final boolean isCurrentlyActive){
-		if(actionState==ItemTouchHelper.ACTION_STATE_SWIPE){
-			// Get RecyclerView item from the MessageViewHolder
-			final View itemView=viewHolder.itemView;
-			final Bitmap icon;
-			final RectF iconDest;
+    @Override
+    public boolean onMove(final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder,
+            final RecyclerView.ViewHolder target) {
+        return false;
+    }
 
-			final Paint paint=new Paint();
-			paint.setColor(resources.getColor(R.color.swipe_delete));
-			canvas.drawRect((float)itemView.getLeft(),(float)itemView.getTop(),dX,
-					(float)itemView.getBottom(),paint);
+    @Override
+    public void onSwiped(final RecyclerView.ViewHolder viewHolder, final int direction) {
+        switch (direction) {
+            case ItemTouchHelper.END:
+                onDeleteListener.onDelete(viewHolder.getAdapterPosition());
+        }
+    }
 
-			final float boxHeight=(float)itemView.getBottom()-(float)itemView.getTop();
-			final float iconHeight=boxHeight/2;
-			final float iconVerticalPadding=(boxHeight-iconHeight)/2;
-			final float iconWidth=iconHeight;
+    public void onChildDraw(final Canvas canvas, final RecyclerView recyclerView,
+            final RecyclerView.ViewHolder viewHolder, final float dX, final float dY,
+            final int actionState, final boolean isCurrentlyActive) {
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            // Get RecyclerView item from the MessageViewHolder
+            final View itemView = viewHolder.itemView;
+            final Bitmap icon;
+            final RectF iconDest;
 
-			icon=drawableToBitmap(resources.getDrawable(R.drawable.ic_trash));
-			iconDest=new RectF(0,itemView.getTop()+iconVerticalPadding,iconWidth,
-					(float)itemView.getBottom()-iconVerticalPadding);
-			canvas.drawBitmap(icon,null,iconDest,paint);
+            final Paint paint = new Paint();
+            paint.setColor(resources.getColor(R.color.swipe_delete));
+            canvas.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX,
+                    (float) itemView.getBottom(), paint);
 
-			super.onChildDraw(canvas,recyclerView,viewHolder,dX,dY,actionState,isCurrentlyActive);
-		}
-	}
+            final float boxHeight = (float) itemView.getBottom() - (float) itemView.getTop();
+            final float iconHeight = boxHeight / 2;
+            final float iconVerticalPadding = (boxHeight - iconHeight) / 2;
+            final float iconWidth = iconHeight;
 
-	private Bitmap drawableToBitmap(final Drawable drawable){
+            icon = drawableToBitmap(resources.getDrawable(R.drawable.ic_trash));
+            iconDest = new RectF(0, itemView.getTop() + iconVerticalPadding, iconWidth,
+                    (float) itemView.getBottom() - iconVerticalPadding);
+            canvas.drawBitmap(icon, null, iconDest, paint);
 
-		if(drawable instanceof BitmapDrawable){
-			return ((BitmapDrawable)drawable).getBitmap();
-		}
+            super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    }
 
-		final Bitmap bitmap=Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-				drawable.getIntrinsicHeight(),Bitmap.Config.ARGB_8888);
-		final Canvas canvas=new Canvas(bitmap);
-		drawable.setBounds(0,0,canvas.getWidth(),canvas.getHeight());
-		drawable.draw(canvas);
-		return bitmap;
-	}
+    private Bitmap drawableToBitmap(final Drawable drawable) {
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        final Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
 }
