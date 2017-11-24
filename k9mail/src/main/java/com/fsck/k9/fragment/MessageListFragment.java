@@ -27,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -110,7 +109,7 @@ public class MessageListFragment extends Fragment
 		implements ConfirmationDialogFragmentListener, LoaderCallbacks<Cursor>,
 		ICursorContextMenuSupplier{
 
-	private LinearLayoutManager layoutManager;
+	LinearLayoutManager layoutManager;
 
 	public static MessageListFragment newInstance(final LocalSearch search,
 												  final boolean isThreadDisplay,
@@ -1198,44 +1197,6 @@ public class MessageListFragment extends Fragment
 		}
 	}
 
-	public void onSwipeRightToLeft(final MotionEvent e1,final MotionEvent e2){
-		// Handle right-to-left as an un-select
-		handleSwipe(e1,false);
-	}
-
-	public void onSwipeLeftToRight(final MotionEvent e1,final MotionEvent e2){
-		// Handle left-to-right as a select.
-		handleSwipe(e1,true);
-	}
-
-	/**
-	 Handle a select or unselect swipe event.
-	 @param downMotion Event that started the swipe
-	 @param selected   {@code true} if this was an attempt to select (i.e. left to right).
-	 */
-	private void handleSwipe(final MotionEvent downMotion,final boolean selected){
-		throw new UnsupportedOperationException("Not restored yet");
-		//TODO restore
-		//		final int x=(int)downMotion.getRawX();
-		//		final int y=(int)downMotion.getRawY();
-		//
-		//		final Rect headerRect=new Rect();
-		//		recyclerView.getGlobalVisibleRect(headerRect);
-		//
-		//		// Only handle swipes in the visible area of the message list
-		//		if(headerRect.contains(x,y))
-		//		{
-		//			final int[] listPosition=new int[2];
-		//			recyclerView.getLocationOnScreen(listPosition);
-		//
-		//			final int listX=x-listPosition[0];
-		//			final int listY=y-listPosition[1];
-		//
-		//			final int listViewPosition=recyclerView.pointToPosition(listX,listY);
-		//
-		//			toggleMessageSelect(listViewPosition);
-		//		}
-	}
 
 	class MessageListActivityListener extends ActivityListener{
 		@Override
