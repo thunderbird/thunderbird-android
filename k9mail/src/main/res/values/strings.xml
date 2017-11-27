@@ -299,6 +299,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_additional_headers_retrieval_failed">The retrieval of additional headers from the database or mail server failed.</string>
 
     <string name="from_same_sender">More from this sender</string>
+    <string name="search_from_format">From <xliff:g id="sender">%s</xliff:g></string>
     <string name="debug_delete_local_body">Debug / Clear message body</string>
 
     <string name="message_discarded_toast">Message discarded</string>
