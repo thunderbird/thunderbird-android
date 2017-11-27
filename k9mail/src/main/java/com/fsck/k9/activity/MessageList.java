@@ -1279,7 +1279,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public void showMoreFromSameSender(String senderAddress) {
-        LocalSearch tmpSearch = new LocalSearch("From " + senderAddress);
+        LocalSearch tmpSearch = new LocalSearch(getString(R.string.search_from_format, senderAddress));
         tmpSearch.addAccountUuids(mSearch.getAccountUuids());
         tmpSearch.and(SearchField.SENDER, senderAddress, Attribute.CONTAINS);
 
