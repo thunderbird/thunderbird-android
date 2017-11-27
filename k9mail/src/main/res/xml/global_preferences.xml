@@ -412,7 +412,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:title="Cryptography"
+        android:title="@string/account_settings_crypto"
         android:key="crypto">
 
         <org.openintents.openpgp.util.OpenPgpAppPreference
