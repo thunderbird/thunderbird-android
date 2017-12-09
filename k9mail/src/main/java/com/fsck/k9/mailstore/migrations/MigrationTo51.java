@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.ContentValues;
@@ -341,7 +342,7 @@ class MigrationTo51 {
     private static MimeStructureState migrateComplexMailContent(SQLiteDatabase db,
             File attachmentDirOld, File attachmentDirNew, long messageId, String htmlContent, String textContent,
             MimeHeader mimeHeader, MimeStructureState structureState) throws IOException {
-        Timber.d("Processing mail with complex data structure as multipart/mixed");
+        Timber.d("Processing mail with complex data structure as multipart/mixed - message ID %d", messageId);
 
         String boundary = MimeUtility.getHeaderParameter(
                 mimeHeader.getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
@@ -389,8 +390,9 @@ class MigrationTo51 {
             while (cursor.moveToNext()) {
                 String contentUriString = cursor.getString(0);
                 String contentId = cursor.getString(1);
+
                 // this is not super efficient, but occurs only once or twice
-                htmlContent = htmlContent.replaceAll(Pattern.quote(contentUriString), "cid:" + contentId);
+                htmlContent = htmlContent.replaceAll(Pattern.quote(contentUriString), Matcher.quoteReplacement("cid:" + contentId));
             }
         } finally {
             cursor.close();
