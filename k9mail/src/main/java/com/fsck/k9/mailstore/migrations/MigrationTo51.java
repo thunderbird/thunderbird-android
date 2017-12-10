@@ -66,7 +66,7 @@ class MigrationTo51 {
 
         File attachmentDirNew, attachmentDirOld;
         Account account = migrationsHelper.getAccount();
-        attachmentDirNew = StorageManager.getInstance(K9.app).getAttachmentDirectory(
+        attachmentDirNew = StorageManager.getInstance(migrationsHelper.getContext()).getAttachmentDirectory(
                 account.getUuid(), account.getLocalStorageProviderId());
         attachmentDirOld = renameOldAttachmentDirAndCreateNew(account, attachmentDirNew);
 
