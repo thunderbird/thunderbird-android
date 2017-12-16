@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -18,10 +16,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -29,6 +25,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.StorageManager;
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
+import timber.log.Timber;
 
 
 class MigrationTo51 {
@@ -392,7 +389,7 @@ class MigrationTo51 {
                 String contentId = cursor.getString(1);
 
                 // this is not super efficient, but occurs only once or twice
-                htmlContent = htmlContent.replaceAll(Pattern.quote(contentUriString), Matcher.quoteReplacement("cid:" + contentId));
+                htmlContent = htmlContent.replace(contentUriString, "cid:" + contentId);
             }
         } finally {
             cursor.close();
