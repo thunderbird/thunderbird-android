@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -17,10 +16,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -28,6 +25,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.StorageManager;
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
+import timber.log.Timber;
 
 
 class MigrationTo51 {
@@ -65,7 +63,7 @@ class MigrationTo51 {
 
         File attachmentDirNew, attachmentDirOld;
         Account account = migrationsHelper.getAccount();
-        attachmentDirNew = StorageManager.getInstance(K9.app).getAttachmentDirectory(
+        attachmentDirNew = StorageManager.getInstance(migrationsHelper.getContext()).getAttachmentDirectory(
                 account.getUuid(), account.getLocalStorageProviderId());
         attachmentDirOld = renameOldAttachmentDirAndCreateNew(account, attachmentDirNew);
 
@@ -341,7 +339,7 @@ class MigrationTo51 {
     private static MimeStructureState migrateComplexMailContent(SQLiteDatabase db,
             File attachmentDirOld, File attachmentDirNew, long messageId, String htmlContent, String textContent,
             MimeHeader mimeHeader, MimeStructureState structureState) throws IOException {
-        Timber.d("Processing mail with complex data structure as multipart/mixed");
+        Timber.d("Processing mail with complex data structure as multipart/mixed - message ID %d", messageId);
 
         String boundary = MimeUtility.getHeaderParameter(
                 mimeHeader.getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE), "boundary");
@@ -389,8 +387,9 @@ class MigrationTo51 {
             while (cursor.moveToNext()) {
                 String contentUriString = cursor.getString(0);
                 String contentId = cursor.getString(1);
+
                 // this is not super efficient, but occurs only once or twice
-                htmlContent = htmlContent.replaceAll(Pattern.quote(contentUriString), "cid:" + contentId);
+                htmlContent = htmlContent.replace(contentUriString, "cid:" + contentId);
             }
         } finally {
             cursor.close();
