@@ -327,7 +327,7 @@ public class Account implements BaseAccount, StoreConfig {
         identities = new ArrayList<>();
 
         Identity identity = new Identity();
-        identity.setSignatureUse(true);
+        identity.setSignatureUse(false);
         identity.setSignature(context.getString(R.string.default_signature));
         identity.setDescription(context.getString(R.string.default_identity_description));
         identities.add(identity);
