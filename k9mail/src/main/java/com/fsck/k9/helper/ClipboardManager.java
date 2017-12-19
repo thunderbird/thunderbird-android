@@ -34,4 +34,8 @@ public class ClipboardManager {
         ClipData clip = ClipData.newPlainText(label, text);
         clipboardManager.setPrimaryClip(clip);
     }
+
+    public String getText() {
+        return ((android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE)).getPrimaryClip().getItemAt(0).getText().toString();
+    }
 }
