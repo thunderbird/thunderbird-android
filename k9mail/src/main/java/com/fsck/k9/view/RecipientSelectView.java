@@ -170,138 +170,75 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         return super.onTouchEvent(event);
     }
 
-    /**
-     * Override the response for the context menu.
-     */
     @Override
     public boolean onTextContextMenuItem(int id) {
         boolean consumed = false;
         switch (id) {
-            /**
-             * Copy and cut don't return a boolean like paste, because the copy and cut behavior is the same whether there is a list of emails or not.
-             * paste has different behavior without email addresses being in the text (e.g. commas and seperating whitespace are stripped)
-             * so if it isn't a list of email addresses, let super.onTextContextMenuItem() take care of pasting text
-             */
-            case android.R.id.cut:
+            case android.R.id.cut: {
                 onCutEvent();
                 consumed = true;
                 break;
-            case android.R.id.copy:
+            }
+            case android.R.id.copy: {
                 onCopyEvent();
                 consumed = true;
                 break;
-            case android.R.id.paste:
+            }
+            case android.R.id.paste: {
                 consumed = onPasteEvent();
                 break;
+            }
         }
-        /**
-         * If the event was not handled above, pass it to super.
-         */
         if (!consumed) {
             consumed = super.onTextContextMenuItem(id);
         }
         return consumed;
     }
 
-    /**
-     * for cutting text, just copy it and then delete what was copied.
-     */
     public void onCutEvent() {
         onCopyEvent();
         getText().delete(getSelectionStart(), getSelectionEnd());
     }
 
     public void onCopyEvent() {
-        /**
-         * get the selection start and end and put that into a string builder.
-         */
-        int start = getSelectionStart();
-        int end = getSelectionEnd();
+        int selectionStart = getSelectionStart();
+        int selectionEnd = getSelectionEnd();
         Editable editable = getText();
-        StringBuilder copiedText = new StringBuilder();
-        copiedText.append(editable.subSequence(start, end));
-
-        /**
-         * get all of the spans (email addresses) in the selected text insert the addresses as a
-         * string, into the correct place in copiedText.
-         */
-        RecipientTokenSpan[] recipientTokenSpans = editable.getSpans(start, end, RecipientTokenSpan.class);
-
-        int offset = -start;
+        StringBuilder copiedTextStringBuilder = new StringBuilder();
+        copiedTextStringBuilder.append(editable.subSequence(selectionStart, selectionEnd));
+        RecipientTokenSpan[] recipientTokenSpans = editable.getSpans(selectionStart, selectionEnd, RecipientTokenSpan.class);
+        int offset = -selectionStart;
         for (int i = 0; i < recipientTokenSpans.length; i++) {
             int spanStart = editable.getSpanStart(recipientTokenSpans[i]);
             int spanEnd = editable.getSpanEnd(recipientTokenSpans[i]);
             String insertedString = recipientTokenSpans[i].getToken().address.toString();
-            //insert a comma seperating each address
-            copiedText.insert(spanEnd+offset, ',');
-            //put the address in where the span was
-            copiedText.replace(spanStart+offset, spanEnd+offset, insertedString);
-            //track the offset from the original string length when inserting addresses so the next ones can be placed correctly
+            copiedTextStringBuilder.insert(spanEnd+offset, ',');
+            copiedTextStringBuilder.replace(spanStart+offset, spanEnd+offset, insertedString);
             offset += insertedString.length() - 1;
         }
-
-        /**
-         * After inserting the addresses into the copied text, put the result on the clipboard
-         */
-        ClipboardManager.getInstance(getContext()).setText("Address List", copiedText.toString());
+        ClipboardManager.getInstance(getContext()).setText("Address List", copiedTextStringBuilder.toString());
     }
 
-    /**
-     * Paste email addresses, but allow a trailing non email string.
-     * For example:
-     * email@address.one, email@address.two, unfinishedEmai
-     * becomes:
-     * [email@address.one][email@address.two] unfinishedEmai
-     *
-     * Side effect:
-     * this:
-     * email@address.one, weird-in-between-text, email@address.two, unfinishedEmai
-     * becomes:
-     * [email@address.one][email@address.two] weird-in-between-textunfinishedEmai
-     */
     public boolean onPasteEvent() {
         boolean eventHandled = false;
         String pastedText = ClipboardManager.getInstance(getContext()).getText();
         StringBuilder trailingText = new StringBuilder();
-        //use parseUnencoded because Address.parse wont do any work if something like unfinishedEmai is at the end
         Address[] addresses = Address.parseUnencoded(pastedText);
         for (int i = 0; i < addresses.length; i++) {
             try {
-                //try to parse the "address" to see if it is really an email address. otherwise there will be an exception
                 DefaultAddressParser.DEFAULT.parseAddress(addresses[i].getAddress(), DecodeMonitor.SILENT);
-
-                /**
-                 * If an exception wasn't thrown then there are email addresses in this text. Set eventHandled to true so that the function returns true.
-                 * Also, when text is pasted in it is expected to replace whatever was selected. So delete whatever is currently selected.
-                 */
                 if (!eventHandled) {
                     eventHandled = true;
                     getText().delete(getSelectionStart(), getSelectionEnd());
                 }
                 addRecipients(new Recipient(addresses[i]));
             } catch (ParseException parseException) {
-                /**
-                 * if it wasn't an email address, paste it as plain text after the email addresses.
-                 * fairly certain there is no way to insert text between email address tokens
-                 * (even if it is put in the edittext directly here it still appears after the emails),
-                 * so it causes the side effect mentioned above.
-                 * Also, waiting to append the text after the emails makes it possible to check at the end of
-                 * this method whether eventHandled is true or false, thus whether the paste operation
-                 * will be handled by super.onTextContextMenuItem
-                 */
                 trailingText.append(addresses[i].getAddress());
             }
         }
-
-        /**
-         * If this method is handling the paste operation and not super.onTextContextMenuItem,
-         * then append whatever wasn't part of an email address to the end of the list of email
-         * addresses.
-         */
         if (eventHandled) {
             append(trailingText.toString());
         }
-
         return eventHandled;
     }
 
