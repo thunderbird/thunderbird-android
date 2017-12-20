@@ -715,6 +715,10 @@ class ImapConnection {
     }
 
     public void close() {
+        if (!open) {
+            return;
+        }
+
         open = false;
         stacktraceForClose = new Exception();
 
