@@ -32,8 +32,8 @@ public class AccountCreatorTest {
         assertEquals(DeletePolicy.ON_DELETE, result);
     }
 
-    @Test(expected= IllegalStateException.class)
-    public void getDefualtDeletePolicy_withSMTP_shouldFail(){
+    @Test(expected = IllegalStateException.class)
+    public void getDefaultDeletePolicy_withSmtp_shouldFail() {
         AccountCreator.getDefaultDeletePolicy(Type.SMTP);
     }
 
