@@ -59,6 +59,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
+import com.fsck.k9.controller.imap.ImapMessageStore;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -121,7 +122,7 @@ import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
 public class MessagingController {
     public static final long INVALID_MESSAGE_ID = -1;
 
-    private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
+    public static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
 
     private static MessagingController inst = null;
@@ -140,6 +141,8 @@ public class MessagingController {
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final TransportProvider transportProvider;
+
+    private ImapMessageStore imapMessageStore;
 
 
     private MessagingListener checkMailListener = null;
@@ -254,6 +257,19 @@ public class MessagingController {
         throw new Error(e);
     }
 
+    private RemoteMessageStore getRemoteMessageStore(Account account) {
+        return account.getStoreUri().startsWith("imap") ? getImapMessageStore() : null;
+    }
+
+    private ImapMessageStore getImapMessageStore() {
+        if (imapMessageStore == null) {
+            imapMessageStore = new ImapMessageStore(notificationController, this, context);
+        }
+
+        return imapMessageStore;
+    }
+
+
     public void addListener(MessagingListener listener) {
         listeners.add(listener);
         refreshListener(listener);
@@ -296,7 +312,7 @@ public class MessagingController {
         cache.unhideMessages(messages);
     }
 
-    private boolean isMessageSuppressed(LocalMessage message) {
+    public boolean isMessageSuppressed(LocalMessage message) {
         long messageId = message.getDatabaseId();
         long folderId = message.getFolder().getDatabaseId();
 
@@ -721,6 +737,17 @@ public class MessagingController {
     @VisibleForTesting
     void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener,
             Folder providedRemoteFolder) {
+        RemoteMessageStore remoteMessageStore = getRemoteMessageStore(account);
+        if (remoteMessageStore != null) {
+            remoteMessageStore.sync(account, folder, listener, providedRemoteFolder);
+        } else {
+            synchronizeMailboxSynchronousLegacy(account, folder, listener, providedRemoteFolder);
+        }
+    }
+
+    void synchronizeMailboxSynchronousLegacy(final Account account, final String folder, final MessagingListener listener,
+        Folder providedRemoteFolder) {
+
         Folder remoteFolder = null;
         LocalFolder tLocalFolder = null;
 
@@ -984,11 +1011,11 @@ public class MessagingController {
 
     }
 
-    void handleAuthenticationFailure(Account account, boolean incoming) {
+    public void handleAuthenticationFailure(Account account, boolean incoming) {
         notificationController.showAuthenticationErrorNotification(account, incoming);
     }
 
-    private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
+    public void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
             throws MessagingException, IOException {
 
         if (remoteStart == 1) {
@@ -1653,7 +1680,7 @@ public class MessagingController {
         });
     }
 
-    private void processPendingCommandsSynchronous(Account account) throws MessagingException {
+    public void processPendingCommandsSynchronous(Account account) throws MessagingException {
         LocalStore localStore = account.getLocalStore();
         List<PendingCommand> commands = localStore.getPendingCommands();
 
@@ -3709,7 +3736,7 @@ public class MessagingController {
     }
 
 
-    private boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message) {
+    public boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message) {
         // If we don't even have an account name, don't show the notification.
         // (This happens during initial account setup)
         if (account.getName() == null) {
