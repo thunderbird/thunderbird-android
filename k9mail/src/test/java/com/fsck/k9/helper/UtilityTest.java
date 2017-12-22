@@ -4,6 +4,8 @@ package com.fsck.k9.helper;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class UtilityTest {
 
@@ -40,5 +42,41 @@ public class UtilityTest {
         String result = Utility.stripNewLines("Test\nTest");
 
         assertEquals("TestTest", result);
+    }
+
+    @Test
+    public void arrayContains_withObject_returnTrue() {
+        Object[] container = { 10, 20, 30, 40, 50, 60, 71, 80, 90, 91 };
+
+        boolean result = Utility.arrayContains(container, 10);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void arrayContains_withoutObject_returnFalse() {
+        Object[] container = { 10, 20, 30, 40, 50, 60, 71, 80, 90, 91 };
+
+        boolean result = Utility.arrayContains(container, 11);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void arrayContainsAny_withObject_returnsTrue() {
+        Object[] container = { 10, 20, 30, 40, 50, 60, 71, 80, 90, 91 };
+
+        boolean result = Utility.arrayContainsAny(container, 1, 2, 3, 10);
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void arrayContainsAny_withoutObject_returnsFalse() {
+        Object[] container = { 10, 20, 30, 40, 50, 60, 71, 80, 90, 91 };
+
+        boolean result = Utility.arrayContainsAny(container, 1, 2, 3, 4);
+
+        assertFalse(result);
     }
 }
