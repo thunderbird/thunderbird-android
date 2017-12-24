@@ -596,7 +596,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             this.contactLookupKey = null;
         }
 
-        public Recipient(String name, String email, String addressLabel, long contactId, String lookupKey) {
+        public Recipient(String name, @NonNull String email, String addressLabel, long contactId, String lookupKey) {
             this.address = new Address(email, name);
             this.contactId = contactId;
             this.addressLabel = addressLabel;
