@@ -7,4 +7,8 @@
     <color name="message_list_widget_text_read">#444444</color>
     <color name="message_list_widget_text_unread">#000000</color>
     <color name="light_black">#444444</color>
+
+    <color name="dot_dark_screen">#6A1B9A</color>
+    <color name="dot_light_screen">#CE93D8</color>>
+    <color name="screen">#9B27B0</color>
 </resources>

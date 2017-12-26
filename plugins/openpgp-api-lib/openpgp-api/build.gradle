@@ -16,6 +16,7 @@ android {
     lintOptions {
         abortOnError false
     }
+    buildToolsVersion '26.0.2'
 }
 
 /*
