@@ -247,6 +247,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_no_additional_headers_available">Tutte le intestazioni sono state scaricate, non ci sono intestazioni aggiuntive da mostrare.</string>
   <string name="message_additional_headers_retrieval_failed">Recupero di intestazioni aggiuntive dal database o dal server di posta non riuscito.</string>
   <string name="from_same_sender">Altri da questo mittente</string>
+  <string name="search_from_format">Da <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Debug / Cancella il corpo del messaggio</string>
   <string name="message_discarded_toast">Messaggio scartato</string>
   <string name="message_saved_toast">Messaggio salvato come bozza</string>
@@ -807,6 +808,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="settings_export_success_generic">Impostazioni esportate correttamente</string>
   <string name="settings_import_global_settings_success">Impostazioni globali importate da <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importato <xliff:g id="accounts">%s</xliff:g> da <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Importato <xliff:g id="original_account_name">%s</xliff:g> da <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 account</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> account</item>

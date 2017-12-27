@@ -245,6 +245,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="message_no_additional_headers_available">Goiburu guztiak deskargatu dira, baina ez dago erakusteko goiburu gehiago.</string>
   <string name="message_additional_headers_retrieval_failed">Datu basetik edo posta zerbitzaritik goiburu gehiago berreskuratzeak huts egin du.</string>
   <string name="from_same_sender">Bidaltzaile honengandik gehiago</string>
+  <string name="search_from_format"><xliff:g id="sender">%s</xliff:g>-(e)tik</string>
   <string name="debug_delete_local_body">Araztu / Garbitu mezuaren gorputza</string>
   <string name="message_discarded_toast">Mezu baztertua</string>
   <string name="message_saved_toast">Mezua zirriborro gisa gordeta</string>
@@ -805,6 +806,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="settings_export_success_generic">Ezarpenak ondo esportatu dira</string>
   <string name="settings_import_global_settings_success">Ezarpen orokorran hemendik inportatu dira: <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> inportatua <xliff:g id="filename">%s</xliff:g>-(e)tik</string>
+  <string name="settings_import_account_imported_as"><xliff:g id="original_account_name">%s</xliff:g> inportatuta <xliff:g id="account_name_after_import">%s</xliff:g> bezala</string>
   <plurals name="settings_import_accounts">
     <item quantity="one">Kontu 1</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> kontu</item>

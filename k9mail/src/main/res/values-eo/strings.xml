@@ -244,6 +244,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="message_no_additional_headers_available">Ĉiuj mesaĝokapoj elŝutitaj, tamen estas neniuj aldonaj kapoj por montri.</string>
   <string name="message_additional_headers_retrieval_failed">Fiaskis elŝuti aldonajn mesaĝokapojn el datumbazo aŭ retpoŝta servilo.</string>
   <string name="from_same_sender">Pli de tiu ĉi sendinto</string>
+  <string name="search_from_format">De <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Senerarigi / forviŝi mesaĝan enhavon</string>
   <string name="message_discarded_toast">Mesaĝo nuligita</string>
   <string name="message_saved_toast">Mesaĝo konservita kiel malneto</string>

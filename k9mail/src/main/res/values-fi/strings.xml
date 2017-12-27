@@ -245,6 +245,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="message_no_additional_headers_available">Kaikki otsikkotiedot on ladattu, mutta näytettäviä ei ole enempää.</string>
   <string name="message_additional_headers_retrieval_failed">Lisäotsikkotietojen haku tietokannasta tai postipalvelimelta epäonnistui.</string>
   <string name="from_same_sender">Lisää samalta lähettäjältä</string>
+  <string name="search_from_format">Lähettäjä <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Vianjäljitys / Tyhjennä viestin sisältö</string>
   <string name="message_discarded_toast">Viesti peruutettu</string>
   <string name="message_saved_toast">Viesti tallennettu luonnoksena</string>
