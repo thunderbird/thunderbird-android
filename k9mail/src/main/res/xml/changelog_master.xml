@@ -8,6 +8,11 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.400" versioncode="23600">
+        <change>Avoid crash on Android 8.1</change>
+        <change>Updated translations</change>
+        <change>Added Albanian translation</change>
+    </release>
     <release version="5.304" versioncode="23540">
         <change>Fixed bug that could cause OpenPGP signature verification to fail when it shouldn't</change>
         <change>Updated translations</change>
