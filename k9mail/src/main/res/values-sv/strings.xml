@@ -246,6 +246,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="message_no_additional_headers_available">Hela brevhuvudet har laddats ner, men det det finns inga ytterligare brevhuvuden att visa.</string>
   <string name="message_additional_headers_retrieval_failed">Hämtningen av ytterligare brevhuvuden från databasen eller e-postservern misslyckades.</string>
   <string name="from_same_sender">Mer från denna avsändare</string>
+  <string name="search_from_format">Från <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Felsök/rensa meddelandets brödtext</string>
   <string name="message_discarded_toast">Meddelandet kastat</string>
   <string name="message_saved_toast">Meddelandet sparat som utkast</string>
@@ -806,6 +807,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="settings_export_success_generic">Inställningar exporterades</string>
   <string name="settings_import_global_settings_success">Importerade globala inställningar från <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importerade <xliff:g id="accounts">%s</xliff:g> från <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Importerade <xliff:g id="original_account_name">%s</xliff:g> som <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 konto</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> konton</item>

@@ -36,15 +36,16 @@ Mae ei nodweddion gwell yn cynnwys:
   <li>…a mwy</li>
 </ul>
 <p>
-Nodwch nad yw K-9 yn cyd-fynd a\'r mwyafrif o gyfrifon Hotmail am ddim ac, fel nifer o gleientiaid e-bost, mae rhai pethau\'n gweithio\'n od wrth drafod â Microsoft Exchange.
+Nodwch nad yw K-9 yn cyd-fynd a mwyafrif cyfrifon am ddim Hotmail ac, fel nifer o gleientiaid e-bost, mae rhai pethau\'n gweithio\'n od wrth drafod â Microsoft Exchange.
+
+Mae\'r ap yn dibynnu ar Android ei hun ar gyfer peth cynnwys. Yn anffodus, nid yw fersiynau swyddogol o Android yn cefnogi\'r Gymraeg ac felly fe welwch rywfaint o Saesneg yn yr ap, e.e. \"5 minutes ago\" yn lle \"5 munud yn ôl\", \"Dec\" yn lle \"Rhag\".
 </p><p>
 Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwestiynnau yma:
 <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">--\n
-Anfonwyd gyda K-9 Mail, yr ap ebost cyntaf ar gael yn Gymraeg ar Android.</string>
+  <string name="default_signature">-- \nAnfonwyd gyda K-9 Mail ar Android\n - yr ap ebost cyntaf yn y Gymraeg.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Caiff y cyfrif \"<xliff:g id="account">%s</xliff:g>\" ei dynnu o K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Caiff yr holl ddata lleol ar gyfer \"<xliff:g id="account">%s</xliff:g>\" ei dynnu. Caiff gosodiadau\'r cyfrif eu cadw.</string>
@@ -250,6 +251,7 @@ Anfonwyd gyda K-9 Mail, yr ap ebost cyntaf ar gael yn Gymraeg ar Android.</strin
   <string name="message_no_additional_headers_available">Mae\'r holl benynnau wedi eu lawrlwytho, ond does dim penynnau eraill i\'w dangos.</string>
   <string name="message_additional_headers_retrieval_failed">Methwyd nôl penynnau ychwanegol o\'r gronfa ddata neu methodd y gweinydd.</string>
   <string name="from_same_sender">Rhagor gan yr anfonwr hwn</string>
+  <string name="search_from_format">Oddi wrth <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Dadfygio / Clirio corff y neges</string>
   <string name="message_discarded_toast">Dileuwyd y neges</string>
   <string name="message_saved_toast">Neges wedi ei chadw fel drafft</string>
@@ -340,7 +342,7 @@ Anfonwyd gyda K-9 Mail, yr ap ebost cyntaf ar gael yn Gymraeg ar Android.</strin
   <string name="account_setup_incoming_client_certificate_label">Tystysgrif cleient</string>
   <string name="account_setup_incoming_pop_server_label">Gweinydd POP3</string>
   <string name="account_setup_incoming_imap_server_label">Gweinydd IMAP</string>
-  <string name="account_setup_incoming_webdav_server_label">Gweinydd exchange</string>
+  <string name="account_setup_incoming_webdav_server_label">Gweinydd Exchange</string>
   <string name="account_setup_incoming_port_label">Porth</string>
   <string name="account_setup_incoming_security_label">Diogelwch</string>
   <string name="account_setup_incoming_auth_type_label">Dilysiad</string>
@@ -467,7 +469,7 @@ Anfonwyd gyda K-9 Mail, yr ap ebost cyntaf ar gael yn Gymraeg ar Android.</strin
   <string name="account_settings_show_pictures_never">Na</string>
   <string name="account_settings_show_pictures_only_from_contacts">Gan gysyllteion</string>
   <string name="account_settings_show_pictures_always">Gan unrhyw un</string>
-  <string name="account_settings_composition">Yn anfon neges(euon)</string>
+  <string name="account_settings_composition">Anfon negeseuon</string>
   <string name="account_settings_default_quoted_text_shown_label">Dyfynnu neges wrth ateb</string>
   <string name="account_settings_default_quoted_text_shown_summary">Cynnwys y neges wreiddiol yn fy ateb.</string>
   <string name="account_settings_reply_after_quote_label">Ateb ar ôl y dyfyniad</string>
@@ -481,12 +483,12 @@ Anfonwyd gyda K-9 Mail, yr ap ebost cyntaf ar gael yn Gymraeg ar Android.</strin
   <string name="account_settings_always_show_cc_bcc_label">Dangos Cc/Bcc pob tro</string>
   <string name="account_settings_message_read_receipt_label">Cadarnhad darllen</string>
   <string name="account_settings_message_read_receipt_summary">Gofyn am gadarnhad bod neges wedi ei darllen bob tro</string>
-  <string name="account_settings_quote_style_label">Gwedd dyfynnu wrth ateb</string>
+  <string name="account_settings_quote_style_label">Arddull dyfynnu wrth ateb</string>
   <string name="account_settings_quote_style_prefix">Rhagddodiad (fel Gmail)</string>
   <string name="account_settings_quote_style_header">Pennyn (fel Outlook)</string>
   <string name="account_settings_general_title">Gosodiadau cyffredinol</string>
-  <string name="account_settings_reading_mail">Yn darllen negeseuon</string>
-  <string name="account_settings_sync">Yn nôl negeseuon</string>
+  <string name="account_settings_reading_mail">Darllen negeseuon</string>
+  <string name="account_settings_sync">Nôl negeseuon</string>
   <string name="account_settings_folders">Ffolderi</string>
   <string name="account_settings_quote_prefix_label">Rhagddodiad cyn dyfynnu testun</string>
   <string name="account_settings_crypto">Cryptograffeg</string>
@@ -629,10 +631,10 @@ Anfonwyd gyda K-9 Mail, yr ap ebost cyntaf ar gael yn Gymraeg ar Android.</strin
   <string name="identity_has_no_email">Fedri di ddim defnyddio hunaniaeth heb gyfeiriad e-bost.</string>
   <string name="sort_earliest_first">Negeseuon cynharaf yn gyntaf</string>
   <string name="sort_latest_first">Negeseuon diweddaraf yn gyntaf</string>
-  <string name="sort_subject_alpha">Pwnc yn nhrefn yr wyddor</string>
-  <string name="sort_subject_re_alpha">Pwnc yn nhrefn groes y wyddor</string>
-  <string name="sort_sender_alpha">Anfonwr yn nhrefn y wyddor</string>
-  <string name="sort_sender_re_alpha">Anfonwr yn nhrefn groes y wyddor</string>
+  <string name="sort_subject_alpha">Pynciau yn nhrefn yr wyddor</string>
+  <string name="sort_subject_re_alpha">Pynciau yn groes i\'r wyddor</string>
+  <string name="sort_sender_alpha">Anfonwyr yn nhrefn y wyddor</string>
+  <string name="sort_sender_re_alpha">Anfonwyr yn groes i\'r wyddor</string>
   <string name="sort_flagged_first">Negeseuon serennog yn gyntaf</string>
   <string name="sort_flagged_last">Negeseuon heb sêr yn gyntaf</string>
   <string name="sort_unread_first">Negeseuon heb eu darllen yn gyntaf</string>
@@ -671,7 +673,7 @@ Anfonwyd gyda K-9 Mail, yr ap ebost cyntaf ar gael yn Gymraeg ar Android.</strin
   <string name="setting_theme_global">Defnyddio thema\'r ap</string>
   <string name="setting_theme_dark">Tywyll</string>
   <string name="setting_theme_light">Golau</string>
-  <string name="display_preferences">Gwedd</string>
+  <string name="display_preferences">Ymddangosiad</string>
   <string name="global_preferences">Aplen Cyfan</string>
   <string name="debug_preferences">Dadfygio</string>
   <string name="privacy_preferences">Preifatrwydd</string>
@@ -768,7 +770,7 @@ Anfonwyd gyda K-9 Mail, yr ap ebost cyntaf ar gael yn Gymraeg ar Android.</strin
   <string name="error_activity_not_found">Methwyd dod o hyd i aplen addas ar gyfer y weithred hon.</string>
   <string name="send_failed_reason">Methwyd anfon: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Cadw neges fel drafft?</string>
-  <string name="save_or_discard_draft_message_instructions_fmt">Cadw neu Ddileu\'r neges hon?</string>
+  <string name="save_or_discard_draft_message_instructions_fmt">Cadw neu ddileu\'r neges hon?</string>
   <string name="confirm_discard_draft_message_title">Dileu\'r neges?</string>
   <string name="confirm_discard_draft_message">Wyt ti\'n sicr dy fod am ddileu\'r neges hon?</string>
   <string name="select_text_now">Dewisa destun i\'w gopïo.</string>
@@ -814,6 +816,7 @@ Anfonwyd gyda K-9 Mail, yr ap ebost cyntaf ar gael yn Gymraeg ar Android.</strin
   <string name="settings_export_success_generic">Allforiwyd y gosodiadau yn llwyddiannus</string>
   <string name="settings_import_global_settings_success">Wedi mewnforio gosodiadau ap cyfan o <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Wedi mewnforio <xliff:g id="accounts">%s</xliff:g> o <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Mewnforiwyd <xliff:g id="original_account_name">%s</xliff:g> fel <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 cyfrif</item>
     <item quantity="two"><xliff:g id="numAccounts">%s</xliff:g> gyfrif</item>

@@ -82,6 +82,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="status_next_poll">Sonraki alım <xliff:g id="nexttime">%s</xliff:g></string>
   <string name="status_no_network">Eşzamanlama devre dışı - Ağ yok</string>
   <string name="status_no_background">Eşzamanlama devre dışı - Artalan etkinliği yok</string>
+  <string name="status_poll_and_push_disabled">İterek yoklama devre dışı</string>
   <string name="status_syncing_blocked">Eşzamanlama engelli</string>
   <string name="status_syncing_off">Eşzamanlama devredışı</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
@@ -244,6 +245,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="message_no_additional_headers_available">Bütün başlıklar indirildi, fakat gösterilecek ek başlık yok.</string>
   <string name="message_additional_headers_retrieval_failed">Veritabanından veya posta suncucundan ek başlıkların alımı başarısız.</string>
   <string name="from_same_sender">Bu Göndericiden daha fazla mesaj</string>
+  <string name="search_from_format">Kimden <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Hata ayıklama / İleti gövdesini temizle</string>
   <string name="message_discarded_toast">Mesaj silindi</string>
   <string name="message_saved_toast">Mesaj taslak olarak kaydedildi</string>
@@ -282,6 +284,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="global_settings_privacy_hide_useragent">Posta istemcisini gizle</string>
   <string name="global_settings_privacy_hide_useragent_detail">Posta başlığından K-9 Kullanıcı Aracısını kaldır</string>
   <string name="global_settings_privacy_hide_timezone">Zaman dilimini gizle</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Posta ve yanıt başlıklarında yerel zaman dilimi yerine UTC kullan</string>
   <string name="global_settings_notification_hide_subject_title">Bildirimlerde konuyu gizle</string>
   <string name="global_settings_notification_hide_subject_never">Hiçbir zaman</string>
   <string name="global_settings_notification_hide_subject_when_locked">Cihaz kilitlendiği zaman</string>
@@ -651,6 +654,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="message_view_help_key">Del (veya D) - Sil\nR - Yanıtla\nA - Hepsini yanıtla\nC - Oluştur\nF - İlet\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)mış olarak İşaretle\nG - Yıldız\nO - Sıralama türü\nI - Sıralama düzeni\nQ - Klasörlere Geri Dön\nS - Seç/Seçimi kaldır\nK veya P - Önceki İleti\nK veya N - Sonraki İleti</string>
   <string name="message_list_help_key">Del (veya D) - Sil\nC - Oluştur\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)dı\nG - Yıldız\nO - Sıralama türü\nI - Sıralama düzeni\nQ - Klasörlere Geri Dön\nS - Seç/seçimi kaldır</string>
   <string name="folder_list_help_key">1 - Yalnız 1. sınıf klasörleri göster\n2 - Yalnız 1. ve 2. sınıf klasörleri göster\n3 - 2. Sınıf klasörler hariç hepsini göster\n4 - Bütün klasörleri göster\nQ - Hesaplara dön\nS - Hesap ayarlarını düzenle</string>
+  <string name="folder_list_filter_hint">Klasör adı içeriği</string>
   <string name="folder_list_display_mode_label">Klasörleri göster…</string>
   <string name="folder_list_display_mode_all">Bütün klasörleri göster</string>
   <string name="folder_list_display_mode_first_class">Sadece 1. Sınıf klasörleri göster</string>
@@ -714,6 +718,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="search_all_messages_detail">Bütün mesajlar aranabilir klasörlerde</string>
   <string name="integrated_inbox_title">Birleşik Gelen Kutusu</string>
   <string name="integrated_inbox_detail">Bütün mesajlar birleşik gelen kutusunda</string>
+  <string name="tap_hint">Okunmamış veya yıldızlı iletiler için kutucuğa veya yıldıza dokunun</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Birleştir</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Birleşik Gelen Kutusunda bütün mesajlar görünür</string>
   <string name="account_settings_searchable_label">Arama için Klasörler</string>
@@ -836,8 +841,10 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="unread_widget_unified_inbox_account_summary">Birleşik Gelen Kutusu</string>
   <string name="unread_widget_all_messages_account_summary">Tüm iletiler</string>
   <string name="unread_widget_folder_enabled_title">Klasör sayısı</string>
+  <string name="unread_widget_folder_enabled_summary">Sadece tek bir klasörün okunmamış sayısını görüntüle</string>
   <string name="unread_widget_folder_title">Klasör</string>
   <string name="unread_widget_action_done">Tamam</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Seçili hesap yok</string>
   <string name="unread_widget_folder_not_selected">Seçili klasör yok</string>
   <string name="import_dialog_error_title">Dosya Yöneticisi uygulaması eksik</string>
@@ -883,6 +890,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="pull_to_refresh_remote_search_from_local_search_release">Arama sunucusunda bırak…</string>
   <string name="remote_search_unavailable_no_network">Sunucuda arama için ağ bağlantısı gereklidir.</string>
   <string name="global_settings_background_as_unread_indicator_label">Okunduğunda rengi değiştir</string>
+  <string name="global_settings_background_as_unread_indicator_summary">İleti okunduğunda farklı bir arkaplan gösterilecek</string>
   <string name="global_settings_threaded_view_label">Konu görünümü</string>
   <string name="global_settings_threaded_view_summary">Konuşma tarafından grup mesajları</string>
   <string name="upgrade_databases_title">Veri tabanı güncelleniyor</string>
@@ -931,9 +939,11 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="address_type_other">Diğer</string>
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Bu hesap için Taslak klasörü ayarlanmamış!</string>
+  <string name="compose_error_no_key_configured">Bu hesap için yapılandırılmış bir anahtar yok! Ayarlarınızı gözden geçirin.</string>
   <string name="crypto_mode_disabled">Şifreleme</string>
   <string name="crypto_mode_opportunistic">Mümkünse şifrele</string>
   <string name="crypto_mode_private">Şifrele</string>
+  <string name="error_crypto_provider_incompatible">Şifreleme sağlayıcısı uyumsuz sürüm kullanıyor.Lütfen ayarlarınızı gözden geçirin!</string>
   <string name="error_crypto_provider_connect">Kripto sağlayıcısına bağlanılamadı, ayarlarınızı kontrol edin veya yeniden denemek için kripto simgesini tıklatın!</string>
   <string name="error_crypto_provider_ui_required">Kripto sağlayıcına erişim engellendi, yeniden denemek için tıklayın!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE modu eklenti desteklemez!</string>
@@ -952,6 +962,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="openpgp_sign_only_disable">Devre dışı</string>
   <string name="openpgp_sign_only_keep_enabled">Koruma etkinleştirildi</string>
   <string name="openpgp_dialog_sign_only_title">PGP Sadece İmza Kipi</string>
+  <string name="openpgp_dialog_sign_only_minus_break">İmzalar posta listelerine gönderildiğinde kırılabilir.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Şifrelenmiş iletiler her zaman bir imza içerir.</string>
   <string name="crypto_msg_disabled">Posta şifreli değil</string>
   <string name="crypto_msg_encrypted_error">İleti şifreli fakat şifre çözme hatası vardı.</string>
@@ -996,6 +1007,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="recipient_error_parse_failed">Adres çözümleme hatası!</string>
   <string name="account_settings_crypto_support_sign_only">Şifresiz imzaları göster</string>
   <string name="account_settings_crypto_support_sign_only_on">Şifresiz imzalar görüntülenir</string>
+  <string name="account_settings_crypto_support_sign_only_off">Şifrelenmemiş imzalar yok sayılacak</string>
   <string name="error_sign_only_no_encryption">Sadece imza kipinde şifreleme kullanılamaz!</string>
   <string name="unsigned_text_divider_label">İmzasız Metin</string>
   <string name="apg_deprecated_title">APG Reddetme Uyarısı</string>
@@ -1008,14 +1020,18 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="apg">APG</string>
   <string name="no_crypto_provider_see_global">Yapılandırılmış OpenPGP uygulaması yok, genel ayarlara bakın!</string>
   <string name="crypto_no_provider_title">Bu eposta şifreli</string>
+  <string name="crypto_no_provider_message">Bu eposta OpenPGP ile şifrelendi. On okumak için uyumlu bir OpenPGP uygulaması kurup yapılandırmanız gerekir.</string>
   <string name="crypto_no_provider_button">OpenPGP uygulaması seçimi</string>
   <string name="mail_list_widget_text">K-9 İleti Listesi</string>
   <string name="mail_list_widget_loading">İletiler Yükleniyor…</string>
   <string name="fetching_folders_failed">Klasör listesi alınırken başarısız oldu</string>
   <string name="messageview_crypto_warning_details">Ayrıntıları Göster</string>
   <string name="openpgp_enabled_error_title">Şifreleme yapılamaz</string>
+  <string name="openpgp_enabled_error_msg">Seçilen bazı alıcılar bu özelliği desteklemiyor!</string>
   <string name="enable_encryption">Şifreleme etkin</string>
   <string name="disable_encryption">şifreleme devre dışı</string>
+  <string name="openpgp_description_text1">İletileri şifrelemek , alıcıdan başkası tarafından okunmamasını sağlar.</string>
+  <string name="openpgp_description_text2">Bu simgeye tıklayarak şifrelemeyi açıp kapatın.</string>
   <string name="openpgp_enabled_error_gotit">Anladım</string>
   <string name="openpgp_enabled_error_back">Geri</string>
   <string name="openpgp_enabled_error_disable">şifreleme devre dışı</string>

@@ -245,6 +245,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="message_no_additional_headers_available">Всички header-и са изтеглини, но няма допълнителни header-и за показване.</string>
   <string name="message_additional_headers_retrieval_failed">Извличането на допълнителни header-и от базата данни или имейл сървъра е неуспешно.</string>
   <string name="from_same_sender">Още от този подател</string>
+  <string name="search_from_format">From <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Дебъгване / Изчистване на тялото на съобщението</string>
   <string name="message_discarded_toast">Съобщението е изтрито</string>
   <string name="message_saved_toast">Съобщението записано като чернова</string>
@@ -805,6 +806,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="settings_export_success_generic">Настройките са успешно изнесени</string>
   <string name="settings_import_global_settings_success">Внесени настройки от <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Внесени <xliff:g id="accounts">%s</xliff:g> от <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as"><xliff:g id="original_account_name">%s</xliff:g> е внесен като <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 профил</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> профила</item>
