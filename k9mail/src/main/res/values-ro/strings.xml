@@ -248,6 +248,7 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="message_no_additional_headers_available">Toate antetele au fost descărcate, dar nu există antete suplimentare pentru a arăta.</string>
   <string name="message_additional_headers_retrieval_failed">Recuperarea antete suplimentare de la serverul de baze de date sau e-mail nu a reușit.</string>
   <string name="from_same_sender">Mai multe de la acest expeditor</string>
+  <string name="search_from_format">De la <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Depanează / Șterge corpul mesajului</string>
   <string name="message_discarded_toast">Mesaj aruncat</string>
   <string name="message_saved_toast">Mesaj salvat ca ciornă</string>
@@ -812,6 +813,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="settings_export_success_generic">Setările au fost exportate cu succes</string>
   <string name="settings_import_global_settings_success">S-au importat setările globale din <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">S-a importat <xliff:g id="accounts">%s</xliff:g> din <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Importat <xliff:g id="original_account_name">%s</xliff:g> ca <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 cont</item>
     <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> conturi</item>

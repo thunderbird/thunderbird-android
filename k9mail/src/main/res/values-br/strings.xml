@@ -806,6 +806,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="settings_export_success_generic">Arventennoù ezporzhiet gant berzh</string>
   <string name="settings_import_global_settings_success">Enporzhiet an arventennoù hollek adalek <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Enporzhiet <xliff:g id="accounts">%s</xliff:g>adalek  <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Enporzhiet <xliff:g id="original_account_name">%s</xliff:g> evel <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 gont</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> a gontoù</item>

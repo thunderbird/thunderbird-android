@@ -807,6 +807,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="settings_export_success_generic">Nye innstillinger i bruk</string>
   <string name="settings_import_global_settings_success">Importerte globale innstillinger fra <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importerte <xliff:g id="accounts">%s</xliff:g> fra <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Importerte <xliff:g id="original_account_name">%s</xliff:g> som <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 konto</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> kontoer</item>
