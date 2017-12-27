@@ -245,6 +245,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="message_no_additional_headers_available">Semua tajuk telah diunduh, tetapi tidak ada tajuk lagi untuk ditampilkan.</string>
   <string name="message_additional_headers_retrieval_failed">Gagal mengambil tajuk tambahan dari basis data atau server surat.</string>
   <string name="from_same_sender">Lebih banyak dari pengirim ini</string>
+  <string name="search_from_format">Dari <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Debug / Kosongkan isi pesan</string>
   <string name="message_discarded_toast">Pesan dibuang</string>
   <string name="message_saved_toast">Pesan disimpan sebagai draf</string>
@@ -803,6 +804,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="settings_export_success_generic">Pengaturan berhasil diekspor</string>
   <string name="settings_import_global_settings_success">Impor pengaturan global dari <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Terimpor <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Terimpor <xliff:g id="original_account_name">%s</xliff:g> sebagai <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> akun</item>
   </plurals>

@@ -249,6 +249,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="message_no_additional_headers_available">Все дополнительные заголовки уже загружены</string>
   <string name="message_additional_headers_retrieval_failed">Сбой загрузки дополнительных заголовков</string>
   <string name="from_same_sender">Вся переписка</string>
+  <string name="search_from_format">От <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Отладка / Очистка тела сообщения</string>
   <string name="message_discarded_toast">Сообщение отменено</string>
   <string name="message_saved_toast">Черновик сохранён</string>
@@ -813,6 +814,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="settings_export_success_generic">Настройки успешно экспортированы</string>
   <string name="settings_import_global_settings_success">Настройки K-9 импортированы из <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Импортировано: <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Ящик <xliff:g id="original_account_name">%s</xliff:g> импортирован как <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 ящик</item>
     <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> ящика</item>

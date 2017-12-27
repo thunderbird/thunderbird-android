@@ -246,6 +246,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="message_no_additional_headers_available">Alle Kopfzeilen wurden heruntergeladen, es sind allerdings keine neuen Kopfzeilen vorhanden.</string>
   <string name="message_additional_headers_retrieval_failed">Die weiteren Kopfzeilen konnten nicht aus der Datenbank oder vom Mailserver geladen werden.</string>
   <string name="from_same_sender">Mehr von diesem Absender</string>
+  <string name="search_from_format">Von <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Fehlersuche / Nachrichtentext löschen</string>
   <string name="message_discarded_toast">Nachricht wurde verworfen</string>
   <string name="message_saved_toast">Nachricht wurde als Entwurf gespeichert</string>
@@ -806,6 +807,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="settings_export_success_generic">Einstellungen erfolgreich exportiert</string>
   <string name="settings_import_global_settings_success">Globale Einstellungen erfolgreich aus <xliff:g id="filename">%s</xliff:g> importiert</string>
   <string name="settings_import_success">\'<xliff:g id="accounts">%s</xliff:g>\' erfolgreich aus <xliff:g id="filename">%s</xliff:g> importiert</string>
+  <string name="settings_import_account_imported_as"><xliff:g id="original_account_name">%s</xliff:g> als <xliff:g id="account_name_after_import">%s</xliff:g> importiert</string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 Konto</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> Konten</item>

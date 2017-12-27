@@ -244,6 +244,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="message_no_additional_headers_available">すべてのヘッダをダウンロードしましたが、表示すべき追加ヘッダはありませんでした。</string>
   <string name="message_additional_headers_retrieval_failed">追加ヘッダをデータベースまたはメールサーバから取得できませんでした。</string>
   <string name="from_same_sender">この送信者からのメールを検索</string>
+  <string name="search_from_format">送信者 <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">デバッグ / メッセージ本文をクリア</string>
   <string name="message_discarded_toast">メールを破棄しました</string>
   <string name="message_saved_toast">下書きに保存しました</string>
@@ -803,6 +804,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="settings_export_success_generic">設定を正常にエクスポートしました</string>
   <string name="settings_import_global_settings_success">グローバル設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
   <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> の設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
+  <string name="settings_import_account_imported_as"><xliff:g id="original_account_name">%s</xliff:g> を <xliff:g id="account_name_after_import">%s</xliff:g> としてインポートしました</string>
   <plurals name="settings_import_accounts">
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> アカウント</item>
   </plurals>
