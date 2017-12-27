@@ -1,18 +1,14 @@
-package com.fsck.k9.activity.setup;
+package com.fsck.k9.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by lenovo on 12/25/2017.
- */
-
-public class Intromanager {
+public class IntroHelper {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     Context contexts;
 
-    public Intromanager(Context contexts) {
+    public IntroHelper(Context contexts) {
         this.contexts = contexts;
         pref = contexts.getSharedPreferences("first",0);
         editor = pref.edit();
@@ -23,7 +19,7 @@ public class Intromanager {
         editor.commit();
     }
 
-    public boolean Check(){
+    public boolean check(){
         return pref.getBoolean("check",true);
     }
 }

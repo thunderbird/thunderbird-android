@@ -21,16 +21,17 @@ import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.helper.IntroHelper;
 import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.message.html.HtmlConverter;
 
 /**
  * Displays a welcome message when no accounts have been created yet.
  */
-public class WelcomeMessage extends Activity{
+public class WelcomeMessage extends K9Activity{
 
     private ViewPager viewPager;
-    private Intromanager intromanager;
+    private IntroHelper introhelper;
     private int[]  layouts;
     private TextView[] dots;
     private LinearLayout dotsLayout;
@@ -40,11 +41,11 @@ public class WelcomeMessage extends Activity{
     private ViewPagerAdapter viewPagerAdapter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        intromanager = new Intromanager(this);
-        if(!intromanager.Check()){
-            intromanager.setFirst(false);
+        introhelper = new IntroHelper(this);
+        if(!introhelper.check()){
+            introhelper.setFirst(false);
             Intent i = new Intent(WelcomeMessage.this,AccountCreator.class);
             startActivity(i);
             finish();
@@ -127,11 +128,11 @@ public class WelcomeMessage extends Activity{
 
             addBottomDots(position);
             if (position==layouts.length-1){
-                next.setText("PROCEED");
+                next.setText(R.string.proceed_button);
                 skip.setVisibility(View.GONE);
             }
             else {
-                next.setText("NEXT");
+                next.setText(R.string.next_button);
                 skip.setVisibility(View.VISIBLE);
             }
         }

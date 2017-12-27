@@ -88,6 +88,10 @@ some quirks when talking to Microsoft Exchange.\n\n
 
     </string>
 
+    <string name="proceed_button">"PROCEED"</string>
+    <string name="next_button">"NEXT"</string>
+    <string name="splash_text">"K-9 Mail is a powerful free email client for Android."</string>
+
 
     <!-- Default signature -->
     <string name="default_signature">-- \nSent from my Android device with K-9 Mail. Please excuse my brevity.</string>

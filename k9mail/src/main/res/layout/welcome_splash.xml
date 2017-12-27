@@ -23,11 +23,11 @@
             android:layout_marginTop="50sp"
             android:textSize="30dp"
             android:textStyle="bold"
-            android:text="Welcome to K-9 Mail"/>
+            android:text="@string/welcome_message_title"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="K-9 Mail is a powerful free email client for Android."
+            android:text="@string/splash_text"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
