@@ -312,7 +312,7 @@ public class WebDavStore extends RemoteStore {
         return folder;
     }
 
-    private Folder getSendSpoolFolder() throws MessagingException {
+    private Folder getSendSpoolFolder() {
         if (sendFolder == null) {
             sendFolder = getFolder(WebDavConstants.DAV_MAIL_SEND_FOLDER);
         }

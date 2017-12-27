@@ -40,7 +40,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
 
     public Socket connectSocket(Socket sock, String host, int port,
             InetAddress localAddress, int localPort, HttpParams params)
-            throws IOException, ConnectTimeoutException {
+            throws IOException {
         return mSchemeSocketFactory.connectSocket(sock, host, port, localAddress, localPort, params);
     }
 

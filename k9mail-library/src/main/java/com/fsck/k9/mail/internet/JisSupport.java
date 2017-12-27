@@ -67,7 +67,7 @@ class JisSupport {
     }
 
 
-    private static String getJisVariantFromReceivedHeaders(Part message) throws MessagingException {
+    private static String getJisVariantFromReceivedHeaders(Part message) {
         String[] receivedHeaders = message.getHeader("Received");
         if (receivedHeaders.length == 0) {
             return null;
@@ -91,7 +91,7 @@ class JisSupport {
         return null;
     }
 
-    private static String getJisVariantFromFromHeaders(Message message) throws MessagingException {
+    private static String getJisVariantFromFromHeaders(Message message) {
         Address addresses[] = message.getFrom();
         if (addresses == null || addresses.length == 0) {
             return null;

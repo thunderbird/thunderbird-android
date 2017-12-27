@@ -45,7 +45,7 @@ public class HtmlQuoteCreator {
      * @throws MessagingException
      */
     public static InsertableHtmlContent quoteOriginalHtmlMessage(Resources resources, Message originalMessage,
-            String messageBody, QuoteStyle quoteStyle) throws MessagingException {
+            String messageBody, QuoteStyle quoteStyle) {
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);
 
         String sentDate = QuoteHelper.getSentDateText(resources, originalMessage);

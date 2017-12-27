@@ -1008,7 +1008,7 @@ public class ImapConnectionTest {
         server.output("2 OK [CAPABILITY " + postAuthCapabilities + "] LOGIN completed");
     }
 
-    private OAuth2TokenProvider createOAuth2TokenProvider() throws AuthenticationFailedException {
+    private OAuth2TokenProvider createOAuth2TokenProvider() {
         return new OAuth2TokenProvider() {
             private int invalidationCount = 0;
 
@@ -1025,7 +1025,7 @@ public class ImapConnectionTest {
                         return XOAUTH_ANOTHER_TOKEN;
                     }
                     default: {
-                        throw new AssertionError("Ran out of auth tokens. invalidateToken() called too often?");
+                        throw new AuthenticationFailedException("Ran out of auth tokens. invalidateToken() called too often?");
                     }
                 }
             }

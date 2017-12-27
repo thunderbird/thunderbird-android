@@ -70,8 +70,7 @@ public class MimePartStreamParser {
         private final MimeBodyPart decryptedRootPart;
         private final Stack<Object> stack = new Stack<>();
 
-        public PartBuilder(FileFactory fileFactory, MimeBodyPart decryptedRootPart)
-                throws MessagingException {
+        public PartBuilder(FileFactory fileFactory, MimeBodyPart decryptedRootPart) {
             this.fileFactory = fileFactory;
             this.decryptedRootPart = decryptedRootPart;
         }
