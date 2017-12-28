@@ -3,11 +3,13 @@
 <!--
      The master change log is kept in res/xml/changelog_master.xml.
      Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
-
-     Don't edit the changelog_<name>_branch.xml files in the gh-pages branch.
-     They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.400" versioncode="23600">
+        <change>Avoid crash on Android 8.1</change>
+        <change>Updated translations</change>
+        <change>Added Albanian translation</change>
+    </release>
     <release version="5.304" versioncode="23540">
         <change>Fixed bug that could cause OpenPGP signature verification to fail when it shouldn't</change>
         <change>Updated translations</change>
@@ -36,8 +38,7 @@
         <change>Many bugfixes and optimizations</change>
         <change>Added translations: Esperanto, Gaelic (Scottish), Icelandic, Welsh</change>
     </release>
-
-    <release version="5.208" versioncode="23271">
+    <release version="5.208" versioncode="23280">
         <change>Fixed bug where automatic synchronization wouldn't restart after the device exited doze mode</change>
     </release>
     <release version="5.207" versioncode="23270">
@@ -101,177 +102,101 @@
         <change>Added translations: Bulgarian, Persian (Farsi), Croatian, Portuguese, Romanian, Slovenian, Serbian</change>
         <change>Lots of smaller bug fixes and features</change>
     </release>
-    <release version="5.115" versioncode="23114" >
-        <change>More user interface tweaks for encryption-related functionality</change>
-        <change>Message signing without encryption is now an expert feature that is disabled by default</change>
-        <change>Added support for directional pad to move to next/previous message</change>
-        <change>Worked around a bug when viewing attachments</change>
-        <change>Fixed notification grouping on Android Wear and Android 7.0</change>
-        <change>Fixed notification actions on Android 7.0</change>
+    <release version="5.010" versioncode="22010" >
+        <change>Fixed packaging error; v5.009 was missing translations</change>
     </release>
-    <release version="5.114" versioncode="23113" >
-        <change>User interface tweaks for encryption-related functionality</change>
-        <change>Fixed crash caused by new message notifications</change>
-        <change>Fixed bug with downloading attachments</change>
-        <change>Fixed structure of emails created with K-9 Mail</change>
-        <change>Fixed bug where message list was displayed twice</change>
-        <change>Updated translations</change>
-    </release>
-    <release version="5.113" versioncode="23112" >
-        <change>Fixed dark theme</change>
-    </release>
-    <release version="5.112" versioncode="23111" >
-        <change>Fixed crash when selecting folder to move message</change>
-        <change>Fixed bug where wrong message format was used when replying</change>
-        <change>Fixed position of context menus on Android 7.0</change>
-        <change>Fixed icon for encryption status of a message</change>
-        <change>Hide crypto status when no crypto provider is configured</change>
-        <change>Hide invalid email addresses of a system contact</change>
-        <change>Added support for linkifying URLs with new TLDs</change>
-        <change>Added server settings for more providers</change>
-    </release>
-    <release version="5.111" versioncode="23110" >
-        <change>Fixed replying to and forwarding of encrypted messages</change>
-        <change>Ask for confirmation on "mark all as read"</change>
-        <change>Suggest server name based on server type</change>
-        <change>Added support for esPass MIME type (application/vnd.espass-espass+zip)</change>
-        <change>Removed attachment indicator for encrypted messages</change>
-        <change>Don't add additional line break to the end of a message when sending</change>
-        <change>Removed broken support for sending messages as 8-bit via SMTP</change>
-        <change>Lots of internal changes and minor bug fixes</change>
-    </release>
-    <release version="5.110" versioncode="23100" >
-        <change>New option: only notify for messages from contacts</change>
-        <change>Added auto-configuration support for more providers</change>
-        <change>Improved PGP/MIME experience</change>
-        <change>Lots of internal improvements</change>
-    </release>
-    <release version="5.109" versioncode="23090" >
-        <change>Added support for List-Post header</change>
-        <change>Added support for sub-folders (WebDAV)</change>
-        <change>Display notification on authentication failures</change>
+    <release version="5.009" versioncode="22009" >
         <change>Protect against the Surreptitious Sharing vulnerability</change>
-        <change>Re-enabled search in message bodies</change>
-        <change>Fixed support for PGP/INLINE</change>
-        <change>Fixed bug where some threads had multiple entries in the message list</change>
-        <change>Fixed 'reply to all'</change>
-        <change>More bug fixes</change>
+        <change>Improved MIME type handling when other apps share files to K-9 Mail</change>
     </release>
-    <release version="5.108" versioncode="23080" >
-        <change>Added rudimentary support for reading and composing PGP/MIME messages</change>
-        <change>Added support for stacked single message notifications on Android Wear</change>
-        <change>Added setting to disable notifications during quiet time</change>
-        <change>Added setting to show confirmation dialog when discarding message</change>
-        <change>Added option to copy sender/recipient addresses to clipboard</change>
-        <change>Show warning when user tries to send an email without a subject</change>
-        <change>New database structure; temporarily disables fulltext search</change>
-        <change>Allow importing of settings created with newer versions of K-9 Mail</change>
-        <change>Added support for Server Name Indication</change>
-        <change>Disabled support for SSLv3 protocol/ciphers and all RC4 ciphers</change>
-        <change>Fixed bug where third-party apps couldn't delete messages from certain folders</change>
-        <change>Fixed bug in settings export with certain folder names</change>
-        <change>IMAP: Fall back to LOGIN command when AUTHENTICATE PLAIN fails</change>
-        <change>Added auto-configuration support for more providers</change>
-        <change>Added translations for Persian (Farsi) and Slovenian</change>
-        <change>Updated translations</change>
-        <change>More bug fixes</change>
+    <release version="5.008" versioncode="22008" >
+        <change>Work around a problem with Android System WebView 49.0.2623.34</change>
     </release>
-    <release version="5.107" versioncode="23070" >
+    <release version="5.007" versioncode="22007" >
+        <change>Improved MIME type handling when other apps share files to K-9 Mail</change>
+        <change>Fixed bug where certificate error dialog was erroneously shown on generic TLS errors (POP3)</change>
+        <change>Fixed bug when exporting folders containing "."</change>
+        <change>Don't overwrite delete policy setting when editing incoming server settings</change>
+        <change>Fixed bug with delete URI in MessageProvider</change>
+        <change>Added auto-configuration settings for some providers</change>
+    </release>
+    <release version="5.006" versioncode="22006" >
         <change>Fixed an issue caused by the latest Android System WebView update</change>
     </release>
-    <release version="5.106" versioncode="23060">
-        <change>Fixed a bug where messages where not always displayed on Android 5.x</change>
+    <release version="5.005" versioncode="22005" >
+        <change>Fixed a bug where messages were not always displayed on Android 5.x</change>
     </release>
-    <release version="5.105" versioncode="23050">
-        <change>Reverted all changes introduced with v5.104 except for the bugfixes related to Android 5.1</change>
+    <release version="5.004" versioncode="22004" >
+        <change>Fixed more crashes when selecting messages on Android 5.1</change>
     </release>
-    <release version="5.104" versioncode="23040">
+    <release version="5.003" versioncode="22003" >
         <change>Fixed crash when selecting multiple messages on Android 5.1</change>
-        <change>Fixed settings export</change>
-        <change>Fixed some layout bugs</change>
-        <change>Added Serbian translation</change>
-        <change>Updated several translations</change>
     </release>
-    <release version="5.103" versioncode="23030">
-        <change>Added ability to customize lock screen notifications (Android 5.0+ only)</change>
+    <release version="5.002" versioncode="22002" >
         <change>Fixed a bug where a certificate error was wrongly reported</change>
-        <change>Updated translation</change>
     </release>
-    <release version="5.102" versioncode="23020">
-        <change>Improved 'open' functionality for attachments</change>
-        <change>Removed APG legacy interface</change>
-        <change>Fixed bug in Russian translation</change>
-    </release>
-    <release version="5.101" versioncode="23010">
-        <change>Fixed build problems that caused v5.100 to request the permissions READ_CALL_LOG and WRITE_CALL_LOG</change>
-    </release>
-    <release version="5.100" versioncode="23000">
+    <release version="5.001" versioncode="22001" >
         <change>Removed SSL/TLS session caching because it was causing problems</change>
     </release>
-    <release version="4.905" versioncode="21008">
-        <change>Dropped support for Android versions older than 4.0.3</change>
+    <release version="5.000" versioncode="22000" >
+        <change>Updated version to 5.000</change>
+    </release>
+    <release version="5.000 RC1" versioncode="21901" >
+        <change>K-9 Mail now requires at least Android 4.0.3</change>
+        <change>Added support for OpenPGP API v3 (get OpenKeychain)</change>
         <change>Added ability to use client certificates for authentication</change>
         <change>Enabled support for TLSv1.1 and TLSv1.2</change>
         <change>Added SSL/TLS session caching</change>
-        <change>Finer grained control for notifications</change>
-        <change>Added support for delete confirmations in the message list</change>
-        <change>Added the option to show the password when setting up new accounts</change>
-        <change>Added privacy setting to omit the User-Agent header</change>
-        <change>Added privacy setting to use UTC as timezone in mail headers</change>
-        <change>Added auto configuration settings for various providers</change>
-        <change>Fixed HELO/EHLO with IPv6 address literals</change>
-        <change>Various bug fixes</change>
-        <change>Added translations: Latvian, Estonian, Norwegian Bokmål, Galician (Spain)</change>
-    </release>
-    <release version="4.904" versioncode="21007" >
-        <change>Added support for OpenPGP API v3</change>
-        <change>Fixed problems with IMAP login</change>
-        <change>Updated translations</change>
-        <change>Fixed multiple bugs</change>
-    </release>
-    <release version="4.903" versioncode="21006" >
         <change>Offer encrypted connection by default when manually setting up an account</change>
         <change>Simplified options for authentication and security</change>
         <change>Removed auto-configuration settings for all providers that didn't support encrypted connections</change>
-        <change>Improved compatibility with IMAP (proxy) servers</change>
-        <change>More small fixes and improvements</change>
-    </release>
-    <release version="4.902" versioncode="21005" >
-        <change>Avoid adding the same recipient twice when using "reply to all"</change>
-        <change>Fixed a bug with bitcoin URIs</change>
-        <change>Added mailbox.org to the list of providers</change>
-    </release>
-    <release version="4.901" versioncode="21004" >
+        <change>Added privacy setting to omit the User-Agent header</change>
+        <change>Added privacy setting to use UTC as timezone in mail headers</change>
+        <change>Finer grained control for notifications</change>
+        <change>Added support for delete confirmations in the message list</change>
+        <change>Added the option to show the password when setting up new accounts</change>
         <change>Added a slider to allow picking a font size for the message body (40% to 250%) in settings</change>
         <change>Added support for KitKat's Storage Access Framework that allows you to attach multiple files at once</change>
-        <change>Added support for apps that don't know how to properly use Android's 'share' functionality</change>
-        <change>Fixed a bug with IMAP Push that could cause excessive battery drain</change>
-        <change>Another attempt at working around the display bug on Asus Transformer devices</change>
-        <change>Don't lose formatting of the quoted message when changing orientation while replying</change>
-        <change>Disabled pull-to-refresh in search views where remote search isn't allowed</change>
-        <change>More bug fixes</change>
-        <change>Updated Japanese translation</change>
+        <change>Multiple bug fixes</change>
+        <change>Updated translations</change>
     </release>
-    <release version="4.900" versioncode="21003" >
-        <change>Fix issue 6064: Inline images don't display on KitKat</change>
-        <change>Update list of German Internet providers</change>
-        <change>Add provider Outlook.sk and Azet.sk to provider list</change>
-        <change>Update Brazilian Portuguese, Czech, Danish, Dutch, French, Greek, Hungarian, Polish, Russian, Slovak, Spanish, and Ukrainian translations</change>
-        <change>Fix POP3 STLS command</change>
-        <change>Use a locale-specific date in the header of a quoted message</change>
-        <change>Account preferences clean-up</change>
-        <change>Make IMAP autoconfig recognize "Draft" as drafts folder</change>
-        <change>Add posteo.de to providers.xml</change>
-        <change>Return proper error message when certificate couldn't be verified against global key store</change>
-        <change>Add support for bitcoin URIs</change>
-        <change>Change the way we harden SSL/TLS sockets Blacklist a couple of weak ciphers, bring known ones in a defined order and sort unknown ciphers at the end. Also re-enable SSLv3 because it's still used a lot.</change>
-        <change>Implement pruning of old certificates from LocalKeyStore. Certificates are deleted whenever server settings are changed or an account is deleted.</change>
-        <change>Fix inadequate certificate validation. Proper host name validation was not being performed for certificates kept in the local keystore.  If an attacker could convince a user to accept and store an attacker's certificate, then that certificate could be used for MITM attacks, giving the attacker access to all connections to all servers in all accounts in K-9.</change>
-        <change>Users can now use different certificates for different servers on the same host (listening to different ports).</change>
-        <change>The above changes mean that users might have to re-accept certificates that they had previously accepted and are still using (but only if the certificate's Subject doesn't match the host that they are connecting to).</change>
-        <change>Make sure to return different colors for senders with different name, but the same mail address (e.g. mails sent by certain issue tracking systems).</change>
-        <change>With the new webview scrollview combo we've got loadinoverviewmode seems to behave better.</change>
-        <change>Fix file selection for import Using FLAG_ACTIVITY_NO_HISTORY will cause the file selection to fail when KitKat's "Open from" activity opens a third-party activity.</change>
+    <release version="4.804" versioncode="20005" >
+        <change>Fixed a bug with IMAP Push that could cause excessive battery drain</change>
+        <change>Exclude error folder from unread/starred count</change>
+        <change>Avoid adding the same recipient twice when using "reply to all"</change>
+        <change>Improved compatibility with IMAP (proxy) servers</change>
+        <change>Improved support for non-standard conform "share" functionality used by some apps</change>
+        <change>Another attempt at working around the display bug on Asus Transformer devices</change>
+        <change>Added mailbox.org to the list of providers﻿</change>
+        <change>More bug fixes</change>
+    </release>
+    <release version="4.803" versioncode="20004" >
+        <change>Removed the work-around for the display bug on Asus Transformer devices introduced in v4.802 because it was causing problems</change>
+        <change>K-9 Mail now uses a locale-specific date in the header of a quoted message</change>
+        <change>Fixed bug where inline images where not showing in KitKat</change>
+        <change>Fixed POP3 STLS command</change>
+        <change>Added auto-configuration settings for some providers</change>
+        <change>Updated Dutch, Spanish, Danish, Slovak, Russian translation</change>
+        <change>More bug fixes</change>
+    </release>
+    <release version="4.802" versioncode="20003" >
+        <change>Added work-around for a display bug on Asus Transformer devices</change>
+        <change>Improved certificate validation. If you had to manually accept a certificate before you will have to do it again after this update.</change>
+        <change>Re-added support for SSLv3; fixed SSL-related problems with Android 2.2</change>
+        <change>Also use SSL/TLS hardening for STARTTLS connections</change>
+        <change>Added support for Bitcoin-URIs</change>
+        <change>Added higher resolution app icon</change>
+        <change>Added support for non-standard conforming servers when looking for "Drafts" folder</change>
+        <change>Added auto-configuration settings for some providers</change>
+        <change>Fixed color generation for contact picture placeholders</change>
+        <change>Updated Japanese, Polish, Czech, Russian, Greek, Hungarian, Dutch, Ukrainian, Brazilian Portuguese, French translations</change>
+    </release>
+    <release version="4.801" versioncode="20002" >
+        <change>Further bugfixes for importing settings on KitKat</change>
+        <change>First pass at a fix for blank messages showing up when the 'Auto-fit messages' option is checked</change>
+    </release>
+    <release version="4.800" versioncode="20001" >
+        <change>This release should behave better on KitKat devices. A version of 4.8 that runs on older devices should appear shortly.</change>
     </release>
     <release version="4.701" versioncode="19002" >
         <change>Overhauled how we do message view scrolling to fix a KitKat issue. Thanks to Joe Steele!</change>
@@ -498,4 +423,5 @@
     <release version="4.319" versioncode="17020" >
         <change>Added Jelly Bean-style notifications</change>
     </release>
+
 </changelog>
