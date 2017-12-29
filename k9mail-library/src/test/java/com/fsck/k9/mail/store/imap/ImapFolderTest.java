@@ -835,6 +835,23 @@ public class ImapFolderTest {
     }
 
     @Test
+    public void fetch_withStructureFetchProfile_shouldSetContentType() throws Exception {
+        ImapFolder folder = createFolder("Folder");
+        prepareImapFolderForOpen(OPEN_MODE_RO);
+        folder.open(OPEN_MODE_RO);
+        String bodyStructure = "(\"TEXT\" \"PLAIN\" (\"CHARSET\" \"US-ASCII\") NIL NIL \"7BIT\" 2279 48)";
+        when(imapConnection.readResponse(any(ImapResponseCallback.class)))
+                .thenReturn(createImapResponse("* 1 FETCH (BODYSTRUCTURE "+bodyStructure+" UID 1)"))
+                .thenReturn(createImapResponse("x OK"));
+        List<ImapMessage> messages = createImapMessages("1");
+        FetchProfile fetchProfile = createFetchProfile(Item.STRUCTURE);
+
+        folder.fetch(messages, fetchProfile, null);
+
+        verify(messages.get(0)).setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain;\r\n CHARSET=\"US-ASCII\"");
+    }
+
+    @Test
     public void fetch_withBodySaneFetchProfile_shouldIssueRespectiveCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
