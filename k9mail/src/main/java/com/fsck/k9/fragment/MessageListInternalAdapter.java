@@ -44,7 +44,7 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN;
 
 
-public class MessageListAdapter extends CursorAdapter {
+public class MessageListInternalAdapter extends CursorAdapter {
 
     private final MessageListFragment fragment;
     private Drawable mAttachmentIcon;
@@ -53,7 +53,7 @@ public class MessageListAdapter extends CursorAdapter {
     private Drawable mForwardedAnsweredIcon;
     private FontSizes fontSizes = K9.getFontSizes();
 
-    MessageListAdapter(MessageListFragment fragment) {
+    MessageListInternalAdapter(MessageListFragment fragment) {
         super(fragment.getActivity(), null, 0);
         this.fragment = fragment;
         mAttachmentIcon = fragment.getResources().getDrawable(R.drawable.ic_email_attachment_small);
@@ -88,7 +88,6 @@ public class MessageListAdapter extends CursorAdapter {
             view.findViewById(R.id.flagged_bottom_right).setVisibility(View.GONE);
 
 
-
         } else {
             view.findViewById(R.id.sender_compact).setVisibility(View.GONE);
             holder.preview = (TextView) view.findViewById(R.id.preview);
@@ -119,11 +118,13 @@ public class MessageListAdapter extends CursorAdapter {
 
 
         // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
-        holder.preview.setLines(Math.max(fragment.previewLines,1));
+        holder.preview.setLines(Math.max(fragment.previewLines, 1));
         fontSizes.setViewTextSize(holder.preview, fontSizes.getMessageListPreview());
         holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
-        fontSizes.setViewTextSize(holder.threadCount, fontSizes.getMessageListSubject()); // thread count is next to subject
-        view.findViewById(R.id.selected_checkbox_wrapper).setVisibility((fragment.checkboxes) ? View.VISIBLE : View.GONE);
+        fontSizes.setViewTextSize(holder.threadCount,
+                fontSizes.getMessageListSubject()); // thread count is next to subject
+        view.findViewById(R.id.selected_checkbox_wrapper)
+                .setVisibility((fragment.checkboxes) ? View.VISIBLE : View.GONE);
 
         holder.flagged.setVisibility(fragment.stars ? View.VISIBLE : View.GONE);
         holder.flagged.setOnClickListener(holder);
@@ -207,7 +208,7 @@ public class MessageListAdapter extends CursorAdapter {
 
         Drawable statusHolder = buildStatusHolder(forwarded, answered);
 
-        if (holder.from != null ) {
+        if (holder.from != null) {
             holder.from.setTypeface(Typeface.create(holder.from.getTypeface(), maybeBoldTypeface));
             if (fragment.senderAboveSubject) {
                 holder.from.setCompoundDrawablesWithIntrinsicBounds(
@@ -221,7 +222,7 @@ public class MessageListAdapter extends CursorAdapter {
                 holder.from.setText(new SpannableStringBuilder(sigil).append(displayName));
             }
         }
-        if (holder.subject != null ) {
+        if (holder.subject != null) {
             if (!fragment.senderAboveSubject) {
                 holder.subject.setCompoundDrawablesWithIntrinsicBounds(
                         statusHolder, // left
@@ -237,7 +238,7 @@ public class MessageListAdapter extends CursorAdapter {
     }
 
     private void formatPreviewText(TextView preview, CharSequence beforePreviewText, String sigil) {
-        Spannable previewText = (Spannable)preview.getText();
+        Spannable previewText = (Spannable) preview.getText();
         previewText.setSpan(buildSenderSpan(), 0, beforePreviewText.length() + sigil.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -253,12 +254,13 @@ public class MessageListAdapter extends CursorAdapter {
      */
     private AbsoluteSizeSpan buildSenderSpan() {
         int fontSize = (fragment.senderAboveSubject) ?
-                fontSizes.getMessageListSubject():
+                fontSizes.getMessageListSubject() :
                 fontSizes.getMessageListSender();
         return new AbsoluteSizeSpan(fontSize, true);
     }
 
-    private Address fetchCounterPartyAddress(boolean fromMe, Address[] toAddrs, Address[] ccAddrs, Address[] fromAddrs) {
+    private Address fetchCounterPartyAddress(boolean fromMe, Address[] toAddrs, Address[] ccAddrs,
+            Address[] fromAddrs) {
         if (fromMe) {
             if (toAddrs.length > 0) {
                 return toAddrs[0];

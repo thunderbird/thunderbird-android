@@ -19,12 +19,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import timber.log.Timber;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -39,7 +37,6 @@ import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.MessageActions;
-import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
@@ -61,6 +58,7 @@ import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 import de.cketti.library.changelog.ChangeLog;
+import timber.log.Timber;
 
 
 /**
@@ -69,7 +67,7 @@ import de.cketti.library.changelog.ChangeLog;
  * From this Activity the user can perform all standard message operations.
  */
 public class MessageList extends K9Activity implements MessageListFragmentListener,
-        MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
+        MessageViewFragmentListener, OnBackStackChangedListener,
         OnSwitchCompleteListener {
 
     @Deprecated
@@ -222,9 +220,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         initializeActionBar();
 
-        // Enable gesture detection for MessageLists
-        setupGestureDetector(this);
-
         if (!decodeExtras(getIntent())) {
             return;
         }
@@ -312,7 +307,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     /**
      * Set the initial display mode (message list, message view, or split view).
-     *
+     * <p>
      * <p><strong>Note:</strong>
      * This method has to be called after {@link #findFragments()} because the result depends on
      * the availability of a {@link MessageViewFragment} instance.
@@ -350,7 +345,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         return (splitViewMode == SplitViewMode.ALWAYS ||
                 (splitViewMode == SplitViewMode.WHEN_IN_LANDSCAPE &&
-                orientation == Configuration.ORIENTATION_LANDSCAPE));
+                        orientation == Configuration.ORIENTATION_LANDSCAPE));
     }
 
     private void initializeLayout() {
@@ -588,7 +583,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     /**
      * Handle hotkeys
-     *
+     * <p>
      * <p>
      * This method is called by {@link #dispatchKeyEvent(KeyEvent)} before any view had the chance
      * to consume this key event.
@@ -973,7 +968,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.message_list_option, menu);
         mMenu = menu;
-        mMenuButtonCheckMail= menu.findItem(R.id.check_mail);
+        mMenuButtonCheckMail = menu.findItem(R.id.check_mail);
         return true;
     }
 
@@ -986,7 +981,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     /**
      * Hide menu items not appropriate for the current context.
-     *
+     * <p>
      * <p><strong>Note:</strong>
      * Please adjust the comments in {@code res/menu/message_list_option.xml} if you change the
      * visibility of a menu item in this method.
@@ -1299,20 +1294,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         configureMenu(mMenu);
     }
 
-    @Override
-    public void onSwipeRightToLeft(MotionEvent e1, MotionEvent e2) {
-        if (mMessageListFragment != null && mDisplayMode != DisplayMode.MESSAGE_VIEW) {
-            mMessageListFragment.onSwipeRightToLeft(e1, e2);
-        }
-    }
-
-    @Override
-    public void onSwipeLeftToRight(MotionEvent e1, MotionEvent e2) {
-        if (mMessageListFragment != null && mDisplayMode != DisplayMode.MESSAGE_VIEW) {
-            mMessageListFragment.onSwipeLeftToRight(e1, e2);
-        }
-    }
-
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
         @Override
         public void onUnmount(String providerId) {
@@ -1336,8 +1317,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         ft.replace(R.id.message_list_container, fragment);
-        if (addToBackStack)
+        if (addToBackStack) {
             ft.addToBackStack(null);
+        }
 
         mMessageListFragment = fragment;
 
@@ -1441,8 +1423,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 mMenuButtonCheckMail.setActionView(null);
             }
         } else {
-            if (mMenuButtonCheckMail != null)
+            if (mMenuButtonCheckMail != null) {
                 mMenuButtonCheckMail.setActionView(null);
+            }
             if (enable) {
                 mActionBarProgress.setVisibility(ProgressBar.VISIBLE);
             } else {
