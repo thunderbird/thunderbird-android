@@ -76,9 +76,8 @@ public class Authentication {
             byte[] result = md.digest(firstPass);
 
             String plainCRAM = username + " " + Hex.encodeHex(result);
-            byte[] b64CRAM = Base64.encodeBase64(plainCRAM.getBytes());
 
-            return b64CRAM;
+            return Base64.encodeBase64(plainCRAM.getBytes());
 
         } catch (Exception e) {
             throw new MessagingException("Something went wrong during CRAM-MD5 computation", e);

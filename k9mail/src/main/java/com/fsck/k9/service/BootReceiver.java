@@ -83,8 +83,7 @@ public class BootReceiver extends CoreReceiver {
         i.putExtra(ALARMED_INTENT, alarmedIntent);
         Uri uri = Uri.parse("action://" + alarmedAction);
         i.setData(uri);
-        PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
-        return pi;
+        return PendingIntent.getBroadcast(context, 0, i, 0);
     }
 
     public static void scheduleIntent(Context context, long atTime, Intent alarmedIntent) {

@@ -265,13 +265,12 @@ public class Contacts {
      */
     private Cursor getContactByAddress(final String address) {
         final Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_LOOKUP_URI, Uri.encode(address));
-        final Cursor c = mContentResolver.query(
+        return mContentResolver.query(
                 uri,
                 PROJECTION,
                 null,
                 null,
                 SORT_ORDER);
-        return c;
     }
 
 }

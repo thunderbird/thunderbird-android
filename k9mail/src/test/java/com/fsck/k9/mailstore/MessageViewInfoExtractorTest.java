@@ -122,13 +122,12 @@ public class MessageViewInfoExtractorTest {
         MessageExtractor.findViewablesAndAttachments(message, outputViewableParts, outputNonViewableParts);
         ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
 
-        String expectedText = BODY_TEXT;
         String expectedHtml =
                 "<pre class=\"k9mail\">" +
                 "K-9 Mail rocks :&gt;" +
                 "</pre>";
 
-        assertEquals(expectedText, container.text);
+        assertEquals(BODY_TEXT, container.text);
         assertEquals(expectedHtml, container.html);
     }
 
@@ -177,12 +176,8 @@ public class MessageViewInfoExtractorTest {
         assertEquals(outputViewableParts.size(), 1);
         ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
 
-        String expectedText = BODY_TEXT;
-        String expectedHtml =
-                bodyText;
-
-        assertEquals(expectedText, container.text);
-        assertEquals(expectedHtml, container.html);
+        assertEquals(BODY_TEXT, container.text);
+        assertEquals(bodyText, container.html);
     }
 
     @Test
