@@ -53,6 +53,45 @@ Please submit bug reports, contribute new features and ask questions at
 </p>
     ]]></string>
 
+    <string name="splash_detail1">
+        Its improved features include:\n\n\n
+
+        Push mail using IMAP IDLE\n\n
+        Better performance\n\n
+        Message refiling\n\n
+        Email signatures\n\n
+        Bcc-to-self\n\n
+        Folder subscriptions\n\n
+
+    </string>
+
+    <string name="splash_detail2">
+        Its improved features include:\n\n\n
+
+        All folder synchronization\n\n
+        Return-address configuration\n\n
+        Keyboard shortcuts\n\n
+        Better IMAP support\n\n
+        Saving attachments to SD\n\n
+        Empty Trash\n\n
+        Message sorting\n\n
+        …and more\n\n
+
+    </string>
+
+    <string name="splash_end">
+        Please note that K-9 does not support most free Hotmail accounts and, like many mail clients, has
+some quirks when talking to Microsoft Exchange.\n\n
+
+    Please submit bug reports, contribute new features and ask questions at\n
+    <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
+
+    </string>
+
+    <string name="proceed_button">"PROCEED"</string>
+    <string name="next_button">"NEXT"</string>
+    <string name="splash_text">"K-9 Mail is a powerful free email client for Android."</string>
+
 
     <!-- Default signature -->
     <string name="default_signature">-- \nSent from my Android device with K-9 Mail. Please excuse my brevity.</string>
@@ -1138,7 +1177,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
 
     <string name="auth_external_error">Unable to authenticate.  The server does not advertise the SASL EXTERNAL capability.  This could be due to a problem with the client certificate (expired, unknown certificate authority) or some other configuration problem.</string>
-    
+
     <!-- === Client certificates specific ================================================================== -->
     <string name="account_setup_basics_client_certificate">Use client certificate</string>
     <string name="client_certificate_spinner_empty">No client certificate</string>

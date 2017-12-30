@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="message_list_item_footer_background">#eeeeee</color>
     <color name="message_list_widget_header_background">#737373</color>
@@ -8,7 +7,7 @@
     <color name="message_list_widget_text_unread">#000000</color>
     <color name="light_black">#444444</color>
 
-    <color name="dot_dark_screen">#6A1B9A</color>
-    <color name="dot_light_screen">#CE93D8</color>>
-    <color name="screen">#9B27B0</color>
+    <color name="dot_dark_screen">#689F38</color>
+    <color name="dot_light_screen">#AED581</color>>
+    <color name="screen">#64DD17</color>
 </resources>
