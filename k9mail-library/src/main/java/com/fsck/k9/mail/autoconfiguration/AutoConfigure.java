@@ -8,7 +8,7 @@ package com.fsck.k9.mail.autoconfiguration;
 public interface AutoConfigure {
     ProviderInfo findProviderInfo(String email);
 
-    public static class ProviderInfo {
+    class ProviderInfo {
         public String incomingUsernameTemplate = "";
 
         public String outgoingUsernameTemplate = "";

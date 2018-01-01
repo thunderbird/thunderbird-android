@@ -44,6 +44,7 @@ import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigureAutodiscover;
 import com.fsck.k9.mail.autoconfiguration.AutoconfigureMozilla;
 import com.fsck.k9.mail.autoconfiguration.AutoconfigureSrv;
+import com.fsck.k9.mail.autoconfiguration.AutoconfigureGuesser;
 import com.fsck.k9.mail.autoconfiguration.DnsHelper;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.store.RemoteStore;
@@ -89,8 +90,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     private Provider provider;
 
     private boolean autoconfiguration;
-    private boolean incomingReady;
-    private boolean outgoingReady;
 
     private static final int REQUEST_CODE_GMAIL = 1;
 
@@ -236,18 +235,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             protected ProviderInfo doInBackground(Void... params) {
                 publishProgress(R.string.account_setup_check_settings_retr_info_msg);
 
-                incomingReady = false;
-                outgoingReady = false;
-
                 final String domain = EmailHelper.getDomainFromEmailAddress(email);
                 ProviderInfo providerInfo = autoconfigureDomain(domain);
 
-                if (providerInfo != null || (incomingReady && outgoingReady)) {
+                if (providerInfo != null) {
                     return providerInfo;
                 }
 
-                incomingReady = false;
-                outgoingReady = false;
                 try {
                     String mxDomain = DnsHelper.getMxDomain(domain);
 
@@ -269,6 +263,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
                 AutoconfigureSrv autoconfigureSrv = new AutoconfigureSrv();
                 AutoConfigureAutodiscover autodiscover = new AutoConfigureAutodiscover();
+                AutoconfigureGuesser guesser = new AutoconfigureGuesser(context);
 
                 provider = findProviderForDomain(domain);
 
@@ -283,7 +278,11 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 providerInfo = autodiscover.findProviderInfo(email);
                 if (providerInfo != null) return providerInfo;
 
-                testDomain(domain);
+                providerInfo = autodiscover.findProviderInfo(email);
+                if (providerInfo != null) return providerInfo;
+
+                providerInfo = guesser.findProviderInfo(email, password);
+                if (providerInfo != null) return providerInfo;
 
                 return null;
             }
@@ -383,14 +382,14 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     return;
                 }
 
-                if (incomingReady && outgoingReady) {
+                /*if (incomingReady && outgoingReady) {
                     accountConfig.setDescription(accountConfig.getEmail());
                     view.goToAccountNames();
                     return;
                 } else if (incomingReady) {
                     view.goToOutgoing();
                     return;
-                }
+                }*/
                 try {
                     if (providerInfo != null) {
                         provider = Provider.newInstanceFromProviderInfo(providerInfo);
@@ -441,11 +440,11 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     updateAccount();
                     view.end();
                 } else {
-                    if (outgoingReady) {
+                    /*if (outgoingReady) {
                         accountConfig.setDescription(accountConfig.getEmail());
                         view.goToAccountNames();
                         return;
-                    }
+                    }*/
                     try {
                         String password = null;
                         String clientCertificateAlias = null;

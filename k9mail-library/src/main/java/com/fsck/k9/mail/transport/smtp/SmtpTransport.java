@@ -22,6 +22,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Queue;
 
+import android.net.Uri;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
@@ -84,11 +85,11 @@ public class SmtpTransport extends Transport {
     private boolean isPipeliningSupported;
 
 
-    public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
+    public SmtpTransport(String transportUri, TrustedSocketFactory trustedSocketFactory,
             OAuth2TokenProvider oAuth2TokenProvider) throws MessagingException {
         ServerSettings settings;
         try {
-            settings = TransportUris.decodeTransportUri(storeConfig.getTransportUri());
+            settings = TransportUris.decodeTransportUri(transportUri);
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding transport URI", e);
         }
