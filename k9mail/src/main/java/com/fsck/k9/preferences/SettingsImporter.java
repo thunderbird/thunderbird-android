@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -804,7 +805,7 @@ public class SettingsImporter {
                 String element = xpp.getName();
                 if (SettingsExporter.ACCOUNT_ELEMENT.equals(element)) {
                     if (accounts == null) {
-                        accounts = new HashMap<>();
+                        accounts = new LinkedHashMap<>();
                     }
 
                     ImportedAccount account = parseAccount(xpp, accountUuids, overview);

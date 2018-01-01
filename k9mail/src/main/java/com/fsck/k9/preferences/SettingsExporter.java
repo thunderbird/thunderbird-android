@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -155,7 +156,7 @@ public class SettingsExporter {
             Set<String> exportAccounts;
             if (accountUuids == null) {
                 List<Account> accounts = preferences.getAccounts();
-                exportAccounts = new HashSet<>();
+                exportAccounts = new LinkedHashSet<>();
                 for (Account account : accounts) {
                     exportAccounts.add(account.getUuid());
                 }
