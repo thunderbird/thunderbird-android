@@ -8,6 +8,9 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.401" versioncode="23610">
+        <change>Fixed bug that lead to some messages showing as empty</change>
+    </release>
     <release version="5.400" versioncode="23600">
         <change>Avoid crash on Android 8.1</change>
         <change>Updated translations</change>
