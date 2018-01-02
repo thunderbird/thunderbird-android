@@ -4,13 +4,18 @@ package com.fsck.k9.helper;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.ContactsContract;
-import timber.log.Timber;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
 
 import com.fsck.k9.mail.Address;
+
+import java.util.WeakHashMap;
+
+import timber.log.Timber;
 
 /**
  * Helper class to access the contacts stored on the device.
@@ -61,6 +66,9 @@ public class Contacts {
         return new Contacts(context);
     }
 
+    protected static WeakHashMap<Object, String> sNameCache = new WeakHashMap<>();
+    protected static WeakHashMap<Object, Uri> sPhotoUriCache = new WeakHashMap<>();
+
 
     protected Context mContext;
     protected ContentResolver mContentResolver;
@@ -74,6 +82,8 @@ public class Contacts {
     protected Contacts(Context context) {
         mContext = context;
         mContentResolver = context.getContentResolver();
+        Uri allContacts = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, "#");
+        mContentResolver.registerContentObserver(allContacts, true, new ContactObserver(null));
     }
 
     /**
@@ -173,6 +183,8 @@ public class Contacts {
             return null;
         }
 
+        if (sNameCache.containsKey(address)) return sNameCache.get(address);
+
         final Cursor c = getContactByAddress(address);
 
         String name = null;
@@ -183,6 +195,7 @@ public class Contacts {
             }
             c.close();
         }
+        sNameCache.put(address, name);
 
         return name;
     }
@@ -229,30 +242,29 @@ public class Contacts {
      *         no such contact could be found or the contact doesn't have a picture.
      */
     public Uri getPhotoUri(String address) {
+        if (sPhotoUriCache.containsKey(address)) return sPhotoUriCache.get(address);
+        Uri uri = null;
         try {
             final Cursor c = getContactByAddress(address);
-            if (c == null) {
-                return null;
-            }
-
-            try {
-                if (!c.moveToFirst()) {
-                    return null;
+            if (c != null) {
+                try {
+                    String uriString = null;
+                    if (c.moveToFirst()) {
+                        int columnIndex = c.getColumnIndex(Photo.PHOTO_URI);
+                        uriString = c.getString(columnIndex);
+                    }
+                    if (uriString != null)
+                        uri = Uri.parse(uriString);
+                } catch (IllegalStateException ignored) {
+                } finally {
+                    c.close();
                 }
-                int columnIndex = c.getColumnIndex(Photo.PHOTO_URI);
-                final String uriString = c.getString(columnIndex);
-                if (uriString == null)
-                    return null;
-                return Uri.parse(uriString);
-            } catch (IllegalStateException e) {
-                return null;
-            } finally {
-                c.close();
             }
         } catch (Exception e) {
             Timber.e(e, "Couldn't fetch photo for contact with email %s", address);
-            return null;
         }
+        sPhotoUriCache.put(address, uri);
+        return uri;
     }
 
     /**
@@ -273,4 +285,20 @@ public class Contacts {
                 SORT_ORDER);
     }
 
+    private class ContactObserver extends ContentObserver {
+        public ContactObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            onChange(selfChange, null);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            sNameCache.clear();
+            sPhotoUriCache.clear();
+        }
+    }
 }
