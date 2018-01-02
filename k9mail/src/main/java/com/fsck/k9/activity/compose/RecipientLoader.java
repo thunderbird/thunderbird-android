@@ -343,8 +343,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             String lookupKey = cursor.getString(INDEX_LOOKUP_KEY);
 
             // already exists? just skip then
-            if (recipientMap.containsKey(email)) {
-                // TODO merge? do something else? what do we do?
+            if (email == null | recipientMap.containsKey(email)) {
+                // TODO We should probably merging contacts with the same email address
                 continue;
             }
 
@@ -373,16 +373,13 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                     break;
                 }
             }
+            Recipient recipient = new Recipient(name, email, addressLabel, contactId, lookupKey);
+            if (recipient.isValidEmailAddress()) {
+                Uri photoUri = cursor.isNull(INDEX_PHOTO_URI) ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
 
-            if (email != null) {
-                Recipient recipient = new Recipient(name, email, addressLabel, contactId, lookupKey);
-                if (recipient.isValidEmailAddress()) {
-                    Uri photoUri = cursor.isNull(INDEX_PHOTO_URI) ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
-
-                    recipient.photoThumbnailUri = photoUri;
-                    recipientMap.put(email, recipient);
-                    recipients.add(recipient);
-                }
+                recipient.photoThumbnailUri = photoUri;
+                recipientMap.put(email, recipient);
+                recipients.add(recipient);
             }
         }
 

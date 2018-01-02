@@ -189,7 +189,7 @@ public class RecipientLoaderTest {
     }
 
     @Test
-    public void queryContactProvider_ignoresRecipientWithNoEmaill() throws Exception {
+    public void queryContactProvider_ignoresRecipientWithNoEmail() throws Exception {
         RecipientLoader recipientLoader = new RecipientLoader(context, CRYPTO_PROVIDER, QUERYSTRING);
         setupContactProvider("%" + QUERYSTRING + "%", CONTACT_NO_EMAIL);
 

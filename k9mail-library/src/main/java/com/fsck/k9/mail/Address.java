@@ -33,7 +33,7 @@ public class Address implements Serializable {
 
     private String mPersonal;
 
-    public Address(@NonNull Address address) {
+    public Address(Address address) {
         mAddress = address.mAddress;
         mPersonal = address.mPersonal;
     }
