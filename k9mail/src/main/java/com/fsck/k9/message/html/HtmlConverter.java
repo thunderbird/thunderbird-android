@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import android.text.Annotation;
 import android.text.Editable;
@@ -179,11 +178,6 @@ public class HtmlConverter {
             "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid $$COLOR$$; padding-left: 1ex;\">";
     private static final String HTML_BLOCKQUOTE_END = "</blockquote>";
     private static final String HTML_NEWLINE = "<br />";
-    private static final Pattern ASCII_PATTERN_FOR_HR = Pattern.compile(
-            "(^|\\Q" + HTML_NEWLINE + "\\E)\\s*((\\Q" + HTML_NEWLINE + "\\E)*" +
-            "((((\\Q" + HTML_NEWLINE + "\\E){0,2}([-=_]{3,})(\\Q" + HTML_NEWLINE +
-            "\\E){0,2})|(([-=_]{2,} ?)(8&lt;|<gt>8|%&lt;|<gt>%)" +
-            "( ?[-=_]{2,})))+(\\Q" + HTML_NEWLINE + "\\E|$)))");
 
     /**
      * Convert a text string into an HTML document.
@@ -276,7 +270,7 @@ public class HtmlConverter {
                    HTML_BLOCKQUOTE_END + "$1"
                );
 
-        text = ASCII_PATTERN_FOR_HR.matcher(text).replaceAll("<hr>");
+        text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", "<hr>");
 
         StringBuffer sb = new StringBuffer(text.length() + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH);
 
