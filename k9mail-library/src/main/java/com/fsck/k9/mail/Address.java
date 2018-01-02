@@ -1,7 +1,6 @@
 
 package com.fsck.k9.mail;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
 import java.io.Serializable;
@@ -38,15 +37,15 @@ public class Address implements Serializable {
         mPersonal = address.mPersonal;
     }
 
-    public Address(@NonNull String address, String personal) {
+    public Address(String address, String personal) {
         this(address, personal, true);
     }
 
-    public Address(@NonNull String address) {
+    public Address(String address) {
         this(address, null, true);
     }
 
-    private Address(@NonNull String address, String personal, boolean parse) {
+    private Address(String address, String personal, boolean parse) {
         if (parse) {
             Rfc822Token[] tokens =  Rfc822Tokenizer.tokenize(address);
             if (tokens.length > 0) {
