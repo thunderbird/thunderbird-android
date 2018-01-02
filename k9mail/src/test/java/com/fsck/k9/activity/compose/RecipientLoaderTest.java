@@ -17,15 +17,12 @@ import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
 
 import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
 import static org.junit.Assert.*;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -173,7 +170,6 @@ public class RecipientLoaderTest {
                         any(String.class),
                         aryEq(new String[] { queriedAddress, queriedAddress }),
                         any(String.class))).thenReturn(cursor);
-
     }
 
     @Test
@@ -197,6 +193,4 @@ public class RecipientLoaderTest {
 
         assertEquals(0, recipients.size());
     }
-
-
 }
