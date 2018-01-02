@@ -121,6 +121,9 @@ public class MessageBuilderTest {
             "--" + BOUNDARY_1 + "\r\n" +
             "Content-Type: message/rfc822;\r\n" +
             " name=\"attach.txt\"\r\n" +
+            "Content-Disposition: attachment;\r\n" +
+            " filename=\"attach.txt\";\r\n" +
+            " size=23\r\n" +
             "\r\n" +
             "text data in attachment" +
             "\r\n" +

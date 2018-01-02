@@ -235,26 +235,26 @@ public abstract class MessageBuilder {
 
             if (!MimeUtil.isMessage(attachment.contentType)) {
                 bp.setEncoding(MimeUtility.getEncodingforType(attachment.contentType));
-
-                /*
-                 * TODO: Oh the joys of MIME...
-                 *
-                 * From RFC 2183 (The Content-Disposition Header Field):
-                 * "Parameter values longer than 78 characters, or which
-                 *  contain non-ASCII characters, MUST be encoded as specified
-                 *  in [RFC 2184]."
-                 *
-                 * Example:
-                 *
-                 * Content-Type: application/x-stuff
-                 *  title*1*=us-ascii'en'This%20is%20even%20more%20
-                 *  title*2*=%2A%2A%2Afun%2A%2A%2A%20
-                 *  title*3="isn't it!"
-                 */
-                bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
-                        "attachment;\r\n filename=\"%s\";\r\n size=%d",
-                        attachment.name, attachment.size));
             }
+
+            /*
+             * TODO: Oh the joys of MIME...
+             *
+             * From RFC 2183 (The Content-Disposition Header Field):
+             * "Parameter values longer than 78 characters, or which
+             *  contain non-ASCII characters, MUST be encoded as specified
+             *  in [RFC 2184]."
+             *
+             * Example:
+             *
+             * Content-Type: application/x-stuff
+             *  title*1*=us-ascii'en'This%20is%20even%20more%20
+             *  title*2*=%2A%2A%2Afun%2A%2A%2A%20
+             *  title*3="isn't it!"
+             */
+            bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
+                    "attachment;\r\n filename=\"%s\";\r\n size=%d",
+                    attachment.name, attachment.size));
 
             mp.addBodyPart(bp);
         }
