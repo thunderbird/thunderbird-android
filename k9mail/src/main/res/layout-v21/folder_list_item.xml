@@ -27,7 +27,11 @@
             android:paddingBottom="2dip"
 
             android:paddingLeft="6dip">
-
+        
+        <Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/folder_toolbar">
 
         <TextView
                 android:id="@+id/folder_name"
@@ -45,6 +49,7 @@
                 android:textColor="?android:attr/textColorTertiary"
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
 
+        </Toolbar>
     </LinearLayout>
 
     <include layout="@layout/accounts_folders_icons"/>
