@@ -1,35 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fadingEdge="none" >
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/view_pager"/>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/layoutDots"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"/>
 
-            <TextView
-                android:id="@+id/welcome_message"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:padding="8dip"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="14sp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.5"
+        android:layout_above="@id/layoutDots"
+        android:background="#FFFFFF"/>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1" />
-        </LinearLayout>
-    </ScrollView>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_next"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:text="NEXT"
+        android:textColor="#FFFFFF"/>
 
-    <include layout="@layout/wizard_welcome" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imp_set"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:background="@null"
+        android:text="Import Settings"
+        android:textColor="#FFFFFF"/>
 
-</LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_skip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="false"
+        android:background="@null"
+        android:text="SKIP"
+        android:textColor="#FFFF"/>
+
+
+</RelativeLayout>

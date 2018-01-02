@@ -394,7 +394,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         if (ACTION_IMPORT_SETTINGS.equals(intent.getAction())) {
             onImport();
         } else if (accounts.size() < 1) {
-            WelcomeMessage.showWelcomeMessage(this);
+            Intent i = new Intent(Accounts.this,WelcomeMessage.class);
+            startActivity(i);
             finish();
             return;
         }

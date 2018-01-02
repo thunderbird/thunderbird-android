@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -37,6 +38,7 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
@@ -944,8 +946,8 @@ public class FolderList extends K9ListActivity {
             }
         }
 
-        public View getItemView(int itemPosition, View convertView, ViewGroup parent) {
-            FolderInfoHolder folder = (FolderInfoHolder) getItem(itemPosition);
+        public View getItemView(final int itemPosition, View convertView, ViewGroup parent) {
+            final FolderInfoHolder folder = (FolderInfoHolder) getItem(itemPosition);
             View view;
             if (convertView != null) {
                 view = convertView;
@@ -970,6 +972,29 @@ public class FolderList extends K9ListActivity {
                 holder.chip = view.findViewById(R.id.chip);
                 holder.folderListItemLayout = (LinearLayout)view.findViewById(R.id.folder_list_item_layout);
                 holder.rawFolderName = folder.name;
+
+                holder.toolbar = (Toolbar) view.findViewById(R.id.folder_toolbar);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    holder.toolbar.inflateMenu(R.menu.folder_context);
+                    holder.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                        FolderInfoHolder folder = (FolderInfoHolder) getItem(itemPosition);
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.clear_local_folder:
+                                    onClearFolder(mAccount, folder.name);
+                                    break;
+                                case R.id.refresh_folder:
+                                    checkMail(folder);
+                                    break;
+                                case R.id.folder_settings:
+                                    FolderSettings.actionSettings(getApplicationContext(), mAccount, folder.name);
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                }
 
                 view.setTag(holder);
             }
@@ -1212,6 +1237,7 @@ public class FolderList extends K9ListActivity {
         public String rawFolderName;
         public View chip;
         public LinearLayout folderListItemLayout;
+        public Toolbar toolbar;
     }
 
     private class FolderClickListener implements OnClickListener {
