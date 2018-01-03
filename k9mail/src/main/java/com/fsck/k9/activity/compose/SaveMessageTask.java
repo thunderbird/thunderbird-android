@@ -8,6 +8,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 
 public class SaveMessageTask extends AsyncTask<Void, Void, Void> {
@@ -36,7 +37,12 @@ public class SaveMessageTask extends AsyncTask<Void, Void, Void> {
         Message draftMessage = messagingController.saveDraft(account, message, draftId, saveRemotely);
         draftId = messagingController.getId(draftMessage);
 
-        android.os.Message msg = android.os.Message.obtain(handler, MessageCompose.MSG_SAVED_DRAFT, draftId);
+        android.os.Message msg = null;
+        if(draftMessage.isSet(Flag.X_SECURE_MESSAGE_DRAFT)) {
+            msg = android.os.Message.obtain(handler, MessageCompose.SECURE_MSG_DRAFT_SAVED, draftId);
+        } else {
+            msg = android.os.Message.obtain(handler, MessageCompose.MSG_SAVED_DRAFT, draftId);
+        }
         handler.sendMessage(msg);
         return null;
     }

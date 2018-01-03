@@ -147,6 +147,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int MSG_PROGRESS_OFF = 2;
     public static final int MSG_SAVED_DRAFT = 4;
     private static final int MSG_DISCARDED_DRAFT = 5;
+    public static final int SECURE_MSG_DRAFT_SAVED = 6;
 
     private static final int REQUEST_MASK_RECIPIENT_PRESENTER = (1 << 8);
     private static final int REQUEST_MASK_LOADER_HELPER = (1 << 9);
@@ -1795,6 +1796,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     Toast.makeText(
                             MessageCompose.this,
                             getString(R.string.message_discarded_toast),
+                            Toast.LENGTH_LONG).show();
+                    break;
+                case SECURE_MSG_DRAFT_SAVED:
+                    draftId = (Long) msg.obj;
+                    Toast.makeText(
+                            MessageCompose.this,
+                            getString(R.string.secure_message_draft_saved_toast),
                             Toast.LENGTH_LONG).show();
                     break;
                 default:
