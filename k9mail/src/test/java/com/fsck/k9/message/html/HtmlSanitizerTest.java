@@ -176,4 +176,17 @@ public class HtmlSanitizerTest {
 
         assertEquals(html, toCompactString(result));
     }
+
+    @Test
+    public void shouldKeepWhitelistedElementsInHeadAndSkipTheRest() {
+        String html = "<html><head>" +
+                "<title>remove this</title>" +
+                "<style>keep this</style>" +
+                "<script>remove this</script>" +
+                "</head></html>";
+
+        Document result = htmlSanitizer.sanitize(html);
+
+        assertEquals("<html><head><style>keep this</style></head><body></body></html>", toCompactString(result));
+    }
 }
