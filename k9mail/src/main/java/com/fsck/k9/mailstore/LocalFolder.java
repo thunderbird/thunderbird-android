@@ -894,6 +894,42 @@ public class LocalFolder extends Folder<LocalMessage> {
         }
     }
 
+    public LocalMessage getMessageUidAndFlags(final String uid) throws MessagingException {
+        try {
+            return this.localStore.getDatabase().execute(false, new DbCallback<LocalMessage>() {
+                @Override
+                public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
+                    try {
+                        open(OPEN_MODE_RW);
+                        LocalMessage message = new LocalMessage(LocalFolder.this.localStore, uid, LocalFolder.this);
+                        Cursor cursor = null;
+
+                        try {
+                            cursor = db.rawQuery(
+                                    "SELECT " +
+                                            "uid, flags, deleted, read, flagged, answered, forwarded " +
+                                            "FROM messages " +
+                                            "WHERE uid = ? AND folder_id = ?",
+                                    new String[] { message.getUid(), Long.toString(databaseId) });
+
+                            if (!cursor.moveToNext()) {
+                                return null;
+                            }
+                            message.populateUidAndFlags(cursor);
+                        } finally {
+                            Utility.closeQuietly(cursor);
+                        }
+                        return message;
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    }
+                }
+            });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
+        }
+    }
+
     public Map<String,Long> getAllMessagesAndEffectiveDates() throws MessagingException {
         try {
             return  localStore.getDatabase().execute(false, new DbCallback<Map<String, Long>>() {
