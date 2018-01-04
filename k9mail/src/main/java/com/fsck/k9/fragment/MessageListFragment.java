@@ -1343,7 +1343,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 handler.updateFooter(context.getResources().getQuantityString(R.plurals.remote_search_downloading_limited,
                         maxResults, maxResults, numResults));
             } else {
-                handler.updateFooter(context.getResources().getQuantityString(R.plurals.remote_search_downloading, numResults));
+                handler.updateFooter(context.getResources().getQuantityString(R.plurals.remote_search_downloading,
+                        numResults, numResults));
             }
             fragmentListener.setMessageListProgress(Window.PROGRESS_START);
         }
