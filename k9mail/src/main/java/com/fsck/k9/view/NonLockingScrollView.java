@@ -157,6 +157,26 @@ public class NonLockingScrollView extends ScrollView {
         }
     }
 
+    private int getContentHeight() {
+        final View child = getChildAt(0);
+        return (child != null) ? child.getHeight() : 0;
+    }
+
+    public float getRelativeScrollY() {
+        final int contentHeight = getContentHeight();
+        final int scrollY = getScrollY();
+        if (scrollY <= contentHeight) {
+            return ((float) scrollY) / ((float) contentHeight);
+        }
+        return 1;
+    }
+
+    public void setRelativeScrollY(float relScrollY) {
+        final int contentHeight = getContentHeight();
+        final int scrollY = (int) (contentHeight * relScrollY);
+        scrollTo(getScrollX(), scrollY);
+    }
+
     class HierarchyTreeChangeListener implements OnHierarchyChangeListener {
         @Override
         public void onChildViewAdded(View parent, View child) {

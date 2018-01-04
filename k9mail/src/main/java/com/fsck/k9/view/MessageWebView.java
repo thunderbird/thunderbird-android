@@ -17,10 +17,26 @@ import android.widget.Toast;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.R;
+import com.fsck.k9.Throttle;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mailstore.AttachmentResolver;
 
 
 public class MessageWebView extends RigidWebView {
+
+    private static final int MIN_RENDERING_FINISHED_INTERVAL = 100;
+    private static final int MAX_RENDERING_FINISHED_INTERVAL = 300;
+
+    private boolean renderingFinished;
+    private OnRenderingFinishedListener onRenderingFinishedListener;
+
+    private final Throttle throttle = new Throttle(getClass().getName(),
+            new Runnable() {
+                @Override public void run() {
+                    onRenderingFinishedDelayed();
+                }
+            }, Utility.getMainThreadHandler(),
+            MIN_RENDERING_FINISHED_INTERVAL, MAX_RENDERING_FINISHED_INTERVAL);
 
     public MessageWebView(Context context) {
         super(context);
@@ -116,6 +132,7 @@ public class MessageWebView extends RigidWebView {
 
     public void displayHtmlContentWithInlineAttachments(@NonNull String htmlText,
             @Nullable AttachmentResolver attachmentResolver, @Nullable OnPageFinishedListener onPageFinishedListener) {
+        renderingFinished = false;
         setWebViewClient(attachmentResolver, onPageFinishedListener);
         setHtmlContent(htmlText);
     }
@@ -132,6 +149,25 @@ public class MessageWebView extends RigidWebView {
     private void setHtmlContent(@NonNull String htmlText) {
         loadDataWithBaseURL("about:blank", htmlText, "text/html", "utf-8", null);
         resumeTimers();
+    }
+
+    public void setOnRenderingFinishedListener(OnRenderingFinishedListener onRenderingFinishedListener) {
+        this.onRenderingFinishedListener = onRenderingFinishedListener;
+    }
+
+    @Override
+    public void invalidate() {
+        if (!renderingFinished && onRenderingFinishedListener != null && getContentHeight() > 0) {
+            throttle.onEvent();
+        }
+        super.invalidate();
+    }
+
+    private void onRenderingFinishedDelayed() {
+        renderingFinished = true;
+        if (onRenderingFinishedListener != null) {
+            onRenderingFinishedListener.onRenderingFinished();
+        }
     }
 
     /*
@@ -152,5 +188,9 @@ public class MessageWebView extends RigidWebView {
 
     public interface OnPageFinishedListener {
         void onPageFinished();
+    }
+
+    public interface OnRenderingFinishedListener {
+        void onRenderingFinished();
     }
 }
