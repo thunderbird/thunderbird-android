@@ -35,7 +35,7 @@ class HeadCleaner {
     static class CleaningVisitor implements NodeVisitor {
         private final Element root;
         private Element destination;
-        private boolean skipChildren = false;
+        private Element elementToSkip;
 
 
         CleaningVisitor(Element root, Element destination) {
@@ -44,7 +44,7 @@ class HeadCleaner {
         }
 
         public void head(Node source, int depth) {
-            if (skipChildren) {
+            if (elementToSkip != null) {
                 return;
             }
 
@@ -59,7 +59,7 @@ class HeadCleaner {
                     destination.appendChild(destinationChild);
                     destination = destinationChild;
                 } else if (source != root) {
-                    skipChildren = true;
+                    elementToSkip = sourceElement;
                 }
             } else if (source instanceof TextNode) {
                 TextNode sourceText = (TextNode) source;
@@ -73,9 +73,10 @@ class HeadCleaner {
         }
 
         public void tail(Node source, int depth) {
-            if (source == destination) {
+            if (source == elementToSkip) {
+                elementToSkip = null;
+            } else if (source instanceof Element && isSafeTag(source)) {
                 destination = destination.parent();
-                skipChildren = false;
             }
         }
 
