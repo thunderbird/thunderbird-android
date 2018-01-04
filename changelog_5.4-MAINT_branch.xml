@@ -5,6 +5,9 @@
      Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.402" versioncode="23620">
+        <change>Fixed display issues with certain messages</change>
+    </release>
     <release version="5.401" versioncode="23610">
         <change>Fixed bug that lead to some messages showing as empty</change>
     </release>
@@ -170,7 +173,7 @@
         <change>Improved compatibility with IMAP (proxy) servers</change>
         <change>Improved support for non-standard conform "share" functionality used by some apps</change>
         <change>Another attempt at working around the display bug on Asus Transformer devices</change>
-        <change>Added mailbox.org to the list of providers﻿</change>
+        <change>Added mailbox.org to the list of providers</change>
         <change>More bug fixes</change>
     </release>
     <release version="4.803" versioncode="20004" >
