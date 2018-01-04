@@ -15,6 +15,13 @@ public class HtmlSanitizer {
         Whitelist whitelist = Whitelist.relaxed()
                 .addTags("font", "hr", "ins", "del")
                 .addAttributes("table", "align", "bgcolor", "border", "cellpadding", "cellspacing", "width")
+                .addAttributes("tr", "align", "bgcolor", "valign")
+                .addAttributes("th",
+                        "align", "bgcolor", "colspan", "headers", "height", "nowrap", "rowspan", "scope", "sorted",
+                        "valign", "width")
+                .addAttributes("td",
+                        "align", "bgcolor", "colspan", "headers", "height", "nowrap", "rowspan", "scope", "valign",
+                        "width")
                 .addAttributes(":all", "class", "style", "id")
                 .addProtocols("img", "src", "http", "https", "cid", "data");
 
