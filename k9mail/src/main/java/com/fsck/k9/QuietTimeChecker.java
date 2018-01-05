@@ -6,17 +6,20 @@ import java.util.GregorianCalendar;
 
 
 class QuietTimeChecker {
+    private final Clock clock;
     private final String quietTimeStart;
     private final String quietTimeEnd;
 
 
-    QuietTimeChecker(String quietTimeStart, String quietTimeEnd) {
+    QuietTimeChecker(Clock clock, String quietTimeStart, String quietTimeEnd) {
+        this.clock = clock;
         this.quietTimeStart = quietTimeStart;
         this.quietTimeEnd = quietTimeEnd;
     }
 
     public boolean isQuietTime() {
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        gregorianCalendar.setTimeInMillis(clock.getTime());
 
         Integer startHour = Integer.parseInt(quietTimeStart.split(":")[0]);
         Integer startMinute = Integer.parseInt(quietTimeStart.split(":")[1]);

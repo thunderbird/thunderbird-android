@@ -996,7 +996,7 @@ public class K9 extends Application {
             return false;
         }
 
-        QuietTimeChecker quietTimeChecker = new QuietTimeChecker(mQuietTimeStarts, mQuietTimeEnds);
+        QuietTimeChecker quietTimeChecker = new QuietTimeChecker(Clock.INSTANCE, mQuietTimeStarts, mQuietTimeEnds);
         return quietTimeChecker.isQuietTime();
     }
 
