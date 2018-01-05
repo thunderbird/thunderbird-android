@@ -26,7 +26,7 @@ class QuietTimeChecker {
         Integer endHour = Integer.parseInt(quietTimeEnd.split(":")[0]);
         Integer endMinute = Integer.parseInt(quietTimeEnd.split(":")[1]);
 
-        Integer now = (gregorianCalendar.get(Calendar.HOUR) * 60) + gregorianCalendar.get(Calendar.MINUTE);
+        Integer now = (gregorianCalendar.get(Calendar.HOUR_OF_DAY) * 60) + gregorianCalendar.get(Calendar.MINUTE);
         Integer quietStarts = startHour * 60 + startMinute;
         Integer quietEnds =  endHour * 60 + endMinute;
 
