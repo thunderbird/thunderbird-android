@@ -189,4 +189,15 @@ public class HtmlSanitizerTest {
 
         assertEquals("<html><head><style>keep this</style></head><body></body></html>", toCompactString(result));
     }
+
+    @Test
+    public void shouldRemoveIFrames() {
+        String html = "<html><body>" +
+                "<iframe src=\"http://www.google.com\" />" +
+                "</body></html>";
+
+        Document result = htmlSanitizer.sanitize(html);
+
+        assertEquals("<html><head></head><body></body></html>", toCompactString(result));
+    }
 }
