@@ -5,6 +5,9 @@
      Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.403" versioncode="23630">
+        <change>Fixed bug that caused 'Quiet Time' to behave erratically</change>
+    </release>
     <release version="5.402" versioncode="23620">
         <change>Fixed display issues with certain messages</change>
     </release>
