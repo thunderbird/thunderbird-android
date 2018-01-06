@@ -6,7 +6,7 @@ import java.util.Comparator;
 import com.fsck.k9.mail.Message;
 
 
-class UidReverseComparator implements Comparator<Message> {
+public class UidReverseComparator implements Comparator<Message> {
     @Override
     public int compare(Message messageLeft, Message messageRight) {
         Long uidLeft = getUidForMessage(messageLeft);
