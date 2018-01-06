@@ -4,8 +4,6 @@ package com.fsck.k9;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -998,41 +996,8 @@ public class K9 extends Application {
             return false;
         }
 
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-
-        Integer startHour = Integer.parseInt(mQuietTimeStarts.split(":")[0]);
-        Integer startMinute = Integer.parseInt(mQuietTimeStarts.split(":")[1]);
-        Integer endHour = Integer.parseInt(mQuietTimeEnds.split(":")[0]);
-        Integer endMinute = Integer.parseInt(mQuietTimeEnds.split(":")[1]);
-
-        Integer now = (gregorianCalendar.get(Calendar.HOUR) * 60) + gregorianCalendar.get(Calendar.MINUTE);
-        Integer quietStarts = startHour * 60 + startMinute;
-        Integer quietEnds =  endHour * 60 + endMinute;
-
-        // If start and end times are the same, we're never quiet
-        if (quietStarts.equals(quietEnds)) {
-            return false;
-        }
-
-
-        // 21:00 - 05:00 means we want to be quiet if it's after 9 or before 5
-        if (quietStarts > quietEnds) {
-            // if it's 22:00 or 03:00 but not 8:00
-            if (now >= quietStarts || now <= quietEnds) {
-                return true;
-            }
-        }
-
-        // 01:00 - 05:00
-        else {
-
-            // if it' 2:00 or 4:00 but not 8:00 or 0:00
-            if (now >= quietStarts && now <= quietEnds) {
-                return true;
-            }
-        }
-
-        return false;
+        QuietTimeChecker quietTimeChecker = new QuietTimeChecker(Clock.INSTANCE, mQuietTimeStarts, mQuietTimeEnds);
+        return quietTimeChecker.isQuietTime();
     }
 
     public static void setDebug(boolean debug) {
