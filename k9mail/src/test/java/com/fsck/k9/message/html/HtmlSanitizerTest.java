@@ -200,4 +200,17 @@ public class HtmlSanitizerTest {
 
         assertEquals("<html><head></head><body></body></html>", toCompactString(result));
     }
+
+    @Test
+    public void shouldKeepFormattingTags() {
+        String html = "<html><body>" +
+                "<center><font face=\"Arial\" color=\"red\" size=\"12\">A</font></center>" +
+                "</body></html>";
+
+        Document result = htmlSanitizer.sanitize(html);
+
+        assertEquals("<html><head></head><body>" +
+                "<center><font face=\"Arial\" color=\"red\" size=\"12\">A</font></center>" +
+                "</body></html>", toCompactString(result));
+    }
 }
