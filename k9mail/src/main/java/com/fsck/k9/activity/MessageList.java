@@ -68,7 +68,6 @@ import timber.log.Timber;
  */
 public class MessageList extends K9Activity implements MessageListFragmentListener,
         MessageViewFragmentListener, OnBackStackChangedListener,
-//        OnSwipeGestureListener,
         OnSwitchCompleteListener {
 
     private static final String EXTRA_SEARCH = "search_bytes";
@@ -216,9 +215,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         initializeActionBar();
-
-        // Enable gesture detection for MessageLists
-//        setupGestureDetector(this);
 
         if (!decodeExtras(getIntent())) {
             return;
@@ -1290,20 +1286,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         configureMenu(mMenu);
     }
-
-//    @Override
-//    public void onSwipeRightToLeft(MotionEvent e1, MotionEvent e2) {
-//        if (mMessageListFragment != null && mDisplayMode != DisplayMode.MESSAGE_VIEW) {
-//            mMessageListFragment.onSwipeRightToLeft(e1, e2);
-//        }
-//    }
-//
-//    @Override
-//    public void onSwipeLeftToRight(MotionEvent e1, MotionEvent e2) {
-//        if (mMessageListFragment != null && mDisplayMode != DisplayMode.MESSAGE_VIEW) {
-//            mMessageListFragment.onSwipeLeftToRight(e1, e2);
-//        }
-//    }
 
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
         @Override
