@@ -343,8 +343,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             String lookupKey = cursor.getString(INDEX_LOOKUP_KEY);
 
             // already exists? just skip then
-            if (recipientMap.containsKey(email)) {
-                // TODO merge? do something else? what do we do?
+            if (email == null || recipientMap.containsKey(email)) {
+                // TODO We should probably merging contacts with the same email address
                 continue;
             }
 
@@ -373,7 +373,6 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                     break;
                 }
             }
-
             Recipient recipient = new Recipient(name, email, addressLabel, contactId, lookupKey);
             if (recipient.isValidEmailAddress()) {
 

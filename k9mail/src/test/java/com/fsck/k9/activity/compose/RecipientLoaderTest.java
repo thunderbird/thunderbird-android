@@ -7,6 +7,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.MatrixCursor;
 import android.net.Uri;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Email;
 
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.mail.Address;
@@ -15,7 +17,9 @@ import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RuntimeEnvironment;
 
+import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
 import static org.junit.Assert.*;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Matchers.any;
@@ -28,10 +32,22 @@ import static org.mockito.Mockito.when;
 @RunWith(K9RobolectricTestRunner.class)
 public class RecipientLoaderTest {
     static final String CRYPTO_PROVIDER = "cryptoProvider";
+    static final String[] PROJECTION = {
+            ContactsContract.CommonDataKinds.Email._ID,
+            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY,
+            ContactsContract.Contacts.LOOKUP_KEY,
+            ContactsContract.CommonDataKinds.Email.ADDRESS,
+            ContactsContract.CommonDataKinds.Email.TYPE,
+            ContactsContract.CommonDataKinds.Email.LABEL,
+            ContactsContract.CommonDataKinds.Email.CONTACT_ID,
+            ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
+    };
     static final String[] PROJECTION_CRYPTO_ADDRESSES = { "address", "uid_address" };
     static final String[] PROJECTION_CRYPTO_STATUS = { "address", "uid_key_status", "autocrypt_key_status" };
     static final Address CONTACT_ADDRESS_1 = Address.parse("Contact Name <address@example.org>")[0];
     static final Address CONTACT_ADDRESS_2 = Address.parse("Other Contact Name <address_two@example.org>")[0];
+    static final String[] CONTACT_1 = new String[] {"0", "Bob", "bob", "bob@host.com", ""+TYPE_HOME, null, "1", null};
+    static final String[] CONTACT_NO_EMAIL = new String[] {"0", "Bob", "bob", null, ""+TYPE_HOME, null, "1", null};
     static final String QUERYSTRING = "querystring";
 
 
@@ -43,6 +59,8 @@ public class RecipientLoaderTest {
     public void setUp() throws Exception {
         context = mock(Context.class);
         contentResolver = mock(ContentResolver.class);
+
+        when(context.getApplicationContext()).thenReturn(RuntimeEnvironment.application);
 
         when(context.getContentResolver()).thenReturn(contentResolver);
     }
@@ -141,4 +159,38 @@ public class RecipientLoaderTest {
                         any(String.class))).thenReturn(cursorCryptoStatus);
     }
 
+    private void setupContactProvider(String queriedAddress, String[]... contacts) {
+        MatrixCursor cursor = new MatrixCursor(PROJECTION);
+        for (String[] contact : contacts) {
+            cursor.addRow(contact);
+        }
+        when(contentResolver
+                .query(eq(Email.CONTENT_URI),
+                        aryEq(PROJECTION),
+                        any(String.class),
+                        aryEq(new String[] { queriedAddress, queriedAddress }),
+                        any(String.class))).thenReturn(cursor);
+    }
+
+    @Test
+    public void queryContactProvider() throws Exception {
+        RecipientLoader recipientLoader = new RecipientLoader(context, CRYPTO_PROVIDER, QUERYSTRING);
+        setupContactProvider("%" + QUERYSTRING + "%", CONTACT_1);
+
+        List<Recipient> recipients = recipientLoader.loadInBackground();
+
+        assertEquals(1, recipients.size());
+        assertEquals("bob@host.com", recipients.get(0).address.getAddress());
+        assertEquals(RecipientCryptoStatus.UNAVAILABLE, recipients.get(0).getCryptoStatus());
+    }
+
+    @Test
+    public void queryContactProvider_ignoresRecipientWithNoEmail() throws Exception {
+        RecipientLoader recipientLoader = new RecipientLoader(context, CRYPTO_PROVIDER, QUERYSTRING);
+        setupContactProvider("%" + QUERYSTRING + "%", CONTACT_NO_EMAIL);
+
+        List<Recipient> recipients = recipientLoader.loadInBackground();
+
+        assertEquals(0, recipients.size());
+    }
 }
