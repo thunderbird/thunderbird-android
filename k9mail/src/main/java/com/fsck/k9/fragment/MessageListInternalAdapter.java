@@ -44,7 +44,7 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN;
 
 
-public class MessageListAdapter extends CursorAdapter {
+public class MessageListInternalAdapter extends CursorAdapter {
 
     private final MessageListFragment fragment;
     private Drawable mAttachmentIcon;
@@ -53,7 +53,7 @@ public class MessageListAdapter extends CursorAdapter {
     private Drawable mForwardedAnsweredIcon;
     private FontSizes fontSizes = K9.getFontSizes();
 
-    MessageListAdapter(MessageListFragment fragment) {
+    MessageListInternalAdapter(MessageListFragment fragment) {
         super(fragment.getActivity(), null, 0);
         this.fragment = fragment;
         mAttachmentIcon = fragment.getResources().getDrawable(R.drawable.ic_email_attachment_small);

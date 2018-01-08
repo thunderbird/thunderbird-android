@@ -129,7 +129,7 @@ public class MessageListHandler extends Handler {
                 break;
             }
             case ACTION_RESTORE_LIST_POSITION: {
-                fragment.listView.onRestoreInstanceState((Parcelable) msg.obj);
+                fragment.recyclerLayoutManager.onRestoreInstanceState((Parcelable) msg.obj);
                 break;
             }
             case ACTION_OPEN_MESSAGE: {
