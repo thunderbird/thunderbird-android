@@ -19,12 +19,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import timber.log.Timber;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -39,7 +37,6 @@ import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.MessageActions;
-import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.activity.setup.Prefs;
@@ -61,6 +58,7 @@ import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 import de.cketti.library.changelog.ChangeLog;
+import timber.log.Timber;
 
 
 /**
@@ -69,7 +67,8 @@ import de.cketti.library.changelog.ChangeLog;
  * From this Activity the user can perform all standard message operations.
  */
 public class MessageList extends K9Activity implements MessageListFragmentListener,
-        MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
+        MessageViewFragmentListener, OnBackStackChangedListener,
+//        OnSwipeGestureListener,
         OnSwitchCompleteListener {
 
     private static final String EXTRA_SEARCH = "search_bytes";
@@ -219,7 +218,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         initializeActionBar();
 
         // Enable gesture detection for MessageLists
-        setupGestureDetector(this);
+//        setupGestureDetector(this);
 
         if (!decodeExtras(getIntent())) {
             return;
@@ -1292,19 +1291,19 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         configureMenu(mMenu);
     }
 
-    @Override
-    public void onSwipeRightToLeft(MotionEvent e1, MotionEvent e2) {
-        if (mMessageListFragment != null && mDisplayMode != DisplayMode.MESSAGE_VIEW) {
-            mMessageListFragment.onSwipeRightToLeft(e1, e2);
-        }
-    }
-
-    @Override
-    public void onSwipeLeftToRight(MotionEvent e1, MotionEvent e2) {
-        if (mMessageListFragment != null && mDisplayMode != DisplayMode.MESSAGE_VIEW) {
-            mMessageListFragment.onSwipeLeftToRight(e1, e2);
-        }
-    }
+//    @Override
+//    public void onSwipeRightToLeft(MotionEvent e1, MotionEvent e2) {
+//        if (mMessageListFragment != null && mDisplayMode != DisplayMode.MESSAGE_VIEW) {
+//            mMessageListFragment.onSwipeRightToLeft(e1, e2);
+//        }
+//    }
+//
+//    @Override
+//    public void onSwipeLeftToRight(MotionEvent e1, MotionEvent e2) {
+//        if (mMessageListFragment != null && mDisplayMode != DisplayMode.MESSAGE_VIEW) {
+//            mMessageListFragment.onSwipeLeftToRight(e1, e2);
+//        }
+//    }
 
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
         @Override
