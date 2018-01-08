@@ -247,8 +247,7 @@ public class ImapSyncTest {
     }
 
     @Test
-    public void sync_withAccountSupportingFetchingFlags_shouldFetchUnsychronizedMessagesListAndFlags()
-            throws Exception {
+    public void sync_shouldFetchUnsynchronizedMessagesListAndFlags() throws Exception {
         messageCountInRemoteFolder(1);
         hasUnsyncedRemoteMessage();
         when(remoteFolder.supportsFetchingFlags()).thenReturn(true);
@@ -260,20 +259,6 @@ public class ImapSyncTest {
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.FLAGS));
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.ENVELOPE));
         assertEquals(2, fetchProfileCaptor.getAllValues().get(0).size());
-    }
-
-    @Test
-    public void sync_withAccountNotSupportingFetchingFlags_shouldFetchUnsychronizedMessages() throws Exception {
-        messageCountInRemoteFolder(1);
-        hasUnsyncedRemoteMessage();
-        when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
-
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
-
-        verify(remoteFolder, atLeastOnce()).fetch(any(List.class), fetchProfileCaptor.capture(),
-                any(MessageRetrievalListener.class));
-        assertEquals(1, fetchProfileCaptor.getAllValues().get(0).size());
-        assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.ENVELOPE));
     }
 
     @Test

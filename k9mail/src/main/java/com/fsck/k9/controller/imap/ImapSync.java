@@ -18,7 +18,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
@@ -332,9 +331,7 @@ class ImapSync {
     /*
      * If the folder is a "special" folder we need to see if it exists
      * on the remote server. It if does not exist we'll try to create it. If we
-     * can't create we'll abort. This will happen on every single Pop3 folder as
-     * designed and on Imap folders during error conditions. This allows us
-     * to treat Pop3 and Imap the same in this code.
+     * can't create we'll abort.
      */
     private boolean verifyOrCreateRemoteSpecialFolder(Account account, String folder, Folder remoteFolder,
             MessagingListener listener) throws MessagingException {
@@ -420,11 +417,6 @@ class ImapSync {
         final List<Message> largeMessages = new ArrayList<>();
         final List<Message> smallMessages = new ArrayList<>();
         if (!unsyncedMessages.isEmpty()) {
-
-            /*
-             * Reverse the order of the messages. Depending on the server this may get us
-             * fetch results for newest to oldest. If not, no harm done.
-             */
             Collections.sort(unsyncedMessages, new UidReverseComparator());
             int visibleLimit = localFolder.getVisibleLimit();
             int listSize = unsyncedMessages.size();
@@ -434,9 +426,7 @@ class ImapSync {
             }
 
             FetchProfile fp = new FetchProfile();
-            if (remoteFolder.supportsFetchingFlags()) {
-                fp.add(FetchProfile.Item.FLAGS);
-            }
+            fp.add(FetchProfile.Item.FLAGS);
             fp.add(FetchProfile.Item.ENVELOPE);
 
             Timber.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size(), folder);
@@ -503,23 +493,6 @@ class ImapSync {
             });
         }
 
-        // If the oldest message seen on this sync is newer than
-        // the oldest message seen on the previous sync, then
-        // we want to move our high-water mark forward
-        // this is all here just for pop which only syncs inbox
-        // this would be a little wrong for IMAP (we'd want a folder-level pref, not an account level pref.)
-        // fortunately, we just don't care.
-        Long oldestMessageTime = localFolder.getOldestMessageDate();
-
-        if (oldestMessageTime != null) {
-            Date oldestExtantMessage = new Date(oldestMessageTime);
-            if (oldestExtantMessage.before(downloadStarted) &&
-                    oldestExtantMessage.after(new Date(account.getLatestOldMessageSeenTime()))) {
-                account.setLatestOldMessageSeenTime(oldestExtantMessage.getTime());
-                account.save(Preferences.getPreferences(context));
-            }
-
-        }
         return newMessages.get();
     }
 
@@ -658,7 +631,7 @@ class ImapSync {
                     public void messageFinished(final T message, int number, int ofTotal) {
                         try {
 
-                            if (!shouldImportMessage(account, message, earliestDate)) {
+                            if (!shouldImportMessage(message, earliestDate)) {
                                 progress.incrementAndGet();
 
                                 return;
@@ -728,7 +701,7 @@ class ImapSync {
         remoteFolder.fetch(largeMessages, fp, null);
         for (T message : largeMessages) {
 
-            if (!shouldImportMessage(account, message, earliestDate)) {
+            if (!shouldImportMessage(message, earliestDate)) {
                 progress.incrementAndGet();
                 continue;
             }
@@ -775,45 +748,43 @@ class ImapSync {
     ) throws MessagingException {
 
         final String folder = remoteFolder.getName();
-        if (remoteFolder.supportsFetchingFlags()) {
-            Timber.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size(), folder);
+        Timber.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size(), folder);
 
-            FetchProfile fp = new FetchProfile();
-            fp.add(FetchProfile.Item.FLAGS);
+        FetchProfile fp = new FetchProfile();
+        fp.add(FetchProfile.Item.FLAGS);
 
-            List<Message> undeletedMessages = new LinkedList<>();
-            for (Message message : syncFlagMessages) {
-                if (!message.isSet(Flag.DELETED)) {
-                    undeletedMessages.add(message);
+        List<Message> undeletedMessages = new LinkedList<>();
+        for (Message message : syncFlagMessages) {
+            if (!message.isSet(Flag.DELETED)) {
+                undeletedMessages.add(message);
+            }
+        }
+
+        remoteFolder.fetch(undeletedMessages, fp, null);
+        for (Message remoteMessage : syncFlagMessages) {
+            LocalMessage localMessage = localFolder.getMessage(remoteMessage.getUid());
+            boolean messageChanged = syncFlags(localMessage, remoteMessage);
+            if (messageChanged) {
+                boolean shouldBeNotifiedOf = false;
+                if (localMessage.isSet(Flag.DELETED) || isMessageSuppressed(localMessage)) {
+                    for (MessagingListener l : getListeners()) {
+                        l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
+                    }
+                } else {
+                    if (shouldNotifyForMessage(account, localFolder, localMessage)) {
+                        shouldBeNotifiedOf = true;
+                    }
+                }
+
+                // we're only interested in messages that need removing
+                if (!shouldBeNotifiedOf) {
+                    MessageReference messageReference = localMessage.makeMessageReference();
+                    notificationController.removeNewMailNotification(account, messageReference);
                 }
             }
-
-            remoteFolder.fetch(undeletedMessages, fp, null);
-            for (Message remoteMessage : syncFlagMessages) {
-                LocalMessage localMessage = localFolder.getMessage(remoteMessage.getUid());
-                boolean messageChanged = syncFlags(localMessage, remoteMessage);
-                if (messageChanged) {
-                    boolean shouldBeNotifiedOf = false;
-                    if (localMessage.isSet(Flag.DELETED) || isMessageSuppressed(localMessage)) {
-                        for (MessagingListener l : getListeners()) {
-                            l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
-                        }
-                    } else {
-                        if (shouldNotifyForMessage(account, localFolder, localMessage)) {
-                            shouldBeNotifiedOf = true;
-                        }
-                    }
-
-                    // we're only interested in messages that need removing
-                    if (!shouldBeNotifiedOf) {
-                        MessageReference messageReference = localMessage.makeMessageReference();
-                        notificationController.removeNewMailNotification(account, messageReference);
-                    }
-                }
-                progress.incrementAndGet();
-                for (MessagingListener l : getListeners()) {
-                    l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
-                }
+            progress.incrementAndGet();
+            for (MessagingListener l : getListeners()) {
+                l.synchronizeMailboxProgress(account, folder, progress.get(), todo);
             }
         }
     }
@@ -840,28 +811,6 @@ class ImapSync {
         localFolder.appendMessages(Collections.singletonList(message));
 
         Message localMessage = localFolder.getMessage(message.getUid());
-
-
-        // Certain (POP3) servers give you the whole message even when you ask for only the first x Kb
-        if (!message.isSet(Flag.X_DOWNLOADED_FULL)) {
-                    /*
-                     * Mark the message as fully downloaded if the message size is smaller than
-                     * the account's autodownload size limit, otherwise mark as only a partial
-                     * download.  This will prevent the system from downloading the same message
-                     * twice.
-                     *
-                     * If there is no limit on autodownload size, that's the same as the message
-                     * being smaller than the max size
-                     */
-            if (account.getMaximumAutoDownloadMessageSize() == 0
-                    || message.getSize() < account.getMaximumAutoDownloadMessageSize()) {
-                localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            } else {
-                // Set a flag indicating that the message has been partially downloaded and
-                // is ready for view.
-                localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, true);
-            }
-        }
     }
 
     private void downloadPartial(Folder remoteFolder, LocalFolder localFolder, Message message)
@@ -913,10 +862,8 @@ class ImapSync {
         return messageChanged;
     }
 
-    private boolean shouldImportMessage(final Account account, final Message message,
-            final Date earliestDate) {
-
-        if (account.isSearchByDateCapable() && message.olderThan(earliestDate)) {
+    private boolean shouldImportMessage(Message message, Date earliestDate) {
+        if (message.olderThan(earliestDate)) {
             Timber.d("Message %s is older than %s, hence not saving", message.getUid(), earliestDate);
             return false;
         }
