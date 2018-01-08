@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ import org.apache.james.mime4j.codec.DecodeMonitor;
 import org.apache.james.mime4j.field.address.DefaultAddressParser;
 import org.apache.james.mime4j.field.address.ParseException;
 import org.apache.james.mime4j.util.CharsetUtil;
+
 import timber.log.Timber;
 
 
@@ -107,6 +109,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         setAdapter(adapter);
 
         setLongClickable(true);
+
+        addTextChangedListener(multipleCharsAtOnceTextWatcher);
     }
 
     @Override
@@ -184,10 +188,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 consumed = true;
                 break;
             }
-            case android.R.id.paste: {
-                consumed = onPasteEvent();
-                break;
-            }
         }
         if (!consumed) {
             consumed = super.onTextContextMenuItem(id);
@@ -212,35 +212,59 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             int spanStart = editable.getSpanStart(recipientTokenSpans[i]);
             int spanEnd = editable.getSpanEnd(recipientTokenSpans[i]);
             String insertedString = recipientTokenSpans[i].getToken().address.toString();
-            copiedTextStringBuilder.insert(spanEnd+offset, ',');
-            copiedTextStringBuilder.replace(spanStart+offset, spanEnd+offset, insertedString);
+            copiedTextStringBuilder.insert(spanEnd + offset, ',');
+            copiedTextStringBuilder.replace(spanStart + offset, spanEnd + offset, insertedString);
             offset += insertedString.length() - 1;
         }
         ClipboardManager.getInstance(getContext()).setText("Address List", copiedTextStringBuilder.toString());
     }
 
-    public boolean onPasteEvent() {
-        boolean eventHandled = false;
-        String pastedText = ClipboardManager.getInstance(getContext()).getText();
-        StringBuilder trailingText = new StringBuilder();
-        Address[] addresses = Address.parseUnencoded(pastedText);
-        for (int i = 0; i < addresses.length; i++) {
-            try {
-                DefaultAddressParser.DEFAULT.parseAddress(addresses[i].getAddress(), DecodeMonitor.SILENT);
-                if (!eventHandled) {
-                    eventHandled = true;
-                    getText().delete(getSelectionStart(), getSelectionEnd());
-                }
-                addRecipients(new Recipient(addresses[i]));
-            } catch (ParseException parseException) {
-                trailingText.append(addresses[i].getAddress());
+    TextWatcher multipleCharsAtOnceTextWatcher = new TextWatcher() {
+        boolean checkForInsertedEmails = false;
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (count - before > 1) {
+                checkForInsertedEmails = true;
+            } else {
+                checkForInsertedEmails = false;
             }
         }
-        if (eventHandled) {
-            append(trailingText.toString());
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (checkForInsertedEmails) {
+                Editable text = getText();
+                String textString = text.toString();
+                Address[] addresses = Address.parseUnencoded(textString);
+                for (Address address : addresses) {
+                    if (Address.parse(address.getAddress())[0].getAddress() != null) {
+                        Recipient recipient = defaultObject(address.getAddress());
+                        if (recipient != null) {
+                            addRecipients(recipient);
+                            int addressStart = textString.indexOf(address.getAddress());
+                            int addressEnd = addressStart + address.getAddress().length();
+                            int trailingSeparatorChars = 0;
+                            for (; addressEnd + trailingSeparatorChars < textString.length(); trailingSeparatorChars++) {
+                                if (textString.charAt(addressEnd + trailingSeparatorChars) != ','
+                                        && textString.charAt(addressEnd + trailingSeparatorChars) != ';'
+                                        && textString.charAt(addressEnd + trailingSeparatorChars) != ' ') {
+                                    break;
+                                }
+                            }
+                            text.delete(addressStart, addressEnd + trailingSeparatorChars);
+                            textString = text.toString();
+                        }
+                    }
+                }
+            }
         }
-        return eventHandled;
-    }
+    };
 
     @Override
     protected Recipient defaultObject(String completionText) {
@@ -660,7 +684,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         public String addressLabel;
 
-        @Nullable // null if the contact has no photo. transient because we serialize this manually, see below.
+        @Nullable
+        // null if the contact has no photo. transient because we serialize this manually, see below.
         public transient Uri photoThumbnailUri;
 
         @NonNull
