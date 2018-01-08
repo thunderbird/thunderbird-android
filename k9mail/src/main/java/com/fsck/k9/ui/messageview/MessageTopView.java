@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.StringRes;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,39 +125,6 @@ public class MessageTopView extends LinearLayout {
         if (view.hasHiddenExternalImages()) {
             showShowPicturesButton();
         }
-    }
-
-    public void showMessageCryptoWarning(final MessageViewInfo messageViewInfo, Drawable providerIcon,
-            @StringRes int warningTextRes, boolean showDetailButton) {
-        resetAndPrepareMessageView(messageViewInfo);
-        View view = mInflater.inflate(R.layout.message_content_crypto_warning, containerView, false);
-        setCryptoProviderIcon(providerIcon, view);
-
-        View detailButton = view.findViewById(R.id.crypto_warning_details);
-        if(showDetailButton) {
-            detailButton.setVisibility(View.VISIBLE);
-            detailButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    messageCryptoPresenter.onClickShowCryptoWarningDetails();
-                }
-            });
-        } else {
-            detailButton.setVisibility(View.GONE);
-        }
-
-        view.findViewById(R.id.crypto_warning_override).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                messageCryptoPresenter.onClickShowMessageOverrideWarning();
-            }
-        });
-
-        TextView warningText = (TextView) view.findViewById(R.id.crypto_warning_text);
-        warningText.setText(warningTextRes);
-
-        containerView.addView(view);
-        displayViewOnLoadFinished(false);
     }
 
     public void showMessageEncryptedButIncomplete(MessageViewInfo messageViewInfo, Drawable providerIcon) {

@@ -15,185 +15,197 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 public enum MessageCryptoDisplayStatus {
     LOADING (
             R.attr.openpgp_grey,
-            R.drawable.status_lock
+            R.drawable.status_lock_disabled
     ),
 
     CANCELLED (
             R.attr.openpgp_black,
-            R.drawable.status_lock,
+            R.drawable.status_lock_unknown,
+            R.string.crypto_msg_title_encrypted_unknown,
             R.string.crypto_msg_cancelled
     ),
 
     DISABLED (
             R.attr.openpgp_grey,
             R.drawable.status_lock_disabled,
-            R.string.crypto_msg_disabled
+            R.string.crypto_msg_title_plaintext,
+            null
     ),
-
-    UNENCRYPTED_SIGN_UNKNOWN (
+    UNENCRYPTED_SIGN_ERROR (
+            R.attr.openpgp_grey,
+            R.drawable.status_signature_unknown,
+            R.string.crypto_msg_title_plaintext,
+            R.string.crypto_msg_unencrypted_sign_error
+    ),
+    INCOMPLETE_SIGNED (
             R.attr.openpgp_black,
-            R.drawable.status_signature_unverified_cutout, R.drawable.status_dots,
-            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_unknown
+            R.drawable.status_signature_unknown,
+            R.string.crypto_msg_title_plaintext,
+            R.string.crypto_msg_incomplete_signed
     ),
 
     UNENCRYPTED_SIGN_VERIFIED (
             R.attr.openpgp_blue,
-            R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_3,
-            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_verified
+            R.drawable.status_signature_dots_3,
+            R.string.crypto_msg_title_unencrypted_signed_e2e,
+            R.string.crypto_msg_unencrypted_sign_verified
     ),
     UNENCRYPTED_SIGN_UNVERIFIED (
-            R.attr.openpgp_orange, 
-            R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_2,
-            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_unverified
-    ),
-    UNENCRYPTED_SIGN_MISMATCH (
-            R.attr.openpgp_red, 
-            R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_1,
-            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_mismatch
-    ),
-    UNENCRYPTED_SIGN_EXPIRED (
-            R.attr.openpgp_red, 
-            R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_1,
-            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_expired
-    ),
-    UNENCRYPTED_SIGN_REVOKED (
-            R.attr.openpgp_red, 
-            R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_1,
-            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_revoked
-    ),
-    UNENCRYPTED_SIGN_INSECURE (
-            R.attr.openpgp_red, 
-            R.drawable.status_signature_verified_cutout, R.drawable.status_none_dots_1,
-            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_insecure
-    ),
-    UNENCRYPTED_SIGN_ERROR (
-            R.attr.openpgp_red,
-            R.drawable.status_signature_verified_cutout, R.drawable.status_dots,
-            R.string.crypto_msg_signed_error, null
+            R.attr.openpgp_blue,
+            R.drawable.status_signature,
+            R.string.crypto_msg_title_unencrypted_signed_e2e,
+            null
     ),
 
-    ENCRYPTED_SIGN_UNKNOWN (
-            R.attr.openpgp_black,
-            R.drawable.status_lock_opportunistic, R.drawable.status_dots,
-            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_unknown
+    UNENCRYPTED_SIGN_UNKNOWN (
+            R.attr.openpgp_orange,
+            R.drawable.status_signature_unknown,
+            R.string.crypto_msg_title_unencrypted_signed,
+            R.string.crypto_msg_unencrypted_sign_unknown
+    ),
+    UNENCRYPTED_SIGN_MISMATCH (
+            R.attr.openpgp_grey,
+            R.drawable.status_signature_unknown,
+            R.string.crypto_msg_title_unencrypted_signed,
+            R.string.crypto_msg_unencrypted_sign_mismatch
+    ),
+    UNENCRYPTED_SIGN_EXPIRED (
+            R.attr.openpgp_grey,
+            R.drawable.status_signature_unknown,
+            R.string.crypto_msg_title_unencrypted_signed,
+            R.string.crypto_msg_unencrypted_sign_expired
+    ),
+    UNENCRYPTED_SIGN_REVOKED (
+            R.attr.openpgp_grey,
+            R.drawable.status_signature_unknown,
+            R.string.crypto_msg_title_unencrypted_signed,
+            R.string.crypto_msg_unencrypted_sign_revoked
+    ),
+    UNENCRYPTED_SIGN_INSECURE (
+            R.attr.openpgp_grey,
+            R.drawable.status_signature_unknown,
+            R.string.crypto_msg_title_unencrypted_signed,
+            R.string.crypto_msg_unencrypted_sign_insecure
     ),
 
     ENCRYPTED_SIGN_VERIFIED (
-            R.attr.openpgp_green, 
-            R.drawable.status_lock, R.drawable.status_none_dots_3,
-            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_verified
+            R.attr.openpgp_green,
+            R.drawable.status_lock_dots_3,
+            R.string.crypto_msg_title_encrypted_signed_e2e,
+            R.string.crypto_msg_encrypted_sign_verified
     ),
     ENCRYPTED_SIGN_UNVERIFIED (
-            R.attr.openpgp_orange, 
-            R.drawable.status_lock, R.drawable.status_none_dots_2,
-            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_unverified
+            R.attr.openpgp_green,
+            R.drawable.status_lock,
+            R.string.crypto_msg_title_encrypted_signed_e2e,
+            null
+    ),
+
+    ENCRYPTED_SIGN_UNKNOWN (
+            R.attr.openpgp_orange,
+            R.drawable.status_lock_unknown,
+            R.string.crypto_msg_title_encrypted_signed,
+            R.string.crypto_msg_encrypted_sign_unknown
     ),
     ENCRYPTED_SIGN_MISMATCH (
-            R.attr.openpgp_red,
-            R.drawable.status_lock, R.drawable.status_none_dots_1,
-            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_mismatch
+            R.attr.openpgp_grey,
+            R.drawable.status_lock_error,
+            R.string.crypto_msg_title_encrypted_signed,
+            R.string.crypto_msg_encrypted_sign_mismatch
     ),
     ENCRYPTED_SIGN_EXPIRED (
-            R.attr.openpgp_red, 
-            R.drawable.status_lock, R.drawable.status_none_dots_1,
-            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_expired
+            R.attr.openpgp_grey,
+            R.drawable.status_lock_error,
+            R.string.crypto_msg_title_encrypted_signed,
+            R.string.crypto_msg_encrypted_sign_expired
     ),
     ENCRYPTED_SIGN_REVOKED (
-            R.attr.openpgp_red, 
-            R.drawable.status_lock, R.drawable.status_none_dots_1,
-            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_revoked
+            R.attr.openpgp_grey,
+            R.drawable.status_lock_error,
+            R.string.crypto_msg_title_encrypted_signed,
+            R.string.crypto_msg_encrypted_sign_revoked
     ),
     ENCRYPTED_SIGN_INSECURE (
-            R.attr.openpgp_red,
-            R.drawable.status_lock, R.drawable.status_none_dots_1,
-            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_insecure
-    ),
-    ENCRYPTED_UNSIGNED (
-            R.attr.openpgp_red, 
-            R.drawable.status_lock, R.drawable.status_dots,
-            R.string.crypto_msg_encrypted_unsigned, R.string.crypto_msg_unsigned_encrypted
+            R.attr.openpgp_grey,
+            R.drawable.status_lock_error,
+            R.string.crypto_msg_title_encrypted_signed,
+            R.string.crypto_msg_encrypted_sign_insecure
     ),
     ENCRYPTED_SIGN_ERROR (
-            R.attr.openpgp_red,
-            R.drawable.status_lock, R.drawable.status_dots,
-            R.string.crypto_msg_signed_encrypted, R.string.crypto_msg_sign_error
-    ),
-
-    ENCRYPTED_ERROR (
-            R.attr.openpgp_red, 
+            R.attr.openpgp_grey,
             R.drawable.status_lock_error,
-            R.string.crypto_msg_encrypted_error
+            R.string.crypto_msg_title_encrypted_signed,
+            R.string.crypto_msg_encrypted_sign_error
     ),
-
     ENCRYPTED_INSECURE (
             R.attr.openpgp_red,
             R.drawable.status_lock_error,
+            R.string.crypto_msg_title_encrypted_signed,
             R.string.crypto_msg_encrypted_insecure
+    ),
+
+    ENCRYPTED_UNSIGNED (
+            R.attr.openpgp_grey,
+            R.drawable.status_lock_error,
+            R.string.crypto_msg_title_encrypted_unsigned,
+            R.string.crypto_msg_encrypted_unsigned
+    ),
+
+    ENCRYPTED_ERROR (
+            R.attr.openpgp_red,
+            R.drawable.status_lock_error,
+            R.string.crypto_msg_title_encrypted_unknown,
+            R.string.crypto_msg_encrypted_error
     ),
 
     INCOMPLETE_ENCRYPTED (
             R.attr.openpgp_black,
-            R.drawable.status_lock_opportunistic,
-            R.string.crypto_msg_incomplete_encrypted
-    ),
-    INCOMPLETE_SIGNED (
-            R.attr.openpgp_black,
-            R.drawable.status_signature_unverified_cutout, R.drawable.status_dots,
-            R.string.crypto_msg_signed_unencrypted, R.string.crypto_msg_sign_incomplete
+            R.drawable.status_lock_unknown,
+            R.string.crypto_msg_title_encrypted_unknown,
+            R.string.crypto_msg_encrypted_incomplete
     ),
 
     ENCRYPTED_NO_PROVIDER (
             R.attr.openpgp_red,
             R.drawable.status_lock_error,
-            R.string.crypto_msg_unsupported_encrypted
+            R.string.crypto_msg_title_encrypted_unknown,
+            R.string.crypto_msg_encrypted_no_provider
     ),
 
     UNSUPPORTED_ENCRYPTED (
             R.attr.openpgp_red,
             R.drawable.status_lock_error,
+            R.string.crypto_msg_title_encrypted_unknown,
             R.string.crypto_msg_unsupported_encrypted
     ),
     UNSUPPORTED_SIGNED (
             R.attr.openpgp_grey,
             R.drawable.status_lock_disabled,
+            R.string.crypto_msg_title_encrypted_unknown,
             R.string.crypto_msg_unsupported_signed
     ),
     ;
 
     @AttrRes public final int colorAttr;
-
     @DrawableRes public final int statusIconRes;
-    @DrawableRes public final Integer statusDotsRes;
+    @StringRes public final Integer titleTextRes;
+    @StringRes public final Integer descriptionTextRes;
 
-    @StringRes public final Integer textResTop;
-    @StringRes public final Integer textResBottom;
-
-    MessageCryptoDisplayStatus(@AttrRes int colorAttr, @DrawableRes int statusIconRes, @DrawableRes Integer statusDotsRes,
-            @StringRes int textResTop, @StringRes Integer textResBottom) {
+    MessageCryptoDisplayStatus(@AttrRes int colorAttr, @DrawableRes int statusIconRes, @StringRes int titleTextRes,
+            Integer descriptionTextRes) {
         this.colorAttr = colorAttr;
         this.statusIconRes = statusIconRes;
-        this.statusDotsRes = statusDotsRes;
 
-        this.textResTop = textResTop;
-        this.textResBottom = textResBottom;
-    }
-
-    MessageCryptoDisplayStatus(@AttrRes int colorAttr, @DrawableRes int statusIconRes, @StringRes int textResTop) {
-        this.colorAttr = colorAttr;
-        this.statusIconRes = statusIconRes;
-        this.statusDotsRes = null;
-
-        this.textResTop = textResTop;
-        this.textResBottom = null;
+        this.titleTextRes = titleTextRes;
+        this.descriptionTextRes = descriptionTextRes;
     }
 
     MessageCryptoDisplayStatus(@AttrRes int colorAttr, @DrawableRes int statusIconRes) {
         this.colorAttr = colorAttr;
         this.statusIconRes = statusIconRes;
-        this.statusDotsRes = null;
 
-        this.textResTop = null;
-        this.textResBottom = null;
+        this.titleTextRes = null;
+        this.descriptionTextRes = null;
     }
 
     @NonNull

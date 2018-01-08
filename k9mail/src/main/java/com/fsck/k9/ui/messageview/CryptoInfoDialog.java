@@ -16,8 +16,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnLayoutChangeListener;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,22 +27,11 @@ import com.fsck.k9.view.ThemeUtils;
 public class CryptoInfoDialog extends DialogFragment {
     public static final String ARG_DISPLAY_STATUS = "display_status";
     public static final String ARG_HAS_SECURITY_WARNING = "has_security_warning";
-    public static final int ICON_ANIM_DELAY = 400;
-    public static final int ICON_ANIM_DURATION = 350;
 
 
-    private View dialogView;
-
-    private View topIconFrame;
-    private ImageView topIcon_1;
-    private ImageView topIcon_2;
-    private ImageView topIcon_3;
-    private TextView topText;
-
-    private View bottomIconFrame;
-    private ImageView bottomIcon_1;
-    private ImageView bottomIcon_2;
-    private TextView bottomText;
+    private ImageView statusIcon;
+    private TextView titleText;
+    private TextView descriptionText;
 
 
     public static CryptoInfoDialog newInstance(MessageCryptoDisplayStatus displayStatus, boolean hasSecurityWarning) {
@@ -63,18 +50,11 @@ public class CryptoInfoDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Builder b = new AlertDialog.Builder(getActivity());
 
-        dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.message_crypto_info_dialog, null);
+        View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.message_crypto_info_dialog, null);
 
-        topIconFrame = dialogView.findViewById(R.id.crypto_info_top_frame);
-        topIcon_1 = (ImageView) topIconFrame.findViewById(R.id.crypto_info_top_icon_1);
-        topIcon_2 = (ImageView) topIconFrame.findViewById(R.id.crypto_info_top_icon_2);
-        topIcon_3 = (ImageView) topIconFrame.findViewById(R.id.crypto_info_top_icon_3);
-        topText = (TextView) dialogView.findViewById(R.id.crypto_info_top_text);
-
-        bottomIconFrame = dialogView.findViewById(R.id.crypto_info_bottom_frame);
-        bottomIcon_1 = (ImageView) bottomIconFrame.findViewById(R.id.crypto_info_bottom_icon_1);
-        bottomIcon_2 = (ImageView) bottomIconFrame.findViewById(R.id.crypto_info_bottom_icon_2);
-        bottomText = (TextView) dialogView.findViewById(R.id.crypto_info_bottom_text);
+        statusIcon = (ImageView) dialogView.findViewById(R.id.crypto_info_top_icon_1);
+        titleText = (TextView) dialogView.findViewById(R.id.crypto_info_title);
+        descriptionText = (TextView) dialogView.findViewById(R.id.crypto_info_text);
 
         MessageCryptoDisplayStatus displayStatus =
                 MessageCryptoDisplayStatus.valueOf(getArguments().getString(ARG_DISPLAY_STATUS));
@@ -116,90 +96,27 @@ public class CryptoInfoDialog extends DialogFragment {
     }
 
     private void setMessageForDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
-        if (displayStatus.textResTop == null) {
+        if (displayStatus.titleTextRes == null) {
             throw new AssertionError("Crypto info dialog can only be displayed for items with text!");
         }
 
-        if (displayStatus.textResBottom == null) {
-            setMessageSingleLine(displayStatus.colorAttr,
-                    displayStatus.textResTop, displayStatus.statusIconRes,
-                    displayStatus.statusDotsRes);
-        } else {
-            if (displayStatus.statusDotsRes == null) {
-                throw new AssertionError("second icon must be non-null if second text is non-null!");
-            }
-            setMessageWithAnimation(displayStatus.colorAttr,
-                    displayStatus.textResTop, displayStatus.statusIconRes,
-                    displayStatus.textResBottom, displayStatus.statusDotsRes);
-        }
+        setMessageSingleLine(displayStatus.colorAttr, displayStatus.titleTextRes, displayStatus.descriptionTextRes,
+                displayStatus.statusIconRes);
     }
 
-    private void setMessageSingleLine(@AttrRes int colorAttr,
-            @StringRes int topTextRes, @DrawableRes int statusIconRes,
-            @DrawableRes Integer statusDotsRes) {
+    private void setMessageSingleLine(@AttrRes int colorAttr, @StringRes int titleTextRes,
+            @StringRes Integer descTextRes, @DrawableRes int statusIconRes) {
         @ColorInt int color = ThemeUtils.getStyledColor(getActivity(), colorAttr);
 
-        topIcon_1.setImageResource(statusIconRes);
-        topIcon_1.setColorFilter(color);
-        topText.setText(topTextRes);
-
-        if (statusDotsRes != null) {
-            topIcon_3.setImageResource(statusDotsRes);
-            topIcon_3.setColorFilter(color);
-            topIcon_3.setVisibility(View.VISIBLE);
+        statusIcon.setImageResource(statusIconRes);
+        statusIcon.setColorFilter(color);
+        titleText.setText(titleTextRes);
+        if (descTextRes != null) {
+            descriptionText.setText(descTextRes);
+            descriptionText.setVisibility(View.VISIBLE);
         } else {
-            topIcon_3.setVisibility(View.GONE);
+            descriptionText.setVisibility(View.GONE);
         }
-
-        bottomText.setVisibility(View.GONE);
-        bottomIconFrame.setVisibility(View.GONE);
-    }
-
-    private void setMessageWithAnimation(@AttrRes int colorAttr,
-            @StringRes int topTextRes, @DrawableRes int statusIconRes,
-            @StringRes int bottomTextRes, @DrawableRes int statusDotsRes) {
-        topIcon_1.setImageResource(statusIconRes);
-        topIcon_2.setImageResource(statusDotsRes);
-        topIcon_3.setVisibility(View.GONE);
-        topText.setText(topTextRes);
-
-        bottomIcon_1.setImageResource(statusIconRes);
-        bottomIcon_2.setImageResource(statusDotsRes);
-        bottomText.setText(bottomTextRes);
-
-        topIcon_1.setColorFilter(ThemeUtils.getStyledColor(getActivity(), colorAttr));
-        bottomIcon_2.setColorFilter(ThemeUtils.getStyledColor(getActivity(), colorAttr));
-
-        prepareIconAnimation();
-    }
-
-    private void prepareIconAnimation() {
-        topText.setAlpha(0.0f);
-        bottomText.setAlpha(0.0f);
-
-        dialogView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
-                float halfVerticalPixelDifference = (bottomIconFrame.getY() - topIconFrame.getY()) / 2.0f;
-                topIconFrame.setTranslationY(halfVerticalPixelDifference);
-                bottomIconFrame.setTranslationY(-halfVerticalPixelDifference);
-
-                topIconFrame.animate().translationY(0)
-                        .setStartDelay(ICON_ANIM_DELAY)
-                        .setDuration(ICON_ANIM_DURATION)
-                        .setInterpolator(new AccelerateDecelerateInterpolator())
-                        .start();
-                bottomIconFrame.animate().translationY(0)
-                        .setStartDelay(ICON_ANIM_DELAY)
-                        .setDuration(ICON_ANIM_DURATION)
-                        .setInterpolator(new AccelerateDecelerateInterpolator())
-                        .start();
-                topText.animate().alpha(1.0f).setStartDelay(ICON_ANIM_DELAY + ICON_ANIM_DURATION).start();
-                bottomText.animate().alpha(1.0f).setStartDelay(ICON_ANIM_DELAY + ICON_ANIM_DURATION).start();
-
-                view.removeOnLayoutChangeListener(this);
-            }
-        });
     }
 
     public interface OnClickShowCryptoKeyListener {
