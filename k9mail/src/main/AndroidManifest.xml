@@ -27,14 +27,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <permission
-        android:name="${applicationId}.permission.READ_ATTACHMENT"
-        android:description="@string/read_attachment_desc"
-        android:label="@string/read_attachment_label"
-        android:permissionGroup="android.permission-group.MESSAGES"
-        android:protectionLevel="dangerous"/>
-    <uses-permission android:name="${applicationId}.permission.READ_ATTACHMENT"/>
-
-    <permission
         android:name="${applicationId}.permission.REMOTE_CONTROL"
         android:description="@string/remote_control_desc"
         android:label="@string/remote_control_label"
@@ -423,10 +415,8 @@
         <provider
             android:name=".provider.AttachmentProvider"
             android:authorities="${applicationId}.attachmentprovider"
-            android:exported="true"
-            android:grantUriPermissions="true"
-            android:multiprocess="true"
-            android:readPermission="${applicationId}.permission.READ_ATTACHMENT">
+            android:exported="false"
+            android:grantUriPermissions="true">
             
             <meta-data
                 android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
