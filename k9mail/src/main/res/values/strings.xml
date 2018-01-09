@@ -1194,7 +1194,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="crypto_msg_title_plaintext">Plaintext</string>
     <string name="crypto_msg_unencrypted_sign_error">End-to-End signature contained an error</string>
-    <string name="crypto_msg_incomplete_signed">must fully download to process End-to-End signature</string>
+    <string name="crypto_msg_incomplete_signed">must fully download message to process signature</string>
     <string name="crypto_msg_unsupported_signed">contains unsupported End-to-End signature</string>
 
     <string name="crypto_msg_title_unencrypted_signed_e2e">End-to-End signed plaintext</string>
@@ -1209,7 +1209,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="crypto_msg_title_encrypted_unknown">Encrypted</string>
     <string name="crypto_msg_encrypted_error">but there was a decryption error</string>
-    <string name="crypto_msg_encrypted_incomplete">must be fully downloaded for decryption</string>
+    <string name="crypto_msg_encrypted_incomplete">must fully download message for decryption</string>
     <string name="crypto_msg_encrypted_no_provider">but no crypto app is configured</string>
     <string name="crypto_msg_encrypted_unsupported">but in an unsupported format</string>
     <string name="crypto_msg_encrypted_cancelled">but decryption was cancelled</string>
@@ -1226,7 +1226,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_encrypted_sign_expired">but End-to-End key is expired</string>
     <string name="crypto_msg_encrypted_sign_revoked">but End-to-End key is revoked</string>
     <string name="crypto_msg_encrypted_sign_insecure">but End-to-End key is not considered secure</string>
-    <string name="crypto_msg_encrypted_sign_error">but End-to-End data had errors</string>
+    <string name="crypto_msg_encrypted_sign_error">but End-to-End data has errors</string>
     <string name="crypto_msg_encrypted_insecure">but encryption not considered secure</string>
 
     <string name="crypto_info_ok">OK</string>
