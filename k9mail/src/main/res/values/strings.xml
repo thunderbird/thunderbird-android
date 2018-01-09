@@ -1193,19 +1193,19 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Encrypted messages always include a signature.</string>
 
     <string name="crypto_msg_title_plaintext">Plaintext</string>
-    <string name="crypto_msg_unencrypted_sign_error">End-to-End signature contained an error</string>
+    <string name="crypto_msg_unencrypted_sign_error">end-to-end signature contained an error</string>
     <string name="crypto_msg_incomplete_signed">must fully download message to process signature</string>
-    <string name="crypto_msg_unsupported_signed">contains unsupported End-to-End signature</string>
+    <string name="crypto_msg_unsupported_signed">contains unsupported end-to-end signature</string>
 
     <string name="crypto_msg_title_unencrypted_signed_e2e">End-to-End signed plaintext</string>
-    <string name="crypto_msg_unencrypted_sign_verified">from verified End-to-End key</string>
+    <string name="crypto_msg_unencrypted_sign_verified">from verified end-to-end key</string>
 
     <string name="crypto_msg_title_unencrypted_signed">Signed plaintext</string>
-    <string name="crypto_msg_unencrypted_sign_mismatch">but End-to-End key didn\'t match sender</string>
-    <string name="crypto_msg_unencrypted_sign_expired">but End-to-End key is expired</string>
-    <string name="crypto_msg_unencrypted_sign_revoked">but End-to-End key is revoked</string>
-    <string name="crypto_msg_unencrypted_sign_insecure">but End-to-End key is not considered secure</string>
-    <string name="crypto_msg_unencrypted_sign_unknown">from unknown End-to-End key</string>
+    <string name="crypto_msg_unencrypted_sign_mismatch">but end-to-end key didn\'t match sender</string>
+    <string name="crypto_msg_unencrypted_sign_expired">but end-to-end key is expired</string>
+    <string name="crypto_msg_unencrypted_sign_revoked">but end-to-end key is revoked</string>
+    <string name="crypto_msg_unencrypted_sign_insecure">but end-to-end key is not considered secure</string>
+    <string name="crypto_msg_unencrypted_sign_unknown">from unknown end-to-end key</string>
 
     <string name="crypto_msg_title_encrypted_unknown">Encrypted</string>
     <string name="crypto_msg_encrypted_error">but there was a decryption error</string>
@@ -1215,18 +1215,18 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_encrypted_cancelled">but decryption was cancelled</string>
 
     <string name="crypto_msg_title_encrypted_unsigned">Encrypted</string>
-    <string name="crypto_msg_encrypted_unsigned">but not End-to-End</string>
+    <string name="crypto_msg_encrypted_unsigned">but not end-to-end</string>
 
     <string name="crypto_msg_title_encrypted_signed_e2e">End-to-End encrypted</string>
-    <string name="crypto_msg_encrypted_sign_verified">from verified End-to-End key</string>
+    <string name="crypto_msg_encrypted_sign_verified">from verified end-to-end key</string>
 
     <string name="crypto_msg_title_encrypted_signed">Encrypted</string>
-    <string name="crypto_msg_encrypted_sign_unknown">from unknown End-to-End key</string>
-    <string name="crypto_msg_encrypted_sign_mismatch">but End-to-End key didn\'t match sender</string>
-    <string name="crypto_msg_encrypted_sign_expired">but End-to-End key is expired</string>
-    <string name="crypto_msg_encrypted_sign_revoked">but End-to-End key is revoked</string>
-    <string name="crypto_msg_encrypted_sign_insecure">but End-to-End key is not considered secure</string>
-    <string name="crypto_msg_encrypted_sign_error">but End-to-End data has errors</string>
+    <string name="crypto_msg_encrypted_sign_unknown">from unknown end-to-end key</string>
+    <string name="crypto_msg_encrypted_sign_mismatch">but end-to-end key didn\'t match sender</string>
+    <string name="crypto_msg_encrypted_sign_expired">but end-to-end key is expired</string>
+    <string name="crypto_msg_encrypted_sign_revoked">but end-to-end key is revoked</string>
+    <string name="crypto_msg_encrypted_sign_insecure">but end-to-end key is not considered secure</string>
+    <string name="crypto_msg_encrypted_sign_error">but end-to-end data has errors</string>
     <string name="crypto_msg_encrypted_insecure">but encryption not considered secure</string>
 
     <string name="crypto_info_ok">OK</string>
