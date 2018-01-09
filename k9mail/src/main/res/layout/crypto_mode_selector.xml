@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/status_lock_opportunistic"
+                android:src="@drawable/status_lock_unknown"
                 android:id="@+id/icon_opportunistic"
                 tools:tint="?attr/openpgp_orange"
                 />
