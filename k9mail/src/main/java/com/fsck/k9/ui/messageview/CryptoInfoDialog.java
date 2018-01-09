@@ -80,7 +80,9 @@ public class CryptoInfoDialog extends DialogFragment {
                 }
             });
         } else if (displayStatus.hasAssociatedKey()) {
-            b.setNeutralButton(R.string.crypto_info_view_key, new OnClickListener() {
+            int buttonLabel = displayStatus.isUnencryptedSigned() ?
+                    R.string.crypto_info_view_signer : R.string.crypto_info_view_sender;
+            b.setNeutralButton(buttonLabel, new OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Fragment frag = getTargetFragment();
