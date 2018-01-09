@@ -16,6 +16,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.util.FileFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.MimeException;
@@ -39,7 +40,7 @@ public class MimePartStreamParser {
                 .build();
 
         MimeStreamParser parser = new MimeStreamParser(parserConfig);
-        parser.setContentHandler(new PartBuilder(fileFactory, parsedRootPart));
+        parser.setContentHandler(new PartBuilder(parser, fileFactory, parsedRootPart));
         parser.setRecurse();
 
         try {
@@ -66,11 +67,17 @@ public class MimePartStreamParser {
 
 
     private static class PartBuilder implements ContentHandler {
+        private MimeStreamParser parser;
         private final FileFactory fileFactory;
         private final MimeBodyPart decryptedRootPart;
         private final Stack<Object> stack = new Stack<>();
 
-        public PartBuilder(FileFactory fileFactory, MimeBodyPart decryptedRootPart) {
+        private boolean isMessagePart;
+        private boolean isContentDispositionAttachment;
+
+        PartBuilder(MimeStreamParser parser, FileFactory fileFactory,
+                MimeBodyPart decryptedRootPart) {
+            this.parser = parser;
             this.fileFactory = fileFactory;
             this.decryptedRootPart = decryptedRootPart;
         }
@@ -111,11 +118,13 @@ public class MimePartStreamParser {
         @Override
         public void endBodyPart() throws MimeException {
             stack.pop();
+            parser.setRecurse();
         }
 
         @Override
         public void startHeader() throws MimeException {
-            // Do nothing
+            isMessagePart = false;
+            isContentDispositionAttachment = false;
         }
 
         @Override
@@ -125,11 +134,22 @@ public class MimePartStreamParser {
 
             Part part = (Part) stack.peek();
             part.addRawHeader(name, raw);
+
+            String fieldImmediateValue = MimeUtility.getHeaderParameter(parsedField.getBody(), null);
+            if ("Content-Type".equalsIgnoreCase(name) && MimeUtility.isMessage(fieldImmediateValue)) {
+                isMessagePart = true;
+            }
+
+            if ("Content-Disposition".equalsIgnoreCase(name) && "attachment".equalsIgnoreCase(fieldImmediateValue)) {
+                isContentDispositionAttachment = true;
+            }
         }
 
         @Override
         public void endHeader() throws MimeException {
-            // Do nothing
+            if (isMessagePart && isContentDispositionAttachment) {
+                parser.setFlat();
+            }
         }
 
         @Override
