@@ -1,7 +1,6 @@
 package com.fsck.k9.activity.compose;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -192,9 +191,7 @@ public class AttachmentPresenter {
         }
     }
 
-    public void processMessageToForwardAsAttachment(MessageViewInfo messageViewInfo) throws IOException,
-            MessagingException {
-
+    public void processMessageToForwardAsAttachment(MessageViewInfo messageViewInfo) throws MessagingException {
         if (messageViewInfo.isMessageIncomplete) {
             attachmentMvpView.showMissingAttachmentsPartialMessageForwardWarning();
         } else {

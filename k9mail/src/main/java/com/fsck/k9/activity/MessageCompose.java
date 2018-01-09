@@ -1219,7 +1219,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     break;
                 }
             }
-        } catch (MessagingException | IOException e) {
+        } catch (MessagingException e) {
             /*
              * Let the user continue composing their message even if we have a problem processing
              * the source message. Log it as an error, though.
@@ -1282,7 +1282,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     }
 
-    private void processMessageToForward(MessageViewInfo messageViewInfo, boolean asAttachment) throws IOException, MessagingException {
+    private void processMessageToForward(MessageViewInfo messageViewInfo, boolean asAttachment) throws MessagingException {
         Message message = messageViewInfo.message;
 
         String subject = message.getSubject();
