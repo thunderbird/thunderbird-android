@@ -119,14 +119,13 @@ public class MessageBuilderTest {
             "soviet message\r\n" +
             "text =E2=98=AD\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
-            "Content-Type: application/octet-stream;\r\n" +
+            "Content-Type: message/rfc822;\r\n" +
             " name=\"attach.txt\"\r\n" +
-            "Content-Transfer-Encoding: base64\r\n" +
             "Content-Disposition: attachment;\r\n" +
             " filename=\"attach.txt\";\r\n" +
             " size=23\r\n" +
             "\r\n" +
-            "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
+            "text data in attachment" +
             "\r\n" +
             "--" + BOUNDARY_1 + "--\r\n";
 
@@ -193,7 +192,7 @@ public class MessageBuilderTest {
     }
 
     @Test
-    public void build_withMessageAttachment_shouldAttachAsApplicationOctetStream() throws Exception {
+    public void build_withMessageAttachment_shouldAttachAsMessageRfc822() throws Exception {
         MessageBuilder messageBuilder = createSimpleMessageBuilder();
         Attachment attachment = createAttachmentWithContent("message/rfc822", "attach.txt", TEST_ATTACHMENT_TEXT);
         messageBuilder.setAttachments(Collections.singletonList(attachment));
@@ -278,7 +277,7 @@ public class MessageBuilderTest {
         fileOutputStream.write(bytes);
         fileOutputStream.close();
 
-        return Attachment.createAttachment(null, 0, mimeType)
+        return Attachment.createAttachment(null, 0, mimeType, true)
                 .deriveWithMetadataLoaded(mimeType, filename, bytes.length)
                 .deriveWithLoadComplete(tempFile.getAbsolutePath());
     }

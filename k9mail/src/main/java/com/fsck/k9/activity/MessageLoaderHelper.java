@@ -85,6 +85,7 @@ public class MessageLoaderHelper {
 
 
     // transient state
+    private boolean onlyLoadMetadata;
     private MessageReference messageReference;
     private Account account;
 
@@ -110,6 +111,7 @@ public class MessageLoaderHelper {
 
     @UiThread
     public void asyncStartOrResumeLoadingMessage(MessageReference messageReference, Parcelable cachedDecryptionResult) {
+        onlyLoadMetadata = false;
         this.messageReference = messageReference;
         this.account = Preferences.getPreferences(context).getAccount(messageReference.getAccountUuid());
 
@@ -120,6 +122,15 @@ public class MessageLoaderHelper {
                 Timber.e("Got decryption result of unknown type - ignoring");
             }
         }
+
+        startOrResumeLocalMessageLoader();
+    }
+
+    @UiThread
+    public void asyncStartOrResumeLoadingMessageMetadata(MessageReference messageReference) {
+        onlyLoadMetadata = true;
+        this.messageReference = messageReference;
+        this.account = Preferences.getPreferences(context).getAccount(messageReference.getAccountUuid());
 
         startOrResumeLocalMessageLoader();
     }
@@ -206,10 +217,17 @@ public class MessageLoaderHelper {
 
         callback.onMessageDataLoadFinished(localMessage);
 
-        boolean messageIncomplete =
-                !localMessage.isSet(Flag.X_DOWNLOADED_FULL) && !localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL);
+        boolean downloadedCompletely = localMessage.isSet(Flag.X_DOWNLOADED_FULL);
+        boolean downloadedPartially = localMessage.isSet(Flag.X_DOWNLOADED_PARTIAL);
+        boolean messageIncomplete = !downloadedCompletely && !downloadedPartially;
         if (messageIncomplete) {
             startDownloadingMessageBody(false);
+            return;
+        }
+
+        if (onlyLoadMetadata) {
+            MessageViewInfo messageViewInfo = MessageViewInfo.createForMetadataOnly(localMessage, !downloadedCompletely);
+            onDecodeMessageFinished(messageViewInfo);
             return;
         }
 
@@ -239,7 +257,8 @@ public class MessageLoaderHelper {
                 throw new IllegalStateException("loader id must be message loader id");
             }
 
-            return new LocalMessageLoader(context, MessagingController.getInstance(context), account, messageReference);
+            MessagingController messagingController = MessagingController.getInstance(context);
+            return new LocalMessageLoader(context, messagingController, account, messageReference, onlyLoadMetadata);
         }
 
         @Override

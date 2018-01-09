@@ -2351,6 +2351,24 @@ public class MessagingController {
         return message;
     }
 
+    public LocalMessage loadMessageMetadata(Account account, String folderName, String uid) throws MessagingException {
+        LocalStore localStore = account.getLocalStore();
+        LocalFolder localFolder = localStore.getFolder(folderName);
+        localFolder.open(Folder.OPEN_MODE_RW);
+
+        LocalMessage message = localFolder.getMessage(uid);
+        if (message == null || message.getDatabaseId() == 0) {
+            throw new IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid);
+        }
+
+        FetchProfile fp = new FetchProfile();
+        fp.add(FetchProfile.Item.ENVELOPE);
+        localFolder.fetch(Collections.singletonList(message), fp, null);
+        localFolder.close();
+
+        return message;
+    }
+
     private void markMessageAsReadOnView(Account account, LocalMessage message)
             throws MessagingException {
 

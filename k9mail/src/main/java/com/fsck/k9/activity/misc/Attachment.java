@@ -35,6 +35,11 @@ public class Attachment implements Parcelable {
     public final String contentType;
 
     /**
+     * {@code true} if we allow MIME types of {@code message/*}, e.g. {@code message/rfc822}.
+     */
+    public final boolean allowMessageType;
+
+    /**
      * The (file)name of the attachment.
      *
      * Valid iff {@link #state} is {@link LoadingState#METADATA} or {@link LoadingState#COMPLETE}.
@@ -62,12 +67,13 @@ public class Attachment implements Parcelable {
         CANCELLED
     }
 
-    private Attachment(Uri uri, LoadingState state, int loaderId, String contentType, String name, Long size,
-            String filename) {
+    private Attachment(Uri uri, LoadingState state, int loaderId, String contentType, boolean allowMessageType,
+            String name, Long size, String filename) {
         this.uri = uri;
         this.state = state;
         this.loaderId = loaderId;
         this.contentType = contentType;
+        this.allowMessageType = allowMessageType;
         this.name = name;
         this.size = size;
         this.filename = filename;
@@ -78,6 +84,7 @@ public class Attachment implements Parcelable {
         state = (LoadingState) in.readSerializable();
         loaderId = in.readInt();
         contentType = in.readString();
+        allowMessageType = in.readInt() != 0;
         name = in.readString();
         if (in.readInt() != 0) {
             size = in.readLong();
@@ -87,29 +94,33 @@ public class Attachment implements Parcelable {
         filename = in.readString();
     }
 
-    public static Attachment createAttachment(Uri uri, int loaderId, String contentType) {
-        return new Attachment(uri, Attachment.LoadingState.URI_ONLY, loaderId, contentType, null, null, null);
+    public static Attachment createAttachment(Uri uri, int loaderId, String contentType, boolean allowMessageType) {
+        return new Attachment(uri, Attachment.LoadingState.URI_ONLY, loaderId, contentType, allowMessageType, null,
+                null, null);
     }
 
     public Attachment deriveWithMetadataLoaded(String usableContentType, String name, long size) {
         if (state != Attachment.LoadingState.URI_ONLY) {
             throw new IllegalStateException("deriveWithMetadataLoaded can only be called on a URI_ONLY attachment!");
         }
-        return new Attachment(uri, Attachment.LoadingState.METADATA, loaderId, usableContentType, name, size, null);
+        return new Attachment(uri, Attachment.LoadingState.METADATA, loaderId, usableContentType, allowMessageType,
+                name, size, null);
     }
 
     public Attachment deriveWithLoadCancelled() {
         if (state != Attachment.LoadingState.METADATA) {
             throw new IllegalStateException("deriveWitLoadCancelled can only be called on a METADATA attachment!");
         }
-        return new Attachment(uri, Attachment.LoadingState.CANCELLED, loaderId, contentType, name, size, null);
+        return new Attachment(uri, Attachment.LoadingState.CANCELLED, loaderId, contentType, allowMessageType, name,
+                size, null);
     }
 
     public Attachment deriveWithLoadComplete(String absolutePath) {
         if (state != Attachment.LoadingState.METADATA) {
             throw new IllegalStateException("deriveWithLoadComplete can only be called on a METADATA attachment!");
         }
-        return new Attachment(uri, Attachment.LoadingState.COMPLETE, loaderId, contentType, name, size, absolutePath);
+        return new Attachment(uri, Attachment.LoadingState.COMPLETE, loaderId, contentType, allowMessageType, name,
+                size, absolutePath);
     }
 
     // === Parcelable ===
@@ -125,6 +136,7 @@ public class Attachment implements Parcelable {
         dest.writeSerializable(state);
         dest.writeInt(loaderId);
         dest.writeString(contentType);
+        dest.writeInt(allowMessageType ? 1 : 0);
         dest.writeString(name);
         if (size != null) {
             dest.writeInt(1);

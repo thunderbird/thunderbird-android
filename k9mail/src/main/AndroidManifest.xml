@@ -435,6 +435,17 @@
         </provider>
 
         <provider
+            android:name=".provider.RawMessageProvider"
+            android:authorities="${applicationId}.rawmessageprovider"
+            android:exported="false">
+
+            <meta-data
+                android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
+                android:value="true" />
+
+        </provider>
+
+        <provider
             android:name=".provider.MessageProvider"
             android:authorities="${applicationId}.messageprovider"
             android:exported="true"
