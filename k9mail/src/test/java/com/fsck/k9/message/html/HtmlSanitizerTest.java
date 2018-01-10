@@ -213,4 +213,25 @@ public class HtmlSanitizerTest {
                 "<center><font face=\"Arial\" color=\"red\" size=\"12\">A</font></center>" +
                 "</body></html>", toCompactString(result));
     }
+
+    @Test
+    public void shouldKeepUris() {
+        String html = "<html><body>" +
+                "<a href=\"tel:00442079460111\">Telephone</a>" +
+                "<a href=\"sip:user@example.com\">SIP</a>" +
+                "<a href=\"bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu\">Bitcoin</a>" +
+                "<a href=\"ethereum:0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7\">Ethereum</a>" +
+                "<a href=\"rtsp://example.com/media.mp4\">RTSP</a>" +
+                "</body></html>";
+
+        Document result = htmlSanitizer.sanitize(html);
+
+        assertEquals("<html><head></head><body>" +
+                "<a href=\"tel:00442079460111\">Telephone</a>" +
+                "<a href=\"sip:user@example.com\">SIP</a>" +
+                "<a href=\"bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu\">Bitcoin</a>" +
+                "<a href=\"ethereum:0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7\">Ethereum</a>" +
+                "<a href=\"rtsp://example.com/media.mp4\">RTSP</a>" +
+                "</body></html>", toCompactString(result));
+    }
 }
