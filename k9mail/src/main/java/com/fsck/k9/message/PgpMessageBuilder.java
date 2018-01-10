@@ -113,8 +113,8 @@ public class PgpMessageBuilder extends MessageBuilder {
         byte[] keyData = autocryptOpenPgpApiInteractor.getKeyMaterialForKeyId(
                 openPgpApi, openPgpKeyId, address.getAddress());
         if (keyData != null) {
-            autocryptOperations.addAutocryptHeaderToMessage(
-                    currentProcessedMimeMessage, keyData, address.getAddress(), false);
+            autocryptOperations.addAutocryptHeaderToMessage(currentProcessedMimeMessage, keyData,
+                    address.getAddress(), cryptoStatus.isSenderPreferEncryptMutual());
         }
 
         startOrContinueBuildMessage(null);

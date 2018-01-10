@@ -400,7 +400,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                 .setCryptoProviderState(cryptoProviderState)
                 .setCryptoMode(currentCryptoMode)
                 .setEnablePgpInline(cryptoEnablePgpInline)
-                .setPreferEncryptMutual(false) // TODO introduce a setting
+                .setPreferEncryptMutual(account.getAutocryptPreferEncryptMutual())
                 .setRecipients(getAllRecipients())
                 .setOpenPgpKeyId(accountCryptoKey)
                 .build();
@@ -640,7 +640,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                     if (currentCryptoStatus.hasAutocryptPendingIntent()) {
                         recipientMvpView.launchUserInteractionPendingIntent(
                                 currentCryptoStatus.getAutocryptPendingIntent(), REQUEST_CODE_AUTOCRYPT);
-                    } else if (currentCryptoStatus.canEncryptAndIsMutual()) {
+                    } else if (currentCryptoStatus.canEncryptAndIsMutualDefault()) {
                         onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
                     } else {
                         onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
@@ -648,7 +648,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                     return;
                 }
 
-                if (currentCryptoMode == CryptoMode.CHOICE_DISABLED && !currentCryptoStatus.canEncryptAndIsMutual()) {
+                if (currentCryptoMode == CryptoMode.CHOICE_DISABLED && !currentCryptoStatus.canEncryptAndIsMutualDefault()) {
                     onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
                     return;
                 }
@@ -902,14 +902,14 @@ public class RecipientPresenter implements PermissionPingCallback {
             if (!cachedCryptoStatus.allRecipientsCanEncrypt()) {
                 onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
                 recipientMvpView.showOpenPgpEnabledErrorDialog(true);
-            } else if (cachedCryptoStatus.canEncryptAndIsMutual()) {
+            } else if (cachedCryptoStatus.canEncryptAndIsMutualDefault()) {
                 onCryptoModeChanged(CryptoMode.NO_CHOICE);
             } else {
                 recipientMvpView.showOpenPgpEncryptExplanationDialog();
                 onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
             }
         } else {
-            if (cachedCryptoStatus.canEncryptAndIsMutual()) {
+            if (cachedCryptoStatus.canEncryptAndIsMutualDefault()) {
                 onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
             } else {
                 onCryptoModeChanged(CryptoMode.NO_CHOICE);
