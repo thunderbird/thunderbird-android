@@ -112,6 +112,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO = "crypto";
     private static final String PREFERENCE_CRYPTO_KEY = "crypto_key";
+    private static final String PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT = "autocrypt_prefer_encrypt";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
@@ -178,7 +179,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mMaxPushFolders;
     private boolean hasPgpCrypto = false;
     private OpenPgpKeyPreference pgpCryptoKey;
-    private CheckBoxPreference pgpSupportSignOnly;
+    private CheckBoxPreference autocryptPreferEncryptMutual;
 
     private PreferenceScreen searchScreen;
     private CheckBoxPreference cloudSearchEnabled;
@@ -711,6 +712,9 @@ public class AccountSettings extends K9PreferenceActivity {
             });
 
             cryptoMenu.setOnPreferenceClickListener(null);
+
+            autocryptPreferEncryptMutual = (CheckBoxPreference) findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
+            autocryptPreferEncryptMutual.setChecked(account.getAutocryptPreferEncryptMutual());
         } else {
             cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_configured);
             cryptoMenu.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -791,6 +795,7 @@ public class AccountSettings extends K9PreferenceActivity {
         } else {
             account.setCryptoKey(Account.NO_OPENPGP_KEY);
         }
+        account.setAutocryptPreferEncryptMutual(autocryptPreferEncryptMutual.isChecked());
 
         // In webdav account we use the exact folder name also for inbox,
         // since it varies because of internationalization

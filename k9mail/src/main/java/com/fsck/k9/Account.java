@@ -220,6 +220,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean stripSignature;
     private boolean syncRemoteDeletions;
     private long pgpCryptoKey;
+    private boolean autocryptPreferEncryptMutual;
     private boolean markMessageAsReadOnView;
     private boolean alwaysShowCcBcc;
     private boolean allowRemoteSearch;
@@ -1642,6 +1643,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setCryptoKey(long keyId) {
         pgpCryptoKey = keyId;
+    }
+
+    public boolean getAutocryptPreferEncryptMutual() {
+        return autocryptPreferEncryptMutual;
+    }
+
+    public void setAutocryptPreferEncryptMutual(boolean autocryptPreferEncryptMutual) {
+        this.autocryptPreferEncryptMutual = autocryptPreferEncryptMutual;
     }
 
     public boolean allowRemoteSearch() {
