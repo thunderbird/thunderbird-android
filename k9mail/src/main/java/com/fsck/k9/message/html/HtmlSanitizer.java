@@ -25,7 +25,8 @@ public class HtmlSanitizer {
                         "align", "bgcolor", "colspan", "headers", "height", "nowrap", "rowspan", "scope", "valign",
                         "width")
                 .addAttributes(":all", "class", "style", "id")
-                .addProtocols("img", "src", "http", "https", "cid", "data");
+                .addProtocols("img", "src", "http", "https", "cid", "data")
+                .addProtocols("a", "href", "tel", "sip", "bitcoin", "ethereum", "rtsp");
 
         cleaner = new Cleaner(whitelist);
         headCleaner = new HeadCleaner();
