@@ -842,6 +842,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="batch_select_all">Select all</string>
 
     <string name="account_setup_push_limit_label">Max folders to check with push</string>
+    <string name="account_setup_push_limit_5">5 folders</string>
     <string name="account_setup_push_limit_10">10 folders</string>
     <string name="account_setup_push_limit_25">25 folders</string>
     <string name="account_setup_push_limit_50">50 folders</string>

@@ -212,6 +212,7 @@
     </string-array>
 
     <string-array name="account_settings_push_limit_entries">
+        <item>@string/account_setup_push_limit_5</item>
         <item>@string/account_setup_push_limit_10</item>
         <item>@string/account_setup_push_limit_25</item>
         <item>@string/account_setup_push_limit_50</item>
@@ -222,6 +223,7 @@
     </string-array>
 
     <string-array name="account_settings_push_limit_values" translatable="false">
+        <item>5</item>
         <item>10</item>
         <item>25</item>
         <item>50</item>
