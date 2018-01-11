@@ -6,8 +6,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.fsck.k9.K9;
+import com.fsck.k9.K9.Theme;
 import com.fsck.k9.K9RobolectricTestRunner;
+import com.fsck.k9.mail.internet.Viewable.Html;
 import org.apache.commons.io.IOUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
@@ -21,6 +29,17 @@ public class HtmlConverterTest {
     // Useful if you want to write stuff to a file for debugging in a browser.
     private static final boolean WRITE_TO_FILE = Boolean.parseBoolean(System.getProperty("k9.htmlConverterTest.writeToFile", "false"));
     private static final String OUTPUT_FILE = "C:/temp/parse.html";
+    private K9.Theme priorMessageViewTheme;
+
+    @Before
+    public void before() {
+        priorMessageViewTheme = K9.getK9MessageViewTheme();
+    }
+
+    @After
+    public void after() {
+        K9.setK9MessageViewThemeSetting(priorMessageViewTheme);
+    }
 
     @Test
     public void testTextQuoteToHtmlBlockquote() {
@@ -292,5 +311,51 @@ public class HtmlConverterTest {
         String text = "hello\n-- %< -------------- >8 --\nworld\n";
         String result = HtmlConverter.textToHtml(text);
         assertEquals("<pre class=\"k9mail\">hello<hr>world<br /></pre>", result);
+    }
+
+    @Test
+    public void wrapMessageContent_addsViewportMetaElement() {
+        Document document = Jsoup.parse(HtmlConverter.wrapMessageContent("Some text"));
+        Elements metaElements = document.head().getElementsByTag("meta");
+
+        assertEquals(1, metaElements.size());
+        assertEquals("viewport", metaElements.get(0).attributes().get("name"));
+    }
+
+    @Test
+    public void wrapMessageContent_setsDirToAuto() {
+        Document document = Jsoup.parse(HtmlConverter.wrapMessageContent("Some text"));
+        String direction = document.getElementsByTag("html").get(0).attributes().get("dir");
+
+        assertEquals("auto", direction);
+    }
+
+    @Test
+    public void wrapMessageContent_addsPreCSS() {
+        K9.setK9MessageViewThemeSetting(Theme.LIGHT);
+
+        Document document = Jsoup.parse(HtmlConverter.wrapMessageContent("Some text"));
+        Elements styleElements = document.head().getElementsByTag("style");
+
+        assertEquals(1, styleElements.size());
+    }
+
+    @Test
+    public void wrapMessageContent_whenDarkMessageViewTheme_addsDarkThemeCSS() {
+        K9.setK9MessageViewThemeSetting(Theme.DARK);
+
+        Document document = Jsoup.parse(HtmlConverter.wrapMessageContent("Some text"));
+        Elements styleElements = document.head().getElementsByTag("style");
+
+        assertEquals(2, styleElements.size());
+    }
+
+    @Test
+    public void wrapMessageContent_putsMessageContentInBody() {
+        String content = "Some text";
+        Document document = Jsoup.parse(HtmlConverter.wrapMessageContent(content));
+        String actualContent = document.getElementsByTag("body").text();
+
+        assertEquals(content, actualContent);
     }
 }
