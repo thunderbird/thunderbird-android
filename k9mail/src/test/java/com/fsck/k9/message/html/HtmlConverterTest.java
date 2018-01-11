@@ -6,8 +6,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.fsck.k9.K9;
+import com.fsck.k9.K9.Theme;
 import com.fsck.k9.K9RobolectricTestRunner;
 import org.apache.commons.io.IOUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
@@ -21,6 +27,17 @@ public class HtmlConverterTest {
     // Useful if you want to write stuff to a file for debugging in a browser.
     private static final boolean WRITE_TO_FILE = Boolean.parseBoolean(System.getProperty("k9.htmlConverterTest.writeToFile", "false"));
     private static final String OUTPUT_FILE = "C:/temp/parse.html";
+    private K9.Theme priorMessageViewTheme;
+
+    @Before
+    public void before() {
+        priorMessageViewTheme = K9.getK9MessageViewTheme();
+    }
+
+    @After
+    public void after() {
+        K9.setK9MessageViewThemeSetting(priorMessageViewTheme);
+    }
 
     @Test
     public void testTextQuoteToHtmlBlockquote() {
@@ -292,5 +309,58 @@ public class HtmlConverterTest {
         String text = "hello\n-- %< -------------- >8 --\nworld\n";
         String result = HtmlConverter.textToHtml(text);
         assertEquals("<pre class=\"k9mail\">hello<hr>world<br /></pre>", result);
+    }
+
+    @Test
+    public void wrapMessageContent_addsViewportMetaElement() {
+        String html = HtmlConverter.wrapMessageContent("Some text");
+
+        assertHtmlContainsElement(html, "head > meta[name=viewport]");
+    }
+
+    @Test
+    public void wrapMessageContent_setsDirToAuto() {
+        String html = HtmlConverter.wrapMessageContent("Some text");
+
+        assertHtmlContainsElement(html, "html[dir=auto]");
+    }
+
+    @Test
+    public void wrapMessageContent_addsPreCSS() {
+        K9.setK9MessageViewThemeSetting(Theme.LIGHT);
+
+        String html = HtmlConverter.wrapMessageContent("Some text");
+
+        assertHtmlContainsElement(html, "head > style");
+    }
+
+    @Test
+    public void wrapMessageContent_whenDarkMessageViewTheme_addsDarkThemeCSS() {
+        K9.setK9MessageViewThemeSetting(Theme.DARK);
+
+        String html = HtmlConverter.wrapMessageContent("Some text");
+
+        assertHtmlContainsElement(html, "head > style", 2);
+    }
+
+    @Test
+    public void wrapMessageContent_putsMessageContentInBody() {
+        String content = "Some text";
+
+        String html = HtmlConverter.wrapMessageContent(content);
+
+        assertEquals(content, Jsoup.parse(html).body().text());
+    }
+
+
+    private void assertHtmlContainsElement(String html, String cssQuery) {
+        assertHtmlContainsElement(html, cssQuery, 1);
+    }
+
+    private void assertHtmlContainsElement(String html, String cssQuery, int numberOfExpectedOccurrences) {
+        Document document = Jsoup.parse(html);
+        int numberOfFoundElements = document.select(cssQuery).size();
+        assertEquals("Expected to find '" + cssQuery + "' " + numberOfExpectedOccurrences + " time(s) in:\n" + html,
+                numberOfExpectedOccurrences, numberOfFoundElements);
     }
 }
