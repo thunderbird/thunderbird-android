@@ -92,6 +92,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY = "lock_screen_notification_visibility";
     private static final String PREFERENCE_HIDE_USERAGENT = "privacy_hide_useragent";
     private static final String PREFERENCE_HIDE_TIMEZONE = "privacy_hide_timezone";
+    private static final String PREFERENCE_HIDE_HOSTNAME_WHEN_CONNECTING = "privacy_hide_hostname_when_connecting";
 
     private static final String PREFERENCE_OPENPGP_PROVIDER = "openpgp_provider";
     private static final String PREFERENCE_OPENPGP_SUPPORT_SIGN_ONLY = "openpgp_support_sign_only";
@@ -152,6 +153,7 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mSensitiveLogging;
     private CheckBoxPreference mHideUserAgent;
     private CheckBoxPreference mHideTimeZone;
+    private CheckBoxPreference mHideHostnameWhenConnecting;
     private CheckBoxPreference mWrapFolderNames;
     private CheckBoxListPreference mVisibleRefileActions;
 
@@ -378,11 +380,13 @@ public class Prefs extends K9PreferenceActivity {
         mSensitiveLogging = (CheckBoxPreference)findPreference(PREFERENCE_SENSITIVE_LOGGING);
         mHideUserAgent = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_USERAGENT);
         mHideTimeZone = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_TIMEZONE);
+        mHideHostnameWhenConnecting = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_HOSTNAME_WHEN_CONNECTING);
 
         mDebugLogging.setChecked(K9.isDebug());
         mSensitiveLogging.setChecked(K9.DEBUG_SENSITIVE);
         mHideUserAgent.setChecked(K9.hideUserAgent());
         mHideTimeZone.setChecked(K9.hideTimeZone());
+        mHideHostnameWhenConnecting.setChecked(K9.hideHostnameWhenConnecting());
 
         mOpenPgpProvider = (OpenPgpAppPreference) findPreference(PREFERENCE_OPENPGP_PROVIDER);
         mOpenPgpProvider.setValue(K9.getOpenPgpProvider());
@@ -560,6 +564,7 @@ public class Prefs extends K9PreferenceActivity {
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
         K9.setHideUserAgent(mHideUserAgent.isChecked());
         K9.setHideTimeZone(mHideTimeZone.isChecked());
+        K9.setHideHostnameWhenConnecting(mHideHostnameWhenConnecting.isChecked());
 
         K9.setOpenPgpProvider(mOpenPgpProvider.getValue());
         K9.setOpenPgpSupportSignOnly(mOpenPgpSupportSignOnly.isChecked());

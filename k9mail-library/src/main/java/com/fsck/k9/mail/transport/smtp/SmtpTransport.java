@@ -81,6 +81,7 @@ public class SmtpTransport extends Transport {
     private int largestAcceptableMessage;
     private boolean retryXoauthWithNewToken;
     private boolean isPipeliningSupported;
+    private boolean shouldHideHostname;
 
 
     public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
@@ -108,6 +109,7 @@ public class SmtpTransport extends Transport {
 
         this.trustedSocketFactory = trustedSocketFactory;
         this.oauthTokenProvider = oauthTokenProvider;
+        this.shouldHideHostname = storeConfig.shouldHideHostname();
     }
 
     @Override
@@ -145,26 +147,9 @@ public class SmtpTransport extends Transport {
             // Eat the banner
             executeCommand(null);
 
-            InetAddress localAddress = socket.getLocalAddress();
-            String localHost = getCanonicalHostName(localAddress);
-            String ipAddr = localAddress.getHostAddress();
+            String hostnameToReportInHelo = buildHostnameToReport(shouldHideHostname);
 
-            if (localHost.equals("") || localHost.equals(ipAddr) || localHost.contains("_")) {
-                // We don't have a FQDN or the hostname contains invalid
-                // characters (see issue 2143), so use IP address.
-                if (!ipAddr.equals("")) {
-                    if (localAddress instanceof Inet6Address) {
-                        localHost = "[IPv6:" + ipAddr + "]";
-                    } else {
-                        localHost = "[" + ipAddr + "]";
-                    }
-                } else {
-                    // If the IP address is no good, set a sane default (see issue 2750).
-                    localHost = "android";
-                }
-            }
-
-            Map<String, String> extensions = sendHello(localHost);
+            Map<String, String> extensions = sendHello(hostnameToReportInHelo);
 
             is8bitEncodingAllowed = extensions.containsKey("8BITMIME");
             isEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES");
@@ -187,7 +172,7 @@ public class SmtpTransport extends Transport {
                      * Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically,
                      * Exim.
                      */
-                    extensions = sendHello(localHost);
+                    extensions = sendHello(hostnameToReportInHelo);
                     secureConnection = true;
                 } else {
                     /*
@@ -325,6 +310,32 @@ public class SmtpTransport extends Transport {
         } catch (IOException ioe) {
             close();
             throw new MessagingException("Unable to open connection to SMTP server.", ioe);
+        }
+    }
+
+    private String buildHostnameToReport(boolean shouldReportHostname) {
+        if (shouldHideHostname) {
+            return "localhost";
+        }
+        InetAddress localAddress = socket.getLocalAddress();
+        String localHostname = getCanonicalHostName(localAddress);
+        String ipAddr = getHostAddress(localAddress);
+
+        if (localHostname.equals("") || localHostname.equals(ipAddr) || localHostname.contains("_")) {
+            // We don't have a FQDN or the hostname contains invalid
+            // characters (see issue 2143), so use IP address.
+            if (!ipAddr.equals("")) {
+                if (localAddress instanceof Inet6Address) {
+                    return "[IPv6:" + ipAddr + "]";
+                } else {
+                    return "[" + ipAddr + "]";
+                }
+            } else {
+                // If the IP address is no good, set a sane default
+                return "android";
+            }
+        } else {
+            return localHostname;
         }
     }
 
@@ -827,5 +838,10 @@ public class SmtpTransport extends Transport {
     @VisibleForTesting
     protected String getCanonicalHostName(InetAddress localAddress) {
         return localAddress.getCanonicalHostName();
+    }
+
+    @VisibleForTesting
+    protected String getHostAddress(InetAddress localAddress) {
+        return localAddress.getHostAddress();
     }
 }
