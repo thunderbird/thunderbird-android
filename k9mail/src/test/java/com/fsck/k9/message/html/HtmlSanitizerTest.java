@@ -217,6 +217,9 @@ public class HtmlSanitizerTest {
     @Test
     public void shouldKeepUris() {
         String html = "<html><body>" +
+                "<a href=\"http://example.com/index.html\">HTTP</a>" +
+                "<a href=\"https://example.com/default.html\">HTTPS</a>" +
+                "<a href=\"mailto:user@example.com\">Mailto</a>" +
                 "<a href=\"tel:00442079460111\">Telephone</a>" +
                 "<a href=\"sip:user@example.com\">SIP</a>" +
                 "<a href=\"bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu\">Bitcoin</a>" +
@@ -227,6 +230,9 @@ public class HtmlSanitizerTest {
         Document result = htmlSanitizer.sanitize(html);
 
         assertEquals("<html><head></head><body>" +
+                "<a href=\"http://example.com/index.html\">HTTP</a>" +
+                "<a href=\"https://example.com/default.html\">HTTPS</a>" +
+                "<a href=\"mailto:user@example.com\">Mailto</a>" +
                 "<a href=\"tel:00442079460111\">Telephone</a>" +
                 "<a href=\"sip:user@example.com\">SIP</a>" +
                 "<a href=\"bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu\">Bitcoin</a>" +
