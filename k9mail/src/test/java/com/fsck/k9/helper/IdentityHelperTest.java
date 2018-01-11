@@ -8,6 +8,7 @@ import com.fsck.k9.Identity;
 import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.internet.MimeMessage;
 
 import org.junit.Before;
@@ -35,7 +36,6 @@ public class IdentityHelperTest {
         createDummyAccount(context);
         msg = parseWithoutRecurse(toStream(
                 "From: <adam@example.org>\r\n" +
-                        "To: <eva@example.org>\r\n" +
                         "Subject: Testmail\r\n" +
                         "MIME-Version: 1.0\r\n" +
                         "Content-type: text/plain\r\n" +
@@ -60,68 +60,121 @@ public class IdentityHelperTest {
 
     private void setIdentity() {
         Identity identity = new Identity();
-        identity.setEmail("test@mail.com");
+        identity.setEmail("test@example.org");
         identity.setName("test");
         Identity identity2 = new Identity();
-        identity2.setEmail("test2@mail.com");
+        identity2.setEmail("test2@example.org");
         identity2.setName("test2");
-        Identity eva = new Identity();
-        eva.setEmail("eva@example.org");
-        eva.setName("Eva");
+        Identity identity3 = new Identity();
+        identity3.setEmail("test3@example.org");
+        identity3.setName("test3");
+        Identity defaultIdentity = new Identity();
+        defaultIdentity.setEmail("default@example.org");
+        defaultIdentity.setName("Default");
 
         List<Identity> identityList = new ArrayList<>();
+        identityList.add(defaultIdentity);
         identityList.add(identity);
         identityList.add(identity2);
-        identityList.add(eva);
+        identityList.add(identity3);
         account.setIdentities(identityList);
     }
 
     @Test
-    public void testXOriginalTo() throws Exception {
-        Address[] addresses = {new Address("test2@mail.com")};
+    public void getRecipientIdentityFromMessage_usesXOriginalTo_whenPresent() throws Exception {
+        Address[] addresses = {new Address("test2@example.org")};
+        msg.removeHeader("To");
         msg.setRecipients(Message.RecipientType.X_ORIGINAL_TO, addresses);
 
         Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
-        assertTrue(identity.getEmail().equalsIgnoreCase("test2@mail.com"));
+        assertTrue(identity.getEmail().equalsIgnoreCase("test2@example.org"));
     }
 
     @Test
-    public void testTo_withoutXOriginalTo() throws Exception {
+    public void getRecipientIdentityFromMessage_usesTo_whenPresent() throws Exception {
+        Address[] addresses = {new Address("test@example.org")};
+        msg.setRecipients(RecipientType.TO, addresses);
         Identity eva = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
-        assertTrue(eva.getEmail().equalsIgnoreCase("eva@example.org"));
+        assertTrue(eva.getEmail().equalsIgnoreCase("test@example.org"));
     }
 
     @Test
-    public void testDeliveredTo() throws Exception {
-        Address[] addresses = {new Address("test2@mail.com")};
+    public void getRecipientIdentityFromMessage_usesCC_whenPresent() throws Exception {
+        Address[] addresses = {new Address("test@example.org")};
+        msg.setRecipients(RecipientType.CC, addresses);
+        Identity eva = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
+        assertTrue(eva.getEmail().equalsIgnoreCase("test@example.org"));
+    }
+
+    @Test
+    public void getRecipientIdentityFromMessage_usesDeliveredTo_whenPresent() throws Exception {
+        Address[] addresses = {new Address("test2@example.org")};
         msg.setRecipients(Message.RecipientType.DELIVERED_TO, addresses);
-        msg.removeHeader("X-Original-To");
+        msg.removeHeader("To");
 
         Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
-        assertTrue(identity.getEmail().equalsIgnoreCase("test2@mail.com"));
+        assertTrue(identity.getEmail().equalsIgnoreCase("test2@example.org"));
 
     }
 
     @Test
-    public void testXEnvelopeTo() throws Exception {
-        Address[] addresses = {new Address("test@mail.com")};
+    public void getRecipientIdentityFromMessage_usesXEnvelopeTo_whenPresent() throws Exception {
+        Address[] addresses = {new Address("test2@example.org")};
         msg.setRecipients(Message.RecipientType.X_ENVELOPE_TO, addresses);
-        msg.removeHeader("X-Original-To");
-        msg.removeHeader("Delivered-To");
+        msg.removeHeader("To");
 
         Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
-        assertTrue(identity.getEmail().equalsIgnoreCase("test@mail.com"));
+        assertTrue(identity.getEmail().equalsIgnoreCase("test2@example.org"));
     }
 
     @Test
-    public void testXEnvelopeTo_withXOriginalTo() throws Exception {
-        Address[] addresses = {new Address("test@mail.com")};
-        Address[] xoriginaltoaddresses = {new Address("test2@mail.com")};
-        msg.setRecipients(Message.RecipientType.X_ENVELOPE_TO, addresses);
-        msg.setRecipients(Message.RecipientType.X_ORIGINAL_TO, xoriginaltoaddresses);
+    public void getRecipientIdentityFromMessage_prefers1To_overCC() throws Exception {
+        Address[] toAddresses = {new Address("test@example.org")};
+        Address[] ccAddresses = {new Address("test2@example.org")};
+        msg.setRecipients(RecipientType.TO, toAddresses);
+        msg.setRecipients(RecipientType.CC, ccAddresses);
 
         Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
-        assertTrue(identity.getEmail().equalsIgnoreCase("test2@mail.com"));
+        assertTrue(identity.getEmail().equalsIgnoreCase("test@example.org"));
+    }
+
+    @Test
+    public void getRecipientIdentityFromMessage_prefers2CC_overXOriginalTo() throws Exception {
+        Address[] ccAddresses = {new Address("test@example.org")};
+        Address[] xOriginalToAddresses = {new Address("test2@example.org")};
+        msg.setRecipients(RecipientType.CC, ccAddresses);
+        msg.setRecipients(RecipientType.X_ORIGINAL_TO, xOriginalToAddresses);
+
+        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
+        assertTrue(identity.getEmail().equalsIgnoreCase("test@example.org"));
+    }
+
+    @Test
+    public void getRecipientIdentityFromMessage_prefers3XOriginalTo_overDeliveredTo() throws Exception {
+        Address[] xOriginalToAddresses = {new Address("test@example.org")};
+        Address[] deliveredToAddresses = {new Address("test2@example.org")};
+        msg.setRecipients(RecipientType.X_ORIGINAL_TO, xOriginalToAddresses);
+        msg.setRecipients(RecipientType.DELIVERED_TO, deliveredToAddresses);
+
+        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
+        assertTrue(identity.getEmail().equalsIgnoreCase("test@example.org"));
+    }
+
+    @Test
+    public void getRecipientIdentityFromMessage_prefers4DeliveredTo_overXEnvelopeTo() throws Exception {
+        Address[] deliveredToAddresses = {new Address("test@example.org")};
+        Address[] xEnvelopeTo = {new Address("test2@example.org")};
+        msg.setRecipients(RecipientType.DELIVERED_TO, deliveredToAddresses);
+        msg.setRecipients(RecipientType.X_ENVELOPE_TO, xEnvelopeTo);
+
+        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
+        assertTrue(identity.getEmail().equalsIgnoreCase("test@example.org"));
+    }
+
+    @Test
+    public void getRecipientIdentityFromMessage_withNoApplicableHeaders_returnsFirstIdentity() throws Exception {
+        Identity identity = IdentityHelper.getRecipientIdentityFromMessage(account, msg);
+        assertTrue(identity.getEmail().equalsIgnoreCase("default@example.org"));
     }
 
 
