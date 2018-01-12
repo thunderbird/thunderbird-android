@@ -39,6 +39,7 @@ import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
 class Pop3Connection {
 
     private final Pop3Settings settings;
+    private final TrustedSocketFactory trustedSocketFactory;
     private Socket socket;
     private BufferedInputStream in;
     private BufferedOutputStream out;
@@ -52,12 +53,17 @@ class Pop3Connection {
     private boolean topNotAdvertised;
 
     Pop3Connection(Pop3Settings settings,
-            TrustedSocketFactory trustedSocketFactory) throws MessagingException {
+            TrustedSocketFactory trustedSocketFactory) {
+        this.settings = settings;
+        this.trustedSocketFactory = trustedSocketFactory;
+    }
+
+    void open() throws MessagingException {
         try {
-            this.settings = settings;
             SocketAddress socketAddress = new InetSocketAddress(settings.getHost(), settings.getPort());
             if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                socket = trustedSocketFactory.createSocket(null, settings.getHost(), settings.getPort(), settings.getClientCertificateAlias());
+                socket = trustedSocketFactory.createSocket(null, settings.getHost(),
+                        settings.getPort(), settings.getClientCertificateAlias());
             } else {
                 socket = new Socket();
             }
@@ -156,7 +162,7 @@ class Pop3Connection {
 
             default:
                 throw new MessagingException(
-                        "Unhandled authentication method found in the server settings (bug).");
+                        "Unhandled authentication method: "+authType+" found in the server settings (bug).");
         }
 
     }
