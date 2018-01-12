@@ -61,6 +61,7 @@ class Pop3Folder extends Folder<Pop3Message> {
         }
 
         connection = pop3Store.createConnection();
+        connection.open();
 
         String response = connection.executeSimpleCommand(STAT_COMMAND);
         String[] parts = response.split(" ");

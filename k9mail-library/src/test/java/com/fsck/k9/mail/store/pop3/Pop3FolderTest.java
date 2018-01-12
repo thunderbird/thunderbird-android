@@ -53,16 +53,7 @@ public class Pop3FolderTest {
         when(mockStore.createConnection()).thenReturn(mockConnection);
         when(mockConnection.executeSimpleCommand(Pop3Commands.STAT_COMMAND)).thenReturn("+OK 10 0");
         folder = new Pop3Folder(mockStore, "Inbox");
-        setupTempDirectory();
-    }
-
-    private void setupTempDirectory() {
-        File tempDirectory = new File("temp");
-        if (!tempDirectory.exists()) {
-            assertTrue(tempDirectory.mkdir());
-            tempDirectory.deleteOnExit();
-        }
-        BinaryTempFileBody.setTempDirectory(tempDirectory);
+        BinaryTempFileBody.setTempDirectory(new File(System.getProperty("java.io.tmpdir")));
     }
 
     @Test
@@ -156,6 +147,15 @@ public class Pop3FolderTest {
                 .thenThrow(new MessagingException("Test"));
 
         folder.open(Folder.OPEN_MODE_RW);
+    }
+
+    @Test
+    public void open_createsAndOpensConnection()
+            throws MessagingException {
+        folder.open(Folder.OPEN_MODE_RW);
+
+        verify(mockStore, times(1)).createConnection();
+        verify(mockConnection).open();
     }
 
     @Test
