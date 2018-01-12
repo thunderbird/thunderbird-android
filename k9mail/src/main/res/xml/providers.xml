@@ -16,10 +16,10 @@
 
     <!--
         This file is used to specify providers that we know default settings for
-        so that the user can set up their account by simply entering their email
+        so that the user can set up their account by simply entering their e-mail
         address and password.
 
-        When a user starts this process, the email address is parsed, the domain
+        When a user starts this process, the e-mail address is parsed, the domain
         broken out and used to search this file for a provider. If one is found the
         provider's settings are used to attempt to connect to the account.
         
@@ -28,7 +28,7 @@
         to the user when there are multiple options provided for a single domain (not currently
         supported).
 
-        A provider contains the settings for setting up an email account
+        A provider contains the settings for setting up an e-mail account
         that ends with the given domain. Domains should be unique within
         this file. Each provider should have at least one incoming section and
         one outgoing section. If more than one is specified only the first
@@ -59,12 +59,12 @@
         The username attribute is used to supply a template for the username
         that will be presented to the server. This username is built from a
         set of variables that are substituted with parts of the user
-        specified email address.
+        specified e-mail address.
 
         Valid substitution values for the username attribute are:
-            $email - the email address the user entered
-            $user - the value before the @ sign in the email address the user entered
-            $domain - the value after the @ sign in the email address the user entered
+            $email - the e-mail address the user entered
+            $user - the value before the @ sign in the e-mail address the user entered
+            $domain - the value after the @ sign in the e-mail address the user entered
             
         The username attribute MUST be specified for the incoming element, so the POP3 or IMAP
         server can identify the mailbox to be opened.

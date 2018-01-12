@@ -1,1 +1,1 @@
-K-9 Mail is a 100% free and open source email client for Android.
+K-9 Mail is a libre software e-mail client for Android.

@@ -2,7 +2,7 @@
 [![Build Status](https://k9mail.ci.cloudbees.com/job/master/badge/icon)](https://k9mail.ci.cloudbees.com/job/master/)
 [![Join the chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k9mail/k-9)
 
-K-9 Mail is an open-source email client for Android.
+K-9 Mail is an open-source e-mail client for Android.
 
 
 ## Download
@@ -14,12 +14,12 @@ K-9 Mail can be downloaded from a couple of sources:
 - [Github Releases](https://github.com/k9mail/k-9/releases)
 - [Amazon Appstore for Android](http://www.amazon.com/dp/B004JK61K0)
 
-You might also be interested in becoming a [tester](https://play.google.com/apps/testing/com.fsck.k9) to get an early look at new versions.
+You might also be interested in becoming a [tester](https://play.google.com/apps/testing/com.fsck.k9) to get an early preview of new versions.
 
 
 ## Release Notes
 
-Check out the [Release Notes](https://github.com/k9mail/k-9/wiki/ReleaseNotes) to find out what changed
+Check out the [release notes](https://github.com/k9mail/k-9/wiki/ReleaseNotes) to find out what changed
 in each version of K-9 Mail.
 
 
@@ -35,7 +35,7 @@ If the app is not behaving like it should, you might find these resources helpfu
 
 ## Translations
 
-Interested in helping to translate K-9 Mail? Contribute here:
+Interested in helping out with translating K-9 Mail? Contribute here:
 
 https://www.transifex.com/projects/p/k9mail/
 
@@ -51,8 +51,8 @@ https://github.com/k9mail/k-9-design
 
 Please fork this repository and contribute back using [pull requests](https://github.com/k9mail/k-9/pulls).
 
-Any contributions, large or small, major features, bug fixes, unit/integration tests are welcomed and appreciated
-but will be thoroughly reviewed and discussed.
+Any contributions, large or small, major features, bug fixes, unit/integration tests are welcomed and appreciated,
+and will be thoroughly reviewed and discussed.
 Please make sure you read the [Code Style Guidelines](https://github.com/k9mail/k-9/wiki/CodeStyle).
 
 
@@ -83,7 +83,7 @@ Aside from discussing changes in [pull requests](https://github.com/k9mail/k-9/p
 
 ## Sponsors
 
-CloudBees' [FOSS program](https://www.cloudbees.com/resources/foss) allows us to use their DEV@cloud service for free.
+CloudBees' [FOSS program](https://www.cloudbees.com/resources/foss) offers us gratis use of their DEV@cloud service.
 
 ![built on DEV@cloud](https://www.cloudbees.com/sites/default/files/styles/large/public/Button-Built-on-CB-1.png)
 
