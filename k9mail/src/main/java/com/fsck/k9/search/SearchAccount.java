@@ -10,7 +10,7 @@ import com.fsck.k9.search.SearchSpecification.SearchField;
 
 /**
  * This class is basically a wrapper around a LocalSearch. It allows to expose it as
- * an account. This is a meta-account containing all the e-mail that matches the search.
+ * an account. This is a meta-account containing all the email that matches the search.
  */
 public class SearchAccount implements BaseAccount {
     public static final String ALL_MESSAGES = "all_messages";

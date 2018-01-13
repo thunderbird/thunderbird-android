@@ -15,7 +15,7 @@ import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatusTyp
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 /** This is an immutable object which contains all relevant metadata entered
- * during e-mail composition to apply cryptographic operations before sending
+ * during email composition to apply cryptographic operations before sending
  * or saving as draft.
  */
 public class ComposeCryptoStatus {
