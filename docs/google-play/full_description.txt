@@ -9,6 +9,6 @@ We're always happy to welcome new developers, designers, documenters, bug triage
 
 If you're having trouble with K-9, please report a bug at https://github.com/k9mail/k-9 rather than just leaving a one-star review. We don't mind you telling the world that you're frustrated, but if you use our bug tracker, we have a better chance of fixing whatever's giving you a hard time.
 
-You can find K-9's release notes at: http://bit.ly/new-k9
+You can find K-9's release notes at: https://bit.ly/new-k9
 
 (People sometimes call K-9: K9, K9 Mail, K-9 Email, K9 Email, K9 E-Mail, k9mail or k9email.)
