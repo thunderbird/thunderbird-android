@@ -92,7 +92,7 @@ public class Contacts {
         contactIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         contactIntent.setData(contactUri);
 
-        // Pass along full E-mail string for possible create dialog
+        // Pass along full email string for possible create dialog
         contactIntent.putExtra(ContactsContract.Intents.EXTRA_CREATE_DESCRIPTION,
                 email.toString());
 

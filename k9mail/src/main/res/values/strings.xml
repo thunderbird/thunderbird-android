@@ -1275,7 +1275,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="enable_encryption">Enable Encryption</string>
     <string name="disable_encryption">Disable Encryption</string>
     <string name="openpgp_description_text1">Encrypting messages ensures they can be read by the recipient, and nobody else.</string>
-    <string name="openpgp_description_text3">Encryption will only show up if supported by all recipients, and they must have sent you an e-mail before.</string>
+    <string name="openpgp_description_text3">Encryption will only show up if supported by all recipients, and they must have sent you an email before.</string>
     <string name="openpgp_description_text2">Toggle encryption by clicking this icon.</string>
     <string name="openpgp_enabled_error_gotit">Got it</string>
     <string name="openpgp_enabled_error_back">Back</string>

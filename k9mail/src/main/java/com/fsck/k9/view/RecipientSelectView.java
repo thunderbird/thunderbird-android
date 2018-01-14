@@ -91,7 +91,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         alternatesAdapter = new AlternateRecipientAdapter(context, this);
         alternatesPopup.setAdapter(alternatesAdapter);
 
-        // don't allow duplicates, based on equality of recipient objects, which is e-mail addresses
+        // don't allow duplicates, based on equality of recipient objects, which is email addresses
         allowDuplicates(false);
 
         // if a token is completed, pick an entry based on best guess.
