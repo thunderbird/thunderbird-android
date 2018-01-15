@@ -147,7 +147,7 @@ public class SmtpTransport extends Transport {
             // Eat the banner
             executeCommand(null);
 
-            String hostnameToReportInHelo = buildHostnameToReport(shouldHideHostname);
+            String hostnameToReportInHelo = buildHostnameToReport();
 
             Map<String, String> extensions = sendHello(hostnameToReportInHelo);
 
@@ -313,7 +313,7 @@ public class SmtpTransport extends Transport {
         }
     }
 
-    private String buildHostnameToReport(boolean shouldReportHostname) {
+    private String buildHostnameToReport() {
         if (shouldHideHostname) {
             return "localhost";
         }
