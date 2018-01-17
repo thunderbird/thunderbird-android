@@ -145,4 +145,14 @@ public class UriLinkifierTest {
 
         assertEquals("<br><a href=\"http://uri.example.org\">http://uri.example.org</a><hr>", outputBuffer.toString());
     }
+
+    @Test
+    public void uriInAngleBrackets() {
+        String text = "<https://github.com/k9mail/k-9/releases>";
+
+        UriLinkifier.linkifyText(text, outputBuffer);
+
+        assertEquals("<<a href=\"https://github.com/k9mail/k-9/releases\">https://github.com/k9mail/k-9/releases</a>>", outputBuffer.toString());
+
+    }
 }
