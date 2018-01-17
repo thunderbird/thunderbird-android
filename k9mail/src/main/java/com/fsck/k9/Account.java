@@ -1481,6 +1481,11 @@ public class Account implements BaseAccount, StoreConfig {
         return idleRefreshMinutes;
     }
 
+    @Override
+    public boolean shouldHideHostname() {
+        return K9.hideHostnameWhenConnecting();
+    }
+
     public synchronized void setIdleRefreshMinutes(int idleRefreshMinutes) {
         this.idleRefreshMinutes = idleRefreshMinutes;
     }

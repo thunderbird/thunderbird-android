@@ -32,4 +32,6 @@ public interface StoreConfig {
     int getDisplayCount();
 
     int getIdleRefreshMinutes();
+
+    boolean shouldHideHostname();
 }

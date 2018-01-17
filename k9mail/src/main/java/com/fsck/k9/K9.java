@@ -237,6 +237,7 @@ public class K9 extends Application {
     private static boolean wrapFolderNames = false;
     private static boolean hideUserAgent = false;
     private static boolean hideTimeZone = false;
+    private static boolean hideHostnameWhenConnecting = false;
 
     private static String openPgpProvider = "";
     private static boolean openPgpSupportSignOnly = false;
@@ -476,6 +477,7 @@ public class K9 extends Application {
         editor.putBoolean("wrapFolderNames", wrapFolderNames);
         editor.putBoolean("hideUserAgent", hideUserAgent);
         editor.putBoolean("hideTimeZone", hideTimeZone);
+        editor.putBoolean("hideHostnameWhenConnecting", hideHostnameWhenConnecting);
 
         editor.putString("openPgpProvider", openPgpProvider);
         editor.putBoolean("openPgpSupportSignOnly", openPgpSupportSignOnly);
@@ -711,6 +713,7 @@ public class K9 extends Application {
         wrapFolderNames = storage.getBoolean("wrapFolderNames", false);
         hideUserAgent = storage.getBoolean("hideUserAgent", false);
         hideTimeZone = storage.getBoolean("hideTimeZone", false);
+        hideHostnameWhenConnecting = storage.getBoolean("hideHostnameWhenConnecting", false);
 
         openPgpProvider = storage.getString("openPgpProvider", NO_OPENPGP_PROVIDER);
         openPgpSupportSignOnly = storage.getBoolean("openPgpSupportSignOnly", false);
@@ -1231,6 +1234,14 @@ public class K9 extends Application {
     }
     public static void setHideTimeZone(final boolean state) {
         hideTimeZone = state;
+    }
+
+    public static boolean hideHostnameWhenConnecting() {
+        return hideHostnameWhenConnecting;
+    }
+
+    public static void setHideHostnameWhenConnecting(final boolean state) {
+        hideHostnameWhenConnecting = state;
     }
 
     public static boolean isOpenPgpProviderConfigured() {
