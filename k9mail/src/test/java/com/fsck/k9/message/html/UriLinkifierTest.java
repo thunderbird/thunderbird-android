@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 
+import static com.fsck.k9.message.html.UriParserTestHelper.assertContainsLink;
 import static com.fsck.k9.message.html.UriParserTestHelper.assertLinkOnly;
 import static junit.framework.Assert.assertEquals;
 
@@ -144,5 +145,37 @@ public class UriLinkifierTest {
         UriLinkifier.linkifyText(text, outputBuffer);
 
         assertEquals("<br><a href=\"http://uri.example.org\">http://uri.example.org</a><hr>", outputBuffer.toString());
+    }
+
+    @Test
+    public void uriDelimitedByAngleBrackets() {
+        // Define the pattern variations.
+        final String EXPECTED = "https://www.foobarDDs.com";
+
+        final String EXPECTED_BRACKETED = "&lt;" + EXPECTED + "<gt>";
+        final String EXPECTED_BRACKETED_FOO_FIRST = "foo" + EXPECTED_BRACKETED;
+        final String EXPECTED_BRACKETED_FOO_LAST = EXPECTED_BRACKETED + "foo";
+        final String EXPECTED_BRACKETED_FOO_FIRST_AND_LAST = "foo" + EXPECTED_BRACKETED + "foo";
+
+        // Then, run the tests.
+        outputBuffer = new StringBuffer();
+        UriLinkifier.linkifyText(EXPECTED, outputBuffer);
+        assertContainsLink(EXPECTED, outputBuffer);
+
+        outputBuffer = new StringBuffer();
+        UriLinkifier.linkifyText(EXPECTED_BRACKETED, outputBuffer);
+        assertContainsLink(EXPECTED, outputBuffer);
+
+        outputBuffer = new StringBuffer();
+        UriLinkifier.linkifyText(EXPECTED_BRACKETED_FOO_FIRST, outputBuffer);
+        assertContainsLink(EXPECTED, outputBuffer);
+
+        outputBuffer = new StringBuffer();
+        UriLinkifier.linkifyText(EXPECTED_BRACKETED_FOO_LAST, outputBuffer);
+        assertContainsLink(EXPECTED, outputBuffer);
+
+        outputBuffer = new StringBuffer();
+        UriLinkifier.linkifyText(EXPECTED_BRACKETED_FOO_FIRST_AND_LAST, outputBuffer);
+        assertContainsLink(EXPECTED, outputBuffer);
     }
 }
