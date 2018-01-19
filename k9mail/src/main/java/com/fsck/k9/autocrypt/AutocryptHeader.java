@@ -54,39 +54,26 @@ class AutocryptHeader {
                     .append('=').append(AutocryptHeader.AUTOCRYPT_PREFER_ENCRYPT_MUTUAL).append("; ");
         }
         builder.append(AutocryptHeader.AUTOCRYPT_PARAM_KEY_DATA).append("=");
-
-        appendBase64KeyData(builder);
+        builder.append(createFoldedBase64KeyData(keyData));
 
         return builder.toString();
     }
 
-    private void appendBase64KeyData(StringBuilder builder) {
+    static String createFoldedBase64KeyData(byte[] keyData) {
         String base64KeyData = ByteString.of(keyData).base64();
+        StringBuilder result = new StringBuilder();
 
-        int base64Length = base64KeyData.length();
-        int lineLengthBeforeKeyData = builder.length();
-        int dataLengthInFirstLine = HEADER_LINE_LENGTH -lineLengthBeforeKeyData;
-
-        boolean keyDataFitsInFirstLine = dataLengthInFirstLine > 0 && base64Length < dataLengthInFirstLine;
-        if (keyDataFitsInFirstLine) {
-            builder.append(base64KeyData, 0, base64Length);
-            return;
-        }
-
-        if (dataLengthInFirstLine > 0) {
-            builder.append(base64KeyData, 0, dataLengthInFirstLine).append("\r\n ");
-        } else {
-            builder.append("\r\n ");
-            dataLengthInFirstLine = 0;
-        }
-
-        for (int i = dataLengthInFirstLine; i < base64Length; i += HEADER_LINE_LENGTH) {
+        for (int i = 0, base64Length = base64KeyData.length(); i < base64Length; i += HEADER_LINE_LENGTH) {
             if (i + HEADER_LINE_LENGTH <= base64Length) {
-                builder.append(base64KeyData, i, i + HEADER_LINE_LENGTH).append("\r\n ");
+                result.append("\r\n ");
+                result.append(base64KeyData, i, i + HEADER_LINE_LENGTH);
             } else {
-                builder.append(base64KeyData, i, base64Length);
+                result.append("\r\n ");
+                result.append(base64KeyData, i, base64Length);
             }
         }
+
+        return result.toString();
     }
 
     @Override
