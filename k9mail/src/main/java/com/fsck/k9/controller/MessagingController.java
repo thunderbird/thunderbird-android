@@ -2264,7 +2264,8 @@ public class MessagingController {
         });
     }
 
-    private boolean loadMessageRemoteSynchronous(final Account account, final String folder,
+    @VisibleForTesting
+    protected boolean loadMessageRemoteSynchronous(final Account account, final String folder,
             final String uid, final MessagingListener listener, final boolean loadPartialFromSearch) {
         Folder remoteFolder = null;
         LocalFolder localFolder = null;

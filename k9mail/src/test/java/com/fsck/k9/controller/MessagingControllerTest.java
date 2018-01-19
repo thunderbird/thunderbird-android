@@ -20,6 +20,7 @@ import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
@@ -504,6 +505,83 @@ public class MessagingControllerTest {
         controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
         verify(listener).remoteSearchFinished(FOLDER_NAME, 0, 50, Collections.<Message>emptyList());
+    }
+
+    @Test
+    public void loadMessageRemoteSynchronous_shouldOpenLocalFolder() throws Exception {
+        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
+                false);
+
+        verify(localFolder).open(Folder.OPEN_MODE_RW);
+    }
+
+    @Test
+    public void loadMessageRemoteSynchronous_shouldGetMessageFromLocalFolder() throws Exception {
+        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
+                false);
+
+        verify(localFolder).getMessage("1");
+    }
+
+    @Test
+    public void loadMessageRemoteSynchronous_shouldNotOpenRemoteFolder_forLocalUid() throws Exception {
+        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "K9LOCAL:1", listener,
+                false);
+
+        verify(remoteFolder, never()).open(anyInt());
+    }
+
+    @Test
+    public void loadMessageRemoteSynchronous_shouldOpenRemoteFolder_forRemoteUid() throws Exception {
+        configureRemoteStoreWithFolder();
+        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
+                false);
+
+        verify(remoteFolder).open(Folder.OPEN_MODE_RW);
+    }
+
+    @Test
+    public void loadMessageRemoteSynchronous_shouldGetMessageUsingRemoteUid() throws Exception {
+        configureRemoteStoreWithFolder();
+        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
+                false);
+
+        verify(remoteFolder).getMessage("1");
+    }
+
+    @Test
+    public void loadMessageRemoteSynchronous_withLoadPartialFromSearchFalse_shouldFetchBodyAndFlags()
+            throws Exception {
+        configureRemoteStoreWithFolder();
+        when(localFolder.getMessage("1")).thenReturn(localNewMessage1);
+        when(remoteFolder.getMessage("1")).thenReturn(remoteNewMessage1);
+        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
+                false);
+
+        verify(remoteFolder).fetch(eq(Collections.singletonList(remoteNewMessage1)),
+                fetchProfileCaptor.capture(), Matchers.<MessageRetrievalListener>eq(null));
+        assertTrue(fetchProfileCaptor.getValue().contains(Item.BODY));
+        assertTrue(fetchProfileCaptor.getValue().contains(Item.FLAGS));
+        assertEquals(2, fetchProfileCaptor.getValue().size());
+    }
+
+    @Test
+    public void loadMessageRemoteSynchronous_withLoadPartialFromSearchTrue_shouldFetchUnsyncedSmallAndLargeMessages()
+            throws Exception {
+        configureRemoteStoreWithFolder();
+        when(localFolder.getMessage("1")).thenReturn(localNewMessage1);
+        when(remoteFolder.getMessage("1")).thenReturn(remoteNewMessage1);
+        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
+                true);
+
+        verify(remoteFolder, times(3)).fetch(eq(Collections.emptyList()),
+                fetchProfileCaptor.capture(), messageRetrievalListenerCaptor.capture());
+        assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(Item.ENVELOPE));
+        assertEquals(1, fetchProfileCaptor.getAllValues().get(0).size());
+        assertTrue(fetchProfileCaptor.getAllValues().get(1).contains(Item.BODY));
+        assertEquals(1, fetchProfileCaptor.getAllValues().get(1).size());
+        assertTrue(fetchProfileCaptor.getAllValues().get(2).contains(Item.STRUCTURE));
+        assertEquals(1, fetchProfileCaptor.getAllValues().get(2).size());
     }
 
     @Test
