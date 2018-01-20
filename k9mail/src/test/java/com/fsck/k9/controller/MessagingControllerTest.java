@@ -200,55 +200,6 @@ public class MessagingControllerTest {
     }
 
     @Test
-    public void listFoldersSynchronous_shouldNotifyTheListenerListingStarted() throws MessagingException {
-        List<LocalFolder> folders = Collections.singletonList(localFolder);
-        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
-
-        controller.listFoldersSynchronous(account, false, listener);
-
-        verify(listener).listFoldersStarted(account);
-    }
-
-    @Test
-    public void listFoldersSynchronous_shouldNotifyTheListenerOfTheListOfFolders() throws MessagingException {
-        List<LocalFolder> folders = Collections.singletonList(localFolder);
-        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
-
-        controller.listFoldersSynchronous(account, false, listener);
-
-        verify(listener).listFolders(eq(account), localFolderListCaptor.capture());
-        assertEquals(folders, localFolderListCaptor.getValue());
-    }
-
-    @Test
-    public void listFoldersSynchronous_shouldNotifyFailureOnException() throws MessagingException {
-        when(localStore.getPersonalNamespaces(false)).thenThrow(new MessagingException("Test"));
-
-        controller.listFoldersSynchronous(account, true, listener);
-
-        verify(listener).listFoldersFailed(account, "Test");
-    }
-
-    @Test
-    public void listFoldersSynchronous_shouldNotNotifyFinishedAfterFailure() throws MessagingException {
-        when(localStore.getPersonalNamespaces(false)).thenThrow(new MessagingException("Test"));
-
-        controller.listFoldersSynchronous(account, true, listener);
-
-        verify(listener, never()).listFoldersFinished(account);
-    }
-
-    @Test
-    public void listFoldersSynchronous_shouldNotifyFinishedAfterSuccess() throws MessagingException {
-        List<LocalFolder> folders = Collections.singletonList(localFolder);
-        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
-
-        controller.listFoldersSynchronous(account, false, listener);
-
-        verify(listener).listFoldersFinished(account);
-    }
-
-    @Test
     public void refreshRemoteSynchronous_shouldCreateFoldersFromRemote() throws MessagingException {
         configureRemoteStoreWithFolder();
         LocalFolder newLocalFolder = mock(LocalFolder.class);

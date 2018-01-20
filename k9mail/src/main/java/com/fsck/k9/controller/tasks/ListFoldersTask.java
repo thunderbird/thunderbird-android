@@ -67,17 +67,15 @@ public class ListFoldersTask implements Runnable {
 
                 if (refreshRemote || localFolders.isEmpty()) {
                     controller.doRefreshRemote(account, taskListener);
-                    return;
-                }
-
-                for (MessagingListener l : listeners) {
-                    l.listFolders(account, localFolders);
+                } else {
+                    for (MessagingListener l : listeners) {
+                        l.listFolders(account, localFolders);
+                    }
                 }
             } catch (Exception e) {
                 for (MessagingListener l : listeners) {
                     l.listFoldersFailed(account, e.getMessage());
                 }
-
                 Timber.e(e);
                 return;
             } finally {
