@@ -267,6 +267,15 @@ public class ImapStore extends RemoteStore {
                 combinedPrefix = null;
             }
 
+            String prefix = getCombinedPrefix();
+            int prefixLength = prefix.length();
+            if (prefixLength > 0 && decodedFolderName.startsWith(prefix)) {
+                if (K9MailLib.isDebug()) {
+                    Timber.d("Folder auto-configuration stripping prefix (%s) from folder name: %s", prefix, decodedFolderName);
+                }
+                decodedFolderName = decodedFolderName.substring(prefixLength);
+            }
+
             if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
                 mStoreConfig.setArchiveFolderName(decodedFolderName);
                 if (K9MailLib.isDebug()) {
