@@ -65,6 +65,7 @@ import com.fsck.k9.controller.tasks.ListFoldersTask;
 import com.fsck.k9.controller.tasks.RefreshRemoteTask;
 import com.fsck.k9.controller.tasks.SearchRemoteTask;
 import com.fsck.k9.controller.tasks.SearchResultsLoader;
+import com.fsck.k9.controller.tasks.SendPendingMessagesTask;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -84,7 +85,6 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -107,7 +107,6 @@ import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SqlQueryBuilder;
 import timber.log.Timber;
 
-import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
 
 
@@ -1373,27 +1372,13 @@ public class MessagingController implements IMessageController {
         return messageChanged;
     }
 
+    //TODO: Use ControllerUtils directly
     private String getRootCauseMessage(Throwable t) {
-        Throwable rootCause = t;
-        Throwable nextCause;
-        do {
-            nextCause = rootCause.getCause();
-            if (nextCause != null) {
-                rootCause = nextCause;
-            }
-        } while (nextCause != null);
-        if (rootCause instanceof MessagingException) {
-            return rootCause.getMessage();
-        } else {
-            // Remove the namespace on the exception so we have a fighting chance of seeing more of the error in the
-            // notification.
-            return (rootCause.getLocalizedMessage() != null)
-                    ? (rootCause.getClass().getSimpleName() + ": " + rootCause.getLocalizedMessage())
-                    : rootCause.getClass().getSimpleName();
-        }
+        return ControllerUtils.getRootCauseMessage(t);
     }
 
-    private void queuePendingCommand(Account account, PendingCommand command) {
+    //TODO: Visible for send task
+    public void queuePendingCommand(Account account, PendingCommand command) {
         try {
             LocalStore localStore = account.getLocalStore();
             localStore.addPendingCommand(command);
@@ -1402,7 +1387,8 @@ public class MessagingController implements IMessageController {
         }
     }
 
-    private void processPendingCommands(final Account account) {
+    //TODO: Visible for send task
+    public void processPendingCommands(final Account account) {
         putBackground("processPendingCommands", null, new Runnable() {
             @Override
             public void run() {
@@ -2275,246 +2261,10 @@ public class MessagingController implements IMessageController {
     @Override
     public void sendPendingMessages(final Account account,
             MessagingListener listener) {
-        putBackground("sendPendingMessages", listener, new Runnable() {
-            @Override
-            public void run() {
-                if (!account.isAvailable(context)) {
-                    throw new UnavailableAccountException();
-                }
-                if (messagesPendingSend(account)) {
-
-                    showSendingNotificationIfNecessary(account);
-
-                    try {
-                        sendPendingMessagesSynchronous(account);
-                    } finally {
-                        clearSendingNotificationIfNecessary(account);
-                    }
-                }
-            }
-        });
-    }
-
-    private void showSendingNotificationIfNecessary(Account account) {
-        if (account.isShowOngoing()) {
-            notificationController.showSendingNotification(account);
-        }
-    }
-
-    private void clearSendingNotificationIfNecessary(Account account) {
-        if (account.isShowOngoing()) {
-            notificationController.clearSendingNotification(account);
-        }
-    }
-
-    private boolean messagesPendingSend(final Account account) {
-        Folder localFolder = null;
-        try {
-            localFolder = account.getLocalStore().getFolder(
-                    account.getOutboxFolderName());
-            if (!localFolder.exists()) {
-                return false;
-            }
-
-            localFolder.open(Folder.OPEN_MODE_RW);
-
-            if (localFolder.getMessageCount() > 0) {
-                return true;
-            }
-        } catch (Exception e) {
-            Timber.e(e, "Exception while checking for unsent messages");
-        } finally {
-            closeFolder(localFolder);
-        }
-        return false;
-    }
-
-    /**
-     * Attempt to send any messages that are sitting in the Outbox.
-     */
-    @VisibleForTesting
-    protected void sendPendingMessagesSynchronous(final Account account) {
-        LocalFolder localFolder = null;
-        Exception lastFailure = null;
-        boolean wasPermanentFailure = false;
-        try {
-            LocalStore localStore = account.getLocalStore();
-            localFolder = localStore.getFolder(
-                    account.getOutboxFolderName());
-            if (!localFolder.exists()) {
-                Timber.v("Outbox does not exist");
-                return;
-            }
-            for (MessagingListener l : getListeners()) {
-                l.sendPendingMessagesStarted(account);
-            }
-            localFolder.open(Folder.OPEN_MODE_RW);
-
-            List<LocalMessage> localMessages = localFolder.getMessages(null);
-            int progress = 0;
-            int todo = localMessages.size();
-            for (MessagingListener l : getListeners()) {
-                l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
-            }
-            /*
-             * The profile we will use to pull all of the content
-             * for a given local message into memory for sending.
-             */
-            FetchProfile fp = new FetchProfile();
-            fp.add(FetchProfile.Item.ENVELOPE);
-            fp.add(FetchProfile.Item.BODY);
-
-            Timber.i("Scanning folder '%s' (%d) for messages to send",
-                    account.getOutboxFolderName(), localFolder.getDatabaseId());
-
-            Transport transport = transportProvider.getTransport(K9.app, account);
-
-            for (LocalMessage message : localMessages) {
-                if (message.isSet(Flag.DELETED)) {
-                    message.destroy();
-                    continue;
-                }
-                try {
-                    AtomicInteger count = new AtomicInteger(0);
-                    AtomicInteger oldCount = sendCount.putIfAbsent(message.getUid(), count);
-                    if (oldCount != null) {
-                        count = oldCount;
-                    }
-
-                    Timber.i("Send count for message %s is %d", message.getUid(), count.get());
-
-                    if (count.incrementAndGet() > K9.MAX_SEND_ATTEMPTS) {
-                        Timber.e("Send count for message %s can't be delivered after %d attempts. " +
-                                "Giving up until the user restarts the device", message.getUid(), MAX_SEND_ATTEMPTS);
-                        notificationController.showSendFailedNotification(account,
-                                new MessagingException(message.getSubject()));
-                        continue;
-                    }
-
-                    localFolder.fetch(Collections.singletonList(message), fp, null);
-                    try {
-                        if (message.getHeader(K9.IDENTITY_HEADER).length > 0) {
-                            Timber.v("The user has set the Outbox and Drafts folder to the same thing. " +
-                                    "This message appears to be a draft, so K-9 will not send it");
-                            continue;
-                        }
-
-                        message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
-
-                        Timber.i("Sending message with UID %s", message.getUid());
-                        transport.sendMessage(message);
-
-                        message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
-                        message.setFlag(Flag.SEEN, true);
-                        progress++;
-                        for (MessagingListener l : getListeners()) {
-                            l.synchronizeMailboxProgress(account, account.getSentFolderName(), progress, todo);
-                        }
-                        moveOrDeleteSentMessage(account, localStore, localFolder, message);
-                    } catch (AuthenticationFailedException e) {
-                        lastFailure = e;
-                        wasPermanentFailure = false;
-
-                        handleAuthenticationFailure(account, false);
-                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
-                    } catch (CertificateValidationException e) {
-                        lastFailure = e;
-                        wasPermanentFailure = false;
-
-                        notifyUserIfCertificateProblem(account, e, false);
-                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
-                    } catch (MessagingException e) {
-                        lastFailure = e;
-                        wasPermanentFailure = e.isPermanentFailure();
-
-                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
-                    } catch (Exception e) {
-                        lastFailure = e;
-                        wasPermanentFailure = true;
-
-                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
-                    }
-                } catch (Exception e) {
-                    lastFailure = e;
-                    wasPermanentFailure = false;
-                    Timber.e(e, "Failed to fetch message for sending");
-                    notifySynchronizeMailboxFailed(account, localFolder, e);
-                }
-            }
-
-            for (MessagingListener l : getListeners()) {
-                l.sendPendingMessagesCompleted(account);
-            }
-
-            if (lastFailure != null) {
-                if (wasPermanentFailure) {
-                    notificationController.showSendFailedNotification(account, lastFailure);
-                } else {
-                    notificationController.showSendFailedNotification(account, lastFailure);
-                }
-            }
-        } catch (UnavailableStorageException e) {
-            Timber.i("Failed to send pending messages because storage is not available - trying again later.");
-            throw new UnavailableAccountException(e);
-        } catch (Exception e) {
-            Timber.v(e, "Failed to send pending messages");
-
-            for (MessagingListener l : getListeners()) {
-                l.sendPendingMessagesFailed(account);
-            }
-        } finally {
-            if (lastFailure == null) {
-                notificationController.clearSendFailedNotification(account);
-            }
-            closeFolder(localFolder);
-        }
-    }
-
-    private void moveOrDeleteSentMessage(Account account, LocalStore localStore,
-            LocalFolder localFolder, LocalMessage message) throws MessagingException {
-        if (!account.hasSentFolder()) {
-            Timber.i("Account does not have a sent mail folder; deleting sent message");
-            message.setFlag(Flag.DELETED, true);
-        } else {
-            LocalFolder localSentFolder = localStore.getFolder(account.getSentFolderName());
-            Timber.i("Moving sent message to folder '%s' (%d)", account.getSentFolderName(), localSentFolder.getDatabaseId());
-
-            localFolder.moveMessages(Collections.singletonList(message), localSentFolder);
-
-            Timber.i("Moved sent message to folder '%s' (%d)", account.getSentFolderName(), localSentFolder.getDatabaseId());
-
-            PendingCommand command = PendingAppend.create(localSentFolder.getName(), message.getUid());
-            queuePendingCommand(account, command);
-            processPendingCommands(account);
-        }
-    }
-
-    private void handleSendFailure(Account account, Store localStore, Folder localFolder, Message message,
-            Exception exception, boolean permanentFailure) throws MessagingException {
-
-        Timber.e(exception, "Failed to send message");
-
-        if (permanentFailure) {
-            moveMessageToDraftsFolder(account, localFolder, localStore, message);
-        }
-
-        message.setFlag(Flag.X_SEND_FAILED, true);
-
-        notifySynchronizeMailboxFailed(account, localFolder, exception);
-    }
-
-    private void moveMessageToDraftsFolder(Account account, Folder localFolder, Store localStore, Message message)
-            throws MessagingException {
-        LocalFolder draftsFolder = (LocalFolder) localStore.getFolder(account.getDraftsFolderName());
-        localFolder.moveMessages(Collections.singletonList(message), draftsFolder);
-    }
-
-    private void notifySynchronizeMailboxFailed(Account account, Folder localFolder, Exception exception) {
-        String folderName = localFolder.getName();
-        String errorMessage = getRootCauseMessage(exception);
-        for (MessagingListener listener : getListeners()) {
-            listener.synchronizeMailboxFailed(account, folderName, errorMessage);
-        }
+        putBackground("sendPendingMessages", listener,
+                new SendPendingMessagesTask(this, context,
+                        notificationController, transportProvider,
+                        sendCount, account, listeners));
     }
 
     @Override
