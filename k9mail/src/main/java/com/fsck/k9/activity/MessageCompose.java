@@ -100,6 +100,8 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
+import com.fsck.k9.view.RecipientSelectView;
+
 import org.openintents.openpgp.util.OpenPgpApi;
 import timber.log.Timber;
 
@@ -142,6 +144,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final String STATE_KEY_READ_RECEIPT = "com.fsck.k9.activity.MessageCompose.messageReadReceipt";
     private static final String STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE = "com.fsck.k9.activity.MessageCompose.changesMadeSinceLastSave";
     private static final String STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT = "alreadyNotifiedUserOfEmptySubject";
+    private static final String STATE_TO_RECIPIENTS = "to_string";
+    private static final String STATE_CC_RECIPIENTS = "cc_string";
+    private static final String STATE_BCC_RECIPIENTS = "bcc_string";
 
     private static final String FRAGMENT_WAITING_FOR_ATTACHMENT = "waitingForAttachment";
 
@@ -203,6 +208,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private boolean requestReadReceipt = false;
 
+    private RecipientSelectView toView;
+    private RecipientSelectView ccView;
+    private RecipientSelectView bccView;
     private TextView chooseIdentityButton;
     private EditText subjectView;
     private EolConvertingEditText signatureView;
@@ -279,6 +287,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         chooseIdentityButton = (TextView) findViewById(R.id.identity);
         chooseIdentityButton.setOnClickListener(this);
+
+        toView = (RecipientSelectView) findViewById(R.id.to);
+        ccView = (RecipientSelectView) findViewById(R.id.cc);
+        bccView = (RecipientSelectView) findViewById(R.id.bcc);
 
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
@@ -596,6 +608,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        outState.putString(STATE_TO_RECIPIENTS,toView.getText().toString().replace(",","").replace(" ",""));
+        outState.putString(STATE_CC_RECIPIENTS,ccView.getText().toString().replace(",","").replace(" ",""));
+        outState.putString(STATE_BCC_RECIPIENTS,bccView.getText().toString().replace(",","").replace(" ",""));
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, relatedMessageProcessed);
         outState.putLong(STATE_KEY_DRAFT_ID, draftId);
         outState.putSerializable(STATE_IDENTITY, identity);
@@ -624,6 +639,42 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         super.onRestoreInstanceState(savedInstanceState);
 
         attachmentsView.removeAllViews();
+
+        List<RecipientSelectView.Recipient> toRecipients = toView.getRecipients();
+        List<RecipientSelectView.Recipient> ccRecipients = ccView.getRecipients();
+        List<RecipientSelectView.Recipient> bccRecipients = bccView.getRecipients();
+
+        toView.removeRecipients(toRecipients);
+        ccView.removeRecipients(ccRecipients);
+        bccView.removeRecipients(bccRecipients);
+
+        String toText = savedInstanceState.getString(STATE_TO_RECIPIENTS);
+        if(toText.length() != 0) {
+            if (toText.charAt(0) == '+') {
+                toText = "";
+            }
+        }
+        toView.setText(toText);
+
+        String ccText = savedInstanceState.getString(STATE_CC_RECIPIENTS);
+        if(ccText.length() != 0) {
+            if (ccText.charAt(0) == '+') {
+                ccText = "";
+            }
+        }
+        ccView.setText(ccText);
+
+        String bccText = savedInstanceState.getString(STATE_BCC_RECIPIENTS);
+        if(bccText.length() != 0) {
+            if (bccText.charAt(0) == '+') {
+                bccText = "";
+            }
+        }
+        bccView.setText(bccText);
+
+        toView.setRecipients(toRecipients);
+        ccView.setRecipients(ccRecipients);
+        bccView.setRecipients(bccRecipients);
 
         requestReadReceipt = savedInstanceState.getBoolean(STATE_KEY_READ_RECEIPT);
 

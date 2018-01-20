@@ -287,6 +287,22 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
     }
 
+    public List<Recipient> getRecipients() {
+        return getObjects();
+    }
+
+    public void removeRecipients(List<Recipient> recipients) {
+        for (Recipient recipient : recipients) {
+            removeObject(recipient);
+        }
+    }
+
+    public void setRecipients(List<Recipient> recipients) {
+        for (Recipient recipient : recipients) {
+            addObject(recipient);
+        }
+    }
+
     public Address[] getAddresses() {
         List<Recipient> recipients = getObjects();
         Address[] address = new Address[recipients.size()];
