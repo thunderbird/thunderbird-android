@@ -119,7 +119,7 @@ import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
  * removed from the queue once the activity is no longer active.
  */
 @SuppressWarnings("unchecked") // TODO change architecture to actually work with generics
-public class MessagingController {
+public class MessagingController implements IMessageController {
     public static final long INVALID_MESSAGE_ID = -1;
 
     public static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
@@ -159,7 +159,6 @@ public class MessagingController {
         }
         return inst;
     }
-
 
     @VisibleForTesting
     MessagingController(Context context, NotificationController notificationController,
@@ -269,27 +268,30 @@ public class MessagingController {
         return imapMessageStore;
     }
 
-
+    @Override
     public void addListener(MessagingListener listener) {
         listeners.add(listener);
         refreshListener(listener);
     }
 
+    @Override
     public void refreshListener(MessagingListener listener) {
         if (listener != null) {
             memorizingMessagingListener.refreshOther(listener);
         }
     }
 
+    @Override
     public void removeListener(MessagingListener listener) {
         listeners.remove(listener);
     }
 
+    @Override
     public Set<MessagingListener> getListeners() {
         return listeners;
     }
 
-
+    @Override
     public Set<MessagingListener> getListeners(MessagingListener listener) {
         if (listener == null) {
             return listeners;
@@ -312,6 +314,7 @@ public class MessagingController {
         cache.unhideMessages(messages);
     }
 
+    @Override
     public boolean isMessageSuppressed(LocalMessage message) {
         long messageId = message.getDatabaseId();
         long folderId = message.getFolder().getDatabaseId();
@@ -354,15 +357,8 @@ public class MessagingController {
         cache.removeValueForThreads(messageIds, columnName);
     }
 
-
-    /**
-     * Lists folders that are available locally and remotely. This method calls
-     * listFoldersCallback for local folders before it returns, and then for
-     * remote folders at some later point. If there are no local folders
-     * includeRemote is forced by this method. This method should be called from
-     * a Thread as it may take several seconds to list the local folders.
-     * TODO this needs to cache the remote folder list
-     */
+    //TODO this needs to cache the remote folder list
+    @Override
     public void listFolders(final Account account, final boolean refreshRemote, final MessagingListener listener) {
         threadPool.execute(new Runnable() {
             @Override
@@ -380,6 +376,7 @@ public class MessagingController {
      * foreground.
      * TODO this needs to cache the remote folder list
      */
+    @Override
     public void listFoldersSynchronous(final Account account, final boolean refreshRemote,
             final MessagingListener listener) {
         for (MessagingListener l : getListeners(listener)) {
@@ -503,6 +500,7 @@ public class MessagingController {
     /**
      * Find all messages in any local account which match the query 'query'
      */
+    @Override
     public void searchLocalMessages(final LocalSearch search, final MessagingListener listener) {
         threadPool.execute(new Runnable() {
             @Override
@@ -566,6 +564,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public Future<?> searchRemoteMessages(final String acctUuid, final String folderName, final String query,
             final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags, final MessagingListener listener) {
         Timber.i("searchRemoteMessages (acct = %s, folderName = %s, query = %s)", acctUuid, folderName, query);
@@ -644,6 +643,7 @@ public class MessagingController {
 
     }
 
+    @Override
     public void loadSearchResults(final Account account, final String folderName, final List<Message> messages,
             final MessagingListener listener) {
         threadPool.execute(new Runnable() {
@@ -701,7 +701,7 @@ public class MessagingController {
         }
     }
 
-
+    @Override
     public void loadMoreMessages(Account account, String folder, MessagingListener listener) {
         try {
             LocalStore localStore = account.getLocalStore();
@@ -718,6 +718,7 @@ public class MessagingController {
     /**
      * Start background synchronization of the specified folder.
      */
+    @Override
     public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener,
             final Folder providedRemoteFolder) {
         putBackground("synchronizeMailbox", listener, new Runnable() {
@@ -996,10 +997,12 @@ public class MessagingController {
 
     }
 
+    @Override
     public void handleAuthenticationFailure(Account account, boolean incoming) {
         notificationController.showAuthenticationErrorNotification(account, incoming);
     }
 
+    @Override
     public void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
             throws MessagingException, IOException {
 
@@ -2045,6 +2048,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public void markAllMessagesRead(final Account account, final String folder) {
         Timber.i("Marking all messages in %s:%s as read", account.getDescription(), folder);
 
@@ -2053,6 +2057,7 @@ public class MessagingController {
         processPendingCommands(account);
     }
 
+    @Override
     public void setFlag(final Account account, final List<Long> messageIds, final Flag flag,
             final boolean newState) {
 
@@ -2066,6 +2071,7 @@ public class MessagingController {
         });
     }
 
+    @Override
     public void setFlagForThreads(final Account account, final List<Long> threadRootIds,
             final Flag flag, final boolean newState) {
 
@@ -2154,6 +2160,7 @@ public class MessagingController {
      * @param newState
      *         {@code true}, if the flag should be set. {@code false} if it should be removed.
      */
+    @Override
     public void setFlag(Account account, String folderName, List<? extends Message> messages, Flag flag,
             boolean newState) {
         // TODO: Put this into the background, but right now some callers depend on the message
@@ -2214,6 +2221,7 @@ public class MessagingController {
      * @param newState
      *         {@code true}, if the flag should be set. {@code false} if it should be removed.
      */
+    @Override
     public void setFlag(Account account, String folderName, String uid, Flag flag,
             boolean newState) {
         Folder localFolder = null;
@@ -2233,6 +2241,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public void clearAllPending(final Account account) {
         try {
             Timber.w("Clearing pending commands!");
@@ -2243,6 +2252,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public void loadMessageRemotePartial(final Account account, final String folder,
             final String uid, final MessagingListener listener) {
         put("loadMessageRemotePartial", listener, new Runnable() {
@@ -2254,6 +2264,7 @@ public class MessagingController {
     }
 
     //TODO: Fix the callback mess. See GH-782
+    @Override
     public void loadMessageRemote(final Account account, final String folder,
             final String uid, final MessagingListener listener) {
         put("loadMessageRemote", listener, new Runnable() {
@@ -2331,6 +2342,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public LocalMessage loadMessage(Account account, String folderName, String uid) throws MessagingException {
         LocalStore localStore = account.getLocalStore();
         LocalFolder localFolder = localStore.getFolder(folderName);
@@ -2352,6 +2364,7 @@ public class MessagingController {
         return message;
     }
 
+    @Override
     public LocalMessage loadMessageMetadata(Account account, String folderName, String uid) throws MessagingException {
         LocalStore localStore = account.getLocalStore();
         LocalFolder localFolder = localStore.getFolder(folderName);
@@ -2431,10 +2444,7 @@ public class MessagingController {
         });
     }
 
-    /**
-     * Stores the given message in the Outbox and starts a sendPendingMessages command to
-     * attempt to send the message.
-     */
+    @Override
     public void sendMessage(final Account account,
             final Message message,
             MessagingListener listener) {
@@ -2459,7 +2469,7 @@ public class MessagingController {
         }
     }
 
-
+    @Override
     public void sendPendingMessages(MessagingListener listener) {
         final Preferences prefs = Preferences.getPreferences(context);
         for (Account account : prefs.getAvailableAccounts()) {
@@ -2467,10 +2477,7 @@ public class MessagingController {
         }
     }
 
-
-    /**
-     * Attempt to send any messages that are sitting in the Outbox.
-     */
+    @Override
     public void sendPendingMessages(final Account account,
             MessagingListener listener) {
         putBackground("sendPendingMessages", listener, new Runnable() {
@@ -2715,6 +2722,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public void getAccountStats(final Context context, final Account account,
             final MessagingListener listener) {
 
@@ -2732,6 +2740,7 @@ public class MessagingController {
         });
     }
 
+    @Override
     public void getSearchAccountStats(final SearchAccount searchAccount,
             final MessagingListener listener) {
 
@@ -2743,6 +2752,7 @@ public class MessagingController {
         });
     }
 
+    @Override
     public AccountStats getSearchAccountStatsSynchronous(final SearchAccount searchAccount,
             final MessagingListener listener) {
 
@@ -2811,6 +2821,7 @@ public class MessagingController {
         return stats;
     }
 
+    @Override
     public void getFolderUnreadMessageCount(final Account account, final String folderName,
             final MessagingListener l) {
         Runnable unreadRunnable = new Runnable() {
@@ -2832,15 +2843,17 @@ public class MessagingController {
         put("getFolderUnread:" + account.getDescription() + ":" + folderName, l, unreadRunnable);
     }
 
-
+    @Override
     public boolean isMoveCapable(MessageReference messageReference) {
         return !messageReference.getUid().startsWith(K9.LOCAL_UID_PREFIX);
     }
 
+    @Override
     public boolean isCopyCapable(MessageReference message) {
         return isMoveCapable(message);
     }
 
+    @Override
     public boolean isMoveCapable(final Account account) {
         try {
             Store localStore = account.getLocalStore();
@@ -2853,6 +2866,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public boolean isCopyCapable(final Account account) {
         try {
             Store localStore = account.getLocalStore();
@@ -2864,6 +2878,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public void moveMessages(final Account srcAccount, final String srcFolder,
             List<MessageReference> messageReferences, final String destFolder) {
         actOnMessageGroup(srcAccount, srcFolder, messageReferences, new MessageActor() {
@@ -2881,6 +2896,7 @@ public class MessagingController {
         });
     }
 
+    @Override
     public void moveMessagesInThread(Account srcAccount, final String srcFolder,
             final List<MessageReference> messageReferences, final String destFolder) {
         actOnMessageGroup(srcAccount, srcFolder, messageReferences, new MessageActor() {
@@ -2903,11 +2919,13 @@ public class MessagingController {
         });
     }
 
+    @Override
     public void moveMessage(final Account account, final String srcFolder, final MessageReference message,
             final String destFolder) {
         moveMessages(account, srcFolder, Collections.singletonList(message), destFolder);
     }
 
+    @Override
     public void copyMessages(final Account srcAccount, final String srcFolder,
             final List<MessageReference> messageReferences, final String destFolder) {
         actOnMessageGroup(srcAccount, srcFolder, messageReferences, new MessageActor() {
@@ -2923,6 +2941,7 @@ public class MessagingController {
         });
     }
 
+    @Override
     public void copyMessagesInThread(Account srcAccount, final String srcFolder,
             final List<MessageReference> messageReferences, final String destFolder) {
         actOnMessageGroup(srcAccount, srcFolder, messageReferences, new MessageActor() {
@@ -2944,6 +2963,7 @@ public class MessagingController {
         });
     }
 
+    @Override
     public void copyMessage(final Account account, final String srcFolder, final MessageReference message,
             final String destFolder) {
 
@@ -3043,6 +3063,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public void expunge(final Account account, final String folder) {
         putBackground("expunge", null, new Runnable() {
             @Override
@@ -3052,6 +3073,7 @@ public class MessagingController {
         });
     }
 
+    @Override
     public void deleteDraft(final Account account, long id) {
         LocalFolder localFolder = null;
         try {
@@ -3071,6 +3093,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public void deleteThreads(final List<MessageReference> messages) {
         actOnMessagesGroupedByAccountAndFolder(messages, new MessageActor() {
             @Override
@@ -3118,10 +3141,12 @@ public class MessagingController {
         return messagesInThreads;
     }
 
+    @Override
     public void deleteMessage(MessageReference message, final MessagingListener listener) {
         deleteMessages(Collections.singletonList(message), listener);
     }
 
+    @Override
     public void deleteMessages(List<MessageReference> messages, final MessagingListener listener) {
         actOnMessagesGroupedByAccountAndFolder(messages, new MessageActor() {
 
@@ -3142,6 +3167,7 @@ public class MessagingController {
     }
 
     @SuppressLint("NewApi") // used for debugging only
+    @Override
     public void debugClearMessagesLocally(final List<MessageReference> messages) {
         if (!BuildConfig.DEBUG) {
             throw new AssertionError("method must only be used in debug build!");
@@ -3280,6 +3306,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public void emptyTrash(final Account account, MessagingListener listener) {
         putBackground("emptyTrash", listener, new Runnable() {
             @Override
@@ -3318,6 +3345,7 @@ public class MessagingController {
         });
     }
 
+    @Override
     public void clearFolder(final Account account, final String folderName, final ActivityListener listener) {
         putBackground("clearFolder", listener, new Runnable() {
             @Override
@@ -3366,6 +3394,7 @@ public class MessagingController {
         return (account.getRemoteStore() instanceof Pop3Store);
     }
 
+    @Override
     public void sendAlternate(Context context, Account account, LocalMessage message) {
         Timber.d("Got message %s:%s:%s for sendAlternate",
                 account.getDescription(), message.getFolder(), message.getUid());
@@ -3409,10 +3438,7 @@ public class MessagingController {
         context.startActivity(Intent.createChooser(msg, context.getString(R.string.send_alternate_chooser_title)));
     }
 
-    /**
-     * Checks mail for one or multiple accounts. If account is null all accounts
-     * are checked.
-     */
+    @Override
     public void checkMail(final Context context, final Account account,
             final boolean ignoreLastCheckedTime,
             final boolean useManualWakeLock,
@@ -3621,7 +3647,7 @@ public class MessagingController {
         }
     }
 
-
+    @Override
     public void compact(final Account account, final MessagingListener ml) {
         putBackground("compact:" + account.getDescription(), ml, new Runnable() {
             @Override
@@ -3644,6 +3670,7 @@ public class MessagingController {
         });
     }
 
+    @Override
     public void clear(final Account account, final MessagingListener ml) {
         putBackground("clear:" + account.getDescription(), ml, new Runnable() {
             @Override
@@ -3672,6 +3699,7 @@ public class MessagingController {
         });
     }
 
+    @Override
     public void recreate(final Account account, final MessagingListener ml) {
         putBackground("recreate:" + account.getDescription(), ml, new Runnable() {
             @Override
@@ -3700,7 +3728,7 @@ public class MessagingController {
         });
     }
 
-
+    @Override
     public boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message) {
         // If we don't even have an account name, don't show the notification.
         // (This happens during initial account setup)
@@ -3776,21 +3804,13 @@ public class MessagingController {
         return true;
     }
 
+    @Override
     public void deleteAccount(Account account) {
         notificationController.clearNewMailNotifications(account);
         memorizingMessagingListener.removeAccount(account);
     }
 
-    /**
-     * Save a draft message.
-     *
-     * @param account
-     *         Account we are saving for.
-     * @param message
-     *         Message to save.
-     *
-     * @return Message representing the entry in the local store.
-     */
+    @Override
     public Message saveDraft(final Account account, final Message message, long existingDraftId, boolean saveRemotely) {
         Message localMessage = null;
         try {
@@ -3821,6 +3841,7 @@ public class MessagingController {
         return localMessage;
     }
 
+    @Override
     public long getId(Message message) {
         long id;
         if (message instanceof LocalMessage) {
@@ -3866,10 +3887,12 @@ public class MessagingController {
         }
     }
 
+    @Override
     public MessagingListener getCheckMailListener() {
         return checkMailListener;
     }
 
+    @Override
     public void setCheckMailListener(MessagingListener checkMailListener) {
         if (this.checkMailListener != null) {
             removeListener(this.checkMailListener);
@@ -3880,10 +3903,12 @@ public class MessagingController {
         }
     }
 
+    @Override
     public Collection<Pusher> getPushers() {
         return pushers.values();
     }
 
+    @Override
     public boolean setupPushing(final Account account) {
         try {
             Pusher previousPusher = pushers.remove(account);
@@ -3977,6 +4002,7 @@ public class MessagingController {
         return false;
     }
 
+    @Override
     public void stopAllPushing() {
         Timber.i("Stopping all pushers");
 
@@ -3988,6 +4014,7 @@ public class MessagingController {
         }
     }
 
+    @Override
     public void messagesArrived(final Account account, final Folder remoteFolder, final List<Message> messages,
             final boolean flagSyncOnly) {
         Timber.i("Got new pushed email messages for account %s, folder %s",
@@ -4050,25 +4077,30 @@ public class MessagingController {
         Timber.i("MessagingController.messagesArrivedLatch released");
     }
 
+    @Override
     public void systemStatusChanged() {
         for (MessagingListener l : getListeners()) {
             l.systemStatusChanged();
         }
     }
 
+    @Override
     public void cancelNotificationsForAccount(Account account) {
         notificationController.clearNewMailNotifications(account);
     }
 
+    @Override
     public void cancelNotificationForMessage(Account account, MessageReference messageReference) {
         notificationController.removeNewMailNotification(account, messageReference);
     }
 
+    @Override
     public void clearCertificateErrorNotifications(Account account, CheckDirection direction) {
         boolean incoming = (direction == CheckDirection.INCOMING);
         notificationController.clearCertificateErrorNotifications(account, incoming);
     }
 
+    @Override
     public void notifyUserIfCertificateProblem(Account account, Exception exception, boolean incoming) {
         if (!(exception instanceof CertificateValidationException)) {
             return;
