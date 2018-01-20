@@ -60,8 +60,11 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
 import com.fsck.k9.controller.imap.ImapMessageStore;
+import com.fsck.k9.controller.tasks.ClearFolderTask;
 import com.fsck.k9.controller.tasks.ListFoldersTask;
 import com.fsck.k9.controller.tasks.RefreshRemoteTask;
+import com.fsck.k9.controller.tasks.SearchRemoteTask;
+import com.fsck.k9.controller.tasks.SearchResultsLoader;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -143,6 +146,7 @@ public class MessagingController implements IMessageController {
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final TransportProvider transportProvider;
+    private final SearchResultsLoader searchResultsLoader;
 
     private ImapMessageStore imapMessageStore;
 
@@ -157,18 +161,21 @@ public class MessagingController implements IMessageController {
             NotificationController notificationController = NotificationController.newInstance(appContext);
             Contacts contacts = Contacts.getInstance(context);
             TransportProvider transportProvider = TransportProvider.getInstance();
-            inst = new MessagingController(appContext, notificationController, contacts, transportProvider);
+            inst = new MessagingController(appContext, notificationController, contacts, transportProvider,
+                    new SearchResultsLoader());
         }
         return inst;
     }
 
     @VisibleForTesting
     MessagingController(Context context, NotificationController notificationController,
-            Contacts contacts, TransportProvider transportProvider) {
+            Contacts contacts, TransportProvider transportProvider,
+            SearchResultsLoader searchResultsLoader) {
         this.context = context;
         this.notificationController = notificationController;
         this.contacts = contacts;
         this.transportProvider = transportProvider;
+        this.searchResultsLoader = searchResultsLoader;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -450,78 +457,9 @@ public class MessagingController implements IMessageController {
             final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags, final MessagingListener listener) {
         Timber.i("searchRemoteMessages (acct = %s, folderName = %s, query = %s)", acctUuid, folderName, query);
 
-        return threadPool.submit(new Runnable() {
-            @Override
-            public void run() {
-                searchRemoteMessagesSynchronous(acctUuid, folderName, query, requiredFlags, forbiddenFlags, listener);
-            }
-        });
-    }
-
-    @VisibleForTesting
-    void searchRemoteMessagesSynchronous(final String acctUuid, final String folderName, final String query,
-            final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags, final MessagingListener listener) {
-        final Account acct = Preferences.getPreferences(context).getAccount(acctUuid);
-
-        if (listener != null) {
-            listener.remoteSearchStarted(folderName);
-        }
-
-        List<Message> extraResults = new ArrayList<>();
-        try {
-            Store remoteStore = acct.getRemoteStore();
-            LocalStore localStore = acct.getLocalStore();
-
-            if (remoteStore == null || localStore == null) {
-                throw new MessagingException("Could not get store");
-            }
-
-            Folder remoteFolder = remoteStore.getFolder(folderName);
-            LocalFolder localFolder = localStore.getFolder(folderName);
-            if (remoteFolder == null || localFolder == null) {
-                throw new MessagingException("Folder not found");
-            }
-
-            List<Message> messages = remoteFolder.search(query, requiredFlags, forbiddenFlags);
-
-            Timber.i("Remote search got %d results", messages.size());
-
-            // There's no need to fetch messages already completely downloaded
-            List<Message> remoteMessages = localFolder.extractNewMessages(messages);
-            messages.clear();
-
-            if (listener != null) {
-                listener.remoteSearchServerQueryComplete(folderName, remoteMessages.size(),
-                        acct.getRemoteSearchNumResults());
-            }
-
-            Collections.sort(remoteMessages, new UidReverseComparator());
-
-            int resultLimit = acct.getRemoteSearchNumResults();
-            if (resultLimit > 0 && remoteMessages.size() > resultLimit) {
-                extraResults = remoteMessages.subList(resultLimit, remoteMessages.size());
-                remoteMessages = remoteMessages.subList(0, resultLimit);
-            }
-
-            loadSearchResultsSynchronous(remoteMessages, localFolder, remoteFolder, listener);
-
-
-        } catch (Exception e) {
-            if (Thread.currentThread().isInterrupted()) {
-                Timber.i(e, "Caught exception on aborted remote search; safe to ignore.");
-            } else {
-                Timber.e(e, "Could not complete remote search");
-                if (listener != null) {
-                    listener.remoteSearchFailed(null, e.getMessage());
-                }
-                Timber.e(e);
-            }
-        } finally {
-            if (listener != null) {
-                listener.remoteSearchFinished(folderName, 0, acct.getRemoteSearchNumResults(), extraResults);
-            }
-        }
-
+        return threadPool.submit(
+                new SearchRemoteTask(context,searchResultsLoader, acctUuid,
+                        folderName, query, requiredFlags, forbiddenFlags, listener));
     }
 
     @Override
@@ -547,7 +485,7 @@ public class MessagingController implements IMessageController {
                         throw new MessagingException("Folder not found");
                     }
 
-                    loadSearchResultsSynchronous(messages, localFolder, remoteFolder, listener);
+                    searchResultsLoader.load(messages, localFolder, remoteFolder, listener);
                 } catch (MessagingException e) {
                     Timber.e(e, "Exception in loadSearchResults");
                 } finally {
@@ -557,29 +495,6 @@ public class MessagingController implements IMessageController {
                 }
             }
         });
-    }
-
-    private void loadSearchResultsSynchronous(List<Message> messages, LocalFolder localFolder, Folder remoteFolder,
-            MessagingListener listener) throws MessagingException {
-        final FetchProfile header = new FetchProfile();
-        header.add(FetchProfile.Item.FLAGS);
-        header.add(FetchProfile.Item.ENVELOPE);
-        final FetchProfile structure = new FetchProfile();
-        structure.add(FetchProfile.Item.STRUCTURE);
-
-        int i = 0;
-        for (Message message : messages) {
-            i++;
-            LocalMessage localMsg = localFolder.getMessage(message.getUid());
-
-            if (localMsg == null) {
-                remoteFolder.fetch(Collections.singletonList(message), header, null);
-                //fun fact: ImapFolder.fetch can't handle getting STRUCTURE at same time as headers
-                remoteFolder.fetch(Collections.singletonList(message), structure, null);
-                localFolder.appendMessages(Collections.singletonList(message));
-                localMsg = localFolder.getMessage(message.getUid());
-            }
-        }
     }
 
     @Override
@@ -3227,33 +3142,9 @@ public class MessagingController implements IMessageController {
 
     @Override
     public void clearFolder(final Account account, final String folderName, final ActivityListener listener) {
-        putBackground("clearFolder", listener, new Runnable() {
-            @Override
-            public void run() {
-                clearFolderSynchronous(account, folderName, listener);
-            }
-        });
+        putBackground("clearFolder", listener,
+                new ClearFolderTask(this, context, account, folderName, listener, listeners));
     }
-
-    @VisibleForTesting
-    protected void clearFolderSynchronous(Account account, String folderName, MessagingListener listener) {
-        LocalFolder localFolder = null;
-        try {
-            localFolder = account.getLocalStore().getFolder(folderName);
-            localFolder.open(Folder.OPEN_MODE_RW);
-            localFolder.clearAllMessages();
-        } catch (UnavailableStorageException e) {
-            Timber.i("Failed to clear folder because storage is not available - trying again later.");
-            throw new UnavailableAccountException(e);
-        } catch (Exception e) {
-            Timber.e(e, "clearFolder failed");
-        } finally {
-            closeFolder(localFolder);
-        }
-
-        new ListFoldersTask(this, context, account, false, listener, listeners).run();
-    }
-
 
     /**
      * Find out whether the account type only supports a local Trash folder.
@@ -3274,6 +3165,7 @@ public class MessagingController implements IMessageController {
         return (account.getRemoteStore() instanceof Pop3Store);
     }
 
+    //TODO: This doesn't seem to really belong here.
     @Override
     public void sendAlternate(Context context, Account account, LocalMessage message) {
         Timber.d("Got message %s:%s:%s for sendAlternate",
