@@ -570,7 +570,9 @@ public class MessagingControllerTest {
             throws Exception {
         configureRemoteStoreWithFolder();
         when(localFolder.getMessage("1")).thenReturn(localNewMessage1);
+        when(localNewMessage1.getUid()).thenReturn("1");
         when(remoteFolder.getMessage("1")).thenReturn(remoteNewMessage1);
+        when(remoteNewMessage1.getUid()).thenReturn("1");
         controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
                 true);
 
