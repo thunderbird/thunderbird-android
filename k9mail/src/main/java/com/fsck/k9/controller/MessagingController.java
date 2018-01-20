@@ -60,6 +60,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
 import com.fsck.k9.controller.imap.ImapMessageStore;
+import com.fsck.k9.controller.tasks.ListFoldersTask;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -357,69 +358,20 @@ public class MessagingController implements IMessageController {
         cache.removeValueForThreads(messageIds, columnName);
     }
 
-    //TODO this needs to cache the remote folder list
     @Override
     public void listFolders(final Account account, final boolean refreshRemote, final MessagingListener listener) {
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                listFoldersSynchronous(account, refreshRemote, listener);
-            }
-        });
+        threadPool.execute(new ListFoldersTask(this,
+                context, account, refreshRemote, listener, listeners));
     }
 
-    /**
-     * Lists folders that are available locally and remotely. This method calls
-     * listFoldersCallback for local folders before it returns, and then for
-     * remote folders at some later point. If there are no local folders
-     * includeRemote is forced by this method. This method is called in the
-     * foreground.
-     * TODO this needs to cache the remote folder list
-     */
     @Override
-    public void listFoldersSynchronous(final Account account, final boolean refreshRemote,
-            final MessagingListener listener) {
-        for (MessagingListener l : getListeners(listener)) {
-            l.listFoldersStarted(account);
-        }
-        List<LocalFolder> localFolders = null;
-        if (!account.isAvailable(context)) {
-            Timber.i("not listing folders of unavailable account");
-        } else {
-            try {
-                LocalStore localStore = account.getLocalStore();
-                localFolders = localStore.getPersonalNamespaces(false);
-
-                if (refreshRemote || localFolders.isEmpty()) {
-                    doRefreshRemote(account, listener);
-                    return;
-                }
-
-                for (MessagingListener l : getListeners(listener)) {
-                    l.listFolders(account, localFolders);
-                }
-            } catch (Exception e) {
-                for (MessagingListener l : getListeners(listener)) {
-                    l.listFoldersFailed(account, e.getMessage());
-                }
-
-                Timber.e(e);
-                return;
-            } finally {
-                if (localFolders != null) {
-                    for (Folder localFolder : localFolders) {
-                        closeFolder(localFolder);
-                    }
-                }
-            }
-        }
-
-        for (MessagingListener l : getListeners(listener)) {
-            l.listFoldersFinished(account);
-        }
+    public void listFoldersSynchronous(final Account account, final boolean refreshRemote, final MessagingListener listener) {
+        new ListFoldersTask(this,
+                context, account, refreshRemote, listener, listeners).run();
     }
 
-    private void doRefreshRemote(final Account account, final MessagingListener listener) {
+    @Override
+    public void doRefreshRemote(final Account account, final MessagingListener listener) {
         put("doRefreshRemote", listener, new Runnable() {
             @Override
             public void run() {
@@ -1016,10 +968,9 @@ public class MessagingController implements IMessageController {
         }
     }
 
+    //TODO: Use ControllerUtils directly
     private static void closeFolder(Folder f) {
-        if (f != null) {
-            f.close();
-        }
+        ControllerUtils.closeFolder(f);
     }
 
     /*
@@ -3371,7 +3322,7 @@ public class MessagingController implements IMessageController {
             closeFolder(localFolder);
         }
 
-        listFoldersSynchronous(account, false, listener);
+        new ListFoldersTask(this, context, account, false, listener, listeners).run();
     }
 
 

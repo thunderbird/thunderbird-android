@@ -50,8 +50,9 @@ public interface IMessageController {
      */
     void listFolders(Account account, boolean refreshRemote, MessagingListener listener);
 
-    void listFoldersSynchronous(Account account, boolean refreshRemote,
-            MessagingListener listener);
+    void listFoldersSynchronous(Account account, boolean refreshRemote, MessagingListener listener);
+
+    void doRefreshRemote(Account account, MessagingListener listener);
 
     void searchLocalMessages(LocalSearch search, MessagingListener listener);
 
