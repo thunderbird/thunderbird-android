@@ -12,6 +12,7 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.mail.FetchProfile;
@@ -24,8 +25,10 @@ import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
+import edu.emory.mathcs.backport.java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Matchers;
@@ -48,6 +51,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
+@RunWith(K9RobolectricTestRunner.class)
 public class SearchRemoteTaskTest {
     private static final String FOLDER_NAME = "Folder";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
@@ -179,7 +183,7 @@ public class SearchRemoteTaskTest {
     }
 
     @Test
-    public void searchRemoteMessagesSynchronous_shouldNotifyStartedListingRemoteMessages() throws Exception {
+    public void run_shouldNotifyStartedListingRemoteMessages() throws Exception {
         setupRemoteSearch();
 
         new SearchRemoteTask(appContext, searchResultsLoader, "1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener).run();
@@ -188,7 +192,7 @@ public class SearchRemoteTaskTest {
     }
 
     @Test
-    public void searchRemoteMessagesSynchronous_shouldQueryRemoteFolder() throws Exception {
+    public void run_shouldQueryRemoteFolder() throws Exception {
         setupRemoteSearch();
 
         new SearchRemoteTask(appContext, searchResultsLoader, "1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener).run();
@@ -197,7 +201,7 @@ public class SearchRemoteTaskTest {
     }
 
     @Test
-    public void searchRemoteMessagesSynchronous_shouldAskLocalFolderToDetermineNewMessages() throws Exception {
+    public void run_shouldAskLocalFolderToDetermineNewMessages() throws Exception {
         setupRemoteSearch();
 
         new SearchRemoteTask(appContext, searchResultsLoader, "1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener).run();
@@ -206,45 +210,18 @@ public class SearchRemoteTaskTest {
     }
 
     @Test
-    public void searchRemoteMessagesSynchronous_shouldTryAndGetNewMessages() throws Exception {
+    public void run_shouldLoadOnlyNewMessages() throws Exception {
         setupRemoteSearch();
 
         new SearchRemoteTask(appContext, searchResultsLoader, "1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener).run();
 
-        verify(localFolder).getMessage("newMessageUid1");
+        verify(searchResultsLoader).load(
+                eq(Arrays.asList(new Message[]{remoteNewMessage1, remoteNewMessage2})),
+                eq(localFolder), eq(remoteFolder), eq(listener));
     }
 
     @Test
-    public void searchRemoteMessagesSynchronous_shouldNotTryAndGetOldMessages() throws Exception {
-        setupRemoteSearch();
-
-        new SearchRemoteTask(appContext, searchResultsLoader, "1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener).run();
-
-        verify(localFolder, never()).getMessage("oldMessageUid");
-    }
-
-    @Test
-    public void searchRemoteMessagesSynchronous_shouldFetchNewMessages() throws Exception {
-        setupRemoteSearch();
-
-        new SearchRemoteTask(appContext, searchResultsLoader, "1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener).run();
-
-        verify(remoteFolder, times(2)).fetch(eq(Collections.singletonList(remoteNewMessage2)),
-                fetchProfileCaptor.capture(), Matchers.<MessageRetrievalListener>eq(null));
-    }
-
-    @Test
-    public void searchRemoteMessagesSynchronous_shouldNotFetchExistingMessages() throws Exception {
-        setupRemoteSearch();
-
-        new SearchRemoteTask(appContext, searchResultsLoader, "1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener).run();
-
-        verify(remoteFolder, never()).fetch(eq(Collections.singletonList(remoteNewMessage1)),
-                fetchProfileCaptor.capture(), Matchers.<MessageRetrievalListener>eq(null));
-    }
-
-    @Test
-    public void searchRemoteMessagesSynchronous_shouldNotifyOnFailure() throws Exception {
+    public void run_shouldNotifyOnFailure() throws Exception {
         setupRemoteSearch();
         when(account.getRemoteStore()).thenThrow(new MessagingException("Test"));
 
@@ -254,9 +231,18 @@ public class SearchRemoteTaskTest {
     }
 
     @Test
-    public void searchRemoteMessagesSynchronous_shouldNotifyOnFinish() throws Exception {
+    public void run_shouldNotifyOnFinishFollowingFailure() throws Exception {
         setupRemoteSearch();
         when(account.getRemoteStore()).thenThrow(new MessagingException("Test"));
+
+        new SearchRemoteTask(appContext, searchResultsLoader, "1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener).run();
+
+        verify(listener).remoteSearchFinished(FOLDER_NAME, 0, 50, Collections.<Message>emptyList());
+    }
+
+    @Test
+    public void run_shouldNotifyOnFinishFollowingSuccess() throws Exception {
+        setupRemoteSearch();
 
         new SearchRemoteTask(appContext, searchResultsLoader, "1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener).run();
 
