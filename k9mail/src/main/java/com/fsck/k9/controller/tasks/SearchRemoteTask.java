@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
-import android.support.annotation.VisibleForTesting;
-
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingListener;
@@ -54,8 +52,7 @@ public class SearchRemoteTask implements Runnable {
         searchRemoteMessagesSynchronous();
     }
 
-    @VisibleForTesting
-    void searchRemoteMessagesSynchronous() {
+    private void searchRemoteMessagesSynchronous() {
         final Account acct = Preferences.getPreferences(context).getAccount(acctUuid);
 
         if (taskListener != null) {
