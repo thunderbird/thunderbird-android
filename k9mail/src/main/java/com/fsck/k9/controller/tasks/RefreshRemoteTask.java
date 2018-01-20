@@ -34,7 +34,7 @@ public class RefreshRemoteTask implements Runnable {
         refreshRemoteSynchronous();
     }
 
-    void refreshRemoteSynchronous() {
+    private void refreshRemoteSynchronous() {
         Set<MessagingListener> listeners = new HashSet<>(this.listeners);
         listeners.add(taskListener);
 

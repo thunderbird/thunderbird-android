@@ -4,7 +4,6 @@ package com.fsck.k9.controller.tasks;
 import java.util.Set;
 
 import android.content.Context;
-import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.controller.ControllerUtils;
@@ -39,11 +38,10 @@ public class ClearFolderTask implements Runnable {
 
     @Override
     public void run() {
-
+        clearFolderSynchronous();
     }
 
-    @VisibleForTesting
-    protected void clearFolderSynchronous() {
+    private void clearFolderSynchronous() {
         LocalFolder localFolder = null;
         try {
             localFolder = account.getLocalStore().getFolder(folderName);
