@@ -104,6 +104,7 @@ public class MessagingControllerTest {
     private Message remoteNewMessage1;
     @Mock
     private LocalMessage localNewMessage1;
+    private MessageDownloader messageDownloader;
 
 
     @Before
@@ -112,8 +113,11 @@ public class MessagingControllerTest {
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
+        messageDownloader = new MessageDownloader();
+
         controller = new MessagingController(
-                appContext, notificationController, contacts, transportProvider, searchResultsLoader);
+                appContext, notificationController, contacts, transportProvider,
+                searchResultsLoader, messageDownloader);
 
         configureAccount();
         configureLocalStore();
@@ -153,84 +157,6 @@ public class MessagingControllerTest {
                 eq((String) null), eq(Collections.singletonList(localMessage)));
     }
 
-    @Test
-    public void loadMessageRemoteSynchronous_shouldOpenLocalFolder() throws Exception {
-        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
-                false);
-
-        verify(localFolder).open(Folder.OPEN_MODE_RW);
-    }
-
-    @Test
-    public void loadMessageRemoteSynchronous_shouldGetMessageFromLocalFolder() throws Exception {
-        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
-                false);
-
-        verify(localFolder).getMessage("1");
-    }
-
-    @Test
-    public void loadMessageRemoteSynchronous_shouldNotOpenRemoteFolder_forLocalUid() throws Exception {
-        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "K9LOCAL:1", listener,
-                false);
-
-        verify(remoteFolder, never()).open(anyInt());
-    }
-
-    @Test
-    public void loadMessageRemoteSynchronous_shouldOpenRemoteFolder_forRemoteUid() throws Exception {
-        configureRemoteStoreWithFolder();
-        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
-                false);
-
-        verify(remoteFolder).open(Folder.OPEN_MODE_RW);
-    }
-
-    @Test
-    public void loadMessageRemoteSynchronous_shouldGetMessageUsingRemoteUid() throws Exception {
-        configureRemoteStoreWithFolder();
-        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
-                false);
-
-        verify(remoteFolder).getMessage("1");
-    }
-
-    @Test
-    public void loadMessageRemoteSynchronous_withLoadPartialFromSearchFalse_shouldFetchBodyAndFlags()
-            throws Exception {
-        configureRemoteStoreWithFolder();
-        when(localFolder.getMessage("1")).thenReturn(localNewMessage1);
-        when(remoteFolder.getMessage("1")).thenReturn(remoteNewMessage1);
-        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
-                false);
-
-        verify(remoteFolder).fetch(eq(Collections.singletonList(remoteNewMessage1)),
-                fetchProfileCaptor.capture(), Matchers.<MessageRetrievalListener>eq(null));
-        assertTrue(fetchProfileCaptor.getValue().contains(Item.BODY));
-        assertTrue(fetchProfileCaptor.getValue().contains(Item.FLAGS));
-        assertEquals(2, fetchProfileCaptor.getValue().size());
-    }
-
-    @Test
-    public void loadMessageRemoteSynchronous_withLoadPartialFromSearchTrue_shouldFetchUnsyncedSmallAndLargeMessages()
-            throws Exception {
-        configureRemoteStoreWithFolder();
-        when(localFolder.getMessage("1")).thenReturn(localNewMessage1);
-        when(localNewMessage1.getUid()).thenReturn("1");
-        when(remoteFolder.getMessage("1")).thenReturn(remoteNewMessage1);
-        when(remoteNewMessage1.getUid()).thenReturn("1");
-        controller.loadMessageRemoteSynchronous(account, FOLDER_NAME, "1", listener,
-                true);
-
-        verify(remoteFolder, times(3)).fetch(eq(Collections.emptyList()),
-                fetchProfileCaptor.capture(), messageRetrievalListenerCaptor.capture());
-        assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(Item.ENVELOPE));
-        assertEquals(1, fetchProfileCaptor.getAllValues().get(0).size());
-        assertTrue(fetchProfileCaptor.getAllValues().get(1).contains(Item.BODY));
-        assertEquals(1, fetchProfileCaptor.getAllValues().get(1).size());
-        assertTrue(fetchProfileCaptor.getAllValues().get(2).contains(Item.STRUCTURE));
-        assertEquals(1, fetchProfileCaptor.getAllValues().get(2).size());
-    }
     @Test
     public void synchronizeMailboxSynchronousLegacy_withOneMessageInRemoteFolder_shouldFinishWithoutError()
             throws Exception {
