@@ -349,7 +349,7 @@ public class MessagingControllerTest {
     }
 
     @Test
-    public void synchronizeMailboxSynchronousLegacy_withUnsyncedNewSmallMessage_shouldFetchStructureAndLimitedBodyOfLargeMessage()
+    public void synchronizeMailboxSynchronousLegacy_withUnsyncedNewSmallMessage_shouldFetchEnvelopeStructureAndLimitedBodyOfLargeMessage()
             throws Exception {
         Message largeMessage = buildLargeNewMessage();
         configureRemoteStoreWithFolder();
@@ -360,13 +360,14 @@ public class MessagingControllerTest {
 
         controller.synchronizeMailboxSynchronousLegacy(account, FOLDER_NAME, listener);
 
-        //TODO: Don't bother fetching messages of a size we don't have
-        verify(remoteFolder, atLeast(4)).fetch(any(List.class), fetchProfileCaptor.capture(),
+        verify(remoteFolder, times(3)).fetch(any(List.class), fetchProfileCaptor.capture(),
                 any(MessageRetrievalListener.class));
+        assertEquals(1, fetchProfileCaptor.getAllValues().get(0).size());
+        assertEquals(FetchProfile.Item.ENVELOPE, fetchProfileCaptor.getAllValues().get(0).get(0));
+        assertEquals(1, fetchProfileCaptor.getAllValues().get(1).size());
+        assertEquals(FetchProfile.Item.STRUCTURE, fetchProfileCaptor.getAllValues().get(1).get(0));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(2).size());
-        assertEquals(FetchProfile.Item.STRUCTURE, fetchProfileCaptor.getAllValues().get(2).get(0));
-        assertEquals(1, fetchProfileCaptor.getAllValues().get(3).size());
-        assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(3).get(0));
+        assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(2).get(0));
     }
 
     private void respondToFetchEnvelopesWithMessage(final Message message) throws MessagingException {
