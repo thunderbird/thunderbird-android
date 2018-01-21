@@ -359,7 +359,7 @@ public class MessageDownloader {
                                 remoteMessage.getSize() > account.getMaximumAutoDownloadMessageSize()) {
                             largeRemoteMessages.add(remoteMessage);
                         } else {
-                            largeRemoteMessages.add(remoteMessage);
+                            smallRemoteMessages.add(remoteMessage);
                         }
                     } catch (Exception e) {
                         Timber.e(e, "Error while storing downloaded message.");
