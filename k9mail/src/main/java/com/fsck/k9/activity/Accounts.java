@@ -15,7 +15,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
@@ -33,6 +32,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
@@ -415,7 +415,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         requestWindowFeature(Window.FEATURE_PROGRESS);
-        actionBar = getActionBar();
+        actionBar = getSupportActionBar();
         initializeActionBar();
         setContentView(R.layout.accounts);
         ListView listView = getListView();
@@ -532,7 +532,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * Save the reference to a currently displayed dialog or a running AsyncTask (if available).
      */
     @Override
-    public Object onRetainNonConfigurationInstance() {
+    public Object onRetainCustomNonConfigurationInstance() {
         Object retain = null;
         if (nonConfigurationInstance != null && nonConfigurationInstance.retain()) {
             retain = nonConfigurationInstance;
