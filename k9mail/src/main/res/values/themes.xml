@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.K9.Startup" parent="@android:style/Theme.Holo.NoActionBar">
+    <style name="Theme.K9.Startup" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
     <!-- Empty base themes that can be easily replaced by RRO (Runtime Resource Overlay) themes -->
-    <style name="Theme.K9.Light.Base" parent="@android:style/Theme.Holo.Light" />
-    <style name="Theme.K9.Dark.Base" parent="@android:style/Theme.Holo" />
+    <style name="Theme.K9.Light.Base" parent="Theme.AppCompat.Light" />
+    <style name="Theme.K9.Dark.Base" parent="Theme.AppCompat" />
 
     <style name="Theme.K9.Light.Common" parent="Theme.K9.Light.Base">
         <item name="iconFolder">@drawable/ic_folder_light</item>
