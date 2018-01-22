@@ -178,6 +178,28 @@ public class HtmlSanitizerTest {
     }
 
     @Test
+    public void shouldKeepMapAreaTags() {
+        String html = "<html><head></head><body><map name=\"planetmap\">\n" +
+                "  <area shape=\"rect\" coords=\"0,0,82,126\" href=\"sun.htm\" alt=\"Sun\">\n" +
+                "  <area shape=\"circle\" coords=\"90,58,3\" href=\"mercur.htm\" alt=\"Mercury\">\n" +
+                "  <area shape=\"circle\" coords=\"124,58,8\" href=\"venus.htm\" alt=\"Venus\">\n" +
+                "</map></body></html>";
+
+        Document result = htmlSanitizer.sanitize(html);
+
+        assertEquals(html, toCompactString(result));
+    }
+
+    @Test
+    public void shouldKeepImgUsemap() {
+        String html = "<html><head></head><body><img src=\"image.jpg\" usemap=\"#planetmap\"></body></html>";
+
+        Document result = htmlSanitizer.sanitize(html);
+
+        assertEquals(html, toCompactString(result));
+    }
+
+    @Test
     public void shouldKeepWhitelistedElementsInHeadAndSkipTheRest() {
         String html = "<html><head>" +
                 "<title>remove this</title>" +
