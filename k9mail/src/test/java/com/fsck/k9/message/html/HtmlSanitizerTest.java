@@ -180,9 +180,9 @@ public class HtmlSanitizerTest {
     @Test
     public void shouldKeepMapAreaTags() {
         String html = "<html><head></head><body><map name=\"planetmap\">\n" +
-                "  <area shape=\"rect\" coords=\"0,0,82,126\" href=\"sun.htm\" alt=\"Sun\">\n" +
-                "  <area shape=\"circle\" coords=\"90,58,3\" href=\"mercur.htm\" alt=\"Mercury\">\n" +
-                "  <area shape=\"circle\" coords=\"124,58,8\" href=\"venus.htm\" alt=\"Venus\">\n" +
+                "  <area shape=\"rect\" coords=\"0,0,82,126\" href=\"http://domain.com/sun.htm\" alt=\"Sun\">\n" +
+                "  <area shape=\"circle\" coords=\"90,58,3\" href=\"http://domain.com/mercur.htm\" alt=\"Mercury\">\n" +
+                "  <area shape=\"circle\" coords=\"124,58,8\" href=\"http://domain.com/venus.htm\" alt=\"Venus\">\n" +
                 "</map></body></html>";
 
         Document result = htmlSanitizer.sanitize(html);
@@ -192,7 +192,9 @@ public class HtmlSanitizerTest {
 
     @Test
     public void shouldKeepImgUsemap() {
-        String html = "<html><head></head><body><img src=\"image.jpg\" usemap=\"#planetmap\"></body></html>";
+        String html = "<html><head></head><body>" +
+                "<img src=\"http://domain.com/image.jpg\" usemap=\"#planetmap\">" +
+                "</body></html>";
 
         Document result = htmlSanitizer.sanitize(html);
 
