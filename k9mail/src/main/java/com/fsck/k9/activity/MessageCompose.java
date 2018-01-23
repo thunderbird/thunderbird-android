@@ -144,9 +144,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final String STATE_KEY_READ_RECEIPT = "com.fsck.k9.activity.MessageCompose.messageReadReceipt";
     private static final String STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE = "com.fsck.k9.activity.MessageCompose.changesMadeSinceLastSave";
     private static final String STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT = "alreadyNotifiedUserOfEmptySubject";
-    private static final String STATE_TO_RECIPIENTS = "to_string";
-    private static final String STATE_CC_RECIPIENTS = "cc_string";
-    private static final String STATE_BCC_RECIPIENTS = "bcc_string";
+    private static final String STATE_TO_RECIPIENTS = "toRecipient";
+    private static final String STATE_CC_RECIPIENTS = "ccRecipient";
+    private static final String STATE_BCC_RECIPIENTS = "bccRecipient";
 
     private static final String FRAGMENT_WAITING_FOR_ATTACHMENT = "waitingForAttachment";
 
