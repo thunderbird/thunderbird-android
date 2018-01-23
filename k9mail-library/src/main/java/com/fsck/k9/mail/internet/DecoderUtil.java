@@ -153,7 +153,7 @@ class DecoderUtil {
                         sb.append(decodeEncodedWord(previousWord));
                         sb.append(sep);
                     } else if (previousWord.encoding.equals(word.encoding) &&
-                            previousWord.charset.equals(word.charset)) {
+                            previousWord.charset.equals(word.charset) && !previousWord.encodedText.endsWith("=")) {
                         word.encodedText = previousWord.encodedText + word.encodedText;
                     } else {
                         sb.append(decodeEncodedWord(previousWord));

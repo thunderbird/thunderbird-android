@@ -193,6 +193,12 @@ public class DecoderUtilTest {
     }
 
     @Test
+    public void decodeEncodedWords_withTwoCompleteEncodedWords_shouldProvideBoth() {
+        assertInputDecodesToExpected("=?UTF-8?B?W+aWsOioguWWrl0g6aGn5a6iOiB4eHhAeHh4LmNvbSDmnInmlrDoqILllq46ICMyMDE4MA==?= " +
+                "=?UTF-8?B?MTE4MTIzNDU2Nzg=?=", "[新訂單] 顧客: xxx@xxx.com 有新訂單: #2018011812345678");
+    }
+
+    @Test
     public void decodeEncodedWords_withRFC2047examples_decodesCorrectly() {
         assertInputDecodesToExpected("(=?ISO-8859-1?Q?a?=)", "(a)");
 
