@@ -1,6 +1,7 @@
 package com.fsck.k9.ui;
 
 
+import android.content.ActivityNotFoundException;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -20,6 +21,9 @@ import android.view.View.OnClickListener;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.fsck.k9.R;
 
 
 /**
@@ -207,10 +211,14 @@ public class ContactBadge extends ImageView implements OnClickListener {
                         getContext(), ContactBadge.this, lookupUri, QuickContact.MODE_LARGE, null);
             } else if (createUri != null) {
                 // Prompt user to add this person to contacts
-                final Intent intent = new Intent(Intents.SHOW_OR_CREATE_CONTACT, createUri);
-                extras.remove(EXTRA_URI_CONTENT);
-                intent.putExtras(extras);
-                getContext().startActivity(intent);
+                try {
+                    final Intent intent = new Intent(Intents.SHOW_OR_CREATE_CONTACT, createUri);
+                    extras.remove(EXTRA_URI_CONTENT);
+                    intent.putExtras(extras);
+                    getContext().startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(getContext(), R.string.error_activity_not_found, Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
