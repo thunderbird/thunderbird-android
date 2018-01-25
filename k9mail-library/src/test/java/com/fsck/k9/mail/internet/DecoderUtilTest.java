@@ -119,7 +119,7 @@ public class DecoderUtilTest {
 
     @Test
     public void decodeEncodedWords_withInvalidBase64String_returnsEmptyString() {
-        assertInputDecodesToExpected("=?us-ascii?b?abc?=", "");
+        assertInputDecodesToExpected("=?us-ascii?b?ab#?=", "");
     }
 
     @Test
@@ -190,6 +190,12 @@ public class DecoderUtilTest {
     @Test
     public void decodeEncodedWords_withEncodedWordFollowedByEncodedWordWithDifferentCharset_shouldDecodeIndividually() {
         assertInputDecodesToExpected("=?us-ascii?Q?oh_no_?= =?utf-8?Q?=F0=9F=92=A9?=", "oh no 💩");
+    }
+
+    @Test
+    public void decodeEncodedWords_withTwoCompleteEncodedWords_shouldProvideBoth() {
+        assertInputDecodesToExpected("=?UTF-8?B?W+aWsOioguWWrl0g6aGn5a6iOiB4eHhAeHh4LmNvbSDmnInmlrDoqILllq46ICMyMDE4MA==?= " +
+                "=?UTF-8?B?MTE4MTIzNDU2Nzg=?=", "[新訂單] 顧客: xxx@xxx.com 有新訂單: #2018011812345678");
     }
 
     @Test

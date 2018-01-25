@@ -17,6 +17,7 @@ repositories {
 dependencies {
     compile 'org.apache.james:apache-mime4j-core:0.8.1'
     compile 'org.apache.james:apache-mime4j-dom:0.8.1'
+    compile "com.squareup.okio:okio:${okioVersion}"
     compile 'commons-io:commons-io:2.4'
     compile 'com.jcraft:jzlib:1.0.7'
     compile 'com.beetstra.jutf7:jutf7:1.0.0'
@@ -27,7 +28,6 @@ dependencies {
     androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
 
     testCompile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
-    testCompile "com.squareup.okio:okio:${okioVersion}"
     testCompile "org.robolectric:robolectric:${robolectricVersion}"
     testCompile "junit:junit:${junitVersion}"
     testCompile "com.google.truth:truth:${truthVersion}"
