@@ -176,6 +176,14 @@ public class MessageHelper {
             }
         }
 
-        return (!TextUtils.isEmpty(address.getPersonal())) ? address.getPersonal() : address.getAddress();
+        if (!TextUtils.isEmpty(address.getPersonal()) && !isSpoofAddress(address.getPersonal())) {
+            return address.getPersonal();
+        } else {
+            return address.getAddress();
+        }
+    }
+
+    private static boolean isSpoofAddress(String displayName) {
+        return displayName.contains("@");
     }
 }
