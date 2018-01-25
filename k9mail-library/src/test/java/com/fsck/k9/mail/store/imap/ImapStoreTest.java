@@ -136,11 +136,11 @@ public class ImapStoreTest {
         ImapConnection imapConnection = mock(ImapConnection.class);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
         List<ImapResponse> imapResponses = Arrays.asList(
-                createImapResponse("* LIST (\\Drafts) \"/\" \"INBOX.Drafts\""),
-                createImapResponse("* LIST (\\Sent) \"/\" \"INBOX.Sent\""),
-                createImapResponse("* LIST (\\Junk) \"/\" \"INBOX.Spam\""),
-                createImapResponse("* LIST (\\Trash) \"/\" \"INBOX.Trash\""),
-                createImapResponse("* LIST (\\Archive) \"/\" \"INBOX.Archive\""),
+                createImapResponse("* LIST (\\Drafts) \".\" \"INBOX.Drafts\""),
+                createImapResponse("* LIST (\\Sent) \".\" \"INBOX.Sent\""),
+                createImapResponse("* LIST (\\Junk) \".\" \"INBOX.Spam\""),
+                createImapResponse("* LIST (\\Trash) \".\" \"INBOX.Trash\""),
+                createImapResponse("* LIST (\\Archive) \".\" \"INBOX.Archive\""),
                 createImapResponse("5 OK Success")
         );
         when(imapConnection.executeSimpleCommand("LIST (SPECIAL-USE) \"\" \"INBOX.*\"")).thenReturn(imapResponses);
@@ -220,6 +220,45 @@ public class ImapStoreTest {
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
+    }
+
+    @Test
+    public void getPersonalNamespaces_withNamespacePrefix_shouldRemoveNamespacePrefix() throws Exception {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        List<ImapResponse> imapResponses = Arrays.asList(
+                createImapResponse("* LIST () \".\" \"INBOX\""),
+                createImapResponse("* LIST () \".\" \"INBOX.FolderOne\""),
+                createImapResponse("* LIST () \".\" \"INBOX.FolderTwo\""),
+                createImapResponse("5 OK Success")
+        );
+        when(imapConnection.executeSimpleCommand("LIST \"\" \"INBOX.*\"")).thenReturn(imapResponses);
+        imapStore.enqueueImapConnection(imapConnection);
+        imapStore.setTestCombinedPrefix("INBOX.");
+
+        List<ImapFolder> result = imapStore.getPersonalNamespaces(false);
+
+        assertNotNull(result);
+        assertEquals(Sets.newSet("INBOX", "FolderOne", "FolderTwo"), extractFolderNames(result));
+    }
+
+    @Test
+    public void getPersonalNamespaces_withFolderNotMatchingNamespacePrefix_shouldExcludeFolderWithoutPrefix()
+            throws Exception {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        List<ImapResponse> imapResponses = Arrays.asList(
+                createImapResponse("* LIST () \".\" \"INBOX\""),
+                createImapResponse("* LIST () \".\" \"INBOX.FolderOne\""),
+                createImapResponse("* LIST () \".\" \"FolderTwo\""),
+                createImapResponse("5 OK Success")
+        );
+        when(imapConnection.executeSimpleCommand("LIST \"\" \"INBOX.*\"")).thenReturn(imapResponses);
+        imapStore.enqueueImapConnection(imapConnection);
+        imapStore.setTestCombinedPrefix("INBOX.");
+
+        List<ImapFolder> result = imapStore.getPersonalNamespaces(false);
+
+        assertNotNull(result);
+        assertEquals(Sets.newSet("INBOX", "FolderOne"), extractFolderNames(result));
     }
 
     @Test
