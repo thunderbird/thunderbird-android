@@ -6,6 +6,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +51,7 @@ public class MessageTopView extends LinearLayout {
     private AttachmentViewCallback attachmentCallback;
     private Button showPicturesButton;
     private boolean isShowingProgress;
+    private boolean showPicturesButtonClicked;
 
     private MessageCryptoPresenter messageCryptoPresenter;
 
@@ -85,6 +88,7 @@ public class MessageTopView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 showPicturesInAllContainerViews();
+                showPicturesButtonClicked = true;
             }
         });
     }
@@ -107,8 +111,8 @@ public class MessageTopView extends LinearLayout {
         resetAndPrepareMessageView(messageViewInfo);
 
         ShowPictures showPicturesSetting = account.getShowPictures();
-        boolean automaticallyLoadPictures =
-                shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
+        boolean loadPictures = shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message) ||
+                showPicturesButtonClicked;
 
         MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container,
                 containerView, false);
@@ -120,9 +124,9 @@ public class MessageTopView extends LinearLayout {
             public void onLoadFinished() {
                 displayViewOnLoadFinished(true);
             }
-        }, automaticallyLoadPictures, hideUnsignedTextDivider, attachmentCallback);
+        }, loadPictures, hideUnsignedTextDivider, attachmentCallback);
 
-        if (view.hasHiddenExternalImages()) {
+        if (view.hasHiddenExternalImages() && !showPicturesButtonClicked) {
             showShowPicturesButton();
         }
     }
@@ -326,6 +330,52 @@ public class MessageTopView extends LinearLayout {
                     .setDuration(PROGRESS_STEP_DURATION).start();
         } else {
             progressBar.setProgress(newPosition);
+        }
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState savedState = new SavedState(superState);
+        savedState.showPicturesButtonClicked = showPicturesButtonClicked;
+        return savedState;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        showPicturesButtonClicked = savedState.showPicturesButtonClicked;
+    }
+
+    private static class SavedState extends BaseSavedState {
+        boolean showPicturesButtonClicked;
+
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            this.showPicturesButtonClicked = (in.readInt() != 0);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt((this.showPicturesButtonClicked) ? 1 : 0);
         }
     }
 }

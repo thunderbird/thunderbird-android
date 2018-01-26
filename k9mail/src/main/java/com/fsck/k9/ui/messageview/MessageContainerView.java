@@ -8,8 +8,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
@@ -68,7 +66,6 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     private boolean showingPictures;
     private LayoutInflater mInflater;
     private AttachmentViewCallback attachmentCallback;
-    private SavedState mSavedState;
     private ClipboardManager mClipboardManager;
     private Map<AttachmentViewInfo, AttachmentView> attachmentViewMap = new HashMap<>();
     private Map<Uri, AttachmentViewInfo> attachments = new HashMap<>();
@@ -371,7 +368,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     }
 
     public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
-            final OnRenderingFinishedListener onRenderingFinishedListener, boolean automaticallyLoadPictures,
+            final OnRenderingFinishedListener onRenderingFinishedListener, boolean loadPictures,
             boolean hideUnsignedTextDivider, AttachmentViewCallback attachmentCallback) {
 
         this.attachmentCallback = attachmentCallback;
@@ -380,18 +377,10 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
         renderAttachments(messageViewInfo);
 
-        if (mSavedState != null) {
-            if (mSavedState.showingPictures) {
-                setLoadPictures(true);
-            }
-
-            mSavedState = null;
-        }
-
         String textToDisplay = messageViewInfo.text;
         if (textToDisplay != null && !isShowingPictures()) {
             if (Utility.hasExternalImages(textToDisplay)) {
-                if (automaticallyLoadPictures) {
+                if (loadPictures) {
                     setLoadPictures(true);
                 } else {
                     hasHiddenExternalImages = true;
@@ -507,32 +496,6 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     }
 
     @Override
-    public Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
-
-        SavedState savedState = new SavedState(superState);
-
-        savedState.attachmentViewVisible = (mAttachmentsContainer != null &&
-                mAttachmentsContainer.getVisibility() == View.VISIBLE);
-        savedState.showingPictures = showingPictures;
-
-        return savedState;
-    }
-
-    @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        if(!(state instanceof SavedState)) {
-            super.onRestoreInstanceState(state);
-            return;
-        }
-
-        SavedState savedState = (SavedState)state;
-        super.onRestoreInstanceState(savedState.getSuperState());
-
-        mSavedState = savedState;
-    }
-
-    @Override
     public void onLayoutChanged() {
         if (mMessageContentView != null) {
             mMessageContentView.invalidate();
@@ -553,42 +516,6 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
     private AttachmentView getAttachmentView(AttachmentViewInfo attachment) {
         return attachmentViewMap.get(attachment);
-    }
-
-    static class SavedState extends BaseSavedState {
-        boolean attachmentViewVisible;
-        boolean showingPictures;
-
-        public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
-            @Override
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
-
-            @Override
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
-
-
-        SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        private SavedState(Parcel in) {
-            super(in);
-            this.attachmentViewVisible = (in.readInt() != 0);
-            this.showingPictures = (in.readInt() != 0);
-        }
-
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            super.writeToParcel(out, flags);
-            out.writeInt((this.attachmentViewVisible) ? 1 : 0);
-            out.writeInt((this.showingPictures) ? 1 : 0);
-        }
     }
 
     interface OnRenderingFinishedListener {
