@@ -1,0 +1,113 @@
+package com.fsck.k9.message.html
+
+
+import com.google.common.truth.Truth.assertThat
+import org.junit.Test
+
+
+class EmailSectionExtractorTest {
+    @Test
+    fun simpleMessageWithoutQuotes() {
+        val message = """
+            Hi Alice,
+
+            are we still on for new Thursday?
+
+            Best
+            Bob
+            """.trimIndent()
+
+        val sections = EmailSectionExtractor.extract(message)
+
+        assertThat(sections.size).isEqualTo(1)
+        with(sections[0]) {
+            assertThat(quoteDepth).isEqualTo(0)
+            assertThat(toString()).isEqualTo(message)
+        }
+    }
+
+    @Test
+    fun quoteFollowedByReply() {
+        val message = """
+            Alice <alice@example.org> wrote:
+            > Hi there
+
+            Hi, what's up?
+            """.trimIndent()
+
+        val sections = EmailSectionExtractor.extract(message)
+
+        assertThat(sections.size).isEqualTo(3)
+        with(sections[0]) {
+            assertThat(quoteDepth).isEqualTo(0)
+            assertThat(toString()).isEqualTo("Alice <alice@example.org> wrote:\n")
+        }
+        with(sections[1]) {
+            assertThat(quoteDepth).isEqualTo(1)
+            assertThat(toString()).isEqualTo("Hi there\n")
+        }
+        with(sections[2]) {
+            assertThat(quoteDepth).isEqualTo(0)
+            assertThat(toString()).isEqualTo("\nHi, what's up?")
+        }
+    }
+
+    @Test
+    fun replyFollowedByTwoQuoteLevels() {
+        val message = """
+            Three
+
+            Bob <bob@example.org> wrote:
+            > Two
+            >${" "}
+            > Alice <alice@example.org> wrote:
+            >> One
+            """.trimIndent()
+
+        val sections = EmailSectionExtractor.extract(message)
+
+        assertThat(sections.size).isEqualTo(3)
+        with(sections[0]) {
+            assertThat(quoteDepth).isEqualTo(0)
+            assertThat(toString()).isEqualTo("Three\n\nBob <bob@example.org> wrote:\n")
+        }
+        with(sections[1]) {
+            assertThat(quoteDepth).isEqualTo(1)
+            assertThat(toString()).isEqualTo("Two\n\nAlice <alice@example.org> wrote:\n")
+        }
+        with(sections[2]) {
+            assertThat(quoteDepth).isEqualTo(2)
+            assertThat(toString()).isEqualTo("One")
+        }
+    }
+
+    @Test
+    fun chaosQuoting() {
+        val message = """
+            >>> One
+            > Three
+            Four
+            >> Two${"\n"}
+            """.trimIndent()
+
+        val sections = EmailSectionExtractor.extract(message)
+
+        assertThat(sections.size).isEqualTo(4)
+        with(sections[0]) {
+            assertThat(quoteDepth).isEqualTo(3)
+            assertThat(toString()).isEqualTo("One\n")
+        }
+        with(sections[1]) {
+            assertThat(quoteDepth).isEqualTo(1)
+            assertThat(toString()).isEqualTo("Three\n")
+        }
+        with(sections[2]) {
+            assertThat(quoteDepth).isEqualTo(0)
+            assertThat(toString()).isEqualTo("Four\n")
+        }
+        with(sections[3]) {
+            assertThat(quoteDepth).isEqualTo(2)
+            assertThat(toString()).isEqualTo("Two\n")
+        }
+    }
+}
