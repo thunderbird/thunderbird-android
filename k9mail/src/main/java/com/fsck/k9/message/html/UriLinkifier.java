@@ -14,7 +14,7 @@ public class UriLinkifier {
     private static final Pattern URI_SCHEME;
     private static final Map<String, UriParser> SUPPORTED_URIS;
     private static final String SCHEME_SEPARATORS = " (\\n>";
-    private static final String ALLOWED_SEPARATORS_PATTERN = "(?:^|[" + SCHEME_SEPARATORS + "])";
+    private static final String ALLOWED_SEPARATORS_PATTERN = "(?:^|[" + SCHEME_SEPARATORS + "]|&lt;)";
 
     static {
         SUPPORTED_URIS = new HashMap<>();
