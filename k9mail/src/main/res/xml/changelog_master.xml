@@ -8,6 +8,37 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.500" versioncode="23700">
+        <change>Import/Export maintain account ordering</change>
+        <change>Improvements to HTML sanitisation mechanism</change>
+        <change>IMAP message sync improvements</change>
+        <change>Further improvements to encryption UX</change>
+        <change>Forward-as-attachment feature</change>
+        <change>Adding option for limiting push connections to 5</change>
+        <change>Altered identity prioritisation</change>
+        <change>Improved rendering of RTL text</change>
+        <change>Added SMTP hostname privacy option</change>
+        <change>Added ability to show email address during composition</change>
+        <change>Removed IMAP namespace prefix from folder names</change>
+        <change>Fixed Mailsploit bug</change>
+        <change>Fixed bug when adding recipients during composition</change>
+        <change>Fixed bug relating to encrypted attached emails</change>
+        <change>Fixed various typos</change>
+    </release>
+    <release version="5.403" versioncode="23630">
+        <change>Fixed bug that caused 'Quiet Time' to behave erratically</change>
+    </release>
+    <release version="5.402" versioncode="23620">
+        <change>Fixed display issues with certain messages</change>
+    </release>
+    <release version="5.401" versioncode="23610">
+        <change>Fixed bug that lead to some messages showing as empty</change>
+    </release>
+    <release version="5.400" versioncode="23600">
+        <change>Avoid crash on Android 8.1</change>
+        <change>Updated translations</change>
+        <change>Added Albanian translation</change>
+    </release>
     <release version="5.304" versioncode="23540">
         <change>Fixed bug that could cause OpenPGP signature verification to fail when it shouldn't</change>
         <change>Updated translations</change>
