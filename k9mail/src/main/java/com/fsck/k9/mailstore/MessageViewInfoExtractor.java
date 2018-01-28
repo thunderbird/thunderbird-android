@@ -124,7 +124,7 @@ public class MessageViewInfoExtractor {
                 !message.isSet(Flag.X_DOWNLOADED_FULL) || MessageExtractor.hasMissingParts(message);
 
         return MessageViewInfo.createWithExtractedContent(
-                message, isMessageIncomplete, viewable.html, attachmentInfos, attachmentResolver);
+                message, contentPart, isMessageIncomplete, viewable.html, attachmentInfos, attachmentResolver);
     }
 
     private ViewableExtractedText extractViewableAndAttachments(List<Part> parts,
