@@ -4,6 +4,8 @@ package com.fsck.k9.message;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -185,22 +187,30 @@ public class PgpMessageBuilder extends MessageBuilder {
             return;
         }
 
-        Address[] toRecipients = currentProcessedMimeMessage.getRecipients(RecipientType.TO);
-        Address[] ccRecipients = currentProcessedMimeMessage.getRecipients(RecipientType.CC);
-        if (toRecipients.length + ccRecipients.length > 1) {
-            addAutocryptGossipHeadersToPart(bodyPart, toRecipients);
-            addAutocryptGossipHeadersToPart(bodyPart, ccRecipients);
+        String[] recipientAddresses = getCryptoRecipientsWithoutBcc();
+        boolean hasMultipleOvertRecipients = recipientAddresses.length >= 2;
+        if (hasMultipleOvertRecipients) {
+            addAutocryptGossipHeadersToPart(bodyPart, recipientAddresses);
         }
     }
 
-    private void addAutocryptGossipHeadersToPart(MimeBodyPart bodyPart, Address[] recipients) {
-        for (Address address : recipients) {
-            byte[] keyMaterial = autocryptOpenPgpApiInteractor.getKeyMaterialForUserId(openPgpApi, address.getAddress());
+    private String[] getCryptoRecipientsWithoutBcc() {
+        ArrayList<String> recipientAddresses = new ArrayList<>(Arrays.asList(cryptoStatus.getRecipientAddresses()));
+        Address[] bccAddresses = currentProcessedMimeMessage.getRecipients(RecipientType.BCC);
+        for (Address bccAddress : bccAddresses) {
+            recipientAddresses.remove(bccAddress.getAddress());
+        }
+        return recipientAddresses.toArray(new String[recipientAddresses.size()]);
+    }
+
+    private void addAutocryptGossipHeadersToPart(MimeBodyPart bodyPart, String[] addresses) {
+        for (String address : addresses) {
+            byte[] keyMaterial = autocryptOpenPgpApiInteractor.getKeyMaterialForUserId(openPgpApi, address);
             if (keyMaterial == null) {
-                Timber.e("Failed fetching gossip key material for address %s", address.getAddress());
+                Timber.e("Failed fetching gossip key material for address %s", address);
                 continue;
             }
-            autocryptOperations.addAutocryptGossipHeaderToPart(bodyPart, keyMaterial, address.getAddress());
+            autocryptOperations.addAutocryptGossipHeaderToPart(bodyPart, keyMaterial, address);
         }
     }
 
