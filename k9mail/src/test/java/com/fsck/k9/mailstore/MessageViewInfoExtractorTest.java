@@ -406,6 +406,8 @@ public class MessageViewInfoExtractorTest {
 
         assertEquals("<pre class=\"k9mail\">text</pre>", messageViewInfo.text);
         assertSame(annotation, messageViewInfo.cryptoResultAnnotation);
+        assertSame(message, messageViewInfo.message);
+        assertSame(message, messageViewInfo.rootPart);
         assertTrue(messageViewInfo.attachments.isEmpty());
         assertTrue(messageViewInfo.extraAttachments.isEmpty());
     }
@@ -427,6 +429,8 @@ public class MessageViewInfoExtractorTest {
 
         assertEquals("<pre class=\"k9mail\">replacement text</pre>", messageViewInfo.text);
         assertSame(annotation, messageViewInfo.cryptoResultAnnotation);
+        assertSame(message, messageViewInfo.message);
+        assertSame(replacementPart, messageViewInfo.rootPart);
         assertTrue(messageViewInfo.attachments.isEmpty());
         assertTrue(messageViewInfo.extraAttachments.isEmpty());
     }
