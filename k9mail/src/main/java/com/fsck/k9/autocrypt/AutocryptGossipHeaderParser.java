@@ -84,9 +84,11 @@ class AutocryptGossipHeaderParser {
         ArrayList<AutocryptGossipHeader> autocryptHeaders = new ArrayList<>();
         for (String header : headers) {
             AutocryptGossipHeader autocryptHeader = parseAutocryptGossipHeader(header);
-            if (autocryptHeader != null) {
-                autocryptHeaders.add(autocryptHeader);
+            if (autocryptHeader == null) {
+                Timber.e("Encountered malformed autocrypt-gossip header - skipping!");
+                continue;
             }
+            autocryptHeaders.add(autocryptHeader);
         }
         return autocryptHeaders;
     }
