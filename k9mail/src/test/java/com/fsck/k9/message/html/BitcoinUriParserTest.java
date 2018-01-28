@@ -3,28 +3,28 @@ package com.fsck.k9.message.html;
 
 import org.junit.Test;
 
-import static com.fsck.k9.message.html.UriParserTestHelper.assertLinkOnly;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 
 public class BitcoinUriParserTest {
     BitcoinUriParser parser = new BitcoinUriParser();
-    StringBuffer outputBuffer = new StringBuffer();
 
 
     @Test
     public void basicBitcoinUri() throws Exception {
-        assertLinkify("bitcoin:19W6QZkx8SYPG7BBCS7odmWGRxqRph5jFU");
+        assertValidUri("bitcoin:19W6QZkx8SYPG7BBCS7odmWGRxqRph5jFU");
     }
 
     @Test
     public void bitcoinUriWithAmount() throws Exception {
-        assertLinkify("bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu?amount=1.2");
+        assertValidUri("bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu?amount=1.2");
     }
 
     @Test
     public void bitcoinUriWithQueryParameters() throws Exception {
-        assertLinkify("bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu?amount=1.2" +
+        assertValidUri("bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu?amount=1.2" +
                 "&message=Payment&label=Satoshi&extra=other-param");
     }
 
@@ -34,51 +34,40 @@ public class BitcoinUriParserTest {
         String uri = "bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu?amount=1.2";
         String text = prefix + uri;
 
-        parser.linkifyUri(text, prefix.length(), outputBuffer);
+        UriMatch uriMatch = parser.parseUri(text, prefix.length());
 
-        assertLinkOnly(uri, outputBuffer);
+        assertUriMatch(uri, uriMatch, prefix.length());
     }
 
     @Test
     public void invalidScheme() throws Exception {
-        assertNotLinkify("bitcion:19W6QZkx8SYPG7BBCS7odmWGRxqRph5jFU");
+        assertInvalidUri("bitcion:19W6QZkx8SYPG7BBCS7odmWGRxqRph5jFU");
     }
 
     @Test
     public void invalidAddress() throws Exception {
-        assertNotLinkify("bitcoin:[invalid]");
-    }
-
-    @Test
-    public void invalidBitcoinUri_shouldReturnStartingPosition() throws Exception {
-        String uri = "bitcoin:[invalid]";
-
-        int newPos = linkify(uri);
-
-        assertEquals(0, newPos);
-    }
-
-    @Test
-    public void invalidBitcoinUri_shouldNotWriteToOutputBuffer() throws Exception {
-        String uri = "bitcoin:[invalid]";
-
-        linkify(uri);
-
-        assertEquals(0, outputBuffer.length());
+        assertInvalidUri("bitcoin:[invalid]");
     }
 
 
-    int linkify(String uri) {
-        return parser.linkifyUri(uri, 0, outputBuffer);
+    private void assertValidUri(String uri) {
+        UriMatch uriMatch = parser.parseUri(uri, 0);
+        assertUriMatch(uri, uriMatch);
     }
 
-    void assertLinkify(String uri) {
-        linkify(uri);
-        assertLinkOnly(uri, outputBuffer);
+    private void assertUriMatch(String uri, UriMatch uriMatch) {
+        assertUriMatch(uri, uriMatch, 0);
     }
 
-    void assertNotLinkify(String text) {
-        int newPos = linkify(text);
-        assertEquals(0, newPos);
+    private void assertUriMatch(String uri, UriMatch uriMatch, int offset) {
+        assertNotNull(uriMatch);
+        assertEquals(offset, uriMatch.getStartIndex());
+        assertEquals(uri.length() + offset, uriMatch.getEndIndex());
+        assertEquals(uri, uriMatch.getUri().toString());
+    }
+
+    private void assertInvalidUri(String text) {
+        UriMatch uriMatch = parser.parseUri(text, 0);
+        assertNull(uriMatch);
     }
 }
