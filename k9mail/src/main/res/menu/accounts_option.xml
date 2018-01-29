@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/search"
         android:icon="?attr/iconActionSearch"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/search_action"/>
     <item
         android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionRefresh"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/check_mail_action"/>
     <item
         android:id="@+id/compose"
         android:alphabeticShortcut="c"
         android:icon="?attr/iconActionCompose"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/compose_action"/>
     <item
         android:id="@+id/add_new_account"
         android:icon="?attr/iconActionAdd"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/add_account_action"/>
     <item
         android:id="@+id/about"
@@ -43,7 +44,7 @@
     <item
         android:id="@+id/edit_prefs"
         android:icon="?attr/iconActionSettings"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/preferences_action"/>
 
 </menu>
