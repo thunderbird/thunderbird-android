@@ -277,7 +277,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="message_compose_attachments_forward_toast">The message cannot be forwarded because some attachments have not been downloaded.</string>
-    <string name="message_compose_show_quoted_text_action">Quote message</string>
+    <string name="message_compose_show_quoted_text_action">Include quoted message</string>
     <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
 
