@@ -360,7 +360,6 @@ public enum MessageCryptoDisplayStatus {
 
     public boolean hasAssociatedKey() {
         switch (this) {
-            case ENCRYPTED_SIGN_UNKNOWN:
             case ENCRYPTED_SIGN_VERIFIED:
             case ENCRYPTED_SIGN_UNVERIFIED:
             case ENCRYPTED_SIGN_MISMATCH:
@@ -368,7 +367,6 @@ public enum MessageCryptoDisplayStatus {
             case ENCRYPTED_SIGN_REVOKED:
             case ENCRYPTED_SIGN_INSECURE:
 
-            case UNENCRYPTED_SIGN_UNKNOWN:
             case UNENCRYPTED_SIGN_VERIFIED:
             case UNENCRYPTED_SIGN_UNVERIFIED:
             case UNENCRYPTED_SIGN_MISMATCH:
@@ -395,4 +393,12 @@ public enum MessageCryptoDisplayStatus {
         return false;
     }
 
+    public boolean isUnknownKey() {
+        switch (this) {
+            case ENCRYPTED_SIGN_UNKNOWN:
+            case UNENCRYPTED_SIGN_UNKNOWN:
+                return true;
+        }
+        return false;
+    }
 }

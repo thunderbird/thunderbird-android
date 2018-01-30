@@ -1241,6 +1241,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_encrypted_insecure">but encryption not considered secure</string>
 
     <string name="crypto_info_ok">OK</string>
+    <string name="crypto_info_search_key">Search Key</string>
     <string name="crypto_info_view_signer">View Signer</string>
     <string name="crypto_info_view_sender">View Sender</string>
     <string name="crypto_info_view_security_warning">Details</string>

@@ -73,10 +73,21 @@ public class CryptoInfoDialog extends DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Fragment frag = getTargetFragment();
-                    if (! (frag instanceof OnClickShowCryptoKeyListener)) {
+                    if (!(frag instanceof OnClickShowCryptoKeyListener)) {
                         throw new AssertionError("Displaying activity must implement OnClickShowCryptoKeyListener!");
                     }
                     ((OnClickShowCryptoKeyListener) frag).onClickShowSecurityWarning();
+                }
+            });
+        } else if (displayStatus.isUnknownKey()) {
+            b.setNeutralButton(R.string.crypto_info_search_key, new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Fragment frag = getTargetFragment();
+                    if (! (frag instanceof OnClickShowCryptoKeyListener)) {
+                        throw new AssertionError("Displaying activity must implement OnClickShowCryptoKeyListener!");
+                    }
+                    ((OnClickShowCryptoKeyListener) frag).onClickSearchKey();
                 }
             });
         } else if (displayStatus.hasAssociatedKey()) {
@@ -124,5 +135,6 @@ public class CryptoInfoDialog extends DialogFragment {
     public interface OnClickShowCryptoKeyListener {
         void onClickShowCryptoKey();
         void onClickShowSecurityWarning();
+        void onClickSearchKey();
     }
 }

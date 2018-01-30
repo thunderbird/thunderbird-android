@@ -713,6 +713,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     @Override
+    public void onClickSearchKey() {
+        messageCryptoPresenter.onClickSearchKey();
+    }
+
+    @Override
     public void onClickShowCryptoKey() {
         messageCryptoPresenter.onClickShowCryptoKey();
     }
