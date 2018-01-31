@@ -1282,4 +1282,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_enabled_error_back">Back</string>
     <string name="openpgp_enabled_error_disable">Disable Encryption</string>
     <string name="openpgp_encryption">OpenPGP Encryption</string>
+
+    <!-- notification channel(s) -->
+    <string name="k9_channel_id" translatable="false">k9_channel</string>
+    <string name="k9_channel_description">All notifications</string>
 </resources>

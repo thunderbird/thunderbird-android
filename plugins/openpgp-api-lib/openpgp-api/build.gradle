@@ -8,8 +8,8 @@ android {
     defaultConfig {
         versionCode 8
         versionName '9.0' // API-Version . minor
-        minSdkVersion 9
-        targetSdkVersion 22
+        minSdkVersion 14
+        targetSdkVersion 27
     }
 
     // Do not abort build if lint finds errors
