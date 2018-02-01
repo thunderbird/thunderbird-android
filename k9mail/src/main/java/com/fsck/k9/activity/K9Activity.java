@@ -15,8 +15,11 @@ public abstract class K9Activity extends Activity implements K9ActivityMagic {
 
     private K9ActivityCommon mBase;
 
-    public static final int PERMISSIONS_REQUEST_READ_CONTACTS  = 1;
+    public static final int PERMISSIONS_REQUEST_READ_CONTACTS = 1;
     public static final int PERMISSIONS_REQUEST_WRITE_CONTACTS = 2;
+    public static final int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 3;
+    public static final int PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 4;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,16 +44,29 @@ public abstract class K9Activity extends Activity implements K9ActivityMagic {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_READ_CONTACTS:
             case PERMISSIONS_REQUEST_WRITE_CONTACTS: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     Toast.makeText(this, R.string.contact_permission_thanks,
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, R.string.contact_permission_request,
+                    Toast.makeText(this, R.string.permission_request,
                             Toast.LENGTH_LONG).show();
                 }
+                break;
+            }
+            case PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+            case PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Toast.makeText(this, R.string.storage_permission_thanks,
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, R.string.permission_request,
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
             }
         }
     }

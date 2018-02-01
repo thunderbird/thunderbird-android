@@ -1288,6 +1288,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="k9_channel_description">All notifications</string>
 
     <!-- permissions -->
-    <string name="contact_permission_request">K-9 works best when this permission is granted.</string>
+    <string name="permission_request">K-9 works best when this permission is granted.</string>
     <string name="contact_permission_thanks">Your contact data is now available.</string>
+    <string name="storage_permission_thanks">You can now access external storage.</string>
 </resources>
