@@ -1,8 +1,8 @@
 package com.fsck.k9.activity;
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
@@ -11,7 +11,7 @@ import com.fsck.k9.activity.K9ActivityCommon.K9ActivityMagic;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 
 
-public abstract class K9Activity extends Activity implements K9ActivityMagic {
+public abstract class K9Activity extends AppCompatActivity implements K9ActivityMagic {
 
     private K9ActivityCommon mBase;
 
@@ -60,10 +60,10 @@ public abstract class K9Activity extends Activity implements K9ActivityMagic {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    Toast.makeText(this, R.string.storage_permission_thanks,
+                    Toast.makeText(this, R.string.contact_permission_thanks,
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, R.string.permission_request,
+                    Toast.makeText(this, R.string.storage_permission_thanks,
                             Toast.LENGTH_LONG).show();
                 }
                 break;
