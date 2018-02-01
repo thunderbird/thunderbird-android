@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.K9.Startup" parent="@android:style/Theme.Holo.NoActionBar">
+    <style name="Theme.K9.Startup" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
     <!-- Empty base themes that can be easily replaced by RRO (Runtime Resource Overlay) themes -->
-    <style name="Theme.K9.Light.Base" parent="@android:style/Theme.Holo.Light" />
-    <style name="Theme.K9.Dark.Base" parent="@android:style/Theme.Holo" />
+    <style name="Theme.K9.Light.Base" parent="Theme.AppCompat.Light" />
+    <style name="Theme.K9.Dark.Base" parent="Theme.AppCompat" />
 
     <style name="Theme.K9.Light.Common" parent="Theme.K9.Light.Base">
         <item name="iconFolder">@drawable/folder_light</item>
@@ -152,7 +152,7 @@
         <item name="backgroundColorChooseAccountHeader">#404040</item>
     </style>
 
-    <style name="Theme.K9.Dialog.Translucent.Dark" parent="@android:style/Theme.Holo.Dialog">
+    <style name="Theme.K9.Dialog.Translucent.Dark" parent="Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -165,7 +165,7 @@
         <item name="tintColorBulletPointNeutral">#bbb</item>
     </style>
 
-    <style name="Theme.K9.Dialog.Translucent.Light" parent="@android:style/Theme.Holo.Light.Dialog">
+    <style name="Theme.K9.Dialog.Translucent.Light" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
