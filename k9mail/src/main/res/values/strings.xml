@@ -1286,4 +1286,8 @@ Please submit bug reports, contribute new features and ask questions at
     <!-- notification channel(s) -->
     <string name="k9_channel_id" translatable="false">k9_channel</string>
     <string name="k9_channel_description">All notifications</string>
+
+    <!-- permissions -->
+    <string name="contact_permission_request">K-9 works best when this permission is granted.</string>
+    <string name="contact_permission_thanks">Your contact data is now available.</string>
 </resources>
