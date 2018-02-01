@@ -18,6 +18,7 @@
         <EditText
             android:id="@+id/description"
             android:singleLine="true"
+			android:inputType="text"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" 
             android:hint="@string/edit_identity_description_hint"
@@ -31,6 +32,7 @@
         <EditText
             android:id="@+id/name"
             android:singleLine="true"
+			android:inputType="text"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" 
             android:hint="@string/edit_identity_name_hint"
