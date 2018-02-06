@@ -27,6 +27,19 @@ class EmailSectionExtractorTest {
     }
 
     @Test
+    fun simpleMessageEndingWithTwoNewlines() {
+        val message = "Hello\n\n"
+
+        val sections = EmailSectionExtractor.extract(message)
+
+        assertThat(sections.size).isEqualTo(1)
+        with(sections[0]) {
+            assertThat(quoteDepth).isEqualTo(0)
+            assertThat(toString()).isEqualTo(message)
+        }
+    }
+
+    @Test
     fun quoteFollowedByReply() {
         val message = """
             Alice <alice@example.org> wrote:
@@ -78,6 +91,24 @@ class EmailSectionExtractorTest {
         with(sections[2]) {
             assertThat(quoteDepth).isEqualTo(2)
             assertThat(toString()).isEqualTo("One")
+        }
+    }
+
+    @Test
+    fun quoteEndingWithEmptyLineButNoNewline() {
+        val message = """
+            > Quoted text
+            > """.trimIndent()
+
+        val sections = EmailSectionExtractor.extract(message)
+
+        assertThat(sections.size).isEqualTo(1)
+        with(sections[0]) {
+            assertThat(quoteDepth).isEqualTo(1)
+            // Note: "Quoted text\n\n" would be a better representation of the quoted text. The goal of this test is
+            // not to preserve the current behavior of only ending in one newline, but to make sure we don't add the
+            // last line twice.
+            assertThat(toString()).isEqualTo("Quoted text\n")
         }
     }
 
