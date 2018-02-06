@@ -1,180 +1,177 @@
 package com.fsck.k9.message.html;
 
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import static com.fsck.k9.message.html.UriParserTestHelper.assertLinkOnly;
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 
 public class HttpUriParserTest {
     private final HttpUriParser parser = new HttpUriParser();
-    private final StringBuffer outputBuffer = new StringBuffer();
 
 
     @Test
     public void emptyUriIgnored() {
-        assertLinkIgnored("http://");
+        assertInvalidUri("http://");
     }
 
     @Test
     public void emptyAuthorityIgnored() {
-        assertLinkIgnored("http:///");
+        assertInvalidUri("http:///");
     }
 
     @Test
     public void simpleDomain() {
-        assertLinkify("http://www.google.com");
+        assertValidUri("http://www.google.com");
     }
 
     @Test
     public void simpleDomainWithHttps() {
-        assertLinkify("https://www.google.com");
+        assertValidUri("https://www.google.com");
     }
 
     @Test
     public void simpleRtspUri() {
-        assertLinkify("rtsp://example.com/media.mp4");
+        assertValidUri("rtsp://example.com/media.mp4");
     }
 
     @Test
     public void invalidDomainIgnored() {
-        assertLinkIgnored("http://-www.google.com");
+        assertInvalidUri("http://-www.google.com");
     }
 
     @Test
     public void domainWithTrailingSlash() {
-        assertLinkify("http://www.google.com/");
+        assertValidUri("http://www.google.com/");
     }
 
     @Test
     public void domainWithUserInfo() {
-        assertLinkify("http://test@google.com/");
+        assertValidUri("http://test@google.com/");
     }
 
     @Test
     public void domainWithFullUserInfo() {
-        assertLinkify("http://test:secret@google.com/");
+        assertValidUri("http://test:secret@google.com/");
     }
 
     @Test
     public void domainWithoutWww() {
-        assertLinkify("http://google.com/");
+        assertValidUri("http://google.com/");
     }
 
     @Test
     public void query() {
-        assertLinkify("http://google.com/give/me/?q=mode&c=information");
+        assertValidUri("http://google.com/give/me/?q=mode&c=information");
     }
 
     @Test
     public void fragment() {
-        assertLinkify("http://google.com/give/me#only-the-best");
+        assertValidUri("http://google.com/give/me#only-the-best");
     }
 
     @Test
     public void queryAndFragment() {
-        assertLinkify("http://google.com/give/me/?q=mode&c=information#only-the-best");
+        assertValidUri("http://google.com/give/me/?q=mode&c=information#only-the-best");
     }
 
     @Test
     public void ipv4Address() {
-        assertLinkify("http://127.0.0.1");
+        assertValidUri("http://127.0.0.1");
     }
 
     @Test
     public void ipv4AddressWithTrailingSlash() {
-        assertLinkify("http://127.0.0.1/");
+        assertValidUri("http://127.0.0.1/");
     }
 
     @Test
     public void ipv4AddressWithEmptyPort() {
-        assertLinkify("http://127.0.0.1:");
+        assertValidUri("http://127.0.0.1:");
     }
 
     @Test
     public void ipv4AddressWithPort() {
-        assertLinkify("http://127.0.0.1:524/");
+        assertValidUri("http://127.0.0.1:524/");
     }
 
     @Test
     public void ipv6Address() {
-        assertLinkify("http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]");
+        assertValidUri("http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]");
     }
 
     @Test
     public void ipv6AddressWithPort() {
-        assertLinkify("http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80");
+        assertValidUri("http://[FEDC:BA98:7654:3210:FEDC:BA98:7654:3210]:80");
     }
 
     @Test
     public void ipv6AddressWithTrailingSlash() {
-        assertLinkify("http://[1080:0:0:0:8:800:200C:417A]/");
+        assertValidUri("http://[1080:0:0:0:8:800:200C:417A]/");
     }
 
     @Test
     public void ipv6AddressWithEndCompression() {
-        assertLinkify("http://[3ffe:2a00:100:7031::1]");
+        assertValidUri("http://[3ffe:2a00:100:7031::1]");
     }
 
     @Test
     public void ipv6AddressWithBeginCompression() {
-        assertLinkify("http://[1080::8:800:200C:417A]/");
+        assertValidUri("http://[1080::8:800:200C:417A]/");
     }
 
     @Test
     public void ipv6AddressWithCompressionPort() {
-        assertLinkify("http://[::FFFF:129.144.52.38]:80/");
+        assertValidUri("http://[::FFFF:129.144.52.38]:80/");
     }
 
     @Test
     public void ipv6AddressWithPrependedCompression() {
-        assertLinkify("http://[::192.9.5.5]/");
+        assertValidUri("http://[::192.9.5.5]/");
     }
 
     @Test
     public void ipv6AddressWithTrailingIp4AndPort() {
-        assertLinkify("http://[::192.9.5.5]:80/");
+        assertValidUri("http://[::192.9.5.5]:80/");
     }
 
     @Test
     public void ipv6WithoutClosingSquareBracketIgnored() {
-        assertLinkIgnored("http://[1080:0:0:0:8:80:200C:417A/");
+        assertInvalidUri("http://[1080:0:0:0:8:80:200C:417A/");
     }
 
     @Test
     public void ipv6InvalidClosingSquareBracketIgnored() {
-        assertLinkIgnored("http://[1080:0:0:0:8:800:270C:417A/]");
+        assertInvalidUri("http://[1080:0:0:0:8:800:270C:417A/]");
     }
 
     @Test
     public void domainWithTrailingSpace() {
         String text = "http://google.com/ ";
 
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
+        UriMatch uriMatch = parser.parseUri(text, 0);
 
-        assertLinkOnly("http://google.com/", outputBuffer);
-        assertEquals(text.length() - 1, endPos);
+        assertUriMatch("http://google.com/", uriMatch);
     }
 
     @Test
     public void domainWithTrailingNewline() {
         String text = "http://google.com/\n";
 
-        int endPos = parser.linkifyUri(text, 0, outputBuffer);
+        UriMatch uriMatch = parser.parseUri(text, 0);
 
-        assertLinkOnly("http://google.com/", outputBuffer);
-        assertEquals(text.length() - 1, endPos);
+        assertUriMatch("http://google.com/", uriMatch);
     }
 
     @Test
     public void domainWithTrailingAngleBracket() {
         String text = "<http://google.com/>";
 
-        int endPos = parser.linkifyUri(text, 1, outputBuffer);
+        UriMatch uriMatch = parser.parseUri(text, 1);
 
-        assertLinkOnly("http://google.com/", outputBuffer);
-        assertEquals(text.length() - 1, endPos);
+        assertUriMatch("http://google.com/", uriMatch, 1);
     }
 
     @Test
@@ -183,9 +180,9 @@ public class HttpUriParserTest {
         String uri = "http://google.com/";
         String text = prefix + uri;
 
-        parser.linkifyUri(text, prefix.length(), outputBuffer);
+        UriMatch uriMatch = parser.parseUri(text, prefix.length());
 
-        assertLinkOnly(uri, outputBuffer);
+        assertUriMatch("http://google.com/", uriMatch, prefix.length());
     }
 
     @Test
@@ -195,25 +192,30 @@ public class HttpUriParserTest {
         String postfix = " postfix";
         String text = prefix + uri + postfix;
 
-        parser.linkifyUri(text, prefix.length(), outputBuffer);
+        UriMatch uriMatch = parser.parseUri(text, prefix.length());
 
-        assertLinkOnly(uri, outputBuffer);
+        assertUriMatch("http://google.com/", uriMatch, prefix.length());
     }
 
 
-    int linkify(String uri) {
-        return parser.linkifyUri(uri, 0, outputBuffer);
+    private void assertValidUri(String uri) {
+        UriMatch uriMatch = parser.parseUri(uri, 0);
+        assertUriMatch(uri, uriMatch);
     }
 
-    void assertLinkify(String uri) {
-        linkify(uri);
-        assertLinkOnly(uri, outputBuffer);
+    private void assertUriMatch(String uri, UriMatch uriMatch) {
+        assertUriMatch(uri, uriMatch, 0);
     }
 
-    void assertLinkIgnored(String uri) {
-        int endPos = linkify(uri);
+    private void assertUriMatch(String uri, UriMatch uriMatch, int offset) {
+        assertNotNull(uriMatch);
+        Assert.assertEquals(offset, uriMatch.getStartIndex());
+        Assert.assertEquals(uri.length() + offset, uriMatch.getEndIndex());
+        Assert.assertEquals(uri, uriMatch.getUri().toString());
+    }
 
-        assertEquals("", outputBuffer.toString());
-        assertEquals(0, endPos);
+    private void assertInvalidUri(String uri) {
+        UriMatch uriMatch = parser.parseUri(uri, 0);
+        assertNull(uriMatch);
     }
 }
