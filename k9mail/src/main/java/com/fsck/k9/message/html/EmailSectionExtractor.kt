@@ -96,12 +96,10 @@ class EmailSectionExtractor private constructor(val text: String) {
     }
 
     private fun completeLastSection() {
-        if (!isStartOfLine) {
-            if (quoteDepth == 0) {
-                sectionBuilder.addSegment(0, sectionStartIndex, text.length)
-            } else {
-                sectionBuilder.addSegment(spaces, startOfContentIndex, text.length)
-            }
+        if (quoteDepth == 0) {
+            sectionBuilder.addSegment(0, sectionStartIndex, text.length)
+        } else if (!isStartOfLine) {
+            sectionBuilder.addSegment(spaces, startOfContentIndex, text.length)
         }
 
         appendSection()
