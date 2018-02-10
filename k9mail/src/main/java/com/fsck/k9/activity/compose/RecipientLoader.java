@@ -2,6 +2,8 @@ package com.fsck.k9.activity.compose;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private static final int INDEX_EMAIL_CUSTOM_LABEL = 5;
     private static final int INDEX_CONTACT_ID = 6;
     private static final int INDEX_PHOTO_URI = 7;
+    private static final int INDEX_TIMES_CONTACTED = 8;
+    private static final int INDEX_KEY_PRIMARY = 9;
 
     private static final String[] PROJECTION = {
             ContactsContract.CommonDataKinds.Email._ID,
@@ -44,7 +48,9 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             ContactsContract.CommonDataKinds.Email.TYPE,
             ContactsContract.CommonDataKinds.Email.LABEL,
             ContactsContract.CommonDataKinds.Email.CONTACT_ID,
-            ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
+            ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,
+            ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED,
+            ContactsContract.Contacts.SORT_KEY_PRIMARY
     };
 
     private static final String SORT_ORDER = "" +
@@ -260,6 +266,21 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         foundValidCursor |= fillContactDataFromNameAndEmail(query, recipients, recipientMap);
 
         if (foundValidCursor) {
+            Collections.sort(recipients, new Comparator<Recipient>() {
+                @Override
+                public int compare(Recipient o1, Recipient o2) {
+
+                    int x = o2.getTimesContacted();
+                    int y = o1.getTimesContacted();
+
+                    int compTimesContacted = (x < y) ? -1 : ((x == y) ? 0 : 1);
+                    if (compTimesContacted != 0){
+                        return compTimesContacted;
+                    }
+                    return  o2.getKeyPrimary().compareTo(o1.getKeyPrimary());
+                }
+            });
+
             registerContentObserver();
         }
 
@@ -374,6 +395,10 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                 }
             }
             Recipient recipient = new Recipient(name, email, addressLabel, contactId, lookupKey);
+            recipient.setTimesContacted(cursor.getInt(INDEX_TIMES_CONTACTED));
+            recipient.setKeyPrimary(cursor.getString(INDEX_KEY_PRIMARY));
+
+
             if (recipient.isValidEmailAddress()) {
 
                 recipient.photoThumbnailUri = cursor.isNull(INDEX_PHOTO_URI) ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
