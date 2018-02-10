@@ -1,6 +1,8 @@
 package com.fsck.k9.activity.compose;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.ContentResolver;
@@ -23,6 +25,7 @@ import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
 import static org.junit.Assert.*;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -40,19 +43,23 @@ public class RecipientLoaderTest {
             ContactsContract.CommonDataKinds.Email.TYPE,
             ContactsContract.CommonDataKinds.Email.LABEL,
             ContactsContract.CommonDataKinds.Email.CONTACT_ID,
-            ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,
-            ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED,
-            ContactsContract.Contacts.SORT_KEY_PRIMARY
+            ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
     };
     static final String[] PROJECTION_CRYPTO_ADDRESSES = { "address", "uid_address" };
     static final String[] PROJECTION_CRYPTO_STATUS = { "address", "uid_key_status", "autocrypt_key_status" };
     static final Address CONTACT_ADDRESS_1 = Address.parse("Contact Name <address@example.org>")[0];
     static final Address CONTACT_ADDRESS_2 = Address.parse("Other Contact Name <address_two@example.org>")[0];
-    static final String TYPE = ""+TYPE_HOME;
-    static final String[] CONTACT_1 = new String[] {"0", "Bob", "bob", "bob@host.com", TYPE, null, "1", null, "100", "Bob"};
-    static final String[] CONTACT_NO_EMAIL = new String[] {"0", "Bob", "bob", null, TYPE, null, "1", null, "10", "Bob_noMail"};
-    static final String[] CONTACT_WITH_NICKNAME_NOT_CONTACTED = new String[] {"0", "Eve_notContacted", "eve_notContacted", "eve_notContacted@host.com", TYPE, null, "2", null, "0", "Eve"};
-    static final String[] NICKNAME_NOT_CONTACTED = new String[]{"2", "Eves_Nickname_Bob"};
+    static final String[] CONTACT_1 = new String[] {"0", "Bob", "bob", "bob@host.com", ""+TYPE_HOME, null, "1", null};
+    static final String[] CONTACT_NO_EMAIL = new String[] {"0", "Bob", "bob", null, ""+TYPE_HOME, null, "1", null};
+
+    static final String CONTACT_ID_NOT_CONTACTED ="2";
+    static final String CONTACT_ID_CONTACTED ="3";
+    static final String[] CONTACT_WITH_NICKNAME_NOT_CONTACTED = new String[] {"0", "Eve_notContacted", "eve_notContacted", "eve_notContacted@host.com", ""+TYPE_HOME, null, CONTACT_ID_NOT_CONTACTED, null};
+    static final String[] CONTACT_WITH_NICKNAME_CONTACTED = new String[] {"0", "Jule", "jule", "jule@host.com", ""+TYPE_HOME, null, CONTACT_ID_CONTACTED, null};
+
+
+    static final String[] NICKNAME_NOT_CONTACTED = new String[]{CONTACT_ID_NOT_CONTACTED, "Eves_Nickname_Bob"};
+    static final String[] NICKNAME_CONTACTED = new String[]{CONTACT_ID_CONTACTED, "Jules_Nickname_Bob"};
 
     static final String QUERYSTRING = "querystring";
 
@@ -172,16 +179,20 @@ public class RecipientLoaderTest {
                         any(String.class))).thenReturn(cursorCryptoStatus);
     }
 
-    private void setupContactProvider(String queriedAddress, String[]... contacts) {
+    private void setupContactProvider(String queriedAddress, List<String> additionalIds, String[]... contacts) {
         MatrixCursor cursor = new MatrixCursor(PROJECTION);
         for (String[] contact : contacts) {
             cursor.addRow(contact);
         }
+        List<String> parameters = new ArrayList<>();
+        parameters.add(queriedAddress);
+        parameters.add(queriedAddress);
+        parameters.addAll(additionalIds);
         when(contentResolver
                 .query(eq(Email.CONTENT_URI),
                         aryEq(PROJECTION),
                         any(String.class),
-                        aryEq(new String[] { queriedAddress, queriedAddress }),
+                        aryEq(parameters.toArray(new String[parameters.size()])),
                         any(String.class))).thenReturn(cursor);
     }
 
@@ -196,27 +207,12 @@ public class RecipientLoaderTest {
                         any(String.class),
                         any(String[].class),
                         any(String.class))).thenReturn(cursor);
-
-
     }
 
-
-    private void setupContactProviderForId(String id, String[]... contacts) {
-        MatrixCursor cursor = new MatrixCursor(PROJECTION);
-        for (String[] contact : contacts) {
-            cursor.addRow(contact);
-        }
-        when(contentResolver
-                .query(eq( Email.CONTENT_URI),
-                        aryEq(PROJECTION),
-                        any(String.class),
-                        aryEq(new String[] { id}),
-                        any(String.class))).thenReturn(cursor);
-    }
     @Test
     public void queryContactProvider() throws Exception {
         RecipientLoader recipientLoader = new RecipientLoader(context, CRYPTO_PROVIDER, QUERYSTRING);
-        setupContactProvider("%" + QUERYSTRING + "%", CONTACT_1);
+        setupContactProvider("%" + QUERYSTRING + "%", Collections.EMPTY_LIST, CONTACT_1);
 
         List<Recipient> recipients = recipientLoader.loadInBackground();
 
@@ -228,7 +224,9 @@ public class RecipientLoaderTest {
     @Test
     public void queryContactProvider_ignoresRecipientWithNoEmail() throws Exception {
         RecipientLoader recipientLoader = new RecipientLoader(context, CRYPTO_PROVIDER, QUERYSTRING);
-        setupContactProvider("%" + QUERYSTRING + "%", CONTACT_NO_EMAIL);
+        List<String> additionalIds = new ArrayList<>();
+        additionalIds.add(CONTACT_ID_NOT_CONTACTED);
+        setupContactProvider("%" + QUERYSTRING + "%", additionalIds, CONTACT_NO_EMAIL);
 
         List<Recipient> recipients = recipientLoader.loadInBackground();
 
@@ -242,14 +240,32 @@ public class RecipientLoaderTest {
     @Test
     public void queryContactProvider_sortByContactedForNickname() throws Exception {
         RecipientLoader recipientLoader = new RecipientLoader(context, null, QUERYSTRING);
-        setupContactProvider("%" + QUERYSTRING + "%", CONTACT_1);
+        List<String> additionalIds = new ArrayList<>();
+        additionalIds.add(CONTACT_ID_NOT_CONTACTED);
+        setupContactProvider("%" + QUERYSTRING + "%", additionalIds, CONTACT_1, CONTACT_WITH_NICKNAME_NOT_CONTACTED);
         setupNicknameContactProvider("%" + QUERYSTRING + "%", NICKNAME_NOT_CONTACTED);
-        setupContactProviderForId(NICKNAME_NOT_CONTACTED[0], CONTACT_WITH_NICKNAME_NOT_CONTACTED);
 
         List<Recipient> recipients = recipientLoader.loadInBackground();
 
         assertEquals(2, recipients.size());
         assertEquals("bob@host.com", recipients.get(0).address.getAddress());
         assertEquals("eve_notContacted@host.com", recipients.get(1).address.getAddress());
+    }
+
+    @Test
+    public void queryContactProvider_sortByContactedForNickname1() throws Exception {
+        RecipientLoader recipientLoader = new RecipientLoader(context, null, QUERYSTRING);
+        List<String> additionalIds = new ArrayList<>();
+        additionalIds.add(CONTACT_ID_NOT_CONTACTED);
+        additionalIds.add(CONTACT_ID_CONTACTED);
+        setupContactProvider("%" + QUERYSTRING + "%", additionalIds, CONTACT_1, CONTACT_WITH_NICKNAME_CONTACTED, CONTACT_WITH_NICKNAME_NOT_CONTACTED);
+        setupNicknameContactProvider("%" + QUERYSTRING + "%", NICKNAME_NOT_CONTACTED, NICKNAME_CONTACTED);
+
+        List<Recipient> recipients = recipientLoader.loadInBackground();
+
+        assertEquals(3, recipients.size());
+        assertEquals("bob@host.com", recipients.get(0).address.getAddress());
+        assertEquals("jule@host.com", recipients.get(1).address.getAddress());
+        assertEquals("eve_notContacted@host.com", recipients.get(2).address.getAddress());
     }
 }
