@@ -3,7 +3,7 @@ package com.fsck.k9.ui.messageview;
 
 import java.util.Collections;
 import java.util.Locale;
-
+import android.Manifest;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.DownloadManager;
@@ -13,11 +13,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
@@ -33,6 +36,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.ChooseFolder;
+import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.MessageReference;
@@ -828,12 +832,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     @Override
     public void onSaveAttachment(AttachmentViewInfo attachment) {
+        checkPerms();
         currentAttachmentViewInfo = attachment;
         getAttachmentController(attachment).saveAttachment();
     }
 
     @Override
     public void onSaveAttachmentToUserProvidedDirectory(final AttachmentViewInfo attachment) {
+        checkPerms();
         currentAttachmentViewInfo = attachment;
         FileBrowserHelper.getInstance().showFileBrowserActivity(MessageViewFragment.this, null,
                 ACTIVITY_CHOOSE_DIRECTORY, new FileBrowserFailOverCallback() {
@@ -848,6 +854,17 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     }
                 });
     }
+
+    private void checkPerms() {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    K9Activity.PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+        }
+    }
+
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
         return new AttachmentController(mController, downloadManager, this, attachment);
