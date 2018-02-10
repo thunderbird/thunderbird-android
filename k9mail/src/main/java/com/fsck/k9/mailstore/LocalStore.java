@@ -94,7 +94,7 @@ public class LocalStore extends Store {
      * a String containing the columns getMessages expects to work with
      * in the correct order.
      */
-    static String GET_MESSAGES_COLS =
+    static final String GET_MESSAGES_COLS =
         "subject, sender_list, date, uid, flags, messages.id, to_list, cc_list, " +
         "bcc_list, reply_to_list, attachment_count, internal_date, messages.message_id, " +
         "folder_id, preview, threads.id, threads.root, deleted, read, flagged, answered, " +

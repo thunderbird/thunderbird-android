@@ -37,7 +37,7 @@ import timber.log.Timber;
 public class Throttle {
     private static final int TIMEOUT_EXTEND_INTERVAL = 500;
 
-    private static Timer TIMER = new Timer();
+    private static final Timer TIMER = new Timer();
 
     private final Clock clock;
     private final Timer timer;
