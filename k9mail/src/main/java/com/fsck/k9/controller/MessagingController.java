@@ -3185,9 +3185,8 @@ public class MessagingController {
     private void deleteMessagesSynchronous(final Account account, final String folder,
             final List<? extends Message> messages,
             MessagingListener listener) {
-        Folder localFolder = null;
-        Folder localTrashFolder = null;
-        List<String> uids = getUidsFromMessages(messages);
+        LocalFolder localFolder = null;
+        LocalFolder localTrashFolder = null;
         try {
             //We need to make these callbacks before moving the messages to the trash
             //as messages get a new UID after being moved
@@ -3196,13 +3195,32 @@ public class MessagingController {
                     l.messageDeleted(account, folder, message);
                 }
             }
-            Store localStore = account.getLocalStore();
+
+            List<Message> localOnlyMessages = new ArrayList<>();
+            List<Message> syncedMessages = new ArrayList<>();
+            List<String> syncedMessageUids = new ArrayList<>();
+            for (Message message : messages) {
+                String uid = message.getUid();
+                if (uid.startsWith(K9.LOCAL_UID_PREFIX)) {
+                    localOnlyMessages.add(message);
+                } else {
+                    syncedMessages.add(message);
+                    syncedMessageUids.add(uid);
+                }
+            }
+
+            LocalStore localStore = account.getLocalStore();
             localFolder = localStore.getFolder(folder);
             Map<String, String> uidMap = null;
             if (folder.equals(account.getTrashFolderName()) || !account.hasTrashFolder()) {
                 Timber.d("Deleting messages in trash folder or trash set to -None-, not copying");
 
-                localFolder.setFlags(messages, Collections.singleton(Flag.DELETED), true);
+                if (!localOnlyMessages.isEmpty()) {
+                    localFolder.destroyMessages(localOnlyMessages);
+                }
+                if (!syncedMessages.isEmpty()) {
+                    localFolder.setFlags(syncedMessages, Collections.singleton(Flag.DELETED), true);
+                }
             } else {
                 localTrashFolder = localStore.getFolder(account.getTrashFolderName());
                 if (!localTrashFolder.exists()) {
@@ -3234,18 +3252,21 @@ public class MessagingController {
                     queuePendingCommand(account, command);
                 }
                 processPendingCommands(account);
-            } else if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
-                if (folder.equals(account.getTrashFolderName())) {
-                    queueSetFlag(account, folder, true, Flag.DELETED, uids);
+            } else if (!syncedMessageUids.isEmpty()) {
+                if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
+                    if (folder.equals(account.getTrashFolderName())) {
+                        queueSetFlag(account, folder, true, Flag.DELETED, syncedMessageUids);
+                    } else {
+                        queueMoveOrCopy(account, folder, account.getTrashFolderName(), false,
+                                    syncedMessageUids, uidMap);
+                    }
+                    processPendingCommands(account);
+                } else if (account.getDeletePolicy() == DeletePolicy.MARK_AS_READ) {
+                    queueSetFlag(account, folder, true, Flag.SEEN, syncedMessageUids);
+                    processPendingCommands(account);
                 } else {
-                    queueMoveOrCopy(account, folder, account.getTrashFolderName(), false, uids, uidMap);
+                    Timber.d("Delete policy %s prevents delete from server", account.getDeletePolicy());
                 }
-                processPendingCommands(account);
-            } else if (account.getDeletePolicy() == DeletePolicy.MARK_AS_READ) {
-                queueSetFlag(account, folder, true, Flag.SEEN, uids);
-                processPendingCommands(account);
-            } else {
-                Timber.d("Delete policy %s prevents delete from server", account.getDeletePolicy());
             }
 
             unsuppressMessages(account, messages);
