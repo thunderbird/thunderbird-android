@@ -1761,9 +1761,15 @@ public class MessagingController {
                 localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
                 remoteFolder.appendMessages(Collections.singletonList(localMessage));
 
-                localFolder.changeUid(localMessage);
-                for (MessagingListener l : getListeners()) {
-                    l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
+                if (localMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
+                    // We didn't get the server UID of the uploaded message. Remove the local message now. The uploaded
+                    // version will be downloaded during the next sync.
+                    localFolder.destroyMessages(Collections.singletonList(localMessage));
+                } else {
+                    localFolder.changeUid(localMessage);
+                    for (MessagingListener l : getListeners()) {
+                        l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
+                    }
                 }
             } else {
                 /*
@@ -1796,10 +1802,17 @@ public class MessagingController {
                     localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
 
                     remoteFolder.appendMessages(Collections.singletonList(localMessage));
-                    localFolder.changeUid(localMessage);
-                    for (MessagingListener l : getListeners()) {
-                        l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
+                    if (localMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
+                        // We didn't get the server UID of the uploaded message. Remove the local message now. The
+                        // uploaded version will be downloaded during the next sync.
+                        localFolder.destroyMessages(Collections.singletonList(localMessage));
+                    } else {
+                        localFolder.changeUid(localMessage);
+                        for (MessagingListener l : getListeners()) {
+                            l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
+                        }
                     }
+
                     if (remoteDate != null) {
                         remoteMessage.setFlag(Flag.DELETED, true);
                         if (Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
