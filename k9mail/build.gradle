@@ -27,19 +27,19 @@ dependencies {
     compile project(':plugins:openpgp-api-lib:openpgp-api')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
     compile "com.squareup.okio:okio:${okioVersion}"
-    compile 'commons-io:commons-io:2.4'
+    compile 'commons-io:commons-io:2.6'
     compile "com.android.support:support-v4:${androidSupportLibraryVersion}"
     compile 'org.jsoup:jsoup:1.11.2'
-    compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
+    compile 'de.cketti.library.changelog:ckchangelog:1.2.2'
     compile 'com.github.bumptech.glide:glide:3.6.1'
-    compile 'com.splitwise:tokenautocomplete:2.0.7'
+    compile 'com.splitwise:tokenautocomplete:2.0.8'
     compile 'de.cketti.safecontentresolver:safe-content-resolver-v14:0.9.0'
     compile 'com.github.amlcurran.showcaseview:library:5.4.1'
-    compile 'com.squareup.moshi:moshi:1.2.0'
+    compile 'com.squareup.moshi:moshi:1.5.0'
     compile "com.jakewharton.timber:timber:${timberVersion}"
     compile 'net.jcip:jcip-annotations:1.0'
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     testCompile "org.robolectric:robolectric:${robolectricVersion}"
     testCompile "junit:junit:${junitVersion}"
