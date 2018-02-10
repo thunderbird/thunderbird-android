@@ -330,9 +330,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     };
 
-    private static String ACCOUNT_STATS = "accountStats";
-    private static String STATE_UNREAD_COUNT = "unreadCount";
-    private static String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
+    private static final String ACCOUNT_STATS = "accountStats";
+    private static final String STATE_UNREAD_COUNT = "unreadCount";
+    private static final String SELECTED_CONTEXT_ACCOUNT = "selectedContextAccount";
     private static final String STATE_EXPORT_GLOBAL_SETTINGS = "exportGlobalSettings";
     private static final String STATE_EXPORT_ACCOUNTS = "exportAccountUuids";
 
@@ -1273,7 +1273,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         return true;
     }
 
-    private static String[][] USED_LIBRARIES = new String[][] {
+    private static final String[][] USED_LIBRARIES = new String[][] {
             new String[] {"Android Support Library", "https://developer.android.com/topic/libraries/support-library/index.html"},
             new String[] {"ckChangeLog", "https://github.com/cketti/ckChangeLog"},
             new String[] {"Commons IO", "http://commons.apache.org/io/"},
