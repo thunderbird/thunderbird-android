@@ -1,6 +1,8 @@
 package com.fsck.k9.notification;
 
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
@@ -10,6 +12,7 @@ import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -36,6 +39,13 @@ public class NotificationController {
 
     public static NotificationController newInstance(Context context) {
         Context appContext = context.getApplicationContext();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ((NotificationManager) appContext.getSystemService(Context.NOTIFICATION_SERVICE))
+                    .createNotificationChannel(new NotificationChannel
+                            (appContext.getString(R.string.k9_channel_id),
+                                    appContext.getString(R.string.k9_channel_description), NotificationManager.IMPORTANCE_DEFAULT));
+        }
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(appContext);
         return new NotificationController(appContext, notificationManager);
     }
@@ -159,6 +169,6 @@ public class NotificationController {
     }
 
     NotificationCompat.Builder createNotificationBuilder() {
-        return new NotificationCompat.Builder(context);
+        return new NotificationCompat.Builder(context, getContext().getString(R.string.k9_channel_id));
     }
 }

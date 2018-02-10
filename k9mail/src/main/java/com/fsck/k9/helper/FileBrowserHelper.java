@@ -9,6 +9,8 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.os.FileUriExposedException;
 import android.text.InputType;
 import android.widget.EditText;
 
@@ -87,12 +89,23 @@ public class FileBrowserHelper {
             Intent intent = new Intent(intentAction);
             intent.setData(Uri.parse(uriPrefix + startPath.getPath()));
 
-            try {
-                c.startActivityForResult(intent, requestcode);
-                success = true;
-            } catch (ActivityNotFoundException e) {
-                // Try the next intent in the list
-                listIndex++;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                try {
+                    c.startActivityForResult(intent, requestcode);
+                    success = true;
+                    // note:  When Storage Access Framework is used, this won't be necessary.
+                } catch (ActivityNotFoundException | FileUriExposedException e) {
+                    // Try the next intent in the list
+                    listIndex++;
+                }
+            } else {
+                try {
+                    c.startActivityForResult(intent, requestcode);
+                    success = true;
+                } catch (ActivityNotFoundException e) {
+                    // Try the next intent in the list
+                    listIndex++;
+                }
             }
         } while (!success && (listIndex < PICK_DIRECTORY_INTENTS.length));
 

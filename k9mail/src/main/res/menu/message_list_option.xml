@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <!--
     The comments preceding the (top level) menu items denote which part of the combined message
@@ -15,78 +16,76 @@
         android:id="@+id/previous_message"
         android:title="@string/previous_action"
         android:icon="?attr/iconActionPreviousMessage"
-        android:showAsAction="always"
-    />
+        app:showAsAction="ifRoom" />
 
     <!-- MessageView -->
     <item
         android:id="@+id/next_message"
         android:title="@string/next_action"
         android:icon="?attr/iconActionNextMessage"
-        android:showAsAction="always"
-    />
+        app:showAsAction="ifRoom" />
 
     <!-- MessageList -->
     <item
         android:id="@+id/search"
         android:icon="?attr/iconActionSearch"
-        android:showAsAction="always"
-        android:title="@string/search_action"/>
+        android:title="@string/search_action"
+        app:showAsAction="ifRoom" />
 
     <!-- MessageList -->
     <item
         android:id="@+id/search_remote"
         android:icon="?attr/iconActionRemoteSearch"
-        android:showAsAction="always"
         android:title="@string/action_remote_search"
-        android:visible="false"/>
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 
     <!-- MessageList -->
     <item
         android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionRefresh"
-        android:showAsAction="always"
-        android:title="@string/check_mail_action"/>
+        android:title="@string/check_mail_action"
+        app:showAsAction="ifRoom" />
 
     <!-- MessageView -->
     <item
         android:id="@+id/delete"
         android:alphabeticShortcut="q"
         android:icon="?attr/iconActionDelete"
-        android:showAsAction="always"
-        android:title="@string/delete_action"/>
+        android:title="@string/delete_action"
+        app:showAsAction="always" />
     <!-- MessageView -->
     <item
         android:id="@+id/archive"
         android:icon="?attr/iconActionArchive"
-        android:showAsAction="ifRoom"
-        android:title="@string/archive_action"/>
+        android:title="@string/archive_action"
+        app:showAsAction="ifRoom" />
     <!-- MessageView -->
     <item
         android:id="@+id/spam"
         android:icon="?attr/iconActionSpam"
-        android:showAsAction="ifRoom"
-        android:title="@string/spam_action"/>
+        android:title="@string/spam_action"
+        app:showAsAction="ifRoom" />
     <!-- MessageView -->
     <item
         android:id="@+id/move"
         android:icon="?attr/iconActionMove"
-        android:showAsAction="ifRoom"
-        android:title="@string/move_action"/>
+        android:title="@string/move_action"
+        app:showAsAction="ifRoom" />
     <!-- MessageView -->
     <item
         android:id="@+id/copy"
         android:icon="?attr/iconActionCopy"
-        android:showAsAction="ifRoom"
-        android:title="@string/copy_action"/>
+        android:title="@string/copy_action"
+        app:showAsAction="ifRoom" />
 
     <!-- MessageView -->
     <item
         android:id="@+id/single_message_options"
         android:icon="?attr/iconActionSingleMessageOptions"
-        android:showAsAction="ifRoom"
-        android:title="@string/single_message_options_action">
+        android:title="@string/single_message_options_action"
+        app:showAsAction="ifRoom">
         <menu>
             <item
                 android:id="@+id/reply"
@@ -110,8 +109,8 @@
     <item
         android:id="@+id/refile"
         android:icon="?attr/iconActionSingleMessageOptions"
-        android:showAsAction="never"
-        android:title="@string/refile_action">
+        android:title="@string/refile_action"
+        app:showAsAction="never">
         <menu>
             <item
                 android:id="@+id/refile_archive"
@@ -137,23 +136,23 @@
     <item
         android:id="@+id/toggle_unread"
         android:alphabeticShortcut="u"
-        android:showAsAction="never"
-        android:title="@string/mark_as_unread_action"/>
+        android:title="@string/mark_as_unread_action"
+        app:showAsAction="never" />
 
     <item android:id="@+id/show_headers"
-          android:showAsAction="never"
-          android:title="@string/show_headers_action"/>
+        android:title="@string/show_headers_action"
+        app:showAsAction="never" />
 
     <item android:id="@+id/hide_headers"
-          android:showAsAction="never"
-          android:title="@string/hide_headers_action"/>
+        android:title="@string/hide_headers_action"
+        app:showAsAction="never" />
 
     <!-- MessageList -->
     <item
         android:id="@+id/set_sort"
         android:icon="?attr/iconActionSort"
-        android:showAsAction="ifRoom"
-        android:title="@string/sort_by">
+        android:title="@string/sort_by"
+        app:showAsAction="ifRoom">
         <menu>
             <item
                 android:id="@+id/set_sort_date"
@@ -184,51 +183,51 @@
         android:id="@+id/compose"
         android:alphabeticShortcut="c"
         android:icon="?attr/iconActionCompose"
-        android:showAsAction="ifRoom"
-        android:title="@string/compose_action"/>
+        android:title="@string/compose_action"
+        app:showAsAction="ifRoom" />
 
     <!-- MessageList -->
     <item
         android:id="@+id/select_all"
         android:icon="?attr/iconActionSelectAll"
-        android:showAsAction="never"
-        android:title="@string/batch_select_all"/>
+        android:title="@string/batch_select_all"
+        app:showAsAction="never" />
 
     <!-- MessageList -->
     <item
         android:id="@+id/mark_all_as_read"
-        android:showAsAction="never"
-        android:title="@string/mark_all_as_read"/>
+        android:title="@string/mark_all_as_read"
+        app:showAsAction="never" />
 
     <!-- MessageList -->
     <item
         android:id="@+id/send_messages"
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionUpload"
-        android:showAsAction="never"
-        android:title="@string/send_messages_action"/>
+        android:title="@string/send_messages_action"
+        app:showAsAction="never" />
 
     <!-- MessageList -->
     <item
         android:id="@+id/expunge"
-        android:showAsAction="never"
-        android:title="@string/expunge_action"/>
+        android:title="@string/expunge_action"
+        app:showAsAction="never" />
 
     <!-- MessageView -->
     <item
         android:id="@+id/select_text"
-        android:showAsAction="never"
-        android:title="@string/select_text_action"/>
+        android:title="@string/select_text_action"
+        app:showAsAction="never" />
 
     <!-- MessageView -->
     <item
         android:id="@+id/toggle_message_view_theme"
-        android:showAsAction="never"
-        android:title="@string/message_view_theme_action_dark"/>
+        android:title="@string/message_view_theme_action_dark"
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_folder_list"
-        android:showAsAction="never"
-        android:title="@string/folders_title" />
+        android:title="@string/folders_title"
+        app:showAsAction="never" />
     <!-- always -->
     <item
         android:id="@+id/settings"

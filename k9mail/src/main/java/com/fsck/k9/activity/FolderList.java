@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils.TruncateAt;
 import android.text.format.DateUtils;
 import timber.log.Timber;
@@ -260,7 +260,7 @@ public class FolderList extends K9ListActivity {
         }
 
         actionBarProgressView = getActionBarProgressView();
-        actionBar = getActionBar();
+        actionBar = getSupportActionBar();
         initializeActionBar();
         setContentView(R.layout.folder_list);
         listView = getListView();
@@ -360,7 +360,7 @@ public class FolderList extends K9ListActivity {
     }
 
 
-    @Override public Object onRetainNonConfigurationInstance() {
+    @Override public Object onRetainCustomNonConfigurationInstance() {
         return (adapter == null) ? null : adapter.mFolders;
     }
 
