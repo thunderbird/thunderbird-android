@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import android.Manifest;
 import android.content.AsyncTaskLoader;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.database.AbstractCursor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -16,6 +18,7 @@ import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Contacts.Data;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 
 import com.fsck.k9.R;
 import com.fsck.k9.mail.Address;
@@ -238,10 +241,68 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     }
 
 
+    private Boolean hasPerm() {
+        return
+                ((ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
+                && ((ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED)));
+
+    }
+
     private Cursor getNicknameCursor(String nickname) {
         nickname = "%" + nickname + "%";
 
         Uri queryUriForNickname = ContactsContract.Data.CONTENT_URI;
+        if (!hasPerm()) {
+            // return empty cursor
+            return new AbstractCursor() {
+                @Override
+                public int getCount() {
+                    return 0;
+                }
+
+                @Override
+                public String[] getColumnNames() {
+                    return new String[0];
+                }
+
+                @Override
+                public String getString(int column) {
+                    return null;
+                }
+
+                @Override
+                public short getShort(int column) {
+                    return 0;
+                }
+
+                @Override
+                public int getInt(int column) {
+                    return 0;
+                }
+
+                @Override
+                public long getLong(int column) {
+                    return 0;
+                }
+
+                @Override
+                public float getFloat(int column) {
+                    return 0;
+                }
+
+                @Override
+                public double getDouble(int column) {
+                    return 0;
+                }
+
+                @Override
+                public boolean isNull(int column) {
+                    return false;
+                }
+            };
+        }
 
         return contentResolver.query(queryUriForNickname,
                 PROJECTION_NICKNAME,
@@ -315,8 +376,10 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         String selection = Contacts.DISPLAY_NAME_PRIMARY + " LIKE ? " +
                 " OR (" + Email.ADDRESS + " LIKE ? AND " + Data.MIMETYPE + " = '" + Email.CONTENT_ITEM_TYPE + "')";
         String[] selectionArgs = { query, query };
-        Cursor cursor = contentResolver.query(queryUri, PROJECTION, selection, selectionArgs, SORT_ORDER);
-
+        Cursor cursor = null;
+        if (hasPerm()) {
+            cursor = contentResolver.query(queryUri, PROJECTION, selection, selectionArgs, SORT_ORDER);
+        }
         if (cursor == null) {
             return false;
         }

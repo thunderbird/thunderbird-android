@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.K9Dialog" parent="@android:Theme.Light">
+    <style name="Theme.K9Dialog" parent="Theme.AppCompat.Light">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowBackground">@drawable/popup_background</item>
         <item name="android:windowTitleStyle">?android:attr/textAppearanceLargeInverse</item>
@@ -14,7 +14,7 @@
       Fix a bug with AutoCompleteTextView
       See https://code.google.com/p/android/issues/detail?id=5237
     -->
-    <style name="Widget.K9.AutoCompleteTextView" parent="@android:style/Widget.AutoCompleteTextView">
+    <style name="Widget.K9.AutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
         <item name="android:textColor">@android:color/primary_text_light</item>
     </style>
 
