@@ -16,7 +16,7 @@ import com.fsck.k9.activity.MessageList;
 
 
 public class MessageListWidgetProvider extends AppWidgetProvider {
-    private static String ACTION_UPDATE_MESSAGE_LIST = "UPDATE_MESSAGE_LIST";
+    private static final String ACTION_UPDATE_MESSAGE_LIST = "UPDATE_MESSAGE_LIST";
 
 
     public static void triggerMessageListWidgetUpdate(Context context) {

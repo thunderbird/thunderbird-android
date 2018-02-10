@@ -18,8 +18,8 @@ import static java.lang.Thread.currentThread;
 
 public class SleepService extends CoreService {
 
-    private static String ALARM_FIRED = "com.fsck.k9.service.SleepService.ALARM_FIRED";
-    private static String LATCH_ID = "com.fsck.k9.service.SleepService.LATCH_ID_EXTRA";
+    private static final String ALARM_FIRED = "com.fsck.k9.service.SleepService.ALARM_FIRED";
+    private static final String LATCH_ID = "com.fsck.k9.service.SleepService.LATCH_ID_EXTRA";
 
 
     private static ConcurrentHashMap<Integer, SleepDatum> sleepData = new ConcurrentHashMap<Integer, SleepDatum>();
