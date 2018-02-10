@@ -1,65 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/add_attachment"
-        android:alphabeticShortcut="n"
-        android:title="@string/add_attachment_action"
+        android:alphabeticShortcut="a"
         android:icon="?attr/iconActionAddAttachment"
+        android:title="@string/add_attachment_action"
+        app:alphabeticModifiers="CTRL|SHIFT"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/send"
-        android:alphabeticShortcut="s"
-        android:title="@string/send_action"
+        android:alphabeticShortcut="\\n"
         android:icon="?attr/iconActionSend"
-        app:showAsAction="ifRoom" />
+        android:title="@string/send_action"
+        app:alphabeticModifiers="CTRL"
+        app:showAsAction="always" />
     <item
         android:id="@+id/add_from_contacts"
-        android:alphabeticShortcut="a"
+        android:alphabeticShortcut="p"
         android:title="@string/add_from_contacts"
-    />
+        app:alphabeticModifiers="CTRL" />
     <item
         android:id="@+id/save"
-        android:alphabeticShortcut="d"
-        android:title="@string/save_draft_action"
+        android:alphabeticShortcut="s"
         android:icon="?attr/iconActionSave"
-        />
+        android:title="@string/save_draft_action"
+        app:alphabeticModifiers="CTRL" />
     <item
         android:id="@+id/discard"
         android:alphabeticShortcut="q"
-        android:title="@string/discard_action"
         android:icon="?attr/iconActionCancel"
-    />
+        android:title="@string/discard_action"
+        app:alphabeticModifiers="CTRL" />
     <item
         android:id="@+id/read_receipt"
         android:alphabeticShortcut="r"
-        android:title="@string/read_receipt"
         android:icon="?attr/iconActionRequestReadReceipt"
-    />
+        android:title="@string/read_receipt"
+        app:alphabeticModifiers="CTRL" />
     <item
         android:id="@+id/openpgp_encrypt_enable"
         android:alphabeticShortcut="c"
         android:title="@string/enable_encryption"
+        app:alphabeticModifiers="CTRL|SHIFT"
         app:showAsAction="never" />
     <item
         android:id="@+id/openpgp_encrypt_disable"
         android:alphabeticShortcut="c"
         android:title="@string/disable_encryption"
+        app:alphabeticModifiers="CTRL|SHIFT"
+
         app:showAsAction="never" />
     <item
         android:id="@+id/openpgp_sign_only"
-        android:alphabeticShortcut="g"
+        android:alphabeticShortcut="s"
         android:title="@string/enable_sign_only"
+        app:alphabeticModifiers="CTRL|SHIFT"
         app:showAsAction="never" />
     <item
         android:id="@+id/openpgp_sign_only_disable"
-        android:alphabeticShortcut="g"
+        android:alphabeticShortcut="s"
         android:title="@string/disable_sign_only"
+        app:alphabeticModifiers="CTRL|SHIFT"
         app:showAsAction="never" />
     <item
         android:id="@+id/openpgp_inline_enable"
         android:alphabeticShortcut="i"
         android:title="@string/enable_inline_pgp"
+        app:alphabeticModifiers="CTRL|SHIFT"
         app:showAsAction="never" />
     <item
         android:id="@+id/openpgp_inline_disable"

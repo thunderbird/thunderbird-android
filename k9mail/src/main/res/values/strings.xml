@@ -794,9 +794,41 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
 
-    <string name="message_view_help_key">Del (or D) - Delete\nR - Reply\nA - Reply All\nC - Compose\nF - Forward\nM - Move\nV - Archive\nY - Copy\nZ - Mark (Un)read\nG - Star\nO - Sort type\nI - Sort order\nQ - Return to Folders\nS - Select/deselect\nJ or P - Previous Message\nK or N - Next Message</string>
     <string name="message_list_help_key">Del (or D) - Delete\nC - Compose\nM - Move\nV - Archive\nY - Copy\nZ - Mark (Un)read\nG - Star\nO - Sort type\nI - Sort order\nQ - Return to Folders\nS - Select/deselect</string>
-
+    <string name="message_view_help_key">
+        CTRL-N, CTRL-M - Compose a new message\n
+        CTRL-R - Reply\n
+        CTRL-SHIFT-R - Reply all\n
+        CTRL-L - Forward email\n
+        DEL - Delete selected mail/thread\n
+        SPACE - Select/Deselect message\n
+        S - Toggle star\n
+        R - Toggle read status\n
+        CTRL-SHIFT-M - Move to another folder\n
+        A - archive selected\n
+        CTRL-C - Copy to another folder\n
+        F - Next message\n
+        B - Previous message\n
+        O - Cycle sort order\n
+        I - Cycle sort type\n
+        H, /, ? - This help</string>
+    <string name="message_composition_help_key">
+        CTRL-SHIFT-A - New attachment\n
+        CTRL-ENTER - Send now\n
+        CTRL-P - Add from Contacts\n
+        CTRL-S Save drafts\n
+        CTRL-Q - Quit/discard\n
+        CTRL-R - Read request read receipt\n
+        CTRL-SHIFT-C - Toggle encryption\n
+        CTRL-SHIFT-S - Toggle openpgp signature\n
+        CTRL-SHIFT-I - Enable/Disable inline PGP\n
+        CTRL-A Select all\n
+        CTRL-C Copy\n
+        CTRL-X Cut\n
+        CTRL-V Paste\n
+        CTRL-Z Undo\n
+        CTRL-SHIFT-Z Redo
+    </string>
     <string name="folder_list_help_key">1 - Display only 1st Class folders\n2 - Display 1st and 2nd Class folders\n3 - Display all except 2nd Class folders\n4 - Display all folders\nQ - Return to Accounts\nS - Edit Account Settings</string>
 
     <string name="folder_list_filter_hint">Folder name contains</string>

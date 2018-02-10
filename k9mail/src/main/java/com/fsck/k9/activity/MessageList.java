@@ -639,13 +639,31 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
                 break;
             }
-            case KeyEvent.KEYCODE_C: {
-                messageListFragment.onCompose();
+            case KeyEvent.KEYCODE_N:{
+                if (event.isCtrlPressed()) {
+                    messageListFragment.onCompose();
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_M:{
+                if (event.isCtrlPressed()) {
+                    if (event.isShiftPressed()) {
+                        if (displayMode == DisplayMode.MESSAGE_LIST) {
+                            messageListFragment.onMove();
+                        } else if (messageViewFragment != null) {
+                            messageViewFragment.onMove();
+                        }
+                    } else {
+                        messageListFragment.onCompose();
+                    }
+                }
                 return true;
             }
             case KeyEvent.KEYCODE_Q: {
-                if (messageListFragment != null && messageListFragment.isSingleAccountMode()) {
-                    onShowFolderList();
+                if (event.isCtrlPressed()) {
+                    if (messageListFragment != null && messageListFragment.isSingleAccountMode()) {
+                        onShowFolderList();
+                    }
                 }
                 return true;
             }
@@ -657,8 +675,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 messageListFragment.onReverseSort();
                 return true;
             }
-            case KeyEvent.KEYCODE_DEL:
-            case KeyEvent.KEYCODE_D: {
+            case KeyEvent.KEYCODE_DEL:{
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment.onDelete();
                 } else if (messageViewFragment != null) {
@@ -666,11 +683,11 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 }
                 return true;
             }
-            case KeyEvent.KEYCODE_S: {
+            case KeyEvent.KEYCODE_SPACE: {
                 messageListFragment.toggleMessageSelect();
                 return true;
             }
-            case KeyEvent.KEYCODE_G: {
+            case KeyEvent.KEYCODE_S: {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment.onToggleFlagged();
                 } else if (messageViewFragment != null) {
@@ -678,15 +695,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 }
                 return true;
             }
-            case KeyEvent.KEYCODE_M: {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment.onMove();
-                } else if (messageViewFragment != null) {
-                    messageViewFragment.onMove();
-                }
-                return true;
-            }
-            case KeyEvent.KEYCODE_V: {
+            case KeyEvent.KEYCODE_A: {
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     messageListFragment.onArchive();
                 } else if (messageViewFragment != null) {
@@ -694,49 +703,51 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 }
                 return true;
             }
-            case KeyEvent.KEYCODE_Y: {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment.onCopy();
-                } else if (messageViewFragment != null) {
-                    messageViewFragment.onCopy();
-                }
-                return true;
-            }
-            case KeyEvent.KEYCODE_Z: {
-                if (displayMode == DisplayMode.MESSAGE_LIST) {
-                    messageListFragment.onToggleRead();
-                } else if (messageViewFragment != null) {
-                    messageViewFragment.onToggleRead();
-                }
-                return true;
-            }
-            case KeyEvent.KEYCODE_F: {
-                if (messageViewFragment != null) {
-                    messageViewFragment.onForward();
-                }
-                return true;
-            }
-            case KeyEvent.KEYCODE_A: {
-                if (messageViewFragment != null) {
-                    messageViewFragment.onReplyAll();
+            case KeyEvent.KEYCODE_C: {
+                if (event.isCtrlPressed()) {
+                    if (displayMode == DisplayMode.MESSAGE_LIST) {
+                        messageListFragment.onCopy();
+                    } else if (messageViewFragment != null) {
+                        messageViewFragment.onCopy();
+                    }
                 }
                 return true;
             }
             case KeyEvent.KEYCODE_R: {
-                if (messageViewFragment != null) {
-                    messageViewFragment.onReply();
+                if (event.isCtrlPressed()) {
+                    if (event.isShiftPressed()) {
+                        if (messageViewFragment != null) {
+                            messageViewFragment.onReplyAll();
+                        } else {
+                            if (messageViewFragment != null) {
+                                messageViewFragment.onReply();
+                            }
+                        }
+                    } else {
+                        if (displayMode == DisplayMode.MESSAGE_LIST) {
+                            messageListFragment.onToggleRead();
+                        } else if (messageViewFragment != null) {
+                            messageViewFragment.onToggleRead();
+                        }
+                    }
                 }
                 return true;
             }
-            case KeyEvent.KEYCODE_J:
-            case KeyEvent.KEYCODE_P: {
+            case KeyEvent.KEYCODE_L: {
+                if (event.isCtrlPressed()) {
+                    if (messageViewFragment != null) {
+                        messageViewFragment.onForward();
+                    }
+                }
+                return true;
+            }
+            case KeyEvent.KEYCODE_B:{
                 if (messageViewFragment != null) {
                     showPreviousMessage();
                 }
                 return true;
             }
-            case KeyEvent.KEYCODE_N:
-            case KeyEvent.KEYCODE_K: {
+            case KeyEvent.KEYCODE_F:{
                 if (messageViewFragment != null) {
                     showNextMessage();
                 }
@@ -747,7 +758,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 messageViewFragment.zoom(event);
                 return true;
             }*/
-            case KeyEvent.KEYCODE_H: {
+            case KeyEvent.KEYCODE_H:
+            case KeyEvent.KEYCODE_HELP:
+            case KeyEvent.KEYCODE_SLASH:
+                {
                 Toast toast;
                 if (displayMode == DisplayMode.MESSAGE_LIST) {
                     toast = Toast.makeText(this, R.string.message_list_help_key, Toast.LENGTH_LONG);
