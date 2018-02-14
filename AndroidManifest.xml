@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.fsck.k9">
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false"/>
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"/>
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
+
+    <!-- Needed to mark a contact as contacted -->
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <permission
+        android:name="${applicationId}.permission.REMOTE_CONTROL"
+        android:description="@string/remote_control_desc"
+        android:label="@string/remote_control_label"
+        android:permissionGroup="android.permission-group.MESSAGES"
+        android:protectionLevel="dangerous"/>
+    <uses-permission android:name="${applicationId}.permission.REMOTE_CONTROL"/>
+
+    <permission
+        android:name="${applicationId}.permission.READ_MESSAGES"
+        android:description="@string/read_messages_desc"
+        android:label="@string/read_messages_label"
+        android:permissionGroup="android.permission-group.MESSAGES"
+        android:protectionLevel="dangerous"/>
+    <uses-permission android:name="${applicationId}.permission.READ_MESSAGES"/>
+
+    <permission
+        android:name="${applicationId}.permission.DELETE_MESSAGES"
+        android:description="@string/delete_messages_desc"
+        android:label="@string/delete_messages_label"
+        android:permissionGroup="android.permission-group.MESSAGES"
+        android:protectionLevel="dangerous"/>
+    <uses-permission android:name="${applicationId}.permission.DELETE_MESSAGES"/>
+
+
+    <application
+        android:name="K9"
+        android:allowTaskReparenting="false"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.K9.Startup"
+        android:resizeableActivity="true"
+        android:allowBackup="false">
+
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value="com.fsck.k9.activity.Search"/>
+
+        <activity
+            android:name=".activity.Accounts"
+            android:configChanges="locale"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:uiOptions="splitActionBarWhenNarrow">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.setup.Prefs"
+            android:configChanges="locale"
+            android:excludeFromRecents="true"
+            android:label="@string/prefs_title"
+            android:taskAffinity="${applicationId}.activity.setup.Prefs"/>
+
+        <activity
+            android:name=".activity.setup.WelcomeMessage"
+            android:configChanges="locale"
+            android:label="@string/welcome_message_title"/>
+
+        <activity
+            android:name=".activity.setup.OpenPgpAppSelectDialog"
+            android:configChanges="locale"
+            android:theme="@style/Theme.K9.Transparent"
+            />
+
+        <activity
+            android:name=".activity.setup.FontSizeSettings"
+            android:configChanges="locale"
+            android:label="@string/font_size_settings_title"/>
+
+        <activity
+            android:name=".activity.setup.AccountSetupBasics"
+            android:configChanges="locale"
+            android:label="@string/account_setup_basics_title"/>
+
+        <activity
+            android:name=".activity.setup.AccountSetupAccountType"
+            android:configChanges="locale"
+            android:label="@string/account_setup_account_type_title"/>
+
+        <activity
+            android:name=".activity.setup.AccountSetupIncoming"
+            android:configChanges="locale"
+            android:label="@string/account_setup_incoming_title"/>
+
+        <activity
+            android:name=".activity.setup.AccountSetupComposition"
+            android:configChanges="locale"
+            android:label="@string/account_settings_composition_title"/>
+
+        <activity
+            android:name=".activity.setup.AccountSetupOutgoing"
+            android:configChanges="locale"
+            android:label="@string/account_setup_outgoing_title"/>
+
+        <activity
+            android:name=".activity.setup.AccountSetupOptions"
+            android:configChanges="locale"
+            android:label="@string/account_setup_options_title"/>
+
+        <activity
+            android:name=".activity.setup.AccountSetupNames"
+            android:configChanges="locale"
+            android:label="@string/account_setup_names_title"/>
+
+        <activity
+            android:name=".activity.ChooseAccount"
+            android:configChanges="locale"
+            android:label="@string/choose_account_title"
+            android:noHistory="true"
+            android:theme="@style/Theme.K9Dialog"/>
+
+        <activity
+            android:name=".activity.ChooseFolder"
+            android:configChanges="locale"
+            android:label="@string/choose_folder_title"
+            android:noHistory="true"
+            android:theme="@style/Theme.K9Dialog"/>
+
+        <activity
+            android:name=".activity.ChooseIdentity"
+            android:configChanges="locale"
+            android:label="@string/choose_identity_title"
+            android:theme="@style/Theme.K9Dialog"/>
+
+        <activity
+            android:name=".activity.ManageIdentities"
+            android:configChanges="locale"
+            android:label="@string/manage_identities_title"/>
+
+        <activity
+            android:name=".activity.EditIdentity"
+            android:configChanges="locale"
+            android:label="@string/edit_identity_title"/>
+
+        <activity
+            android:name=".activity.NotificationDeleteConfirmation"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <!-- XXX Note: this activity is hacked to ignore config changes,
+             since it doesn't currently handle them correctly in code. -->
+        <activity
+            android:name=".activity.setup.AccountSetupCheckSettings"
+            android:configChanges="keyboardHidden|orientation|locale"
+            android:label="@string/account_setup_check_settings_title"/>
+
+        <activity
+            android:name=".activity.setup.AccountSettings"
+            android:configChanges="locale"
+            android:label="@string/account_settings_title_fmt"/>
+
+        <activity
+            android:name=".activity.setup.FolderSettings"
+            android:configChanges="locale"
+            android:label="@string/folder_settings_title"
+            android:theme="@android:style/Theme.Dialog"/>
+
+        <activity
+            android:name=".activity.FolderList"
+            android:configChanges="locale"
+            android:uiOptions="splitActionBarWhenNarrow">
+            <intent-filter>
+                <!-- This action is only to allow an entry point for launcher shortcuts -->
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.MessageList"
+            android:configChanges="locale"
+            android:launchMode="singleTop"
+            android:uiOptions="splitActionBarWhenNarrow">
+            <intent-filter>
+                <!-- This action is only to allow an entry point for launcher shortcuts -->
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data
+                    android:host="messages"
+                    android:scheme="email"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.MessageCompose"
+            android:configChanges="orientation|screenSize"
+            android:enabled="false"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO"/>
+                <data android:scheme="mailto"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <data android:mimeType="*/*"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE"/>
+                <data android:mimeType="*/*"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="mailto"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.autocrypt.PEER_ACTION"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Search Activity - searchable -->
+        <activity
+            android:name=".activity.Search"
+            android:configChanges="locale"
+            android:label="@string/search_action"
+            android:uiOptions="splitActionBarWhenNarrow">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+
+        <activity
+            android:name=".activity.LauncherShortcuts"
+            android:configChanges="locale"
+            android:label="@string/shortcuts_title">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.EmailAddressList"
+            android:configChanges="locale"/>
+
+        <activity android:name=".activity.UnreadWidgetConfiguration">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.UpgradeDatabases"
+            android:label="@string/upgrade_databases_title"/>
+
+        <receiver
+            android:name=".service.BootReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.DEVICE_STORAGE_LOW"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.DEVICE_STORAGE_OK"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.android.sync.SYNC_CONN_STATUS_CHANGED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".service.RemoteControlReceiver"
+            android:enabled="true"
+            android:permission="${applicationId}.permission.REMOTE_CONTROL">
+            <intent-filter>
+                <action android:name="${applicationId}.K9RemoteControl.set"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="${applicationId}.K9RemoteControl.requestAccounts"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".service.CoreReceiver"
+            android:exported="false"/>
+
+        <receiver
+            android:name=".service.StorageReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <!--
+                android.intent.action.MEDIA_MOUNTED
+
+                     * Broadcast Action:  External media is present and mounted at its mount point.
+                     * The path to the mount point for the removed media is contained in the Intent.mData field.
+                     * The Intent contains an extra with name "read-only" and Boolean value to indicate if the
+                     * media was mounted read only.
+
+                 -->
+                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+                <!--
+
+                MEDIA_EJECT and MEDIA_UNMOUNTED are not defined here: they have to be dynamically registered
+                otherwise it would make K-9 start at the wrong time
+
+                 -->
+                <data android:scheme="file"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".provider.UnreadWidgetProvider"
+            android:icon="@drawable/icon"
+            android:label="@string/unread_widget_label">
+            <intent-filter
+                >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/unread_widget_info"/>
+        </receiver>
+
+        <receiver
+            android:name=".widget.list.MessageListWidgetProvider"
+            android:icon="@drawable/message_list_widget_preview"
+            android:label="@string/mail_list_widget_text">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/message_list_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".widget.list.MessageListWidgetService"
+            android:enabled="true"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <service
+            android:name=".service.MailService"
+            android:enabled="true"/>
+
+        <service
+            android:name=".notification.NotificationActionService"
+            android:enabled="true"/>
+
+        <service
+            android:name=".service.PushService"
+            android:enabled="true"/>
+
+        <service
+            android:name=".service.PollService"
+            android:enabled="true"/>
+
+        <service
+            android:name=".service.RemoteControlService"
+            android:enabled="true"
+            android:permission="${applicationId}.permission.REMOTE_CONTROL"/>
+
+        <service
+            android:name=".service.SleepService"
+            android:enabled="true"/>
+
+        <service
+            android:name=".service.DatabaseUpgradeService"
+            android:exported="false"/>
+
+        <provider
+            android:name=".provider.AttachmentProvider"
+            android:authorities="${applicationId}.attachmentprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            
+            <meta-data
+                android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
+                android:value="true" />
+        
+        </provider>
+
+        <provider
+            android:name=".provider.RawMessageProvider"
+            android:authorities="${applicationId}.rawmessageprovider"
+            android:exported="false">
+
+            <meta-data
+                android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
+                android:value="true" />
+
+        </provider>
+
+        <provider
+            android:name=".provider.MessageProvider"
+            android:authorities="${applicationId}.messageprovider"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:multiprocess="true"
+            android:readPermission="${applicationId}.permission.READ_MESSAGES"
+            android:writePermission="${applicationId}.permission.DELETE_MESSAGES"/>
+
+        <provider
+            android:name=".provider.EmailProvider"
+            android:authorities="${applicationId}.provider.email"
+            android:exported="false"/>
+
+        <provider
+            android:name=".provider.DecryptedFileProvider"
+            android:authorities="${applicationId}.decryptedfileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/decrypted_file_provider_paths" />
+        </provider>
+
+        <provider
+            android:name=".provider.AttachmentTempFileProvider"
+            android:authorities="${applicationId}.tempfileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/temp_file_provider_paths" />
+        </provider>
+
+    </application>
+</manifest>
