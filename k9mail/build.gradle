@@ -22,30 +22,31 @@ configurations.all {
 }
 
 dependencies {
-    compile project(':k9mail-library')
-    compile project(':plugins:HoloColorPicker')
-    compile project(':plugins:openpgp-api-lib:openpgp-api')
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
-    compile "com.squareup.okio:okio:${okioVersion}"
-    compile 'commons-io:commons-io:2.4'
-    compile "com.android.support:support-v4:${androidSupportLibraryVersion}"
-    compile 'org.jsoup:jsoup:1.11.2'
-    compile 'de.cketti.library.changelog:ckchangelog:1.2.1'
-    compile 'com.github.bumptech.glide:glide:3.6.1'
-    compile 'com.splitwise:tokenautocomplete:2.0.7'
-    compile 'de.cketti.safecontentresolver:safe-content-resolver-v14:0.9.0'
-    compile 'com.github.amlcurran.showcaseview:library:5.4.1'
-    compile 'com.squareup.moshi:moshi:1.2.0'
-    compile "com.jakewharton.timber:timber:${timberVersion}"
-    compile 'net.jcip:jcip-annotations:1.0'
+    implementation project(':k9mail-library')
+    implementation project(':plugins:HoloColorPicker')
+    implementation project(':plugins:openpgp-api-lib:openpgp-api')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
+    implementation "com.squareup.okio:okio:${okioVersion}"
+    implementation 'commons-io:commons-io:2.4'
+    implementation "com.android.support:support-v4:${androidSupportLibraryVersion}"
+    implementation 'org.jsoup:jsoup:1.11.2'
+    implementation 'de.cketti.library.changelog:ckchangelog:1.2.1'
+    implementation 'com.github.bumptech.glide:glide:3.6.1'
+    implementation 'com.splitwise:tokenautocomplete:2.0.7'
+    implementation 'de.cketti.safecontentresolver:safe-content-resolver-v14:0.9.0'
+    implementation 'com.github.amlcurran.showcaseview:library:5.4.1'
+    implementation 'com.squareup.moshi:moshi:1.2.0'
+    implementation "com.jakewharton.timber:timber:${timberVersion}"
+    implementation 'net.jcip:jcip-annotations:1.0'
+    implementation 'org.apache.james:apache-mime4j-core:0.8.1'
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
 
-    testCompile "org.robolectric:robolectric:${robolectricVersion}"
-    testCompile "junit:junit:${junitVersion}"
-    testCompile "com.google.truth:truth:${truthVersion}"
-    testCompile "org.mockito:mockito-core:${mockitoVersion}"
-    testCompile "org.jdom:jdom2:2.0.6"
+    testImplementation "org.robolectric:robolectric:${robolectricVersion}"
+    testImplementation "junit:junit:${junitVersion}"
+    testImplementation "com.google.truth:truth:${truthVersion}"
+    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+    testImplementation "org.jdom:jdom2:2.0.6"
 }
 
 android {
