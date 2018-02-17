@@ -227,7 +227,7 @@ class ImapSync {
             if (account.syncRemoteDeletions()) {
                 List<String> destroyMessageUids = new ArrayList<>();
                 for (String localMessageUid : localUidMap.keySet()) {
-                    if (remoteUidMap.get(localMessageUid) == null) {
+                    if (!localMessageUid.startsWith(K9.LOCAL_UID_PREFIX) && remoteUidMap.get(localMessageUid) == null) {
                         destroyMessageUids.add(localMessageUid);
                     }
                 }
