@@ -10,10 +10,6 @@ if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
 }
 
-repositories {
-    jcenter()
-}
-
 dependencies {
     implementation 'org.apache.james:apache-mime4j-core:0.8.1'
     implementation 'org.apache.james:apache-mime4j-dom:0.8.1'

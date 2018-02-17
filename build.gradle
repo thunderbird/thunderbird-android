@@ -22,4 +22,9 @@ subprojects {
             project.android.dexOptions.preDexLibraries = !rootProject.hasProperty('disablePreDex')
         }
     }
+
+    repositories {
+        jcenter()
+        google()
+    }
 }

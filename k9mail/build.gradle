@@ -10,10 +10,6 @@ if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
 }
 
-repositories {
-    jcenter()
-}
-
 //noinspection GroovyAssignabilityCheck
 configurations.all {
     resolutionStrategy {
