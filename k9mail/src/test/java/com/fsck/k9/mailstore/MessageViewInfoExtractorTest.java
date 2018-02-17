@@ -151,7 +151,7 @@ public class MessageViewInfoExtractorTest {
                 "not flowed line";
         String expectedHtml =
                 "<pre class=\"k9mail\">" +
-                        "K-9 Mail rocks :&gt; flowed line<br />not flowed line" +
+                        "K-9 Mail rocks :&gt; flowed line<br>not flowed line" +
                         "</pre>";
 
         assertEquals(expectedText, container.text);
@@ -353,12 +353,12 @@ public class MessageViewInfoExtractorTest {
         String expectedHtmlText = "<table style=\"border: 0\">" +
                 "<tr><th style=\"text-align: left; vertical-align: top;\">Subject:</th><td>(No subject)</td></tr>" +
                 "</table>" +
-                "<pre class=\"k9mail\">text body of first message<br /></pre>" +
+                "<pre class=\"k9mail\">text body of first message<br></pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: 1px solid #000\"></p>" +
                 "<table style=\"border: 0\">" +
                 "<tr><th style=\"text-align: left; vertical-align: top;\">Subject:</th><td>subject of second message</td></tr>" +
                 "</table>" +
-                "<pre class=\"k9mail\">text part of second message<br /></pre>";
+                "<pre class=\"k9mail\">text part of second message<br></pre>";
 
 
         assertEquals(4, outputViewableParts.size());
