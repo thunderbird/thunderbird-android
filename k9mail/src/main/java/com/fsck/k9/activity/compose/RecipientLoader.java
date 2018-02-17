@@ -266,6 +266,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         foundValidCursor |= fillContactDataFromNameAndEmail(query, recipients, recipientMap);
 
         if (foundValidCursor) {
+            //nicknames should be sorted as the others - timesContacted,keyPrimary
             Collections.sort(recipients, new Comparator<Recipient>() {
                 @Override
                 public int compare(Recipient o1, Recipient o2) {
