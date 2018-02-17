@@ -163,7 +163,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     }
 
     private void fillContactDataFromCryptoProvider(String query, List<Recipient> recipients,
-                                                   Map<String, Recipient> recipientMap) {
+            Map<String, Recipient> recipientMap) {
         Cursor cursor;
         try {
             Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/autocrypt_status");
@@ -197,7 +197,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     }
 
     private void fillContactDataFromAddresses(Address[] addresses, List<Recipient> recipients,
-                                              Map<String, Recipient> recipientMap) {
+            Map<String, Recipient> recipientMap) {
         for (Address address : addresses) {
             // TODO actually query contacts - not sure if this is possible in a single query tho :(
             Recipient recipient = new Recipient(address);
@@ -207,7 +207,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     }
 
     private void fillContactDataFromEmailContentUri(Uri contactUri, List<Recipient> recipients,
-                                                    Map<String, Recipient> recipientMap) {
+            Map<String, Recipient> recipientMap) {
         Cursor cursor = contentResolver.query(contactUri, PROJECTION, null, null, null);
 
         if (cursor == null) {
@@ -218,7 +218,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     }
 
     private void fillContactDataFromLookupKey(Uri lookupKeyUri, List<Recipient> recipients,
-                                              Map<String, Recipient> recipientMap) {
+            Map<String, Recipient> recipientMap) {
         // We could use the contact id from the URI directly, but getting it from the lookup key is safer
         Uri contactContentUri = Contacts.lookupContact(contentResolver, lookupKeyUri);
         if (contactContentUri == null) {
@@ -259,14 +259,14 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     @SuppressWarnings("ConstantConditions")
     private void fillContactDataFromQuery(String query, List<Recipient> recipients,
-                                          Map<String, Recipient> recipientMap) {
+            Map<String, Recipient> recipientMap) {
 
         boolean foundValidCursor = false;
         foundValidCursor |= fillContactDataFromNickname(query, recipients, recipientMap);
         foundValidCursor |= fillContactDataFromNameAndEmail(query, recipients, recipientMap);
 
         if (foundValidCursor) {
-            //nicknames should be sorted as the others - timesContacted,keyPrimary
+            //nicknames should be sorted as the others - by timesContacted,keyPrimary
             Collections.sort(recipients, new Comparator<Recipient>() {
                 @Override
                 public int compare(Recipient o1, Recipient o2) {
@@ -275,10 +275,10 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                     int y = o1.getTimesContacted();
 
                     int compTimesContacted = (x < y) ? -1 : ((x == y) ? 0 : 1);
-                    if (compTimesContacted != 0){
+                    if (compTimesContacted != 0) {
                         return compTimesContacted;
                     }
-                    return  o2.getKeyPrimary().compareTo(o1.getKeyPrimary());
+                    return o2.getKeyPrimary().compareTo(o1.getKeyPrimary());
                 }
             });
 
@@ -296,7 +296,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     @SuppressWarnings("ConstantConditions")
     private boolean fillContactDataFromNickname(String nickname, List<Recipient> recipients,
-                                                Map<String, Recipient> recipientMap) {
+            Map<String, Recipient> recipientMap) {
 
         boolean hasContact = false;
 
@@ -329,7 +329,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
 
     private boolean fillContactDataFromNameAndEmail(String query, List<Recipient> recipients,
-                                                    Map<String, Recipient> recipientMap) {
+            Map<String, Recipient> recipientMap) {
         query = "%" + query + "%";
 
         Uri queryUri = Email.CONTENT_URI;
@@ -350,12 +350,12 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     }
 
     private void fillContactDataFromCursor(Cursor cursor, List<Recipient> recipients,
-                                           Map<String, Recipient> recipientMap) {
+            Map<String, Recipient> recipientMap) {
         fillContactDataFromCursor(cursor, recipients, recipientMap, null);
     }
 
     private void fillContactDataFromCursor(Cursor cursor, List<Recipient> recipients,
-                                           Map<String, Recipient> recipientMap, @Nullable String prefilledName) {
+            Map<String, Recipient> recipientMap, @Nullable String prefilledName) {
 
         while (cursor.moveToNext()) {
             String name = prefilledName != null ? prefilledName : cursor.getString(INDEX_NAME);
@@ -402,7 +402,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
             if (recipient.isValidEmailAddress()) {
 
-                recipient.photoThumbnailUri = cursor.isNull(INDEX_PHOTO_URI) ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
+                recipient.photoThumbnailUri =
+                        cursor.isNull(INDEX_PHOTO_URI) ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
                 recipientMap.put(email, recipient);
                 recipients.add(recipient);
             }

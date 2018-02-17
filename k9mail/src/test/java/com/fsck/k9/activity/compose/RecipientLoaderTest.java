@@ -48,11 +48,15 @@ public class RecipientLoaderTest {
     static final String[] PROJECTION_CRYPTO_STATUS = { "address", "uid_key_status", "autocrypt_key_status" };
     static final Address CONTACT_ADDRESS_1 = Address.parse("Contact Name <address@example.org>")[0];
     static final Address CONTACT_ADDRESS_2 = Address.parse("Other Contact Name <address_two@example.org>")[0];
-    static final String TYPE = ""+TYPE_HOME;
-    static final String[] CONTACT_1 = new String[] {"0", "Bob", "bob", "bob@host.com", TYPE, null, "1", null, "100", "Bob"};
-    static final String[] CONTACT_NO_EMAIL = new String[] {"0", "Bob", "bob", null, TYPE, null, "1", null, "10", "Bob_noMail"};
-    static final String[] CONTACT_WITH_NICKNAME_NOT_CONTACTED = new String[] {"0", "Eve_notContacted", "eve_notContacted", "eve_notContacted@host.com", TYPE, null, "2", null, "0", "Eve"};
-    static final String[] NICKNAME_NOT_CONTACTED = new String[]{"2", "Eves_Nickname_Bob"};
+    static final String TYPE = "" + TYPE_HOME;
+    static final String[] CONTACT_1 =
+            new String[] { "0", "Bob", "bob", "bob@host.com", TYPE, null, "1", null, "100", "Bob" };
+    static final String[] CONTACT_NO_EMAIL =
+            new String[] { "0", "Bob", "bob", null, TYPE, null, "1", null, "10", "Bob_noMail" };
+    static final String[] CONTACT_WITH_NICKNAME_NOT_CONTACTED =
+            new String[] { "0", "Eve_notContacted", "eve_notContacted", "eve_notContacted@host.com", TYPE, null, "2",
+                    null, "0", "Eve" };
+    static final String[] NICKNAME_NOT_CONTACTED = new String[] { "2", "Eves_Nickname_Bob" };
 
     static final String QUERYSTRING = "querystring";
 
@@ -61,7 +65,6 @@ public class RecipientLoaderTest {
             ContactsContract.Data.CONTACT_ID,
             ContactsContract.CommonDataKinds.Nickname.NAME
     };
-
 
 
     Context context;
@@ -205,12 +208,13 @@ public class RecipientLoaderTest {
             cursor.addRow(contact);
         }
         when(contentResolver
-                .query(eq( Email.CONTENT_URI),
+                .query(eq(Email.CONTENT_URI),
                         aryEq(PROJECTION),
                         any(String.class),
-                        aryEq(new String[] { id}),
+                        aryEq(new String[] { id }),
                         any(String.class))).thenReturn(cursor);
     }
+
     @Test
     public void queryContactProvider() throws Exception {
         RecipientLoader recipientLoader = new RecipientLoader(context, CRYPTO_PROVIDER, QUERYSTRING);
