@@ -9,6 +9,7 @@ import java.util.Map;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -22,6 +23,8 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
+import android.widget.CompoundButton;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -46,6 +49,8 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
+import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog;
+import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog.OnPreferEncryptChangedListener;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import timber.log.Timber;
 
@@ -55,6 +60,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private static final int DIALOG_COLOR_PICKER_ACCOUNT = 1;
     private static final int DIALOG_COLOR_PICKER_LED = 2;
+    private static final int DIALOG_AUTOCRYPT_PREFER_ENCRYPT = 3;
 
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
@@ -179,7 +185,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mMaxPushFolders;
     private boolean hasPgpCrypto = false;
     private OpenPgpKeyPreference pgpCryptoKey;
-    private CheckBoxPreference autocryptPreferEncryptMutual;
+    private Preference autocryptPreferEncryptMutual;
 
     private PreferenceScreen searchScreen;
     private CheckBoxPreference cloudSearchEnabled;
@@ -713,8 +719,14 @@ public class AccountSettings extends K9PreferenceActivity {
 
             cryptoMenu.setOnPreferenceClickListener(null);
 
-            autocryptPreferEncryptMutual = (CheckBoxPreference) findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
-            autocryptPreferEncryptMutual.setChecked(account.getAutocryptPreferEncryptMutual());
+            autocryptPreferEncryptMutual = findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
+            autocryptPreferEncryptMutual.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    showDialog(DIALOG_AUTOCRYPT_PREFER_ENCRYPT);
+                    return false;
+                }
+            });
         } else {
             cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_configured);
             cryptoMenu.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -795,7 +807,6 @@ public class AccountSettings extends K9PreferenceActivity {
         } else {
             account.setCryptoKey(Account.NO_OPENPGP_KEY);
         }
-        account.setAutocryptPreferEncryptMutual(autocryptPreferEncryptMutual.isChecked());
 
         // In webdav account we use the exact folder name also for inbox,
         // since it varies because of internationalization
@@ -933,6 +944,16 @@ public class AccountSettings extends K9PreferenceActivity {
                         },
                         account.getNotificationSetting().getLedColor());
 
+                break;
+            }
+            case DIALOG_AUTOCRYPT_PREFER_ENCRYPT: {
+                dialog = new AutocryptPreferEncryptDialog(this, account.getAutocryptPreferEncryptMutual(),
+                        new OnPreferEncryptChangedListener() {
+                            @Override
+                            public void onPreferEncryptChanged(boolean enabled) {
+                                account.setAutocryptPreferEncryptMutual(enabled);
+                            }
+                        });
                 break;
             }
         }
