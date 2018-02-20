@@ -1282,7 +1282,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_enabled_error_back">Back</string>
     <string name="openpgp_enabled_error_disable">Disable Encryption</string>
     <string name="openpgp_encryption">OpenPGP Encryption</string>
-    <string name="account_settings_crypto_prefer_encrypt">Encryption preference</string>
-    <string name="account_settings_crypto_prefer_encrypt_on">By default when replying to encrypted, or if all recipients also checked this option</string>
-    <string name="account_settings_crypto_prefer_encrypt_off">By default, when replying to encrypted messages</string>
+
+    <string name="account_settings_crypto_prefer_encrypt">Autocrypt mutual mode</string>
+    <string name="dialog_autocrypt_mutual_title">Autocrypt mutual mode</string>
+    <string name="dialog_autocrypt_mutual_description_1">Messages will normally be encrypted by choice, or when replying to an encrypted message.</string>
+    <string name="dialog_autocrypt_mutual_description_2">If both sender and recipients enable mutual mode, encryption will be enabled by default.</string>
 </resources>
