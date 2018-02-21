@@ -56,9 +56,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Informações da revisão: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Estamos usando as seguintes bibliotecas de terceiros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Emojis: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Ler anexos do e-mail</string>
-  <string name="read_attachment_desc">Permite que esta aplicação leia os anexos de seus e-mails.</string>
   <string name="read_messages_label">Ler e-mails</string>
   <string name="read_messages_desc">Permite que esta aplicação leia seus e-mails.</string>
   <string name="delete_messages_label">Excluir e-mails</string>
@@ -225,7 +222,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="compose_error_incomplete_recipient">O campo destinatário está incompleto!</string>
   <string name="error_contact_address_not_found">Não foi possível encontrar um endereço de e-mail para este contato.</string>
   <string name="message_compose_attachments_skipped_toast">Alguns anexos não puderam ser encaminhados porque não foram baixados.</string>
-  <string name="message_compose_show_quoted_text_action">Citar a mensagem</string>
   <string name="message_compose_description_delete_quoted_text">Remover o texto citado</string>
   <string name="message_compose_description_edit_quoted_text">Editar o texto citado</string>
   <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -980,30 +976,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="openpgp_dialog_sign_only_minus_break">Assinaturas podem apresentar problema quando enviadas para listas de discussão.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">A assinatura pode ser mostrada como um anexo \'signature.asc\' em alguns clientes.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Mensagens criptografadas sempre incluem uma assinatura.</string>
-  <string name="crypto_msg_disabled">A mensagem não está criptografada</string>
-  <string name="crypto_msg_encrypted_error">A mensagens está criptografada, mas ocorreu erro de descriptografia.</string>
-  <string name="crypto_msg_encrypted_insecure">A mensagem está criptografada, mas é insegura!</string>
-  <string name="crypto_msg_signed_error">A mensagem está assinada, mas a assinatura não pôde ser verificada.</string>
-  <string name="crypto_msg_encrypted_no_provider">A mensagem está criptografada, mas não existe nenhum arquivo de criptografia configurado.</string>
-  <string name="crypto_msg_unsupported_encrypted">A mensagem está criptografada, mas em um formato não suportado.</string>
-  <string name="crypto_msg_unsupported_signed">A mensagem está assinada, mas em um formato não suportado.</string>
-  <string name="crypto_msg_incomplete_encrypted">A mensagem está criptografada, mas precisa ser baixada totalmente para ser descriptografada.</string>
-  <string name="crypto_msg_cancelled">A mensagem está criptografada, mas a descriptografia foi cancelada.</string>
-  <string name="crypto_msg_signed_unencrypted">A mensagem está assinada, mas não criptografada.</string>
-  <string name="crypto_msg_encrypted_unsigned">A mensagem foi criptografada, mas não assinada.</string>
-  <string name="crypto_msg_sign_unknown">A assinatura foi feita por uma chave desconhecida.</string>
-  <string name="crypto_msg_sign_verified">A assinatura foi feita por uma chave confiável.</string>
-  <string name="crypto_msg_sign_unverified">A assinatura foi feita por uma chave não confiável!</string>
-  <string name="crypto_msg_sign_error">A assinatura contém um erro.</string>
-  <string name="crypto_msg_sign_mismatch">A assinatura foi feita pela chave errada.</string>
-  <string name="crypto_msg_sign_expired">A assinatura foi feita por uma chave expirada.</string>
-  <string name="crypto_msg_sign_revoked">A assinatura foi feita por uma chave revogada.</string>
-  <string name="crypto_msg_sign_insecure">A assinatura foi feita por uma chave insegura.</string>
-  <string name="crypto_msg_sign_incomplete">A mensagem deve ser inteiramente baixada para que sua assinatura seja verificada.</string>
-  <string name="crypto_msg_signed_encrypted">A mensagem está assinada e criptografada.</string>
-  <string name="crypto_msg_unsigned_encrypted">Não existe assinatura, esta mensagem pode ter sido interceptada.</string>
   <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_view_key">Ver o assinante</string>
   <string name="crypto_info_view_security_warning">Detalhes</string>
   <string name="locked_attach_unlock">Desbloquear</string>
   <string name="locked_attach_unencrypted">Esta parte não foi criptografada e pode estar insegura.</string>
@@ -1013,13 +986,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="messageview_decrypt_retry">Tentar novamente</string>
   <string name="messageview_decrypt_incomplete">A mensagem criptografada deve ser baixada para descriptografia.</string>
   <string name="messageview_crypto_error_title">Erro descriptografando a mensagem</string>
-  <string name="messageview_crypto_warning_title">Alerta de segurança</string>
-  <string name="messageview_crypto_warning_revoked">Esta mensagem foi assinada por uma <b>chave revogada!</b></string>
-  <string name="messageview_crypto_warning_expired">Esta mensagem foi assinada por uma <b>chave expirada!</b></string>
-  <string name="messageview_crypto_warning_insecure">Esta mensagem foi assinada por uma <b>chave insegura!</b></string>
-  <string name="messageview_crypto_warning_error">Ocorreu um <b>erro na assinatura desta mensagem!</b></string>
-  <string name="messageview_crypto_warning_unsigned">Esta mensagem estava criptografada, mas não assinada. Isso <b>quebra a segurança ponta-a-ponta!</b></string>
-  <string name="messageview_crypto_warning_show_anyway">Exibir a mensagem mesmo assim</string>
   <string name="recipient_error_non_ascii">Atualmente não existe suporte para caracteres especiais!</string>
   <string name="recipient_error_parse_failed">Erro ao analisar o endereço!</string>
   <string name="account_settings_crypto_support_sign_only">Exibir assinaturas não criptografadas</string>
@@ -1049,7 +1015,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="enable_encryption">Habilitar a criptografia</string>
   <string name="disable_encryption">Desabilitar a criptografia</string>
   <string name="openpgp_description_text1">Criptografar mensagens garante que elas sejam lidas somente pelo destinatário e mais ninguém.</string>
-  <string name="openpgp_description_text3">A criptografia só será exibida se for suportada por todos os destinatários, e eles devem ter enviado um e-mail para você antes.</string>
   <string name="openpgp_description_text2">Alterne a criptografia clicando neste ícone.</string>
   <string name="openpgp_enabled_error_gotit">Entendi</string>
   <string name="openpgp_enabled_error_back">Voltar</string>

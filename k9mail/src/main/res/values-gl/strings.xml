@@ -14,6 +14,36 @@
   <string name="app_license">Licienciado baixo a Licencia Apache, Version 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Benvido/a a K-9 Mail</string>
+  <string name="accounts_welcome"><![CDATA[
+<p>
+K-9 Mail é un potente cliente de correo para Android.
+</p><p>
+As características melloradas inclúen:
+</p>
+<ul>
+  <li>Push mail utilizando IMAP IDLE</li>
+  <li>Mellor rendemento</li>
+  <li>Autocompletado de mensaxe</li>
+  <li>Firmas de correo</li>
+  <li>Bcc ao remitente</li>
+  <li>Suscrición de cartafoles</li>
+  <li>Sincronización de todos os cartafoles</li>
+  <li>Configuración da conta de resposta</li>
+  <li>Atallos de teclado</li>
+  <li>Melloras no xestión IMAP</li>
+  <li>Gardar anexos en tarxeta SD</li>
+  <li>Baldeirar o lixo</li>
+  <li>Ordenar mensaxes</li>
+  <li>…e máis</li>
+</ul>
+<p>
+Por favor teña en conta que K-9 non soporta a maioría das contas gratuítas Hotmail e, como moitos clientes, ten
+problemiñas ao utilizar Microsoft Exchange.
+</p><p>
+Por favor envíen informes de fallos, contribúa con novas características e consulte dúbidas en
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
+</p>
+    ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nEnviado dende o meu teléfono Android con K-9 Mail. Desculpa a miña brevedade</string>
   <!--General strings that include the app name-->
@@ -27,9 +57,6 @@
   <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Información da revisión: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Usamos as seguintes librerías de terceiros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Iconos Emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Ler adxuntos da mensaxe</string>
-  <string name="read_attachment_desc">Permitir a esta aplicación ler adxuntos do teu correo</string>
   <string name="read_messages_label">Ler correos</string>
   <string name="read_messages_desc">Permitir a esta aplicación ler tus correos</string>
   <string name="delete_messages_label">Borrar correos</string>
@@ -43,6 +70,7 @@
   <string name="compose_title_reply">Responder</string>
   <string name="compose_title_reply_all">Responder a todos</string>
   <string name="compose_title_forward">Reenviar</string>
+  <string name="compose_title_forward_as_attachment">Reenviar como anexo</string>
   <string name="choose_account_title">Escolla Conta</string>
   <string name="choose_folder_title">Seleccionar carpeta</string>
   <string name="status_loading_account_folder">Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -73,6 +101,7 @@
   <string name="archive_action">Arquivar</string>
   <string name="spam_action">Spam</string>
   <string name="forward_action">Reenviar</string>
+  <string name="forward_as_attachment_action">Reenviar como anexo</string>
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
   <string name="refile_action">Arquivar...</string>
@@ -138,7 +167,12 @@
   <string name="clearing_account">Limpando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Creando conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Correo novo</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nova mensaxe</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> novas mensaxes</item>
+  </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> Sin Ler (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> máis en <xliff:g id="account">%2$s</xliff:g></string>
   <string name="notification_action_reply">Responder</string>
   <string name="notification_action_mark_as_read">Marcar Lido</string>
   <string name="notification_action_mark_all_as_read">Marcar todos lidos</string>
@@ -186,11 +220,12 @@
   <string name="message_compose_quote_header_to">Para:</string>
   <string name="message_compose_quote_header_cc">CC:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> escribiu:</string>
+  <string name="message_compose_reply_header_fmt_with_date">No <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> escribeu:</string>
   <string name="message_compose_error_no_recipients">Debes engadir un destinatario</string>
   <string name="compose_error_incomplete_recipient">O campo de destino contén datos incompletos!</string>
   <string name="error_contact_address_not_found">Non atopo enderezo electrónico.</string>
   <string name="message_compose_attachments_skipped_toast">Algúns adxuntos non poden reenviarse porque non foron descargados.</string>
-  <string name="message_compose_show_quoted_text_action">Citar mensaxe</string>
+  <string name="message_compose_attachments_forward_toast">Esta mensaxes non pode ser reenviada xa que algúns anexos non foron descargados.</string>
   <string name="message_compose_description_delete_quoted_text">Eliminar texto citado</string>
   <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
   <string name="message_view_from_format">Dende: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -210,6 +245,8 @@
   <string name="message_no_additional_headers_available">Todas as cabeceiras foron descargadas, pero non hai encabezados adicionáis que amosar</string>
   <string name="message_additional_headers_retrieval_failed">Prodúxose un erro ao descargar os encabezados adicionáis dende a base de datos ou o servidor</string>
   <string name="from_same_sender">Máis deste remitente</string>
+  <string name="search_from_format">De <xliff:g id="sender">%s</xliff:g></string>
+  <string name="debug_delete_local_body">Depurar/Limpar corpo da mensaxe</string>
   <string name="message_discarded_toast">Mensaxes descartadas</string>
   <string name="message_saved_toast">Mensaxe guardada coma borrador</string>
   <string name="global_settings_flag_label">Ver estrelas</string>
@@ -219,6 +256,8 @@
   <string name="global_settings_preview_lines_label">Previsualizar liñas</string>
   <string name="global_settings_show_correspondent_names_label">Amosar os nomes correspondentes</string>
   <string name="global_settings_show_correspondent_names_summary">Amosar os nomes en lugar dos enderezos</string>
+  <string name="global_settings_sender_above_subject_label">Nome enriba do asunto</string>
+  <string name="global_settings_sender_above_subject_summary">Mostrar os nomes dos destinos enriba da liña de asunto en lugar de debaixo dela</string>
   <string name="global_settings_show_contact_name_label">Ver nome de contactos</string>
   <string name="global_settings_show_contact_name_summary">Usar nome de destinatario dende contactos cando esté dispoñible</string>
   <string name="global_settings_registered_name_color_label">Colorear contactos</string>
@@ -237,6 +276,7 @@
   <string name="global_settings_confirm_actions_title">Confirmar acción</string>
   <string name="global_settings_confirm_actions_summary">Amosar un diálogo cuando se realice una de estas acciones</string>
   <string name="global_settings_confirm_action_delete">Eliminar</string>
+  <string name="global_settings_confirm_action_delete_starred">Eliminar con Estrela (na vista de mensaxe)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
   <string name="global_settings_confirm_menu_discard">Descartar mensaxe</string>
   <string name="global_settings_confirm_menu_mark_all_read">Marcar todas as mensaxes como lidas</string>
@@ -303,6 +343,7 @@
   <string name="account_setup_incoming_security_none_label">Ningunha</string>
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" non é válido con \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_incoming_delete_policy_label">Borrado de mesaxes</string>
   <string name="account_setup_incoming_delete_policy_never_label">Non borrar do servidor</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Borrar do servidor</string>
@@ -342,6 +383,7 @@
   <string name="account_setup_outgoing_username_label">Usuario</string>
   <string name="account_setup_outgoing_password_label">Contrasinal</string>
   <string name="account_setup_outgoing_authentication_label">Tipo de autentificación</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" non é válido con \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_bad_uri">Configuración inválida: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Opcións de conta</string>
   <string name="compact_action">Compactar</string>
@@ -391,6 +433,7 @@
   <string name="account_setup_failed_dlg_title">No se puido rematar a Configuración</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Nome de usuaria ou contrasinal incorrectos.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">O servidor presentou un certificado SSL non válido. Esto a veces pasa por estar mal configurado o servidor. Outras porque alguén está tratando de atacala a vostede ou o seu servidor. Se non está segura do que acontece, pulse en Rexeitar e contacte coa administración do servidor de correo.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Non se puido conectar co servidor.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Editar detalles</string>
   <string name="account_setup_failed_dlg_continue_action">Continuar</string>
   <string name="account_settings_push_advanced_title">Avanzado</string>
@@ -398,6 +441,7 @@
   <string name="account_settings_default_label">Conta por defecto</string>
   <string name="account_settings_default_summary">Enviar correo dende esta conta por defecto</string>
   <string name="account_settings_notify_label">Notificar correo novo</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Cartafoles de notificacións</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Todas</string>
   <string name="account_settings_folder_notify_new_mail_mode_first_class">Só 1a clase</string>
   <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1a e 2a Clase</string>
@@ -409,28 +453,42 @@
   <string name="account_settings_notify_sync_summary">Avisarme no estatus cuando se comprobe o correo</string>
   <string name="account_settings_notify_self_label">Incluir bandexa de saída</string>
   <string name="account_settings_notify_self_summary">Amosar notificacións durante o envío de correo</string>
+  <string name="account_notify_contacts_mail_only_label">Só contactos</string>
+  <string name="account_notify_contacts_mail_only_summary">Mostrar notificacións só das mensaxes de contactos coñecidos</string>
   <string name="account_settings_notification_opens_unread_label">Abrir correo non lido</string>
   <string name="account_settings_notification_opens_unread_summary">Abrir correo non lido dende a notificación</string>
+  <string name="account_settings_mark_message_as_read_on_view_label">Marcar como lido ao abrir</string>
+  <string name="account_settings_mark_message_as_read_on_view_summary">Marcas unha mensaxe como lida cando se abre para vela</string>
   <string name="account_settings_show_pictures_label">Amosar imaxes</string>
   <string name="account_settings_show_pictures_never">Nunca</string>
   <string name="account_settings_show_pictures_only_from_contacts">Só dos meuis contactos</string>
   <string name="account_settings_show_pictures_always">De calquera</string>
   <string name="account_settings_composition">Configuración Saínte</string>
+  <string name="account_settings_default_quoted_text_shown_label">Citar mensaxe na resposta</string>
+  <string name="account_settings_default_quoted_text_shown_summary">Incluír a mensaxe orixinal na súa resposta.</string>
   <string name="account_settings_reply_after_quote_label">Resposta tras cita</string>
   <string name="account_settings_reply_after_quote_summary">Cando se responda a un correo, o texto orixinal estará por riba da sua resposta</string>
+  <string name="account_settings_strip_signature_label">Quitar as firmas na resposta</string>
+  <string name="account_settings_strip_signature_summary">Quitaranse as firmas nas mensaxes citadas</string>
   <string name="account_settings_message_format_label">Formato da mensaxe</string>
   <string name="account_settings_message_format_text">Texto plano (borraránse imaxes e formato)</string>
   <string name="account_settings_message_format_html">HTML (mantéñense imaxes e formato)</string>
+  <string name="account_settings_message_format_auto">Automático</string>
   <string name="account_settings_always_show_cc_bcc_label">Mostrar sempre Cc/Bcc</string>
   <string name="account_settings_message_read_receipt_label">Ler destinatario</string>
+  <string name="account_settings_message_read_receipt_summary">Solicitar sempre aviso de lectura</string>
   <string name="account_settings_quote_style_label">Responder estilo comentario</string>
   <string name="account_settings_quote_style_prefix">Prefixo (coma Gmail, Pine)</string>
   <string name="account_settings_quote_style_header">Cabeceira (coma Outlook, Yahoo!, Hotmail)</string>
   <string name="account_settings_general_title">Configuración Xeral</string>
+  <string name="account_settings_reading_mail">Lendo correo</string>
   <string name="account_settings_sync">Configuración Entrante</string>
   <string name="account_settings_folders">Carpetas</string>
   <string name="account_settings_quote_prefix_label">Prefixo de cita</string>
   <string name="account_settings_crypto">Cifrado</string>
+  <string name="account_settings_crypto_app">App OpenPGP</string>
+  <string name="account_settings_crypto_key">A miña chave</string>
+  <string name="account_settings_no_openpgp_provider_configured">Non ten un app OpenPGP configurado</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
   <string name="account_settings_storage_title">Almacenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
@@ -495,18 +553,24 @@
   <string name="folder_settings_in_top_group_label">Amosar ao principio</string>
   <string name="folder_settings_in_top_group_summary">Amosar cerca do principio da lista</string>
   <string name="folder_settings_folder_display_mode_label">Clase de carpeta</string>
+  <string name="folder_settings_folder_display_mode_normal">Sen Clase</string>
   <string name="folder_settings_folder_display_mode_first_class">1a Clase</string>
   <string name="folder_settings_folder_display_mode_second_class">2a Clase</string>
+  <string name="folder_settings_folder_sync_mode_label">Clase de consulta de cartafol</string>
   <string name="folder_settings_folder_sync_mode_normal">ningunha</string>
   <string name="folder_settings_folder_sync_mode_first_class">1a Clase</string>
   <string name="folder_settings_folder_sync_mode_second_class">2a Clase</string>
   <string name="folder_settings_folder_sync_mode_inherited">Aa mesma que a de visualización</string>
   <string name="folder_settings_folder_push_mode_label">Clase en subscripción</string>
+  <string name="folder_settings_folder_push_mode_normal">Sen Clase</string>
   <string name="folder_settings_folder_push_mode_first_class">1a Clase</string>
   <string name="folder_settings_folder_push_mode_second_class">2a Clase</string>
   <string name="folder_settings_folder_push_mode_inherited">A mesma que en sincronización</string>
+  <string name="folder_settings_folder_notify_mode_label">Clase de notificación de cartafol</string>
+  <string name="folder_settings_folder_notify_mode_normal">Sen Clase</string>
   <string name="folder_settings_folder_notify_mode_first_class">1a Clase</string>
   <string name="folder_settings_folder_notify_mode_second_class">2a Clase</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Igual que Clase no envío</string>
   <string name="account_settings_incoming_label">Servidor de entrada</string>
   <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>
   <string name="account_settings_outgoing_label">Servidor de saída</string>
@@ -563,6 +627,8 @@
   <string name="sort_latest_first">Últimas mensaxes primeiro</string>
   <string name="sort_subject_alpha">Asunto alfabético</string>
   <string name="sort_subject_re_alpha">Asunto alfabético inverso</string>
+  <string name="sort_sender_alpha">Alfabético do remitente</string>
+  <string name="sort_sender_re_alpha">Alfabético inverso do remitente</string>
   <string name="sort_flagged_first">Con estrelas primeiro</string>
   <string name="sort_flagged_last">Sin estrelas primeiro</string>
   <string name="sort_unread_first">Sin ler primeiro</string>
@@ -571,6 +637,7 @@
   <string name="sort_unattached_first">Sen adxuntos primeiro</string>
   <string name="sort_by">Ordeado por…</string>
   <string name="sort_by_date">Data</string>
+  <string name="sort_by_arrival">Chegada</string>
   <string name="sort_by_subject">Asunto</string>
   <string name="sort_by_sender">Remitente</string>
   <string name="sort_by_flag">Estrelas</string>
@@ -579,9 +646,16 @@
   <string name="account_delete_dlg_title">Eliminar conta</string>
   <string name="account_recreate_dlg_title">Recrear conta</string>
   <string name="account_clear_dlg_title">Limpar conta</string>
+  <string name="provider_note_auonejp">Asegúrese de habilitar IMAP ou POP3 na páxina de axustes do correo au mail.</string>
+  <string name="provider_note_naver">Asegúrese de habilitar IMAP ou POP3 na páxina de axustes do correo Naver.</string>
+  <string name="provider_note_hanmail">Asegúrese de habilitar IMAP ou POP3 na páxina de axustes do correo Hanmail(Daum).</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificado descoñecido</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceptar certificado</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rexeitar certificado</string>
+  <string name="message_view_help_key">Del (ou D) - Eliminar\nR - Respostar\nA - Respostar a todos\nC - Compoñer\nF - Reenviar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar (Non)lido\nG - Estrela\nO - Sort type\nI - Sort order\nQ - Voltar aos cartafoles\nS - Seleccionar/Non seleccionar\nJ ou P - Mensaxe anterior\nK ou N - Seguinte mensaxe</string>
+  <string name="message_list_help_key">Del (ou D) - Eliminar\nC - Compoñer\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar (Non)lido\nG - Estrela\nO - Tipo de orde\nI - Establecer orde\nQ - Voltar aos cartafoles\nS - Seleccionar/Non Seleccionar</string>
+  <string name="folder_list_help_key">1 - Mostar só cartafoles de 1ª Clase\n2 - Mostrar cartafoles de 1ª e 2ª Clase\3 - Mostar todos menos os de 2ª clase\n4 - Mostrar todos os cartafoles\nQ - Volvar a Contas\nS - Editar axustes da conta</string>
+  <string name="folder_list_filter_hint">Nome do cartafol contén</string>
   <string name="folder_list_display_mode_label">Carpetas</string>
   <string name="folder_list_display_mode_all">Ver todas as carpetas</string>
   <string name="folder_list_display_mode_first_class">Ver só carpetas de 1a Clase</string>
@@ -590,6 +664,7 @@
   <string name="account_settings_signature__location_label">Posición da sinatura</string>
   <string name="account_settings_signature__location_before_quoted_text">Antes do texto citado</string>
   <string name="account_settings_signature__location_after_quoted_text">Despois do texto citado</string>
+  <string name="setting_theme_global">Usar decorado do app</string>
   <string name="setting_theme_dark">Escuro</string>
   <string name="setting_theme_light">Claro</string>
   <string name="display_preferences">Visualización</string>
@@ -603,13 +678,20 @@
   <string name="messageview_preferences">mensaxes</string>
   <string name="folderlist_preferences">Lista de carpetas</string>
   <string name="settings_theme_label">Tema</string>
+  <string name="settings_message_theme_label">Decorado da vista de mensaxe</string>
+  <string name="settings_compose_theme_label">Decorado do Editor de mensaxe</string>
   <string name="settings_language_label">Idioma</string>
+  <string name="settings_message_theme_selection_label">Decorado do mensaxe fixado</string>
+  <string name="settings_message_theme_selection_summary_off">Escolla o decorado da vista de mensaxe para visualizala</string>
+  <string name="settings_message_theme_selection_summary_on">Utilizar un decorado fixo para vista de mensaxe</string>
   <string name="setting_language_system">Configurado no sistema</string>
   <string name="background_ops_label">Sincronizar en segundo plano</string>
   <string name="background_ops_never">Nunca</string>
   <string name="background_ops_always">Sempre</string>
+  <string name="background_ops_auto_sync_only">Cando \'Sincr Auto\' está marcado</string>
   <string name="batch_select_all">Seleccionar todos</string>
   <string name="account_setup_push_limit_label">Max. subscripcións</string>
+  <string name="account_setup_push_limit_5">5 cartafoles</string>
   <string name="account_setup_push_limit_10">10 carpetas</string>
   <string name="account_setup_push_limit_25">25 carpetas</string>
   <string name="account_setup_push_limit_50">50 carpetas</string>
@@ -638,6 +720,7 @@
   <string name="search_all_messages_detail">Mensaxes nas carpetas de búsqueda</string>
   <string name="integrated_inbox_title">Entrada unificada</string>
   <string name="integrated_inbox_detail">Mensajes na Entrada unificada</string>
+  <string name="tap_hint">Toque círculo ou estrela para mensaxes non lidas ou con estrela</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Todas as mensaxes amosaranse nunha bandexa unificada</string>
   <string name="account_settings_searchable_label">Carpetas para buscar</string>
@@ -666,6 +749,10 @@
   <string name="font_size_message_view_subject">Asunto</string>
   <string name="font_size_message_view_date">Data e Hora</string>
   <string name="font_size_message_view_content">Corpo da mensaxe</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
+  <string name="font_size_message_compose">Estructura da mensaxe</string>
+  <string name="font_size_message_compose_input">Campos de entrada de texto</string>
   <string name="font_size_default">Predefinido</string>
   <string name="font_size_tiniest">Moi delgada</string>
   <string name="font_size_tiny">Delgada</string>
@@ -676,6 +763,7 @@
   <string name="font_size_larger">Moi Grande</string>
   <string name="miscellaneous_preferences">Varios</string>
   <string name="error_activity_not_found">Non existe aplicación para executar esta acción</string>
+  <string name="send_failed_reason">Fallou o envío: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">¿Guardar coma borrador?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">¿Gardar ou descartar esta mensaxe?</string>
   <string name="confirm_discard_draft_message_title">Descartar mensaxe?</string>
@@ -689,6 +777,8 @@
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Borrar</string>
   <string name="dialog_confirm_delete_cancel_button">Non borrar</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Confirme a marca de todas lidas</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Quere marcar todas as mensaxes como lidas?</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Si</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">Non</string>
   <string name="dialog_confirm_spam_title">Confirmar antes de mover á carpeta spam</string>
@@ -703,18 +793,66 @@
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="import_export_action">Axustes Importar &amp; Exportar</string>
+  <string name="settings_export_account">Exportar axustes da conta</string>
+  <string name="settings_export_all">Exportar axustes e contas</string>
   <string name="settings_import_dialog_title">Importar</string>
   <string name="settings_export_dialog_title">Exportar</string>
+  <string name="settings_import">Importar axustes</string>
+  <string name="settings_import_selection">Importar selección</string>
   <string name="settings_import_global_settings">Axustes globais</string>
+  <string name="settings_exporting">Exportando axustes...</string>
+  <string name="settings_importing">Importando axustes...</string>
   <string name="settings_import_scanning_file">A escanear ficheiro…</string>
+  <string name="settings_export_success">Gardando axustes exportados en  <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_generic">Gardáronse correctamente os axustes</string>
+  <string name="settings_import_global_settings_success">Axustes globais importados desde <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_success">Importado <xliff:g id="accounts">%s</xliff:g> desde <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Importado <xliff:g id="original_account_name">%s</xliff:g> como <xliff:g id="account_name_after_import">%s</xliff:g></string>
+  <plurals name="settings_import_accounts">
+    <item quantity="one">1 conta</item>
+    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> contas</item>
+  </plurals>
+  <string name="settings_export_failure">Fallou ao exportar axustes</string>
+  <string name="settings_import_failure">Fallo ao importar os axustes de <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_export_success_header">Exportouse correctamente</string>
   <string name="settings_export_failed_header">Erro ao exportar</string>
+  <string name="settings_import_success_header">Importouse correctamente</string>
   <string name="settings_import_failed_header">Erro ao importar</string>
   <string name="settings_import_activate_account_header">Activar conta</string>
+  <string name="settings_import_activate_account_intro">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" debe proporcionar os <xliff:g id="server_passwords">%s</xliff:g>.</string>
+  <plurals name="settings_import_server_passwords">
+    <item quantity="one">contrasinal de servidor</item>
+    <item quantity="other">contrasinais de servidor</item>
+  </plurals>
+  <string name="settings_import_incoming_server">Servidor de entrada (<xliff:g id="hostname">%s</xliff:g>):</string>
+  <string name="settings_import_outgoing_server">Servidor de saída (<xliff:g id="hostname">%s</xliff:g>):</string>
+  <plurals name="settings_import_setting_passwords">
+    <item quantity="one">Establecendo contrasinal...</item>
+    <item quantity="other">Establecendo contrasinais...</item>
+  </plurals>
+  <string name="settings_import_use_incoming_server_password">Utilizar o contrasinal do servidor de entrada</string>
   <string name="activate_account_action">Activar</string>
   <string name="account_unavailable">A conta \"<xliff:g id="account">%s</xliff:g>\" non está dispoñible; verifica o almacenamento</string>
+  <string name="settings_attachment_default_path">Gardar anexos en...</string>
   <string name="attachment_save_title">Gardar anexo</string>
+  <string name="attachment_save_desc">Non se atopou xestor de ficheiros. Onde quere gardar este anexo?</string>
   <string name="manage_accounts_move_up_action">Subir</string>
   <string name="manage_accounts_move_down_action">Baixar</string>
+  <string name="manage_accounts_moving_message">Movendo conta...</string>
+  <string name="unread_widget_select_account">Mostrar conta de non lidas para...</string>
+  <string name="unread_widget_account_title">Conta</string>
+  <string name="unread_widget_account_summary">A conta para a cal se mostrará o número de non lidos</string>
+  <string name="unread_widget_unified_inbox_account_summary">Caixa de entrada unificada</string>
+  <string name="unread_widget_all_messages_account_summary">Todas as mensaxes</string>
+  <string name="unread_widget_folder_enabled_title">Conta de cartafol</string>
+  <string name="unread_widget_folder_enabled_summary">Mostar o número de non lidos para cartafol individual</string>
+  <string name="unread_widget_folder_title">Cartafol</string>
+  <string name="unread_widget_folder_summary">O cartafol para o cal se mostrará o número de mensaxes non lidas</string>
+  <string name="unread_widget_action_done">Feito</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Sen conta seleccionada</string>
+  <string name="unread_widget_folder_not_selected">Sen cartafol seleccionado</string>
+  <string name="import_dialog_error_title">Falta o aplicativo de xestión de ficheiros</string>
   <string name="close">Pechar</string>
   <string name="webview_empty_message">Sen texto</string>
   <string name="webview_contextmenu_link_view_action">Abrir ligazón</string>
@@ -727,6 +865,7 @@
   <string name="webview_contextmenu_image_download_action">Descargar imaxe</string>
   <string name="webview_contextmenu_image_copy_action">Copiar URL da imaxe ao portapapeis</string>
   <string name="webview_contextmenu_image_clipboard_label">URL da imaxe</string>
+  <string name="webview_contextmenu_phone_call_action">Chamar a número</string>
   <string name="webview_contextmenu_phone_save_action">Gardar nos contactos</string>
   <string name="webview_contextmenu_phone_copy_action">Copiar número ao portapapeis</string>
   <string name="webview_contextmenu_phone_clipboard_label">Número de teléfono</string>
@@ -744,32 +883,179 @@
   <string name="account_settings_remote_search_num_results_entries_250">250</string>
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+  <string name="account_settings_remote_search_num_label">Límite de búsqueda no servidor</string>
+  <string name="account_settings_remote_search_num_summary">A busca parará despois de atopar <xliff:g id="num_results">%s</xliff:g> resultados.</string>
+  <string name="remote_search_sending_query">Enviando consulta ao servidor</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">Obtendo %d resultado</item>
+    <item quantity="other">Obtendo %d resultados</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">Obtendo %1$d de %2$d resultado</item>
+    <item quantity="other">Obtendo %1$d de %2$d resultados</item>
+  </plurals>
+  <string name="remote_search_error">Fallou a busca remota</string>
   <string name="account_settings_search">Procurar</string>
+  <string name="account_settings_remote_search_enabled">Habilitar a busca en servidor</string>
+  <string name="account_settings_remote_search_enabled_summary">Buscar mensaxes no servidor ademáis de no seu dispositivo</string>
+  <string name="action_remote_search">Buscar mensaxes no servidor</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Tirar para busca ao servidor...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Soltar para busca no servidor...</string>
+  <string name="remote_search_unavailable_no_network">Precísase conexión a rede para buscar no servidor.</string>
+  <string name="global_settings_background_as_unread_indicator_label">Cambiar a cor cando lido</string>
+  <string name="global_settings_background_as_unread_indicator_summary">O fondo diferente mostrará que a mensaxe foi lida.</string>
+  <string name="global_settings_threaded_view_label">Vista en conversa</string>
   <string name="global_settings_threaded_view_summary">Agrupar mensaxes por conversa</string>
   <string name="upgrade_databases_title">Actualizando bases de datos</string>
   <string name="upgrade_databases_unspecified">Actualizando bases de datos…</string>
   <string name="upgrade_database_format">Actualizando base de datos da conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="message_list_loading">A cargar…</string>
+  <string name="global_settings_splitview_mode_label">Mostrar pantalla dividida</string>
   <string name="global_settings_splitview_always">Sempre</string>
   <string name="global_settings_splitview_never">Nunca</string>
   <string name="global_settings_splitview_when_in_landscape">Na orientación horizontal</string>
   <string name="message_view_empty">Por favor, selecciona unha mensaxe da esquerda</string>
   <string name="global_settings_show_contact_picture_label">Mostrar fotografías dos contactos</string>
   <string name="global_settings_show_contact_picture_summary">Mostrar fotografías dos contactos na listaxe de mensaxes</string>
+  <string name="last_refresh_time_format">Refrescado <xliff:g id="formatted_time">%s</xliff:g></string>
+  <string name="last_refresh_time_format_with_push">Refrescado <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>
   <string name="preposition_for_date">o <xliff:g id="date">%s</xliff:g></string>
+  <string name="mark_all_as_read">Marcar todo como lido</string>
+  <string name="global_settings_colorize_missing_contact_pictures_label">Dar cor a imaxes de contacto</string>
+  <string name="global_settings_colorize_missing_contact_pictures_summary">Dar cor a imaxes de contacto perdidos</string>
+  <string name="global_settings_messageview_visible_refile_actions_title">Accións da mensaxe visible</string>
+  <string name="global_settings_messageview_visible_refile_actions_summary">Mostar accións seleccionadas no menú de vista da mensaxe</string>
   <string name="loading_attachment">A cargar anexo…</string>
   <string name="fetching_attachment_dialog_title_send">Enviando mensaxe</string>
   <string name="fetching_attachment_dialog_title_save">Gardando borrador</string>
   <string name="fetching_attachment_dialog_message">Obtendo anexo…</string>
+  <string name="auth_external_error">Non se puido autenticar. O servidor non anuncia a característica  SASL EXTERNAL. Esto poderíase deber a un problema co certificado (caducado, autoridade certificadora descoñecida) ou a outro problema de configuración.</string>
   <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Utilizar certificado do cliente</string>
+  <string name="client_certificate_spinner_empty">Sen certificado do cliente</string>
+  <string name="client_certificate_spinner_delete">Eliminar a selección do certificado do cliente</string>
+  <string name="client_certificate_retrieval_failure">Fallou a obtención do certificado do cliente para o alias \"<xliff:g id="alias">%s</xliff:g>\"</string>
+  <string name="client_certificate_advanced_options">Axustes avanzados</string>
+  <string name="client_certificate_expired">Certificado cliente \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" caducou ou ben non é válido (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
+  <string name="preview_encrypted">*Cifrado*</string>
+  <string name="add_from_contacts">Engadir desde contactos</string>
   <string name="crypto_settings_cancel">Cancelar</string>
+  <string name="crypto_settings_ok">Procede</string>
   <string name="recipient_cc">Cc</string>
   <string name="recipient_bcc">CCo</string>
   <string name="recipient_to">Para</string>
+  <string name="recipient_from">Desde</string>
+  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
+  <string name="address_type_home">Inicio</string>
+  <string name="address_type_work">Traballo</string>
   <string name="address_type_other">Outras</string>
   <string name="address_type_mobile">Móbil</string>
+  <string name="compose_error_no_draft_folder">Non hai cartafol de borradores configurado para esta conta!</string>
+  <string name="compose_error_no_key_configured">Sen chave configurada para esta conta! Verifique os axustes.</string>
+  <string name="crypto_mode_disabled">Non cifrar</string>
+  <string name="crypto_mode_opportunistic">Cifrar si é posible</string>
   <string name="crypto_mode_private">Cifrar</string>
+  <string name="error_crypto_provider_incompatible">O proveedor de criptografía utiliza unha versión incompatible. Por favor revise os axustes!</string>
+  <string name="error_crypto_provider_connect">Non se puido conectar ao proveedor de criptografía, verifique os axustes ou pulse na icona de cifrado para intentalo de novo!</string>
+  <string name="error_crypto_provider_ui_required">Denegouse o acceso ao proveedor de cifrado, pulse botón de cifrado para voltar a intentalo!</string>
+  <string name="error_crypto_inline_attach">O modo PGP/INLINE non soporta anexos!</string>
+  <string name="enable_inline_pgp">Habilitar PGP/INLINE</string>
+  <string name="disable_inline_pgp">Deshabilitar PGP/INLINE</string>
+  <string name="enable_sign_only">Habilitar só-firma PGP</string>
+  <string name="disable_sign_only">Deshabilitar só-firma PGP</string>
+  <string name="openpgp_inline_title">Modo PGP/INLINE</string>
+  <string name="openpgp_inline_text">Este correo envíase no formato PGP/INLINE.\nEsto só debería usarse por compatiblidade:</string>
+  <string name="openpgp_inline_plus_compat">Algúns clientes só soportan este formato</string>
+  <string name="openpgp_inline_minus_transit">As firmas poderíanse danar durante o tránsito</string>
+  <string name="openpgp_inline_minus_attach">Non pode anexar ficheiros</string>
+  <string name="openpgp_inline_ok">Vale!</string>
+  <string name="openpgp_inline_disable">Deshabilitar</string>
+  <string name="openpgp_inline_keep_enabled">Manter habilitado</string>
+  <string name="openpgp_sign_only_ok">Vale!</string>
+  <string name="openpgp_sign_only_disable">Deshabilitar</string>
+  <string name="openpgp_sign_only_keep_enabled">Manter habilitado</string>
+  <string name="openpgp_dialog_sign_only_title">Modo de só-firma PGP</string>
+  <string name="openpgp_dialog_sign_only_text">En este modo, a súa chave PGP utilizarase para crear unha firma criptográfica de unha mensaxe non cifrada.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Esto non cifra o correo, pero verifica que foi enviado desde a súa chave.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Poderían fallar as firmas cando envía a listas de correo.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">As firmas poderíanse mostar como anexos \'signature.asc\' en algúns clientes.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Mensaxes cifradas sempre inclúen a firma.</string>
+  <string name="crypto_msg_title_plaintext">Texto plano</string>
+  <string name="crypto_msg_unencrypted_sign_error">a firma extremo-a-extremo contiña un erro</string>
+  <string name="crypto_msg_incomplete_signed">debe descargar completamente a mensaxe para procesar a firma</string>
+  <string name="crypto_msg_unsupported_signed">contén una firma extremo-a-extremo non soportada</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">texto plano firmado extremo-a-extremo</string>
+  <string name="crypto_msg_unencrypted_sign_verified">do firmante verificado</string>
+  <string name="crypto_msg_title_unencrypted_signed">Texto plano firmado</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">pero a chave extremo-a-extremo non coincide co remitente</string>
+  <string name="crypto_msg_unencrypted_sign_expired">pero a chave extremo-a-extremo está caducada</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">pero a chave extremo-a-extremos está repudiada</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">pero a chave extremo-a-extremo está considerada como non-segura</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">de chave extremo-a-extremo descoñecida</string>
+  <string name="crypto_msg_title_encrypted_unknown">Cifrado</string>
+  <string name="crypto_msg_encrypted_error">pero houbo un erro no descifrado</string>
+  <string name="crypto_msg_encrypted_incomplete">debe descargar completamente a mensaxe para o descifrado</string>
+  <string name="crypto_msg_encrypted_no_provider">pero non hay app de criptogradfía configurada</string>
+  <string name="crypto_msg_encrypted_unsupported">pero nun formato non soportado</string>
+  <string name="crypto_msg_encrypted_cancelled">pero o descifrado foi cancelado</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Cifrado</string>
+  <string name="crypto_msg_encrypted_unsigned">pero non extremo-a-extremo</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Cifrado extremo-a-extremo</string>
+  <string name="crypto_msg_encrypted_sign_verified">de remitente verificado</string>
+  <string name="crypto_msg_title_encrypted_signed">Cifrado</string>
+  <string name="crypto_msg_encrypted_sign_unknown">de chave extremo-a-extremo descoñecida</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">pero a chave extremo-a-extremo non coincide co remitente</string>
+  <string name="crypto_msg_encrypted_sign_expired">pero a chave extremo-a-extremo está caducada</string>
+  <string name="crypto_msg_encrypted_sign_revoked">pero a chave extremo-a-extremos está repudiada</string>
+  <string name="crypto_msg_encrypted_sign_insecure">pero a chave extremo-a-extremo está considerada como non-segura</string>
+  <string name="crypto_msg_encrypted_sign_error">pero os datos extremo-a-extremo conteñen erros</string>
+  <string name="crypto_msg_encrypted_insecure">pero o cifrado é considerado non-seguro</string>
   <string name="crypto_info_ok">Aceptar</string>
+  <string name="crypto_info_view_signer">Ver firmante</string>
+  <string name="crypto_info_view_sender">Ver remitente</string>
+  <string name="crypto_info_view_security_warning">Detalles</string>
+  <string name="locked_attach_unlock">Desbloquear</string>
+  <string name="locked_attach_unencrypted">Esta parte non foi cifrada, e podería ser non segura.</string>
+  <string name="locked_attach_title">Anexo non protexido</string>
   <string name="message_progress_text">A cargar…</string>
+  <string name="messageview_decrypt_cancelled">O descifrado foi cancelado</string>
+  <string name="messageview_decrypt_retry">Intentar de novo</string>
+  <string name="messageview_decrypt_incomplete">Debe descargar a mensaxe cifrada para descifrala.</string>
+  <string name="messageview_crypto_error_title">Fallo ao descifrar o correo</string>
+  <string name="recipient_error_non_ascii">Actualmente non están soportados os caracteres especiais!</string>
+  <string name="recipient_error_parse_failed">Erro procesando o enderezo!</string>
+  <string name="account_settings_crypto_support_sign_only">Mostar firmas non cifradas</string>
+  <string name="account_settings_crypto_support_sign_only_on">Mostraránse as firmas non cifradas</string>
+  <string name="account_settings_crypto_support_sign_only_off">Ignoraránse as firmas non cifradas</string>
+  <string name="error_sign_only_no_encryption">Cifrado non dispoñible no modo só-firma!</string>
+  <string name="unsigned_text_divider_label">Texto non firmado</string>
+  <string name="apg_deprecated_title">Aviso de APG obsoleto</string>
+  <string name="apg_deprecated_1">AGP xa non está mantido!</string>
+  <string name="apg_deprecated_2">Debido a esto, eliminouse o soporte para APG de K-9 Mail.</string>
+  <string name="apg_deprecated_bullet_1">O desenvolvemento detívose a inicios do 2014</string>
+  <string name="apg_deprecated_bullet_2">Contén cuestións de seguridade non resoltas</string>
+  <string name="apg_learn_more">Pode <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">pulsar aquí</a> para saber máis.</string>
+  <string name="apg_deprecated_ok">Vale!</string>
+  <string name="apg">APG</string>
+  <string name="no_crypto_provider_see_global">Sen app OpenPGP configurado, mire nos axuste globais!</string>
+  <string name="crypto_no_provider_title">Este correo está cifrado</string>
+  <string name="crypto_no_provider_message">Este correo foi cifrado con OpenPGP.\nPara lelo, precisa instalar e configurar un app compatible con OpenPGP</string>
+  <string name="crypto_no_provider_button">Escolla o app OpenPGP</string>
+  <string name="mail_list_widget_text">Lista de mensaxes K-9</string>
+  <string name="mail_list_widget_loading">Cargando mensaxes...</string>
+  <string name="fetching_folders_failed">Fallou a obtención da lista de cartafoles</string>
+  <string name="messageview_crypto_warning_details">Mostrar detalles</string>
+  <string name="error_recipient_crypto_retrieve">Fallo ao obter o estado do destinatario do proveedor OpenPGP!</string>
+  <string name="openpgp_enabled_error_title">Cifrado non posible</string>
+  <string name="openpgp_enabled_error_msg">Algún dos destinatarios seleccionados non soportan esta característica!</string>
+  <string name="enable_encryption">Habilitar cifrado</string>
+  <string name="disable_encryption">Deshabilitar cifrado</string>
+  <string name="openpgp_description_text1">Cifrando as mensaxes asegúrase de que serán lidas polo destinatario e ninguén máis.</string>
+  <string name="openpgp_description_text3">O cifrado só se mostrará se é soportado por todos os destinatarios, e antes deberíanlle ter enviado un mensaxe a vostede.</string>
+  <string name="openpgp_description_text2">Habilite o cifrado pulsando esta icona.</string>
+  <string name="openpgp_enabled_error_gotit">Pilloo</string>
+  <string name="openpgp_enabled_error_back">Atrás</string>
+  <string name="openpgp_enabled_error_disable">Deshabilitar cifrado</string>
+  <string name="openpgp_encryption">Cifrado OpenPGP</string>
 </resources>
