@@ -1199,6 +1199,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_unencrypted_sign_error">end-to-end signature contained an error</string>
     <string name="crypto_msg_incomplete_signed">must fully download message to process signature</string>
     <string name="crypto_msg_unsupported_signed">contains unsupported end-to-end signature</string>
+    <string name="crypto_msg_unsupported_encrypted">Message is encrypted, but in an unsupported format.</string>
+    <string name="crypto_msg_cancelled">Message is encrypted, but decryption was cancelled.</string>
 
     <string name="crypto_msg_title_unencrypted_signed_e2e">End-to-End signed plaintext</string>
     <string name="crypto_msg_unencrypted_sign_verified">from verified signer</string>
