@@ -55,9 +55,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="app_authors_fmt">Aŭtoroj: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Informoj pri eldono: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">La jenaj bibliotekoj de eksteraj liverantoj estas uzataj: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Emoĝioj: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Legi retpoŝtajn kunsendaĵojn</string>
-  <string name="read_attachment_desc">Permesas al tiu ĉi aplikaĵo legi viajn retpoŝtajn mesaĝojn.</string>
   <string name="read_messages_label">Legi retleterojn</string>
   <string name="read_messages_desc">Permesas al tiu ĉi aplikaĵo legi viajn retleterojn.</string>
   <string name="delete_messages_label">Forigi retleterojn</string>
@@ -71,6 +68,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="compose_title_reply">Respondi</string>
   <string name="compose_title_reply_all">Respondi al ĉiuj</string>
   <string name="compose_title_forward">Plusendi</string>
+  <string name="compose_title_forward_as_attachment">Plusendi kiel kunsendaĵon</string>
   <string name="choose_account_title">Elektu konton</string>
   <string name="choose_folder_title">Elekti mesaĝujon</string>
   <string name="status_loading_account_folder">Kontrolado: <xliff:g id="account">%s</xliff:g>: <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -101,6 +99,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="archive_action">Arĥivigi</string>
   <string name="spam_action">Trudmesaĝo</string>
   <string name="forward_action">Plusendi</string>
+  <string name="forward_as_attachment_action">Plusendi kiel kunsendaĵon</string>
   <string name="move_action">Movi</string>
   <string name="single_message_options_action">Sendi…</string>
   <string name="refile_action">Agoj…</string>
@@ -224,7 +223,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="compose_error_incomplete_recipient">La kampo \'Ricevonto\' enhavas nekompletan enigo!</string>
   <string name="error_contact_address_not_found">Neniu retpoŝtadreso trovita por tiu ĉi kontakto.</string>
   <string name="message_compose_attachments_skipped_toast">Iuj kunsendaĵoj ne povas esti plusenditaj, ĉar ili ne estas elŝutitaj.</string>
-  <string name="message_compose_show_quoted_text_action">Citi mesaĝon</string>
+  <string name="message_compose_attachments_forward_toast">Tiu ĉi retletero ne povas esti plusendita, ĉar iuj kunsendaĵoj ne estas elŝutitaj.</string>
+  <string name="message_compose_show_quoted_text_action">Enhavi citatan mesaĝon</string>
   <string name="message_compose_description_delete_quoted_text">Forigi citatan tekston</string>
   <string name="message_compose_description_edit_quoted_text">Redakti citatan tekston</string>
   <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -284,6 +284,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="global_settings_privacy_hide_useragent_detail">Forviŝi nomon de klienta aplikaĵo K-9 el mesaĝokapo</string>
   <string name="global_settings_privacy_hide_timezone">Kaŝi horzonon</string>
   <string name="global_settings_privacy_hide_timezone_detail">Uzi UTC anstataŭ lokan horzonon en mesaĝokapo kaj respond-kampo</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting">Kaŝi nomon de komputilo</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Identigi kiel ‘localhost’ dum konekti al SMTP-serviloj</string>
   <string name="global_settings_notification_hide_subject_title">Kaŝi temon en sciigoj</string>
   <string name="global_settings_notification_hide_subject_never">Neniam</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kiam aparato estas ŝlosita</string>
@@ -690,6 +692,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="background_ops_auto_sync_only">Kiam \'Aŭtomata samtempigo\' estas aktiva</string>
   <string name="batch_select_all">Elekti ĉiujn</string>
   <string name="account_setup_push_limit_label">Kiom da mesaĝujoj por puŝ-kontrolo</string>
+  <string name="account_setup_push_limit_5">5 mesaĝujoj</string>
   <string name="account_setup_push_limit_10">Maksimume 10 mesaĝujoj</string>
   <string name="account_setup_push_limit_25">Maksimume 25 mesaĝujoj</string>
   <string name="account_setup_push_limit_50">Maksimume 50 mesaĝujoj</string>
@@ -805,6 +808,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="settings_export_success_generic">Sukcese elportis agordojn</string>
   <string name="settings_import_global_settings_success">Enportis ĝeneralajn agordojn el <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Enportis <xliff:g id="accounts">%s</xliff:g> el <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Enportis <xliff:g id="original_account_name">%s</xliff:g> kiel <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 konto</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> kontoj</item>
@@ -978,30 +982,39 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="openpgp_dialog_sign_only_minus_break">Subskriboj povas difektiĝi dum sendado al dissendolistoj.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">En iuj retpoŝtiloj, subskriboj povas estis montrataj kiel kunsendaĵojn \'signature.asc\'.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Ĉifritaj retleteroj ĉiam enhavas subskribon.</string>
-  <string name="crypto_msg_disabled">Retletero ne estas ĉifrita</string>
-  <string name="crypto_msg_encrypted_error">Retletero estas ĉifrita, sed okazis eraro dum malĉifrado.</string>
-  <string name="crypto_msg_encrypted_insecure">Retletero estas ĉifrita, sed nesekura!</string>
-  <string name="crypto_msg_signed_error">Retletero estas subskribita, sed subskribo ne povas esti verigita.</string>
-  <string name="crypto_msg_encrypted_no_provider">Retletero estas ĉifrita, sed neniu ĉifra aplikaĵo estas agordita.</string>
-  <string name="crypto_msg_unsupported_encrypted">Retletero estas ĉifrita, sed en nesubtenata formo.</string>
-  <string name="crypto_msg_unsupported_signed">Retletero estas subskribita, sed en nesubtenata formo.</string>
-  <string name="crypto_msg_incomplete_encrypted">Retletero estas ĉifrita, do ĝi devas esti elŝutita tute por malĉifri.</string>
-  <string name="crypto_msg_cancelled">Retletero estas ĉifrita, sed malĉifrado estis nuligita.</string>
-  <string name="crypto_msg_signed_unencrypted">Retletero estas subskribita, sed ne ĉifrita.</string>
-  <string name="crypto_msg_encrypted_unsigned">Retletero estis ĉifrita, sed ne subskribita.</string>
-  <string name="crypto_msg_sign_unknown">Subskribita per nekonata ŝlosilo.</string>
-  <string name="crypto_msg_sign_verified">Subskribita per konfidata ŝlosilo.</string>
-  <string name="crypto_msg_sign_unverified">Subskribita per malkonfidata ŝlosilo!</string>
-  <string name="crypto_msg_sign_error">Subskribo enhavas eraron.</string>
-  <string name="crypto_msg_sign_mismatch">Subskribo per malĝusta ŝlosilo.</string>
-  <string name="crypto_msg_sign_expired">Subskribita per senvalidiĝa (per si mem) ŝlosilo.</string>
-  <string name="crypto_msg_sign_revoked">Subskribita per senvalidigita (de posedanto) ŝlosilo.</string>
-  <string name="crypto_msg_sign_insecure">Subskribita per malsekura ŝlosilo.</string>
-  <string name="crypto_msg_sign_incomplete">Retletero devas esti elŝutita tute por verigi ĝian subskribon.</string>
-  <string name="crypto_msg_signed_encrypted">Retletero estas subskribita kaj ĉifrita.</string>
-  <string name="crypto_msg_unsigned_encrypted">Tiu ĉi retletero ne estas subskribita, oni povas ĝin interkapti.</string>
+  <string name="crypto_msg_title_plaintext">Platteksto</string>
+  <string name="crypto_msg_unencrypted_sign_error">ĉifra subskribo enhavas eraron</string>
+  <string name="crypto_msg_incomplete_signed">devas esti tute elŝutita por pritrakti subskribon</string>
+  <string name="crypto_msg_unsupported_signed">enhavas nesubtenatan ĉifran subskribon</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">ĉifr-subskribita platteksto</string>
+  <string name="crypto_msg_unencrypted_sign_verified">de verigita subskribinto</string>
+  <string name="crypto_msg_title_unencrypted_signed">Subskribita platteksto</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">sed ĉifroŝlosilo ne kongruas al sendinto</string>
+  <string name="crypto_msg_unencrypted_sign_expired">sed ĉifroŝlosilo senvalidiĝis</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">sed ĉifroŝlosilo estas senvalidigita</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">sed ĉifroŝlosilo ne estas sekurinda</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">el nekonata ĉifroŝlosilo</string>
+  <string name="crypto_msg_title_encrypted_unknown">Ĉifrita</string>
+  <string name="crypto_msg_encrypted_error">sed okazis eraro dum malĉifrado</string>
+  <string name="crypto_msg_encrypted_incomplete">devas tute elŝuti retleteron por malĉifri</string>
+  <string name="crypto_msg_encrypted_no_provider">sed neniu ĉifra aplikaĵo estas agordota</string>
+  <string name="crypto_msg_encrypted_unsupported">sed estas en nesubtenata tipo</string>
+  <string name="crypto_msg_encrypted_cancelled">sed malĉifrado estis ĉesigita</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Ĉifrita</string>
+  <string name="crypto_msg_encrypted_unsigned">sed ne tute (end-to-end)</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Plene ĉifrita</string>
+  <string name="crypto_msg_encrypted_sign_verified">de verigita subskribinto</string>
+  <string name="crypto_msg_title_encrypted_signed">Ĉifrita</string>
+  <string name="crypto_msg_encrypted_sign_unknown">el nekonata ĉifroŝlosilo</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">sed ĉifroŝlosilo ne kongruas al sendinto</string>
+  <string name="crypto_msg_encrypted_sign_expired">sed ĉifroŝlosilo senvalidiĝis</string>
+  <string name="crypto_msg_encrypted_sign_revoked">sed ĉifroŝlosilo estas senvalidigita</string>
+  <string name="crypto_msg_encrypted_sign_insecure">sed ĉifroŝlosilo ne estas sekurinda</string>
+  <string name="crypto_msg_encrypted_sign_error">sed ĉifraj datumoj enhavas erarojn</string>
+  <string name="crypto_msg_encrypted_insecure">sed ĉifr-metodo ne estas sekurinda</string>
   <string name="crypto_info_ok">Bone</string>
-  <string name="crypto_info_view_key">Vidi subskribinton</string>
+  <string name="crypto_info_view_signer">Vidigi subskribinton</string>
+  <string name="crypto_info_view_sender">Vidigi sendinton</string>
   <string name="crypto_info_view_security_warning">Detaloj</string>
   <string name="locked_attach_unlock">Malŝlosi</string>
   <string name="locked_attach_unencrypted">Tiu ĉi parto ne estis ĉifrita kaj ĝi povas esti nesekura.</string>
@@ -1011,13 +1024,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="messageview_decrypt_retry">Reprovi</string>
   <string name="messageview_decrypt_incomplete">Ĉifrita retletero devas esti elŝutita por malĉifri.</string>
   <string name="messageview_crypto_error_title">Eraro dum malĉifrado de retletero</string>
-  <string name="messageview_crypto_warning_title">Averto pri sekureco</string>
-  <string name="messageview_crypto_warning_revoked">Tiu ĉi mesaĝo estas subskribita per <b>senvalidigita (de posedanto) ŝlosilo!</b></string>
-  <string name="messageview_crypto_warning_expired">Tiu ĉi mesaĝo estas subskribita per <b>senvalidiĝa (per si mem) ŝlosilo!</b></string>
-  <string name="messageview_crypto_warning_insecure">Tiu ĉi mesaĝo estas subskribita per <b>malsekura ŝlosilo!</b></string>
-  <string name="messageview_crypto_warning_error">Okazis <b>eraro en subskribo de tiu ĉi mesaĝo!</b></string>
-  <string name="messageview_crypto_warning_unsigned">Tiu ĉi mesaĝo estis ĉifrita, sed ne subskribita. Ĝi <b>ne estas tute sekura</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Montri mesaĝon malgraŭ tio</string>
   <string name="recipient_error_non_ascii">Specialaj signoj ne estas nune subtenataj!</string>
   <string name="recipient_error_parse_failed">Eraro dum analizado de adreso!</string>
   <string name="account_settings_crypto_support_sign_only">Montri neĉifritajn subskribojn</string>

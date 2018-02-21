@@ -56,9 +56,6 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Informații despre versiune: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Folosim următoarele biblioteci externe: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Iconițe Emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Citește anexele mesajului</string>
-  <string name="read_attachment_desc">Permiteți acestei aplicații să citească anexele mesajelor.</string>
   <string name="read_messages_label">Citire emailuri</string>
   <string name="read_messages_desc">Permiteți acestei aplicații să vă citească emailurile.</string>
   <string name="delete_messages_label">Ștergere emailuri</string>
@@ -72,6 +69,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="compose_title_reply">Răspundeți</string>
   <string name="compose_title_reply_all">Răspundeți tuturor</string>
   <string name="compose_title_forward">Redirecționează</string>
+  <string name="compose_title_forward_as_attachment">Trimite atașat</string>
   <string name="choose_account_title">Alege contul</string>
   <string name="choose_folder_title">Alegeți dosar</string>
   <string name="status_loading_account_folder">Interogare <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -102,6 +100,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="archive_action">Arhivează</string>
   <string name="spam_action">Spam</string>
   <string name="forward_action">Redirecționează</string>
+  <string name="forward_as_attachment_action">Trimite atașat</string>
   <string name="move_action">Mută</string>
   <string name="single_message_options_action">Trimite…</string>
   <string name="refile_action">Reîndosariază…</string>
@@ -228,7 +227,7 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="compose_error_incomplete_recipient">Câmpul Destinatar conține date incomplete!</string>
   <string name="error_contact_address_not_found">Nu a putut fi găsită adresa de e-mail pentru acest contact.</string>
   <string name="message_compose_attachments_skipped_toast">Unele anexe nu pot fi redirecționate deoarece nu au fost descărcate.</string>
-  <string name="message_compose_show_quoted_text_action">Citat mesaj</string>
+  <string name="message_compose_attachments_forward_toast">Mesajul nu poate fi redirecționat pentru că unele documente atașate nu au fost descărcate</string>
   <string name="message_compose_description_delete_quoted_text">Eliminați textul citat</string>
   <string name="message_compose_description_edit_quoted_text">Editați textul citat</string>
   <string name="message_view_from_format">De la: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -696,6 +695,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="background_ops_auto_sync_only">Când \'Auto-sync\' este activat</string>
   <string name="batch_select_all">Selectează tot</string>
   <string name="account_setup_push_limit_label">Maxim de dosare de verificat prin push</string>
+  <string name="account_setup_push_limit_5">5 dosare</string>
   <string name="account_setup_push_limit_10">10 dosare</string>
   <string name="account_setup_push_limit_25">25 de dosare</string>
   <string name="account_setup_push_limit_50">50 de dosare</string>
@@ -992,30 +992,39 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="openpgp_dialog_sign_only_minus_break">Semnăturile se pot strica atunci când sunt trimise listelor de mesaje.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Semnăturile pot fi afișate ca anexă „signature.asc” de către unele aplicații.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Mesajele criptate conțin întotdeauna o semnătură.</string>
-  <string name="crypto_msg_disabled">Mesajul nu este criptat</string>
-  <string name="crypto_msg_encrypted_error">Mesajul este criptat, dar a apărut o eroare la decriptare.</string>
-  <string name="crypto_msg_encrypted_insecure">Mesajul este criptat dar nesigur!</string>
-  <string name="crypto_msg_signed_error">Mesajul este semnat, dar nu s-a putut verifica semnătura.</string>
-  <string name="crypto_msg_encrypted_no_provider">Mesajul este criptat, dar nu s-a configurat nici o aplicație criptografică.</string>
-  <string name="crypto_msg_unsupported_encrypted">Mesajul este criptat, dar este într-un format nesuportat.</string>
-  <string name="crypto_msg_unsupported_signed">Mesajul este semnat, dar este într-un format nesuportat.</string>
-  <string name="crypto_msg_incomplete_encrypted">Mesajul este criptat, dar trebuie descărcat complet pentru decriptare.</string>
-  <string name="crypto_msg_cancelled">Mesajul este criptat, dar decriptarea a fost anulată.</string>
-  <string name="crypto_msg_signed_unencrypted">Mesajul este semnat, dar nu este criptat.</string>
-  <string name="crypto_msg_encrypted_unsigned">Mesajul a fost criptat, dar nu semnat.</string>
-  <string name="crypto_msg_sign_unknown">Semnătură efectuată cu o cheie necunoscută.</string>
-  <string name="crypto_msg_sign_verified">Semnătură efectuată cu o cheie de încredere.</string>
-  <string name="crypto_msg_sign_unverified">Semnătură efectuată cu o cheie nerecunoscută!</string>
-  <string name="crypto_msg_sign_error">Semnătura conține o eroare.</string>
-  <string name="crypto_msg_sign_mismatch">Semnătură efectuată cu o cheie greșită.</string>
-  <string name="crypto_msg_sign_expired">Semnătură efectuată cu o cheie expirată.</string>
-  <string name="crypto_msg_sign_revoked">Semnătură efectuată cu o cheie revocată.</string>
-  <string name="crypto_msg_sign_insecure">Semnătură efectuată cu o cheie nesigură.</string>
-  <string name="crypto_msg_sign_incomplete">Mesajul trebuie descărcat complet pentru a putea verifica semnătura.</string>
-  <string name="crypto_msg_signed_encrypted">Mesajul este semnat și criptat.</string>
-  <string name="crypto_msg_unsigned_encrypted">Nici o semnătură existentă, se poate ca mesajul să fi fost interceptat.</string>
+  <string name="crypto_msg_title_plaintext">Text simplu</string>
+  <string name="crypto_msg_unencrypted_sign_error">semnătura end-to-end conține o eroare</string>
+  <string name="crypto_msg_incomplete_signed">trebuie descărcat mesajul complet pentru a procesa semnătura</string>
+  <string name="crypto_msg_unsupported_signed">conține o semnătură end-to-end invalidă</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Text semnat End-to-End</string>
+  <string name="crypto_msg_unencrypted_sign_verified">de la semnatar verificat</string>
+  <string name="crypto_msg_title_unencrypted_signed">Text semnat</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">dar cheia end-to-end nu se potrivește cu expeditorul</string>
+  <string name="crypto_msg_unencrypted_sign_expired">dar cheia end-to-end a expirat</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">dar cheia end-to-end a fost revocată</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">dar cheia end-to-end nu e considerată sigură</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">de la o cheie end-to-end necunoscută</string>
+  <string name="crypto_msg_title_encrypted_unknown">Criptat</string>
+  <string name="crypto_msg_encrypted_error">dar a apărut o eroare la decriptare</string>
+  <string name="crypto_msg_encrypted_incomplete">trebuie descărcat complet mesajul pentru decriptare</string>
+  <string name="crypto_msg_encrypted_no_provider">dar nu este configurată o aplicație de criptare</string>
+  <string name="crypto_msg_encrypted_unsupported">dar într-un format nesuportat</string>
+  <string name="crypto_msg_encrypted_cancelled">dar decriptarea a fost oprită</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Criptat</string>
+  <string name="crypto_msg_encrypted_unsigned">dar nu end-to-end</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Criptat End-to-End</string>
+  <string name="crypto_msg_encrypted_sign_verified">de la expeditor verificat</string>
+  <string name="crypto_msg_title_encrypted_signed">Criptat</string>
+  <string name="crypto_msg_encrypted_sign_unknown">de la o cheie end-to-end necunoscută</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">dar cheia end-to-end nu se potrivește cu expeditorul</string>
+  <string name="crypto_msg_encrypted_sign_expired">dar cheia end-to-end a expirat</string>
+  <string name="crypto_msg_encrypted_sign_revoked">dar cheia end-to-end a fost revocată</string>
+  <string name="crypto_msg_encrypted_sign_insecure">dar cheia end-to-end nu e considerată sigură</string>
+  <string name="crypto_msg_encrypted_sign_error">dar datele end-to-end sunt eronate</string>
+  <string name="crypto_msg_encrypted_insecure">dar criptarea nu e considerată sigură</string>
   <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_view_key">Vedeți semnatarul</string>
+  <string name="crypto_info_view_signer">Vezi Semnatar</string>
+  <string name="crypto_info_view_sender">Vezi Expeditor</string>
   <string name="crypto_info_view_security_warning">Detalii</string>
   <string name="locked_attach_unlock">Deblochează</string>
   <string name="locked_attach_unencrypted">Această parte nu a fost criptată și poate fi nesigură.</string>
@@ -1025,13 +1034,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="messageview_decrypt_retry">Reîncearcă</string>
   <string name="messageview_decrypt_incomplete">Mesajul criptat trebuie descărcat pentru decriptare.</string>
   <string name="messageview_crypto_error_title">Eroare la decriptarea email-ului</string>
-  <string name="messageview_crypto_warning_title">Atenționare de securitate</string>
-  <string name="messageview_crypto_warning_revoked">Mesajul a fost semnat cu o <b>cheie revocată!</b></string>
-  <string name="messageview_crypto_warning_expired">Mesajul a fost semnat cu o <b>cheie expirată!</b></string>
-  <string name="messageview_crypto_warning_insecure">Mesajul a fost semnat cu o <b>cheie nesigură!</b></string>
-  <string name="messageview_crypto_warning_error">Eroare <b>în semnătura mesajului!</b></string>
-  <string name="messageview_crypto_warning_unsigned">Mesajul a fost criptat, dar nu semnat. <b>Nu a fost securizat de la un capăt la celălalt</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Arată mesajul totuși</string>
   <string name="recipient_error_non_ascii">Caracterele speciale nu sunt suportate deocamdată!</string>
   <string name="recipient_error_parse_failed">Eroare la citirea adresei!</string>
   <string name="account_settings_crypto_support_sign_only">Arată semnăturile necriptate</string>
@@ -1061,7 +1063,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="enable_encryption">Activează criptarea</string>
   <string name="disable_encryption">Dezactivează criptarea</string>
   <string name="openpgp_description_text1">Criptarea mesajelor asigură că acestea pot fi citite doar de către destinatar, și nimeni altcineva.</string>
-  <string name="openpgp_description_text3">Criptarea va apărea doar dacă este suportată de toți destinatarii, și aceștia trebuie să vă fi trimis un e-mail anterior.</string>
   <string name="openpgp_description_text2">Schimbă criptarea apăsînd iconița</string>
   <string name="openpgp_enabled_error_gotit">Am înțeles</string>
   <string name="openpgp_enabled_error_back">Înapoi</string>

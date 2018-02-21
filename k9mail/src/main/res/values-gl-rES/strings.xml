@@ -27,9 +27,6 @@
   <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Revisión da información: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Estamos a usar as seguintes librarías de terceiros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Iconas emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Ler anexos da mensaxe</string>
-  <string name="read_attachment_desc">Permitir a este aplicativo ler os anexos do teu correo.</string>
   <string name="read_messages_label">Ler correos</string>
   <string name="read_messages_desc">Permitir a este aplicativo ler os teus correos.</string>
   <string name="delete_messages_label">Eliminar correos</string>
@@ -178,7 +175,6 @@
   <string name="message_compose_error_no_recipients">Debes engadir cando menos un destinatario.</string>
   <string name="error_contact_address_not_found">Non se puido atopar un enderezo electrónico para este contacto.</string>
   <string name="message_compose_attachments_skipped_toast">Algúns anexos non poden reenviarse porque non foron descargados previamente.</string>
-  <string name="message_compose_show_quoted_text_action">Cita da mensaxe</string>
   <string name="message_compose_description_delete_quoted_text">Eliminar texto citado</string>
   <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
   <string name="message_view_from_format">Desde: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>

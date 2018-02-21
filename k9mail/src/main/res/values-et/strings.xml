@@ -27,9 +27,6 @@
   <string name="app_authors_fmt">Autorid: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Parandusteave: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">me kasutame järgnevaid kolmanda osapoole teeke: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Emotikonid: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Loe meili manuseid</string>
-  <string name="read_attachment_desc">Luba sellel appil lugeda meili manuseid.</string>
   <string name="read_messages_label">Loe meilisõnumeid</string>
   <string name="read_messages_desc">Luba sellel appil lugeda meilisõnumeid.</string>
   <string name="delete_messages_label">Kustuta meilisõnumid</string>
@@ -197,7 +194,6 @@
   <string name="compose_error_incomplete_recipient">Vastuvõtja väli on puudulikult täidetud!</string>
   <string name="error_contact_address_not_found">Selle kontakti emaili aadressi ei leita</string>
   <string name="message_compose_attachments_skipped_toast">Mõnda manust ei saa edasi saata, kuna seda pole alla laetud</string>
-  <string name="message_compose_show_quoted_text_action">Noteeri kiri</string>
   <string name="message_compose_description_delete_quoted_text">Eemalda osundatud tekst</string>
   <string name="message_compose_description_edit_quoted_text">Muuda osundatud teksti</string>
   <string name="message_view_from_format">Kellelt: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>

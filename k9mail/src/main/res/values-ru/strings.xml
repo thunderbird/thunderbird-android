@@ -56,9 +56,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="app_authors_fmt">Авторы: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Изменения: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Сторонние компоненты: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Эмотиконы: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Чтение вложений</string>
-  <string name="read_attachment_desc">Разрешить программе чтение вложений почты</string>
   <string name="read_messages_label">Чтение почты</string>
   <string name="read_messages_desc">Разрешить программе чтение почты</string>
   <string name="delete_messages_label">Удаление почты</string>
@@ -72,6 +69,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="compose_title_reply">Ответ</string>
   <string name="compose_title_reply_all">Ответить всем</string>
   <string name="compose_title_forward">Пересылка</string>
+  <string name="compose_title_forward_as_attachment">Переслать вложением</string>
   <string name="choose_account_title">Выберите ящик</string>
   <string name="choose_folder_title">Выбор папки</string>
   <string name="status_loading_account_folder">проверка <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -102,6 +100,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="archive_action">В архив</string>
   <string name="spam_action">В спам</string>
   <string name="forward_action">Переслать</string>
+  <string name="forward_as_attachment_action">Переслать вложением</string>
   <string name="move_action">Переместить</string>
   <string name="single_message_options_action">Отправить</string>
   <string name="refile_action">Смена папки</string>
@@ -229,7 +228,8 @@ K-9 Mail — почтовый клиент для Android.
   <string name="compose_error_incomplete_recipient">Поле адресата заполнено неполностью!</string>
   <string name="error_contact_address_not_found">Контакт не содержит сведений о email</string>
   <string name="message_compose_attachments_skipped_toast">Некоторые вложения не были загружены и не могут быть отправлены</string>
-  <string name="message_compose_show_quoted_text_action">Цитировать</string>
+  <string name="message_compose_attachments_forward_toast">Сообщение не может быть переслано, так как не загружены вложения.</string>
+  <string name="message_compose_show_quoted_text_action">Включить цитируемое сообщение</string>
   <string name="message_compose_description_delete_quoted_text">Удалить цитату</string>
   <string name="message_compose_description_edit_quoted_text">Правка цитаты</string>
   <string name="message_view_from_format">от: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -289,6 +289,8 @@ K-9 Mail — почтовый клиент для Android.
   <string name="global_settings_privacy_hide_useragent_detail">Убрать K-9 User-Agent из заголовков писем</string>
   <string name="global_settings_privacy_hide_timezone">Скрыть временную зону</string>
   <string name="global_settings_privacy_hide_timezone_detail">Использовать UTC вместо местного времени в заголовках писем</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting">Скрыть имя хоста</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Представляться \'localhost\' при подключении к SMTP-серверам</string>
   <string name="global_settings_notification_hide_subject_title">Скрыть тему в уведомлении</string>
   <string name="global_settings_notification_hide_subject_never">Никогда</string>
   <string name="global_settings_notification_hide_subject_when_locked">При блокировке</string>
@@ -695,6 +697,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="background_ops_auto_sync_only">Автосинхронизация вкл.</string>
   <string name="batch_select_all">Выбрать все</string>
   <string name="account_setup_push_limit_label">Лимит push-проверки</string>
+  <string name="account_setup_push_limit_5">5 папок</string>
   <string name="account_setup_push_limit_10">10 папок</string>
   <string name="account_setup_push_limit_25">25 папок</string>
   <string name="account_setup_push_limit_50">50 папок</string>
@@ -998,30 +1001,39 @@ K-9 Mail — почтовый клиент для Android.
   <string name="openpgp_dialog_sign_only_minus_break">Подписи могут повредиться при отправке нескольким адресатам</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Подписи могут отображаться как вложенные файлы \'signature.asc\'</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Всегда добавлять подпись к шифрованным сообщениям</string>
-  <string name="crypto_msg_disabled">Сообщение не зашифровано</string>
-  <string name="crypto_msg_encrypted_error">Сообщение зашифровано, сбой дешифрования</string>
-  <string name="crypto_msg_encrypted_insecure">Сообщение зашифровано, но небезопасно</string>
-  <string name="crypto_msg_signed_error">Сообщение подписано, невозможно проверить подпись</string>
-  <string name="crypto_msg_encrypted_no_provider">Сообщение зашифровано, но настроенное криптоприложение не найдено</string>
-  <string name="crypto_msg_unsupported_encrypted">Сообщение зашифровано в неподдерживаемом формате</string>
-  <string name="crypto_msg_unsupported_signed">Сообщение подписано в неподдерживаемом формате</string>
-  <string name="crypto_msg_incomplete_encrypted">Сообщение зашифровано, требуется полная загрузка для дешифрования</string>
-  <string name="crypto_msg_cancelled">Сообщение зашифровано, дешифрование отменено</string>
-  <string name="crypto_msg_signed_unencrypted">Сообщение подписано, не зашифровано</string>
-  <string name="crypto_msg_encrypted_unsigned">Сообщение зашифровано, не подписано</string>
-  <string name="crypto_msg_sign_unknown">Подписано неизвестным ключом</string>
-  <string name="crypto_msg_sign_verified">Подписано доверенным ключом</string>
-  <string name="crypto_msg_sign_unverified">Подписано недоверенным ключом</string>
-  <string name="crypto_msg_sign_error">Подпись с ошибкой</string>
-  <string name="crypto_msg_sign_mismatch">Подписано неверным ключом</string>
-  <string name="crypto_msg_sign_expired">Подписано просроченным ключом</string>
-  <string name="crypto_msg_sign_revoked">Подписано отозванным ключом</string>
-  <string name="crypto_msg_sign_insecure">Подписано незащищённым ключом</string>
-  <string name="crypto_msg_sign_incomplete">Требуется полная загрузка сообщения для проверки подписи</string>
-  <string name="crypto_msg_signed_encrypted">Сообщение подписано и зашифровано</string>
-  <string name="crypto_msg_unsigned_encrypted">Подпись отсутствует, сообщение может быть перехвачено</string>
+  <string name="crypto_msg_title_plaintext">Текст</string>
+  <string name="crypto_msg_unencrypted_sign_error">неверная подпись сквозного шифрования</string>
+  <string name="crypto_msg_incomplete_signed">требуется полная загрузка сообщения для проверки подписи</string>
+  <string name="crypto_msg_unsupported_signed">содержит неподдерживаемую подпись сквозного шифрования</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">текст, подписанный ключом сквозного шифрования</string>
+  <string name="crypto_msg_unencrypted_sign_verified">от проверенного подписанта</string>
+  <string name="crypto_msg_title_unencrypted_signed">Подписанный текст</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">но ключ сквозного шифрования не соответствует отправителю</string>
+  <string name="crypto_msg_unencrypted_sign_expired">но ключ сквозного шифрования просрочен</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">но ключ сквозного шифрования отозван</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">но ключ сквозного шифрования небезопасен</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">но ключ сквозного шифрования неизвестен</string>
+  <string name="crypto_msg_title_encrypted_unknown">Зашифровано</string>
+  <string name="crypto_msg_encrypted_error">но был сбой дешифрования</string>
+  <string name="crypto_msg_encrypted_incomplete">требуется полная загрузка сообщения для дешифрования</string>
+  <string name="crypto_msg_encrypted_no_provider">но отсутствует настроенное криптоприложение</string>
+  <string name="crypto_msg_encrypted_unsupported">но в неподдерживаемом формате</string>
+  <string name="crypto_msg_encrypted_cancelled">но дешифрование было отменено</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Зашифровано</string>
+  <string name="crypto_msg_encrypted_unsigned">но без сквозного шифрования</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">со сквозным шифрованием</string>
+  <string name="crypto_msg_encrypted_sign_verified">от проверенного отправителя</string>
+  <string name="crypto_msg_title_encrypted_signed">Зашифровано</string>
+  <string name="crypto_msg_encrypted_sign_unknown">но ключ сквозного шифрования неизвестен</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">но ключ сквозного шифрования не соответствует отправителю</string>
+  <string name="crypto_msg_encrypted_sign_expired">но ключ сквозного шифрования просрочен</string>
+  <string name="crypto_msg_encrypted_sign_revoked">но ключ сквозного шифрования отозван</string>
+  <string name="crypto_msg_encrypted_sign_insecure">но ключ сквозного шифрования небезопасен</string>
+  <string name="crypto_msg_encrypted_sign_error">но есть ошибки в данных сквозного шифрования</string>
+  <string name="crypto_msg_encrypted_insecure">но шифрование не считается безопасным</string>
   <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_view_key">Кем подписано</string>
+  <string name="crypto_info_view_signer">Кем подписано</string>
+  <string name="crypto_info_view_sender">Кем отправлено</string>
   <string name="crypto_info_view_security_warning">Подробности</string>
   <string name="locked_attach_unlock">Разблокировать</string>
   <string name="locked_attach_unencrypted">Эта часть не была зашифрована и небезопасна</string>
@@ -1031,13 +1043,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="messageview_decrypt_retry">Повтор</string>
   <string name="messageview_decrypt_incomplete">Зашифрованное сообщение необходимо загрузить для дешифрования</string>
   <string name="messageview_crypto_error_title">Сбой дешифрования почты</string>
-  <string name="messageview_crypto_warning_title">Предупреждение безопасности</string>
-  <string name="messageview_crypto_warning_revoked">Сообщение подписано <b>отозванным ключом!</b></string>
-  <string name="messageview_crypto_warning_expired">Сообщение подписано <b>просроченным ключом!</b></string>
-  <string name="messageview_crypto_warning_insecure">Сообщение подписано <b>небезопасным ключом!</b></string>
-  <string name="messageview_crypto_warning_error"><b>Ошибка в подписи сообщения!</b></string>
-  <string name="messageview_crypto_warning_unsigned">Сообщение зашифровано, но не подписано и <b>могло быть прочитано</b> при доставке!</string>
-  <string name="messageview_crypto_warning_show_anyway">Всё равно показать сообщение</string>
   <string name="recipient_error_non_ascii">Спецсимволы пока не поддерживаются!</string>
   <string name="recipient_error_parse_failed">Ошибка разбора адреса!</string>
   <string name="account_settings_crypto_support_sign_only">Незашифрованные подписи</string>
@@ -1067,7 +1072,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="enable_encryption">Включить шифрование</string>
   <string name="disable_encryption">Отключить шифрование</string>
   <string name="openpgp_description_text1">Шифрование сообщений гарантирует, что никто, кроме получателя, не сможет их прочесть</string>
-  <string name="openpgp_description_text3">Шифрование отображается при поддержке всеми адресатами, и если они писали вам ранее</string>
+  <string name="openpgp_description_text3">Шифрование отображается, если поддерживается всеми адресатами и они писали Вам ранее.</string>
   <string name="openpgp_description_text2">Включите шифрование, нажав этот значок</string>
   <string name="openpgp_enabled_error_gotit">Понятно</string>
   <string name="openpgp_enabled_error_back">Назад</string>
