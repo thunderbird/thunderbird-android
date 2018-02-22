@@ -27,9 +27,6 @@
   <string name="app_authors_fmt">מפתחים: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">מידע על גירסאות: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">אנחנו משתמשים בספריות הבאות של ספקים חיצוניים: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">אמוג\'ים: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">קרא הקבצים המצורפים לדוא\"ל</string>
-  <string name="read_attachment_desc">אפשר ליישום זה לקרוא את קבצים המצורפים לדוא\"ל שלך.</string>
   <string name="read_messages_label">קרא אימיילים</string>
   <string name="read_messages_desc">אפשר ליישום זה לקרוא את האימיילים שלכם.</string>
   <string name="delete_messages_label">מחק אימיילים</string>
@@ -191,7 +188,6 @@
   <string name="message_compose_error_no_recipients">עליך להוסיף לפחות נמען אחד.</string>
   <string name="error_contact_address_not_found">לא ניתן למצוא כתובת דוא\"ל.</string>
   <string name="message_compose_attachments_skipped_toast">קבצים מסוימים אינם ניתנים להעברה בגלל שהם לא הורדו.</string>
-  <string name="message_compose_show_quoted_text_action">צטט הודעה</string>
   <string name="message_view_from_format">מ: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">ל:</string>
   <string name="message_view_cc_label">עותק:</string>

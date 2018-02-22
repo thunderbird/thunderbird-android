@@ -57,9 +57,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="app_authors_fmt">Készítők: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Verzió információk: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">A következő könyvtárakat használjuk: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Emoji ikonok: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Email mellékletek olvasása</string>
-  <string name="read_attachment_desc">Az alkalmazás engedélyezi a levélmellékletek megnyitását.</string>
   <string name="read_messages_label">Email-ek olvasása</string>
   <string name="read_messages_desc">Engedélyezi ennek az alkalmazásnak, hogy elolvassa az email-jeit.</string>
   <string name="delete_messages_label">Email-ek törlése</string>
@@ -73,6 +70,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="compose_title_reply">Válasz</string>
   <string name="compose_title_reply_all">Válasz mindnekinek</string>
   <string name="compose_title_forward">Továbbítás</string>
+  <string name="compose_title_forward_as_attachment">Továbbítás mellékletként</string>
   <string name="choose_account_title">Fiók választás</string>
   <string name="choose_folder_title">Mappa választása</string>
   <string name="status_loading_account_folder"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -103,6 +101,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="archive_action">Archiválás</string>
   <string name="spam_action">Levélszemét</string>
   <string name="forward_action">Továbbítás</string>
+  <string name="forward_as_attachment_action">Továbbítás mellékletként</string>
   <string name="move_action">Áthelyezés</string>
   <string name="single_message_options_action">Küldés…</string>
   <string name="refile_action">Rendszerezés…</string>
@@ -226,7 +225,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="compose_error_incomplete_recipient">A CÍMZETT input mező hiányos!</string>
   <string name="error_contact_address_not_found">E-mail cím nem található.</string>
   <string name="message_compose_attachments_skipped_toast">Néhány mellékletet nem lehet továbbítani, mert nem lettek letöltve.</string>
-  <string name="message_compose_show_quoted_text_action">Idézet</string>
   <string name="message_compose_description_delete_quoted_text">Idézett szöveg törlése</string>
   <string name="message_compose_description_edit_quoted_text">Idézett szöveg szerkesztése</string>
   <string name="message_view_from_format">Feladó: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -691,6 +689,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="background_ops_auto_sync_only">Amikor az \'Automatikus szinkronizáció\' be van kapcsolva</string>
   <string name="batch_select_all">Mindent kijelöl</string>
   <string name="account_setup_push_limit_label">Átküldéssel ellenőrizendő mappák maximum száma</string>
+  <string name="account_setup_push_limit_5">5 mappa</string>
   <string name="account_setup_push_limit_10">10 mappa</string>
   <string name="account_setup_push_limit_25">25 mappa</string>
   <string name="account_setup_push_limit_50">50 mappa</string>
@@ -964,26 +963,12 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="openpgp_sign_only_disable">Letiltás</string>
   <string name="openpgp_sign_only_keep_enabled">Tartsa bekapcsolva</string>
   <string name="openpgp_dialog_sign_only_title">PGP csak-aláírás mód</string>
-  <string name="crypto_msg_disabled">Az üzenet nem titkosított.</string>
-  <string name="crypto_msg_encrypted_insecure">Az üzenet titkosított, de nem biztonságos.</string>
-  <string name="crypto_msg_signed_error">Az üzenet aláírásra került, de az aláírást nem lehet ellenőrizni.</string>
-  <string name="crypto_msg_incomplete_encrypted">Az üzenet titkosítva lett, de teljesen le kell tölteni a visszafejtéshez.</string>
-  <string name="crypto_msg_cancelled">Az üzenet titkosítva lett, de a visszafejtést megszakították.</string>
-  <string name="crypto_msg_signed_unencrypted">Az üzenet aláírásra került, de nem lett titkosítva.</string>
-  <string name="crypto_msg_encrypted_unsigned">Az üzenet titkosítva volt, de nem lett aláírva.</string>
-  <string name="crypto_msg_sign_unknown">Az aláírás ismeretlen kulccsal készült.</string>
-  <string name="crypto_msg_sign_verified">Az aláírás megbízható kulccsal készült.</string>
-  <string name="crypto_msg_sign_unverified">Az aláírás megbízhatatlan kulccsal készült.</string>
-  <string name="crypto_msg_sign_error">Az aláírás hibát tartalmaz.</string>
-  <string name="crypto_msg_sign_mismatch">Az aláírás rossz kulccsal készült.</string>
-  <string name="crypto_msg_sign_expired">Az aláírás lejárt kulccsal készült.</string>
-  <string name="crypto_msg_sign_revoked">Az aláírás visszavont kulccsal készült.</string>
-  <string name="crypto_msg_sign_insecure">Az aláírás nem biztonságos kulccsal történt.</string>
-  <string name="crypto_msg_sign_incomplete">Az üzenet teljes letöltése szükséges az aláírás ellenőrzéséhez.</string>
-  <string name="crypto_msg_signed_encrypted">Az üzenet aláírásra és titkosításra került.</string>
-  <string name="crypto_msg_unsigned_encrypted">Nincs aláírás, az üzenet feltehetően elfogásra került.</string>
+  <string name="crypto_msg_title_encrypted_unknown">Titkosított</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Titkosított</string>
+  <string name="crypto_msg_title_encrypted_signed">Titkosított</string>
   <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_view_key">Aláíró megtekintése</string>
+  <string name="crypto_info_view_signer">Aláíró megtekintése</string>
+  <string name="crypto_info_view_sender">Feladó megtekintése</string>
   <string name="crypto_info_view_security_warning">Részletek</string>
   <string name="locked_attach_unlock">Feloldás</string>
   <string name="locked_attach_unencrypted">Ez a rész nem volt kódolva és lehet, hogy nem biztonságos.</string>
@@ -993,13 +978,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="messageview_decrypt_retry">Újra</string>
   <string name="messageview_decrypt_incomplete">A titkosított üzenet letöltése szükséges a visszafejtéshez.</string>
   <string name="messageview_crypto_error_title">Email kititkosítási hiba</string>
-  <string name="messageview_crypto_warning_title">Biztonsági figyelmeztetés</string>
-  <string name="messageview_crypto_warning_revoked">Ez az üzenet <b>visszavont kulccsal</b> lett aláírva.</string>
-  <string name="messageview_crypto_warning_expired">Ez az üzenet <b>lejárt kulccsal</b> lett aláírva.</string>
-  <string name="messageview_crypto_warning_insecure">Ez az üzenet <b>nem biztonságos kulccsal</b> lett aláírva.</string>
-  <string name="messageview_crypto_warning_error"><b>Hiba volt az üzenet aláírásában!</b></string>
-  <string name="messageview_crypto_warning_unsigned">Az üzenet titkosítva volt, de nem lett aláírva. Nincs <b>biztonság a végpontok között</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Mindenképpen mutassa az üzenetet</string>
   <string name="recipient_error_non_ascii">A különleges karakterek jelenleg nem támogatottak!</string>
   <string name="recipient_error_parse_failed">Hiba történt az email cím elemzésénél.</string>
   <string name="account_settings_crypto_support_sign_only">Nem titkosított aláírások megjelenítése</string>
@@ -1026,7 +1004,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="enable_encryption">Titkosítás engedélyezése</string>
   <string name="disable_encryption">Titkosítás letiltása</string>
   <string name="openpgp_description_text1">Az üzenetek titkosítása biztosítja, hogy azokat csak a címzett olvashatja lel és senki más.</string>
-  <string name="openpgp_description_text3">A titkosítás csak akkor jelenik meg, ha azt az összes címzett támogatja és előtte emailt kell küldeniük.</string>
   <string name="openpgp_description_text2">A titkosítási mód átváltása az ikonra kattintva.</string>
   <string name="openpgp_enabled_error_gotit">Értem</string>
   <string name="openpgp_enabled_error_back">Vissza</string>

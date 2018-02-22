@@ -56,9 +56,6 @@
   <string name="app_authors_fmt">Аутори: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Подаци о ревизији: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Користимо следеће библиотеке треће стране: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Емоџи иконе: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">читање прилога е-поште</string>
-  <string name="read_attachment_desc">Дозвољава овој апликацији читање прилога ваших е-порука.</string>
   <string name="read_messages_label">читање е-порука</string>
   <string name="read_messages_desc">Дозвољава овој апликацији читање ваших е-порука.</string>
   <string name="delete_messages_label">брисање е-порука</string>
@@ -228,7 +225,6 @@
   <string name="compose_error_incomplete_recipient">Поље примаоца садржи непотпун унос!</string>
   <string name="error_contact_address_not_found">Адреса е-поште овог контакта није нађена.</string>
   <string name="message_compose_attachments_skipped_toast">Неки прилози не могу бити прослеђени јер нису преузети.</string>
-  <string name="message_compose_show_quoted_text_action">Цитирај поруку</string>
   <string name="message_compose_description_delete_quoted_text">Уклони цитирани текст</string>
   <string name="message_compose_description_edit_quoted_text">Уреди цитирани текст</string>
   <string name="message_view_from_format">Од: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -984,30 +980,7 @@
   <string name="openpgp_dialog_sign_only_minus_break">Потписи могу да се покваре ако се шаље на мејлинг-листе.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Потписи могу бити приказани као „signature.asc“ прилози у неким клијентима.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Шифроване поруке увек укључују потпис.</string>
-  <string name="crypto_msg_disabled">Порука није шифрована</string>
-  <string name="crypto_msg_encrypted_error">Порука је шифрована али је дошло до грешке приликом дешифровања.</string>
-  <string name="crypto_msg_encrypted_insecure">Порука је шифрована али није обезбеђена!</string>
-  <string name="crypto_msg_signed_error">Порука је потписана али потпис није прошао оверу.</string>
-  <string name="crypto_msg_encrypted_no_provider">Порука је шифрована али није постављена апликација за шифровање.</string>
-  <string name="crypto_msg_unsupported_encrypted">Порука је шифрована али у неподржаном формату.</string>
-  <string name="crypto_msg_unsupported_signed">Порука је потписана али у неподржаном формату.</string>
-  <string name="crypto_msg_incomplete_encrypted">Порука је шифрована али мора бити преузета у потпуности ради дешифровања.</string>
-  <string name="crypto_msg_cancelled">Порука је шифрована али је дешифровање отказано.</string>
-  <string name="crypto_msg_signed_unencrypted">Порука је потписана али није шифрована.</string>
-  <string name="crypto_msg_encrypted_unsigned">Порука је шифрована али није потписана.</string>
-  <string name="crypto_msg_sign_unknown">Потпис направљен непознатим кључем.</string>
-  <string name="crypto_msg_sign_verified">Потпис направљен поузданим кључем.</string>
-  <string name="crypto_msg_sign_unverified">Потпис направљен непоузданим кључем!</string>
-  <string name="crypto_msg_sign_error">Потпис има грешку.</string>
-  <string name="crypto_msg_sign_mismatch">Потпис направљен погрешним кључем.</string>
-  <string name="crypto_msg_sign_expired">Потпис направљен истеклим кључем.</string>
-  <string name="crypto_msg_sign_revoked">Потпис направљен опозваним кључем.</string>
-  <string name="crypto_msg_sign_insecure">Потпис направљен небезбедним кључем.</string>
-  <string name="crypto_msg_sign_incomplete">Порука мора бити преузета у потпуности ради овере потписа.</string>
-  <string name="crypto_msg_signed_encrypted">Порука је потписана и шифрована.</string>
-  <string name="crypto_msg_unsigned_encrypted">Нема потписа, ова порука је можда пресретнута.</string>
   <string name="crypto_info_ok">У реду</string>
-  <string name="crypto_info_view_key">Прикажи потписника</string>
   <string name="crypto_info_view_security_warning">Детаљи</string>
   <string name="locked_attach_unlock">Откључај</string>
   <string name="locked_attach_unencrypted">Овај део није шифрован и може бити небезбедан.</string>
@@ -1017,13 +990,6 @@
   <string name="messageview_decrypt_retry">Покушај поново</string>
   <string name="messageview_decrypt_incomplete">Шифрована порука мора бити преузета за дешифровање.</string>
   <string name="messageview_crypto_error_title">Грешка дешифровања е-поруке</string>
-  <string name="messageview_crypto_warning_title">Безбедносно упозорење</string>
-  <string name="messageview_crypto_warning_revoked">Ова порука је потписана <b>опозваним кључем!</b></string>
-  <string name="messageview_crypto_warning_expired">Ова порука је потписана <b>истеклим кључем!</b></string>
-  <string name="messageview_crypto_warning_insecure">Ова порука је потписана <b>небезбедним кључем!</b></string>
-  <string name="messageview_crypto_warning_error">Дошло је до <b>грешке у потпису ове поруке!</b></string>
-  <string name="messageview_crypto_warning_unsigned">Порука је шифрована али није потписана. Порука <b>није обезбеђена с-краја-на-крај</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Прикажи поруку свеједно</string>
   <string name="recipient_error_non_ascii">Посебни знакови тренутно нису нису подржани!</string>
   <string name="recipient_error_parse_failed">Грешка прослеђивања адресе!</string>
   <string name="account_settings_crypto_support_sign_only">Прикажи нешифроване потписе</string>
