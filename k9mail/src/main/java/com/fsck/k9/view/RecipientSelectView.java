@@ -583,6 +583,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         public Address address;
 
         public String addressLabel;
+        private int timesContacted;
+        private String keyPrimary;
 
         @Nullable // null if the contact has no photo. transient because we serialize this manually, see below.
         public transient Uri photoThumbnailUri;
@@ -607,7 +609,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         public String getDisplayNameOrAddress() {
             final String displayName = K9.showCorrespondentNames() ? getDisplayName() : null;
-    
+
             if (displayName != null) {
                 return displayName;
             }
@@ -694,6 +696,22 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 String uriString = ois.readUTF();
                 photoThumbnailUri = Uri.parse(uriString);
             }
+        }
+
+        public void setTimesContacted(int timesContacted) {
+            this.timesContacted = timesContacted;
+        }
+
+        public int getTimesContacted() {
+            return timesContacted;
+        }
+
+        public void setKeyPrimary(String keyPrimary) {
+            this.keyPrimary = keyPrimary;
+        }
+
+        public String getKeyPrimary() {
+            return keyPrimary;
         }
     }
 }
