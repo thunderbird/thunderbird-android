@@ -85,6 +85,22 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private static final int CRYPTO_PROVIDER_STATUS_UNTRUSTED = 1;
     private static final int CRYPTO_PROVIDER_STATUS_TRUSTED = 2;
 
+    private static final Comparator<Recipient> RECIPIENT_COMPARATOR = new Comparator<Recipient>() {
+        @Override
+        public int compare(Recipient lhs, Recipient rhs) {
+            int timesContactedDiff = rhs.timesContacted - lhs.timesContacted;
+            if (timesContactedDiff != 0) {
+                return timesContactedDiff;
+            }
+
+            if (lhs.sortKey == null || rhs.sortKey == null) {
+                return 0;
+            }
+
+            return lhs.sortKey.compareTo(rhs.sortKey);
+        }
+    };
+
 
     private final String query;
     private final Address[] addresses;
@@ -266,22 +282,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         foundValidCursor |= fillContactDataFromNameAndEmail(query, recipients, recipientMap);
 
         if (foundValidCursor) {
-            //nicknames should be sorted as the others - by timesContacted,keyPrimary
-            Collections.sort(recipients, new Comparator<Recipient>() {
-                @Override
-                public int compare(Recipient o1, Recipient o2) {
-
-                    int x = o2.getTimesContacted();
-                    int y = o1.getTimesContacted();
-
-                    int compTimesContacted = (x < y) ? -1 : ((x == y) ? 0 : 1);
-                    if (compTimesContacted != 0) {
-                        return compTimesContacted;
-                    }
-                    return o2.getKeyPrimary().compareTo(o1.getKeyPrimary());
-                }
-            });
-
+            Collections.sort(recipients, RECIPIENT_COMPARATOR);
             registerContentObserver();
         }
 
@@ -361,14 +362,17 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             String name = prefilledName != null ? prefilledName : cursor.getString(INDEX_NAME);
 
             String email = cursor.getString(INDEX_EMAIL);
-            long contactId = cursor.getLong(INDEX_CONTACT_ID);
-            String lookupKey = cursor.getString(INDEX_LOOKUP_KEY);
 
             // already exists? just skip then
             if (email == null || recipientMap.containsKey(email)) {
                 // TODO We should probably merging contacts with the same email address
                 continue;
             }
+
+            long contactId = cursor.getLong(INDEX_CONTACT_ID);
+            String lookupKey = cursor.getString(INDEX_LOOKUP_KEY);
+            int timesContacted = cursor.getInt(INDEX_TIMES_CONTACTED);
+            String sortKey = cursor.getString(INDEX_KEY_PRIMARY);
 
             int addressType = cursor.getInt(INDEX_EMAIL_TYPE);
             String addressLabel = null;
@@ -395,10 +399,9 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                     break;
                 }
             }
-            Recipient recipient = new Recipient(name, email, addressLabel, contactId, lookupKey);
-            recipient.setTimesContacted(cursor.getInt(INDEX_TIMES_CONTACTED));
-            recipient.setKeyPrimary(cursor.getString(INDEX_KEY_PRIMARY));
 
+            Recipient recipient = new Recipient(name, email, addressLabel, contactId, lookupKey,
+                    timesContacted, sortKey);
 
             if (recipient.isValidEmailAddress()) {
 
