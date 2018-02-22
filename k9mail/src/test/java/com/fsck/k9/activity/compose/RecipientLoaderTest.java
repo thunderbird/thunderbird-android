@@ -44,6 +44,10 @@ public class RecipientLoaderTest {
             ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED,
             ContactsContract.Contacts.SORT_KEY_PRIMARY
     };
+    static final String[] PROJECTION_NICKNAME = {
+            ContactsContract.Data.CONTACT_ID,
+            ContactsContract.CommonDataKinds.Nickname.NAME
+    };
     static final String[] PROJECTION_CRYPTO_ADDRESSES = { "address", "uid_address" };
     static final String[] PROJECTION_CRYPTO_STATUS = { "address", "uid_key_status", "autocrypt_key_status" };
     static final Address CONTACT_ADDRESS_1 = Address.parse("Contact Name <address@example.org>")[0];
@@ -59,12 +63,6 @@ public class RecipientLoaderTest {
     static final String[] NICKNAME_NOT_CONTACTED = new String[] { "2", "Eves_Nickname_Bob" };
 
     static final String QUERYSTRING = "querystring";
-
-
-    private static final String[] PROJECTION_NICKNAME = {
-            ContactsContract.Data.CONTACT_ID,
-            ContactsContract.CommonDataKinds.Nickname.NAME
-    };
 
 
     Context context;
@@ -188,7 +186,7 @@ public class RecipientLoaderTest {
                         any(String.class))).thenReturn(cursor);
     }
 
-    private void setupNicknameContactProvider(String queriedAddress, String[]... contactsWithNickname) {
+    private void setupNicknameContactProvider(String[]... contactsWithNickname) {
         MatrixCursor cursor = new MatrixCursor(PROJECTION_NICKNAME);
         for (String[] contact : contactsWithNickname) {
             cursor.addRow(contact);
@@ -199,10 +197,7 @@ public class RecipientLoaderTest {
                         any(String.class),
                         any(String[].class),
                         any(String.class))).thenReturn(cursor);
-
-
     }
-
 
     private void setupContactProviderForId(String id, String[]... contacts) {
         MatrixCursor cursor = new MatrixCursor(PROJECTION);
@@ -239,15 +234,11 @@ public class RecipientLoaderTest {
         assertEquals(0, recipients.size());
     }
 
-
-    /**
-     * Nickname should be sorted as querying others (more times contacted first)
-     */
     @Test
-    public void queryContactProvider_sortByContactedForNickname() throws Exception {
+    public void queryContactProvider_sortByTimesContactedForNickname() throws Exception {
         RecipientLoader recipientLoader = new RecipientLoader(context, null, QUERYSTRING);
         setupContactProvider("%" + QUERYSTRING + "%", CONTACT_1);
-        setupNicknameContactProvider("%" + QUERYSTRING + "%", NICKNAME_NOT_CONTACTED);
+        setupNicknameContactProvider(NICKNAME_NOT_CONTACTED);
         setupContactProviderForId(NICKNAME_NOT_CONTACTED[0], CONTACT_WITH_NICKNAME_NOT_CONTACTED);
 
         List<Recipient> recipients = recipientLoader.loadInBackground();

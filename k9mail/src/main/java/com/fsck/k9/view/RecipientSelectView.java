@@ -583,8 +583,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         public Address address;
 
         public String addressLabel;
-        private int timesContacted;
-        private String keyPrimary;
+        public final int timesContacted;
+        public final String sortKey;
 
         @Nullable // null if the contact has no photo. transient because we serialize this manually, see below.
         public transient Uri photoThumbnailUri;
@@ -597,14 +597,23 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             this.contactId = null;
             this.cryptoStatus = RecipientCryptoStatus.UNDEFINED;
             this.contactLookupKey = null;
+            timesContacted = 0;
+            sortKey = null;
         }
 
         public Recipient(String name, String email, String addressLabel, long contactId, String lookupKey) {
+            this(name, email, addressLabel, contactId, lookupKey, 0, null);
+        }
+
+        public Recipient(String name, String email, String addressLabel, long contactId, String lookupKey,
+                int timesContacted, String sortKey) {
             this.address = new Address(email, name);
             this.contactId = contactId;
             this.addressLabel = addressLabel;
             this.cryptoStatus = RecipientCryptoStatus.UNDEFINED;
             this.contactLookupKey = lookupKey;
+            this.timesContacted = timesContacted;
+            this.sortKey = sortKey;
         }
 
         public String getDisplayNameOrAddress() {
@@ -696,22 +705,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 String uriString = ois.readUTF();
                 photoThumbnailUri = Uri.parse(uriString);
             }
-        }
-
-        public void setTimesContacted(int timesContacted) {
-            this.timesContacted = timesContacted;
-        }
-
-        public int getTimesContacted() {
-            return timesContacted;
-        }
-
-        public void setKeyPrimary(String keyPrimary) {
-            this.keyPrimary = keyPrimary;
-        }
-
-        public String getKeyPrimary() {
-            return keyPrimary;
         }
     }
 }
