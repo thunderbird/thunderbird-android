@@ -479,6 +479,11 @@
             android:key="crypto_key"
             android:title="@string/account_settings_crypto_key" />
 
+        <Preference
+            android:key="autocrypt_prefer_encrypt"
+            android:title="@string/account_settings_crypto_prefer_encrypt"
+            />
+
     </PreferenceScreen>
 
 </PreferenceScreen>
