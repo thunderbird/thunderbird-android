@@ -5,7 +5,6 @@ import java.util.Map;
 
 import android.net.Uri;
 
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
@@ -16,9 +15,10 @@ import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -26,8 +26,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
-@RunWith(K9RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
+@RunWith(RobolectricTestRunner.class)
 public class AttachmentResolverTest {
     public static final Uri ATTACHMENT_TEST_URI_1 = Uri.parse("uri://test/1");
     public static final Uri ATTACHMENT_TEST_URI_2 = Uri.parse("uri://test/2");
