@@ -9,12 +9,12 @@ import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.mockito.Matchers.any;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class CertificateErrorNotificationsTest {
     private static final boolean INCOMING = true;
     private static final boolean OUTGOING = false;

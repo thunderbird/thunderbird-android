@@ -4,7 +4,6 @@ package com.fsck.k9.crypto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Multipart;
@@ -15,7 +14,7 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import static com.fsck.k9.message.TestMessageConstructionUtils.bodypart;
 import static com.fsck.k9.message.TestMessageConstructionUtils.messageFromBody;
@@ -29,8 +28,7 @@ import static org.mockito.Mockito.mock;
 
 
 @SuppressWarnings("WeakerAccess")
-@RunWith(K9RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
+@RunWith(RobolectricTestRunner.class)
 public class MessageCryptoStructureDetectorTest {
     MessageCryptoAnnotations messageCryptoAnnotations = mock(MessageCryptoAnnotations.class);
     static final String PGP_INLINE_DATA = "" +

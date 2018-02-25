@@ -12,7 +12,6 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.fsck.k9.GlobalsHelper;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
@@ -39,6 +38,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static com.fsck.k9.message.TestMessageConstructionUtils.bodypart;
@@ -56,7 +56,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("WeakerAccess")
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class MessageViewInfoExtractorTest {
     public static final String BODY_TEXT = "K-9 Mail rocks :>";
     public static final String BODY_TEXT_HTML = "K-9 Mail rocks :&gt;";

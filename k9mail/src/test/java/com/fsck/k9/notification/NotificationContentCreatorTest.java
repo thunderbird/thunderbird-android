@@ -4,7 +4,6 @@ package com.fsck.k9.notification;
 import android.content.Context;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -14,6 +13,7 @@ import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class NotificationContentCreatorTest {
     private static final String ACCOUNT_UUID = "1-2-3";
     private static final String FOLDER_NAME = "INBOX";

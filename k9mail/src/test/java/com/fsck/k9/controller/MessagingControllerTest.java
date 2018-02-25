@@ -14,7 +14,6 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -46,6 +45,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLog;
 
@@ -70,7 +70,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class MessagingControllerTest {
     private static final String FOLDER_NAME = "Folder";
     private static final String SENT_FOLDER_NAME = "Sent";

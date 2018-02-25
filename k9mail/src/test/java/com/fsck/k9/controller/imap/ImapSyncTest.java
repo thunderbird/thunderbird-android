@@ -11,7 +11,6 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
@@ -34,6 +33,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLog;
 
@@ -51,7 +51,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class ImapSyncTest {
     private static final String FOLDER_NAME = "Folder";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
