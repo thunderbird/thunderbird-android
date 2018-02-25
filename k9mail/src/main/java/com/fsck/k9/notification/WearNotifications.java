@@ -55,7 +55,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addMarkAllAsReadAction(WearableExtender wearableExtender, NotificationData notificationData) {
-        int icon = R.drawable.ic_action_mark_as_read_dark;
+        int icon = R.drawable.ic_email_open_dark;
         String title = context.getString(R.string.notification_action_mark_all_as_read);
 
         Account account = notificationData.getAccount();
@@ -68,7 +68,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addDeleteAllAction(WearableExtender wearableExtender, NotificationData notificationData) {
-        int icon = R.drawable.ic_action_delete_dark;
+        int icon = R.drawable.ic_delete_dark;
         String title = context.getString(R.string.notification_action_delete_all);
 
         Account account = notificationData.getAccount();
@@ -81,7 +81,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addArchiveAllAction(WearableExtender wearableExtender, NotificationData notificationData) {
-        int icon = R.drawable.ic_action_archive_dark;
+        int icon = R.drawable.ic_archive_dark;
         String title = context.getString(R.string.notification_action_archive_all);
 
         Account account = notificationData.getAccount();
@@ -166,7 +166,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addReplyAction(WearableExtender wearableExtender, NotificationHolder holder) {
-        int icon = R.drawable.ic_action_single_message_options_dark;
+        int icon = R.drawable.ic_reply_all_dark;
         String title = context.getString(R.string.notification_action_reply);
 
         MessageReference messageReference = holder.content.messageReference;
@@ -178,7 +178,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addMarkAsReadAction(WearableExtender wearableExtender, NotificationHolder holder) {
-        int icon = R.drawable.ic_action_mark_as_read_dark;
+        int icon = R.drawable.ic_email_open_dark;
         String title = context.getString(R.string.notification_action_mark_as_read);
 
         MessageReference messageReference = holder.content.messageReference;
@@ -190,7 +190,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addDeleteAction(WearableExtender wearableExtender, NotificationHolder holder) {
-        int icon = R.drawable.ic_action_delete_dark;
+        int icon = R.drawable.ic_delete_dark;
         String title = context.getString(R.string.notification_action_delete);
 
         MessageReference messageReference = holder.content.messageReference;
@@ -202,7 +202,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addArchiveAction(WearableExtender wearableExtender, NotificationHolder holder) {
-        int icon = R.drawable.ic_action_archive_dark;
+        int icon = R.drawable.ic_archive_dark;
         String title = context.getString(R.string.notification_action_archive);
 
         MessageReference messageReference = holder.content.messageReference;
@@ -214,7 +214,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addMarkAsSpamAction(WearableExtender wearableExtender, NotificationHolder holder) {
-        int icon = R.drawable.ic_action_spam_dark;
+        int icon = R.drawable.ic_report_dark;
         String title = context.getString(R.string.notification_action_spam);
 
         MessageReference messageReference = holder.content.messageReference;
