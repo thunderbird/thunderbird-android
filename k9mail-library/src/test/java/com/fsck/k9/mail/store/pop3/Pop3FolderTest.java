@@ -6,8 +6,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.fsck.k9.mail.FetchProfile;
@@ -49,10 +47,10 @@ public class Pop3FolderTest {
         mockStoreConfig = mock(StoreConfig.class);
         mockListener = mock(MessageRetrievalListener.class);
         when(mockStore.getConfig()).thenReturn(mockStoreConfig);
-        when(mockStoreConfig.getInboxFolderName()).thenReturn("Inbox");
+        when(mockStoreConfig.getInboxFolderName()).thenReturn(Pop3Folder.INBOX);
         when(mockStore.createConnection()).thenReturn(mockConnection);
         when(mockConnection.executeSimpleCommand(Pop3Commands.STAT_COMMAND)).thenReturn("+OK 10 0");
-        folder = new Pop3Folder(mockStore, "Inbox");
+        folder = new Pop3Folder(mockStore, Pop3Folder.INBOX);
         BinaryTempFileBody.setTempDirectory(new File(System.getProperty("java.io.tmpdir")));
     }
 

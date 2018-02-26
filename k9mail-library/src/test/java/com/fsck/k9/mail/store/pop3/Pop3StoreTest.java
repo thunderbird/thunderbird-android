@@ -66,7 +66,7 @@ public class Pop3StoreTest {
     public void setUp() throws Exception {
         //Using a SSL socket allows us to mock it
         when(mockStoreConfig.getStoreUri()).thenReturn("pop3+ssl+://PLAIN:user:password@server:12345");
-        when(mockStoreConfig.getInboxFolderName()).thenReturn("Inbox");
+        when(mockStoreConfig.getInboxFolderName()).thenReturn(Pop3Folder.INBOX);
         when(mockTrustedSocketFactory.createSocket(null, "server", 12345, null)).thenReturn(mockSocket);
         when(mockSocket.isConnected()).thenReturn(true);
         when(mockSocket.isClosed()).thenReturn(false);
@@ -187,7 +187,7 @@ public class Pop3StoreTest {
         List<Pop3Folder> folders = store.getPersonalNamespaces(true);
 
         assertEquals(1, folders.size());
-        assertEquals("Inbox", folders.get(0).getName());
+        assertEquals("INBOX", folders.get(0).getName());
     }
 
     @Test
@@ -247,7 +247,7 @@ public class Pop3StoreTest {
         when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(response.getBytes("UTF-8")));
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         when(mockSocket.getOutputStream()).thenReturn(byteArrayOutputStream);
-        Pop3Folder folder = store.getFolder("Inbox");
+        Pop3Folder folder = store.getFolder(Pop3Folder.INBOX);
 
         folder.open(Folder.OPEN_MODE_RW);
 
@@ -262,7 +262,7 @@ public class Pop3StoreTest {
                 CAPA_RESPONSE +
                 AUTH_PLAIN_FAILED_RESPONSE;
         when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(response.getBytes("UTF-8")));
-        Pop3Folder folder = store.getFolder("Inbox");
+        Pop3Folder folder = store.getFolder(Pop3Folder.INBOX);
 
         folder.open(Folder.OPEN_MODE_RW);
     }
