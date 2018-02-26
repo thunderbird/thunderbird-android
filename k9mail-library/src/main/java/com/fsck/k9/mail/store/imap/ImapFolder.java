@@ -41,6 +41,7 @@ import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
 class ImapFolder extends Folder<ImapMessage> {
+    static final String INBOX = "INBOX";
     private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -78,7 +79,7 @@ class ImapFolder extends Folder<ImapMessage> {
     private String getPrefixedName() throws MessagingException {
         String prefixedName = "";
 
-        if (!store.getStoreConfig().getInboxFolderName().equalsIgnoreCase(name)) {
+        if (!INBOX.equalsIgnoreCase(name)) {
             ImapConnection connection;
             synchronized (this) {
                 if (this.connection == null) {

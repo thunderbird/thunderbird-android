@@ -197,7 +197,7 @@ public class ImapStore extends RemoteStore {
                 combinedPrefix = null;
             }
 
-            if (folder.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
+            if (ImapFolder.INBOX.equalsIgnoreCase(folder)) {
                 continue;
             } else if (folder.equals(mStoreConfig.getOutboxFolderName())) {
                 /*
@@ -216,12 +216,14 @@ public class ImapStore extends RemoteStore {
             }
         }
 
-        folderNames.add(mStoreConfig.getInboxFolderName());
+        folderNames.add(ImapFolder.INBOX);
 
         return folderNames;
     }
 
     void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
+        mStoreConfig.setInboxFolderName(ImapFolder.INBOX);
+
         if (!connection.hasCapability(Capabilities.SPECIAL_USE)) {
             if (K9MailLib.isDebug()) {
                 Timber.d("No detected folder auto-configuration methods.");
