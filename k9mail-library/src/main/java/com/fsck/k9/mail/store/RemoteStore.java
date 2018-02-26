@@ -161,10 +161,6 @@ public abstract class RemoteStore {
         return false;
     }
 
-    public boolean isSendCapable() {
-        return false;
-    }
-
     public boolean isExpungeCapable() {
         return false;
     }
