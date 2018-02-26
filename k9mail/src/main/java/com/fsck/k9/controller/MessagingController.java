@@ -2855,9 +2855,8 @@ public class MessagingController {
 
     public boolean isMoveCapable(final Account account) {
         try {
-            LocalStore localStore = account.getLocalStore();
             Store remoteStore = account.getRemoteStore();
-            return localStore.isMoveCapable() && remoteStore.isMoveCapable();
+            return remoteStore.isMoveCapable();
         } catch (MessagingException me) {
 
             Timber.e(me, "Exception while ascertaining move capability");
@@ -2867,9 +2866,8 @@ public class MessagingController {
 
     public boolean isCopyCapable(final Account account) {
         try {
-            LocalStore localStore = account.getLocalStore();
             Store remoteStore = account.getRemoteStore();
-            return localStore.isCopyCapable() && remoteStore.isCopyCapable();
+            return remoteStore.isCopyCapable();
         } catch (MessagingException me) {
             Timber.e(me, "Exception while ascertaining copy capability");
             return false;
@@ -2968,10 +2966,10 @@ public class MessagingController {
         try {
             LocalStore localStore = account.getLocalStore();
             Store remoteStore = account.getRemoteStore();
-            if (!isCopy && (!remoteStore.isMoveCapable() || !localStore.isMoveCapable())) {
+            if (!isCopy && !remoteStore.isMoveCapable()) {
                 return;
             }
-            if (isCopy && (!remoteStore.isCopyCapable() || !localStore.isCopyCapable())) {
+            if (isCopy && !remoteStore.isCopyCapable()) {
                 return;
             }
 

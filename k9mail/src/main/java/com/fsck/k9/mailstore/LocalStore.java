@@ -427,9 +427,6 @@ public class LocalStore {
         return folders;
     }
 
-    public void checkSettings() throws MessagingException {
-    }
-
     public void delete() throws UnavailableStorageException {
         database.delete();
     }
@@ -546,14 +543,6 @@ public class LocalStore {
                 return null;
             }
         });
-    }
-
-    public boolean isMoveCapable() {
-        return true;
-    }
-
-    public boolean isCopyCapable() {
-        return true;
     }
 
     public List<LocalMessage> searchForMessages(MessageRetrievalListener<LocalMessage> retrievalListener,
