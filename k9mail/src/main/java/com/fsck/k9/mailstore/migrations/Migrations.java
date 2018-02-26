@@ -3,10 +3,13 @@ package com.fsck.k9.mailstore.migrations;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import com.fsck.k9.mailstore.LocalStore;
+
 
 public class Migrations {
     @SuppressWarnings("fallthrough")
     public static void upgradeDatabase(SQLiteDatabase db, MigrationsHelper migrationsHelper) {
+        boolean shouldBuildFtsTable = false;
         switch (db.getVersion()) {
             case 29:
                 MigrationTo30.addDeletedColumn(db);
@@ -63,7 +66,8 @@ public class Migrations {
             case 53:
                 MigrationTo54.addPreviewTypeColumn(db);
             case 54:
-                MigrationTo55.createFtsSearchTable(db, migrationsHelper);
+                MigrationTo55.createFtsSearchTable(db);
+                shouldBuildFtsTable = true;
             case 55:
                 MigrationTo56.cleanUpFtsTable(db);
             case 56:
@@ -78,5 +82,15 @@ public class Migrations {
             case 60:
                 MigrationTo61.removeErrorsFolder(db);
         }
+
+        if (shouldBuildFtsTable) {
+            buildFtsTable(db, migrationsHelper);
+        }
+    }
+
+    private static void buildFtsTable(SQLiteDatabase db, MigrationsHelper migrationsHelper) {
+        LocalStore localStore = migrationsHelper.getLocalStore();
+        FullTextIndexer fullTextIndexer = new FullTextIndexer(localStore, db);
+        fullTextIndexer.indexAllMessages();
     }
 }
