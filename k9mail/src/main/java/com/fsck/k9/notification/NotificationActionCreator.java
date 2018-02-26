@@ -276,7 +276,7 @@ class NotificationActionCreator {
     }
 
     private boolean skipFolderListInBackStack(Account account, String folderName) {
-        return folderName != null && folderName.equals(account.getAutoExpandFolderName());
+        return folderName != null && folderName.equals(account.getAutoExpandFolder());
     }
 
     private boolean skipAccountsInBackStack() {

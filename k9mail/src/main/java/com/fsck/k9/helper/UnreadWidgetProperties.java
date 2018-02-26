@@ -111,11 +111,11 @@ public class UnreadWidgetProperties {
 
     private Intent getClickIntentForAccount(Context context) {
         Account account = Preferences.getPreferences(context).getAccount(accountUuid);
-        if (K9.FOLDER_NONE.equals(account.getAutoExpandFolderName())) {
+        if (K9.FOLDER_NONE.equals(account.getAutoExpandFolder())) {
             return FolderList.actionHandleAccountIntent(context, account, false);
         }
-        LocalSearch search = new LocalSearch(account.getAutoExpandFolderName());
-        search.addAllowedFolder(account.getAutoExpandFolderName());
+        LocalSearch search = new LocalSearch(account.getAutoExpandFolder());
+        search.addAllowedFolder(account.getAutoExpandFolder());
         search.addAccountUuid(account.getUuid());
         return MessageList.intentDisplaySearch(context, search, false, true, true);
     }

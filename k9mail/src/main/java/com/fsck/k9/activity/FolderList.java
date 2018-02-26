@@ -333,8 +333,8 @@ public class FolderList extends K9ListActivity {
         }
 
         if (intent.getBooleanExtra(EXTRA_FROM_SHORTCUT, false) &&
-                   !K9.FOLDER_NONE.equals(account.getAutoExpandFolderName())) {
-            onOpenFolder(account.getAutoExpandFolderName());
+                   !K9.FOLDER_NONE.equals(account.getAutoExpandFolder())) {
+            onOpenFolder(account.getAutoExpandFolder());
             finish();
         } else {
             initializeActivityView();
@@ -870,7 +870,7 @@ public class FolderList extends K9ListActivity {
             @Override
             public void emptyTrashCompleted(Account account) {
                 if (account.equals(FolderList.this.account)) {
-                    refreshFolder(account, FolderList.this.account.getTrashFolderName());
+                    refreshFolder(account, FolderList.this.account.getTrashFolder());
                 }
             }
 
@@ -886,7 +886,7 @@ public class FolderList extends K9ListActivity {
             public void sendPendingMessagesCompleted(Account account) {
                 super.sendPendingMessagesCompleted(account);
                 if (account.equals(FolderList.this.account)) {
-                    refreshFolder(account, FolderList.this.account.getOutboxFolderName());
+                    refreshFolder(account, FolderList.this.account.getOutboxFolder());
                 }
             }
 
@@ -903,7 +903,7 @@ public class FolderList extends K9ListActivity {
             public void sendPendingMessagesFailed(Account account) {
                 super.sendPendingMessagesFailed(account);
                 if (account.equals(FolderList.this.account)) {
-                    refreshFolder(account, FolderList.this.account.getOutboxFolderName());
+                    refreshFolder(account, FolderList.this.account.getOutboxFolder());
                 }
             }
 

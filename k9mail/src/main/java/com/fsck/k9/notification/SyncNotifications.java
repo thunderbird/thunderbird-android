@@ -33,7 +33,7 @@ class SyncNotifications {
         String tickerText = context.getString(R.string.notification_bg_send_ticker, accountName);
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
-        String outboxFolderName = account.getOutboxFolderName();
+        String outboxFolderName = account.getOutboxFolder();
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
                 account, outboxFolderName, notificationId);
 

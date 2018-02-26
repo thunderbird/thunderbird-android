@@ -28,7 +28,7 @@ public class MlfUtils {
         return localFolder;
     }
 
-    static void setLastSelectedFolderName(Preferences preferences,
+    static void setLastSelectedFolder(Preferences preferences,
             List<MessageReference> messages, String destFolderName) {
         MessageReference firstMsg = messages.get(0);
         Account account = preferences.getAccount(firstMsg.getAccountUuid());

@@ -104,24 +104,24 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
      */
     public static String getDisplayName(Context context, Account account, String name) {
         final String displayName;
-        if (name.equals(account.getSpamFolderName())) {
+        if (name.equals(account.getSpamFolder())) {
             displayName = String.format(
                     context.getString(R.string.special_mailbox_name_spam_fmt), name);
-        } else if (name.equals(account.getArchiveFolderName())) {
+        } else if (name.equals(account.getArchiveFolder())) {
             displayName = String.format(
                     context.getString(R.string.special_mailbox_name_archive_fmt), name);
-        } else if (name.equals(account.getSentFolderName())) {
+        } else if (name.equals(account.getSentFolder())) {
             displayName = String.format(
                     context.getString(R.string.special_mailbox_name_sent_fmt), name);
-        } else if (name.equals(account.getTrashFolderName())) {
+        } else if (name.equals(account.getTrashFolder())) {
             displayName = String.format(
                     context.getString(R.string.special_mailbox_name_trash_fmt), name);
-        } else if (name.equals(account.getDraftsFolderName())) {
+        } else if (name.equals(account.getDraftsFolder())) {
             displayName = String.format(
                     context.getString(R.string.special_mailbox_name_drafts_fmt), name);
-        } else if (name.equals(account.getOutboxFolderName())) {
+        } else if (name.equals(account.getOutboxFolder())) {
             displayName = context.getString(R.string.special_mailbox_name_outbox);
-        } else if (name.equals(account.getInboxFolderName())) {
+        } else if (name.equals(account.getInboxFolder())) {
             displayName = context.getString(R.string.special_mailbox_name_inbox);
         } else {
             displayName = name;

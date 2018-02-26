@@ -1,7 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1062,7 +1061,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void openAutoExpandFolder() {
-        String folder = account.getAutoExpandFolderName();
+        String folder = account.getAutoExpandFolder();
         LocalSearch search = new LocalSearch(folder);
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folder);

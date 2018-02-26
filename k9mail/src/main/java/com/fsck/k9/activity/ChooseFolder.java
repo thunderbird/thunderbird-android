@@ -282,7 +282,7 @@ public class ChooseFolder extends K9ListActivity {
                 if (mHideCurrentFolder && name.equals(mFolder)) {
                     continue;
                 }
-                if (account.getOutboxFolderName().equals(name)) {
+                if (account.getOutboxFolder().equals(name)) {
                     continue;
                 }
 
@@ -381,7 +381,7 @@ public class ChooseFolder extends K9ListActivity {
     };
 
     private String buildDisplayName(Account account, String name) {
-        if (!account.getInboxFolderName().equals(name)) {
+        if (!account.getInboxFolder().equals(name)) {
             return name;
         }
 

@@ -10,17 +10,17 @@ public interface StoreConfig {
     boolean subscribedFoldersOnly();
     boolean useCompression(NetworkType type);
 
-    String getInboxFolderName();
-    String getOutboxFolderName();
-    String getDraftsFolderName();
+    String getInboxFolder();
+    String getOutboxFolder();
+    String getDraftsFolder();
 
-    void setArchiveFolderName(String name);
-    void setDraftsFolderName(String name);
-    void setTrashFolderName(String name);
-    void setSpamFolderName(String name);
-    void setSentFolderName(String name);
-    void setAutoExpandFolderName(String name);
-    void setInboxFolderName(String name);
+    void setArchiveFolder(String name);
+    void setDraftsFolder(String name);
+    void setTrashFolder(String name);
+    void setSpamFolder(String name);
+    void setSentFolder(String name);
+    void setAutoExpandFolder(String name);
+    void setInboxFolder(String name);
 
     int getMaximumAutoDownloadMessageSize();
 

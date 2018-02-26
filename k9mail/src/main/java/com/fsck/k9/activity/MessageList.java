@@ -1213,7 +1213,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         Account account = prefs.getAccount(messageReference.getAccountUuid());
         String folderName = messageReference.getFolderName();
 
-        if (folderName.equals(account.getDraftsFolderName())) {
+        if (folderName.equals(account.getDraftsFolder())) {
             MessageActions.actionEditDraft(this, messageReference);
         } else {
             messageViewContainer.removeView(messageViewPlaceHolder);

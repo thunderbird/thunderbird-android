@@ -57,7 +57,7 @@ class MigrationTo41 {
         Folder.FolderClass pushClass = Folder.FolderClass.SECOND_CLASS;
         boolean inTopGroup = false;
         boolean integrate = false;
-        if (account.getInboxFolderName().equals(name)) {
+        if (account.getInboxFolder().equals(name)) {
             displayClass = Folder.FolderClass.FIRST_CLASS;
             syncClass =  Folder.FolderClass.FIRST_CLASS;
             pushClass =  Folder.FolderClass.FIRST_CLASS;

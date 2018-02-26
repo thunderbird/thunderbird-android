@@ -808,16 +808,16 @@ public class AccountSettings extends K9PreferenceActivity {
         // In webdav account we use the exact folder name also for inbox,
         // since it varies because of internationalization
         if (account.getStoreUri().startsWith("webdav"))
-            account.setAutoExpandFolderName(autoExpandFolder.getValue());
+            account.setAutoExpandFolder(autoExpandFolder.getValue());
         else
-            account.setAutoExpandFolderName(reverseTranslateFolder(autoExpandFolder.getValue()));
+            account.setAutoExpandFolder(reverseTranslateFolder(autoExpandFolder.getValue()));
 
         if (isMoveCapable) {
-            account.setArchiveFolderName(archiveFolder.getValue());
-            account.setDraftsFolderName(draftsFolder.getValue());
-            account.setSentFolderName(sentFolder.getValue());
-            account.setSpamFolderName(spamFolder.getValue());
-            account.setTrashFolderName(trashFolder.getValue());
+            account.setArchiveFolder(archiveFolder.getValue());
+            account.setDraftsFolder(draftsFolder.getValue());
+            account.setSentFolder(sentFolder.getValue());
+            account.setSpamFolder(spamFolder.getValue());
+            account.setTrashFolder(trashFolder.getValue());
         }
 
         //IMAP stuff
@@ -986,7 +986,7 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private String translateFolder(String in) {
-        if (account.getInboxFolderName().equals(in)) {
+        if (account.getInboxFolder().equals(in)) {
             return getString(R.string.special_mailbox_name_inbox);
         } else {
             return in;
@@ -995,7 +995,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private String reverseTranslateFolder(String in) {
         if (getString(R.string.special_mailbox_name_inbox).equals(in)) {
-            return account.getInboxFolderName();
+            return account.getInboxFolder();
         } else {
             return in;
         }
@@ -1042,7 +1042,7 @@ public class AccountSettings extends K9PreferenceActivity {
             Iterator <? extends Folder > iter = folders.iterator();
             while (iter.hasNext()) {
                 Folder folder = iter.next();
-                if (account.getOutboxFolderName().equals(folder.getName())) {
+                if (account.getOutboxFolder().equals(folder.getName())) {
                     iter.remove();
                 }
             }
@@ -1090,14 +1090,14 @@ public class AccountSettings extends K9PreferenceActivity {
 
         @Override
         protected void onPostExecute(Void res) {
-            initListPreference(autoExpandFolder, account.getAutoExpandFolderName(), allFolderLabels, allFolderValues);
+            initListPreference(autoExpandFolder, account.getAutoExpandFolder(), allFolderLabels, allFolderValues);
             autoExpandFolder.setEnabled(true);
             if (isMoveCapable) {
-                initListPreference(archiveFolder, account.getArchiveFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(draftsFolder, account.getDraftsFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(sentFolder, account.getSentFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(spamFolder, account.getSpamFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(trashFolder, account.getTrashFolderName(), allFolderLabels, allFolderValues);
+                initListPreference(archiveFolder, account.getArchiveFolder(), allFolderLabels, allFolderValues);
+                initListPreference(draftsFolder, account.getDraftsFolder(), allFolderLabels, allFolderValues);
+                initListPreference(sentFolder, account.getSentFolder(), allFolderLabels, allFolderValues);
+                initListPreference(spamFolder, account.getSpamFolder(), allFolderLabels, allFolderValues);
+                initListPreference(trashFolder, account.getTrashFolder(), allFolderLabels, allFolderValues);
                 archiveFolder.setEnabled(true);
                 spamFolder.setEnabled(true);
                 draftsFolder.setEnabled(true);
