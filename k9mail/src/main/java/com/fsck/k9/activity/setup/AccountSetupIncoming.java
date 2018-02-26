@@ -40,7 +40,6 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
@@ -501,7 +500,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                 boolean isPushCapable = false;
                 try {
-                    Store store = mAccount.getRemoteStore();
+                    RemoteStore store = mAccount.getRemoteStore();
                     isPushCapable = store.isPushCapable();
                 } catch (Exception e) {
                     Timber.e(e, "Could not get remote store");

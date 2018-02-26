@@ -1,24 +1,27 @@
 
 package com.fsck.k9.activity.setup;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import timber.log.Timber;
-import com.fsck.k9.*;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.FolderClass;
-
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.service.MailService;
+import timber.log.Timber;
 
 public class FolderSettings extends K9PreferenceActivity {
 
@@ -68,7 +71,7 @@ public class FolderSettings extends K9PreferenceActivity {
 
         boolean isPushCapable = false;
         try {
-            Store store = mAccount.getRemoteStore();
+            RemoteStore store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
         } catch (Exception e) {
             Timber.e(e, "Could not get remote store");

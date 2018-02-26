@@ -33,8 +33,8 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -112,7 +112,7 @@ class ImapSync {
                 Timber.v("SYNC: using providedRemoteFolder %s", folder);
                 remoteFolder = providedRemoteFolder;
             } else {
-                Store remoteStore = account.getRemoteStore();
+                RemoteStore remoteStore = account.getRemoteStore();
 
                 Timber.v("SYNC: About to get remote folder %s", folder);
                 remoteFolder = remoteStore.getFolder(folder);
