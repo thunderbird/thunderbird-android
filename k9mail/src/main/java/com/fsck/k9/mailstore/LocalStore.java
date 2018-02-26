@@ -909,6 +909,24 @@ public class LocalStore extends Store {
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                 for (LocalFolder folder : foldersToCreate) {
                     String name = folder.getName();
+
+                    if (K9.DEVELOPER_MODE) {
+                        Cursor cursor = db.query("folders", new String[] { "id", "name" },
+                                "name = ?", new String[] { name },null, null, null);
+                        try {
+                            if (cursor.moveToNext()) {
+                                long folderId = cursor.getLong(0);
+                                String folderName = cursor.getString(1);
+
+                                throw new AssertionError("Tried to create folder '" + name + "'" +
+                                        " that already exists in the database as '" + folderName + "'" +
+                                        " (" + folderId + ")");
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+                    }
+
                     final  LocalFolder.PreferencesHolder prefHolder = folder.new PreferencesHolder();
 
                     // When created, special folders should always be displayed
