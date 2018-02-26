@@ -201,13 +201,15 @@ public class Pop3Store extends RemoteStore {
     @Override
     public List<Pop3Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         List<Pop3Folder> folders = new LinkedList<>();
-        folders.add(getFolder(mStoreConfig.getInboxFolderName()));
+        folders.add(getFolder(Pop3Folder.INBOX));
         return folders;
     }
 
     @Override
     public void checkSettings() throws MessagingException {
-        Pop3Folder folder = new Pop3Folder(this, mStoreConfig.getInboxFolderName());
+        mStoreConfig.setInboxFolderName(Pop3Folder.INBOX);
+
+        Pop3Folder folder = new Pop3Folder(this, Pop3Folder.INBOX);
         try {
             folder.open(Folder.OPEN_MODE_RW);
             folder.requestUidl();
