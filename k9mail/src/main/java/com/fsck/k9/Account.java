@@ -1075,7 +1075,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public boolean isSpecialFolder(String folderName) {
-        return (folderName != null && (folderName.equalsIgnoreCase(getInboxFolderName()) ||
+        return (folderName != null && (folderName.equals(getInboxFolderName()) ||
                 folderName.equals(getTrashFolderName()) ||
                 folderName.equals(getDraftsFolderName()) ||
                 folderName.equals(getArchiveFolderName()) ||
@@ -1097,7 +1097,7 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a drafts folder set.
      */
     public synchronized boolean hasDraftsFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(draftsFolderName);
+        return !K9.FOLDER_NONE.equals(draftsFolderName);
     }
 
     public synchronized String getSentFolderName() {
@@ -1113,7 +1113,7 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a sent folder set.
      */
     public synchronized boolean hasSentFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(sentFolderName);
+        return !K9.FOLDER_NONE.equals(sentFolderName);
     }
 
 
@@ -1130,7 +1130,7 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a trash folder set.
      */
     public synchronized boolean hasTrashFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(trashFolderName);
+        return !K9.FOLDER_NONE.equals(trashFolderName);
     }
 
     public synchronized String getArchiveFolderName() {
@@ -1146,7 +1146,7 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has an archive folder set.
      */
     public synchronized boolean hasArchiveFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(archiveFolderName);
+        return !K9.FOLDER_NONE.equals(archiveFolderName);
     }
 
     public synchronized String getSpamFolderName() {
@@ -1162,7 +1162,7 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a spam folder set.
      */
     public synchronized boolean hasSpamFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(spamFolderName);
+        return !K9.FOLDER_NONE.equals(spamFolderName);
     }
 
     public synchronized String getOutboxFolderName() {

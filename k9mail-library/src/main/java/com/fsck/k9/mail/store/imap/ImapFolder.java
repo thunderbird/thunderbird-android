@@ -392,7 +392,7 @@ class ImapFolder extends Folder<ImapMessage> {
             return;
         }
 
-        if (trashFolderName == null || getName().equalsIgnoreCase(trashFolderName)) {
+        if (trashFolderName == null || getName().equals(trashFolderName)) {
             setFlags(messages, Collections.singleton(Flag.DELETED), true);
         } else {
             ImapFolder remoteTrashFolder = getStore().getFolder(trashFolderName);
