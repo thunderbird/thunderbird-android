@@ -943,7 +943,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     activeMessages = null; // don't need it any more
 
                     if (messages.size() > 0) {
-                        MlfUtils.setLastSelectedFolderName(preferences, messages, destFolderName);
+                        MlfUtils.setLastSelectedFolder(preferences, messages, destFolderName);
                     }
 
                     switch (requestCode) {
@@ -1789,7 +1789,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         for (Entry<Account, List<MessageReference>> entry : messagesByAccount.entrySet()) {
             Account account = entry.getKey();
-            String archiveFolder = account.getArchiveFolderName();
+            String archiveFolder = account.getArchiveFolder();
 
             if (!K9.FOLDER_NONE.equals(archiveFolder)) {
                 move(entry.getValue(), archiveFolder);
@@ -1838,7 +1838,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         for (Entry<Account, List<MessageReference>> entry : messagesByAccount.entrySet()) {
             Account account = entry.getKey();
-            String spamFolder = account.getSpamFolderName();
+            String spamFolder = account.getSpamFolder();
 
             if (!K9.FOLDER_NONE.equals(spamFolder)) {
                 move(entry.getValue(), spamFolder);
@@ -2508,7 +2508,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public boolean isOutbox() {
-        return (folderName != null && folderName.equals(account.getOutboxFolderName()));
+        return (folderName != null && folderName.equals(account.getOutboxFolder()));
     }
 
     public boolean isRemoteFolder() {
@@ -2518,7 +2518,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         if (!messagingController.isMoveCapable(account)) {
             // For POP3 accounts only the Inbox is a remote folder.
-            return (folderName != null && folderName.equals(account.getInboxFolderName()));
+            return (folderName != null && folderName.equals(account.getInboxFolder()));
         }
 
         return true;

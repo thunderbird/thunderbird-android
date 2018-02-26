@@ -508,7 +508,7 @@ public class MessagingControllerTest {
 
     @Test
     public void sendPendingMessagesSynchronous_withNonExistentOutbox_shouldNotStartSync() throws MessagingException {
-        when(account.getOutboxFolderName()).thenReturn(FOLDER_NAME);
+        when(account.getOutboxFolder()).thenReturn(FOLDER_NAME);
         when(localFolder.exists()).thenReturn(false);
         controller.addListener(listener);
 
@@ -826,9 +826,9 @@ public class MessagingControllerTest {
     }
 
     private void setupAccountWithMessageToSend() throws MessagingException {
-        when(account.getOutboxFolderName()).thenReturn(FOLDER_NAME);
+        when(account.getOutboxFolder()).thenReturn(FOLDER_NAME);
         when(account.hasSentFolder()).thenReturn(true);
-        when(account.getSentFolderName()).thenReturn(SENT_FOLDER_NAME);
+        when(account.getSentFolder()).thenReturn(SENT_FOLDER_NAME);
         when(localStore.getFolder(SENT_FOLDER_NAME)).thenReturn(sentFolder);
         when(sentFolder.getDatabaseId()).thenReturn(1L);
         when(localFolder.exists()).thenReturn(true);

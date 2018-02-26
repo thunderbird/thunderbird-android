@@ -76,7 +76,7 @@ class ImapSync {
         /*
          * We don't ever sync the Outbox
          */
-        if (folder.equals(account.getOutboxFolderName())) {
+        if (folder.equals(account.getOutboxFolder())) {
             for (MessagingListener l : getListeners(listener)) {
                 l.synchronizeMailboxFinished(account, folder, 0, 0);
             }
@@ -335,9 +335,9 @@ class ImapSync {
      */
     private boolean verifyOrCreateRemoteSpecialFolder(Account account, String folder, Folder remoteFolder,
             MessagingListener listener) throws MessagingException {
-        if (folder.equals(account.getTrashFolderName()) ||
-                folder.equals(account.getSentFolderName()) ||
-                folder.equals(account.getDraftsFolderName())) {
+        if (folder.equals(account.getTrashFolder()) ||
+                folder.equals(account.getSentFolder()) ||
+                folder.equals(account.getDraftsFolder())) {
             if (!remoteFolder.exists()) {
                 if (!remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
                     for (MessagingListener l : getListeners(listener)) {

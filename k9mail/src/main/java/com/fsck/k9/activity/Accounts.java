@@ -674,11 +674,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 Timber.i("refusing to open account that is not available");
                 return false;
             }
-            if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolderName())) {
+            if (K9.FOLDER_NONE.equals(realAccount.getAutoExpandFolder())) {
                 FolderList.actionHandleAccount(this, realAccount);
             } else {
-                LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolderName());
-                search.addAllowedFolder(realAccount.getAutoExpandFolderName());
+                LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolder());
+                search.addAllowedFolder(realAccount.getAutoExpandFolder());
                 search.addAccountUuid(realAccount.getUuid());
                 MessageList.actionDisplaySearch(this, search, false, true);}
         }

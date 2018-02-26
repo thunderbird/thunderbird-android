@@ -918,7 +918,7 @@ public class LocalStore {
                     if (account.isSpecialFolder(name)) {
                         prefHolder.inTopGroup = true;
                         prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        if (name.equals(account.getInboxFolderName())) {
+                        if (name.equals(account.getInboxFolder())) {
                             prefHolder.integrate = true;
                             prefHolder.notifyClass = LocalFolder.FolderClass.FIRST_CLASS;
                             prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
@@ -926,7 +926,7 @@ public class LocalStore {
                             prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
 
                         }
-                        if (name.equals(account.getInboxFolderName()) || name.equals(account.getDraftsFolderName())) {
+                        if (name.equals(account.getInboxFolder()) || name.equals(account.getDraftsFolder())) {
                             prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
                             prefHolder.syncClass = LocalFolder.FolderClass.NO_CLASS;

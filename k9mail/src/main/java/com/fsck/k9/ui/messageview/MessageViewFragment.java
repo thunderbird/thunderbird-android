@@ -305,7 +305,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        if (mAccount.getSpamFolderName().equals(dstFolder) && K9.confirmSpam()) {
+        if (mAccount.getSpamFolder().equals(dstFolder) && K9.confirmSpam()) {
             mDstFolder = dstFolder;
             showDialog(R.id.dialog_confirm_spam);
         } else {
@@ -383,11 +383,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onArchive() {
-        onRefile(mAccount.getArchiveFolderName());
+        onRefile(mAccount.getArchiveFolder());
     }
 
     public void onSpam() {
-        onRefile(mAccount.getSpamFolderName());
+        onRefile(mAccount.getSpamFolder());
     }
 
     public void onSelectText() {
@@ -399,7 +399,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
         intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.getFolderName());
-        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolder());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference.toIdentityString());
         startActivityForResult(intent, activity);
     }
@@ -455,7 +455,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 String messageReferenceString = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE);
                 MessageReference ref = MessageReference.parse(messageReferenceString);
                 if (mMessageReference.equals(ref)) {
-                    mAccount.setLastSelectedFolderName(destFolderName);
+                    mAccount.setLastSelectedFolder(destFolderName);
                     switch (requestCode) {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE: {
                             mFragmentListener.showNextMessageOrReturn();
@@ -629,12 +629,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public boolean canMessageBeArchived() {
-        return (!mMessageReference.getFolderName().equals(mAccount.getArchiveFolderName())
+        return (!mMessageReference.getFolderName().equals(mAccount.getArchiveFolder())
                 && mAccount.hasArchiveFolder());
     }
 
     public boolean canMessageBeMovedToSpam() {
-        return (!mMessageReference.getFolderName().equals(mAccount.getSpamFolderName())
+        return (!mMessageReference.getFolderName().equals(mAccount.getSpamFolder())
                 && mAccount.hasSpamFolder());
     }
 

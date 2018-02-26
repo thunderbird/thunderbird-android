@@ -85,9 +85,9 @@ public class ActivityListener extends SimpleMessagingListener {
             }
 
             if (account != null) {
-                if (displayName.equals(account.getInboxFolderName())) {
+                if (displayName.equals(account.getInboxFolder())) {
                     displayName = context.getString(R.string.special_mailbox_name_inbox);
-                } else if (displayName.equals(account.getOutboxFolderName())) {
+                } else if (displayName.equals(account.getOutboxFolder())) {
                     displayName = context.getString(R.string.special_mailbox_name_outbox);
                 }
             }

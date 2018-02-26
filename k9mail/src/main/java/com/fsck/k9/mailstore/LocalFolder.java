@@ -103,7 +103,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         this.name = name;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
 
-        if (getAccount().getInboxFolderName().equals(getName())) {
+        if (getAccount().getInboxFolder().equals(getName())) {
             syncClass =  FolderClass.FIRST_CLASS;
             pushClass =  FolderClass.FIRST_CLASS;
             isInTopGroup = true;
@@ -597,25 +597,25 @@ public class LocalFolder extends Folder<LocalMessage> {
         String id = getPrefId();
 
         // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-        if (displayClass == FolderClass.NO_CLASS && !getAccount().getInboxFolderName().equals(getName())) {
+        if (displayClass == FolderClass.NO_CLASS && !getAccount().getInboxFolder().equals(getName())) {
             editor.remove(id + ".displayMode");
         } else {
             editor.putString(id + ".displayMode", displayClass.name());
         }
 
-        if (syncClass == FolderClass.INHERITED && !getAccount().getInboxFolderName().equals(getName())) {
+        if (syncClass == FolderClass.INHERITED && !getAccount().getInboxFolder().equals(getName())) {
             editor.remove(id + ".syncMode");
         } else {
             editor.putString(id + ".syncMode", syncClass.name());
         }
 
-        if (notifyClass == FolderClass.INHERITED && !getAccount().getInboxFolderName().equals(getName())) {
+        if (notifyClass == FolderClass.INHERITED && !getAccount().getInboxFolder().equals(getName())) {
             editor.remove(id + ".notifyMode");
         } else {
             editor.putString(id + ".notifyMode", notifyClass.name());
         }
 
-        if (pushClass == FolderClass.SECOND_CLASS && !getAccount().getInboxFolderName().equals(getName())) {
+        if (pushClass == FolderClass.SECOND_CLASS && !getAccount().getInboxFolder().equals(getName())) {
             editor.remove(id + ".pushMode");
         } else {
             editor.putString(id + ".pushMode", pushClass.name());

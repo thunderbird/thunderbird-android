@@ -176,9 +176,9 @@ public class NotificationActionService extends CoreService {
     private void archiveMessages(Intent intent, Account account, MessagingController controller) {
         Timber.i("NotificationActionService archiving messages");
 
-        String archiveFolderName = account.getArchiveFolderName();
+        String archiveFolderName = account.getArchiveFolder();
         if (archiveFolderName == null ||
-                (archiveFolderName.equals(account.getSpamFolderName()) && K9.confirmSpam()) ||
+                (archiveFolderName.equals(account.getSpamFolder()) && K9.confirmSpam()) ||
                 !isMovePossible(controller, account, archiveFolderName)) {
             Timber.w("Can not archive messages");
             return;
@@ -204,7 +204,7 @@ public class NotificationActionService extends CoreService {
             return;
         }
 
-        String spamFolderName = account.getSpamFolderName();
+        String spamFolderName = account.getSpamFolder();
         if (spamFolderName != null && !K9.confirmSpam() && isMovePossible(controller, account, spamFolderName)) {
             String sourceFolderName = messageReference.getFolderName();
             controller.moveMessage(account, sourceFolderName, messageReference, spamFolderName);
