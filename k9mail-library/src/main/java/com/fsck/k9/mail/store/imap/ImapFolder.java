@@ -1370,7 +1370,7 @@ class ImapFolder extends Folder<ImapMessage> {
     public boolean equals(Object other) {
         if (other instanceof ImapFolder) {
             ImapFolder otherFolder = (ImapFolder) other;
-            return otherFolder.getName().equalsIgnoreCase(getName());
+            return otherFolder.getName().equals(getName());
         }
 
         return super.equals(other);
