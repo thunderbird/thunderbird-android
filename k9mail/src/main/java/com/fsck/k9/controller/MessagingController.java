@@ -78,13 +78,13 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
@@ -435,7 +435,7 @@ public class MessagingController {
     void refreshRemoteSynchronous(final Account account, final MessagingListener listener) {
         List<LocalFolder> localFolders = null;
         try {
-            Store store = account.getRemoteStore();
+            RemoteStore store = account.getRemoteStore();
 
             List<? extends Folder> remoteFolders = store.getPersonalNamespaces(false);
 
@@ -589,7 +589,7 @@ public class MessagingController {
 
         List<Message> extraResults = new ArrayList<>();
         try {
-            Store remoteStore = acct.getRemoteStore();
+            RemoteStore remoteStore = acct.getRemoteStore();
             LocalStore localStore = acct.getLocalStore();
 
             if (remoteStore == null || localStore == null) {
@@ -653,7 +653,7 @@ public class MessagingController {
                     listener.enableProgressIndicator(true);
                 }
                 try {
-                    Store remoteStore = account.getRemoteStore();
+                    RemoteStore remoteStore = account.getRemoteStore();
                     LocalStore localStore = account.getLocalStore();
 
                     if (remoteStore == null || localStore == null) {
@@ -789,7 +789,7 @@ public class MessagingController {
             localFolder.open(Folder.OPEN_MODE_RW);
             Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
 
-            Store remoteStore = account.getRemoteStore();
+            RemoteStore remoteStore = account.getRemoteStore();
 
             Timber.v("SYNC: About to get remote folder %s", folder);
             remoteFolder = remoteStore.getFolder(folder);
@@ -1711,7 +1711,7 @@ public class MessagingController {
                 return;
             }
 
-            Store remoteStore = account.getRemoteStore();
+            RemoteStore remoteStore = account.getRemoteStore();
             remoteFolder = remoteStore.getFolder(folder);
             if (!remoteFolder.exists()) {
                 if (!remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
@@ -1852,7 +1852,7 @@ public class MessagingController {
             String destFolder = command.destFolder;
             boolean isCopy = command.isCopy;
 
-            Store remoteStore = account.getRemoteStore();
+            RemoteStore remoteStore = account.getRemoteStore();
             remoteSrcFolder = remoteStore.getFolder(srcFolder);
 
             LocalStore localStore = account.getLocalStore();
@@ -1957,7 +1957,7 @@ public class MessagingController {
         boolean newState = command.newState;
         Flag flag = command.flag;
 
-        Store remoteStore = account.getRemoteStore();
+        RemoteStore remoteStore = account.getRemoteStore();
         Folder remoteFolder = remoteStore.getFolder(folder);
         if (!remoteFolder.exists() || !remoteFolder.isFlagSupported(flag)) {
             return;
@@ -2000,7 +2000,7 @@ public class MessagingController {
 
         Timber.d("processPendingExpunge: folder = %s", folder);
 
-        Store remoteStore = account.getRemoteStore();
+        RemoteStore remoteStore = account.getRemoteStore();
         Folder remoteFolder = remoteStore.getFolder(folder);
         try {
             if (!remoteFolder.exists()) {
@@ -2037,7 +2037,7 @@ public class MessagingController {
                 l.folderStatusChanged(account, folder, 0);
             }
 
-            Store remoteStore = account.getRemoteStore();
+            RemoteStore remoteStore = account.getRemoteStore();
             remoteFolder = remoteStore.getFolder(folder);
 
             if (!remoteFolder.exists() || !remoteFolder.isFlagSupported(Flag.SEEN)) {
@@ -2299,7 +2299,7 @@ public class MessagingController {
                 message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                 message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
             } else {
-                Store remoteStore = account.getRemoteStore();
+                RemoteStore remoteStore = account.getRemoteStore();
                 remoteFolder = remoteStore.getFolder(folder);
                 remoteFolder.open(Folder.OPEN_MODE_RW);
 
@@ -2407,7 +2407,7 @@ public class MessagingController {
                     LocalStore localStore = account.getLocalStore();
                     localFolder = localStore.getFolder(folderName);
 
-                    Store remoteStore = account.getRemoteStore();
+                    RemoteStore remoteStore = account.getRemoteStore();
                     remoteFolder = remoteStore.getFolder(folderName);
                     remoteFolder.open(Folder.OPEN_MODE_RW);
 
@@ -2855,7 +2855,7 @@ public class MessagingController {
 
     public boolean isMoveCapable(final Account account) {
         try {
-            Store remoteStore = account.getRemoteStore();
+            RemoteStore remoteStore = account.getRemoteStore();
             return remoteStore.isMoveCapable();
         } catch (MessagingException me) {
 
@@ -2866,7 +2866,7 @@ public class MessagingController {
 
     public boolean isCopyCapable(final Account account) {
         try {
-            Store remoteStore = account.getRemoteStore();
+            RemoteStore remoteStore = account.getRemoteStore();
             return remoteStore.isCopyCapable();
         } catch (MessagingException me) {
             Timber.e(me, "Exception while ascertaining copy capability");
@@ -2965,7 +2965,7 @@ public class MessagingController {
 
         try {
             LocalStore localStore = account.getLocalStore();
-            Store remoteStore = account.getRemoteStore();
+            RemoteStore remoteStore = account.getRemoteStore();
             if (!isCopy && !remoteStore.isMoveCapable()) {
                 return;
             }
@@ -3288,7 +3288,7 @@ public class MessagingController {
     }
 
     void processPendingEmptyTrash(Account account) throws MessagingException {
-        Store remoteStore = account.getRemoteStore();
+        RemoteStore remoteStore = account.getRemoteStore();
 
         Folder remoteFolder = remoteStore.getFolder(account.getTrashFolderName());
         try {
@@ -3978,7 +3978,7 @@ public class MessagingController {
                 }
 
                 try {
-                    Store store = account.getRemoteStore();
+                    RemoteStore store = account.getRemoteStore();
                     if (!store.isPushCapable()) {
                         Timber.i("Account %s is not push capable, skipping", account.getDescription());
 

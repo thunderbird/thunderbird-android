@@ -2,15 +2,19 @@ package com.fsck.k9.mail.store;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 
+import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.PushReceiver;
+import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -20,7 +24,7 @@ import com.fsck.k9.mail.store.webdav.WebDavHttpClient;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
 
 
-public abstract class RemoteStore extends Store {
+public abstract class RemoteStore {
     public static final int SOCKET_CONNECT_TIMEOUT = 30000;
     public static final int SOCKET_READ_TIMEOUT = 60000;
 
@@ -30,7 +34,7 @@ public abstract class RemoteStore extends Store {
     /**
      * Remote stores indexed by Uri.
      */
-    private static Map<String, Store> sStores = new HashMap<String, Store>();
+    private static Map<String, RemoteStore> sStores = new HashMap<>();
 
 
     public RemoteStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory) {
@@ -41,14 +45,15 @@ public abstract class RemoteStore extends Store {
     /**
      * Get an instance of a remote mail store.
      */
-    public static synchronized Store getInstance(Context context, StoreConfig storeConfig) throws MessagingException {
+    public static synchronized RemoteStore getInstance(Context context, StoreConfig storeConfig)
+            throws MessagingException {
         String uri = storeConfig.getStoreUri();
 
         if (uri.startsWith("local")) {
             throw new RuntimeException("Asked to get non-local Store object but given LocalStore URI");
         }
 
-        Store store = sStores.get(uri);
+        RemoteStore store = sStores.get(uri);
         if (store == null) {
             if (uri.startsWith("imap")) {
                 OAuth2TokenProvider oAuth2TokenProvider = null;
@@ -136,5 +141,41 @@ public abstract class RemoteStore extends Store {
         } else {
             throw new IllegalArgumentException("Not a valid store URI");
         }
+    }
+
+    public abstract Folder<? extends Message> getFolder(String name);
+
+    public abstract List<? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException;
+
+    public abstract void checkSettings() throws MessagingException;
+
+    public boolean isCopyCapable() {
+        return false;
+    }
+
+    public boolean isMoveCapable() {
+        return false;
+    }
+
+    public boolean isPushCapable() {
+        return false;
+    }
+
+    public boolean isSendCapable() {
+        return false;
+    }
+
+    public boolean isExpungeCapable() {
+        return false;
+    }
+
+    public boolean isSeenFlagSupported() {
+        return true;
+    }
+
+    public void sendMessages(List<? extends Message> messages) throws MessagingException { }
+
+    public Pusher getPusher(PushReceiver receiver) {
+        return null;
     }
 }

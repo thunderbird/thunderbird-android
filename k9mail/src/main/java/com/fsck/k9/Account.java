@@ -26,7 +26,6 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.RemoteStore;
@@ -1308,7 +1307,7 @@ public class Account implements BaseAccount, StoreConfig {
         return LocalStore.getInstance(this, K9.app);
     }
 
-    public Store getRemoteStore() throws MessagingException {
+    public RemoteStore getRemoteStore() throws MessagingException {
         return RemoteStore.getInstance(K9.app, this);
     }
 
