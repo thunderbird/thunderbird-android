@@ -55,7 +55,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addMarkAllAsReadAction(WearableExtender wearableExtender, NotificationData notificationData) {
-        int icon = R.drawable.ic_email_open_dark;
+        int icon = R.drawable.ic_opened_envelope_dark;
         String title = context.getString(R.string.notification_action_mark_all_as_read);
 
         Account account = notificationData.getAccount();
@@ -68,7 +68,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addDeleteAllAction(WearableExtender wearableExtender, NotificationData notificationData) {
-        int icon = R.drawable.ic_delete_dark;
+        int icon = R.drawable.ic_trash_can_dark;
         String title = context.getString(R.string.notification_action_delete_all);
 
         Account account = notificationData.getAccount();
@@ -178,7 +178,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addMarkAsReadAction(WearableExtender wearableExtender, NotificationHolder holder) {
-        int icon = R.drawable.ic_email_open_dark;
+        int icon = R.drawable.ic_opened_envelope_dark;
         String title = context.getString(R.string.notification_action_mark_as_read);
 
         MessageReference messageReference = holder.content.messageReference;
@@ -190,7 +190,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addDeleteAction(WearableExtender wearableExtender, NotificationHolder holder) {
-        int icon = R.drawable.ic_delete_dark;
+        int icon = R.drawable.ic_trash_can_dark;
         String title = context.getString(R.string.notification_action_delete);
 
         MessageReference messageReference = holder.content.messageReference;
@@ -214,7 +214,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addMarkAsSpamAction(WearableExtender wearableExtender, NotificationHolder holder) {
-        int icon = R.drawable.ic_report_dark;
+        int icon = R.drawable.ic_alert_octagon_dark;
         String title = context.getString(R.string.notification_action_spam);
 
         MessageReference messageReference = holder.content.messageReference;
