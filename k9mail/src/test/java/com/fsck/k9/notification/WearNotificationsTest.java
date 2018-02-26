@@ -75,8 +75,8 @@ public class WearNotificationsTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_single_message_options_dark, "Reply", replyPendingIntent);
-        verifyAddAction(R.drawable.ic_action_mark_as_read_dark, "Mark Read", markAsReadPendingIntent);
+        verifyAddAction(R.drawable.ic_reply_all_dark, "Reply", replyPendingIntent);
+        verifyAddAction(R.drawable.ic_opened_envelope_dark, "Mark Read", markAsReadPendingIntent);
         verifyNumberOfActions(2);
     }
 
@@ -96,7 +96,7 @@ public class WearNotificationsTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_delete_dark, "Delete", deletePendingIntent);
+        verifyAddAction(R.drawable.ic_trash_can_dark, "Delete", deletePendingIntent);
     }
 
     @Test
@@ -115,7 +115,7 @@ public class WearNotificationsTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_archive_dark, "Archive", archivePendingIntent);
+        verifyAddAction(R.drawable.ic_archive_dark, "Archive", archivePendingIntent);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class WearNotificationsTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_spam_dark, "Spam", markAsSpamPendingIntent);
+        verifyAddAction(R.drawable.ic_alert_octagon_dark, "Spam", markAsSpamPendingIntent);
     }
 
     @Test
@@ -150,7 +150,7 @@ public class WearNotificationsTest {
         wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_mark_as_read_dark, "Mark All Read", markAllAsReadPendingIntent);
+        verifyAddAction(R.drawable.ic_opened_envelope_dark, "Mark All Read", markAllAsReadPendingIntent);
         verifyNumberOfActions(1);
     }
 
@@ -167,7 +167,7 @@ public class WearNotificationsTest {
         wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_delete_dark, "Delete All", deletePendingIntent);
+        verifyAddAction(R.drawable.ic_trash_can_dark, "Delete All", deletePendingIntent);
     }
 
     @Test
@@ -183,7 +183,7 @@ public class WearNotificationsTest {
         wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_archive_dark, "Archive All", archivePendingIntent);
+        verifyAddAction(R.drawable.ic_archive_dark, "Archive All", archivePendingIntent);
     }
 
     private void disableOptionalActions() {
