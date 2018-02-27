@@ -14,7 +14,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
@@ -29,11 +28,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openintents.openpgp.util.OpenPgpUtils;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowLog;
 import org.robolectric.shadows.ShadowSQLiteConnection;
 
-@RunWith(K9RobolectricTestRunner.class)
+
+@RunWith(RobolectricTestRunner.class)
 public class MigrationTest {
 
     Account account;

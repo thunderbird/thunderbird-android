@@ -11,7 +11,6 @@ import android.os.ParcelFileDescriptor;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
@@ -34,6 +33,7 @@ import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.ShadowOpenPgpAsyncTask;
 import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
 
@@ -49,8 +49,8 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("ConstantConditions")
-@RunWith(K9RobolectricTestRunner.class)
-@Config(shadows = {ShadowOpenPgpAsyncTask.class})
+@RunWith(RobolectricTestRunner.class)
+@Config(shadows = { ShadowOpenPgpAsyncTask.class })
 public class RecipientPresenterTest {
     private static final ReplyToAddresses TO_ADDRESSES = new ReplyToAddresses(Address.parse("to@example.org"));
     private static final List<Address> ALL_TO_ADDRESSES = Arrays.asList(Address.parse("allTo@example.org"));

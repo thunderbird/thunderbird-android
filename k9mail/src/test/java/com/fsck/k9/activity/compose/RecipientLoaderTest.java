@@ -10,17 +10,17 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("WeakerAccess")
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class RecipientLoaderTest {
     static final String CRYPTO_PROVIDER = "cryptoProvider";
     static final String[] PROJECTION = {
