@@ -28,13 +28,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.controller.PendingCommandSerializer;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
+import com.fsck.k9.controller.PendingCommandSerializer;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -46,7 +45,6 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
@@ -68,13 +66,14 @@ import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
+import timber.log.Timber;
 
 /**
  * <pre>
  * Implements a SQLite database backed local store for Messages.
  * </pre>
  */
-public class LocalStore extends Store {
+public class LocalStore {
     static final String[] EMPTY_STRING_ARRAY = new String[0];
     static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
@@ -388,13 +387,11 @@ public class LocalStore extends Store {
         });
     }
 
-    @Override
     public LocalFolder getFolder(String name) {
         return new LocalFolder(this, name);
     }
 
     // TODO this takes about 260-300ms, seems slow.
-    @Override
     public List<LocalFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         final List<LocalFolder> folders = new LinkedList<>();
         try {
@@ -428,10 +425,6 @@ public class LocalStore extends Store {
             throw(MessagingException) e.getCause();
         }
         return folders;
-    }
-
-    @Override
-    public void checkSettings() throws MessagingException {
     }
 
     public void delete() throws UnavailableStorageException {
@@ -550,16 +543,6 @@ public class LocalStore extends Store {
                 return null;
             }
         });
-    }
-
-    @Override
-    public boolean isMoveCapable() {
-        return true;
-    }
-
-    @Override
-    public boolean isCopyCapable() {
-        return true;
     }
 
     public List<LocalMessage> searchForMessages(MessageRetrievalListener<LocalMessage> retrievalListener,

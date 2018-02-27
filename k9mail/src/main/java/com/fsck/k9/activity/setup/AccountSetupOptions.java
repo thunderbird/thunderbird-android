@@ -1,18 +1,24 @@
 
 package com.fsck.k9.activity.setup;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import timber.log.Timber;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Spinner;
-import com.fsck.k9.*;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
-import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.RemoteStore;
+import timber.log.Timber;
+
 
 public class AccountSetupOptions extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
@@ -112,7 +118,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
         boolean isPushCapable = false;
         try {
-            Store store = mAccount.getRemoteStore();
+            RemoteStore store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
         } catch (Exception e) {
             Timber.e(e, "Could not get remote store");

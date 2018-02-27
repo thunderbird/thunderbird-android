@@ -25,9 +25,9 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -98,7 +98,7 @@ public class MessagingControllerTest {
     @Mock
     private LocalStore localStore;
     @Mock
-    private Store remoteStore;
+    private RemoteStore remoteStore;
     @Mock
     private NotificationController notificationController;
     @Mock
