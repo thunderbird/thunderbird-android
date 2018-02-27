@@ -121,8 +121,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
                     context.getString(R.string.special_mailbox_name_drafts_fmt), name);
         } else if (name.equals(account.getOutboxFolderName())) {
             displayName = context.getString(R.string.special_mailbox_name_outbox);
-        // FIXME: We really shouldn't do a case-insensitive comparison here
-        } else if (name.equalsIgnoreCase(account.getInboxFolderName())) {
+        } else if (name.equals(account.getInboxFolderName())) {
             displayName = context.getString(R.string.special_mailbox_name_inbox);
         } else {
             displayName = name;

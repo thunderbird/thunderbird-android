@@ -301,7 +301,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
+        if (K9.FOLDER_NONE.equals(dstFolder)) {
             return;
         }
 

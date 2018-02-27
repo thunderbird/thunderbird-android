@@ -240,7 +240,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private boolean isMovePossible(Account account, String destinationFolderName) {
-        if (K9.FOLDER_NONE.equalsIgnoreCase(destinationFolderName)) {
+        if (K9.FOLDER_NONE.equals(destinationFolderName)) {
             return false;
         }
 

@@ -31,6 +31,9 @@ import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
  * POP3 only supports one folder, "Inbox". So the folder name is the ID here.
  */
 class Pop3Folder extends Folder<Pop3Message> {
+    static final String INBOX = "INBOX";
+
+
     private Pop3Store pop3Store;
     private Map<String, Pop3Message> uidToMsgMap = new HashMap<>();
     @SuppressLint("UseSparseArrays")
@@ -44,10 +47,6 @@ class Pop3Folder extends Folder<Pop3Message> {
         super();
         this.pop3Store = pop3Store;
         this.name = name;
-
-        if (this.name.equalsIgnoreCase(pop3Store.getConfig().getInboxFolderName())) {
-            this.name = pop3Store.getConfig().getInboxFolderName();
-        }
     }
 
     @Override
@@ -56,7 +55,7 @@ class Pop3Folder extends Folder<Pop3Message> {
             return;
         }
 
-        if (!name.equalsIgnoreCase(pop3Store.getConfig().getInboxFolderName())) {
+        if (!INBOX.equals(name)) {
             throw new MessagingException("Folder does not exist");
         }
 
@@ -113,7 +112,7 @@ class Pop3Folder extends Folder<Pop3Message> {
 
     @Override
     public boolean exists() throws MessagingException {
-        return name.equalsIgnoreCase(pop3Store.getConfig().getInboxFolderName());
+        return INBOX.equals(name);
     }
 
     @Override

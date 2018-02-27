@@ -986,7 +986,7 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private String translateFolder(String in) {
-        if (account.getInboxFolderName().equalsIgnoreCase(in)) {
+        if (account.getInboxFolderName().equals(in)) {
             return getString(R.string.special_mailbox_name_inbox);
         } else {
             return in;
