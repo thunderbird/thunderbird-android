@@ -205,38 +205,36 @@ public class RecipientLoaderTest {
         int maxTargets = 1;
         setupContactProvider(CONTACT_1, CONTACT_2);
 
-        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, CRYPTO_PROVIDER,
-                maxTargets);
+        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, maxTargets);
         List<Recipient> recipients = recipientLoader.loadInBackground();
 
         assertEquals(maxTargets, recipients.size());
         assertEquals("bob@host.com", recipients.get(0).address.getAddress());
-        assertEquals(RecipientCryptoStatus.UNAVAILABLE, recipients.get(0).getCryptoStatus());
+        assertEquals(RecipientCryptoStatus.UNDEFINED, recipients.get(0).getCryptoStatus());
     }
 
+    @Test
     public void getMostContactedFoundLess() throws Exception {
         int maxTargets = 5;
         setupContactProvider(CONTACT_1, CONTACT_2);
 
-
-        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, CRYPTO_PROVIDER,
-                maxTargets);
+        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, maxTargets);
         List<Recipient> recipients = recipientLoader.loadInBackground();
 
         assertEquals(2, recipients.size());
         assertEquals("bob@host.com", recipients.get(0).address.getAddress());
-        assertEquals(RecipientCryptoStatus.UNAVAILABLE, recipients.get(0).getCryptoStatus());
+        assertEquals(RecipientCryptoStatus.UNDEFINED, recipients.get(0).getCryptoStatus());
         assertEquals("bob2@host.com", recipients.get(1).address.getAddress());
-        assertEquals(RecipientCryptoStatus.UNAVAILABLE, recipients.get(1).getCryptoStatus());
+        assertEquals(RecipientCryptoStatus.UNDEFINED, recipients.get(1).getCryptoStatus());
     }
 
+    @Test
     public void getMostContactedFoundNothing() throws Exception {
         int maxTargets = 5;
         setupContactProvider();
 
 
-        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, CRYPTO_PROVIDER,
-                maxTargets);
+        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, maxTargets);
         List<Recipient> recipients = recipientLoader.loadInBackground();
 
         assertEquals(0, recipients.size());

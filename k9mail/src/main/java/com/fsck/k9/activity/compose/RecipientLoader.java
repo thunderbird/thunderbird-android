@@ -91,14 +91,14 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private List<Recipient> cachedRecipients;
     private ForceLoadContentObserver observerContact, observerKey;
 
-    private RecipientLoader(Context context, String cryptoProvider) {
+    private RecipientLoader(Context context) {
         super(context);
         this.query = null;
         this.lookupKeyUri = null;
         this.addresses = null;
         this.contactUri = null;
 
-        this.cryptoProvider = cryptoProvider;
+        this.cryptoProvider = null;
         this.contentResolver = context.getContentResolver();
     }
 
@@ -135,14 +135,11 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         contentResolver = context.getContentResolver();
     }
 
-    public static RecipientLoader getMostContactedRecipientLoader(Context context, String cryptoProvider,
-            final int maxRecipients) {
-        return new RecipientLoader(context, cryptoProvider) {
+    public static RecipientLoader getMostContactedRecipientLoader(Context context, final int maxRecipients) {
+        return new RecipientLoader(context) {
             @Override
             public List<Recipient> loadInBackground() {
-                Map<String, Recipient> recipientMap = new HashMap<>();
-                List<Recipient> recipients = super.fillContactDataBySortOrder(recipientMap, maxRecipients);
-                return super.fillCryptoStatusData(recipients, recipientMap);
+                return super.fillContactDataBySortOrder(maxRecipients);
             }
         };
     }
@@ -334,7 +331,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         return hasContact;
     }
 
-    private List<Recipient> fillContactDataBySortOrder(Map<String, Recipient> recipientMap, Integer maxRecipients) {
+    private List<Recipient> fillContactDataBySortOrder(int maxRecipients) {
         List<Recipient> recipients = new ArrayList<>();
 
         Uri queryUri = Email.CONTENT_URI;
@@ -344,7 +341,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             return recipients;
         }
 
-        fillContactDataFromCursor(cursor, recipients, recipientMap, null, maxRecipients);
+        fillContactDataFromCursor(cursor, recipients, new HashMap<String, Recipient>(), null, maxRecipients);
 
         return recipients;
     }
