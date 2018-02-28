@@ -3,21 +3,21 @@ package com.fsck.k9.activity.misc;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.graphics.drawable.Icon;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -34,8 +34,8 @@ import com.bumptech.glide.load.resource.bitmap.BitmapResource;
 import com.bumptech.glide.load.resource.bitmap.StreamBitmapDecoder;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
-import com.bumptech.glide.load.resource.transcode.BitmapBytesTranscoder;
 import com.bumptech.glide.load.resource.transcode.BitmapToGlideDrawableTranscoder;
+import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.fsck.k9.helper.Contacts;
@@ -60,7 +60,7 @@ public class ContactPictureLoader {
     private static final String FALLBACK_CONTACT_LETTER = "?";
 
 
-    private Resources mResources;
+    private final Context context;
     private Contacts mContactsHelper;
     private int mPictureSizeInPx;
 
@@ -106,11 +106,11 @@ public class ContactPictureLoader {
      *         use a dynamically calculated background color.
      */
     public ContactPictureLoader(Context context, int defaultBackgroundColor) {
-        Context appContext = context.getApplicationContext();
-        mResources = appContext.getResources();
-        mContactsHelper = Contacts.getInstance(appContext);
+        this.context = context.getApplicationContext();
+        mContactsHelper = Contacts.getInstance(this.context);
 
-        float scale = mResources.getDisplayMetrics().density;
+        Resources resources = context.getResources();
+        float scale = resources.getDisplayMetrics().density;
         mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
 
         mDefaultBackgroundColor = defaultBackgroundColor;
@@ -176,39 +176,35 @@ public class ContactPictureLoader {
         }
     }
 
-    public Bitmap loadContactPictureIcon(Context context, Recipient recipient) {
-        return loadContactPicture(context, recipient.photoThumbnailUri, recipient.address);
+    public Bitmap loadContactPictureIcon(Recipient recipient) {
+        return loadContactPicture(recipient.photoThumbnailUri, recipient.address);
     }
 
-    private Bitmap loadContactPicture(final Context context, Uri photoUri, final Address address) {
+    @WorkerThread
+    private Bitmap loadContactPicture(Uri photoUri, Address address) {
+        FutureTarget<Bitmap> bitmapTarget;
         if (photoUri != null) {
-            try {
-                return Glide.with(context)
-                        .load(photoUri)
-                        .asBitmap()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .dontAnimate()
-                        .into(mPictureSizeInPx, mPictureSizeInPx)
-                        .get();
-            } catch (Exception e) {
-            }
-        }
-        try {
-            return Glide.with(context)
+            bitmapTarget = Glide.with(context)
+                    .load(photoUri)
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .dontAnimate()
+                    .into(mPictureSizeInPx, mPictureSizeInPx);
+        } else {
+            bitmapTarget = Glide.with(context)
                     .using(new FallbackGlideModelLoader(), FallbackGlideParams.class)
                     .from(FallbackGlideParams.class)
                     .as(Bitmap.class)
                     .decoder(new FallbackGlideBitmapDecoder(context))
-                    .encoder(new BitmapEncoder(Bitmap.CompressFormat.PNG, 0))
+                    .encoder(new BitmapEncoder(CompressFormat.PNG, 0))
                     .cacheDecoder(new FileToStreamDecoder<>(new StreamBitmapDecoder(context)))
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .load(new FallbackGlideParams(address))
                     .dontAnimate()
-                    .into(mPictureSizeInPx, mPictureSizeInPx).get();
-        } catch (Exception e) {
+                    .into(mPictureSizeInPx, mPictureSizeInPx);
         }
 
-        return null;
+        return loadIgnoringErors(bitmapTarget);
     }
 
     private int calcUnknownContactColor(Address address) {
@@ -307,6 +303,16 @@ public class ContactPictureLoader {
 
                 }
             };
+        }
+    }
+
+    @WorkerThread
+    @Nullable
+    private <T> T loadIgnoringErors(FutureTarget<T> target) {
+        try {
+            return target.get();
+        } catch (Exception e) {
+            return null;
         }
     }
 
