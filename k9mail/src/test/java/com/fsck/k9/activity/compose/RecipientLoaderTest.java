@@ -17,6 +17,7 @@ import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.robolectric.RuntimeEnvironment;
 
 import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
@@ -24,6 +25,7 @@ import static org.junit.Assert.*;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -46,8 +48,11 @@ public class RecipientLoaderTest {
     static final String[] PROJECTION_CRYPTO_STATUS = { "address", "uid_key_status", "autocrypt_key_status" };
     static final Address CONTACT_ADDRESS_1 = Address.parse("Contact Name <address@example.org>")[0];
     static final Address CONTACT_ADDRESS_2 = Address.parse("Other Contact Name <address_two@example.org>")[0];
-    static final String[] CONTACT_1 = new String[] {"0", "Bob", "bob", "bob@host.com", ""+TYPE_HOME, null, "1", null};
-    static final String[] CONTACT_NO_EMAIL = new String[] {"0", "Bob", "bob", null, ""+TYPE_HOME, null, "1", null};
+    static final String[] CONTACT_1 =
+            new String[] { "0", "Bob", "bob", "bob@host.com", "" + TYPE_HOME, null, "1", null };
+    static final String[] CONTACT_2 =
+            new String[] { "2", "Bob2", "bob2", "bob2@host.com", "" + TYPE_HOME, null, "2", null };
+    static final String[] CONTACT_NO_EMAIL = new String[] { "0", "Bob", "bob", null, "" + TYPE_HOME, null, "1", null };
     static final String QUERYSTRING = "querystring";
 
 
@@ -192,5 +197,63 @@ public class RecipientLoaderTest {
         List<Recipient> recipients = recipientLoader.loadInBackground();
 
         assertEquals(0, recipients.size());
+    }
+
+
+    @Test
+    public void getMostContactedFoundMore() throws Exception {
+        int maxTargets = 1;
+        setupContactProvider(CONTACT_1, CONTACT_2);
+
+        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, CRYPTO_PROVIDER,
+                maxTargets);
+        List<Recipient> recipients = recipientLoader.loadInBackground();
+
+        assertEquals(maxTargets, recipients.size());
+        assertEquals("bob@host.com", recipients.get(0).address.getAddress());
+        assertEquals(RecipientCryptoStatus.UNAVAILABLE, recipients.get(0).getCryptoStatus());
+    }
+
+    public void getMostContactedFoundLess() throws Exception {
+        int maxTargets = 5;
+        setupContactProvider(CONTACT_1, CONTACT_2);
+
+
+        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, CRYPTO_PROVIDER,
+                maxTargets);
+        List<Recipient> recipients = recipientLoader.loadInBackground();
+
+        assertEquals(2, recipients.size());
+        assertEquals("bob@host.com", recipients.get(0).address.getAddress());
+        assertEquals(RecipientCryptoStatus.UNAVAILABLE, recipients.get(0).getCryptoStatus());
+        assertEquals("bob2@host.com", recipients.get(1).address.getAddress());
+        assertEquals(RecipientCryptoStatus.UNAVAILABLE, recipients.get(1).getCryptoStatus());
+    }
+
+    public void getMostContactedFoundNothing() throws Exception {
+        int maxTargets = 5;
+        setupContactProvider();
+
+
+        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, CRYPTO_PROVIDER,
+                maxTargets);
+        List<Recipient> recipients = recipientLoader.loadInBackground();
+
+        assertEquals(0, recipients.size());
+    }
+
+
+    private void setupContactProvider(String[]... contacts) {
+        MatrixCursor cursor = new MatrixCursor(PROJECTION);
+        for (String[] contact : contacts) {
+            cursor.addRow(contact);
+        }
+        when(contentResolver
+                .query(eq(Email.CONTENT_URI),
+                        aryEq(PROJECTION),
+                        isNull(String.class),
+                        isNull(String[].class),
+                        any(String.class))).thenReturn(cursor);
+
     }
 }
