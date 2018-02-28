@@ -3,16 +3,19 @@ package com.fsck.k9.activity.misc;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
@@ -31,6 +34,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapResource;
 import com.bumptech.glide.load.resource.bitmap.StreamBitmapDecoder;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.load.resource.file.FileToStreamDecoder;
+import com.bumptech.glide.load.resource.transcode.BitmapBytesTranscoder;
 import com.bumptech.glide.load.resource.transcode.BitmapToGlideDrawableTranscoder;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -170,6 +174,41 @@ public class ContactPictureLoader {
         } else {
             loadFallbackPicture(address, imageView);
         }
+    }
+
+    public Bitmap loadContactPictureIcon(Context context, Recipient recipient) {
+        return loadContactPicture(context, recipient.photoThumbnailUri, recipient.address);
+    }
+
+    private Bitmap loadContactPicture(final Context context, Uri photoUri, final Address address) {
+        if (photoUri != null) {
+            try {
+                return Glide.with(context)
+                        .load(photoUri)
+                        .asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .dontAnimate()
+                        .into(mPictureSizeInPx, mPictureSizeInPx)
+                        .get();
+            } catch (Exception e) {
+            }
+        }
+        try {
+            return Glide.with(context)
+                    .using(new FallbackGlideModelLoader(), FallbackGlideParams.class)
+                    .from(FallbackGlideParams.class)
+                    .as(Bitmap.class)
+                    .decoder(new FallbackGlideBitmapDecoder(context))
+                    .encoder(new BitmapEncoder(Bitmap.CompressFormat.PNG, 0))
+                    .cacheDecoder(new FileToStreamDecoder<>(new StreamBitmapDecoder(context)))
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .load(new FallbackGlideParams(address))
+                    .dontAnimate()
+                    .into(mPictureSizeInPx, mPictureSizeInPx).get();
+        } catch (Exception e) {
+        }
+
+        return null;
     }
 
     private int calcUnknownContactColor(Address address) {
