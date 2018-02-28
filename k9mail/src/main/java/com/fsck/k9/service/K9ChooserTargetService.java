@@ -1,8 +1,12 @@
 package com.fsck.k9.service;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.TargetApi;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -11,55 +15,78 @@ import android.os.Build;
 import android.os.Bundle;
 import android.service.chooser.ChooserTarget;
 import android.service.chooser.ChooserTargetService;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.compose.RecipientLoader;
+import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.ContactPicture;
-import com.fsck.k9.view.RecipientSelectView;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 
 @TargetApi(Build.VERSION_CODES.M)
 public class K9ChooserTargetService extends ChooserTargetService {
+    private static final int MAX_TARGETS = 5;
 
-    private final int MAX_TARGETS = 5;
+    private RecipientLoader recipientLoader;
+    private ContactPictureLoader contactPictureLoader;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        Context applicationContext = getApplicationContext();
+        recipientLoader = RecipientLoader.getMostContactedRecipientLoader(applicationContext, MAX_TARGETS);
+        contactPictureLoader = ContactPicture.getContactPictureLoader(applicationContext);
+    }
 
     @Override
     public List<ChooserTarget> onGetChooserTargets(ComponentName targetActivityName, IntentFilter matchedFilter) {
-        final List<ChooserTarget> targets = new ArrayList<>();
-        final ComponentName componentName = new ComponentName(this, MessageCompose.class);
+        List<Recipient> recipients = recipientLoader.loadInBackground();
 
-        String cryptoProvider = null;//TODO please check, cryptoProvider necessary?
-        RecipientLoader recipientLoader = RecipientLoader
-                .getMostContactedRecipientLoader(this.getApplicationContext(), cryptoProvider, MAX_TARGETS);
-        List<RecipientSelectView.Recipient> recipients = recipientLoader.loadInBackground();
+        return createChooserTargets(recipients);
+    }
 
-        // Ranking score for target between 0.0f and 1.0f
+    @NonNull
+    private List<ChooserTarget> createChooserTargets(List<Recipient> recipients) {
         float score = 1.0f;
 
-        for (RecipientSelectView.Recipient recipient : recipients) {
+        List<ChooserTarget> targets = new ArrayList<>();
+        ComponentName componentName = new ComponentName(this, MessageCompose.class);
+        for (Recipient recipient : recipients) {
+            Bundle intentExtras = prepareIntentExtras(recipient);
+            Icon icon = loadRecipientIcon(recipient);
 
+            ChooserTarget chooserTarget =
+                    new ChooserTarget(recipient.getDisplayNameOrAddress(), icon, score, componentName, intentExtras);
+            targets.add(chooserTarget);
 
-            final Bundle extras = new Bundle();
-            extras.putString("uuid", recipient.getDisplayNameOrAddress());
-            String address = recipient.address.getAddress();
-            extras.putStringArray(Intent.EXTRA_EMAIL,
-                    new String[] { recipient.getDisplayNameOrAddress() + "<" + address + ">" });
-
-            Icon icon = null;
-            Bitmap bitmap = ContactPicture.getContactPictureLoader(getApplicationContext())
-                    .loadContactPictureIcon(getApplicationContext(), recipient);
-            if (bitmap != null) {
-                icon = Icon.createWithBitmap(bitmap);
-            }
-
-            targets.add(new ChooserTarget(recipient.getDisplayNameOrAddress(), icon, score, componentName, extras));
             score -= 0.1;
         }
 
         return targets;
+    }
+
+    @NonNull
+    private Bundle prepareIntentExtras(Recipient recipient) {
+        String address = recipient.address.getAddress();
+        String displayNameOrAddress = recipient.getDisplayNameOrAddress();
+
+        Bundle extras = new Bundle();
+        extras.putString("uuid", displayNameOrAddress);
+        extras.putStringArray(Intent.EXTRA_EMAIL, new String[] { displayNameOrAddress + "<" + address + ">" });
+        return extras;
+    }
+
+    @Nullable
+    private Icon loadRecipientIcon(Recipient recipient) {
+        Bitmap bitmap = contactPictureLoader.loadContactPictureIcon(recipient);
+        if (bitmap == null) {
+            return null;
+        }
+
+        return Icon.createWithBitmap(bitmap);
     }
 
 }
