@@ -130,10 +130,6 @@ public class LocalFolder extends Folder<LocalMessage> {
         return getAccount().getSignatureUse();
     }
 
-    public void setLastSelectedFolderName(String destFolderName) {
-        getAccount().setLastSelectedFolderName(destFolderName);
-    }
-
     public boolean syncRemoteDeletions() {
         return getAccount().syncRemoteDeletions();
     }
