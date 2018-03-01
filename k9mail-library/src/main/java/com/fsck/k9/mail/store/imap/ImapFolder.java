@@ -224,7 +224,7 @@ class ImapFolder extends Folder<ImapMessage> {
     }
 
     @Override
-    public String getName() {
+    public String getServerId() {
         return name;
     }
 
@@ -387,22 +387,22 @@ class ImapFolder extends Folder<ImapMessage> {
     }
 
     @Override
-    public void delete(List<? extends Message> messages, String trashFolderName) throws MessagingException {
+    public void delete(List<? extends Message> messages, String trashFolder) throws MessagingException {
         if (messages.isEmpty()) {
             return;
         }
 
-        if (trashFolderName == null || getName().equals(trashFolderName)) {
+        if (trashFolder == null || getServerId().equals(trashFolder)) {
             setFlags(messages, Collections.singleton(Flag.DELETED), true);
         } else {
-            ImapFolder remoteTrashFolder = getStore().getFolder(trashFolderName);
+            ImapFolder remoteTrashFolder = getStore().getFolder(trashFolder);
             String encodedTrashFolderName = folderNameCodec.encode(remoteTrashFolder.getPrefixedName());
             String escapedTrashFolderName = ImapUtility.encodeString(encodedTrashFolderName);
 
             if (!exists(escapedTrashFolderName)) {
                 if (K9MailLib.isDebug()) {
                     Timber.i("IMAPMessage.delete: attempting to create remote '%s' folder for %s",
-                            trashFolderName, getLogId());
+                            trashFolder, getLogId());
                 }
                 remoteTrashFolder.create(FolderType.HOLDS_MESSAGES);
             }
@@ -410,12 +410,12 @@ class ImapFolder extends Folder<ImapMessage> {
             if (exists(escapedTrashFolderName)) {
                 if (K9MailLib.isDebug()) {
                     Timber.d("IMAPMessage.delete: copying remote %d messages to '%s' for %s",
-                            messages.size(), trashFolderName, getLogId());
+                            messages.size(), trashFolder, getLogId());
                 }
 
                 moveMessages(messages, remoteTrashFolder);
             } else {
-                throw new MessagingException("IMAPMessage.delete: remote Trash folder " + trashFolderName +
+                throw new MessagingException("IMAPMessage.delete: remote Trash folder " + trashFolder +
                         " does not exist and could not be created for " + getLogId(), true);
             }
         }
@@ -1370,7 +1370,7 @@ class ImapFolder extends Folder<ImapMessage> {
     public boolean equals(Object other) {
         if (other instanceof ImapFolder) {
             ImapFolder otherFolder = (ImapFolder) other;
-            return otherFolder.getName().equals(getName());
+            return otherFolder.getServerId().equals(getServerId());
         }
 
         return super.equals(other);
@@ -1378,7 +1378,7 @@ class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public int hashCode() {
-        return getName().hashCode();
+        return getServerId().hashCode();
     }
 
     private ImapStore getStore() {
@@ -1386,7 +1386,7 @@ class ImapFolder extends Folder<ImapMessage> {
     }
 
     protected String getLogId() {
-        String id = store.getStoreConfig().toString() + ":" + getName() + "/" + Thread.currentThread().getName();
+        String id = store.getStoreConfig().toString() + ":" + getServerId() + "/" + Thread.currentThread().getName();
         if (connection != null) {
             id += "/" + connection.getLogId();
         }

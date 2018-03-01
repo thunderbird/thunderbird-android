@@ -257,7 +257,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         @Override
-        public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
+        public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
             try {
                 AccountStats stats = account.getStats(Accounts.this);
                 if (stats == null) {
@@ -304,26 +304,26 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         @Override
         public void synchronizeMailboxFinished(
             Account account,
-            String folder,
+            String folderServerId,
             int totalMessagesInMailbox,
         int numNewMessages) {
             MessagingController.getInstance(getApplication()).getAccountStats(Accounts.this, account, mListener);
-            super.synchronizeMailboxFinished(account, folder, totalMessagesInMailbox, numNewMessages);
+            super.synchronizeMailboxFinished(account, folderServerId, totalMessagesInMailbox, numNewMessages);
 
             handler.progress(false);
 
         }
 
         @Override
-        public void synchronizeMailboxStarted(Account account, String folder) {
-            super.synchronizeMailboxStarted(account, folder);
+        public void synchronizeMailboxStarted(Account account, String folderServerId) {
+            super.synchronizeMailboxStarted(account, folderServerId);
             handler.progress(true);
         }
 
         @Override
-        public void synchronizeMailboxFailed(Account account, String folder,
+        public void synchronizeMailboxFailed(Account account, String folderServerId,
         String message) {
-            super.synchronizeMailboxFailed(account, folder, message);
+            super.synchronizeMailboxFailed(account, folderServerId, message);
             handler.progress(false);
 
         }

@@ -821,14 +821,14 @@ public class Account implements BaseAccount, StoreConfig {
         return stats;
     }
 
-    public int getFolderUnreadCount(Context context, String folderName) throws MessagingException {
+    public int getFolderUnreadCount(Context context, String folderServerId) throws MessagingException {
         if (!isAvailable(context)) {
             return 0;
         }
 
         int unreadMessageCount = 0;
 
-        Cursor cursor = loadUnreadCountForFolder(context, folderName);
+        Cursor cursor = loadUnreadCountForFolder(context, folderServerId);
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 unreadMessageCount = cursor.getInt(0);
@@ -840,7 +840,7 @@ public class Account implements BaseAccount, StoreConfig {
         return unreadMessageCount;
     }
 
-    private Cursor loadUnreadCountForFolder(Context context, String folderName) {
+    private Cursor loadUnreadCountForFolder(Context context, String folderServerId) {
         ContentResolver cr = context.getContentResolver();
 
         Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
@@ -851,7 +851,7 @@ public class Account implements BaseAccount, StoreConfig {
         };
 
         LocalSearch search = new LocalSearch();
-        search.addAllowedFolder(folderName);
+        search.addAllowedFolder(folderServerId);
 
         // Use the LocalSearch instance to create a WHERE clause to query the content provider
         StringBuilder query = new StringBuilder();
@@ -1073,14 +1073,14 @@ public class Account implements BaseAccount, StoreConfig {
         this.deletePolicy = deletePolicy;
     }
 
-    public boolean isSpecialFolder(String folderName) {
-        return (folderName != null && (folderName.equals(getInboxFolder()) ||
-                folderName.equals(getTrashFolder()) ||
-                folderName.equals(getDraftsFolder()) ||
-                folderName.equals(getArchiveFolder()) ||
-                folderName.equals(getSpamFolder()) ||
-                folderName.equals(getOutboxFolder()) ||
-                folderName.equals(getSentFolder())));
+    public boolean isSpecialFolder(String folderServerId) {
+        return (folderServerId != null && (folderServerId.equals(getInboxFolder()) ||
+                folderServerId.equals(getTrashFolder()) ||
+                folderServerId.equals(getDraftsFolder()) ||
+                folderServerId.equals(getArchiveFolder()) ||
+                folderServerId.equals(getSpamFolder()) ||
+                folderServerId.equals(getOutboxFolder()) ||
+                folderServerId.equals(getSentFolder())));
     }
 
     public synchronized String getDraftsFolder() {
@@ -1688,8 +1688,8 @@ public class Account implements BaseAccount, StoreConfig {
         return lastSelectedFolder;
     }
 
-    public synchronized void setLastSelectedFolder(String folderName) {
-        lastSelectedFolder = folderName;
+    public synchronized void setLastSelectedFolder(String folderServerId) {
+        lastSelectedFolder = folderServerId;
     }
 
     public synchronized NotificationSetting getNotificationSetting() {
@@ -1842,9 +1842,9 @@ public class Account implements BaseAccount, StoreConfig {
         search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolder()));
     }
 
-    private void excludeSpecialFolder(LocalSearch search, String folderName) {
-        if (folderName != null && !K9.FOLDER_NONE.equals(folderName)) {
-            search.and(SearchField.FOLDER, folderName, Attribute.NOT_EQUALS);
+    private void excludeSpecialFolder(LocalSearch search, String folderServerId) {
+        if (folderServerId != null && !K9.FOLDER_NONE.equals(folderServerId)) {
+            search.and(SearchField.FOLDER, folderServerId, Attribute.NOT_EQUALS);
         }
     }
 

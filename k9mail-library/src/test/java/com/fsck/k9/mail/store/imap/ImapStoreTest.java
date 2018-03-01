@@ -368,7 +368,7 @@ public class ImapStoreTest {
     private Set<String> extractFolderNames(List<? extends Folder> folders) {
         Set<String> folderNames = new HashSet<>(folders.size());
         for (Folder folder : folders) {
-            folderNames.add(folder.getName());
+            folderNames.add(folder.getServerId());
         }
 
         return folderNames;

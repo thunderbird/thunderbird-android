@@ -281,7 +281,7 @@ class ImapSync {
             if (commandException != null) {
                 String rootMessage = getRootCauseMessage(commandException);
                 Timber.e("Root cause failure in %s:%s was '%s'",
-                        account.getDescription(), tLocalFolder.getName(), rootMessage);
+                        account.getDescription(), tLocalFolder.getServerId(), rootMessage);
                 localFolder.setStatus(rootMessage);
                 for (MessagingListener l : getListeners(listener)) {
                     l.synchronizeMailboxFailed(account, folder, rootMessage);
@@ -307,7 +307,7 @@ class ImapSync {
                     tLocalFolder.setLastChecked(System.currentTimeMillis());
                 } catch (MessagingException me) {
                     Timber.e(e, "Could not set last checked on folder %s:%s",
-                            account.getDescription(), tLocalFolder.getName());
+                            account.getDescription(), tLocalFolder.getServerId());
                 }
             }
 
@@ -383,7 +383,7 @@ class ImapSync {
         if (earliestDate != null) {
             Timber.d("Only syncing messages after %s", earliestDate);
         }
-        final String folder = remoteFolder.getName();
+        final String folder = remoteFolder.getServerId();
 
         int unreadBeforeStart = 0;
         try {
@@ -562,7 +562,7 @@ class ImapSync {
             final AtomicInteger progress,
             final int todo,
             FetchProfile fp) throws MessagingException {
-        final String folder = remoteFolder.getName();
+        final String folder = remoteFolder.getServerId();
 
         final Date earliestDate = account.getEarliestPollDate();
         remoteFolder.fetch(unsyncedMessages, fp,
@@ -619,7 +619,7 @@ class ImapSync {
             final AtomicInteger newMessages,
             final int todo,
             FetchProfile fp) throws MessagingException {
-        final String folder = remoteFolder.getName();
+        final String folder = remoteFolder.getServerId();
 
         final Date earliestDate = account.getEarliestPollDate();
 
@@ -693,7 +693,7 @@ class ImapSync {
             final AtomicInteger newMessages,
             final int todo,
             FetchProfile fp) throws MessagingException {
-        final String folder = remoteFolder.getName();
+        final String folder = remoteFolder.getServerId();
         final Date earliestDate = account.getEarliestPollDate();
 
         Timber.d("SYNC: Fetching large messages for folder %s", folder);
@@ -747,7 +747,7 @@ class ImapSync {
             final int todo
     ) throws MessagingException {
 
-        final String folder = remoteFolder.getName();
+        final String folder = remoteFolder.getServerId();
         Timber.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size(), folder);
 
         FetchProfile fp = new FetchProfile();

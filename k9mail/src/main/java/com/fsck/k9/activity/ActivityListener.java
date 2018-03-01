@@ -121,7 +121,7 @@ public class ActivityListener extends SimpleMessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxFinished(Account account, String folder, int totalMessagesInMailbox,
+    public void synchronizeMailboxFinished(Account account, String folderServerId, int totalMessagesInMailbox,
             int numNewMessages) {
         synchronized (lock) {
             loadingAccountDescription = null;
@@ -133,10 +133,10 @@ public class ActivityListener extends SimpleMessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxStarted(Account account, String folder) {
+    public void synchronizeMailboxStarted(Account account, String folderServerId) {
         synchronized (lock) {
             loadingAccountDescription = account.getDescription();
-            loadingFolderName = folder;
+            loadingFolderName = folderServerId;
             this.account = account;
             folderCompleted = 0;
             folderTotal = 0;
@@ -146,17 +146,17 @@ public class ActivityListener extends SimpleMessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxHeadersStarted(Account account, String folder) {
+    public void synchronizeMailboxHeadersStarted(Account account, String folderServerId) {
         synchronized (lock) {
             loadingAccountDescription = account.getDescription();
-            loadingHeaderFolderName = folder;
+            loadingHeaderFolderName = folderServerId;
         }
 
         informUserOfStatus();
     }
 
     @Override
-    public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total) {
+    public void synchronizeMailboxHeadersProgress(Account account, String folderServerId, int completed, int total) {
         synchronized (lock) {
             folderCompleted = completed;
             folderTotal = total;
@@ -166,7 +166,7 @@ public class ActivityListener extends SimpleMessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxHeadersFinished(Account account, String folder, int total, int completed) {
+    public void synchronizeMailboxHeadersFinished(Account account, String folderServerId, int total, int completed) {
         synchronized (lock) {
             loadingHeaderFolderName = null;
             folderCompleted = 0;
@@ -177,7 +177,7 @@ public class ActivityListener extends SimpleMessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxProgress(Account account, String folder, int completed, int total) {
+    public void synchronizeMailboxProgress(Account account, String folderServerId, int completed, int total) {
         synchronized (lock) {
             folderCompleted = completed;
             folderTotal = total;
@@ -187,7 +187,7 @@ public class ActivityListener extends SimpleMessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxFailed(Account account, String folder, String message) {
+    public void synchronizeMailboxFailed(Account account, String folderServerId, String message) {
         synchronized (lock) {
             loadingAccountDescription = null;
             loadingHeaderFolderName = null;
@@ -273,7 +273,7 @@ public class ActivityListener extends SimpleMessagingListener {
     }
 
     @Override
-    public void folderStatusChanged(Account account, String folder, int unreadMessageCount) {
+    public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
         informUserOfStatus();
     }
 

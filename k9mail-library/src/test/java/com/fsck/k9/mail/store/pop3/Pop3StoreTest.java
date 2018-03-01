@@ -179,7 +179,7 @@ public class Pop3StoreTest {
     public void getFolder_shouldReturnFolderWithCorrectName() throws Exception {
         Pop3Folder folder = store.getFolder("TestFolder");
 
-        assertEquals("TestFolder", folder.getName());
+        assertEquals("TestFolder", folder.getServerId());
     }
 
     @Test
@@ -187,7 +187,7 @@ public class Pop3StoreTest {
         List<Pop3Folder> folders = store.getPersonalNamespaces(true);
 
         assertEquals(1, folders.size());
-        assertEquals("INBOX", folders.get(0).getName());
+        assertEquals("INBOX", folders.get(0).getServerId());
     }
 
     @Test

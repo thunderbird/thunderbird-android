@@ -12,9 +12,9 @@ public interface PushReceiver {
     void messagesArrived(Folder folder, List<Message> mess);
     void messagesFlagsChanged(Folder folder, List<Message> mess);
     void messagesRemoved(Folder folder, List<Message> mess);
-    String getPushState(String folderName);
+    String getPushState(String folderServerId);
     void pushError(String errorMessage, Exception e);
     void authenticationFailed();
-    void setPushActive(String folderName, boolean enabled);
+    void setPushActive(String folderServerId, boolean enabled);
     void sleep(TracingWakeLock wakeLock, long millis);
 }

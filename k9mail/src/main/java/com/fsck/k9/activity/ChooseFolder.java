@@ -42,7 +42,7 @@ public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = "com.fsck.k9.ChooseFolder_showDisplayableOnly";
 
 
-    String mFolder;
+    String currentFolder;
     String mSelectFolder;
     Account mAccount;
     MessageReference mMessageReference;
@@ -85,7 +85,7 @@ public class ChooseFolder extends K9ListActivity {
             String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE);
             mMessageReference = MessageReference.parse(messageReferenceString);
         }
-        mFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
+        currentFolder = intent.getStringExtra(EXTRA_CUR_FOLDER);
         mSelectFolder = intent.getStringExtra(EXTRA_SEL_FOLDER);
         if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null) {
             mHideCurrentFolder = false;
@@ -96,8 +96,8 @@ public class ChooseFolder extends K9ListActivity {
         if (intent.getStringExtra(EXTRA_SHOW_DISPLAYABLE_ONLY) != null) {
             mShowDisplayableOnly = true;
         }
-        if (mFolder == null)
-            mFolder = "";
+        if (currentFolder == null)
+            currentFolder = "";
 
         mAdapter = new ArrayAdapter<FolderDisplayData>(this, android.R.layout.simple_list_item_1) {
             private Filter myFilter = null;
@@ -126,9 +126,9 @@ public class ChooseFolder extends K9ListActivity {
 
                 Intent result = new Intent();
                 result.putExtra(EXTRA_ACCOUNT, mAccount.getUuid());
-                result.putExtra(EXTRA_CUR_FOLDER, mFolder);
-                String destFolderName = folder.name;
-                result.putExtra(EXTRA_NEW_FOLDER, destFolderName);
+                result.putExtra(EXTRA_CUR_FOLDER, currentFolder);
+                String targetFolder = folder.serverId;
+                result.putExtra(EXTRA_NEW_FOLDER, targetFolder);
                 if (mMessageReference != null) {
                     result.putExtra(EXTRA_MESSAGE, mMessageReference.toIdentityString());
                 }
@@ -277,12 +277,12 @@ public class ChooseFolder extends K9ListActivity {
             List<FolderDisplayData> topFolders = new ArrayList<>();
 
             for (LocalFolder folder : folders) {
-                String name = folder.getName();
+                String serverId = folder.getServerId();
 
-                if (mHideCurrentFolder && name.equals(mFolder)) {
+                if (mHideCurrentFolder && serverId.equals(currentFolder)) {
                     continue;
                 }
-                if (account.getOutboxFolder().equals(name)) {
+                if (account.getOutboxFolder().equals(serverId)) {
                     continue;
                 }
 
@@ -299,8 +299,8 @@ public class ChooseFolder extends K9ListActivity {
                 }
 
                 long id = folder.getDatabaseId();
-                String displayName = buildDisplayName(account, name);
-                FolderDisplayData folderDisplayData = new FolderDisplayData(id, name, displayName);
+                String displayName = buildDisplayName(account, serverId);
+                FolderDisplayData folderDisplayData = new FolderDisplayData(id, serverId, displayName);
 
                 if (folder.isInTopGroup()) {
                     topFolders.add(folderDisplayData);
@@ -345,11 +345,11 @@ public class ChooseFolder extends K9ListActivity {
                          * (mSelectedFolder) was provided.
                          */
 
-                        if (folder.name.equals(mSelectFolder)) {
+                        if (folder.serverId.equals(mSelectFolder)) {
                             selectedFolder = position;
                             break;
                         }
-                    } else if (folder.name.equals(mFolder)) {
+                    } else if (folder.serverId.equals(currentFolder)) {
                         selectedFolder = position;
                         break;
                     }
@@ -380,9 +380,9 @@ public class ChooseFolder extends K9ListActivity {
         }
     };
 
-    private String buildDisplayName(Account account, String name) {
-        if (!account.getInboxFolder().equals(name)) {
-            return name;
+    private String buildDisplayName(Account account, String serverId) {
+        if (!account.getInboxFolder().equals(serverId)) {
+            return serverId;
         }
 
         return getString(R.string.special_mailbox_name_inbox);
@@ -391,12 +391,12 @@ public class ChooseFolder extends K9ListActivity {
 
     static class FolderDisplayData {
         final long id;
-        final String name;
+        final String serverId;
         final String displayName;
 
-        FolderDisplayData(long id, String name, String displayName) {
+        FolderDisplayData(long id, String serverId, String displayName) {
             this.id = id;
-            this.name = name;
+            this.serverId = serverId;
             this.displayName = displayName;
         }
 

@@ -159,9 +159,9 @@ public class NotificationActionService extends CoreService {
         List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
         for (MessageReference messageReference : messageReferences) {
-            String folderName = messageReference.getFolderName();
+            String folderServerId = messageReference.getFolderServerId();
             String uid = messageReference.getUid();
-            controller.setFlag(account, folderName, uid, Flag.SEEN, true);
+            controller.setFlag(account, folderServerId, uid, Flag.SEEN, true);
         }
     }
 
@@ -188,7 +188,7 @@ public class NotificationActionService extends CoreService {
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
         for (MessageReference messageReference : messageReferences) {
             if (controller.isMoveCapable(messageReference)) {
-                String sourceFolderName = messageReference.getFolderName();
+                String sourceFolderName = messageReference.getFolderServerId();
                 controller.moveMessage(account, sourceFolderName, messageReference, archiveFolderName);
             }
         }
@@ -206,7 +206,7 @@ public class NotificationActionService extends CoreService {
 
         String spamFolderName = account.getSpamFolder();
         if (spamFolderName != null && !K9.confirmSpam() && isMovePossible(controller, account, spamFolderName)) {
-            String sourceFolderName = messageReference.getFolderName();
+            String sourceFolderName = messageReference.getFolderServerId();
             controller.moveMessage(account, sourceFolderName, messageReference, spamFolderName);
         }
     }

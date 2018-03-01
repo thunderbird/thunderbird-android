@@ -32,7 +32,7 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.CC_LIST_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.DATE_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FLAGGED_COLUMN;
-import static com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_NAME_COLUMN;
+import static com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FORWARDED_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_TYPE_COLUMN;
@@ -289,10 +289,10 @@ public class MessageListAdapter extends CursorAdapter {
 
     private void changeBackgroundColorIfActiveMessage(Cursor cursor, Account account, View view) {
         String uid = cursor.getString(UID_COLUMN);
-        String folderName = cursor.getString(FOLDER_NAME_COLUMN);
+        String folderServerId = cursor.getString(FOLDER_SERVER_ID_COLUMN);
 
         if (account.getUuid().equals(fragment.activeMessage.getAccountUuid()) &&
-                folderName.equals(fragment.activeMessage.getFolderName()) &&
+                folderServerId.equals(fragment.activeMessage.getFolderServerId()) &&
                 uid.equals(fragment.activeMessage.getUid())) {
             int res = R.attr.messageListActiveItemBackgroundColor;
 
