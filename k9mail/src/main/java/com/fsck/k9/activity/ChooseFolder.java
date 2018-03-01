@@ -298,6 +298,11 @@ public class ChooseFolder extends K9ListActivity {
                     continue;
                 }
 
+                if (account.getInboxFolderName().equals(name)) {
+                    mHeldInbox = name;
+                    name = getString(R.string.special_mailbox_name_inbox);
+                }
+
                 if (folder.isInTopGroup()) {
                     topFolders.add(name);
                 } else {
@@ -316,15 +321,15 @@ public class ChooseFolder extends K9ListActivity {
             Collections.sort(topFolders, comparator);
             Collections.sort(newFolders, comparator);
 
-            List<String> localFolders = new ArrayList<String>(newFolders.size() +
+            final List<String> folderList = new ArrayList<String>(newFolders.size() +
                     topFolders.size() + ((mShowOptionNone) ? 1 : 0));
 
             if (mShowOptionNone) {
-                localFolders.add(K9.FOLDER_NONE);
+                folderList.add(K9.FOLDER_NONE);
             }
 
-            localFolders.addAll(topFolders);
-            localFolders.addAll(newFolders);
+            folderList.addAll(topFolders);
+            folderList.addAll(newFolders);
 
             int selectedFolder = -1;
 
@@ -332,17 +337,9 @@ public class ChooseFolder extends K9ListActivity {
              * We're not allowed to change the adapter from a background thread, so we collect the
              * folder names and update the adapter in the UI thread (see finally block).
              */
-            final List<String> folderList = new ArrayList<String>();
             try {
                 int position = 0;
-                for (String name : localFolders) {
-                    if (mAccount.getInboxFolderName().equals(name)) {
-                        folderList.add(getString(R.string.special_mailbox_name_inbox));
-                        mHeldInbox = name;
-                    } else {
-                        folderList.add(name);
-                    }
-
+                for (String name : folderList) {
                     if (mSelectFolder != null) {
                         /*
                          * Never select EXTRA_CUR_FOLDER (mFolder) if EXTRA_SEL_FOLDER
@@ -351,9 +348,11 @@ public class ChooseFolder extends K9ListActivity {
 
                         if (name.equals(mSelectFolder)) {
                             selectedFolder = position;
+                            break;
                         }
                     } else if (name.equals(mFolder)) {
                         selectedFolder = position;
+                        break;
                     }
                     position++;
                 }
