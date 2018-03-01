@@ -15,7 +15,6 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
-import timber.log.Timber;
 
 import static com.fsck.k9.fragment.MLFProjectionInfo.SENDER_LIST_COLUMN;
 
@@ -31,14 +30,9 @@ public class MlfUtils {
 
     static void setLastSelectedFolderName(Preferences preferences,
             List<MessageReference> messages, String destFolderName) {
-        try {
-            MessageReference firstMsg = messages.get(0);
-            Account account = preferences.getAccount(firstMsg.getAccountUuid());
-            LocalFolder firstMsgFolder = MlfUtils.getOpenFolder(firstMsg.getFolderName(), account);
-            firstMsgFolder.setLastSelectedFolderName(destFolderName);
-        } catch (MessagingException e) {
-            Timber.e(e, "Error getting folder for setLastSelectedFolderName()");
-        }
+        MessageReference firstMsg = messages.get(0);
+        Account account = preferences.getAccount(firstMsg.getAccountUuid());
+        account.setLastSelectedFolder(destFolderName);
     }
 
     static String getSenderAddressFromCursor(Cursor cursor) {
