@@ -106,6 +106,11 @@ class Pop3Folder extends Folder<Pop3Message> {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public boolean create(FolderType type) throws MessagingException {
         return false;
     }

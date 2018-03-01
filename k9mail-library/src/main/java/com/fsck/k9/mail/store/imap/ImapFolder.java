@@ -228,6 +228,11 @@ class ImapFolder extends Folder<ImapMessage> {
         return name;
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
+
     private boolean exists(String escapedFolderName) throws MessagingException {
         try {
             // Since we don't care about RECENT, we'll use that for the check, because we're checking

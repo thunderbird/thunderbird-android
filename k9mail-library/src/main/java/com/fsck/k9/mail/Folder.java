@@ -142,6 +142,8 @@ public abstract class Folder<T extends Message> {
 
     public abstract String getServerId();
 
+    public abstract String getName();
+
     /**
      * @param oldPushState
      * @param message

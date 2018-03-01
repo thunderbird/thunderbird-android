@@ -224,6 +224,11 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     @Override
+    public String getName() {
+        return serverId;
+    }
+
+    @Override
     public boolean exists() throws MessagingException {
         return this.localStore.getDatabase().execute(false, new DbCallback<Boolean>() {
             @Override

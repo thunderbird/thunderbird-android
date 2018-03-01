@@ -299,7 +299,8 @@ public class ChooseFolder extends K9ListActivity {
                 }
 
                 long id = folder.getDatabaseId();
-                String displayName = buildDisplayName(account, serverId);
+                String name = folder.getName();
+                String displayName = buildDisplayName(account, serverId, name);
                 FolderDisplayData folderDisplayData = new FolderDisplayData(id, serverId, displayName);
 
                 if (folder.isInTopGroup()) {
@@ -380,12 +381,12 @@ public class ChooseFolder extends K9ListActivity {
         }
     };
 
-    private String buildDisplayName(Account account, String serverId) {
-        if (!account.getInboxFolder().equals(serverId)) {
-            return serverId;
+    private String buildDisplayName(Account account, String serverId, String name) {
+        if (account.getInboxFolder().equals(serverId)) {
+            return getString(R.string.special_mailbox_name_inbox);
+        } else {
+            return name;
         }
-
-        return getString(R.string.special_mailbox_name_inbox);
     }
 
 
