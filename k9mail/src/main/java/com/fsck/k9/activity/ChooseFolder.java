@@ -40,6 +40,7 @@ public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_SHOW_CURRENT = "com.fsck.k9.ChooseFolder_showcurrent";
     public static final String EXTRA_SHOW_FOLDER_NONE = "com.fsck.k9.ChooseFolder_showOptionNone";
     public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = "com.fsck.k9.ChooseFolder_showDisplayableOnly";
+    public static final String RESULT_FOLDER_DISPLAY_NAME = "folderDisplayName";
 
 
     String currentFolder;
@@ -132,6 +133,7 @@ public class ChooseFolder extends K9ListActivity {
                 if (mMessageReference != null) {
                     result.putExtra(EXTRA_MESSAGE, mMessageReference.toIdentityString());
                 }
+                result.putExtra(RESULT_FOLDER_DISPLAY_NAME, folder.displayName);
                 setResult(RESULT_OK, result);
                 finish();
             }

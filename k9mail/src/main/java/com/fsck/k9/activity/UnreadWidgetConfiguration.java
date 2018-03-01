@@ -118,7 +118,9 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
                     handleChooseAccount(data.getStringExtra(ChooseAccount.EXTRA_ACCOUNT_UUID));
                     break;
                 case REQUEST_CHOOSE_FOLDER:
-                    handleChooseFolder(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER));
+                    String folderServerId = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                    String folderDisplayName = data.getStringExtra(ChooseFolder.RESULT_FOLDER_DISPLAY_NAME);
+                    handleChooseFolder(folderServerId, folderDisplayName);
                     break;
             }
         }
@@ -165,9 +167,9 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
         unreadFolder.setEnabled(true);
     }
 
-    private void handleChooseFolder(String folderServerId) {
+    private void handleChooseFolder(String folderServerId, String folderDisplayName) {
         selectedFolder = folderServerId;
-        unreadFolder.setSummary(selectedFolder);
+        unreadFolder.setSummary(folderDisplayName);
     }
 
     @Override
