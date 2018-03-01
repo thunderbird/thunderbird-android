@@ -254,7 +254,7 @@ public class MessagingControllerTest {
 
         List<Folder> folders = Collections.singletonList(remoteFolder);
         when(remoteStore.getPersonalNamespaces(false)).thenAnswer(createAnswer(folders));
-        when(remoteFolder.getName()).thenReturn("NewFolder");
+        when(remoteFolder.getServerId()).thenReturn("NewFolder");
         when(localStore.getFolder("NewFolder")).thenReturn(newLocalFolder);
 
         controller.refreshRemoteSynchronous(account, listener);
@@ -266,7 +266,7 @@ public class MessagingControllerTest {
     public void refreshRemoteSynchronous_shouldDeleteFoldersNotOnRemote() throws MessagingException {
         configureRemoteStoreWithFolder();
         LocalFolder oldLocalFolder = mock(LocalFolder.class);
-        when(oldLocalFolder.getName()).thenReturn("OldLocalFolder");
+        when(oldLocalFolder.getServerId()).thenReturn("OldLocalFolder");
         when(localStore.getPersonalNamespaces(false))
                 .thenReturn(Collections.singletonList(oldLocalFolder));
         List<Folder> folders = Collections.emptyList();
@@ -295,7 +295,7 @@ public class MessagingControllerTest {
         configureRemoteStoreWithFolder();
         LocalFolder missingSpecialFolder = mock(LocalFolder.class);
         when(account.isSpecialFolder("Outbox")).thenReturn(true);
-        when(missingSpecialFolder.getName()).thenReturn("Outbox");
+        when(missingSpecialFolder.getServerId()).thenReturn("Outbox");
         when(localStore.getPersonalNamespaces(false))
                 .thenReturn(Collections.singletonList(missingSpecialFolder));
         List<Folder> folders = Collections.emptyList();
@@ -905,14 +905,14 @@ public class MessagingControllerTest {
 
     private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
-        when(localFolder.getName()).thenReturn(FOLDER_NAME);
+        when(localFolder.getServerId()).thenReturn(FOLDER_NAME);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
     }
 
     private void configureRemoteStoreWithFolder() throws MessagingException {
         when(account.getRemoteStore()).thenReturn(remoteStore);
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
-        when(remoteFolder.getName()).thenReturn(FOLDER_NAME);
+        when(remoteFolder.getServerId()).thenReturn(FOLDER_NAME);
     }
 
     private void setAccountsInPreferences(Map<String, Account> newAccounts)

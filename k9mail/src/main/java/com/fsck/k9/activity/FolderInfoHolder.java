@@ -9,7 +9,7 @@ import com.fsck.k9.mailstore.LocalFolder;
 
 
 public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
-    public String name;
+    public String serverId;
     public String displayName;
     public long lastChecked;
     public int unreadMessageCount = -1;
@@ -23,17 +23,17 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof FolderInfoHolder && name.equals(((FolderInfoHolder) o).name);
+        return o instanceof FolderInfoHolder && serverId.equals(((FolderInfoHolder) o).serverId);
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return serverId.hashCode();
     }
 
     public int compareTo(FolderInfoHolder o) {
-        String s1 = this.name;
-        String s2 = o.name;
+        String s1 = this.serverId;
+        String s2 = o.serverId;
 
         int ret = s1.compareToIgnoreCase(s2);
         if (ret != 0) {
@@ -76,12 +76,12 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
 
     public void populate(Context context, LocalFolder folder, Account account) {
         this.folder = folder;
-        this.name = folder.getName();
+        this.serverId = folder.getServerId();
         this.lastChecked = folder.getLastUpdate();
 
         this.status = truncateStatus(folder.getStatus());
 
-        this.displayName = getDisplayName(context, account, name);
+        this.displayName = getDisplayName(context, account, serverId);
         setMoreMessagesFromFolder(folder);
     }
 

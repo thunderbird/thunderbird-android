@@ -1042,7 +1042,7 @@ public class AccountSettings extends K9PreferenceActivity {
             Iterator <? extends Folder > iter = folders.iterator();
             while (iter.hasNext()) {
                 Folder folder = iter.next();
-                if (account.getOutboxFolder().equals(folder.getName())) {
+                if (account.getOutboxFolder().equals(folder.getServerId())) {
                     iter.remove();
                 }
             }
@@ -1055,8 +1055,8 @@ public class AccountSettings extends K9PreferenceActivity {
 
             int i = 1;
             for (Folder folder : folders) {
-                allFolderLabels[i] = folder.getName();
-                allFolderValues[i] = folder.getName();
+                allFolderLabels[i] = folder.getServerId();
+                allFolderValues[i] = folder.getServerId();
                 i++;
             }
             return null;

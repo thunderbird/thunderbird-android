@@ -26,7 +26,7 @@ class Pop3Message extends MimeMessage {
     }
 
     @Override
-    public void delete(String trashFolderName) throws MessagingException {
+    public void delete(String trashFolder) throws MessagingException {
         //  try
         //  {
         //  Poor POP3 users, we can't copy the message to the Trash folder, but they still want a delete

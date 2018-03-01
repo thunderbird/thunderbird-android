@@ -31,8 +31,8 @@ public class SqlQueryBuilder {
             SearchCondition condition = node.mCondition;
             switch (condition.field) {
                 case FOLDER: {
-                    String folderName = condition.value;
-                    long folderId = getFolderId(account, folderName);
+                    String folderServerId = condition.value;
+                    long folderId = getFolderId(account, folderServerId);
                     if (condition.attribute == Attribute.EQUALS) {
                         query.append("folder_id = ?");
                     } else {
@@ -104,11 +104,11 @@ public class SqlQueryBuilder {
         appendExprRight(condition, query, selectionArgs);
     }
 
-    private static long getFolderId(Account account, String folderName) {
+    private static long getFolderId(Account account, String folderServerId) {
         long folderId = 0;
         try {
             LocalStore localStore = account.getLocalStore();
-            LocalFolder folder = localStore.getFolder(folderName);
+            LocalFolder folder = localStore.getFolder(folderServerId);
             folder.open(Folder.OPEN_MODE_RO);
             folderId = folder.getDatabaseId();
         } catch (MessagingException e) {

@@ -32,10 +32,10 @@ public class FolderListFilter<T> extends Filter {
     /**
      * Create a filter for a list of folders.
      *
-     * @param folderNames
+     * @param folders
      */
-    public FolderListFilter(final ArrayAdapter<T> folderNames) {
-        this.mFolders = folderNames;
+    public FolderListFilter(final ArrayAdapter<T> folders) {
+        this.mFolders = folders;
     }
 
     /**

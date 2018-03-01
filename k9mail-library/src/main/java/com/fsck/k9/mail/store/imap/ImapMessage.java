@@ -30,7 +30,7 @@ class ImapMessage extends MimeMessage {
     }
 
     @Override
-    public void delete(String trashFolderName) throws MessagingException {
-        getFolder().delete(Collections.singletonList(this), trashFolderName);
+    public void delete(String trashFolder) throws MessagingException {
+        getFolder().delete(Collections.singletonList(this), trashFolder);
     }
 }

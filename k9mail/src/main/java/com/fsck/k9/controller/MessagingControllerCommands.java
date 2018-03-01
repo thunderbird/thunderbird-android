@@ -115,8 +115,8 @@ public class MessagingControllerCommands {
         public final String uid;
 
 
-        public static PendingAppend create(String folderName, String uid) {
-            return new PendingAppend(folderName, uid);
+        public static PendingAppend create(String folderServerId, String uid) {
+            return new PendingAppend(folderServerId, uid);
         }
 
         private PendingAppend(String folder, String uid) {
@@ -162,8 +162,8 @@ public class MessagingControllerCommands {
         public final String folder;
 
 
-        public static PendingExpunge create(String folderName) {
-            return new PendingExpunge(folderName);
+        public static PendingExpunge create(String folderServerId) {
+            return new PendingExpunge(folderServerId);
         }
 
         private PendingExpunge(String folder) {

@@ -54,7 +54,7 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
     private Preference unreadFolder;
 
     private String selectedAccountUuid;
-    private String selectedFolderName;
+    private String selectedFolder;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -91,7 +91,7 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 unreadFolder.setSummary(getString(R.string.unread_widget_folder_summary));
-                selectedFolderName = null;
+                selectedFolder = null;
                 return true;
             }
         });
@@ -132,7 +132,7 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
         }
 
         selectedAccountUuid = accountUuid;
-        selectedFolderName = null;
+        selectedFolder = null;
         unreadFolder.setSummary(getString(R.string.unread_widget_folder_summary));
         if (SearchAccount.UNIFIED_INBOX.equals(selectedAccountUuid) ||
                 SearchAccount.ALL_MESSAGES.equals(selectedAccountUuid)) {
@@ -151,7 +151,7 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
         unreadFolderEnabled.setEnabled(false);
         unreadFolderEnabled.setChecked(false);
         unreadFolder.setEnabled(false);
-        selectedFolderName = null;
+        selectedFolder = null;
     }
 
     private void handleRegularAccount() {
@@ -165,9 +165,9 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
         unreadFolder.setEnabled(true);
     }
 
-    private void handleChooseFolder(String folderName) {
-        selectedFolderName = folderName;
-        unreadFolder.setSummary(selectedFolderName);
+    private void handleChooseFolder(String folderServerId) {
+        selectedFolder = folderServerId;
+        unreadFolder.setSummary(selectedFolder);
     }
 
     @Override
@@ -194,7 +194,7 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
         if (selectedAccountUuid == null) {
             Toast.makeText(this, R.string.unread_widget_account_not_selected, Toast.LENGTH_LONG).show();
             return false;
-        } else if (unreadFolderEnabled.isChecked() && selectedFolderName == null) {
+        } else if (unreadFolderEnabled.isChecked() && selectedFolder == null) {
             Toast.makeText(this, R.string.unread_widget_folder_not_selected, Toast.LENGTH_LONG).show();
             return false;
         }
@@ -202,7 +202,7 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
     }
 
     private void updateWidgetAndExit() {
-        UnreadWidgetProperties properties = new UnreadWidgetProperties(appWidgetId, selectedAccountUuid,selectedFolderName);
+        UnreadWidgetProperties properties = new UnreadWidgetProperties(appWidgetId, selectedAccountUuid, selectedFolder);
         saveWidgetProperties(this, properties);
 
         // Update widget
@@ -222,15 +222,15 @@ public class UnreadWidgetConfiguration extends K9PreferenceActivity {
         SharedPreferences.Editor editor =
                 context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit();
         editor.putString(PREF_PREFIX_KEY + appWidgetId, properties.getAccountUuid());
-        editor.putString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_NAME_SUFFIX_KEY, properties.getFolderName());
+        editor.putString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_NAME_SUFFIX_KEY, properties.getFolderServerId());
         editor.apply();
     }
 
     public static UnreadWidgetProperties getWidgetProperties(Context context, int appWidgetId) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String accountUuid = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
-        String folderName = prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_NAME_SUFFIX_KEY, null);
-        return new UnreadWidgetProperties(appWidgetId, accountUuid, folderName);
+        String folderServerId = prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_NAME_SUFFIX_KEY, null);
+        return new UnreadWidgetProperties(appWidgetId, accountUuid, folderServerId);
     }
 
     public static void deleteWidgetConfiguration(Context context, int appWidgetId) {

@@ -45,9 +45,9 @@ public class FolderSettings extends K9PreferenceActivity {
     private ListPreference mPushClass;
     private ListPreference mNotifyClass;
 
-    public static void actionSettings(Context context, Account account, String folderName) {
+    public static void actionSettings(Context context, Account account, String folderServerId) {
         Intent i = new Intent(context, FolderSettings.class);
-        i.putExtra(EXTRA_FOLDER_NAME, folderName);
+        i.putExtra(EXTRA_FOLDER_NAME, folderServerId);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
@@ -56,16 +56,16 @@ public class FolderSettings extends K9PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String folderName = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
+        String folderServerId = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         Account mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try {
             LocalStore localStore = mAccount.getLocalStore();
-            mFolder = localStore.getFolder(folderName);
+            mFolder = localStore.getFolder(folderServerId);
             mFolder.open(Folder.OPEN_MODE_RW);
         } catch (MessagingException me) {
-            Timber.e(me, "Unable to edit folder %s preferences", folderName);
+            Timber.e(me, "Unable to edit folder %s preferences", folderServerId);
             return;
         }
 
@@ -79,7 +79,7 @@ public class FolderSettings extends K9PreferenceActivity {
 
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
-        String displayName = FolderInfoHolder.getDisplayName(this, mAccount, mFolder.getName());
+        String displayName = FolderInfoHolder.getDisplayName(this, mAccount, mFolder.getServerId());
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
         category.setTitle(displayName);
 

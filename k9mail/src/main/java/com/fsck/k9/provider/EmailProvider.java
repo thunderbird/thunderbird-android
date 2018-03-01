@@ -94,7 +94,7 @@ public class EmailProvider extends ContentProvider {
 
     private static final String[] FOLDERS_COLUMNS = {
             FolderColumns.ID,
-            FolderColumns.NAME,
+            FolderColumns.SERVER_ID,
             FolderColumns.LAST_UPDATED,
             FolderColumns.UNREAD_COUNT,
             FolderColumns.VISIBLE_LIMIT,
@@ -126,7 +126,7 @@ public class EmailProvider extends ContentProvider {
 
         String THREAD_COUNT = "thread_count";
 
-        String FOLDER_NAME = "name";
+        String FOLDER_SERVER_ID = "name";
         String INTEGRATE = "integrate";
     }
 
@@ -161,7 +161,7 @@ public class EmailProvider extends ContentProvider {
 
     public interface FolderColumns {
         String ID = "id";
-        String NAME = "name";
+        String SERVER_ID = "name";
         String LAST_UPDATED = "last_updated";
         String UNREAD_COUNT = "unread_count";
         String VISIBLE_LIMIT = "visible_limit";

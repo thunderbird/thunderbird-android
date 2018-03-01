@@ -131,7 +131,7 @@ public class LocalStore {
         "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages";
 
     static final int FOLDER_ID_INDEX = 0;
-    static final int FOLDER_NAME_INDEX = 1;
+    static final int FOLDER_SERVER_ID_INDEX = 1;
     static final int FOLDER_VISIBLE_LIMIT_INDEX = 2;
     static final int FOLDER_LAST_CHECKED_INDEX = 3;
     static final int FOLDER_STATUS_INDEX = 4;
@@ -387,8 +387,8 @@ public class LocalStore {
         });
     }
 
-    public LocalFolder getFolder(String name) {
-        return new LocalFolder(this, name);
+    public LocalFolder getFolder(String serverId) {
+        return new LocalFolder(this, serverId);
     }
 
     // TODO this takes about 260-300ms, seems slow.
@@ -407,8 +407,8 @@ public class LocalStore {
                             if (cursor.isNull(FOLDER_ID_INDEX)) {
                                 continue;
                             }
-                            String folderName = cursor.getString(FOLDER_NAME_INDEX);
-                            LocalFolder folder = new LocalFolder(LocalStore.this, folderName);
+                            String folderServerId = cursor.getString(FOLDER_SERVER_ID_INDEX);
+                            LocalFolder folder = new LocalFolder(LocalStore.this, folderServerId);
                             folder.open(cursor);
 
                             folders.add(folder);
@@ -807,10 +807,10 @@ public class LocalStore {
         }
 
         Map.Entry<String,List<String>> entry = foldersAndUids.entrySet().iterator().next();
-        String folderName = entry.getKey();
+        String folderServerId = entry.getKey();
         String uid = entry.getValue().get(0);
 
-        LocalFolder folder = getFolder(folderName);
+        LocalFolder folder = getFolder(folderServerId);
         LocalMessage localMessage = folder.getMessage(uid);
 
         FetchProfile fp = new FetchProfile();
@@ -891,18 +891,18 @@ public class LocalStore {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                 for (LocalFolder folder : foldersToCreate) {
-                    String name = folder.getName();
+                    String serverId = folder.getServerId();
 
                     if (K9.DEVELOPER_MODE) {
                         Cursor cursor = db.query("folders", new String[] { "id", "name" },
-                                "name = ?", new String[] { name },null, null, null);
+                                "name = ?", new String[] { serverId },null, null, null);
                         try {
                             if (cursor.moveToNext()) {
                                 long folderId = cursor.getLong(0);
-                                String folderName = cursor.getString(1);
+                                String folderServerId = cursor.getString(1);
 
-                                throw new AssertionError("Tried to create folder '" + name + "'" +
-                                        " that already exists in the database as '" + folderName + "'" +
+                                throw new AssertionError("Tried to create folder '" + serverId + "'" +
+                                        " that already exists in the database as '" + folderServerId + "'" +
                                         " (" + folderId + ")");
                             }
                         } finally {
@@ -915,10 +915,10 @@ public class LocalStore {
                     // When created, special folders should always be displayed
                     // inbox should be integrated
                     // and the inbox and drafts folders should be syncced by default
-                    if (account.isSpecialFolder(name)) {
+                    if (account.isSpecialFolder(serverId)) {
                         prefHolder.inTopGroup = true;
                         prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        if (name.equals(account.getInboxFolder())) {
+                        if (serverId.equals(account.getInboxFolder())) {
                             prefHolder.integrate = true;
                             prefHolder.notifyClass = LocalFolder.FolderClass.FIRST_CLASS;
                             prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
@@ -926,16 +926,16 @@ public class LocalStore {
                             prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
 
                         }
-                        if (name.equals(account.getInboxFolder()) || name.equals(account.getDraftsFolder())) {
+                        if (serverId.equals(account.getInboxFolder()) || serverId.equals(account.getDraftsFolder())) {
                             prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
                             prefHolder.syncClass = LocalFolder.FolderClass.NO_CLASS;
                         }
                     }
-                    folder.refresh(name, prefHolder);   // Recover settings from Preferences
+                    folder.refresh(serverId, prefHolder);   // Recover settings from Preferences
 
                     db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
-                                   name,
+                                   serverId,
                                    visibleLimit,
                                    prefHolder.inTopGroup ? 1 : 0,
                                    prefHolder.displayClass.name(),
@@ -1204,7 +1204,7 @@ public class LocalStore {
     }
 
     /**
-     * Get folder name and UID for the supplied messages.
+     * Get folder server ID and UID for the supplied messages.
      *
      * @param messageIds
      *         A list of primary keys in the "messages" table.
@@ -1263,12 +1263,12 @@ public class LocalStore {
                 try {
                     while (cursor.moveToNext()) {
                         String uid = cursor.getString(0);
-                        String folderName = cursor.getString(1);
+                        String folderServerId = cursor.getString(1);
 
-                        List<String> uidList = folderMap.get(folderName);
+                        List<String> uidList = folderMap.get(folderServerId);
                         if (uidList == null) {
                             uidList = new ArrayList<>();
-                            folderMap.put(folderName, uidList);
+                            folderMap.put(folderServerId, uidList);
                         }
 
                         uidList.add(uid);
