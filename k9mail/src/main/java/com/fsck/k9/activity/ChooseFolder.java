@@ -282,6 +282,10 @@ public class ChooseFolder extends K9ListActivity {
                 if (mHideCurrentFolder && name.equals(mFolder)) {
                     continue;
                 }
+                if (account.getOutboxFolderName().equals(name)) {
+                    continue;
+                }
+
                 Folder.FolderClass fMode = folder.getDisplayClass();
 
                 if ((aMode == FolderMode.FIRST_CLASS &&
@@ -335,7 +339,7 @@ public class ChooseFolder extends K9ListActivity {
                     if (mAccount.getInboxFolderName().equals(name)) {
                         folderList.add(getString(R.string.special_mailbox_name_inbox));
                         mHeldInbox = name;
-                    } else if (!account.getOutboxFolderName().equals(name)) {
+                    } else {
                         folderList.add(name);
                     }
 
