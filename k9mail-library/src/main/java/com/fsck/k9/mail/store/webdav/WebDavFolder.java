@@ -200,6 +200,11 @@ class WebDavFolder extends Folder<WebDavMessage> {
     }
 
     @Override
+    public String getName() {
+        return this.mName;
+    }
+
+    @Override
     public boolean exists() {
         return true;
     }

@@ -36,7 +36,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
@@ -58,8 +57,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final int DIALOG_COLOR_PICKER_ACCOUNT = 1;
     private static final int DIALOG_COLOR_PICKER_LED = 2;
     private static final int DIALOG_AUTOCRYPT_PREFER_ENCRYPT = 3;
-
-    private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
     private static final int ACTIVITY_MANAGE_IDENTITIES = 2;
 
@@ -805,12 +802,7 @@ public class AccountSettings extends K9PreferenceActivity {
             account.setCryptoKey(Account.NO_OPENPGP_KEY);
         }
 
-        // In webdav account we use the exact folder name also for inbox,
-        // since it varies because of internationalization
-        if (account.getStoreUri().startsWith("webdav"))
-            account.setAutoExpandFolder(autoExpandFolder.getValue());
-        else
-            account.setAutoExpandFolder(reverseTranslateFolder(autoExpandFolder.getValue()));
+        account.setAutoExpandFolder(autoExpandFolder.getValue());
 
         if (isMoveCapable) {
             account.setArchiveFolder(archiveFolder.getValue());
@@ -872,13 +864,6 @@ public class AccountSettings extends K9PreferenceActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (pgpCryptoKey != null && pgpCryptoKey.handleOnActivityResult(requestCode, resultCode, data)) {
             return;
-        }
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-            case SELECT_AUTO_EXPAND_FOLDER:
-                autoExpandFolder.setSummary(translateFolder(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER)));
-                break;
-            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -974,30 +959,11 @@ public class AccountSettings extends K9PreferenceActivity {
         }
     }
 
-    public void onChooseAutoExpandFolder() {
-        Intent selectIntent = new Intent(this, ChooseFolder.class);
-        selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, account.getUuid());
-
-        selectIntent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, autoExpandFolder.getSummary());
-        selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
-        selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_FOLDER_NONE, "yes");
-        selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_DISPLAYABLE_ONLY, "yes");
-        startActivityForResult(selectIntent, SELECT_AUTO_EXPAND_FOLDER);
-    }
-
-    private String translateFolder(String in) {
-        if (account.getInboxFolder().equals(in)) {
+    private String getFolderDisplayName(String folderServerId, String folderName) {
+        if (account.getInboxFolder().equals(folderServerId)) {
             return getString(R.string.special_mailbox_name_inbox);
         } else {
-            return in;
-        }
-    }
-
-    private String reverseTranslateFolder(String in) {
-        if (getString(R.string.special_mailbox_name_inbox).equals(in)) {
-            return account.getInboxFolder();
-        } else {
-            return in;
+            return folderName;
         }
     }
 
@@ -1055,7 +1021,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
             int i = 1;
             for (Folder folder : folders) {
-                allFolderLabels[i] = folder.getServerId();
+                allFolderLabels[i] = getFolderDisplayName(folder.getServerId(), folder.getName());
                 allFolderValues[i] = folder.getServerId();
                 i++;
             }

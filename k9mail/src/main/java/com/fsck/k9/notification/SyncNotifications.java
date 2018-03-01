@@ -64,12 +64,13 @@ class SyncNotifications {
     public void showFetchingMailNotification(Account account, Folder folder) {
         String accountName = account.getDescription();
         String folderServerId = folder.getServerId();
+        String folderName = folder.getName();
 
         Context context = controller.getContext();
-        String tickerText = context.getString(R.string.notification_bg_sync_ticker, accountName, folderServerId);
+        String tickerText = context.getString(R.string.notification_bg_sync_ticker, accountName, folderName);
         String title = context.getString(R.string.notification_bg_sync_title);
         //TODO: Use format string from resources
-        String text = accountName + context.getString(R.string.notification_bg_title_separator) + folderServerId;
+        String text = accountName + context.getString(R.string.notification_bg_title_separator) + folderName;
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(

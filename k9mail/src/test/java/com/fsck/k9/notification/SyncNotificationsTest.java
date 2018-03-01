@@ -30,6 +30,7 @@ import static org.mockito.Mockito.when;
 public class SyncNotificationsTest {
     private static final int ACCOUNT_NUMBER = 1;
     private static final String ACCOUNT_NAME = "TestAccount";
+    private static final String FOLDER_SERVER_ID = "INBOX";
     private static final String FOLDER_NAME = "Inbox";
 
 
@@ -140,7 +141,8 @@ public class SyncNotificationsTest {
 
     private Folder createFakeFolder() {
         Folder folder = mock(Folder.class);
-        when(folder.getServerId()).thenReturn(FOLDER_NAME);
+        when(folder.getServerId()).thenReturn(FOLDER_SERVER_ID);
+        when(folder.getName()).thenReturn(FOLDER_NAME);
         return folder;
     }
 }

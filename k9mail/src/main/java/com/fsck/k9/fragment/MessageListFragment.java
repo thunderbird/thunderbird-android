@@ -180,6 +180,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * Stores the server ID of the folder that we want to open as soon as possible after load.
      */
     private String folderServerId;
+    private String folderName;
 
     private boolean remoteSearchPerformed = false;
     private Future<?> remoteSearchFuture = null;
@@ -316,8 +317,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         // regular folder content display
         if (!isManualSearch() && singleFolderMode) {
             Activity activity = getActivity();
-            String displayName = FolderInfoHolder.getDisplayName(activity, account,
-                    folderServerId);
+            String displayName = FolderInfoHolder.getDisplayName(activity, account, folderServerId, folderName);
 
             fragmentListener.setMessageListTitle(displayName);
 
@@ -593,6 +593,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             singleFolderMode = true;
             folderServerId = search.getFolderServerIds().get(0);
             currentFolder = getFolderInfoHolder(folderServerId, account);
+            folderName = currentFolder.displayName;
         }
 
         allAccounts = false;
