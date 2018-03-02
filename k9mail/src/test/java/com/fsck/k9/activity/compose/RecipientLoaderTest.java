@@ -10,18 +10,17 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -31,7 +30,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("WeakerAccess")
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class RecipientLoaderTest {
     static final String CRYPTO_PROVIDER = "cryptoProvider";
     static final String[] PROJECTION = {
@@ -42,17 +41,30 @@ public class RecipientLoaderTest {
             ContactsContract.CommonDataKinds.Email.TYPE,
             ContactsContract.CommonDataKinds.Email.LABEL,
             ContactsContract.CommonDataKinds.Email.CONTACT_ID,
-            ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
+            ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,
+            ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED,
+            ContactsContract.Contacts.SORT_KEY_PRIMARY
+    };
+    static final String[] PROJECTION_NICKNAME = {
+            ContactsContract.Data.CONTACT_ID,
+            ContactsContract.CommonDataKinds.Nickname.NAME
     };
     static final String[] PROJECTION_CRYPTO_ADDRESSES = { "address", "uid_address" };
     static final String[] PROJECTION_CRYPTO_STATUS = { "address", "uid_key_status", "autocrypt_key_status" };
     static final Address CONTACT_ADDRESS_1 = Address.parse("Contact Name <address@example.org>")[0];
     static final Address CONTACT_ADDRESS_2 = Address.parse("Other Contact Name <address_two@example.org>")[0];
+    static final String TYPE = "" + TYPE_HOME;
     static final String[] CONTACT_1 =
-            new String[] { "0", "Bob", "bob", "bob@host.com", "" + TYPE_HOME, null, "1", null };
+            new String[] { "0", "Bob", "bob", "bob@host.com", TYPE, null, "1", null, "100", "Bob" };
     static final String[] CONTACT_2 =
-            new String[] { "2", "Bob2", "bob2", "bob2@host.com", "" + TYPE_HOME, null, "2", null };
-    static final String[] CONTACT_NO_EMAIL = new String[] { "0", "Bob", "bob", null, "" + TYPE_HOME, null, "1", null };
+            new String[] { "2", "Bob2", "bob2", "bob2@host.com", TYPE, null, "2", null, "101", "Bob" };
+    static final String[] CONTACT_NO_EMAIL =
+            new String[] { "0", "Bob", "bob", null, TYPE, null, "1", null, "10", "Bob_noMail" };
+    static final String[] CONTACT_WITH_NICKNAME_NOT_CONTACTED =
+            new String[] { "0", "Eve_notContacted", "eve_notContacted", "eve_notContacted@host.com", TYPE, null, "2",
+                    null, "0", "Eve" };
+    static final String[] NICKNAME_NOT_CONTACTED = new String[] { "2", "Eves_Nickname_Bob" };
+
     static final String QUERYSTRING = "querystring";
 
 
@@ -177,6 +189,32 @@ public class RecipientLoaderTest {
                         any(String.class))).thenReturn(cursor);
     }
 
+    private void setupNicknameContactProvider(String[]... contactsWithNickname) {
+        MatrixCursor cursor = new MatrixCursor(PROJECTION_NICKNAME);
+        for (String[] contact : contactsWithNickname) {
+            cursor.addRow(contact);
+        }
+        when(contentResolver
+                .query(eq(ContactsContract.Data.CONTENT_URI),
+                        aryEq(PROJECTION_NICKNAME),
+                        any(String.class),
+                        any(String[].class),
+                        any(String.class))).thenReturn(cursor);
+    }
+
+    private void setupContactProviderForId(String id, String[]... contacts) {
+        MatrixCursor cursor = new MatrixCursor(PROJECTION);
+        for (String[] contact : contacts) {
+            cursor.addRow(contact);
+        }
+        when(contentResolver
+                .query(eq(Email.CONTENT_URI),
+                        aryEq(PROJECTION),
+                        any(String.class),
+                        aryEq(new String[] { id }),
+                        any(String.class))).thenReturn(cursor);
+    }
+
     @Test
     public void queryContactProvider() throws Exception {
         RecipientLoader recipientLoader = new RecipientLoader(context, CRYPTO_PROVIDER, QUERYSTRING);
@@ -197,6 +235,21 @@ public class RecipientLoaderTest {
         List<Recipient> recipients = recipientLoader.loadInBackground();
 
         assertEquals(0, recipients.size());
+    }
+
+
+    @Test
+    public void queryContactProvider_sortByTimesContactedForNickname() throws Exception {
+        RecipientLoader recipientLoader = new RecipientLoader(context, null, QUERYSTRING);
+        setupContactProvider("%" + QUERYSTRING + "%", CONTACT_1);
+        setupNicknameContactProvider(NICKNAME_NOT_CONTACTED);
+        setupContactProviderForId(NICKNAME_NOT_CONTACTED[0], CONTACT_WITH_NICKNAME_NOT_CONTACTED);
+
+        List<Recipient> recipients = recipientLoader.loadInBackground();
+
+        assertEquals(2, recipients.size());
+        assertEquals("bob@host.com", recipients.get(0).address.getAddress());
+        assertEquals("eve_notContacted@host.com", recipients.get(1).address.getAddress());
     }
 
 

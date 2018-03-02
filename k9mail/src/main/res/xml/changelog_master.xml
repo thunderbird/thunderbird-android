@@ -8,22 +8,22 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
-    <release version="5.500" versioncode="23700">
-        <change>Import/Export maintain account ordering</change>
-        <change>Improvements to HTML sanitisation mechanism</change>
-        <change>IMAP message sync improvements</change>
-        <change>Further improvements to encryption UX</change>
-        <change>Forward-as-attachment feature</change>
-        <change>Adding option for limiting push connections to 5</change>
-        <change>Altered identity prioritisation</change>
+    <release version="5.501" versioncode="25010">
+        <change>Fixed bug that lead to important files being stripped from the APK</change>
+    </release>
+    <release version="5.500" versioncode="25000">
+        <change>Further improvements to encryption user experience</change>
+        <change>Added ability to forward a message as attachment</change>
+        <change>Improved the way we display text/plain messages</change>
         <change>Improved rendering of RTL text</change>
+        <change>Import/Export maintain account ordering</change>
+        <change>Altered identity prioritization</change>
+        <change>Added option for limiting push connections to 5</change>
         <change>Added SMTP hostname privacy option</change>
-        <change>Added ability to show email address during composition</change>
-        <change>Removed IMAP namespace prefix from folder names</change>
-        <change>Fixed Mailsploit bug</change>
-        <change>Fixed bug when adding recipients during composition</change>
+        <change>Fixed bug that caused draft messages to be lost</change>
         <change>Fixed bug relating to encrypted attached emails</change>
-        <change>Fixed various typos</change>
+        <change>Updated translations</change>
+        <change>More bug fixes</change>
     </release>
     <release version="5.403" versioncode="23630">
         <change>Fixed bug that caused 'Quiet Time' to behave erratically</change>

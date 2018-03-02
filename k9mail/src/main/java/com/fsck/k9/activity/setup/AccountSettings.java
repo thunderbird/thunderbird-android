@@ -9,7 +9,6 @@ import java.util.Map;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -23,8 +22,6 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
-import android.widget.CompoundButton;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -46,7 +43,7 @@ import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog;
@@ -220,7 +217,7 @@ public class AccountSettings extends K9PreferenceActivity {
         account = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try {
-            final Store store = account.getRemoteStore();
+            RemoteStore store = account.getRemoteStore();
             isMoveCapable = store.isMoveCapable();
             isPushCapable = store.isPushCapable();
             isExpungeCapable = store.isExpungeCapable();
@@ -989,7 +986,7 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private String translateFolder(String in) {
-        if (account.getInboxFolderName().equalsIgnoreCase(in)) {
+        if (account.getInboxFolderName().equals(in)) {
             return getString(R.string.special_mailbox_name_inbox);
         } else {
             return in;

@@ -25,6 +25,7 @@ dependencies {
     implementation "com.squareup.okio:okio:${okioVersion}"
     implementation 'commons-io:commons-io:2.4'
     implementation "com.android.support:support-v4:${androidSupportLibraryVersion}"
+    implementation "com.android.support:appcompat-v7:${androidSupportLibraryVersion}"
     implementation 'org.jsoup:jsoup:1.11.2'
     implementation 'de.cketti.library.changelog:ckchangelog:1.2.1'
     implementation 'com.github.bumptech.glide:glide:3.6.1'
@@ -53,8 +54,8 @@ android {
         applicationId "com.fsck.k9"
         testApplicationId "com.fsck.k9.tests"
 
-        versionCode 25000
-        versionName '5.500-SNAPSHOT'
+        versionCode 27000
+        versionName '5.700-SNAPSHOT'
 
         minSdkVersion 15
         targetSdkVersion 22
@@ -107,6 +108,12 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 }
 

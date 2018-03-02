@@ -279,10 +279,7 @@ public class ChooseFolder extends K9ListActivity {
             for (Folder folder : folders) {
                 String name = folder.getName();
 
-                // Inbox needs to be compared case-insensitively
-                if (mHideCurrentFolder && (name.equals(mFolder) || (
-                        mAccount.getInboxFolderName().equalsIgnoreCase(mFolder) &&
-                        mAccount.getInboxFolderName().equalsIgnoreCase(name)))) {
+                if (mHideCurrentFolder && name.equals(mFolder)) {
                     continue;
                 }
                 Folder.FolderClass fMode = folder.getDisplayClass();
@@ -335,7 +332,7 @@ public class ChooseFolder extends K9ListActivity {
             try {
                 int position = 0;
                 for (String name : localFolders) {
-                    if (mAccount.getInboxFolderName().equalsIgnoreCase(name)) {
+                    if (mAccount.getInboxFolderName().equals(name)) {
                         folderList.add(getString(R.string.special_mailbox_name_inbox));
                         mHeldInbox = name;
                     } else if (!account.getOutboxFolderName().equals(name)) {
@@ -351,9 +348,7 @@ public class ChooseFolder extends K9ListActivity {
                         if (name.equals(mSelectFolder)) {
                             selectedFolder = position;
                         }
-                    } else if (name.equals(mFolder) || (
-                            mAccount.getInboxFolderName().equalsIgnoreCase(mFolder) &&
-                            mAccount.getInboxFolderName().equalsIgnoreCase(name))) {
+                    } else if (name.equals(mFolder)) {
                         selectedFolder = position;
                     }
                     position++;

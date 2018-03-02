@@ -41,6 +41,7 @@ import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
 class ImapFolder extends Folder<ImapMessage> {
+    static final String INBOX = "INBOX";
     private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -78,7 +79,7 @@ class ImapFolder extends Folder<ImapMessage> {
     private String getPrefixedName() throws MessagingException {
         String prefixedName = "";
 
-        if (!store.getStoreConfig().getInboxFolderName().equalsIgnoreCase(name)) {
+        if (!INBOX.equalsIgnoreCase(name)) {
             ImapConnection connection;
             synchronized (this) {
                 if (this.connection == null) {
@@ -391,7 +392,7 @@ class ImapFolder extends Folder<ImapMessage> {
             return;
         }
 
-        if (trashFolderName == null || getName().equalsIgnoreCase(trashFolderName)) {
+        if (trashFolderName == null || getName().equals(trashFolderName)) {
             setFlags(messages, Collections.singleton(Flag.DELETED), true);
         } else {
             ImapFolder remoteTrashFolder = getStore().getFolder(trashFolderName);
@@ -1369,7 +1370,7 @@ class ImapFolder extends Folder<ImapMessage> {
     public boolean equals(Object other) {
         if (other instanceof ImapFolder) {
             ImapFolder otherFolder = (ImapFolder) other;
-            return otherFolder.getName().equalsIgnoreCase(getName());
+            return otherFolder.getName().equals(getName());
         }
 
         return super.equals(other);
