@@ -6,7 +6,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.StringRes;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,7 @@ public class MessageTopView extends LinearLayout {
     private AttachmentViewCallback attachmentCallback;
     private Button showPicturesButton;
     private boolean isShowingProgress;
+    private boolean showPicturesButtonClicked;
 
     private MessageCryptoPresenter messageCryptoPresenter;
 
@@ -86,6 +88,7 @@ public class MessageTopView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 showPicturesInAllContainerViews();
+                showPicturesButtonClicked = true;
             }
         });
     }
@@ -108,8 +111,8 @@ public class MessageTopView extends LinearLayout {
         resetAndPrepareMessageView(messageViewInfo);
 
         ShowPictures showPicturesSetting = account.getShowPictures();
-        boolean automaticallyLoadPictures =
-                shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message);
+        boolean loadPictures = shouldAutomaticallyLoadPictures(showPicturesSetting, messageViewInfo.message) ||
+                showPicturesButtonClicked;
 
         MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container,
                 containerView, false);
@@ -121,44 +124,11 @@ public class MessageTopView extends LinearLayout {
             public void onLoadFinished() {
                 displayViewOnLoadFinished(true);
             }
-        }, automaticallyLoadPictures, hideUnsignedTextDivider, attachmentCallback);
+        }, loadPictures, hideUnsignedTextDivider, attachmentCallback);
 
-        if (view.hasHiddenExternalImages()) {
+        if (view.hasHiddenExternalImages() && !showPicturesButtonClicked) {
             showShowPicturesButton();
         }
-    }
-
-    public void showMessageCryptoWarning(final MessageViewInfo messageViewInfo, Drawable providerIcon,
-            @StringRes int warningTextRes, boolean showDetailButton) {
-        resetAndPrepareMessageView(messageViewInfo);
-        View view = mInflater.inflate(R.layout.message_content_crypto_warning, containerView, false);
-        setCryptoProviderIcon(providerIcon, view);
-
-        View detailButton = view.findViewById(R.id.crypto_warning_details);
-        if(showDetailButton) {
-            detailButton.setVisibility(View.VISIBLE);
-            detailButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    messageCryptoPresenter.onClickShowCryptoWarningDetails();
-                }
-            });
-        } else {
-            detailButton.setVisibility(View.GONE);
-        }
-
-        view.findViewById(R.id.crypto_warning_override).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                messageCryptoPresenter.onClickShowMessageOverrideWarning();
-            }
-        });
-
-        TextView warningText = (TextView) view.findViewById(R.id.crypto_warning_text);
-        warningText.setText(warningTextRes);
-
-        containerView.addView(view);
-        displayViewOnLoadFinished(false);
     }
 
     public void showMessageEncryptedButIncomplete(MessageViewInfo messageViewInfo, Drawable providerIcon) {
@@ -360,6 +330,52 @@ public class MessageTopView extends LinearLayout {
                     .setDuration(PROGRESS_STEP_DURATION).start();
         } else {
             progressBar.setProgress(newPosition);
+        }
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState savedState = new SavedState(superState);
+        savedState.showPicturesButtonClicked = showPicturesButtonClicked;
+        return savedState;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        showPicturesButtonClicked = savedState.showPicturesButtonClicked;
+    }
+
+    private static class SavedState extends BaseSavedState {
+        boolean showPicturesButtonClicked;
+
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            this.showPicturesButtonClicked = (in.readInt() != 0);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt((this.showPicturesButtonClicked) ? 1 : 0);
         }
     }
 }

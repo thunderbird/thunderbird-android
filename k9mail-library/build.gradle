@@ -10,31 +10,31 @@ if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
 }
 
-repositories {
-    jcenter()
-}
-
 dependencies {
-    compile 'org.apache.james:apache-mime4j-core:0.8.1'
-    compile 'org.apache.james:apache-mime4j-dom:0.8.1'
-    compile 'commons-io:commons-io:2.4'
-    compile 'com.jcraft:jzlib:1.0.7'
-    compile 'com.beetstra.jutf7:jutf7:1.0.0'
-    compile "com.android.support:support-annotations:${androidSupportLibraryVersion}"
-    compile "com.jakewharton.timber:timber:${timberVersion}"
+    implementation 'org.apache.james:apache-mime4j-core:0.8.1'
+    implementation 'org.apache.james:apache-mime4j-dom:0.8.1'
+    implementation "com.squareup.okio:okio:${okioVersion}"
+    implementation 'commons-io:commons-io:2.4'
+    implementation 'com.jcraft:jzlib:1.0.7'
+    implementation 'com.beetstra.jutf7:jutf7:1.0.0'
+    implementation "com.android.support:support-annotations:${androidSupportLibraryVersion}"
+    implementation "com.jakewharton.timber:timber:${timberVersion}"
 
-    compile 'dnsjava:dnsjava:2.1.7'
-    compile 'org.jsoup:jsoup:1.10.2'
+    androidTestImplementation 'com.android.support.test:runner:0.4.1'
+    androidTestImplementation 'com.madgag.spongycastle:pg:1.51.0.0'
 
-    androidTestCompile 'com.android.support.test:runner:0.4.1'
-    androidTestCompile 'com.madgag.spongycastle:pg:1.51.0.0'
+    implementation 'dnsjava:dnsjava:2.1.7'
+    implementation 'org.jsoup:jsoup:1.10.2'
 
-    testCompile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
-    testCompile "com.squareup.okio:okio:${okioVersion}"
-    testCompile "org.robolectric:robolectric:${robolectricVersion}"
-    testCompile "junit:junit:${junitVersion}"
-    testCompile "com.google.truth:truth:${truthVersion}"
-    testCompile "org.mockito:mockito-core:${mockitoVersion}"
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
+    testImplementation "org.robolectric:robolectric:${robolectricVersion}"
+    testImplementation "junit:junit:${junitVersion}"
+    testImplementation "com.google.truth:truth:${truthVersion}"
+    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+
+    // The Android Gradle plugin doesn't seem to put the Apache HTTP Client on the runtime classpath anymore when
+    // running JVM tests.
+    testImplementation 'org.apache.httpcomponents:httpclient:4.5.5'
 }
 
 android {

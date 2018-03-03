@@ -43,9 +43,11 @@ import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
+import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog;
+import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog.OnPreferEncryptChangedListener;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import timber.log.Timber;
 
@@ -55,6 +57,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private static final int DIALOG_COLOR_PICKER_ACCOUNT = 1;
     private static final int DIALOG_COLOR_PICKER_LED = 2;
+    private static final int DIALOG_AUTOCRYPT_PREFER_ENCRYPT = 3;
 
     private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
 
@@ -112,6 +115,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO = "crypto";
     private static final String PREFERENCE_CRYPTO_KEY = "crypto_key";
+    private static final String PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT = "autocrypt_prefer_encrypt";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
@@ -178,7 +182,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mMaxPushFolders;
     private boolean hasPgpCrypto = false;
     private OpenPgpKeyPreference pgpCryptoKey;
-    private CheckBoxPreference pgpSupportSignOnly;
+    private Preference autocryptPreferEncryptMutual;
 
     private PreferenceScreen searchScreen;
     private CheckBoxPreference cloudSearchEnabled;
@@ -213,7 +217,7 @@ public class AccountSettings extends K9PreferenceActivity {
         account = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try {
-            final Store store = account.getRemoteStore();
+            RemoteStore store = account.getRemoteStore();
             isMoveCapable = store.isMoveCapable();
             isPushCapable = store.isPushCapable();
             isExpungeCapable = store.isExpungeCapable();
@@ -711,6 +715,15 @@ public class AccountSettings extends K9PreferenceActivity {
             });
 
             cryptoMenu.setOnPreferenceClickListener(null);
+
+            autocryptPreferEncryptMutual = findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
+            autocryptPreferEncryptMutual.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    showDialog(DIALOG_AUTOCRYPT_PREFER_ENCRYPT);
+                    return false;
+                }
+            });
         } else {
             cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_configured);
             cryptoMenu.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -930,6 +943,16 @@ public class AccountSettings extends K9PreferenceActivity {
 
                 break;
             }
+            case DIALOG_AUTOCRYPT_PREFER_ENCRYPT: {
+                dialog = new AutocryptPreferEncryptDialog(this, account.getAutocryptPreferEncryptMutual(),
+                        new OnPreferEncryptChangedListener() {
+                            @Override
+                            public void onPreferEncryptChanged(boolean enabled) {
+                                account.setAutocryptPreferEncryptMutual(enabled);
+                            }
+                        });
+                break;
+            }
         }
 
         return dialog;
@@ -963,7 +986,7 @@ public class AccountSettings extends K9PreferenceActivity {
     }
 
     private String translateFolder(String in) {
-        if (account.getInboxFolderName().equalsIgnoreCase(in)) {
+        if (account.getInboxFolderName().equals(in)) {
             return getString(R.string.special_mailbox_name_inbox);
         } else {
             return in;

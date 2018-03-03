@@ -57,9 +57,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">以下のライブラリを利用しています: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">絵文字アイコン: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">添付ファイルを読む</string>
-  <string name="read_attachment_desc">このアプリケーションでは電子メールの添付ファイルを読むことができます</string>
   <string name="read_messages_label">メールを読む</string>
   <string name="read_messages_desc">このアプリケーションがメールを読むことを許可する</string>
   <string name="delete_messages_label">メールを削除</string>
@@ -73,6 +70,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="compose_title_reply">返信</string>
   <string name="compose_title_reply_all">全員に返信</string>
   <string name="compose_title_forward">転送</string>
+  <string name="compose_title_forward_as_attachment">添付として転送</string>
   <string name="choose_account_title">アカウントの選択</string>
   <string name="choose_folder_title">フォルダ選択</string>
   <string name="status_loading_account_folder">受信 <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -103,6 +101,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="archive_action">アーカイブ</string>
   <string name="spam_action">迷惑メールとみなす</string>
   <string name="forward_action">転送</string>
+  <string name="forward_as_attachment_action">添付として転送</string>
   <string name="move_action">移動</string>
   <string name="single_message_options_action">メッセージ操作…</string>
   <string name="refile_action">整理…</string>
@@ -224,7 +223,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="compose_error_incomplete_recipient">受信者の入力が不完全です!</string>
   <string name="error_contact_address_not_found">メールアドレスが登録されていません</string>
   <string name="message_compose_attachments_skipped_toast">ダウンロードしていないため、一部の添付ファイルを転送することはできません。</string>
-  <string name="message_compose_show_quoted_text_action">元のメッセージを引用する</string>
+  <string name="message_compose_attachments_forward_toast">一部の添付をダウンロードしていないため、メッセージを転送できません。</string>
+  <string name="message_compose_show_quoted_text_action">引用文を含める</string>
   <string name="message_compose_description_delete_quoted_text">引用文を削除します</string>
   <string name="message_compose_description_edit_quoted_text">引用文を編集します</string>
   <string name="message_view_from_format">送信者: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -280,10 +280,12 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="global_settings_confirm_menu_discard">メッセージ破棄</string>
   <string name="global_settings_confirm_menu_mark_all_read">すべてのメールを既読にする</string>
   <string name="global_settings_confirm_action_delete_notif">削除(通知領域)</string>
-  <string name="global_settings_privacy_hide_useragent">メールクライアントを非表示</string>
+  <string name="global_settings_privacy_hide_useragent">メールクライアントを隠す</string>
   <string name="global_settings_privacy_hide_useragent_detail">メールヘッダからK-9のUser-Agentヘッダを削除する</string>
-  <string name="global_settings_privacy_hide_timezone">タイムゾーンを非表示</string>
+  <string name="global_settings_privacy_hide_timezone">タイムゾーンを隠す</string>
   <string name="global_settings_privacy_hide_timezone_detail">メールヘッダと返信ヘッダにローカルタイムゾーンの代わりにUTCを利用します</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting">ホスト名を隠す</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">SMTP サーバに接続するときに \'localhost\' として識別します</string>
   <string name="global_settings_notification_hide_subject_title">通知時にメールの題名を隠すか</string>
   <string name="global_settings_notification_hide_subject_never">常に表示する</string>
   <string name="global_settings_notification_hide_subject_when_locked">ロック時のみ隠す</string>
@@ -690,6 +692,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="background_ops_auto_sync_only">自動同期がチェックされた時</string>
   <string name="batch_select_all">全選択</string>
   <string name="account_setup_push_limit_label">プッシュ受信の最大フォルダ数</string>
+  <string name="account_setup_push_limit_5">5 フォルダ</string>
   <string name="account_setup_push_limit_10">10 フォルダ</string>
   <string name="account_setup_push_limit_25">25 フォルダ</string>
   <string name="account_setup_push_limit_50">50 フォルダ</string>
@@ -973,30 +976,39 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="openpgp_dialog_sign_only_minus_break">署名はメーリングリストへの送信時に破損する可能性があります。</string>
   <string name="openpgp_dialog_sign_only_minus_attach">一部のクライアントで、署名は \'signature.asc\' 添付ファイルとして表示されることがあります。</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">暗号化されたメッセージには常に署名が含まれます。</string>
-  <string name="crypto_msg_disabled">メッセージは暗号化されていません</string>
-  <string name="crypto_msg_encrypted_error">メッセージは暗号化されていますが、復号化エラーが発生しました。</string>
-  <string name="crypto_msg_encrypted_insecure">メッセージは暗号化されていますが、安全ではありません!</string>
-  <string name="crypto_msg_signed_error">メッセージは署名されていますが、署名を検証できませんでした。</string>
-  <string name="crypto_msg_encrypted_no_provider">メッセージは暗号化されていますが、暗号化アプリが設定されていません。</string>
-  <string name="crypto_msg_unsupported_encrypted">メッセージは暗号化されていますが、サポートされていない形式です。</string>
-  <string name="crypto_msg_unsupported_signed">メッセージは署名されていますが、サポートされていない形式です。</string>
-  <string name="crypto_msg_incomplete_encrypted">メールは暗号化されていますが、復号化のため完全にダウンロードする必要があります。</string>
-  <string name="crypto_msg_cancelled">メッセージは暗号化されていますが、復号化をキャンセルされました。</string>
-  <string name="crypto_msg_signed_unencrypted">メッセージは署名されていますが、暗号化されていません。</string>
-  <string name="crypto_msg_encrypted_unsigned">メッセージは暗号化されていますが、署名されていません。</string>
-  <string name="crypto_msg_sign_unknown">不明な鍵で署名されました。</string>
-  <string name="crypto_msg_sign_verified">信頼済鍵で署名されました。</string>
-  <string name="crypto_msg_sign_unverified">信頼されていない鍵で署名されました!</string>
-  <string name="crypto_msg_sign_error">署名にエラーが含まれていました。</string>
-  <string name="crypto_msg_sign_mismatch">誤った鍵で署名されました。</string>
-  <string name="crypto_msg_sign_expired">期限切れの鍵で署名されました。</string>
-  <string name="crypto_msg_sign_revoked">取り消された鍵で署名されました。</string>
-  <string name="crypto_msg_sign_insecure">安全ではない鍵で署名されました。</string>
-  <string name="crypto_msg_sign_incomplete">署名を検証するために、完全にダウンロードする必要があります。</string>
-  <string name="crypto_msg_signed_encrypted">メッセージは署名および暗号化されています。</string>
-  <string name="crypto_msg_unsigned_encrypted">署名がありません。このメッセージは傍受されている可能性があります。</string>
+  <string name="crypto_msg_title_plaintext">平文</string>
+  <string name="crypto_msg_unencrypted_sign_error">エンドトゥエンド署名にエラーが含まれていました</string>
+  <string name="crypto_msg_incomplete_signed">署名を処理するために、完全にダウンロードする必要があります</string>
+  <string name="crypto_msg_unsupported_signed">サポートされていないエンドトゥエンド署名が含まれています</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">エンドトゥエンド署名された平文</string>
+  <string name="crypto_msg_unencrypted_sign_verified">検証済の署名者から</string>
+  <string name="crypto_msg_title_unencrypted_signed">署名された平文</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">エンドトゥエンドの鍵が送信者と一致しません</string>
+  <string name="crypto_msg_unencrypted_sign_expired">エンドトゥエンドの鍵が有効期限切れです</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">エンドトゥエンドの鍵が失効されました</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">エンドトゥエンドの鍵が安全ではないようです</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">不明なエンドトゥエンドの鍵から</string>
+  <string name="crypto_msg_title_encrypted_unknown">暗号化</string>
+  <string name="crypto_msg_encrypted_error">復号エラーがありました</string>
+  <string name="crypto_msg_encrypted_incomplete">復号化するために、完全にダウンロードする必要があります</string>
+  <string name="crypto_msg_encrypted_no_provider">暗号化アプリが設定されていません</string>
+  <string name="crypto_msg_encrypted_unsupported">サポートされていない形式です</string>
+  <string name="crypto_msg_encrypted_cancelled">復号化がキャンセルされました</string>
+  <string name="crypto_msg_title_encrypted_unsigned">暗号化</string>
+  <string name="crypto_msg_encrypted_unsigned">エンドトゥエンドではありません</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">エンドトゥエンドではありません</string>
+  <string name="crypto_msg_encrypted_sign_verified">検証済の署名者から</string>
+  <string name="crypto_msg_title_encrypted_signed">暗号化</string>
+  <string name="crypto_msg_encrypted_sign_unknown">不明なエンドトゥエンドの鍵から</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">エンドトゥエンドの鍵が送信者と一致しません</string>
+  <string name="crypto_msg_encrypted_sign_expired">エンドトゥエンドの鍵が有効期限切れです</string>
+  <string name="crypto_msg_encrypted_sign_revoked">エンドトゥエンドの鍵が失効されました</string>
+  <string name="crypto_msg_encrypted_sign_insecure">エンドトゥエンドの鍵が安全ではないようです</string>
+  <string name="crypto_msg_encrypted_sign_error">エンドトゥエンドのデータがエラーです</string>
+  <string name="crypto_msg_encrypted_insecure">暗号が安全ではないようです</string>
   <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_view_key">署名者を表示</string>
+  <string name="crypto_info_view_signer">署名者を表示</string>
+  <string name="crypto_info_view_sender">送信者を表示</string>
   <string name="crypto_info_view_security_warning">詳細</string>
   <string name="locked_attach_unlock">ロック解除</string>
   <string name="locked_attach_unencrypted">この部分は暗号化されていません。安全ではない可能性があります。</string>
@@ -1006,13 +1018,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="messageview_decrypt_retry">再実行</string>
   <string name="messageview_decrypt_incomplete">暗号化されたメールは、復号化するためにダウンロードする必要があります。</string>
   <string name="messageview_crypto_error_title">メールの復号化時にエラー</string>
-  <string name="messageview_crypto_warning_title">セキュリティ警告</string>
-  <string name="messageview_crypto_warning_revoked">このメッセージは <b>取り消された鍵</b> で署名されました!</string>
-  <string name="messageview_crypto_warning_expired">このメッセージは <b>期限切れの鍵</b> で署名されました!</string>
-  <string name="messageview_crypto_warning_insecure">このメッセージは <b>安全ではない鍵</b> で署名されました!</string>
-  <string name="messageview_crypto_warning_error"><b>このメッセージの署名にエラー</b> がありました!</string>
-  <string name="messageview_crypto_warning_unsigned">このメッセージは暗号化されていますが、署名されていません。 <b>エンドツーエンドのセキュリティはありません</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">とにかくメッセージを表示する</string>
   <string name="recipient_error_non_ascii">特殊文字は現在サポートされていません!</string>
   <string name="recipient_error_parse_failed">アドレスの解析時にエラー!</string>
   <string name="account_settings_crypto_support_sign_only">暗号化されていない署名を表示</string>

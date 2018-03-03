@@ -220,13 +220,6 @@ public abstract class MessageBuilder {
                 continue;
             }
 
-            String contentType = attachment.contentType;
-            if (MimeUtil.isMessage(contentType)) {
-                contentType = "application/octet-stream";
-                // TODO reencode message body to 7 bit
-                // body = new TempFileMessageBody(attachment.filename);
-            }
-
             Body body = new TempFileBody(attachment.filename);
             MimeBodyPart bp = new MimeBodyPart(body);
 
@@ -236,11 +229,13 @@ public abstract class MessageBuilder {
              * MimeHeader.writeTo().
              */
             bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n name=\"%s\"",
-                    contentType,
+                    attachment.contentType,
                     EncoderUtil.encodeIfNecessary(attachment.name,
                             EncoderUtil.Usage.WORD_ENTITY, 7)));
 
-            bp.setEncoding(MimeUtility.getEncodingforType(contentType));
+            if (!MimeUtil.isMessage(attachment.contentType)) {
+                bp.setEncoding(MimeUtility.getEncodingforType(attachment.contentType));
+            }
 
             /*
              * TODO: Oh the joys of MIME...

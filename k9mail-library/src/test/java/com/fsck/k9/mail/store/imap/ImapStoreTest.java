@@ -135,6 +135,31 @@ public class ImapStoreTest {
     }
 
     @Test
+    public void autoconfigureFolders_removeNamespacePrefix() throws Exception {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
+        List<ImapResponse> imapResponses = Arrays.asList(
+                createImapResponse("* LIST (\\Drafts) \".\" \"INBOX.Drafts\""),
+                createImapResponse("* LIST (\\Sent) \".\" \"INBOX.Sent\""),
+                createImapResponse("* LIST (\\Junk) \".\" \"INBOX.Spam\""),
+                createImapResponse("* LIST (\\Trash) \".\" \"INBOX.Trash\""),
+                createImapResponse("* LIST (\\Archive) \".\" \"INBOX.Archive\""),
+                createImapResponse("5 OK Success")
+        );
+        when(imapConnection.executeSimpleCommand("LIST (SPECIAL-USE) \"\" \"INBOX.*\"")).thenReturn(imapResponses);
+
+        imapStore.setTestCombinedPrefix("INBOX.");
+        imapStore.autoconfigureFolders(imapConnection);
+
+        assertEquals("INBOX.", imapStore.getCombinedPrefix());
+        verify(storeConfig).setDraftsFolderName("Drafts");
+        verify(storeConfig).setSentFolderName("Sent");
+        verify(storeConfig).setSpamFolderName("Spam");
+        verify(storeConfig).setTrashFolderName("Trash");
+        verify(storeConfig).setArchiveFolderName("Archive");
+    }
+
+    @Test
     public void getPersonalNamespaces_withForceListAll() throws Exception {
         when(storeConfig.subscribedFoldersOnly()).thenReturn(true);
         ImapConnection imapConnection = mock(ImapConnection.class);
@@ -198,6 +223,45 @@ public class ImapStoreTest {
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
+    }
+
+    @Test
+    public void getPersonalNamespaces_withNamespacePrefix_shouldRemoveNamespacePrefix() throws Exception {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        List<ImapResponse> imapResponses = Arrays.asList(
+                createImapResponse("* LIST () \".\" \"INBOX\""),
+                createImapResponse("* LIST () \".\" \"INBOX.FolderOne\""),
+                createImapResponse("* LIST () \".\" \"INBOX.FolderTwo\""),
+                createImapResponse("5 OK Success")
+        );
+        when(imapConnection.executeSimpleCommand("LIST \"\" \"INBOX.*\"")).thenReturn(imapResponses);
+        imapStore.enqueueImapConnection(imapConnection);
+        imapStore.setTestCombinedPrefix("INBOX.");
+
+        List<ImapFolder> result = imapStore.getPersonalNamespaces(false);
+
+        assertNotNull(result);
+        assertEquals(Sets.newSet("INBOX", "FolderOne", "FolderTwo"), extractFolderNames(result));
+    }
+
+    @Test
+    public void getPersonalNamespaces_withFolderNotMatchingNamespacePrefix_shouldExcludeFolderWithoutPrefix()
+            throws Exception {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        List<ImapResponse> imapResponses = Arrays.asList(
+                createImapResponse("* LIST () \".\" \"INBOX\""),
+                createImapResponse("* LIST () \".\" \"INBOX.FolderOne\""),
+                createImapResponse("* LIST () \".\" \"FolderTwo\""),
+                createImapResponse("5 OK Success")
+        );
+        when(imapConnection.executeSimpleCommand("LIST \"\" \"INBOX.*\"")).thenReturn(imapResponses);
+        imapStore.enqueueImapConnection(imapConnection);
+        imapStore.setTestCombinedPrefix("INBOX.");
+
+        List<ImapFolder> result = imapStore.getPersonalNamespaces(false);
+
+        assertNotNull(result);
+        assertEquals(Sets.newSet("INBOX", "FolderOne"), extractFolderNames(result));
     }
 
     @Test
@@ -316,6 +380,7 @@ public class ImapStoreTest {
 
     static class TestImapStore extends ImapStore {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();
+        private String testCombinedPrefix;
 
         public TestImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
                 ConnectivityManager connectivityManager, OAuth2TokenProvider oAuth2TokenProvider) throws MessagingException {
@@ -332,6 +397,15 @@ public class ImapStoreTest {
 
         public void enqueueImapConnection(ImapConnection imapConnection) {
             imapConnections.add(imapConnection);
+        }
+
+        @Override
+        String getCombinedPrefix() {
+            return testCombinedPrefix != null ? testCombinedPrefix : super.getCombinedPrefix();
+        }
+
+        void setTestCombinedPrefix(String prefix) {
+            testCombinedPrefix = prefix;
         }
     }
 }

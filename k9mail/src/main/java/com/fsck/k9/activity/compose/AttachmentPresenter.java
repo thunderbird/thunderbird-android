@@ -16,13 +16,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.activity.misc.Attachment.LoadingState;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
+import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.provider.RawMessageProvider;
 
 
 public class AttachmentPresenter {
@@ -141,7 +145,7 @@ public class AttachmentPresenter {
 
         int loaderId = getNextFreeLoaderId();
         Attachment attachment = Attachment.createAttachment(
-                attachmentViewInfo.internalUri, loaderId, attachmentViewInfo.mimeType);
+                attachmentViewInfo.internalUri, loaderId, attachmentViewInfo.mimeType, true);
         attachment = attachment.deriveWithMetadataLoaded(
                 attachmentViewInfo.mimeType, attachmentViewInfo.displayName, attachmentViewInfo.size);
 
@@ -149,12 +153,16 @@ public class AttachmentPresenter {
     }
 
     public void addAttachment(Uri uri, String contentType) {
+        addAttachment(uri, contentType, false);
+    }
+
+    private void addAttachment(Uri uri, String contentType, boolean allowMessageType) {
         if (attachments.containsKey(uri)) {
             return;
         }
 
         int loaderId = getNextFreeLoaderId();
-        Attachment attachment = Attachment.createAttachment(uri, loaderId, contentType);
+        Attachment attachment = Attachment.createAttachment(uri, loaderId, contentType, allowMessageType);
 
         addAttachmentAndStartLoader(attachment);
     }
@@ -180,6 +188,18 @@ public class AttachmentPresenter {
         boolean isMissingParts = !loadNonInlineAttachments(messageViewInfo);
         if (isMissingParts) {
             attachmentMvpView.showMissingAttachmentsPartialMessageWarning();
+        }
+    }
+
+    public void processMessageToForwardAsAttachment(MessageViewInfo messageViewInfo) throws MessagingException {
+        if (messageViewInfo.isMessageIncomplete) {
+            attachmentMvpView.showMissingAttachmentsPartialMessageForwardWarning();
+        } else {
+            LocalMessage localMessage = (LocalMessage) messageViewInfo.message;
+            MessageReference messageReference = localMessage.makeMessageReference();
+            Uri rawMessageUri = RawMessageProvider.getRawMessageUri(messageReference);
+
+            addAttachment(rawMessageUri, "message/rfc822", true);
         }
     }
 
@@ -383,6 +403,7 @@ public class AttachmentPresenter {
         void performSaveAfterChecks();
 
         void showMissingAttachmentsPartialMessageWarning();
+        void showMissingAttachmentsPartialMessageForwardWarning();
     }
 
     public interface AttachmentsChangedListener {

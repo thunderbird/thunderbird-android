@@ -233,7 +233,7 @@ public class NotificationActionService extends CoreService {
 
     private boolean isMovePossible(MessagingController controller, Account account,
             String destinationFolderName) {
-        boolean isSpecialFolderConfigured = !K9.FOLDER_NONE.equalsIgnoreCase(destinationFolderName);
+        boolean isSpecialFolderConfigured = !K9.FOLDER_NONE.equals(destinationFolderName);
 
         return isSpecialFolderConfigured && controller.isMoveCapable(account);
     }

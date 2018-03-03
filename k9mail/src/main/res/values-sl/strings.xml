@@ -56,9 +56,6 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="app_authors_fmt">Avtorstvo: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Podrobnosti različice: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Vključene so naslednje zunanje knjižnice: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Izrazne ikone: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Preglej prilogo pošte …</string>
-  <string name="read_attachment_desc">Možnost omogoča programu branje prilog elektronskih sporočil.</string>
   <string name="read_messages_label">Preberi pošto</string>
   <string name="read_messages_desc">Možnost omogoča programu branje elektronske pošte.</string>
   <string name="delete_messages_label">brisanje sporočil elektronske pošte</string>
@@ -72,6 +69,7 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="compose_title_reply">Odgovori</string>
   <string name="compose_title_reply_all">Odgovori vsem</string>
   <string name="compose_title_forward">Posreduj</string>
+  <string name="compose_title_forward_as_attachment">Posreduj kot prilogo</string>
   <string name="choose_account_title">Izbor računa</string>
   <string name="choose_folder_title">Izbor mape</string>
   <string name="status_loading_account_folder">Izpraševanje <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -102,6 +100,7 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="archive_action">Arhiviraj</string>
   <string name="spam_action">Označi kot neželeno pošto</string>
   <string name="forward_action">Posreduj</string>
+  <string name="forward_as_attachment_action">Posreduj kot prilogo</string>
   <string name="move_action">Premakni</string>
   <string name="single_message_options_action">Pošlji …</string>
   <string name="refile_action">Določi mapo …</string>
@@ -166,7 +165,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="abbrev_kilobytes"> kB</string>
   <string name="abbrev_bytes"> B</string>
   <string name="account_size_changed">Račun »<xliff:g id="account">%s</xliff:g>« je skrčen iz <xliff:g id="oldSize">%s</xliff:g> na <xliff:g id="newSize">%s</xliff:g>.</string>
-  <string name="compacting_account">Stiskanje računa »<xliff:g id="account">%s</xliff:g>«</string>
+  <string name="compacting_account">Poteka stiskanje računa »<xliff:g id="account">%s</xliff:g>«.</string>
   <string name="clearing_account">Čiščenje računa »<xliff:g id="account">%s</xliff:g>«</string>
   <string name="recreating_account">Poustvarjanje računa »<xliff:g id="account">%s</xliff:g>«</string>
   <string name="notification_new_title">Nova pošta</string>
@@ -230,7 +229,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="compose_error_incomplete_recipient">Polje prejemnika vsebuje nepopoln naslov!</string>
   <string name="error_contact_address_not_found">Za ta stik ni mogoče najti nobenega elektronskega naslova.</string>
   <string name="message_compose_attachments_skipped_toast">Nekaterih prilog ni mogoče posredovati, ker še niso prejete na napravo.</string>
-  <string name="message_compose_show_quoted_text_action">Navedi izvirno sporočilo</string>
+  <string name="message_compose_attachments_forward_toast">Sporočila ni mogoče posredovati, ker nekatere priloge še niso prejete.</string>
+  <string name="message_compose_show_quoted_text_action">Vključi citirano sporočilo</string>
   <string name="message_compose_description_delete_quoted_text">Odstrani izvirno besedilo</string>
   <string name="message_compose_description_edit_quoted_text">Uredi izvirno besedilo</string>
   <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -290,6 +290,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="global_settings_privacy_hide_useragent_detail">Odstrani podatke programa K-9 iz glave pošte</string>
   <string name="global_settings_privacy_hide_timezone">Skrij časovni pas</string>
   <string name="global_settings_privacy_hide_timezone_detail">V glavah poštnih sporočil se uporabi čas UTC in ne krajevni čas</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting">Skrij ime gostitelja</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Pri povezovanju s SMTP strežniki se identificiraj kot \'localhost\'</string>
   <string name="global_settings_notification_hide_subject_title">Skrivanje izpisa zadeve sporočila v obvestilih</string>
   <string name="global_settings_notification_hide_subject_never">Vedno pokaži zadevo</string>
   <string name="global_settings_notification_hide_subject_when_locked">Skrij, ko je naprava zaklenjena</string>
@@ -657,6 +659,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nepoznano potrdilo</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Sprejmi ključ</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Zavrni ključ</string>
+  <string name="message_view_help_key">Del (ali D) – Izbriši\nR – Odgovori\nA - Odgovori vsem\nC – Sestavi\nF – Posreduj\nM – Premakni\nV – Arhiviraj\nY – Kopiraj\nZ – Označi (Ne)prebrano\nG – Označi z zvezdico\nO – Način razvrščanja\nI – Razvrščanje\nQ – Nazaj na mape\nS – Izberi/Odstrani izbor\nJ ali P – Predhodno sporočilo\nK ali N – Naslednje sporočilo</string>
+  <string name="message_list_help_key">Del (ali D) – Izbriši\nC – Sestavi\nM – Premakni\nV – Arhiviraj\nY – Kopiraj\nZ – Označi (Ne)Prebrano\nG – Označi z zvezdico\nO – Način razvrščanja\nI – Razvrščanje\nQ – Nazaj na mape\nS – Izberi/Odstrani izbor</string>
   <string name="folder_list_help_key">1 - Pokaži le mape 1. ravni\n2 - Pokaži mape 1. in 2. ravni\n3 - Pokaži vse razen map 2. ravni\n4 - Pokaži vse mape\nQ - Vrni se na račune\nS - Uredi nastavitve računa</string>
   <string name="folder_list_filter_hint">Ime mape vsebuje</string>
   <string name="folder_list_display_mode_label">Pokaži mape …</string>
@@ -694,6 +698,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="background_ops_auto_sync_only">Ko je omogočeno samodejno usklajevanje</string>
   <string name="batch_select_all">Izberi vse</string>
   <string name="account_setup_push_limit_label">Največje število map za preverjanje s potiskom</string>
+  <string name="account_setup_push_limit_5">5 map</string>
   <string name="account_setup_push_limit_10">10 map</string>
   <string name="account_setup_push_limit_25">25 map</string>
   <string name="account_setup_push_limit_50">50 map</string>
@@ -813,6 +818,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="settings_export_success_generic">Nastavitve so uspešno izvožene</string>
   <string name="settings_import_global_settings_success">Splošne nastavitve so uspešno uvožene iz datoteke <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Nastavitve <xliff:g id="accounts">%s</xliff:g> iz <xliff:g id="filename">%s</xliff:g> so uspešno uvožene.</string>
+  <string name="settings_import_account_imported_as">Račun <xliff:g id="original_account_name">%s</xliff:g> je uvožen kot <xliff:g id="account_name_after_import">%s</xliff:g>.</string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 račun</item>
     <item quantity="two"><xliff:g id="numAccounts">%s</xliff:g> računa</item>
@@ -932,8 +938,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="message_view_empty">Izberite sporočilo na levi.</string>
   <string name="global_settings_show_contact_picture_label">Pokaži slike stikov</string>
   <string name="global_settings_show_contact_picture_summary">V seznamu sporočil prikaže slike stikov</string>
-  <string name="last_refresh_time_format">Osveženo <xliff:g id="formatted_time">%s</xliff:g></string>
-  <string name="last_refresh_time_format_with_push">Osveženo <xliff:g id="time_with_preposition">%s</xliff:g> (potiskanje je dejavno)</string>
+  <string name="last_refresh_time_format">Nazadnje osveženo: <xliff:g id="formatted_time">%s</xliff:g></string>
+  <string name="last_refresh_time_format_with_push">Nazadnje osveženo: <xliff:g id="time_with_preposition">%s</xliff:g> (potiskanje je dejavno)</string>
   <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">Označi vse kot prebrano</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Obarvaj slike stikov</string>
@@ -996,30 +1002,39 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="openpgp_dialog_sign_only_minus_break">Podpisi se lahko pri pošiljanju na dopisne sezname okvarijo.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Podpisi so v nekaterih odjemalcih prikazani kot priloge »signature.asc«.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Šifrirana sporočila vedno vključujejo tudi podpis</string>
-  <string name="crypto_msg_disabled">Sporočilo ni šifrirano</string>
-  <string name="crypto_msg_encrypted_error">Sporočilo je šifrirano, vendar je prišlo pri odšifriranju do napake.</string>
-  <string name="crypto_msg_encrypted_insecure">Sporočilo je šifrirano, vendar ni varno!</string>
-  <string name="crypto_msg_signed_error">Sporočilo je podpisano, vendar podpisa ni mogoče preveriti.</string>
-  <string name="crypto_msg_encrypted_no_provider">Sporočilo je šifrirano, ni pa nastavljenega programa za odšifriranje.</string>
-  <string name="crypto_msg_unsupported_encrypted">Sporočilo je šifrirano, vendar z nepodprto obliko šifriranja.</string>
-  <string name="crypto_msg_unsupported_signed">Sporočilo je podpisano, vendar z nepodprto obliko podpisa.</string>
-  <string name="crypto_msg_incomplete_encrypted">Sporočilo je šifrirano, vendar ga je treba za odšifriranje prejeti v celoti.</string>
-  <string name="crypto_msg_cancelled">Sporočilo je šifrirano, vendar je bilo odšifriranje prekinjeno.</string>
-  <string name="crypto_msg_signed_unencrypted">Sporočilo je podpisano, vendar ni šifrirano.</string>
-  <string name="crypto_msg_encrypted_unsigned">Sporočilo je bilo šifrirano, vendar ni podpisano.</string>
-  <string name="crypto_msg_sign_unknown">Podpis je narejen z neznanim ključem.</string>
-  <string name="crypto_msg_sign_verified">Podpis je narejen z zaupanja vrednim ključem.</string>
-  <string name="crypto_msg_sign_unverified">Podpis je narejen z zaupanja nevrednim ključem!</string>
-  <string name="crypto_msg_sign_error">V podpisu sporočila je napaka.</string>
-  <string name="crypto_msg_sign_mismatch">Podpis je narejen z napačnim ključem.</string>
-  <string name="crypto_msg_sign_expired">Podpis je narejen s pretečenim ključem.</string>
-  <string name="crypto_msg_sign_revoked">Podpis je narejen s preklicanim ključem.</string>
-  <string name="crypto_msg_sign_insecure">Podpis je narejen z ne-varnim ključem.</string>
-  <string name="crypto_msg_sign_incomplete">Za preverjanje podpisa je treba sporočilo prejeti v celoti.</string>
-  <string name="crypto_msg_signed_encrypted">Sporočilo je podpisano in šifrirano.</string>
-  <string name="crypto_msg_unsigned_encrypted">Ni podpisa: to sporočilo je bilo morda prestreženo.</string>
+  <string name="crypto_msg_title_plaintext">Golo besedilo</string>
+  <string name="crypto_msg_unencrypted_sign_error">end-to-end podpis je vseboval napako</string>
+  <string name="crypto_msg_incomplete_signed">za obdelavo podpisa se mora sporočilo prenesti v celoti </string>
+  <string name="crypto_msg_unsupported_signed">vsebuje nepodprt end-to-end podpis</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">End-to-end podpisano golo besedilo</string>
+  <string name="crypto_msg_unencrypted_sign_verified">od preverjenega podpisnika</string>
+  <string name="crypto_msg_title_unencrypted_signed">Podpisano besedilno sporočilo</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">vendar end-to-end ključ ni ustrezal pošiljatelju</string>
+  <string name="crypto_msg_unencrypted_sign_expired">vendar end-to-end ključ je potekel</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">vendar end-to-end ključ je preklican</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">vendar end-to-end ključ ni varen</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">od neznanega end-to-end ključa </string>
+  <string name="crypto_msg_title_encrypted_unknown">Šifrirano</string>
+  <string name="crypto_msg_encrypted_error">vendar je prišlo do napake pri odšifriranju</string>
+  <string name="crypto_msg_encrypted_incomplete">za odšifriranje se mora sporočilo prenesti v celoti </string>
+  <string name="crypto_msg_encrypted_no_provider">vendar ni konfigurirana nobena aplikacija za odšifriranje</string>
+  <string name="crypto_msg_encrypted_unsupported">vendar z nepodprto obliko šifriranja</string>
+  <string name="crypto_msg_encrypted_cancelled">vendar je bilo odšifriranje preklicano</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Šifrirano</string>
+  <string name="crypto_msg_encrypted_unsigned">vendar ne end-to-end</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">End-to-end šifrirano</string>
+  <string name="crypto_msg_encrypted_sign_verified">od preverjenega pošiljatelja</string>
+  <string name="crypto_msg_title_encrypted_signed">Šifrirano</string>
+  <string name="crypto_msg_encrypted_sign_unknown">od neznanega end-to-end ključa </string>
+  <string name="crypto_msg_encrypted_sign_mismatch">vendar end-to-end ključ ni ustrezal pošiljatelju</string>
+  <string name="crypto_msg_encrypted_sign_expired">vendar end-to-end ključ je potekel</string>
+  <string name="crypto_msg_encrypted_sign_revoked">vendar end-to-end ključ je preklican</string>
+  <string name="crypto_msg_encrypted_sign_insecure">vendar end-to-end ključ ni varen</string>
+  <string name="crypto_msg_encrypted_sign_error">vendar imajo end-to-end podatki napake</string>
+  <string name="crypto_msg_encrypted_insecure">vendar šifriranje se ne smatra za varno</string>
   <string name="crypto_info_ok">V redu</string>
-  <string name="crypto_info_view_key">Podatki podpisnika</string>
+  <string name="crypto_info_view_signer">Podatki podpisnika</string>
+  <string name="crypto_info_view_sender">Podatki pošiljatelja</string>
   <string name="crypto_info_view_security_warning">Podrobnosti</string>
   <string name="locked_attach_unlock">Odkleni</string>
   <string name="locked_attach_unencrypted">Ta del sporočila ni bil ustrezno šifriran, zato je lahko nezanesljiv.</string>
@@ -1029,13 +1044,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="messageview_decrypt_retry">Znova poskusi</string>
   <string name="messageview_decrypt_incomplete">Za odšifriranje sporočila je treba sporočilo prejeti v celoti.</string>
   <string name="messageview_crypto_error_title">Napaka odšifriranja sporočila</string>
-  <string name="messageview_crypto_warning_title">Varnostno opozorilo</string>
-  <string name="messageview_crypto_warning_revoked">To sporočilo je podpisano s <b>preklicanim ključem</b>!</string>
-  <string name="messageview_crypto_warning_expired">To sporočilo je bilo podpisano s <b>poteklim ključem</b>!</string>
-  <string name="messageview_crypto_warning_insecure">To sporočilo je bilo podpisano z <b>ne-varnim ključem</b>!</string>
-  <string name="messageview_crypto_warning_error">Prišlo je do <b>napake v podpisu tega sporočila</b>!</string>
-  <string name="messageview_crypto_warning_unsigned">Sporočilo je bilo šifrirano, vendar ni podpisano. Sporočilo ni <b>popolnoma zavarovano</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Vseeno pokaži sporočilo</string>
   <string name="recipient_error_non_ascii">Posebni znaki trenutno niso podprti!</string>
   <string name="recipient_error_parse_failed">Prišlo je do napake pri razčlenjevanju naslova!</string>
   <string name="account_settings_crypto_support_sign_only">Pokaži nešifrirane podpise</string>

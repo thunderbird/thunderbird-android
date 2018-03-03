@@ -26,9 +26,6 @@
   <string name="app_authors_fmt">Autoriai: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Laidos informacija: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Mes naudojame šias trečiųjų šalių bibliotekas: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Emoji piktogramos: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Žiūrėti el. pašto priedus</string>
-  <string name="read_attachment_desc">Leidžia šiai programai peržiūrėti jūsų laiškų priedus.</string>
   <string name="read_messages_label">Skaityti laiškus</string>
   <string name="read_messages_desc">Leidžia programai skaityti jūsų laiškus.</string>
   <string name="delete_messages_label">Šalinti laiškus</string>
@@ -173,7 +170,6 @@
   <string name="message_compose_error_no_recipients">Turite pridėti bent vieną gavėją.</string>
   <string name="error_contact_address_not_found">Nepavyko rasti šio kontakto el. pašto adreso.</string>
   <string name="message_compose_attachments_skipped_toast">Kai kurių priedų negalima persiųsti, nes jie nebuvo parsiųsti.</string>
-  <string name="message_compose_show_quoted_text_action">Cituoti laišką</string>
   <string name="message_compose_description_delete_quoted_text">Pašalinti cituojamą tekstą</string>
   <string name="message_compose_description_edit_quoted_text">Redaguoti cituojamą tekstą</string>
   <string name="message_view_from_format">Nuo: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>

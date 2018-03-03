@@ -391,6 +391,12 @@
             android:key="privacy_hide_timezone"
             android:title="@string/global_settings_privacy_hide_timezone"
             android:summary="@string/global_settings_privacy_hide_timezone_detail"/>
+
+        <CheckBoxPreference
+            android:persistent="false"
+            android:key="privacy_hide_hostname_when_connecting"
+            android:title="@string/global_settings_privacy_hide_hostname_when_connecting"
+            android:summary="@string/global_settings_privacy_hide_hostname_when_connecting_detail"/>
     </PreferenceScreen>
 
     <PreferenceScreen

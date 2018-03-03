@@ -56,9 +56,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="app_authors_fmt">Egileak: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Berrikuspenaren Informazioa: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Hirugarrenen liburutegi hauek erabiltzen ari gara: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Emotikonoen ikonoak: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Irakurri postaren eranskinak</string>
-  <string name="read_attachment_desc">Aplikazio honi zure postaren eranskinak irakurtzea onartzen dio.</string>
   <string name="read_messages_label">Irakurri posta</string>
   <string name="read_messages_desc">Aplikazio honi zure posta irakurtzea onartzen dio.</string>
   <string name="delete_messages_label">Ezabatu posta</string>
@@ -72,6 +69,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="compose_title_reply">Erantzun</string>
   <string name="compose_title_reply_all">Erantzun denei</string>
   <string name="compose_title_forward">Birbidali</string>
+  <string name="compose_title_forward_as_attachment">Birbidali eranskin gisa</string>
   <string name="choose_account_title">Aukeratu Kontua</string>
   <string name="choose_folder_title">Aukeratu karpeta</string>
   <string name="status_loading_account_folder"><xliff:g id="account">%s</xliff:g> aztertzen:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -102,6 +100,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="archive_action">Artxibatu</string>
   <string name="spam_action">Spam</string>
   <string name="forward_action">Birbidali</string>
+  <string name="forward_as_attachment_action">Birbidali eranskin gisa</string>
   <string name="move_action">Mugitu</string>
   <string name="single_message_options_action">Bidali…</string>
   <string name="refile_action">Artxibatu…</string>
@@ -225,7 +224,8 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="compose_error_incomplete_recipient">Hartzailearen eremua osatu gabea dago!</string>
   <string name="error_contact_address_not_found">Kontaktu honen posta helbidea ez da aurkitu.</string>
   <string name="message_compose_attachments_skipped_toast">Eranskin batzuk ezin dira birbidali deskargatu ez direlako.</string>
-  <string name="message_compose_show_quoted_text_action">Aipatu mezua</string>
+  <string name="message_compose_attachments_forward_toast">Mezua ezin da birbidali eranskin batzuk ez direlako deskargatu.</string>
+  <string name="message_compose_show_quoted_text_action">Sartu aipatutako mezua</string>
   <string name="message_compose_description_delete_quoted_text">Kendu aipua</string>
   <string name="message_compose_description_edit_quoted_text">Editatu aipua</string>
   <string name="message_view_from_format">Nondik: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -238,7 +238,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="message_view_status_no_space">Eranskina ezin izan da gorde leku nahikorik ez dagoelako.</string>
   <string name="message_view_show_pictures_action">Erakutsi irudiak</string>
   <string name="message_view_no_viewer">Ezin da <xliff:g id="mimetype">%s</xliff:g>-(r)entzako ikustailerik aurkitu.</string>
-  <string name="message_view_download_remainder">Mezu osoa deskargatu</string>
+  <string name="message_view_download_remainder">Deskargatu mezu osoa</string>
   <string name="message_view_toast_unable_to_display_message">Ezin da mezua bistaratu</string>
   <string name="message_view_sender_label">%1$s-(r)en bidez</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -285,6 +285,8 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="global_settings_privacy_hide_useragent_detail">Kendu K-9 Erabiltzaile-Agentea posta goiburutik</string>
   <string name="global_settings_privacy_hide_timezone">Ezkutatu ordu-zona</string>
   <string name="global_settings_privacy_hide_timezone_detail">Erabili UTC tokiko ordu-zonaren ordez posta goiburuetan eta erantzunen goiburuan</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting">Ezkutatu ostalari-izena</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Identifikatu \"ostalari lokal\" bezala SMTP zerbitzarietara konektatzean</string>
   <string name="global_settings_notification_hide_subject_title">Ezkutatu gaia jakinarazpenetan</string>
   <string name="global_settings_notification_hide_subject_never">Inoiz ez</string>
   <string name="global_settings_notification_hide_subject_when_locked">Gailua blokeatuta dagoenean</string>
@@ -691,6 +693,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="background_ops_auto_sync_only">\'Auto-sinkronizazioa\' hautatuta dagoenean</string>
   <string name="batch_select_all">Hautatu guztia</string>
   <string name="account_setup_push_limit_label">\"Push\"ekin egiaztatuko diren karpeta kopuru maximoa</string>
+  <string name="account_setup_push_limit_5">5 karpeta</string>
   <string name="account_setup_push_limit_10">10 karpeta</string>
   <string name="account_setup_push_limit_25">25 karpeta</string>
   <string name="account_setup_push_limit_50">50 karpeta</string>
@@ -980,30 +983,39 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="openpgp_dialog_sign_only_minus_break">Sinadurak hautsi daitezke posta zerrendetara bidaltzean.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Sinadurak \'signature.asc\' eranskin gisa bistaratu daitezke bezero batzuetan.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Mezu enkriptatuek beti dute sinadura bat.</string>
-  <string name="crypto_msg_disabled">Mezua ez dago enkriptatuta</string>
-  <string name="crypto_msg_encrypted_error">Mezua enkriptatuta dago, baina desenkriptatze errore bat gertatu da.</string>
-  <string name="crypto_msg_encrypted_insecure">Mezua enkriptatuta dago baina ez da segurua!</string>
-  <string name="crypto_msg_signed_error">Mezua sinatuta dago, baina sinadura ezin izan da egiaztatu.</string>
-  <string name="crypto_msg_encrypted_no_provider">Mezua enkriptatuta dago, baina ez da enkriptatze aplikaziorik konfiguratu.</string>
-  <string name="crypto_msg_unsupported_encrypted">Mezua enkriptatuta dago, baina onartzen ez den formatu batean.</string>
-  <string name="crypto_msg_unsupported_signed">Mezua sinatuta dago, baina onartzen ez den formatu batean.</string>
-  <string name="crypto_msg_incomplete_encrypted">Mezua enkriptatuta dago, baina osorik deskargatu behar da desenkriptatzeko.</string>
-  <string name="crypto_msg_cancelled">Mezua enkriptatuta dago, baina desenkriptatzea bertan behera utzi da.</string>
-  <string name="crypto_msg_signed_unencrypted">Mezua sinatuta dago, baina ez enkriptatuta.</string>
-  <string name="crypto_msg_encrypted_unsigned">Mezua enkriptatuta dago, baina ez sinatuta.</string>
-  <string name="crypto_msg_sign_unknown">Gako ezezagunarekin egindako sinadura.</string>
-  <string name="crypto_msg_sign_verified">Gako fidagarriarekin egindako sinadura.</string>
-  <string name="crypto_msg_sign_unverified">Gako ez-fidagarriarekin egindako sinadura!</string>
-  <string name="crypto_msg_sign_error">Sinadurak errore bat zuen.</string>
-  <string name="crypto_msg_sign_mismatch">Gako okerrarekin egindako sinadura.</string>
-  <string name="crypto_msg_sign_expired">Gako iraungiarekin egindako sinadura.</string>
-  <string name="crypto_msg_sign_revoked">Gako errebokatuarekin egindako sinadura.</string>
-  <string name="crypto_msg_sign_insecure">Segurua ez den gakoarekin egindako sinadura.</string>
-  <string name="crypto_msg_sign_incomplete">Mezua osorik deskargatu behar da bere sinadura egiaztatzeko.</string>
-  <string name="crypto_msg_signed_encrypted">Mezua sinatuta eta enkriptatuta dago.</string>
-  <string name="crypto_msg_unsigned_encrypted">Ez dago sinadurarik, posible da mezu hau bidean atzeman izana.</string>
+  <string name="crypto_msg_title_plaintext">Testu arrunta</string>
+  <string name="crypto_msg_unencrypted_sign_error">muturretik muturrerako sinadurak errore bat zuen</string>
+  <string name="crypto_msg_incomplete_signed">mezua osorik deskargatu behar da sinadura prozesatzeko</string>
+  <string name="crypto_msg_unsupported_signed">onartzen ez den muturretik muturrerako sinadura dauka</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Muturretik muturrera sinatutako testu arrunta</string>
+  <string name="crypto_msg_unencrypted_sign_verified">sinatzaile egiaztatutik</string>
+  <string name="crypto_msg_title_unencrypted_signed">Sinatutako testu arrunta</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">baina muturretik muturrerako gakoa ez dator bat bidaltzailearekin</string>
+  <string name="crypto_msg_unencrypted_sign_expired">baina muturretik muturrerako gakoa iraungi da</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">baina muturretik muturrerako gakoa ezeztatu da</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">baina muturretik muturrerako gakoa ez da segurutzat jotzen</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">muturretik muturrerako gako ezezagunetik</string>
+  <string name="crypto_msg_title_encrypted_unknown">Enkriptatuta</string>
+  <string name="crypto_msg_encrypted_error">baina desenkriptatze errore bat gertatu da</string>
+  <string name="crypto_msg_encrypted_incomplete">mezua osorik deskargatu behar da desenkriptatzeko</string>
+  <string name="crypto_msg_encrypted_no_provider">baina ez dago enkriptatze aplikaziorik konfiguratuta</string>
+  <string name="crypto_msg_encrypted_unsupported">baina onartzen ez den formatu batean</string>
+  <string name="crypto_msg_encrypted_cancelled">baina desenkriptatzea bertan behera utzi da</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Enkriptatuta</string>
+  <string name="crypto_msg_encrypted_unsigned">baina ez muturretik muturrera</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Muturretik muturrera enkriptatuta</string>
+  <string name="crypto_msg_encrypted_sign_verified">bidaltzaile egiaztatutik</string>
+  <string name="crypto_msg_title_encrypted_signed">Enkriptatuta</string>
+  <string name="crypto_msg_encrypted_sign_unknown">muturretik muturrerako gako ezezagunetik</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">baina muturretik muturrerako gakoa ez dator bat bidaltzailearekin</string>
+  <string name="crypto_msg_encrypted_sign_expired">baina muturretik muturrerako gakoa iraungi da</string>
+  <string name="crypto_msg_encrypted_sign_revoked">baina muturretik muturrerako gakoa ezeztatu da</string>
+  <string name="crypto_msg_encrypted_sign_insecure">baina muturretik muturrerako gakoa ez da segurutzat jotzen</string>
+  <string name="crypto_msg_encrypted_sign_error">baina muturretik muturrerako datuek erroreak dauzkate</string>
+  <string name="crypto_msg_encrypted_insecure">baina enkriptatzea ez da segurutzat jotzen</string>
   <string name="crypto_info_ok">Ados</string>
-  <string name="crypto_info_view_key">Ikusi Sinatzailea</string>
+  <string name="crypto_info_view_signer">Ikusi Sinatzailea</string>
+  <string name="crypto_info_view_sender">Ikusi Bidaltzailea</string>
   <string name="crypto_info_view_security_warning">Xehetasunak</string>
   <string name="locked_attach_unlock">Desblokeatu</string>
   <string name="locked_attach_unencrypted">Zati hau ez zegoen enkriptatuta, eta posible da ez izatea segurua.</string>
@@ -1013,13 +1025,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="messageview_decrypt_retry">Saiatu berriro</string>
   <string name="messageview_decrypt_incomplete">Enkriptatutako mezua deskargatu behar da desenkriptatzeko.</string>
   <string name="messageview_crypto_error_title">Errorea posta desenkriptatzean</string>
-  <string name="messageview_crypto_warning_title">Segurtasun Abisua</string>
-  <string name="messageview_crypto_warning_revoked">Mezu hau <b>gako errebokatu</b> batekin sinatu zen!</string>
-  <string name="messageview_crypto_warning_expired">Mezu hau <b>gako iraungi</b> batekin sinatu zen!</string>
-  <string name="messageview_crypto_warning_insecure">Mezu hau <b>segurua ez zen gako</b> batekin sinatu zen.</string>
-  <string name="messageview_crypto_warning_error"><b>Mezu honen sinaduran errore</b> bat zegoen!</string>
-  <string name="messageview_crypto_warning_unsigned">Mezu hau enkriptatuta zegoen, baina ez sinatuta. <b>Ez da segurua muturretik muturrera</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Erakutsi mezua hala ere</string>
   <string name="recipient_error_non_ascii">Une honetan karaktere bereziak ez dira onartzen!</string>
   <string name="recipient_error_parse_failed">Errorea helbidea analizatzean!</string>
   <string name="account_settings_crypto_support_sign_only">Erakutsi enkriptatu gabeko sinatzeak</string>

@@ -11,7 +11,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
 
 
@@ -34,7 +34,7 @@ public interface AccountConfig extends StoreConfig {
 
     public String getEmail();
     public String getDescription();
-    Store getRemoteStore() throws MessagingException;
+    RemoteStore getRemoteStore() throws MessagingException;
 
     public void setName(String name);
     public void setDescription(String description);

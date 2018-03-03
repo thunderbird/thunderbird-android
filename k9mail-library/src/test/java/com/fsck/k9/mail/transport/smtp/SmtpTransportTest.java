@@ -42,36 +42,100 @@ import static org.mockito.Mockito.when;
 
 @RunWith(K9LibRobolectricTestRunner.class)
 public class SmtpTransportTest {
-    private static final String LOCALHOST_NAME = "localhost";
     private static final String USERNAME = "user";
     private static final String PASSWORD = "password";
     private static final String CLIENT_CERTIFICATE_ALIAS = null;
 
     
     private TrustedSocketFactory socketFactory;
-    private OAuth2TokenProvider oauth2TokenProvider;
+    private OAuth2TokenProvider oAuth2TokenProvider;
+    private StoreConfig storeConfig = mock(StoreConfig.class);
 
-    
     @Before
     public void before() throws AuthenticationFailedException, OAuth2NeedUserPromptException {
         socketFactory = TestTrustedSocketFactory.newInstance();
-        oauth2TokenProvider = mock(OAuth2TokenProvider.class);
-        when(oauth2TokenProvider.getToken(eq(USERNAME), anyInt()))
+        oAuth2TokenProvider = mock(OAuth2TokenProvider.class);
+        when(oAuth2TokenProvider.getToken(eq(USERNAME), anyInt()))
                 .thenReturn("oldToken").thenReturn("newToken");
     }
 
     @Test
     public void SmtpTransport_withValidTransportUri() throws Exception {
-        StoreConfig storeConfig = createStoreConfigWithTransportUri("smtp://user:password:CRAM_MD5@server:123456");
+        StoreConfig storeConfig = setupStoreConfigWithTransportUri("smtp://user:password:CRAM_MD5@server:123456");
 
-        new SmtpTransport(storeConfig, socketFactory, oauth2TokenProvider);
+        new SmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider);
     }
 
     @Test(expected = MessagingException.class)
     public void SmtpTransport_withInvalidTransportUri_shouldThrow() throws Exception {
-        StoreConfig storeConfig = createStoreConfigWithTransportUri("smpt://");
+        StoreConfig storeConfig = setupStoreConfigWithTransportUri("smpt://");
 
-        new SmtpTransport(storeConfig, socketFactory, oauth2TokenProvider);
+        new SmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider);
+    }
+
+    @Test
+    public void open_withShouldHideHostnameTrue_shouldProvideLocalhost() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO localhost");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 OK");
+        when(storeConfig.shouldHideHostname()).thenReturn(true);
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null,
+                "private.host.org", "127.0.0.1");
+
+        transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withShouldHideHostnameFalse_shouldProvideHostname() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO visible.host.org");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 OK");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null,
+                "visible.host.org", "127.0.0.1");
+
+        transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withEmptyHostname_shouldProvideIPAddress() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO [127.0.0.1]");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 OK");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null,
+                "", "127.0.0.1");
+
+        transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
+    @Test
+    public void open_withEmptyHostnameAndIP_shouldProvideSensibleDefault() throws Exception {
+        MockSmtpServer server = new MockSmtpServer();
+        server.output("220 localhost Simple Mail Transfer Service Ready");
+        server.expect("EHLO android");
+        server.output("250-localhost Hello client.localhost");
+        server.output("250 OK");
+        SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null,
+                "", "");
+
+        transport.open();
+
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
     }
 
     @Test
@@ -233,9 +297,9 @@ public class SmtpTransportTest {
                     e.getMessage());
         }
 
-        InOrder inOrder = inOrder(oauth2TokenProvider);
-        inOrder.verify(oauth2TokenProvider).getToken(eq(USERNAME), anyInt());
-        inOrder.verify(oauth2TokenProvider).invalidateToken(USERNAME);
+        InOrder inOrder = inOrder(oAuth2TokenProvider);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
         server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
@@ -258,10 +322,10 @@ public class SmtpTransportTest {
 
         transport.open();
 
-        InOrder inOrder = inOrder(oauth2TokenProvider);
-        inOrder.verify(oauth2TokenProvider).getToken(eq(USERNAME), anyInt());
-        inOrder.verify(oauth2TokenProvider).invalidateToken(USERNAME);
-        inOrder.verify(oauth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        InOrder inOrder = inOrder(oAuth2TokenProvider);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }
@@ -284,10 +348,10 @@ public class SmtpTransportTest {
 
         transport.open();
 
-        InOrder inOrder = inOrder(oauth2TokenProvider);
-        inOrder.verify(oauth2TokenProvider).getToken(eq(USERNAME), anyInt());
-        inOrder.verify(oauth2TokenProvider).invalidateToken(USERNAME);
-        inOrder.verify(oauth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        InOrder inOrder = inOrder(oAuth2TokenProvider);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }
@@ -310,10 +374,10 @@ public class SmtpTransportTest {
 
         transport.open();
 
-        InOrder inOrder = inOrder(oauth2TokenProvider);
-        inOrder.verify(oauth2TokenProvider).getToken(eq(USERNAME), anyInt());
-        inOrder.verify(oauth2TokenProvider).invalidateToken(USERNAME);
-        inOrder.verify(oauth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        InOrder inOrder = inOrder(oAuth2TokenProvider);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }
@@ -363,7 +427,7 @@ public class SmtpTransportTest {
         server.output("250 AUTH XOAUTH2");
         server.expect("QUIT");
         server.output("221 BYE");
-        when(oauth2TokenProvider.getToken(anyString(), anyInt())).thenThrow(new AuthenticationFailedException("Failed to fetch token"));
+        when(oAuth2TokenProvider.getToken(anyString(), anyInt())).thenThrow(new AuthenticationFailedException("Failed to fetch token"));
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
 
         try {
@@ -527,9 +591,9 @@ public class SmtpTransportTest {
                     e.getMessage());
         }
 
-        InOrder inOrder = inOrder(oauth2TokenProvider);
-        inOrder.verify(oauth2TokenProvider).getToken(eq(USERNAME), anyInt());
-        inOrder.verify(oauth2TokenProvider).invalidateToken(USERNAME);
+        InOrder inOrder = inOrder(oAuth2TokenProvider);
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyInt());
+        inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
         server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
@@ -866,16 +930,19 @@ public class SmtpTransportTest {
 
     private SmtpTransport startServerAndCreateSmtpTransportWithoutPassword(MockSmtpServer server) throws IOException,
             MessagingException {
-        return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null);
+        return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null,
+                "localhost", "127.0.0.1");
     }
 
     private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server, AuthType authenticationType,
             ConnectionSecurity connectionSecurity) throws IOException, MessagingException {
-        return startServerAndCreateSmtpTransport(server, authenticationType, connectionSecurity, PASSWORD);
+        return startServerAndCreateSmtpTransport(server, authenticationType, connectionSecurity, PASSWORD,
+                "localhost", "127.0.0.1");
     }
 
     private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server, AuthType authenticationType,
-            ConnectionSecurity connectionSecurity, String password) throws IOException, MessagingException {
+            ConnectionSecurity connectionSecurity, String password,
+            String injectedHostname, String injectedIP) throws IOException, MessagingException {
         server.start();
 
         String host = server.getHost();
@@ -890,13 +957,12 @@ public class SmtpTransportTest {
                 password,
                 CLIENT_CERTIFICATE_ALIAS);
         String uri = TransportUris.createTransportUri(serverSettings);
-        StoreConfig storeConfig = createStoreConfigWithTransportUri(uri);
+        StoreConfig storeConfig = setupStoreConfigWithTransportUri(uri);
 
-        return new TestSmtpTransport(storeConfig, socketFactory, oauth2TokenProvider);
+        return new TestSmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider, injectedHostname, injectedIP);
     }
 
-    private StoreConfig createStoreConfigWithTransportUri(String value) {
-        StoreConfig storeConfig = mock(StoreConfig.class);
+    private StoreConfig setupStoreConfigWithTransportUri(String value) {
         when(storeConfig.getTransportUri()).thenReturn(value);
         return storeConfig;
     }
@@ -938,14 +1004,26 @@ public class SmtpTransportTest {
     
     
     static class TestSmtpTransport extends SmtpTransport {
-        TestSmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oAuth2TokenProvider)
+        private final String injectedHostname;
+        private final String injectedIP;
+
+        TestSmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
+                OAuth2TokenProvider oAuth2TokenProvider,
+                String injectedHostname, String injectedIP)
                 throws MessagingException {
             super(storeConfig, trustedSocketFactory, oAuth2TokenProvider);
+            this.injectedHostname = injectedHostname;
+            this.injectedIP = injectedIP;
         }
 
         @Override
         protected String getCanonicalHostName(InetAddress localAddress) {
-            return LOCALHOST_NAME;
+            return injectedHostname;
+        }
+
+        @Override
+        protected String getHostAddress(InetAddress localAddress) {
+            return injectedIP;
         }
     }
 }

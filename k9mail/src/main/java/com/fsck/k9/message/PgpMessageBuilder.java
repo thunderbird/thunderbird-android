@@ -4,6 +4,8 @@ package com.fsck.k9.message;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -20,6 +22,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
+import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
@@ -51,6 +54,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     private OpenPgpApi openPgpApi;
 
     private MimeMessage currentProcessedMimeMessage;
+    private MimeBodyPart messageContentBodyPart;
     private ComposeCryptoStatus cryptoStatus;
 
 
@@ -106,11 +110,11 @@ public class PgpMessageBuilder extends MessageBuilder {
         }
 
         Address address = currentProcessedMimeMessage.getFrom()[0];
-        byte[] keyData = autocryptOpenPgpApiInteractor.getKeyMaterialFromApi(
+        byte[] keyData = autocryptOpenPgpApiInteractor.getKeyMaterialForKeyId(
                 openPgpApi, openPgpKeyId, address.getAddress());
         if (keyData != null) {
-            autocryptOperations.addAutocryptHeaderToMessage(
-                    currentProcessedMimeMessage, keyData, address.getAddress(), false);
+            autocryptOperations.addAutocryptHeaderToMessage(currentProcessedMimeMessage, keyData,
+                    address.getAddress(), cryptoStatus.isSenderPreferEncryptMutual());
         }
 
         startOrContinueBuildMessage(null);
@@ -145,12 +149,16 @@ public class PgpMessageBuilder extends MessageBuilder {
                 throw new MessagingException("Must have recipients to build message!");
             }
 
+            if (messageContentBodyPart == null) {
+                messageContentBodyPart = createBodyPartFromMessageContent(shouldEncrypt);
+            }
+
             if (pgpApiIntent == null) {
                 pgpApiIntent = buildOpenPgpApiIntent(shouldSign, shouldEncrypt, isPgpInlineMode);
             }
 
-            PendingIntent returnedPendingIntent = launchOpenPgpApiIntent(
-                    pgpApiIntent, shouldEncrypt || isPgpInlineMode, shouldEncrypt || !isPgpInlineMode, isPgpInlineMode);
+            PendingIntent returnedPendingIntent = launchOpenPgpApiIntent(pgpApiIntent, messageContentBodyPart,
+                    shouldEncrypt || isPgpInlineMode, shouldEncrypt || !isPgpInlineMode, isPgpInlineMode);
             if (returnedPendingIntent != null) {
                 queueMessageBuildPendingIntent(returnedPendingIntent, REQUEST_USER_INTERACTION);
                 return;
@@ -159,6 +167,50 @@ public class PgpMessageBuilder extends MessageBuilder {
             queueMessageBuildSuccess(currentProcessedMimeMessage);
         } catch (MessagingException me) {
             queueMessageBuildException(me);
+        }
+    }
+
+    private MimeBodyPart createBodyPartFromMessageContent(boolean shouldEncrypt) throws MessagingException {
+        MimeBodyPart bodyPart = currentProcessedMimeMessage.toBodyPart();
+        String[] contentType = currentProcessedMimeMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
+        if (contentType.length > 0) {
+            bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
+        }
+
+        addGossipHeadersToBodyPart(shouldEncrypt, bodyPart);
+
+        return bodyPart;
+    }
+
+    private void addGossipHeadersToBodyPart(boolean shouldEncrypt, MimeBodyPart bodyPart) {
+        if (!shouldEncrypt) {
+            return;
+        }
+
+        String[] recipientAddresses = getCryptoRecipientsWithoutBcc();
+        boolean hasMultipleOvertRecipients = recipientAddresses.length >= 2;
+        if (hasMultipleOvertRecipients) {
+            addAutocryptGossipHeadersToPart(bodyPart, recipientAddresses);
+        }
+    }
+
+    private String[] getCryptoRecipientsWithoutBcc() {
+        ArrayList<String> recipientAddresses = new ArrayList<>(Arrays.asList(cryptoStatus.getRecipientAddresses()));
+        Address[] bccAddresses = currentProcessedMimeMessage.getRecipients(RecipientType.BCC);
+        for (Address bccAddress : bccAddresses) {
+            recipientAddresses.remove(bccAddress.getAddress());
+        }
+        return recipientAddresses.toArray(new String[recipientAddresses.size()]);
+    }
+
+    private void addAutocryptGossipHeadersToPart(MimeBodyPart bodyPart, String[] addresses) {
+        for (String address : addresses) {
+            byte[] keyMaterial = autocryptOpenPgpApiInteractor.getKeyMaterialForUserId(openPgpApi, address);
+            if (keyMaterial == null) {
+                Timber.e("Failed fetching gossip key material for address %s", address);
+                continue;
+            }
+            autocryptOperations.addAutocryptGossipHeaderToPart(bodyPart, keyMaterial, address);
         }
     }
 
@@ -193,14 +245,8 @@ public class PgpMessageBuilder extends MessageBuilder {
         return pgpApiIntent;
     }
 
-    private PendingIntent launchOpenPgpApiIntent(@NonNull Intent openPgpIntent,
+    private PendingIntent launchOpenPgpApiIntent(@NonNull Intent openPgpIntent, MimeBodyPart bodyPart,
             boolean captureOutputPart, boolean capturedOutputPartIs7Bit, boolean writeBodyContentOnly) throws MessagingException {
-        final MimeBodyPart bodyPart = currentProcessedMimeMessage.toBodyPart();
-        String[] contentType = currentProcessedMimeMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        if (contentType.length > 0) {
-            bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
-        }
-
         OpenPgpDataSource dataSource = createOpenPgpDataSourceFromBodyPart(bodyPart, writeBodyContentOnly);
 
         BinaryTempFileBody pgpResultTempBody = null;

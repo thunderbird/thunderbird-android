@@ -57,9 +57,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="app_authors_fmt">Autorzy: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Historia zmian: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">K-9 mail zawiera kod źródłowy: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Ikony Emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Czytaj załączniki</string>
-  <string name="read_attachment_desc">Zezwalaj tej aplikacji na czytanie załaczników z Twoich wiadomości.</string>
   <string name="read_messages_label">Czytaj pocztę</string>
   <string name="read_messages_desc">Zezwalaj tej aplikacji na czytanie Twoich wiadomości</string>
   <string name="delete_messages_label">Usuń wiadomości</string>
@@ -230,7 +227,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="compose_error_incomplete_recipient">Pole Odbiorca jest niekompletne!</string>
   <string name="error_contact_address_not_found">Żaden adres email nie został znaleziony.</string>
   <string name="message_compose_attachments_skipped_toast">Niektóre załączniki nie mogą być przesłane dalej ponieważ nie zostały wcześniej pobrane.</string>
-  <string name="message_compose_show_quoted_text_action">Cytuj wiadomość</string>
   <string name="message_compose_description_delete_quoted_text">Usuń cytowany tekst</string>
   <string name="message_compose_description_edit_quoted_text">Edytuj cytowany tekst</string>
   <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -993,30 +989,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="openpgp_dialog_sign_only_minus_break">Podpisy mogą ulec uszkodzeniu przy wysyłaniu do list mailingowych</string>
   <string name="openpgp_dialog_sign_only_minus_attach">W przypadku niektórych klientów, podpisy mogą być wyświetlane jako załączniki \'signature.asc\' .</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Zaszyfrowane wiadomości są zawsze opatrzone podpisem.</string>
-  <string name="crypto_msg_disabled">Wiadomość nie jest zaszyfrowana</string>
-  <string name="crypto_msg_encrypted_error">Wiadomość jest zaszyfrowana, ale wystąpił błąd deszyfrowana.</string>
-  <string name="crypto_msg_encrypted_insecure">Wiadomość zaszyfrowana, ale nie bezpieczna.</string>
-  <string name="crypto_msg_signed_error">Wiadomość jest podpisana, ale podpis nie mógł być zweryfikowany.</string>
-  <string name="crypto_msg_encrypted_no_provider">Wiadomość jest zaszyfrowana, ale nie skonfigurowano aplikacji kryptografii.</string>
-  <string name="crypto_msg_unsupported_encrypted">Wiadomość jest zaszyfrowana, ale w niewspieranym formacie.</string>
-  <string name="crypto_msg_unsupported_signed">Wiadomość jest podpisana, ale w niewspieranym formacie.</string>
-  <string name="crypto_msg_incomplete_encrypted">Wiadomość jest zaszyfrowana, ale musi być pobrana w całości do odszyfrowania.</string>
-  <string name="crypto_msg_cancelled">Wiadomość jest zaszyfrowana, ale deszyfrowanie zostało przerwane.</string>
-  <string name="crypto_msg_signed_unencrypted">Wiadomość jest podpisana, ale nie zaszyfrowana.</string>
-  <string name="crypto_msg_encrypted_unsigned">Wiadomość została zaszyfrowana, ale nie została podpisana.</string>
-  <string name="crypto_msg_sign_unknown">Podpis z wykorzystaniem nieznanego klucza.</string>
-  <string name="crypto_msg_sign_verified">Podpis z wykorzystaniem zaufanego klucza.</string>
-  <string name="crypto_msg_sign_unverified">Podpis z wykorzystaniem niezaufanego klucza!</string>
-  <string name="crypto_msg_sign_error">Podpis zawierał błąd.</string>
-  <string name="crypto_msg_sign_mismatch">Podpis z wykorzystaniem niewłaściwego klucza.</string>
-  <string name="crypto_msg_sign_expired">Podpis z wykorzystaniem klucza, który wygasł.</string>
-  <string name="crypto_msg_sign_revoked">Podpis z wykorzystaniem unieważnionego klucza.</string>
-  <string name="crypto_msg_sign_insecure">Podpis z wykorzystaniem niezabezpieczonego klucza.</string>
-  <string name="crypto_msg_sign_incomplete">Wiadomość musi zostać w całości pobrana, aby zweryfikować jej podpis.</string>
-  <string name="crypto_msg_signed_encrypted">Wiadomość jest podpisana i zaszyfrowana.</string>
-  <string name="crypto_msg_unsigned_encrypted">Brak podpisu, wiadomość mogła zostać przechwycona.</string>
   <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_view_key">Pokaż stronę podpisującą</string>
   <string name="crypto_info_view_security_warning">Szczegóły</string>
   <string name="locked_attach_unlock">Odblokuj</string>
   <string name="locked_attach_unencrypted">Ta część nie została zaszyfrowana i może nie być zabezpieczona.</string>
@@ -1026,13 +999,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="messageview_decrypt_retry">Spróbuj ponownie</string>
   <string name="messageview_decrypt_incomplete">Aby dokonać odszyfrowania, należy pobrać zaszyfrowane wiadomości.</string>
   <string name="messageview_crypto_error_title">Błąd odszyfrowywania wiadomości e-mail.</string>
-  <string name="messageview_crypto_warning_title">Ostrzeżenie o zabezpieczeniach</string>
-  <string name="messageview_crypto_warning_revoked">Wiadomość została podpisana z wykorzystaniem <b>unieważnionego klucza!</b></string>
-  <string name="messageview_crypto_warning_expired">Wiadomość została podpisana z wykorzystaniem <b>klucza, który wygasł!</b></string>
-  <string name="messageview_crypto_warning_insecure">Wiadomość została podpisana z wykorzystaniem <b>niezabezpieczonego klucza!</b></string>
-  <string name="messageview_crypto_warning_error">W <b>podpisie wiadomości wystąpił błąd!</b></string>
-  <string name="messageview_crypto_warning_unsigned">Ta wiadomość została zaszyfrowana lecz nie podpisana. To <b>nie jest bezpieczne</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Wyświetl wiadomość mimo to</string>
   <string name="recipient_error_non_ascii">Znaki specjalne nie są obecnie obsługiwane!</string>
   <string name="recipient_error_parse_failed">Błąd analizowania adresu!</string>
   <string name="account_settings_crypto_support_sign_only">Pokaż nie zaszyfrowane podpisy</string>
@@ -1062,7 +1028,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="enable_encryption">Włącz szyfrowanie</string>
   <string name="disable_encryption">Wyłącz szyfrowanie</string>
   <string name="openpgp_description_text1">Szyfrowanie gwarantuje, że wiadomości mogą być odczytane tylko przez odbiorcę i nikogo innego.</string>
-  <string name="openpgp_description_text3">Szyfrowanie pokaże się tylko gdy wszyscy odbiorcy wiadomości je obsługują i wcześniej wysłali Ci wiadomość.</string>
   <string name="openpgp_description_text2">Przełącz szyfrowanie klikając ten przycisk.</string>
   <string name="openpgp_enabled_error_gotit">Zrozumiano</string>
   <string name="openpgp_enabled_error_back">Cofnij</string>

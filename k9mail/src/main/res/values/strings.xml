@@ -77,10 +77,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-    <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
-    <string name="read_attachment_label">Read Email attachments</string>
-    <string name="read_attachment_desc">Allows this application to read your Email attachments.</string>
     <string name="read_messages_label">Read Emails</string>
     <string name="read_messages_desc">Allows this application to read your Emails.</string>
     <string name="delete_messages_label">Delete Emails</string>
@@ -97,6 +94,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="compose_title_reply">Reply</string>
     <string name="compose_title_reply_all">Reply all</string>
     <string name="compose_title_forward">Forward</string>
+    <string name="compose_title_forward_as_attachment">Forward as attachment</string>
 
     <string name="choose_account_title">Choose Account</string>
     <string name="choose_folder_title">Choose Folder</string>
@@ -131,6 +129,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="archive_action">Archive</string>
     <string name="spam_action">Spam</string>
     <string name="forward_action">Forward</string>
+    <string name="forward_as_attachment_action">Forward as attachment</string>
     <string name="move_action">Move</string>
     <string name="single_message_options_action">Send…</string>
     <string name="refile_action">Refile…</string>
@@ -276,7 +275,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="compose_error_incomplete_recipient">Recipient field contains incomplete input!</string>
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
-    <string name="message_compose_show_quoted_text_action">Quote message</string>
+    <string name="message_compose_attachments_forward_toast">The message cannot be forwarded because some attachments have not been downloaded.</string>
+    <string name="message_compose_show_quoted_text_action">Include quoted message</string>
     <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
 
@@ -346,6 +346,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>
     <string name="global_settings_privacy_hide_timezone_detail">Use UTC instead of local timezone in mail headers and reply header</string>
+    <string name="global_settings_privacy_hide_hostname_when_connecting">Hide hostname</string>
+    <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Identify as \'localhost\' when connecting to SMTP servers</string>
     <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>
     <string name="global_settings_notification_hide_subject_never">Never</string>
     <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>
@@ -846,6 +848,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="batch_select_all">Select all</string>
 
     <string name="account_setup_push_limit_label">Max folders to check with push</string>
+    <string name="account_setup_push_limit_5">5 folders</string>
     <string name="account_setup_push_limit_10">10 folders</string>
     <string name="account_setup_push_limit_25">25 folders</string>
     <string name="account_setup_push_limit_50">50 folders</string>
@@ -1198,36 +1201,48 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_dialog_sign_only_minus_attach">Signatures may be displayed as \'signature.asc\' attachments in some clients.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Encrypted messages always include a signature.</string>
 
-    <string name="crypto_msg_disabled">Message is not encrypted</string>
-
-    <string name="crypto_msg_encrypted_error">Message is encrypted, but there was a decryption error.</string>
-    <string name="crypto_msg_encrypted_insecure">Message is encrypted but insecure!</string>
-    <string name="crypto_msg_signed_error">Message is signed, but the signature could not be verified.</string>
-    <string name="crypto_msg_encrypted_no_provider">Message is encrypted, but no crypto app is configured.</string>
+    <string name="crypto_msg_title_plaintext">Plaintext</string>
+    <string name="crypto_msg_unencrypted_sign_error">end-to-end signature contained an error</string>
+    <string name="crypto_msg_incomplete_signed">must fully download message to process signature</string>
+    <string name="crypto_msg_unsupported_signed">contains unsupported end-to-end signature</string>
     <string name="crypto_msg_unsupported_encrypted">Message is encrypted, but in an unsupported format.</string>
-    <string name="crypto_msg_unsupported_signed">Message is signed, but in an unsupported format.</string>
-    <string name="crypto_msg_incomplete_encrypted">Message is encrypted, but must be fully downloaded for decryption.</string>
     <string name="crypto_msg_cancelled">Message is encrypted, but decryption was cancelled.</string>
 
-    <string name="crypto_msg_signed_unencrypted">Message is signed, but not encrypted.</string>
-    <string name="crypto_msg_encrypted_unsigned">Message was encrypted, but not signed.</string>
+    <string name="crypto_msg_title_unencrypted_signed_e2e">End-to-End signed plaintext</string>
+    <string name="crypto_msg_unencrypted_sign_verified">from verified signer</string>
 
-    <string name="crypto_msg_sign_unknown">Signature made by unknown key.</string>
-    <string name="crypto_msg_sign_verified">Signature made by trusted key.</string>
-    <string name="crypto_msg_sign_unverified">Signature made by untrusted key!</string>
-    <string name="crypto_msg_sign_error">Signature contained an error.</string>
-    <string name="crypto_msg_sign_mismatch">Signature made by wrong key.</string>
-    <string name="crypto_msg_sign_expired">Signature made by expired key.</string>
-    <string name="crypto_msg_sign_revoked">Signature made by revoked key.</string>
-    <string name="crypto_msg_sign_insecure">Signature made by insecure key.</string>
-    <string name="crypto_msg_sign_incomplete">Message must be fully downloaded to verify its signature.</string>
+    <string name="crypto_msg_title_unencrypted_signed">Signed plaintext</string>
+    <string name="crypto_msg_unencrypted_sign_mismatch">but end-to-end key didn\'t match sender</string>
+    <string name="crypto_msg_unencrypted_sign_expired">but end-to-end key is expired</string>
+    <string name="crypto_msg_unencrypted_sign_revoked">but end-to-end key is revoked</string>
+    <string name="crypto_msg_unencrypted_sign_insecure">but end-to-end key is not considered secure</string>
+    <string name="crypto_msg_unencrypted_sign_unknown">from unknown end-to-end key</string>
 
-    <string name="crypto_msg_signed_encrypted">Message is signed and encrypted.</string>
-    <string name="crypto_msg_unsigned_encrypted">There is no signature, this message may have been intercepted.</string>
+    <string name="crypto_msg_title_encrypted_unknown">Encrypted</string>
+    <string name="crypto_msg_encrypted_error">but there was a decryption error</string>
+    <string name="crypto_msg_encrypted_incomplete">must fully download message for decryption</string>
+    <string name="crypto_msg_encrypted_no_provider">but no crypto app is configured</string>
+    <string name="crypto_msg_encrypted_unsupported">but in an unsupported format</string>
+    <string name="crypto_msg_encrypted_cancelled">but decryption was cancelled</string>
 
+    <string name="crypto_msg_title_encrypted_unsigned">Encrypted</string>
+    <string name="crypto_msg_encrypted_unsigned">but not end-to-end</string>
+
+    <string name="crypto_msg_title_encrypted_signed_e2e">End-to-End encrypted</string>
+    <string name="crypto_msg_encrypted_sign_verified">from verified sender</string>
+
+    <string name="crypto_msg_title_encrypted_signed">Encrypted</string>
+    <string name="crypto_msg_encrypted_sign_unknown">from unknown end-to-end key</string>
+    <string name="crypto_msg_encrypted_sign_mismatch">but end-to-end key didn\'t match sender</string>
+    <string name="crypto_msg_encrypted_sign_expired">but end-to-end key is expired</string>
+    <string name="crypto_msg_encrypted_sign_revoked">but end-to-end key is revoked</string>
+    <string name="crypto_msg_encrypted_sign_insecure">but end-to-end key is not considered secure</string>
+    <string name="crypto_msg_encrypted_sign_error">but end-to-end data has errors</string>
+    <string name="crypto_msg_encrypted_insecure">but encryption not considered secure</string>
 
     <string name="crypto_info_ok">OK</string>
-    <string name="crypto_info_view_key">View Signer</string>
+    <string name="crypto_info_view_signer">View Signer</string>
+    <string name="crypto_info_view_sender">View Sender</string>
     <string name="crypto_info_view_security_warning">Details</string>
     <string name="locked_attach_unlock">Unlock</string>
     <string name="locked_attach_unencrypted">This part was not encrypted, and may be insecure.</string>
@@ -1238,13 +1253,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="messageview_decrypt_incomplete">Encrypted message must be downloaded for decryption.</string>
     <string name="messageview_crypto_error_title">Error decrypting email</string>
 
-    <string name="messageview_crypto_warning_title">Security Warning</string>
-    <string name="messageview_crypto_warning_revoked">This message was signed by a <b>revoked key!</b></string>
-    <string name="messageview_crypto_warning_expired">This message was signed by an <b>expired key!</b></string>
-    <string name="messageview_crypto_warning_insecure">This message was signed by an <b>insecure key!</b></string>
-    <string name="messageview_crypto_warning_error">There was an <b>error in this message\'s signature!</b></string>
-    <string name="messageview_crypto_warning_unsigned">This message was encrypted, but not signed. It is <b>not end-to-end secure</b>!</string>
-    <string name="messageview_crypto_warning_show_anyway">Show message anyway</string>
     <string name="recipient_error_non_ascii">Special characters are currently not supported!</string>
     <string name="recipient_error_parse_failed">Error parsing address!</string>
     <string name="account_settings_crypto_support_sign_only">Show unencrypted signatures</string>
@@ -1276,7 +1284,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="enable_encryption">Enable Encryption</string>
     <string name="disable_encryption">Disable Encryption</string>
     <string name="openpgp_description_text1">Encrypting messages ensures they can be read by the recipient, and nobody else.</string>
-    <string name="openpgp_description_text3">Encryption will only show up if supported by all recipients, and they must have sent you an e-mail before.</string>
+    <string name="openpgp_description_text3">Encryption will only show up if supported by all recipients, and they must have sent you an email before.</string>
     <string name="openpgp_description_text2">Toggle encryption by clicking this icon.</string>
     <string name="openpgp_enabled_error_gotit">Got it</string>
     <string name="openpgp_enabled_error_back">Back</string>
@@ -1299,4 +1307,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="linked_webview_title_gmail">Gmail Authorization</string>
     <string name="linked_webview_title_outlook">Outlook Authorization</string>
     <string name="OAuth2_not_supported">OAuth 2.0 is not supported for this email</string>
+
+    <string name="account_settings_crypto_prefer_encrypt">Autocrypt mutual mode</string>
+    <string name="dialog_autocrypt_mutual_title">Autocrypt mutual mode</string>
+    <string name="dialog_autocrypt_mutual_description_1">Messages will normally be encrypted by choice, or when replying to an encrypted message.</string>
+    <string name="dialog_autocrypt_mutual_description_2">If both sender and recipients enable mutual mode, encryption will be enabled by default.</string>
 </resources>

@@ -33,7 +33,6 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.filter.Base64;
@@ -227,6 +226,7 @@ public class Account implements BaseAccount, AccountConfig {
     private boolean stripSignature;
     private boolean syncRemoteDeletions;
     private long pgpCryptoKey;
+    private boolean autocryptPreferEncryptMutual;
     private boolean markMessageAsReadOnView;
     private boolean alwaysShowCcBcc;
     private boolean allowRemoteSearch;
@@ -1148,7 +1148,7 @@ public class Account implements BaseAccount, AccountConfig {
     }
 
     public boolean isSpecialFolder(String folderName) {
-        return (folderName != null && (folderName.equalsIgnoreCase(getInboxFolderName()) ||
+        return (folderName != null && (folderName.equals(getInboxFolderName()) ||
                 folderName.equals(getTrashFolderName()) ||
                 folderName.equals(getDraftsFolderName()) ||
                 folderName.equals(getArchiveFolderName()) ||
@@ -1170,7 +1170,7 @@ public class Account implements BaseAccount, AccountConfig {
      * @return true if account has a drafts folder set.
      */
     public synchronized boolean hasDraftsFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(draftsFolderName);
+        return !K9.FOLDER_NONE.equals(draftsFolderName);
     }
 
     public synchronized String getSentFolderName() {
@@ -1186,7 +1186,7 @@ public class Account implements BaseAccount, AccountConfig {
      * @return true if account has a sent folder set.
      */
     public synchronized boolean hasSentFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(sentFolderName);
+        return !K9.FOLDER_NONE.equals(sentFolderName);
     }
 
 
@@ -1203,7 +1203,7 @@ public class Account implements BaseAccount, AccountConfig {
      * @return true if account has a trash folder set.
      */
     public synchronized boolean hasTrashFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(trashFolderName);
+        return !K9.FOLDER_NONE.equals(trashFolderName);
     }
 
     public synchronized String getArchiveFolderName() {
@@ -1219,7 +1219,7 @@ public class Account implements BaseAccount, AccountConfig {
      * @return true if account has an archive folder set.
      */
     public synchronized boolean hasArchiveFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(archiveFolderName);
+        return !K9.FOLDER_NONE.equals(archiveFolderName);
     }
 
     public synchronized String getSpamFolderName() {
@@ -1235,7 +1235,7 @@ public class Account implements BaseAccount, AccountConfig {
      * @return true if account has a spam folder set.
      */
     public synchronized boolean hasSpamFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(spamFolderName);
+        return !K9.FOLDER_NONE.equals(spamFolderName);
     }
 
     public synchronized String getOutboxFolderName() {
@@ -1383,7 +1383,7 @@ public class Account implements BaseAccount, AccountConfig {
         return LocalStore.getInstance(this, K9.app);
     }
 
-    public Store getRemoteStore() throws MessagingException {
+    public RemoteStore getRemoteStore() throws MessagingException {
         return RemoteStore.getInstance(K9.app, this, Globals.getOAuth2TokenProvider());
     }
 
@@ -1557,6 +1557,11 @@ public class Account implements BaseAccount, AccountConfig {
         return idleRefreshMinutes;
     }
 
+    @Override
+    public boolean shouldHideHostname() {
+        return K9.hideHostnameWhenConnecting();
+    }
+
     public synchronized void setIdleRefreshMinutes(int idleRefreshMinutes) {
         this.idleRefreshMinutes = idleRefreshMinutes;
     }
@@ -1713,6 +1718,14 @@ public class Account implements BaseAccount, AccountConfig {
 
     public void setCryptoKey(long keyId) {
         pgpCryptoKey = keyId;
+    }
+
+    public boolean getAutocryptPreferEncryptMutual() {
+        return autocryptPreferEncryptMutual;
+    }
+
+    public void setAutocryptPreferEncryptMutual(boolean autocryptPreferEncryptMutual) {
+        this.autocryptPreferEncryptMutual = autocryptPreferEncryptMutual;
     }
 
     public boolean allowRemoteSearch() {

@@ -1,7 +1,6 @@
 package com.fsck.k9.autocrypt;
 
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,8 +20,6 @@ import static org.junit.Assert.assertNull;
 
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
-@SuppressWarnings("WeakerAccess")
 public class AutocryptHeaderParserTest {
     AutocryptHeaderParser autocryptHeaderParser = AutocryptHeaderParser.getInstance();
 
@@ -123,8 +119,6 @@ public class AutocryptHeaderParserTest {
     }
 
     private InputStream readFromResourceFile(String name) throws FileNotFoundException {
-        return new FileInputStream(RuntimeEnvironment.application.getPackageResourcePath() + "/src/test/resources/" + name);
+        return getClass().getResourceAsStream("/" + name);
     }
-
-
 }

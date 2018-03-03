@@ -1129,6 +1129,10 @@ public class MimeUtility {
         return isSameMimeType(mimeType, "message/rfc822");
     }
 
+    public static boolean isMessageType(String mimeType) {
+        return mimeType != null && mimeType.toLowerCase(Locale.ROOT).startsWith("message/");
+    }
+
     public static boolean isSameMimeType(String mimeType, String otherMimeType) {
         return mimeType != null && mimeType.equalsIgnoreCase(otherMimeType);
     }

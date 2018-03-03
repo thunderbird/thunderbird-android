@@ -57,9 +57,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="app_authors_fmt">Na h-ùghdaran: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Fiosrachadh mun lèireamhas: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Tha sinn a’ cleachdadh na leabhar-lannan a leanas a tha le treas-phàrtaidhean: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Ìomhaigheagan emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Ceanglachan puist-d a leughadh</string>
-  <string name="read_attachment_desc">Leig leis an aplacaid seo ceanglachain nam post-d agad a leughadh.</string>
   <string name="read_messages_label">Puist-d a leughadh</string>
   <string name="read_messages_desc">Leig leis an aplacaid seo na puist-d agad a leughadh.</string>
   <string name="delete_messages_label">Puist-d a sguabadh às</string>
@@ -230,7 +227,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="compose_error_incomplete_recipient">Tha rud ann an raon nan daoine a gheibh e a tha leth-chrìochnaichte!</string>
   <string name="error_contact_address_not_found">Cha b’ urrainn dhuinn seòladh puist-d a lorg dhan neach-aithne seo.</string>
   <string name="message_compose_attachments_skipped_toast">Chan urrainn dhuinn cuid dhe na ceanglachain a shìneadh air adhart oir cha deach an luchdadh a-nuas.</string>
-  <string name="message_compose_show_quoted_text_action">Dèan luaidh air an teachdaireachd</string>
   <string name="message_compose_description_delete_quoted_text">Thoir an luaidh air falbh</string>
   <string name="message_compose_description_edit_quoted_text">Crìoch na na luaidhe</string>
   <string name="message_view_from_format">O: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -959,30 +955,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="openpgp_dialog_sign_only_minus_break">Dh’fhaoidte gum bris soidhneadh nuair a chuireas tu rud gu liosta-phuist.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Dh’fhaoidte gun nochd soidhnidhean mar “signature.asc” ann an cuid a chliantan.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Bidh soidhneadh am broinn teachdaireachd chrioptaichte an-còmhnaidh.</string>
-  <string name="crypto_msg_disabled">Chan eil an teachdaireachd crioptaichte</string>
-  <string name="crypto_msg_encrypted_error">Tha an teachdaireachd crioptaichte ach bha mearachd dì-chrioptachaidh ann.</string>
-  <string name="crypto_msg_encrypted_insecure">Tha an teachdaireachd crioptaichte ach chan eil e tèarainte!</string>
-  <string name="crypto_msg_signed_error">Chaidh an teachdaireachd a shoidhneadh ach cha b’ urrainn dhuinn a dhearbhadh.</string>
-  <string name="crypto_msg_encrypted_no_provider">Tha an teachdaireachd crioptaichte ach cha deach aplacaid crioptachaidh a rèiteachadh.</string>
-  <string name="crypto_msg_unsupported_encrypted">Tha an teachdaireachd crioptaichte ach ann am fòrmat ris nach eil taic.</string>
-  <string name="crypto_msg_unsupported_signed">Chaidh an teachdaireachd a shoidhneadh ach ann am fòrmat ris nach eil taic.</string>
-  <string name="crypto_msg_incomplete_encrypted">Tha an teachdaireachd crioptaichte ach feumaidh tu a luchdadh a-nuas buileach mus gabh a dhì-chrioptachadh.</string>
-  <string name="crypto_msg_cancelled">Tha an teachdaireachd crioptaichte ach cha sguireadh dhen dì-chrioptachadh.</string>
-  <string name="crypto_msg_signed_unencrypted">Chaidh an teachdaireachd a shoidhneadh ach chan eil e crioptaichte.</string>
-  <string name="crypto_msg_encrypted_unsigned">Chaidh an teachdaireachd a chrioptachadh ach cha deach a shoidhneadh.</string>
-  <string name="crypto_msg_sign_unknown">Chaidh an soidhneadh a dhèanamh le iuchair neo-aithnichte.</string>
-  <string name="crypto_msg_sign_verified">Chaidh an soidhneadh a dhèanamh le iuchair earbsach.</string>
-  <string name="crypto_msg_sign_unverified">Chaidh an soidhneadh a dhèanamh le iuchair anns nach eil earbsa!</string>
-  <string name="crypto_msg_sign_error">Bha mearachd san t-soidhneadh.</string>
-  <string name="crypto_msg_sign_mismatch">Chaidh an soidhneadh a dhèanamh le iuchair chearr.</string>
-  <string name="crypto_msg_sign_expired">Chaidh an soidhneadh a dhèanamh le iuchair a dh’fhalbh an ùine air.</string>
-  <string name="crypto_msg_sign_revoked">Chaidh an soidhneadh a dhèanamh le iuchair a chaidh a ghairm air ais.</string>
-  <string name="crypto_msg_sign_insecure">Chaidh an soidhneadh a dhèanamh le iuchair nach eil tèarainte.</string>
-  <string name="crypto_msg_sign_incomplete">Feumaidh tu an teachdaireachd a luchdadh a-nuas buileach mus urrainn dhut an soidhneadh aige a dhearbhadh.</string>
-  <string name="crypto_msg_signed_encrypted">Chaidh an teachdaireachd a shoidhneadh is a chrioptachadh.</string>
-  <string name="crypto_msg_unsigned_encrypted">Chan eil soidhneadh ann, dh’fhaoidte gun do bhris cuideigin a-steach air an teachdaireachd seo.</string>
   <string name="crypto_info_ok">Ceart ma-thà</string>
-  <string name="crypto_info_view_key">Seall an soidhniche</string>
   <string name="crypto_info_view_security_warning">Mion-fhiosrachadh</string>
   <string name="locked_attach_unlock">Thoir a’ ghlas dheth</string>
   <string name="locked_attach_unencrypted">Cha deach a’ phàirt seo a chrioptachadh is dh’fhaoidte gu bheil e neo-thèarainte.</string>
@@ -992,13 +965,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="messageview_decrypt_retry">Feuch ris a-rithist</string>
   <string name="messageview_decrypt_incomplete">Feumaidh tu an teachdaireachd chrioptaichte a luchdadh a-nuas mus gabh a dhì-chrioptachadh.</string>
   <string name="messageview_crypto_error_title">Mearachd a’ dì-chrioptachadh a’ phuist-d</string>
-  <string name="messageview_crypto_warning_title">Rabhadh tèarainteachd</string>
-  <string name="messageview_crypto_warning_revoked">Chaidh an teachdaireachd seo a shoidhneadh le <b>iuchair a chaidh a ghairm ais ais!</b></string>
-  <string name="messageview_crypto_warning_expired">Chaidh an teachdaireachd seo a shoidhneadh le <b>iuchair a dh’fhalbh an ùine air!</b></string>
-  <string name="messageview_crypto_warning_insecure">Chaidh an teachdaireachd seo a shoidhneadh le <b>iuchair nach eil tèarainte!</b></string>
-  <string name="messageview_crypto_warning_error">Bha <b>mearachd ann an soidhneadh na teachdaireachd seo!</b></string>
-  <string name="messageview_crypto_warning_unsigned">Chaidh an teachdaireachd seo a chrioptachadh ach cha deach a shoidhneadh. Chan eil <b>e tèarainte o cheann gu ceann</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Seall an teachdaireachd co-dhiù</string>
   <string name="recipient_error_non_ascii">Chan eil taic ri caractaran sònraichte aig an àm seo!</string>
   <string name="recipient_error_parse_failed">Mearachd a’ pàrsadh an t-seòlaidh!</string>
   <string name="error_sign_only_no_encryption">Chan eil crioptachadh ri fhaidhinn sa mhodh anns nach dèanar ach soidhneadh!</string>

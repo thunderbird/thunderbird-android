@@ -308,6 +308,7 @@ public class OpenPgpApi {
     // UPDATE_AUTOCRYPT_PEER
     public static final String EXTRA_AUTOCRYPT_PEER_ID = "autocrypt_peer_id";
     public static final String EXTRA_AUTOCRYPT_PEER_UPDATE = "autocrypt_peer_update";
+    public static final String EXTRA_AUTOCRYPT_PEER_GOSSIP_UPDATES = "autocrypt_peer_gossip_updates";
 
     // INTERNAL, must not be used
     public static final String EXTRA_CALL_UUID1 = "call_uuid1";

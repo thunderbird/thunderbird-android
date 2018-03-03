@@ -15,7 +15,7 @@ import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatusTyp
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 /** This is an immutable object which contains all relevant metadata entered
- * during e-mail composition to apply cryptographic operations before sending
+ * during email composition to apply cryptographic operations before sending
  * or saving as draft.
  */
 public class ComposeCryptoStatus {
@@ -84,7 +84,7 @@ public class ComposeCryptoStatus {
             case NO_CHOICE:
                 if (recipientAutocryptStatusType == RecipientAutocryptStatusType.NO_RECIPIENTS) {
                     return CryptoStatusDisplayType.NO_CHOICE_EMPTY;
-                } else if (canEncryptAndIsMutual()) {
+                } else if (canEncryptAndIsMutualDefault()) {
                     if (recipientAutocryptStatusType.isConfirmed()) {
                         return CryptoStatusDisplayType.NO_CHOICE_MUTUAL_TRUSTED;
                     } else {
@@ -136,7 +136,7 @@ public class ComposeCryptoStatus {
         }
 
         boolean isExplicitlyEnabled = (cryptoMode == CryptoMode.CHOICE_ENABLED);
-        boolean isMutualAndNotDisabled = (cryptoMode != CryptoMode.CHOICE_DISABLED && canEncryptAndIsMutual());
+        boolean isMutualAndNotDisabled = (cryptoMode != CryptoMode.CHOICE_DISABLED && canEncryptAndIsMutualDefault());
         return isExplicitlyEnabled || isMutualAndNotDisabled;
     }
 
@@ -168,8 +168,16 @@ public class ComposeCryptoStatus {
         return recipientAddresses.length > 0;
     }
 
-    boolean canEncryptAndIsMutual() {
-        return allRecipientsCanEncrypt() && preferEncryptMutual && recipientAutocryptStatus.type.isMutual();
+    public boolean isSenderPreferEncryptMutual() {
+        return preferEncryptMutual;
+    }
+
+    private boolean isRecipientsPreferEncryptMutual() {
+        return recipientAutocryptStatus.type.isMutual();
+    }
+
+    boolean canEncryptAndIsMutualDefault() {
+        return allRecipientsCanEncrypt() && isSenderPreferEncryptMutual() && isRecipientsPreferEncryptMutual();
     }
 
     boolean hasAutocryptPendingIntent() {

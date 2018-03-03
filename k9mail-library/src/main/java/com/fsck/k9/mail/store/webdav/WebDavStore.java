@@ -977,11 +977,6 @@ public class WebDavStore extends RemoteStore {
     }
 
     @Override
-    public boolean isSendCapable() {
-        return true;
-    }
-
-    @Override
     public void sendMessages(List<? extends Message> messages) throws MessagingException {
         WebDavFolder tmpFolder = getFolder(mStoreConfig.getDraftsFolderName());
         try {

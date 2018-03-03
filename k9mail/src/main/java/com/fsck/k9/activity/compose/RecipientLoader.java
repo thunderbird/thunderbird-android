@@ -2,6 +2,8 @@ package com.fsck.k9.activity.compose;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private static final int INDEX_EMAIL_CUSTOM_LABEL = 5;
     private static final int INDEX_CONTACT_ID = 6;
     private static final int INDEX_PHOTO_URI = 7;
+    private static final int INDEX_TIMES_CONTACTED = 8;
+    private static final int INDEX_KEY_PRIMARY = 9;
 
     private static final String[] PROJECTION = {
             ContactsContract.CommonDataKinds.Email._ID,
@@ -44,7 +48,9 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             ContactsContract.CommonDataKinds.Email.TYPE,
             ContactsContract.CommonDataKinds.Email.LABEL,
             ContactsContract.CommonDataKinds.Email.CONTACT_ID,
-            ContactsContract.Contacts.PHOTO_THUMBNAIL_URI
+            ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,
+            ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED,
+            ContactsContract.Contacts.SORT_KEY_PRIMARY
     };
 
     private static final String SORT_ORDER = "" +
@@ -78,6 +84,22 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     private static final int CRYPTO_PROVIDER_STATUS_UNTRUSTED = 1;
     private static final int CRYPTO_PROVIDER_STATUS_TRUSTED = 2;
+
+    private static final Comparator<Recipient> RECIPIENT_COMPARATOR = new Comparator<Recipient>() {
+        @Override
+        public int compare(Recipient lhs, Recipient rhs) {
+            int timesContactedDiff = rhs.timesContacted - lhs.timesContacted;
+            if (timesContactedDiff != 0) {
+                return timesContactedDiff;
+            }
+
+            if (lhs.sortKey == null || rhs.sortKey == null) {
+                return 0;
+            }
+
+            return lhs.sortKey.compareTo(rhs.sortKey);
+        }
+    };
 
 
     private final String query;
@@ -260,6 +282,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         foundValidCursor |= fillContactDataFromNameAndEmail(query, recipients, recipientMap);
 
         if (foundValidCursor) {
+            Collections.sort(recipients, RECIPIENT_COMPARATOR);
             registerContentObserver();
         }
 
@@ -339,14 +362,17 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             String name = prefilledName != null ? prefilledName : cursor.getString(INDEX_NAME);
 
             String email = cursor.getString(INDEX_EMAIL);
-            long contactId = cursor.getLong(INDEX_CONTACT_ID);
-            String lookupKey = cursor.getString(INDEX_LOOKUP_KEY);
 
             // already exists? just skip then
             if (email == null || recipientMap.containsKey(email)) {
                 // TODO We should probably merging contacts with the same email address
                 continue;
             }
+
+            long contactId = cursor.getLong(INDEX_CONTACT_ID);
+            String lookupKey = cursor.getString(INDEX_LOOKUP_KEY);
+            int timesContacted = cursor.getInt(INDEX_TIMES_CONTACTED);
+            String sortKey = cursor.getString(INDEX_KEY_PRIMARY);
 
             int addressType = cursor.getInt(INDEX_EMAIL_TYPE);
             String addressLabel = null;
@@ -373,10 +399,14 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                     break;
                 }
             }
-            Recipient recipient = new Recipient(name, email, addressLabel, contactId, lookupKey);
+
+            Recipient recipient = new Recipient(name, email, addressLabel, contactId, lookupKey,
+                    timesContacted, sortKey);
+
             if (recipient.isValidEmailAddress()) {
 
-                recipient.photoThumbnailUri = cursor.isNull(INDEX_PHOTO_URI) ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
+                recipient.photoThumbnailUri =
+                        cursor.isNull(INDEX_PHOTO_URI) ? null : Uri.parse(cursor.getString(INDEX_PHOTO_URI));
                 recipientMap.put(email, recipient);
                 recipients.add(recipient);
             }

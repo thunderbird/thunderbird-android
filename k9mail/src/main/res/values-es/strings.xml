@@ -56,9 +56,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Información de la revisión: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Estamos usando las siguientes librerías de terceros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Iconos de Emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Leer archivos adjuntos</string>
-  <string name="read_attachment_desc">Permitir a esta aplicación leer los archivos adjuntos a los correos.</string>
   <string name="read_messages_label">Leer correos</string>
   <string name="read_messages_desc">Permitir a esta aplicación leer los correos.</string>
   <string name="delete_messages_label">Borrar correos</string>
@@ -224,7 +221,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="compose_error_incomplete_recipient">¡El campo de destinatario está incompleto!</string>
   <string name="error_contact_address_not_found">No se encontró la dirección de correo electrónico de este contacto.</string>
   <string name="message_compose_attachments_skipped_toast">Algunos adjuntos no pueden reenviarse porque no han sido descargados.</string>
-  <string name="message_compose_show_quoted_text_action">Incluir mensaje original</string>
   <string name="message_compose_description_delete_quoted_text">Eliminar mensaje original</string>
   <string name="message_compose_description_edit_quoted_text">Editar mensaje original</string>
   <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -947,30 +943,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="openpgp_dialog_sign_only_minus_break">Las firmas pueden estropearse al ser enviadas a listas de correo. </string>
   <string name="openpgp_dialog_sign_only_minus_attach">Algunos clientes de correo mostrarán las firmas como adjuntos \'signature.asc\'.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Los mensajes cifrados siempres incluirán una firma.</string>
-  <string name="crypto_msg_disabled">El mensaje no está cifrado</string>
-  <string name="crypto_msg_encrypted_error">El mensaje está cifrado, pero ha habido un error al descifrar.</string>
-  <string name="crypto_msg_encrypted_insecure">¡El mensaje está cifrado pero es inseguro!</string>
-  <string name="crypto_msg_signed_error">El mensaje está firmado, pero no se ha podido verificar la firma.</string>
-  <string name="crypto_msg_encrypted_no_provider">El mensaje está cifrado, pero no hay aplicación de cifrado instalada.</string>
-  <string name="crypto_msg_unsupported_encrypted">El mensaje está cifrado, pero en un formato no soportado.</string>
-  <string name="crypto_msg_unsupported_signed">El mensaje está firmado, pero en un formato no soportado.</string>
-  <string name="crypto_msg_incomplete_encrypted">El mensaje está cifrado, pero se debe descargar completamente para descifrarlo.</string>
-  <string name="crypto_msg_cancelled">El mensaje está cifrado, pero se ha cancelado el descifrado.</string>
-  <string name="crypto_msg_signed_unencrypted">El mensaje está firmado, pero no cifrado.</string>
-  <string name="crypto_msg_encrypted_unsigned">El mensaje está cifrado, pero no firmado.</string>
-  <string name="crypto_msg_sign_unknown">La firma es de una clave desconocida.</string>
-  <string name="crypto_msg_sign_verified">La firma es de una clave en la que se confía.</string>
-  <string name="crypto_msg_sign_unverified">¡La firma está hecha con una clave en la que no se confía!</string>
-  <string name="crypto_msg_sign_error">La firma contiene un error.</string>
-  <string name="crypto_msg_sign_mismatch">La firma está hecha con una clave incorrecta.</string>
-  <string name="crypto_msg_sign_expired">La firma está hecha con una clave caducada.</string>
-  <string name="crypto_msg_sign_revoked">La firma está hecha con una clave revocada.</string>
-  <string name="crypto_msg_sign_insecure">La firma está hecha con una clave insegura.</string>
-  <string name="crypto_msg_sign_incomplete">El mensaje debe descargarse completamente para verificar su firma.</string>
-  <string name="crypto_msg_signed_encrypted">El mensaje está firmado y cifrado.</string>
-  <string name="crypto_msg_unsigned_encrypted">No hay firma, este mensaje puede haber sido interceptado.</string>
   <string name="crypto_info_ok">Aceptar</string>
-  <string name="crypto_info_view_key">Ver firmante</string>
   <string name="crypto_info_view_security_warning">Detalles</string>
   <string name="locked_attach_unlock">Desbloquear</string>
   <string name="locked_attach_unencrypted">Esta parte no está cifrada, y puede ser insegura.</string>
@@ -980,13 +953,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="messageview_decrypt_retry">Reintentar</string>
   <string name="messageview_decrypt_incomplete">El mensaje cifrado debe descargarse para descifrarlo.</string>
   <string name="messageview_crypto_error_title">Error descifrando el correo</string>
-  <string name="messageview_crypto_warning_title">Aviso de seguridad</string>
-  <string name="messageview_crypto_warning_revoked">¡Este mensaje fue firmado con una <b>clave revocada</b>!</string>
-  <string name="messageview_crypto_warning_expired">¡Este mensaje fue firmado con una <b>clave caducada</b>!</string>
-  <string name="messageview_crypto_warning_insecure">¡Este mensaje fue firmado con una <b>clave insegura</b>!</string>
-  <string name="messageview_crypto_warning_error">¡Ha habido un <b>error en la firma de este mensaje</b>!</string>
-  <string name="messageview_crypto_warning_unsigned">Este mensaje estaba cifrado, pero no firmado. ¡<b>No es seguro punto a punto</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Mostrar el mensaje igualmente</string>
   <string name="recipient_error_non_ascii">¡Los caracteres especiales aún no están soportados!</string>
   <string name="recipient_error_parse_failed">¡Error al analizar la dirección!</string>
   <string name="error_sign_only_no_encryption">¡El cifrado no está disponible en el modo de solo firma!</string>

@@ -83,6 +83,10 @@ public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
             usableContentType = MimeUtility.getMimeTypeByExtension(name);
         }
 
+        if (!sourceAttachment.allowMessageType && MimeUtility.isMessageType(usableContentType)) {
+            usableContentType = MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE;
+        }
+
         if (size <= 0) {
             String uriString = uri.toString();
             if (uriString.startsWith("file://")) {

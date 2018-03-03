@@ -37,14 +37,18 @@ public class MessageViewInfo {
         this.extraAttachments = extraAttachments;
     }
 
-    static MessageViewInfo createWithExtractedContent(Message message, boolean isMessageIncomplete,
+    static MessageViewInfo createWithExtractedContent(Message message, Part rootPart, boolean isMessageIncomplete,
             String text, List<AttachmentViewInfo> attachments, AttachmentResolver attachmentResolver) {
         return new MessageViewInfo(
-                message, isMessageIncomplete, message, text, attachments, null, attachmentResolver, null,
+                message, isMessageIncomplete, rootPart, text, attachments, null, attachmentResolver, null,
                 Collections.<AttachmentViewInfo>emptyList());
     }
 
     public static MessageViewInfo createWithErrorState(Message message, boolean isMessageIncomplete) {
+        return new MessageViewInfo(message, isMessageIncomplete, null, null, null, null, null, null, null);
+    }
+
+    public static MessageViewInfo createForMetadataOnly(Message message, boolean isMessageIncomplete) {
         return new MessageViewInfo(message, isMessageIncomplete, null, null, null, null, null, null, null);
     }
 

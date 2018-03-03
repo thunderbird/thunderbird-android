@@ -57,9 +57,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="app_authors_fmt">Autoren: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Versionsinformationen: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Wir verwenden die folgenden externen Bibliotheken: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Emoji-Bilder: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">E-Mail-Anhänge lesen</string>
-  <string name="read_attachment_desc">Der Anwendung erlauben, Ihre E-Mail-Anhänge zu lesen.</string>
   <string name="read_messages_label">E-Mails lesen</string>
   <string name="read_messages_desc">Der Anwendung erlauben, Ihre E-Mails zu lesen.</string>
   <string name="delete_messages_label">E-Mails löschen</string>
@@ -73,6 +70,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="compose_title_reply">Antworten</string>
   <string name="compose_title_reply_all">Allen antworten</string>
   <string name="compose_title_forward">Weiterleiten</string>
+  <string name="compose_title_forward_as_attachment">Als Anhang weiterleiten</string>
   <string name="choose_account_title">Konto auswählen</string>
   <string name="choose_folder_title">Ordner auswählen</string>
   <string name="status_loading_account_folder">Lade <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -103,6 +101,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="archive_action">Archivieren</string>
   <string name="spam_action">Spam</string>
   <string name="forward_action">Weiterleiten</string>
+  <string name="forward_as_attachment_action">Als Anhang weiterleiten</string>
   <string name="move_action">Verschieben</string>
   <string name="single_message_options_action">Senden…</string>
   <string name="refile_action">Umsortieren…</string>
@@ -226,7 +225,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="compose_error_incomplete_recipient">Empfänger-Feld enthält unvollständigen Inhalt!</string>
   <string name="error_contact_address_not_found">Es wurde keine E-Mail-Adresse für diesen Kontakt gefunden.</string>
   <string name="message_compose_attachments_skipped_toast">Einige Anhänge können nicht weitergeleitet werden, da diese nicht heruntergeladen wurden.</string>
-  <string name="message_compose_show_quoted_text_action">Ursprüngliche Nachricht zitieren</string>
+  <string name="message_compose_attachments_forward_toast">Die Nachricht kann nicht weitergeleitet werden, da einige Anhänge nicht heruntergeladen wurden.</string>
+  <string name="message_compose_show_quoted_text_action">Zitierte Nachricht einfügen</string>
   <string name="message_compose_description_delete_quoted_text">Zitierten Text entfernen</string>
   <string name="message_compose_description_edit_quoted_text">Zitierten Text bearbeiten</string>
   <string name="message_view_from_format">Von: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -282,10 +282,12 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_confirm_menu_discard">Nachricht verwerfen</string>
   <string name="global_settings_confirm_menu_mark_all_read">Alle Nachrichten als gelesen markieren</string>
   <string name="global_settings_confirm_action_delete_notif">Löschen (aus Benachrichtigung)</string>
-  <string name="global_settings_privacy_hide_useragent">Mail-Client ausblenden</string>
+  <string name="global_settings_privacy_hide_useragent">E-Mail-Client ausblenden</string>
   <string name="global_settings_privacy_hide_useragent_detail">K-9 Benutzer-Agent aus E-Mail-Kopfzeilen entfernen</string>
   <string name="global_settings_privacy_hide_timezone">Zeitzone ausblenden</string>
   <string name="global_settings_privacy_hide_timezone_detail">UTC statt lokaler Zeitzone in E-Mail-Kopfzeilen und Antwort-Kopfzeilen verwenden</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting">Hostnamen ausblenden</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Bei einer Verbindung zu SMTP-Servern als \'localhost\' kennzeichnen</string>
   <string name="global_settings_notification_hide_subject_title">Betreff in Benachrichtigungen verbergen</string>
   <string name="global_settings_notification_hide_subject_never">Niemals</string>
   <string name="global_settings_notification_hide_subject_when_locked">Wenn der Bildschirm gesperrt ist</string>
@@ -692,6 +694,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="background_ops_auto_sync_only">Wenn \'Automatische Synchronisation\' aktiviert ist</string>
   <string name="batch_select_all">Alle auswählen</string>
   <string name="account_setup_push_limit_label">Maximale Push-Ordner-Anzahl</string>
+  <string name="account_setup_push_limit_5">5 Ordner</string>
   <string name="account_setup_push_limit_10">10 Ordner</string>
   <string name="account_setup_push_limit_25">25 Ordner</string>
   <string name="account_setup_push_limit_50">50 Ordner</string>
@@ -891,8 +894,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
     <item quantity="other">%d Resultate werden abgerufen</item>
   </plurals>
   <plurals name="remote_search_downloading_limited">
-    <item quantity="one">%1$d von %2$d Resultaten werden aberufen</item>
-    <item quantity="other">%1$d von %2$d Resultaten werden aberufen</item>
+    <item quantity="one">%1$d von %2$d Resultaten werden abgerufen</item>
+    <item quantity="other">%1$d von %2$d Resultaten werden abgerufen</item>
   </plurals>
   <string name="remote_search_error">Suche fehlgeschlagen</string>
   <string name="account_settings_search">Suche</string>
@@ -977,34 +980,43 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="openpgp_sign_only_keep_enabled">Aktiviert lassen</string>
   <string name="openpgp_dialog_sign_only_title">PGP Nur-Signieren-Modus</string>
   <string name="openpgp_dialog_sign_only_text">In diesem Modus wird Ihr PGP-Schlüssel verwendet, um eine kryptografische Signatur einer unverschlüsselten E-Mail zu erstellen.</string>
-  <string name="openpgp_dialog_sign_only_plus_verified">Dadurch wird die E-Mail nicht verschlüsselt, sondern nachgewiesen, dass sie von Ihrem Schlüssel gesendet wurde.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Dadurch wird die E-Mail nicht verschlüsselt, sondern es wird überprüft, ob sie von Ihrem Schlüssel gesendet wurde.</string>
   <string name="openpgp_dialog_sign_only_minus_break">Signaturen können kaputtgehen, wenn sie an Mailinglisten gesendet werden.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Signaturen können als \'signature.asc\'-Anhänge in einigen Clients angezeigt werden.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Verschlüsselte Nachrichten enthalten immer eine Signatur.</string>
-  <string name="crypto_msg_disabled">Nachricht ist nicht verschlüsselt</string>
-  <string name="crypto_msg_encrypted_error">Nachricht ist verschlüsselt, aber es gab einen Fehler bei der Entschlüsselung.</string>
-  <string name="crypto_msg_encrypted_insecure">Nachricht ist verschlüsselt, aber unsicher!</string>
-  <string name="crypto_msg_signed_error">Nachricht ist signiert, aber die Signatur konnte nicht verifiziert werden.</string>
-  <string name="crypto_msg_encrypted_no_provider">Nachricht ist verschlüsselt aber keine Verschlüsselungs-App eingestellt.</string>
-  <string name="crypto_msg_unsupported_encrypted">Nachricht ist verschlüsselt, aber in einem nicht unterstützten Format.</string>
-  <string name="crypto_msg_unsupported_signed">Nachricht ist signiert, aber in einem nicht unterstützten Format.</string>
-  <string name="crypto_msg_incomplete_encrypted">Nachricht ist verschlüsselt, aber muss zur Entschlüsselung vollständig heruntergeladen werden.</string>
-  <string name="crypto_msg_cancelled">Nachricht ist verschlüsselt, aber Entschlüsselung wurde abgebrochen.</string>
-  <string name="crypto_msg_signed_unencrypted">Nachricht ist signiert, aber nicht verschlüsselt.</string>
-  <string name="crypto_msg_encrypted_unsigned">Nachricht wurde verschlüsselt, aber nicht signiert.</string>
-  <string name="crypto_msg_sign_unknown">Signatur mit unbekanntem Schlüssel gemacht.</string>
-  <string name="crypto_msg_sign_verified">Signatur mit vertrauenswürdigem Schlüssel gemacht.</string>
-  <string name="crypto_msg_sign_unverified">Signatur mit nicht vertrauenswürdigem Schlüssel gemacht.</string>
-  <string name="crypto_msg_sign_error">Signatur enthielt einen Fehler.</string>
-  <string name="crypto_msg_sign_mismatch">Signatur mit falschem Schlüssel gemacht.</string>
-  <string name="crypto_msg_sign_expired">Signatur mit abgelaufenem Schlüssel gemacht.</string>
-  <string name="crypto_msg_sign_revoked">Signatur mit zurückgezogenem Schlüssel gemacht.</string>
-  <string name="crypto_msg_sign_insecure">Signatur mit unsicherem Schlüssel gemacht.</string>
-  <string name="crypto_msg_sign_incomplete">Nachricht muss zum Verfizieren der Signatur vollständig heruntergeladen werden.</string>
-  <string name="crypto_msg_signed_encrypted">Nachricht ist signiert und verschlüsselt.</string>
-  <string name="crypto_msg_unsigned_encrypted">Es gibt keine Signatur, diese Nachricht könnte abgefangen worden sein.</string>
+  <string name="crypto_msg_title_plaintext">Klartext</string>
+  <string name="crypto_msg_unencrypted_sign_error">Ende-zu-Ende-Signatur enthielt einen Fehler</string>
+  <string name="crypto_msg_incomplete_signed">muss die Nachricht vollständig herunterladen, um die Signatur zu verarbeiten</string>
+  <string name="crypto_msg_unsupported_signed">enthält eine nicht unterstützte Ende-zu-Ende-Signatur</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Ende-zu-Ende signierter Klartext</string>
+  <string name="crypto_msg_unencrypted_sign_verified">von verifiziertem Signierer</string>
+  <string name="crypto_msg_title_unencrypted_signed">Signierter Klartext</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">aber der Ende-zu-Ende-Schlüssel stimmte nicht mit dem Absender überein</string>
+  <string name="crypto_msg_unencrypted_sign_expired">aber der Ende-zu-Ende-Schlüssel ist abgelaufen</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">aber der Ende-zu-Ende-Schlüssel wurde widerrufen</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">aber der Ende-zu-Ende-Schlüssel wird nicht als sicher angesehen.</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">von unbekanntem Ende-zu-Ende-Schlüssel</string>
+  <string name="crypto_msg_title_encrypted_unknown">Verschlüsselt</string>
+  <string name="crypto_msg_encrypted_error">aber es gab einen Entschlüsselungsfehler</string>
+  <string name="crypto_msg_encrypted_incomplete">muss die Nachricht zur Entschlüsselung vollständig herunterladen</string>
+  <string name="crypto_msg_encrypted_no_provider">aber keine Verschlüsselungs-App eingerichtet</string>
+  <string name="crypto_msg_encrypted_unsupported">aber in einem nicht unterstützten Format</string>
+  <string name="crypto_msg_encrypted_cancelled">aber die Entschlüsselung wurde abgebrochen</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Verschlüsselt</string>
+  <string name="crypto_msg_encrypted_unsigned">aber nicht Ende-zu-Ende</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Ende-zu-Ende verschlüsselt</string>
+  <string name="crypto_msg_encrypted_sign_verified">von verifiziertem Absender</string>
+  <string name="crypto_msg_title_encrypted_signed">Verschlüsselt</string>
+  <string name="crypto_msg_encrypted_sign_unknown">von unbekanntem Ende-zu-Ende-Schlüssel</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">aber der Ende-zu-Ende-Schlüssel stimmte nicht mit dem Absender überein</string>
+  <string name="crypto_msg_encrypted_sign_expired">aber der Ende-zu-Ende-Schlüssel ist abgelaufen</string>
+  <string name="crypto_msg_encrypted_sign_revoked">aber der Ende-zu-Ende-Schlüssel wurde widerrufen</string>
+  <string name="crypto_msg_encrypted_sign_insecure">aber der Ende-zu-Ende-Schlüssel wird nicht als sicher angesehen</string>
+  <string name="crypto_msg_encrypted_sign_error">aber die Ende-zu-Ende Daten sind fehlerhaft</string>
+  <string name="crypto_msg_encrypted_insecure">aber die Verschlüsselung wird nicht als sicher angesehen</string>
   <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_view_key">Signierer anzeigen</string>
+  <string name="crypto_info_view_signer">Signierer anzeigen</string>
+  <string name="crypto_info_view_sender">Absender anzeigen</string>
   <string name="crypto_info_view_security_warning">Details</string>
   <string name="locked_attach_unlock">Entsperren</string>
   <string name="locked_attach_unencrypted">Dieser Teil wurde nicht verschlüsselt und könnte unsicher sein.</string>
@@ -1014,13 +1026,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="messageview_decrypt_retry">Wiederholen</string>
   <string name="messageview_decrypt_incomplete">Verschlüsselte Nachricht muss für die Entschlüsselung heruntergeladen werden.</string>
   <string name="messageview_crypto_error_title">Fehler beim Entschlüsseln der E-Mail</string>
-  <string name="messageview_crypto_warning_title">Sicherheitswarnung</string>
-  <string name="messageview_crypto_warning_revoked">Diese Nachricht wurde mit einem <b>zurückgezogenen Schlüssel</b> signiert!</string>
-  <string name="messageview_crypto_warning_expired">Diese Nachricht wurde mit einem <b>abgelaufenen Schlüssel</b> signiert!</string>
-  <string name="messageview_crypto_warning_insecure">Diese Nachricht wurde mit einem <b>unsicheren Schlüssel</b> signiert!</string>
-  <string name="messageview_crypto_warning_error">Es gab einen Fehler in der Signatur dieser Nachricht!</string>
-  <string name="messageview_crypto_warning_unsigned">Diese Nachricht wurde verschlüsselt, aber nicht signiert. Sie ist <b>nicht Ende-zu-Ende sicher</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Nachricht trotzdem anzeigen</string>
   <string name="recipient_error_non_ascii">Sonderzeichen werden derzeit nicht unterstützt!</string>
   <string name="recipient_error_parse_failed">Fehler beim Einlesen der Adresse!</string>
   <string name="account_settings_crypto_support_sign_only">Unverschlüsselte Signaturen anzeigen</string>
@@ -1037,8 +1042,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="apg_deprecated_ok">Verstanden!</string>
   <string name="apg">APG</string>
   <string name="no_crypto_provider_see_global">Keine OpenPGP-App konfiguriert, siehe globale Einstellungen!</string>
-  <string name="crypto_no_provider_title">Diese Email ist verschlüsselt</string>
-  <string name="crypto_no_provider_message">Diese Email ist mit OpenPGP verschlüsselt.
+  <string name="crypto_no_provider_title">Diese E-Mail ist verschlüsselt</string>
+  <string name="crypto_no_provider_message">Diese E-Mail ist mit OpenPGP verschlüsselt.
 Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert werden.</string>
   <string name="crypto_no_provider_button">OpenPGP-App wählen</string>
   <string name="mail_list_widget_text">K-9 Nachrichtenliste</string>
@@ -1051,7 +1056,7 @@ Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert w
   <string name="enable_encryption">Verschlüsselung aktivieren</string>
   <string name="disable_encryption">Verschlüsselung deaktivieren</string>
   <string name="openpgp_description_text1">Durch die Verschlüsselung von Nachrichten wird sichergestellt, dass sie für den Empfänger und sonst niemanden lesbar sind.</string>
-  <string name="openpgp_description_text3">Die Verschlüsselung wird nur angezeigt, wenn sie von allen Empfängern unterstützt wird und sie müssen Ihnen zuvor eine E-Mail gesendet haben.</string>
+  <string name="openpgp_description_text3">Die Verschlüsselung wird nur angezeigt, wenn sie von allen Empfängern unterstützt wird und diese Ihnen zuvor schon eine E-Mail gesendet haben.</string>
   <string name="openpgp_description_text2">Schalten Sie die Verschlüsselung um, indem Sie auf dieses Symbol klicken.</string>
   <string name="openpgp_enabled_error_gotit">Verstanden</string>
   <string name="openpgp_enabled_error_back">Zurück</string>

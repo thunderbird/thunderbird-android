@@ -72,6 +72,17 @@ public class MessageActions {
     }
 
     /**
+     * Compose a new message as a forward of the given message.
+     */
+    public static void actionForwardAsAttachment(Context context, MessageReference messageReference, Parcelable decryptionResult) {
+        Intent i = new Intent(context, MessageCompose.class);
+        i.putExtra(MessageCompose.EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString());
+        i.putExtra(MessageCompose.EXTRA_MESSAGE_DECRYPTION_RESULT, decryptionResult);
+        i.setAction(MessageCompose.ACTION_FORWARD_AS_ATTACHMENT);
+        context.startActivity(i);
+    }
+
+    /**
      * Continue composition of the given message. This action modifies the way this Activity
      * handles certain actions.
      * Save will attempt to replace the message in the given folder with the updated version.

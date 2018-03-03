@@ -301,7 +301,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        if (K9.FOLDER_NONE.equalsIgnoreCase(dstFolder)) {
+        if (K9.FOLDER_NONE.equals(dstFolder)) {
             return;
         }
 
@@ -335,6 +335,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public void onForward() {
         if (mMessage != null) {
             mFragmentListener.onForward(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
+        }
+    }
+
+    public void onForwardAsAttachment() {
+        if (mMessage != null) {
+            mFragmentListener.onForwardAsAttachment(mMessage.makeMessageReference(), messageCryptoPresenter.getDecryptionResultForReply());
         }
     }
 
@@ -723,6 +729,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public interface MessageViewFragmentListener {
         void onForward(MessageReference messageReference, Parcelable decryptionResultForReply);
+        void onForwardAsAttachment(MessageReference messageReference, Parcelable decryptionResultForReply);
         void disableDeleteAction();
         void onReplyAll(MessageReference messageReference, Parcelable decryptionResultForReply);
         void onReply(MessageReference messageReference, Parcelable decryptionResultForReply);

@@ -56,9 +56,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="app_authors_fmt">Ophavsmænd: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Revisions information: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Vi anvender følgende 3je parts biblioteker: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Emoji ikoner: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Læs mail vedhæftninger</string>
-  <string name="read_attachment_desc">Tillad dette program at læse dine vedhæftede filer.</string>
   <string name="read_messages_label">Læs mails</string>
   <string name="read_messages_desc">Tillad dette program at læse dine mails.</string>
   <string name="delete_messages_label">Slet mails</string>
@@ -221,7 +218,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="compose_error_incomplete_recipient">Modtager felt indeholder ufuldstændig indtastning!</string>
   <string name="error_contact_address_not_found">Mail addresse ikke fundet.</string>
   <string name="message_compose_attachments_skipped_toast">Nogle vedhæftninger kunne ikke videresendes fordi de ikke er blevet hentet fra server.</string>
-  <string name="message_compose_show_quoted_text_action">Citer meddelelse</string>
   <string name="message_compose_description_delete_quoted_text">Fjern citeret tekst</string>
   <string name="message_compose_description_edit_quoted_text">Rediger citeret tekst</string>
   <string name="message_view_from_format">Fra: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -938,29 +934,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="openpgp_dialog_sign_only_minus_break">Signaturer kan blive ødelagt ved afsendelse til postlister.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Signaturer bliver måske vist som \'signature.asc\'-vedhæftninger i nogen klienter.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Krypterede meddelelser inkluderer altid en signatur</string>
-  <string name="crypto_msg_disabled">Meddelelse er ikke krypteret</string>
-  <string name="crypto_msg_encrypted_error">Meddelelsen er krypteret, men der var en dekrypteringsfejl.</string>
-  <string name="crypto_msg_signed_error">Meddelelsen er signeret, men signaturen kunne ikke verificeres.</string>
-  <string name="crypto_msg_encrypted_no_provider">Meddelelsen er krypteret, men der blev ikke fundet en krypterings applikation.</string>
-  <string name="crypto_msg_unsupported_encrypted">Meddelelsen er krypteret, men i et ikke-understøttet format.</string>
-  <string name="crypto_msg_unsupported_signed">Meddelelsen er signeret, men i et ikke-understøttet format.</string>
-  <string name="crypto_msg_incomplete_encrypted">Meddelelsen er krypteret men skal downloades for at kunne dekrypteres.</string>
-  <string name="crypto_msg_cancelled">Meddelelsen er krypteret, men dekrypteringen blev afbrudt.</string>
-  <string name="crypto_msg_signed_unencrypted">Meddelelsen er signeret men ikke krypteret.</string>
-  <string name="crypto_msg_encrypted_unsigned">Meddelelsen blev krypteret men ikke signeret.</string>
-  <string name="crypto_msg_sign_unknown">Signatur af ukendt nøgle.</string>
-  <string name="crypto_msg_sign_verified">Signatur af betroet nøgle.</string>
-  <string name="crypto_msg_sign_unverified">Signatur af ikke-betroet nøgle!</string>
-  <string name="crypto_msg_sign_error">Signatur indeholdte en fejl.</string>
-  <string name="crypto_msg_sign_mismatch">Signatur af forkert nøgle.</string>
-  <string name="crypto_msg_sign_expired">Signatur af udløbet nøgle.</string>
-  <string name="crypto_msg_sign_revoked">Signatur af tilbagekaldt nøgle.</string>
-  <string name="crypto_msg_sign_insecure">Signatur af usikker nøgle.</string>
-  <string name="crypto_msg_sign_incomplete">Meddelelse skal downloades helt for at verificere signatur.</string>
-  <string name="crypto_msg_signed_encrypted">Meddelelse er signeret og krypteret.</string>
-  <string name="crypto_msg_unsigned_encrypted">Der er ingen signatur, denne meddelelse kan være opsnappet.</string>
   <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_view_key">Se underskriver</string>
   <string name="locked_attach_unlock">Lås op</string>
   <string name="locked_attach_unencrypted">Denne del var ikke krypteret og kan være usikker.</string>
   <string name="locked_attach_title">Ubeskyttet vedhæftning</string>
@@ -969,13 +943,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="messageview_decrypt_retry">Prøv igen</string>
   <string name="messageview_decrypt_incomplete">Krypteret meddelelse skal downloades for dekryptering.</string>
   <string name="messageview_crypto_error_title">Fejl ved dekryptering af email</string>
-  <string name="messageview_crypto_warning_title">Sikkerhedsadvarsel</string>
-  <string name="messageview_crypto_warning_revoked">Denne meddelelse blev signeret af en <b>tilbagekaldt nøgle!</b></string>
-  <string name="messageview_crypto_warning_expired">Denne meddelelse blev signeret af en <b>udløbet nøgle!</b></string>
-  <string name="messageview_crypto_warning_insecure">Denne meddelelse blev signeret af en <b>usikker nøgle!</b></string>
-  <string name="messageview_crypto_warning_error">Der var en <b> fejl i denne meddelelses signatur!</b></string>
-  <string name="messageview_crypto_warning_unsigned">Denne meddelelse er krypteret, men ikke signeret. Den er <b>ikke end-to-end sikker</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Vis meddelelse alligevel</string>
   <string name="recipient_error_non_ascii">Specialkarakterer er ikke understøttet endnu!</string>
   <string name="recipient_error_parse_failed">Fejl ved parsing af adresse!</string>
   <string name="error_sign_only_no_encryption">Kryptering er ikke tilgængelig i \"Signer-Kun\"-tilstand!</string>

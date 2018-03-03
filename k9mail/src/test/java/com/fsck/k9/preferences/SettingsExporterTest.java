@@ -1,12 +1,5 @@
 package com.fsck.k9.preferences;
 
-import com.fsck.k9.K9RobolectricTestRunner;
-
-import org.jdom2.Document;
-import org.jdom2.input.SAXBuilder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RuntimeEnvironment;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,11 +7,19 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Set;
 
+import org.jdom2.Document;
+import org.jdom2.input.SAXBuilder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-@RunWith(K9RobolectricTestRunner.class)
+
+@RunWith(RobolectricTestRunner.class)
 public class SettingsExporterTest {
 
     @Test

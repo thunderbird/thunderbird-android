@@ -71,7 +71,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:id="@+id/crypto_special_sign_only"
-                android:src="@drawable/status_signature_verified_cutout"
+                android:src="@drawable/status_signature"
                 android:tint="?attr/openpgp_blue"
                 />
 
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
-                    android:src="@drawable/status_signature_verified_cutout"
+                    android:src="@drawable/status_signature"
                     android:tint="?attr/openpgp_blue"
                     />
 

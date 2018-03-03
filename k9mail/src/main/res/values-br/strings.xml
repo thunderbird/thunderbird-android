@@ -56,9 +56,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="app_authors_fmt">Aozerien: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">TItouroù an handelv: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Arverañ a reomp al levraouegoù da-heul: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Arlunioù emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Lenn kenstagadennoù ar postel</string>
-  <string name="read_attachment_desc">Aotren an arload-mañ da lenn kenstagadennoù ho posteloù.</string>
   <string name="read_messages_label">Lenn ar posteloù</string>
   <string name="read_messages_desc">Aotren an arload-mañ da lenn ho posteloù.</string>
   <string name="delete_messages_label">Dilemel posteloù</string>
@@ -72,6 +69,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="compose_title_reply">Respont</string>
   <string name="compose_title_reply_all">Respont d’an holl</string>
   <string name="compose_title_forward">Treuzkas</string>
+  <string name="compose_title_forward_as_attachment">Treuzkas evel stagadenn</string>
   <string name="choose_account_title">Dibab ar gont</string>
   <string name="choose_folder_title">Dibab an teuliad</string>
   <string name="status_loading_account_folder">Kerc’hat <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -102,6 +100,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="archive_action">Diellaouiñ</string>
   <string name="spam_action">Lastez</string>
   <string name="forward_action">Treuzkas</string>
+  <string name="forward_as_attachment_action">Treuzkas evel stagadenn</string>
   <string name="move_action">Dilec’hiañ</string>
   <string name="single_message_options_action">Kas...</string>
   <string name="refile_action">Kemman ar rummad...</string>
@@ -163,7 +162,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="abbrev_megabytes">Me</string>
   <string name="abbrev_kilobytes">Ke</string>
   <string name="abbrev_bytes">e</string>
-  <string name="account_size_changed">Digresket eo ar gont \"<xliff:g id="account">%s</xliff:g>\" eus <xliff:g id="oldSize">%%s</xliff:g> da <xliff:g id="newSize">%%s</xliff:g></string>
+  <string name="account_size_changed">Digresket eo ar gont \"<xliff:g id="account">%s</xliff:g>\" eus <xliff:g id="oldSize">%s</xliff:g> da <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">O koazhañ ar gont  \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="clearing_account">O skarzhañ ar gont \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="recreating_account">Oc’h adkrouiñ ar gont \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -226,7 +225,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="compose_error_incomplete_recipient">Enankañ diglok a zo er vaezienn degemerer!</string>
   <string name="error_contact_address_not_found">N’eus bet kavet chomlec’h postel ebet evit an darempred-mañ.</string>
   <string name="message_compose_attachments_skipped_toast">N’haller ket treuzkas ul lodenn eus ar c’henstagadennoù rak n’int ket bet pellgarget.</string>
-  <string name="message_compose_show_quoted_text_action">Menegiñ ar gemennadenn</string>
+  <string name="message_compose_attachments_forward_toast">N\'haller ket treuzkas ar gemennadenn dre ma n\'eo ket bet pellgarget ul lodenn eus ar stagadennoù.</string>
   <string name="message_compose_description_delete_quoted_text">Dilemel an destenn meneget</string>
   <string name="message_compose_description_edit_quoted_text">Embann an destenn meneget</string>
   <string name="message_view_from_format">A-berzh: <xliff:g id="name">%s</xliff:g> &amp;amp;lt;<xliff:g id="email">%s</xliff:g>&amp;amp;gt;</string>
@@ -246,6 +245,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="message_no_additional_headers_available">An holl dalbennoù a zo bet pellgarget, met n’eus talbenn ouzhpenn ebet da ziskouez.</string>
   <string name="message_additional_headers_retrieval_failed">C’hwitadenn en ur adkavout talbennoù ouzhpenn eus ar stlennvon pe an dafariad postel.</string>
   <string name="from_same_sender">Muioc’h a-berzh ar c’haser-mañ</string>
+  <string name="search_from_format">A-berzh <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Diveugañ / Skarzhañ korf ar gemennadenn</string>
   <string name="message_discarded_toast">Kemennadenn dilezet</string>
   <string name="message_saved_toast">Kemennadenn enrollet evel brouilhed</string>
@@ -285,6 +285,8 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="global_settings_privacy_hide_useragent_detail">Dilemel User-agent K-9 eus talbennoù ar postel</string>
   <string name="global_settings_privacy_hide_timezone">Kuzhat ar gwerzhid-eur</string>
   <string name="global_settings_privacy_hide_timezone_detail">Arverañ UTC e plas ar gwerzhid-eur lec’hel e talbennoù ar postel hag ar respont</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting">Kuzhat an anv ostiz</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Dilesa evel \'localhost\' p\'emañ o kennaskañ da zafariadoù SMTP</string>
   <string name="global_settings_notification_hide_subject_title">Kuzhat an danvez er rebuziñ</string>
   <string name="global_settings_notification_hide_subject_never">Morse</string>
   <string name="global_settings_notification_hide_subject_when_locked">P’eo prennet an trevnad</string>
@@ -691,6 +693,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="background_ops_auto_sync_only">P’eo gweredekaet ar goubredañ emgefreek</string>
   <string name="batch_select_all">Diuzañ an holl</string>
   <string name="account_setup_push_limit_label">Niver a deuliadoù uhelañ da gerc’hat dre Push</string>
+  <string name="account_setup_push_limit_5">5 teuliad</string>
   <string name="account_setup_push_limit_10">10 teuliad</string>
   <string name="account_setup_push_limit_25">25 teuliad</string>
   <string name="account_setup_push_limit_50">50 teuliad</string>
@@ -716,9 +719,9 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="flagged_modifier">- Steredenn</string>
   <string name="unread_modifier">- Anlennet</string>
   <string name="search_all_messages_title">An holl gemennadennoù</string>
-  <string name="search_all_messages_detail">Holl kemennadennoù an teuliadoù a c’haller klask eno</string>
+  <string name="search_all_messages_detail">Kemennadennoù an teuliadoù klaskus</string>
   <string name="integrated_inbox_title">Boest degemer unanet</string>
-  <string name="integrated_inbox_detail">Holl kemennadennoù an teuliadoù unanet</string>
+  <string name="integrated_inbox_detail">Holl gemennadennoù an teuliadoù unanet</string>
   <string name="tap_hint">Stokit ar c’helc’h pe ar steredenn evit ar c’hemennadennoù anlennet pe steredennet</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Unanañ</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">An holl gemennadennoù a zo skrammet er voest degemer unanet</string>
@@ -980,30 +983,8 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="openpgp_dialog_sign_only_minus_break">Gallout a ra ar sinadurioù terriñ m’eo kaset da roll posteloù.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Gallout a ra ar sinadur bezañ diskouezet evel ur genstagadenn ’signature.asc’ e arvalioù ’zo.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Ar c’hemennadennoù enrineget a endalc’h atav ur sinadur.</string>
-  <string name="crypto_msg_disabled">N’eo ket enrineget ar gemennadenn</string>
-  <string name="crypto_msg_encrypted_error">Enrineget eo ar gemennadenn met ur gudenn a zo bet e-pad an ezrinegañ.</string>
-  <string name="crypto_msg_encrypted_insecure">Enrineget eo ar gemennadenn met n’eo ket diogel!</string>
-  <string name="crypto_msg_signed_error">Sinet eo ar gemennadenn met n’haller ket gwiriañ ar sinadur.</string>
-  <string name="crypto_msg_encrypted_no_provider">Enrineget eo ar gemennadenn m’eo n’eus arload enrinegañ ebet kefluniet.</string>
-  <string name="crypto_msg_unsupported_encrypted">Enrineget eo ar gemennadenn met en ur mentrezh anskor emañ.</string>
-  <string name="crypto_msg_unsupported_signed">Sinet eo ar gemennadenn met en ur mentrezh anskor emañ.</string>
-  <string name="crypto_msg_incomplete_encrypted">Enrineget eo ar gemennadenn met rankout a ra bezañ pellgarget betek penn evit ezrinegañ.</string>
-  <string name="crypto_msg_cancelled">Enrineget eo ar gemennadenn met nullet eo bet an ezrinegañ.</string>
-  <string name="crypto_msg_signed_unencrypted">Sinet eo ar gemennadenn met n’eo ket enrineget.</string>
-  <string name="crypto_msg_encrypted_unsigned">Enrineget eo ar gemennadenn met n’eo ket sinet.</string>
-  <string name="crypto_msg_sign_unknown">Sinet eo bet gant un alc’hwez dianav.</string>
-  <string name="crypto_msg_sign_verified">Sinet eo bet gant un alc’hwez a fiziañs.</string>
-  <string name="crypto_msg_sign_unverified">Sinet eo bet gant un alc’hwez disfiziet!</string>
-  <string name="crypto_msg_sign_error">Ur fazi a zo en alc’hwez.</string>
-  <string name="crypto_msg_sign_mismatch">Gant un alc’hwez fall eo bet graet ar sinadur.</string>
-  <string name="crypto_msg_sign_expired">Gant un alc’hwez diamzeret eo bet graet ar sinadur.</string>
-  <string name="crypto_msg_sign_revoked">Gant un alc’hwez dizorniet eo bet graet ar sinadur.</string>
-  <string name="crypto_msg_sign_insecure">Gant un alc’hwez ha n’eo ket diogel eo bet graet an alc’hwez.</string>
-  <string name="crypto_msg_sign_incomplete">Ret eo d’ar gemennadenn bezañ pellgarget betek penn evit gwiriañ he sinadur.</string>
-  <string name="crypto_msg_signed_encrypted">Sinet hag enrineget eo ar gemennadenn.</string>
-  <string name="crypto_msg_unsigned_encrypted">N’eus sinadur ebet, gallout a ra ar gemennadenn-mañ bezañ bet daspaket.</string>
+  <string name="crypto_msg_title_plaintext">Testenn blaen</string>
   <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_view_key">Gwelout ar siner</string>
   <string name="crypto_info_view_security_warning">Munudoù</string>
   <string name="locked_attach_unlock">Dibrennañ</string>
   <string name="locked_attach_unencrypted">N’eo ket enrineget al lodenn-mañ ha marteze n’eo ket diogel.</string>
@@ -1013,13 +994,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="messageview_decrypt_retry">Adklask</string>
   <string name="messageview_decrypt_incomplete">Ar c’hemennadennoù enrineget a rank bezañ pellgarget evit o ezrinegañ.</string>
   <string name="messageview_crypto_error_title">Fazi en ur ezrinegañ ar postel</string>
-  <string name="messageview_crypto_warning_title">Arvar diogelroez</string>
-  <string name="messageview_crypto_warning_revoked">Sinet eo bet ar gemennadenn-mañ gant un <b>alc’hwez dizorniet!</b></string>
-  <string name="messageview_crypto_warning_expired">Sinet eo bet an alc’hwez-mañ gant un <b>alc’hwez diamzeret!</b></string>
-  <string name="messageview_crypto_warning_insecure">Sinet eo bet an alc’hwez-mañ gant un <b>alc’hwez n’eo ket diogel!</b></string>
-  <string name="messageview_crypto_warning_error"><b>Ur gudenn a zo e sinadur ar gemennadenn!</b></string>
-  <string name="messageview_crypto_warning_unsigned">Enrineget eo ar gemennadenn-mañ met n’eo ket sinet. N’eo ket <b>diogel penn-eus-penn</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Diskouez ar gemennadenn memestra</string>
   <string name="recipient_error_non_ascii">An arouezioù arbennik n’int ket skoret evit ar mare!</string>
   <string name="recipient_error_parse_failed">Fazi en ur zielfennañ ar chomlec’h!</string>
   <string name="account_settings_crypto_support_sign_only">Sinadurioù dienrineget</string>
@@ -1049,7 +1023,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="enable_encryption">Gweredekaat an enrinegañ</string>
   <string name="disable_encryption">Diweredekaat an enrinegañ</string>
   <string name="openpgp_description_text1">En ur enrinegañ kemennadennoù e vezit sur eo lennet ar c’hemennadennoù gant an degemerer ha den ebet all. </string>
-  <string name="openpgp_description_text3">Kinniget e vo an enrinegañ m’eo skoret gant an holl degemererien nemetken, ha ret eo dezho bezañ bet kaset deoc’h ur postel a-raok.</string>
   <string name="openpgp_description_text2">Trec’haolit an enrinegañ en ur glikañ war an arlun-mañ.</string>
   <string name="openpgp_enabled_error_gotit">Komprenet ’m eus!</string>
   <string name="openpgp_enabled_error_back">Distreiñ</string>

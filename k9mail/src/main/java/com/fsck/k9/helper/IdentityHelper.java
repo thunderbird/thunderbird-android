@@ -25,11 +25,34 @@ public class IdentityHelper {
     public static Identity getRecipientIdentityFromMessage(Account account, Message message) {
         Identity recipient = null;
 
-        for (Address address : message.getRecipients(Message.RecipientType.X_ORIGINAL_TO)) {
-            Identity identity = account.findIdentity(address);
-            if (identity != null) {
-                recipient = identity;
-                break;
+            for (Address address : message.getRecipients(Message.RecipientType.TO)) {
+                Identity identity = account.findIdentity(address);
+                if (identity != null) {
+                    recipient = identity;
+                    break;
+                }
+            }
+
+        if (recipient == null) {
+            Address[] ccAddresses = message.getRecipients(Message.RecipientType.CC);
+            if (ccAddresses.length > 0) {
+                for (Address address : ccAddresses) {
+                    Identity identity = account.findIdentity(address);
+                    if (identity != null) {
+                        recipient = identity;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (recipient == null) {
+            for (Address address : message.getRecipients(Message.RecipientType.X_ORIGINAL_TO)) {
+                Identity identity = account.findIdentity(address);
+                if (identity != null) {
+                    recipient = identity;
+                    break;
+                }
             }
         }
 
@@ -49,29 +72,6 @@ public class IdentityHelper {
                 if (identity != null) {
                     recipient = identity;
                     break;
-                }
-            }
-        }
-
-        if (recipient == null) {
-            for (Address address : message.getRecipients(Message.RecipientType.TO)) {
-                Identity identity = account.findIdentity(address);
-                if (identity != null) {
-                    recipient = identity;
-                    break;
-                }
-            }
-        }
-
-        if (recipient == null) {
-            Address[] ccAddresses = message.getRecipients(Message.RecipientType.CC);
-            if (ccAddresses.length > 0) {
-                for (Address address : ccAddresses) {
-                    Identity identity = account.findIdentity(address);
-                    if (identity != null) {
-                        recipient = identity;
-                        break;
-                    }
                 }
             }
         }
