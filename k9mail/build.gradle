@@ -63,8 +63,8 @@ android {
     buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
-        applicationId "com.fsck.k9"
-        testApplicationId "com.fsck.k9.tests"
+        applicationId "horse.amazin.my.l10"
+        testApplicationId "horse.amazin.my.l10.tests"
 
         versionCode 27000
         versionName '5.700-SNAPSHOT'

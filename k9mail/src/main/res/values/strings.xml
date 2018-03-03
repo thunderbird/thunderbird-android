@@ -5,26 +5,26 @@
     <!-- This should make it easier for forks to change the branding -->
 
     <!-- Used in AndroidManifest.xml -->
-    <string name="app_name">K-9 Mail</string>
+    <string name="app_name">L-10 Mail</string>
 
-    <string name="shortcuts_title">K-9 Accounts</string>
-    <string name="unread_widget_label">K-9 Unread</string>
+    <string name="shortcuts_title">L-10 Accounts</string>
+    <string name="unread_widget_label">L-10 Unread</string>
 
-    <string name="remote_control_label">K-9 Mail remote control</string>
-    <string name="remote_control_desc">Allows this application to control K-9 Mail activities and settings.</string>
+    <string name="remote_control_label">L-10 Mail remote control</string>
+    <string name="remote_control_desc">Allows this application to control L-10 Mail activities and settings.</string>
 
 
     <!-- Used in the about dialog -->
-    <string name="app_authors">Google, The K-9 Dog Walkers.</string>
-    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+    <string name="app_authors">Google, The L-10 Dog Walkers.</string>
+    <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The L-10 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
 
 
     <!-- Welcome message -->
-    <string name="welcome_message_title">Welcome to K-9 Mail</string>
+    <string name="welcome_message_title">Welcome to L-10 Mail</string>
     <string name="accounts_welcome"><![CDATA[
 <p>
-K-9 Mail is a powerful free email client for Android.
+L-10 Mail is a powerful free email client for Android.
 </p><p>
 Its improved features include:
 </p>
@@ -45,21 +45,21 @@ Its improved features include:
   <li>…and more</li>
 </ul>
 <p>
-Please note that K-9 does not support most free Hotmail accounts and, like many mail clients, has
+Please note that L-10 does not support most free Hotmail accounts and, like many mail clients, has
 some quirks when talking to Microsoft Exchange.
 </p><p>
 Please submit bug reports, contribute new features and ask questions at
-<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
+<a href="https://github.com/k9mail/L-10/">https://github.com/k9mail/L-10/</a>.
 </p>
     ]]></string>
 
 
     <!-- Default signature -->
-    <string name="default_signature">-- \nSent from my Android device with K-9 Mail. Please excuse my brevity.</string>
+    <string name="default_signature">-- \nSent from my Android device with L-10 Mail. Please excuse my brevity.</string>
 
 
     <!-- General strings that include the app name -->
-    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
+    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from L-10 Mail.</string>
     <string name="account_recreate_dlg_instructions_fmt">All local data for \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
     <string name="account_clear_dlg_instructions_fmt">Local copies of messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
 
@@ -343,7 +343,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>
 
     <string name="global_settings_privacy_hide_useragent">Hide mail client</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Remove L-10 User-Agent from mail headers</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>
     <string name="global_settings_privacy_hide_timezone_detail">Use UTC instead of local timezone in mail headers and reply header</string>
     <string name="global_settings_privacy_hide_hostname_when_connecting">Hide hostname</string>
@@ -1262,7 +1262,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="unsigned_text_divider_label">Unsigned Text</string>
     <string name="apg_deprecated_title">APG Deprecation Warning</string>
     <string name="apg_deprecated_1">APG is no longer maintained!</string>
-    <string name="apg_deprecated_2">Because of this, support for APG has been removed from K-9 Mail.</string>
+    <string name="apg_deprecated_2">Because of this, support for APG has been removed from L-10 Mail.</string>
     <string name="apg_deprecated_bullet_1">Development stopped in early 2014</string>
     <string name="apg_deprecated_bullet_2">Contains unfixed security issues</string>
     <string name="apg_learn_more">You can <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">click here</a> to learn more.</string>
@@ -1273,7 +1273,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_no_provider_message">This email has been encrypted with OpenPGP.\nTo read it, you need to install and configure a compatible OpenPGP App.</string>
     <string name="crypto_no_provider_button">Choose OpenPGP App</string>
 
-    <string name="mail_list_widget_text">K-9 Message List</string>
+    <string name="mail_list_widget_text">L-10 Message List</string>
     <string name="mail_list_widget_loading">Loading messages…</string>
     <string name="fetching_folders_failed">Fetching folder list failed</string>
     <string name="messageview_crypto_warning_details">Show Details</string>
