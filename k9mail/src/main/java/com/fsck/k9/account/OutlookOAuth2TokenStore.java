@@ -1,16 +1,16 @@
 package com.fsck.k9.account;
 
+
+import java.io.IOException;
+
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.oauth.OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.mail.oauth.SpecificOAuth2TokenProvider;
 import com.google.gson.annotations.SerializedName;
-
-import java.io.IOException;
-
 import retrofit2.Call;
-import retrofit2.GsonConverterFactory;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;

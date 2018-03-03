@@ -35,7 +35,6 @@ import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.OAuth2NeedUserPromptException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.TransportUris;
@@ -231,6 +230,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
     private void findProvider(final String email) {
         findProviderTask = new AsyncTask<Void, Integer, ProviderInfo>() {
+
+            private boolean outgoingReady;
+            private boolean incomingReady;
+
             @Override
             protected ProviderInfo doInBackground(Void... params) {
                 publishProgress(R.string.account_setup_check_settings_retr_info_msg);
@@ -281,7 +284,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 providerInfo = autodiscover.findProviderInfo(email);
                 if (providerInfo != null) return providerInfo;
 
-                providerInfo = guesser.findProviderInfo(email, password);
+                providerInfo = guesser.findProviderInfo(email);
                 if (providerInfo != null) return providerInfo;
 
                 return null;
@@ -561,7 +564,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         }
 
         private void checkIncomingSettings() throws MessagingException {
-            Store store;
+            RemoteStore store;
 
             if (editSettings) {
                 clearCertificateErrorNotifications(CheckDirection.INCOMING);
@@ -1330,7 +1333,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
         boolean isPushCapable = false;
         try {
-            Store store = account.getRemoteStore();
+            RemoteStore store = account.getRemoteStore();
             isPushCapable = store.isPushCapable();
         } catch (Exception e) {
             Timber.e(e, "Could not get remote store");

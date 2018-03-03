@@ -44,6 +44,10 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${timberVersion}"
     implementation 'net.jcip:jcip-annotations:1.0'
     implementation 'org.apache.james:apache-mime4j-core:0.8.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "com.android.support:design:${androidSupportLibraryVersion}"
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0';
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
 

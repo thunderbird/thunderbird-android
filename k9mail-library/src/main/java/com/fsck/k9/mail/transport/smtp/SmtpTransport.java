@@ -22,7 +22,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Queue;
 
-import android.net.Uri;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
@@ -50,7 +49,6 @@ import com.fsck.k9.mail.oauth.OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.StoreConfig;
 import javax.net.ssl.SSLException;
 import org.apache.commons.io.IOUtils;
 import timber.log.Timber;
@@ -86,11 +84,11 @@ public class SmtpTransport extends Transport {
     private boolean shouldHideHostname;
 
 
-    public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-            OAuth2TokenProvider oAuth2TokenProvider) throws MessagingException {
+    public SmtpTransport(String transportUri, TrustedSocketFactory trustedSocketFactory,
+            OAuth2TokenProvider oAuth2TokenProvider, boolean shouldHideHostname) throws MessagingException {
         ServerSettings settings;
         try {
-            settings = TransportUris.decodeTransportUri(storeConfig.getTransportUri());
+            settings = TransportUris.decodeTransportUri(transportUri);
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding transport URI", e);
         }
@@ -111,7 +109,7 @@ public class SmtpTransport extends Transport {
 
         this.trustedSocketFactory = trustedSocketFactory;
         this.oauthTokenProvider = oAuth2TokenProvider;
-        this.shouldHideHostname = storeConfig.shouldHideHostname();
+        this.shouldHideHostname = shouldHideHostname;
     }
 
     @Override

@@ -6,16 +6,7 @@ import java.net.UnknownHostException;
 
 import android.content.Context;
 
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.TransportUris;
-import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
-import com.fsck.k9.mail.transport.smtp.SmtpTransport;
 import timber.log.Timber;
 
 
@@ -86,64 +77,8 @@ public class AutoconfigureGuesser implements AutoConfigure {
             "%s"
     };
 
-
-    public ProviderInfo findProviderInfo(String email, String password) {
+    @Override
+    public ProviderInfo findProviderInfo(String email) {
         return null;
-    }
-
-    public ProviderInfo findProviderInfo(Address address, String password) {
-        String domain = address.getHostname();
-
-        SmtpGuess guess = null;
-        String smtpHost = null;
-        for (String formatCandidate : DOMAIN_CANDIDATES) {
-            smtpHost = String.format(formatCandidate, domain);
-            guess = guessSmtpPortForHost(smtpHost);
-            if (guess != null) {
-                break;
-            }
-        }
-
-        try {
-            attemptSmtpLogin(guess, smtpHost, address.toString(), password);
-        } catch (AuthenticationFailedException e) {
-            return new
-        }
-        attemptSmtpLogin(guess, smtpHost, address.getPersonal(), password);
-
-        testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.STARTTLS_REQUIRED, false);
-
-        testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.SSL_TLS_REQUIRED, false);
-
-        String domainWithImapPrefix = "imap." + domain;
-        guessSmtpSetting(domainWithImapPrefix, false);
-
-        String domainWithSmtpPrefix = "smtp." + domain;
-        testOutgoing(domainWithSmtpPrefix, ConnectionSecurity.STARTTLS_REQUIRED, false);
-
-        testOutgoing(domainWithSmtpPrefix, ConnectionSecurity.SSL_TLS_REQUIRED, false);
-
-        ProviderInfo providerInfo = new ProviderInfo();
-        return providerInfo;
-    }
-
-    private boolean attemptSmtpLogin(SmtpGuess guess, String host, String username, String password)
-            throws AuthenticationFailedException {
-        try {
-            ServerSettings serverSettings = new ServerSettings(Type.SMTP, host, guess.port,
-                    guess.connectionSecurity, AuthType.PLAIN, username, password, null);
-
-            SmtpTransport smtpTransport = new SmtpTransport(
-                    TransportUris.createTransportUri(serverSettings),
-                    new DefaultTrustedSocketFactory(context), null);
-            smtpTransport.open();
-            return true;
-        } catch (MessagingException e) {
-            if (e instanceof AuthenticationFailedException) {
-                throw (AuthenticationFailedException) e;
-            }
-            return false;
-        }
-
     }
 }

@@ -25,7 +25,6 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mail.store.RemoteStore;
@@ -263,6 +262,12 @@ class AccountConfigImpl implements AccountConfig, Parcelable {
     }
 
     @Override
+    public boolean shouldHideHostname() {
+        // TODO
+        return false;
+    }
+
+    @Override
     public FolderMode getFolderPushMode() {
         return folderPushMode;
     }
@@ -313,7 +318,7 @@ class AccountConfigImpl implements AccountConfig, Parcelable {
     }
 
     @Override
-    public Store getRemoteStore() throws MessagingException {
+    public RemoteStore getRemoteStore() throws MessagingException {
         return RemoteStore.getInstance(K9.app, this, Globals.getOAuth2TokenProvider());
     }
 

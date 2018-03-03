@@ -3,7 +3,6 @@ package com.fsck.k9.mail;
 
 import android.content.Context;
 
-import com.fsck.k9.mail.oauth.OAuth2AuthorizationCodeFlowTokenProvider;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
@@ -26,7 +25,8 @@ public class TransportProvider {
             OAuth2TokenProvider oAuth2TokenProvider) throws MessagingException {
         String uri = storeConfig.getTransportUri();
         if (uri.startsWith("smtp")) {
-            return new SmtpTransport(uri, new DefaultTrustedSocketFactory(context), oAuth2TokenProvider);
+            return new SmtpTransport(uri, new DefaultTrustedSocketFactory(context), oAuth2TokenProvider,
+                    storeConfig.shouldHideHostname());
         } else if (uri.startsWith("webdav")) {
             return new WebDavTransport(storeConfig);
         } else {

@@ -1,20 +1,47 @@
 package com.fsck.k9.activity.setup;
 
+
+import java.security.cert.X509Certificate;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.BuildConfig;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -23,44 +50,13 @@ import com.fsck.k9.account.OutlookWebViewClient;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.setup.AccountSetupPresenter.Stage;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
-
-import android.support.annotation.StringRes;
-
-import com.fsck.k9.Account;
-
-import java.security.cert.X509Certificate;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.text.method.DigitsKeyListener;
-import android.webkit.CookieManager;
-import android.webkit.WebView;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
-
-import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.service.StorageGoneReceiver;
-import com.fsck.k9.view.ClientCertificateSpinner;
-
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
-import timber.log.Timber;
-
-import android.view.View.OnClickListener;
-import android.widget.*;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings.Type;
+import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
+import timber.log.Timber;
 
 import static com.fsck.k9.mail.ServerSettings.Type.IMAP;
 import static com.fsck.k9.mail.ServerSettings.Type.POP3;
@@ -117,7 +113,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private CoordinatorLayout coordinatorLayout;
 
     @SuppressWarnings("FieldCanBeLocal")
-    private MaterialProgressBar progressBar;
+    private ProgressBar progressBar;
 
     private CheckBox requireLoginView;
 
@@ -157,7 +153,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
         setContentView(R.layout.account_setup);
 
-        flipper = (ViewFlipper) findViewById(R.id.view_flipper);
+        flipper = findViewById(R.id.view_flipper);
         flipper.setInAnimation(this, R.anim.fade_in);
         flipper.setOutAnimation(this, R.anim.fade_out);
 
@@ -236,12 +232,12 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     private void basicsStart() {
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.basics_coordinator_layout);
-        emailView = (EditText) findViewById(R.id.account_email);
-        passwordViewLayout = (TextInputLayout) findViewById(R.id.password_input_layout);
-        passwordView = (EditText) findViewById(R.id.account_password);
-        manualSetupButton = (Button) findViewById(R.id.manual_setup);
-        nextButton = (Button) findViewById(R.id.basics_next);
+        coordinatorLayout = findViewById(R.id.basics_coordinator_layout);
+        emailView = findViewById(R.id.account_email);
+        passwordViewLayout = findViewById(R.id.password_input_layout);
+        passwordView = findViewById(R.id.account_password);
+        manualSetupButton = findViewById(R.id.manual_setup);
+        nextButton = findViewById(R.id.basics_next);
         nextButton.setOnClickListener(this);
         manualSetupButton.setOnClickListener(this);
 
@@ -295,14 +291,14 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     private void checkingStart() {
-        messageView = (TextView) findViewById(R.id.message);
-        progressBar = (MaterialProgressBar) findViewById(R.id.progress);
+        messageView = findViewById(R.id.message);
+        progressBar = findViewById(R.id.progress);
 
         progressBar.setIndeterminate(true);
     }
 
     private void accountTypeStart() {
-        accountTypeRadioGroup = (RadioGroup) findViewById(R.id.account_type_radio_group);
+        accountTypeRadioGroup = findViewById(R.id.account_type_radio_group);
 
         findViewById(R.id.account_type_next).setOnClickListener(this);
 
@@ -759,30 +755,30 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     private void incomingStart() {
         View incomingView = findViewById(R.id.account_setup_incoming);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.incoming_coordinator_layout);
-        usernameView = (EditText) incomingView.findViewById(R.id.incoming_account_username);
-        usernameViewLayout = (TextInputLayout) incomingView.findViewById(R.id.incoming_account_username_layout);
-        passwordView = (EditText) incomingView.findViewById(R.id.incoming_account_password);
-        clientCertificateSpinner = (ClientCertificateSpinner) incomingView.findViewById(R.id.incoming_account_client_certificate_spinner);
-        clientCertificateLabelView = (TextView) incomingView.findViewById(R.id.account_client_certificate_label);
-        passwordViewLayout = (TextInputLayout) incomingView.findViewById(R.id.incoming_account_password_layout);
-        serverViewLayout = (TextInputLayout)  incomingView.findViewById(R.id.incoming_account_server_layout);
-        serverView = (TextInputEditText) incomingView.findViewById(R.id.incoming_account_server);
-        portView = (TextInputEditText) incomingView.findViewById(R.id.incoming_account_port);
-        securityTypeLabelView = (TextView) incomingView.findViewById(R.id.account_setup_incoming_security_label);
-        securityTypeView = (Spinner) incomingView.findViewById(R.id.incoming_account_security_type);
-        authTypeView = (Spinner) incomingView.findViewById(R.id.incoming_account_auth_type);
-        imapAutoDetectNamespaceView = (CheckBox) incomingView.findViewById(R.id.imap_autodetect_namespace);
-        imapPathPrefixLayout = (TextInputLayout) incomingView.findViewById(R.id.imap_path_prefix_layout);
-        imapPathPrefixView = (EditText) incomingView.findViewById(R.id.imap_path_prefix);
-        webdavPathPrefixView = (EditText) incomingView.findViewById(R.id.webdav_path_prefix);
-        webdavAuthPathView = (EditText) incomingView.findViewById(R.id.webdav_auth_path);
-        webdavMailboxPathView = (EditText) incomingView.findViewById(R.id.webdav_mailbox_path);
-        nextButton = (Button) incomingView.findViewById(R.id.incoming_next);
-        compressionMobile = (CheckBox) incomingView.findViewById(R.id.compression_mobile);
-        compressionWifi = (CheckBox) incomingView.findViewById(R.id.compression_wifi);
-        compressionOther = (CheckBox) incomingView.findViewById(R.id.compression_other);
-        subscribedFoldersOnly = (CheckBox) incomingView.findViewById(R.id.subscribed_folders_only);
+        coordinatorLayout = findViewById(R.id.incoming_coordinator_layout);
+        usernameView = incomingView.findViewById(R.id.incoming_account_username);
+        usernameViewLayout = incomingView.findViewById(R.id.incoming_account_username_layout);
+        passwordView = incomingView.findViewById(R.id.incoming_account_password);
+        clientCertificateSpinner = incomingView.findViewById(R.id.incoming_account_client_certificate_spinner);
+        clientCertificateLabelView = incomingView.findViewById(R.id.account_client_certificate_label);
+        passwordViewLayout = incomingView.findViewById(R.id.incoming_account_password_layout);
+        serverViewLayout = incomingView.findViewById(R.id.incoming_account_server_layout);
+        serverView = incomingView.findViewById(R.id.incoming_account_server);
+        portView = incomingView.findViewById(R.id.incoming_account_port);
+        securityTypeLabelView = incomingView.findViewById(R.id.account_setup_incoming_security_label);
+        securityTypeView = incomingView.findViewById(R.id.incoming_account_security_type);
+        authTypeView = incomingView.findViewById(R.id.incoming_account_auth_type);
+        imapAutoDetectNamespaceView = incomingView.findViewById(R.id.imap_autodetect_namespace);
+        imapPathPrefixLayout = incomingView.findViewById(R.id.imap_path_prefix_layout);
+        imapPathPrefixView = incomingView.findViewById(R.id.imap_path_prefix);
+        webdavPathPrefixView = incomingView.findViewById(R.id.webdav_path_prefix);
+        webdavAuthPathView = incomingView.findViewById(R.id.webdav_auth_path);
+        webdavMailboxPathView = incomingView.findViewById(R.id.webdav_mailbox_path);
+        nextButton = incomingView.findViewById(R.id.incoming_next);
+        compressionMobile = incomingView.findViewById(R.id.compression_mobile);
+        compressionWifi = incomingView.findViewById(R.id.compression_wifi);
+        compressionOther = incomingView.findViewById(R.id.compression_other);
+        subscribedFoldersOnly = incomingView.findViewById(R.id.subscribed_folders_only);
 
         nextButton.setOnClickListener(this);
 
@@ -935,11 +931,11 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     // names
 
     public void namesStart() {
-        doneButton = (Button) findViewById(R.id.done);
+        doneButton = findViewById(R.id.done);
         doneButton.setOnClickListener(this);
 
-        description = (EditText) findViewById(R.id.account_description);
-        name = (EditText) findViewById(R.id.account_name);
+        description = findViewById(R.id.account_description);
+        name = findViewById(R.id.account_name);
         name.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1096,20 +1092,20 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     private void outgoingStart() {
         final View outgoingView = findViewById(R.id.account_setup_outgoing);
-        coordinatorLayout = (CoordinatorLayout) outgoingView.findViewById(R.id.outgoing_coordinator_layout);
-        usernameView = (EditText) outgoingView.findViewById(R.id.outgoing_account_username);
-        usernameViewLayout = (TextInputLayout) outgoingView.findViewById(R.id.outgoing_account_username_layout);
-        passwordView = (EditText) outgoingView.findViewById(R.id.outgoing_account_password);
-        passwordViewLayout = (TextInputLayout) outgoingView.findViewById(R.id.outgoing_account_password_layout);
-        clientCertificateSpinner = (ClientCertificateSpinner) outgoingView.findViewById(R.id.outgoing_account_client_certificate_spinner);
-        clientCertificateLabelView = (TextView) outgoingView.findViewById(R.id.account_client_certificate_label);
-        serverView = (TextInputEditText) outgoingView.findViewById(R.id.outgoing_account_server);
-        portView = (TextInputEditText) outgoingView.findViewById(R.id.outgoing_account_port);
-        requireLoginView = (CheckBox) outgoingView.findViewById(R.id.account_require_login);
-        requireLoginSettingsView = (ViewGroup) outgoingView.findViewById(R.id.account_require_login_settings);
-        securityTypeView = (Spinner) outgoingView.findViewById(R.id.outgoing_account_security_type);
-        authTypeView = (Spinner) outgoingView.findViewById(R.id.outgoing_account_auth_type);
-        nextButton = (Button) outgoingView.findViewById(R.id.outgoing_next);
+        coordinatorLayout = outgoingView.findViewById(R.id.outgoing_coordinator_layout);
+        usernameView = outgoingView.findViewById(R.id.outgoing_account_username);
+        usernameViewLayout = outgoingView.findViewById(R.id.outgoing_account_username_layout);
+        passwordView = outgoingView.findViewById(R.id.outgoing_account_password);
+        passwordViewLayout = outgoingView.findViewById(R.id.outgoing_account_password_layout);
+        clientCertificateSpinner = outgoingView.findViewById(R.id.outgoing_account_client_certificate_spinner);
+        clientCertificateLabelView = outgoingView.findViewById(R.id.account_client_certificate_label);
+        serverView = outgoingView.findViewById(R.id.outgoing_account_server);
+        portView = outgoingView.findViewById(R.id.outgoing_account_port);
+        requireLoginView = outgoingView.findViewById(R.id.account_require_login);
+        requireLoginSettingsView = outgoingView.findViewById(R.id.account_require_login_settings);
+        securityTypeView = outgoingView.findViewById(R.id.outgoing_account_security_type);
+        authTypeView = outgoingView.findViewById(R.id.outgoing_account_auth_type);
+        nextButton = outgoingView.findViewById(R.id.outgoing_next);
 
         nextButton.setOnClickListener(this);
 
@@ -1288,7 +1284,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
         authDialog = new Dialog(this);
         authDialog.setContentView(R.layout.oauth_webview);
-        WebView web = (WebView) authDialog.findViewById(R.id.web_view);
+        WebView web = authDialog.findViewById(R.id.web_view);
         web.getSettings().setSaveFormData(false);
         web.getSettings().setJavaScriptEnabled(true);
         web.getSettings().setUserAgentString("K-9 Mail " + BuildConfig.VERSION_NAME);
@@ -1315,7 +1311,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
         authDialog = new Dialog(this);
         authDialog.setContentView(R.layout.oauth_webview);
-        WebView web = (WebView) authDialog.findViewById(R.id.web_view);
+        WebView web = authDialog.findViewById(R.id.web_view);
         web.getSettings().setSaveFormData(false);
         web.getSettings().setJavaScriptEnabled(true);
         web.getSettings().setUserAgentString("K-9 Mail " + BuildConfig.VERSION_NAME);

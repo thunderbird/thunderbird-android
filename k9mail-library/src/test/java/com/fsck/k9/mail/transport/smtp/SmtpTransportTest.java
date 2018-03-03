@@ -63,14 +63,16 @@ public class SmtpTransportTest {
     public void SmtpTransport_withValidTransportUri() throws Exception {
         StoreConfig storeConfig = setupStoreConfigWithTransportUri("smtp://user:password:CRAM_MD5@server:123456");
 
-        new SmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider);
+        new SmtpTransport(storeConfig.getTransportUri(), socketFactory, oAuth2TokenProvider, storeConfig.shouldHideHostname()
+        );
     }
 
     @Test(expected = MessagingException.class)
     public void SmtpTransport_withInvalidTransportUri_shouldThrow() throws Exception {
         StoreConfig storeConfig = setupStoreConfigWithTransportUri("smpt://");
 
-        new SmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider);
+        new SmtpTransport(storeConfig.getTransportUri(), socketFactory, oAuth2TokenProvider, storeConfig.shouldHideHostname()
+        );
     }
 
     @Test
@@ -1011,7 +1013,8 @@ public class SmtpTransportTest {
                 OAuth2TokenProvider oAuth2TokenProvider,
                 String injectedHostname, String injectedIP)
                 throws MessagingException {
-            super(storeConfig, trustedSocketFactory, oAuth2TokenProvider);
+            super(storeConfig.getTransportUri(), trustedSocketFactory, oAuth2TokenProvider, storeConfig.shouldHideHostname()
+            );
             this.injectedHostname = injectedHostname;
             this.injectedIP = injectedIP;
         }

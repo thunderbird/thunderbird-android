@@ -18,13 +18,11 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="32dp" />
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+    <ProgressBar
         android:id="@+id/progress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        app:mpb_progressStyle="horizontal"
-        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
         app:layout_constraintLeft_toLeftOf="@+id/title"
         android:layout_marginRight="16dp"
         app:layout_constraintRight_toRightOf="parent"
@@ -42,4 +40,5 @@
         app:layout_constraintTop_toBottomOf="@+id/title"
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="@+id/title"/>
+
 </android.support.constraint.ConstraintLayout>
