@@ -1,10 +1,23 @@
 package com.fsck.k9.activity.setup;
 
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import android.app.Activity;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.XmlResourceParser;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,7 +25,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
@@ -21,7 +33,8 @@ import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.account.Oauth2PromptRequestHandler;
 import com.fsck.k9.activity.AccountConfig;
-import com.fsck.k9.activity.setup.AccountSetupContract.View;
+import com.fsck.k9.activity.setup.AccountSetupContract.AccountSetupView;
+import com.fsck.k9.activity.setup.AccountSetupContract.Presenter;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.UrlEncodingHelper;
@@ -38,57 +51,27 @@ import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.TransportUris;
-import com.fsck.k9.mail.autoconfiguration.AutoConfigure;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
-import com.fsck.k9.mail.autoconfiguration.AutoConfigureAutodiscover;
-import com.fsck.k9.mail.autoconfiguration.AutoconfigureMozilla;
-import com.fsck.k9.mail.autoconfiguration.AutoconfigureSrv;
-import com.fsck.k9.mail.autoconfiguration.AutoconfigureGuesser;
-import com.fsck.k9.mail.autoconfiguration.DnsHelper;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
-import com.fsck.k9.service.MailService;
-
-import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.UnknownHostException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import com.fsck.k9.setup.ServerNameSuggester;
-
 import timber.log.Timber;
 
-import static com.fsck.k9.mail.ServerSettings.Type.IMAP;
-import static com.fsck.k9.mail.ServerSettings.Type.POP3;
-import static com.fsck.k9.mail.ServerSettings.Type.SMTP;
-import static com.fsck.k9.mail.ServerSettings.Type.WebDAV;
 
-
-public class AccountSetupPresenter implements AccountSetupContract.Presenter,
-        Oauth2PromptRequestHandler {
+public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHandler, Observer<ProviderInfo> {
 
     private Context context;
+    private LifecycleOwner lifecycleOwner;
     private Preferences preferences;
 
     private ServerSettings incomingSettings;
     private ServerSettings outgoingSettings;
     private boolean makeDefault;
-    private Provider provider;
 
-    private boolean autoconfiguration;
+    private boolean isManualSetup;
 
     private static final int REQUEST_CODE_GMAIL = 1;
 
@@ -107,15 +90,16 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         ACCOUNT_NAMES,
     }
 
-    private View view;
+    private AccountSetupView accountSetupView;
+    private AccountSetupViewModel viewModel;
 
-    private AsyncTask findProviderTask;
     private CheckDirection currentDirection;
     private CheckDirection direction;
 
     private boolean editSettings;
 
     private String password;
+    private String clientCertificateAlias;
 
     private ConnectionSecurity currentIncomingSecurityType;
     private AuthType currentIncomingAuthType;
@@ -127,19 +111,15 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
     private Stage stage;
 
-    private boolean restoring;
-
-    private AccountConfig accountConfig;
-
     private Handler handler;
 
-    private boolean canceled;
-    private boolean destroyed;
-
-    public AccountSetupPresenter(Context context, Preferences preferences, View view) {
+    public AccountSetupPresenter(Context context, LifecycleOwner lifecycleOwner, Preferences preferences,
+            AccountSetupView accountSetupView, AccountSetupViewModel viewModel) {
         this.context = context;
+        this.lifecycleOwner = lifecycleOwner;
         this.preferences = preferences;
-        this.view = view;
+        this.accountSetupView = accountSetupView;
+        this.viewModel = viewModel;
         this.handler = new Handler(Looper.getMainLooper());
         Globals.getOAuth2TokenProvider().setPromptRequestHandler(this);
     }
@@ -155,13 +135,14 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     public void onInputChangedInBasics(String email, String password) {
         EmailAddressValidator emailValidator = new EmailAddressValidator();
 
-        boolean valid = email != null && email.length() > 0
-                && (canOAuth2(email) || (password != null && password.length() > 0))
-                && emailValidator.isValidAddressOnly(email);
+        accountSetupView.setPasswordInBasicsEnabled(true);
+        accountSetupView.setPasswordHintInBasics(context.getString(R.string.account_setup_basics_password_hint));
+        accountSetupView.setManualSetupButtonInBasicsVisibility(false);
 
+        /*
         if (!canOAuth2(email)) {
             view.setPasswordInBasicsEnabled(true);
-            view.setManualSetupButtonInBasicsVisibility(android.view.View.VISIBLE);
+            view.setManualSetupButtonInBasicsVisibility(true);
             view.setPasswordHintInBasics(context.getString(R.string.account_setup_basics_password_hint));
         } else {
             view.setPasswordInBasicsEnabled(false);
@@ -169,10 +150,14 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     R.string.account_setup_basics_password_no_password_needed_hint
                     )
             );
-            view.setManualSetupButtonInBasicsVisibility(android.view.View.INVISIBLE);
-        }
+            view.setManualSetupButtonInBasicsVisibility(false);
+        }*/
 
-        view.setNextButtonInBasicsEnabled(valid);
+        boolean valid = email != null && email.length() > 0
+                && (canOAuth2(email) || (password != null && password.length() > 0))
+                && emailValidator.isValidAddressOnly(email);
+
+        accountSetupView.setNextButtonInBasicsEnabled(valid);
     }
 
     private boolean canOAuth2(String email) {
@@ -187,15 +172,16 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
     @Override
     public void onNextButtonInBasicViewClicked(String email, String password) {
-        if (accountConfig == null) {
-            accountConfig = new AccountConfigImpl(preferences);
+        if (viewModel.accountConfig == null) {
+            viewModel.accountConfig = new ManualSetupInfo();
         }
 
-        accountConfig.setEmail(email);
+        viewModel.accountConfig.setEmail(email);
 
         this.password = password;
 
-        view.goToAutoConfiguration();
+        accountSetupView.goToAutoConfiguration();
+        startAutoConfiguration();
     }
 
     // endregion basics
@@ -208,224 +194,71 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             checkOutgoing();
         } else if (currentDirection == CheckDirection.OUTGOING) {
             if (editSettings) {
-                ((Account) accountConfig).save(preferences);
-                view.end();
+                // ((Account) viewModel.accountConfig).save(preferences);
+                accountSetupView.end();
             } else {
-                view.goToAccountNames();
+                accountSetupView.goToAccountNames();
             }
         } else {
             if (editSettings) {
-                ((Account) accountConfig).save(preferences);
-                view.end();
+                // ((Account) viewModel.accountConfig).save(preferences);
+                accountSetupView.end();
             } else {
-                view.goToOutgoing();
+                accountSetupView.goToOutgoing();
             }
         }
     }
 
 
-    private void autoConfiguration() {
-        findProvider(accountConfig.getEmail());
+    private void startAutoConfiguration() {
+        LiveData<ProviderInfo> autoconfigureLiveData =
+                viewModel.getAutoconfigureLiveData(context, viewModel.accountConfig.getEmail());
+        autoconfigureLiveData.observe(lifecycleOwner, this);
     }
 
-    private void findProvider(final String email) {
-        findProviderTask = new AsyncTask<Void, Integer, ProviderInfo>() {
+    @Override
+    public void onChanged(@Nullable ProviderInfo providerInfo) {
+        viewModel.setupInfo = viewModel.setupInfo.withProviderInfo(providerInfo);
+        accountSetupView.goToAccountNames();
 
-            private boolean outgoingReady;
-            private boolean incomingReady;
-
-            @Override
-            protected ProviderInfo doInBackground(Void... params) {
-                publishProgress(R.string.account_setup_check_settings_retr_info_msg);
-
-                final String domain = EmailHelper.getDomainFromEmailAddress(email);
-                ProviderInfo providerInfo = autoconfigureDomain(domain);
-
-                if (providerInfo != null) {
-                    return providerInfo;
-                }
-
-                try {
-                    String mxDomain = DnsHelper.getMxDomain(domain);
-
-                    if (mxDomain == null) return null;
-
-                    publishProgress(R.string.account_setup_check_settings_retr_info_msg);
-                    providerInfo = autoconfigureDomain(mxDomain);
-
-                } catch (UnknownHostException e) {
-                    Timber.e(e, "Error while trying to run MX lookup");
-                }
-
-                return providerInfo;
+        //                 if (incomingReady && outgoingReady) {
+        // } else if (incomingReady) {
+    //                    view.goToOutgoing();
+    //                    return;
+        // }
+        /*
+        try {
+            if (providerInfo != null) {
+                provider = Provider.newInstanceFromProviderInfo(providerInfo);
             }
 
-            @Nullable
-            private ProviderInfo autoconfigureDomain(String domain) {
-                ProviderInfo providerInfo;
-                AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
-                AutoconfigureSrv autoconfigureSrv = new AutoconfigureSrv();
-                AutoConfigureAutodiscover autodiscover = new AutoConfigureAutodiscover();
-                AutoconfigureGuesser guesser = new AutoconfigureGuesser(context);
+            if (provider != null) {
+                autoconfiguration = true;
 
-                provider = findProviderForDomain(domain);
-
-                if (provider != null) return null;
-
-                providerInfo = autoconfigureMozilla.findProviderInfo(email);
-                if (providerInfo != null) return providerInfo;
-
-                providerInfo = autoconfigureSrv.findProviderInfo(email);
-                if (providerInfo != null) return providerInfo;
-
-                providerInfo = autodiscover.findProviderInfo(email);
-                if (providerInfo != null) return providerInfo;
-
-                providerInfo = autodiscover.findProviderInfo(email);
-                if (providerInfo != null) return providerInfo;
-
-                providerInfo = guesser.findProviderInfo(email);
-                if (providerInfo != null) return providerInfo;
-
-                return null;
-            }
-
-            private void testDomain(String domain) {
-                String guessedDomainForMailPrefix;
-                //noinspection ConstantConditions
-                if (domain.startsWith("mail.")) {
-                    guessedDomainForMailPrefix = domain;
-                } else {
-                    guessedDomainForMailPrefix = "mail." + domain;
+                boolean usingOAuth2 = false;
+                if (canOAuth2(email)) {
+                    usingOAuth2 = true;
                 }
+                modifyAccount(accountConfig.getEmail(), password, provider, usingOAuth2);
 
-                Timber.d("Test %s for imap", guessedDomainForMailPrefix);
-                testIncoming(guessedDomainForMailPrefix, false);
-
-                Timber.d("Test %s for smtp and starttls", guessedDomainForMailPrefix);
-                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.STARTTLS_REQUIRED, false);
-
-                Timber.d("Test %s for smtp and ssl/tls", guessedDomainForMailPrefix);
-                testOutgoing(guessedDomainForMailPrefix, ConnectionSecurity.SSL_TLS_REQUIRED, false);
-
-                String domainWithImapPrefix = "imap." + domain;
-                Timber.d("Test %s for imap", domainWithImapPrefix);
-                testIncoming(domainWithImapPrefix, false);
-
-                String domainWithSmtpPrefix = "smtp." + domain;
-                Timber.d("Test %s for smtp and starttls", domainWithSmtpPrefix);
-                testOutgoing(domainWithSmtpPrefix, ConnectionSecurity.STARTTLS_REQUIRED, false);
-
-                Timber.d("Test %s for smtp and ssl/tls", domainWithSmtpPrefix);
-                testOutgoing(domainWithSmtpPrefix, ConnectionSecurity.SSL_TLS_REQUIRED, false);
+                checkIncomingAndOutgoing();
             }
+        } catch (URISyntaxException e) {
+            Timber.e(e, "Error while converting providerInfo to provider");
+            provider = null;
+        }
 
-            private void testIncoming(String domain, boolean useLocalPart) {
-                if (!incomingReady) {
-                    try {
-                        accountConfig.setStoreUri(getDefaultStoreURI(
-                                useLocalPart ? EmailHelper.getLocalPartFromEmailAddress(email) : email,
-                                password, domain).toString());
-                        accountConfig.getRemoteStore().checkSettings();
-                        incomingReady = true;
-                        Timber.d("Server %s is right for imap", domain);
-                    } catch (AuthenticationFailedException afe) {
-                        if (!useLocalPart) {
-                            Timber.d("Server %s is connected, but authentication failed. Use local part as username this time", domain);
-                            testIncoming(domain, true);
-                        } else {
-                            Timber.d("Server %s is connected, but authentication failed for both email address and local-part", domain);
-                        }
-                    } catch (URISyntaxException | MessagingException ignored) {
-                        Timber.d("Unknown error occurred when using OAuth 2.0");
-                    }
-                }
-            }
-
-            private void testOutgoing(String domain, ConnectionSecurity connectionSecurity, boolean useLocalPart) {
-                if (!outgoingReady) {
-                    try {
-                        accountConfig.setTransportUri(getDefaultTransportURI(
-                                useLocalPart ? EmailHelper.getLocalPartFromEmailAddress(email) : email,
-                                password, domain, connectionSecurity).toString());
-                        Transport transport = TransportProvider.getInstance().getTransport(context, accountConfig,
-                                Globals.getOAuth2TokenProvider());
-                        transport.close();
-                        try {
-                            transport.open();
-                        } finally {
-                            transport.close();
-                        }
-                        outgoingReady = true;
-                        Timber.d("Server %s is right for smtp and %s", domain, connectionSecurity.toString());
-                    } catch (AuthenticationFailedException afe) {
-                        if (!useLocalPart) {
-                            Timber.d("Server %s is connected, but authentication failed. Use local part as username this time", domain);
-                            testOutgoing(domain, connectionSecurity, true);
-                        } else {
-                            Timber.d("Server %s is connected, but authentication failed for both email address and local-part", domain);
-                        }
-                    } catch (URISyntaxException | MessagingException ignored) {
-                        Timber.d("Unknown error occurred when using OAuth 2.0");
-                    }
-                }
-            }
-
-            @Override
-            protected void onProgressUpdate(Integer... values) {
-                super.onProgressUpdate(values);
-                view.setMessage(values[0]);
-            }
-
-            @Override
-            protected void onPostExecute(ProviderInfo providerInfo) {
-                super.onPostExecute(providerInfo);
-
-                if (canceled) {
-                    return;
-                }
-
-                /*if (incomingReady && outgoingReady) {
-                    accountConfig.setDescription(accountConfig.getEmail());
-                    view.goToAccountNames();
-                    return;
-                } else if (incomingReady) {
-                    view.goToOutgoing();
-                    return;
-                }*/
-                try {
-                    if (providerInfo != null) {
-                        provider = Provider.newInstanceFromProviderInfo(providerInfo);
-                    }
-
-                    if (provider != null) {
-                        autoconfiguration = true;
-
-                        boolean usingOAuth2 = false;
-                        if (canOAuth2(email)) {
-                            usingOAuth2 = true;
-                        }
-                        modifyAccount(accountConfig.getEmail(), password, provider, usingOAuth2);
-
-                        checkIncomingAndOutgoing();
-                    }
-                } catch (URISyntaxException e) {
-                    Timber.e(e, "Error while converting providerInfo to provider");
-                    provider = null;
-                }
-
-                if (provider == null) {
-                    autoconfiguration = false;
-                    manualSetup(accountConfig.getEmail(), password);
-                }
-            }
-        }.execute();
+        if (provider == null) {
+            autoconfiguration = false;
+            manualSetup(accountConfig.getEmail(), password);
+        }
+                    */
     }
 
     private void checkIncomingAndOutgoing() {
         direction = CheckDirection.BOTH;
         currentDirection = CheckDirection.INCOMING;
-        new CheckIncomingTask(accountConfig, new CheckSettingsSuccessCallback() {
+        new CheckIncomingTask(viewModel.accountConfig, new CheckSettingsSuccessCallback() {
             @Override
             public void onCheckSuccess() {
                 checkOutgoing();
@@ -436,42 +269,32 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     private void checkIncoming() {
         direction = CheckDirection.INCOMING;
         currentDirection = CheckDirection.INCOMING;
-        new CheckIncomingTask(accountConfig, new CheckSettingsSuccessCallback() {
+        new CheckIncomingTask(viewModel.accountConfig, new CheckSettingsSuccessCallback() {
             @Override
             public void onCheckSuccess() {
                 if (editSettings) {
                     updateAccount();
-                    view.end();
+                    accountSetupView.end();
                 } else {
                     /*if (outgoingReady) {
                         accountConfig.setDescription(accountConfig.getEmail());
                         view.goToAccountNames();
                         return;
                     }*/
-                    try {
-                        String password = null;
-                        String clientCertificateAlias = null;
-                        if (AuthType.EXTERNAL == incomingSettings.authenticationType) {
-                            clientCertificateAlias = incomingSettings.clientCertificateAlias;
-                        } else {
-                            password = incomingSettings.password;
-                        }
 
-                        URI oldUri = new URI(accountConfig.getTransportUri());
-                        ServerSettings transportServer = new ServerSettings(Type.SMTP,
-                                oldUri.getHost(), oldUri.getPort(),
-                                ConnectionSecurity.SSL_TLS_REQUIRED, currentIncomingAuthType,
-                                incomingSettings.username, password, clientCertificateAlias);
-                        String transportUri = TransportUris.createTransportUri(transportServer);
-                        accountConfig.setTransportUri(transportUri);
-                    } catch (URISyntaxException use) {
-                    /*
-                     * If we can't set up the URL we just continue. It's only for
-                     * convenience.
-                     */
+                    ServerSettings transportServer = TransportUris.decodeTransportUri(viewModel.accountConfig.getTransportUri());
+                    if (AuthType.EXTERNAL == incomingSettings.authenticationType) {
+                        clientCertificateAlias = incomingSettings.clientCertificateAlias;
+                        transportServer.newClientCertificateAlias(clientCertificateAlias);
+                    } else {
+                        password = incomingSettings.password;
+                        transportServer = transportServer.newPassword(password);
                     }
 
-                    view.goToOutgoing();
+                    String transportUri = TransportUris.createTransportUri(transportServer);
+                    viewModel.accountConfig.setTransportUri(transportUri);
+
+                    accountSetupView.goToOutgoing();
                 }
             }
         }).execute();
@@ -481,18 +304,18 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         direction = CheckDirection.OUTGOING;
         currentDirection = CheckDirection.OUTGOING;
 
-        new CheckOutgoingTask(accountConfig, new CheckSettingsSuccessCallback() {
+        new CheckOutgoingTask(viewModel.accountConfig, new CheckSettingsSuccessCallback() {
             @Override
             public void onCheckSuccess() {
                 if (!editSettings) {
                     //We've successfully checked outgoing as well.
-                    accountConfig.setDescription(accountConfig.getEmail());
+                    viewModel.accountConfig.setDescription(viewModel.accountConfig.getEmail());
 
-                    view.goToAccountNames();
+                    accountSetupView.goToAccountNames();
                 } else {
                     updateAccount();
 
-                    view.end();
+                    accountSetupView.end();
                 }
             }
         }).execute();
@@ -504,7 +327,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
         switch (stage) {
             case AUTOCONFIGURATION:
-                autoConfiguration();
+                startAutoConfiguration();
                 break;
             case INCOMING_CHECKING:
                 checkIncoming();
@@ -532,11 +355,11 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             if (editSettings) {
                 clearCertificateErrorNotifications(CheckDirection.OUTGOING);
             }
-            if (!(accountConfig.getRemoteStore() instanceof WebDavStore)) {
+            if (!(viewModel.accountConfig.getRemoteStore() instanceof WebDavStore)) {
                 publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
             }
 
-            transport = TransportProvider.getInstance().getTransport(context, accountConfig,
+            transport = TransportProvider.getInstance().getTransport(context, viewModel.accountConfig,
                     Globals.getOAuth2TokenProvider());
 
             transport.close();
@@ -570,7 +393,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 clearCertificateErrorNotifications(CheckDirection.INCOMING);
             }
 
-            store = accountConfig.getRemoteStore();
+            store = viewModel.accountConfig.getRemoteStore();
 
             if (store instanceof WebDavStore) {
                 publishProgress(R.string.account_setup_check_settings_authenticate);
@@ -584,10 +407,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             }
 
             if (editSettings) {
-                Account account = (Account) accountConfig;
-                MessagingController.getInstance(context).listFoldersSynchronous(account, true, null);
-                MessagingController.getInstance(context)
-                        .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
+                // Account account = (Account) viewModel.accountConfig;
+                // MessagingController.getInstance(context).listFoldersSynchronous(account, true, null);
+                // MessagingController.getInstance(context)
+                // .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
             }
         }
     }
@@ -628,8 +451,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            view.goBack();
-                            view.showErrorDialog(R.string.account_setup_failed_auth_message);
+                            accountSetupView.goBack();
+                            accountSetupView.showErrorDialog(R.string.account_setup_failed_auth_message);
                         }
                     });
                 }
@@ -640,8 +463,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        view.goBack();
-                        view.showErrorDialog(R.string.account_setup_failed_server_message);
+                        accountSetupView.goBack();
+                        accountSetupView.showErrorDialog(R.string.account_setup_failed_server_message);
                     }
                 });
             }
@@ -657,10 +480,6 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
              * so relying on InterruptedException is not enough. Instead, check after
              * each potentially long-running operation.
              */
-            if (canceled) {
-                return;
-            }
-
             if (bool && callback != null) {
                 callback.onCheckSuccess();
             }
@@ -674,81 +493,15 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            view.setMessage(values[0]);
+            accountSetupView.setMessage(values[0]);
         }
 
 
     }
 
 
-    private String getXmlAttribute(XmlResourceParser xml, String name) {
-        int resId = xml.getAttributeResourceValue(null, name, 0);
-        if (resId == 0) {
-            return xml.getAttributeValue(null, name);
-        } else {
-            return context.getString(resId);
-        }
-    }
-
-    private Provider findProviderForDomain(String domain) {
-        try {
-            XmlResourceParser xml = context.getResources().getXml(R.xml.providers);
-            int xmlEventType;
-            Provider provider = null;
-            while ((xmlEventType = xml.next()) != XmlResourceParser.END_DOCUMENT) {
-                if (xmlEventType == XmlResourceParser.START_TAG
-                        && "provider".equals(xml.getName())
-                        && domain.equalsIgnoreCase(getXmlAttribute(xml, "domain"))) {
-                    provider = new Provider();
-                    provider.id = getXmlAttribute(xml, "id");
-                    provider.label = getXmlAttribute(xml, "label");
-                    provider.domain = getXmlAttribute(xml, "domain");
-                    provider.note = getXmlAttribute(xml, "note");
-                } else if (xmlEventType == XmlResourceParser.START_TAG
-                        && "incoming".equals(xml.getName())
-                        && provider != null) {
-                    provider.incomingUriTemplate = new URI(getXmlAttribute(xml, "uri"));
-                    provider.incomingUsernameTemplate = getXmlAttribute(xml, "username");
-                } else if (xmlEventType == XmlResourceParser.START_TAG
-                        && "outgoing".equals(xml.getName())
-                        && provider != null) {
-                    provider.outgoingUriTemplate = new URI(getXmlAttribute(xml, "uri"));
-                    provider.outgoingUsernameTemplate = getXmlAttribute(xml, "username");
-                } else if (xmlEventType == XmlResourceParser.END_TAG
-                        && "provider".equals(xml.getName())
-                        && provider != null) {
-                    return provider;
-                }
-            }
-        } catch (Exception e) {
-            Timber.e(e, "Error while trying to load provider settings.");
-        }
-        return null;
-    }
-
-    private URI getDefaultStoreURI(String username, String password, String server) throws URISyntaxException {
-        String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
-        String userInfo = username + ":" + passwordEnc;
-
-        return new URI("imap+ssl+", userInfo, server, 993, null, null, null);
-    }
-
-    private URI getDefaultTransportURI(String username, String password, String server,
-            ConnectionSecurity connectionSecurity) throws URISyntaxException {
-        String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
-        String userInfo = username + ":" + passwordEnc;
-
-        if (connectionSecurity == ConnectionSecurity.STARTTLS_REQUIRED) {
-            return new URI("smtp+tls+", userInfo, server, 587, null, null, null);
-        } else {
-            return new URI("smtp+ssl+", userInfo, server, 465, null, null, null);
-        }
-    }
-
-    private void modifyAccount(String email, String password, @NonNull Provider provider,
-                               boolean usingOAuth2) throws URISyntaxException {
-
-        accountConfig.init(email, password);
+    private void modifyAccount(String email, String password, @NonNull ProviderInfo providerInfo, boolean usingOAuth2) {
+        viewModel.accountConfig.init(email, password);
 
         String[] emailParts = EmailHelper.splitEmail(email);
         String user = emailParts[0];
@@ -756,25 +509,21 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         String userEnc = UrlEncodingHelper.encodeUtf8(user);
         String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
 
-        String incomingUsername = provider.incomingUsernameTemplate;
+        String incomingUsername = providerInfo.incomingUsernameTemplate;
         incomingUsername = incomingUsername.replaceAll("\\$email", email);
         incomingUsername = incomingUsername.replaceAll("\\$user", userEnc);
         incomingUsername = incomingUsername.replaceAll("\\$domain", domain);
 
-        URI incomingUriTemplate = provider.incomingUriTemplate;
         String incomingUserInfo = incomingUsername + ":" + passwordEnc;
         if (usingOAuth2) {
             incomingUserInfo = AuthType.XOAUTH2 + ":" + incomingUserInfo;
         }
-        URI incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUserInfo,
-                incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null, null, null);
+        String incomingUri =
+                providerInfo.incomingType + incomingUserInfo + providerInfo.incomingAddr + providerInfo.incomingPort;
 
-        String outgoingUsername = provider.outgoingUsernameTemplate;
+        String outgoingUsername = providerInfo.outgoingUsernameTemplate;
 
-        URI outgoingUriTemplate = provider.outgoingUriTemplate;
-
-
-        URI outgoingUri;
+        String outgoingUri;
         if (outgoingUsername != null) {
             outgoingUsername = outgoingUsername.replaceAll("\\$email", email);
             outgoingUsername = outgoingUsername.replaceAll("\\$user", userEnc);
@@ -784,46 +533,42 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             if (usingOAuth2) {
                 outgoingUserInfo = outgoingUserInfo + ":" + AuthType.XOAUTH2;
             }
-            outgoingUri = new URI(outgoingUriTemplate.getScheme(), outgoingUserInfo,
-                    outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
-                    null, null);
+            outgoingUri = providerInfo.outgoingType + outgoingUserInfo + providerInfo.outgoingAddr + ":" +
+                    providerInfo.outgoingPort;
 
         } else {
-            outgoingUri = new URI(outgoingUriTemplate.getScheme(),
-                    null, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
-                    null, null);
-
+            outgoingUri = providerInfo.outgoingType + providerInfo.outgoingAddr + ":" + providerInfo.outgoingPort;
         }
 
-        accountConfig.setStoreUri(incomingUri.toString());
-        accountConfig.setTransportUri(outgoingUri.toString());
+        viewModel.accountConfig.setStoreUri(incomingUri);
+        viewModel.accountConfig.setTransportUri(outgoingUri);
 
-        setupFolderNames(incomingUriTemplate.getHost().toLowerCase(Locale.US));
+        setupFolderNames(providerInfo.incomingAddr.toLowerCase(Locale.US));
 
-        ServerSettings incomingSettings = RemoteStore.decodeStoreUri(incomingUri.toString());
-        accountConfig.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
+        ServerSettings incomingSettings = RemoteStore.decodeStoreUri(incomingUri);
+        viewModel.accountConfig.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
     }
 
     private void setupFolderNames(String domain) {
-        accountConfig.setDraftsFolderName(K9.getK9String(R.string.special_mailbox_name_drafts));
-        accountConfig.setTrashFolderName(K9.getK9String(R.string.special_mailbox_name_trash));
-        accountConfig.setSentFolderName(K9.getK9String(R.string.special_mailbox_name_sent));
-        accountConfig.setArchiveFolderName(K9.getK9String(R.string.special_mailbox_name_archive));
+        viewModel.accountConfig.setDraftsFolderName(K9.getK9String(R.string.special_mailbox_name_drafts));
+        viewModel.accountConfig.setTrashFolderName(K9.getK9String(R.string.special_mailbox_name_trash));
+        viewModel.accountConfig.setSentFolderName(K9.getK9String(R.string.special_mailbox_name_sent));
+        viewModel.accountConfig.setArchiveFolderName(K9.getK9String(R.string.special_mailbox_name_archive));
 
         // Yahoo! has a special folder for Spam, called "Bulk Mail".
         if (domain.endsWith(".yahoo.com")) {
-            accountConfig.setSpamFolderName("Bulk Mail");
+            viewModel.accountConfig.setSpamFolderName("Bulk Mail");
         } else {
-            accountConfig.setSpamFolderName(K9.getK9String(R.string.special_mailbox_name_spam));
+            viewModel.accountConfig.setSpamFolderName(K9.getK9String(R.string.special_mailbox_name_spam));
         }
     }
 
     @Override
     public void onCertificateAccepted(X509Certificate certificate) {
         try {
-            accountConfig.addCertificate(currentDirection, certificate);
+            viewModel.accountConfig.addCertificate(currentDirection, certificate);
         } catch (CertificateException e) {
-            view.showErrorDialog(
+            accountSetupView.showErrorDialog(
                     R.string.account_setup_failed_dlg_certificate_message_fmt,
                     e.getMessage() == null ? "" : e.getMessage());
         }
@@ -834,20 +579,20 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     @Override
     public void onCertificateRefused() {
         if (stage == Stage.INCOMING_CHECKING) {
-            view.goToIncoming();
+            accountSetupView.goToIncoming();
         } else if (stage == Stage.OUTGOING_CHECKING) {
-            view.goToOutgoing();
+            accountSetupView.goToOutgoing();
         }
     }
 
     @Override
     public void onPositiveClickedInConfirmationDialog() {
         if (stage == Stage.INCOMING_CHECKING) {
-            view.goToIncoming();
+            accountSetupView.goToIncoming();
         } else if (stage == Stage.OUTGOING_CHECKING){
-            view.goToOutgoing();
+            accountSetupView.goToOutgoing();
         } else {
-            view.goToBasics();
+            accountSetupView.goToBasics();
         }
     }
 
@@ -988,7 +733,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         handler.post(new Runnable() {
             @Override
             public void run() {
-                view.showAcceptKeyDialog(msgResId, finalExMessage, chainInfo.toString(), chain[0]);
+                accountSetupView.showAcceptKeyDialog(msgResId, finalExMessage, chainInfo.toString(), chain[0]);
             }
         });
     }
@@ -1003,53 +748,9 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     R.string.account_setup_failed_dlg_certificate_message_fmt,
                     cve);
         } else {
-            view.showErrorDialog(
+            accountSetupView.showErrorDialog(
                     R.string.account_setup_failed_dlg_server_message_fmt,
                     errorMessageForCertificateException(cve));
-        }
-    }
-
-    private static class Provider implements Serializable {
-        private static final long serialVersionUID = 8511656164616538989L;
-
-        public String id;
-
-        public String label;
-
-        public String domain;
-
-        public URI incomingUriTemplate;
-
-        public String incomingUsernameTemplate;
-
-        public URI outgoingUriTemplate;
-
-        public String outgoingUsernameTemplate;
-
-        public String note;
-
-        public static Provider newInstanceFromProviderInfo(@Nullable AutoConfigure.ProviderInfo providerInfo) throws URISyntaxException {
-            if (providerInfo == null) return null;
-
-            Provider provider = new Provider();
-
-            provider.incomingUsernameTemplate = providerInfo.incomingUsernameTemplate;
-            provider.outgoingUsernameTemplate = providerInfo.outgoingUsernameTemplate;
-
-            provider.incomingUriTemplate = new URI(providerInfo.incomingType + "+"
-                    + ("".equals(providerInfo.incomingSocketType) ? "" : (providerInfo.incomingSocketType + "+")),
-                    null,
-                    providerInfo.incomingAddr,
-                    providerInfo.incomingPort,
-                    null, null, null);
-            provider.outgoingUriTemplate = new URI(providerInfo.outgoingType + "+"
-                    + ("".equals(providerInfo.outgoingSocketType) ? "" : (providerInfo.outgoingSocketType + "+")),
-                    null,
-                    providerInfo.outgoingAddr,
-                    providerInfo.outgoingPort,
-                    null, null, null);
-
-            return provider;
         }
     }
 
@@ -1068,104 +769,104 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         stage = Stage.INCOMING;
         ConnectionSecurity[] connectionSecurityChoices = ConnectionSecurity.values();
         try {
-            incomingSettings = RemoteStore.decodeStoreUri(accountConfig.getStoreUri());
+            incomingSettings = RemoteStore.decodeStoreUri(viewModel.accountConfig.getStoreUri());
 
             currentIncomingAuthType = incomingSettings.authenticationType;
 
-            view.setAuthTypeInIncoming(currentIncomingAuthType);
+            accountSetupView.setAuthTypeInIncoming(currentIncomingAuthType);
 
             updateViewFromAuthTypeInIncoming(currentIncomingAuthType);
 
             currentIncomingSecurityType = incomingSettings.connectionSecurity;
 
             if (incomingSettings.username != null) {
-                view.setUsernameInIncoming(incomingSettings.username);
+                accountSetupView.setUsernameInIncoming(incomingSettings.username);
             }
 
             if (incomingSettings.password != null) {
-                view.setPasswordInIncoming(incomingSettings.password);
+                accountSetupView.setPasswordInIncoming(incomingSettings.password);
             }
 
             if (incomingSettings.clientCertificateAlias != null) {
-                view.setCertificateAliasInIncoming(incomingSettings.clientCertificateAlias);
+                accountSetupView.setCertificateAliasInIncoming(incomingSettings.clientCertificateAlias);
             }
 
             if (Type.POP3 == incomingSettings.type) {
-                view.setServerLabel(getString(R.string.account_setup_incoming_pop_server_label));
+                accountSetupView.setServerLabel(getString(R.string.account_setup_incoming_pop_server_label));
 
-                view.hideViewsWhenPop3();
+                accountSetupView.hideViewsWhenPop3();
             } else if (Type.IMAP == incomingSettings.type) {
-                view.setServerLabel(getString(R.string.account_setup_incoming_imap_server_label));
+                accountSetupView.setServerLabel(getString(R.string.account_setup_incoming_imap_server_label));
 
                 ImapStoreSettings imapSettings = (ImapStoreSettings) incomingSettings;
 
-                view.setImapAutoDetectNamespace(imapSettings.autoDetectNamespace);
+                accountSetupView.setImapAutoDetectNamespace(imapSettings.autoDetectNamespace);
                 if (imapSettings.pathPrefix != null) {
-                    view.setImapPathPrefix(imapSettings.pathPrefix);
+                    accountSetupView.setImapPathPrefix(imapSettings.pathPrefix);
                 }
 
-                view.hideViewsWhenImap();
+                accountSetupView.hideViewsWhenImap();
 
                 if (!editSettings) {
-                    view.hideViewsWhenImapAndNotEdit();
+                    accountSetupView.hideViewsWhenImapAndNotEdit();
                 }
             } else if (Type.WebDAV == incomingSettings.type) {
-                view.setServerLabel(getString(R.string.account_setup_incoming_webdav_server_label));
+                accountSetupView.setServerLabel(getString(R.string.account_setup_incoming_webdav_server_label));
                 connectionSecurityChoices = new ConnectionSecurity[] {
                         ConnectionSecurity.NONE,
                         ConnectionSecurity.SSL_TLS_REQUIRED };
 
-                view.hideViewsWhenWebDav();
+                accountSetupView.hideViewsWhenWebDav();
                 WebDavStoreSettings webDavSettings = (WebDavStoreSettings) incomingSettings;
 
                 if (webDavSettings.path != null) {
-                    view.setWebDavPathPrefix(webDavSettings.path);
+                    accountSetupView.setWebDavPathPrefix(webDavSettings.path);
                 }
 
                 if (webDavSettings.authPath != null) {
-                    view.setWebDavAuthPath(webDavSettings.authPath);
+                    accountSetupView.setWebDavAuthPath(webDavSettings.authPath);
                 }
 
                 if (webDavSettings.mailboxPath != null) {
-                    view.setWebDavMailboxPath(webDavSettings.mailboxPath);
+                    accountSetupView.setWebDavMailboxPath(webDavSettings.mailboxPath);
                 }
             } else {
-                throw new IllegalArgumentException("Unknown account type: " + accountConfig.getStoreUri());
+                throw new IllegalArgumentException("Unknown account type: " + viewModel.accountConfig.getStoreUri());
             }
 
             if (!editSettings) {
-                accountConfig.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
+                viewModel.accountConfig.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
             }
 
-            view.setSecurityChoices(connectionSecurityChoices);
+            accountSetupView.setSecurityChoices(connectionSecurityChoices);
 
-            view.setSecurityTypeInIncoming(currentIncomingSecurityType);
+            accountSetupView.setSecurityTypeInIncoming(currentIncomingSecurityType);
             updateAuthPlainTextFromSecurityType(currentIncomingSecurityType);
 
             if (incomingSettings.host != null) {
-                view.setServerInIncoming(incomingSettings.host);
+                accountSetupView.setServerInIncoming(incomingSettings.host);
             }
 
             if (incomingSettings.port != -1) {
                 String port = String.valueOf(incomingSettings.port);
-                view.setPortInIncoming(port);
+                accountSetupView.setPortInIncoming(port);
                 currentIncomingPort = port;
             } else {
                 updatePortFromSecurityTypeInIncoming(currentIncomingSecurityType);
             }
 
             if (editSettings) {
-                view.setCompressionSectionVisibility(android.view.View.VISIBLE);
-                view.setImapPathPrefixSectionVisibility(android.view.View.VISIBLE);
+                accountSetupView.setCompressionSectionVisibility(android.view.View.VISIBLE);
+                accountSetupView.setImapPathPrefixSectionVisibility(android.view.View.VISIBLE);
             }
-            view.setCompressionMobile(accountConfig.useCompression(NetworkType.MOBILE));
-            view.setCompressionWifi(accountConfig.useCompression(NetworkType.WIFI));
-            view.setCompressionOther(accountConfig.useCompression(NetworkType.OTHER));
+            accountSetupView.setCompressionMobile(viewModel.accountConfig.useCompression(NetworkType.MOBILE));
+            accountSetupView.setCompressionWifi(viewModel.accountConfig.useCompression(NetworkType.WIFI));
+            accountSetupView.setCompressionOther(viewModel.accountConfig.useCompression(NetworkType.OTHER));
 
-            view.setSubscribedFoldersOnly(accountConfig.subscribedFoldersOnly());
+            accountSetupView.setSubscribedFoldersOnly(viewModel.accountConfig.subscribedFoldersOnly());
 
         } catch (IllegalArgumentException e) {
-            view.showFailureToast(e);
+            accountSetupView.showFailureToast(e);
         }
     }
 
@@ -1175,15 +876,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     private void updatePortFromSecurityTypeInIncoming(ConnectionSecurity securityType) {
-        if (restoring) return;
-
         String port = String.valueOf(AccountCreator.getDefaultPort(securityType, incomingSettings.type));
-        view.setPortInIncoming(port);
+        accountSetupView.setPortInIncoming(port);
         currentIncomingPort = port;
     }
 
     private void updateAuthPlainTextFromSecurityType(ConnectionSecurity securityType) {
-        view.setAuthTypeInsecureText(securityType == ConnectionSecurity.NONE);
+        accountSetupView.setAuthTypeInsecureText(securityType == ConnectionSecurity.NONE);
     }
 
     @Override
@@ -1216,7 +915,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     Boolean.toString(autoDetectNamespace));
             extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
                     imapPathPrefix);
-        } else if (WebDAV == incomingSettings.type) {
+        } else if (Type.WebDAV == incomingSettings.type) {
             extra = new HashMap<>();
             extra.put(WebDavStoreSettings.PATH_KEY,
                     webdavPathPrefix);
@@ -1226,18 +925,18 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     webdavMailboxPath);
         }
 
-        accountConfig.deleteCertificate(host, port, CheckDirection.INCOMING);
+        viewModel.accountConfig.deleteCertificate(host, port, CheckDirection.INCOMING);
         incomingSettings = new ServerSettings(incomingSettings.type, host, port,
                 connectionSecurity, authType, username, password, clientCertificateAlias, extra);
 
-        accountConfig.setStoreUri(RemoteStore.createStoreUri(incomingSettings));
+        viewModel.accountConfig.setStoreUri(RemoteStore.createStoreUri(incomingSettings));
 
-        accountConfig.setCompression(NetworkType.MOBILE, compressMobile);
-        accountConfig.setCompression(NetworkType.WIFI, compressWifi);
-        accountConfig.setCompression(NetworkType.OTHER, compressOther);
-        accountConfig.setSubscribedFoldersOnly(subscribedFoldersOnly);
+        viewModel.accountConfig.setCompression(NetworkType.MOBILE, compressMobile);
+        viewModel.accountConfig.setCompression(NetworkType.WIFI, compressWifi);
+        viewModel.accountConfig.setCompression(NetworkType.OTHER, compressOther);
+        viewModel.accountConfig.setSubscribedFoldersOnly(subscribedFoldersOnly);
 
-        view.goToIncomingChecking();
+        accountSetupView.goToIncomingChecking();
     }
 
     private void revokeInvalidSettingsAndUpdateViewInIncoming(AuthType authType,
@@ -1247,10 +946,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
 
         if (isAuthTypeExternal && !hasConnectionSecurity) {
-            view.showInvalidSettingsToast();
-            view.setAuthTypeInIncoming(currentIncomingAuthType);
-            view.setSecurityTypeInIncoming(currentIncomingSecurityType);
-            view.setPortInIncoming(currentIncomingPort);
+            accountSetupView.showInvalidSettingsToast();
+            accountSetupView.setAuthTypeInIncoming(currentIncomingAuthType);
+            accountSetupView.setSecurityTypeInIncoming(currentIncomingSecurityType);
+            accountSetupView.setPortInIncoming(currentIncomingPort);
         } else {
             currentIncomingPort = port;
 
@@ -1275,13 +974,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     private void setAuthTypeInIncoming(AuthType authType) {
-        view.setAuthTypeInIncoming(authType);
+        accountSetupView.setAuthTypeInIncoming(authType);
 
         updateViewFromAuthTypeInIncoming(authType);
     }
 
     private void setSecurityTypeInIncoming(ConnectionSecurity securityType) {
-        view.setSecurityTypeInIncoming(securityType);
+        accountSetupView.setSecurityTypeInIncoming(securityType);
 
         updatePortFromSecurityTypeInIncoming(securityType);
         updateAuthPlainTextFromSecurityType(securityType);
@@ -1317,20 +1016,21 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                 || hasValidOAuth2Settings);
 
         checkInvalidOAuthError(isAuthTypeOAuth, isOAuthValid);
-        view.setNextButtonInIncomingEnabled(enabled);
+        accountSetupView.setNextButtonInIncomingEnabled(enabled);
     }
 
     private void checkInvalidOAuthError(boolean isAuthTypeOAuth, boolean isOAuthValid) {
         if (isAuthTypeOAuth && !isOAuthValid) {
-            view.showInvalidOAuthError();
+            accountSetupView.showInvalidOAuthError();
         } else {
-            view.clearInvalidOAuthError();
+            accountSetupView.clearInvalidOAuthError();
         }
     }
 
     private void updateAccount() {
-        Account account = (Account) accountConfig;
+        // Account account = (Account) viewModel.accountConfig;
 
+        /*
         boolean isPushCapable = false;
         try {
             RemoteStore store = account.getRemoteStore();
@@ -1339,18 +1039,19 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             Timber.e(e, "Could not get remote store");
         }
         if (isPushCapable && account.getFolderPushMode() != FolderMode.NONE) {
-            MailService.actionRestartPushers(view.getContext(), null);
+            MailService.actionRestartPushers(accountSetupView.getContext(), null);
         }
         account.save(preferences);
+        */
     }
 
     private void updateViewFromAuthTypeInIncoming(AuthType authType) {
         if (authType == AuthType.EXTERNAL) {
-            view.setViewExternalInIncoming();
+            accountSetupView.setViewExternalInIncoming();
         } else if (authType == AuthType.XOAUTH2) {
-            view.setViewOAuth2InIncoming();
+            accountSetupView.setViewOAuth2InIncoming();
         } else {
-            view.setViewNotExternalInIncoming();
+            accountSetupView.setViewNotExternalInIncoming();
         }
     }
 
@@ -1370,22 +1071,22 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     @Override
     public void onInputChangedInNames(String name, String description) {
         if (Utility.requiredFieldValid(name)) {
-            view.setDoneButtonInNamesEnabled(true);
+            accountSetupView.setDoneButtonInNamesEnabled(true);
         } else {
-            view.setDoneButtonInNamesEnabled(false);
+            accountSetupView.setDoneButtonInNamesEnabled(false);
         }
     }
 
     @Override
     public void onNextButtonInNamesClicked(String name, String description) {
         if (Utility.requiredFieldValid(description)) {
-            accountConfig.setDescription(description);
+            viewModel.accountConfig.setDescription(description);
         }
 
-        accountConfig.setName(name);
+        viewModel.accountConfig.setName(name);
 
         Account account = preferences.newAccount();
-        account.loadConfig(accountConfig);
+        account.loadConfig(viewModel.accountConfig);
 
         MessagingController.getInstance(context).listFoldersSynchronous(account, true, null);
         MessagingController.getInstance(context)
@@ -1399,7 +1100,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
         K9.setServicesEnabled(context);
 
-        view.goToListAccounts();
+        accountSetupView.goToListAccounts();
     }
 
     // endregion names
@@ -1418,19 +1119,14 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     private void analysisAccount() {
-        try {
-            if (new URI(accountConfig.getStoreUri()).getScheme().startsWith("webdav")) {
-                accountConfig.setTransportUri(accountConfig.getStoreUri());
-                view.goToOutgoingChecking();
-
-                return;
-            }
-        } catch (URISyntaxException e) {
-            view.showFailureToast(e);
+        if (viewModel.accountConfig.getStoreUri().startsWith("webdav")) {
+            viewModel.accountConfig.setTransportUri(viewModel.accountConfig.getStoreUri());
+            accountSetupView.goToOutgoingChecking();
+            return;
         }
 
         try {
-            outgoingSettings = TransportUris.decodeTransportUri(accountConfig.getTransportUri());
+            outgoingSettings = TransportUris.decodeTransportUri(viewModel.accountConfig.getTransportUri());
 
             currentOutgoingAuthType = outgoingSettings.authenticationType;
             setAuthTypeInOutgoing(currentOutgoingAuthType);
@@ -1439,39 +1135,39 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             setSecurityTypeInOutgoing(currentOutgoingSecurityType);
 
             if (outgoingSettings.username != null && !outgoingSettings.username.isEmpty()) {
-                view.setUsernameInOutgoing(outgoingSettings.username);
+                accountSetupView.setUsernameInOutgoing(outgoingSettings.username);
             }
 
             if (outgoingSettings.password != null) {
-                view.setPasswordInOutgoing(outgoingSettings.password);
+                accountSetupView.setPasswordInOutgoing(outgoingSettings.password);
             }
 
             if (outgoingSettings.clientCertificateAlias != null) {
-                view.setCertificateAliasInOutgoing(outgoingSettings.clientCertificateAlias);
+                accountSetupView.setCertificateAliasInOutgoing(outgoingSettings.clientCertificateAlias);
             }
 
             if (outgoingSettings.host != null) {
-                view.setServerInOutgoing(outgoingSettings.host);
+                accountSetupView.setServerInOutgoing(outgoingSettings.host);
             }
 
             if (outgoingSettings.port != -1) {
                 currentOutgoingPort = String.valueOf(outgoingSettings.port);
-                view.setPortInOutgoing(currentOutgoingPort);
+                accountSetupView.setPortInOutgoing(currentOutgoingPort);
             }
         } catch (Exception e) {
-            view.showFailureToast(e);
+            accountSetupView.showFailureToast(e);
         }
     }
 
 
     private void setAuthTypeInOutgoing(AuthType authType) {
-        view.setAuthTypeInOutgoing(authType);
+        accountSetupView.setAuthTypeInOutgoing(authType);
 
         updateViewFromAuthTypeInOutgoing(authType);
     }
 
     private void setSecurityTypeInOutgoing(ConnectionSecurity securityType) {
-        view.setSecurityTypeInOutgoing(securityType);
+        accountSetupView.setSecurityTypeInOutgoing(securityType);
 
         updateViewFromSecurityTypeInOutgoing(securityType);
     }
@@ -1500,13 +1196,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             clientCertificateAlias = null;
         }
 
-        accountConfig.deleteCertificate(host, port, CheckDirection.OUTGOING);
+        viewModel.accountConfig.deleteCertificate(host, port, CheckDirection.OUTGOING);
         ServerSettings server = new ServerSettings(Type.SMTP, host, port, connectionSecurity,
                 authType, username, password, clientCertificateAlias);
         String uri = TransportUris.createTransportUri(server);
-        accountConfig.setTransportUri(uri);
+        viewModel.accountConfig.setTransportUri(uri);
 
-        view.goToOutgoingChecking();
+        accountSetupView.goToOutgoingChecking();
     }
 
     @Override
@@ -1521,7 +1217,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
             if (isAuthTypeExternal && !hasConnectionSecurity && !requireLogin) {
                 authType = AuthType.PLAIN;
-                view.setAuthTypeInOutgoing(authType);
+                accountSetupView.setAuthTypeInOutgoing(authType);
                 updateViewFromAuthTypeInOutgoing(authType);
             }
         }
@@ -1565,7 +1261,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
 
         checkInvalidOAuthError(isAuthTypeOAuth, isOAuthValid);
 
-        view.setNextButtonInOutgoingEnabled(enabled);
+        accountSetupView.setNextButtonInOutgoingEnabled(enabled);
     }
 
     private void revokeInvalidSettingsAndUpdateViewInOutgoing(AuthType authType,
@@ -1576,10 +1272,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         boolean hasConnectionSecurity = (connectionSecurity != ConnectionSecurity.NONE);
 
         if (isAuthTypeExternal && !hasConnectionSecurity) {
-            view.showInvalidSettingsToastInOutgoing();
-            view.setAuthTypeInOutgoing(currentOutgoingAuthType);
-            view.setSecurityTypeInOutgoing(currentOutgoingSecurityType);
-            view.setPortInOutgoing(currentOutgoingPort);
+            accountSetupView.showInvalidSettingsToastInOutgoing();
+            accountSetupView.setAuthTypeInOutgoing(currentOutgoingAuthType);
+            accountSetupView.setSecurityTypeInOutgoing(currentOutgoingSecurityType);
+            accountSetupView.setPortInOutgoing(currentOutgoingPort);
         } else {
             currentOutgoingPort = port;
 
@@ -1592,21 +1288,20 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     private void updateViewFromSecurityTypeInOutgoing(ConnectionSecurity securityType) {
-        view.updateAuthPlainTextInOutgoing(securityType == ConnectionSecurity.NONE);
+        accountSetupView.updateAuthPlainTextInOutgoing(securityType == ConnectionSecurity.NONE);
 
-        if (restoring) return;
-        String port = String.valueOf(AccountCreator.getDefaultPort(securityType, SMTP));
-        view.setPortInOutgoing(port);
+        String port = String.valueOf(AccountCreator.getDefaultPort(securityType, Type.SMTP));
+        accountSetupView.setPortInOutgoing(port);
         currentOutgoingPort = port;
     }
 
     private void updateViewFromAuthTypeInOutgoing(AuthType authType) {
         if (authType == AuthType.EXTERNAL) {
-            view.setViewExternalInOutgoing();
+            accountSetupView.setViewExternalInOutgoing();
         } else if (authType == AuthType.XOAUTH2) {
-            view.setViewOAuth2InOutgoing();
+            accountSetupView.setViewOAuth2InOutgoing();
         } else {
-            view.setViewNotExternalInOutgoing();
+            accountSetupView.setViewNotExternalInOutgoing();
         }
     }
 
@@ -1619,13 +1314,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     @Override
-    public void onNextButtonInAccountTypeClicked(Type serverType) throws URISyntaxException {
+    public void onNextButtonInAccountTypeClicked(Type serverType) {
         switch (serverType) {
             case IMAP:
-                onImapOrPop3Selected(IMAP, "imap+ssl+");
+                onImapOrPop3Selected(Type.IMAP);
                 break;
             case POP3:
-                onImapOrPop3Selected(POP3, "pop3+ssl+");
+                onImapOrPop3Selected(Type.POP3);
                 break;
             case WebDAV:
                 onWebdavSelected();
@@ -1633,9 +1328,10 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         }
     }
 
-    private void onImapOrPop3Selected(Type serverType, String schemePrefix) throws URISyntaxException {
+    private void onImapOrPop3Selected(Type serverType) {
         ServerNameSuggester serverNameSuggester = new ServerNameSuggester();
 
+        /*
         String domainPart = EmailHelper.getDomainFromEmailAddress(accountConfig.getEmail());
 
         String suggestedStoreServerName = serverNameSuggester.suggestServerName(serverType, domainPart);
@@ -1649,22 +1345,23 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         URI transportUri = new URI("smtp+tls+", transportUriForDecode.getUserInfo(), suggestedTransportServerName,
                 transportUriForDecode.getPort(), null, null, null);
         accountConfig.setTransportUri(transportUri.toString());
+        */
 
-        view.goToIncomingSettings();
+        accountSetupView.goToIncomingSettings();
     }
 
-    private void onWebdavSelected() throws URISyntaxException {
+    private void onWebdavSelected() {
         ServerNameSuggester serverNameSuggester = new ServerNameSuggester();
 
-        URI uriForDecode = new URI(accountConfig.getStoreUri());
+        String storeUri = viewModel.accountConfig.getStoreUri();
 
+        /*
         /*
          * The user info we have been given from
          * BasicsView.onManualSetup() is encoded as an IMAP store
          * URI: AuthType:UserName:Password (no fields should be empty).
          * However, AuthType is not applicable to WebDAV nor to its store
          * URI. Re-encode without it, using just the UserName and Password.
-         */
         String userPass = "";
         String[] userInfo = uriForDecode.getUserInfo().split(":");
         if (userInfo.length > 1) {
@@ -1678,69 +1375,64 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         String suggestedServerName = serverNameSuggester.suggestServerName(WebDAV, domainPart);
         URI uri = new URI("webdav+ssl+", userPass, suggestedServerName, uriForDecode.getPort(), null, null, null);
         accountConfig.setStoreUri(uri.toString());
+        */
 
-        view.goToIncomingSettings();
+        accountSetupView.goToIncomingSettings();
     }
 
     // endregion account type
 
     @Override
     public void onBackPressed() {
-        if (findProviderTask != null && !findProviderTask.isCancelled()) {
-            findProviderTask.cancel(true);
-        }
         switch (stage) {
             case AUTOCONFIGURATION:
             case AUTOCONFIGURATION_INCOMING_CHECKING:
             case AUTOCONFIGURATION_OUTGOING_CHECKING:
             case ACCOUNT_TYPE:
                 stage = Stage.BASICS;
-                view.goToBasics();
+                accountSetupView.goToBasics();
                 break;
             case INCOMING:
                 if (!editSettings) {
                     stage = Stage.ACCOUNT_TYPE;
-                    view.goToAccountType();
+                    accountSetupView.goToAccountType();
                 } else {
-                    view.end();
+                    accountSetupView.end();
                 }
                 break;
             case INCOMING_CHECKING:
                 stage = Stage.INCOMING;
-                view.goToIncoming();
+                accountSetupView.goToIncoming();
                 break;
             case OUTGOING:
                 if (!editSettings) {
                     stage = Stage.INCOMING;
-                    view.goToIncoming();
+                    accountSetupView.goToIncoming();
                 } else {
-                    view.end();
+                    accountSetupView.end();
                 }
                 break;
             case OUTGOING_CHECKING:
             case ACCOUNT_NAMES:
-                if (autoconfiguration) {
-                    stage = Stage.BASICS;
-                    view.goToBasics();
-                } else {
+                if (isManualSetup) {
                     stage = Stage.OUTGOING;
-                    view.goToOutgoing();
+                    accountSetupView.goToOutgoing();
+                } else {
+                    stage = Stage.BASICS;
+                    accountSetupView.goToBasics();
                 }
                 break;
             default:
-                view.end();
+                accountSetupView.end();
                 break;
         }
     }
 
     @Override
-    public void setAccount(Account account) {
-        this.accountConfig = account;
-    }
-
-    @Override
     public Account getAccount() {
-        return (Account) accountConfig;
+        return null;
+        // TODO
+        // return (Account) viewModel.accountConfig;
     }
 
     public boolean isEditSettings() {
@@ -1748,37 +1440,13 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     @Override
-    public void onGetAccountUuid(@Nullable String accountUuid) {
-        accountConfig = preferences.getAccount(accountUuid);
-    }
-
-    @Override
-    public void onGetAccountConfig(@Nullable AccountConfigImpl accountConfig) {
-        this.accountConfig = accountConfig;
-    }
-
-    @Override
-    public void onRestoreStart() {
-        restoring = true;
-    }
-
-    @Override
-    public void onRestoreEnd() {
-        restoring = false;
-    }
-
-    @Override
-    public AccountSetupStatus getStatus() {
-        return new AccountSetupStatus(currentIncomingSecurityType, currentIncomingAuthType,
-                currentIncomingPort, currentOutgoingSecurityType, currentOutgoingAuthType,
-                currentOutgoingPort, accountConfig.isNotifyNewMail(), accountConfig.isShowOngoing(),
-                accountConfig.getAutomaticCheckIntervalMinutes(), accountConfig.getDisplayCount(), accountConfig.getFolderPushMode(),
-                accountConfig.getName(), accountConfig.getDescription());
+    public void onGetAccountConfig(@Nullable ManualSetupInfo accountConfig) {
+        this.viewModel.accountConfig = accountConfig;
     }
 
     @Override
     public AccountConfig getAccountConfig() {
-        return accountConfig;
+        return viewModel.accountConfig;
     }
 
     @Override
@@ -1787,20 +1455,20 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     }
 
     private void manualSetup(String email, String password) {
-        autoconfiguration = false;
+        isManualSetup = true;
 
-        if (accountConfig == null) {
-            accountConfig = new AccountConfigImpl(preferences);
+        if (viewModel.accountConfig == null) {
+            viewModel.accountConfig = new ManualSetupInfo();
         }
 
-        accountConfig.init(email, password);
+        viewModel.accountConfig.init(email, password);
 
-        view.goToAccountType();
+        accountSetupView.goToAccountType();
     }
 
     @Override
     public void handleGmailXOAuth2Intent(Intent intent) {
-        view.startIntentForResult(intent, REQUEST_CODE_GMAIL);
+        accountSetupView.startIntentForResult(intent, REQUEST_CODE_GMAIL);
     }
 
     @Override
@@ -1808,7 +1476,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         handler.post(new Runnable() {
             @Override
             public void run() {
-                view.openGmailUrl(url);
+                accountSetupView.openGmailUrl(url);
             }
         });
     }
@@ -1818,7 +1486,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
         handler.post(new Runnable() {
             @Override
             public void run() {
-                view.openOutlookUrl(url);
+                accountSetupView.openOutlookUrl(url);
             }
         });
     }
@@ -1829,7 +1497,7 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
             if (resultCode == Activity.RESULT_OK) {
                 checkIncomingAndOutgoing();
             } else {
-                view.goBack();
+                accountSetupView.goBack();
             }
         }
     }
@@ -1837,12 +1505,12 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     @Override
     public void onOAuthCodeGot(final String code) {
         oAuth2CodeGotten = true;
-        view.closeAuthDialog();
+        accountSetupView.closeAuthDialog();
         new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... params) {
                 try {
-                    Globals.getOAuth2TokenProvider().getAuthorizationCodeFlowTokenProvider().exchangeCode(accountConfig.getEmail(), code);
+                    Globals.getOAuth2TokenProvider().getAuthorizationCodeFlowTokenProvider().exchangeCode(viewModel.accountConfig.getEmail(), code);
                 } catch (AuthenticationFailedException e) {
                     return false;
                 }
@@ -1855,8 +1523,8 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
                     checkIncomingAndOutgoing();
                 } else {
                     oAuth2CodeGotten = false;
-                    view.goToBasics();
-                    view.showErrorDialog("Error when exchanging code");
+                    accountSetupView.goToBasics();
+                    accountSetupView.showErrorDialog("Error when exchanging code");
                 }
             }
         }.execute();
@@ -1865,132 +1533,17 @@ public class AccountSetupPresenter implements AccountSetupContract.Presenter,
     @Override
     public void onErrorWhenGettingOAuthCode(String errorMessage) {
         oAuth2CodeGotten = false;
-        view.closeAuthDialog();
-        view.goToBasics();
-        view.showErrorDialog(errorMessage);
+        accountSetupView.closeAuthDialog();
+        accountSetupView.goToBasics();
+        accountSetupView.showErrorDialog(errorMessage);
     }
 
     @Override
     public void onWebViewDismiss() {
         if (!oAuth2CodeGotten) {
-            view.goToBasics();
-            view.showErrorDialog("Please connect us with Gmail"); // TODO: 8/18/17 A better error message?
+            accountSetupView.goToBasics();
+            accountSetupView.showErrorDialog("Please connect us with Gmail"); // TODO: 8/18/17 A better error message?
         }
     }
-
-    @Override
-    public void onPause() {
-        canceled = true;
-    }
-
-    @Override
-    public void onStop() {
-        canceled = true;
-    }
-
-    @Override
-    public void onDestroy() {
-        canceled = true;
-        destroyed = true;
-    }
-
-    @Override
-    public void onResume() {
-        canceled = false;
-        destroyed = false;
-    }
-
-    static class AccountSetupStatus {
-        private ConnectionSecurity incomingSecurityType;
-        private AuthType incomingAuthType;
-        private String incomingPort;
-
-        private ConnectionSecurity outgoingSecurityType;
-        private AuthType outgoingAuthType;
-        private String outgoingPort;
-
-        private boolean notifyNewMail;
-        private boolean showOngoing;
-        private int automaticCheckIntervalMinutes;
-        private int displayCount;
-        private Account.FolderMode folderPushMode;
-
-        private String name;
-        private String description;
-
-        AccountSetupStatus(ConnectionSecurity incomingSecurityType, AuthType incomingAuthType,
-                String incomingPort, ConnectionSecurity outgoingSecurityType, AuthType outgoingAuthType,
-                String outgoingPort, boolean notifyNewMail, boolean showOngoing, int automaticCheckIntervalMinutes,
-                int displayCount, Account.FolderMode folderPushMode,
-                String name, String description) {
-            this.incomingSecurityType = incomingSecurityType;
-            this.incomingAuthType = incomingAuthType;
-            this.incomingPort = incomingPort;
-            this.outgoingSecurityType = outgoingSecurityType;
-            this.outgoingAuthType = outgoingAuthType;
-            this.outgoingPort = outgoingPort;
-            this.notifyNewMail = notifyNewMail;
-            this.showOngoing = showOngoing;
-            this.automaticCheckIntervalMinutes = automaticCheckIntervalMinutes;
-            this.displayCount = displayCount;
-            this.folderPushMode = folderPushMode;
-            this.name = name;
-            this.description = description;
-        }
-
-        public ConnectionSecurity getIncomingSecurityType() {
-            return incomingSecurityType;
-        }
-
-        public AuthType getIncomingAuthType() {
-            return incomingAuthType;
-        }
-
-        public String getIncomingPort() {
-            return incomingPort;
-        }
-
-        public ConnectionSecurity getOutgoingSecurityType() {
-            return outgoingSecurityType;
-        }
-
-        public AuthType getOutgoingAuthType() {
-            return outgoingAuthType;
-        }
-
-        public String getOutgoingPort() {
-            return outgoingPort;
-        }
-
-        public boolean isNotifyNewMail() {
-            return notifyNewMail;
-        }
-
-        public boolean isShowOngoing() {
-            return showOngoing;
-        }
-
-        public int getAutomaticCheckIntervalMinutes() {
-            return automaticCheckIntervalMinutes;
-        }
-
-        public int getDisplayCount() {
-            return displayCount;
-        }
-
-        public FolderMode getFolderPushMode() {
-            return folderPushMode;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-    }
-
-
 }
 

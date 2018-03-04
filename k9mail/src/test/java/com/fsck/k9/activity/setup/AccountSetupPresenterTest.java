@@ -1,7 +1,6 @@
 package com.fsck.k9.activity.setup;
 
 
-import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -14,7 +13,6 @@ import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.K9OAuth2TokenProvider;
 import com.fsck.k9.activity.setup.AccountSetupPresenter.Stage;
-import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings.Type;
@@ -58,7 +56,7 @@ public class AccountSetupPresenterTest {
 
         GlobalsHelper.setOAuth2TokenProvider(new K9OAuth2TokenProvider(view));
 
-        presenter = new AccountSetupPresenter(context, preferences, view);
+        presenter = new AccountSetupPresenter(context, preferences, view, viewModel);
 
         account = mock(Account.class);
         doNothing().when(account).save(Mockito.any(Preferences.class));

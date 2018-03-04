@@ -16,7 +16,6 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.helper.EmailHelper;
@@ -28,10 +27,9 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mail.store.RemoteStore;
-import timber.log.Timber;
 
 
-class AccountConfigImpl implements AccountConfig, Parcelable {
+class ManualSetupInfo implements AccountConfig, Parcelable {
     private String name;
     private String description;
     private String email;
@@ -75,10 +73,7 @@ class AccountConfigImpl implements AccountConfig, Parcelable {
 
     private DeletePolicy deletePolicy = DeletePolicy.NEVER;
 
-    private Preferences preferences;
-
-    AccountConfigImpl(Preferences preferences) {
-        this.preferences = preferences;
+    ManualSetupInfo() {
     }
 
     @Override
@@ -324,7 +319,6 @@ class AccountConfigImpl implements AccountConfig, Parcelable {
 
     @Override
     public void init(String email, String password) {
-        this.name = getOwnerName();
         this.email = email;
 
         String[] emailParts = EmailHelper.splitEmail(email);
@@ -447,7 +441,7 @@ class AccountConfigImpl implements AccountConfig, Parcelable {
         dest.writeInt(this.deletePolicy == null ? -1 : this.deletePolicy.ordinal());
     }
 
-    protected AccountConfigImpl(Parcel in) {
+    protected ManualSetupInfo(Parcel in) {
         this.name = in.readString();
         this.description = in.readString();
         this.email = in.readString();
@@ -497,38 +491,15 @@ class AccountConfigImpl implements AccountConfig, Parcelable {
         this.deletePolicy = tmpDeletePolicy == -1 ? null : DeletePolicy.values()[tmpDeletePolicy];
     }
 
-    public static final Creator<AccountConfigImpl> CREATOR = new Creator<AccountConfigImpl>() {
+    public static final Creator<ManualSetupInfo> CREATOR = new Creator<ManualSetupInfo>() {
         @Override
-        public AccountConfigImpl createFromParcel(Parcel source) {
-            return new AccountConfigImpl(source);
+        public ManualSetupInfo createFromParcel(Parcel source) {
+            return new ManualSetupInfo(source);
         }
 
         @Override
-        public AccountConfigImpl[] newArray(int size) {
-            return new AccountConfigImpl[size];
+        public ManualSetupInfo[] newArray(int size) {
+            return new ManualSetupInfo[size];
         }
     };
-
-    private String getOwnerName() {
-        String name = null;
-        try {
-            name = getDefaultAccountName();
-        } catch (Exception e) {
-            Timber.e(e, "Could not get default account name");
-        }
-
-        if (name == null) {
-            name = "";
-        }
-        return name;
-    }
-
-    private String getDefaultAccountName() {
-        String name = null;
-        Account account = preferences.getDefaultAccount();
-        if (account != null) {
-            name = account.getName();
-        }
-        return name;
-    }
 }

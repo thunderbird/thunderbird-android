@@ -18,14 +18,14 @@ import com.fsck.k9.mail.ServerSettings.Type;
 
 
 interface AccountSetupContract {
-    interface View {
+    interface AccountSetupView {
         // account type
         void goToIncomingSettings();
 
         // basics
         void setPasswordInBasicsEnabled(boolean enabled);
         void setPasswordHintInBasics(String hint);
-        void setManualSetupButtonInBasicsVisibility(int visibility);
+        void setManualSetupButtonInBasicsVisibility(boolean visible);
         void setNextButtonInBasicsEnabled(boolean enabled);
         void goToAccountType();
         void goToAutoConfiguration();
@@ -141,7 +141,6 @@ interface AccountSetupContract {
         void onInputChangedInBasics(String email, String password);
         void onManualSetupButtonClicked(String email, String password);
         void onNextButtonInBasicViewClicked(String email, String password);
-        void setAccount(Account account);
         Account getAccount();
 
         /* checking */
@@ -192,20 +191,11 @@ interface AccountSetupContract {
 
         void onBackPressed();
         void onGetMakeDefault(boolean makeDefault);
-        void onGetAccountUuid(String accountUuid);
-        void onGetAccountConfig(AccountConfigImpl accountConfig);
-        void onRestoreStart();
-        void onRestoreEnd();
+        void onGetAccountConfig(ManualSetupInfo accountConfig);
 
         void onActivityResult(int requestCode, int resultCode, Intent data);
 
-        AccountSetupPresenter.AccountSetupStatus getStatus();
         AccountConfig getAccountConfig();
         void onWebViewDismiss();
-
-        void onPause();
-        void onStop();
-        void onDestroy();
-        void onResume();
     }
 }

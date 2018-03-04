@@ -6,6 +6,7 @@ import java.security.cert.X509Certificate;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -48,6 +49,7 @@ import com.fsck.k9.R;
 import com.fsck.k9.account.GmailWebViewClient;
 import com.fsck.k9.account.OutlookWebViewClient;
 import com.fsck.k9.activity.Accounts;
+import com.fsck.k9.activity.setup.AccountSetupContract.AccountSetupView;
 import com.fsck.k9.activity.setup.AccountSetupPresenter.Stage;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.helper.Utility;
@@ -63,7 +65,7 @@ import static com.fsck.k9.mail.ServerSettings.Type.POP3;
 import static com.fsck.k9.mail.ServerSettings.Type.WebDAV;
 
 
-public class AccountSetupActivity extends AppCompatActivity implements AccountSetupContract.View,
+public class AccountSetupActivity extends AppCompatActivity implements AccountSetupView,
         ConfirmationDialogFragmentListener, OnClickListener, OnCheckedChangeListener {
 
     private static final String EXTRA_ACCOUNT = "account";
@@ -158,7 +160,9 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         flipper.setOutAnimation(this, R.anim.fade_out);
 
         Preferences preferences = Preferences.getPreferences(this);
-        presenter = new AccountSetupPresenter(this, preferences, this);
+
+        AccountSetupViewModel viewModel = ViewModelProviders.of(this).get(AccountSetupViewModel.class);
+        presenter = new AccountSetupPresenter(getApplicationContext(), this, preferences, this, viewModel);
 
         Intent intent = getIntent();
 
@@ -173,14 +177,12 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
             accountUuid = savedInstanceState.getString(STATE_ACCOUNT, accountUuid);
 
-            AccountConfigImpl accountConfig = savedInstanceState.getParcelable(STAGE_CONFIG);
+            ManualSetupInfo accountConfig = savedInstanceState.getParcelable(STAGE_CONFIG);
             presenter.onGetAccountConfig(accountConfig);
 
             makeDefault = savedInstanceState.getBoolean(STATE_MAKE_DEFAULT, makeDefault);
             presenter.onGetMakeDefault(makeDefault);
         }
-
-        presenter.onGetAccountUuid(accountUuid);
 
         if (stage == null) {
             stage = Stage.BASICS;
@@ -220,15 +222,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         if (editSettings) {
             outState.putString(STATE_ACCOUNT, presenter.getAccount().getUuid());
         } else {
-            outState.putParcelable(STAGE_CONFIG, (AccountConfigImpl) presenter.getAccountConfig());
+            outState.putParcelable(STAGE_CONFIG, (ManualSetupInfo) presenter.getAccountConfig());
         }
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        presenter.onRestoreStart();
-        super.onRestoreInstanceState(savedInstanceState);
-        presenter.onRestoreEnd();
     }
 
     private void basicsStart() {
@@ -286,8 +281,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     @Override
-    public void setManualSetupButtonInBasicsVisibility(int visibility) {
-        manualSetupButton.setVisibility(visibility);
+    public void setManualSetupButtonInBasicsVisibility(boolean visible) {
+        manualSetupButton.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     private void checkingStart() {
@@ -357,7 +352,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         stage = Stage.AUTOCONFIGURATION;
         setSelection(getPositionFromLayoutId(R.layout.account_setup_check_settings));
         checkingStart();
-        presenter.onCheckingStart(Stage.AUTOCONFIGURATION);
     }
 
 
@@ -1340,29 +1334,5 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         presenter.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        presenter.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        presenter.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        presenter.onDestroy();
     }
 }
