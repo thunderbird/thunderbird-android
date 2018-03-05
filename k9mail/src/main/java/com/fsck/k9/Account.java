@@ -115,7 +115,7 @@ public class Account implements BaseAccount, StoreConfig {
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
     /*
-     * http://developer.android.com/design/style/color.html
+     * https://developer.android.com/design/style/color.html
      * Note: Order does matter, it's the order in which they will be picked.
      */
     private static final Integer[] PREDEFINED_COLORS = new Integer[] {
