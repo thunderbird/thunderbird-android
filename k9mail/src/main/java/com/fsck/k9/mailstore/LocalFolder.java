@@ -78,6 +78,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
 
     private String serverId = null;
+    private String name;
     private long databaseId = -1;
     private int visibleLimit = -1;
     private String prefId = null;
@@ -154,7 +155,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                         String baseQuery = "SELECT " + LocalStore.GET_FOLDER_COLS + " FROM folders ";
 
                         if (serverId != null) {
-                            cursor = db.rawQuery(baseQuery + "where folders.name = ?", new String[] { serverId });
+                            cursor = db.rawQuery(baseQuery + "where folders.server_id = ?", new String[] { serverId });
                         } else {
                             cursor = db.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(
                                     databaseId) });
@@ -206,6 +207,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         this.syncClass = Folder.FolderClass.valueOf((syncClass == null) ? noClass : syncClass);
         String moreMessagesValue = cursor.getString(LocalStore.MORE_MESSAGES_INDEX);
         moreMessages = MoreMessages.fromDatabaseName(moreMessagesValue);
+        name = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
     }
 
     @Override
@@ -225,7 +227,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     @Override
     public String getName() {
-        return serverId;
+        return name;
     }
 
     @Override
@@ -235,7 +237,7 @@ public class LocalFolder extends Folder<LocalMessage> {
             public Boolean doDbWork(final SQLiteDatabase db) throws WrappedException {
                 Cursor cursor = null;
                 try {
-                    cursor = db.rawQuery("SELECT id FROM folders where folders.name = ?",
+                    cursor = db.rawQuery("SELECT id FROM folders where folders.server_id = ?",
                             new String[] { LocalFolder.this.getServerId() });
                     if (cursor.moveToFirst()) {
                         int folderId = cursor.getInt(0);
