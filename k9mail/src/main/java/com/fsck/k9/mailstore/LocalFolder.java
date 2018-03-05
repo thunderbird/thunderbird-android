@@ -230,6 +230,21 @@ public class LocalFolder extends Folder<LocalMessage> {
         return name;
     }
 
+    public void setName(String name) throws MessagingException {
+        try {
+            open(OPEN_MODE_RW);
+
+            if (name.equals(this.name)) {
+                return;
+            }
+
+            this.name = name;
+        } catch (MessagingException e) {
+            throw new WrappedException(e);
+        }
+        updateFolderColumn("name", name);
+    }
+
     @Override
     public boolean exists() throws MessagingException {
         return this.localStore.getDatabase().execute(false, new DbCallback<Boolean>() {
