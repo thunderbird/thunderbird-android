@@ -128,10 +128,10 @@ public class LocalStore {
 
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
-        "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages";
+        "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages, server_id";
 
     static final int FOLDER_ID_INDEX = 0;
-    static final int FOLDER_SERVER_ID_INDEX = 1;
+    static final int FOLDER_NAME_INDEX = 1;
     static final int FOLDER_VISIBLE_LIMIT_INDEX = 2;
     static final int FOLDER_LAST_CHECKED_INDEX = 3;
     static final int FOLDER_STATUS_INDEX = 4;
@@ -144,6 +144,7 @@ public class LocalStore {
     static final int FOLDER_DISPLAY_CLASS_INDEX = 11;
     static final int FOLDER_NOTIFY_CLASS_INDEX = 12;
     static final int MORE_MESSAGES_INDEX = 13;
+    static final int FOLDER_SERVER_ID_INDEX = 14;
 
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -892,10 +893,11 @@ public class LocalStore {
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                 for (LocalFolder folder : foldersToCreate) {
                     String serverId = folder.getServerId();
+                    String name = folder.getName();
 
                     if (K9.DEVELOPER_MODE) {
-                        Cursor cursor = db.query("folders", new String[] { "id", "name" },
-                                "name = ?", new String[] { serverId },null, null, null);
+                        Cursor cursor = db.query("folders", new String[] { "id", "server_id" },
+                                "server_id = ?", new String[] { serverId },null, null, null);
                         try {
                             if (cursor.moveToNext()) {
                                 long folderId = cursor.getLong(0);
@@ -934,8 +936,8 @@ public class LocalStore {
                     }
                     folder.refresh(serverId, prefHolder);   // Recover settings from Preferences
 
-                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
-                                   serverId,
+                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate, server_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
+                                   name,
                                    visibleLimit,
                                    prefHolder.inTopGroup ? 1 : 0,
                                    prefHolder.displayClass.name(),
@@ -943,6 +945,7 @@ public class LocalStore {
                                    prefHolder.notifyClass.name(),
                                    prefHolder.pushClass.name(),
                                    prefHolder.integrate ? 1 : 0,
+                                   serverId
                                });
 
                 }
@@ -1214,7 +1217,7 @@ public class LocalStore {
      *         If this is {@code false} only the UIDs for messages in {@code messageIds} are
      *         returned.
      *
-     * @return The list of UIDs for the messages grouped by folder name.
+     * @return The list of UIDs for the messages grouped by folder server ID.
      *
      */
     public Map<String, List<String>> getFoldersAndUids(final List<Long> messageIds,
@@ -1239,7 +1242,7 @@ public class LocalStore {
                     throws UnavailableStorageException {
 
                 if (threadedList) {
-                    String sql = "SELECT m.uid, f.name " +
+                    String sql = "SELECT m.uid, f.server_id " +
                             "FROM threads t " +
                             "LEFT JOIN messages m ON (t.message_id = m.id) " +
                             "LEFT JOIN folders f ON (m.folder_id = f.id) " +
@@ -1250,7 +1253,7 @@ public class LocalStore {
 
                 } else {
                     String sql =
-                            "SELECT m.uid, f.name " +
+                            "SELECT m.uid, f.server_id " +
                             "FROM messages m " +
                             "LEFT JOIN folders f ON (m.folder_id = f.id) " +
                             "WHERE m.empty = 0 AND m.id" + selectionSet;
