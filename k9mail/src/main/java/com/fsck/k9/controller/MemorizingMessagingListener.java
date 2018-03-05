@@ -90,7 +90,8 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
             }
             Memory somethingStarted = null;
             if (syncStarted != null) {
-                other.synchronizeMailboxStarted(syncStarted.account, syncStarted.folderServerId);
+                other.synchronizeMailboxStarted(syncStarted.account, syncStarted.folderServerId,
+                        syncStarted.folderName);
                 somethingStarted = syncStarted;
             }
             if (sendStarted != null) {
@@ -117,8 +118,10 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     }
 
     @Override
-    public synchronized void synchronizeMailboxStarted(Account account, String folderServerId) {
+    public synchronized void synchronizeMailboxStarted(Account account, String folderServerId,
+            String folderName) {
         Memory memory = getMemory(account, folderServerId);
+        memory.folderName = folderName;
         memory.syncingState = MemorizingState.STARTED;
         memory.folderCompleted = 0;
         memory.folderTotal = 0;
@@ -222,6 +225,7 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     private static class Memory {
         Account account;
         String folderServerId;
+        String folderName;
         MemorizingState syncingState = null;
         MemorizingState sendingState = null;
         MemorizingState pushingState = null;
