@@ -1,6 +1,7 @@
 
 package com.fsck.k9;
 
+
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -8,10 +9,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.ContentResolver;
@@ -23,36 +24,34 @@ import android.net.Uri;
 import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.CheckDirection;
 import com.fsck.k9.helper.EmailHelper;
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.Transport;
-import timber.log.Timber;
-
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
-import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.Storage;
+import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.StatsColumns;
 import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
-import com.fsck.k9.mail.ssl.LocalKeyStore;
+import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
+import timber.log.Timber;
 
 import static com.fsck.k9.Preferences.getEnumStringPref;
 
@@ -348,31 +347,6 @@ public class Account implements BaseAccount, AccountConfig {
         notificationSetting.setLedColor(chipColor);
 
         cacheChips();
-    }
-
-    public void loadConfig(AccountConfig accountConfig) {
-        setName(accountConfig.getName());
-        setEmail(accountConfig.getEmail());
-        setStoreUri(accountConfig.getStoreUri());
-        setTransportUri(accountConfig.getTransportUri());
-        setDescription(accountConfig.getDescription());
-        setInboxFolderName(accountConfig.getInboxFolderName());
-        setDraftsFolderName(accountConfig.getDraftsFolderName());
-        setArchiveFolderName(accountConfig.getArchiveFolderName());
-        setSentFolderName(accountConfig.getSentFolderName());
-        setSpamFolderName(accountConfig.getSpamFolderName());
-        setTrashFolderName(accountConfig.getTrashFolderName());
-        setAutoExpandFolderName(accountConfig.getAutoExpandFolderName());
-        setDisplayCount(accountConfig.getDisplayCount());
-        setAllowRemoteSearch(accountConfig.allowRemoteSearch());
-        setAutomaticCheckIntervalMinutes(accountConfig.getAutomaticCheckIntervalMinutes());
-        setDeletePolicy(accountConfig.getDeletePolicy());
-        setCompression(NetworkType.WIFI, accountConfig.useCompression(NetworkType.WIFI));
-        setCompression(NetworkType.MOBILE, accountConfig.useCompression(NetworkType.MOBILE));
-        setCompression(NetworkType.OTHER, accountConfig.useCompression(NetworkType.OTHER));
-        setFolderPushMode(accountConfig.getFolderPushMode());
-        setNotifyNewMail(accountConfig.isNotifyNewMail());
-        setShowOngoing(accountConfig.isShowOngoing());
     }
 
     /*

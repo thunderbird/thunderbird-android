@@ -11,17 +11,18 @@ import com.fsck.k9.mail.autoconfiguration.AutoConfigureAggregator;
 
 class AutoconfigureLiveData extends AsyncTaskLiveData<ProviderInfo> {
     private final String email;
-    private final AutoConfigureAggregator autoConfigureAggregator = new AutoConfigureAggregator();
+    private final AutoConfigureAggregator autoConfigureAggregator;
 
     AutoconfigureLiveData(@NonNull Context context, String email) {
         super(context, null);
 
         this.email = email;
+        this.autoConfigureAggregator = new AutoConfigureAggregator();
     }
 
     @Override
     protected ProviderInfo asyncLoadData() {
-        return autoConfigureAggregator.findProviderInfo(getContext(), email);
+        return autoConfigureAggregator.findProviderInfo(email);
     }
 
     boolean isForEmail(String email) {

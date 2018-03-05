@@ -55,6 +55,7 @@
                         android:layout_height="match_parent"
                         android:inputType="textEmailAddress"
                         android:hint="@string/account_setup_basics_email_hint" />
+
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout

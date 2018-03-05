@@ -19,50 +19,36 @@
         android:layout_marginEnd="@dimen/account_setup_settings_field_margin_end"
         />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="6dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="@dimen/account_setup_margin_below_title_incoming_and_outgoing"
-        android:layout_marginLeft="@dimen/account_setup_settings_margin_start"
-        android:layout_marginStart="@dimen/account_setup_settings_margin_start"
-        android:layout_marginRight="@dimen/account_setup_settings_field_margin_end"
-        android:layout_marginEnd="@dimen/account_setup_settings_field_margin_end"
-        android:clipToPadding="false"
-        android:fadingEdge="none"
-        android:scrollbarStyle="outsideInset"
-        android:overScrollMode="ifContentScrolls"
-        >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="10dp"
+            android:layout_marginTop="@dimen/account_setup_margin_below_title_incoming_and_outgoing"
+            android:layout_marginLeft="@dimen/account_setup_settings_margin_start"
+            android:layout_marginStart="@dimen/account_setup_settings_margin_start"
+            android:layout_marginRight="@dimen/account_setup_settings_field_margin_end"
+            android:layout_marginEnd="@dimen/account_setup_settings_field_margin_end"
             android:orientation="vertical"
             >
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/account_description"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:hint="@string/account_setup_names_account_name_label"
+                />
+
             <com.fsck.k9.view.TextInputLayoutWithHelperText
                 android:id="@+id/account_description_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:helperText="@string/account_description_helper_text"
-                >
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/account_description"
-                    android:singleLine="true"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:hint="@string/account_setup_names_account_name_label"
-                    />
-            </com.fsck.k9.view.TextInputLayoutWithHelperText>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/account_name_layout"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/account_setup_margin_between_items_incoming_and_outgoing"
+                app:helperText="@string/account_setup_names_user_name_small_label"
                 >
+
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/account_name"
                     android:singleLine="true"
@@ -70,17 +56,19 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:hint="@string/account_setup_names_user_name_label"/>
-            </android.support.design.widget.TextInputLayout>
 
-            <View
-                android:layout_height="0dip"
-                android:layout_width="fill_parent"
-                android:layout_weight="1"/>
+            </com.fsck.k9.view.TextInputLayoutWithHelperText>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="right"
+                android:id="@+id/done"
+                android:text="@string/done_action"
+                style="?borderlessButtonStyle"
+                />
+
         </LinearLayout>
-    </ScrollView>
 
-    <include
-        layout="@layout/wizard_done"
-        android:id="@+id/include"
-        />
 </LinearLayout>

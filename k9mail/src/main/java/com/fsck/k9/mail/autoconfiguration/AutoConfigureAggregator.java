@@ -1,44 +1,45 @@
 package com.fsck.k9.mail.autoconfiguration;
 
 
-import java.net.UnknownHostException;
-
-import android.content.Context;
-
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
 
 
 public class AutoConfigureAggregator {
+    private final AutoconfigureMozilla autoconfigureMozilla;
+    private final AutoconfigureSrv autoconfigureSrv;
+    private final AutoConfigureAutodiscover autoconfigureAutodiscover;
+    private final AutoconfigureGuesser autoconfigureGuesser;
 
-    public ProviderInfo findProviderInfo(Context context, String email) {
-        String mailDomain = EmailHelper.getDomainFromEmailAddress(email);
+    public AutoConfigureAggregator() {
+        autoconfigureMozilla = new AutoconfigureMozilla();
+        autoconfigureSrv = new AutoconfigureSrv();
+        autoconfigureAutodiscover = new AutoConfigureAutodiscover();
+        autoconfigureGuesser = new AutoconfigureGuesser();
+    }
 
-        ProviderInfo providerInfo;
-        AutoconfigureMozilla autoconfigureMozilla = new AutoconfigureMozilla();
-        AutoconfigureSrv autoconfigureSrv = new AutoconfigureSrv();
-        AutoConfigureAutodiscover autodiscover = new AutoConfigureAutodiscover();
-        AutoconfigureGuesser guesser = new AutoconfigureGuesser(context);
+    public ProviderInfo findProviderInfo(String email) {
+        ProviderInfo providerInfo = ProviderInfo.createEmpty();
 
-        providerInfo = autoconfigureMozilla.findProviderInfo(email);
-        if (providerInfo != null) return providerInfo;
+        String providerDomain = EmailHelper.getDomainFromEmailAddress(email);
 
-        providerInfo = autoconfigureSrv.findProviderInfo(email);
-        if (providerInfo != null) return providerInfo;
-
-        // providerInfo = autodiscover.findProviderInfo(email);
+        // providerInfo = autoconfigureMozilla.findProviderInfo(email);
         // if (providerInfo != null) return providerInfo;
 
-        providerInfo = autodiscover.findProviderInfo(email);
-        if (providerInfo != null) return providerInfo;
+        providerInfo = autoconfigureSrv.findProviderInfo(providerInfo, email);
+        if (providerInfo.isComplete()) {
+            return providerInfo;
+        }
 
-        providerInfo = guesser.findProviderInfo(email);
-        if (providerInfo != null) return providerInfo;
+//         providerInfo = autodiscover.findProviderInfo(email);
+//         if (providerInfo != null) return providerInfo;
 
-        try {
-            String mxDomain = DnsHelper.getMxDomain(email);
-        } catch (UnknownHostException e) {
-            return null;
+        // providerInfo = autoconfigureAutodiscover.findProviderInfo(email);
+        // if (providerInfo != null) return providerInfo;
+
+        providerInfo = autoconfigureGuesser.findProviderInfo(providerInfo, email);
+        if (providerInfo.isComplete()) {
+            return providerInfo;
         }
 
         return providerInfo;

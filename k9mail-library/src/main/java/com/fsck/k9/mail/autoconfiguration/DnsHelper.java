@@ -9,7 +9,7 @@ import org.xbill.DNS.TextParseException;
 
 public class DnsHelper {
     public static String getMxDomain(String domain) throws UnknownHostException {
-        DNSOperation dnsOperation = new DNSOperation();
+        DnsOperation dnsOperation = new DnsOperation();
         MXRecord mxRecord;
         try {
             mxRecord = dnsOperation.mxLookup(domain);

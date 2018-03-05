@@ -8,7 +8,7 @@ import android.content.Context;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
 
 
-class AccountSetupViewModel extends ViewModel {
+public class AccountSetupViewModel extends ViewModel {
     private AutoconfigureLiveData providerInfoLiveData;
 
     IncrementalSetupInfo setupInfo = IncrementalSetupInfo.createEmptySetupInfo();
@@ -31,25 +31,40 @@ class AccountSetupViewModel extends ViewModel {
 
     static class IncrementalSetupInfo {
         public final SetupState state;
+
         public final String email;
         public final String password;
 
-        private IncrementalSetupInfo(SetupState state, String email, String password, ProviderInfo providerInfo) {
+        public final ProviderInfo providerInfo;
+
+        public final String accountName;
+        public final String accountDescription;
+
+        private IncrementalSetupInfo(SetupState state, String email, String password, ProviderInfo providerInfo,
+                String accountName, String accountDescription) {
             this.state = state;
             this.email = email;
             this.password = password;
+            this.providerInfo = providerInfo;
+            this.accountName = accountName;
+            this.accountDescription = accountDescription;
         }
 
         static IncrementalSetupInfo createEmptySetupInfo() {
-            return new IncrementalSetupInfo(SetupState.EMPTY, null, null, null);
+            return new IncrementalSetupInfo(SetupState.EMPTY, null, null, null, null, null);
         }
 
         IncrementalSetupInfo withCredentials(String email, String password) {
-            return new IncrementalSetupInfo(SetupState.CREDENTIALS, email, password, null);
+            return new IncrementalSetupInfo(SetupState.CREDENTIALS, email, password, null, accountName, null);
         }
 
         IncrementalSetupInfo withProviderInfo(ProviderInfo providerInfo) {
-            return new IncrementalSetupInfo(SetupState.DETECTED, email, password, providerInfo);
+            return new IncrementalSetupInfo(SetupState.DETECTED, email, password, providerInfo, accountName,
+                    null);
+        }
+
+        public IncrementalSetupInfo withAccountInfo(String accountName, String description) {
+            return new IncrementalSetupInfo(SetupState.DONE, email, password, providerInfo, accountName, description);
         }
     }
 

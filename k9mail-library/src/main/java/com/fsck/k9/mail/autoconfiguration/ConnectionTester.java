@@ -12,33 +12,17 @@ import timber.log.Timber;
 
 
 class ConnectionTester {
-    boolean probeIsPortOpen(InetAddress[] inetAddresses, int port) {
-        for (InetAddress address : inetAddresses) {
-            try {
-                Timber.d("Probing %s", port);
-                if (connectToAddress(address, port)) {
-                    return true;
-                }
-            } catch (IOException e) {
-                Timber.w(e, "Could not connect to %s", address);
-            }
-        }
+    private static final int PORTSCAN_TIMEOUT = 500;
 
-        Timber.d("No open port found");
-        return false;
-    }
-
-    private boolean connectToAddress(InetAddress address, int port) throws IOException {
-        SocketAddress socketAddress = new InetSocketAddress(address, port);
-
-        Socket socket = new Socket();
-        socket.connect(socketAddress, 1000);
-
+    boolean isPortOpen(String host, int port) {
+        Timber.d("Knocking host %s on port %d", host, port);
         try {
-            return socket.isConnected();
-        } finally {
-            IOUtils.closeQuietly(socket);
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress(host, port), PORTSCAN_TIMEOUT);
+            socket.close();
+            return true;
+        } catch (IOException e) {
+            return false;
         }
     }
-
 }

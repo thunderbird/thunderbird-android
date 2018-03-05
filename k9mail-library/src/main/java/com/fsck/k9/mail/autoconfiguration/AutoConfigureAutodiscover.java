@@ -34,33 +34,31 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
             "</Autodiscover>";
 
     @Override
-    public ProviderInfo findProviderInfo(String email) {
+    public ProviderInfo findProviderInfo(ProviderInfo providerInfo, String email) {
         String[] parts = email.split("@");
         if (parts.length < 2) return null;
         String domain = parts[1];
 
-        ProviderInfo providerInfo;
-
         String url = String.format(AUTODISCOVER_URL1, domain);
-        providerInfo = findProviderInfoByUrl(url, email);
+        providerInfo = findProviderInfoByUrl(providerInfo, url, email);
 
         if (providerInfo != null) return providerInfo;
 
         url = String.format(AUTODISCOVER_URL2, domain);
-        providerInfo = findProviderInfoByUrl(url, email);
+        providerInfo = findProviderInfoByUrl(providerInfo, url, email);
 
         if (providerInfo != null) return providerInfo;
 
         url = String.format(AUTODISCOVER_URL3, domain);
-        providerInfo = findProviderInfoByUrl(url, email, true);
+        providerInfo = findProviderInfoByUrl(providerInfo, url, email, true);
 
         url = String.format(AUTODISCOVER_SRV, domain);
-        DNSOperation dnsOperation = new DNSOperation();
+        DnsOperation dnsOperation = new DnsOperation();
         try {
             SRVRecord srvRecord = dnsOperation.choose(dnsOperation.srvLookup(url));
             if (srvRecord != null) {
                 url = srvRecord.getTarget().toString(true);
-                providerInfo = findProviderInfoByUrl(url, email);
+                providerInfo = findProviderInfoByUrl(providerInfo, url, email);
             }
         } catch (TextParseException e) {
             Timber.e(e, "Error while trying to do SRV lookup");
@@ -71,12 +69,11 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
         return providerInfo;
     }
 
-    private ProviderInfo findProviderInfoByUrl(String url, String email) {
-        return findProviderInfoByUrl(url, email, false);
+    private ProviderInfo findProviderInfoByUrl(ProviderInfo providerInfo, String url, String email) {
+        return findProviderInfoByUrl(providerInfo, url, email, false);
     }
 
-    private ProviderInfo findProviderInfoByUrl(String url, String email, boolean followRedirects) {
-        ProviderInfo providerInfo = null;
+    private ProviderInfo findProviderInfoByUrl(ProviderInfo providerInfo, String url, String email, boolean followRedirects) {
         try {
             Document document = Jsoup.connect(url).timeout(5000).requestBody(String.format(AUTODISCOVER_POST_BODY, email))
                     .followRedirects(followRedirects).post();
@@ -90,11 +87,11 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
             }
             Element action = account.select("Action").first();
             if (action.text().equalsIgnoreCase("settings")) {
-                providerInfo = parse(account);
+                providerInfo = parse(providerInfo, account);
             } else if (account.text().equalsIgnoreCase("redirectUrl")) {
                 Element redirectUrl = account.select("RedirectUrl").first();
                 if (redirectUrl != null) {
-                    providerInfo = findProviderInfoByUrl(redirectUrl.text(), email);
+                    providerInfo = findProviderInfoByUrl(providerInfo, redirectUrl.text(), email);
                 }
             }
 
@@ -104,8 +101,8 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
         return providerInfo;
     }
 
-    public ProviderInfo parse(Element account) {
-        ProviderInfo providerInfo = new ProviderInfo();
+    public ProviderInfo parse(ProviderInfo providerInfo, Element account) {
+        /*
         Elements protocols = account.select("Protocol");
         for (Element protocol : protocols) {
             Element type = protocol.select("Type").first();
@@ -155,14 +152,14 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
 
                 Element SSL = protocol.select("SSL").first();
                 if (SSL != null && SSL.text().equalsIgnoreCase("on")) {
-                    providerInfo.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
+                    providerInfo.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
                 } else {
-                    providerInfo.incomingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+                    providerInfo.incomingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
                 }
 
                 Element TLS = protocol.select("TLS").first();
                 if (TLS != null && TLS.text().equalsIgnoreCase("on")) {
-                    providerInfo.incomingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+                    providerInfo.incomingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
                 }
 
                 break;
@@ -178,7 +175,7 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
                 Element usePopAuth = protocol.select("UsePOPAuth").first();
                 if (usePopAuth != null && usePopAuth.text().equalsIgnoreCase("on")) {
                     providerInfo.outgoingAddr = providerInfo.incomingAddr;
-                    providerInfo.outgoingSocketType = providerInfo.incomingSocketType;
+                    providerInfo.outgoingSecurity = providerInfo.incomingSecurity;
                     providerInfo.outgoingUsernameTemplate = providerInfo.incomingUsernameTemplate;
                 }
 
@@ -186,7 +183,7 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
                 if (server == null && providerInfo.outgoingAddr.equals("")) {
                     providerInfo.outgoingUsernameTemplate = "";
                     providerInfo.outgoingAddr = "";
-                    providerInfo.outgoingSocketType = "";
+                    providerInfo.outgoingSecurity = "";
                     providerInfo.outgoingPort = -1;
 
                     continue;
@@ -223,19 +220,19 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
 
                 Element SSL = protocol.select("SSL").first();
                 if (SSL != null && SSL.text().equalsIgnoreCase("on") &&
-                        providerInfo.outgoingSocketType.isEmpty()) {
-                    providerInfo.outgoingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
+                        providerInfo.outgoingSecurity.isEmpty()) {
+                    providerInfo.outgoingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
                 }
 
                 Element TLS = protocol.select("TLS").first();
                 if (TLS != null && TLS.text().equalsIgnoreCase("on") &&
-                        providerInfo.outgoingSocketType.isEmpty()) {
-                    providerInfo.outgoingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+                        providerInfo.outgoingSecurity.isEmpty()) {
+                    providerInfo.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
                 }
 
                 Element encryption = protocol.select("Encryption").first();
-                if (encryption != null && providerInfo.outgoingSocketType.isEmpty()) {
-                    providerInfo.outgoingSocketType = encryption.text();
+                if (encryption != null && providerInfo.outgoingSecurity.isEmpty()) {
+                    providerInfo.outgoingSecurity = encryption.text();
                 }
             }
         }
@@ -243,6 +240,7 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
         if (providerInfo.incomingAddr.equals("") || providerInfo.outgoingAddr.equals("")) {
             return null;
         }
+        */
 
         return providerInfo;
     }

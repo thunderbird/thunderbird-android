@@ -94,7 +94,7 @@ interface AccountSetupContract {
 
         /* --Names-- */
         void setDoneButtonInNamesEnabled(boolean enabled);
-        void goToListAccounts();
+        void finishSetupToAccountList();
 
         /* --outgoing-- */
 
@@ -119,7 +119,7 @@ interface AccountSetupContract {
 
         void goToOutgoingChecking();
 
-        void goToAccountNames();
+        void goToAccountNames(String accountName, String accountDescription);
 
 
         // ---
@@ -168,13 +168,10 @@ interface AccountSetupContract {
                 boolean subscribedFoldersOnly);
 
         /* --names--*/
-        void onNamesStart();
         void onInputChangedInNames(String name, String description);
-        void onNextButtonInNamesClicked(String name, String description);
+        void onDoneButtonInNamesClicked(String name, String description);
 
         // outgoing
-        void onOutgoingStart();
-
         void onOutgoingStart(boolean editSettings);
 
         void onNextInOutgoingClicked(String username, String password, String clientCertificateAlias,

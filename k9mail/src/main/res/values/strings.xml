@@ -389,8 +389,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_check_settings_canceling_msg">Canceling\u2026</string>
 
     <string name="account_setup_names_title">You\'re almost done!</string>
-    <string name="account_setup_names_account_name_label">Give this account a name</string>
-    <string name="account_setup_names_user_name_label">Type your name (displays on outgoing messages):</string>
+    <string name="account_setup_names_account_name_label">Account Label</string>
+    <string name="account_setup_names_user_name_label">Your name</string>
+    <string name="account_setup_names_user_name_small_label">Displays on outgoing messages</string>
 
     <string name="account_setup_account_type_title">Account type</string>
     <string name="account_setup_account_type_instructions">What kind of account is this?</string>

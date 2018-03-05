@@ -14,7 +14,6 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +34,8 @@ import com.fsck.k9.account.Oauth2PromptRequestHandler;
 import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.AccountSetupContract.AccountSetupView;
 import com.fsck.k9.activity.setup.AccountSetupContract.Presenter;
+import com.fsck.k9.activity.setup.AccountSetupViewModel.IncrementalSetupInfo;
+import com.fsck.k9.activity.setup.AccountSetupViewModel.SetupState;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.UrlEncodingHelper;
@@ -98,9 +99,6 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
 
     private boolean editSettings;
 
-    private String password;
-    private String clientCertificateAlias;
-
     private ConnectionSecurity currentIncomingSecurityType;
     private AuthType currentIncomingAuthType;
     private String currentIncomingPort;
@@ -129,6 +127,7 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
     @Override
     public void onBasicsStart() {
         stage = Stage.BASICS;
+        accountSetupView.goToBasics();
     }
 
     @Override
@@ -172,15 +171,7 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
 
     @Override
     public void onNextButtonInBasicViewClicked(String email, String password) {
-        if (viewModel.accountConfig == null) {
-            viewModel.accountConfig = new ManualSetupInfo();
-        }
-
-        viewModel.accountConfig.setEmail(email);
-
-        this.password = password;
-
-        accountSetupView.goToAutoConfiguration();
+        viewModel.setupInfo = viewModel.setupInfo.withCredentials(email, password);
         startAutoConfiguration();
     }
 
@@ -197,7 +188,9 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
                 // ((Account) viewModel.accountConfig).save(preferences);
                 accountSetupView.end();
             } else {
-                accountSetupView.goToAccountNames();
+                accountSetupView.goToAccountNames(viewModel.setupInfo.accountName,
+                        viewModel.setupInfo.accountDescription);
+                stage = Stage.ACCOUNT_NAMES;
             }
         } else {
             if (editSettings) {
@@ -211,15 +204,22 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
 
 
     private void startAutoConfiguration() {
-        LiveData<ProviderInfo> autoconfigureLiveData =
-                viewModel.getAutoconfigureLiveData(context, viewModel.accountConfig.getEmail());
-        autoconfigureLiveData.observe(lifecycleOwner, this);
+        accountSetupView.goToAutoConfiguration();
+        stage = Stage.AUTOCONFIGURATION;
+
+        viewModel.getAutoconfigureLiveData(context, viewModel.setupInfo.email).observe(lifecycleOwner, this);
     }
 
     @Override
     public void onChanged(@Nullable ProviderInfo providerInfo) {
+        viewModel.getAutoconfigureLiveData(context, viewModel.setupInfo.email).removeObserver(this);
+
         viewModel.setupInfo = viewModel.setupInfo.withProviderInfo(providerInfo);
-        accountSetupView.goToAccountNames();
+        String description = getDefaultAccountDescription(viewModel.setupInfo.email);
+        viewModel.setupInfo = viewModel.setupInfo.withAccountInfo("", description);
+
+        accountSetupView.goToAccountNames(viewModel.setupInfo.accountName, viewModel.setupInfo.accountDescription);
+        stage = Stage.ACCOUNT_NAMES;
 
         //                 if (incomingReady && outgoingReady) {
         // } else if (incomingReady) {
@@ -255,6 +255,13 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
                     */
     }
 
+    @NonNull
+    private String getDefaultAccountDescription(String email) {
+        String description = EmailHelper.getProviderNameFromEmailAddress(email) + " Account";
+        description = description.substring(0, 1).toUpperCase() + description.substring(1);
+        return description;
+    }
+
     private void checkIncomingAndOutgoing() {
         direction = CheckDirection.BOTH;
         currentDirection = CheckDirection.INCOMING;
@@ -284,11 +291,9 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
 
                     ServerSettings transportServer = TransportUris.decodeTransportUri(viewModel.accountConfig.getTransportUri());
                     if (AuthType.EXTERNAL == incomingSettings.authenticationType) {
-                        clientCertificateAlias = incomingSettings.clientCertificateAlias;
-                        transportServer.newClientCertificateAlias(clientCertificateAlias);
+                        transportServer = transportServer.newClientCertificateAlias(incomingSettings.clientCertificateAlias);
                     } else {
-                        password = incomingSettings.password;
-                        transportServer = transportServer.newPassword(password);
+                        transportServer = transportServer.newPassword(incomingSettings.password);
                     }
 
                     String transportUri = TransportUris.createTransportUri(transportServer);
@@ -311,7 +316,9 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
                     //We've successfully checked outgoing as well.
                     viewModel.accountConfig.setDescription(viewModel.accountConfig.getEmail());
 
-                    accountSetupView.goToAccountNames();
+                    accountSetupView.goToAccountNames(viewModel.setupInfo.accountName,
+                            viewModel.setupInfo.accountDescription);
+                    stage = Stage.ACCOUNT_NAMES;
                 } else {
                     updateAccount();
 
@@ -1064,11 +1071,6 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
     // region names
 
     @Override
-    public void onNamesStart() {
-        stage = Stage.ACCOUNT_NAMES;
-    }
-
-    @Override
     public void onInputChangedInNames(String name, String description) {
         if (Utility.requiredFieldValid(name)) {
             accountSetupView.setDoneButtonInNamesEnabled(true);
@@ -1078,39 +1080,61 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
     }
 
     @Override
-    public void onNextButtonInNamesClicked(String name, String description) {
-        if (Utility.requiredFieldValid(description)) {
-            viewModel.accountConfig.setDescription(description);
+    public void onDoneButtonInNamesClicked(String name, String description) {
+        if (!Utility.requiredFieldValid(description)) {
+            return;
         }
 
-        viewModel.accountConfig.setName(name);
+        viewModel.setupInfo = viewModel.setupInfo.withAccountInfo(name, description);
 
+        createAccountFromSetupInfo();
+
+        accountSetupView.finishSetupToAccountList();
+    }
+
+    private void createAccountFromSetupInfo() {
         Account account = preferences.newAccount();
-        account.loadConfig(viewModel.accountConfig);
-
-        MessagingController.getInstance(context).listFoldersSynchronous(account, true, null);
-        MessagingController.getInstance(context)
-                .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
-
+        applySetupInfoToAccount(account, viewModel.setupInfo);
         account.save(preferences);
+
+        // MessagingController.getInstance(context).listFoldersSynchronous(account, true, null);
+        // MessagingController.getInstance(context)
+        // .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
 
         if (account.equals(preferences.getDefaultAccount()) || makeDefault) {
             preferences.setDefaultAccount(account);
         }
 
         K9.setServicesEnabled(context);
+    }
 
-        accountSetupView.goToListAccounts();
+    private static void applySetupInfoToAccount(Account account, IncrementalSetupInfo setupInfo) {
+        if (setupInfo.state != SetupState.DONE) {
+            throw new IllegalStateException("Cannot apply from incomplete setup info!");
+        }
+
+        account.setName(setupInfo.accountName);
+        account.setEmail(setupInfo.email);
+        account.setStoreUri(setupInfo.providerInfo.getStoreUri());
+        account.setTransportUri(setupInfo.providerInfo.getTransportUri());
+        account.setDescription(setupInfo.accountDescription);
+
+        account.setDraftsFolderName(K9.getK9String(R.string.special_mailbox_name_drafts));
+        account.setTrashFolderName(K9.getK9String(R.string.special_mailbox_name_trash));
+        account.setSentFolderName(K9.getK9String(R.string.special_mailbox_name_sent));
+        account.setArchiveFolderName(K9.getK9String(R.string.special_mailbox_name_archive));
+
+        // Yahoo! has a special folder for Spam, called "Bulk Mail".
+        if (setupInfo.email.toLowerCase().endsWith(".yahoo.com")) {
+            account.setSpamFolderName("Bulk Mail");
+        } else {
+            account.setSpamFolderName(K9.getK9String(R.string.special_mailbox_name_spam));
+        }
     }
 
     // endregion names
 
     // region outgoing
-    @Override
-    public void onOutgoingStart() {
-        onOutgoingStart(editSettings);
-    }
-
     @Override
     public void onOutgoingStart(boolean editSettings) {
         this.editSettings = editSettings;

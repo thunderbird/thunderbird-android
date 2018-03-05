@@ -32,12 +32,12 @@ public class SRVTest {
 
         ProviderInfo expected = new ProviderInfo();
 
-        expected.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
+        expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.incomingPort = 993;
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingAddr = "imap.test.com";
-        expected.outgoingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+        expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.outgoingPort = 587;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
@@ -72,12 +72,12 @@ public class SRVTest {
 
         ProviderInfo expected = new ProviderInfo();
 
-        expected.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
+        expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.incomingPort = 993;
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingAddr = "mail.test.com";
-        expected.outgoingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+        expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.outgoingPort = 587;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
@@ -112,12 +112,12 @@ public class SRVTest {
 
         ProviderInfo expected = new ProviderInfo();
 
-        expected.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
+        expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.incomingPort = 995;
         expected.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         expected.incomingAddr = "pop3.test.com";
-        expected.outgoingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+        expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.outgoingPort = 587;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
@@ -152,12 +152,12 @@ public class SRVTest {
 
         ProviderInfo expected = new ProviderInfo();
 
-        expected.incomingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+        expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.incomingPort = 143;
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingAddr = "mail.test.com";
-        expected.outgoingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+        expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.outgoingPort = 587;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
@@ -192,12 +192,12 @@ public class SRVTest {
 
         ProviderInfo expected1 = new ProviderInfo();
 
-        expected1.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
+        expected1.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
         expected1.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected1.incomingPort = 993;
         expected1.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected1.incomingAddr = "imap.test.com";
-        expected1.outgoingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+        expected1.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected1.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected1.outgoingPort = 587;
         expected1.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
@@ -205,12 +205,12 @@ public class SRVTest {
 
         ProviderInfo expected2 = new ProviderInfo();
 
-        expected2.incomingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+        expected2.incomingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected2.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected2.incomingPort = 143;
         expected2.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected2.incomingAddr = "mail.test.com";
-        expected2.outgoingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+        expected2.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected2.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected2.outgoingPort = 587;
         expected2.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
@@ -264,12 +264,12 @@ public class SRVTest {
 
         ProviderInfo expected = new ProviderInfo();
 
-        expected.incomingSocketType = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
+        expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.incomingPort = 123;
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingAddr = "imap.test.com";
-        expected.outgoingSocketType = ProviderInfo.SOCKET_TYPE_STARTTLS;
+        expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.outgoingPort = 789;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;

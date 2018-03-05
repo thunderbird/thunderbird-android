@@ -26,6 +26,7 @@ import android.text.method.DigitsKeyListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.AdapterView;
@@ -127,8 +128,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private CheckBox notifySyncView;
     private CheckBox pushEnable;
 
-    private EditText description;
-    private EditText name;
+    private EditText accountName;
+    private EditText accountDescription;
     @SuppressWarnings("FieldCanBeLocal")
     private Button doneButton;
 
@@ -147,8 +148,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     boolean editSettings;
 
-    Stage stage;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,13 +165,11 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
         Intent intent = getIntent();
 
-        stage = (Stage) intent.getSerializableExtra(EXTRA_STAGE);
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         editSettings = intent.getBooleanExtra(EXTRA_EDIT_SETTINGS, false);
         boolean makeDefault = intent.getBooleanExtra(EXTRA_MAKE_DEFAULT, false);
 
         if (savedInstanceState != null) {
-            stage = (Stage) savedInstanceState.getSerializable(STATE_STAGE);
             editSettings = savedInstanceState.getBoolean(STATE_EDIT_SETTINGS, editSettings);
 
             accountUuid = savedInstanceState.getString(STATE_ACCOUNT, accountUuid);
@@ -182,33 +179,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
             makeDefault = savedInstanceState.getBoolean(STATE_MAKE_DEFAULT, makeDefault);
             presenter.onGetMakeDefault(makeDefault);
-        }
-
-        if (stage == null) {
-            stage = Stage.BASICS;
-        }
-
-        switch (stage) {
-            case BASICS:
-            case AUTOCONFIGURATION:
-            case AUTOCONFIGURATION_INCOMING_CHECKING:
-            case AUTOCONFIGURATION_OUTGOING_CHECKING:
-                goToBasics();
-                break;
-            case ACCOUNT_TYPE:
-                goToAccountType();
-                break;
-            case INCOMING:
-            case INCOMING_CHECKING:
-                goToIncoming();
-                break;
-            case OUTGOING:
-            case OUTGOING_CHECKING:
-                goToOutgoing();
-                break;
-            case ACCOUNT_NAMES:
-                goToAccountNames();
-                break;
+        } else {
+            presenter.onBasicsStart();
         }
     }
 
@@ -216,7 +188,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putSerializable(STATE_STAGE, stage);
         final boolean editSettings = presenter.isEditSettings();
         outState.putBoolean(STATE_EDIT_SETTINGS, editSettings);
         if (editSettings) {
@@ -237,8 +208,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         manualSetupButton.setOnClickListener(this);
 
         initializeViewListenersInBasics();
-
-        presenter.onBasicsStart();
         onInputChangedInBasics();
     }
 
@@ -326,14 +295,12 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     public void goToBasics() {
-        stage = Stage.BASICS;
         setSelection(getPositionFromLayoutId(R.layout.account_setup_basics));
         basicsStart();
     }
 
 
     public void goToOutgoing() {
-        stage = Stage.OUTGOING;
         setSelection(getPositionFromLayoutId(R.layout.account_setup_outgoing));
         outgoingStart();
     }
@@ -341,7 +308,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     @Override
     public void goToIncoming() {
-        stage = Stage.INCOMING;
         setSelection(getPositionFromLayoutId(R.layout.account_setup_incoming));
         incomingStart();
     }
@@ -349,32 +315,50 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     @Override
     public void goToAutoConfiguration() {
-        stage = Stage.AUTOCONFIGURATION;
+        hideKeyboard();
         setSelection(getPositionFromLayoutId(R.layout.account_setup_check_settings));
         checkingStart();
     }
 
-
     @Override
     public void goToAccountType() {
-        stage = Stage.ACCOUNT_TYPE;
         setSelection(getPositionFromLayoutId(R.layout.account_setup_account_type));
         accountTypeStart();
     }
 
     @Override
-    public void goToAccountNames() {
-        stage = Stage.ACCOUNT_NAMES;
+    public void goToAccountNames(String accountName, String accountDescription) {
         setSelection(getPositionFromLayoutId(R.layout.account_setup_names));
-        namesStart();
+
+        this.accountName = findViewById(R.id.account_name);
+        this.accountDescription = findViewById(R.id.account_description);
+        this.doneButton = findViewById(R.id.done);
+
+        this.accountName.setText(accountName);
+        this.accountName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                onInputChangeInNames();
+            }
+        });
+
+        this.accountDescription.setText(accountDescription);
+
+        this.doneButton.setOnClickListener(this);
     }
 
     @Override
     public void goToOutgoingChecking() {
-        stage = Stage.OUTGOING_CHECKING;
         setSelection(getPositionFromLayoutId(R.layout.account_setup_check_settings));
         checkingStart();
-        presenter.onCheckingStart(stage);
     }
 
     @Override
@@ -384,14 +368,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     @Override
     public void goToIncomingChecking() {
-        stage = Stage.INCOMING_CHECKING;
         setSelection(getPositionFromLayoutId(R.layout.account_setup_check_settings));
         checkingStart();
-        presenter.onCheckingStart(stage);
-    }
-
-    public void listAccounts() {
-        Accounts.listAccounts(this);
     }
 
     private void setSelection(int position) {
@@ -585,7 +563,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
                     onNextInOutgoing();
                     break;
                 case R.id.done:
-                    presenter.onNextButtonInNamesClicked(name.getText().toString(), description.getText().toString());
+                    presenter.onDoneButtonInNamesClicked(accountName.getText().toString(), accountDescription.getText().toString());
                     break;
                 case R.id.manual_setup:
                     presenter.onManualSetupButtonClicked(emailView.getText().toString(),
@@ -924,42 +902,19 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     // names
 
-    public void namesStart() {
-        doneButton = findViewById(R.id.done);
-        doneButton.setOnClickListener(this);
-
-        description = findViewById(R.id.account_description);
-        name = findViewById(R.id.account_name);
-        name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                onInputChangeInNames();
-            }
-        });
-
-        presenter.onNamesStart();
-    }
-
     @Override
     public void setDoneButtonInNamesEnabled(boolean enabled) {
         doneButton.setEnabled(enabled);
     }
 
     private void onInputChangeInNames() {
-        presenter.onInputChangedInNames(name.getText().toString(), description.getText().toString());
+        presenter.onInputChangedInNames(accountName.getText().toString(), accountDescription.getText().toString());
     }
 
     @Override
-    public void goToListAccounts() {
-        listAccounts();
+    public void finishSetupToAccountList() {
+        Accounts.listAccounts(this);
+        finish();
     }
 
     // outgoing
@@ -1334,5 +1289,13 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         presenter.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View decorView = getWindow().getDecorView();
+        if (decorView != null) {
+            imm.hideSoftInputFromWindow(decorView.getApplicationWindowToken(), 0);
+        }
     }
 }

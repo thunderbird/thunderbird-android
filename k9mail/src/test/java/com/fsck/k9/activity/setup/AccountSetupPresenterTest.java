@@ -105,7 +105,7 @@ public class AccountSetupPresenterTest {
 
         presenter.onNegativeClickedInConfirmationDialog();
 
-        verify(view).goToAccountNames();
+        verify(view).goToAccountNames(viewModel.setupInfo.accountName, viewModel.setupInfo.accountDescription);
     }
 
     @Test

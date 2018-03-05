@@ -24,7 +24,41 @@ import org.xbill.DNS.Type;
  * Util class for DNS operations
  */
 
-class DNSOperation {
+class DnsOperation {
+    private final Resolver resolver;
+
+    DnsOperation() {
+        try {
+            resolver = new SimpleResolver();
+        } catch (UnknownHostException e) {
+            throw new IllegalStateException("No dns resolver - cannot resolve!");
+        }
+    }
+
+    boolean hasAorMxRecord(String domain) {
+        if (hasSomeRecordOfType(domain, Type.MX)) {
+            return true;
+        }
+        if (hasSomeRecordOfType(domain, Type.A)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean hasSomeRecordOfType(String domain, int type) {
+        try {
+            Lookup lookup = new Lookup(domain, type, DClass.IN);
+            lookup.setResolver(resolver);
+
+            Record[] records = lookup.run();
+
+            return lookup.getResult() == Lookup.SUCCESSFUL && records != null && records.length > 0;
+        } catch (TextParseException e) {
+            return false;
+        }
+    }
+
     MXRecord mxLookup(String domain) throws TextParseException, UnknownHostException {
         Lookup lookup = new Lookup(domain, Type.MX, DClass.IN);
         Resolver resolver = new SimpleResolver();
