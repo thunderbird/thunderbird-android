@@ -28,7 +28,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:gravity="center_vertical"
@@ -51,6 +50,15 @@
                 />
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/prefer_encrypt_learn_more"
+            android:text="@string/dialog_autocrypt_mutual_learn_more" />
 
     </LinearLayout>
 

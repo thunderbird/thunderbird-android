@@ -35,6 +35,9 @@ public class AutocryptPreferEncryptDialog extends AlertDialog implements OnClick
         @SuppressLint("InflateParams")
         View contentView = inflater.inflate(R.layout.dialog_autocrypt_prefer_encrypt, null);
 
+        TextView learnMoreText = (TextView) contentView.findViewById(R.id.prefer_encrypt_learn_more);
+        makeTextViewLinksClickable(learnMoreText);
+
         preferEncryptCheckbox = (CheckBox) contentView.findViewById(R.id.prefer_encrypt_check);
         preferEncryptCheckbox.setChecked(preferEncryptEnabled);
 
@@ -65,5 +68,9 @@ public class AutocryptPreferEncryptDialog extends AlertDialog implements OnClick
 
     public interface OnPreferEncryptChangedListener {
         void onPreferEncryptChanged(boolean enabled);
+    }
+
+    private void makeTextViewLinksClickable(TextView textView) {
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
