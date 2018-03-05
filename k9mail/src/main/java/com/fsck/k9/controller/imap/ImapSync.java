@@ -70,23 +70,25 @@ class ImapSync {
 
         Timber.i("Synchronizing folder %s:%s", account.getDescription(), folder);
 
-        for (MessagingListener l : getListeners(listener)) {
-            l.synchronizeMailboxStarted(account, folder);
-        }
-        /*
-         * We don't ever sync the Outbox
-         */
+        // We don't ever sync the Outbox
         if (folder.equals(account.getOutboxFolder())) {
-            for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxFinished(account, folder, 0, 0);
-            }
-
             return;
         }
 
         Exception commandException = null;
         try {
             Timber.d("SYNC: About to process pending commands for account %s", account.getDescription());
+
+            Timber.v("SYNC: About to get local folder %s", folder);
+            final LocalStore localStore = account.getLocalStore();
+            tLocalFolder = localStore.getFolder(folder);
+            final LocalFolder localFolder = tLocalFolder;
+            localFolder.open(Folder.OPEN_MODE_RW);
+            String folderName = localFolder.getName();
+
+            for (MessagingListener l : getListeners(listener)) {
+                l.synchronizeMailboxStarted(account, folder, folderName);
+            }
 
             try {
                 processPendingCommandsSynchronous(account);
@@ -99,12 +101,7 @@ class ImapSync {
              * Get the message list from the local store and create an index of
              * the uids within the list.
              */
-            Timber.v("SYNC: About to get local folder %s", folder);
 
-            final LocalStore localStore = account.getLocalStore();
-            tLocalFolder = localStore.getFolder(folder);
-            final LocalFolder localFolder = tLocalFolder;
-            localFolder.open(Folder.OPEN_MODE_RW);
             localFolder.updateLastUid();
             Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
 
@@ -189,7 +186,7 @@ class ImapSync {
 
                 final AtomicInteger headerProgress = new AtomicInteger(0);
                 for (MessagingListener l : getListeners(listener)) {
-                    l.synchronizeMailboxHeadersStarted(account, folder);
+                    l.synchronizeMailboxHeadersStarted(account, folder, folderName);
                 }
 
 

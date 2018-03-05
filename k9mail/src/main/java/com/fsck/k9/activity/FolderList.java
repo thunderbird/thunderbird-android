@@ -771,8 +771,8 @@ public class FolderList extends K9ListActivity {
             }
 
             @Override
-            public void synchronizeMailboxStarted(Account account, String folderServerId) {
-                super.synchronizeMailboxStarted(account, folderServerId);
+            public void synchronizeMailboxStarted(Account account, String folderServerId, String folderName) {
+                super.synchronizeMailboxStarted(account, folderServerId, folderName);
                 if (account.equals(FolderList.this.account)) {
 
                     handler.progress(true);

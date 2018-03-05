@@ -1364,12 +1364,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public void synchronizeMailboxStarted(Account account, String folderServerId) {
+        public void synchronizeMailboxStarted(Account account, String folderServerId, String folderName) {
             if (updateForMe(account, folderServerId)) {
                 handler.progress(true);
                 handler.folderLoading(folderServerId, true);
             }
-            super.synchronizeMailboxStarted(account, folderServerId);
+            super.synchronizeMailboxStarted(account, folderServerId, folderName);
         }
 
         @Override

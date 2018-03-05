@@ -315,8 +315,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         @Override
-        public void synchronizeMailboxStarted(Account account, String folderServerId) {
-            super.synchronizeMailboxStarted(account, folderServerId);
+        public void synchronizeMailboxStarted(Account account, String folderServerId, String folderName) {
+            super.synchronizeMailboxStarted(account, folderServerId, folderName);
             handler.progress(true);
         }
 
