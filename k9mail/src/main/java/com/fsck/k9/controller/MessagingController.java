@@ -440,7 +440,7 @@ public class MessagingController {
             List<? extends Folder> remoteFolders = store.getPersonalNamespaces(false);
 
             LocalStore localStore = account.getLocalStore();
-            Set<String> remoteFolderServerIds = new HashSet<>();
+            Map<String, Folder> remoteFolderMap = new HashMap<>();
             List<LocalFolder> foldersToCreate = new LinkedList<>();
 
             localFolders = localStore.getPersonalNamespaces(false);
@@ -454,7 +454,7 @@ public class MessagingController {
                     LocalFolder localFolder = localStore.getFolder(remoteFolder.getServerId());
                     foldersToCreate.add(localFolder);
                 }
-                remoteFolderServerIds.add(remoteFolder.getServerId());
+                remoteFolderMap.put(remoteFolder.getServerId(), remoteFolder);
             }
             localStore.createFolders(foldersToCreate, account.getDisplayCount());
 
@@ -463,7 +463,7 @@ public class MessagingController {
             /*
              * Clear out any folders that are no longer on the remote store.
              */
-            for (Folder localFolder : localFolders) {
+            for (LocalFolder localFolder : localFolders) {
                 String localFolderServerId = localFolder.getServerId();
 
                 // FIXME: This is a hack used to clean up when we accidentally created the
@@ -472,8 +472,11 @@ public class MessagingController {
                     localFolder.delete(false);
                 }
 
-                if (!account.isSpecialFolder(localFolderServerId) &&
-                        !remoteFolderServerIds.contains(localFolderServerId)) {
+                boolean folderExistsOnServer = remoteFolderMap.containsKey(localFolderServerId);
+                if (folderExistsOnServer) {
+                    Folder remoteFolder = remoteFolderMap.get(localFolderServerId);
+                    localFolder.setName(remoteFolder.getName());
+                } else if (!account.isSpecialFolder(localFolderServerId)) {
                     localFolder.delete(false);
                 }
             }
