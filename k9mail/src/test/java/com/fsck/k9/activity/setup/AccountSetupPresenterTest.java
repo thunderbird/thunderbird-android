@@ -101,7 +101,7 @@ public class AccountSetupPresenterTest {
 
     @Test
     public void testOnNegativeClickedInConfirmationDialog_outgoing() {
-        presenter.onCheckingStart(Stage.OUTGOING_CHECKING);
+        presenter.onCheckingStart(Stage.CHECKING_CREDENTIALS);
 
         presenter.onNegativeClickedInConfirmationDialog();
 
@@ -134,7 +134,7 @@ public class AccountSetupPresenterTest {
     public void testOnCertificatedRefused_outgoing() {
         mockAccountUrisImap();
         presenter.onOutgoingStart();
-        presenter.onCheckingStart(Stage.OUTGOING_CHECKING);
+        presenter.onCheckingStart(Stage.CHECKING_CREDENTIALS);
 
         presenter.onCertificateRefused();
 

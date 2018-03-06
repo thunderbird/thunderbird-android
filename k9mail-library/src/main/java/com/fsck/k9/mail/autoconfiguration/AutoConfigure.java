@@ -1,6 +1,7 @@
 package com.fsck.k9.mail.autoconfiguration;
 
 
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import timber.log.Timber;
 
@@ -10,55 +11,47 @@ import timber.log.Timber;
  */
 
 public interface AutoConfigure {
-    ProviderInfo findProviderInfo(ProviderInfo providerInfo, String email);
+    ProviderInfo findProviderInfo(ProviderInfo providerInfo, String localpart, String domain);
 
     class ProviderInfo {
         public final String incomingUsernameTemplate = "";
         public final String incomingType;
         public final ConnectionSecurity incomingSecurity;
-        public final String incomingAddr;
+        public final String incomingHost;
         public final Integer incomingPort;
 
         public final String outgoingUsernameTemplate = "";
         public final String outgoingType;
         public final ConnectionSecurity outgoingSecurity;
-        public final String outgoingAddr;
+        public final String outgoingHost;
         public final Integer outgoingPort;
 
         public final boolean isFatalError;
 
-        public static String USERNAME_TEMPLATE_EMAIL = "$email";
-        public static String USERNAME_TEMPLATE_USER = "$user";
-        public static String USERNAME_TEMPLATE_DOMAIN = "$domain";
-        public static String USERNAME_TEMPLATE_SRV = "$srv";
+        public static final String USERNAME_TEMPLATE_EMAIL = "$email";
+        public static final String USERNAME_TEMPLATE_USER = "$user";
+        public static final String USERNAME_TEMPLATE_DOMAIN = "$domain";
+        public static final String USERNAME_TEMPLATE_SRV = "$srv";
 
-        public static String INCOMING_TYPE_IMAP = "imap";
-        public static String INCOMING_TYPE_POP3 = "pop3";
-        public static String OUTGOING_TYPE_SMTP = "smtp";
+        public static final String INCOMING_TYPE_IMAP = "imap";
+        public static final String INCOMING_TYPE_POP3 = "pop3";
+        public static final String OUTGOING_TYPE_SMTP = "smtp";
 
         public ProviderInfo(
-                String incomingType, String incomingAddr, Integer incomingPort, ConnectionSecurity incomingSecurity,
-                String outgoingType, String outgoingAddr, Integer outgoingPort, ConnectionSecurity outgoingSecurity,
+                String incomingType, String incomingHost, Integer incomingPort, ConnectionSecurity incomingSecurity,
+                String outgoingType, String outgoingHost, Integer outgoingPort, ConnectionSecurity outgoingSecurity,
                 boolean isFatalError) {
             this.incomingType = incomingType;
             this.incomingSecurity = incomingSecurity;
-            this.incomingAddr = incomingAddr;
+            this.incomingHost = incomingHost;
             this.incomingPort = incomingPort;
 
             this.outgoingType = outgoingType;
             this.outgoingSecurity = outgoingSecurity;
-            this.outgoingAddr = outgoingAddr;
+            this.outgoingHost = outgoingHost;
             this.outgoingPort = outgoingPort;
 
             this.isFatalError = isFatalError;
-        }
-
-        public String getStoreUri() {
-            return null;
-        }
-
-        public String getTransportUri() {
-            return null;
         }
 
         public static ProviderInfo createEmpty() {
@@ -82,7 +75,7 @@ public interface AutoConfigure {
         public ProviderInfo withSmtpInfo(String host, int port, ConnectionSecurity security) {
             // ProviderInfo.USERNAME_TEMPLATE_SRV;
             Timber.d("Found SMTP info, host %s:%d, %s", host, port, security.toString());
-            return new ProviderInfo(incomingType, incomingAddr, incomingPort, incomingSecurity, OUTGOING_TYPE_SMTP, host, port, security,
+            return new ProviderInfo(incomingType, incomingHost, incomingPort, incomingSecurity, OUTGOING_TYPE_SMTP, host, port, security,
                     false);
         }
 
@@ -100,6 +93,38 @@ public interface AutoConfigure {
 
         public boolean isComplete() {
             return hasFatalError() || hasIncoming() && hasOutgoing();
+        }
+    }
+
+    class AuthInfo {
+        public final AuthType incomingAuthType;
+        public final String incomingUsername;
+        public final String incomingPassword;
+
+        public final AuthType outgoingAuthType;
+        public final String outgoingUsername;
+        public final String outgoingPassword;
+
+        AuthInfo(AuthType authType, String username, String password, AuthType outgoingAuthType,
+                String outgoingUsername, String outgoingPassword) {
+            this.incomingAuthType = authType;
+            this.incomingUsername = username;
+            this.incomingPassword = password;
+            this.outgoingAuthType = outgoingAuthType;
+            this.outgoingUsername = outgoingUsername;
+            this.outgoingPassword = outgoingPassword;
+        }
+
+        public static AuthInfo createEmpty() {
+            return new AuthInfo(null, null, null, null, null, null);
+        }
+
+        public AuthInfo withIncomingAuth(AuthType authType, String username, String password) {
+            return new AuthInfo(authType, username, password, outgoingAuthType, outgoingUsername, outgoingPassword);
+        }
+
+        public AuthInfo withOutgoingAuth(AuthType authType, String username, String password) {
+            return new AuthInfo(incomingAuthType, incomingUsername, incomingPassword, authType, username, password);
         }
     }
 }

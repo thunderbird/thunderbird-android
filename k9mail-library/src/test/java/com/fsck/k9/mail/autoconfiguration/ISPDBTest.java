@@ -41,12 +41,12 @@ public class ISPDBTest {
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.incomingAddr = "securemail.a1.net";
+        expected.incomingHost = "securemail.a1.net";
         expected.incomingPort = 993;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_EMAIL;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
-        expected.outgoingAddr = "securemail.a1.net";
+        expected.outgoingHost = "securemail.a1.net";
         expected.outgoingPort = 587;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_EMAIL;
 
@@ -102,12 +102,12 @@ public class ISPDBTest {
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.incomingAddr = "pop3.elpasotel.net";
+        expected.incomingHost = "pop3.elpasotel.net";
         expected.incomingPort = 995;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_EMAIL;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
-        expected.outgoingAddr = "smtp.elpasotel.net";
+        expected.outgoingHost = "smtp.elpasotel.net";
         expected.outgoingPort = 587;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_EMAIL;
 
@@ -170,12 +170,12 @@ public class ISPDBTest {
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.incomingAddr = "imap.mail.com";
+        expected.incomingHost = "imap.mail.com";
         expected.incomingPort = 993;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_EMAIL;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.outgoingAddr = "smtp.mail.com";
+        expected.outgoingHost = "smtp.mail.com";
         expected.outgoingPort = 465;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_EMAIL;
 
@@ -212,12 +212,12 @@ public class ISPDBTest {
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         expected.incomingSecurity = "";
-        expected.incomingAddr = "mail.iiyama-catv.ne.jp";
+        expected.incomingHost = "mail.iiyama-catv.ne.jp";
         expected.incomingPort = 110;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
         expected.outgoingSecurity = "";
-        expected.outgoingAddr = "smtp.iiyama-catv.ne.jp";
+        expected.outgoingHost = "smtp.iiyama-catv.ne.jp";
         expected.outgoingPort = 25;
         expected.outgoingUsernameTemplate = "";
 
@@ -254,13 +254,13 @@ public class ISPDBTest {
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
-        expected.incomingAddr = "mbox.iijmio-mail.jp";
+        expected.incomingHost = "mbox.iijmio-mail.jp";
         expected.incomingPort = 110;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER + "." +
                 ProviderInfo.USERNAME_TEMPLATE_DOMAIN;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
-        expected.outgoingAddr = "mbox.iijmio-mail.jp";
+        expected.outgoingHost = "mbox.iijmio-mail.jp";
         expected.outgoingPort = 587;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER + "." +
                 ProviderInfo.USERNAME_TEMPLATE_DOMAIN;
@@ -299,12 +299,12 @@ public class ISPDBTest {
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.incomingAddr = "securemail.a1.net";
+        expected.incomingHost = "securemail.a1.net";
         expected.incomingPort = 123;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_EMAIL;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
-        expected.outgoingAddr = "securemail.a1.net";
+        expected.outgoingHost = "securemail.a1.net";
         expected.outgoingPort = 456;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_EMAIL;
 

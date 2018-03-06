@@ -10,7 +10,6 @@ import android.support.annotation.StringRes;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.BasePresenter;
-import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.AccountSetupPresenter.Stage;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -45,7 +44,7 @@ interface AccountSetupContract {
 
         /* --incoming-- */
 
-        void goToIncomingChecking();
+        void goToCheckingCredentials();
         void setNextButtonInIncomingEnabled(boolean enabled);
         void setAuthTypeInIncoming(AuthType authType);
         void setSecurityTypeInIncoming(ConnectionSecurity security);
@@ -117,9 +116,7 @@ interface AccountSetupContract {
         void setViewExternalInOutgoing();
         void setViewOAuth2InOutgoing();
 
-        void goToOutgoingChecking();
-
-        void goToAccountNames(String accountName, String accountDescription);
+        void goToAccountNames(String accountName);
 
 
         // ---
@@ -148,7 +145,6 @@ interface AccountSetupContract {
 
         void onCheckingStart(Stage stage);
 
-        void onCertificateAccepted(X509Certificate certificate);
         void onPositiveClickedInConfirmationDialog();
 
         /* incoming */
@@ -168,8 +164,8 @@ interface AccountSetupContract {
                 boolean subscribedFoldersOnly);
 
         /* --names--*/
-        void onInputChangedInNames(String name, String description);
-        void onDoneButtonInNamesClicked(String name, String description);
+        void onInputChangedInNames(String name);
+        void onDoneButtonInNamesClicked(String name);
 
         // outgoing
         void onOutgoingStart(boolean editSettings);
@@ -182,8 +178,6 @@ interface AccountSetupContract {
                 String username, String password, AuthType authType,
                 ConnectionSecurity connectionSecurity, boolean requireLogin);
 
-        void onCertificateRefused();
-
         // ---
 
         void onBackPressed();
@@ -192,7 +186,6 @@ interface AccountSetupContract {
 
         void onActivityResult(int requestCode, int resultCode, Intent data);
 
-        AccountConfig getAccountConfig();
         void onWebViewDismiss();
     }
 }

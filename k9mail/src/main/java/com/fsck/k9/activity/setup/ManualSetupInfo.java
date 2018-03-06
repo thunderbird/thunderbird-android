@@ -17,7 +17,6 @@ import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -29,7 +28,7 @@ import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mail.store.RemoteStore;
 
 
-class ManualSetupInfo implements AccountConfig, Parcelable {
+class ManualSetupInfo implements Parcelable {
     private String name;
     private String description;
     private String email;
@@ -76,22 +75,18 @@ class ManualSetupInfo implements AccountConfig, Parcelable {
     ManualSetupInfo() {
     }
 
-    @Override
     public String getStoreUri() {
         return storeUri;
     }
 
-    @Override
     public String getTransportUri() {
         return transportUri;
     }
 
-    @Override
     public boolean subscribedFoldersOnly() {
         return subscribedFoldersOnly;
     }
 
-    @Override
     public boolean useCompression(NetworkType type) {
         Boolean useCompression = compressionMap.get(type);
         if (useCompression == null) {
@@ -101,223 +96,175 @@ class ManualSetupInfo implements AccountConfig, Parcelable {
         return useCompression;
     }
 
-    @Override
     public void setCompression(NetworkType networkType, boolean useCompression) {
         compressionMap.put(networkType, useCompression);
     }
 
-    @Override
     public String getInboxFolderName() {
         return inboxFolderName;
     }
 
-    @Override
     public String getOutboxFolderName() {
         return outboxFolderName;
     }
 
-    @Override
     public String getDraftsFolderName() {
         return draftsFolderName;
     }
 
-    @Override
     public String getArchiveFolderName() {
         return archiveFolderName;
     }
 
-    @Override
     public String getTrashFolderName() {
         return trashFolderName;
     }
 
-    @Override
     public String getSpamFolderName() {
         return spamFolderName;
     }
 
-    @Override
     public String getSentFolderName() {
         return sentFolderName;
     }
 
-    @Override
     public String getAutoExpandFolderName() {
         return autoExpandFolderName;
     }
 
-    @Override
     public void setArchiveFolderName(String name) {
         archiveFolderName = name;
     }
 
-    @Override
     public void setDraftsFolderName(String name) {
         draftsFolderName = name;
     }
 
-    @Override
     public void setTrashFolderName(String name) {
         trashFolderName = name;
     }
 
-    @Override
     public void setSpamFolderName(String name) {
         spamFolderName = name;
     }
 
-    @Override
     public void setSentFolderName(String name) {
         sentFolderName = name;
     }
 
-    @Override
     public void setAutoExpandFolderName(String name) {
         autoExpandFolderName = name;
     }
 
-    @Override
     public void setInboxFolderName(String name) {
         inboxFolderName = name;
     }
 
-    @Override
     public int getMaximumAutoDownloadMessageSize() {
         return maximumAutoDownloadMessageSize;
     }
 
-    @Override
     public boolean allowRemoteSearch() {
         return allowRemoteSearch;
     }
 
-    @Override
     public boolean isRemoteSearchFullText() {
         return remoteSearchFullText;
     }
 
-    @Override
     public boolean isPushPollOnConnect() {
         return pushPollOnConnect;
     }
 
-    @Override
     public ConnectionSecurity getIncomingSecurityType() {
         return incomingSecurityType;
     }
 
-    @Override
     public AuthType getIncomingAuthType() {
         return incomingAuthType;
     }
 
-    @Override
     public String getIncomingPort() {
         return incomingPort;
     }
 
-    @Override
     public ConnectionSecurity getOutgoingSecurityType() {
         return outgoingSecurityType;
     }
 
-    @Override
     public AuthType getOutgoingAuthType() {
         return outgoingAuthType;
     }
 
-    @Override
     public String getOutgoingPort() {
         return outgoingPort;
     }
 
-    @Override
     public boolean isNotifyNewMail() {
         return notifyNewMail;
     }
 
-    @Override
     public boolean isShowOngoing() {
         return showOngoing;
     }
 
-    @Override
     public int getAutomaticCheckIntervalMinutes() {
         return automaticCheckIntervalMinutes;
     }
 
-    @Override
     public int getDisplayCount() {
         return displayCount;
     }
 
-    @Override
     public int getIdleRefreshMinutes() {
         return idleRefreshMinutes;
     }
 
-    @Override
     public boolean shouldHideHostname() {
         // TODO
         return false;
     }
 
-    @Override
     public FolderMode getFolderPushMode() {
         return folderPushMode;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public DeletePolicy getDeletePolicy() {
         return deletePolicy;
     }
 
-    @Override
     public String getDescription() {
         return description;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @Override
     public void setDeletePolicy(DeletePolicy deletePolicy) {
         this.deletePolicy = deletePolicy;
     }
 
-    @Override
     public void setEmail(String email) {
         this.email = email;
     }
 
-    @Override
     public void setStoreUri(String storeUri) {
         this.storeUri = storeUri;
     }
 
-    @Override
     public void setTransportUri(String transportUri) {
         this.transportUri = transportUri;
     }
 
-    @Override
-    public RemoteStore getRemoteStore() throws MessagingException {
-        return RemoteStore.getInstance(K9.app, this, Globals.getOAuth2TokenProvider());
-    }
-
-    @Override
     public void init(String email, String password) {
         this.email = email;
 
@@ -354,12 +301,10 @@ class ManualSetupInfo implements AccountConfig, Parcelable {
         }
     }
 
-    @Override
     public String getEmail() {
         return email;
     }
 
-    @Override
     public void addCertificate(CheckDirection direction, X509Certificate certificate) throws CertificateException {
         Uri uri;
         if (direction == CheckDirection.INCOMING) {
@@ -371,12 +316,10 @@ class ManualSetupInfo implements AccountConfig, Parcelable {
         localKeyStore.addCertificate(uri.getHost(), uri.getPort(), certificate);
     }
 
-    @Override
     public void setSubscribedFoldersOnly(boolean subscribedFoldersOnly) {
         this.subscribedFoldersOnly = subscribedFoldersOnly;
     }
 
-    @Override
     public void deleteCertificate(String newHost, int newPort, CheckDirection direction) {
         Uri uri;
         if (direction == CheckDirection.INCOMING) {

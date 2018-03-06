@@ -73,7 +73,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private static final String EXTRA_STAGE = "stage";
     private static final String EXTRA_EDIT_SETTINGS = "edit_settings";
     private static final String EXTRA_MAKE_DEFAULT = "make_default";
-    private static final String STATE_STAGE = "state_stage";
     private static final String STATE_ACCOUNT = "state_account";
     private static final String STAGE_CONFIG = "state_config";
     private static final String STATE_EDIT_SETTINGS = "state_edit_settings";
@@ -129,7 +128,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private CheckBox pushEnable;
 
     private EditText accountName;
-    private EditText accountDescription;
     @SuppressWarnings("FieldCanBeLocal")
     private Button doneButton;
 
@@ -192,8 +190,6 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         outState.putBoolean(STATE_EDIT_SETTINGS, editSettings);
         if (editSettings) {
             outState.putString(STATE_ACCOUNT, presenter.getAccount().getUuid());
-        } else {
-            outState.putParcelable(STAGE_CONFIG, (ManualSetupInfo) presenter.getAccountConfig());
         }
     }
 
@@ -327,11 +323,10 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     @Override
-    public void goToAccountNames(String accountName, String accountDescription) {
+    public void goToAccountNames(String accountName) {
         setSelection(getPositionFromLayoutId(R.layout.account_setup_names));
 
         this.accountName = findViewById(R.id.account_name);
-        this.accountDescription = findViewById(R.id.account_description);
         this.doneButton = findViewById(R.id.done);
 
         this.accountName.setText(accountName);
@@ -350,15 +345,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
             }
         });
 
-        this.accountDescription.setText(accountDescription);
-
         this.doneButton.setOnClickListener(this);
-    }
-
-    @Override
-    public void goToOutgoingChecking() {
-        setSelection(getPositionFromLayoutId(R.layout.account_setup_check_settings));
-        checkingStart();
     }
 
     @Override
@@ -367,7 +354,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     @Override
-    public void goToIncomingChecking() {
+    public void goToCheckingCredentials() {
         setSelection(getPositionFromLayoutId(R.layout.account_setup_check_settings));
         checkingStart();
     }
@@ -397,14 +384,14 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
                         getString(R.string.account_setup_failed_dlg_invalid_certificate_accept),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                presenter.onCertificateAccepted(certificate);
+                                // presenter.onCertificateAccepted(certificate);
                             }
                         })
                 .setNegativeButton(
                         getString(R.string.account_setup_failed_dlg_invalid_certificate_reject),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                presenter.onCertificateRefused();
+                                // presenter.onCertificateRefused();
                             }
                         })
                 .show();
@@ -563,7 +550,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
                     onNextInOutgoing();
                     break;
                 case R.id.done:
-                    presenter.onDoneButtonInNamesClicked(accountName.getText().toString(), accountDescription.getText().toString());
+                    presenter.onDoneButtonInNamesClicked(accountName.getText().toString());
                     break;
                 case R.id.manual_setup:
                     presenter.onManualSetupButtonClicked(emailView.getText().toString(),
@@ -908,7 +895,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     }
 
     private void onInputChangeInNames() {
-        presenter.onInputChangedInNames(accountName.getText().toString(), accountDescription.getText().toString());
+        presenter.onInputChangedInNames(accountName.getText().toString());
     }
 
     @Override

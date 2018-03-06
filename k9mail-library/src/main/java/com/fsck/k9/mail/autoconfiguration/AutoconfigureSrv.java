@@ -59,11 +59,7 @@ public class AutoconfigureSrv implements AutoConfigure {
     }
 
     @Override
-    public ProviderInfo findProviderInfo(ProviderInfo providerInfo, String email) {
-        String[] parts = email.split("@");
-        if (parts.length < 2) return providerInfo;
-        String domain = parts[1];
-
+    public ProviderInfo findProviderInfo(ProviderInfo providerInfo, String localpart, String domain) {
         DnsOperation dnsOperation = new DnsOperation();
 
         try {

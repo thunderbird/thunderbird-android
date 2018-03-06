@@ -9,7 +9,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please wait"
+        android:text="Checking credentials…"
         android:textColor="@android:color/black"
         android:layout_marginLeft="32dp"
         android:layout_marginStart="32dp"

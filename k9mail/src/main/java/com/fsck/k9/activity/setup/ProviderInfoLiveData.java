@@ -9,11 +9,11 @@ import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigureAggregator;
 
 
-class AutoconfigureLiveData extends AsyncTaskLiveData<ProviderInfo> {
+class ProviderInfoLiveData extends AsyncTaskLiveData<ProviderInfo> {
     private final String email;
     private final AutoConfigureAggregator autoConfigureAggregator;
 
-    AutoconfigureLiveData(@NonNull Context context, String email) {
+    ProviderInfoLiveData(@NonNull Context context, String email) {
         super(context, null);
 
         this.email = email;

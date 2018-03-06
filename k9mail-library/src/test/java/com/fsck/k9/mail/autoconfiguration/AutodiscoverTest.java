@@ -49,12 +49,12 @@ public class AutodiscoverTest {
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.incomingAddr = "mail.contoso.com";
+        expected.incomingHost = "mail.contoso.com";
         expected.incomingPort = 995;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.outgoingAddr = "mail.contoso.com";
+        expected.outgoingHost = "mail.contoso.com";
         expected.outgoingPort = 587;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER;
 
@@ -99,12 +99,12 @@ public class AutodiscoverTest {
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
-        expected.incomingAddr = "mail.contoso.com";
+        expected.incomingHost = "mail.contoso.com";
         expected.incomingPort = ProviderInfo.IMAP_STARTTLS_DEFAULT_PORT;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.outgoingAddr = "smtp.contoso.com";
+        expected.outgoingHost = "smtp.contoso.com";
         expected.outgoingPort = 587;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER;
 
@@ -159,12 +159,12 @@ public class AutodiscoverTest {
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.incomingAddr = "mail.contoso.com";
+        expected.incomingHost = "mail.contoso.com";
         expected.incomingPort = 995;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.outgoingAddr = "mail.contoso.com";
+        expected.outgoingHost = "mail.contoso.com";
         expected.outgoingPort = 587;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER;
 
@@ -211,13 +211,13 @@ public class AutodiscoverTest {
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
         expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
-        expected.incomingAddr = "mail.contoso.com";
+        expected.incomingHost = "mail.contoso.com";
         expected.incomingPort = ProviderInfo.IMAP_STARTTLS_DEFAULT_PORT;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER + "@" +
                 ProviderInfo.USERNAME_TEMPLATE_DOMAIN;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.outgoingAddr = "smtp.contoso.com";
+        expected.outgoingHost = "smtp.contoso.com";
         expected.outgoingPort = 587;
         expected.outgoingUsernameTemplate = "abc@def.com";
 
@@ -264,12 +264,12 @@ public class AutodiscoverTest {
         ProviderInfo expected = new ProviderInfo();
         expected.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
         expected.incomingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.incomingAddr = "mail.contoso.com";
+        expected.incomingHost = "mail.contoso.com";
         expected.incomingPort = 123;
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_SSL_OR_TLS;
-        expected.outgoingAddr = "mail.contoso.com";
+        expected.outgoingHost = "mail.contoso.com";
         expected.outgoingPort = 456;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_USER;
 

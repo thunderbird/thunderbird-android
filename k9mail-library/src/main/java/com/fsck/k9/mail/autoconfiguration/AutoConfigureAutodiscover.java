@@ -7,7 +7,6 @@ import java.net.UnknownHostException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.xbill.DNS.SRVRecord;
 import org.xbill.DNS.TextParseException;
 import timber.log.Timber;
@@ -34,10 +33,8 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
             "</Autodiscover>";
 
     @Override
-    public ProviderInfo findProviderInfo(ProviderInfo providerInfo, String email) {
-        String[] parts = email.split("@");
-        if (parts.length < 2) return null;
-        String domain = parts[1];
+    public ProviderInfo findProviderInfo(ProviderInfo providerInfo, String localpart, String domain) {
+        String email = localpart + "@" + domain;
 
         String url = String.format(AUTODISCOVER_URL1, domain);
         providerInfo = findProviderInfoByUrl(providerInfo, url, email);
@@ -122,7 +119,7 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
                 }
 
 
-                providerInfo.incomingAddr = server.text();
+                providerInfo.incomingHost = server.text();
 
                 Element port = protocol.select("Port").first();
                 if (port != null) {
@@ -174,22 +171,22 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
 
                 Element usePopAuth = protocol.select("UsePOPAuth").first();
                 if (usePopAuth != null && usePopAuth.text().equalsIgnoreCase("on")) {
-                    providerInfo.outgoingAddr = providerInfo.incomingAddr;
+                    providerInfo.outgoingHost = providerInfo.incomingHost;
                     providerInfo.outgoingSecurity = providerInfo.incomingSecurity;
                     providerInfo.outgoingUsernameTemplate = providerInfo.incomingUsernameTemplate;
                 }
 
                 Element server = protocol.select("Server").first();
-                if (server == null && providerInfo.outgoingAddr.equals("")) {
+                if (server == null && providerInfo.outgoingHost.equals("")) {
                     providerInfo.outgoingUsernameTemplate = "";
-                    providerInfo.outgoingAddr = "";
+                    providerInfo.outgoingHost = "";
                     providerInfo.outgoingSecurity = "";
                     providerInfo.outgoingPort = -1;
 
                     continue;
                 }
                 if (server != null) {
-                    providerInfo.outgoingAddr = server.text();
+                    providerInfo.outgoingHost = server.text();
                 }
 
                 Element port = protocol.select("Port").first();
@@ -237,7 +234,7 @@ public class AutoConfigureAutodiscover implements AutoConfigure {
             }
         }
 
-        if (providerInfo.incomingAddr.equals("") || providerInfo.outgoingAddr.equals("")) {
+        if (providerInfo.incomingHost.equals("") || providerInfo.outgoingHost.equals("")) {
             return null;
         }
         */

@@ -36,12 +36,12 @@ public class SRVTest {
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.incomingPort = 993;
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
-        expected.incomingAddr = "imap.test.com";
+        expected.incomingHost = "imap.test.com";
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.outgoingPort = 587;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
-        expected.outgoingAddr = "smtp.test.com";
+        expected.outgoingHost = "smtp.test.com";
 
         Assert.assertEquals(expected, actual);
     }
@@ -76,12 +76,12 @@ public class SRVTest {
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.incomingPort = 993;
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
-        expected.incomingAddr = "mail.test.com";
+        expected.incomingHost = "mail.test.com";
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.outgoingPort = 587;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
-        expected.outgoingAddr = "smtp.test.com";
+        expected.outgoingHost = "smtp.test.com";
 
         Assert.assertEquals(expected, actual);
     }
@@ -116,12 +116,12 @@ public class SRVTest {
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.incomingPort = 995;
         expected.incomingType = ProviderInfo.INCOMING_TYPE_POP3;
-        expected.incomingAddr = "pop3.test.com";
+        expected.incomingHost = "pop3.test.com";
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.outgoingPort = 587;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
-        expected.outgoingAddr = "smtp.test.com";
+        expected.outgoingHost = "smtp.test.com";
 
         Assert.assertEquals(expected, actual);
     }
@@ -156,12 +156,12 @@ public class SRVTest {
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.incomingPort = 143;
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
-        expected.incomingAddr = "mail.test.com";
+        expected.incomingHost = "mail.test.com";
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.outgoingPort = 587;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
-        expected.outgoingAddr = "smtp.test.com";
+        expected.outgoingHost = "smtp.test.com";
 
         Assert.assertEquals(expected, actual);
     }
@@ -196,12 +196,12 @@ public class SRVTest {
         expected1.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected1.incomingPort = 993;
         expected1.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
-        expected1.incomingAddr = "imap.test.com";
+        expected1.incomingHost = "imap.test.com";
         expected1.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected1.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected1.outgoingPort = 587;
         expected1.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
-        expected1.outgoingAddr = "smtp.test.com";
+        expected1.outgoingHost = "smtp.test.com";
 
         ProviderInfo expected2 = new ProviderInfo();
 
@@ -209,12 +209,12 @@ public class SRVTest {
         expected2.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected2.incomingPort = 143;
         expected2.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
-        expected2.incomingAddr = "mail.test.com";
+        expected2.incomingHost = "mail.test.com";
         expected2.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected2.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected2.outgoingPort = 587;
         expected2.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
-        expected2.outgoingAddr = "smtp.test.com";
+        expected2.outgoingHost = "smtp.test.com";
 
         Assert.assertTrue(expected1.equals(actual) || expected2.equals(actual));
     }
@@ -268,12 +268,12 @@ public class SRVTest {
         expected.incomingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.incomingPort = 123;
         expected.incomingType = ProviderInfo.INCOMING_TYPE_IMAP;
-        expected.incomingAddr = "imap.test.com";
+        expected.incomingHost = "imap.test.com";
         expected.outgoingSecurity = ProviderInfo.SOCKET_TYPE_STARTTLS;
         expected.outgoingUsernameTemplate = ProviderInfo.USERNAME_TEMPLATE_SRV;
         expected.outgoingPort = 789;
         expected.outgoingType = ProviderInfo.OUTGOING_TYPE_SMTP;
-        expected.outgoingAddr = "smtp.test.com";
+        expected.outgoingHost = "smtp.test.com";
 
         Assert.assertEquals(expected, actual);
     }

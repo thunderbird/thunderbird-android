@@ -1,9 +1,7 @@
 package com.fsck.k9.mail.autoconfiguration;
 
 
-import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.mail.ConnectionSecurity;
-import timber.log.Timber;
 
 
 public class AutoconfigureGuesser implements AutoConfigure {
@@ -14,17 +12,10 @@ public class AutoconfigureGuesser implements AutoConfigure {
     private static final int SMTP_SSL_OR_TLS_DEFAULT_PORT = 465;
     private static final int SMTP_STARTTLS_DEFAULT_PORT = 587;
 
-    private final DnsOperation dnsOperation = new DnsOperation();
     private ConnectionTester connectionTester = new ConnectionTester();
 
     @Override
-    public ProviderInfo findProviderInfo(ProviderInfo providerInfo, String email) {
-        String domain = EmailHelper.getDomainFromEmailAddress(email);
-
-        if (!dnsOperation.hasAorMxRecord(domain)) {
-            return ProviderInfo.createFatalError();
-        }
-
+    public ProviderInfo findProviderInfo(ProviderInfo providerInfo, String localpart, String domain) {
         if (!providerInfo.hasIncoming()) {
             providerInfo = checkForOpenImapPort(domain, providerInfo);
         }

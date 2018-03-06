@@ -104,11 +104,7 @@ public class AutoconfigureMozilla implements AutoConfigure {
     }
 
     @Override
-    public ProviderInfo findProviderInfo(ProviderInfo providerInfo, String email) {
-        String[] parts = email.split("@");
-        if (parts.length < 2) return null;
-        String domain = parts[1];
-
+    public ProviderInfo findProviderInfo(ProviderInfo providerInfo, String localpart, String domain) {
         try {
             String url = String.format(ISPDB_URL, domain);
             Document document = Jsoup.connect(url).timeout(5000).get();

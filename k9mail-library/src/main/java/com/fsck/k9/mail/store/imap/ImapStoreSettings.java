@@ -44,6 +44,11 @@ public class ImapStoreSettings extends ServerSettings {
         return extra;
     }
 
+    public static ImapStoreSettings create(String host, int port, ConnectionSecurity connectionSecurity) {
+        return new ImapStoreSettings(host, port, connectionSecurity, null,
+                null, null, null, true, "/");
+    }
+
     @Override
     public ServerSettings newPassword(String newPassword) {
         return new ImapStoreSettings(host, port, connectionSecurity, authenticationType,

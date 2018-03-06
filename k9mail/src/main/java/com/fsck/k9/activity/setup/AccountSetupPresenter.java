@@ -4,7 +4,6 @@ package com.fsck.k9.activity.setup;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,6 +16,7 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,12 +31,10 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.account.Oauth2PromptRequestHandler;
-import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.AccountSetupContract.AccountSetupView;
 import com.fsck.k9.activity.setup.AccountSetupContract.Presenter;
 import com.fsck.k9.activity.setup.AccountSetupViewModel.IncrementalSetupInfo;
 import com.fsck.k9.activity.setup.AccountSetupViewModel.SetupState;
-import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
@@ -44,25 +42,21 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.OAuth2NeedUserPromptException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.TransportUris;
+import com.fsck.k9.mail.autoconfiguration.AutoConfigure.AuthInfo;
 import com.fsck.k9.mail.autoconfiguration.AutoConfigure.ProviderInfo;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
-import com.fsck.k9.mail.store.webdav.WebDavStore;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import com.fsck.k9.setup.ServerNameSuggester;
 import timber.log.Timber;
 
 
-public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHandler, Observer<ProviderInfo> {
+public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHandler {
 
     private Context context;
     private LifecycleOwner lifecycleOwner;
@@ -84,18 +78,14 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
         AUTOCONFIGURATION_INCOMING_CHECKING,
         AUTOCONFIGURATION_OUTGOING_CHECKING,
         INCOMING,
-        INCOMING_CHECKING,
         OUTGOING,
-        OUTGOING_CHECKING,
+        CHECKING_CREDENTIALS,
         ACCOUNT_TYPE,
         ACCOUNT_NAMES,
     }
 
     private AccountSetupView accountSetupView;
     private AccountSetupViewModel viewModel;
-
-    private CheckDirection currentDirection;
-    private CheckDirection direction;
 
     private boolean editSettings;
 
@@ -111,7 +101,7 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
 
     private Handler handler;
 
-    public AccountSetupPresenter(Context context, LifecycleOwner lifecycleOwner, Preferences preferences,
+    AccountSetupPresenter(Context context, LifecycleOwner lifecycleOwner, Preferences preferences,
             AccountSetupView accountSetupView, AccountSetupViewModel viewModel) {
         this.context = context;
         this.lifecycleOwner = lifecycleOwner;
@@ -181,24 +171,12 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
 
     @Override
     public void onNegativeClickedInConfirmationDialog() {
-        if (direction == CheckDirection.BOTH && currentDirection == CheckDirection.INCOMING) {
-            checkOutgoing();
-        } else if (currentDirection == CheckDirection.OUTGOING) {
-            if (editSettings) {
-                // ((Account) viewModel.accountConfig).save(preferences);
-                accountSetupView.end();
-            } else {
-                accountSetupView.goToAccountNames(viewModel.setupInfo.accountName,
-                        viewModel.setupInfo.accountDescription);
-                stage = Stage.ACCOUNT_NAMES;
-            }
+        if (editSettings) {
+            // ((Account) viewModel.accountConfig).save(preferences);
+            accountSetupView.end();
         } else {
-            if (editSettings) {
-                // ((Account) viewModel.accountConfig).save(preferences);
-                accountSetupView.end();
-            } else {
-                accountSetupView.goToOutgoing();
-            }
+            accountSetupView.goToAccountNames(viewModel.setupInfo.accountName);
+            stage = Stage.ACCOUNT_NAMES;
         }
     }
 
@@ -207,19 +185,21 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
         accountSetupView.goToAutoConfiguration();
         stage = Stage.AUTOCONFIGURATION;
 
-        viewModel.getAutoconfigureLiveData(context, viewModel.setupInfo.email).observe(lifecycleOwner, this);
+        viewModel.getProviderInfoLiveData(context, viewModel.setupInfo.email).observe(lifecycleOwner,
+                new Observer<ProviderInfo>() {
+                    @Override
+                    public void onChanged(@Nullable ProviderInfo providerInfo) {
+                        onProviderInfoChanged(this, providerInfo);
+                    }
+                });
     }
 
-    @Override
-    public void onChanged(@Nullable ProviderInfo providerInfo) {
-        viewModel.getAutoconfigureLiveData(context, viewModel.setupInfo.email).removeObserver(this);
+    private void onProviderInfoChanged(Observer<ProviderInfo> observer, @Nullable ProviderInfo providerInfo) {
+        viewModel.getProviderInfoLiveData(context, viewModel.setupInfo.email).removeObserver(observer);
 
         viewModel.setupInfo = viewModel.setupInfo.withProviderInfo(providerInfo);
-        String description = getDefaultAccountDescription(viewModel.setupInfo.email);
-        viewModel.setupInfo = viewModel.setupInfo.withAccountInfo("", description);
 
-        accountSetupView.goToAccountNames(viewModel.setupInfo.accountName, viewModel.setupInfo.accountDescription);
-        stage = Stage.ACCOUNT_NAMES;
+        checkCredentials();
 
         //                 if (incomingReady && outgoingReady) {
         // } else if (incomingReady) {
@@ -262,70 +242,30 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
         return description;
     }
 
-    private void checkIncomingAndOutgoing() {
-        direction = CheckDirection.BOTH;
-        currentDirection = CheckDirection.INCOMING;
-        new CheckIncomingTask(viewModel.accountConfig, new CheckSettingsSuccessCallback() {
-            @Override
-            public void onCheckSuccess() {
-                checkOutgoing();
-            }
-        }).execute();
-    }
+    private void checkCredentials() {
+        accountSetupView.goToCheckingCredentials();
 
-    private void checkIncoming() {
-        direction = CheckDirection.INCOMING;
-        currentDirection = CheckDirection.INCOMING;
-        new CheckIncomingTask(viewModel.accountConfig, new CheckSettingsSuccessCallback() {
-            @Override
-            public void onCheckSuccess() {
-                if (editSettings) {
-                    updateAccount();
-                    accountSetupView.end();
-                } else {
-                    /*if (outgoingReady) {
-                        accountConfig.setDescription(accountConfig.getEmail());
-                        view.goToAccountNames();
-                        return;
-                    }*/
-
-                    ServerSettings transportServer = TransportUris.decodeTransportUri(viewModel.accountConfig.getTransportUri());
-                    if (AuthType.EXTERNAL == incomingSettings.authenticationType) {
-                        transportServer = transportServer.newClientCertificateAlias(incomingSettings.clientCertificateAlias);
-                    } else {
-                        transportServer = transportServer.newPassword(incomingSettings.password);
+        viewModel.getAuthInfoLiveData(context, viewModel.setupInfo.providerInfo, viewModel.setupInfo.email, viewModel.setupInfo.password).observe(lifecycleOwner,
+                new Observer<AuthInfo>() {
+                    @Override
+                    public void onChanged(@Nullable AuthInfo authInfo) {
+                        onAuthInfoChanged(this, authInfo);
                     }
-
-                    String transportUri = TransportUris.createTransportUri(transportServer);
-                    viewModel.accountConfig.setTransportUri(transportUri);
-
-                    accountSetupView.goToOutgoing();
-                }
-            }
-        }).execute();
+                });
     }
 
-    private void checkOutgoing() {
-        direction = CheckDirection.OUTGOING;
-        currentDirection = CheckDirection.OUTGOING;
+    private void onAuthInfoChanged(Observer<AuthInfo> observer, AuthInfo authInfo) {
+        viewModel.getAuthInfoLiveData(context, viewModel.setupInfo.providerInfo, viewModel.setupInfo.email,
+                viewModel.setupInfo.password).removeObserver(observer);
 
-        new CheckOutgoingTask(viewModel.accountConfig, new CheckSettingsSuccessCallback() {
-            @Override
-            public void onCheckSuccess() {
-                if (!editSettings) {
-                    //We've successfully checked outgoing as well.
-                    viewModel.accountConfig.setDescription(viewModel.accountConfig.getEmail());
+        viewModel.setupInfo.withAuthInfo(authInfo);
 
-                    accountSetupView.goToAccountNames(viewModel.setupInfo.accountName,
-                            viewModel.setupInfo.accountDescription);
-                    stage = Stage.ACCOUNT_NAMES;
-                } else {
-                    updateAccount();
+        askAccountName();
+    }
 
-                    accountSetupView.end();
-                }
-            }
-        }).execute();
+    private void askAccountName() {
+        accountSetupView.goToAccountNames(viewModel.setupInfo.accountName);
+        stage = Stage.ACCOUNT_NAMES;
     }
 
     @Override
@@ -336,176 +276,50 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
             case AUTOCONFIGURATION:
                 startAutoConfiguration();
                 break;
-            case INCOMING_CHECKING:
-                checkIncoming();
-                break;
-            case OUTGOING_CHECKING:
-                checkOutgoing();
+            case CHECKING_CREDENTIALS:
+                checkCredentials();
                 break;
         }
     }
 
+    /*
+    @Override
+    protected Boolean doInBackground(CheckDirection... params) {
+        try {
+            checkSettings();
 
-    private class CheckOutgoingTask extends CheckAccountTask {
-        private CheckOutgoingTask(AccountConfig accountConfig) {
-            super(accountConfig);
-        }
+            return true;
 
-        private CheckOutgoingTask(AccountConfig accountConfig, CheckSettingsSuccessCallback callback) {
-            super(accountConfig, callback);
-        }
-
-        @Override
-        void checkSettings() throws Exception {
-            Transport transport;
-
-            if (editSettings) {
-                clearCertificateErrorNotifications(CheckDirection.OUTGOING);
-            }
-            if (!(viewModel.accountConfig.getRemoteStore() instanceof WebDavStore)) {
-                publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
-            }
-
-            transport = TransportProvider.getInstance().getTransport(context, viewModel.accountConfig,
-                    Globals.getOAuth2TokenProvider());
-
-            transport.close();
-            try {
-                transport.open();
-            } finally {
-                transport.close();
-            }
-
-        }
-    }
-
-    private class CheckIncomingTask extends CheckAccountTask {
-        private CheckIncomingTask(AccountConfig accountConfig) {
-            super(accountConfig);
-        }
-
-        private CheckIncomingTask(AccountConfig accountConfig, CheckSettingsSuccessCallback callback) {
-            super(accountConfig, callback);
-        }
-
-        @Override
-        void checkSettings() throws Exception {
-            checkIncomingSettings();
-        }
-
-        private void checkIncomingSettings() throws MessagingException {
-            RemoteStore store;
-
-            if (editSettings) {
-                clearCertificateErrorNotifications(CheckDirection.INCOMING);
-            }
-
-            store = viewModel.accountConfig.getRemoteStore();
-
-            if (store instanceof WebDavStore) {
-                publishProgress(R.string.account_setup_check_settings_authenticate);
+        } catch (OAuth2NeedUserPromptException ignored) {
+        } catch (final AuthenticationFailedException afe) {
+            Timber.e(afe, "Error while testing settings");
+            if (afe.getMessage().equals(AuthenticationFailedException.OAUTH2_ERROR_INVALID_REFRESH_TOKEN)) {
+                Globals.getOAuth2TokenProvider().disconnectEmailWithK9(accountConfig.getEmail());
+                checkCredentials();
             } else {
-                publishProgress(R.string.account_setup_check_settings_check_incoming_msg);
-            }
-            store.checkSettings();
-
-            if (store instanceof WebDavStore) {
-                publishProgress(R.string.account_setup_check_settings_fetch);
-            }
-
-            if (editSettings) {
-                // Account account = (Account) viewModel.accountConfig;
-                // MessagingController.getInstance(context).listFoldersSynchronous(account, true, null);
-                // MessagingController.getInstance(context)
-                // .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
-            }
-        }
-    }
-
-    /**
-     * FIXME: Don't use an AsyncTask to perform network operations.
-     * See also discussion in https://github.com/k9mail/k-9/pull/560
-     */
-    private abstract class CheckAccountTask extends AsyncTask<CheckDirection, Integer, Boolean> {
-        private final AccountConfig accountConfig;
-        private CheckSettingsSuccessCallback callback;
-
-        private CheckAccountTask(AccountConfig accountConfig) {
-            this(accountConfig, null);
-        }
-
-        private CheckAccountTask(AccountConfig accountConfig, CheckSettingsSuccessCallback callback) {
-            this.accountConfig = accountConfig;
-            this.callback = callback;
-        }
-
-        abstract void checkSettings() throws Exception;
-
-        @Override
-        protected Boolean doInBackground(CheckDirection... params) {
-            try {
-                checkSettings();
-
-                return true;
-
-            } catch (OAuth2NeedUserPromptException ignored) {
-            } catch (final AuthenticationFailedException afe) {
-                Timber.e(afe, "Error while testing settings");
-                if (afe.getMessage().equals(AuthenticationFailedException.OAUTH2_ERROR_INVALID_REFRESH_TOKEN)) {
-                    Globals.getOAuth2TokenProvider().disconnectEmailWithK9(accountConfig.getEmail());
-                    replayChecking();
-                } else {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            accountSetupView.goBack();
-                            accountSetupView.showErrorDialog(R.string.account_setup_failed_auth_message);
-                        }
-                    });
-                }
-            } catch (CertificateValidationException cve) {
-                handleCertificateValidationException(cve);
-            } catch (final Exception e) {
-                Timber.e(e, "Error while testing settings");
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         accountSetupView.goBack();
-                        accountSetupView.showErrorDialog(R.string.account_setup_failed_server_message);
+                        accountSetupView.showErrorDialog(R.string.account_setup_failed_auth_message);
                     }
                 });
             }
-            return false;
+        } catch (CertificateValidationException cve) {
+            handleCertificateValidationException(cve);
+        } catch (final Exception e) {
+            Timber.e(e, "Error while testing settings");
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    accountSetupView.goBack();
+                    accountSetupView.showErrorDialog(R.string.account_setup_failed_server_message);
+                }
+            });
         }
-
-        @Override
-        protected void onPostExecute(Boolean bool) {
-            super.onPostExecute(bool);
-
-            /*
-             * This task could be interrupted at any point, but network operations can block,
-             * so relying on InterruptedException is not enough. Instead, check after
-             * each potentially long-running operation.
-             */
-            if (bool && callback != null) {
-                callback.onCheckSuccess();
-            }
-        }
-
-        void clearCertificateErrorNotifications(CheckDirection direction) {
-            final MessagingController ctrl = MessagingController.getInstance(context);
-            ctrl.clearCertificateErrorNotifications((Account) accountConfig, direction);
-
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            accountSetupView.setMessage(values[0]);
-        }
-
-
+        return false;
     }
-
+    */
 
     private void modifyAccount(String email, String password, @NonNull ProviderInfo providerInfo, boolean usingOAuth2) {
         viewModel.accountConfig.init(email, password);
@@ -526,7 +340,7 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
             incomingUserInfo = AuthType.XOAUTH2 + ":" + incomingUserInfo;
         }
         String incomingUri =
-                providerInfo.incomingType + incomingUserInfo + providerInfo.incomingAddr + providerInfo.incomingPort;
+                providerInfo.incomingType + incomingUserInfo + providerInfo.incomingHost + providerInfo.incomingPort;
 
         String outgoingUsername = providerInfo.outgoingUsernameTemplate;
 
@@ -540,17 +354,17 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
             if (usingOAuth2) {
                 outgoingUserInfo = outgoingUserInfo + ":" + AuthType.XOAUTH2;
             }
-            outgoingUri = providerInfo.outgoingType + outgoingUserInfo + providerInfo.outgoingAddr + ":" +
+            outgoingUri = providerInfo.outgoingType + outgoingUserInfo + providerInfo.outgoingHost + ":" +
                     providerInfo.outgoingPort;
 
         } else {
-            outgoingUri = providerInfo.outgoingType + providerInfo.outgoingAddr + ":" + providerInfo.outgoingPort;
+            outgoingUri = providerInfo.outgoingType + providerInfo.outgoingHost + ":" + providerInfo.outgoingPort;
         }
 
         viewModel.accountConfig.setStoreUri(incomingUri);
         viewModel.accountConfig.setTransportUri(outgoingUri);
 
-        setupFolderNames(providerInfo.incomingAddr.toLowerCase(Locale.US));
+        setupFolderNames(providerInfo.incomingHost.toLowerCase(Locale.US));
 
         ServerSettings incomingSettings = RemoteStore.decodeStoreUri(incomingUri);
         viewModel.accountConfig.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
@@ -571,45 +385,11 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
     }
 
     @Override
-    public void onCertificateAccepted(X509Certificate certificate) {
-        try {
-            viewModel.accountConfig.addCertificate(currentDirection, certificate);
-        } catch (CertificateException e) {
-            accountSetupView.showErrorDialog(
-                    R.string.account_setup_failed_dlg_certificate_message_fmt,
-                    e.getMessage() == null ? "" : e.getMessage());
-        }
-
-        replayChecking();
-    }
-
-    @Override
-    public void onCertificateRefused() {
-        if (stage == Stage.INCOMING_CHECKING) {
-            accountSetupView.goToIncoming();
-        } else if (stage == Stage.OUTGOING_CHECKING) {
-            accountSetupView.goToOutgoing();
-        }
-    }
-
-    @Override
     public void onPositiveClickedInConfirmationDialog() {
-        if (stage == Stage.INCOMING_CHECKING) {
-            accountSetupView.goToIncoming();
-        } else if (stage == Stage.OUTGOING_CHECKING){
-            accountSetupView.goToOutgoing();
+        if (stage == Stage.CHECKING_CREDENTIALS){
+            accountSetupView.goToCheckingCredentials();
         } else {
             accountSetupView.goToBasics();
-        }
-    }
-
-    private void replayChecking() {
-        if (direction == CheckDirection.BOTH && currentDirection == CheckDirection.INCOMING) {
-            checkIncomingAndOutgoing();
-        } else if (currentDirection == CheckDirection.INCOMING) {
-            checkIncoming();
-        } else {
-            checkOutgoing();
         }
     }
 
@@ -943,7 +723,7 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
         viewModel.accountConfig.setCompression(NetworkType.OTHER, compressOther);
         viewModel.accountConfig.setSubscribedFoldersOnly(subscribedFoldersOnly);
 
-        accountSetupView.goToIncomingChecking();
+        accountSetupView.goToCheckingCredentials();
     }
 
     private void revokeInvalidSettingsAndUpdateViewInIncoming(AuthType authType,
@@ -1071,7 +851,7 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
     // region names
 
     @Override
-    public void onInputChangedInNames(String name, String description) {
+    public void onInputChangedInNames(String name) {
         if (Utility.requiredFieldValid(name)) {
             accountSetupView.setDoneButtonInNamesEnabled(true);
         } else {
@@ -1080,10 +860,8 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
     }
 
     @Override
-    public void onDoneButtonInNamesClicked(String name, String description) {
-        if (!Utility.requiredFieldValid(description)) {
-            return;
-        }
+    public void onDoneButtonInNamesClicked(String name) {
+        String description = getDefaultAccountDescription(viewModel.setupInfo.email);
 
         viewModel.setupInfo = viewModel.setupInfo.withAccountInfo(name, description);
 
@@ -1115,8 +893,8 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
 
         account.setName(setupInfo.accountName);
         account.setEmail(setupInfo.email);
-        account.setStoreUri(setupInfo.providerInfo.getStoreUri());
-        account.setTransportUri(setupInfo.providerInfo.getTransportUri());
+        account.setStoreUri(setupInfo.getStoreUri());
+        account.setTransportUri(setupInfo.getTransportUri());
         account.setDescription(setupInfo.accountDescription);
 
         account.setDraftsFolderName(K9.getK9String(R.string.special_mailbox_name_drafts));
@@ -1145,7 +923,7 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
     private void analysisAccount() {
         if (viewModel.accountConfig.getStoreUri().startsWith("webdav")) {
             viewModel.accountConfig.setTransportUri(viewModel.accountConfig.getStoreUri());
-            accountSetupView.goToOutgoingChecking();
+            accountSetupView.goToCheckingCredentials();
             return;
         }
 
@@ -1226,7 +1004,7 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
         String uri = TransportUris.createTransportUri(server);
         viewModel.accountConfig.setTransportUri(uri);
 
-        accountSetupView.goToOutgoingChecking();
+        accountSetupView.goToCheckingCredentials();
     }
 
     @Override
@@ -1424,10 +1202,6 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
                     accountSetupView.end();
                 }
                 break;
-            case INCOMING_CHECKING:
-                stage = Stage.INCOMING;
-                accountSetupView.goToIncoming();
-                break;
             case OUTGOING:
                 if (!editSettings) {
                     stage = Stage.INCOMING;
@@ -1436,10 +1210,10 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
                     accountSetupView.end();
                 }
                 break;
-            case OUTGOING_CHECKING:
+            case CHECKING_CREDENTIALS:
             case ACCOUNT_NAMES:
                 if (isManualSetup) {
-                    stage = Stage.OUTGOING;
+                    stage = Stage.INCOMING;
                     accountSetupView.goToOutgoing();
                 } else {
                     stage = Stage.BASICS;
@@ -1466,11 +1240,6 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
     @Override
     public void onGetAccountConfig(@Nullable ManualSetupInfo accountConfig) {
         this.viewModel.accountConfig = accountConfig;
-    }
-
-    @Override
-    public AccountConfig getAccountConfig() {
-        return viewModel.accountConfig;
     }
 
     @Override
@@ -1519,7 +1288,7 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_GMAIL) {
             if (resultCode == Activity.RESULT_OK) {
-                checkIncomingAndOutgoing();
+                checkCredentials();
             } else {
                 accountSetupView.goBack();
             }
@@ -1544,7 +1313,7 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
             @Override
             protected void onPostExecute(Boolean result) {
                 if (result) {
-                    checkIncomingAndOutgoing();
+                    checkCredentials();
                 } else {
                     oAuth2CodeGotten = false;
                     accountSetupView.goToBasics();

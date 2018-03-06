@@ -21,7 +21,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 
-import com.fsck.k9.activity.AccountConfig;
 import com.fsck.k9.activity.setup.CheckDirection;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.Utility;
@@ -36,6 +35,7 @@ import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
@@ -59,7 +59,7 @@ import static com.fsck.k9.Preferences.getEnumStringPref;
  * Account stores all of the settings for a single account defined by the user. It is able to save
  * and delete itself given a Preferences to work with. Each account is defined by a UUID.
  */
-public class Account implements BaseAccount, AccountConfig {
+public class Account implements StoreConfig, BaseAccount {
     /**
      * Default value for the inbox folder (never changes for POP3 and IMAP)
      */
@@ -947,12 +947,10 @@ public class Account implements BaseAccount, AccountConfig {
         this.description = description;
     }
 
-    @Override
     public synchronized String getName() {
         return identities.get(0).getName();
     }
 
-    @Override
     public synchronized void setName(String name) {
         identities.get(0).setName(name);
     }
@@ -1065,37 +1063,6 @@ public class Account implements BaseAccount, AccountConfig {
         this.latestOldMessageSeenTime = latestOldMessageSeenTime;
     }
 
-    @Override
-    public ConnectionSecurity getIncomingSecurityType() {
-        return RemoteStore.decodeStoreUri(getStoreUri()).connectionSecurity;
-    }
-
-    @Override
-    public AuthType getIncomingAuthType() {
-        return RemoteStore.decodeStoreUri(getStoreUri()).authenticationType;
-    }
-
-    @Override
-    public String getIncomingPort() {
-        return String.valueOf(RemoteStore.decodeStoreUri(getStoreUri()).port);
-    }
-
-    @Override
-    public ConnectionSecurity getOutgoingSecurityType() {
-        return TransportUris.decodeTransportUri(getTransportUri()).connectionSecurity;
-    }
-
-    @Override
-    public AuthType getOutgoingAuthType() {
-        return TransportUris.decodeTransportUri(getTransportUri()).authenticationType;
-    }
-
-    @Override
-    public String getOutgoingPort() {
-        return String.valueOf(TransportUris.decodeTransportUri(getTransportUri()).port);
-    }
-
-    @Override
     public synchronized boolean isNotifyNewMail() {
         return notifyNewMail;
     }
@@ -1116,7 +1083,6 @@ public class Account implements BaseAccount, AccountConfig {
         return deletePolicy;
     }
 
-    @Override
     public synchronized void setDeletePolicy(DeletePolicy deletePolicy) {
         this.deletePolicy = deletePolicy;
     }
@@ -1255,7 +1221,6 @@ public class Account implements BaseAccount, AccountConfig {
         return false;
     }
 
-    @Override
     public synchronized FolderMode getFolderPushMode() {
         return folderPushMode;
     }
@@ -1267,7 +1232,6 @@ public class Account implements BaseAccount, AccountConfig {
         return pushMode != oldPushMode;
     }
 
-    @Override
     public synchronized boolean isShowOngoing() {
         return notifySync;
     }
@@ -1531,7 +1495,6 @@ public class Account implements BaseAccount, AccountConfig {
         return idleRefreshMinutes;
     }
 
-    @Override
     public boolean shouldHideHostname() {
         return K9.hideHostnameWhenConnecting();
     }
@@ -1917,7 +1880,6 @@ public class Account implements BaseAccount, AccountConfig {
      * new host/port, then try and delete any (possibly non-existent) certificate stored for the
      * old host/port.
      */
-    @Override
     public void deleteCertificate(String newHost, int newPort, CheckDirection direction) {
         Uri uri;
         if (direction == CheckDirection.INCOMING) {
