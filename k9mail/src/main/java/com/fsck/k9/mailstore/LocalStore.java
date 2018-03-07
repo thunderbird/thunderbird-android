@@ -901,9 +901,7 @@ public class LocalStore {
                                 long folderId = cursor.getLong(0);
                                 String folderName = cursor.getString(1);
 
-                                throw new AssertionError("Tried to create folder '" + name + "'" +
-                                        " that already exists in the database as '" + folderName + "'" +
-                                        " (" + folderId + ")");
+                                return null;
                             }
                         } finally {
                             cursor.close();
