@@ -28,16 +28,24 @@
 
     <!-- MessageList -->
     <item
+        android:id="@+id/compose"
+        android:alphabeticShortcut="c"
+        android:icon="?attr/iconActionCompose"
+        app:showAsAction="ifRoom"
+        android:title="@string/compose_action"/>
+
+    <!-- MessageList -->
+    <item
         android:id="@+id/search"
         android:icon="?attr/iconActionSearch"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/search_action"/>
 
     <!-- MessageList -->
     <item
         android:id="@+id/search_remote"
         android:icon="?attr/iconActionRemoteSearch"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/action_remote_search"
         android:visible="false"/>
 
@@ -46,7 +54,7 @@
         android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionRefresh"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/check_mail_action"/>
 
     <!-- MessageView -->
@@ -54,7 +62,7 @@
         android:id="@+id/delete"
         android:alphabeticShortcut="q"
         android:icon="?attr/iconActionDelete"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/delete_action"/>
     <!-- MessageView -->
     <item
@@ -85,7 +93,7 @@
     <item
         android:id="@+id/single_message_options"
         android:icon="?attr/iconActionSingleMessageOptions"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:title="@string/single_message_options_action">
         <menu>
             <item
@@ -178,14 +186,6 @@
                 android:title="@string/sort_by_attach"/>
         </menu>
     </item>
-
-    <!-- always -->
-    <item
-        android:id="@+id/compose"
-        android:alphabeticShortcut="c"
-        android:icon="?attr/iconActionCompose"
-        app:showAsAction="ifRoom"
-        android:title="@string/compose_action"/>
 
     <!-- MessageList -->
     <item

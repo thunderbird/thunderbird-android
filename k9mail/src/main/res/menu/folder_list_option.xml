@@ -13,17 +13,17 @@
         android:title="@string/filter_folders_action"
         app:actionViewClass="android.widget.SearchView"/>
     <item
-        android:id="@+id/check_mail"
-        android:alphabeticShortcut="r"
-        android:icon="?attr/iconActionRefresh"
-        app:showAsAction="always"
-        android:title="@string/check_mail_action"/>
-    <item
         android:id="@+id/compose"
         android:alphabeticShortcut="c"
         android:icon="?attr/iconActionCompose"
         app:showAsAction="always"
         android:title="@string/compose_action"/>
+    <item
+        android:id="@+id/check_mail"
+        android:alphabeticShortcut="r"
+        android:icon="?attr/iconActionRefresh"
+        app:showAsAction="always"
+        android:title="@string/check_mail_action"/>
     <item
         android:icon="?attr/iconFolder"
         android:title="@string/folder_list_display_mode_label">

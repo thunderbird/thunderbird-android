@@ -1127,6 +1127,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         if (displayMode == DisplayMode.MESSAGE_VIEW || messageListFragment == null ||
                 !messageListFragment.isInitialized()) {
+            menu.findItem(R.id.compose).setVisible(false);
             menu.findItem(R.id.check_mail).setVisible(false);
             menu.findItem(R.id.set_sort).setVisible(false);
             menu.findItem(R.id.select_all).setVisible(false);
@@ -1135,6 +1136,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             menu.findItem(R.id.mark_all_as_read).setVisible(false);
             menu.findItem(R.id.show_folder_list).setVisible(false);
         } else {
+            menu.findItem(R.id.compose).setVisible(true);
             menu.findItem(R.id.set_sort).setVisible(true);
             menu.findItem(R.id.select_all).setVisible(true);
             menu.findItem(R.id.compose).setVisible(true);
