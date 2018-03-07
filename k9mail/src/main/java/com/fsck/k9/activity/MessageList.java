@@ -92,7 +92,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private static final int PREVIOUS = 1;
     private static final int NEXT = 2;
 
-    public static final int REQUEST_MASK_PENDING_INTENT = 1 << 16;
+    public static final int REQUEST_MASK_PENDING_INTENT = 1 << 15;
 
     public static void actionDisplaySearch(Context context, SearchSpecification search,
             boolean noThreading, boolean newTask) {
