@@ -9,11 +9,11 @@ import javax.net.ssl.X509TrustManager;
 
 
 @SuppressLint("TrustAllX509TrustManager")
-class VeryTrustingTrustManager implements X509TrustManager {
-    private final X509Certificate serverCertificate;
+public class VeryTrustingTrustManager implements X509TrustManager {
+    private final X509Certificate[] serverCertificate;
 
 
-    public VeryTrustingTrustManager(X509Certificate serverCertificate) {
+    public VeryTrustingTrustManager(X509Certificate... serverCertificate) {
         this.serverCertificate = serverCertificate;
     }
 
@@ -29,7 +29,7 @@ class VeryTrustingTrustManager implements X509TrustManager {
 
     @Override
     public X509Certificate[] getAcceptedIssuers() {
-        return new X509Certificate[] { serverCertificate };
+        return serverCertificate;
     }
 }
 

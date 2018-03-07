@@ -442,7 +442,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         ChangeLog cl = new ChangeLog(this);
-        if (cl.isFirstRun()) {
+        if (cl.isFirstRun() && !cl.isFirstRunEver()) {
             cl.getLogDialog().show();
         }
     }

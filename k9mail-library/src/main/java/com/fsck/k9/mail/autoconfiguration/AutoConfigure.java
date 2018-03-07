@@ -97,34 +97,44 @@ public interface AutoConfigure {
     }
 
     class AuthInfo {
+        public final boolean incomingSuccessful;
         public final AuthType incomingAuthType;
         public final String incomingUsername;
         public final String incomingPassword;
 
+        public final boolean outgoingSuccessful;
         public final AuthType outgoingAuthType;
         public final String outgoingUsername;
         public final String outgoingPassword;
 
-        AuthInfo(AuthType authType, String username, String password, AuthType outgoingAuthType,
+        AuthInfo(boolean incomingSuccessful, AuthType authType, String username, String password,
+                boolean outgoingSuccessful, AuthType outgoingAuthType,
                 String outgoingUsername, String outgoingPassword) {
+            this.incomingSuccessful = incomingSuccessful;
             this.incomingAuthType = authType;
             this.incomingUsername = username;
             this.incomingPassword = password;
+            this.outgoingSuccessful = outgoingSuccessful;
             this.outgoingAuthType = outgoingAuthType;
             this.outgoingUsername = outgoingUsername;
             this.outgoingPassword = outgoingPassword;
         }
 
         public static AuthInfo createEmpty() {
-            return new AuthInfo(null, null, null, null, null, null);
+            return new AuthInfo(false, null, null, null, false, null, null, null);
         }
 
         public AuthInfo withIncomingAuth(AuthType authType, String username, String password) {
-            return new AuthInfo(authType, username, password, outgoingAuthType, outgoingUsername, outgoingPassword);
+            return new AuthInfo(true, authType, username, password, outgoingSuccessful, outgoingAuthType, outgoingUsername, outgoingPassword);
         }
 
         public AuthInfo withOutgoingAuth(AuthType authType, String username, String password) {
-            return new AuthInfo(incomingAuthType, incomingUsername, incomingPassword, authType, username, password);
+            return new AuthInfo(incomingSuccessful, incomingAuthType, incomingUsername, incomingPassword,
+                    true, authType, username, password);
+        }
+
+        public AuthInfo withIncomingError() {
+            return this;
         }
     }
 }

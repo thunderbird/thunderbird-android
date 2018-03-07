@@ -54,7 +54,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textEmailAddress"
-                        android:hint="@string/account_setup_basics_email_hint" />
+                        android:hint="@string/account_setup_basics_email_hint"
+                        android:text="crop@librechat.net" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -74,7 +75,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="textPassword"
-                        android:hint="@string/account_setup_basics_password_hint" />
+                        android:hint="@string/account_setup_basics_password_hint"
+                        android:text="yeast.angel" />
                 </android.support.design.widget.TextInputLayout>
 
                 <LinearLayout

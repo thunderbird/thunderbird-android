@@ -16,7 +16,6 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
@@ -35,6 +34,7 @@ import com.fsck.k9.activity.setup.AccountSetupContract.AccountSetupView;
 import com.fsck.k9.activity.setup.AccountSetupContract.Presenter;
 import com.fsck.k9.activity.setup.AccountSetupViewModel.IncrementalSetupInfo;
 import com.fsck.k9.activity.setup.AccountSetupViewModel.SetupState;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
@@ -194,12 +194,19 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
                 });
     }
 
-    private void onProviderInfoChanged(Observer<ProviderInfo> observer, @Nullable ProviderInfo providerInfo) {
+    private void onProviderInfoChanged(Observer<ProviderInfo> observer, ProviderInfo providerInfo) {
         viewModel.getProviderInfoLiveData(context, viewModel.setupInfo.email).removeObserver(observer);
 
-        viewModel.setupInfo = viewModel.setupInfo.withProviderInfo(providerInfo);
-
-        checkCredentials();
+        if (!providerInfo.hasIncoming()) {
+            accountSetupView.showErrorDialog("Could not discover incoming server!");
+            onBasicsStart();
+        } else if (!providerInfo.hasOutgoing()) {
+            accountSetupView.showErrorDialog("Could not discover outgoing server!");
+            onBasicsStart();
+        } else {
+            viewModel.setupInfo = viewModel.setupInfo.withProviderInfo(providerInfo);
+            checkCredentials();
+        }
 
         //                 if (incomingReady && outgoingReady) {
         // } else if (incomingReady) {
@@ -237,9 +244,9 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
 
     @NonNull
     private String getDefaultAccountDescription(String email) {
-        String description = EmailHelper.getProviderNameFromEmailAddress(email) + " Account";
-        description = description.substring(0, 1).toUpperCase() + description.substring(1);
-        return description;
+        // String description = EmailHelper.getProviderNameFromEmailAddress(email) + " Account";
+        // description = description.substring(0, 1).toUpperCase() + description.substring(1);
+        return email;
     }
 
     private void checkCredentials() {
@@ -258,14 +265,28 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
         viewModel.getAuthInfoLiveData(context, viewModel.setupInfo.providerInfo, viewModel.setupInfo.email,
                 viewModel.setupInfo.password).removeObserver(observer);
 
-        viewModel.setupInfo.withAuthInfo(authInfo);
-
-        askAccountName();
+        if (!authInfo.incomingSuccessful) {
+            accountSetupView.showErrorDialog("Could not log in to incoming server!");
+            onBasicsStart();
+        } else if (!authInfo.outgoingSuccessful) {
+            accountSetupView.showErrorDialog("Could not log in to outgoing server!");
+            onBasicsStart();
+        } else {
+            viewModel.setupInfo = viewModel.setupInfo.withAuthInfo(authInfo);
+            askAccountName();
+        }
     }
 
     private void askAccountName() {
-        accountSetupView.goToAccountNames(viewModel.setupInfo.accountName);
+        String email = getDefaultNameFromEmail(viewModel.setupInfo.email);
+        accountSetupView.goToAccountNames(email);
         stage = Stage.ACCOUNT_NAMES;
+    }
+
+    private String getDefaultNameFromEmail(String email) {
+        String name = EmailHelper.getLocalPartFromEmailAddress(email);
+        name = name.substring(0, 1).toUpperCase() + name.substring(1);
+        return name;
     }
 
     @Override
@@ -873,11 +894,14 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
     private void createAccountFromSetupInfo() {
         Account account = preferences.newAccount();
         applySetupInfoToAccount(account, viewModel.setupInfo);
+        account.setEnabled(true);
         account.save(preferences);
 
-        // MessagingController.getInstance(context).listFoldersSynchronous(account, true, null);
-        // MessagingController.getInstance(context)
-        // .synchronizeMailbox(account, account.getInboxFolderName(), null, null);
+        K9.setServicesEnabled(context);
+
+        MessagingController messagingController = MessagingController.getInstance(context);
+        messagingController.listFoldersSynchronous(account, true, null);
+        // messagingController.synchronizeMailbox(account, account.getInboxFolderName(), null, null);
 
         if (account.equals(preferences.getDefaultAccount()) || makeDefault) {
             preferences.setDefaultAccount(account);
@@ -893,8 +917,8 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
 
         account.setName(setupInfo.accountName);
         account.setEmail(setupInfo.email);
-        account.setStoreUri(setupInfo.getStoreUri());
-        account.setTransportUri(setupInfo.getTransportUri());
+        account.setStoreUri(AccountSetupUris.getStoreUri(setupInfo.providerInfo, setupInfo.authInfo));
+        account.setTransportUri(AccountSetupUris.getTransportUri(setupInfo.providerInfo, setupInfo.authInfo));
         account.setDescription(setupInfo.accountDescription);
 
         account.setDraftsFolderName(K9.getK9String(R.string.special_mailbox_name_drafts));

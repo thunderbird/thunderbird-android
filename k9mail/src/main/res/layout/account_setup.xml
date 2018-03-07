@@ -7,7 +7,10 @@
     <include android:id="@+id/account_setup_basics"
         layout="@layout/account_setup_basics"/>
 
-    <include android:id="@+id/account_setup_autoconfiguration"
+    <include android:id="@+id/account_setup_autodiscover"
+        layout="@layout/account_setup_autodiscover"/>
+
+    <include android:id="@+id/account_setup_checking"
         layout="@layout/account_setup_check_settings"/>
 
     <include android:id="@+id/account_setup_account_type"

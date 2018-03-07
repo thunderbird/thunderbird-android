@@ -30,7 +30,7 @@ public class WebDavSocketFactory implements LayeredSocketFactory {
     public WebDavSocketFactory(String host, int port) throws NoSuchAlgorithmException, KeyManagementException {
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, new TrustManager[] {
-                TrustManagerFactory.get(host, port)
+                new TrustManagerFactory().get(host, port)
         }, null);
         mSocketFactory = sslContext.getSocketFactory();
         mSchemeSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory();

@@ -91,33 +91,6 @@ public class AccountSetupViewModel extends ViewModel {
             return new IncrementalSetupInfo(
                     SetupState.DONE, email, password, providerInfo, authInfo, accountName, accountDescription);
         }
-
-        public String getStoreUri() {
-            switch (providerInfo.incomingType) {
-                case ProviderInfo.INCOMING_TYPE_IMAP: {
-                    ServerSettings server = new ServerSettings(Type.IMAP, providerInfo.incomingHost, providerInfo.incomingPort, providerInfo.incomingSecurity,
-                            authInfo.incomingAuthType, authInfo.incomingUsername, authInfo.incomingPassword, null);
-                    return ImapStore.createStoreUri(server);
-                }
-                case ProviderInfo.INCOMING_TYPE_POP3: {
-                    ServerSettings server = new ServerSettings(Type.POP3, providerInfo.incomingHost, providerInfo.incomingPort, providerInfo.incomingSecurity,
-                            authInfo.incomingAuthType, authInfo.incomingUsername, authInfo.incomingPassword, null);
-                    return Pop3Store.createStoreUri(server);
-                }
-            }
-            return null;
-        }
-
-        public String getTransportUri() {
-            switch (providerInfo.incomingType) {
-                case ProviderInfo.OUTGOING_TYPE_SMTP: {
-                    ServerSettings server = new ServerSettings(Type.SMTP, providerInfo.outgoingHost, providerInfo.outgoingPort, providerInfo.outgoingSecurity,
-                            authInfo.outgoingAuthType, authInfo.outgoingUsername, authInfo.outgoingPassword, null);
-                    return TransportUris.createTransportUri(server);
-                }
-            }
-            return null;
-        }
     }
 
     enum SetupState {

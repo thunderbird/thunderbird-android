@@ -18,8 +18,8 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class TrustManagerFactory {
-    private static X509TrustManager defaultTrustManager;
+public class TrustManagerFactory {
+    public static X509TrustManager defaultTrustManager;
 
     private static LocalKeyStore keyStore;
 
@@ -111,10 +111,10 @@ public final class TrustManagerFactory {
         }
     }
 
-    private TrustManagerFactory() {
+    public TrustManagerFactory() {
     }
 
-    public static X509TrustManager get(String host, int port) {
+    public X509TrustManager get(String host, int port) {
         return SecureX509TrustManager.getInstance(host, port);
     }
 }

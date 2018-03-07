@@ -92,6 +92,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     protected static final String[] BLACKLISTED_PROTOCOLS = {
             "SSLv3"
     };
+    private TrustManagerFactory trustManagerFactory;
 
     static {
         String[] enabledCiphers = null;
@@ -130,6 +131,12 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
 
     public DefaultTrustedSocketFactory(Context context) {
         this.context = context;
+        trustManagerFactory = new TrustManagerFactory();
+    }
+
+    public DefaultTrustedSocketFactory(Context context, TrustManagerFactory trustManagerFactory) {
+        this.context = context;
+        this.trustManagerFactory = trustManagerFactory;
     }
 
     private static boolean hasWeakSslImplementation() {
@@ -181,7 +188,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     public Socket createSocket(Socket socket, String host, int port, String clientCertificateAlias)
             throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException {
 
-        TrustManager[] trustManagers = new TrustManager[] { TrustManagerFactory.get(host, port) };
+        TrustManager[] trustManagers = new TrustManager[] { trustManagerFactory.get(host, port) };
         KeyManager[] keyManagers = null;
         if (!TextUtils.isEmpty(clientCertificateAlias)) {
             keyManagers = new KeyManager[] { new KeyChainKeyManager(context, clientCertificateAlias) };

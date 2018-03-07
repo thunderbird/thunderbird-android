@@ -139,6 +139,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     private int position;
 
     int[] layoutIds = new int[]{R.layout.account_setup_basics,
+            R.layout.account_setup_autodiscover,
             R.layout.account_setup_check_settings, R.layout.account_setup_account_type,
             R.layout.account_setup_incoming, R.layout.account_setup_outgoing,
             R.layout.account_setup_options, R.layout.account_setup_names};
@@ -312,7 +313,7 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public void goToAutoConfiguration() {
         hideKeyboard();
-        setSelection(getPositionFromLayoutId(R.layout.account_setup_check_settings));
+        setSelection(getPositionFromLayoutId(R.layout.account_setup_autodiscover));
         checkingStart();
     }
 
