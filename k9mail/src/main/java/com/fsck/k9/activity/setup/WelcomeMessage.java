@@ -29,7 +29,7 @@ public class WelcomeMessage extends K9Activity implements OnClickListener{
         setContentView(R.layout.welcome_message);
 
         TextView welcome = (TextView) findViewById(R.id.welcome_message);
-        welcome.setText(HtmlConverter.htmlToSpanned(getString(R.string.accounts_welcome)));
+        welcome.setText(HtmlConverter.htmlToSpanned(getString(R.string.accounts_welcome_l10)));
         welcome.setMovementMethod(LinkMovementMethod.getInstance());
 
         findViewById(R.id.next).setOnClickListener(this);

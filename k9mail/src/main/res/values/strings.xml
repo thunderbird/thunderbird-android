@@ -22,34 +22,15 @@
 
     <!-- Welcome message -->
     <string name="welcome_message_title">Welcome to L-10 Mail</string>
-    <string name="accounts_welcome"><![CDATA[
+    <string name="accounts_welcome_l10"><![CDATA[
 <p>
-L-10 Mail is a powerful free email client for Android.
+Welcome to L-10 Mail!
 </p><p>
-Its improved features include:
+L-10 is a fork of K-9 Mail with some experimental features, especially for Autocrypt support.
 </p>
-<ul>
-  <li>Push mail using IMAP IDLE</li>
-  <li>Better performance</li>
-  <li>Message refiling</li>
-  <li>Email signatures</li>
-  <li>Bcc-to-self</li>
-  <li>Folder subscriptions</li>
-  <li>All folder synchronization</li>
-  <li>Return-address configuration</li>
-  <li>Keyboard shortcuts</li>
-  <li>Better IMAP support</li>
-  <li>Saving attachments to SD</li>
-  <li>Empty Trash</li>
-  <li>Message sorting</li>
-  <li>…and more</li>
-</ul>
 <p>
-Please note that L-10 does not support most free Hotmail accounts and, like many mail clients, has
-some quirks when talking to Microsoft Exchange.
-</p><p>
-Please submit bug reports, contribute new features and ask questions at
-<a href="https://github.com/k9mail/L-10/">https://github.com/k9mail/L-10/</a>.
+This software is meant for demonstration only.
+Please do not use this client otherwise!
 </p>
     ]]></string>
 
