@@ -21,6 +21,8 @@ interface AccountSetupContract {
         // account type
         void goToIncomingSettings();
 
+        void setBasicInfo(String username, String password);
+
         // basics
         void setPasswordInBasicsEnabled(boolean enabled);
         void setPasswordHintInBasics(String hint);

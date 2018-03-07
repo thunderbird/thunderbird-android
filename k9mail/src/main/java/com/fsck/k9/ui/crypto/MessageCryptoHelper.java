@@ -58,7 +58,7 @@ import timber.log.Timber;
 public class MessageCryptoHelper {
     private static final int INVALID_OPENPGP_RESULT_CODE = -1;
     private static final MimeBodyPart NO_REPLACEMENT_PART = null;
-    private static final int REQUEST_CODE_USER_INTERACTION = 124;
+    private static final int REQUEST_CODE_USER_INTERACTION = 17;
 
 
     private final Context context;

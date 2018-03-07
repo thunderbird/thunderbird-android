@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.BuildConfig;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.Globals;
 import com.fsck.k9.K9;
@@ -118,6 +119,9 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
     public void onBasicsStart() {
         stage = Stage.BASICS;
         accountSetupView.goToBasics();
+        if (BuildConfig.DEBUG) {
+            accountSetupView.setBasicInfo("crop@librechat.net", "yeast.angel");
+        }
     }
 
     @Override
@@ -901,7 +905,7 @@ public class AccountSetupPresenter implements Presenter, Oauth2PromptRequestHand
 
         MessagingController messagingController = MessagingController.getInstance(context);
         messagingController.listFoldersSynchronous(account, true, null);
-        // messagingController.synchronizeMailbox(account, account.getInboxFolderName(), null, null);
+        messagingController.synchronizeMailbox(account, account.getInboxFolderName(), null, null);
 
         if (account.equals(preferences.getDefaultAccount()) || makeDefault) {
             preferences.setDefaultAccount(account);

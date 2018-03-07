@@ -208,6 +208,12 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
         onInputChangedInBasics();
     }
 
+    @Override
+    public void setBasicInfo(String username, String password) {
+        emailView.setText(username);
+        passwordView.setText(password);
+    }
+
     private void onInputChangedInBasics() {
         if (presenter == null) return;
 
