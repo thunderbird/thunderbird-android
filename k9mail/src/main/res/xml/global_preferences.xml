@@ -370,36 +370,6 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:title="@string/privacy_preferences"
-        android:key="privacy_preferences">
-
-        <ListPreference
-            android:persistent="false"
-            android:key="notification_hide_subject"
-            android:entries="@array/global_settings_notification_hide_subject_entries"
-            android:entryValues="@array/global_settings_notification_hide_subject_values"
-            android:title="@string/global_settings_notification_hide_subject_title"/>
-
-        <CheckBoxPreference
-            android:persistent="false"
-            android:key="privacy_hide_useragent"
-            android:title="@string/global_settings_privacy_hide_useragent"
-            android:summary="@string/global_settings_privacy_hide_useragent_detail"/>
-
-        <CheckBoxPreference
-            android:persistent="false"
-            android:key="privacy_hide_timezone"
-            android:title="@string/global_settings_privacy_hide_timezone"
-            android:summary="@string/global_settings_privacy_hide_timezone_detail"/>
-
-        <CheckBoxPreference
-            android:persistent="false"
-            android:key="privacy_hide_hostname_when_connecting"
-            android:title="@string/global_settings_privacy_hide_hostname_when_connecting"
-            android:summary="@string/global_settings_privacy_hide_hostname_when_connecting_detail"/>
-    </PreferenceScreen>
-
-    <PreferenceScreen
         android:title="@string/debug_preferences"
         android:key="debug_preferences">
 
@@ -414,25 +384,6 @@
             android:key="sensitive_logging"
             android:title="@string/debug_enable_sensitive_logging_title"
             android:summary="@string/debug_enable_sensitive_logging_summary" />
-
-    </PreferenceScreen>
-
-    <PreferenceScreen
-        android:title="@string/account_settings_crypto"
-        android:key="crypto">
-
-        <org.openintents.openpgp.util.OpenPgpAppPreference
-            android:persistent="false"
-            android:key="openpgp_provider"
-            android:title="@string/account_settings_crypto_app" />
-
-        <CheckBoxPreference
-            android:persistent="false"
-            android:key="openpgp_support_sign_only"
-            android:title="@string/account_settings_crypto_support_sign_only"
-            android:summaryOn="@string/account_settings_crypto_support_sign_only_on"
-            android:summaryOff="@string/account_settings_crypto_support_sign_only_off"
-            />
 
     </PreferenceScreen>
 

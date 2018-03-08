@@ -8,10 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,7 +21,6 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
@@ -39,8 +35,6 @@ import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.TimePickerPreference;
 import com.fsck.k9.service.MailService;
-import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
-import org.openintents.openpgp.util.OpenPgpAppPreference;
 
 
 public class Prefs extends K9PreferenceActivity {
@@ -64,7 +58,6 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_VOLUME_NAVIGATION = "volume_navigation";
     private static final String PREFERENCE_START_INTEGRATED_INBOX = "start_integrated_inbox";
     private static final String PREFERENCE_CONFIRM_ACTIONS = "confirm_actions";
-    private static final String PREFERENCE_NOTIFICATION_HIDE_SUBJECT = "notification_hide_subject";
     private static final String PREFERENCE_MEASURE_ACCOUNTS = "measure_accounts";
     private static final String PREFERENCE_COUNT_SEARCH = "count_search";
     private static final String PREFERENCE_HIDE_SPECIAL_ACCOUNTS = "hide_special_accounts";
@@ -90,12 +83,6 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_QUIET_TIME_ENDS = "quiet_time_ends";
     private static final String PREFERENCE_NOTIF_QUICK_DELETE = "notification_quick_delete";
     private static final String PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY = "lock_screen_notification_visibility";
-    private static final String PREFERENCE_HIDE_USERAGENT = "privacy_hide_useragent";
-    private static final String PREFERENCE_HIDE_TIMEZONE = "privacy_hide_timezone";
-    private static final String PREFERENCE_HIDE_HOSTNAME_WHEN_CONNECTING = "privacy_hide_hostname_when_connecting";
-
-    private static final String PREFERENCE_OPENPGP_PROVIDER = "openpgp_provider";
-    private static final String PREFERENCE_OPENPGP_SUPPORT_SIGN_ONLY = "openpgp_support_sign_only";
 
     private static final String PREFERENCE_AUTOFIT_WIDTH = "messageview_autofit_width";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
@@ -131,7 +118,6 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxListPreference mVolumeNavigation;
     private CheckBoxPreference mStartIntegratedInbox;
     private CheckBoxListPreference mConfirmActions;
-    private ListPreference mNotificationHideSubject;
     private CheckBoxPreference mMeasureAccounts;
     private CheckBoxPreference mCountSearch;
     private CheckBoxPreference mHideSpecialAccounts;
@@ -151,14 +137,8 @@ public class Prefs extends K9PreferenceActivity {
     private ListPreference mBackgroundOps;
     private CheckBoxPreference mDebugLogging;
     private CheckBoxPreference mSensitiveLogging;
-    private CheckBoxPreference mHideUserAgent;
-    private CheckBoxPreference mHideTimeZone;
-    private CheckBoxPreference mHideHostnameWhenConnecting;
     private CheckBoxPreference mWrapFolderNames;
     private CheckBoxListPreference mVisibleRefileActions;
-
-    private OpenPgpAppPreference mOpenPgpProvider;
-    private CheckBoxPreference mOpenPgpSupportSignOnly;
 
     private CheckBoxPreference mQuietTimeEnabled;
     private CheckBoxPreference mDisableNotificationDuringQuietTime;
@@ -252,9 +232,6 @@ public class Prefs extends K9PreferenceActivity {
 
         mConfirmActions.setItems(confirmActionEntries);
         mConfirmActions.setCheckedItems(confirmActionValues);
-
-        mNotificationHideSubject = setupListPreference(PREFERENCE_NOTIFICATION_HIDE_SUBJECT,
-                K9.getNotificationHideSubject().toString());
 
         mMeasureAccounts = (CheckBoxPreference)findPreference(PREFERENCE_MEASURE_ACCOUNTS);
         mMeasureAccounts.setChecked(K9.measureAccounts());
@@ -378,37 +355,9 @@ public class Prefs extends K9PreferenceActivity {
 
         mDebugLogging = (CheckBoxPreference)findPreference(PREFERENCE_DEBUG_LOGGING);
         mSensitiveLogging = (CheckBoxPreference)findPreference(PREFERENCE_SENSITIVE_LOGGING);
-        mHideUserAgent = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_USERAGENT);
-        mHideTimeZone = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_TIMEZONE);
-        mHideHostnameWhenConnecting = (CheckBoxPreference)findPreference(PREFERENCE_HIDE_HOSTNAME_WHEN_CONNECTING);
 
         mDebugLogging.setChecked(K9.isDebug());
         mSensitiveLogging.setChecked(K9.DEBUG_SENSITIVE);
-        mHideUserAgent.setChecked(K9.hideUserAgent());
-        mHideTimeZone.setChecked(K9.hideTimeZone());
-        mHideHostnameWhenConnecting.setChecked(K9.hideHostnameWhenConnecting());
-
-        mOpenPgpProvider = (OpenPgpAppPreference) findPreference(PREFERENCE_OPENPGP_PROVIDER);
-        mOpenPgpProvider.setValue(K9.getOpenPgpProvider());
-        if (OpenPgpAppPreference.isApgInstalled(getApplicationContext())) {
-            mOpenPgpProvider.addLegacyProvider(
-                    APG_PROVIDER_PLACEHOLDER, getString(R.string.apg), R.drawable.ic_apg_small);
-        }
-        mOpenPgpProvider.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                String value = newValue.toString();
-                if (APG_PROVIDER_PLACEHOLDER.equals(value)) {
-                    mOpenPgpProvider.setValue("");
-                    showDialog(DIALOG_APG_DEPRECATION_WARNING);
-                } else {
-                    mOpenPgpProvider.setValue(value);
-                }
-                return false;
-            }
-        });
-
-        mOpenPgpSupportSignOnly = (CheckBoxPreference) findPreference(PREFERENCE_OPENPGP_SUPPORT_SIGN_ONLY);
-        mOpenPgpSupportSignOnly.setChecked(K9.getOpenPgpSupportSignOnly());
 
         mAttachmentPathPreference = findPreference(PREFERENCE_ATTACHMENT_DEF_PATH);
         mAttachmentPathPreference.setSummary(K9.getAttachmentDefaultPath());
@@ -499,7 +448,6 @@ public class Prefs extends K9PreferenceActivity {
         K9.setUseVolumeKeysForNavigation(mVolumeNavigation.getCheckedItems()[0]);
         K9.setUseVolumeKeysForListNavigation(mVolumeNavigation.getCheckedItems()[1]);
         K9.setStartIntegratedInbox(!mHideSpecialAccounts.isChecked() && mStartIntegratedInbox.isChecked());
-        K9.setNotificationHideSubject(NotificationHideSubject.valueOf(mNotificationHideSubject.getValue()));
 
         int index = 0;
         K9.setConfirmDelete(mConfirmActions.getCheckedItems()[index++]);
@@ -562,12 +510,6 @@ public class Prefs extends K9PreferenceActivity {
         }
         K9.setDebug(mDebugLogging.isChecked());
         K9.DEBUG_SENSITIVE = mSensitiveLogging.isChecked();
-        K9.setHideUserAgent(mHideUserAgent.isChecked());
-        K9.setHideTimeZone(mHideTimeZone.isChecked());
-        K9.setHideHostnameWhenConnecting(mHideHostnameWhenConnecting.isChecked());
-
-        K9.setOpenPgpProvider(mOpenPgpProvider.getValue());
-        K9.setOpenPgpSupportSignOnly(mOpenPgpSupportSignOnly.isChecked());
 
         StorageEditor editor = storage.edit();
         K9.save(editor);
@@ -595,25 +537,6 @@ public class Prefs extends K9PreferenceActivity {
             }
         },
         K9.getContactNameColor()).show();
-    }
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        Dialog dialog = null;
-        switch (id) {
-            case DIALOG_APG_DEPRECATION_WARNING: {
-                dialog = new ApgDeprecationWarningDialog(this);
-                dialog.setOnCancelListener(new OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        mOpenPgpProvider.show();
-                    }
-                });
-                break;
-            }
-
-        }
-        return dialog;
     }
 
     @Override
