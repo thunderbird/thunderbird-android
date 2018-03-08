@@ -306,6 +306,25 @@ public class OpenPgpAppPreference extends DialogPreference {
         }
     }
 
+    public static String getOpenPgpProviderPackage(Context context) {
+        Intent intent = new Intent(OpenPgpApi.SERVICE_INTENT_2);
+        List<ResolveInfo> resInfo = context.getPackageManager().queryIntentServices(intent, 0);
+        if (resInfo == null) {
+            return null;
+        }
+        for (ResolveInfo resolveInfo : resInfo) {
+            if (resolveInfo.serviceInfo == null) {
+                continue;
+            }
+
+            String packageName = resolveInfo.serviceInfo.packageName;
+            if (!PROVIDER_BLACKLIST.contains(packageName)) {
+                return packageName;
+            }
+        }
+        return null;
+    }
+
     public void show() {
         showDialog(null);
     }

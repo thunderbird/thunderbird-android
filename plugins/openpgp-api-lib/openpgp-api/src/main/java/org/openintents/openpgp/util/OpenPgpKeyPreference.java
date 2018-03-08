@@ -19,14 +19,15 @@ package org.openintents.openpgp.util;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.Preference;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -36,7 +37,6 @@ import org.openintents.openpgp.R;
 
 public class OpenPgpKeyPreference extends Preference {
     private long mKeyId;
-    private String mOpenPgpProvider;
     private OpenPgpServiceConnection mServiceConnection;
     private String mDefaultUserId;
 
@@ -50,21 +50,13 @@ public class OpenPgpKeyPreference extends Preference {
 
     @Override
     public CharSequence getSummary() {
+        String openPgpProviderPackage = OpenPgpAppPreference.getOpenPgpProviderPackage(getContext());
+        if (openPgpProviderPackage == null) {
+            return "No OpenPGP Provider installed - click to install.";
+        }
+
         return (mKeyId == NO_KEY) ? getContext().getString(R.string.openpgp_no_key_selected)
                 : getContext().getString(R.string.openpgp_key_selected);
-    }
-
-    private void updateEnabled() {
-        if (TextUtils.isEmpty(mOpenPgpProvider)) {
-            setEnabled(false);
-        } else {
-            setEnabled(true);
-        }
-    }
-
-    public void setOpenPgpProvider(String packageName) {
-        mOpenPgpProvider = packageName;
-        updateEnabled();
     }
 
     public void setDefaultUserId(String userId) {
@@ -73,10 +65,18 @@ public class OpenPgpKeyPreference extends Preference {
 
     @Override
     protected void onClick() {
+        notifyChanged();
+
+        String openPgpProviderPackage = OpenPgpAppPreference.getOpenPgpProviderPackage(getContext());
+        if (openPgpProviderPackage == null) {
+            startInstallPackageActivity("org.sufficientlysecure.keychain");
+            return;
+        }
+
         // bind to service
         mServiceConnection = new OpenPgpServiceConnection(
                 getContext().getApplicationContext(),
-                mOpenPgpProvider,
+                openPgpProviderPackage,
                 new OpenPgpServiceConnection.OnBound() {
                     @Override
                     public void onBound(IOpenPgpService2 service) {
@@ -91,6 +91,16 @@ public class OpenPgpKeyPreference extends Preference {
                 }
         );
         mServiceConnection.bindToService();
+    }
+
+    private void startInstallPackageActivity(String providerPackage) {
+        try {
+            getContext().startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=" + providerPackage)));
+        } catch (ActivityNotFoundException anfe) {
+            getContext().startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=" + providerPackage)));
+        }
     }
 
     private void getSignKeyId(Intent data) {
@@ -216,7 +226,6 @@ public class OpenPgpKeyPreference extends Preference {
         // Save the instance state
         final SavedState myState = new SavedState(superState);
         myState.keyId = mKeyId;
-        myState.openPgpProvider = mOpenPgpProvider;
         myState.defaultUserId = mDefaultUserId;
         return myState;
     }
@@ -233,7 +242,6 @@ public class OpenPgpKeyPreference extends Preference {
         SavedState myState = (SavedState) state;
         super.onRestoreInstanceState(myState.getSuperState());
         mKeyId = myState.keyId;
-        mOpenPgpProvider = myState.openPgpProvider;
         mDefaultUserId = myState.defaultUserId;
         notifyChanged();
     }

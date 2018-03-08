@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -22,7 +24,6 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
-import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
@@ -48,6 +49,7 @@ import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog.OnPreferEncryptChangedListener;
+import org.openintents.openpgp.util.OpenPgpAppPreference;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import timber.log.Timber;
 
@@ -180,7 +182,6 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference pushPollOnConnect;
     private ListPreference idleRefreshPeriod;
     private ListPreference mMaxPushFolders;
-    private boolean hasPgpCrypto = false;
     private OpenPgpKeyPreference pgpCryptoKey;
     private Preference autocryptPreferEncryptMutual;
 
@@ -696,48 +697,75 @@ public class AccountSettings extends K9PreferenceActivity {
                 return true;
             }
         });
+    }
 
-        hasPgpCrypto = K9.isOpenPgpProviderConfigured();
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        setupCryptoStuff();
+    }
+
+    private void setupCryptoStuff() {
+        refreshOpenPgpProvider();
+        String providerPackage = K9.getOpenPgpProvider();
+
+        pgpCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
+
+        pgpCryptoKey.setValue(account.getCryptoKey());
+        pgpCryptoKey.setSummary(null);
+        // pgpCryptoKey.setOpenPgpProvider(K9.getOpenPgpProvider());
+        // TODO: other identities?
+        pgpCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)));
+        pgpCryptoKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                refreshOpenPgpProvider();
+
+                long value = (Long) newValue;
+                pgpCryptoKey.setValue(value);
+                return false;
+            }
+        });
+
+        autocryptPreferEncryptMutual = findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
+        autocryptPreferEncryptMutual.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                showDialog(DIALOG_AUTOCRYPT_PREFER_ENCRYPT);
+                return false;
+            }
+        });
+
         PreferenceScreen cryptoMenu = (PreferenceScreen) findPreference(PREFERENCE_CRYPTO);
-        if (hasPgpCrypto) {
-            pgpCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
-
-            pgpCryptoKey.setValue(account.getCryptoKey());
-            pgpCryptoKey.setOpenPgpProvider(K9.getOpenPgpProvider());
-            // TODO: other identities?
-            pgpCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)));
-            pgpCryptoKey.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    long value = (Long) newValue;
-                    pgpCryptoKey.setValue(value);
-                    return false;
-                }
-            });
-
-            cryptoMenu.setOnPreferenceClickListener(null);
-
-            autocryptPreferEncryptMutual = findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
-            autocryptPreferEncryptMutual.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    showDialog(DIALOG_AUTOCRYPT_PREFER_ENCRYPT);
-                    return false;
-                }
-            });
-        } else {
-            cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_configured);
+        if (providerPackage == null) {
+            cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_installed);
             cryptoMenu.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Dialog dialog = ((PreferenceScreen) preference).getDialog();
-                    if (dialog != null) {
-                        dialog.dismiss();
-                    }
-                    Toast.makeText(AccountSettings.this,
-                            R.string.no_crypto_provider_see_global, Toast.LENGTH_SHORT).show();
+                    startInstallPackageActivity("org.sufficientlysecure.keychain");
                     return true;
                 }
             });
+        } else {
+            cryptoMenu.setOnPreferenceClickListener(null);
+        }
+    }
+
+    private void refreshOpenPgpProvider() {
+        String providerPackage = OpenPgpAppPreference.getOpenPgpProviderPackage(getApplicationContext());
+        boolean hasPgpCrypto = K9.isOpenPgpProviderConfigured();
+        if (!hasPgpCrypto) {
+            K9.setOpenPgpProvider(providerPackage);
+        }
+    }
+
+    private void startInstallPackageActivity(String providerPackage) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=" + providerPackage)));
+        } catch (ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=" + providerPackage)));
         }
     }
 
@@ -799,10 +827,8 @@ public class AccountSettings extends K9PreferenceActivity {
         account.setReplyAfterQuote(replyAfterQuote.isChecked());
         account.setStripSignature(stripSignature.isChecked());
         account.setLocalStorageProviderId(localStorageProvider.getValue());
-        if (hasPgpCrypto) {
+        if (pgpCryptoKey != null) {
             account.setCryptoKey(pgpCryptoKey.getValue());
-        } else {
-            account.setCryptoKey(Account.NO_OPENPGP_KEY);
         }
 
         // In webdav account we use the exact folder name also for inbox,
