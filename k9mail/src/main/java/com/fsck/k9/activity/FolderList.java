@@ -1,5 +1,6 @@
 package com.fsck.k9.activity;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -15,7 +16,6 @@ import android.os.PowerManager;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils.TruncateAt;
 import android.text.format.DateUtils;
-import timber.log.Timber;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -47,24 +47,23 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.MessageActions;
-import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.FolderSettings;
-import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.SizeFormatter;
-import com.fsck.k9.mail.power.TracingPowerManager;
-import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.power.TracingPowerManager;
+import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.service.MailService;
-
+import com.fsck.k9.ui.settings.SettingsActivity;
 import de.cketti.library.changelog.ChangeLog;
+import timber.log.Timber;
 
 /**
  * FolderList is the primary user interface for the program. This
@@ -409,7 +408,7 @@ public class FolderList extends K9ListActivity {
         }
 
         case KeyEvent.KEYCODE_S: {
-            onEditAccount();
+            onEditSettings();
             return true;
         }
 
@@ -458,11 +457,8 @@ public class FolderList extends K9ListActivity {
 
     }
 
-    private void onEditPrefs() {
-        Prefs.actionPrefs(this);
-    }
-    private void onEditAccount() {
-        AccountSettings.actionSettings(this, account);
+    private void onEditSettings() {
+        SettingsActivity.launch(this);
     }
 
     private void onAccounts() {
@@ -516,14 +512,8 @@ public class FolderList extends K9ListActivity {
 
             return true;
 
-        case R.id.account_settings:
-            onEditAccount();
-
-            return true;
-
-        case R.id.app_settings:
-            onEditPrefs();
-
+        case R.id.settings:
+            onEditSettings();
             return true;
 
         case R.id.empty_trash:
