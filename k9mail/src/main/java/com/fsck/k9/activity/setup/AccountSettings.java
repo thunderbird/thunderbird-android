@@ -46,6 +46,8 @@ import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.StorageManager;
+import com.fsck.k9.preferences.Storage;
+import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog.OnPreferEncryptChangedListener;
@@ -757,6 +759,11 @@ public class AccountSettings extends K9PreferenceActivity {
         if (!hasPgpCrypto) {
             K9.setOpenPgpProvider(providerPackage);
         }
+
+        Storage storage = Preferences.getPreferences(this).getStorage();
+        StorageEditor editor = storage.edit();
+        K9.save(editor);
+        editor.commit();
     }
 
     private void startInstallPackageActivity(String providerPackage) {
