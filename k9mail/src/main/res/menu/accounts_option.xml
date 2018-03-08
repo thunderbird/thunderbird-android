@@ -20,11 +20,6 @@
         app:showAsAction="always"
         android:title="@string/compose_action"/>
     <item
-        android:id="@+id/add_new_account"
-        android:icon="?attr/iconActionAdd"
-        app:showAsAction="ifRoom"
-        android:title="@string/add_account_action"/>
-    <item
         android:id="@+id/about"
         android:icon="?attr/iconActionAbout"
         android:title="@string/about_action"/>
