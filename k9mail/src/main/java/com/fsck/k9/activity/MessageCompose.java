@@ -421,11 +421,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         if (action == Action.REPLY || action == Action.REPLY_ALL ||
                 action == Action.EDIT_DRAFT) {
-            //change focus to message body.
-            messageContentView.requestFocus();
+            // change focus to message body.
+            // messageContentView.requestFocus();
         } else {
             // Explicitly set focus to "To:" input field (see issue 2998)
-            recipientMvpView.requestFocusOnToField();
+            // recipientMvpView.requestFocusOnToField();
         }
 
         if (action == Action.FORWARD || action == Action.FORWARD_AS_ATTACHMENT) {
