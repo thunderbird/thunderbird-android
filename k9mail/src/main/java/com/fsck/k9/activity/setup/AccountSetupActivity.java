@@ -407,11 +407,13 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
     @Override
     public void showErrorDialog(@StringRes final int msgResId, final Object... args) {
         // TODO: 8/13/17 add a "detail" button and show exception details here
+        hideKeyboard();
         Snackbar.make(coordinatorLayout, getString(msgResId, args), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void showErrorDialog(String errorMessage) {
+        hideKeyboard();
         Snackbar.make(coordinatorLayout, errorMessage, Snackbar.LENGTH_LONG).show();
     }
 
