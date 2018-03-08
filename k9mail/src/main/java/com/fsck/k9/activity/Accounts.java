@@ -73,7 +73,6 @@ import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
-import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.activity.setup.WelcomeMessage;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.SizeFormatter;
@@ -93,6 +92,7 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
+import com.fsck.k9.ui.settings.SettingsActivity;
 import com.fsck.k9.view.ColorChip;
 import de.cketti.library.changelog.ChangeLog;
 import timber.log.Timber;
@@ -613,8 +613,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         AccountSetupBasics.actionNewAccount(this);
     }
 
-    private void onEditPrefs() {
-        Prefs.actionPrefs(this);
+    private void onEditSettings() {
+        SettingsActivity.launch(this);
     }
 
 
@@ -1246,8 +1246,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         case R.id.add_new_account:
             onAddNewAccount();
             break;
-        case R.id.edit_prefs:
-            onEditPrefs();
+        case R.id.settings:
+            onEditSettings();
             break;
         case R.id.check_mail:
             onCheckMail(null);

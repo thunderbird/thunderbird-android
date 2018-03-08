@@ -42,7 +42,7 @@
         </menu>
     </item>
     <item
-        android:id="@+id/edit_prefs"
+        android:id="@+id/settings"
         android:icon="?attr/iconActionSettings"
         app:showAsAction="never"
         android:title="@string/preferences_action"/>

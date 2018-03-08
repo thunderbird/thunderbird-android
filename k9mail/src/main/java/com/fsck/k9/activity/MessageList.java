@@ -15,11 +15,10 @@ import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.support.v7.app.ActionBar;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import timber.log.Timber;
+import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,9 +39,6 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
-import com.fsck.k9.activity.setup.AccountSettings;
-import com.fsck.k9.activity.setup.FolderSettings;
-import com.fsck.k9.activity.setup.Prefs;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
 import com.fsck.k9.helper.ParcelableUtil;
@@ -56,11 +52,13 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
+import com.fsck.k9.ui.settings.SettingsActivity;
 import com.fsck.k9.view.MessageHeader;
 import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 import de.cketti.library.changelog.ChangeLog;
+import timber.log.Timber;
 
 
 /**
@@ -166,7 +164,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private int firstBackStackId = -1;
 
     private Account account;
-    private String folderServerId;
     private LocalSearch search;
     private boolean singleFolderMode;
     private boolean singleAccountMode;
@@ -257,7 +254,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         messageReference = null;
         search = null;
-        folderServerId = null;
 
         if (!decodeExtras(intent)) {
             return;
@@ -481,10 +477,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             Timber.i("not opening MessageList of unavailable account");
             onAccountUnavailable();
             return false;
-        }
-
-        if (singleFolderMode) {
-            folderServerId = search.getFolderServerIds().get(0);
         }
 
         // now we know if we are in single account mode and need a subtitle
@@ -780,12 +772,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         finish();
     }
 
-    private void onEditPrefs() {
-        Prefs.actionPrefs(this);
-    }
-
-    private void onEditAccount() {
-        AccountSettings.actionSettings(this, account);
+    private void onEditSettings() {
+        SettingsActivity.launch(this);
     }
 
     @Override
@@ -846,12 +834,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 messageListFragment.selectAll();
                 return true;
             }
-            case R.id.app_settings: {
-                onEditPrefs();
-                return true;
-            }
-            case R.id.account_settings: {
-                onEditAccount();
+            case R.id.settings: {
+                onEditSettings();
                 return true;
             }
             case R.id.search: {
@@ -950,12 +934,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 messageListFragment.onSendPendingMessages();
                 return true;
             }
-            case R.id.folder_settings: {
-                if (folderServerId != null) {
-                    FolderSettings.actionSettings(this, account, folderServerId);
-                }
-                return true;
-            }
             case R.id.expunge: {
                 messageListFragment.onExpunge();
                 return true;
@@ -996,17 +974,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private void configureMenu(Menu menu) {
         if (menu == null) {
             return;
-        }
-
-        // Set visibility of account/folder settings menu items
-        if (messageListFragment == null) {
-            menu.findItem(R.id.account_settings).setVisible(false);
-            menu.findItem(R.id.folder_settings).setVisible(false);
-        } else {
-            menu.findItem(R.id.account_settings).setVisible(
-                    messageListFragment.isSingleAccountMode());
-            menu.findItem(R.id.folder_settings).setVisible(
-                    messageListFragment.isSingleFolderMode());
         }
 
         /*
