@@ -907,7 +907,8 @@ public class AccountSetupActivity extends AppCompatActivity implements AccountSe
 
     @Override
     public void finishSetupToAccountList() {
-        Accounts.listAccounts(this);
+        Accounts.goToStartup(this);
+        // Accounts.listAccounts(this);
         finish();
     }
 

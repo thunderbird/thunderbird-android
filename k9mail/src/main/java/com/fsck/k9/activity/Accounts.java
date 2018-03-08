@@ -344,6 +344,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     public static final String ACTION_IMPORT_SETTINGS = "importSettings";
 
 
+    public static void goToStartup(Context context) {
+        Intent intent = new Intent(context, Accounts.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+    }
+
     public static void listAccounts(Context context) {
         Intent intent = new Intent(context, Accounts.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP |
