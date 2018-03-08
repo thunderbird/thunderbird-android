@@ -69,7 +69,7 @@ android {
         applicationId "horse.amazin.my.l10"
         testApplicationId "horse.amazin.my.l10.tests"
 
-        versionCode 1
+        versionCode 3
         versionName '0.1-IFF'
 
         minSdkVersion 15
