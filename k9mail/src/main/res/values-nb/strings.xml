@@ -227,6 +227,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="error_contact_address_not_found">Ingen e-postadresse ble funnet for denne kontakten.</string>
   <string name="message_compose_attachments_skipped_toast">Noen vedlegg kunne ikke videresendes fordi de ikke har blitt lastet ned.</string>
   <string name="message_compose_attachments_forward_toast">Meldingen kan ikke videresendes fordi noen av vedleggene ikke har blitt lastet ned enda.</string>
+  <string name="message_compose_show_quoted_text_action">Inkluder sitert melding</string>
   <string name="message_compose_description_delete_quoted_text">Fjern sitert tekst</string>
   <string name="message_compose_description_edit_quoted_text">Rediger sitert tekst</string>
   <string name="message_view_from_format">Fra: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -988,6 +989,8 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="crypto_msg_unencrypted_sign_error">ende-til-ende -signaturen inneholdt en feil</string>
   <string name="crypto_msg_incomplete_signed">må laste ned meldingen helt for å behandle signaturen</string>
   <string name="crypto_msg_unsupported_signed">inneholder ustøttet ende-til-ende -signatur</string>
+  <string name="crypto_msg_unsupported_encrypted">Meldingen er kryptert, med i et ustøttet format.</string>
+  <string name="crypto_msg_cancelled">Meldingen er kryptert, men dekrypteringen ble avbrutt.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Ende-til-ende -signert klartekst</string>
   <string name="crypto_msg_unencrypted_sign_verified">fra bekreftet underskriver</string>
   <string name="crypto_msg_title_unencrypted_signed">Signert klartekst</string>
@@ -1061,4 +1064,8 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="openpgp_enabled_error_back">Tilbake</string>
   <string name="openpgp_enabled_error_disable">Skru av kryptering</string>
   <string name="openpgp_encryption">OpenPGP-kryptering</string>
+  <string name="account_settings_crypto_prefer_encrypt">Gjensidig Autocrypt-modus</string>
+  <string name="dialog_autocrypt_mutual_title">Gjensidig Autocrypt-modus</string>
+  <string name="dialog_autocrypt_mutual_description_1">Meldinger vil normalt bli kryptert når valgt, eller ved besvaring av kryptert melding.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Hvis både avsender og mottakere skrur på gjensidig modus, vil kryptering være påslått som forvalg.</string>
 </resources>

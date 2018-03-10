@@ -973,6 +973,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="openpgp_dialog_sign_only_title">PGP Sign-Only hamur</string>
   <string name="openpgp_dialog_sign_only_minus_break">Undirritanir geta bilað ef verið er að senda á póstlista.</string>
   <string name="crypto_msg_title_plaintext">Hreinn texti</string>
+  <string name="crypto_msg_unsupported_encrypted">Skilaboðin eru dulrituð, en á óstuddu sniði.</string>
+  <string name="crypto_msg_cancelled">Skilaboðin eru dulrituð, en hætt var við afkóðun.</string>
   <string name="crypto_msg_unencrypted_sign_verified">frá sannvottuðum undirritara</string>
   <string name="crypto_msg_title_unencrypted_signed">Undirritaður hreintexti</string>
   <string name="crypto_msg_title_encrypted_unknown">Dulritað</string>

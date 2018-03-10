@@ -980,10 +980,15 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="openpgp_dialog_sign_only_minus_break">Allekirjoitukset saattavat rikkoontua postituslistoille lähettäessä.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Allekirjoitukset saatetaan näyttää \"signature.asc\"-liitteinä joissain sovelluksissa.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Salatut viestit sisältävät aina allekirjoituksen.</string>
+  <string name="crypto_msg_title_plaintext">Raakateksti</string>
   <string name="crypto_msg_unencrypted_sign_error">päästä päähän -allekirjoitus sisälsi virheen</string>
   <string name="crypto_msg_incomplete_signed">viesti täytyy ladata kokonaan, jotta allekirjoitus voidaan käsitellä</string>
   <string name="crypto_msg_unsupported_signed">sisältää ei-tuetun päästä päähän -allekirjoituksen</string>
+  <string name="crypto_msg_unsupported_encrypted">Viesti on salattu, mutta sen muoto ei ole tuettu.</string>
+  <string name="crypto_msg_cancelled">Viesti on salattu, mutta viestin salauksen purkaminen peruttiin.</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Päästä päähän -allekirjoitettu raakateksti</string>
   <string name="crypto_msg_unencrypted_sign_verified">vahvistetulta allekirjoittajalta</string>
+  <string name="crypto_msg_title_unencrypted_signed">Allekirjoitettu raakateksti</string>
   <string name="crypto_msg_unencrypted_sign_mismatch">mutta päästä päähän -avain ei vastannut lähettäjää</string>
   <string name="crypto_msg_unencrypted_sign_expired">mutta päästä päähän -avain on vanhentunut</string>
   <string name="crypto_msg_unencrypted_sign_revoked">mutta päästä päähän -avain on kumottu</string>
@@ -1053,4 +1058,5 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="openpgp_enabled_error_back">Takaisin</string>
   <string name="openpgp_enabled_error_disable">Poista salaus käytöstä</string>
   <string name="openpgp_encryption">OpenPGP-salaus</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Voit <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">napauttaa tästä</a> saadaksesi lisätietoja.</string>
 </resources>

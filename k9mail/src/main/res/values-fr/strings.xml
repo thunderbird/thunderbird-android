@@ -988,6 +988,8 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="crypto_msg_unencrypted_sign_error">La signature de bout en bout contenait une erreur</string>
   <string name="crypto_msg_incomplete_signed">le courriel doit être complètement téléchargé pour traiter la signature</string>
   <string name="crypto_msg_unsupported_signed">contient une signature de bout en bout non prise en charge</string>
+  <string name="crypto_msg_unsupported_encrypted">Le courriel est chiffré, mais dans un format non pris en charge.</string>
+  <string name="crypto_msg_cancelled">Le courriel est chiffré, mais le déchiffrement a été annulé.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">texte en clair signé de bout en bout</string>
   <string name="crypto_msg_unencrypted_sign_verified">d’un signataire vérifié</string>
   <string name="crypto_msg_title_unencrypted_signed">Texte en clair signé</string>
@@ -1061,4 +1063,9 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="openpgp_enabled_error_back">Retour</string>
   <string name="openpgp_enabled_error_disable">Désactiver le chiffrement</string>
   <string name="openpgp_encryption">Chiffrement OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Mode mutuel Autocrypt</string>
+  <string name="dialog_autocrypt_mutual_title">Mode mutuel Autocrypt</string>
+  <string name="dialog_autocrypt_mutual_description_1">Les courriels seront habituellement chiffrés par choix ou en répondant à un courriel chiffré.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Si l’expéditeur et les destinataires activent le mode mutuel, le chiffrement sera activé par défaut.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Vous pouvez <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">cliquer ici</a> pour en apprendre davantage.</string>
 </resources>

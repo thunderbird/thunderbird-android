@@ -41,8 +41,7 @@ Harap dicatat bahwa K-9 tidak mendukung sebagian besar akun Hotmail gratis dan, 
 beberapa kebiasaan saat berbicara dengan Microsoft Exchange.
 </p><p>
 Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
-https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
-</p>
+<a href="https://github.com/k9mail/k-9/">https:/github.com/k9mail/k-9/</a>.</p>
 ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nDikirim dari perangkat Android saya menggunakan K-9 Mail.</string>
@@ -70,6 +69,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="compose_title_reply">Balas</string>
   <string name="compose_title_reply_all">Balas semua</string>
   <string name="compose_title_forward">Teruskan</string>
+  <string name="compose_title_forward_as_attachment">Teruskan sebagai Lampiran</string>
   <string name="choose_account_title">Pilih akun</string>
   <string name="choose_folder_title">Pilih Folder</string>
   <string name="status_loading_account_folder">Menarik <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -100,6 +100,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="archive_action">Arsip</string>
   <string name="spam_action">Spam</string>
   <string name="forward_action">Teruskan</string>
+  <string name="forward_as_attachment_action">Teruskan sebagai Lampiran</string>
   <string name="move_action">Pindah</string>
   <string name="single_message_options_action">Kirim…</string>
   <string name="refile_action">File kan kembali...</string>
@@ -222,6 +223,8 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="compose_error_incomplete_recipient">Bidang penerima berisi masukan yang tidak lengkap!</string>
   <string name="error_contact_address_not_found">Tidak ada alamat surel yang ditemukan untuk kontak ini.</string>
   <string name="message_compose_attachments_skipped_toast">Beberapa lampiran tidak bisa diteruskan karena mereka belum diunduh.</string>
+  <string name="message_compose_attachments_forward_toast">Pesan tidak dapat diteruskan karena beberapa lampiran belum diunduh.</string>
+  <string name="message_compose_show_quoted_text_action">Sertakan pesan yang dikutip</string>
   <string name="message_compose_description_delete_quoted_text">Buang teks kutipan</string>
   <string name="message_compose_description_edit_quoted_text">Sunting teks kutipan</string>
   <string name="message_view_from_format">Dari: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -281,6 +284,8 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="global_settings_privacy_hide_useragent_detail">Buang User-Agent K-9 dari tajuk surel</string>
   <string name="global_settings_privacy_hide_timezone">Sembunyikan zona waktu</string>
   <string name="global_settings_privacy_hide_timezone_detail">Gunakan UTC, bukan zona waktu lokal di header email dan header balasan</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting">Sembunyikan nama host</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Identifikasi sebagai \'localhost\' saat terhubung ke server SMTP</string>
   <string name="global_settings_notification_hide_subject_title">Sembunyikan subyek dalam notifikasi</string>
   <string name="global_settings_notification_hide_subject_never">Tidak pernah</string>
   <string name="global_settings_notification_hide_subject_when_locked">Ketika perangkat di kunci</string>
@@ -687,6 +692,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="background_ops_auto_sync_only">Saat \'Sinkronisasi otomatis\' dicentang</string>
   <string name="batch_select_all">Pilih semua</string>
   <string name="account_setup_push_limit_label">Max folder untuk memeriksa dengan dorongan</string>
+  <string name="account_setup_push_limit_5">5 folder</string>
   <string name="account_setup_push_limit_10">10 folder</string>
   <string name="account_setup_push_limit_25">25 folder</string>
   <string name="account_setup_push_limit_50">50 folder</string>
@@ -969,7 +975,27 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="openpgp_dialog_sign_only_minus_break">Tanda tangan bisa pecah saat dikirim ke milis.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Tanda tangan dapat ditampilkan sebagai lampiran \'signature.asc\' pada beberapa klien.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Pesan terenkripsi selalu menyertakan tanda tangan.</string>
+  <string name="crypto_msg_title_plaintext">Teks biasa</string>
+  <string name="crypto_msg_unencrypted_sign_error">tanda tangan akhir-ke-akhir berisi kesalahan</string>
+  <string name="crypto_msg_incomplete_signed">harus mengunduh pesan untuk memproses tanda tangan</string>
+  <string name="crypto_msg_unsupported_signed">berisi tanda tangan akhir-ke-akhir yang tidak didukung</string>
+  <string name="crypto_msg_unsupported_encrypted">Pesan dienkripsi, namun dalam format yang tidak didukung.</string>
+  <string name="crypto_msg_cancelled">Pesan dienkripsi, tapi dekripsi dibatalkan.</string>
+  <string name="crypto_msg_unencrypted_sign_verified">dari penanda yang diverifikasi</string>
+  <string name="crypto_msg_title_unencrypted_signed">Bertanda teks biasa</string>
+  <string name="crypto_msg_title_encrypted_unknown">Terenkripsi</string>
+  <string name="crypto_msg_encrypted_error">tapi ada kesalahan dekripsi</string>
+  <string name="crypto_msg_encrypted_incomplete">harus mendownload pesan untuk dekripsi sepenuhnya</string>
+  <string name="crypto_msg_encrypted_no_provider">namun tidak ada aplikasi kripto yang dikonfigurasi</string>
+  <string name="crypto_msg_encrypted_unsupported">namun dalam format yang tidak didukung</string>
+  <string name="crypto_msg_encrypted_cancelled">namun dekripsi dibatalkan</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Terenkripsi</string>
+  <string name="crypto_msg_encrypted_sign_verified">dari penanda yang diverifikasi</string>
+  <string name="crypto_msg_title_encrypted_signed">Terenkripsi</string>
+  <string name="crypto_msg_encrypted_insecure">namun enkripsi tidak dianggap aman</string>
   <string name="crypto_info_ok">OK</string>
+  <string name="crypto_info_view_signer">Lihat Penanda</string>
+  <string name="crypto_info_view_sender">Lihat Pengirim</string>
   <string name="crypto_info_view_security_warning">Detail</string>
   <string name="locked_attach_unlock">Buka kunci</string>
   <string name="locked_attach_unencrypted">Bagian ini tidak dienkripsi, dan mungkin tidak aman.</string>
@@ -1008,9 +1034,14 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="enable_encryption">Aktifkan Enkripsi</string>
   <string name="disable_encryption">Nonaktifkan enkripsi</string>
   <string name="openpgp_description_text1">Mengenkripsi pesan memastikan mereka dapat dibaca oleh penerima, dan tidak ada orang lain.</string>
+  <string name="openpgp_description_text3">Enkripsi hanya akan muncul jika didukung oleh semua penerima, dan mereka harus sudah mengirimi Anda email sebelumnya.</string>
   <string name="openpgp_description_text2">Alihkan enkripsi dengan mengklik ikon ini.</string>
   <string name="openpgp_enabled_error_gotit">Mengerti</string>
   <string name="openpgp_enabled_error_back">Kembali</string>
   <string name="openpgp_enabled_error_disable">Nonaktifkan enkripsi</string>
   <string name="openpgp_encryption">Enkripsi OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Mode gabungan otomatis kripto</string>
+  <string name="dialog_autocrypt_mutual_title">Mode gabungan otomatis kripto</string>
+  <string name="dialog_autocrypt_mutual_description_1">Pesan biasanya akan dienkripsi berdasarkan pilihan, atau saat membalas pesan terenkripsi.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Jika kedua pengirim dan penerima mengaktifkan mode bersama, enkripsi akan diaktifkan secara default.</string>
 </resources>

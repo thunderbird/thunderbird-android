@@ -987,6 +987,8 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="crypto_msg_unencrypted_sign_error">muturretik muturrerako sinadurak errore bat zuen</string>
   <string name="crypto_msg_incomplete_signed">mezua osorik deskargatu behar da sinadura prozesatzeko</string>
   <string name="crypto_msg_unsupported_signed">onartzen ez den muturretik muturrerako sinadura dauka</string>
+  <string name="crypto_msg_unsupported_encrypted">Mezua enkriptatuta dago, baina onartzen ez den formatu batean.</string>
+  <string name="crypto_msg_cancelled">Mezua enkriptatuta dago, baina desenkriptatzea bertan behera utzi da.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Muturretik muturrera sinatutako testu arrunta</string>
   <string name="crypto_msg_unencrypted_sign_verified">sinatzaile egiaztatutik</string>
   <string name="crypto_msg_title_unencrypted_signed">Sinatutako testu arrunta</string>

@@ -943,6 +943,8 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="openpgp_dialog_sign_only_minus_break">Las firmas pueden estropearse al ser enviadas a listas de correo. </string>
   <string name="openpgp_dialog_sign_only_minus_attach">Algunos clientes de correo mostrarán las firmas como adjuntos \'signature.asc\'.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Los mensajes cifrados siempres incluirán una firma.</string>
+  <string name="crypto_msg_unsupported_encrypted">El mensaje está cifrado, pero en un formato no soportado.</string>
+  <string name="crypto_msg_cancelled">El mensaje está cifrado, pero se ha cancelado el descifrado.</string>
   <string name="crypto_info_ok">Aceptar</string>
   <string name="crypto_info_view_security_warning">Detalles</string>
   <string name="locked_attach_unlock">Desbloquear</string>

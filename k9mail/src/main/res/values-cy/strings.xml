@@ -1007,6 +1007,8 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="crypto_msg_unencrypted_sign_error">roedd gwall mewn llofnod diwedd-i-ddiwedd</string>
   <string name="crypto_msg_incomplete_signed">rhaid lawrlwytho\'r neges yn gyfan er mwyn prosesu\'r llofnod</string>
   <string name="crypto_msg_unsupported_signed">mae\'n cynnwys llofnod diwedd-i-ddiwedd anghydnaws</string>
+  <string name="crypto_msg_unsupported_encrypted">Mae\'r neges wedi ei amgryptio, ond mewn fformat diarth.</string>
+  <string name="crypto_msg_cancelled">Mae\'r neges wedi ei amgryptio, ond diddymwyd yr amgryptio.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Llofnod testun plaen Diwedd-i-Ddiwedd</string>
   <string name="crypto_msg_unencrypted_sign_verified">oddi wrth lofnodwr wedi\'i gwirio</string>
   <string name="crypto_msg_title_unencrypted_signed">Llofnod testun plaen</string>

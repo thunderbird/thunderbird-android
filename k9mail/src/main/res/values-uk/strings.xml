@@ -945,6 +945,8 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="openpgp_dialog_sign_only_minus_break">Підписи можуть бути пошкоджені при надсиланні листа у списки розсилки.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Деякі клієнти можуть відображати підписи як вкладення \'signature.asc\'.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Зашифровані листи завжди підписані.</string>
+  <string name="crypto_msg_unsupported_encrypted">Повідомлення зашифроване, але це формат не підтримується.</string>
+  <string name="crypto_msg_cancelled">Повідомлення зашифроване, але розшифровування було скасовано.</string>
   <string name="crypto_info_ok">Окей</string>
   <string name="locked_attach_unlock">Розблокувати</string>
   <string name="locked_attach_unencrypted">Ця частина не зашифрована й може бути небезпечною.</string>

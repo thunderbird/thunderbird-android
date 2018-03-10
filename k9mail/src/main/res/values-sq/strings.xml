@@ -989,6 +989,8 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="crypto_msg_unencrypted_sign_error">nënshkrimi skaj-më-skaj përmban një gabim</string>
   <string name="crypto_msg_incomplete_signed">që të përpunohet nënshkrimi, mesazhi duhet shkarkuar plotësisht</string>
   <string name="crypto_msg_unsupported_signed">përmban nënshkrim skaj-më-skaj të pambuluar</string>
+  <string name="crypto_msg_unsupported_encrypted">Mesazhi është i fshehtëzuar, por në një format të pambuluar.</string>
+  <string name="crypto_msg_cancelled">Mesazhi është i fshehtëzuar, por shfshehtëzimi u anulua.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Tekst i thjeshtë i nënshkruar Skaj-më-Skaj</string>
   <string name="crypto_msg_unencrypted_sign_verified">nga nënshkrues i verifikuar</string>
   <string name="crypto_msg_title_unencrypted_signed">Tekst i thjeshtë i nënshkruar</string>
@@ -1062,4 +1064,8 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="openpgp_enabled_error_back">Mbrapsht</string>
   <string name="openpgp_enabled_error_disable">Çaktivizo Fshehtëzimin</string>
   <string name="openpgp_encryption">Fshehtëzim OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Mënyra Autocrypt e përbashkët</string>
+  <string name="dialog_autocrypt_mutual_title">Mënyra Autocrypt e përbashkët</string>
+  <string name="dialog_autocrypt_mutual_description_1">Mesazhet normalisht do të fshehtëzohen sipas zgjedhjes tuaj,  ose kur i përgjigjeni një mesazhi të fshehtëzuar.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Nëse si dërguesi, ashtu edhe marrësit aktivizojnë mënyrën e përbashkët, fshehtëzimi do të aktivizohet si parazgjedhje.</string>
 </resources>

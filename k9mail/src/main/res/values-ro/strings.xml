@@ -996,6 +996,8 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="crypto_msg_unencrypted_sign_error">semnătura end-to-end conține o eroare</string>
   <string name="crypto_msg_incomplete_signed">trebuie descărcat mesajul complet pentru a procesa semnătura</string>
   <string name="crypto_msg_unsupported_signed">conține o semnătură end-to-end invalidă</string>
+  <string name="crypto_msg_unsupported_encrypted">Mesajul este criptat, dar este într-un format nesuportat.</string>
+  <string name="crypto_msg_cancelled">Mesajul este criptat, dar decriptarea a fost anulată.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Text semnat End-to-End</string>
   <string name="crypto_msg_unencrypted_sign_verified">de la semnatar verificat</string>
   <string name="crypto_msg_title_unencrypted_signed">Text semnat</string>

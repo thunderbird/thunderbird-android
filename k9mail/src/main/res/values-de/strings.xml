@@ -988,6 +988,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="crypto_msg_unencrypted_sign_error">Ende-zu-Ende-Signatur enthielt einen Fehler</string>
   <string name="crypto_msg_incomplete_signed">muss die Nachricht vollständig herunterladen, um die Signatur zu verarbeiten</string>
   <string name="crypto_msg_unsupported_signed">enthält eine nicht unterstützte Ende-zu-Ende-Signatur</string>
+  <string name="crypto_msg_unsupported_encrypted">Nachricht ist verschlüsselt, aber in einem nicht unterstützten Format.</string>
+  <string name="crypto_msg_cancelled">Nachricht ist verschlüsselt, aber Entschlüsselung wurde abgebrochen.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Ende-zu-Ende signierter Klartext</string>
   <string name="crypto_msg_unencrypted_sign_verified">von verifiziertem Signierer</string>
   <string name="crypto_msg_title_unencrypted_signed">Signierter Klartext</string>
@@ -1062,4 +1064,9 @@ Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert w
   <string name="openpgp_enabled_error_back">Zurück</string>
   <string name="openpgp_enabled_error_disable">Verschlüsselung deaktivieren</string>
   <string name="openpgp_encryption">OpenPGP-Verschlüsselung</string>
+  <string name="account_settings_crypto_prefer_encrypt">Autocrypt wechselseitiger Modus</string>
+  <string name="dialog_autocrypt_mutual_title">Autocrypt wechselseitiger Modus</string>
+  <string name="dialog_autocrypt_mutual_description_1">Nachrichten werden normalerweise auf Wunsch oder beim Antworten auf eine verschlüsselte Nachricht verschlüsselt.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Wenn sowohl Sender als auch Empfänger den wechselseitigen Modus aktiviert haben, wird die Verschlüsselung automatisch aktiviert.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Sie können <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">hier klicken</a> , um mehr zu erfahren.</string>
 </resources>

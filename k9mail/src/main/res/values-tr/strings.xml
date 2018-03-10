@@ -987,6 +987,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="crypto_msg_unencrypted_sign_error">uçtan uca imza bir hata içeriyor</string>
   <string name="crypto_msg_incomplete_signed">İmza işlemi için ileti tamamen indirilmelidir</string>
   <string name="crypto_msg_unsupported_signed">desteklenmeyen uçtan uca imza içeriyor</string>
+  <string name="crypto_msg_unsupported_encrypted">İleti şifreli, fakat desteklenmeyen bir biçim içinde.</string>
+  <string name="crypto_msg_cancelled">İleti şifreli, fakat şifre çözme iptal edildi.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Uçtan uca imzalanmış düz metin</string>
   <string name="crypto_msg_unencrypted_sign_verified">doğrulanmış imzalayandan</string>
   <string name="crypto_msg_title_unencrypted_signed">İmzalı metin</string>
@@ -1060,4 +1062,9 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="openpgp_enabled_error_back">Geri</string>
   <string name="openpgp_enabled_error_disable">şifreleme devre dışı</string>
   <string name="openpgp_encryption">OpenPGP Şifreleme</string>
+  <string name="account_settings_crypto_prefer_encrypt">Autocrypt karşılıklı kipi</string>
+  <string name="dialog_autocrypt_mutual_title">Autocrypt karşılıklı kipi</string>
+  <string name="dialog_autocrypt_mutual_description_1">İletiler normalde seçilerek veya şifrelenmiş bir iletiyi yanıtlarken şifrelenecektir.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Hem gönderen hem de alıcının karşılıklı kipi etkinse, şifreleme öntanımlı olarak etkinleştirilir.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Daha fazlasını öğrenmek için <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">buraya tıkla</a> .</string>
 </resources>
