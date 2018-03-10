@@ -26,21 +26,21 @@ public interface MessagingListener {
     void listFoldersFinished(Account account);
     void listFoldersFailed(Account account, String message);
 
-    void listLocalMessagesAddMessages(Account account, String folder, List<LocalMessage> messages);
+    void listLocalMessagesAddMessages(Account account, String folderServerId, List<LocalMessage> messages);
 
-    void synchronizeMailboxStarted(Account account, String folder);
-    void synchronizeMailboxHeadersStarted(Account account, String folder);
-    void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total);
-    void synchronizeMailboxHeadersFinished(Account account, String folder, int totalMessagesInMailbox,
+    void synchronizeMailboxStarted(Account account, String folderServerId, String folderName);
+    void synchronizeMailboxHeadersStarted(Account account, String folderServerId, String folderName);
+    void synchronizeMailboxHeadersProgress(Account account, String folderServerId, int completed, int total);
+    void synchronizeMailboxHeadersFinished(Account account, String folderServerId, int totalMessagesInMailbox,
             int numNewMessages);
-    void synchronizeMailboxProgress(Account account, String folder, int completed, int total);
-    void synchronizeMailboxNewMessage(Account account, String folder, Message message);
-    void synchronizeMailboxRemovedMessage(Account account, String folder, Message message);
-    void synchronizeMailboxFinished(Account account, String folder, int totalMessagesInMailbox, int numNewMessages);
-    void synchronizeMailboxFailed(Account account, String folder, String message);
+    void synchronizeMailboxProgress(Account account, String folderServerId, int completed, int total);
+    void synchronizeMailboxNewMessage(Account account, String folderServerId, Message message);
+    void synchronizeMailboxRemovedMessage(Account account, String folderServerId, Message message);
+    void synchronizeMailboxFinished(Account account, String folderServerId, int totalMessagesInMailbox, int numNewMessages);
+    void synchronizeMailboxFailed(Account account, String folderServerId, String message);
 
-    void loadMessageRemoteFinished(Account account, String folder, String uid);
-    void loadMessageRemoteFailed(Account account, String folder, String uid, Throwable t);
+    void loadMessageRemoteFinished(Account account, String folderServerId, String uid);
+    void loadMessageRemoteFailed(Account account, String folderServerId, String uid, Throwable t);
 
     void checkMailStarted(Context context, Account account);
     void checkMailFinished(Context context, Account account);
@@ -51,13 +51,13 @@ public interface MessagingListener {
 
     void emptyTrashCompleted(Account account);
 
-    void folderStatusChanged(Account account, String folderName, int unreadMessageCount);
+    void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount);
     void systemStatusChanged();
 
-    void messageDeleted(Account account, String folder, Message message);
-    void messageUidChanged(Account account, String folder, String oldUid, String newUid);
+    void messageDeleted(Account account, String folderServerId, Message message);
+    void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid);
 
-    void setPushActive(Account account, String folderName, boolean enabled);
+    void setPushActive(Account account, String folderServerId, boolean enabled);
 
     void loadAttachmentFinished(Account account, Message message, Part part);
     void loadAttachmentFailed(Account account, Message message, Part part, String reason);
@@ -68,9 +68,9 @@ public interface MessagingListener {
     void pendingCommandsFinished(Account account);
 
     void remoteSearchStarted(String folder);
-    void remoteSearchServerQueryComplete(String folderName, int numResults, int maxResults);
-    void remoteSearchFinished(String folder, int numResults, int maxResults, List<Message> extraResults);
-    void remoteSearchFailed(String folder, String err);
+    void remoteSearchServerQueryComplete(String folderServerId, int numResults, int maxResults);
+    void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<Message> extraResults);
+    void remoteSearchFailed(String folderServerId, String err);
 
     void enableProgressIndicator(boolean enable);
 

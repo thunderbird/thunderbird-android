@@ -47,7 +47,7 @@ public class Pop3FolderTest {
         mockStoreConfig = mock(StoreConfig.class);
         mockListener = mock(MessageRetrievalListener.class);
         when(mockStore.getConfig()).thenReturn(mockStoreConfig);
-        when(mockStoreConfig.getInboxFolderName()).thenReturn(Pop3Folder.INBOX);
+        when(mockStoreConfig.getInboxFolder()).thenReturn(Pop3Folder.INBOX);
         when(mockStore.createConnection()).thenReturn(mockConnection);
         when(mockConnection.executeSimpleCommand(Pop3Commands.STAT_COMMAND)).thenReturn("+OK 10 0");
         folder = new Pop3Folder(mockStore, Pop3Folder.INBOX);

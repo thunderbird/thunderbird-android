@@ -49,7 +49,7 @@ public abstract class Message implements Part, Body {
         }
         Message other = (Message)o;
         return (getUid().equals(other.getUid())
-                && getFolder().getName().equals(other.getFolder().getName()));
+                && getFolder().getServerId().equals(other.getFolder().getServerId()));
     }
 
     @Override
@@ -57,7 +57,7 @@ public abstract class Message implements Part, Body {
         final int MULTIPLIER = 31;
 
         int result = 1;
-        result = MULTIPLIER * result + (mFolder != null ? mFolder.getName().hashCode() : 0);
+        result = MULTIPLIER * result + (mFolder != null ? mFolder.getServerId().hashCode() : 0);
         result = MULTIPLIER * result + mUid.hashCode();
         return result;
     }
@@ -148,7 +148,7 @@ public abstract class Message implements Part, Body {
 
     public abstract long getSize();
 
-    public void delete(String trashFolderName) throws MessagingException {}
+    public void delete(String trashFolder) throws MessagingException {}
 
     /*
      * TODO Refactor Flags at some point to be able to store user defined flags.

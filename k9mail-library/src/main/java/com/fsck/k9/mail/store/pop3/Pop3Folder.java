@@ -101,6 +101,11 @@ class Pop3Folder extends Folder<Pop3Message> {
     }
 
     @Override
+    public String getServerId() {
+        return name;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -523,7 +528,7 @@ class Pop3Folder extends Folder<Pop3Message> {
     }
 
     @Override
-    public void delete(List<? extends Message> msgs, String trashFolderName) throws MessagingException {
+    public void delete(List<? extends Message> msgs, String trashFolder) throws MessagingException {
         setFlags(msgs, Collections.singleton(Flag.DELETED), true);
     }
 

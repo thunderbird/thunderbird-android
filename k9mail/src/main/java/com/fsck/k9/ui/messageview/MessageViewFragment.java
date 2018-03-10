@@ -305,7 +305,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        if (mAccount.getSpamFolderName().equals(dstFolder) && K9.confirmSpam()) {
+        if (mAccount.getSpamFolder().equals(dstFolder) && K9.confirmSpam()) {
             mDstFolder = dstFolder;
             showDialog(R.id.dialog_confirm_spam);
         } else {
@@ -314,7 +314,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void refileMessage(String dstFolder) {
-        String srcFolder = mMessageReference.getFolderName();
+        String srcFolder = mMessageReference.getFolderServerId();
         MessageReference messageToMove = mMessageReference;
         mFragmentListener.showNextMessageOrReturn();
         mController.moveMessage(mAccount, srcFolder, messageToMove, dstFolder);
@@ -347,7 +347,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public void onToggleFlagged() {
         if (mMessage != null) {
             boolean newState = !mMessage.isSet(Flag.FLAGGED);
-            mController.setFlag(mAccount, mMessage.getFolder().getName(),
+            mController.setFlag(mAccount, mMessage.getFolder().getServerId(),
                     Collections.singletonList(mMessage), Flag.FLAGGED, newState);
             mMessageView.setHeaders(mMessage, mAccount);
         }
@@ -383,11 +383,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onArchive() {
-        onRefile(mAccount.getArchiveFolderName());
+        onRefile(mAccount.getArchiveFolder());
     }
 
     public void onSpam() {
-        onRefile(mAccount.getSpamFolderName());
+        onRefile(mAccount.getSpamFolder());
     }
 
     public void onSelectText() {
@@ -398,8 +398,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private void startRefileActivity(int activity) {
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.getFolderName());
-        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolderName());
+        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.getFolderServerId());
+        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolder());
         intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference.toIdentityString());
         startActivityForResult(intent, activity);
     }
@@ -451,19 +451,19 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     return;
                 }
 
-                String destFolderName = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                String destFolder = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
                 String messageReferenceString = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE);
                 MessageReference ref = MessageReference.parse(messageReferenceString);
                 if (mMessageReference.equals(ref)) {
-                    mAccount.setLastSelectedFolderName(destFolderName);
+                    mAccount.setLastSelectedFolder(destFolder);
                     switch (requestCode) {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE: {
                             mFragmentListener.showNextMessageOrReturn();
-                            moveMessage(ref, destFolderName);
+                            moveMessage(ref, destFolder);
                             break;
                         }
                         case ACTIVITY_CHOOSE_FOLDER_COPY: {
-                            copyMessage(ref, destFolderName);
+                            copyMessage(ref, destFolder);
                             break;
                         }
                     }
@@ -481,7 +481,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public void onToggleRead() {
         if (mMessage != null) {
-            mController.setFlag(mAccount, mMessage.getFolder().getName(),
+            mController.setFlag(mAccount, mMessage.getFolder().getServerId(),
                     Collections.singletonList(mMessage), Flag.SEEN, !mMessage.isSet(Flag.SEEN));
             mMessageView.setHeaders(mMessage, mAccount);
             String subject = mMessage.getSubject();
@@ -512,11 +512,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void moveMessage(MessageReference reference, String destFolderName) {
-        mController.moveMessage(mAccount, mMessageReference.getFolderName(), reference, destFolderName);
+        mController.moveMessage(mAccount, mMessageReference.getFolderServerId(), reference, destFolderName);
     }
 
     public void copyMessage(MessageReference reference, String destFolderName) {
-        mController.copyMessage(mAccount, mMessageReference.getFolderName(), reference, destFolderName);
+        mController.copyMessage(mAccount, mMessageReference.getFolderServerId(), reference, destFolderName);
     }
 
     private void showDialog(int dialogId) {
@@ -629,12 +629,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public boolean canMessageBeArchived() {
-        return (!mMessageReference.getFolderName().equals(mAccount.getArchiveFolderName())
+        return (!mMessageReference.getFolderServerId().equals(mAccount.getArchiveFolder())
                 && mAccount.hasArchiveFolder());
     }
 
     public boolean canMessageBeMovedToSpam() {
-        return (!mMessageReference.getFolderName().equals(mAccount.getSpamFolderName())
+        return (!mMessageReference.getFolderServerId().equals(mAccount.getSpamFolder())
                 && mAccount.hasSpamFolder());
     }
 

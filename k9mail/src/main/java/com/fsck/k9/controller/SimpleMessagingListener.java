@@ -45,53 +45,53 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void listLocalMessagesAddMessages(Account account, String folder, List<LocalMessage> messages) {
+    public void listLocalMessagesAddMessages(Account account, String folderServerId, List<LocalMessage> messages) {
     }
 
     @Override
-    public void synchronizeMailboxStarted(Account account, String folder) {
+    public void synchronizeMailboxStarted(Account account, String folderServerId, String folderName) {
     }
 
     @Override
-    public void synchronizeMailboxHeadersStarted(Account account, String folder) {
+    public void synchronizeMailboxHeadersStarted(Account account, String folderServerId, String folderName) {
     }
 
     @Override
-    public void synchronizeMailboxHeadersProgress(Account account, String folder, int completed, int total) {
+    public void synchronizeMailboxHeadersProgress(Account account, String folderServerId, int completed, int total) {
     }
 
     @Override
-    public void synchronizeMailboxHeadersFinished(Account account, String folder, int totalMessagesInMailbox,
+    public void synchronizeMailboxHeadersFinished(Account account, String folderServerId, int totalMessagesInMailbox,
             int numNewMessages) {
     }
 
     @Override
-    public void synchronizeMailboxProgress(Account account, String folder, int completed, int total) {
+    public void synchronizeMailboxProgress(Account account, String folderServerId, int completed, int total) {
     }
 
     @Override
-    public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
+    public void synchronizeMailboxNewMessage(Account account, String folderServerId, Message message) {
     }
 
     @Override
-    public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message) {
+    public void synchronizeMailboxRemovedMessage(Account account, String folderServerId, Message message) {
     }
 
     @Override
-    public void synchronizeMailboxFinished(Account account, String folder, int totalMessagesInMailbox,
+    public void synchronizeMailboxFinished(Account account, String folderServerId, int totalMessagesInMailbox,
             int numNewMessages) {
     }
 
     @Override
-    public void synchronizeMailboxFailed(Account account, String folder, String message) {
+    public void synchronizeMailboxFailed(Account account, String folderServerId, String message) {
     }
 
     @Override
-    public void loadMessageRemoteFinished(Account account, String folder, String uid) {
+    public void loadMessageRemoteFinished(Account account, String folderServerId, String uid) {
     }
 
     @Override
-    public void loadMessageRemoteFailed(Account account, String folder, String uid, Throwable t) {
+    public void loadMessageRemoteFailed(Account account, String folderServerId, String uid, Throwable t) {
     }
 
     @Override
@@ -119,7 +119,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
+    public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
     }
 
     @Override
@@ -127,15 +127,15 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void messageDeleted(Account account, String folder, Message message) {
+    public void messageDeleted(Account account, String folderServerId, Message message) {
     }
 
     @Override
-    public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
+    public void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid) {
     }
 
     @Override
-    public void setPushActive(Account account, String folderName, boolean enabled) {
+    public void setPushActive(Account account, String folderServerId, boolean enabled) {
     }
 
     @Override
@@ -167,15 +167,15 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void remoteSearchServerQueryComplete(String folderName, int numResults, int maxResults) {
+    public void remoteSearchServerQueryComplete(String folderServerId, int numResults, int maxResults) {
     }
 
     @Override
-    public void remoteSearchFinished(String folder, int numResults, int maxResults, List<Message> extraResults) {
+    public void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<Message> extraResults) {
     }
 
     @Override
-    public void remoteSearchFailed(String folder, String err) {
+    public void remoteSearchFailed(String folderServerId, String err) {
     }
 
     @Override

@@ -374,13 +374,13 @@ public class ImapSyncTest {
 
     private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
-        when(localFolder.getName()).thenReturn(FOLDER_NAME);
+        when(localFolder.getServerId()).thenReturn(FOLDER_NAME);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
     }
 
     private void configureRemoteStoreWithFolder() throws MessagingException {
         when(account.getRemoteStore()).thenReturn(remoteStore);
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
-        when(remoteFolder.getName()).thenReturn(FOLDER_NAME);
+        when(remoteFolder.getServerId()).thenReturn(FOLDER_NAME);
     }
 }

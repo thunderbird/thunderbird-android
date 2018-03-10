@@ -46,13 +46,13 @@ class ImapFolderPusher extends ImapFolder {
     private volatile boolean idling = false;
 
 
-    public ImapFolderPusher(ImapStore store, String name, PushReceiver pushReceiver) {
-        super(store, name);
+    public ImapFolderPusher(ImapStore store, String serverId, PushReceiver pushReceiver) {
+        super(store, serverId);
         this.pushReceiver = pushReceiver;
 
         Context context = pushReceiver.getContext();
         TracingPowerManager powerManager = TracingPowerManager.getPowerManager(context);
-        String tag = "ImapFolderPusher " + store.getStoreConfig().toString() + ":" + getName();
+        String tag = "ImapFolderPusher " + store.getStoreConfig().toString() + ":" + getServerId();
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag);
         wakeLock.setReferenceCounted(false);
     }
@@ -205,7 +205,7 @@ class ImapFolderPusher extends ImapFolder {
                     if (stop) {
                         Timber.i("Got exception while idling, but stop is set for %s", getLogId());
                     } else {
-                        pushReceiver.pushError("Push error for " + getName(), e);
+                        pushReceiver.pushError("Push error for " + getServerId(), e);
                         Timber.e("Got exception while idling for %s", getLogId());
 
                         pushReceiver.sleep(wakeLock, delayTime);
@@ -218,7 +218,7 @@ class ImapFolderPusher extends ImapFolder {
                         idleFailureCount++;
                         if (idleFailureCount > IDLE_FAILURE_COUNT_LIMIT) {
                             Timber.e("Disabling pusher for %s after %d consecutive errors", getLogId(), idleFailureCount);
-                            pushReceiver.pushError("Push disabled for " + getName() + " after " + idleFailureCount +
+                            pushReceiver.pushError("Push disabled for " + getServerId() + " after " + idleFailureCount +
                                     " consecutive errors", e);
                             stop = true;
                         }
@@ -226,7 +226,7 @@ class ImapFolderPusher extends ImapFolder {
                 }
             }
 
-            pushReceiver.setPushActive(getName(), false);
+            pushReceiver.setPushActive(getServerId(), false);
 
             try {
                 if (K9MailLib.isDebug()) {
@@ -246,7 +246,7 @@ class ImapFolderPusher extends ImapFolder {
 
             clearStoredUntaggedResponses();
             idling = false;
-            pushReceiver.setPushActive(getName(), false);
+            pushReceiver.setPushActive(getServerId(), false);
 
             try {
                 connection.close();
@@ -297,7 +297,7 @@ class ImapFolderPusher extends ImapFolder {
         }
 
         private void prepareForIdle() {
-            pushReceiver.setPushActive(getName(), true);
+            pushReceiver.setPushActive(getServerId(), true);
             idling = true;
         }
 
@@ -671,7 +671,7 @@ class ImapFolderPusher extends ImapFolder {
         private long getOldUidNext() {
             long oldUidNext = -1L;
             try {
-                String serializedPushState = pushReceiver.getPushState(getName());
+                String serializedPushState = pushReceiver.getPushState(getServerId());
                 ImapPushState pushState = ImapPushState.parse(serializedPushState);
                 oldUidNext = pushState.uidNext;
 

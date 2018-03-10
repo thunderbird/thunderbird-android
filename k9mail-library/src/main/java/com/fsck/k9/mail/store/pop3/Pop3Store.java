@@ -193,7 +193,7 @@ public class Pop3Store extends RemoteStore {
         Pop3Folder folder = mFolders.get(name);
         if (folder == null) {
             folder = new Pop3Folder(this, name);
-            mFolders.put(folder.getName(), folder);
+            mFolders.put(folder.getServerId(), folder);
         }
         return folder;
     }
@@ -207,7 +207,7 @@ public class Pop3Store extends RemoteStore {
 
     @Override
     public void checkSettings() throws MessagingException {
-        mStoreConfig.setInboxFolderName(Pop3Folder.INBOX);
+        mStoreConfig.setInboxFolder(Pop3Folder.INBOX);
 
         Pop3Folder folder = new Pop3Folder(this, Pop3Folder.INBOX);
         try {

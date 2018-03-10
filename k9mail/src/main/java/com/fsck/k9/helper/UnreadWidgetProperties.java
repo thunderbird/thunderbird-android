@@ -20,13 +20,13 @@ public class UnreadWidgetProperties {
 
     private int appWidgetId;
     private String accountUuid;
-    private String folderName;
+    private String folderServerId;
     private Type type;
 
-    public UnreadWidgetProperties(int appWidgetId, String accountUuid, String folderName) {
+    public UnreadWidgetProperties(int appWidgetId, String accountUuid, String folderServerId) {
         this.appWidgetId = appWidgetId;
         this.accountUuid = accountUuid;
-        this.folderName = folderName;
+        this.folderServerId = folderServerId;
         calculateType();
     }
 
@@ -37,7 +37,7 @@ public class UnreadWidgetProperties {
             case ACCOUNT:
                 return accountName;
             case FOLDER:
-                return context.getString(R.string.unread_widget_title, accountName, folderName);
+                return context.getString(R.string.unread_widget_title, accountName, folderServerId);
             default:
                 return null;
         }
@@ -56,7 +56,7 @@ public class UnreadWidgetProperties {
                 stats = account.getStats(context);
                 return stats.unreadMessageCount;
             case FOLDER:
-                return ((Account) baseAccount).getFolderUnreadCount(context, folderName);
+                return ((Account) baseAccount).getFolderUnreadCount(context, folderServerId);
             default:
                 return -1;
         }
@@ -85,15 +85,15 @@ public class UnreadWidgetProperties {
         return accountUuid;
     }
 
-    public String getFolderName() {
-        return folderName;
+    public String getFolderServerId() {
+        return folderServerId;
     }
 
     private void calculateType() {
         if (SearchAccount.UNIFIED_INBOX.equals(accountUuid) ||
                 SearchAccount.ALL_MESSAGES.equals(accountUuid)) {
             type = Type.SEARCH_ACCOUNT;
-        } else if(folderName != null) {
+        } else if (folderServerId != null) {
             type = Type.FOLDER;
         } else {
             type = Type.ACCOUNT;
@@ -111,19 +111,19 @@ public class UnreadWidgetProperties {
 
     private Intent getClickIntentForAccount(Context context) {
         Account account = Preferences.getPreferences(context).getAccount(accountUuid);
-        if (K9.FOLDER_NONE.equals(account.getAutoExpandFolderName())) {
+        if (K9.FOLDER_NONE.equals(account.getAutoExpandFolder())) {
             return FolderList.actionHandleAccountIntent(context, account, false);
         }
-        LocalSearch search = new LocalSearch(account.getAutoExpandFolderName());
-        search.addAllowedFolder(account.getAutoExpandFolderName());
+        LocalSearch search = new LocalSearch(account.getAutoExpandFolder());
+        search.addAllowedFolder(account.getAutoExpandFolder());
         search.addAccountUuid(account.getUuid());
         return MessageList.intentDisplaySearch(context, search, false, true, true);
     }
 
     private Intent getClickIntentForFolder(Context context) {
         Account account = Preferences.getPreferences(context).getAccount(accountUuid);
-        LocalSearch search = new LocalSearch(folderName);
-        search.addAllowedFolder(folderName);
+        LocalSearch search = new LocalSearch(folderServerId);
+        search.addAllowedFolder(folderServerId);
         search.addAccountUuid(account.getUuid());
         Intent clickIntent = MessageList.intentDisplaySearch(context, search, false, true, true);
         clickIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

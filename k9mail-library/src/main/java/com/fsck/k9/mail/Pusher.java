@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public interface Pusher {
-    public void start(List<String> folderNames);
+    public void start(List<String> folderServerIds);
     public void refresh();
     public void stop();
     /**

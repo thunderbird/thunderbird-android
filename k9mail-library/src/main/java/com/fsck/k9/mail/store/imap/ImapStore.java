@@ -199,7 +199,7 @@ public class ImapStore extends RemoteStore {
 
             if (ImapFolder.INBOX.equalsIgnoreCase(folder)) {
                 continue;
-            } else if (folder.equals(mStoreConfig.getOutboxFolderName())) {
+            } else if (folder.equals(mStoreConfig.getOutboxFolder())) {
                 /*
                  * There is a folder on the server with the same name as our local
                  * outbox. Until we have a good plan to deal with this situation
@@ -222,7 +222,7 @@ public class ImapStore extends RemoteStore {
     }
 
     void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
-        mStoreConfig.setInboxFolderName(ImapFolder.INBOX);
+        mStoreConfig.setInboxFolder(ImapFolder.INBOX);
 
         if (!connection.hasCapability(Capabilities.SPECIAL_USE)) {
             if (K9MailLib.isDebug()) {
@@ -262,27 +262,27 @@ public class ImapStore extends RemoteStore {
             }
 
             if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
-                mStoreConfig.setArchiveFolderName(decodedFolderName);
+                mStoreConfig.setArchiveFolder(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Archive folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Drafts")) {
-                mStoreConfig.setDraftsFolderName(decodedFolderName);
+                mStoreConfig.setDraftsFolder(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Drafts folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Sent")) {
-                mStoreConfig.setSentFolderName(decodedFolderName);
+                mStoreConfig.setSentFolder(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Sent folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Junk")) {
-                mStoreConfig.setSpamFolderName(decodedFolderName);
+                mStoreConfig.setSpamFolder(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Spam folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Trash")) {
-                mStoreConfig.setTrashFolderName(decodedFolderName);
+                mStoreConfig.setTrashFolder(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Trash folder: %s", decodedFolderName);
                 }

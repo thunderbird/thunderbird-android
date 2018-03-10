@@ -113,11 +113,11 @@ public class ImapStoreTest {
 
         imapStore.autoconfigureFolders(imapConnection);
 
-        verify(storeConfig).setDraftsFolderName("[Gmail]/Drafts");
-        verify(storeConfig).setSentFolderName("[Gmail]/Sent Mail");
-        verify(storeConfig).setSpamFolderName("[Gmail]/Spam");
-        verify(storeConfig).setTrashFolderName("[Gmail]/Trash");
-        verify(storeConfig).setArchiveFolderName("[Gmail]/All Mail");
+        verify(storeConfig).setDraftsFolder("[Gmail]/Drafts");
+        verify(storeConfig).setSentFolder("[Gmail]/Sent Mail");
+        verify(storeConfig).setSpamFolder("[Gmail]/Spam");
+        verify(storeConfig).setTrashFolder("[Gmail]/Trash");
+        verify(storeConfig).setArchiveFolder("[Gmail]/All Mail");
     }
 
     @Test
@@ -149,11 +149,11 @@ public class ImapStoreTest {
         imapStore.autoconfigureFolders(imapConnection);
 
         assertEquals("INBOX.", imapStore.getCombinedPrefix());
-        verify(storeConfig).setDraftsFolderName("Drafts");
-        verify(storeConfig).setSentFolderName("Sent");
-        verify(storeConfig).setSpamFolderName("Spam");
-        verify(storeConfig).setTrashFolderName("Trash");
-        verify(storeConfig).setArchiveFolderName("Archive");
+        verify(storeConfig).setDraftsFolder("Drafts");
+        verify(storeConfig).setSentFolder("Sent");
+        verify(storeConfig).setSpamFolder("Spam");
+        verify(storeConfig).setTrashFolder("Trash");
+        verify(storeConfig).setArchiveFolder("Archive");
     }
 
     @Test
@@ -359,7 +359,7 @@ public class ImapStoreTest {
 
     private StoreConfig createStoreConfig() {
         StoreConfig storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getInboxFolderName()).thenReturn("INBOX");
+        when(storeConfig.getInboxFolder()).thenReturn("INBOX");
         when(storeConfig.getStoreUri()).thenReturn("imap://user:password@imap.example.org");
 
         return storeConfig;
@@ -368,7 +368,7 @@ public class ImapStoreTest {
     private Set<String> extractFolderNames(List<? extends Folder> folders) {
         Set<String> folderNames = new HashSet<>(folders.size());
         for (Folder folder : folders) {
-            folderNames.add(folder.getName());
+            folderNames.add(folder.getServerId());
         }
 
         return folderNames;
