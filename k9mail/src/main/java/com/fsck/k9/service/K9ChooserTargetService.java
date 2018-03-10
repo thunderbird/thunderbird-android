@@ -22,6 +22,7 @@ import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.compose.RecipientLoader;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.helper.ContactPicture;
+import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 
@@ -70,12 +71,13 @@ public class K9ChooserTargetService extends ChooserTargetService {
 
     @NonNull
     private Bundle prepareIntentExtras(Recipient recipient) {
-        String address = recipient.address.getAddress();
-        String displayNameOrAddress = recipient.getDisplayNameOrAddress();
+        Address address = recipient.address;
 
         Bundle extras = new Bundle();
-        extras.putString("uuid", displayNameOrAddress);
-        extras.putStringArray(Intent.EXTRA_EMAIL, new String[] { displayNameOrAddress + "<" + address + ">" });
+        extras.putStringArray(Intent.EXTRA_EMAIL, new String[] { address.toString() });
+        extras.putStringArray(Intent.EXTRA_CC, new String[0]);
+        extras.putStringArray(Intent.EXTRA_BCC, new String[0]);
+
         return extras;
     }
 
@@ -88,5 +90,4 @@ public class K9ChooserTargetService extends ChooserTargetService {
 
         return Icon.createWithBitmap(bitmap);
     }
-
 }
