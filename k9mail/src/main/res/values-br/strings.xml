@@ -984,6 +984,8 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="openpgp_dialog_sign_only_minus_attach">Gallout a ra ar sinadur bezañ diskouezet evel ur genstagadenn ’signature.asc’ e arvalioù ’zo.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Ar c’hemennadennoù enrineget a endalc’h atav ur sinadur.</string>
   <string name="crypto_msg_title_plaintext">Testenn blaen</string>
+  <string name="crypto_msg_unsupported_encrypted">Enrineget eo ar gemennadenn met en ur mentrezh anskor emañ.</string>
+  <string name="crypto_msg_cancelled">Enrineget eo ar gemennadenn met nullet eo bet an ezrinegañ.</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_security_warning">Munudoù</string>
   <string name="locked_attach_unlock">Dibrennañ</string>

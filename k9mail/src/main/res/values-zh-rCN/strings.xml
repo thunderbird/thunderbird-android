@@ -962,6 +962,8 @@ https://github.com/k9mail/k-9/20
   <string name="openpgp_dialog_sign_only_minus_break">发送到邮件列表时，签名可能会中断。</string>
   <string name="openpgp_dialog_sign_only_minus_attach">签名在一些邮件软件中会显示为附件 “signature.asc”。</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">加密邮件总是包含一个签名。</string>
+  <string name="crypto_msg_unsupported_encrypted">消息是加密的，但以不支持的格式进行加密。</string>
+  <string name="crypto_msg_cancelled"> 消息已加密，但解密被取消。</string>
   <string name="crypto_info_ok">确定</string>
   <string name="crypto_info_view_security_warning">详情</string>
   <string name="locked_attach_unlock">解锁</string>

@@ -963,6 +963,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="openpgp_sign_only_disable">Letiltás</string>
   <string name="openpgp_sign_only_keep_enabled">Tartsa bekapcsolva</string>
   <string name="openpgp_dialog_sign_only_title">PGP csak-aláírás mód</string>
+  <string name="crypto_msg_cancelled">Az üzenet titkosítva lett, de a visszafejtést megszakították.</string>
   <string name="crypto_msg_title_encrypted_unknown">Titkosított</string>
   <string name="crypto_msg_title_encrypted_unsigned">Titkosított</string>
   <string name="crypto_msg_title_encrypted_signed">Titkosított</string>

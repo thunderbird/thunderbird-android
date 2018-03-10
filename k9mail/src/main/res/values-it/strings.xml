@@ -989,6 +989,8 @@ Per favore invia segnalazioni di errori, contribuisci con nuove funzionalità e 
   <string name="crypto_msg_unencrypted_sign_error">la firma end-to-end conteneva un errore</string>
   <string name="crypto_msg_incomplete_signed">devi scaricare completamente il messaggio per verificare la firma</string>
   <string name="crypto_msg_unsupported_signed">contiene una firma end-to-end non supportata</string>
+  <string name="crypto_msg_unsupported_encrypted">Il messaggio è cifrato, ma in un formato non supportato.</string>
+  <string name="crypto_msg_cancelled">Il messaggio è cifrato, ma la decifratura è stata annullata.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Testo semplice firmato End-to-End</string>
   <string name="crypto_msg_unencrypted_sign_verified">da firmatario verificato</string>
   <string name="crypto_msg_title_unencrypted_signed">Testo semplice firmato</string>
@@ -1062,4 +1064,9 @@ Per favore invia segnalazioni di errori, contribuisci con nuove funzionalità e 
   <string name="openpgp_enabled_error_back">Indietro</string>
   <string name="openpgp_enabled_error_disable">Disabilita cifratura</string>
   <string name="openpgp_encryption">Cifratura OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Modalità di cifratura reciproca automatica</string>
+  <string name="dialog_autocrypt_mutual_title">Modalità di cifratura reciproca automatica</string>
+  <string name="dialog_autocrypt_mutual_description_1">I messaggi saranno normalmente cifrati per scelta o quando si risponde a un messaggio cifrato.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Se il mittente e i destinatari abilitano la modalità reciproca, la cifratura sarà abilitata in modo predefinito.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Puoi fare <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">clic qui</a> per ulteriori informazioni.</string>
 </resources>

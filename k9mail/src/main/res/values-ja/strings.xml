@@ -980,6 +980,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="crypto_msg_unencrypted_sign_error">エンドトゥエンド署名にエラーが含まれていました</string>
   <string name="crypto_msg_incomplete_signed">署名を処理するために、完全にダウンロードする必要があります</string>
   <string name="crypto_msg_unsupported_signed">サポートされていないエンドトゥエンド署名が含まれています</string>
+  <string name="crypto_msg_unsupported_encrypted">メッセージは暗号化されていますが、サポートされていない形式です。</string>
+  <string name="crypto_msg_cancelled">メッセージは暗号化されていますが、復号化をキャンセルされました。</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">エンドトゥエンド署名された平文</string>
   <string name="crypto_msg_unencrypted_sign_verified">検証済の署名者から</string>
   <string name="crypto_msg_title_unencrypted_signed">署名された平文</string>
@@ -1053,4 +1055,9 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="openpgp_enabled_error_back">戻る</string>
   <string name="openpgp_enabled_error_disable">暗号化を無効にする</string>
   <string name="openpgp_encryption">OpenPGP 暗号化</string>
+  <string name="account_settings_crypto_prefer_encrypt">自動暗号化相互モード</string>
+  <string name="dialog_autocrypt_mutual_title">自動暗号化相互モード</string>
+  <string name="dialog_autocrypt_mutual_description_1">通常、メッセージは選択して、または暗号化されたメッセージに返信するときに暗号化されます。</string>
+  <string name="dialog_autocrypt_mutual_description_2">送信者と受信者の両方が相互モードを有効にすると、デフォルトで暗号化が有効になります。</string>
+  <string name="dialog_autocrypt_mutual_learn_more">詳細については <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">ここをクリック</a> してください。</string>
 </resources>

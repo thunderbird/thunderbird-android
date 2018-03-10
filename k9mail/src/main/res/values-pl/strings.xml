@@ -989,6 +989,8 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="openpgp_dialog_sign_only_minus_break">Podpisy mogą ulec uszkodzeniu przy wysyłaniu do list mailingowych</string>
   <string name="openpgp_dialog_sign_only_minus_attach">W przypadku niektórych klientów, podpisy mogą być wyświetlane jako załączniki \'signature.asc\' .</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Zaszyfrowane wiadomości są zawsze opatrzone podpisem.</string>
+  <string name="crypto_msg_unsupported_encrypted">Wiadomość jest zaszyfrowana, ale w niewspieranym formacie.</string>
+  <string name="crypto_msg_cancelled">Wiadomość jest zaszyfrowana, ale deszyfrowanie zostało przerwane.</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_security_warning">Szczegóły</string>
   <string name="locked_attach_unlock">Odblokuj</string>

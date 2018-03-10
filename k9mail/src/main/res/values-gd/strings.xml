@@ -955,6 +955,8 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="openpgp_dialog_sign_only_minus_break">Dh’fhaoidte gum bris soidhneadh nuair a chuireas tu rud gu liosta-phuist.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Dh’fhaoidte gun nochd soidhnidhean mar “signature.asc” ann an cuid a chliantan.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Bidh soidhneadh am broinn teachdaireachd chrioptaichte an-còmhnaidh.</string>
+  <string name="crypto_msg_unsupported_encrypted">Tha an teachdaireachd crioptaichte ach ann am fòrmat ris nach eil taic.</string>
+  <string name="crypto_msg_cancelled">Tha an teachdaireachd crioptaichte ach cha sguireadh dhen dì-chrioptachadh.</string>
   <string name="crypto_info_ok">Ceart ma-thà</string>
   <string name="crypto_info_view_security_warning">Mion-fhiosrachadh</string>
   <string name="locked_attach_unlock">Thoir a’ ghlas dheth</string>

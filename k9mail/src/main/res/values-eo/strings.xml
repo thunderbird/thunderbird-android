@@ -986,6 +986,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="crypto_msg_unencrypted_sign_error">ĉifra subskribo enhavas eraron</string>
   <string name="crypto_msg_incomplete_signed">devas esti tute elŝutita por pritrakti subskribon</string>
   <string name="crypto_msg_unsupported_signed">enhavas nesubtenatan ĉifran subskribon</string>
+  <string name="crypto_msg_unsupported_encrypted">Retletero estas ĉifrita, sed en nesubtenata formo.</string>
+  <string name="crypto_msg_cancelled">Retletero estas ĉifrita, sed malĉifrado estis nuligita.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">ĉifr-subskribita platteksto</string>
   <string name="crypto_msg_unencrypted_sign_verified">de verigita subskribinto</string>
   <string name="crypto_msg_title_unencrypted_signed">Subskribita platteksto</string>
@@ -1059,4 +1061,9 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="openpgp_enabled_error_back">Antaŭen</string>
   <string name="openpgp_enabled_error_disable">Malaktivigi ĉifradon</string>
   <string name="openpgp_encryption">OpenPGP-ĉifrado</string>
+  <string name="account_settings_crypto_prefer_encrypt">Reciproke aŭtomata ĉifrado</string>
+  <string name="dialog_autocrypt_mutual_title">Reciproke aŭtomata ĉifrado</string>
+  <string name="dialog_autocrypt_mutual_description_1">Mesaĝoj norme estos ĉifritaj laŭ elekto aŭ kiam respondi al ĉifrita mesaĝo</string>
+  <string name="dialog_autocrypt_mutual_description_2">Se ambaŭ sendanto kaj ricevanto aktivigas tiun ĉi reĝimon, ĉifrado estos implicite aktivigita.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Vi povas <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klaki tien ĉi</a> por sciiĝi pli (en la angla).</string>
 </resources>

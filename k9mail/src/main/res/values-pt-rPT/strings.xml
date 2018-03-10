@@ -944,6 +944,8 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="openpgp_dialog_sign_only_minus_break">Assinaturas podem romper quando enviadas para listas de discussão.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">As assinaturas podem ser exibidas como anexos \'signature.asc\' em alguns clientes.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Mensagens encriptadas incluem sempre uma assinatura.</string>
+  <string name="crypto_msg_unsupported_encrypted">A mensagem está encriptada, mas num formato não suportado.</string>
+  <string name="crypto_msg_cancelled">A mensagem está encriptada, mas a desencriptação foi cancelada.</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_security_warning">Detalhes</string>
   <string name="locked_attach_unlock">Desbloquear</string>

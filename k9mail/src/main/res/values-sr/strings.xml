@@ -980,6 +980,8 @@
   <string name="openpgp_dialog_sign_only_minus_break">Потписи могу да се покваре ако се шаље на мејлинг-листе.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Потписи могу бити приказани као „signature.asc“ прилози у неким клијентима.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Шифроване поруке увек укључују потпис.</string>
+  <string name="crypto_msg_unsupported_encrypted">Порука је шифрована али у неподржаном формату.</string>
+  <string name="crypto_msg_cancelled">Порука је шифрована али је дешифровање отказано.</string>
   <string name="crypto_info_ok">У реду</string>
   <string name="crypto_info_view_security_warning">Детаљи</string>
   <string name="locked_attach_unlock">Откључај</string>

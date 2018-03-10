@@ -988,6 +988,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="crypto_msg_unencrypted_sign_error">La signatura d\'extrem a extrem contenia un error.</string>
   <string name="crypto_msg_incomplete_signed">cal baixar completament el missatge per processar-ne la signatura</string>
   <string name="crypto_msg_unsupported_signed">conté una signatura d\'extrem a extrem no admesa</string>
+  <string name="crypto_msg_unsupported_encrypted">El missatge està encriptat, però en un format no admès.</string>
+  <string name="crypto_msg_cancelled">El missatge està encriptat, però se n\'ha cancel·lat la desencriptació.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Text pla signat d\'extrem a extrem</string>
   <string name="crypto_msg_unencrypted_sign_verified">des d\'un signant verificat</string>
   <string name="crypto_msg_title_unencrypted_signed">Text pla signat</string>
@@ -1061,4 +1063,9 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="openpgp_enabled_error_back">Enrere</string>
   <string name="openpgp_enabled_error_disable">Inhabilita l\'encriptació</string>
   <string name="openpgp_encryption">Encriptació d\'OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Mode mutu d\'autoencriptació</string>
+  <string name="dialog_autocrypt_mutual_title">Mode mutu d\'autoencriptació</string>
+  <string name="dialog_autocrypt_mutual_description_1">Els missatges s\'encriptaran normalment per selecció o en respondre un missatge encriptat.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Si tant el remitent com el destinatari habiliten el mode mutu, l\'encriptació s\'habilitarà per defecte.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Podeu <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">clicar aquí</a> per saber-ne més.</string>
 </resources>

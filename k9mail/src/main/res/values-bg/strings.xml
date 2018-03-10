@@ -225,6 +225,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="error_contact_address_not_found">За този контакт не може да бъде намерен email адрес.</string>
   <string name="message_compose_attachments_skipped_toast">Някой от прикачените файлове не могат да бъдат препратени, тъй като не са свалени.</string>
   <string name="message_compose_attachments_forward_toast">Съобщението не може да бъде препратено, защото не всички прикачени файлове са свалени</string>
+  <string name="message_compose_show_quoted_text_action">Включване на цитирани съобщения</string>
   <string name="message_compose_description_delete_quoted_text">Премахни цитираният текст</string>
   <string name="message_compose_description_edit_quoted_text">Редактирай цитираният текст</string>
   <string name="message_view_from_format">От: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -986,7 +987,37 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="crypto_msg_unencrypted_sign_error">\"от край\" - \"до край\" подписа съдържа грешка</string>
   <string name="crypto_msg_incomplete_signed">трябва да се свали съобщението за да се обработи подписа</string>
   <string name="crypto_msg_unsupported_signed">съдържа наподдържан \"от край\" - \"до край\" подпис</string>
+  <string name="crypto_msg_unsupported_encrypted">Съобщението е криптирано, но в неподдържан формат.</string>
+  <string name="crypto_msg_cancelled">Съобщението е криптирано, но декриптирането е прекратено.</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Подписания от край-до-край некриптиран текст</string>
+  <string name="crypto_msg_unencrypted_sign_verified">с потвърден подпис</string>
+  <string name="crypto_msg_title_unencrypted_signed">Подписан некриптиран текст</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">но ключът от край-до-край несъвпада с този на изпращача</string>
+  <string name="crypto_msg_unencrypted_sign_expired">но ключът от край-до-край е изтекъл</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">но ключът от край-до-край е оттеглен</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">но ключът от край-до-край не се счита за сигурен</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">от непознат ключ край-до-край</string>
+  <string name="crypto_msg_title_encrypted_unknown">Криптиран</string>
+  <string name="crypto_msg_encrypted_error">но възникна грешка при декриптирането</string>
+  <string name="crypto_msg_encrypted_incomplete">тряба да се изтегли цялото съобщение за декриптиране</string>
+  <string name="crypto_msg_encrypted_no_provider">но няма настроена крипто приложение</string>
+  <string name="crypto_msg_encrypted_unsupported">но е в неподържан формат</string>
+  <string name="crypto_msg_encrypted_cancelled">но декриптирането е прекратено</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Криптирано</string>
+  <string name="crypto_msg_encrypted_unsigned">но не е от край-до-край</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Криптирано от край-до-край</string>
+  <string name="crypto_msg_encrypted_sign_verified">от потвърден изпащач</string>
+  <string name="crypto_msg_title_encrypted_signed">Криптирано</string>
+  <string name="crypto_msg_encrypted_sign_unknown">от непознат ключ край-до-край</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">но ключът от край-до-край не съвпада с този на изпращача</string>
+  <string name="crypto_msg_encrypted_sign_expired">но ключът от край-до-край е изтекъл</string>
+  <string name="crypto_msg_encrypted_sign_revoked">но ключът от край-до-край е оттеглен</string>
+  <string name="crypto_msg_encrypted_sign_insecure">но ключът от край-до-край не се счита за сигурен</string>
+  <string name="crypto_msg_encrypted_sign_error">но информацията от край-до-край има грешки</string>
+  <string name="crypto_msg_encrypted_insecure">но криптирането не се счита за сигурно</string>
   <string name="crypto_info_ok">ОК</string>
+  <string name="crypto_info_view_signer">Преглед на подписалия се</string>
+  <string name="crypto_info_view_sender">Преглед на изпращача</string>
   <string name="crypto_info_view_security_warning">Информация</string>
   <string name="locked_attach_unlock">Отключване</string>
   <string name="locked_attach_unencrypted">Тази част не криптирана и може да е несигурна.</string>
@@ -1025,9 +1056,15 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="enable_encryption">Включване на криптирането</string>
   <string name="disable_encryption">Изключване на криптирането</string>
   <string name="openpgp_description_text1">Криптирането на съобщения подсигурява, че те могат да бъдат прочетени единствено от получателя им и никой друг.</string>
+  <string name="openpgp_description_text3">Криптирането ще се покаже единствено, когато е поддържано от всички получатели и ако те са Ви изпратили имейл преди.</string>
   <string name="openpgp_description_text2">Промянана на криптирането след натискане на тази икона.</string>
   <string name="openpgp_enabled_error_gotit">Ясно</string>
   <string name="openpgp_enabled_error_back">Назад</string>
   <string name="openpgp_enabled_error_disable">Изключване на криптирането</string>
   <string name="openpgp_encryption">OpenPGP криптиране</string>
+  <string name="account_settings_crypto_prefer_encrypt">Взаимен режим на Autocrypt</string>
+  <string name="dialog_autocrypt_mutual_title">Взаимен режим на Autocrypt</string>
+  <string name="dialog_autocrypt_mutual_description_1">Обикновено съобщенията ще бъдат криптирано ако това е изрично зададено или ако се отговаря на криптирано съобщение.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Ако както изпращача така и получателите активират взаимния режим, криптирането ще бъде активирано по подразбиране.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Може да <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">натиснете тук</a>, за да научете повече.</string>
 </resources>

@@ -951,6 +951,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="openpgp_dialog_sign_only_minus_break">Podpisy môžu byť pri odoslaní do diskusných skupín poškodené.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Niektoré e-mailové klienty zobrazujú podpis ako prílohu s názvom \'signature.asc\'</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Šifrované správy vždy obsahujú podpis.</string>
+  <string name="crypto_msg_unsupported_encrypted">Formát šifrovanej správy nie je podporovaný.</string>
+  <string name="crypto_msg_cancelled">Správa je šifrovaná, dešifrovanie bolo zrušené.</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_security_warning">Detaily</string>
   <string name="locked_attach_unlock">Odomknúť</string>
