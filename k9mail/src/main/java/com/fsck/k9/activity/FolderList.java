@@ -350,7 +350,7 @@ public class FolderList extends K9ListActivity {
 
     @SuppressWarnings("unchecked")
     private void restorePreviousData() {
-        final Object previousData = getLastNonConfigurationInstance();
+        final Object previousData = getLastCustomNonConfigurationInstance();
 
         if (previousData != null) {
             adapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;

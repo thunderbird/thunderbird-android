@@ -434,7 +434,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         handler.setViewTitle();
 
         // Handle activity restarts because of a configuration change (e.g. rotating the screen)
-        nonConfigurationInstance = (NonConfigurationInstance) getLastNonConfigurationInstance();
+        nonConfigurationInstance = (NonConfigurationInstance) getLastCustomNonConfigurationInstance();
         if (nonConfigurationInstance != null) {
             nonConfigurationInstance.restore(this);
         }
