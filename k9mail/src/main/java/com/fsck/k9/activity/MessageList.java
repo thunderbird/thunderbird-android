@@ -153,7 +153,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private MessageTitleView actionBarSubject;
     private TextView actionBarTitle;
     private TextView actionBarSubTitle;
-    private TextView actionBarUnread;
     private Menu menu;
 
     private ViewGroup messageViewContainer;
@@ -538,7 +537,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         actionBarSubject = (MessageTitleView) customView.findViewById(R.id.message_title_view);
         actionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
         actionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
-        actionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
         actionBarProgress = (ProgressBar) customView.findViewById(R.id.actionbar_progress);
         actionButtonIndeterminateProgress = getActionButtonIndeterminateProgress();
 
@@ -1145,15 +1143,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         actionBarSubTitle.setText(subTitle);
     }
 
-    public void setActionBarUnread(int unread) {
-        if (unread == 0) {
-            actionBarUnread.setVisibility(View.GONE);
-        } else {
-            actionBarUnread.setVisibility(View.VISIBLE);
-            actionBarUnread.setText(String.format("%d", unread));
-        }
-    }
-
     @Override
     public void setMessageListTitle(String title) {
         setActionBarTitle(title);
@@ -1162,11 +1151,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void setMessageListSubTitle(String subTitle) {
         setActionBarSubTitle(subTitle);
-    }
-
-    @Override
-    public void setUnreadCount(int unread) {
-        setActionBarUnread(unread);
     }
 
     @Override
