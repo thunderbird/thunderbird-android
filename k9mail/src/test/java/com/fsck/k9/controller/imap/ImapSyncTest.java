@@ -353,6 +353,7 @@ public class ImapSyncTest {
     }
 
     private void setUpMessagingController() throws MessagingException {
+        when(controller.getAccountStats(account)).thenReturn(accountStats);
         when(controller.getListeners(any(MessagingListener.class))).thenAnswer(new Answer<Set<MessagingListener>>() {
             @Override
             public Set<MessagingListener> answer(InvocationOnMock invocation) throws Throwable {
@@ -367,7 +368,6 @@ public class ImapSyncTest {
     private void configureAccount() throws MessagingException {
         when(account.isAvailable(appContext)).thenReturn(true);
         when(account.getLocalStore()).thenReturn(localStore);
-        when(account.getStats(any(Context.class))).thenReturn(accountStats);
         when(account.getMaximumAutoDownloadMessageSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
         when(account.getEmail()).thenReturn("user@host.com");
     }

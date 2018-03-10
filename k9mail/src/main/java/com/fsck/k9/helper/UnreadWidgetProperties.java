@@ -44,16 +44,16 @@ public class UnreadWidgetProperties {
     }
 
     public int getUnreadCount(Context context) throws MessagingException {
+        MessagingController controller = MessagingController.getInstance(context);
         BaseAccount baseAccount = getAccount(context);
         AccountStats stats;
         switch (type) {
             case SEARCH_ACCOUNT:
-                MessagingController controller = MessagingController.getInstance(context);
                 stats = controller.getSearchAccountStatsSynchronous((SearchAccount) baseAccount, null);
                 return stats.unreadMessageCount;
             case ACCOUNT:
                 Account account = (Account) baseAccount;
-                stats = account.getStats(context);
+                stats = controller.getAccountStats(account);
                 return stats.unreadMessageCount;
             case FOLDER:
                 return ((Account) baseAccount).getFolderUnreadCount(context, folderServerId);

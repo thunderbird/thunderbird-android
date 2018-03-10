@@ -766,61 +766,6 @@ public class Account implements BaseAccount, StoreConfig {
 
     }
 
-    /**
-     * @return <code>null</code> if not available
-     * @throws MessagingException
-     * @see {@link #isAvailable(Context)}
-     */
-    public AccountStats getStats(Context context) throws MessagingException {
-        if (!isAvailable(context)) {
-            return null;
-        }
-
-        AccountStats stats = new AccountStats();
-
-        ContentResolver cr = context.getContentResolver();
-
-        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
-                "account/" + getUuid() + "/stats");
-
-        String[] projection = {
-                StatsColumns.UNREAD_COUNT,
-                StatsColumns.FLAGGED_COUNT
-        };
-
-        // Create LocalSearch instance to exclude special folders (Trash, Drafts, Spam, Outbox,
-        // Sent) and limit the search to displayable folders.
-        LocalSearch search = new LocalSearch();
-        excludeSpecialFolders(search);
-        limitToDisplayableFolders(search);
-
-        // Use the LocalSearch instance to create a WHERE clause to query the content provider
-        StringBuilder query = new StringBuilder();
-        List<String> queryArgs = new ArrayList<>();
-        ConditionsTreeNode conditions = search.getConditions();
-        SqlQueryBuilder.buildWhereClause(this, conditions, query, queryArgs);
-
-        String selection = query.toString();
-        String[] selectionArgs = queryArgs.toArray(new String[0]);
-
-        Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
-        try {
-            if (cursor != null && cursor.moveToFirst()) {
-                stats.unreadMessageCount = cursor.getInt(0);
-                stats.flaggedMessageCount = cursor.getInt(1);
-            }
-        } finally {
-            Utility.closeQuietly(cursor);
-        }
-
-        LocalStore localStore = getLocalStore();
-        if (K9.measureAccounts()) {
-            stats.size = localStore.getSize();
-        }
-
-        return stats;
-    }
-
     public int getFolderUnreadCount(Context context, String folderServerId) throws MessagingException {
         if (!isAvailable(context)) {
             return 0;

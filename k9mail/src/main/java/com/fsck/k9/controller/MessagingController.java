@@ -141,6 +141,7 @@ public class MessagingController {
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final TransportProvider transportProvider;
+    private final AccountStatsCollector accountStatsCollector;
 
     private ImapMessageStore imapMessageStore;
 
@@ -155,19 +156,22 @@ public class MessagingController {
             NotificationController notificationController = NotificationController.newInstance(appContext);
             Contacts contacts = Contacts.getInstance(context);
             TransportProvider transportProvider = TransportProvider.getInstance();
-            inst = new MessagingController(appContext, notificationController, contacts, transportProvider);
+            AccountStatsCollector accountStatsCollector = new DefaultAccountStatsCollector(context);
+            inst = new MessagingController(appContext, notificationController, contacts, transportProvider,
+                    accountStatsCollector);
         }
         return inst;
     }
 
 
     @VisibleForTesting
-    MessagingController(Context context, NotificationController notificationController,
-            Contacts contacts, TransportProvider transportProvider) {
+    MessagingController(Context context, NotificationController notificationController, Contacts contacts,
+            TransportProvider transportProvider, AccountStatsCollector accountStatsCollector) {
         this.context = context;
         this.notificationController = notificationController;
         this.contacts = contacts;
         this.transportProvider = transportProvider;
+        this.accountStatsCollector = accountStatsCollector;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -1081,7 +1085,7 @@ public class MessagingController {
 
         int unreadBeforeStart = 0;
         try {
-            AccountStats stats = account.getStats(context);
+            AccountStats stats = getAccountStats(account);
             unreadBeforeStart = stats.unreadMessageCount;
 
         } catch (MessagingException e) {
@@ -2735,7 +2739,7 @@ public class MessagingController {
             @Override
             public void run() {
                 try {
-                    AccountStats stats = account.getStats(context);
+                    AccountStats stats = getAccountStats(account);
                     listener.accountStatusChanged(account, stats);
                 } catch (MessagingException me) {
                     Timber.e(me, "Count not get unread count for account %s", account.getDescription());
@@ -2743,6 +2747,10 @@ public class MessagingController {
 
             }
         });
+    }
+
+    public AccountStats getAccountStats(Account account) throws MessagingException {
+        return accountStatsCollector.getStats(account);
     }
 
     public void getSearchAccountStats(final SearchAccount searchAccount,
@@ -3573,7 +3581,7 @@ public class MessagingController {
 
                             account.setRingNotified(false);
                             try {
-                                AccountStats stats = account.getStats(context);
+                                AccountStats stats = getAccountStats(account);
                                 if (stats == null || stats.unreadMessageCount == 0) {
                                     notificationController.clearNewMailNotifications(account);
                                 }
