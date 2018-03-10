@@ -56,7 +56,7 @@ public class UnreadWidgetProperties {
                 stats = controller.getAccountStats(account);
                 return stats.unreadMessageCount;
             case FOLDER:
-                return ((Account) baseAccount).getFolderUnreadCount(context, folderServerId);
+                return controller.getFolderUnreadMessageCount((Account) baseAccount, folderServerId);
             default:
                 return -1;
         }

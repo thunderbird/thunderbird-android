@@ -2840,8 +2840,7 @@ public class MessagingController {
 
                 int unreadMessageCount = 0;
                 try {
-                    Folder localFolder = account.getLocalStore().getFolder(folderServerId);
-                    unreadMessageCount = localFolder.getUnreadMessageCount();
+                    unreadMessageCount = getFolderUnreadMessageCount(account, folderServerId);
                 } catch (MessagingException me) {
                     Timber.e(me, "Count not get unread count for account %s", account.getDescription());
                 }
@@ -2853,6 +2852,11 @@ public class MessagingController {
         put("getFolderUnread:" + account.getDescription() + ":" + folderServerId, l, unreadRunnable);
     }
 
+    public int getFolderUnreadMessageCount(Account account, String folderServerId) throws MessagingException {
+        LocalStore localStore = account.getLocalStore();
+        Folder localFolder = localStore.getFolder(folderServerId);
+        return localFolder.getUnreadMessageCount();
+    }
 
     public boolean isMoveCapable(MessageReference messageReference) {
         return !messageReference.getUid().startsWith(K9.LOCAL_UID_PREFIX);
