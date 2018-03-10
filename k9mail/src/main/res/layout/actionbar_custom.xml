@@ -46,15 +46,6 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/actionbar_unread_count"
-            tools:text="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="12dip"
-            android:paddingRight="12dip"
-            android:textColor="?android:attr/textColorTertiary"
-            android:textSize="36sp" />
     </LinearLayout>
 
     <LinearLayout

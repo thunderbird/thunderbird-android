@@ -40,8 +40,6 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.AccountStats;
-import com.fsck.k9.BaseAccount;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -88,8 +86,6 @@ public class FolderList extends K9ListActivity {
 
     private FolderListHandler handler = new FolderListHandler();
 
-    private int unreadMessageCount;
-
     private FontSizes fontSizes = K9.getFontSizes();
     private Context context;
 
@@ -97,29 +93,18 @@ public class FolderList extends K9ListActivity {
     private View actionBarProgressView;
     private ActionBar actionBar;
 
-    private TextView actionBarTitle;
-    private TextView actionBarSubTitle;
-    private TextView actionBarUnread;
-
     class FolderListHandler extends Handler {
 
         public void refreshTitle() {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    actionBarTitle.setText(getString(R.string.folders_title));
-
-                    if (unreadMessageCount == 0) {
-                        actionBarUnread.setVisibility(View.GONE);
-                    } else {
-                        actionBarUnread.setText(String.format("%d", unreadMessageCount));
-                        actionBarUnread.setVisibility(View.VISIBLE);
-                    }
+                    actionBar.setTitle(R.string.folders_title);
 
                     String operation = adapter.mListener.getOperation(FolderList.this);
                     if (operation.length() < 1) {
-                        actionBarSubTitle.setText(account.getEmail());
+                        actionBar.setSubtitle(account.getEmail());
                     } else {
-                        actionBarSubTitle.setText(operation);
+                        actionBar.setSubtitle(operation);
                     }
                 }
             });
@@ -303,14 +288,6 @@ public class FolderList extends K9ListActivity {
     }
 
     private void initializeActionBar() {
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.actionbar_custom);
-
-        View customView = actionBar.getCustomView();
-        actionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
-        actionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
-        actionBarUnread = (TextView) customView.findViewById(R.id.actionbar_unread_count);
-
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -318,7 +295,6 @@ public class FolderList extends K9ListActivity {
     public void onNewIntent(Intent intent) {
         setIntent(intent); // onNewIntent doesn't autoset our "internal" intent
 
-        unreadMessageCount = 0;
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT);
         account = Preferences.getPreferences(this).getAccount(accountUuid);
 
@@ -594,7 +570,7 @@ public class FolderList extends K9ListActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 folderMenuItem.collapseActionView();
-                actionBarTitle.setText(getString(R.string.filter_folders_action));
+                actionBar.setTitle(R.string.filter_folders_action);
                 return true;
             }
 
@@ -609,7 +585,7 @@ public class FolderList extends K9ListActivity {
 
             @Override
             public boolean onClose() {
-                actionBarTitle.setText(getString(R.string.folders_title));
+                actionBar.setTitle(R.string.folders_title);
                 return false;
             }
         });
@@ -681,17 +657,6 @@ public class FolderList extends K9ListActivity {
             public void informUserOfStatus() {
                 handler.refreshTitle();
                 handler.dataChanged();
-            }
-            @Override
-            public void accountStatusChanged(BaseAccount account, AccountStats stats) {
-                if (!account.equals(FolderList.this.account)) {
-                    return;
-                }
-                if (stats == null) {
-                    return;
-                }
-                unreadMessageCount = stats.unreadMessageCount;
-                handler.refreshTitle();
             }
 
             @Override

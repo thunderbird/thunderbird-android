@@ -170,7 +170,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private Account account;
     private String[] accountUuids;
-    private int unreadMessageCount = 0;
 
     private Cursor[] cursors;
     private boolean[] cursorValid;
@@ -338,19 +337,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
 
             fragmentListener.setMessageListSubTitle(null);
-        }
-
-        // set unread count
-        if (unreadMessageCount <= 0) {
-            fragmentListener.setUnreadCount(0);
-        } else {
-            if (!singleFolderMode && title == null) {
-                // The unread message count is easily confused
-                // with total number of messages in the search result, so let's hide it.
-                fragmentListener.setUnreadCount(0);
-            } else {
-                fragmentListener.setUnreadCount(unreadMessageCount);
-            }
         }
     }
 
@@ -1393,15 +1379,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             super.synchronizeMailboxFailed(account, folderServerId, message);
         }
 
-        @Override
-        public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
-            if (isSingleAccountMode() && isSingleFolderMode() && MessageListFragment.this.account.equals(account) &&
-                    MessageListFragment.this.folderServerId.equals(folderServerId)) {
-                MessageListFragment.this.unreadMessageCount = unreadMessageCount;
-            }
-            super.folderStatusChanged(account, folderServerId, unreadMessageCount);
-        }
-
         private boolean updateForMe(Account account, String folderServerId) {
             if (account == null || folderServerId == null) {
                 return false;
@@ -2391,7 +2368,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         void openMessage(MessageReference messageReference);
         void setMessageListTitle(String title);
         void setMessageListSubTitle(String subTitle);
-        void setUnreadCount(int unread);
         void onCompose(Account account);
         boolean startSearch(Account account, String folderServerId);
         void remoteSearchStarted();
