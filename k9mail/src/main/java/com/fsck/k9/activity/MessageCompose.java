@@ -446,7 +446,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         setTitle();
 
-        currentMessageBuilder = (MessageBuilder) getLastNonConfigurationInstance();
+        currentMessageBuilder = (MessageBuilder) getLastCustomNonConfigurationInstance();
         if (currentMessageBuilder != null) {
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.reattachCallback(this);
