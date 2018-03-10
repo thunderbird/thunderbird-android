@@ -33,6 +33,7 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchAccount;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.After;
@@ -136,6 +137,12 @@ public class MessagingControllerTest {
     private volatile boolean hasFetchedMessage = false;
 
     private AccountStatsCollector accountStatsCollector = new AccountStatsCollector() {
+        @NotNull
+        @Override
+        public AccountStats getSearchAccountStats(@NotNull SearchAccount searchAccount) {
+            return accountStats;
+        }
+
         @Nullable
         @Override
         public AccountStats getStats(@NotNull Account account) {

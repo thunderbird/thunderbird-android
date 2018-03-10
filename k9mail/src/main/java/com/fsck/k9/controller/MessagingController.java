@@ -27,11 +27,8 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
@@ -93,13 +90,9 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.MessageRemovalListener;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
-import com.fsck.k9.provider.EmailProvider;
-import com.fsck.k9.provider.EmailProvider.StatsColumns;
-import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
-import com.fsck.k9.search.SqlQueryBuilder;
 import timber.log.Timber;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
@@ -2753,9 +2746,7 @@ public class MessagingController {
         return accountStatsCollector.getStats(account);
     }
 
-    public void getSearchAccountStats(final SearchAccount searchAccount,
-            final MessagingListener listener) {
-
+    public void getSearchAccountStats(final SearchAccount searchAccount, final MessagingListener listener) {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -2764,67 +2755,9 @@ public class MessagingController {
         });
     }
 
-    public AccountStats getSearchAccountStatsSynchronous(final SearchAccount searchAccount,
-            final MessagingListener listener) {
+    public AccountStats getSearchAccountStatsSynchronous(SearchAccount searchAccount, MessagingListener listener) {
+        AccountStats stats = accountStatsCollector.getSearchAccountStats(searchAccount);
 
-        Preferences preferences = Preferences.getPreferences(context);
-        LocalSearch search = searchAccount.getRelatedSearch();
-
-        // Collect accounts that belong to the search
-        String[] accountUuids = search.getAccountUuids();
-        List<Account> accounts;
-        if (search.searchAllAccounts()) {
-            accounts = preferences.getAccounts();
-        } else {
-            accounts = new ArrayList<>(accountUuids.length);
-            for (int i = 0, len = accountUuids.length; i < len; i++) {
-                String accountUuid = accountUuids[i];
-                accounts.set(i, preferences.getAccount(accountUuid));
-            }
-        }
-
-        ContentResolver cr = context.getContentResolver();
-
-        int unreadMessageCount = 0;
-        int flaggedMessageCount = 0;
-
-        String[] projection = {
-                StatsColumns.UNREAD_COUNT,
-                StatsColumns.FLAGGED_COUNT
-        };
-
-        for (Account account : accounts) {
-            StringBuilder query = new StringBuilder();
-            List<String> queryArgs = new ArrayList<>();
-            ConditionsTreeNode conditions = search.getConditions();
-            SqlQueryBuilder.buildWhereClause(account, conditions, query, queryArgs);
-
-            String selection = query.toString();
-            String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
-
-            Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
-                    "account/" + account.getUuid() + "/stats");
-
-            // Query content provider to get the account stats
-            Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    unreadMessageCount += cursor.getInt(0);
-                    flaggedMessageCount += cursor.getInt(1);
-                }
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }
-        }
-
-        // Create AccountStats instance...
-        AccountStats stats = new AccountStats();
-        stats.unreadMessageCount = unreadMessageCount;
-        stats.flaggedMessageCount = flaggedMessageCount;
-
-        // ...and notify the listener
         if (listener != null) {
             listener.accountStatusChanged(searchAccount, stats);
         }
