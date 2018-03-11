@@ -5,7 +5,6 @@ package com.fsck.k9.activity.setup;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -320,8 +319,6 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setStoreUri(incomingUri.toString());
             mAccount.setTransportUri(outgoingUri.toString());
 
-            setupFolderNames(incomingUriTemplate.getHost().toLowerCase(Locale.US));
-
             ServerSettings incomingSettings = RemoteStore.decodeStoreUri(incomingUri.toString());
             mAccount.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
 
@@ -415,27 +412,10 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setStoreUri(storeUri);
         mAccount.setTransportUri(transportUri);
 
-        setupFolderNames(domain);
-
         AccountSetupAccountType.actionSelectAccountType(this, mAccount, false);
 
         finish();
     }
-
-    private void setupFolderNames(String domain) {
-        mAccount.setDraftsFolder(getString(R.string.special_mailbox_name_drafts));
-        mAccount.setTrashFolder(getString(R.string.special_mailbox_name_trash));
-        mAccount.setSentFolder(getString(R.string.special_mailbox_name_sent));
-        mAccount.setArchiveFolder(getString(R.string.special_mailbox_name_archive));
-
-        // Yahoo! has a special folder for Spam, called "Bulk Mail".
-        if (domain.endsWith(".yahoo.com")) {
-            mAccount.setSpamFolder("Bulk Mail");
-        } else {
-            mAccount.setSpamFolder(getString(R.string.special_mailbox_name_spam));
-        }
-    }
-
 
     public void onClick(View v) {
         switch (v.getId()) {
