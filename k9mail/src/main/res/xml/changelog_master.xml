@@ -8,6 +8,9 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.502" versioncode="25020">
+        <change>Updated translations</change>
+    </release>
     <release version="5.501" versioncode="25010">
         <change>Fixed bug that lead to important files being stripped from the APK</change>
     </release>
