@@ -36,13 +36,18 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
+import com.fsck.k9.mailstore.LocalFolder;
+import com.fsck.k9.mailstore.LocalStore;
 import timber.log.Timber;
+
 
 /**
  * Checks the given settings to make sure that they can be used to send and
@@ -432,6 +437,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     return null;
                 }
 
+                createSpecialLocalFolders(direction);
+
                 setResult(RESULT_OK);
                 finish();
 
@@ -507,6 +514,43 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             MessagingController.getInstance(getApplication()).listFoldersSynchronous(account, true, null);
             MessagingController.getInstance(getApplication())
                     .synchronizeMailbox(account, account.getInboxFolder(), null, null);
+        }
+
+        private void createSpecialLocalFolders(CheckDirection direction) throws MessagingException {
+            if (direction != CheckDirection.INCOMING) {
+                return;
+            }
+
+            LocalStore localStore = account.getLocalStore();
+            createLocalFolder(localStore, Account.OUTBOX, getString(R.string.special_mailbox_name_outbox));
+
+            if  (!account.getStoreUri().startsWith("pop3")) {
+                return;
+            }
+
+            String draftsFolderInternalId = "Drafts";
+            String sentFolderInternalId = "Sent";
+            String trashFolderInternalId = "Trash";
+
+            createLocalFolder(localStore, draftsFolderInternalId, getString(R.string.special_mailbox_name_drafts));
+            createLocalFolder(localStore, sentFolderInternalId, getString(R.string.special_mailbox_name_sent));
+            createLocalFolder(localStore, trashFolderInternalId, getString(R.string.special_mailbox_name_trash));
+
+            account.setDraftsFolder(draftsFolderInternalId);
+            account.setSentFolder(sentFolderInternalId);
+            account.setTrashFolder(trashFolderInternalId);
+        }
+
+        private void createLocalFolder(LocalStore localStore, String internalId, String folderName)
+                throws MessagingException {
+
+            LocalFolder folder = localStore.getFolder(internalId);
+            if (!folder.exists()) {
+                folder.create(FolderType.HOLDS_MESSAGES);
+            }
+            folder.setName(folderName);
+            folder.setInTopGroup(true);
+            folder.setSyncClass(FolderClass.NONE);
         }
 
         @Override
