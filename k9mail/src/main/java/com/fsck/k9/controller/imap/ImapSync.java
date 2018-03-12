@@ -114,11 +114,6 @@ class ImapSync {
                 Timber.v("SYNC: About to get remote folder %s", folder);
                 remoteFolder = remoteStore.getFolder(folder);
 
-                if (!verifyOrCreateRemoteSpecialFolder(account, folder, remoteFolder, listener)) {
-                    return;
-                }
-
-
                 /*
                  * Synchronization process:
                  *
@@ -323,30 +318,6 @@ class ImapSync {
             closeFolder(tLocalFolder);
         }
 
-    }
-
-    /*
-     * If the folder is a "special" folder we need to see if it exists
-     * on the remote server. It if does not exist we'll try to create it. If we
-     * can't create we'll abort.
-     */
-    private boolean verifyOrCreateRemoteSpecialFolder(Account account, String folder, Folder remoteFolder,
-            MessagingListener listener) throws MessagingException {
-        if (folder.equals(account.getTrashFolder()) ||
-                folder.equals(account.getSentFolder()) ||
-                folder.equals(account.getDraftsFolder())) {
-            if (!remoteFolder.exists()) {
-                if (!remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.synchronizeMailboxFinished(account, folder, 0, 0);
-                    }
-
-                    Timber.i("Done synchronizing folder %s", folder);
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     /**

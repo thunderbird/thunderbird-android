@@ -795,11 +795,6 @@ public class MessagingController {
             Timber.v("SYNC: About to get remote folder %s", folder);
             remoteFolder = remoteStore.getFolder(folder);
 
-            if (!verifyOrCreateRemoteSpecialFolder(account, folder, remoteFolder, listener)) {
-                return;
-            }
-
-
             /*
              * Synchronization process:
              *
@@ -1018,32 +1013,6 @@ public class MessagingController {
         if (f != null) {
             f.close();
         }
-    }
-
-    /*
-     * If the folder is a "special" folder we need to see if it exists
-     * on the remote server. It if does not exist we'll try to create it. If we
-     * can't create we'll abort. This will happen on every single Pop3 folder as
-     * designed and on Imap folders during error conditions. This allows us
-     * to treat Pop3 and Imap the same in this code.
-     */
-    private boolean verifyOrCreateRemoteSpecialFolder(Account account, String folder, Folder remoteFolder,
-            MessagingListener listener) throws MessagingException {
-        if (folder.equals(account.getTrashFolder()) ||
-                folder.equals(account.getSentFolder()) ||
-                folder.equals(account.getDraftsFolder())) {
-            if (!remoteFolder.exists()) {
-                if (!remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.synchronizeMailboxFinished(account, folder, 0, 0);
-                    }
-
-                    Timber.i("Done synchronizing folder %s", folder);
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     /**
@@ -1715,9 +1684,8 @@ public class MessagingController {
             RemoteStore remoteStore = account.getRemoteStore();
             remoteFolder = remoteStore.getFolder(folder);
             if (!remoteFolder.exists()) {
-                if (!remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
-                    return;
-                }
+                Timber.w("Remote folder doesn't exist: %s", folder);
+                return;
             }
             remoteFolder.open(Folder.OPEN_MODE_RW);
             if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
@@ -3221,16 +3189,9 @@ public class MessagingController {
                     localFolder.setFlags(syncedMessages, Collections.singleton(Flag.DELETED), true);
                 }
             } else {
+                Timber.d("Deleting messages in normal folder, moving");
                 localTrashFolder = localStore.getFolder(account.getTrashFolder());
-                if (!localTrashFolder.exists()) {
-                    localTrashFolder.create(Folder.FolderType.HOLDS_MESSAGES);
-                }
-                if (localTrashFolder.exists()) {
-                    Timber.d("Deleting messages in normal folder, moving");
-
-                    uidMap = localFolder.moveMessages(messages, localTrashFolder);
-
-                }
+                uidMap = localFolder.moveMessages(messages, localTrashFolder);
             }
 
             for (MessagingListener l : getListeners()) {

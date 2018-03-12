@@ -356,15 +356,14 @@ class ImapFolder extends Folder<ImapMessage> {
         String encodedDestinationFolderName = folderNameCodec.encode(imapFolder.getPrefixedName());
         String escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName);
 
-        //TODO: Try to copy/move the messages first and only create the folder if the
-        //      operation fails. This will save a roundtrip if the folder already exists.
+        //TODO: Just perform the operation and only check for existence of the folder if the operation fails.
         if (!exists(escapedDestinationFolderName)) {
             if (K9MailLib.isDebug()) {
-                Timber.i("ImapFolder.copyMessages: attempting to create remote folder '%s' for %s",
+                Timber.i("ImapFolder.copyMessages: couldn't find remote folder '%s' for %s",
                         escapedDestinationFolderName, getLogId());
             }
 
-            imapFolder.create(FolderType.HOLDS_MESSAGES);
+            throw new FolderNotFoundException(imapFolder.getServerId());
         }
 
         try {
@@ -406,23 +405,18 @@ class ImapFolder extends Folder<ImapMessage> {
 
             if (!exists(escapedTrashFolderName)) {
                 if (K9MailLib.isDebug()) {
-                    Timber.i("IMAPMessage.delete: attempting to create remote '%s' folder for %s",
+                    Timber.i("ImapFolder.delete: couldn't find remote trash folder '%s' for %s",
                             trashFolder, getLogId());
                 }
-                remoteTrashFolder.create(FolderType.HOLDS_MESSAGES);
+                throw new FolderNotFoundException(remoteTrashFolder.getServerId());
             }
 
-            if (exists(escapedTrashFolderName)) {
-                if (K9MailLib.isDebug()) {
-                    Timber.d("IMAPMessage.delete: copying remote %d messages to '%s' for %s",
-                            messages.size(), trashFolder, getLogId());
-                }
-
-                moveMessages(messages, remoteTrashFolder);
-            } else {
-                throw new MessagingException("IMAPMessage.delete: remote Trash folder " + trashFolder +
-                        " does not exist and could not be created for " + getLogId(), true);
+            if (K9MailLib.isDebug()) {
+                Timber.d("IMAPMessage.delete: copying remote %d messages to '%s' for %s",
+                        messages.size(), trashFolder, getLogId());
             }
+
+            moveMessages(messages, remoteTrashFolder);
         }
     }
 

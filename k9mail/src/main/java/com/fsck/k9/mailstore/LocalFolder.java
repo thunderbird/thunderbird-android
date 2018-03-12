@@ -167,9 +167,8 @@ public class LocalFolder extends Folder<LocalMessage> {
                                 open(cursor);
                             }
                         } else {
-                            Timber.w("Creating folder %s with existing id %d", getServerId(), getDatabaseId());
-                            create(FolderType.HOLDS_MESSAGES);
-                            open(mode);
+                            throw new MessagingException("LocalFolder.open(): Folder not found: " +
+                                    serverId + " (" + databaseId + ")");
                         }
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
