@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 if (!rootProject.optimizeForDevelopment) {
     apply from: '../gradle/plugins/checkstyle-android.gradle'
@@ -26,6 +27,8 @@ dependencies {
     implementation 'commons-io:commons-io:2.4'
     implementation "com.android.support:support-v4:${androidSupportLibraryVersion}"
     implementation "com.android.support:appcompat-v7:${androidSupportLibraryVersion}"
+    implementation "com.android.support:recyclerview-v7:${androidSupportLibraryVersion}"
+    implementation "android.arch.lifecycle:extensions:1.1.0"
     implementation 'org.jsoup:jsoup:1.11.2'
     implementation 'de.cketti.library.changelog:ckchangelog:1.2.1'
     implementation 'com.github.bumptech.glide:glide:3.6.1'
@@ -36,6 +39,9 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${timberVersion}"
     implementation 'net.jcip:jcip-annotations:1.0'
     implementation 'org.apache.james:apache-mime4j-core:0.8.1'
+    implementation 'com.xwray:groupie:2.0.3'
+    implementation 'com.xwray:groupie-kotlin-android-extensions:2.0.3'
+    implementation "org.jetbrains.anko:anko-coroutines:0.10.4"
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
 
@@ -114,6 +120,16 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
     }
 }
 

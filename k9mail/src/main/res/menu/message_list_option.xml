@@ -234,18 +234,6 @@
         android:id="@+id/settings"
         android:icon="?attr/iconActionSettings"
         app:showAsAction="never"
-        android:title="@string/preferences_action">
-        <menu>
-            <item
-                android:id="@+id/folder_settings"
-                android:title="@string/folder_settings_action"/>
-            <item
-                android:id="@+id/account_settings"
-                android:title="@string/account_settings_action"/>
-            <item
-                android:id="@+id/app_settings"
-                android:title="@string/global_settings_action"/>
-        </menu>
-    </item>
+        android:title="@string/preferences_action" />
 
 </menu>

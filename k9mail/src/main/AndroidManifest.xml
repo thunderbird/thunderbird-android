@@ -291,6 +291,10 @@
             android:name=".activity.UpgradeDatabases"
             android:label="@string/upgrade_databases_title"/>
 
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/prefs_title" />
+
         <receiver
             android:name=".service.BootReceiver"
             android:enabled="true">
