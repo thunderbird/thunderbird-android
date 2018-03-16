@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -55,6 +56,8 @@ public class RecipientLoaderTest {
     static final String TYPE = "" + TYPE_HOME;
     static final String[] CONTACT_1 =
             new String[] { "0", "Bob", "bob", "bob@host.com", TYPE, null, "1", null, "100", "Bob" };
+    static final String[] CONTACT_2 =
+            new String[] { "2", "Bob2", "bob2", "bob2@host.com", TYPE, null, "2", null, "99", "Bob2" };
     static final String[] CONTACT_NO_EMAIL =
             new String[] { "0", "Bob", "bob", null, TYPE, null, "1", null, "10", "Bob_noMail" };
     static final String[] CONTACT_WITH_NICKNAME_NOT_CONTACTED =
@@ -246,5 +249,60 @@ public class RecipientLoaderTest {
         assertEquals(2, recipients.size());
         assertEquals("bob@host.com", recipients.get(0).address.getAddress());
         assertEquals("eve_notContacted@host.com", recipients.get(1).address.getAddress());
+    }
+
+    @Test
+    public void getMostContactedFoundMore() throws Exception {
+        int maxTargets = 1;
+        setupContactProvider(CONTACT_1, CONTACT_2);
+
+        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, maxTargets);
+        List<Recipient> recipients = recipientLoader.loadInBackground();
+
+        assertEquals(maxTargets, recipients.size());
+        assertEquals("bob@host.com", recipients.get(0).address.getAddress());
+        assertEquals(RecipientCryptoStatus.UNDEFINED, recipients.get(0).getCryptoStatus());
+    }
+
+    @Test
+    public void getMostContactedFoundLess() throws Exception {
+        int maxTargets = 5;
+        setupContactProvider(CONTACT_1, CONTACT_2);
+
+        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, maxTargets);
+        List<Recipient> recipients = recipientLoader.loadInBackground();
+
+        assertEquals(2, recipients.size());
+        assertEquals("bob@host.com", recipients.get(0).address.getAddress());
+        assertEquals(RecipientCryptoStatus.UNDEFINED, recipients.get(0).getCryptoStatus());
+        assertEquals("bob2@host.com", recipients.get(1).address.getAddress());
+        assertEquals(RecipientCryptoStatus.UNDEFINED, recipients.get(1).getCryptoStatus());
+    }
+
+    @Test
+    public void getMostContactedFoundNothing() throws Exception {
+        int maxTargets = 5;
+        setupContactProvider();
+
+
+        RecipientLoader recipientLoader = RecipientLoader.getMostContactedRecipientLoader(context, maxTargets);
+        List<Recipient> recipients = recipientLoader.loadInBackground();
+
+        assertEquals(0, recipients.size());
+    }
+
+
+    private void setupContactProvider(String[]... contacts) {
+        MatrixCursor cursor = new MatrixCursor(PROJECTION);
+        for (String[] contact : contacts) {
+            cursor.addRow(contact);
+        }
+        when(contentResolver
+                .query(eq(Email.CONTENT_URI),
+                        aryEq(PROJECTION),
+                        isNull(String.class),
+                        isNull(String[].class),
+                        any(String.class))).thenReturn(cursor);
+
     }
 }

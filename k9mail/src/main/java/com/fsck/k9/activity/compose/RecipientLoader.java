@@ -17,6 +17,7 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Contacts.Data;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fsck.k9.R;
@@ -112,6 +113,16 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private List<Recipient> cachedRecipients;
     private ForceLoadContentObserver observerContact, observerKey;
 
+    private RecipientLoader(Context context) {
+        super(context);
+        this.query = null;
+        this.lookupKeyUri = null;
+        this.addresses = null;
+        this.contactUri = null;
+
+        this.cryptoProvider = null;
+        this.contentResolver = context.getContentResolver();
+    }
 
     public RecipientLoader(Context context, String cryptoProvider, String query) {
         super(context);
@@ -146,6 +157,15 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         contentResolver = context.getContentResolver();
     }
 
+    public static RecipientLoader getMostContactedRecipientLoader(Context context, final int maxRecipients) {
+        return new RecipientLoader(context) {
+            @Override
+            public List<Recipient> loadInBackground() {
+                return super.fillContactDataBySortOrder(maxRecipients);
+            }
+        };
+    }
+
     @Override
     public List<Recipient> loadInBackground() {
         List<Recipient> recipients = new ArrayList<>();
@@ -167,6 +187,11 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             throw new IllegalStateException("loader must be initialized with query or list of addresses!");
         }
 
+        return fillCryptoStatusData(recipients, recipientMap);
+    }
+
+    @NonNull
+    private List<Recipient> fillCryptoStatusData(List<Recipient> recipients, Map<String, Recipient> recipientMap) {
         if (recipients.isEmpty()) {
             return recipients;
         }
@@ -177,6 +202,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
         return recipients;
     }
+
 
     private void fillContactDataFromCryptoProvider(String query, List<Recipient> recipients,
             Map<String, Recipient> recipientMap) {
@@ -279,7 +305,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
         boolean foundValidCursor = false;
         foundValidCursor |= fillContactDataFromNickname(query, recipients, recipientMap);
-        foundValidCursor |= fillContactDataFromNameAndEmail(query, recipients, recipientMap);
+        foundValidCursor |= fillContactDataFromNameAndEmail(query, recipients, recipientMap, null);
 
         if (foundValidCursor) {
             Collections.sort(recipients, RECIPIENT_COMPARATOR);
@@ -317,7 +343,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                         .query(queryUri, PROJECTION, selection, new String[] { id }, SORT_ORDER);
 
                 String contactNickname = nicknameCursor.getString(INDEX_NICKNAME);
-                fillContactDataFromCursor(cursor, recipients, recipientMap, contactNickname);
+                fillContactDataFromCursor(cursor, recipients, recipientMap, contactNickname, null);
 
                 hasContact = true;
             }
@@ -328,9 +354,25 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         return hasContact;
     }
 
+    private List<Recipient> fillContactDataBySortOrder(int maxRecipients) {
+        List<Recipient> recipients = new ArrayList<>();
+
+        Uri queryUri = Email.CONTENT_URI;
+        Cursor cursor = contentResolver.query(queryUri, PROJECTION, null, null, SORT_ORDER);
+
+        if (cursor == null) {
+            return recipients;
+        }
+
+        fillContactDataFromCursor(cursor, recipients, new HashMap<String, Recipient>(), null, maxRecipients);
+
+        return recipients;
+    }
+
 
     private boolean fillContactDataFromNameAndEmail(String query, List<Recipient> recipients,
-            Map<String, Recipient> recipientMap) {
+            Map<String, Recipient> recipientMap, Integer maxTargets) {
+
         query = "%" + query + "%";
 
         Uri queryUri = Email.CONTENT_URI;
@@ -352,13 +394,13 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
 
     private void fillContactDataFromCursor(Cursor cursor, List<Recipient> recipients,
             Map<String, Recipient> recipientMap) {
-        fillContactDataFromCursor(cursor, recipients, recipientMap, null);
+        fillContactDataFromCursor(cursor, recipients, recipientMap, null, null);
     }
 
     private void fillContactDataFromCursor(Cursor cursor, List<Recipient> recipients,
-            Map<String, Recipient> recipientMap, @Nullable String prefilledName) {
+            Map<String, Recipient> recipientMap, @Nullable String prefilledName, @Nullable Integer maxRecipients) {
 
-        while (cursor.moveToNext()) {
+        while (cursor.moveToNext() && (maxRecipients == null || recipients.size() < maxRecipients)) {
             String name = prefilledName != null ? prefilledName : cursor.getString(INDEX_NAME);
 
             String email = cursor.getString(INDEX_EMAIL);
@@ -508,4 +550,5 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             contentResolver.unregisterContentObserver(observerContact);
         }
     }
+
 }
