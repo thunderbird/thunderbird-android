@@ -83,7 +83,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         listener = mock(RecipientPresenter.RecipientsChangedListener.class);
 
         recipientPresenter = new RecipientPresenter(
-                context, loaderManager, recipientMvpView, account, composePgpInlineDecider,
+                context, getLifecycle(), loaderManager, recipientMvpView, account, composePgpInlineDecider,
                 composePgpEnableByDefaultDecider, autocryptStatusInteractor, replyToParser, listener);
         runBackgroundTask();
 

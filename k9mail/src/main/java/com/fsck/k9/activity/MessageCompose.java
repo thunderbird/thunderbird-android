@@ -282,7 +282,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
         ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider = new ComposePgpEnableByDefaultDecider();
-        recipientPresenter = new RecipientPresenter(getApplicationContext(), getLoaderManager(),
+        recipientPresenter = new RecipientPresenter(getApplicationContext(), getLifecycle(), getLoaderManager(),
                 recipientMvpView, account, composePgpInlineDecider, composePgpEnableByDefaultDecider,
                 AutocryptStatusInteractor.getInstance(), new ReplyToParser(), this);
         recipientPresenter.asyncUpdateCryptoStatus();
@@ -450,15 +450,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (currentMessageBuilder != null) {
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.reattachCallback(this);
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        if (recipientPresenter != null) {
-            recipientPresenter.onActivityDestroy();
         }
     }
 

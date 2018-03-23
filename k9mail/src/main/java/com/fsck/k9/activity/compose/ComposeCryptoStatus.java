@@ -9,9 +9,9 @@ import android.app.PendingIntent;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
-import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
 import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus;
 import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatusType;
+import com.fsck.k9.ui.crypto.OpenPgpApiManager.CryptoProviderState;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 
 /** This is an immutable object which contains all relevant metadata entered
