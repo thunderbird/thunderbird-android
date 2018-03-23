@@ -29,7 +29,7 @@ public class ApgDeprecationWarningDialog extends AlertDialog {
         setIcon(R.drawable.ic_apg_small);
         setTitle(R.string.apg_deprecated_title);
         setView(contentView);
-        setButton(Dialog.BUTTON_NEUTRAL, context.getString(R.string.apg_deprecated_ok), new OnClickListener() {
+        setButton(Dialog.BUTTON_POSITIVE, context.getString(R.string.apg_deprecated_ok), new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 cancel();

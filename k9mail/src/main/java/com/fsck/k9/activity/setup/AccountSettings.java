@@ -714,6 +714,7 @@ public class AccountSettings extends K9PreferenceActivity {
         pgpHideSignOnly = (SwitchPreference) findPreference(PREFERENCE_CRYPTO_HIDE_SIGN_ONLY);
 
         boolean isPgpConfigured = K9.isOpenPgpProviderConfigured();
+        boolean isKeyConfigured = account.hasCryptoKey();
 
         if (!isPgpConfigured) {
             pgpEnable.setChecked(false);
@@ -728,16 +729,11 @@ public class AccountSettings extends K9PreferenceActivity {
                         K9.setOpenPgpProvider(openPgpProviderPackages.get(0));
                         setupCryptoStuff();
                     } else {
-                        Intent i = new Intent(getApplicationContext(), OpenPgpAppSelectDialog.class);
-                        startActivity(i);
+                        OpenPgpAppSelectDialog.startOpenPgpChooserActivity(getApplicationContext());
                     }
                     return false;
                 }
             });
-
-            pgpCryptoKey.setEnabled(false);
-            autocryptPreferEncryptMutual.setEnabled(false);
-            pgpHideSignOnly.setEnabled(false);
         } else {
             String pgpProvider = K9.getOpenPgpProvider();
             String pgpProviderName = OpenPgpProviderUtil.getOpenPgpProviderName(getPackageManager(), pgpProvider);
@@ -755,12 +751,9 @@ public class AccountSettings extends K9PreferenceActivity {
             });
 
             pgpCryptoKey.setOpenPgpProvider(pgpProvider);
-
-            pgpCryptoKey.setEnabled(true);
-            autocryptPreferEncryptMutual.setEnabled(true);
-            pgpHideSignOnly.setEnabled(true);
         }
 
+        pgpCryptoKey.setEnabled(isPgpConfigured);
         pgpCryptoKey.setValue(account.getCryptoKey());
         pgpCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)));
         pgpCryptoKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -771,6 +764,7 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
+        autocryptPreferEncryptMutual.setEnabled(isPgpConfigured && isKeyConfigured);
         autocryptPreferEncryptMutual.setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -779,6 +773,7 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
+        pgpHideSignOnly.setEnabled(isPgpConfigured && isKeyConfigured);
         pgpHideSignOnly = (SwitchPreference) findPreference(PREFERENCE_CRYPTO_HIDE_SIGN_ONLY);
         pgpHideSignOnly.setChecked(account.getPgpHideSignOnly());
     }

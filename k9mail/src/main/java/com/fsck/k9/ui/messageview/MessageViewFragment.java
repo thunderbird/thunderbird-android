@@ -404,11 +404,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         startActivityForResult(intent, activity);
     }
 
-    private void startOpenPgpChooserActivity() {
-        Intent i = new Intent(getActivity(), OpenPgpAppSelectDialog.class);
-        startActivity(i);
-    }
-
     public void onPendingIntentResult(int requestCode, int resultCode, Intent data) {
         if ((requestCode & REQUEST_MASK_LOADER_HELPER) == REQUEST_MASK_LOADER_HELPER) {
             requestCode ^= REQUEST_MASK_LOADER_HELPER;
@@ -713,7 +708,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         @Override
         public void showCryptoConfigDialog() {
-            startOpenPgpChooserActivity();
+            OpenPgpAppSelectDialog.startOpenPgpChooserActivity(getActivity());
         }
     };
 

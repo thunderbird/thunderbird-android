@@ -591,6 +591,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
     <string name="account_settings_crypto">End-to-end encryption</string>
     <string name="account_settings_crypto_app">Enable OpenPGP support</string>
+    <string name="account_settings_crypto_app_select_title">Select OpenPGP app</string>
     <string name="account_settings_crypto_key">Configure end-to-end key</string>
     <string name="account_settings_crypto_summary_off">No OpenPGP app configured</string>
     <string name="account_settings_crypto_summary_on">Connected to %s</string>

@@ -11,12 +11,14 @@ import android.app.DialogFragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -30,6 +32,8 @@ import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpAppPreference;
+import org.openintents.openpgp.util.OpenPgpProviderUtil;
+import timber.log.Timber;
 
 
 public class OpenPgpAppSelectDialog extends Activity {
@@ -39,16 +43,23 @@ public class OpenPgpAppSelectDialog extends Activity {
 
     public static final String FRAG_OPENPGP_SELECT = "openpgp_select";
     public static final String FRAG_APG_DEPRECATE = "apg_deprecate";
+    public static final String FRAG_OPENKEYCHAIN_INFO = "openkeychain_info";
 
     private static final String MARKET_INTENT_URI_BASE = "market://details?id=%s";
     private static final Intent MARKET_INTENT = new Intent(Intent.ACTION_VIEW, Uri.parse(
             String.format(MARKET_INTENT_URI_BASE, OPENKEYCHAIN_PACKAGE)));
 
     private static final ArrayList<String> PROVIDER_BLACKLIST = new ArrayList<>();
+    private boolean isStopped;
 
     static {
         // Unfortunately, the current released version of APG includes a broken version of the API
         PROVIDER_BLACKLIST.add(PACKAGE_NAME_APG);
+    }
+
+    public static void startOpenPgpChooserActivity(Context context) {
+        Intent i = new Intent(context, OpenPgpAppSelectDialog.class);
+        context.startActivity(i);
     }
 
     @Override
@@ -57,10 +68,29 @@ public class OpenPgpAppSelectDialog extends Activity {
 
         setTheme(K9.getK9Theme() == K9.Theme.LIGHT ?
                 R.style.Theme_K9_Dialog_Translucent_Light : R.style.Theme_K9_Dialog_Translucent_Dark);
+    }
 
-        if (savedInstanceState == null) {
+    @Override
+    protected void onStart() {
+        isStopped = false;
+        super.onStart();
+
+        List<String> openPgpProviderPackages = OpenPgpProviderUtil.getOpenPgpProviderPackages(this);
+        if (openPgpProviderPackages.isEmpty()) {
+            showOpenKeychainInfoFragment();
+        } else if (openPgpProviderPackages.size() == 1) {
+            Timber.d("Only one OpenPGP provider - just choosing that one!");
+            persistOpenPgpProviderSetting(openPgpProviderPackages.get(0));
+            finish();
+        } else {
             showOpenPgpSelectDialogFragment();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        isStopped = true;
+        super.onStop();
     }
 
     private void showOpenPgpSelectDialogFragment() {
@@ -71,6 +101,11 @@ public class OpenPgpAppSelectDialog extends Activity {
     private void showApgDeprecationDialogFragment() {
         ApgDeprecationDialogFragment fragment = new ApgDeprecationDialogFragment();
         fragment.show(getFragmentManager(), FRAG_APG_DEPRECATE);
+    }
+
+    private void showOpenKeychainInfoFragment() {
+        OpenKeychainInfoFragment fragment = new OpenKeychainInfoFragment();
+        fragment.show(getFragmentManager(), FRAG_OPENKEYCHAIN_INFO);
     }
 
     public static class OpenPgpAppSelectFragment extends DialogFragment {
@@ -132,6 +167,13 @@ public class OpenPgpAppSelectDialog extends Activity {
         }
 
         @Override
+        public void onStop() {
+            super.onStop();
+
+            dismiss();
+        }
+
+        @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             selectedPackage = K9.getOpenPgpProvider();
@@ -142,7 +184,7 @@ public class OpenPgpAppSelectDialog extends Activity {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-            builder.setTitle(R.string.account_settings_crypto_app);
+            builder.setTitle(R.string.account_settings_crypto_app_select_title);
 
             // do again, maybe an app has now been installed
             populateAppList();
@@ -223,10 +265,62 @@ public class OpenPgpAppSelectDialog extends Activity {
         }
 
         @Override
+        public void onStop() {
+            super.onStop();
+
+            dismiss();
+        }
+
+        @Override
         public void onDismiss(DialogInterface dialog) {
             super.onDismiss(dialog);
 
             ((OpenPgpAppSelectDialog) getActivity()).onDismissApgDialog();
+        }
+    }
+
+    public static class OpenKeychainInfoFragment extends DialogFragment {
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setTitle("No OpenPGP app installed");
+            builder.setView(LayoutInflater.from(getActivity()).inflate(
+                    R.layout.dialog_openkeychain_info, null, false));
+
+            builder.setNegativeButton("Cancel", new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dismiss();
+                }
+            });
+            builder.setPositiveButton("Install", new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    startOpenKeychainInstallActivity();
+                    dismiss();
+                }
+            });
+
+            return builder.create();
+        }
+
+        private void startOpenKeychainInstallActivity() {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("market://details?id=org.sufficientlysecure.keychain")));
+            } catch (ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=org.sufficientlysecure.keychain")));
+            }
+        }
+
+        @Override
+        public void onStop() {
+            super.onStop();
+
+            dismiss();
         }
     }
 
@@ -249,7 +343,9 @@ public class OpenPgpAppSelectDialog extends Activity {
     }
 
     public void onDismissApgDialog() {
-        showOpenPgpSelectDialogFragment();
+        if (!isStopped) {
+            showOpenPgpSelectDialogFragment();
+        }
     }
 
     private static class OpenPgpProviderEntry {
@@ -272,16 +368,6 @@ public class OpenPgpAppSelectDialog extends Activity {
         @Override
         public String toString() {
             return simpleName;
-        }
-    }
-
-    private void startInstallPackageActivity(String providerPackage) {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=" + providerPackage)));
-        } catch (ActivityNotFoundException anfe) {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=" + providerPackage)));
         }
     }
 }

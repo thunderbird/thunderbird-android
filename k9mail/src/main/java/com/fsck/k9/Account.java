@@ -1512,6 +1512,10 @@ public class Account implements BaseAccount, StoreConfig {
         pgpCryptoKey = keyId;
     }
 
+    public boolean hasCryptoKey() {
+        return pgpCryptoKey != NO_OPENPGP_KEY;
+    }
+
     public boolean getAutocryptPreferEncryptMutual() {
         return autocryptPreferEncryptMutual;
     }
