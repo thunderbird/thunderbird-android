@@ -277,10 +277,10 @@ public class RecipientPresenter implements PermissionPingCallback {
             menu.findItem(R.id.openpgp_encrypt_enable).setVisible(!isEncrypting);
             menu.findItem(R.id.openpgp_encrypt_disable).setVisible(isEncrypting);
 
-            boolean showSignOnly = K9.getOpenPgpSupportSignOnly();
+            boolean hideSignOnly = account.getPgpHideSignOnly();
             boolean isSignOnly = currentCryptoStatus.isSignOnly();
-            menu.findItem(R.id.openpgp_sign_only).setVisible(showSignOnly && !isSignOnly);
-            menu.findItem(R.id.openpgp_sign_only_disable).setVisible(showSignOnly && isSignOnly);
+            menu.findItem(R.id.openpgp_sign_only).setVisible(!hideSignOnly && !isSignOnly);
+            menu.findItem(R.id.openpgp_sign_only_disable).setVisible(!hideSignOnly && isSignOnly);
 
             boolean pgpInlineModeEnabled = currentCryptoStatus.isPgpInlineModeEnabled();
             boolean showPgpInlineEnable = (isEncrypting || isSignOnly) && !pgpInlineModeEnabled;

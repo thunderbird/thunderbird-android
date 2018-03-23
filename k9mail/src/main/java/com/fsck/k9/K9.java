@@ -1257,14 +1257,6 @@ public class K9 extends Application {
         K9.openPgpProvider = openPgpProvider;
     }
 
-    public static boolean getOpenPgpSupportSignOnly() {
-        return openPgpSupportSignOnly;
-    }
-
-    public static void setOpenPgpSupportSignOnly(boolean supportSignOnly) {
-        openPgpSupportSignOnly = supportSignOnly;
-    }
-
     public static String getAttachmentDefaultPath() {
         return attachmentDefaultPath;
     }

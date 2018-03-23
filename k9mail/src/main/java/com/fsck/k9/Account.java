@@ -203,6 +203,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean syncRemoteDeletions;
     private long pgpCryptoKey;
     private boolean autocryptPreferEncryptMutual;
+    private boolean pgpHideSignOnly;
     private boolean markMessageAsReadOnView;
     private boolean alwaysShowCcBcc;
     private boolean allowRemoteSearch;
@@ -429,6 +430,7 @@ public class Account implements BaseAccount, StoreConfig {
         identities = loadIdentities(storage);
 
         pgpCryptoKey = storage.getLong(accountUuid + ".cryptoKey", NO_OPENPGP_KEY);
+        pgpHideSignOnly = storage.getBoolean(accountUuid + ".pgpHideSignOnly", true);
         allowRemoteSearch = storage.getBoolean(accountUuid + ".allowRemoteSearch", false);
         remoteSearchFullText = storage.getBoolean(accountUuid + ".remoteSearchFullText", false);
         remoteSearchNumResults = storage.getInt(accountUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
@@ -695,6 +697,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(accountUuid + ".replyAfterQuote", replyAfterQuote);
         editor.putBoolean(accountUuid + ".stripSignature", stripSignature);
         editor.putLong(accountUuid + ".cryptoKey", pgpCryptoKey);
+        editor.putBoolean(accountUuid + ".pgpHideSignOnly", pgpHideSignOnly);
         editor.putBoolean(accountUuid + ".allowRemoteSearch", allowRemoteSearch);
         editor.putBoolean(accountUuid + ".remoteSearchFullText", remoteSearchFullText);
         editor.putInt(accountUuid + ".remoteSearchNumResults", remoteSearchNumResults);
@@ -1515,6 +1518,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setAutocryptPreferEncryptMutual(boolean autocryptPreferEncryptMutual) {
         this.autocryptPreferEncryptMutual = autocryptPreferEncryptMutual;
+    }
+
+    public boolean getPgpHideSignOnly() {
+        return pgpHideSignOnly;
+    }
+
+    public void setPgpHideSignOnly(boolean pgpHideSignOnly) {
+        this.pgpHideSignOnly = pgpHideSignOnly;
     }
 
     public boolean allowRemoteSearch() {

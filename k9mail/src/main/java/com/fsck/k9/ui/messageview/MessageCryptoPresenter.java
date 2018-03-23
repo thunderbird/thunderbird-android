@@ -67,11 +67,6 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             return false;
         }
 
-        boolean suppressSignOnlyMessages = !K9.getOpenPgpSupportSignOnly();
-        if (suppressSignOnlyMessages && displayStatus.isUnencryptedSigned()) {
-            return false;
-        }
-
         if (cryptoResultAnnotation.isOverrideSecurityWarning()) {
             overrideCryptoWarning = true;
         }

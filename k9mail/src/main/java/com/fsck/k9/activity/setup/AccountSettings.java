@@ -22,7 +22,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
-import android.widget.Toast;
+import android.preference.SwitchPreference;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
@@ -48,6 +48,7 @@ import com.fsck.k9.service.MailService;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog.OnPreferEncryptChangedListener;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
+import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import timber.log.Timber;
 
 
@@ -110,8 +111,10 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_REPLY_AFTER_QUOTE = "reply_after_quote";
     private static final String PREFERENCE_STRIP_SIGNATURE = "strip_signature";
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
-    private static final String PREFERENCE_CRYPTO = "crypto";
-    private static final String PREFERENCE_CRYPTO_KEY = "crypto_key";
+    private static final String PREFERENCE_CRYPTO = "openpgp";
+    private static final String PREFERENCE_CRYPTO_PROVIDER = "openpgp_provider";
+    private static final String PREFERENCE_CRYPTO_KEY = "openpgp_key";
+    private static final String PREFERENCE_CRYPTO_HIDE_SIGN_ONLY = "openpgp_hide_sign_only";
     private static final String PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT = "autocrypt_prefer_encrypt";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
@@ -177,9 +180,9 @@ public class AccountSettings extends K9PreferenceActivity {
     private CheckBoxPreference pushPollOnConnect;
     private ListPreference idleRefreshPeriod;
     private ListPreference mMaxPushFolders;
-    private boolean hasPgpCrypto = false;
     private OpenPgpKeyPreference pgpCryptoKey;
     private Preference autocryptPreferEncryptMutual;
+    private SwitchPreference pgpHideSignOnly;
 
     private PreferenceScreen searchScreen;
     private CheckBoxPreference cloudSearchEnabled;
@@ -198,6 +201,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference spamFolder;
     private ListPreference trashFolder;
     private CheckBoxPreference alwaysShowCcBcc;
+    private SwitchPreference pgpEnable;
 
 
     public static void actionSettings(Context context, Account account) {
@@ -693,49 +697,90 @@ public class AccountSettings extends K9PreferenceActivity {
                 return true;
             }
         });
+    }
 
-        hasPgpCrypto = K9.isOpenPgpProviderConfigured();
-        PreferenceScreen cryptoMenu = (PreferenceScreen) findPreference(PREFERENCE_CRYPTO);
-        if (hasPgpCrypto) {
-            pgpCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-            pgpCryptoKey.setValue(account.getCryptoKey());
-            pgpCryptoKey.setOpenPgpProvider(K9.getOpenPgpProvider());
-            // TODO: other identities?
-            pgpCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)));
-            pgpCryptoKey.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    long value = (Long) newValue;
-                    pgpCryptoKey.setValue(value);
-                    return false;
-                }
-            });
+        // we might return here from the play store, so it's important we refresh on resume
+        setupCryptoStuff();
+    }
 
-            cryptoMenu.setOnPreferenceClickListener(null);
+    private void setupCryptoStuff() {
+        pgpEnable = (SwitchPreference) findPreference(PREFERENCE_CRYPTO_PROVIDER);
+        pgpCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
+        autocryptPreferEncryptMutual = findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
+        pgpHideSignOnly = (SwitchPreference) findPreference(PREFERENCE_CRYPTO_HIDE_SIGN_ONLY);
 
-            autocryptPreferEncryptMutual = findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
-            autocryptPreferEncryptMutual.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        boolean isPgpConfigured = K9.isOpenPgpProviderConfigured();
+
+        if (!isPgpConfigured) {
+            pgpEnable.setChecked(false);
+            pgpEnable.setSummary(R.string.account_settings_crypto_summary_off);
+            pgpEnable.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    showDialog(DIALOG_AUTOCRYPT_PREFER_ENCRYPT);
-                    return false;
-                }
-            });
-        } else {
-            cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_configured);
-            cryptoMenu.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Dialog dialog = ((PreferenceScreen) preference).getDialog();
-                    if (dialog != null) {
-                        dialog.dismiss();
+                    pgpEnable.setOnPreferenceClickListener(null);
+                    List<String> openPgpProviderPackages =
+                            OpenPgpProviderUtil.getOpenPgpProviderPackages(getApplicationContext());
+                    if (openPgpProviderPackages.size() == 1) {
+                        K9.setOpenPgpProvider(openPgpProviderPackages.get(0));
+                        setupCryptoStuff();
+                    } else {
+                        Intent i = new Intent(getApplicationContext(), OpenPgpAppSelectDialog.class);
+                        startActivity(i);
                     }
-                    Toast.makeText(AccountSettings.this,
-                            R.string.no_crypto_provider_see_global, Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
+
+            pgpCryptoKey.setEnabled(false);
+            autocryptPreferEncryptMutual.setEnabled(false);
+            pgpHideSignOnly.setEnabled(false);
+        } else {
+            String pgpProvider = K9.getOpenPgpProvider();
+            String pgpProviderName = OpenPgpProviderUtil.getOpenPgpProviderName(getPackageManager(), pgpProvider);
+
+            pgpEnable.setChecked(true);
+            pgpEnable.setSummary(getString(R.string.account_settings_crypto_summary_on, pgpProviderName));
+            pgpEnable.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    pgpEnable.setOnPreferenceClickListener(null);
+                    K9.setOpenPgpProvider("");
+                    setupCryptoStuff();
                     return true;
                 }
             });
+
+            pgpCryptoKey.setOpenPgpProvider(pgpProvider);
+
+            pgpCryptoKey.setEnabled(true);
+            autocryptPreferEncryptMutual.setEnabled(true);
+            pgpHideSignOnly.setEnabled(true);
         }
+
+        pgpCryptoKey.setValue(account.getCryptoKey());
+        pgpCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)));
+        pgpCryptoKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                long value = (Long) newValue;
+                pgpCryptoKey.setValue(value);
+                return false;
+            }
+        });
+
+        autocryptPreferEncryptMutual.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                showDialog(DIALOG_AUTOCRYPT_PREFER_ENCRYPT);
+                return false;
+            }
+        });
+
+        pgpHideSignOnly = (SwitchPreference) findPreference(PREFERENCE_CRYPTO_HIDE_SIGN_ONLY);
+        pgpHideSignOnly.setChecked(account.getPgpHideSignOnly());
     }
 
     private void removeListEntry(ListPreference listPreference, String remove) {
@@ -796,11 +841,10 @@ public class AccountSettings extends K9PreferenceActivity {
         account.setReplyAfterQuote(replyAfterQuote.isChecked());
         account.setStripSignature(stripSignature.isChecked());
         account.setLocalStorageProviderId(localStorageProvider.getValue());
-        if (hasPgpCrypto) {
+        if (pgpCryptoKey != null) {
             account.setCryptoKey(pgpCryptoKey.getValue());
-        } else {
-            account.setCryptoKey(Account.NO_OPENPGP_KEY);
         }
+        account.setPgpHideSignOnly(pgpHideSignOnly.isChecked());
 
         account.setAutoExpandFolder(autoExpandFolder.getValue());
 
