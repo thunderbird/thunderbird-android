@@ -8,10 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,8 +36,6 @@ import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.TimePickerPreference;
 import com.fsck.k9.service.MailService;
-import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
-import org.openintents.openpgp.util.OpenPgpAppPreference;
 
 
 public class Prefs extends K9PreferenceActivity {
@@ -94,9 +89,6 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_HIDE_TIMEZONE = "privacy_hide_timezone";
     private static final String PREFERENCE_HIDE_HOSTNAME_WHEN_CONNECTING = "privacy_hide_hostname_when_connecting";
 
-    private static final String PREFERENCE_OPENPGP_PROVIDER = "openpgp_provider";
-    private static final String PREFERENCE_OPENPGP_SUPPORT_SIGN_ONLY = "openpgp_support_sign_only";
-
     private static final String PREFERENCE_AUTOFIT_WIDTH = "messageview_autofit_width";
     private static final String PREFERENCE_BACKGROUND_OPS = "background_ops";
     private static final String PREFERENCE_DEBUG_LOGGING = "debug_logging";
@@ -108,11 +100,7 @@ public class Prefs extends K9PreferenceActivity {
     private static final String PREFERENCE_FOLDERLIST_WRAP_NAME = "folderlist_wrap_folder_name";
     private static final String PREFERENCE_SPLITVIEW_MODE = "splitview_mode";
 
-    private static final String APG_PROVIDER_PLACEHOLDER = "apg-placeholder";
-
     private static final int ACTIVITY_CHOOSE_FOLDER = 1;
-
-    private static final int DIALOG_APG_DEPRECATION_WARNING = 1;
 
     // Named indices for the mVisibleRefileActions field
     private static final int VISIBLE_REFILE_ACTIONS_DELETE = 0;
@@ -156,9 +144,6 @@ public class Prefs extends K9PreferenceActivity {
     private CheckBoxPreference mHideHostnameWhenConnecting;
     private CheckBoxPreference mWrapFolderNames;
     private CheckBoxListPreference mVisibleRefileActions;
-
-    private OpenPgpAppPreference mOpenPgpProvider;
-    private CheckBoxPreference mOpenPgpSupportSignOnly;
 
     private CheckBoxPreference mQuietTimeEnabled;
     private CheckBoxPreference mDisableNotificationDuringQuietTime;
@@ -388,28 +373,6 @@ public class Prefs extends K9PreferenceActivity {
         mHideTimeZone.setChecked(K9.hideTimeZone());
         mHideHostnameWhenConnecting.setChecked(K9.hideHostnameWhenConnecting());
 
-        mOpenPgpProvider = (OpenPgpAppPreference) findPreference(PREFERENCE_OPENPGP_PROVIDER);
-        mOpenPgpProvider.setValue(K9.getOpenPgpProvider());
-        if (OpenPgpAppPreference.isApgInstalled(getApplicationContext())) {
-            mOpenPgpProvider.addLegacyProvider(
-                    APG_PROVIDER_PLACEHOLDER, getString(R.string.apg), R.drawable.ic_apg_small);
-        }
-        mOpenPgpProvider.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                String value = newValue.toString();
-                if (APG_PROVIDER_PLACEHOLDER.equals(value)) {
-                    mOpenPgpProvider.setValue("");
-                    showDialog(DIALOG_APG_DEPRECATION_WARNING);
-                } else {
-                    mOpenPgpProvider.setValue(value);
-                }
-                return false;
-            }
-        });
-
-        mOpenPgpSupportSignOnly = (CheckBoxPreference) findPreference(PREFERENCE_OPENPGP_SUPPORT_SIGN_ONLY);
-        mOpenPgpSupportSignOnly.setChecked(K9.getOpenPgpSupportSignOnly());
-
         mAttachmentPathPreference = findPreference(PREFERENCE_ATTACHMENT_DEF_PATH);
         mAttachmentPathPreference.setSummary(K9.getAttachmentDefaultPath());
         mAttachmentPathPreference
@@ -566,9 +529,6 @@ public class Prefs extends K9PreferenceActivity {
         K9.setHideTimeZone(mHideTimeZone.isChecked());
         K9.setHideHostnameWhenConnecting(mHideHostnameWhenConnecting.isChecked());
 
-        K9.setOpenPgpProvider(mOpenPgpProvider.getValue());
-        K9.setOpenPgpSupportSignOnly(mOpenPgpSupportSignOnly.isChecked());
-
         StorageEditor editor = storage.edit();
         K9.save(editor);
         editor.commit();
@@ -595,25 +555,6 @@ public class Prefs extends K9PreferenceActivity {
             }
         },
         K9.getContactNameColor()).show();
-    }
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        Dialog dialog = null;
-        switch (id) {
-            case DIALOG_APG_DEPRECATION_WARNING: {
-                dialog = new ApgDeprecationWarningDialog(this);
-                dialog.setOnCancelListener(new OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        mOpenPgpProvider.show();
-                    }
-                });
-                break;
-            }
-
-        }
-        return dialog;
     }
 
     @Override
