@@ -1,16 +1,12 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
-
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
 public class ImapPushStateTest {
     @Test
     public void parse_withValidArgument() throws Exception {

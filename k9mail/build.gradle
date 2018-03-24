@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.xwray:groupie-kotlin-android-extensions:2.0.3'
     implementation "org.jetbrains.anko:anko-coroutines:0.10.4"
 
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     testImplementation "org.robolectric:robolectric:${robolectricVersion}"
     testImplementation "junit:junit:${junitVersion}"

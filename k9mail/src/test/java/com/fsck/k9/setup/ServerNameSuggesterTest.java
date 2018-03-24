@@ -4,13 +4,10 @@ package com.fsck.k9.setup;
 import com.fsck.k9.mail.ServerSettings.Type;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(RobolectricTestRunner.class)
 public class ServerNameSuggesterTest {
     private ServerNameSuggester serverNameSuggester;
 

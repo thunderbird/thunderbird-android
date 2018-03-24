@@ -12,8 +12,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -22,7 +20,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 
-@RunWith(RobolectricTestRunner.class)
 public class DeferredFileBodyTest {
     public static final String TEST_ENCODING = "test-encoding";
     public static final byte[] TEST_DATA_SHORT = "test data".getBytes();

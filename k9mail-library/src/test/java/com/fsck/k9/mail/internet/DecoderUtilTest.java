@@ -1,15 +1,11 @@
 package com.fsck.k9.mail.internet;
 
 
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
-
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
 public class DecoderUtilTest {
     private static final String INVALID = "=?utf-8?Q??=";
 

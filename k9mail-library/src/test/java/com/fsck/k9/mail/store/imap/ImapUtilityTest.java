@@ -17,17 +17,14 @@
 
 package com.fsck.k9.mail.store.imap;
 
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.List;
+
+import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
 public class ImapUtilityTest  {
     @Test
     public void testGetImapSequenceValues() {

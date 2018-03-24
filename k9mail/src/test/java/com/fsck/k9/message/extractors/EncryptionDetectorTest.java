@@ -4,8 +4,6 @@ package com.fsck.k9.message.extractors;
 import com.fsck.k9.mail.Message;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static com.fsck.k9.message.MessageCreationHelper.createMessage;
 import static com.fsck.k9.message.MessageCreationHelper.createMultipartMessage;
@@ -17,7 +15,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
 public class EncryptionDetectorTest {
     private static final String CRLF = "\r\n";
 

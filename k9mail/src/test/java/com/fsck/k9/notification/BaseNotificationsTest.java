@@ -11,8 +11,6 @@ import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,7 +20,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
 public class BaseNotificationsTest {
     private static final int ACCOUNT_COLOR = 0xAABBCC;
     private static final String ACCOUNT_NAME = "AccountName";

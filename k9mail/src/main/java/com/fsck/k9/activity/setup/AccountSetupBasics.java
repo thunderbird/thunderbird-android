@@ -314,6 +314,7 @@ public class AccountSetupBasics extends K9Activity
             }
             if (mAccount == null) {
                 mAccount = Preferences.getPreferences(this).newAccount();
+                mAccount.setChipColor(AccountCreator.pickColor(this));
             }
             mAccount.setName(getOwnerName());
             mAccount.setEmail(email);
@@ -400,6 +401,7 @@ public class AccountSetupBasics extends K9Activity
 
         if (mAccount == null) {
             mAccount = Preferences.getPreferences(this).newAccount();
+            mAccount.setChipColor(AccountCreator.pickColor(this));
         }
         mAccount.setName(getOwnerName());
         mAccount.setEmail(email);
