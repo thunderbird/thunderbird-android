@@ -1269,7 +1269,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="no_crypto_provider_see_global">No OpenPGP app configured, see global settings!</string>
     <string name="crypto_no_provider_title">This email is encrypted</string>
     <string name="crypto_no_provider_message">This email has been encrypted with OpenPGP.\nTo read it, you need to install and configure a compatible OpenPGP App.</string>
-    <string name="crypto_no_provider_button">Choose OpenPGP App</string>
+    <string name="crypto_no_provider_button">Go to Settings</string>
 
     <string name="mail_list_widget_text">K-9 Message List</string>
     <string name="mail_list_widget_loading">Loading messages…</string>

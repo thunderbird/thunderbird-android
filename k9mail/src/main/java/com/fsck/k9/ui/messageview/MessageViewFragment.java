@@ -36,7 +36,7 @@ import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.MessageReference;
-import com.fsck.k9.activity.setup.OpenPgpAppSelectDialog;
+import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
@@ -708,7 +708,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         @Override
         public void showCryptoConfigDialog() {
-            OpenPgpAppSelectDialog.startOpenPgpChooserActivity(getActivity(), mAccount);
+            AccountSettings.actionSettingsOpenPgp(getActivity(), mAccount);
         }
     };
 

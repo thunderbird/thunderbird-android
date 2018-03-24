@@ -23,6 +23,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
 import android.preference.SwitchPreference;
+import android.widget.ListAdapter;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
@@ -54,6 +55,7 @@ import timber.log.Timber;
 
 public class AccountSettings extends K9PreferenceActivity {
     private static final String EXTRA_ACCOUNT = "account";
+    private static final String EXTRA_SHOW_OPENPGP = "show_openpgp";
 
     private static final int DIALOG_COLOR_PICKER_ACCOUNT = 1;
     private static final int DIALOG_COLOR_PICKER_LED = 2;
@@ -210,12 +212,20 @@ public class AccountSettings extends K9PreferenceActivity {
         context.startActivity(i);
     }
 
+    public static void actionSettingsOpenPgp(Context context, Account account) {
+        Intent i = new Intent(context, AccountSettings.class);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
+        i.putExtra(EXTRA_SHOW_OPENPGP, true);
+        context.startActivity(i);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         account = Preferences.getPreferences(this).getAccount(accountUuid);
+        boolean startInOpenPgp = getIntent().getBooleanExtra(EXTRA_SHOW_OPENPGP, false);
 
         try {
             RemoteStore store = account.getRemoteStore();
@@ -697,6 +707,11 @@ public class AccountSettings extends K9PreferenceActivity {
                 return true;
             }
         });
+
+        if (startInOpenPgp) {
+            PreferenceScreen preference = (PreferenceScreen) findPreference(PREFERENCE_CRYPTO);
+            goToPreferenceScreen(preference);
+        }
     }
 
     @Override
@@ -1026,6 +1041,17 @@ public class AccountSettings extends K9PreferenceActivity {
 
             remoteSearchNumResults
                     .setSummary(String.format(getString(R.string.account_settings_remote_search_num_summary), maxResults));
+        }
+    }
+
+    private void goToPreferenceScreen(PreferenceScreen preference) {
+        PreferenceScreen preferenceScreen = getPreferenceScreen();
+        ListAdapter listAdapter = preferenceScreen.getRootAdapter();
+        for (int itemNumber = 0; itemNumber < listAdapter.getCount(); itemNumber++) {
+            if (listAdapter.getItem(itemNumber).equals(preference)) {
+                preferenceScreen.onItemClick(null, null, itemNumber, 0);
+                break;
+            }
         }
     }
 
