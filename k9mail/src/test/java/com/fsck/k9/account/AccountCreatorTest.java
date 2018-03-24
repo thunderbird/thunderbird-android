@@ -5,10 +5,13 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings.Type;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 
 
+@RunWith(RobolectricTestRunner.class)
 public class AccountCreatorTest {
 
     @Test
