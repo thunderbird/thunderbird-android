@@ -6,11 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -19,7 +17,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
 public class ImapResponseParserTest {
     private PeekableInputStream peekableInputStream;
 

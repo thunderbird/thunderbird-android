@@ -13,8 +13,6 @@ import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static com.fsck.k9.message.TestMessageConstructionUtils.bodypart;
 import static com.fsck.k9.message.TestMessageConstructionUtils.messageFromBody;
@@ -28,7 +26,6 @@ import static org.mockito.Mockito.mock;
 
 
 @SuppressWarnings("WeakerAccess")
-@RunWith(RobolectricTestRunner.class)
 public class MessageCryptoStructureDetectorTest {
     MessageCryptoAnnotations messageCryptoAnnotations = mock(MessageCryptoAnnotations.class);
     static final String PGP_INLINE_DATA = "" +

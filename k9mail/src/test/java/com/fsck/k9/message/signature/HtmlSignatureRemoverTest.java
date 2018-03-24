@@ -2,14 +2,11 @@ package com.fsck.k9.message.signature;
 
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static com.fsck.k9.message.html.HtmlHelper.extractText;
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(RobolectricTestRunner.class)
 public class HtmlSignatureRemoverTest {
     @Test
     public void shouldStripSignatureFromK9StyleHtml() throws Exception {

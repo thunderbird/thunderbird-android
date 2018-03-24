@@ -14,13 +14,10 @@ import org.jsoup.nodes.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static junit.framework.Assert.assertEquals;
 
 
-@RunWith(RobolectricTestRunner.class)
 public class HtmlConverterTest {
     // Useful if you want to write stuff to a file for debugging in a browser.
     private static final boolean WRITE_TO_FILE = Boolean.parseBoolean(System.getProperty("k9.htmlConverterTest.writeToFile", "false"));

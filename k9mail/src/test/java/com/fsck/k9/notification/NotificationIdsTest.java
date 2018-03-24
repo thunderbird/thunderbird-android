@@ -3,15 +3,12 @@ package com.fsck.k9.notification;
 
 import com.fsck.k9.Account;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
 public class NotificationIdsTest {
     private static final boolean INCOMING = true;
     private static final boolean OUTGOING = false;
