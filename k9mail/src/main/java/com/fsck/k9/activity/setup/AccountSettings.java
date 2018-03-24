@@ -24,6 +24,7 @@ import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
 import android.preference.SwitchPreference;
 import android.widget.ListAdapter;
+import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
@@ -728,8 +729,21 @@ public class AccountSettings extends K9PreferenceActivity {
         autocryptPreferEncryptMutual = findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
         pgpHideSignOnly = (SwitchPreference) findPreference(PREFERENCE_CRYPTO_HIDE_SIGN_ONLY);
 
-        boolean isPgpConfigured = account.isOpenPgpProviderConfigured();
+        String pgpProvider = account.getOpenPgpProvider();
+        String pgpProviderName = null;
+        boolean isPgpConfigured = pgpProvider != null;
         boolean isKeyConfigured = account.hasOpenPgpKey();
+
+        if (isPgpConfigured) {
+            pgpProviderName = OpenPgpProviderUtil.getOpenPgpProviderName(getPackageManager(), pgpProvider);
+
+            if (pgpProviderName == null) {
+                Toast.makeText(this, R.string.account_settings_openpgp_missing, Toast.LENGTH_LONG).show();
+                account.setOpenPgpProvider(null);
+                pgpProvider = null;
+                isPgpConfigured = false;
+            }
+        }
 
         if (!isPgpConfigured) {
             pgpEnable.setChecked(false);
@@ -750,9 +764,6 @@ public class AccountSettings extends K9PreferenceActivity {
                 }
             });
         } else {
-            String pgpProvider = account.getOpenPgpProvider();
-            String pgpProviderName = OpenPgpProviderUtil.getOpenPgpProviderName(getPackageManager(), pgpProvider);
-
             pgpEnable.setChecked(true);
             pgpEnable.setSummary(getString(R.string.account_settings_crypto_summary_on, pgpProviderName));
             pgpEnable.setOnPreferenceClickListener(new OnPreferenceClickListener() {

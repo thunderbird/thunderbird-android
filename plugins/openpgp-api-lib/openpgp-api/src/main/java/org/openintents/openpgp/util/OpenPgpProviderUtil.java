@@ -36,7 +36,7 @@ public class OpenPgpProviderUtil {
         intent.setPackage(openPgpProvider);
         List<ResolveInfo> resInfo = packageManager.queryIntentServices(intent, 0);
         if (resInfo == null) {
-            return "";
+            return null;
         }
 
         for (ResolveInfo resolveInfo : resInfo) {
@@ -47,6 +47,6 @@ public class OpenPgpProviderUtil {
             return String.valueOf(resolveInfo.serviceInfo.loadLabel(packageManager));
         }
 
-        return "";
+        return null;
     }
 }
