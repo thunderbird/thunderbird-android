@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -37,6 +38,8 @@ import timber.log.Timber;
 
 
 public class OpenPgpAppSelectDialog extends Activity {
+    private static final String EXTRA_ACCOUNT = "account";
+
     private static final String OPENKEYCHAIN_PACKAGE = "org.sufficientlysecure.keychain";
     private static final String APG_PROVIDER_PLACEHOLDER = "apg-placeholder";
     private static final String PACKAGE_NAME_APG = "org.thialfihar.android.apg";
@@ -50,21 +53,27 @@ public class OpenPgpAppSelectDialog extends Activity {
             String.format(MARKET_INTENT_URI_BASE, OPENKEYCHAIN_PACKAGE)));
 
     private static final ArrayList<String> PROVIDER_BLACKLIST = new ArrayList<>();
+
     private boolean isStopped;
+    private Account account;
 
     static {
         // Unfortunately, the current released version of APG includes a broken version of the API
         PROVIDER_BLACKLIST.add(PACKAGE_NAME_APG);
     }
 
-    public static void startOpenPgpChooserActivity(Context context) {
+    public static void startOpenPgpChooserActivity(Context context, Account account) {
         Intent i = new Intent(context, OpenPgpAppSelectDialog.class);
+        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
+        account = Preferences.getPreferences(this).getAccount(accountUuid);
 
         setTheme(K9.getK9Theme() == K9.Theme.LIGHT ?
                 R.style.Theme_K9_Dialog_Translucent_Light : R.style.Theme_K9_Dialog_Translucent_Dark);
@@ -117,11 +126,6 @@ public class OpenPgpAppSelectDialog extends Activity {
 
             Context context = getActivity();
 
-            OpenPgpProviderEntry noneEntry = new OpenPgpProviderEntry("",
-                    context.getString(R.string.openpgp_list_preference_none),
-                    getResources().getDrawable(R.drawable.ic_action_cancel_launchersize));
-            openPgpProviderList.add(0, noneEntry);
-
             if (OpenPgpAppPreference.isApgInstalled(getActivity())) {
                 Drawable icon = getResources().getDrawable(R.drawable.ic_apg_small);
                 openPgpProviderList.add(new OpenPgpProviderEntry(
@@ -173,25 +177,25 @@ public class OpenPgpAppSelectDialog extends Activity {
             dismiss();
         }
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            selectedPackage = K9.getOpenPgpProvider();
-        }
-
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
             builder.setTitle(R.string.account_settings_crypto_app_select_title);
+            builder.setNegativeButton("Cancel", new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dismiss();
+                }
+            });
 
             // do again, maybe an app has now been installed
             populateAppList();
 
             // Init ArrayAdapter with OpenPGP Providers
             ListAdapter adapter = new ArrayAdapter<OpenPgpProviderEntry>(getActivity(),
-                    android.R.layout.select_dialog_singlechoice, android.R.id.text1, openPgpProviderList) {
+                    android.R.layout.select_dialog_item, android.R.id.text1, openPgpProviderList) {
                 public View getView(int position, View convertView, ViewGroup parent) {
                     // User super class to create the View
                     View v = super.getView(position, convertView, parent);
@@ -209,7 +213,7 @@ public class OpenPgpAppSelectDialog extends Activity {
                 }
             };
 
-            builder.setSingleChoiceItems(adapter, getIndexOfProviderList(selectedPackage),
+            builder.setSingleChoiceItems(adapter, 0,
                     new DialogInterface.OnClickListener() {
 
                         @Override
@@ -237,17 +241,6 @@ public class OpenPgpAppSelectDialog extends Activity {
                     });
 
             return builder.create();
-        }
-
-        private int getIndexOfProviderList(String packageName) {
-            for (OpenPgpProviderEntry app : openPgpProviderList) {
-                if (app.packageName.equals(packageName)) {
-                    return openPgpProviderList.indexOf(app);
-                }
-            }
-
-            // default is "none"
-            return 0;
         }
 
         @Override
@@ -335,11 +328,8 @@ public class OpenPgpAppSelectDialog extends Activity {
     }
 
     private void persistOpenPgpProviderSetting(String selectedPackage) {
-        K9.setOpenPgpProvider(selectedPackage);
-
-        StorageEditor editor = Preferences.getPreferences(this).getStorage().edit();
-        K9.save(editor);
-        editor.commit();
+        account.setOpenPgpProvider(selectedPackage);
+        account.save(Preferences.getPreferences(this));
     }
 
     public void onDismissApgDialog() {

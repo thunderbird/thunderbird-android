@@ -12,7 +12,6 @@ import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
 
 import com.fsck.k9.Globals;
-import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Address;
@@ -70,8 +69,8 @@ public class MessageViewInfoExtractor {
     }
 
     @WorkerThread
-    public MessageViewInfo extractMessageForView(Message message, @Nullable MessageCryptoAnnotations cryptoAnnotations)
-            throws MessagingException {
+    public MessageViewInfo extractMessageForView(Message message, @Nullable MessageCryptoAnnotations cryptoAnnotations,
+            boolean openPgpProviderConfigured) throws MessagingException {
         ArrayList<Part> extraParts = new ArrayList<>();
         Part cryptoContentPart = MessageCryptoStructureDetector.findPrimaryEncryptedOrSignedPart(message, extraParts);
 
@@ -85,7 +84,7 @@ public class MessageViewInfoExtractor {
         boolean isOpenPgpEncrypted = (MessageCryptoStructureDetector.isPartMultipartEncrypted(cryptoContentPart) &&
                         MessageCryptoStructureDetector.isMultipartEncryptedOpenPgpProtocol(cryptoContentPart)) ||
                         MessageCryptoStructureDetector.isPartPgpInlineEncrypted(cryptoContentPart);
-        if (!K9.isOpenPgpProviderConfigured() && isOpenPgpEncrypted) {
+        if (!openPgpProviderConfigured && isOpenPgpEncrypted) {
             CryptoResultAnnotation noProviderAnnotation = CryptoResultAnnotation.createErrorAnnotation(
                     CryptoError.OPENPGP_ENCRYPTED_NO_PROVIDER, null);
             return MessageViewInfo.createWithErrorState(message, false)

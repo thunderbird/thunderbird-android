@@ -62,7 +62,7 @@ public class MessageCryptoHelper {
 
 
     private final Context context;
-    private final String openPgpProviderPackage;
+    private final String openPgpProvider;
     private final AutocryptOperations autocryptOperations;
     private final Object callbackLock = new Object();
     private final Deque<CryptoPart> partsToProcess = new ArrayDeque<>();
@@ -91,20 +91,16 @@ public class MessageCryptoHelper {
 
 
     public MessageCryptoHelper(Context context, OpenPgpApiFactory openPgpApiFactory,
-            AutocryptOperations autocryptOperations) {
+            AutocryptOperations autocryptOperations, @NonNull String openPgpProvider) {
         this.context = context.getApplicationContext();
-
-        if (!K9.isOpenPgpProviderConfigured()) {
-            throw new IllegalStateException("MessageCryptoHelper must only be called with a OpenPGP provider!");
-        }
 
         this.autocryptOperations = autocryptOperations;
         this.openPgpApiFactory = openPgpApiFactory;
-        openPgpProviderPackage = K9.getOpenPgpProvider();
+        this.openPgpProvider = openPgpProvider;
     }
 
-    public boolean isConfiguredForOutdatedCryptoProvider() {
-        return !openPgpProviderPackage.equals(K9.getOpenPgpProvider());
+    public boolean isConfiguredForOpenPgpProvider(String openPgpProvider) {
+        return this.openPgpProvider.equals(openPgpProvider);
     }
 
     public void asyncStartOrResumeProcessingMessage(Message message, MessageCryptoCallback callback,
@@ -236,7 +232,7 @@ public class MessageCryptoHelper {
     }
 
     private void connectToCryptoProviderService() {
-        openPgpServiceConnection = new OpenPgpServiceConnection(context, openPgpProviderPackage,
+        openPgpServiceConnection = new OpenPgpServiceConnection(context, openPgpProvider,
                 new OnBound() {
 
                     @Override

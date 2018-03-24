@@ -18,13 +18,13 @@ public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo
     private static final MessageViewInfoExtractor messageViewInfoExtractor = MessageViewInfoExtractor.getInstance();
 
 
-    private final Message message;
+    private final LocalMessage message;
     private MessageViewInfo messageViewInfo;
     @Nullable
     private MessageCryptoAnnotations annotations;
 
     public LocalMessageExtractorLoader(
-            Context context, Message message, @Nullable MessageCryptoAnnotations annotations) {
+            Context context, LocalMessage message, @Nullable MessageCryptoAnnotations annotations) {
         super(context);
         this.message = message;
         this.annotations = annotations;
@@ -51,7 +51,7 @@ public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo
     @WorkerThread
     public MessageViewInfo loadInBackground() {
         try {
-            return messageViewInfoExtractor.extractMessageForView(message, annotations);
+            return messageViewInfoExtractor.extractMessageForView(message, annotations, message.getAccount().isOpenPgpProviderConfigured());
         } catch (Exception e) {
             Timber.e(e, "Error while decoding message");
             return null;

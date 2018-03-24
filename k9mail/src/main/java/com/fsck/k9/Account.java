@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
@@ -201,9 +202,10 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean replyAfterQuote;
     private boolean stripSignature;
     private boolean syncRemoteDeletions;
-    private long pgpCryptoKey;
+    private String openPgpProvider;
+    private long openPgpKey;
     private boolean autocryptPreferEncryptMutual;
-    private boolean pgpHideSignOnly;
+    private boolean openPgpHideSignOnly;
     private boolean markMessageAsReadOnView;
     private boolean alwaysShowCcBcc;
     private boolean allowRemoteSearch;
@@ -297,7 +299,7 @@ public class Account implements BaseAccount, StoreConfig {
         replyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
         stripSignature = DEFAULT_STRIP_SIGNATURE;
         syncRemoteDeletions = true;
-        pgpCryptoKey = NO_OPENPGP_KEY;
+        openPgpKey = NO_OPENPGP_KEY;
         allowRemoteSearch = false;
         remoteSearchFullText = false;
         remoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
@@ -429,8 +431,8 @@ public class Account implements BaseAccount, StoreConfig {
         isSignatureBeforeQuotedText = storage.getBoolean(accountUuid + ".signatureBeforeQuotedText", false);
         identities = loadIdentities(storage);
 
-        pgpCryptoKey = storage.getLong(accountUuid + ".cryptoKey", NO_OPENPGP_KEY);
-        pgpHideSignOnly = storage.getBoolean(accountUuid + ".pgpHideSignOnly", true);
+        openPgpKey = storage.getLong(accountUuid + ".cryptoKey", NO_OPENPGP_KEY);
+        openPgpHideSignOnly = storage.getBoolean(accountUuid + ".openPgpHideSignOnly", true);
         allowRemoteSearch = storage.getBoolean(accountUuid + ".allowRemoteSearch", false);
         remoteSearchFullText = storage.getBoolean(accountUuid + ".remoteSearchFullText", false);
         remoteSearchNumResults = storage.getInt(accountUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
@@ -696,8 +698,8 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(accountUuid + ".defaultQuotedTextShown", defaultQuotedTextShown);
         editor.putBoolean(accountUuid + ".replyAfterQuote", replyAfterQuote);
         editor.putBoolean(accountUuid + ".stripSignature", stripSignature);
-        editor.putLong(accountUuid + ".cryptoKey", pgpCryptoKey);
-        editor.putBoolean(accountUuid + ".pgpHideSignOnly", pgpHideSignOnly);
+        editor.putLong(accountUuid + ".cryptoKey", openPgpKey);
+        editor.putBoolean(accountUuid + ".openPgpHideSignOnly", openPgpHideSignOnly);
         editor.putBoolean(accountUuid + ".allowRemoteSearch", allowRemoteSearch);
         editor.putBoolean(accountUuid + ".remoteSearchFullText", remoteSearchFullText);
         editor.putInt(accountUuid + ".remoteSearchNumResults", remoteSearchNumResults);
@@ -1504,16 +1506,29 @@ public class Account implements BaseAccount, StoreConfig {
         this.stripSignature = stripSignature;
     }
 
-    public long getCryptoKey() {
-        return pgpCryptoKey;
+    public boolean isOpenPgpProviderConfigured() {
+        return openPgpProvider != null;
     }
 
-    public void setCryptoKey(long keyId) {
-        pgpCryptoKey = keyId;
+    @Nullable
+    public String getOpenPgpProvider() {
+        return openPgpProvider;
     }
 
-    public boolean hasCryptoKey() {
-        return pgpCryptoKey != NO_OPENPGP_KEY;
+    public void setOpenPgpProvider(String openPgpProvider) {
+        this.openPgpProvider = openPgpProvider;
+    }
+
+    public long getOpenPgpKey() {
+        return openPgpKey;
+    }
+
+    public void setOpenPgpKey(long keyId) {
+        openPgpKey = keyId;
+    }
+
+    public boolean hasOpenPgpKey() {
+        return openPgpKey != NO_OPENPGP_KEY;
     }
 
     public boolean getAutocryptPreferEncryptMutual() {
@@ -1524,12 +1539,12 @@ public class Account implements BaseAccount, StoreConfig {
         this.autocryptPreferEncryptMutual = autocryptPreferEncryptMutual;
     }
 
-    public boolean getPgpHideSignOnly() {
-        return pgpHideSignOnly;
+    public boolean getOpenPgpHideSignOnly() {
+        return openPgpHideSignOnly;
     }
 
-    public void setPgpHideSignOnly(boolean pgpHideSignOnly) {
-        this.pgpHideSignOnly = pgpHideSignOnly;
+    public void setOpenPgpHideSignOnly(boolean openPgpHideSignOnly) {
+        this.openPgpHideSignOnly = openPgpHideSignOnly;
     }
 
     public boolean allowRemoteSearch() {

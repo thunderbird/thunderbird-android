@@ -244,7 +244,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 mMessageView, mAccount, messageViewInfo);
         if (!handledByCryptoPresenter) {
             mMessageView.showMessage(mAccount, messageViewInfo);
-            if (K9.isOpenPgpProviderConfigured()) {
+            if (mAccount.isOpenPgpProviderConfigured()) {
                 mMessageView.getMessageHeaderView().setCryptoStatusDisabled();
             } else {
                 mMessageView.getMessageHeaderView().hideCryptoStatus();
@@ -254,7 +254,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private void displayHeaderForLoadingMessage(LocalMessage message) {
         mMessageView.setHeaders(message, mAccount);
-        if (K9.isOpenPgpProviderConfigured()) {
+        if (mAccount.isOpenPgpProviderConfigured()) {
             mMessageView.getMessageHeaderView().setCryptoStatusLoading();
         }
         displayMessageSubject(getSubjectForMessage(message));
@@ -708,7 +708,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         @Override
         public void showCryptoConfigDialog() {
-            OpenPgpAppSelectDialog.startOpenPgpChooserActivity(getActivity());
+            OpenPgpAppSelectDialog.startOpenPgpChooserActivity(getActivity(), mAccount);
         }
     };
 
