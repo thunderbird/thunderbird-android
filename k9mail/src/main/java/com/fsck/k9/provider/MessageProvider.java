@@ -3,6 +3,7 @@ package com.fsck.k9.provider;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -690,11 +691,15 @@ public class MessageProvider extends ContentProvider {
 
             Object[] values = new Object[2];
 
-            for (Account account : Preferences.getPreferences(getContext()).getAvailableAccounts()) {
+            Context context = getContext();
+            MessagingController controller = MessagingController.getInstance(context);
+            Collection<Account> accounts = Preferences.getPreferences(context).getAvailableAccounts();
+
+            for (Account account : accounts) {
                 if (account.getAccountNumber() == accountNumber) {
                     myAccount = account;
                     try {
-                        myAccountStats = account.getStats(getContext());
+                        myAccountStats = controller.getAccountStats(account);
                         values[0] = myAccount.getDescription();
                         if (myAccountStats == null) {
                             values[1] = 0;

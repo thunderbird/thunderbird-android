@@ -115,6 +115,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private static final int DIALOG_RECREATE_ACCOUNT = 3;
     private static final int DIALOG_NO_FILE_MANAGER = 4;
 
+    private MessagingController controller;
+
     /*
      * Must be serializable hence implementation class used for declaration.
      */
@@ -246,7 +248,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         @Override
         public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
             try {
-                AccountStats stats = account.getStats(Accounts.this);
+                AccountStats stats = controller.getAccountStats(account);
                 if (stats == null) {
                     Timber.w("Unable to get account stats");
                 } else {
@@ -364,6 +366,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        controller = MessagingController.getInstance(getApplicationContext());
 
         if (!K9.isHideSpecialAccounts()) {
             createSpecialAccounts();

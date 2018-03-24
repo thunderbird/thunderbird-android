@@ -384,7 +384,7 @@ class ImapSync {
 
         int unreadBeforeStart = 0;
         try {
-            AccountStats stats = account.getStats(context);
+            AccountStats stats = controller.getAccountStats(account);
             unreadBeforeStart = stats.unreadMessageCount;
 
         } catch (MessagingException e) {

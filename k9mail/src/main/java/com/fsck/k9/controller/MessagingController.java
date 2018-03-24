@@ -27,11 +27,8 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
@@ -93,13 +90,9 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.MessageRemovalListener;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
-import com.fsck.k9.provider.EmailProvider;
-import com.fsck.k9.provider.EmailProvider.StatsColumns;
-import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
-import com.fsck.k9.search.SqlQueryBuilder;
 import timber.log.Timber;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
@@ -141,6 +134,7 @@ public class MessagingController {
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final TransportProvider transportProvider;
+    private final AccountStatsCollector accountStatsCollector;
 
     private ImapMessageStore imapMessageStore;
 
@@ -155,19 +149,22 @@ public class MessagingController {
             NotificationController notificationController = NotificationController.newInstance(appContext);
             Contacts contacts = Contacts.getInstance(context);
             TransportProvider transportProvider = TransportProvider.getInstance();
-            inst = new MessagingController(appContext, notificationController, contacts, transportProvider);
+            AccountStatsCollector accountStatsCollector = new DefaultAccountStatsCollector(context);
+            inst = new MessagingController(appContext, notificationController, contacts, transportProvider,
+                    accountStatsCollector);
         }
         return inst;
     }
 
 
     @VisibleForTesting
-    MessagingController(Context context, NotificationController notificationController,
-            Contacts contacts, TransportProvider transportProvider) {
+    MessagingController(Context context, NotificationController notificationController, Contacts contacts,
+            TransportProvider transportProvider, AccountStatsCollector accountStatsCollector) {
         this.context = context;
         this.notificationController = notificationController;
         this.contacts = contacts;
         this.transportProvider = transportProvider;
+        this.accountStatsCollector = accountStatsCollector;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -1081,7 +1078,7 @@ public class MessagingController {
 
         int unreadBeforeStart = 0;
         try {
-            AccountStats stats = account.getStats(context);
+            AccountStats stats = getAccountStats(account);
             unreadBeforeStart = stats.unreadMessageCount;
 
         } catch (MessagingException e) {
@@ -2735,7 +2732,7 @@ public class MessagingController {
             @Override
             public void run() {
                 try {
-                    AccountStats stats = account.getStats(context);
+                    AccountStats stats = getAccountStats(account);
                     listener.accountStatusChanged(account, stats);
                 } catch (MessagingException me) {
                     Timber.e(me, "Count not get unread count for account %s", account.getDescription());
@@ -2745,9 +2742,11 @@ public class MessagingController {
         });
     }
 
-    public void getSearchAccountStats(final SearchAccount searchAccount,
-            final MessagingListener listener) {
+    public AccountStats getAccountStats(Account account) throws MessagingException {
+        return accountStatsCollector.getStats(account);
+    }
 
+    public void getSearchAccountStats(final SearchAccount searchAccount, final MessagingListener listener) {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -2756,67 +2755,9 @@ public class MessagingController {
         });
     }
 
-    public AccountStats getSearchAccountStatsSynchronous(final SearchAccount searchAccount,
-            final MessagingListener listener) {
+    public AccountStats getSearchAccountStatsSynchronous(SearchAccount searchAccount, MessagingListener listener) {
+        AccountStats stats = accountStatsCollector.getSearchAccountStats(searchAccount);
 
-        Preferences preferences = Preferences.getPreferences(context);
-        LocalSearch search = searchAccount.getRelatedSearch();
-
-        // Collect accounts that belong to the search
-        String[] accountUuids = search.getAccountUuids();
-        List<Account> accounts;
-        if (search.searchAllAccounts()) {
-            accounts = preferences.getAccounts();
-        } else {
-            accounts = new ArrayList<>(accountUuids.length);
-            for (int i = 0, len = accountUuids.length; i < len; i++) {
-                String accountUuid = accountUuids[i];
-                accounts.set(i, preferences.getAccount(accountUuid));
-            }
-        }
-
-        ContentResolver cr = context.getContentResolver();
-
-        int unreadMessageCount = 0;
-        int flaggedMessageCount = 0;
-
-        String[] projection = {
-                StatsColumns.UNREAD_COUNT,
-                StatsColumns.FLAGGED_COUNT
-        };
-
-        for (Account account : accounts) {
-            StringBuilder query = new StringBuilder();
-            List<String> queryArgs = new ArrayList<>();
-            ConditionsTreeNode conditions = search.getConditions();
-            SqlQueryBuilder.buildWhereClause(account, conditions, query, queryArgs);
-
-            String selection = query.toString();
-            String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
-
-            Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
-                    "account/" + account.getUuid() + "/stats");
-
-            // Query content provider to get the account stats
-            Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    unreadMessageCount += cursor.getInt(0);
-                    flaggedMessageCount += cursor.getInt(1);
-                }
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }
-        }
-
-        // Create AccountStats instance...
-        AccountStats stats = new AccountStats();
-        stats.unreadMessageCount = unreadMessageCount;
-        stats.flaggedMessageCount = flaggedMessageCount;
-
-        // ...and notify the listener
         if (listener != null) {
             listener.accountStatusChanged(searchAccount, stats);
         }
@@ -2832,8 +2773,7 @@ public class MessagingController {
 
                 int unreadMessageCount = 0;
                 try {
-                    Folder localFolder = account.getLocalStore().getFolder(folderServerId);
-                    unreadMessageCount = localFolder.getUnreadMessageCount();
+                    unreadMessageCount = getFolderUnreadMessageCount(account, folderServerId);
                 } catch (MessagingException me) {
                     Timber.e(me, "Count not get unread count for account %s", account.getDescription());
                 }
@@ -2845,6 +2785,11 @@ public class MessagingController {
         put("getFolderUnread:" + account.getDescription() + ":" + folderServerId, l, unreadRunnable);
     }
 
+    public int getFolderUnreadMessageCount(Account account, String folderServerId) throws MessagingException {
+        LocalStore localStore = account.getLocalStore();
+        Folder localFolder = localStore.getFolder(folderServerId);
+        return localFolder.getUnreadMessageCount();
+    }
 
     public boolean isMoveCapable(MessageReference messageReference) {
         return !messageReference.getUid().startsWith(K9.LOCAL_UID_PREFIX);
@@ -3573,7 +3518,7 @@ public class MessagingController {
 
                             account.setRingNotified(false);
                             try {
-                                AccountStats stats = account.getStats(context);
+                                AccountStats stats = getAccountStats(account);
                                 if (stats == null || stats.unreadMessageCount == 0) {
                                     notificationController.clearNewMailNotifications(account);
                                 }

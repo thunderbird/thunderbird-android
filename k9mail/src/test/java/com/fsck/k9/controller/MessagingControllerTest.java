@@ -33,6 +33,9 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchAccount;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -133,6 +136,20 @@ public class MessagingControllerTest {
     private LocalMessage localMessageToSend1;
     private volatile boolean hasFetchedMessage = false;
 
+    private AccountStatsCollector accountStatsCollector = new AccountStatsCollector() {
+        @NotNull
+        @Override
+        public AccountStats getSearchAccountStats(@NotNull SearchAccount searchAccount) {
+            return accountStats;
+        }
+
+        @Nullable
+        @Override
+        public AccountStats getStats(@NotNull Account account) {
+            return accountStats;
+        }
+    };
+
 
     @Before
     public void setUp() throws MessagingException {
@@ -140,7 +157,8 @@ public class MessagingControllerTest {
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
-        controller = new MessagingController(appContext, notificationController, contacts, transportProvider);
+        controller = new MessagingController(appContext, notificationController, contacts, transportProvider,
+                accountStatsCollector);
 
         configureAccount();
         configureLocalStore();
@@ -898,7 +916,6 @@ public class MessagingControllerTest {
     private void configureAccount() throws MessagingException {
         when(account.isAvailable(appContext)).thenReturn(true);
         when(account.getLocalStore()).thenReturn(localStore);
-        when(account.getStats(any(Context.class))).thenReturn(accountStats);
         when(account.getMaximumAutoDownloadMessageSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
         when(account.getEmail()).thenReturn("user@host.com");
     }
