@@ -1,7 +1,6 @@
 package com.fsck.k9.ui.settings
 
 import android.app.Activity
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -16,8 +15,11 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_settings.*
+import org.koin.android.architecture.ext.viewModel
 
 class SettingsActivity : K9Activity() {
+    private val viewModel: SettingsViewModel by viewModel()
+
     private lateinit var settingsAdapter: GroupAdapter<ViewHolder>
 
 
@@ -48,7 +50,6 @@ class SettingsActivity : K9Activity() {
     }
 
     private fun populateSettingsList() {
-        val viewModel = ViewModelProviders.of(this).get(SettingsViewModel::class.java)
         viewModel.accounts.observe(this) { accounts ->
             populateSettingsList(accounts)
         }
