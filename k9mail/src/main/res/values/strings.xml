@@ -1298,4 +1298,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="dialog_autocrypt_mutual_learn_more">You can <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">click here</a> to learn more.</string>
 
     <string name="general_settings_title">General settings</string>
+
+    <string name="dialog_openkeychain_info_title">No OpenPGP app installed</string>
+    <string name="dialog_openkeychain_info_install">Install</string>
+    <string name="dialog_openkeychain_info_text">K-9 Mail requires OpenKeychain for end-to-end encryption.</string>
 </resources>

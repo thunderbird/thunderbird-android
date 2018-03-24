@@ -46,7 +46,7 @@ public class AutocryptPreferEncryptDialog extends AlertDialog implements OnClick
         // TODO add autocrypt logo?
         // setIcon(R.drawable.autocrypt);
         setView(contentView);
-        setButton(Dialog.BUTTON_NEUTRAL, context.getString(R.string.done_action), new OnClickListener() {
+        setButton(Dialog.BUTTON_POSITIVE, context.getString(R.string.done_action), new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 cancel();
