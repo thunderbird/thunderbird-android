@@ -1,7 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -28,6 +26,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -447,7 +446,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         setTitle();
 
-        currentMessageBuilder = (MessageBuilder) getLastNonConfigurationInstance();
+        currentMessageBuilder = (MessageBuilder) getLastCustomNonConfigurationInstance();
         if (currentMessageBuilder != null) {
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.reattachCallback(this);
@@ -612,7 +611,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Override
-    public Object onRetainNonConfigurationInstance() {
+    public Object onRetainCustomNonConfigurationInstance() {
         if (currentMessageBuilder != null) {
             currentMessageBuilder.detachCallback();
         }
@@ -1062,7 +1061,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void openAutoExpandFolder() {
-        String folder = account.getAutoExpandFolderName();
+        String folder = account.getAutoExpandFolder();
         LocalSearch search = new LocalSearch(folder);
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folder);
@@ -1437,15 +1436,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         private void updateReferencedMessage() {
             if (messageReference != null && messageReference.getFlag() != null) {
                 Timber.d("Setting referenced message (%s, %s) flag to %s",
-                        messageReference.getFolderName(),
+                        messageReference.getFolderServerId(),
                         messageReference.getUid(),
                         messageReference.getFlag());
 
                 final Account account = Preferences.getPreferences(context)
                         .getAccount(messageReference.getAccountUuid());
-                final String folderName = messageReference.getFolderName();
+                final String folderServerId = messageReference.getFolderServerId();
                 final String sourceMessageUid = messageReference.getUid();
-                MessagingController.getInstance(context).setFlag(account, folderName,
+                MessagingController.getInstance(context).setFlag(account, folderServerId,
                         sourceMessageUid, messageReference.getFlag(), true);
             }
         }
@@ -1654,7 +1653,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     };
 
     private void initializeActionBar() {
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -1662,18 +1661,18 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public MessagingListener messagingListener = new SimpleMessagingListener() {
 
         @Override
-        public void messageUidChanged(Account account, String folder, String oldUid, String newUid) {
+        public void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid) {
             if (relatedMessageReference == null) {
                 return;
             }
 
             Account sourceAccount = Preferences.getPreferences(MessageCompose.this)
                     .getAccount(relatedMessageReference.getAccountUuid());
-            String sourceFolder = relatedMessageReference.getFolderName();
+            String sourceFolder = relatedMessageReference.getFolderServerId();
             String sourceMessageUid = relatedMessageReference.getUid();
 
             boolean changedMessageIsCurrent =
-                    account.equals(sourceAccount) && folder.equals(sourceFolder) && oldUid.equals(sourceMessageUid);
+                    account.equals(sourceAccount) && folderServerId.equals(sourceFolder) && oldUid.equals(sourceMessageUid);
             if (changedMessageIsCurrent) {
                 relatedMessageReference = relatedMessageReference.withModifiedUid(newUid);
             }

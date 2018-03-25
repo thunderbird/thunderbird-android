@@ -5,11 +5,11 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.mail.Message;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static junit.framework.Assert.assertEquals;
@@ -17,9 +17,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class ActivityListenerTest {
-    private static final String FOLDER = "folder";
+    private static final String FOLDER_SERVER_ID = ":folder:123";
+    private static final String FOLDER_NAME = "folder";
     private static final String ERROR_MESSAGE = "errorMessage";
     private static final int COUNT = 23;
 
@@ -41,8 +42,8 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenFolderStatusChanged() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.folderStatusChanged(account, FOLDER, COUNT);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_SERVER_ID, FOLDER_NAME);
+        activityListener.folderStatusChanged(account, FOLDER_SERVER_ID, COUNT);
 
         String operation = activityListener.getOperation(context);
 
@@ -51,7 +52,7 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxStarted() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_SERVER_ID, FOLDER_NAME);
 
         String operation = activityListener.getOperation(context);
 
@@ -60,8 +61,8 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxProgress_shouldResultInValidStatus() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.synchronizeMailboxProgress(account, FOLDER, 1, 2);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_SERVER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxProgress(account, FOLDER_SERVER_ID, 1, 2);
 
         String operation = activityListener.getOperation(context);
 
@@ -70,8 +71,8 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxFailed_shouldResultInValidStatus() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.synchronizeMailboxFailed(account, FOLDER, ERROR_MESSAGE);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_SERVER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxFailed(account, FOLDER_SERVER_ID, ERROR_MESSAGE);
 
         String operation = activityListener.getOperation(context);
 
@@ -84,9 +85,9 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxFailedAfterHeadersStarted_shouldResultInValidStatus() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER);
-        activityListener.synchronizeMailboxFailed(account, FOLDER, ERROR_MESSAGE);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_SERVER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER_SERVER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxFailed(account, FOLDER_SERVER_ID, ERROR_MESSAGE);
 
         String operation = activityListener.getOperation(context);
 
@@ -99,8 +100,8 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxFinished() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.synchronizeMailboxFinished(account, FOLDER, COUNT, COUNT);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_SERVER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxFinished(account, FOLDER_SERVER_ID, COUNT, COUNT);
 
         String operation = activityListener.getOperation(context);
 
@@ -113,7 +114,7 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxHeadersStarted_shouldResultInValidStatus() {
-        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER);
+        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER_SERVER_ID, FOLDER_NAME);
 
         String operation = activityListener.getOperation(context);
 
@@ -122,8 +123,8 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxHeadersProgress() {
-        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER);
-        activityListener.synchronizeMailboxHeadersProgress(account, FOLDER, 2, 3);
+        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER_SERVER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxHeadersProgress(account, FOLDER_SERVER_ID, 2, 3);
 
         String operation = activityListener.getOperation(context);
 
@@ -132,8 +133,8 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxHeadersFinished() {
-        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER);
-        activityListener.synchronizeMailboxHeadersFinished(account, FOLDER, COUNT, COUNT);
+        activityListener.synchronizeMailboxHeadersStarted(account, FOLDER_SERVER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxHeadersFinished(account, FOLDER_SERVER_ID, COUNT, COUNT);
 
         String operation = activityListener.getOperation(context);
 
@@ -142,8 +143,8 @@ public class ActivityListenerTest {
 
     @Test
     public void getOperation__whenSynchronizeMailboxNewMessage() {
-        activityListener.synchronizeMailboxStarted(account, FOLDER);
-        activityListener.synchronizeMailboxNewMessage(account, FOLDER, message);
+        activityListener.synchronizeMailboxStarted(account, FOLDER_SERVER_ID, FOLDER_NAME);
+        activityListener.synchronizeMailboxNewMessage(account, FOLDER_SERVER_ID, message);
 
         String operation = activityListener.getOperation(context);
 

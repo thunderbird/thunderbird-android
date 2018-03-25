@@ -77,7 +77,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
     <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>
     <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-    <string name="app_emoji_icons">Emoji icons: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
 
     <string name="read_messages_label">Read Emails</string>
     <string name="read_messages_desc">Allows this application to read your Emails.</string>
@@ -277,7 +276,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="message_compose_attachments_forward_toast">The message cannot be forwarded because some attachments have not been downloaded.</string>
-    <string name="message_compose_show_quoted_text_action">Quote message</string>
+    <string name="message_compose_show_quoted_text_action">Include quoted message</string>
     <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
 
@@ -1202,6 +1201,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_unencrypted_sign_error">end-to-end signature contained an error</string>
     <string name="crypto_msg_incomplete_signed">must fully download message to process signature</string>
     <string name="crypto_msg_unsupported_signed">contains unsupported end-to-end signature</string>
+    <string name="crypto_msg_unsupported_encrypted">Message is encrypted, but in an unsupported format.</string>
+    <string name="crypto_msg_cancelled">Message is encrypted, but decryption was cancelled.</string>
 
     <string name="crypto_msg_title_unencrypted_signed_e2e">End-to-End signed plaintext</string>
     <string name="crypto_msg_unencrypted_sign_verified">from verified signer</string>
@@ -1285,4 +1286,12 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="openpgp_enabled_error_back">Back</string>
     <string name="openpgp_enabled_error_disable">Disable Encryption</string>
     <string name="openpgp_encryption">OpenPGP Encryption</string>
+
+    <string name="account_settings_crypto_prefer_encrypt">Autocrypt mutual mode</string>
+    <string name="dialog_autocrypt_mutual_title">Autocrypt mutual mode</string>
+    <string name="dialog_autocrypt_mutual_description_1">Messages will normally be encrypted by choice, or when replying to an encrypted message.</string>
+    <string name="dialog_autocrypt_mutual_description_2">If both sender and recipients enable mutual mode, encryption will be enabled by default.</string>
+    <string name="dialog_autocrypt_mutual_learn_more">You can <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">click here</a> to learn more.</string>
+
+    <string name="general_settings_title">General settings</string>
 </resources>

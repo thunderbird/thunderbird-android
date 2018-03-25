@@ -56,9 +56,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="app_authors_fmt">Höfundar: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Upplýsingar útgáfu: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Við erum að nota eftirfarandi aðgerðasöfn frá öðrum aðilum: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Emoji-tákn: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Lesa viðhengi tölvupósta</string>
-  <string name="read_attachment_desc">Leyfa þessu forriti að lesa viðhengi tölvupósta.</string>
   <string name="read_messages_label">Lesa tölvupósta</string>
   <string name="read_messages_desc">Leyfa þessu forriti að lesa tölvupóstana mína.</string>
   <string name="delete_messages_label">Eyða tölvupóstum</string>
@@ -72,6 +69,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="compose_title_reply">Svara</string>
   <string name="compose_title_reply_all">Svara öllum</string>
   <string name="compose_title_forward">Framsenda</string>
+  <string name="compose_title_forward_as_attachment">Áframsenda sem viðhengi</string>
   <string name="choose_account_title">Veldu aðgang</string>
   <string name="choose_folder_title">Veldu möppu</string>
   <string name="status_loading_account_folder">Athuga <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -102,6 +100,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="archive_action">Geymsla</string>
   <string name="spam_action">Ruslpóstur</string>
   <string name="forward_action">Framsenda</string>
+  <string name="forward_as_attachment_action">Áframsenda sem viðhengi</string>
   <string name="move_action">Færa</string>
   <string name="single_message_options_action">Senda…</string>
   <string name="refile_action">Endurraða…</string>
@@ -226,7 +225,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="compose_error_incomplete_recipient">Reitur fyrir viðtakanda inniheldur ekki nægar upplýsingar!</string>
   <string name="error_contact_address_not_found">Ekkert póstfang fannst fyrir þennan tengilið.</string>
   <string name="message_compose_attachments_skipped_toast">Ekki var hægt að áframsenda sum viðhengi því ekki er búið að hlaða þeim inn.</string>
-  <string name="message_compose_show_quoted_text_action">Tilvitnun í skilaboð</string>
+  <string name="message_compose_attachments_forward_toast">Ekki var hægt að áframsenda póstinn því ekki er búið að hlaða sumum viðhengjum inn.</string>
+  <string name="message_compose_show_quoted_text_action">Hafa með tilvitnuð skilaboð</string>
   <string name="message_compose_description_delete_quoted_text">Fjarlægja tilvitnun</string>
   <string name="message_compose_description_edit_quoted_text">Breyta tilvitnun</string>
   <string name="message_view_from_format">Frá: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -246,6 +246,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="message_no_additional_headers_available">Búið er að ná í alla hausa, en það eru engir viðbótarhausar sem hægt er að sækja.</string>
   <string name="message_additional_headers_retrieval_failed">Mistókst að sækja viðbótarhausa úr gagnagrunni eða af póstþjóni.</string>
   <string name="from_same_sender">Fleira frá þessum sendanda</string>
+  <string name="search_from_format">Frá <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Aflúsa / Hreinsa meginmál skilaboða</string>
   <string name="message_discarded_toast">Skilaboðum hent</string>
   <string name="message_saved_toast">Skilaboð vistuð sem drög</string>
@@ -285,6 +286,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_privacy_hide_useragent_detail">Fjarlægja kennistreng K-9 úr pósthausum</string>
   <string name="global_settings_privacy_hide_timezone">Fela tímabelti</string>
   <string name="global_settings_privacy_hide_timezone_detail">Nota UTC sem staðvært tímabelti í pósthausum og svarhausum</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting">Fela vélarheiti</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Kynna sig sem \'localhost\' þegar tengst er við SMTP-þjóna</string>
   <string name="global_settings_notification_hide_subject_title">Fela viðfangsefni í tilkynningum</string>
   <string name="global_settings_notification_hide_subject_never">Aldrei</string>
   <string name="global_settings_notification_hide_subject_when_locked">Þegar tækið er læst</string>
@@ -432,6 +435,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="move_copy_cannot_copy_unsynced_message">Get ekki afritað eða fært skilaboð sem ekki er samstillt við póstþjóninn</string>
   <string name="account_setup_failed_dlg_title">Ekki var hægt að ljúka uppsetningu</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Rangt notandanafn eða lykilorð.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Þjónninn gaf upp ógilt SSL-skilríki. Stundum getur þetta gerst vegna vanstillingar á þjóninum. En stundum gerist þetta vegna þess að einhver er að gera árás á þig eða póstþjóninn. Ef þú ert ekki alveg viss, smelltu þá á \'Hafna\' og hafðu samband við þá sem sjá um póstþjóninn þinn.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Gat ekki tengst við póstþjón.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Breyta upplýsingum</string>
   <string name="account_setup_failed_dlg_continue_action">Áfram</string>
@@ -484,7 +488,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_sync">Náð í póst</string>
   <string name="account_settings_folders">Möppur</string>
   <string name="account_settings_quote_prefix_label">Forskeyti á tilvitnun</string>
-  <string name="account_settings_crypto">Dulkóðun</string>
+  <string name="account_settings_crypto">Dulritun</string>
   <string name="account_settings_crypto_app">OpenPGP-forrit</string>
   <string name="account_settings_crypto_key">Lykillinn minn</string>
   <string name="account_settings_no_openpgp_provider_configured">Ekkert OpenPGP-forrit er uppsett</string>
@@ -690,6 +694,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="background_ops_auto_sync_only">Þegar merkt er við sjálfvirka samstillingu</string>
   <string name="batch_select_all">Velja allt</string>
   <string name="account_setup_push_limit_label">Hámarksfjöldi mappa sem á að athuga með ýtingu</string>
+  <string name="account_setup_push_limit_5">5 möppur</string>
   <string name="account_setup_push_limit_10">10 möppur</string>
   <string name="account_setup_push_limit_25">25 möppur</string>
   <string name="account_setup_push_limit_50">50 möppur</string>
@@ -805,6 +810,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="settings_export_success_generic">Tókst að flytja út stillingar</string>
   <string name="settings_import_global_settings_success">Flutti inn víðværar stillingar úr <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Flutti inn <xliff:g id="accounts">%s</xliff:g> frá <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Flutti inn <xliff:g id="original_account_name">%s</xliff:g> sem <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 aðgangur</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> aðgangar</item>
@@ -964,29 +970,18 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="openpgp_sign_only_ok">Náði því!</string>
   <string name="openpgp_sign_only_disable">Gera óvirkt</string>
   <string name="openpgp_sign_only_keep_enabled">Halda virku</string>
-  <string name="crypto_msg_disabled">Skilaboðin eru ekki dulrituð</string>
-  <string name="crypto_msg_encrypted_error">Skilaboðin eru dulrituð, en villa kom upp við við afkóðun.</string>
-  <string name="crypto_msg_encrypted_insecure">Skilaboðin eru dulrituð, en eru óörugg!</string>
-  <string name="crypto_msg_signed_error">Skilaboðin eru undirrituð, en ekki var hægt að sannreyna undirritun þeirra.</string>
-  <string name="crypto_msg_encrypted_no_provider">Skilaboðin eru dulrituð, en ekkert dulritunarforrit er uppsett.</string>
-  <string name="crypto_msg_unsupported_encrypted">Skilaboðin eru dulrituð, en á óstuddu sniði.</string>
-  <string name="crypto_msg_unsupported_signed">Skilaboðin eru undirrituð, en á óstuddu sniði.</string>
-  <string name="crypto_msg_incomplete_encrypted">Skilaboðin eru dulrituð, en þau verður að hala niður að fullu svo hægt sé að afkóða þau.</string>
-  <string name="crypto_msg_cancelled">Skilaboðin eru dulrituð, en hætt var við afkóðun.</string>
-  <string name="crypto_msg_signed_unencrypted">Skilaboðin eru undirrituð, en ekki dulrituð.</string>
-  <string name="crypto_msg_encrypted_unsigned">Skilaboðin voru dulrituð, en ekki undirrituð.</string>
-  <string name="crypto_msg_sign_unknown">Undirritun gerð með óþekktum lykli.</string>
-  <string name="crypto_msg_sign_verified">Undirritun gerð með öruggum lykli.</string>
-  <string name="crypto_msg_sign_unverified">Undirritun gerð með óöruggum lykli!</string>
-  <string name="crypto_msg_sign_error">Undirritun innihélt villu.</string>
-  <string name="crypto_msg_sign_mismatch">Undirritun gerð með röngum lykli.</string>
-  <string name="crypto_msg_sign_expired">Undirritun gerð með útrunnum lykli.</string>
-  <string name="crypto_msg_sign_revoked">Undirritun gerð með afturkölluðum lykli.</string>
-  <string name="crypto_msg_sign_insecure">Undirritun gerð með óöruggum lykli.</string>
-  <string name="crypto_msg_sign_incomplete">Það verður að sækja dulrituð skilaboð að fullu svo hægt sé að sannreyna undirritun þeirra.</string>
-  <string name="crypto_msg_signed_encrypted">Skilaboðin eru undirrituð og dulrituð.</string>
+  <string name="openpgp_dialog_sign_only_title">PGP Sign-Only hamur</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Undirritanir geta bilað ef verið er að senda á póstlista.</string>
+  <string name="crypto_msg_title_plaintext">Hreinn texti</string>
+  <string name="crypto_msg_unencrypted_sign_verified">frá sannvottuðum undirritara</string>
+  <string name="crypto_msg_title_unencrypted_signed">Undirritaður hreintexti</string>
+  <string name="crypto_msg_title_encrypted_unknown">Dulritað</string>
+  <string name="crypto_msg_encrypted_no_provider">en ekkert dulritunarforrit er uppsett</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Dulritað</string>
+  <string name="crypto_msg_title_encrypted_signed">Dulritað</string>
   <string name="crypto_info_ok">Í lagi</string>
-  <string name="crypto_info_view_key">Skoða undirritara</string>
+  <string name="crypto_info_view_signer">Skoða undirritara</string>
+  <string name="crypto_info_view_sender">Skoða sendanda</string>
   <string name="crypto_info_view_security_warning">Nánar</string>
   <string name="locked_attach_unlock">Aflæsa</string>
   <string name="locked_attach_unencrypted">Þessi hluti var ekki dulritaður og gæti því verið óöruggur.</string>
@@ -996,12 +991,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="messageview_decrypt_retry">Reyna aftur</string>
   <string name="messageview_decrypt_incomplete">Það verður að sækja dulrituð skilaboð svo hægt sé að afkóða þau.</string>
   <string name="messageview_crypto_error_title">Villa við að afkóða póst</string>
-  <string name="messageview_crypto_warning_title">Öryggisviðvörun</string>
-  <string name="messageview_crypto_warning_revoked">Þessi skilaboð voru undirrituð með <b>lykli sem hefur verið afturkallaður!</b></string>
-  <string name="messageview_crypto_warning_expired">Þessi skilaboð voru undirrituð með <b>lykli sem er útrunninn!</b></string>
-  <string name="messageview_crypto_warning_insecure">Þessi skilaboð voru undirrituð með <b>lykli sem er óöruggur!</b></string>
-  <string name="messageview_crypto_warning_error">Það var <b>villa í undirritun þessara skilaboða!</b></string>
-  <string name="messageview_crypto_warning_show_anyway">Birta skilaboðin samt</string>
   <string name="recipient_error_non_ascii">Ekki er ennþá stuðningur við sérstafi!</string>
   <string name="recipient_error_parse_failed">Villa við að þátta netfang!</string>
   <string name="unsigned_text_divider_label">Óundirritaður texti</string>

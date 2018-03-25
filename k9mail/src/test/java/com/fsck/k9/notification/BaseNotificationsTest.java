@@ -7,13 +7,10 @@ import android.support.v4.app.NotificationCompat.Builder;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,8 +20,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(K9RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
 public class BaseNotificationsTest {
     private static final int ACCOUNT_COLOR = 0xAABBCC;
     private static final String ACCOUNT_NAME = "AccountName";

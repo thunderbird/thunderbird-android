@@ -59,9 +59,6 @@ public class EmailProvider extends ContentProvider {
     private static final int MESSAGES_THREADED = MESSAGE_BASE + 1;
     private static final int MESSAGES_THREAD = MESSAGE_BASE + 2;
 
-    private static final int STATS_BASE = 100;
-    private static final int STATS = STATS_BASE;
-
 
     private static final String MESSAGES_TABLE = "messages";
 
@@ -106,7 +103,8 @@ public class EmailProvider extends ContentProvider {
             FolderColumns.TOP_GROUP,
             FolderColumns.POLL_CLASS,
             FolderColumns.PUSH_CLASS,
-            FolderColumns.DISPLAY_CLASS
+            FolderColumns.DISPLAY_CLASS,
+            FolderColumns.SERVER_ID
     };
 
     private static final String THREADS_TABLE = "threads";
@@ -117,8 +115,6 @@ public class EmailProvider extends ContentProvider {
         matcher.addURI(AUTHORITY, "account/*/messages", MESSAGES);
         matcher.addURI(AUTHORITY, "account/*/messages/threaded", MESSAGES_THREADED);
         matcher.addURI(AUTHORITY, "account/*/thread/#", MESSAGES_THREAD);
-
-        matcher.addURI(AUTHORITY, "account/*/stats", STATS);
     }
 
     public interface SpecialColumns {
@@ -126,7 +122,7 @@ public class EmailProvider extends ContentProvider {
 
         String THREAD_COUNT = "thread_count";
 
-        String FOLDER_NAME = "name";
+        String FOLDER_SERVER_ID = "server_id";
         String INTEGRATE = "integrate";
     }
 
@@ -174,6 +170,7 @@ public class EmailProvider extends ContentProvider {
         String POLL_CLASS = "poll_class";
         String PUSH_CLASS = "push_class";
         String DISPLAY_CLASS = "display_class";
+        String SERVER_ID = "server_id";
     }
 
     public interface ThreadColumns {
@@ -187,11 +184,6 @@ public class EmailProvider extends ContentProvider {
         String UNREAD_COUNT = "unread_count";
         String FLAGGED_COUNT = "flagged_count";
     }
-
-    private static final String[] STATS_DEFAULT_PROJECTION = {
-            StatsColumns.UNREAD_COUNT,
-            StatsColumns.FLAGGED_COUNT
-    };
 
 
     private Preferences mPreferences;
@@ -251,17 +243,6 @@ public class EmailProvider extends ContentProvider {
 
                 cursor = new SpecialColumnsCursor(new IdTrickeryCursor(cursor), projection, specialColumns);
                 cursor = new EmailProviderCacheCursor(accountUuid, cursor, getContext());
-                break;
-            }
-            case STATS: {
-                List<String> segments = uri.getPathSegments();
-                String accountUuid = segments.get(1);
-
-                cursor = getAccountStats(accountUuid, projection, selection, selectionArgs);
-
-                Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid + "/messages");
-
-                cursor.setNotificationUri(contentResolver, notificationUri);
                 break;
             }
         }
@@ -530,69 +511,6 @@ public class EmailProvider extends ContentProvider {
         }
     }
 
-    private Cursor getAccountStats(String accountUuid, String[] columns, final String selection,
-            final String[] selectionArgs) {
-
-        Account account = getAccount(accountUuid);
-        LockableDatabase database = getDatabase(account);
-
-        // Use default projection if none was given
-        String[] sourceProjection = (columns == null) ? STATS_DEFAULT_PROJECTION : columns;
-
-        // Create SQL query string
-        final StringBuilder sql = new StringBuilder();
-        sql.append("SELECT ");
-
-        // Append projection for the database query
-        // e.g. "SUM(read=0) AS unread_count, SUM(flagged) AS flagged_count"
-        boolean first = true;
-        for (String columnName : sourceProjection) {
-            if (!first) {
-                sql.append(',');
-            } else {
-                first = false;
-            }
-
-            if (StatsColumns.UNREAD_COUNT.equals(columnName)) {
-                sql.append("SUM(" + MessageColumns.READ + "=0) AS " + StatsColumns.UNREAD_COUNT);
-            } else if (StatsColumns.FLAGGED_COUNT.equals(columnName)) {
-                sql.append("SUM(" + MessageColumns.FLAGGED + ") AS " + StatsColumns.FLAGGED_COUNT);
-            } else {
-                throw new IllegalArgumentException("Column name not allowed: " + columnName);
-            }
-        }
-
-        // Table selection
-        sql.append(" FROM messages");
-
-        if (containsAny(selection, FOLDERS_COLUMNS)) {
-            sql.append(" JOIN folders ON (folders.id = messages.folder_id)");
-        }
-
-        // WHERE clause
-        sql.append(" WHERE (deleted = 0 AND empty = 0)");
-        if (!TextUtils.isEmpty(selection)) {
-            sql.append(" AND (");
-            sql.append(selection);
-            sql.append(")");
-        }
-
-        // Query the database and return the result cursor
-        try {
-            return database.execute(false, new DbCallback<Cursor>() {
-                @Override
-                public Cursor doDbWork(SQLiteDatabase db) throws WrappedException,
-                        UnavailableStorageException {
-                    return db.rawQuery(sql.toString(), selectionArgs);
-                }
-            });
-        } catch (UnavailableStorageException e) {
-            throw new RuntimeException("Storage not available", e);
-        } catch (MessagingException e) {
-            throw new RuntimeException("messaging exception", e);
-        }
-    }
-
     private Account getAccount(String accountUuid) {
         if (mPreferences == null) {
             Context appContext = getContext().getApplicationContext();
@@ -807,19 +725,5 @@ public class EmailProvider extends ContentProvider {
 
             return super.isNull(realColumnIndex);
         }
-    }
-
-    private static boolean containsAny(String haystack, String[] needles) {
-        if (haystack == null) {
-            return false;
-        }
-
-        for (String needle : needles) {
-            if (haystack.contains(needle)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

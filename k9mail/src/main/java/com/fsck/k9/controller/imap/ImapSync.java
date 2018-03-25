@@ -33,8 +33,8 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -70,23 +70,25 @@ class ImapSync {
 
         Timber.i("Synchronizing folder %s:%s", account.getDescription(), folder);
 
-        for (MessagingListener l : getListeners(listener)) {
-            l.synchronizeMailboxStarted(account, folder);
-        }
-        /*
-         * We don't ever sync the Outbox
-         */
-        if (folder.equals(account.getOutboxFolderName())) {
-            for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxFinished(account, folder, 0, 0);
-            }
-
+        // We don't ever sync the Outbox
+        if (folder.equals(account.getOutboxFolder())) {
             return;
         }
 
         Exception commandException = null;
         try {
             Timber.d("SYNC: About to process pending commands for account %s", account.getDescription());
+
+            Timber.v("SYNC: About to get local folder %s", folder);
+            final LocalStore localStore = account.getLocalStore();
+            tLocalFolder = localStore.getFolder(folder);
+            final LocalFolder localFolder = tLocalFolder;
+            localFolder.open(Folder.OPEN_MODE_RW);
+            String folderName = localFolder.getName();
+
+            for (MessagingListener l : getListeners(listener)) {
+                l.synchronizeMailboxStarted(account, folder, folderName);
+            }
 
             try {
                 processPendingCommandsSynchronous(account);
@@ -99,12 +101,7 @@ class ImapSync {
              * Get the message list from the local store and create an index of
              * the uids within the list.
              */
-            Timber.v("SYNC: About to get local folder %s", folder);
 
-            final LocalStore localStore = account.getLocalStore();
-            tLocalFolder = localStore.getFolder(folder);
-            final LocalFolder localFolder = tLocalFolder;
-            localFolder.open(Folder.OPEN_MODE_RW);
             localFolder.updateLastUid();
             Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
 
@@ -112,7 +109,7 @@ class ImapSync {
                 Timber.v("SYNC: using providedRemoteFolder %s", folder);
                 remoteFolder = providedRemoteFolder;
             } else {
-                Store remoteStore = account.getRemoteStore();
+                RemoteStore remoteStore = account.getRemoteStore();
 
                 Timber.v("SYNC: About to get remote folder %s", folder);
                 remoteFolder = remoteStore.getFolder(folder);
@@ -189,7 +186,7 @@ class ImapSync {
 
                 final AtomicInteger headerProgress = new AtomicInteger(0);
                 for (MessagingListener l : getListeners(listener)) {
-                    l.synchronizeMailboxHeadersStarted(account, folder);
+                    l.synchronizeMailboxHeadersStarted(account, folder, folderName);
                 }
 
 
@@ -227,7 +224,7 @@ class ImapSync {
             if (account.syncRemoteDeletions()) {
                 List<String> destroyMessageUids = new ArrayList<>();
                 for (String localMessageUid : localUidMap.keySet()) {
-                    if (remoteUidMap.get(localMessageUid) == null) {
+                    if (!localMessageUid.startsWith(K9.LOCAL_UID_PREFIX) && remoteUidMap.get(localMessageUid) == null) {
                         destroyMessageUids.add(localMessageUid);
                     }
                 }
@@ -281,7 +278,7 @@ class ImapSync {
             if (commandException != null) {
                 String rootMessage = getRootCauseMessage(commandException);
                 Timber.e("Root cause failure in %s:%s was '%s'",
-                        account.getDescription(), tLocalFolder.getName(), rootMessage);
+                        account.getDescription(), tLocalFolder.getServerId(), rootMessage);
                 localFolder.setStatus(rootMessage);
                 for (MessagingListener l : getListeners(listener)) {
                     l.synchronizeMailboxFailed(account, folder, rootMessage);
@@ -307,7 +304,7 @@ class ImapSync {
                     tLocalFolder.setLastChecked(System.currentTimeMillis());
                 } catch (MessagingException me) {
                     Timber.e(e, "Could not set last checked on folder %s:%s",
-                            account.getDescription(), tLocalFolder.getName());
+                            account.getDescription(), tLocalFolder.getServerId());
                 }
             }
 
@@ -335,9 +332,9 @@ class ImapSync {
      */
     private boolean verifyOrCreateRemoteSpecialFolder(Account account, String folder, Folder remoteFolder,
             MessagingListener listener) throws MessagingException {
-        if (folder.equals(account.getTrashFolderName()) ||
-                folder.equals(account.getSentFolderName()) ||
-                folder.equals(account.getDraftsFolderName())) {
+        if (folder.equals(account.getTrashFolder()) ||
+                folder.equals(account.getSentFolder()) ||
+                folder.equals(account.getDraftsFolder())) {
             if (!remoteFolder.exists()) {
                 if (!remoteFolder.create(FolderType.HOLDS_MESSAGES)) {
                     for (MessagingListener l : getListeners(listener)) {
@@ -383,11 +380,11 @@ class ImapSync {
         if (earliestDate != null) {
             Timber.d("Only syncing messages after %s", earliestDate);
         }
-        final String folder = remoteFolder.getName();
+        final String folder = remoteFolder.getServerId();
 
         int unreadBeforeStart = 0;
         try {
-            AccountStats stats = account.getStats(context);
+            AccountStats stats = controller.getAccountStats(account);
             unreadBeforeStart = stats.unreadMessageCount;
 
         } catch (MessagingException e) {
@@ -562,7 +559,7 @@ class ImapSync {
             final AtomicInteger progress,
             final int todo,
             FetchProfile fp) throws MessagingException {
-        final String folder = remoteFolder.getName();
+        final String folder = remoteFolder.getServerId();
 
         final Date earliestDate = account.getEarliestPollDate();
         remoteFolder.fetch(unsyncedMessages, fp,
@@ -619,7 +616,7 @@ class ImapSync {
             final AtomicInteger newMessages,
             final int todo,
             FetchProfile fp) throws MessagingException {
-        final String folder = remoteFolder.getName();
+        final String folder = remoteFolder.getServerId();
 
         final Date earliestDate = account.getEarliestPollDate();
 
@@ -693,7 +690,7 @@ class ImapSync {
             final AtomicInteger newMessages,
             final int todo,
             FetchProfile fp) throws MessagingException {
-        final String folder = remoteFolder.getName();
+        final String folder = remoteFolder.getServerId();
         final Date earliestDate = account.getEarliestPollDate();
 
         Timber.d("SYNC: Fetching large messages for folder %s", folder);
@@ -747,7 +744,7 @@ class ImapSync {
             final int todo
     ) throws MessagingException {
 
-        final String folder = remoteFolder.getName();
+        final String folder = remoteFolder.getServerId();
         Timber.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size(), folder);
 
         FetchProfile fp = new FetchProfile();

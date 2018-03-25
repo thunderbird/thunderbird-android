@@ -250,6 +250,10 @@
                 <action android:name="org.autocrypt.PEER_ACTION"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+
+            <meta-data
+                android:name="android.service.chooser.chooser_target_service"
+                android:value="com.fsck.k9.service.K9ChooserTargetService" />
         </activity>
 
         <!-- Search Activity - searchable -->
@@ -290,6 +294,10 @@
         <activity
             android:name=".activity.UpgradeDatabases"
             android:label="@string/upgrade_databases_title"/>
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/prefs_title" />
 
         <receiver
             android:name=".service.BootReceiver"
@@ -411,6 +419,15 @@
         <service
             android:name=".service.DatabaseUpgradeService"
             android:exported="false"/>
+
+
+        <service
+            android:name="com.fsck.k9.service.K9ChooserTargetService"
+            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE" >
+            <intent-filter>
+                <action android:name="android.service.chooser.ChooserTargetService" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name=".provider.AttachmentProvider"

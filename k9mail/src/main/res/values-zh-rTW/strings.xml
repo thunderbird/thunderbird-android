@@ -26,9 +26,6 @@
   <string name="app_authors_fmt">作者: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">更新日誌: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">我們目前使用第三方的函式庫: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">表情符號圖示: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">顯示附件</string>
-  <string name="read_attachment_desc">允許該程式讀取附件。</string>
   <string name="read_messages_label">顯示郵件</string>
   <string name="read_messages_desc">允許該程式讀取郵件。</string>
   <string name="delete_messages_label">刪除郵件</string>
@@ -132,7 +129,6 @@
   <string name="notification_action_delete">刪除</string>
   <string name="notification_action_archive">歸檔</string>
   <string name="notification_action_spam">標記為垃圾</string>
-  <string name="notification_certificate_error_title">驗證失敗</string>
   <string name="notification_certificate_error_text">檢查你的伺服器設定</string>
   <string name="notification_bg_sync_ticker">正在檢查郵件：<xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">正在檢查郵件</string>
@@ -172,7 +168,6 @@
   <string name="message_compose_error_no_recipients">至少必須加入一位收件人。</string>
   <string name="error_contact_address_not_found">沒有發現電子郵件地址</string>
   <string name="message_compose_attachments_skipped_toast">由於一些附件還沒有被下載，因此無法轉寄這些附件。</string>
-  <string name="message_compose_show_quoted_text_action">引用郵件</string>
   <string name="message_compose_description_delete_quoted_text">清除引用文字內容</string>
   <string name="message_compose_description_edit_quoted_text">編輯引用文字內容</string>
   <string name="message_view_from_format">寄件人：<xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>

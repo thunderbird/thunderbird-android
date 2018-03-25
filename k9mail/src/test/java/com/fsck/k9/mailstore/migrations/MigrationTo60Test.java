@@ -255,34 +255,34 @@ public class MigrationTo60Test {
         return command;
     }
 
-    OldPendingCommand queueSetFlagBulk(String folderName, boolean newState, Flag flag, String[] uids) {
+    OldPendingCommand queueSetFlagBulk(String folderServerId, boolean newState, Flag flag, String[] uids) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_SET_FLAG_BULK;
         int length = 3 + uids.length;
         command.arguments = new String[length];
-        command.arguments[0] = folderName;
+        command.arguments[0] = folderServerId;
         command.arguments[1] = Boolean.toString(newState);
         command.arguments[2] = flag.toString();
         System.arraycopy(uids, 0, command.arguments, 3, uids.length);
         return command;
     }
 
-    OldPendingCommand queueSetFlagOld(String folderName, boolean newState, Flag flag, String uid) {
+    OldPendingCommand queueSetFlagOld(String folderServerId, boolean newState, Flag flag, String uid) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_SET_FLAG;
         command.arguments = new String[4];
-        command.arguments[0] = folderName;
+        command.arguments[0] = folderServerId;
         command.arguments[1] = uid;
         command.arguments[2] = Boolean.toString(newState);
         command.arguments[3] = flag.toString();
         return command;
     }
 
-    OldPendingCommand queueExpunge(String folderName) {
+    OldPendingCommand queueExpunge(String folderServerId) {
         OldPendingCommand command = new OldPendingCommand();
         command.command = PENDING_COMMAND_EXPUNGE;
         command.arguments = new String[1];
-        command.arguments[0] = folderName;
+        command.arguments[0] = folderServerId;
         return command;
     }
 

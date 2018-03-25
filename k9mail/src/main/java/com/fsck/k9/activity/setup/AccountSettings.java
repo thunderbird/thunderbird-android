@@ -36,16 +36,17 @@ import com.fsck.k9.K9;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.ChooseIdentity;
 import com.fsck.k9.activity.ColorPickerDialog;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.activity.ManageIdentities;
 import com.fsck.k9.crypto.OpenPgpApiHelper;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
+import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog;
+import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog.OnPreferEncryptChangedListener;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import timber.log.Timber;
 
@@ -55,8 +56,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
     private static final int DIALOG_COLOR_PICKER_ACCOUNT = 1;
     private static final int DIALOG_COLOR_PICKER_LED = 2;
-
-    private static final int SELECT_AUTO_EXPAND_FOLDER = 1;
+    private static final int DIALOG_AUTOCRYPT_PREFER_ENCRYPT = 3;
 
     private static final int ACTIVITY_MANAGE_IDENTITIES = 2;
 
@@ -112,6 +112,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_SYNC_REMOTE_DELETIONS = "account_sync_remote_deletetions";
     private static final String PREFERENCE_CRYPTO = "crypto";
     private static final String PREFERENCE_CRYPTO_KEY = "crypto_key";
+    private static final String PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT = "autocrypt_prefer_encrypt";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
@@ -178,7 +179,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference mMaxPushFolders;
     private boolean hasPgpCrypto = false;
     private OpenPgpKeyPreference pgpCryptoKey;
-    private CheckBoxPreference pgpSupportSignOnly;
+    private Preference autocryptPreferEncryptMutual;
 
     private PreferenceScreen searchScreen;
     private CheckBoxPreference cloudSearchEnabled;
@@ -213,7 +214,7 @@ public class AccountSettings extends K9PreferenceActivity {
         account = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try {
-            final Store store = account.getRemoteStore();
+            RemoteStore store = account.getRemoteStore();
             isMoveCapable = store.isMoveCapable();
             isPushCapable = store.isPushCapable();
             isExpungeCapable = store.isExpungeCapable();
@@ -711,6 +712,15 @@ public class AccountSettings extends K9PreferenceActivity {
             });
 
             cryptoMenu.setOnPreferenceClickListener(null);
+
+            autocryptPreferEncryptMutual = findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
+            autocryptPreferEncryptMutual.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    showDialog(DIALOG_AUTOCRYPT_PREFER_ENCRYPT);
+                    return false;
+                }
+            });
         } else {
             cryptoMenu.setSummary(R.string.account_settings_no_openpgp_provider_configured);
             cryptoMenu.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -792,19 +802,14 @@ public class AccountSettings extends K9PreferenceActivity {
             account.setCryptoKey(Account.NO_OPENPGP_KEY);
         }
 
-        // In webdav account we use the exact folder name also for inbox,
-        // since it varies because of internationalization
-        if (account.getStoreUri().startsWith("webdav"))
-            account.setAutoExpandFolderName(autoExpandFolder.getValue());
-        else
-            account.setAutoExpandFolderName(reverseTranslateFolder(autoExpandFolder.getValue()));
+        account.setAutoExpandFolder(autoExpandFolder.getValue());
 
         if (isMoveCapable) {
-            account.setArchiveFolderName(archiveFolder.getValue());
-            account.setDraftsFolderName(draftsFolder.getValue());
-            account.setSentFolderName(sentFolder.getValue());
-            account.setSpamFolderName(spamFolder.getValue());
-            account.setTrashFolderName(trashFolder.getValue());
+            account.setArchiveFolder(archiveFolder.getValue());
+            account.setDraftsFolder(draftsFolder.getValue());
+            account.setSentFolder(sentFolder.getValue());
+            account.setSpamFolder(spamFolder.getValue());
+            account.setTrashFolder(trashFolder.getValue());
         }
 
         //IMAP stuff
@@ -859,13 +864,6 @@ public class AccountSettings extends K9PreferenceActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (pgpCryptoKey != null && pgpCryptoKey.handleOnActivityResult(requestCode, resultCode, data)) {
             return;
-        }
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-            case SELECT_AUTO_EXPAND_FOLDER:
-                autoExpandFolder.setSummary(translateFolder(data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER)));
-                break;
-            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -930,6 +928,16 @@ public class AccountSettings extends K9PreferenceActivity {
 
                 break;
             }
+            case DIALOG_AUTOCRYPT_PREFER_ENCRYPT: {
+                dialog = new AutocryptPreferEncryptDialog(this, account.getAutocryptPreferEncryptMutual(),
+                        new OnPreferEncryptChangedListener() {
+                            @Override
+                            public void onPreferEncryptChanged(boolean enabled) {
+                                account.setAutocryptPreferEncryptMutual(enabled);
+                            }
+                        });
+                break;
+            }
         }
 
         return dialog;
@@ -951,30 +959,11 @@ public class AccountSettings extends K9PreferenceActivity {
         }
     }
 
-    public void onChooseAutoExpandFolder() {
-        Intent selectIntent = new Intent(this, ChooseFolder.class);
-        selectIntent.putExtra(ChooseFolder.EXTRA_ACCOUNT, account.getUuid());
-
-        selectIntent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, autoExpandFolder.getSummary());
-        selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
-        selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_FOLDER_NONE, "yes");
-        selectIntent.putExtra(ChooseFolder.EXTRA_SHOW_DISPLAYABLE_ONLY, "yes");
-        startActivityForResult(selectIntent, SELECT_AUTO_EXPAND_FOLDER);
-    }
-
-    private String translateFolder(String in) {
-        if (account.getInboxFolderName().equalsIgnoreCase(in)) {
+    private String getFolderDisplayName(String folderServerId, String folderName) {
+        if (account.getInboxFolder().equals(folderServerId)) {
             return getString(R.string.special_mailbox_name_inbox);
         } else {
-            return in;
-        }
-    }
-
-    private String reverseTranslateFolder(String in) {
-        if (getString(R.string.special_mailbox_name_inbox).equals(in)) {
-            return account.getInboxFolderName();
-        } else {
-            return in;
+            return folderName;
         }
     }
 
@@ -1019,7 +1008,7 @@ public class AccountSettings extends K9PreferenceActivity {
             Iterator <? extends Folder > iter = folders.iterator();
             while (iter.hasNext()) {
                 Folder folder = iter.next();
-                if (account.getOutboxFolderName().equals(folder.getName())) {
+                if (account.getOutboxFolder().equals(folder.getServerId())) {
                     iter.remove();
                 }
             }
@@ -1032,8 +1021,8 @@ public class AccountSettings extends K9PreferenceActivity {
 
             int i = 1;
             for (Folder folder : folders) {
-                allFolderLabels[i] = folder.getName();
-                allFolderValues[i] = folder.getName();
+                allFolderLabels[i] = getFolderDisplayName(folder.getServerId(), folder.getName());
+                allFolderValues[i] = folder.getServerId();
                 i++;
             }
             return null;
@@ -1067,14 +1056,14 @@ public class AccountSettings extends K9PreferenceActivity {
 
         @Override
         protected void onPostExecute(Void res) {
-            initListPreference(autoExpandFolder, account.getAutoExpandFolderName(), allFolderLabels, allFolderValues);
+            initListPreference(autoExpandFolder, account.getAutoExpandFolder(), allFolderLabels, allFolderValues);
             autoExpandFolder.setEnabled(true);
             if (isMoveCapable) {
-                initListPreference(archiveFolder, account.getArchiveFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(draftsFolder, account.getDraftsFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(sentFolder, account.getSentFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(spamFolder, account.getSpamFolderName(), allFolderLabels, allFolderValues);
-                initListPreference(trashFolder, account.getTrashFolderName(), allFolderLabels, allFolderValues);
+                initListPreference(archiveFolder, account.getArchiveFolder(), allFolderLabels, allFolderValues);
+                initListPreference(draftsFolder, account.getDraftsFolder(), allFolderLabels, allFolderValues);
+                initListPreference(sentFolder, account.getSentFolder(), allFolderLabels, allFolderValues);
+                initListPreference(spamFolder, account.getSpamFolder(), allFolderLabels, allFolderValues);
+                initListPreference(trashFolder, account.getTrashFolder(), allFolderLabels, allFolderValues);
                 archiveFolder.setEnabled(true);
                 spamFolder.setEnabled(true);
                 draftsFolder.setEnabled(true);

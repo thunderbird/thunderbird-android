@@ -77,7 +77,8 @@ public class LocalFolder extends Folder<LocalMessage> {
     private final AttachmentInfoExtractor attachmentInfoExtractor;
 
 
-    private String name = null;
+    private String serverId = null;
+    private String name;
     private long databaseId = -1;
     private int visibleLimit = -1;
     private String prefId = null;
@@ -97,13 +98,13 @@ public class LocalFolder extends Folder<LocalMessage> {
     private MoreMessages moreMessages = MoreMessages.UNKNOWN;
 
 
-    public LocalFolder(LocalStore localStore, String name) {
+    public LocalFolder(LocalStore localStore, String serverId) {
         super();
         this.localStore = localStore;
-        this.name = name;
+        this.serverId = serverId;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
 
-        if (getAccount().getInboxFolderName().equals(getName())) {
+        if (getAccount().getInboxFolder().equals(getServerId())) {
             syncClass =  FolderClass.FIRST_CLASS;
             pushClass =  FolderClass.FIRST_CLASS;
             isInTopGroup = true;
@@ -130,10 +131,6 @@ public class LocalFolder extends Folder<LocalMessage> {
         return getAccount().getSignatureUse();
     }
 
-    public void setLastSelectedFolderName(String destFolderName) {
-        getAccount().setLastSelectedFolderName(destFolderName);
-    }
-
     public boolean syncRemoteDeletions() {
         return getAccount().syncRemoteDeletions();
     }
@@ -157,8 +154,8 @@ public class LocalFolder extends Folder<LocalMessage> {
                     try {
                         String baseQuery = "SELECT " + LocalStore.GET_FOLDER_COLS + " FROM folders ";
 
-                        if (name != null) {
-                            cursor = db.rawQuery(baseQuery + "where folders.name = ?", new String[] { name });
+                        if (serverId != null) {
+                            cursor = db.rawQuery(baseQuery + "where folders.server_id = ?", new String[] { serverId });
                         } else {
                             cursor = db.rawQuery(baseQuery + "where folders.id = ?", new String[] { Long.toString(
                                     databaseId) });
@@ -170,7 +167,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                                 open(cursor);
                             }
                         } else {
-                            Timber.w("Creating folder %s with existing id %d", getName(), getDatabaseId());
+                            Timber.w("Creating folder %s with existing id %d", getServerId(), getDatabaseId());
                             create(FolderType.HOLDS_MESSAGES);
                             open(mode);
                         }
@@ -189,7 +186,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     void open(Cursor cursor) throws MessagingException {
         databaseId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
-        name = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
+        serverId = cursor.getString(LocalStore.FOLDER_SERVER_ID_INDEX);
         visibleLimit = cursor.getInt(LocalStore.FOLDER_VISIBLE_LIMIT_INDEX);
         pushState = cursor.getString(LocalStore.FOLDER_PUSH_STATE_INDEX);
         super.setStatus(cursor.getString(LocalStore.FOLDER_STATUS_INDEX));
@@ -210,11 +207,12 @@ public class LocalFolder extends Folder<LocalMessage> {
         this.syncClass = Folder.FolderClass.valueOf((syncClass == null) ? noClass : syncClass);
         String moreMessagesValue = cursor.getString(LocalStore.MORE_MESSAGES_INDEX);
         moreMessages = MoreMessages.fromDatabaseName(moreMessagesValue);
+        name = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
     }
 
     @Override
     public boolean isOpen() {
-        return (databaseId != -1 && name != null);
+        return (databaseId != -1 && serverId != null);
     }
 
     @Override
@@ -223,8 +221,28 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     @Override
+    public String getServerId() {
+        return serverId;
+    }
+
+    @Override
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) throws MessagingException {
+        try {
+            open(OPEN_MODE_RW);
+
+            if (name.equals(this.name)) {
+                return;
+            }
+
+            this.name = name;
+        } catch (MessagingException e) {
+            throw new WrappedException(e);
+        }
+        updateFolderColumn("name", name);
     }
 
     @Override
@@ -234,8 +252,8 @@ public class LocalFolder extends Folder<LocalMessage> {
             public Boolean doDbWork(final SQLiteDatabase db) throws WrappedException {
                 Cursor cursor = null;
                 try {
-                    cursor = db.rawQuery("SELECT id FROM folders where folders.name = ?",
-                            new String[] { LocalFolder.this.getName() });
+                    cursor = db.rawQuery("SELECT id FROM folders where folders.server_id = ?",
+                            new String[] { LocalFolder.this.getServerId() });
                     if (cursor.moveToFirst()) {
                         int folderId = cursor.getInt(0);
                         return (folderId > 0);
@@ -257,7 +275,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     @Override
     public boolean create(FolderType type, final int visibleLimit) throws MessagingException {
         if (exists()) {
-            throw new MessagingException("Folder " + name + " already exists.");
+            throw new MessagingException("Folder " + serverId + " already exists.");
         }
         List<LocalFolder> foldersToCreate = new ArrayList<>(1);
         foldersToCreate.add(this);
@@ -574,7 +592,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     private String getPrefId() throws MessagingException {
         open(OPEN_MODE_RW);
-        return getPrefId(name);
+        return getPrefId(serverId);
     }
 
     public void delete() throws MessagingException {
@@ -601,25 +619,25 @@ public class LocalFolder extends Folder<LocalMessage> {
         String id = getPrefId();
 
         // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-        if (displayClass == FolderClass.NO_CLASS && !getAccount().getInboxFolderName().equals(getName())) {
+        if (displayClass == FolderClass.NO_CLASS && !getAccount().getInboxFolder().equals(getServerId())) {
             editor.remove(id + ".displayMode");
         } else {
             editor.putString(id + ".displayMode", displayClass.name());
         }
 
-        if (syncClass == FolderClass.INHERITED && !getAccount().getInboxFolderName().equals(getName())) {
+        if (syncClass == FolderClass.INHERITED && !getAccount().getInboxFolder().equals(getServerId())) {
             editor.remove(id + ".syncMode");
         } else {
             editor.putString(id + ".syncMode", syncClass.name());
         }
 
-        if (notifyClass == FolderClass.INHERITED && !getAccount().getInboxFolderName().equals(getName())) {
+        if (notifyClass == FolderClass.INHERITED && !getAccount().getInboxFolder().equals(getServerId())) {
             editor.remove(id + ".notifyMode");
         } else {
             editor.putString(id + ".notifyMode", notifyClass.name());
         }
 
-        if (pushClass == FolderClass.SECOND_CLASS && !getAccount().getInboxFolderName().equals(getName())) {
+        if (pushClass == FolderClass.SECOND_CLASS && !getAccount().getInboxFolder().equals(getServerId())) {
             editor.remove(id + ".pushMode");
         } else {
             editor.putString(id + ".pushMode", pushClass.name());
@@ -639,7 +657,7 @@ public class LocalFolder extends Folder<LocalMessage> {
             prefHolder.displayClass = FolderClass.valueOf(storage.getString(id + ".displayMode",
                                       prefHolder.displayClass.name()));
         } catch (Exception e) {
-            Timber.e(e, "Unable to load displayMode for %s", getName());
+            Timber.e(e, "Unable to load displayMode for %s", getServerId());
         }
         if (prefHolder.displayClass == FolderClass.NONE) {
             prefHolder.displayClass = FolderClass.NO_CLASS;
@@ -649,7 +667,7 @@ public class LocalFolder extends Folder<LocalMessage> {
             prefHolder.syncClass = FolderClass.valueOf(storage.getString(id  + ".syncMode",
                                    prefHolder.syncClass.name()));
         } catch (Exception e) {
-            Timber.e(e, "Unable to load syncMode for %s", getName());
+            Timber.e(e, "Unable to load syncMode for %s", getServerId());
 
         }
         if (prefHolder.syncClass == FolderClass.NONE) {
@@ -660,7 +678,7 @@ public class LocalFolder extends Folder<LocalMessage> {
             prefHolder.notifyClass = FolderClass.valueOf(storage.getString(id  + ".notifyMode",
                                    prefHolder.notifyClass.name()));
         } catch (Exception e) {
-            Timber.e(e, "Unable to load notifyMode for %s", getName());
+            Timber.e(e, "Unable to load notifyMode for %s", getServerId());
         }
         if (prefHolder.notifyClass == FolderClass.NONE) {
             prefHolder.notifyClass = FolderClass.INHERITED;
@@ -670,7 +688,7 @@ public class LocalFolder extends Folder<LocalMessage> {
             prefHolder.pushClass = FolderClass.valueOf(storage.getString(id  + ".pushMode",
                                    prefHolder.pushClass.name()));
         } catch (Exception e) {
-            Timber.e(e, "Unable to load pushMode for %s", getName());
+            Timber.e(e, "Unable to load pushMode for %s", getServerId());
         }
         if (prefHolder.pushClass == FolderClass.NONE) {
             prefHolder.pushClass = FolderClass.INHERITED;
@@ -1015,14 +1033,14 @@ public class LocalFolder extends Folder<LocalMessage> {
         open(OPEN_MODE_RW);
 
         String accountUuid = getAccountUuid();
-        String folderName = getName();
+        String folderServerId = getServerId();
 
         List<LocalMessage> messages = new ArrayList<>();
         for (MessageReference messageReference : messageReferences) {
             if (!accountUuid.equals(messageReference.getAccountUuid())) {
                 throw new IllegalArgumentException("all message references must belong to this Account!");
             }
-            if (!folderName.equals(messageReference.getFolderName())) {
+            if (!folderServerId.equals(messageReference.getFolderServerId())) {
                 throw new IllegalArgumentException("all message references must belong to this LocalFolder!");
             }
 
@@ -1068,7 +1086,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                                     lDestFolder.getDatabaseId(),
                                     message.getUid(),
                                     lMessage.getDatabaseId(),
-                                    getName());
+                                    getServerId());
 
                             String newUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
                             message.setUid(newUid);
@@ -1854,14 +1872,14 @@ public class LocalFolder extends Folder<LocalMessage> {
     @Override
     public boolean equals(Object o) {
         if (o instanceof LocalFolder) {
-            return ((LocalFolder)o).name.equals(name);
+            return ((LocalFolder)o).serverId.equals(serverId);
         }
         return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return serverId.hashCode();
     }
 
     void destroyMessage(LocalMessage localMessage) throws MessagingException {
@@ -2105,7 +2123,7 @@ public class LocalFolder extends Folder<LocalMessage> {
             }
         });
 
-        Timber.d("Updated last UID for folder %s to %s", name, lastUid);
+        Timber.d("Updated last UID for folder %s to %s", serverId, lastUid);
         this.lastUid = lastUid;
     }
 

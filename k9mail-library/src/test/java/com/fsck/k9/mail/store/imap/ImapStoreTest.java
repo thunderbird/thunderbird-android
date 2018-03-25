@@ -113,11 +113,11 @@ public class ImapStoreTest {
 
         imapStore.autoconfigureFolders(imapConnection);
 
-        verify(storeConfig).setDraftsFolderName("[Gmail]/Drafts");
-        verify(storeConfig).setSentFolderName("[Gmail]/Sent Mail");
-        verify(storeConfig).setSpamFolderName("[Gmail]/Spam");
-        verify(storeConfig).setTrashFolderName("[Gmail]/Trash");
-        verify(storeConfig).setArchiveFolderName("[Gmail]/All Mail");
+        verify(storeConfig).setDraftsFolder("[Gmail]/Drafts");
+        verify(storeConfig).setSentFolder("[Gmail]/Sent Mail");
+        verify(storeConfig).setSpamFolder("[Gmail]/Spam");
+        verify(storeConfig).setTrashFolder("[Gmail]/Trash");
+        verify(storeConfig).setArchiveFolder("[Gmail]/All Mail");
     }
 
     @Test
@@ -129,6 +129,31 @@ public class ImapStoreTest {
 
         verify(imapConnection, atLeastOnce()).hasCapability(anyString());
         verifyNoMoreInteractions(imapConnection);
+    }
+
+    @Test
+    public void autoconfigureFolders_removeNamespacePrefix() throws Exception {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
+        List<ImapResponse> imapResponses = Arrays.asList(
+                createImapResponse("* LIST (\\Drafts) \".\" \"INBOX.Drafts\""),
+                createImapResponse("* LIST (\\Sent) \".\" \"INBOX.Sent\""),
+                createImapResponse("* LIST (\\Junk) \".\" \"INBOX.Spam\""),
+                createImapResponse("* LIST (\\Trash) \".\" \"INBOX.Trash\""),
+                createImapResponse("* LIST (\\Archive) \".\" \"INBOX.Archive\""),
+                createImapResponse("5 OK Success")
+        );
+        when(imapConnection.executeSimpleCommand("LIST (SPECIAL-USE) \"\" \"INBOX.*\"")).thenReturn(imapResponses);
+
+        imapStore.setTestCombinedPrefix("INBOX.");
+        imapStore.autoconfigureFolders(imapConnection);
+
+        assertEquals("INBOX.", imapStore.getCombinedPrefix());
+        verify(storeConfig).setDraftsFolder("Drafts");
+        verify(storeConfig).setSentFolder("Sent");
+        verify(storeConfig).setSpamFolder("Spam");
+        verify(storeConfig).setTrashFolder("Trash");
+        verify(storeConfig).setArchiveFolder("Archive");
     }
 
     @Test
@@ -195,6 +220,45 @@ public class ImapStoreTest {
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
+    }
+
+    @Test
+    public void getPersonalNamespaces_withNamespacePrefix_shouldRemoveNamespacePrefix() throws Exception {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        List<ImapResponse> imapResponses = Arrays.asList(
+                createImapResponse("* LIST () \".\" \"INBOX\""),
+                createImapResponse("* LIST () \".\" \"INBOX.FolderOne\""),
+                createImapResponse("* LIST () \".\" \"INBOX.FolderTwo\""),
+                createImapResponse("5 OK Success")
+        );
+        when(imapConnection.executeSimpleCommand("LIST \"\" \"INBOX.*\"")).thenReturn(imapResponses);
+        imapStore.enqueueImapConnection(imapConnection);
+        imapStore.setTestCombinedPrefix("INBOX.");
+
+        List<ImapFolder> result = imapStore.getPersonalNamespaces(false);
+
+        assertNotNull(result);
+        assertEquals(Sets.newSet("INBOX", "FolderOne", "FolderTwo"), extractFolderNames(result));
+    }
+
+    @Test
+    public void getPersonalNamespaces_withFolderNotMatchingNamespacePrefix_shouldExcludeFolderWithoutPrefix()
+            throws Exception {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        List<ImapResponse> imapResponses = Arrays.asList(
+                createImapResponse("* LIST () \".\" \"INBOX\""),
+                createImapResponse("* LIST () \".\" \"INBOX.FolderOne\""),
+                createImapResponse("* LIST () \".\" \"FolderTwo\""),
+                createImapResponse("5 OK Success")
+        );
+        when(imapConnection.executeSimpleCommand("LIST \"\" \"INBOX.*\"")).thenReturn(imapResponses);
+        imapStore.enqueueImapConnection(imapConnection);
+        imapStore.setTestCombinedPrefix("INBOX.");
+
+        List<ImapFolder> result = imapStore.getPersonalNamespaces(false);
+
+        assertNotNull(result);
+        assertEquals(Sets.newSet("INBOX", "FolderOne"), extractFolderNames(result));
     }
 
     @Test
@@ -295,7 +359,7 @@ public class ImapStoreTest {
 
     private StoreConfig createStoreConfig() {
         StoreConfig storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getInboxFolderName()).thenReturn("INBOX");
+        when(storeConfig.getInboxFolder()).thenReturn("INBOX");
         when(storeConfig.getStoreUri()).thenReturn("imap://user:password@imap.example.org");
 
         return storeConfig;
@@ -304,7 +368,7 @@ public class ImapStoreTest {
     private Set<String> extractFolderNames(List<? extends Folder> folders) {
         Set<String> folderNames = new HashSet<>(folders.size());
         for (Folder folder : folders) {
-            folderNames.add(folder.getName());
+            folderNames.add(folder.getServerId());
         }
 
         return folderNames;
@@ -313,6 +377,7 @@ public class ImapStoreTest {
 
     static class TestImapStore extends ImapStore {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();
+        private String testCombinedPrefix;
 
         public TestImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
                 ConnectivityManager connectivityManager, OAuth2TokenProvider oauth2TokenProvider) throws MessagingException {
@@ -329,6 +394,15 @@ public class ImapStoreTest {
 
         public void enqueueImapConnection(ImapConnection imapConnection) {
             imapConnections.add(imapConnection);
+        }
+
+        @Override
+        String getCombinedPrefix() {
+            return testCombinedPrefix != null ? testCombinedPrefix : super.getCombinedPrefix();
+        }
+
+        void setTestCombinedPrefix(String prefix) {
+            testCombinedPrefix = prefix;
         }
     }
 }

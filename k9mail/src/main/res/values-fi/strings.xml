@@ -56,9 +56,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="app_authors_fmt">Tekijät: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Versiotiedot: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Käytämme seuraavia kolmannen osapuolen kirjastoja: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Emoji-kuvakkeet: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Lue sähköpostin liitteet</string>
-  <string name="read_attachment_desc">Antaa sovellukselle luvan lukea sähköpostisi liitteet.</string>
   <string name="read_messages_label">Lue sähköpostit</string>
   <string name="read_messages_desc">Antaa sovellukselle luvan lukea sähköpostisi.</string>
   <string name="delete_messages_label">Poista sähköpostit</string>
@@ -72,6 +69,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="compose_title_reply">Vastaa</string>
   <string name="compose_title_reply_all">Vastaa kaikille</string>
   <string name="compose_title_forward">Välitä</string>
+  <string name="compose_title_forward_as_attachment">Välitä liitteenä</string>
   <string name="choose_account_title">Valitse tili</string>
   <string name="choose_folder_title">Valitse kansio</string>
   <string name="status_loading_account_folder">Ladataan <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -102,6 +100,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="archive_action">Arkistoi</string>
   <string name="spam_action">Roskaposti</string>
   <string name="forward_action">Välitä</string>
+  <string name="forward_as_attachment_action">Välitä liitteenä</string>
   <string name="move_action">Siirrä</string>
   <string name="single_message_options_action">Viestin asetukset…</string>
   <string name="refile_action">Arkistoi…</string>
@@ -225,7 +224,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="compose_error_incomplete_recipient">Vastaanottajakenttä sisältää virheellistä syötettä!</string>
   <string name="error_contact_address_not_found">Tämän henkilön sähköpostiosoitetta ei löytynyt.</string>
   <string name="message_compose_attachments_skipped_toast">Joitakin liitteitä ei voida lähettää edelleen, koska niitä ei ole ladattu.</string>
-  <string name="message_compose_show_quoted_text_action">Lainaa viestiä</string>
+  <string name="message_compose_attachments_forward_toast">Viestiä ei voida välittää, koska joitain liitteitä ei ole ladattu.</string>
+  <string name="message_compose_show_quoted_text_action">Sisällytä lainattu viesti</string>
   <string name="message_compose_description_delete_quoted_text">Poista lainattu teksti</string>
   <string name="message_compose_description_edit_quoted_text">Muokkaa lainattua tekstiä</string>
   <string name="message_view_from_format">Lähettäjä: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -285,6 +285,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="global_settings_privacy_hide_useragent_detail">Poista K-9-tunnistetiedot viestin otsaketiedoista</string>
   <string name="global_settings_privacy_hide_timezone">Piilota aikavyöhyke</string>
   <string name="global_settings_privacy_hide_timezone_detail">Käytä UTC-aikaa paikallisen aikavyöhykkeen sijaan sähköpostin otsakkeissa</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting">Piilota laitenimi</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Tunnistaudu laitenimellä \"localhost\" yhdistäessä SMTP-palvelimiin</string>
   <string name="global_settings_notification_hide_subject_title">Piilota aihe ilmoituksissa</string>
   <string name="global_settings_notification_hide_subject_never">Ei koskaan</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kun laite on lukittu</string>
@@ -688,6 +690,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="background_ops_auto_sync_only">Kun Automaattinen synkronointi on valittu</string>
   <string name="batch_select_all">Valitse kaikki</string>
   <string name="account_setup_push_limit_label">Push-tilassa tarkistettavien kansioiden enimmäismäärä</string>
+  <string name="account_setup_push_limit_5">5 kansiota</string>
   <string name="account_setup_push_limit_10">10 kansiota</string>
   <string name="account_setup_push_limit_25">25 kansiota</string>
   <string name="account_setup_push_limit_50">50 kansiota</string>
@@ -803,6 +806,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="settings_export_success_generic">Asetukset vietiin onnistuneesti</string>
   <string name="settings_import_global_settings_success">Yleiset asetukset tuotu tiedostosta <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Tuotu <xliff:g id="accounts">%s</xliff:g> tiedostosta <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Tuotiin <xliff:g id="original_account_name">%s</xliff:g> nimellä <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 tili</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> tiliä</item>
@@ -951,6 +955,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="crypto_mode_disabled">Älä salaa</string>
   <string name="crypto_mode_opportunistic">Salaa jos mahdollista</string>
   <string name="crypto_mode_private">Salaa</string>
+  <string name="error_crypto_provider_incompatible">Salauksen tarjoaja käyttää yhteensopimatonta versiota. Tarkista asetuksesi!</string>
   <string name="error_crypto_provider_connect">Yhteyttä salaussovellukseen ei voitu muodostaa: tarkista asetukset tai yritä napsauttaa salauskuvaketta uudestaan!</string>
   <string name="error_crypto_provider_ui_required">Yhteyttä salaussovellukseen ei voitu muodostaa: tarkista asetukset tai yritä napsauttaa salauskuvaketta uudestaan!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE-tila ei tue liitteitä!</string>
@@ -975,30 +980,36 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="openpgp_dialog_sign_only_minus_break">Allekirjoitukset saattavat rikkoontua postituslistoille lähettäessä.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Allekirjoitukset saatetaan näyttää \"signature.asc\"-liitteinä joissain sovelluksissa.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Salatut viestit sisältävät aina allekirjoituksen.</string>
-  <string name="crypto_msg_disabled">Viesti ei ole salattu</string>
-  <string name="crypto_msg_encrypted_error">Viesti on salattu, mutta salauksen purkamisen yhteydessä ilmeni virhe.</string>
-  <string name="crypto_msg_encrypted_insecure">Viesti on salattu mutta turvaton!</string>
-  <string name="crypto_msg_signed_error">Viesti on allekirjoitettu, mutta allekirjoitusta ei voitu vahvistaa.</string>
-  <string name="crypto_msg_encrypted_no_provider">Viesti on salattu, mutta salaukseen erikoistunutta sovellusta ei ole määritetty.</string>
-  <string name="crypto_msg_unsupported_encrypted">Viesti on salattu, mutta sen muoto ei ole tuettu.</string>
-  <string name="crypto_msg_unsupported_signed">Viesti on allekirjoitettu, mutta sen muoto ei ole tuettu.</string>
-  <string name="crypto_msg_incomplete_encrypted">Viesti on salattu, mutta se tulee ladata kokonaan jotta sen salaus voidaan purkaa.</string>
-  <string name="crypto_msg_cancelled">Viesti on salattu, mutta viestin salauksen purkaminen peruttiin.</string>
-  <string name="crypto_msg_signed_unencrypted">Viesti on allekirjoitettu, mutta ei salattu.</string>
-  <string name="crypto_msg_encrypted_unsigned">Viesti on salattu, mutta ei allekirjoitettu.</string>
-  <string name="crypto_msg_sign_unknown">Allekirjoitus on tehty tuntemattomalla avaimella.</string>
-  <string name="crypto_msg_sign_verified">Allekirjoitus tehty luotetulla avaimella.</string>
-  <string name="crypto_msg_sign_unverified">Allekirjoitus tehty avaimella, johon ei luoteta!</string>
-  <string name="crypto_msg_sign_error">Allekirjoitus sisälsi virheen.</string>
-  <string name="crypto_msg_sign_mismatch">Allekirjoitus on tehty väärällä avaimella.</string>
-  <string name="crypto_msg_sign_expired">Allekirjoitus on tehty vanhentuneella avaimella.</string>
-  <string name="crypto_msg_sign_revoked">Allekirjoitus on tehty kumotulla avaimella.</string>
-  <string name="crypto_msg_sign_insecure">Allekirjoitus on tehty turvattomalla avaimella.</string>
-  <string name="crypto_msg_sign_incomplete">Viesti tulee ladata kokonaan, jotta sen allekirjoitus voidaan vahvistaa.</string>
-  <string name="crypto_msg_signed_encrypted">Viesti on allekirjoitettu ja salattu.</string>
-  <string name="crypto_msg_unsigned_encrypted">Ei allekirjoitusta, tämä viesti saattaa olla kaapattu.</string>
+  <string name="crypto_msg_unencrypted_sign_error">päästä päähän -allekirjoitus sisälsi virheen</string>
+  <string name="crypto_msg_incomplete_signed">viesti täytyy ladata kokonaan, jotta allekirjoitus voidaan käsitellä</string>
+  <string name="crypto_msg_unsupported_signed">sisältää ei-tuetun päästä päähän -allekirjoituksen</string>
+  <string name="crypto_msg_unencrypted_sign_verified">vahvistetulta allekirjoittajalta</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">mutta päästä päähän -avain ei vastannut lähettäjää</string>
+  <string name="crypto_msg_unencrypted_sign_expired">mutta päästä päähän -avain on vanhentunut</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">mutta päästä päähän -avain on kumottu</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">mutta päästä päähän -avainta ei mielletä turvalliseksi</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">tuntemattomalta päästä päähän -avaimelta</string>
+  <string name="crypto_msg_title_encrypted_unknown">Salattu</string>
+  <string name="crypto_msg_encrypted_error">mutta salausta purkaessa tapahtui virhe</string>
+  <string name="crypto_msg_encrypted_incomplete">täytyy ladata viesti kokonaan salauksen purkamista varten</string>
+  <string name="crypto_msg_encrypted_no_provider">mutta salaussovellusta ei ole määritetty</string>
+  <string name="crypto_msg_encrypted_unsupported">mutta ei-tuetussa muodossa</string>
+  <string name="crypto_msg_encrypted_cancelled">mutta salauksen purkaminen peruttiin</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Salattu</string>
+  <string name="crypto_msg_encrypted_unsigned">mutta ei päästä päähän</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Päästä päähän salattu</string>
+  <string name="crypto_msg_encrypted_sign_verified">vahvistetulta lähettäjältä</string>
+  <string name="crypto_msg_title_encrypted_signed">Salattu</string>
+  <string name="crypto_msg_encrypted_sign_unknown">tuntemattomalta päästä päähän -avaimelta</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">mutta päästä päähän -avain ei vastannut lähettäjää</string>
+  <string name="crypto_msg_encrypted_sign_expired">mutta päästä päähän -avain on vanhentunut</string>
+  <string name="crypto_msg_encrypted_sign_revoked">mutta päästä päähän -avain on kumottu</string>
+  <string name="crypto_msg_encrypted_sign_insecure">mutta päästä päähän -avainta ei mielletä turvalliseksi</string>
+  <string name="crypto_msg_encrypted_sign_error">mutta päästä päähän -tiedot sisältävät virheitä</string>
+  <string name="crypto_msg_encrypted_insecure">mutta salausta ei mielletä turvalliseksi</string>
   <string name="crypto_info_ok">OK</string>
-  <string name="crypto_info_view_key">Näytä allekirjoittaja</string>
+  <string name="crypto_info_view_signer">Näytä allekirjoittaja</string>
+  <string name="crypto_info_view_sender">Näytä lähettäjä</string>
   <string name="crypto_info_view_security_warning">Yksityiskohdat</string>
   <string name="locked_attach_unlock">Avaa lukitus</string>
   <string name="locked_attach_unencrypted">Tätä osaa ei salattu, joten se saattaa olla epäluotettava.</string>
@@ -1008,13 +1019,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="messageview_decrypt_retry">Yritä uudelleen</string>
   <string name="messageview_decrypt_incomplete">Salattu viesti tulee ladata, jotta sen salaus voidaan avata.</string>
   <string name="messageview_crypto_error_title">Virhe sähköpostin salausta avatessa</string>
-  <string name="messageview_crypto_warning_title">Turvallisuusvaroitus</string>
-  <string name="messageview_crypto_warning_revoked">Viesti allekirjoitettiin <b>kumotulla avaimella!</b></string>
-  <string name="messageview_crypto_warning_expired">Viesti allekirjoitettiin <b>vanhentuneella avaimella!</b></string>
-  <string name="messageview_crypto_warning_insecure">Viesti allekirjoitettiin <b>turvattomalla avaimella!</b></string>
-  <string name="messageview_crypto_warning_error">Tämän viestin <b>allekirjoituksessa on virhe!</b></string>
-  <string name="messageview_crypto_warning_unsigned">Tämä viesti salattiin, mutta sitä ei allekirjoitettu. Se ei ole <b>\"end-to-end\"-turvallinen</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Näytä viesti silti</string>
   <string name="recipient_error_non_ascii">Erikoismerkit eivät ole tällä hetkellä tuettuja!</string>
   <string name="recipient_error_parse_failed">Virhe osoitetta jäsennettäessä!</string>
   <string name="account_settings_crypto_support_sign_only">Näytä salaamattomat allekirjoitukset</string>
@@ -1043,7 +1047,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="enable_encryption">Käytä salausta</string>
   <string name="disable_encryption">Poista salaus käytöstä</string>
   <string name="openpgp_description_text1">Viestin salaus takaa, ettei niitä voi lukea kukaan muu kuin vastaanottaja.</string>
-  <string name="openpgp_description_text3">Salauksen käytön mahdollisuus näkyy vain, jos se on tuettu kaikkien vastaanottajien toimesta, ja he ovat lähettäneet sinulle sähköpostia aiemmin.</string>
+  <string name="openpgp_description_text3">Salaus ilmestyy näkyviin vain jos kaikki vastaanottajat tukevat sitä, ja kyseiset tahot ovat lähettäneet sinulle sähköpostia aiemmin.</string>
   <string name="openpgp_description_text2">Ota salaus käyttöön tai poista käytöstä napauttamalla tätä kuvaketta.</string>
   <string name="openpgp_enabled_error_gotit">Selvä</string>
   <string name="openpgp_enabled_error_back">Takaisin</string>

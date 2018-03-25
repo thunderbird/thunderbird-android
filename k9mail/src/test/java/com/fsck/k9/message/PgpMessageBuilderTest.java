@@ -17,7 +17,6 @@ import android.os.Bundle;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
@@ -49,6 +48,7 @@ import org.mockito.ArgumentCaptor;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static com.fsck.k9.autocrypt.AutocryptOperationsHelper.assertMessageHasAutocryptHeader;
@@ -65,7 +65,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class PgpMessageBuilderTest {
     private static final long TEST_KEY_ID = 123L;
     private static final String TEST_MESSAGE_TEXT = "message text with a ☭ CCCP symbol";
@@ -80,7 +80,7 @@ public class PgpMessageBuilderTest {
 
     @Before
     public void setUp() throws Exception {
-        when(autocryptOpenPgpApiInteractor.getKeyMaterialFromApi(openPgpApi, TEST_KEY_ID, SENDER_EMAIL))
+        when(autocryptOpenPgpApiInteractor.getKeyMaterialForKeyId(openPgpApi, TEST_KEY_ID, SENDER_EMAIL))
                 .thenReturn(AUTOCRYPT_KEY_MATERIAL);
     }
 
@@ -328,6 +328,66 @@ public class PgpMessageBuilderTest {
 
         verify(mockCallback).onMessageBuildException(any(MessagingException.class));
         verifyNoMoreInteractions(mockCallback);
+    }
+
+    @Test
+    public void buildEncrypt__checkGossip() throws MessagingException {
+        ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
+                .setCryptoMode(CryptoMode.CHOICE_ENABLED)
+                .setRecipients(Arrays.asList(
+                        new Recipient("alice", "alice@example.org", "alice", -1, "key"),
+                        new Recipient("bob", "bob@example.org", "bob", -1, "key2")))
+                .build();
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus);
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class))).thenReturn(returnIntent);
+        pgpMessageBuilder.buildAsync(mock(Callback.class));
+
+        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("alice@example.org"));
+        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("bob@example.org"));
+    }
+
+    @Test
+    public void buildEncrypt__checkGossip__filterBcc() throws MessagingException {
+        ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
+                .setCryptoMode(CryptoMode.CHOICE_ENABLED)
+                .setRecipients(Arrays.asList(
+                        new Recipient("alice", "alice@example.org", "alice", -1, "key"),
+                        new Recipient("bob", "bob@example.org", "bob", -1, "key2"),
+                        new Recipient("carol", "carol@example.org", "carol", -1, "key3")))
+                .build();
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus);
+        pgpMessageBuilder.setBcc(Collections.singletonList(new Address("carol@example.org")));
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class))).thenReturn(returnIntent);
+        pgpMessageBuilder.buildAsync(mock(Callback.class));
+
+        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("alice@example.org"));
+        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("bob@example.org"));
+    }
+
+    @Test
+    public void buildEncrypt__checkGossip__filterBccSingleRecipient() throws MessagingException {
+        ComposeCryptoStatus cryptoStatus = cryptoStatusBuilder
+                .setCryptoMode(CryptoMode.CHOICE_ENABLED)
+                .setRecipients(Arrays.asList(
+                        new Recipient("alice", "alice@example.org", "alice", -1, "key"),
+                        new Recipient("carol", "carol@example.org", "carol", -1, "key3")))
+                .build();
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus);
+        pgpMessageBuilder.setBcc(Collections.singletonList(new Address("carol@example.org")));
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class))).thenReturn(returnIntent);
+        pgpMessageBuilder.buildAsync(mock(Callback.class));
+
+        verify(autocryptOpenPgpApiInteractor).getKeyMaterialForKeyId(any(OpenPgpApi.class), any(Long.class), any(String.class));
+        verifyNoMoreInteractions(autocryptOpenPgpApiInteractor);
     }
 
     @Test

@@ -6,8 +6,8 @@ import android.os.IBinder;
 import timber.log.Timber;
 
 public class PushService extends CoreService {
-    private static String START_SERVICE = "com.fsck.k9.service.PushService.startService";
-    private static String STOP_SERVICE = "com.fsck.k9.service.PushService.stopService";
+    private static final String START_SERVICE = "com.fsck.k9.service.PushService.startService";
+    private static final String STOP_SERVICE = "com.fsck.k9.service.PushService.stopService";
 
     public static void startService(Context context) {
         Intent i = new Intent();

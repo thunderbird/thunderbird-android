@@ -33,9 +33,9 @@ class SyncNotifications {
         String tickerText = context.getString(R.string.notification_bg_send_ticker, accountName);
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
-        String outboxFolderName = account.getOutboxFolderName();
+        String outboxFolder = account.getOutboxFolder();
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
-                account, outboxFolderName, notificationId);
+                account, outboxFolder, notificationId);
 
         NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(R.drawable.ic_notify_check_mail)
@@ -63,6 +63,7 @@ class SyncNotifications {
 
     public void showFetchingMailNotification(Account account, Folder folder) {
         String accountName = account.getDescription();
+        String folderServerId = folder.getServerId();
         String folderName = folder.getName();
 
         Context context = controller.getContext();
@@ -73,7 +74,7 @@ class SyncNotifications {
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
-                account, folderName, notificationId);
+                account, folderServerId, notificationId);
 
         NotificationCompat.Builder builder = controller.createNotificationBuilder()
                 .setSmallIcon(R.drawable.ic_notify_check_mail)

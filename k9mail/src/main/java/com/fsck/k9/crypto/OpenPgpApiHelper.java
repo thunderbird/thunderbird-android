@@ -1,8 +1,8 @@
 package com.fsck.k9.crypto;
 
-import android.text.TextUtils;
 
 import com.fsck.k9.Identity;
+import com.fsck.k9.helper.StringHelper;
 
 
 public class OpenPgpApiHelper {
@@ -20,7 +20,7 @@ public class OpenPgpApiHelper {
         StringBuilder sb = new StringBuilder();
 
         String name = identity.getName();
-        if (!TextUtils.isEmpty(name)) {
+        if (!StringHelper.isNullOrEmpty(name)) {
             sb.append(name).append(" ");
         }
         sb.append("<").append(identity.getEmail()).append(">");

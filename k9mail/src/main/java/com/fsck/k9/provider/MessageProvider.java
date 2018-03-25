@@ -3,6 +3,7 @@ package com.fsck.k9.provider;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -107,7 +108,7 @@ public class MessageProvider extends ContentProvider {
 
                 MessagingController.getInstance(application).addListener(new SimpleMessagingListener() {
                     @Override
-                    public void folderStatusChanged(Account account, String folderName, int unreadMessageCount) {
+                    public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
                         application.getContentResolver().notifyChange(CONTENT_URI, null);
                     }
                 });
@@ -165,7 +166,7 @@ public class MessageProvider extends ContentProvider {
 
         List<String> segments = uri.getPathSegments();
         int accountId = Integer.parseInt(segments.get(1));
-        String folderName = segments.get(2);
+        String folderServerId = segments.get(2);
         String msgUid = segments.get(3);
 
         // get account
@@ -185,7 +186,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         if (myAccount != null) {
-            MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderName, msgUid, null);
+            MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderServerId, msgUid, null);
             MessagingController controller = MessagingController.getInstance(getContext());
             controller.deleteMessage(messageReference, null);
         }
@@ -417,7 +418,7 @@ public class MessageProvider extends ContentProvider {
             return CONTENT_URI.buildUpon()
                     .appendPath("delete_message")
                     .appendPath(Integer.toString(accountNumber))
-                    .appendPath(message.getFolder().getName())
+                    .appendPath(message.getFolder().getServerId())
                     .appendPath(message.getUid())
                     .build()
                     .toString();
@@ -690,11 +691,15 @@ public class MessageProvider extends ContentProvider {
 
             Object[] values = new Object[2];
 
-            for (Account account : Preferences.getPreferences(getContext()).getAvailableAccounts()) {
+            Context context = getContext();
+            MessagingController controller = MessagingController.getInstance(context);
+            Collection<Account> accounts = Preferences.getPreferences(context).getAvailableAccounts();
+
+            for (Account account : accounts) {
                 if (account.getAccountNumber() == accountNumber) {
                     myAccount = account;
                     try {
-                        myAccountStats = account.getStats(getContext());
+                        myAccountStats = controller.getAccountStats(account);
                         values[0] = myAccount.getDescription();
                         if (myAccountStats == null) {
                             values[1] = 0;
@@ -1089,7 +1094,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         @Override
-        public void listLocalMessagesAddMessages(Account account, String folderName, List<LocalMessage> messages) {
+        public void listLocalMessagesAddMessages(Account account, String folderServerId, List<LocalMessage> messages) {
             Context context = getContext();
 
             for (LocalMessage message : messages) {

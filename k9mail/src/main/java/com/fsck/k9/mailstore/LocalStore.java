@@ -28,13 +28,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.controller.PendingCommandSerializer;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
+import com.fsck.k9.controller.PendingCommandSerializer;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -46,7 +46,6 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
@@ -68,13 +67,14 @@ import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
+import timber.log.Timber;
 
 /**
  * <pre>
  * Implements a SQLite database backed local store for Messages.
  * </pre>
  */
-public class LocalStore extends Store {
+public class LocalStore {
     static final String[] EMPTY_STRING_ARRAY = new String[0];
     static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
@@ -94,7 +94,7 @@ public class LocalStore extends Store {
      * a String containing the columns getMessages expects to work with
      * in the correct order.
      */
-    static String GET_MESSAGES_COLS =
+    static final String GET_MESSAGES_COLS =
         "subject, sender_list, date, uid, flags, messages.id, to_list, cc_list, " +
         "bcc_list, reply_to_list, attachment_count, internal_date, messages.message_id, " +
         "folder_id, preview, threads.id, threads.root, deleted, read, flagged, answered, " +
@@ -129,7 +129,7 @@ public class LocalStore extends Store {
 
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
-        "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages";
+        "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages, server_id";
 
     static final int FOLDER_ID_INDEX = 0;
     static final int FOLDER_NAME_INDEX = 1;
@@ -145,6 +145,7 @@ public class LocalStore extends Store {
     static final int FOLDER_DISPLAY_CLASS_INDEX = 11;
     static final int FOLDER_NOTIFY_CLASS_INDEX = 12;
     static final int MORE_MESSAGES_INDEX = 13;
+    static final int FOLDER_SERVER_ID_INDEX = 14;
 
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -177,7 +178,7 @@ public class LocalStore extends Store {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 61;
+    public static final int DB_VERSION = 62;
 
     private final Context context;
     private final ContentResolver contentResolver;
@@ -388,13 +389,11 @@ public class LocalStore extends Store {
         });
     }
 
-    @Override
-    public LocalFolder getFolder(String name) {
-        return new LocalFolder(this, name);
+    public LocalFolder getFolder(String serverId) {
+        return new LocalFolder(this, serverId);
     }
 
     // TODO this takes about 260-300ms, seems slow.
-    @Override
     public List<LocalFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         final List<LocalFolder> folders = new LinkedList<>();
         try {
@@ -410,8 +409,8 @@ public class LocalStore extends Store {
                             if (cursor.isNull(FOLDER_ID_INDEX)) {
                                 continue;
                             }
-                            String folderName = cursor.getString(FOLDER_NAME_INDEX);
-                            LocalFolder folder = new LocalFolder(LocalStore.this, folderName);
+                            String folderServerId = cursor.getString(FOLDER_SERVER_ID_INDEX);
+                            LocalFolder folder = new LocalFolder(LocalStore.this, folderServerId);
                             folder.open(cursor);
 
                             folders.add(folder);
@@ -428,10 +427,6 @@ public class LocalStore extends Store {
             throw(MessagingException) e.getCause();
         }
         return folders;
-    }
-
-    @Override
-    public void checkSettings() throws MessagingException {
     }
 
     public void delete() throws UnavailableStorageException {
@@ -550,16 +545,6 @@ public class LocalStore extends Store {
                 return null;
             }
         });
-    }
-
-    @Override
-    public boolean isMoveCapable() {
-        return true;
-    }
-
-    @Override
-    public boolean isCopyCapable() {
-        return true;
     }
 
     public List<LocalMessage> searchForMessages(MessageRetrievalListener<LocalMessage> retrievalListener,
@@ -824,10 +809,10 @@ public class LocalStore extends Store {
         }
 
         Map.Entry<String,List<String>> entry = foldersAndUids.entrySet().iterator().next();
-        String folderName = entry.getKey();
+        String folderServerId = entry.getKey();
         String uid = entry.getValue().get(0);
 
-        LocalFolder folder = getFolder(folderName);
+        LocalFolder folder = getFolder(folderServerId);
         LocalMessage localMessage = folder.getMessage(uid);
 
         FetchProfile fp = new FetchProfile();
@@ -908,16 +893,35 @@ public class LocalStore extends Store {
             @Override
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                 for (LocalFolder folder : foldersToCreate) {
+                    String serverId = folder.getServerId();
                     String name = folder.getName();
+
+                    if (K9.DEVELOPER_MODE) {
+                        Cursor cursor = db.query("folders", new String[] { "id", "server_id" },
+                                "server_id = ?", new String[] { serverId },null, null, null);
+                        try {
+                            if (cursor.moveToNext()) {
+                                long folderId = cursor.getLong(0);
+                                String folderServerId = cursor.getString(1);
+
+                                throw new AssertionError("Tried to create folder '" + serverId + "'" +
+                                        " that already exists in the database as '" + folderServerId + "'" +
+                                        " (" + folderId + ")");
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+                    }
+
                     final  LocalFolder.PreferencesHolder prefHolder = folder.new PreferencesHolder();
 
                     // When created, special folders should always be displayed
                     // inbox should be integrated
                     // and the inbox and drafts folders should be syncced by default
-                    if (account.isSpecialFolder(name)) {
+                    if (account.isSpecialFolder(serverId)) {
                         prefHolder.inTopGroup = true;
                         prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        if (name.equalsIgnoreCase(account.getInboxFolderName())) {
+                        if (serverId.equals(account.getInboxFolder())) {
                             prefHolder.integrate = true;
                             prefHolder.notifyClass = LocalFolder.FolderClass.FIRST_CLASS;
                             prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
@@ -925,16 +929,15 @@ public class LocalStore extends Store {
                             prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
 
                         }
-                        if (name.equalsIgnoreCase(account.getInboxFolderName()) ||
-                                name.equalsIgnoreCase(account.getDraftsFolderName())) {
+                        if (serverId.equals(account.getInboxFolder()) || serverId.equals(account.getDraftsFolder())) {
                             prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
                         } else {
                             prefHolder.syncClass = LocalFolder.FolderClass.NO_CLASS;
                         }
                     }
-                    folder.refresh(name, prefHolder);   // Recover settings from Preferences
+                    folder.refresh(serverId, prefHolder);   // Recover settings from Preferences
 
-                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
+                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate, server_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
                                    name,
                                    visibleLimit,
                                    prefHolder.inTopGroup ? 1 : 0,
@@ -943,6 +946,7 @@ public class LocalStore extends Store {
                                    prefHolder.notifyClass.name(),
                                    prefHolder.pushClass.name(),
                                    prefHolder.integrate ? 1 : 0,
+                                   serverId
                                });
 
                 }
@@ -1204,7 +1208,7 @@ public class LocalStore extends Store {
     }
 
     /**
-     * Get folder name and UID for the supplied messages.
+     * Get folder server ID and UID for the supplied messages.
      *
      * @param messageIds
      *         A list of primary keys in the "messages" table.
@@ -1214,7 +1218,7 @@ public class LocalStore extends Store {
      *         If this is {@code false} only the UIDs for messages in {@code messageIds} are
      *         returned.
      *
-     * @return The list of UIDs for the messages grouped by folder name.
+     * @return The list of UIDs for the messages grouped by folder server ID.
      *
      */
     public Map<String, List<String>> getFoldersAndUids(final List<Long> messageIds,
@@ -1239,7 +1243,7 @@ public class LocalStore extends Store {
                     throws UnavailableStorageException {
 
                 if (threadedList) {
-                    String sql = "SELECT m.uid, f.name " +
+                    String sql = "SELECT m.uid, f.server_id " +
                             "FROM threads t " +
                             "LEFT JOIN messages m ON (t.message_id = m.id) " +
                             "LEFT JOIN folders f ON (m.folder_id = f.id) " +
@@ -1250,7 +1254,7 @@ public class LocalStore extends Store {
 
                 } else {
                     String sql =
-                            "SELECT m.uid, f.name " +
+                            "SELECT m.uid, f.server_id " +
                             "FROM messages m " +
                             "LEFT JOIN folders f ON (m.folder_id = f.id) " +
                             "WHERE m.empty = 0 AND m.id" + selectionSet;
@@ -1263,12 +1267,12 @@ public class LocalStore extends Store {
                 try {
                     while (cursor.moveToNext()) {
                         String uid = cursor.getString(0);
-                        String folderName = cursor.getString(1);
+                        String folderServerId = cursor.getString(1);
 
-                        List<String> uidList = folderMap.get(folderName);
+                        List<String> uidList = folderMap.get(folderServerId);
                         if (uidList == null) {
                             uidList = new ArrayList<>();
-                            folderMap.put(folderName, uidList);
+                            folderMap.put(folderServerId, uidList);
                         }
 
                         uidList.add(uid);
@@ -1287,6 +1291,40 @@ public class LocalStore extends Store {
 
         return folderMap;
     }
+
+    public AccountStats getAccountStats(LocalSearch search) throws MessagingException {
+        StringBuilder whereBuilder = new StringBuilder();
+        List<String> queryArgs = new ArrayList<>();
+        SqlQueryBuilder.buildWhereClause(account, search.getConditions(), whereBuilder, queryArgs);
+
+        String where = whereBuilder.toString();
+        final String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
+
+        final String sqlQuery = "SELECT SUM(read=0), SUM(flagged) " +
+                "FROM messages " +
+                "JOIN folders ON (folders.id = messages.folder_id) " +
+                "WHERE (messages.empty = 0 AND messages.deleted = 0)" +
+                (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
+
+        return database.execute(false, new DbCallback<AccountStats>() {
+            @Override
+            public AccountStats doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException {
+                Cursor cursor = db.rawQuery(sqlQuery, selectionArgs);
+                try {
+                    AccountStats accountStats = new AccountStats();
+                    if (cursor.moveToFirst()) {
+                        accountStats.unreadMessageCount = cursor.getInt(0);
+                        accountStats.flaggedMessageCount = cursor.getInt(1);
+                    }
+
+                    return accountStats;
+                } finally {
+                    cursor.close();
+                }
+            }
+        });
+    }
+
 
     public static String getColumnNameForFlag(Flag flag) {
         switch (flag) {

@@ -1,24 +1,27 @@
 
 package com.fsck.k9.activity.setup;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import timber.log.Timber;
-import com.fsck.k9.*;
+
+import com.fsck.k9.Account;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.FolderClass;
-
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.service.MailService;
+import timber.log.Timber;
 
 public class FolderSettings extends K9PreferenceActivity {
 
@@ -42,9 +45,9 @@ public class FolderSettings extends K9PreferenceActivity {
     private ListPreference mPushClass;
     private ListPreference mNotifyClass;
 
-    public static void actionSettings(Context context, Account account, String folderName) {
+    public static void actionSettings(Context context, Account account, String folderServerId) {
         Intent i = new Intent(context, FolderSettings.class);
-        i.putExtra(EXTRA_FOLDER_NAME, folderName);
+        i.putExtra(EXTRA_FOLDER_NAME, folderServerId);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);
     }
@@ -53,22 +56,22 @@ public class FolderSettings extends K9PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String folderName = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
+        String folderServerId = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         Account mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try {
             LocalStore localStore = mAccount.getLocalStore();
-            mFolder = localStore.getFolder(folderName);
+            mFolder = localStore.getFolder(folderServerId);
             mFolder.open(Folder.OPEN_MODE_RW);
         } catch (MessagingException me) {
-            Timber.e(me, "Unable to edit folder %s preferences", folderName);
+            Timber.e(me, "Unable to edit folder %s preferences", folderServerId);
             return;
         }
 
         boolean isPushCapable = false;
         try {
-            Store store = mAccount.getRemoteStore();
+            RemoteStore store = mAccount.getRemoteStore();
             isPushCapable = store.isPushCapable();
         } catch (Exception e) {
             Timber.e(e, "Could not get remote store");
@@ -76,7 +79,8 @@ public class FolderSettings extends K9PreferenceActivity {
 
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
-        String displayName = FolderInfoHolder.getDisplayName(this, mAccount, mFolder.getName());
+        String folderName = mFolder.getName();
+        String displayName = FolderInfoHolder.getDisplayName(this, mAccount, folderServerId, folderName);
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
         category.setTitle(displayName);
 

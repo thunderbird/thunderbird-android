@@ -14,7 +14,6 @@ import android.support.v4.app.NotificationCompat.WearableExtender;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageReference;
@@ -23,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
@@ -34,7 +34,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class WearNotificationsTest {
     private static final int ACCOUNT_NUMBER = 42;
     private static final String ACCOUNT_NAME = "accountName";
@@ -75,8 +75,8 @@ public class WearNotificationsTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_single_message_options_dark, "Reply", replyPendingIntent);
-        verifyAddAction(R.drawable.ic_action_mark_as_read_dark, "Mark Read", markAsReadPendingIntent);
+        verifyAddAction(R.drawable.ic_reply_all_dark, "Reply", replyPendingIntent);
+        verifyAddAction(R.drawable.ic_opened_envelope_dark, "Mark Read", markAsReadPendingIntent);
         verifyNumberOfActions(2);
     }
 
@@ -96,7 +96,7 @@ public class WearNotificationsTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_delete_dark, "Delete", deletePendingIntent);
+        verifyAddAction(R.drawable.ic_trash_can_dark, "Delete", deletePendingIntent);
     }
 
     @Test
@@ -115,7 +115,7 @@ public class WearNotificationsTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_archive_dark, "Archive", archivePendingIntent);
+        verifyAddAction(R.drawable.ic_archive_dark, "Archive", archivePendingIntent);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class WearNotificationsTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_spam_dark, "Spam", markAsSpamPendingIntent);
+        verifyAddAction(R.drawable.ic_alert_octagon_dark, "Spam", markAsSpamPendingIntent);
     }
 
     @Test
@@ -150,7 +150,7 @@ public class WearNotificationsTest {
         wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_mark_as_read_dark, "Mark All Read", markAllAsReadPendingIntent);
+        verifyAddAction(R.drawable.ic_opened_envelope_dark, "Mark All Read", markAllAsReadPendingIntent);
         verifyNumberOfActions(1);
     }
 
@@ -167,7 +167,7 @@ public class WearNotificationsTest {
         wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_delete_dark, "Delete All", deletePendingIntent);
+        verifyAddAction(R.drawable.ic_trash_can_dark, "Delete All", deletePendingIntent);
     }
 
     @Test
@@ -183,7 +183,7 @@ public class WearNotificationsTest {
         wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_action_archive_dark, "Archive All", archivePendingIntent);
+        verifyAddAction(R.drawable.ic_archive_dark, "Archive All", archivePendingIntent);
     }
 
     private void disableOptionalActions() {
@@ -197,11 +197,11 @@ public class WearNotificationsTest {
     }
 
     private void disableArchiveAction() {
-        when(account.getArchiveFolderName()).thenReturn(K9.FOLDER_NONE);
+        when(account.getArchiveFolder()).thenReturn(K9.FOLDER_NONE);
     }
 
     private void disableSpamAction() {
-        when(account.getSpamFolderName()).thenReturn(K9.FOLDER_NONE);
+        when(account.getSpamFolder()).thenReturn(K9.FOLDER_NONE);
     }
 
     private void enableDeleteAction() {
@@ -210,11 +210,11 @@ public class WearNotificationsTest {
     }
 
     private void enableArchiveAction() {
-        when(account.getArchiveFolderName()).thenReturn("Archive");
+        when(account.getArchiveFolder()).thenReturn("Archive");
     }
 
     private void enableSpamAction() {
-        when(account.getSpamFolderName()).thenReturn("Spam");
+        when(account.getSpamFolder()).thenReturn("Spam");
     }
 
     private void disableOptionalSummaryActions() {

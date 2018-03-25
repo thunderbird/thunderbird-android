@@ -40,28 +40,28 @@ public class MessagingControllerPushReceiver implements PushReceiver {
     }
 
     public void syncFolder(Folder folder) {
-        Timber.v("syncFolder(%s)", folder.getName());
+        Timber.v("syncFolder(%s)", folder.getServerId());
 
         final CountDownLatch latch = new CountDownLatch(1);
-        controller.synchronizeMailbox(account, folder.getName(), new SimpleMessagingListener() {
+        controller.synchronizeMailbox(account, folder.getServerId(), new SimpleMessagingListener() {
             @Override
-            public void synchronizeMailboxFinished(Account account, String folder,
+            public void synchronizeMailboxFinished(Account account, String folderServerId,
             int totalMessagesInMailbox, int numNewMessages) {
                 latch.countDown();
             }
 
             @Override
-            public void synchronizeMailboxFailed(Account account, String folder,
+            public void synchronizeMailboxFailed(Account account, String folderServerId,
             String message) {
                 latch.countDown();
             }
         }, folder);
 
-        Timber.v("syncFolder(%s) about to await latch release", folder.getName());
+        Timber.v("syncFolder(%s) about to await latch release", folder.getServerId());
 
         try {
             latch.await();
-            Timber.v("syncFolder(%s) got latch release", folder.getName());
+            Timber.v("syncFolder(%s) got latch release", folder.getServerId());
         } catch (Exception e) {
             Timber.e(e, "Interrupted while awaiting latch release");
         }
@@ -87,15 +87,15 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         controller.handleAuthenticationFailure(account, true);
     }
 
-    public String getPushState(String folderName) {
+    public String getPushState(String folderServerId) {
         LocalFolder localFolder = null;
         try {
             LocalStore localStore = account.getLocalStore();
-            localFolder = localStore.getFolder(folderName);
+            localFolder = localStore.getFolder(folderServerId);
             localFolder.open(Folder.OPEN_MODE_RW);
             return localFolder.getPushState();
         } catch (Exception e) {
-            Timber.e(e, "Unable to get push state from account %s, folder %s", account.getDescription(), folderName);
+            Timber.e(e, "Unable to get push state from account %s, folder %s", account.getDescription(), folderServerId);
             return null;
         } finally {
             if (localFolder != null) {
@@ -104,9 +104,9 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         }
     }
 
-    public void setPushActive(String folderName, boolean enabled) {
+    public void setPushActive(String folderServerId, boolean enabled) {
         for (MessagingListener l : controller.getListeners()) {
-            l.setPushActive(account, folderName, enabled);
+            l.setPushActive(account, folderServerId, enabled);
         }
     }
 

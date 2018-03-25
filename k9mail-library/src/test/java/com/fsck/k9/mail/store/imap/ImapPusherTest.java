@@ -6,12 +6,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.store.StoreConfig;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doThrow;
@@ -20,7 +18,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(K9LibRobolectricTestRunner.class)
 public class ImapPusherTest {
     private ImapStore imapStore;
     private TestImapPusher imapPusher;

@@ -11,7 +11,6 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
@@ -20,7 +19,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Store;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -34,6 +33,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLog;
 
@@ -51,7 +51,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class ImapSyncTest {
     private static final String FOLDER_NAME = "Folder";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
@@ -74,7 +74,7 @@ public class ImapSyncTest {
     @Mock
     private LocalStore localStore;
     @Mock
-    private Store remoteStore;
+    private RemoteStore remoteStore;
     @Mock
     private NotificationController notificationController;
     @Captor
@@ -353,6 +353,7 @@ public class ImapSyncTest {
     }
 
     private void setUpMessagingController() throws MessagingException {
+        when(controller.getAccountStats(account)).thenReturn(accountStats);
         when(controller.getListeners(any(MessagingListener.class))).thenAnswer(new Answer<Set<MessagingListener>>() {
             @Override
             public Set<MessagingListener> answer(InvocationOnMock invocation) throws Throwable {
@@ -367,20 +368,19 @@ public class ImapSyncTest {
     private void configureAccount() throws MessagingException {
         when(account.isAvailable(appContext)).thenReturn(true);
         when(account.getLocalStore()).thenReturn(localStore);
-        when(account.getStats(any(Context.class))).thenReturn(accountStats);
         when(account.getMaximumAutoDownloadMessageSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
         when(account.getEmail()).thenReturn("user@host.com");
     }
 
     private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
-        when(localFolder.getName()).thenReturn(FOLDER_NAME);
+        when(localFolder.getServerId()).thenReturn(FOLDER_NAME);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
     }
 
     private void configureRemoteStoreWithFolder() throws MessagingException {
         when(account.getRemoteStore()).thenReturn(remoteStore);
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
-        when(remoteFolder.getName()).thenReturn(FOLDER_NAME);
+        when(remoteFolder.getServerId()).thenReturn(FOLDER_NAME);
     }
 }

@@ -14,7 +14,6 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -25,15 +24,18 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Store;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
+import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.search.SearchAccount;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +48,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLog;
 
@@ -70,7 +73,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
-@RunWith(K9RobolectricTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class MessagingControllerTest {
     private static final String FOLDER_NAME = "Folder";
     private static final String SENT_FOLDER_NAME = "Sent";
@@ -98,7 +101,7 @@ public class MessagingControllerTest {
     @Mock
     private LocalStore localStore;
     @Mock
-    private Store remoteStore;
+    private RemoteStore remoteStore;
     @Mock
     private NotificationController notificationController;
     @Mock
@@ -133,6 +136,20 @@ public class MessagingControllerTest {
     private LocalMessage localMessageToSend1;
     private volatile boolean hasFetchedMessage = false;
 
+    private AccountStatsCollector accountStatsCollector = new AccountStatsCollector() {
+        @NotNull
+        @Override
+        public AccountStats getSearchAccountStats(@NotNull SearchAccount searchAccount) {
+            return accountStats;
+        }
+
+        @Nullable
+        @Override
+        public AccountStats getStats(@NotNull Account account) {
+            return accountStats;
+        }
+    };
+
 
     @Before
     public void setUp() throws MessagingException {
@@ -140,7 +157,8 @@ public class MessagingControllerTest {
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
-        controller = new MessagingController(appContext, notificationController, contacts, transportProvider);
+        controller = new MessagingController(appContext, notificationController, contacts, transportProvider,
+                accountStatsCollector);
 
         configureAccount();
         configureLocalStore();
@@ -254,7 +272,7 @@ public class MessagingControllerTest {
 
         List<Folder> folders = Collections.singletonList(remoteFolder);
         when(remoteStore.getPersonalNamespaces(false)).thenAnswer(createAnswer(folders));
-        when(remoteFolder.getName()).thenReturn("NewFolder");
+        when(remoteFolder.getServerId()).thenReturn("NewFolder");
         when(localStore.getFolder("NewFolder")).thenReturn(newLocalFolder);
 
         controller.refreshRemoteSynchronous(account, listener);
@@ -266,7 +284,7 @@ public class MessagingControllerTest {
     public void refreshRemoteSynchronous_shouldDeleteFoldersNotOnRemote() throws MessagingException {
         configureRemoteStoreWithFolder();
         LocalFolder oldLocalFolder = mock(LocalFolder.class);
-        when(oldLocalFolder.getName()).thenReturn("OldLocalFolder");
+        when(oldLocalFolder.getServerId()).thenReturn("OldLocalFolder");
         when(localStore.getPersonalNamespaces(false))
                 .thenReturn(Collections.singletonList(oldLocalFolder));
         List<Folder> folders = Collections.emptyList();
@@ -295,7 +313,7 @@ public class MessagingControllerTest {
         configureRemoteStoreWithFolder();
         LocalFolder missingSpecialFolder = mock(LocalFolder.class);
         when(account.isSpecialFolder("Outbox")).thenReturn(true);
-        when(missingSpecialFolder.getName()).thenReturn("Outbox");
+        when(missingSpecialFolder.getServerId()).thenReturn("Outbox");
         when(localStore.getPersonalNamespaces(false))
                 .thenReturn(Collections.singletonList(missingSpecialFolder));
         List<Folder> folders = Collections.emptyList();
@@ -508,7 +526,7 @@ public class MessagingControllerTest {
 
     @Test
     public void sendPendingMessagesSynchronous_withNonExistentOutbox_shouldNotStartSync() throws MessagingException {
-        when(account.getOutboxFolderName()).thenReturn(FOLDER_NAME);
+        when(account.getOutboxFolder()).thenReturn(FOLDER_NAME);
         when(localFolder.exists()).thenReturn(false);
         controller.addListener(listener);
 
@@ -826,9 +844,9 @@ public class MessagingControllerTest {
     }
 
     private void setupAccountWithMessageToSend() throws MessagingException {
-        when(account.getOutboxFolderName()).thenReturn(FOLDER_NAME);
+        when(account.getOutboxFolder()).thenReturn(FOLDER_NAME);
         when(account.hasSentFolder()).thenReturn(true);
-        when(account.getSentFolderName()).thenReturn(SENT_FOLDER_NAME);
+        when(account.getSentFolder()).thenReturn(SENT_FOLDER_NAME);
         when(localStore.getFolder(SENT_FOLDER_NAME)).thenReturn(sentFolder);
         when(sentFolder.getDatabaseId()).thenReturn(1L);
         when(localFolder.exists()).thenReturn(true);
@@ -898,21 +916,20 @@ public class MessagingControllerTest {
     private void configureAccount() throws MessagingException {
         when(account.isAvailable(appContext)).thenReturn(true);
         when(account.getLocalStore()).thenReturn(localStore);
-        when(account.getStats(any(Context.class))).thenReturn(accountStats);
         when(account.getMaximumAutoDownloadMessageSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
         when(account.getEmail()).thenReturn("user@host.com");
     }
 
     private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
-        when(localFolder.getName()).thenReturn(FOLDER_NAME);
+        when(localFolder.getServerId()).thenReturn(FOLDER_NAME);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
     }
 
     private void configureRemoteStoreWithFolder() throws MessagingException {
         when(account.getRemoteStore()).thenReturn(remoteStore);
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
-        when(remoteFolder.getName()).thenReturn(FOLDER_NAME);
+        when(remoteFolder.getServerId()).thenReturn(FOLDER_NAME);
     }
 
     private void setAccountsInPreferences(Map<String, Account> newAccounts)

@@ -1,6 +1,7 @@
 
 package com.fsck.k9;
 
+
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -8,45 +9,38 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
-import timber.log.Timber;
 
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.Store;
-import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
-import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.Storage;
-import com.fsck.k9.provider.EmailProvider;
-import com.fsck.k9.provider.EmailProvider.StatsColumns;
+import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.search.ConditionsTreeNode;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
-import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
+import timber.log.Timber;
 
 import static com.fsck.k9.Preferences.getEnumStringPref;
 
@@ -115,18 +109,6 @@ public class Account implements BaseAccount, StoreConfig {
     public static final String IDENTITY_EMAIL_KEY = "email";
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
-    /*
-     * http://developer.android.com/design/style/color.html
-     * Note: Order does matter, it's the order in which they will be picked.
-     */
-    private static final Integer[] PREDEFINED_COLORS = new Integer[] {
-            Color.parseColor("#0099CC"),    // blue
-            Color.parseColor("#669900"),    // green
-            Color.parseColor("#FF8800"),    // orange
-            Color.parseColor("#CC0000"),    // red
-            Color.parseColor("#9933CC")     // purple
-    };
-
     public enum SortType {
         SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
         SORT_ARRIVAL(R.string.sort_earliest_first, R.string.sort_latest_first, false),
@@ -180,13 +162,13 @@ public class Account implements BaseAccount, StoreConfig {
     private FolderMode folderNotifyNewMailMode;
     private boolean notifySelfNewMail;
     private boolean notifyContactsMailOnly;
-    private String inboxFolderName;
-    private String draftsFolderName;
-    private String sentFolderName;
-    private String trashFolderName;
-    private String archiveFolderName;
-    private String spamFolderName;
-    private String autoExpandFolderName;
+    private String inboxFolder;
+    private String draftsFolder;
+    private String sentFolder;
+    private String trashFolder;
+    private String archiveFolder;
+    private String spamFolder;
+    private String autoExpandFolder;
     private FolderMode folderDisplayMode;
     private FolderMode folderSyncMode;
     private FolderMode folderPushMode;
@@ -220,6 +202,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean stripSignature;
     private boolean syncRemoteDeletions;
     private long pgpCryptoKey;
+    private boolean autocryptPreferEncryptMutual;
     private boolean markMessageAsReadOnView;
     private boolean alwaysShowCcBcc;
     private boolean allowRemoteSearch;
@@ -249,7 +232,7 @@ public class Account implements BaseAccount, StoreConfig {
      * Note: For now this value isn't persisted. So it will be reset when
      *       K-9 Mail is restarted.
      */
-    private String lastSelectedFolderName = null;
+    private String lastSelectedFolder = null;
 
     private List<Identity> identities;
 
@@ -297,10 +280,9 @@ public class Account implements BaseAccount, StoreConfig {
         showPictures = ShowPictures.NEVER;
         isSignatureBeforeQuotedText = false;
         expungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
-        autoExpandFolderName = INBOX;
-        inboxFolderName = INBOX;
+        autoExpandFolder = INBOX;
+        inboxFolder = INBOX;
         maxPushFolders = 10;
-        chipColor = pickColor(context);
         goToUnreadMessageSearch = false;
         subscribedFoldersOnly = false;
         maximumPolledMessageAge = -1;
@@ -343,28 +325,6 @@ public class Account implements BaseAccount, StoreConfig {
         cacheChips();
     }
 
-    /*
-     * Pick a nice Android guidelines color if we haven't used them all yet.
-     */
-    private int pickColor(Context context) {
-        List<Account> accounts = Preferences.getPreferences(context).getAccounts();
-
-        List<Integer> availableColors = new ArrayList<>(PREDEFINED_COLORS.length);
-        Collections.addAll(availableColors, PREDEFINED_COLORS);
-
-        for (Account account : accounts) {
-            Integer color = account.getChipColor();
-            if (availableColors.contains(color)) {
-                availableColors.remove(color);
-                if (availableColors.isEmpty()) {
-                    break;
-                }
-            }
-        }
-
-        return (availableColors.isEmpty()) ? ColorPicker.getRandomColor() : availableColors.get(0);
-    }
-
     protected Account(Preferences preferences, String uuid) {
         this.accountUuid = uuid;
         loadAccount(preferences);
@@ -398,12 +358,12 @@ public class Account implements BaseAccount, StoreConfig {
         notifyContactsMailOnly = storage.getBoolean(accountUuid + ".notifyContactsMailOnly", false);
         notifySync = storage.getBoolean(accountUuid + ".notifyMailCheck", false);
         deletePolicy =  DeletePolicy.fromInt(storage.getInt(accountUuid + ".deletePolicy", DeletePolicy.NEVER.setting));
-        inboxFolderName = storage.getString(accountUuid + ".inboxFolderName", INBOX);
-        draftsFolderName = storage.getString(accountUuid + ".draftsFolderName", "Drafts");
-        sentFolderName = storage.getString(accountUuid + ".sentFolderName", "Sent");
-        trashFolderName = storage.getString(accountUuid + ".trashFolderName", "Trash");
-        archiveFolderName = storage.getString(accountUuid + ".archiveFolderName", "Archive");
-        spamFolderName = storage.getString(accountUuid + ".spamFolderName", "Spam");
+        inboxFolder = storage.getString(accountUuid + ".inboxFolderName", INBOX);
+        draftsFolder = storage.getString(accountUuid + ".draftsFolderName", "Drafts");
+        sentFolder = storage.getString(accountUuid + ".sentFolderName", "Sent");
+        trashFolder = storage.getString(accountUuid + ".trashFolderName", "Trash");
+        archiveFolder = storage.getString(accountUuid + ".archiveFolderName", "Archive");
+        spamFolder = storage.getString(accountUuid + ".spamFolderName", "Spam");
         expungePolicy = getEnumStringPref(storage, accountUuid + ".expungePolicy", Expunge.EXPUNGE_IMMEDIATELY);
         syncRemoteDeletions = storage.getBoolean(accountUuid + ".syncRemoteDeletions", true);
 
@@ -429,7 +389,7 @@ public class Account implements BaseAccount, StoreConfig {
             compressionMap.put(type, useCompression);
         }
 
-        autoExpandFolderName = storage.getString(accountUuid + ".autoExpandFolderName", INBOX);
+        autoExpandFolder = storage.getString(accountUuid + ".autoExpandFolderName", INBOX);
 
         accountNumber = storage.getInt(accountUuid + ".accountNumber", 0);
 
@@ -688,13 +648,13 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(accountUuid + ".notifyContactsMailOnly", notifyContactsMailOnly);
         editor.putBoolean(accountUuid + ".notifyMailCheck", notifySync);
         editor.putInt(accountUuid + ".deletePolicy", deletePolicy.setting);
-        editor.putString(accountUuid + ".inboxFolderName", inboxFolderName);
-        editor.putString(accountUuid + ".draftsFolderName", draftsFolderName);
-        editor.putString(accountUuid + ".sentFolderName", sentFolderName);
-        editor.putString(accountUuid + ".trashFolderName", trashFolderName);
-        editor.putString(accountUuid + ".archiveFolderName", archiveFolderName);
-        editor.putString(accountUuid + ".spamFolderName", spamFolderName);
-        editor.putString(accountUuid + ".autoExpandFolderName", autoExpandFolderName);
+        editor.putString(accountUuid + ".inboxFolderName", inboxFolder);
+        editor.putString(accountUuid + ".draftsFolderName", draftsFolder);
+        editor.putString(accountUuid + ".sentFolderName", sentFolder);
+        editor.putString(accountUuid + ".trashFolderName", trashFolder);
+        editor.putString(accountUuid + ".archiveFolderName", archiveFolder);
+        editor.putString(accountUuid + ".spamFolderName", spamFolder);
+        editor.putString(accountUuid + ".autoExpandFolderName", autoExpandFolder);
         editor.putInt(accountUuid + ".accountNumber", accountNumber);
         editor.putString(accountUuid + ".sortTypeEnum", sortType.name());
         editor.putBoolean(accountUuid + ".sortAscending", sortAscending.get(sortType));
@@ -765,106 +725,6 @@ public class Account implements BaseAccount, StoreConfig {
         }
 
     }
-
-    /**
-     * @return <code>null</code> if not available
-     * @throws MessagingException
-     * @see {@link #isAvailable(Context)}
-     */
-    public AccountStats getStats(Context context) throws MessagingException {
-        if (!isAvailable(context)) {
-            return null;
-        }
-
-        AccountStats stats = new AccountStats();
-
-        ContentResolver cr = context.getContentResolver();
-
-        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
-                "account/" + getUuid() + "/stats");
-
-        String[] projection = {
-                StatsColumns.UNREAD_COUNT,
-                StatsColumns.FLAGGED_COUNT
-        };
-
-        // Create LocalSearch instance to exclude special folders (Trash, Drafts, Spam, Outbox,
-        // Sent) and limit the search to displayable folders.
-        LocalSearch search = new LocalSearch();
-        excludeSpecialFolders(search);
-        limitToDisplayableFolders(search);
-
-        // Use the LocalSearch instance to create a WHERE clause to query the content provider
-        StringBuilder query = new StringBuilder();
-        List<String> queryArgs = new ArrayList<>();
-        ConditionsTreeNode conditions = search.getConditions();
-        SqlQueryBuilder.buildWhereClause(this, conditions, query, queryArgs);
-
-        String selection = query.toString();
-        String[] selectionArgs = queryArgs.toArray(new String[0]);
-
-        Cursor cursor = cr.query(uri, projection, selection, selectionArgs, null);
-        try {
-            if (cursor != null && cursor.moveToFirst()) {
-                stats.unreadMessageCount = cursor.getInt(0);
-                stats.flaggedMessageCount = cursor.getInt(1);
-            }
-        } finally {
-            Utility.closeQuietly(cursor);
-        }
-
-        LocalStore localStore = getLocalStore();
-        if (K9.measureAccounts()) {
-            stats.size = localStore.getSize();
-        }
-
-        return stats;
-    }
-
-    public int getFolderUnreadCount(Context context, String folderName) throws MessagingException {
-        if (!isAvailable(context)) {
-            return 0;
-        }
-
-        int unreadMessageCount = 0;
-
-        Cursor cursor = loadUnreadCountForFolder(context, folderName);
-        try {
-            if (cursor != null && cursor.moveToFirst()) {
-                unreadMessageCount = cursor.getInt(0);
-            }
-        } finally {
-            Utility.closeQuietly(cursor);
-        }
-
-        return unreadMessageCount;
-    }
-
-    private Cursor loadUnreadCountForFolder(Context context, String folderName) {
-        ContentResolver cr = context.getContentResolver();
-
-        Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI,
-                "account/" + getUuid() + "/stats");
-
-        String[] projection = {
-                StatsColumns.UNREAD_COUNT,
-        };
-
-        LocalSearch search = new LocalSearch();
-        search.addAllowedFolder(folderName);
-
-        // Use the LocalSearch instance to create a WHERE clause to query the content provider
-        StringBuilder query = new StringBuilder();
-        List<String> queryArgs = new ArrayList<>();
-        ConditionsTreeNode conditions = search.getConditions();
-        SqlQueryBuilder.buildWhereClause(this, conditions, query, queryArgs);
-
-        String selection = query.toString();
-        String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
-
-        return cr.query(uri, projection, selection, selectionArgs, null);
-    }
-
 
     public synchronized void setChipColor(int color) {
         chipColor = color;
@@ -1073,22 +933,22 @@ public class Account implements BaseAccount, StoreConfig {
         this.deletePolicy = deletePolicy;
     }
 
-    public boolean isSpecialFolder(String folderName) {
-        return (folderName != null && (folderName.equalsIgnoreCase(getInboxFolderName()) ||
-                folderName.equals(getTrashFolderName()) ||
-                folderName.equals(getDraftsFolderName()) ||
-                folderName.equals(getArchiveFolderName()) ||
-                folderName.equals(getSpamFolderName()) ||
-                folderName.equals(getOutboxFolderName()) ||
-                folderName.equals(getSentFolderName())));
+    public boolean isSpecialFolder(String folderServerId) {
+        return (folderServerId != null && (folderServerId.equals(getInboxFolder()) ||
+                folderServerId.equals(getTrashFolder()) ||
+                folderServerId.equals(getDraftsFolder()) ||
+                folderServerId.equals(getArchiveFolder()) ||
+                folderServerId.equals(getSpamFolder()) ||
+                folderServerId.equals(getOutboxFolder()) ||
+                folderServerId.equals(getSentFolder())));
     }
 
-    public synchronized String getDraftsFolderName() {
-        return draftsFolderName;
+    public synchronized String getDraftsFolder() {
+        return draftsFolder;
     }
 
-    public synchronized void setDraftsFolderName(String name) {
-        draftsFolderName = name;
+    public synchronized void setDraftsFolder(String name) {
+        draftsFolder = name;
     }
 
     /**
@@ -1096,15 +956,15 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a drafts folder set.
      */
     public synchronized boolean hasDraftsFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(draftsFolderName);
+        return !K9.FOLDER_NONE.equals(draftsFolder);
     }
 
-    public synchronized String getSentFolderName() {
-        return sentFolderName;
+    public synchronized String getSentFolder() {
+        return sentFolder;
     }
 
-    public synchronized void setSentFolderName(String name) {
-        sentFolderName = name;
+    public synchronized void setSentFolder(String name) {
+        sentFolder = name;
     }
 
     /**
@@ -1112,16 +972,16 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a sent folder set.
      */
     public synchronized boolean hasSentFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(sentFolderName);
+        return !K9.FOLDER_NONE.equals(sentFolder);
     }
 
 
-    public synchronized String getTrashFolderName() {
-        return trashFolderName;
+    public synchronized String getTrashFolder() {
+        return trashFolder;
     }
 
-    public synchronized void setTrashFolderName(String name) {
-        trashFolderName = name;
+    public synchronized void setTrashFolder(String name) {
+        trashFolder = name;
     }
 
     /**
@@ -1129,15 +989,15 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a trash folder set.
      */
     public synchronized boolean hasTrashFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(trashFolderName);
+        return !K9.FOLDER_NONE.equals(trashFolder);
     }
 
-    public synchronized String getArchiveFolderName() {
-        return archiveFolderName;
+    public synchronized String getArchiveFolder() {
+        return archiveFolder;
     }
 
-    public synchronized void setArchiveFolderName(String archiveFolderName) {
-        this.archiveFolderName = archiveFolderName;
+    public synchronized void setArchiveFolder(String archiveFolder) {
+        this.archiveFolder = archiveFolder;
     }
 
     /**
@@ -1145,15 +1005,15 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has an archive folder set.
      */
     public synchronized boolean hasArchiveFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(archiveFolderName);
+        return !K9.FOLDER_NONE.equals(archiveFolder);
     }
 
-    public synchronized String getSpamFolderName() {
-        return spamFolderName;
+    public synchronized String getSpamFolder() {
+        return spamFolder;
     }
 
-    public synchronized void setSpamFolderName(String name) {
-        spamFolderName = name;
+    public synchronized void setSpamFolder(String name) {
+        spamFolder = name;
     }
 
     /**
@@ -1161,19 +1021,19 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a spam folder set.
      */
     public synchronized boolean hasSpamFolder() {
-        return !K9.FOLDER_NONE.equalsIgnoreCase(spamFolderName);
+        return !K9.FOLDER_NONE.equals(spamFolder);
     }
 
-    public synchronized String getOutboxFolderName() {
+    public String getOutboxFolder() {
         return OUTBOX;
     }
 
-    public synchronized String getAutoExpandFolderName() {
-        return autoExpandFolderName;
+    public synchronized String getAutoExpandFolder() {
+        return autoExpandFolder;
     }
 
-    public synchronized void setAutoExpandFolderName(String name) {
-        autoExpandFolderName = name;
+    public synchronized void setAutoExpandFolder(String name) {
+        autoExpandFolder = name;
     }
 
     public synchronized int getAccountNumber() {
@@ -1307,7 +1167,7 @@ public class Account implements BaseAccount, StoreConfig {
         return LocalStore.getInstance(this, K9.app);
     }
 
-    public Store getRemoteStore() throws MessagingException {
+    public RemoteStore getRemoteStore() throws MessagingException {
         return RemoteStore.getInstance(K9.app, this);
     }
 
@@ -1644,6 +1504,14 @@ public class Account implements BaseAccount, StoreConfig {
         pgpCryptoKey = keyId;
     }
 
+    public boolean getAutocryptPreferEncryptMutual() {
+        return autocryptPreferEncryptMutual;
+    }
+
+    public void setAutocryptPreferEncryptMutual(boolean autocryptPreferEncryptMutual) {
+        this.autocryptPreferEncryptMutual = autocryptPreferEncryptMutual;
+    }
+
     public boolean allowRemoteSearch() {
         return allowRemoteSearch;
     }
@@ -1660,12 +1528,12 @@ public class Account implements BaseAccount, StoreConfig {
         remoteSearchNumResults = (val >= 0 ? val : 0);
     }
 
-    public String getInboxFolderName() {
-        return inboxFolderName;
+    public String getInboxFolder() {
+        return inboxFolder;
     }
 
-    public void setInboxFolderName(String name) {
-        this.inboxFolderName = name;
+    public void setInboxFolder(String name) {
+        this.inboxFolder = name;
     }
 
     public synchronized boolean syncRemoteDeletions() {
@@ -1676,12 +1544,12 @@ public class Account implements BaseAccount, StoreConfig {
         this.syncRemoteDeletions = syncRemoteDeletions;
     }
 
-    public synchronized String getLastSelectedFolderName() {
-        return lastSelectedFolderName;
+    public synchronized String getLastSelectedFolder() {
+        return lastSelectedFolder;
     }
 
-    public synchronized void setLastSelectedFolderName(String folderName) {
-        lastSelectedFolderName = folderName;
+    public synchronized void setLastSelectedFolder(String folderServerId) {
+        lastSelectedFolder = folderServerId;
     }
 
     public synchronized NotificationSetting getNotificationSetting() {
@@ -1802,12 +1670,12 @@ public class Account implements BaseAccount, StoreConfig {
      *         The {@code LocalSearch} instance to modify.
      */
     public void excludeSpecialFolders(LocalSearch search) {
-        excludeSpecialFolder(search, getTrashFolderName());
-        excludeSpecialFolder(search, getDraftsFolderName());
-        excludeSpecialFolder(search, getSpamFolderName());
-        excludeSpecialFolder(search, getOutboxFolderName());
-        excludeSpecialFolder(search, getSentFolderName());
-        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+        excludeSpecialFolder(search, getTrashFolder());
+        excludeSpecialFolder(search, getDraftsFolder());
+        excludeSpecialFolder(search, getSpamFolder());
+        excludeSpecialFolder(search, getOutboxFolder());
+        excludeSpecialFolder(search, getSentFolder());
+        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolder()));
     }
 
     /**
@@ -1828,15 +1696,15 @@ public class Account implements BaseAccount, StoreConfig {
      *         The {@code LocalSearch} instance to modify.
      */
     public void excludeUnwantedFolders(LocalSearch search) {
-        excludeSpecialFolder(search, getTrashFolderName());
-        excludeSpecialFolder(search, getSpamFolderName());
-        excludeSpecialFolder(search, getOutboxFolderName());
-        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolderName()));
+        excludeSpecialFolder(search, getTrashFolder());
+        excludeSpecialFolder(search, getSpamFolder());
+        excludeSpecialFolder(search, getOutboxFolder());
+        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolder()));
     }
 
-    private void excludeSpecialFolder(LocalSearch search, String folderName) {
-        if (folderName != null && !K9.FOLDER_NONE.equals(folderName)) {
-            search.and(SearchField.FOLDER, folderName, Attribute.NOT_EQUALS);
+    private void excludeSpecialFolder(LocalSearch search, String folderServerId) {
+        if (folderServerId != null && !K9.FOLDER_NONE.equals(folderServerId)) {
+            search.and(SearchField.FOLDER, folderServerId, Attribute.NOT_EQUALS);
         }
     }
 

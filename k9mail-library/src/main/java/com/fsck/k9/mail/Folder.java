@@ -99,10 +99,10 @@ public abstract class Folder<T extends Message> {
         return null;
     }
 
-    public void delete(List<? extends Message> msgs, String trashFolderName) throws MessagingException {
+    public void delete(List<? extends Message> msgs, String trashFolder) throws MessagingException {
         for (Message message : msgs) {
             Message myMessage = getMessage(message.getUid());
-            myMessage.delete(trashFolderName);
+            myMessage.delete(trashFolder);
         }
     }
 
@@ -140,6 +140,8 @@ public abstract class Folder<T extends Message> {
 
     public abstract void delete(boolean recurse) throws MessagingException;
 
+    public abstract String getServerId();
+
     public abstract String getName();
 
     /**
@@ -161,7 +163,7 @@ public abstract class Folder<T extends Message> {
 
     @Override
     public String toString() {
-        return getName();
+        return getServerId();
     }
 
     public long getLastChecked() {

@@ -94,19 +94,19 @@ class WebDavFolder extends Folder<WebDavMessage> {
 
     @Override
     public Map<String, String> copyMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
-        moveOrCopyMessages(messages, folder.getName(), false);
+        moveOrCopyMessages(messages, folder.getServerId(), false);
         return null;
     }
 
     @Override
     public Map<String, String> moveMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
-        moveOrCopyMessages(messages, folder.getName(), true);
+        moveOrCopyMessages(messages, folder.getServerId(), true);
         return null;
     }
 
     @Override
-    public void delete(List<? extends Message> msgs, String trashFolderName) throws MessagingException {
-        moveOrCopyMessages(msgs, trashFolderName, true);
+    public void delete(List<? extends Message> msgs, String trashFolder) throws MessagingException {
+        moveOrCopyMessages(msgs, trashFolder, true);
     }
 
     private void moveOrCopyMessages(List<? extends Message> messages, String folderName, boolean isMove)
@@ -192,6 +192,11 @@ class WebDavFolder extends Folder<WebDavMessage> {
     @Override
     public int getMode() {
         return Folder.OPEN_MODE_RW;
+    }
+
+    @Override
+    public String getServerId() {
+        return this.mName;
     }
 
     @Override

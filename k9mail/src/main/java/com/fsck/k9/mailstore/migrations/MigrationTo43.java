@@ -44,7 +44,7 @@ class MigrationTo43 {
                 if (messages.size() > 0) {
                     // ... and move them to the drafts folder (we don't want to
                     // surprise the user by sending potentially very old messages)
-                    LocalFolder drafts = new LocalFolder(localStore, account.getDraftsFolderName());
+                    LocalFolder drafts = new LocalFolder(localStore, account.getDraftsFolder());
                     obsoleteOutbox.moveMessages(messages, drafts);
                 }
 

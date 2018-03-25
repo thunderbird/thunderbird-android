@@ -56,9 +56,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="app_authors_fmt">Autors: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Informació de la revisió: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Fem servir les següents biblioteques de tercers: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Icones Emoji: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">Llegeix adjunts del correu</string>
-  <string name="read_attachment_desc">Permet a aquesta aplicació que llegeixi els adjunts del correu.</string>
   <string name="read_messages_label">Llegeix els correus</string>
   <string name="read_messages_desc">Permet a aquesta aplicació llegir els correus.</string>
   <string name="delete_messages_label">Elimina correus</string>
@@ -72,6 +69,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="compose_title_reply">Respon</string>
   <string name="compose_title_reply_all">Respon a tothom</string>
   <string name="compose_title_forward">Reenvia</string>
+  <string name="compose_title_forward_as_attachment">Reenvia com a adjunt</string>
   <string name="choose_account_title">Trieu un compte</string>
   <string name="choose_folder_title">Tria carpeta</string>
   <string name="status_loading_account_folder">Comprova <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -102,6 +100,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="archive_action">Arxiva</string>
   <string name="spam_action">Brossa</string>
   <string name="forward_action">Reenvia</string>
+  <string name="forward_as_attachment_action">Reenvia com a adjunt</string>
   <string name="move_action">Mou</string>
   <string name="single_message_options_action">Opcions del missatge…</string>
   <string name="refile_action">Rearxiva…</string>
@@ -139,8 +138,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="message_view_theme_action_light">Canvia a la vista clara</string>
   <string name="mark_as_unread_action">Marca com a no llegit</string>
   <string name="read_receipt">Llegeix la confirmació de lectura</string>
-  <string name="read_receipt_enabled">Es farà una petició per la confirmació de lectura</string>
-  <string name="read_receipt_disabled">No es faran més peticions per les confirmacions de lectura</string>
+  <string name="read_receipt_enabled">Es demanarà confirmació de lectura</string>
+  <string name="read_receipt_disabled">No es demanarà confirmació de lectura</string>
   <string name="add_attachment_action">Afegeix adjunt</string>
   <string name="empty_trash_action">Buida la paperera</string>
   <string name="expunge_action">Expurga</string>
@@ -226,7 +225,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="compose_error_incomplete_recipient">El camp del destinatari conté una entrada incompleta!</string>
   <string name="error_contact_address_not_found">No s\'ha trobat cap adreça de correu.</string>
   <string name="message_compose_attachments_skipped_toast">Alguns adjunts no es poden reenviar perquè no s\'han baixat.</string>
-  <string name="message_compose_show_quoted_text_action">Cita el missatge</string>
+  <string name="message_compose_attachments_forward_toast">Aquest missatge no es pot reenviar perquè alguns adjunts no s\'han baixat.</string>
+  <string name="message_compose_show_quoted_text_action">Inclou el missatge citat</string>
   <string name="message_compose_description_delete_quoted_text">Elimina el text citat</string>
   <string name="message_compose_description_edit_quoted_text">Edita el text citat</string>
   <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -286,6 +286,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_privacy_hide_useragent_detail">Suprimeix el nom K-9 User-Agent de les capçaleres del missatge</string>
   <string name="global_settings_privacy_hide_timezone">Amaga el fus horari</string>
   <string name="global_settings_privacy_hide_timezone_detail">Usa UTC en comptes de l\'hora local a les capçaleres dels missatges i a la capçalera de resposta</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting">Amaga el nom d\'usuari</string>
+  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Identifica\'t com a \"localhost\" en connectar a servidors SMTP.</string>
   <string name="global_settings_notification_hide_subject_title">Amaga l\'assumpte a les notificacions</string>
   <string name="global_settings_notification_hide_subject_never">Mai</string>
   <string name="global_settings_notification_hide_subject_when_locked">Quan el telèfon està bloquejat</string>
@@ -477,7 +479,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_message_format_auto">Automàtic (text pla excepte per a missatges HTML)</string>
   <string name="account_settings_always_show_cc_bcc_label">Mostra sempre C/a i C/a ocults</string>
   <string name="account_settings_message_read_receipt_label">Confirmació de lectura</string>
-  <string name="account_settings_message_read_receipt_summary">Sempre es fan peticions de confirmació de lectura.</string>
+  <string name="account_settings_message_read_receipt_summary">Demana sempre una confirmació de lectura</string>
   <string name="account_settings_quote_style_label">Contesta amb estil de citació</string>
   <string name="account_settings_quote_style_prefix">Prefix (com a Gmail)</string>
   <string name="account_settings_quote_style_header">Capçalera (com a l\'Outlook)</string>
@@ -692,6 +694,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="background_ops_auto_sync_only">Quan la sincronització automàtica estigui activada</string>
   <string name="batch_select_all">Selecciona-ho tot</string>
   <string name="account_setup_push_limit_label">Nombre màxim de carpetes a comprovar amb tramesa</string>
+  <string name="account_setup_push_limit_5">5 carpetes</string>
   <string name="account_setup_push_limit_10">10 carpetes</string>
   <string name="account_setup_push_limit_25">25 carpetes</string>
   <string name="account_setup_push_limit_50">50 carpetes</string>
@@ -777,11 +780,11 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Sí</string>
   <string name="dialog_confirm_delete_cancel_button">No</string>
-  <string name="dialog_confirm_mark_all_as_read_title">Confirma marca-ho tot com a llegit</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Confirmeu marcar-ho tot com a llegit</string>
   <string name="dialog_confirm_mark_all_as_read_message">Voleu marcar tots els missatges com a llegits?</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Sí</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">No</string>
-  <string name="dialog_confirm_spam_title">Confirma moure\'l a la carpeta brossa</string>
+  <string name="dialog_confirm_spam_title">Confirmeu moure\'l a la carpeta brossa</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Realment voleu moure aquest missatge a la carpeta brossa?</item>
     <item quantity="other">Realment voleu moure aquests missatges a la carpeta brossa?</item>
@@ -981,30 +984,39 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="openpgp_dialog_sign_only_minus_break">Les signatures es poden trencar quan s\'envien a llistes de correu.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Les signatures es poden mostrar com a adjunts \"signature.asc\" en alguns clients.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Els missatges encriptats sempre inclouen una signatura.</string>
-  <string name="crypto_msg_disabled">El missatge no està encriptat.</string>
-  <string name="crypto_msg_encrypted_error">El missatge està encriptat, però hi ha hagut un error de desencriptació.</string>
-  <string name="crypto_msg_encrypted_insecure">El missatge està encriptat però no és segur!</string>
-  <string name="crypto_msg_signed_error">El missatge està signat, però no se n\'ha pogut verificar la signatura.</string>
-  <string name="crypto_msg_encrypted_no_provider">El missatge està encriptat, però no hi ha cap aplicació de criptografia configurada.</string>
-  <string name="crypto_msg_unsupported_encrypted">El missatge està encriptat, però en un format no admès.</string>
-  <string name="crypto_msg_unsupported_signed">El missatge està signat, però en un format no admès.</string>
-  <string name="crypto_msg_incomplete_encrypted">El missatge està encriptat, però cal baixar-lo completament per desencriptar-lo.</string>
-  <string name="crypto_msg_cancelled">El missatge està encriptat, però se n\'ha cancel·lat la desencriptació.</string>
-  <string name="crypto_msg_signed_unencrypted">El missatge està signat, però no encriptat.</string>
-  <string name="crypto_msg_encrypted_unsigned">El missatge està encriptat, però no signat.</string>
-  <string name="crypto_msg_sign_unknown">Signatura feta per una clau desconeguda.</string>
-  <string name="crypto_msg_sign_verified">Signatura feta per una clau de confiança.</string>
-  <string name="crypto_msg_sign_unverified">Signatura feta per una clau que no és de confiança!</string>
-  <string name="crypto_msg_sign_error">La signatura contenia un error.</string>
-  <string name="crypto_msg_sign_mismatch">Signatura feta per una clau incorrecta.</string>
-  <string name="crypto_msg_sign_expired">Signatura feta per una clau caducada.</string>
-  <string name="crypto_msg_sign_revoked">Signatura feta per una clau revocada.</string>
-  <string name="crypto_msg_sign_insecure">Signatura feta per una clau no segura.</string>
-  <string name="crypto_msg_sign_incomplete">Cal baixar el missatge completament per verificar-ne la signatura.</string>
-  <string name="crypto_msg_signed_encrypted">El missatge està signat i encriptat.</string>
-  <string name="crypto_msg_unsigned_encrypted">No hi ha signatura. Aquest missatge pot haver estat interceptat.</string>
+  <string name="crypto_msg_title_plaintext">Text pla</string>
+  <string name="crypto_msg_unencrypted_sign_error">La signatura d\'extrem a extrem contenia un error.</string>
+  <string name="crypto_msg_incomplete_signed">cal baixar completament el missatge per processar-ne la signatura</string>
+  <string name="crypto_msg_unsupported_signed">conté una signatura d\'extrem a extrem no admesa</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Text pla signat d\'extrem a extrem</string>
+  <string name="crypto_msg_unencrypted_sign_verified">des d\'un signant verificat</string>
+  <string name="crypto_msg_title_unencrypted_signed">Text pla signat</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">però la clau d\'extrem a extrem no ha coincidit amb el remitent</string>
+  <string name="crypto_msg_unencrypted_sign_expired">però la clau d\'extrem a extrem ha caducat</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">però la clau d\'extrem a extrem està revocada</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">però la clau d\'extrem a extrem no es considera segura</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">des d\'una clau d\'extrem a extrem desconeguda</string>
+  <string name="crypto_msg_title_encrypted_unknown">Encriptat</string>
+  <string name="crypto_msg_encrypted_error">però hi ha hagut un error de desencriptació</string>
+  <string name="crypto_msg_encrypted_incomplete">cal descarregar completament el missatge per a la desencriptació</string>
+  <string name="crypto_msg_encrypted_no_provider">però no hi ha cap aplicació d\'encriptació configurada</string>
+  <string name="crypto_msg_encrypted_unsupported">però en un format no admès</string>
+  <string name="crypto_msg_encrypted_cancelled">però la desencriptació s\'ha cancel·lat</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Encriptat</string>
+  <string name="crypto_msg_encrypted_unsigned">però no d\'extrem a extrem</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Encriptat d\'extrem a extrem</string>
+  <string name="crypto_msg_encrypted_sign_verified">des d\'un remitent verificat</string>
+  <string name="crypto_msg_title_encrypted_signed">Encriptat</string>
+  <string name="crypto_msg_encrypted_sign_unknown">des d\'una clau d\'extrem a extrem desconeguda</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">però la clau d\'extrem a extrem no ha coincidit amb el remitent</string>
+  <string name="crypto_msg_encrypted_sign_expired">però la clau d\'extrem a extrem ha caducat</string>
+  <string name="crypto_msg_encrypted_sign_revoked">però la clau d\'extrem a extrem està revocada</string>
+  <string name="crypto_msg_encrypted_sign_insecure">però la clau d\'extrem a extrem no es considera segura</string>
+  <string name="crypto_msg_encrypted_sign_error">però les dades d\'extrem a extrem tenen errors</string>
+  <string name="crypto_msg_encrypted_insecure">però l\'encriptació no es considera segura</string>
   <string name="crypto_info_ok">D\'acord</string>
-  <string name="crypto_info_view_key">Mostra qui signa</string>
+  <string name="crypto_info_view_signer">Mostra qui signa</string>
+  <string name="crypto_info_view_sender">Mostra el remitent</string>
   <string name="crypto_info_view_security_warning">Detalls</string>
   <string name="locked_attach_unlock">Desbloqueja</string>
   <string name="locked_attach_unencrypted">Aquesta part no estava encriptada i pot no ser segura.</string>
@@ -1014,13 +1026,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="messageview_decrypt_retry">Torna-hi</string>
   <string name="messageview_decrypt_incomplete">Cal baixar el missatge encriptat per desencriptar-lo.</string>
   <string name="messageview_crypto_error_title">Error en desencriptar el correu</string>
-  <string name="messageview_crypto_warning_title">Avís de seguretat</string>
-  <string name="messageview_crypto_warning_revoked">Aquest missatge es va signar amb una <b>clau revocada!</b></string>
-  <string name="messageview_crypto_warning_expired">Aquest missatge es va signar amb una <b>clau caducada!</b></string>
-  <string name="messageview_crypto_warning_insecure">Aquest missatge es va signar amb una <b>clau no segura!</b></string>
-  <string name="messageview_crypto_warning_error">Hi ha hagut un <b> error a la signatura d\'aquest missatge!</b></string>
-  <string name="messageview_crypto_warning_unsigned">El missatge estava encriptat, però no signat. <b>No és segur d\'extrem a extrem</b>!</string>
-  <string name="messageview_crypto_warning_show_anyway">Mostra el missatge de tota manera</string>
   <string name="recipient_error_non_ascii">Els caràcters especials no s\'admeten actualment!</string>
   <string name="recipient_error_parse_failed">Error analitzant l\'adreça!</string>
   <string name="account_settings_crypto_support_sign_only">Mostra les signatures no encriptades</string>
@@ -1050,7 +1055,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="enable_encryption">Habilita l\'encriptació</string>
   <string name="disable_encryption">Inhabilita l\'encriptació</string>
   <string name="openpgp_description_text1">Encriptar els missatges assegura que els pugui llegir el destinatari i ningú més.</string>
-  <string name="openpgp_description_text3">L\'encriptació només es mostrarà si tots els destinataris l\'admeten i primer us han d\'haver enviat un missatge.</string>
+  <string name="openpgp_description_text3">L\'encriptació només es mostrarà si tots els destinataris l\'admeten i us han d\'haver enviat un missatge abans.</string>
   <string name="openpgp_description_text2">Commuteu l\'encriptació clicant en aquesta icona.</string>
   <string name="openpgp_enabled_error_gotit">Ja ho tinc</string>
   <string name="openpgp_enabled_error_back">Enrere</string>

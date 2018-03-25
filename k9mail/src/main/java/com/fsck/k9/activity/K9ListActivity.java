@@ -1,10 +1,10 @@
 package com.fsck.k9.activity;
 
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.fsck.k9.K9;
@@ -12,19 +12,21 @@ import com.fsck.k9.activity.K9ActivityCommon.K9ActivityMagic;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 
 
-public abstract class K9ListActivity extends ListActivity implements K9ActivityMagic {
+public abstract class K9ListActivity extends K9Activity implements K9ActivityMagic {
 
-    private K9ActivityCommon mBase;
+    private K9ActivityCommon base;
+    protected ListAdapter adapter;
+    protected ListView list;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        mBase = K9ActivityCommon.newInstance(this);
+        base = K9ActivityCommon.newInstance(this);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        mBase.preDispatchTouchEvent(event);
+        base.preDispatchTouchEvent(event);
         return super.dispatchTouchEvent(event);
     }
 
@@ -35,7 +37,7 @@ public abstract class K9ListActivity extends ListActivity implements K9ActivityM
 
     @Override
     public void setupGestureDetector(OnSwipeGestureListener listener) {
-        mBase.setupGestureDetector(listener);
+        base.setupGestureDetector(listener);
     }
 
     @Override
@@ -43,7 +45,7 @@ public abstract class K9ListActivity extends ListActivity implements K9ActivityM
         // Shortcuts that work no matter what is selected
         if (K9.useVolumeKeysForListNavigationEnabled() &&
                 (keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
-                keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+                        keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
 
             final ListView listView = getListView();
 
@@ -75,5 +77,20 @@ public abstract class K9ListActivity extends ListActivity implements K9ActivityM
         }
 
         return super.onKeyUp(keyCode, event);
+    }
+
+    protected ListView getListView() {
+        if (list == null) {
+            list = (ListView) findViewById(android.R.id.list);
+        }
+        return list;
+    }
+
+    protected void setListAdapter(ListAdapter listAdapter) {
+        if (list == null) {
+            list = (ListView) findViewById(android.R.id.list);
+        }
+        list.setAdapter(listAdapter);
+        adapter = listAdapter;
     }
 }

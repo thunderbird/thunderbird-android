@@ -57,9 +57,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="app_authors_fmt">Автори: <xliff:g id="app_authors">%s</xliff:g></string>
   <string name="app_revision_fmt">Інформація про зміни: <xliff:g id="app_revision_url">%s</xliff:g></string>
   <string name="app_libraries">Ми використовуємо такі бібліотеки сторонніх розробників: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="app_emoji_icons">Смайлики: <xliff:g id="app_emoji_icons_link">%s</xliff:g></string>
-  <string name="read_attachment_label">читати вкладення електронної пошти</string>
-  <string name="read_attachment_desc">Дозволити цій програмі читати вкладення електронної пошти.</string>
   <string name="read_messages_label">читати листи</string>
   <string name="read_messages_desc">Дозволити цій програмі читати ваші листи.</string>
   <string name="delete_messages_label">Видалити листи</string>
@@ -225,7 +222,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="compose_error_incomplete_recipient">Поле отримувача містить не повністю введені дані!</string>
   <string name="error_contact_address_not_found">Не знайденої адреси електронної пошти.</string>
   <string name="message_compose_attachments_skipped_toast">Деякі вкладення не можуть бути переслані бо вони не завантажилися.</string>
-  <string name="message_compose_show_quoted_text_action">Цитувати повідомлення</string>
   <string name="message_compose_description_delete_quoted_text">Видалити цитований текст</string>
   <string name="message_compose_description_edit_quoted_text">Редагувати цитований текст</string>
   <string name="message_view_from_format">Від: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -949,29 +945,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="openpgp_dialog_sign_only_minus_break">Підписи можуть бути пошкоджені при надсиланні листа у списки розсилки.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Деякі клієнти можуть відображати підписи як вкладення \'signature.asc\'.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Зашифровані листи завжди підписані.</string>
-  <string name="crypto_msg_disabled">Повідомлення не зашифроване</string>
-  <string name="crypto_msg_encrypted_error">Повідомлення зашифроване, але під час розшифровування виникла помилка.</string>
-  <string name="crypto_msg_signed_error">Повідомлення підписане, але підпис не може бути перевірено.</string>
-  <string name="crypto_msg_encrypted_no_provider">Лист зашифрований, але кріптографічний додаток не налаштовано</string>
-  <string name="crypto_msg_unsupported_encrypted">Повідомлення зашифроване, але це формат не підтримується.</string>
-  <string name="crypto_msg_unsupported_signed">Повідомлення підписане, але цей формат не підтримується.</string>
-  <string name="crypto_msg_incomplete_encrypted">Повідомлення зашифроване, але має бути повністю завантажене для розшифровування.</string>
-  <string name="crypto_msg_cancelled">Повідомлення зашифроване, але розшифровування було скасовано.</string>
-  <string name="crypto_msg_signed_unencrypted">Повідомлення підписане, але не не зашифроване.</string>
-  <string name="crypto_msg_encrypted_unsigned">Повідомлення зашифроване, але не підписане.</string>
-  <string name="crypto_msg_sign_unknown">Підпис зроблено невідомим ключем.</string>
-  <string name="crypto_msg_sign_verified">Підпис зроблено довіреним ключем.</string>
-  <string name="crypto_msg_sign_unverified">Підпис зроблено не довіреним ключем.</string>
-  <string name="crypto_msg_sign_error">Підпис містить помилку.</string>
-  <string name="crypto_msg_sign_mismatch">Підпис зроблено неправильним ключем.</string>
-  <string name="crypto_msg_sign_expired">Підпис зроблено простроченим ключем.</string>
-  <string name="crypto_msg_sign_revoked">Підпис зроблено відкликаним ключем.</string>
-  <string name="crypto_msg_sign_insecure">Підпис зроблено ключем, що не є безпечним.</string>
-  <string name="crypto_msg_sign_incomplete">Щоб перевірити підпис треба завантажити повідомлення повністю.</string>
-  <string name="crypto_msg_signed_encrypted">Повідомлення підписане та зашифроване.</string>
-  <string name="crypto_msg_unsigned_encrypted">Підпису немає, це повідомлення могло бути перехопленим.</string>
   <string name="crypto_info_ok">Окей</string>
-  <string name="crypto_info_view_key">Переглянути підпис</string>
   <string name="locked_attach_unlock">Розблокувати</string>
   <string name="locked_attach_unencrypted">Ця частина не зашифрована й може бути небезпечною.</string>
   <string name="locked_attach_title">незахищене вкладення</string>
@@ -980,11 +954,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="messageview_decrypt_retry">спробувати знову</string>
   <string name="messageview_decrypt_incomplete">Для розшифровування зашифроване повідомлення потрібно завантажити.</string>
   <string name="messageview_crypto_error_title">Помилка під час розшифровування email</string>
-  <string name="messageview_crypto_warning_title">Попередження щодо безпеки</string>
-  <string name="messageview_crypto_warning_revoked">Підпис зроблено <b>відкликаним ключем!</b></string>
-  <string name="messageview_crypto_warning_expired">Підпис зроблено <b>простроченим ключем!</b></string>
-  <string name="messageview_crypto_warning_insecure">Підпис зроблено <b>ключем, що не є безпечним!</b></string>
-  <string name="messageview_crypto_warning_error">В <b>підписі цього повідомлення є помилка!</b></string>
   <string name="recipient_error_non_ascii">Спеціальні символи на разі не підтримуються!</string>
   <string name="recipient_error_parse_failed">Помилка розбору адреси!</string>
   <string name="error_sign_only_no_encryption">Шифрування недоступне у режимі PGP Sign-Only</string>

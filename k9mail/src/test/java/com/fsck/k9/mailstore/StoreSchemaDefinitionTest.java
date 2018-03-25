@@ -17,14 +17,13 @@ import com.fsck.k9.Account;
 import com.fsck.k9.BuildConfig;
 import com.fsck.k9.GlobalsHelper;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.R;
 import com.fsck.k9.mail.MessagingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
 
 import static org.junit.Assert.assertEquals;
@@ -37,8 +36,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(K9RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
+@RunWith(RobolectricTestRunner.class)
 public class StoreSchemaDefinitionTest {
     private StoreSchemaDefinition storeSchemaDefinition;
 
@@ -357,7 +355,7 @@ public class StoreSchemaDefinitionTest {
 
     private Account createAccount() {
         Account account = mock(Account.class);
-        when(account.getInboxFolderName()).thenReturn("Inbox");
+        when(account.getInboxFolder()).thenReturn("Inbox");
         when(account.getLocalStorageProviderId()).thenReturn(StorageManager.InternalStorageProvider.ID);
         return account;
     }

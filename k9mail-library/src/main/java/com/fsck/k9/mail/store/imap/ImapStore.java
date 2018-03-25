@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import android.net.ConnectivityManager;
+import android.support.annotation.Nullable;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -174,8 +175,6 @@ public class ImapStore extends RemoteStore {
         Set<String> folderNames = new HashSet<>(listResponses.size());
 
         for (ListResponse listResponse : listResponses) {
-            boolean includeFolder = true;
-
             String decodedFolderName;
             try {
                 decodedFolderName = folderNameCodec.decode(listResponse.getName());
@@ -198,43 +197,33 @@ public class ImapStore extends RemoteStore {
                 combinedPrefix = null;
             }
 
-            if (folder.equalsIgnoreCase(mStoreConfig.getInboxFolderName())) {
+            if (ImapFolder.INBOX.equalsIgnoreCase(folder)) {
                 continue;
-            } else if (folder.equals(mStoreConfig.getOutboxFolderName())) {
+            } else if (folder.equals(mStoreConfig.getOutboxFolder())) {
                 /*
                  * There is a folder on the server with the same name as our local
                  * outbox. Until we have a good plan to deal with this situation
                  * we simply ignore the folder on the server.
                  */
                 continue;
-            } else {
-                int prefixLength = getCombinedPrefix().length();
-                if (prefixLength > 0) {
-                    // Strip prefix from the folder name
-                    if (folder.length() >= prefixLength) {
-                        folder = folder.substring(prefixLength);
-                    }
-                    if (!decodedFolderName.equalsIgnoreCase(getCombinedPrefix() + folder)) {
-                        includeFolder = false;
-                    }
-                }
+            } else if (listResponse.hasAttribute("\\NoSelect")) {
+                continue;
             }
 
-            if (listResponse.hasAttribute("\\NoSelect")) {
-                includeFolder = false;
-            }
-
-            if (includeFolder) {
+            folder = removePrefixFromFolderName(folder);
+            if (folder != null) {
                 folderNames.add(folder);
             }
         }
 
-        folderNames.add(mStoreConfig.getInboxFolderName());
+        folderNames.add(ImapFolder.INBOX);
 
         return folderNames;
     }
 
     void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
+        mStoreConfig.setInboxFolder(ImapFolder.INBOX);
+
         if (!connection.hasCapability(Capabilities.SPECIAL_USE)) {
             if (K9MailLib.isDebug()) {
                 Timber.d("No detected folder auto-configuration methods.");
@@ -267,33 +256,55 @@ public class ImapStore extends RemoteStore {
                 combinedPrefix = null;
             }
 
+            decodedFolderName = removePrefixFromFolderName(decodedFolderName);
+            if (decodedFolderName == null) {
+                continue;
+            }
+
             if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
-                mStoreConfig.setArchiveFolderName(decodedFolderName);
+                mStoreConfig.setArchiveFolder(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Archive folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Drafts")) {
-                mStoreConfig.setDraftsFolderName(decodedFolderName);
+                mStoreConfig.setDraftsFolder(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Drafts folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Sent")) {
-                mStoreConfig.setSentFolderName(decodedFolderName);
+                mStoreConfig.setSentFolder(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Sent folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Junk")) {
-                mStoreConfig.setSpamFolderName(decodedFolderName);
+                mStoreConfig.setSpamFolder(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Spam folder: %s", decodedFolderName);
                 }
             } else if (listResponse.hasAttribute("\\Trash")) {
-                mStoreConfig.setTrashFolderName(decodedFolderName);
+                mStoreConfig.setTrashFolder(decodedFolderName);
                 if (K9MailLib.isDebug()) {
                     Timber.d("Folder auto-configuration detected Trash folder: %s", decodedFolderName);
                 }
             }
         }
+    }
+
+    @Nullable
+    private String removePrefixFromFolderName(String folderName) {
+        String prefix = getCombinedPrefix();
+        int prefixLength = prefix.length();
+        if (prefixLength == 0) {
+            return folderName;
+        }
+
+        if (!folderName.startsWith(prefix)) {
+            // Folder name doesn't start with our configured prefix. But right now when building commands we prefix all
+            // folders except the INBOX with the prefix. So we won't be able to use this folder.
+            return null;
+        }
+
+        return folderName.substring(prefixLength);
     }
 
     @Override

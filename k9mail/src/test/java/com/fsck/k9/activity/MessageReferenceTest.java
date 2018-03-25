@@ -1,11 +1,8 @@
 package com.fsck.k9.activity;
 
 
-import com.fsck.k9.K9RobolectricTestRunner;
 import com.fsck.k9.mail.Flag;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -14,8 +11,6 @@ import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 
 
-@RunWith(K9RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
 public class MessageReferenceTest {
 
     @Test
@@ -39,7 +34,7 @@ public class MessageReferenceTest {
 
         assertNotNull(messageReference);
         assertEquals("o hai!", messageReference.getAccountUuid());
-        assertEquals("folder", messageReference.getFolderName());
+        assertEquals("folder", messageReference.getFolderServerId());
         assertEquals("10101010", messageReference.getUid());
         assertNull(messageReference.getFlag());
     }
@@ -50,7 +45,7 @@ public class MessageReferenceTest {
 
         assertNotNull(messageReference);
         assertEquals("o hai!", messageReference.getAccountUuid());
-        assertEquals("folder", messageReference.getFolderName());
+        assertEquals("folder", messageReference.getFolderServerId());
         assertEquals("10101010", messageReference.getUid());
         assertEquals(Flag.ANSWERED, messageReference.getFlag());
     }
@@ -63,7 +58,7 @@ public class MessageReferenceTest {
         MessageReference messageReferenceTwo = messageReferenceOne.withModifiedUid("---");
 
         assertEquals("account", messageReferenceTwo.getAccountUuid());
-        assertEquals("folder", messageReferenceTwo.getFolderName());
+        assertEquals("folder", messageReferenceTwo.getFolderServerId());
         assertEquals("---", messageReferenceTwo.getUid());
         assertEquals(Flag.ANSWERED, messageReferenceTwo.getFlag());
     }
@@ -76,7 +71,7 @@ public class MessageReferenceTest {
         MessageReference messageReferenceTwo = messageReferenceOne.withModifiedFlag(Flag.DELETED);
 
         assertEquals("account", messageReferenceTwo.getAccountUuid());
-        assertEquals("folder", messageReferenceTwo.getFolderName());
+        assertEquals("folder", messageReferenceTwo.getFolderServerId());
         assertEquals("uid", messageReferenceTwo.getUid());
         assertEquals(Flag.DELETED, messageReferenceTwo.getFlag());
     }
@@ -209,13 +204,13 @@ public class MessageReferenceTest {
         createMessageReference("account", "folder", null);
     }
 
-    private MessageReference createMessageReference(String accountUuid, String folderName, String uid) {
-        return new MessageReference(accountUuid, folderName, uid, null);
+    private MessageReference createMessageReference(String accountUuid, String folderServerId, String uid) {
+        return new MessageReference(accountUuid, folderServerId, uid, null);
     }
 
-    private MessageReference createMessageReferenceWithFlag(String accountUuid, String folderName, String uid,
+    private MessageReference createMessageReferenceWithFlag(String accountUuid, String folderServerId, String uid,
             Flag flag) {
-        return new MessageReference(accountUuid, folderName, uid, flag);
+        return new MessageReference(accountUuid, folderServerId, uid, flag);
     }
 
     private void assertEqualsReturnsTrueSymmetrically(MessageReference referenceOne, MessageReference referenceTwo) {

@@ -190,23 +190,23 @@ public class WebDavStore extends RemoteStore {
         Map<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
         String folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_INBOX_FOLDER));
         if (folderName != null) {
-            mStoreConfig.setAutoExpandFolderName(folderName);
-            mStoreConfig.setInboxFolderName(folderName);
+            mStoreConfig.setAutoExpandFolder(folderName);
+            mStoreConfig.setInboxFolder(folderName);
         }
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_DRAFTS_FOLDER));
         if (folderName != null) {
-            mStoreConfig.setDraftsFolderName(folderName);
+            mStoreConfig.setDraftsFolder(folderName);
         }
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_TRASH_FOLDER));
         if (folderName != null) {
-            mStoreConfig.setTrashFolderName(folderName);
+            mStoreConfig.setTrashFolder(folderName);
         }
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SPAM_FOLDER));
         if (folderName != null) {
-            mStoreConfig.setSpamFolderName(folderName);
+            mStoreConfig.setSpamFolder(folderName);
         }
 
         // K-9 Mail's outbox is a special local folder and different from Exchange/WebDAV's outbox.
@@ -218,7 +218,7 @@ public class WebDavStore extends RemoteStore {
 
         folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SENT_FOLDER));
         if (folderName != null) {
-            mStoreConfig.setSentFolderName(folderName);
+            mStoreConfig.setSentFolder(folderName);
         }
 
         /*
@@ -977,13 +977,8 @@ public class WebDavStore extends RemoteStore {
     }
 
     @Override
-    public boolean isSendCapable() {
-        return true;
-    }
-
-    @Override
     public void sendMessages(List<? extends Message> messages) throws MessagingException {
-        WebDavFolder tmpFolder = getFolder(mStoreConfig.getDraftsFolderName());
+        WebDavFolder tmpFolder = getFolder(mStoreConfig.getDraftsFolder());
         try {
             tmpFolder.open(Folder.OPEN_MODE_RW);
             List<? extends Message> retMessages = tmpFolder.appendWebDavMessages(messages);

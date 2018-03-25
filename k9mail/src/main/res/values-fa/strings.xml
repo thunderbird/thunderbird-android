@@ -19,8 +19,6 @@
   <string name="import_dialog_error_message">لطفا یک مدیریت پوشه برای ادامه با این مفهوم نصب کنید</string>
   <string name="open_market">بازی مغازه ای را باز کن</string>
   <!--=== General strings ==================================================================-->
-  <string name="read_attachment_label">پیوست های پست الکترونیکی را بخوان</string>
-  <string name="read_attachment_desc">اجازه دادن به این برنامه برای خواندن پیوست های نامه الکترونیکی شما</string>
   <string name="read_messages_label">نامه های الکترونیکی را بخوان</string>
   <string name="read_messages_desc">اجازه دادن به این برنامه برای خواندن نامه های الکترونیکی شما</string>
   <string name="delete_messages_label">نامه های الکترونیکی را پاک کن</string>
@@ -151,7 +149,6 @@
   <string name="compose_error_incomplete_recipient">فیلد دریافتی حاوی ورودی ناقص است</string>
   <string name="error_contact_address_not_found">هیچ آدرس نامه الکترونیکی برای این تماس پیدا نشد</string>
   <string name="message_compose_attachments_skipped_toast">بعضی پیوست ها نمی توانند ارسال شوند زیرا بارگیری (دانلود) نشده اند</string>
-  <string name="message_compose_show_quoted_text_action">اعلام کردن پیام</string>
   <string name="message_compose_description_delete_quoted_text">حذف متن اعلام شده</string>
   <string name="message_compose_description_edit_quoted_text">ویرایش متن اعلام شده</string>
   <string name="message_view_from_format">از: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>

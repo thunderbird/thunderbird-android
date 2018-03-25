@@ -1,22 +1,19 @@
 package com.fsck.k9.mail.store.webdav;
 
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.K9LibRobolectricTestRunner;
-import com.fsck.k9.mail.MessagingException;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
+
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.MessagingException;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(K9LibRobolectricTestRunner.class)
 public class WebDavMessageTest {
 
     private WebDavMessage message;
@@ -30,7 +27,7 @@ public class WebDavMessageTest {
     @Before
     public void before() {
         MockitoAnnotations.initMocks(this);
-        when(mockFolder.getName()).thenReturn("Inbox");
+        when(mockFolder.getServerId()).thenReturn("Inbox");
         when(mockFolder.getUrl()).thenReturn("http://example.org/Inbox");
         message = new WebDavMessage("message1", mockFolder);
     }

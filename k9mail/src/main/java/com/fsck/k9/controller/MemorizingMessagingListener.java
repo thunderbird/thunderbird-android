@@ -41,11 +41,11 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
                             syncStarted = memory;
                             break;
                         case FINISHED:
-                            other.synchronizeMailboxFinished(memory.account, memory.folderName,
+                            other.synchronizeMailboxFinished(memory.account, memory.folderServerId,
                                     memory.syncingTotalMessagesInMailbox, memory.syncingNumNewMessages);
                             break;
                         case FAILED:
-                            other.synchronizeMailboxFailed(memory.account, memory.folderName,
+                            other.synchronizeMailboxFailed(memory.account, memory.folderServerId,
                                     memory.failureMessage);
                             break;
                     }
@@ -67,10 +67,10 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
                 if (memory.pushingState != null) {
                     switch (memory.pushingState) {
                         case STARTED:
-                            other.setPushActive(memory.account, memory.folderName, true);
+                            other.setPushActive(memory.account, memory.folderServerId, true);
                             break;
                         case FINISHED:
-                            other.setPushActive(memory.account, memory.folderName, false);
+                            other.setPushActive(memory.account, memory.folderServerId, false);
                             break;
                         case FAILED:
                             break;
@@ -90,7 +90,8 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
             }
             Memory somethingStarted = null;
             if (syncStarted != null) {
-                other.synchronizeMailboxStarted(syncStarted.account, syncStarted.folderName);
+                other.synchronizeMailboxStarted(syncStarted.account, syncStarted.folderServerId,
+                        syncStarted.folderName);
                 somethingStarted = syncStarted;
             }
             if (sendStarted != null) {
@@ -109,7 +110,7 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
                 somethingStarted = processingStarted;
             }
             if (somethingStarted != null && somethingStarted.folderTotal > 0) {
-                other.synchronizeMailboxProgress(somethingStarted.account, somethingStarted.folderName,
+                other.synchronizeMailboxProgress(somethingStarted.account, somethingStarted.folderServerId,
                         somethingStarted.folderCompleted, somethingStarted.folderTotal);
             }
 
@@ -117,34 +118,36 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     }
 
     @Override
-    public synchronized void synchronizeMailboxStarted(Account account, String folder) {
-        Memory memory = getMemory(account, folder);
+    public synchronized void synchronizeMailboxStarted(Account account, String folderServerId,
+            String folderName) {
+        Memory memory = getMemory(account, folderServerId);
+        memory.folderName = folderName;
         memory.syncingState = MemorizingState.STARTED;
         memory.folderCompleted = 0;
         memory.folderTotal = 0;
     }
 
     @Override
-    public synchronized void synchronizeMailboxFinished(Account account, String folder,
+    public synchronized void synchronizeMailboxFinished(Account account, String folderServerId,
             int totalMessagesInMailbox, int numNewMessages) {
-        Memory memory = getMemory(account, folder);
+        Memory memory = getMemory(account, folderServerId);
         memory.syncingState = MemorizingState.FINISHED;
         memory.syncingTotalMessagesInMailbox = totalMessagesInMailbox;
         memory.syncingNumNewMessages = numNewMessages;
     }
 
     @Override
-    public synchronized void synchronizeMailboxFailed(Account account, String folder,
+    public synchronized void synchronizeMailboxFailed(Account account, String folderServerId,
             String message) {
 
-        Memory memory = getMemory(account, folder);
+        Memory memory = getMemory(account, folderServerId);
         memory.syncingState = MemorizingState.FAILED;
         memory.failureMessage = message;
     }
 
     @Override
-    public synchronized void setPushActive(Account account, String folderName, boolean active) {
-        Memory memory = getMemory(account, folderName);
+    public synchronized void setPushActive(Account account, String folderServerId, boolean active) {
+        Memory memory = getMemory(account, folderServerId);
         memory.pushingState = (active ? MemorizingState.STARTED : MemorizingState.FINISHED);
     }
 
@@ -170,9 +173,9 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
 
 
     @Override
-    public synchronized void synchronizeMailboxProgress(Account account, String folderName, int completed,
+    public synchronized void synchronizeMailboxProgress(Account account, String folderServerId, int completed,
             int total) {
-        Memory memory = getMemory(account, folderName);
+        Memory memory = getMemory(account, folderServerId);
         memory.folderCompleted = completed;
         memory.folderTotal = total;
     }
@@ -204,23 +207,24 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         memory.processingCommandTitle = null;
     }
 
-    private Memory getMemory(Account account, String folderName) {
-        Memory memory = memories.get(getMemoryKey(account, folderName));
+    private Memory getMemory(Account account, String folderServerId) {
+        Memory memory = memories.get(getMemoryKey(account, folderServerId));
         if (memory == null) {
-            memory = new Memory(account, folderName);
-            memories.put(getMemoryKey(memory.account, memory.folderName), memory);
+            memory = new Memory(account, folderServerId);
+            memories.put(getMemoryKey(memory.account, memory.folderServerId), memory);
         }
         return memory;
     }
 
-    private static String getMemoryKey(Account taccount, String tfolderName) {
-        return taccount.getDescription() + ":" + tfolderName;
+    private static String getMemoryKey(Account account, String folderServerId) {
+        return account.getDescription() + ":" + folderServerId;
     }
 
     private enum MemorizingState { STARTED, FINISHED, FAILED }
 
     private static class Memory {
         Account account;
+        String folderServerId;
         String folderName;
         MemorizingState syncingState = null;
         MemorizingState sendingState = null;
@@ -235,9 +239,9 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         int folderTotal = 0;
         String processingCommandTitle = null;
 
-        Memory(Account nAccount, String nFolderName) {
-            account = nAccount;
-            folderName = nFolderName;
+        Memory(Account account, String folderServerId) {
+            this.account = account;
+            this.folderServerId = folderServerId;
         }
     }
 }

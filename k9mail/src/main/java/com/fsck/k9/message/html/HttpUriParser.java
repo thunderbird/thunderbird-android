@@ -4,9 +4,12 @@ package com.fsck.k9.message.html;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 
 /**
- * Parses and "linkifies" http links.
+ * Parses http/https/rtsp URIs
  * <p>
  * This class is in parts inspired by OkHttp's
  * <a href="https://github.com/square/okhttp/blob/master/okhttp/src/main/java/okhttp3/HttpUrl.java">HttpUrl</a>.
@@ -16,6 +19,7 @@ import java.util.regex.Pattern;
 class HttpUriParser implements UriParser {
     // This string represent character group sub-delim as described in RFC 3986
     private static final String SUB_DELIM = "!$&'()*+,;=";
+    private static final Pattern SCHEME_PATTERN = Pattern.compile("(https?|rtsp)://", Pattern.CASE_INSENSITIVE);
     private static final Pattern DOMAIN_PATTERN =
             Pattern.compile("[\\da-z](?:[\\da-z-]*[\\da-z])*(?:\\.[\\da-z](?:[\\da-z-]*[\\da-z])*)*(?::(\\d{0,5}))?",
                     Pattern.CASE_INSENSITIVE);
@@ -23,27 +27,20 @@ class HttpUriParser implements UriParser {
             Pattern.compile("(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})(:(\\d{0,5}))?");
 
 
+    @Nullable
     @Override
-    public int linkifyUri(String text, int startPos, StringBuffer outputBuffer) {
-        int currentPos = startPos;
-
-        // Scheme
-        String shortScheme = text.substring(currentPos, Math.min(currentPos + 7, text.length()));
-        String longScheme = text.substring(currentPos, Math.min(currentPos + 8, text.length()));
-        if (longScheme.equalsIgnoreCase("https://")) {
-            currentPos += "https://".length();
-        } else if (shortScheme.equalsIgnoreCase("http://")) {
-            currentPos += "http://".length();
-        } else if (shortScheme.equalsIgnoreCase("rtsp://")) {
-            currentPos += "rtsp://".length();
-        } else {
-            return startPos;
+    public UriMatch parseUri(@NotNull CharSequence text, int startPos) {
+        Matcher schemeMatcher = SCHEME_PATTERN.matcher(text);
+        if (!schemeMatcher.find(startPos) || schemeMatcher.start() != startPos) {
+            return null;
         }
+
+        int currentPos = schemeMatcher.end();
 
         // Authority
         int matchedAuthorityEnd = tryMatchAuthority(text, currentPos);
         if (matchedAuthorityEnd == currentPos) {
-            return startPos;
+            return null;
         }
         currentPos = matchedAuthorityEnd;
 
@@ -62,18 +59,12 @@ class HttpUriParser implements UriParser {
             currentPos = matchUnreservedPCTEncodedSubDelimClassesGreedy(text, currentPos + 1, ":@/?");
         }
 
-        String httpUri = text.substring(startPos, currentPos);
-        outputBuffer.append("<a href=\"")
-                .append(httpUri)
-                .append("\">")
-                .append(httpUri)
-                .append("</a>");
-
-        return currentPos;
+        CharSequence uri = text.subSequence(startPos, currentPos);
+        return new UriMatch(startPos, currentPos, uri);
     }
 
-    private int tryMatchAuthority(String text, int startPos) {
-        int authorityLimit = text.indexOf('/', startPos);
+    private int tryMatchAuthority(CharSequence text, int startPos) {
+        int authorityLimit = indexOf(text, '/', startPos);
         if (authorityLimit == -1) {
             authorityLimit = text.length();
         }
@@ -97,8 +88,8 @@ class HttpUriParser implements UriParser {
         return startPos;
     }
 
-    private int tryMatchUserInfo(String text, int startPos, int limit) {
-        int userInfoEnd = text.indexOf('@', startPos);
+    private int tryMatchUserInfo(CharSequence text, int startPos, int limit) {
+        int userInfoEnd = indexOf(text, '@', startPos);
         if (userInfoEnd != -1 && userInfoEnd < limit) {
             if (matchUnreservedPCTEncodedSubDelimClassesGreedy(text, startPos, ":") != userInfoEnd) {
                 // Illegal character in user info
@@ -109,7 +100,7 @@ class HttpUriParser implements UriParser {
         return startPos;
     }
 
-    private int tryMatchDomainName(String text, int startPos) {
+    private int tryMatchDomainName(CharSequence text, int startPos) {
         try {
             Matcher matcher = DOMAIN_PATTERN.matcher(text);
             if (!matcher.find(startPos) || matcher.start() != startPos) {
@@ -130,7 +121,7 @@ class HttpUriParser implements UriParser {
         }
     }
 
-    private int tryMatchIpv4Address(String text, int startPos, boolean portAllowed) {
+    private int tryMatchIpv4Address(CharSequence text, int startPos, boolean portAllowed) {
         Matcher matcher = IPv4_PATTERN.matcher(text);
         if (!matcher.find(startPos) || matcher.start() != startPos) {
             return startPos;
@@ -158,12 +149,12 @@ class HttpUriParser implements UriParser {
         return matcher.end();
     }
 
-    private int tryMatchIpv6Address(String text, int startPos) {
-        if (startPos == text.length() || text.codePointAt(startPos) != '[') {
+    private int tryMatchIpv6Address(CharSequence text, int startPos) {
+        if (startPos == text.length() || text.charAt(startPos) != '[') {
             return startPos;
         }
 
-        int addressEnd = text.indexOf(']');
+        int addressEnd = indexOf(text, ']', startPos);
         if (addressEnd == -1) {
             return startPos;
         }
@@ -174,13 +165,13 @@ class HttpUriParser implements UriParser {
         int endSegmentsCount = 0;
 
         // Handle :: separator and segments in front of it
-        int compressionPos = text.indexOf("::");
+        int compressionPos = indexOf(text, "::", currentPos);
         boolean compressionEnabled = compressionPos != -1 && compressionPos < addressEnd;
         if (compressionEnabled) {
             while (currentPos < compressionPos) {
                 // Check segment separator
                 if (beginSegmentsCount > 0) {
-                    if (text.codePointAt(currentPos) != ':') {
+                    if (text.charAt(currentPos) != ':') {
                         return startPos;
                     } else {
                         ++currentPos;
@@ -204,7 +195,7 @@ class HttpUriParser implements UriParser {
         while (currentPos < addressEnd && (beginSegmentsCount + endSegmentsCount) < 8) {
             // Check segment separator
             if (endSegmentsCount > 0) {
-                if (text.codePointAt(currentPos) != ':') {
+                if (text.charAt(currentPos) != ':') {
                     return startPos;
                 } else {
                     ++currentPos;
@@ -212,7 +203,7 @@ class HttpUriParser implements UriParser {
             }
 
             // Small look ahead, do not run into IPv4 tail (7 is IPv4 minimum length)
-            int nextColon = text.indexOf(':', currentPos);
+            int nextColon = indexOf(text, ':', currentPos);
             if ((nextColon == -1 || nextColon > addressEnd) && (addressEnd - currentPos) >= 7) {
                 break;
             }
@@ -246,14 +237,14 @@ class HttpUriParser implements UriParser {
         }
 
         // Check optional port
-        if (currentPos == text.length() || text.codePointAt(currentPos) != ':') {
+        if (currentPos == text.length() || text.charAt(currentPos) != ':') {
             return currentPos;
         }
         ++currentPos;
 
         int port = 0;
         for (; currentPos < text.length(); currentPos++) {
-            int c = text.codePointAt(currentPos);
+            int c = text.charAt(currentPos);
             if (c < '0' || c > '9') {
                 break;
             }
@@ -262,21 +253,22 @@ class HttpUriParser implements UriParser {
         return (port <= 65535) ? currentPos : startPos;
     }
 
-    private int parse16BitHexSegment(String text, int startPos, int endPos) {
+    private int parse16BitHexSegment(CharSequence text, int startPos, int endPos) {
         int currentPos = startPos;
-        while (isHexDigit(text.codePointAt(currentPos)) && currentPos < endPos) {
+        while (isHexDigit(text.charAt(currentPos)) && currentPos < endPos) {
             ++currentPos;
         }
 
         return currentPos;
     }
 
-    private int matchUnreservedPCTEncodedSubDelimClassesGreedy(String text, int startPos, String additionalCharacters) {
+    private int matchUnreservedPCTEncodedSubDelimClassesGreedy(CharSequence text, int startPos,
+            String additionalCharacters) {
         String allowedCharacters = SUB_DELIM + "-._~" + additionalCharacters;
         int currentPos;
         int shouldBeHex = 0;
         for (currentPos = startPos; currentPos < text.length(); currentPos++) {
-            int c = text.codePointAt(currentPos);
+            int c = text.charAt(currentPos);
 
             if (isHexDigit(c)) {
                 shouldBeHex = Math.max(shouldBeHex - 1, 0);
@@ -298,5 +290,36 @@ class HttpUriParser implements UriParser {
 
     private boolean isHexDigit(int c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9');
+    }
+
+    private int indexOf(CharSequence text, char ch, int fromIndex) {
+        for (int i = fromIndex, end = text.length(); i < end; i++) {
+            if (text.charAt(i) == ch) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private int indexOf(CharSequence text, String str, int fromIndex) {
+        char ch = str.charAt(0);
+        for (int i = fromIndex, end = text.length(); i < end; i++) {
+            if (text.charAt(i) == ch) {
+                boolean found = true;
+                for (int j = 1, strLen = str.length(); j < strLen; j++) {
+                    if (text.charAt(i + j) != str.charAt(j)) {
+                        found = false;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    return i;
+                }
+            }
+        }
+
+        return -1;
     }
 }

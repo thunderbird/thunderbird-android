@@ -32,6 +32,7 @@ import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.AlternateRecipientAdapter;
 import com.fsck.k9.activity.AlternateRecipientAdapter.AlternateRecipientListener;
@@ -204,6 +205,20 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         if (hasFocus) {
             displayKeyboard();
         }
+    }
+
+    /**
+     * TokenCompleteTextView removes composing strings, and etc, but leaves internal composition
+     * predictions partially constructed. Changing either/or the Selection or Candidate start/end
+     * positions, forces the IMM to reset cleaner.
+     */
+    @Override
+    protected void replaceText(CharSequence text) {
+        super.replaceText(text);
+
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.updateSelection(this, getSelectionStart(), getSelectionEnd(), -1, -1);
     }
 
     private void displayKeyboard() {
@@ -582,6 +597,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         public Address address;
 
         public String addressLabel;
+        public final int timesContacted;
+        public final String sortKey;
 
         @Nullable // null if the contact has no photo. transient because we serialize this manually, see below.
         public transient Uri photoThumbnailUri;
@@ -594,18 +611,28 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             this.contactId = null;
             this.cryptoStatus = RecipientCryptoStatus.UNDEFINED;
             this.contactLookupKey = null;
+            timesContacted = 0;
+            sortKey = null;
         }
 
         public Recipient(String name, String email, String addressLabel, long contactId, String lookupKey) {
+            this(name, email, addressLabel, contactId, lookupKey, 0, null);
+        }
+
+        public Recipient(String name, String email, String addressLabel, long contactId, String lookupKey,
+                int timesContacted, String sortKey) {
             this.address = new Address(email, name);
             this.contactId = contactId;
             this.addressLabel = addressLabel;
             this.cryptoStatus = RecipientCryptoStatus.UNDEFINED;
             this.contactLookupKey = lookupKey;
+            this.timesContacted = timesContacted;
+            this.sortKey = sortKey;
         }
 
         public String getDisplayNameOrAddress() {
-            String displayName = getDisplayName();
+            final String displayName = K9.showCorrespondentNames() ? getDisplayName() : null;
+
             if (displayName != null) {
                 return displayName;
             }

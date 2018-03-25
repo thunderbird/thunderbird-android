@@ -25,13 +25,13 @@ class ImapPusher implements Pusher {
     }
 
     @Override
-    public void start(List<String> folderNames) {
+    public void start(List<String> folderServerIds) {
         synchronized (folderPushers) {
             stop();
 
             setLastRefresh(currentTimeMillis());
 
-            for (String folderName : folderNames) {
+            for (String folderName : folderServerIds) {
                 ImapFolderPusher pusher = createImapFolderPusher(folderName);
                 folderPushers.add(pusher);
 
@@ -47,7 +47,7 @@ class ImapPusher implements Pusher {
                 try {
                     folderPusher.refresh();
                 } catch (Exception e) {
-                    Timber.e(e, "Got exception while refreshing for %s", folderPusher.getName());
+                    Timber.e(e, "Got exception while refreshing for %s", folderPusher.getServerId());
                 }
             }
         }
@@ -63,12 +63,12 @@ class ImapPusher implements Pusher {
             for (ImapFolderPusher folderPusher : folderPushers) {
                 try {
                     if (K9MailLib.isDebug()) {
-                        Timber.i("Requesting stop of IMAP folderPusher %s", folderPusher.getName());
+                        Timber.i("Requesting stop of IMAP folderPusher %s", folderPusher.getServerId());
                     }
 
                     folderPusher.stop();
                 } catch (Exception e) {
-                    Timber.e(e, "Got exception while stopping %s", folderPusher.getName());
+                    Timber.e(e, "Got exception while stopping %s", folderPusher.getServerId());
                 }
             }
 

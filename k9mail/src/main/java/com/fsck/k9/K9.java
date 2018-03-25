@@ -605,28 +605,28 @@ public class K9 extends Application {
             }
 
             @Override
-            public void synchronizeMailboxRemovedMessage(Account account, String folder, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
+            public void synchronizeMailboxRemovedMessage(Account account, String folderServerId, Message message) {
+                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folderServerId, message);
                 updateUnreadWidget();
                 updateMailListWidget();
             }
 
             @Override
-            public void messageDeleted(Account account, String folder, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folder, message);
+            public void messageDeleted(Account account, String folderServerId, Message message) {
+                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folderServerId, message);
                 updateUnreadWidget();
                 updateMailListWidget();
             }
 
             @Override
-            public void synchronizeMailboxNewMessage(Account account, String folder, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folder, message);
+            public void synchronizeMailboxNewMessage(Account account, String folderServerId, Message message) {
+                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folderServerId, message);
                 updateUnreadWidget();
                 updateMailListWidget();
             }
 
             @Override
-            public void folderStatusChanged(Account account, String folderName,
+            public void folderStatusChanged(Account account, String folderServerId,
                     int unreadMessageCount) {
 
                 updateUnreadWidget();
@@ -635,7 +635,7 @@ public class K9 extends Application {
                 // let observers know a change occurred
                 Intent intent = new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null);
                 intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folderName);
+                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folderServerId);
                 K9.this.sendBroadcast(intent);
 
             }

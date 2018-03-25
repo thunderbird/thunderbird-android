@@ -315,6 +315,7 @@ public class AccountSetupBasics extends K9Activity
             }
             if (mAccount == null) {
                 mAccount = Preferences.getPreferences(this).newAccount();
+                mAccount.setChipColor(AccountCreator.pickColor(this));
             }
             mAccount.setName(getOwnerName());
             mAccount.setEmail(email);
@@ -420,6 +421,7 @@ public class AccountSetupBasics extends K9Activity
         // Create and set account info.
         if (mAccount == null) {
             mAccount = Preferences.getPreferences(this).newAccount();
+            mAccount.setChipColor(AccountCreator.pickColor(this));
         }
 
         mAccount.setName(getOwnerName());
@@ -435,16 +437,16 @@ public class AccountSetupBasics extends K9Activity
     }
 
     private void setupFolderNames(String domain) {
-        mAccount.setDraftsFolderName(getString(R.string.special_mailbox_name_drafts));
-        mAccount.setTrashFolderName(getString(R.string.special_mailbox_name_trash));
-        mAccount.setSentFolderName(getString(R.string.special_mailbox_name_sent));
-        mAccount.setArchiveFolderName(getString(R.string.special_mailbox_name_archive));
+        mAccount.setDraftsFolder(getString(R.string.special_mailbox_name_drafts));
+        mAccount.setTrashFolder(getString(R.string.special_mailbox_name_trash));
+        mAccount.setSentFolder(getString(R.string.special_mailbox_name_sent));
+        mAccount.setArchiveFolder(getString(R.string.special_mailbox_name_archive));
 
         // Yahoo! has a special folder for Spam, called "Bulk Mail".
         if (domain.endsWith(".yahoo.com")) {
-            mAccount.setSpamFolderName("Bulk Mail");
+            mAccount.setSpamFolder("Bulk Mail");
         } else {
-            mAccount.setSpamFolderName(getString(R.string.special_mailbox_name_spam));
+            mAccount.setSpamFolder(getString(R.string.special_mailbox_name_spam));
         }
     }
 
