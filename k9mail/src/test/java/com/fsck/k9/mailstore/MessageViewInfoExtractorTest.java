@@ -11,7 +11,7 @@ import java.util.TimeZone;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.fsck.k9.GlobalsHelper;
+import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
@@ -35,10 +35,8 @@ import com.fsck.k9.message.html.HtmlProcessor;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static com.fsck.k9.message.TestMessageConstructionUtils.bodypart;
@@ -56,8 +54,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("WeakerAccess")
-@RunWith(RobolectricTestRunner.class)
-public class MessageViewInfoExtractorTest {
+public class MessageViewInfoExtractorTest extends K9RobolectricTest {
     public static final String BODY_TEXT = "K-9 Mail rocks :>";
     public static final String BODY_TEXT_HTML = "K-9 Mail rocks :&gt;";
     public static final String BODY_TEXT_FLOWED = "K-9 Mail rocks :> \r\nflowed line\r\nnot flowed line";
@@ -71,8 +68,6 @@ public class MessageViewInfoExtractorTest {
     @Before
     public void setUp() throws Exception {
         context = RuntimeEnvironment.application;
-
-        GlobalsHelper.setContext(context);
 
         HtmlProcessor htmlProcessor = createFakeHtmlProcessor();
         attachmentInfoExtractor = spy(AttachmentInfoExtractor.getInstance());

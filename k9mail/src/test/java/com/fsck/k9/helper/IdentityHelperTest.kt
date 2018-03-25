@@ -3,18 +3,16 @@ package com.fsck.k9.helper
 
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
+import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.internet.MimeMessage
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
-@RunWith(RobolectricTestRunner::class)
-class IdentityHelperTest {
+class IdentityHelperTest : RobolectricTest() {
     private val account = createDummyAccount()
 
     @Test

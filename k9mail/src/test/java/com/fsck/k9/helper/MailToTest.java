@@ -7,13 +7,12 @@ import java.util.List;
 
 import android.net.Uri;
 
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.helper.MailTo.CaseInsensitiveParamWrapper;
 import com.fsck.k9.mail.Address;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -22,8 +21,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class MailToTest {
+public class MailToTest extends RobolectricTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 

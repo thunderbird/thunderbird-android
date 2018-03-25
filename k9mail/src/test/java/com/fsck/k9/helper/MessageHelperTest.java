@@ -5,19 +5,17 @@ import android.content.Context;
 import android.graphics.Color;
 import android.text.SpannableString;
 
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.Address;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class MessageHelperTest {
+public class MessageHelperTest extends RobolectricTest {
     private Contacts contacts;
     private Contacts contactsWithFakeContact;
     private Contacts contactsWithFakeSpoofContact;

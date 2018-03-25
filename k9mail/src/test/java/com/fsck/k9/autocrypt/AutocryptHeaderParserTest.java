@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -19,8 +20,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class AutocryptHeaderParserTest {
+public class AutocryptHeaderParserTest extends RobolectricTest {
     AutocryptHeaderParser autocryptHeaderParser = AutocryptHeaderParser.getInstance();
 
     @Before

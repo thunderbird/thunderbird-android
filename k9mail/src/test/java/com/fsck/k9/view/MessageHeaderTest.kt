@@ -1,14 +1,12 @@
 package com.fsck.k9.view
 
+import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.internet.MimeMessage
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
-class MessageHeaderTest {
+class MessageHeaderTest : RobolectricTest() {
 
     @Test
     fun shouldShowSender_withSender_shouldReturnTrue() {

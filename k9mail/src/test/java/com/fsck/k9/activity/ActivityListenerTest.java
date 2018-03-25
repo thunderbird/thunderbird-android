@@ -5,11 +5,10 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.Message;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static junit.framework.Assert.assertEquals;
@@ -17,8 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class ActivityListenerTest {
+public class ActivityListenerTest extends RobolectricTest {
     private static final String FOLDER_SERVER_ID = ":folder:123";
     private static final String FOLDER_NAME = "folder";
     private static final String ERROR_MESSAGE = "errorMessage";

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -15,8 +16,6 @@ import com.fsck.k9.mailstore.LocalBodyPart;
 import com.fsck.k9.provider.AttachmentProvider;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
@@ -26,8 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class AttachmentInfoExtractorTest {
+public class AttachmentInfoExtractorTest extends RobolectricTest {
     public static final Uri TEST_URI = Uri.parse("uri://test");
     public static final String TEST_MIME_TYPE = "text/plain";
     public static final long TEST_SIZE = 123L;
