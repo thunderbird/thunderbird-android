@@ -374,8 +374,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="quiet_time_starts">Quiet Time starts</string>
     <string name="quiet_time_ends">Quiet Time ends</string>
 
+    <!-- Account Setup / Basics -->
     <string name="account_setup_basics_title">Set up a new account</string>
     <string name="account_setup_basics_email_hint">Email address</string>
+    <string name="account_setup_basics_email_invalid">Please enter a valid eMail address</string>
     <string name="account_setup_basics_password_hint">Password</string>
     <string name="account_setup_basics_show_password">Show password</string>
     <string name="account_setup_basics_manual_setup_action">Manual setup</string>
