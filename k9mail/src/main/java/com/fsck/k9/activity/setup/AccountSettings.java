@@ -720,10 +720,10 @@ public class AccountSettings extends K9PreferenceActivity {
         super.onResume();
 
         // we might return here from the play store, so it's important we refresh on resume
-        setupCryptoStuff();
+        setupCryptoSettings();
     }
 
-    private void setupCryptoStuff() {
+    private void setupCryptoSettings() {
         pgpEnable = (SwitchPreference) findPreference(PREFERENCE_CRYPTO_PROVIDER);
         pgpCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
         autocryptPreferEncryptMutual = findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
@@ -756,7 +756,7 @@ public class AccountSettings extends K9PreferenceActivity {
                             OpenPgpProviderUtil.getOpenPgpProviderPackages(getApplicationContext());
                     if (openPgpProviderPackages.size() == 1) {
                         account.setOpenPgpProvider(openPgpProviderPackages.get(0));
-                        setupCryptoStuff();
+                        setupCryptoSettings();
                     } else {
                         OpenPgpAppSelectDialog.startOpenPgpChooserActivity(getApplicationContext(), account);
                     }
@@ -771,7 +771,7 @@ public class AccountSettings extends K9PreferenceActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     pgpEnable.setOnPreferenceClickListener(null);
                     account.setOpenPgpProvider(null);
-                    setupCryptoStuff();
+                    setupCryptoSettings();
                     return true;
                 }
             });
@@ -786,7 +786,7 @@ public class AccountSettings extends K9PreferenceActivity {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 long value = (Long) newValue;
                 pgpCryptoKey.setValue(value);
-                setupCryptoStuff();
+                setupCryptoSettings();
                 return false;
             }
         });
