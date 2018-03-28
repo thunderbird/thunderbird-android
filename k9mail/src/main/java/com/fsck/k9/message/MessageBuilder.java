@@ -129,6 +129,8 @@ public abstract class MessageBuilder {
 
         if (isDraft && isPgpInlineEnabled) {
             message.setFlag(Flag.X_DRAFT_OPENPGP_INLINE, true);
+        } else if (isDraft) {
+            message.setFlag(Flag.DRAFT, true);
         }
     }
     
