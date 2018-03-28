@@ -304,6 +304,13 @@ public class OpenPgpAppSelectDialog extends Activity {
 
             dismiss();
         }
+
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            super.onDismiss(dialog);
+
+            getActivity().finish();
+        }
     }
 
     public void onSelectProvider(String selectedPackage) {
