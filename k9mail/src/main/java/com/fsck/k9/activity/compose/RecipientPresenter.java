@@ -42,10 +42,10 @@ import com.fsck.k9.message.ComposePgpEnableByDefaultDecider;
 import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.PgpMessageBuilder;
-import com.fsck.k9.ui.crypto.OpenPgpApiManager;
-import com.fsck.k9.ui.crypto.OpenPgpApiManager.CryptoProviderError;
-import com.fsck.k9.ui.crypto.OpenPgpApiManager.OpenPgpApiManagerCallback;
-import com.fsck.k9.ui.crypto.OpenPgpApiManager.CryptoProviderState;
+import org.openintents.openpgp.OpenPgpApiManager;
+import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError;
+import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
+import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import timber.log.Timber;
 
@@ -380,7 +380,7 @@ public class RecipientPresenter {
     public void asyncUpdateCryptoStatus() {
         cachedCryptoStatus = null;
 
-        final CryptoProviderState cryptoProviderState = openPgpApiManager.getCryptoProviderState();
+        final OpenPgpProviderState openPgpProviderState = openPgpApiManager.getOpenPgpProviderState();
 
         Long accountCryptoKey = account.getOpenPgpKey();
         if (accountCryptoKey == Account.NO_OPENPGP_KEY) {
@@ -388,7 +388,7 @@ public class RecipientPresenter {
         }
 
         final ComposeCryptoStatus composeCryptoStatus = new ComposeCryptoStatusBuilder()
-                .setCryptoProviderState(cryptoProviderState)
+                .setOpenPgpProviderState(openPgpProviderState)
                 .setCryptoMode(currentCryptoMode)
                 .setEnablePgpInline(cryptoEnablePgpInline)
                 .setPreferEncryptMutual(account.getAutocryptPreferEncryptMutual())
@@ -401,7 +401,7 @@ public class RecipientPresenter {
         new AsyncTask<Void,Void,RecipientAutocryptStatus>() {
             @Override
             protected RecipientAutocryptStatus doInBackground(Void... voids) {
-                if (cryptoProviderState != CryptoProviderState.OK) {
+                if (openPgpProviderState != OpenPgpProviderState.OK) {
                     return null;
                 }
 
@@ -606,7 +606,7 @@ public class RecipientPresenter {
     }
 
     void onClickCryptoStatus() {
-        switch (openPgpApiManager.getCryptoProviderState()) {
+        switch (openPgpApiManager.getOpenPgpProviderState()) {
             case UNCONFIGURED:
                 Timber.e("click on crypto status while unconfigured - this should not really happen?!");
                 return;
@@ -819,12 +819,12 @@ public class RecipientPresenter {
         }
 
         @Override
-        public void onCryptoStatusChanged() {
+        public void onOpenPgpProviderStatusChanged() {
             asyncUpdateCryptoStatus();
         }
 
         @Override
-        public void onCryptoProviderError(CryptoProviderError error) {
+        public void onOpenPgpProviderError(OpenPgpProviderError error) {
             switch (error) {
                 case VersionIncompatible:
                     recipientMvpView.showErrorOpenPgpIncompatible();
