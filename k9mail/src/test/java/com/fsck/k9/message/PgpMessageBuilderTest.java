@@ -21,7 +21,6 @@ import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
-import com.fsck.k9.activity.compose.RecipientPresenter.CryptoProviderState;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor;
 import com.fsck.k9.autocrypt.AutocryptOperations;
@@ -45,6 +44,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
@@ -86,7 +86,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
     public void build__withCryptoProviderUnconfigured__shouldThrow() throws MessagingException {
         cryptoStatusBuilder.setCryptoMode(CryptoMode.NO_CHOICE);
 
-        cryptoStatusBuilder.setOpenPgpProviderState(CryptoProviderState.UNCONFIGURED);
+        cryptoStatusBuilder.setOpenPgpProviderState(OpenPgpProviderState.UNCONFIGURED);
         pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
 
         Callback mockCallback = mock(Callback.class);
@@ -100,7 +100,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
     public void build__withCryptoProviderUninitialized__shouldThrow() throws MessagingException {
         cryptoStatusBuilder.setCryptoMode(CryptoMode.NO_CHOICE);
 
-        cryptoStatusBuilder.setOpenPgpProviderState(CryptoProviderState.UNINITIALIZED);
+        cryptoStatusBuilder.setOpenPgpProviderState(OpenPgpProviderState.UNINITIALIZED);
         pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
 
         Callback mockCallback = mock(Callback.class);
@@ -114,21 +114,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
     public void build__withCryptoProviderError__shouldThrow() throws MessagingException {
         cryptoStatusBuilder.setCryptoMode(CryptoMode.NO_CHOICE);
 
-        cryptoStatusBuilder.setOpenPgpProviderState(CryptoProviderState.ERROR);
-        pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
-
-        Callback mockCallback = mock(Callback.class);
-        pgpMessageBuilder.buildAsync(mockCallback);
-
-        verify(mockCallback).onMessageBuildException(any(MessagingException.class));
-        verifyNoMoreInteractions(mockCallback);
-    }
-
-    @Test
-    public void build__withCryptoProviderLostConnection__shouldThrow() throws MessagingException {
-        cryptoStatusBuilder.setCryptoMode(CryptoMode.NO_CHOICE);
-
-        cryptoStatusBuilder.setOpenPgpProviderState(CryptoProviderState.LOST_CONNECTION);
+        cryptoStatusBuilder.setOpenPgpProviderState(OpenPgpProviderState.ERROR);
         pgpMessageBuilder.setCryptoStatus(cryptoStatusBuilder.build());
 
         Callback mockCallback = mock(Callback.class);
@@ -607,7 +593,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
                 .setPreferEncryptMutual(false)
                 .setOpenPgpKeyId(TEST_KEY_ID)
                 .setRecipients(new ArrayList<Recipient>())
-                .setOpenPgpProviderState(CryptoProviderState.OK);
+                .setOpenPgpProviderState(OpenPgpProviderState.OK);
     }
 
     private static PgpMessageBuilder createDefaultPgpMessageBuilder(OpenPgpApi openPgpApi,

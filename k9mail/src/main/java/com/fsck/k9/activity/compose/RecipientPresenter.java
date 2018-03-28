@@ -9,7 +9,6 @@ import java.util.List;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.PendingIntent;
-import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -88,8 +87,9 @@ public class RecipientPresenter {
     private boolean cryptoEnablePgpInline = false;
 
 
-    public RecipientPresenter(Context context, Lifecycle lifecycle, LoaderManager loaderManager,
-            RecipientMvpView recipientMvpView, Account account, ComposePgpInlineDecider composePgpInlineDecider,
+    public RecipientPresenter(Context context, LoaderManager loaderManager,
+            OpenPgpApiManager openPgpApiManager, RecipientMvpView recipientMvpView, Account account,
+            ComposePgpInlineDecider composePgpInlineDecider,
             ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider,
             AutocryptStatusInteractor autocryptStatusInteractor,
             ReplyToParser replyToParser, RecipientsChangedListener recipientsChangedListener) {
@@ -100,7 +100,7 @@ public class RecipientPresenter {
         this.composePgpEnableByDefaultDecider = composePgpEnableByDefaultDecider;
         this.replyToParser = replyToParser;
         this.listener = recipientsChangedListener;
-        this.openPgpApiManager = new OpenPgpApiManager(context, lifecycle, openPgpCallback, account.getOpenPgpProvider());
+        this.openPgpApiManager = openPgpApiManager;
 
         recipientMvpView.setPresenter(this);
         recipientMvpView.setLoaderManager(loaderManager);
@@ -308,7 +308,7 @@ public class RecipientPresenter {
 
         String openPgpProvider = account.getOpenPgpProvider();
         recipientMvpView.setCryptoProvider(openPgpProvider);
-        // openPgpApiManager.setOpenPgpProvider(openPgpProvider);
+        openPgpApiManager.setOpenPgpProvider(openPgpProvider, openPgpCallback);
     }
 
     @SuppressWarnings("UnusedParameters")

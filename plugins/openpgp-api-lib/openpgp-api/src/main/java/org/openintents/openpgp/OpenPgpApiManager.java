@@ -20,19 +20,19 @@ import timber.log.Timber;
 
 public class OpenPgpApiManager implements LifecycleObserver {
     private final Context context;
-    private final String openPgpProvider;
+
+    @Nullable
+    private String openPgpProvider;
+    @Nullable
+    private OpenPgpApiManagerCallback callback;
 
     private OpenPgpServiceConnection openPgpServiceConnection;
     private OpenPgpApi openPgpApi;
     private PendingIntent userInteractionPendingIntent;
-    private OpenPgpApiManagerCallback callback;
     private OpenPgpProviderState openPgpProviderState = OpenPgpProviderState.UNCONFIGURED;
 
-    public OpenPgpApiManager(Context context, Lifecycle lifecycle,
-            OpenPgpApiManagerCallback callback, String openPgpProvider) {
+    public OpenPgpApiManager(Context context, Lifecycle lifecycle) {
         this.context = context;
-        this.callback = callback;
-        this.openPgpProvider = openPgpProvider;
 
         lifecycle.addObserver(this);
     }
@@ -50,6 +50,17 @@ public class OpenPgpApiManager implements LifecycleObserver {
     @OnLifecycleEvent(Event.ON_DESTROY)
     public void onLifecycleDestroy() {
         disconnect();
+    }
+
+    public void setOpenPgpProvider(@Nullable String openPgpProvider, OpenPgpApiManagerCallback callback) {
+        if (openPgpProvider == null || !openPgpProvider.equals(this.openPgpProvider)) {
+            disconnect();
+        }
+
+        this.openPgpProvider = openPgpProvider;
+        this.callback = callback;
+
+        setupCryptoProvider();
     }
 
     private void setupCryptoProvider() {
