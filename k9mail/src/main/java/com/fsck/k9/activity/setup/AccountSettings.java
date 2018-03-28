@@ -23,7 +23,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
 import android.preference.SwitchPreference;
-import android.text.TextUtils;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
@@ -50,6 +49,7 @@ import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog.OnPreferEncryptChangedListener;
+import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import timber.log.Timber;
@@ -206,6 +206,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference trashFolder;
     private CheckBoxPreference alwaysShowCcBcc;
     private SwitchPreference pgpEnable;
+    private OpenPgpApiManager openPgpApiManager;
 
 
     public static void actionSettings(Context context, Account account) {
@@ -224,6 +225,8 @@ public class AccountSettings extends K9PreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), getLifecycle());
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         account = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -776,11 +779,10 @@ public class AccountSettings extends K9PreferenceActivity {
                     return true;
                 }
             });
-
-            pgpCryptoKey.setOpenPgpProvider(pgpProvider);
         }
 
-        pgpCryptoKey.setEnabled(isPgpConfigured);
+        pgpCryptoKey.setOpenPgpApiManager(openPgpApiManager);
+        pgpCryptoKey.setOpenPgpProvider(pgpProvider);
         pgpCryptoKey.setValue(account.getOpenPgpKey());
         pgpCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)));
         pgpCryptoKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
