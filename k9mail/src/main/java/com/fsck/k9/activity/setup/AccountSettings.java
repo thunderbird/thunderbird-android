@@ -709,7 +709,7 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
-        if (startInOpenPgp) {
+        if (savedInstanceState == null && startInOpenPgp) {
             PreferenceScreen preference = (PreferenceScreen) findPreference(PREFERENCE_CRYPTO);
             goToPreferenceScreen(preference);
         }
@@ -758,7 +758,7 @@ public class AccountSettings extends K9PreferenceActivity {
                         account.setOpenPgpProvider(openPgpProviderPackages.get(0));
                         setupCryptoSettings();
                     } else {
-                        OpenPgpAppSelectDialog.startOpenPgpChooserActivity(getApplicationContext(), account);
+                        OpenPgpAppSelectDialog.startOpenPgpChooserActivity(AccountSettings.this, account);
                     }
                     return false;
                 }

@@ -224,6 +224,12 @@ public class AccountSettings {
         s.put("notifyContactsMailOnly", Settings.versions(
                 new V(42, new BooleanSetting(false))
         ));
+        s.put("openPgpHideSignOnly", Settings.versions(
+                new V(50, new BooleanSetting(true))
+        ));
+        s.put("autocryptMutualMode", Settings.versions(
+                new V(50, new BooleanSetting(false))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
