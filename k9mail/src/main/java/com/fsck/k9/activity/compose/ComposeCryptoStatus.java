@@ -40,7 +40,6 @@ public class ComposeCryptoStatus {
                 return CryptoStatusDisplayType.UNCONFIGURED;
             case UNINITIALIZED:
                 return CryptoStatusDisplayType.UNINITIALIZED;
-            case LOST_CONNECTION:
             case ERROR:
             case UI_REQUIRED:
                 return CryptoStatusDisplayType.ERROR;

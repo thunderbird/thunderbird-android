@@ -659,7 +659,6 @@ public class RecipientPresenter {
                 recipientMvpView.launchUserInteractionPendingIntent(pendingIntent, OPENPGP_USER_INTERACTION);
                 break;
 
-            case LOST_CONNECTION:
             case UNINITIALIZED:
             case ERROR:
                 openPgpApiManager.refreshConnection();
@@ -837,6 +836,9 @@ public class RecipientPresenter {
         @Override
         public void onOpenPgpProviderError(OpenPgpProviderError error) {
             switch (error) {
+                case ConnectionLost:
+                    openPgpApiManager.refreshConnection();
+                    break;
                 case VersionIncompatible:
                     recipientMvpView.showErrorOpenPgpIncompatible();
                     break;
