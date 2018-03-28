@@ -42,6 +42,7 @@ public class ComposeCryptoStatus {
                 return CryptoStatusDisplayType.UNINITIALIZED;
             case LOST_CONNECTION:
             case ERROR:
+            case UI_REQUIRED:
                 return CryptoStatusDisplayType.ERROR;
             case OK:
                 // provider status is ok -> return value is based on cryptoMode

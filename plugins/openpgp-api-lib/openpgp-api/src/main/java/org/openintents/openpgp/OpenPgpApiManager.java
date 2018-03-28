@@ -23,7 +23,7 @@ public class OpenPgpApiManager implements LifecycleObserver {
 
     private OpenPgpServiceConnection openPgpServiceConnection;
     private OpenPgpApi openPgpApi;
-    private PendingIntent pendingUserInteractionIntent;
+    private PendingIntent userInteractionPendingIntent;
     private OpenPgpApiManagerCallback callback;
     private OpenPgpProviderState openPgpProviderState = OpenPgpProviderState.UNCONFIGURED;
 
@@ -85,25 +85,25 @@ public class OpenPgpApiManager implements LifecycleObserver {
         boolean isOkStateButLostConnection = openPgpProviderState == OpenPgpProviderState.OK &&
                 (openPgpServiceConnection == null || !openPgpServiceConnection.isBound());
         if (isOkStateButLostConnection) {
+            userInteractionPendingIntent = null;
             setOpenPgpProviderState(OpenPgpProviderState.LOST_CONNECTION);
-            pendingUserInteractionIntent = null;
             return;
         }
 
         if (openPgpServiceConnection == null) {
+            userInteractionPendingIntent = null;
             setOpenPgpProviderState(OpenPgpProviderState.UNCONFIGURED);
             return;
         }
 
         if (!openPgpServiceConnection.isBound()) {
-            pendingUserInteractionIntent = null;
+            userInteractionPendingIntent = null;
             openPgpServiceConnection.bindToService();
             return;
         }
 
-        if (pendingUserInteractionIntent != null) {
-            callback.launchUserInteractionPendingIntent(pendingUserInteractionIntent);
-            pendingUserInteractionIntent = null;
+        if (userInteractionPendingIntent != null) {
+            setOpenPgpProviderState(OpenPgpProviderState.UI_REQUIRED);
             return;
         }
 
@@ -117,7 +117,12 @@ public class OpenPgpApiManager implements LifecycleObserver {
     }
 
     public void onUserInteractionResult() {
+        userInteractionPendingIntent = null;
         refreshConnection();
+    }
+
+    public PendingIntent getUserInteractionPendingIntent() {
+        return userInteractionPendingIntent;
     }
 
     private void onPgpPermissionCheckResult(Intent result) {
@@ -128,9 +133,8 @@ public class OpenPgpApiManager implements LifecycleObserver {
                 break;
 
             case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                pendingUserInteractionIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
-                setOpenPgpProviderState(OpenPgpProviderState.ERROR);
-                callback.onOpenPgpProviderError(OpenPgpProviderError.UserInteractionRequired);
+                userInteractionPendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+                setOpenPgpProviderState(OpenPgpProviderState.UI_REQUIRED);
                 break;
 
             case OpenPgpApi.RESULT_CODE_ERROR:
@@ -176,7 +180,7 @@ public class OpenPgpApiManager implements LifecycleObserver {
 
     public OpenPgpApi getOpenPgpApi() {
         if (openPgpServiceConnection == null || !openPgpServiceConnection.isBound()) {
-            Timber.e("obtained openpgpapi object, but service is not bound! inconsistent state?");
+            Timber.e("Obtained OpenPgpApi object, but service is not bound! Inconsistent state?");
         }
         return openPgpApi;
     }
@@ -189,16 +193,16 @@ public class OpenPgpApiManager implements LifecycleObserver {
         UNCONFIGURED,
         UNINITIALIZED,
         LOST_CONNECTION,
+        UI_REQUIRED,
         ERROR,
         OK
     }
 
     public enum OpenPgpProviderError {
-        ConnectionFailed, VersionIncompatible, UserInteractionRequired
+        ConnectionFailed, VersionIncompatible
     }
 
     public interface OpenPgpApiManagerCallback {
-        void launchUserInteractionPendingIntent(PendingIntent pendingIntent);
         void onOpenPgpProviderStatusChanged();
         void onOpenPgpProviderError(OpenPgpProviderError error);
     }
