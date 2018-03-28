@@ -1517,6 +1517,9 @@ public class Account implements BaseAccount, StoreConfig {
 
     @Nullable
     public String getOpenPgpProvider() {
+        if (TextUtils.isEmpty(openPgpProvider)) {
+            return null;
+        }
         return openPgpProvider;
     }
 

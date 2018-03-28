@@ -23,6 +23,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
 import android.preference.SwitchPreference;
+import android.text.TextUtils;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
@@ -731,7 +732,7 @@ public class AccountSettings extends K9PreferenceActivity {
 
         String pgpProvider = account.getOpenPgpProvider();
         String pgpProviderName = null;
-        boolean isPgpConfigured = pgpProvider != null;
+        boolean isPgpConfigured = account.isOpenPgpProviderConfigured();
         boolean isKeyConfigured = account.hasOpenPgpKey();
 
         if (isPgpConfigured) {
