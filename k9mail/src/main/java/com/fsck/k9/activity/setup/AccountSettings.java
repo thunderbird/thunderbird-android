@@ -786,7 +786,7 @@ public class AccountSettings extends K9PreferenceActivity {
         pgpCryptoKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 long value = (Long) newValue;
-                pgpCryptoKey.setValue(value);
+                account.setOpenPgpKey(value);
                 setupCryptoSettings();
                 return false;
             }
