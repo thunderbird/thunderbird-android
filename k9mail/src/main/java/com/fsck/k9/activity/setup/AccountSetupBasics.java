@@ -24,7 +24,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.EmailAddressValidator;
@@ -216,7 +215,8 @@ public class AccountSetupBasics extends K9Activity
         boolean valid = Utility.requiredFieldValid(mEmailView)
                 && ((!clientCertificateChecked && Utility.requiredFieldValid(mPasswordView))
                         || (clientCertificateChecked && clientCertificateAlias != null))
-                && mEmailValidator.isValidAddressOnly(email);
+                && mEmailValidator.isValidAddressOnly(email)
+                && !getServerForEmail(ServerSettings.Type.IMAP).equals("");
 
         mNextButton.setEnabled(valid);
         mManualSetupButton.setEnabled(valid);
@@ -279,6 +279,7 @@ public class AccountSetupBasics extends K9Activity
         String[] emailParts = splitEmail(email);
         String user = emailParts[0];
         String domain = emailParts[1];
+
         try {
             String userEnc = UrlEncodingHelper.encodeUtf8(user);
             String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
@@ -383,14 +384,14 @@ public class AccountSetupBasics extends K9Activity
         }
     }
 
-    private void onManualSetup() {
+    private String getServerForEmail(final ServerSettings.Type serverType) {
         String email = mEmailView.getText().toString();
         String[] emailParts = splitEmail(email);
         String domain = emailParts[1];
 
-        String password = null;
-        String clientCertificateAlias = null;
         AuthType authenticationType;
+        String clientCertificateAlias = null;
+        String password = null;
         if (mClientCertificateCheckBox.isChecked()) {
             authenticationType = AuthType.EXTERNAL;
             clientCertificateAlias = mClientCertificateSpinner.getAlias();
@@ -399,23 +400,34 @@ public class AccountSetupBasics extends K9Activity
             password = mPasswordView.getText().toString();
         }
 
-        // set default uris
-        // NOTE: they will be changed again in AccountSetupAccountType!
-        ServerSettings storeServer = new ServerSettings(ServerSettings.Type.IMAP, "mail." + domain, -1,
-                ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
-        ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
-                ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
+        switch (serverType) {
+            case IMAP: {
+                String storeUri = "";
+                try {
+                    final ServerSettings storeServer =
+                        new ServerSettings(serverType, "mail." + domain, -1, ConnectionSecurity.SSL_TLS_REQUIRED,
+                                           authenticationType, email, password, clientCertificateAlias);
+                    storeUri = RemoteStore.createStoreUri(storeServer);
+                } catch (IllegalArgumentException e) {
+                    // createStoreUri() tosses for invalid values, such as: "foo@b.2" ... be graceful.
+                }
+                return storeUri;
+            }
 
-        // createStoreUri() tosses for invalid values, such as: "foo@b.2" ... be graceful.
-        String storeUri = "";
-        try {
-            storeUri = RemoteStore.createStoreUri(storeServer);
-        } catch (IllegalArgumentException e) {
-            final String invalidAccount = getString(R.string.account_setup_basics_email_invalid);
-            Toast.makeText(AccountSetupBasics.this, invalidAccount, Toast.LENGTH_SHORT).show();
-            return;
+            case SMTP: {
+                final ServerSettings transportServer =
+                    new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1, ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
+                return TransportUris.createTransportUri(transportServer);
+            }
+
+            default: {
+                throw new IllegalArgumentException("Requested server type not available");
+            }
         }
-        String transportUri = TransportUris.createTransportUri(transportServer);
+    }
+
+    private void onManualSetup() {
+        final String email = mEmailView.getText().toString();
 
         // Create and set account info.
         if (mAccount == null) {
@@ -424,10 +436,11 @@ public class AccountSetupBasics extends K9Activity
 
         mAccount.setName(getOwnerName());
         mAccount.setEmail(email);
-        mAccount.setStoreUri(storeUri);
-        mAccount.setTransportUri(transportUri);
+        mAccount.setStoreUri(getServerForEmail(ServerSettings.Type.IMAP));
+        mAccount.setTransportUri(getServerForEmail(ServerSettings.Type.SMTP));
 
-        setupFolderNames(domain);
+        // Split out domain and setup deault initial folders.
+        setupFolderNames(splitEmail(email)[1]);
 
         AccountSetupAccountType.actionSelectAccountType(this, mAccount, false);
 
