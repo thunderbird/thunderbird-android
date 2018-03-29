@@ -252,7 +252,7 @@ public class OpenPgpKeyPreference extends Preference {
         public SavedState(Parcel source) {
             super(source);
 
-            keyId = source.readInt();
+            keyId = source.readLong();
             openPgpProvider = source.readString();
             defaultUserId = source.readString();
         }
