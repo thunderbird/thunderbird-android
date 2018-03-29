@@ -73,6 +73,15 @@ public class OpenPgpKeyPreference extends Preference {
 
     @Override
     protected void onClick() {
+        bindServiceAndGetSignKeyId(new Intent());
+    }
+
+    private void bindServiceAndGetSignKeyId(final Intent data) {
+        if (mServiceConnection != null) {
+            getSignKeyId(data);
+            return;
+        }
+
         // bind to service
         mServiceConnection = new OpenPgpServiceConnection(
                 getContext().getApplicationContext(),
@@ -81,7 +90,7 @@ public class OpenPgpKeyPreference extends Preference {
                     @Override
                     public void onBound(IOpenPgpService2 service) {
 
-                        getSignKeyId(new Intent());
+                        getSignKeyId(data);
                     }
 
                     @Override
@@ -284,7 +293,7 @@ public class OpenPgpKeyPreference extends Preference {
 
     public boolean handleOnActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_KEY_PREFERENCE && resultCode == Activity.RESULT_OK) {
-            getSignKeyId(data);
+            bindServiceAndGetSignKeyId(data);
             return true;
         } else {
             return false;
