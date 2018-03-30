@@ -27,6 +27,7 @@
 
     <PreferenceScreen
         android:title="@string/display_preferences"
+        android:icon="?attr/iconPreferencesDisplay"
         android:key="display_preferences">
 
         <PreferenceCategory
@@ -248,6 +249,7 @@
 
     <PreferenceScreen
         android:title="@string/interaction_preferences"
+        android:icon="?attr/iconPreferencesInteraction"
         android:key="interaction_preferences">
 
         <CheckBoxPreference
@@ -295,6 +297,7 @@
 
     <PreferenceScreen
         android:title="@string/notifications_title"
+        android:icon="?attr/iconPreferencesNotifications"
         android:key="notification_preferences">
 
         <CheckBoxPreference
@@ -347,6 +350,7 @@
 
     <PreferenceScreen
         android:title="@string/network_preferences"
+        android:icon="?attr/iconPreferencesNetwork"
         android:key="network_preferences">
 
         <ListPreference
@@ -361,6 +365,7 @@
 
     <PreferenceScreen
         android:title="@string/miscellaneous_preferences"
+        android:icon="?attr/iconPreferencesVarious"
         android:key="misc_preferences">
 
         <Preference
@@ -371,6 +376,7 @@
 
     <PreferenceScreen
         android:title="@string/privacy_preferences"
+        android:icon="?attr/iconPreferencesPrivacy"
         android:key="privacy_preferences">
 
         <ListPreference
@@ -401,6 +407,7 @@
 
     <PreferenceScreen
         android:title="@string/debug_preferences"
+        android:icon="?attr/iconPreferencesDebug"
         android:key="debug_preferences">
 
         <CheckBoxPreference
@@ -419,6 +426,7 @@
 
     <PreferenceScreen
         android:title="@string/account_settings_crypto"
+        android:icon="?attr/iconPreferencesCrypto"
         android:key="crypto">
 
         <org.openintents.openpgp.util.OpenPgpAppPreference
