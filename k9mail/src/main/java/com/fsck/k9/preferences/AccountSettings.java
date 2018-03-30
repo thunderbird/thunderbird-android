@@ -230,6 +230,8 @@ public class AccountSettings {
         s.put("autocryptMutualMode", Settings.versions(
                 new V(50, new BooleanSetting(false))
         ));
+        // note that there is no setting for openPgpProvider, because this will have to be set up together
+        // with the actual provider after import anyways.
 
         SETTINGS = Collections.unmodifiableMap(s);
 
