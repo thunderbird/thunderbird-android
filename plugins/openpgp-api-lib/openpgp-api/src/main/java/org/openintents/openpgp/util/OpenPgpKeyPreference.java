@@ -77,7 +77,7 @@ public class OpenPgpKeyPreference extends Preference {
     }
 
     private void bindServiceAndGetSignKeyId(final Intent data) {
-        if (mServiceConnection != null) {
+        if (mServiceConnection != null && mServiceConnection.isBound()) {
             getSignKeyId(data);
             return;
         }
