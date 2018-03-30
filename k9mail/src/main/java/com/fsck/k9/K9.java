@@ -530,6 +530,7 @@ public class K9 extends Application {
 
         super.onCreate();
         app = this;
+        DI.start(this);
         Globals.setContext(this);
 
         K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {

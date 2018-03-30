@@ -4,14 +4,13 @@ package com.fsck.k9.cache;
 import java.util.Collections;
 import java.util.UUID;
 
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
@@ -23,8 +22,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class EmailProviderCacheTest {
+public class EmailProviderCacheTest extends RobolectricTest {
 
     private EmailProviderCache cache;
     @Mock

@@ -7,11 +7,10 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Set;
 
+import com.fsck.k9.K9RobolectricTest;
 import org.jdom2.Document;
 import org.jdom2.input.SAXBuilder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
@@ -19,8 +18,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class SettingsExporterTest {
+public class SettingsExporterTest extends K9RobolectricTest {
 
     @Test
     public void exportPreferences_producesXML() throws Exception {

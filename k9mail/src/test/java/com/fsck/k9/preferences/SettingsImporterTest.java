@@ -7,13 +7,12 @@ import java.util.List;
 import java.util.UUID;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.AuthType;
 import org.apache.tools.ant.filters.StringInputStream;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
@@ -21,8 +20,7 @@ import static org.junit.Assert.assertFalse;
 
 
 @SuppressWarnings("unchecked")
-@RunWith(RobolectricTestRunner.class)
-public class SettingsImporterTest {
+public class SettingsImporterTest extends K9RobolectricTest {
 
     @Before
     public void before() {

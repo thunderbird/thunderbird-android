@@ -17,6 +17,7 @@ import android.os.Bundle;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
+import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
@@ -43,12 +44,10 @@ import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static com.fsck.k9.autocrypt.AutocryptOperationsHelper.assertMessageHasAutocryptHeader;
@@ -65,8 +64,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class PgpMessageBuilderTest {
+public class PgpMessageBuilderTest extends K9RobolectricTest {
     private static final long TEST_KEY_ID = 123L;
     private static final String TEST_MESSAGE_TEXT = "message text with a ☭ CCCP symbol";
     private static final byte[] AUTOCRYPT_KEY_MATERIAL = { 1, 2, 3 };

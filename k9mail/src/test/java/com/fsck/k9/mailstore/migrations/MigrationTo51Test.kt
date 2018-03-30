@@ -2,6 +2,7 @@ package com.fsck.k9.mailstore.migrations
 
 import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.Account
+import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.whenever
 import org.apache.commons.io.IOUtils
@@ -10,17 +11,12 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
-import org.robolectric.annotation.Config
 import java.io.ByteArrayInputStream
 
 
-@RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
-class MigrationTo51Test {
+class MigrationTo51Test : RobolectricTest() {
     private lateinit var mockMigrationsHelper: MigrationsHelper
     private lateinit var database: SQLiteDatabase
 

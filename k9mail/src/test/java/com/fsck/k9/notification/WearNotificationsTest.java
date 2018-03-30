@@ -16,13 +16,12 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.R;
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
@@ -34,8 +33,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class WearNotificationsTest {
+public class WearNotificationsTest extends RobolectricTest {
     private static final int ACCOUNT_NUMBER = 42;
     private static final String ACCOUNT_NAME = "accountName";
 

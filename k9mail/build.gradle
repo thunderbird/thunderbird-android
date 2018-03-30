@@ -42,6 +42,7 @@ dependencies {
     implementation 'com.xwray:groupie:2.0.3'
     implementation 'com.xwray:groupie-kotlin-android-extensions:2.0.3'
     implementation "org.jetbrains.anko:anko-coroutines:0.10.4"
+    implementation "org.koin:koin-android-architecture:${koinVersion}"
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
@@ -50,6 +51,7 @@ dependencies {
     testImplementation "com.google.truth:truth:${truthVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
     testImplementation "org.jdom:jdom2:2.0.6"
+    testImplementation "org.koin:koin-test:${koinVersion}"
 }
 
 android {

@@ -17,12 +17,11 @@ import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.R;
+import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static com.fsck.k9.MockHelper.mockBuilder;
@@ -34,8 +33,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class DeviceNotificationsTest {
+public class DeviceNotificationsTest extends RobolectricTest {
     private static final int UNREAD_MESSAGE_COUNT = 42;
     private static final int NEW_MESSAGE_COUNT = 2;
     private static final String ACCOUNT_NAME = "accountName";

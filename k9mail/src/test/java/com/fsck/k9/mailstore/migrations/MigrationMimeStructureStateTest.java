@@ -3,15 +3,13 @@ package com.fsck.k9.mailstore.migrations;
 
 import android.content.ContentValues;
 
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mailstore.migrations.MigrationTo51.MimeStructureState;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 
-@RunWith(RobolectricTestRunner.class) // required for ContentValues
-public class MigrationMimeStructureStateTest {
+public class MigrationMimeStructureStateTest extends RobolectricTest {
 
     @Test(expected = IllegalStateException.class)
     public void init_popParent_shouldCrash() throws Exception {

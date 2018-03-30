@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -21,7 +22,6 @@ import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
@@ -31,9 +31,7 @@ import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpSinkResultCallback;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import static com.fsck.k9.message.TestMessageConstructionUtils.bodypart;
 import static com.fsck.k9.message.TestMessageConstructionUtils.messageFromBody;
@@ -51,9 +49,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE, sdk = 21)
-public class MessageCryptoHelperTest {
+public class MessageCryptoHelperTest extends RobolectricTest {
     private MessageCryptoHelper messageCryptoHelper;
     private OpenPgpApi openPgpApi;
     private Intent capturedApiIntent;

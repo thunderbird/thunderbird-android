@@ -12,6 +12,7 @@ import java.util.Set;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingEmptyTrash;
@@ -22,9 +23,6 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mailstore.migrations.MigrationTo60.OldPendingCommand;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -32,9 +30,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
-public class MigrationTo60Test {
+public class MigrationTo60Test extends RobolectricTest {
     private static final String PENDING_COMMAND_MOVE_OR_COPY = "com.fsck.k9.MessagingController.moveOrCopy";
     private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK = "com.fsck.k9.MessagingController.moveOrCopyBulk";
     private static final String PENDING_COMMAND_MOVE_OR_COPY_BULK_NEW = "com.fsck.k9.MessagingController.moveOrCopyBulkNew";

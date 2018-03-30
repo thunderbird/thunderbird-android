@@ -18,11 +18,10 @@ import com.fsck.k9.BuildConfig;
 import com.fsck.k9.GlobalsHelper;
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.MessagingException;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowLog;
 
@@ -36,8 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class StoreSchemaDefinitionTest {
+public class StoreSchemaDefinitionTest extends RobolectricTest {
     private StoreSchemaDefinition storeSchemaDefinition;
 
 

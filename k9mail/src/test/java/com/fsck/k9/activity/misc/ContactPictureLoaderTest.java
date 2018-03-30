@@ -1,16 +1,14 @@
 package com.fsck.k9.activity.misc;
 
 
+import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.Address;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(RobolectricTestRunner.class)
-public class ContactPictureLoaderTest {
+public class ContactPictureLoaderTest extends RobolectricTest {
 
     @Test
     public void calcUnknownContactLetter_withNoNameUsesAddress() {
