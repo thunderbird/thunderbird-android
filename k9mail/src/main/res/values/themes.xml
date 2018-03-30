@@ -38,7 +38,7 @@
         <item name="iconActionRemoteSearch">@drawable/ic_magnify_cloud_light</item>
         <item name="iconActionAbout">@drawable/ic_info_outline_light</item>
         <item name="iconActionAdd">@drawable/ic_plus_light</item>
-        <item name="iconActionImportExport">@drawable/ic_import_export_light</item>
+        <item name="iconActionImportExport">@drawable/ic_arrow_up_down_light</item>
         <item name="iconActionUpload">@drawable/ic_file_upload_light</item>
         <item name="iconActionSelectAll">@drawable/ic_select_all_light</item>
         <item name="iconActionSave">@drawable/ic_floppy_light</item>
@@ -46,6 +46,14 @@
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_light</item>
         <item name="iconActionExpand">@drawable/ic_chevron_down_light</item>
         <item name="iconActionCollapse">@drawable/ic_chevron_up_light</item>
+        <item name="iconPreferencesDisplay">@drawable/ic_tv_light</item>
+        <item name="iconPreferencesInteraction">@drawable/ic_touch_light</item>
+        <item name="iconPreferencesNotifications">@drawable/ic_notifications_light</item>
+        <item name="iconPreferencesNetwork">@drawable/ic_arrow_up_down_light</item>
+        <item name="iconPreferencesVarious">@drawable/ic_widgets_light</item>
+        <item name="iconPreferencesPrivacy">@drawable/ic_shield_light</item>
+        <item name="iconPreferencesDebug">@drawable/ic_bug_light</item>
+        <item name="iconPreferencesCrypto">@drawable/ic_lock_plus_light</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
@@ -104,7 +112,7 @@
         <item name="iconActionRemoteSearch">@drawable/ic_magnify_cloud_dark</item>
         <item name="iconActionAbout">@drawable/ic_info_outline_dark</item>
         <item name="iconActionAdd">@drawable/ic_plus_dark</item>
-        <item name="iconActionImportExport">@drawable/ic_import_export_dark</item>
+        <item name="iconActionImportExport">@drawable/ic_arrow_up_down_dark</item>
         <item name="iconActionUpload">@drawable/ic_file_upload_dark</item>
         <item name="iconActionSelectAll">@drawable/ic_select_all_dark</item>
         <item name="iconActionSave">@drawable/ic_floppy_dark</item>
@@ -112,6 +120,14 @@
         <item name="iconActionRequestReadReceipt">@drawable/ic_action_request_read_receipt_dark</item>
         <item name="iconActionExpand">@drawable/ic_chevron_down_dark</item>
         <item name="iconActionCollapse">@drawable/ic_chevron_up_dark</item>
+        <item name="iconPreferencesDisplay">@drawable/ic_tv_dark</item>
+        <item name="iconPreferencesInteraction">@drawable/ic_touch_dark</item>
+        <item name="iconPreferencesNotifications">@drawable/ic_notifications_dark</item>
+        <item name="iconPreferencesNetwork">@drawable/ic_arrow_up_down_dark</item>
+        <item name="iconPreferencesVarious">@drawable/ic_widgets_dark</item>
+        <item name="iconPreferencesPrivacy">@drawable/ic_shield_dark</item>
+        <item name="iconPreferencesDebug">@drawable/ic_bug_dark</item>
+        <item name="iconPreferencesCrypto">@drawable/ic_lock_plus_dark</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
