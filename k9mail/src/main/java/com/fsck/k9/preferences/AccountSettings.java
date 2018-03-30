@@ -51,7 +51,7 @@ public class AccountSettings {
                 new V(13, new BooleanSetting(false))
         ));
         s.put("archiveFolderName", Settings.versions(
-                new V(1, new StringSetting("Archive"))
+                new V(1, new StringSetting(K9.FOLDER_NONE))
         ));
         s.put("autoExpandFolderName", Settings.versions(
                 new V(1, new StringSetting("INBOX"))
@@ -73,7 +73,7 @@ public class AccountSettings {
                         R.array.account_settings_display_count_values))
         ));
         s.put("draftsFolderName", Settings.versions(
-                new V(1, new StringSetting("Drafts"))
+                new V(1, new StringSetting(K9.FOLDER_NONE))
         ));
         s.put("expungePolicy", Settings.versions(
                 new V(1, new StringResourceSetting(Expunge.EXPUNGE_IMMEDIATELY.name(),
@@ -164,7 +164,7 @@ public class AccountSettings {
                 new V(1, new EnumSetting<>(Searchable.class, Searchable.ALL))
         ));
         s.put("sentFolderName", Settings.versions(
-                new V(1, new StringSetting("Sent"))
+                new V(1, new StringSetting(K9.FOLDER_NONE))
         ));
         s.put("sortTypeEnum", Settings.versions(
                 new V(9, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
@@ -179,7 +179,7 @@ public class AccountSettings {
                 new V(1, new BooleanSetting(false))
         ));
         s.put("spamFolderName", Settings.versions(
-                new V(1, new StringSetting("Spam"))
+                new V(1, new StringSetting(K9.FOLDER_NONE))
         ));
         s.put("stripSignature", Settings.versions(
                 new V(2, new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE))
@@ -191,7 +191,7 @@ public class AccountSettings {
                 new V(1, new BooleanSetting(true))
         ));
         s.put("trashFolderName", Settings.versions(
-                new V(1, new StringSetting("Trash"))
+                new V(1, new StringSetting(K9.FOLDER_NONE))
         ));
         s.put("useCompression.MOBILE", Settings.versions(
                 new V(1, new BooleanSetting(true))

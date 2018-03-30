@@ -418,7 +418,7 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void delete_withoutTrashFolderExisting_shouldCreateTrashFolder() throws Exception {
+    public void delete_withoutTrashFolderExisting_shouldThrow() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         ImapFolder trashFolder = createFolder("Trash");
@@ -432,9 +432,12 @@ public class ImapFolderTest {
         doThrow(NegativeImapResponseException.class).doReturn(Collections.emptyList())
                 .when(imapConnection).executeSimpleCommand("STATUS \"Trash\" (RECENT)");
 
-        folder.delete(messages, "Trash");
-
-        verify(imapConnection).executeSimpleCommand("CREATE \"Trash\"");
+        try {
+            folder.delete(messages, "Trash");
+            fail("Expected exception");
+        } catch (FolderNotFoundException e) {
+            assertEquals("Trash", e.getFolderServerId());
+        }
     }
 
     @Test

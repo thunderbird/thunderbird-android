@@ -303,6 +303,11 @@ public class Account implements BaseAccount, StoreConfig {
         isEnabled = true;
         markMessageAsReadOnView = true;
         alwaysShowCcBcc = false;
+        archiveFolder = K9.FOLDER_NONE;
+        draftsFolder = K9.FOLDER_NONE;
+        sentFolder = K9.FOLDER_NONE;
+        spamFolder = K9.FOLDER_NONE;
+        trashFolder = K9.FOLDER_NONE;
 
         searchableFolders = Searchable.ALL;
 
@@ -359,11 +364,11 @@ public class Account implements BaseAccount, StoreConfig {
         notifySync = storage.getBoolean(accountUuid + ".notifyMailCheck", false);
         deletePolicy =  DeletePolicy.fromInt(storage.getInt(accountUuid + ".deletePolicy", DeletePolicy.NEVER.setting));
         inboxFolder = storage.getString(accountUuid + ".inboxFolderName", INBOX);
-        draftsFolder = storage.getString(accountUuid + ".draftsFolderName", "Drafts");
-        sentFolder = storage.getString(accountUuid + ".sentFolderName", "Sent");
-        trashFolder = storage.getString(accountUuid + ".trashFolderName", "Trash");
-        archiveFolder = storage.getString(accountUuid + ".archiveFolderName", "Archive");
-        spamFolder = storage.getString(accountUuid + ".spamFolderName", "Spam");
+        draftsFolder = storage.getString(accountUuid + ".draftsFolderName", K9.FOLDER_NONE);
+        sentFolder = storage.getString(accountUuid + ".sentFolderName", K9.FOLDER_NONE);
+        trashFolder = storage.getString(accountUuid + ".trashFolderName", K9.FOLDER_NONE);
+        archiveFolder = storage.getString(accountUuid + ".archiveFolderName", K9.FOLDER_NONE);
+        spamFolder = storage.getString(accountUuid + ".spamFolderName", K9.FOLDER_NONE);
         expungePolicy = getEnumStringPref(storage, accountUuid + ".expungePolicy", Expunge.EXPUNGE_IMMEDIATELY);
         syncRemoteDeletions = storage.getBoolean(accountUuid + ".syncRemoteDeletions", true);
 
