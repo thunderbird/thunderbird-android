@@ -589,10 +589,14 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_sync">Fetching mail</string>
     <string name="account_settings_folders">Folders</string>
     <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
-    <string name="account_settings_crypto">Cryptography</string>
-    <string name="account_settings_crypto_app">OpenPGP app</string>
-    <string name="account_settings_crypto_key">My Key</string>
+    <string name="account_settings_crypto">End-to-end encryption</string>
+    <string name="account_settings_crypto_app">Enable OpenPGP support</string>
+    <string name="account_settings_crypto_app_select_title">Select OpenPGP app</string>
+    <string name="account_settings_crypto_key">Configure end-to-end key</string>
+    <string name="account_settings_crypto_summary_off">No OpenPGP app configured</string>
+    <string name="account_settings_crypto_summary_on">Connected to %s</string>
     <string name="account_settings_no_openpgp_provider_configured">No OpenPGP app configured</string>
+    <string name="account_settings_no_openpgp_provider_installed">No OpenPGP app found - click to install</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
@@ -665,6 +669,8 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_settings_sync_remote_deletetions_label">Sync server deletions</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
+
+    <string name="account_settings_openpgp_missing">Missing OpenPGP app - was it uninstalled?</string>
 
     <string name="folder_settings_title">Folder settings</string>
 
@@ -1249,9 +1255,9 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="recipient_error_non_ascii">Special characters are currently not supported!</string>
     <string name="recipient_error_parse_failed">Error parsing address!</string>
-    <string name="account_settings_crypto_support_sign_only">Show unencrypted signatures</string>
-    <string name="account_settings_crypto_support_sign_only_on">Unencrypted signatures will be displayed</string>
-    <string name="account_settings_crypto_support_sign_only_off">Unencrypted signatures will be ignored</string>
+    <string name="account_settings_crypto_hide_sign_only">Hide unencrypted signatures</string>
+    <string name="account_settings_crypto_hide_sign_only_on">Only encrypted signatures will be displayed</string>
+    <string name="account_settings_crypto_hide_sign_only_off">All signatures will be displayed</string>
     <string name="error_sign_only_no_encryption">Encryption unavailable in sign-only mode!</string>
     <string name="unsigned_text_divider_label">Unsigned Text</string>
     <string name="apg_deprecated_title">APG Deprecation Warning</string>
@@ -1265,7 +1271,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="no_crypto_provider_see_global">No OpenPGP app configured, see global settings!</string>
     <string name="crypto_no_provider_title">This email is encrypted</string>
     <string name="crypto_no_provider_message">This email has been encrypted with OpenPGP.\nTo read it, you need to install and configure a compatible OpenPGP App.</string>
-    <string name="crypto_no_provider_button">Choose OpenPGP App</string>
+    <string name="crypto_no_provider_button">Go to Settings</string>
 
     <string name="mail_list_widget_text">K-9 Message List</string>
     <string name="mail_list_widget_loading">Loading messages…</string>
@@ -1292,4 +1298,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="dialog_autocrypt_mutual_learn_more">You can <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">click here</a> to learn more.</string>
 
     <string name="general_settings_title">General settings</string>
+
+    <string name="dialog_openkeychain_info_title">No OpenPGP app installed</string>
+    <string name="dialog_openkeychain_info_install">Install</string>
+    <string name="dialog_openkeychain_info_text">K-9 Mail requires OpenKeychain for end-to-end encryption.</string>
 </resources>

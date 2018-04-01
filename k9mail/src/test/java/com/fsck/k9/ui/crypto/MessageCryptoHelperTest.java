@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
@@ -63,13 +62,11 @@ public class MessageCryptoHelperTest extends RobolectricTest {
         openPgpApi = mock(OpenPgpApi.class);
         autocryptOperations = mock(AutocryptOperations.class);
 
-        K9.setOpenPgpProvider("org.example.dummy");
-
         OpenPgpApiFactory openPgpApiFactory = mock(OpenPgpApiFactory.class);
         when(openPgpApiFactory.createOpenPgpApi(any(Context.class), any(IOpenPgpService2.class))).thenReturn(openPgpApi);
 
         messageCryptoHelper = new MessageCryptoHelper(RuntimeEnvironment.application, openPgpApiFactory,
-                autocryptOperations);
+                autocryptOperations, "org.example.dummy");
         messageCryptoCallback = mock(MessageCryptoCallback.class);
     }
 

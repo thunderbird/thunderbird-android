@@ -328,9 +328,10 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         when(autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(
                 any(OpenPgpApi.class), any(String[].class))).thenReturn(autocryptStatusResult);
 
-        K9.setOpenPgpProvider(CRYPTO_PROVIDER);
         permissionPingIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
-        when(account.getCryptoKey()).thenReturn(CRYPTO_KEY_ID);
+        when(account.getOpenPgpKey()).thenReturn(CRYPTO_KEY_ID);
+        when(account.isOpenPgpProviderConfigured()).thenReturn(true);
+        when(account.getOpenPgpProvider()).thenReturn(CRYPTO_PROVIDER);
         when(openPgpServiceConnection.isBound()).thenReturn(true);
         when(openPgpServiceConnection.getService()).thenReturn(openPgpService2);
         when(openPgpService2.execute(any(Intent.class), any(ParcelFileDescriptor.class), any(Integer.class)))

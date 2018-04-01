@@ -50,6 +50,9 @@ import timber.log.Timber.DebugTree;
 
 
 public class K9 extends Application {
+
+    public static final int VERSION_MIGRATE_OPENPGP_TO_ACCOUNTS = 63;
+
     /**
      * Components that are interested in knowing when the K9 instance is
      * available and ready (Android invokes Application.onCreate() after other
@@ -239,9 +242,6 @@ public class K9 extends Application {
     private static boolean hideTimeZone = false;
     private static boolean hideHostnameWhenConnecting = false;
 
-    private static String openPgpProvider = "";
-    private static boolean openPgpSupportSignOnly = false;
-
     private static SortType sortType;
     private static Map<SortType, Boolean> sortAscending = new HashMap<SortType, Boolean>();
 
@@ -310,8 +310,6 @@ public class K9 extends Application {
     public static final int MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 60000;
 
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
-
-    public static final String NO_OPENPGP_PROVIDER = "";
 
     public static class Intents {
 
@@ -478,9 +476,6 @@ public class K9 extends Application {
         editor.putBoolean("hideUserAgent", hideUserAgent);
         editor.putBoolean("hideTimeZone", hideTimeZone);
         editor.putBoolean("hideHostnameWhenConnecting", hideHostnameWhenConnecting);
-
-        editor.putString("openPgpProvider", openPgpProvider);
-        editor.putBoolean("openPgpSupportSignOnly", openPgpSupportSignOnly);
 
         editor.putString("language", language);
         editor.putInt("theme", theme.ordinal());
@@ -669,6 +664,28 @@ public class K9 extends Application {
         if (cachedVersion >= LocalStore.DB_VERSION) {
             K9.setDatabasesUpToDate(false);
         }
+        if (cachedVersion < VERSION_MIGRATE_OPENPGP_TO_ACCOUNTS) {
+            migrateOpenPgpGlobalToAccountSettings();
+        }
+    }
+
+    private void migrateOpenPgpGlobalToAccountSettings() {
+        Preferences preferences = Preferences.getPreferences(this);
+        Storage storage = preferences.getStorage();
+
+        String openPgpProvider = storage.getString("openPgpProvider", null);
+        boolean openPgpSupportSignOnly = storage.getBoolean("openPgpSupportSignOnly", false);
+
+        for (Account account : preferences.getAccounts()) {
+            account.setOpenPgpProvider(openPgpProvider);
+            account.setOpenPgpHideSignOnly(!openPgpSupportSignOnly);
+            account.save(preferences);
+        }
+
+        storage.edit()
+                .remove("openPgpProvider")
+                .remove("openPgpSupportSignOnly")
+                .commit();
     }
 
     /**
@@ -715,9 +732,6 @@ public class K9 extends Application {
         hideUserAgent = storage.getBoolean("hideUserAgent", false);
         hideTimeZone = storage.getBoolean("hideTimeZone", false);
         hideHostnameWhenConnecting = storage.getBoolean("hideHostnameWhenConnecting", false);
-
-        openPgpProvider = storage.getString("openPgpProvider", NO_OPENPGP_PROVIDER);
-        openPgpSupportSignOnly = storage.getBoolean("openPgpSupportSignOnly", false);
 
         confirmDelete = storage.getBoolean("confirmDelete", false);
         confirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true);
@@ -1243,26 +1257,6 @@ public class K9 extends Application {
 
     public static void setHideHostnameWhenConnecting(final boolean state) {
         hideHostnameWhenConnecting = state;
-    }
-
-    public static boolean isOpenPgpProviderConfigured() {
-        return !NO_OPENPGP_PROVIDER.equals(openPgpProvider);
-    }
-
-    public static String getOpenPgpProvider() {
-        return openPgpProvider;
-    }
-
-    public static void setOpenPgpProvider(String openPgpProvider) {
-        K9.openPgpProvider = openPgpProvider;
-    }
-
-    public static boolean getOpenPgpSupportSignOnly() {
-        return openPgpSupportSignOnly;
-    }
-
-    public static void setOpenPgpSupportSignOnly(boolean supportSignOnly) {
-        openPgpSupportSignOnly = supportSignOnly;
     }
 
     public static String getAttachmentDefaultPath() {

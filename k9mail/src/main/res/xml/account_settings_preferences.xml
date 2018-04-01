@@ -472,16 +472,29 @@
 
     <PreferenceScreen
         android:title="@string/account_settings_crypto"
-        android:key="crypto">
+        android:key="openpgp">
+
+        <SwitchPreference
+            android:persistent="false"
+            android:key="openpgp_provider"
+            android:title="@string/account_settings_crypto_app" />
 
         <org.openintents.openpgp.util.OpenPgpKeyPreference
             android:persistent="false"
-            android:key="crypto_key"
+            android:key="openpgp_key"
             android:title="@string/account_settings_crypto_key" />
 
         <Preference
             android:key="autocrypt_prefer_encrypt"
             android:title="@string/account_settings_crypto_prefer_encrypt"
+            />
+
+        <SwitchPreference
+            android:persistent="false"
+            android:key="openpgp_hide_sign_only"
+            android:title="@string/account_settings_crypto_hide_sign_only"
+            android:summaryOn="@string/account_settings_crypto_hide_sign_only_on"
+            android:summaryOff="@string/account_settings_crypto_hide_sign_only_off"
             />
 
     </PreferenceScreen>

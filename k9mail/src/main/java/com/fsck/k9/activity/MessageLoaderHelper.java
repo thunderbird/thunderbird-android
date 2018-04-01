@@ -14,13 +14,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 
-import com.fsck.k9.autocrypt.AutocryptOperations;
-import com.fsck.k9.ui.crypto.OpenPgpApiFactory;
-import timber.log.Timber;
-
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
@@ -31,9 +27,11 @@ import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import com.fsck.k9.ui.crypto.MessageCryptoHelper;
+import com.fsck.k9.ui.crypto.OpenPgpApiFactory;
 import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
+import timber.log.Timber;
 
 
 /** This class is responsible for loading a message start to finish, and
@@ -81,7 +79,6 @@ public class MessageLoaderHelper {
     private LoaderManager loaderManager;
     @Nullable // make this explicitly nullable, make sure to cancel/ignore any operation if this is null
     private MessageLoaderCallbacks callback;
-    private final boolean processSignedOnly;
 
 
     // transient state
@@ -102,8 +99,6 @@ public class MessageLoaderHelper {
         this.loaderManager = loaderManager;
         this.fragmentManager = fragmentManager;
         this.callback = callback;
-
-        processSignedOnly = K9.getOpenPgpSupportSignOnly();
     }
 
 
@@ -144,8 +139,10 @@ public class MessageLoaderHelper {
     public void asyncRestartMessageCryptoProcessing() {
         cancelAndClearCryptoOperation();
         cancelAndClearDecodeLoader();
-        if (K9.isOpenPgpProviderConfigured()) {
-            startOrResumeCryptoOperation();
+
+        if (account.isOpenPgpProviderConfigured()) {
+            String openPgpProvider = account.getOpenPgpProvider();
+            startOrResumeCryptoOperation(openPgpProvider);
         } else {
             startOrResumeDecodeMessage();
         }
@@ -231,8 +228,9 @@ public class MessageLoaderHelper {
             return;
         }
 
-        if (K9.isOpenPgpProviderConfigured()) {
-            startOrResumeCryptoOperation();
+        if (account.isOpenPgpProviderConfigured()) {
+            String openPgpProvider = account.getOpenPgpProvider();
+            startOrResumeCryptoOperation(openPgpProvider);
             return;
         }
 
@@ -287,18 +285,18 @@ public class MessageLoaderHelper {
 
     // process with crypto helper
 
-    private void startOrResumeCryptoOperation() {
+    private void startOrResumeCryptoOperation(String openPgpProvider) {
         RetainFragment<MessageCryptoHelper> retainCryptoHelperFragment = getMessageCryptoHelperRetainFragment(true);
         if (retainCryptoHelperFragment.hasData()) {
             messageCryptoHelper = retainCryptoHelperFragment.getData();
         }
-        if (messageCryptoHelper == null || messageCryptoHelper.isConfiguredForOutdatedCryptoProvider()) {
+        if (messageCryptoHelper == null || !messageCryptoHelper.isConfiguredForOpenPgpProvider(openPgpProvider)) {
             messageCryptoHelper = new MessageCryptoHelper(
-                    context, new OpenPgpApiFactory(), AutocryptOperations.getInstance());
+                    context, new OpenPgpApiFactory(), AutocryptOperations.getInstance(), openPgpProvider);
             retainCryptoHelperFragment.setData(messageCryptoHelper);
         }
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(
-                localMessage, messageCryptoCallback, cachedDecryptionResult, processSignedOnly);
+                localMessage, messageCryptoCallback, cachedDecryptionResult, !account.getOpenPgpHideSignOnly());
     }
 
     private void cancelAndClearCryptoOperation() {
