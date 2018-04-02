@@ -72,19 +72,12 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
     @Override
     protected void onClick() {
         switch (openPgpApiManager.getOpenPgpProviderState()) {
+            // The GET_SIGN_KEY action is special, in that it can be used as an implicit registration
+            // to the API. Therefore, we can ignore the UI_REQUIRED here. If it comes up regardless,
+            // it will also work as a regular pending intent.
+            case UI_REQUIRED:
             case OK: {
                 apiGetOrStartPendingIntent();
-                break;
-            }
-            case UI_REQUIRED: {
-                try {
-                    Activity act = (Activity) getContext();
-                    act.startIntentSenderFromChild(
-                            act, openPgpApiManager.getUserInteractionPendingIntent().getIntentSender(),
-                            REQUEST_CODE_API_MANAGER, null, 0, 0, 0);
-                } catch (IntentSender.SendIntentException e) {
-                    Log.e(OpenPgpApi.TAG, "SendIntentException", e);
-                }
                 break;
             }
             default: {
@@ -100,6 +93,9 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         if (openPgpApiManager.getOpenPgpProviderState() == OpenPgpProviderState.OK) {
             apiRetrievePendingIntentAndKeyInfo();
         } else {
+            pendingIntentSelectKey = null;
+            pendingIntentRunImmediately = false;
+            cachedActivityResultData = null;
             refreshTitleAndSummary();
         }
     }
@@ -304,7 +300,9 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
                     cachedActivityResultData = data;
                     // this might happen early in the lifecycle (e.g. before onResume). if the provider isn't connected
                     // here, apiRetrievePendingIntentAndKeyInfo() will be called as soon as it is.
-                    if (openPgpApiManager.getOpenPgpProviderState() == OpenPgpProviderState.OK) {
+                    OpenPgpProviderState openPgpProviderState = openPgpApiManager.getOpenPgpProviderState();
+                    if (openPgpProviderState == OpenPgpProviderState.OK ||
+                            openPgpProviderState == OpenPgpProviderState.UI_REQUIRED) {
                         apiRetrievePendingIntentAndKeyInfo();
                     }
                 }
