@@ -42,6 +42,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
     private long keyId;
     private String defaultUserId;
     private OpenPgpApiManager openPgpApiManager;
+    private Intent cachedActivityResultData;
 
     private PendingIntent pendingIntentSelectKey;
     private boolean pendingIntentRunImmediately;
@@ -111,7 +112,13 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
     }
 
     private void apiRetrievePendingIntentAndKeyInfo() {
-        Intent data = new Intent();
+        Intent data;
+        if (cachedActivityResultData != null) {
+            data = cachedActivityResultData;
+            cachedActivityResultData = null;
+        } else {
+            data = new Intent();
+        }
         apiRetrievePendingIntentAndKeyInfo(data);
     }
 
@@ -294,7 +301,12 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
                 return true;
             case REQUEST_CODE_KEY_PREFERENCE:
                 if (resultCode == Activity.RESULT_OK) {
-                    apiRetrievePendingIntentAndKeyInfo(data);
+                    cachedActivityResultData = data;
+                    // this might happen early in the lifecycle (e.g. before onResume). if the provider isn't connected
+                    // here, apiRetrievePendingIntentAndKeyInfo() will be called as soon as it is.
+                    if (openPgpApiManager.getOpenPgpProviderState() == OpenPgpProviderState.OK) {
+                        apiRetrievePendingIntentAndKeyInfo();
+                    }
                 }
                 return true;
         }
