@@ -207,6 +207,20 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
     }
 
+    /**
+     * TokenCompleteTextView removes composing strings, and etc, but leaves internal composition
+     * predictions partially constructed. Changing either/or the Selection or Candidate start/end
+     * positions, forces the IMM to reset cleaner.
+     */ 
+    @Override
+    protected void replaceText(CharSequence text) {
+        super.replaceText(text);
+
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.updateSelection(this, getSelectionStart(), getSelectionEnd(), -1, -1);
+    }
+
     private void displayKeyboard() {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm == null) {
