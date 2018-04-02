@@ -26,7 +26,6 @@ import android.content.res.TypedArray;
 import android.preference.Preference;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
@@ -36,6 +35,7 @@ import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.R;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 import org.openintents.openpgp.util.OpenPgpUtils.UserId;
+import timber.log.Timber;
 
 
 public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManagerCallback {
@@ -149,7 +149,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
                 }
                 case OpenPgpApi.RESULT_CODE_ERROR: {
                     OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
-                    Log.e(OpenPgpApi.TAG, "RESULT_CODE_ERROR: " + error.getMessage());
+                    Timber.e("RESULT_CODE_ERROR: %s", error.getMessage());
 
                     break;
                 }
@@ -169,7 +169,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
 
     private void apiStartPendingIntent() {
         if (pendingIntentSelectKey == null) {
-            Log.e(OpenPgpApi.TAG, "Tried to launch pending intent but didn't have any?");
+            Timber.e("Tried to launch pending intent but didn't have any?");
             return;
         }
 
@@ -178,7 +178,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
             act.startIntentSenderFromChild(act, pendingIntentSelectKey.getIntentSender(),
                     REQUEST_CODE_KEY_PREFERENCE, null, 0, 0, 0);
         } catch (IntentSender.SendIntentException e) {
-            Log.e(OpenPgpApi.TAG, "SendIntentException", e);
+            Timber.e(e,"Error launching pending intent");
         } finally {
             pendingIntentSelectKey = null;
         }
