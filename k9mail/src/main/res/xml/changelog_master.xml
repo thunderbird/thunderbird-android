@@ -8,6 +8,10 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.503" versioncode="25030">
+        <change>Fixed bug with some soft keyboards when auto-completing recipients</change>
+        <change>Fixed crash when decrypting messages</change>
+    </release>
     <release version="5.502" versioncode="25020">
         <change>Updated translations</change>
     </release>

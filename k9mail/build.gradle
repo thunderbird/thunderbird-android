@@ -53,8 +53,8 @@ android {
         applicationId "com.fsck.k9"
         testApplicationId "com.fsck.k9.tests"
 
-        versionCode 25020
-        versionName '5.502'
+        versionCode 25030
+        versionName '5.503'
 
         minSdkVersion 15
         targetSdkVersion 22
