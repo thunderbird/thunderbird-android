@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.TypedArray;
 import android.preference.Preference;
+import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -33,14 +34,23 @@ import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.R;
+import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
+import org.openintents.openpgp.util.OpenPgpUtils.UserId;
+
 
 public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManagerCallback {
     private long keyId;
     private String defaultUserId;
     private OpenPgpApiManager openPgpApiManager;
 
-    public static final int REQUEST_CODE_API_MANAGER = 9998;
-    public static final int REQUEST_CODE_KEY_PREFERENCE = 9999;
+    private PendingIntent pendingIntentSelectKey;
+    private boolean pendingIntentRunImmediately;
+
+    private String keyPrimaryUserId;
+    private long keyCreationTime;
+
+    private static final int REQUEST_CODE_API_MANAGER = 9998;
+    private static final int REQUEST_CODE_KEY_PREFERENCE = 9999;
 
     private static final int NO_KEY = 0;
 
@@ -48,26 +58,10 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         super(context, attrs);
     }
 
-    @Override
-    public CharSequence getSummary() {
-        return (keyId == NO_KEY) ? getContext().getString(R.string.openpgp_no_key_selected)
-                : getContext().getString(R.string.openpgp_key_selected);
-    }
-
-    private void updateEnabled() {
-        boolean isConfigured = openPgpApiManager != null &&
-                openPgpApiManager.getOpenPgpProviderState() != OpenPgpProviderState.UNCONFIGURED;
-        setEnabled(isConfigured);
-    }
-
-    public void setOpenPgpApiManager(OpenPgpApiManager openPgpApiManager) {
+    public void setOpenPgpProvider(OpenPgpApiManager openPgpApiManager, String openPgpProvider) {
         this.openPgpApiManager = openPgpApiManager;
-
-    }
-
-    public void setOpenPgpProvider(String openPgpProvider) {
-        openPgpApiManager.setOpenPgpProvider(openPgpProvider, this);
-        updateEnabled();
+        this.openPgpApiManager.setOpenPgpProvider(openPgpProvider, this);
+        refreshTitleAndSummary();
     }
 
     public void setDefaultUserId(String userId) {
@@ -78,7 +72,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
     protected void onClick() {
         switch (openPgpApiManager.getOpenPgpProviderState()) {
             case OK: {
-                getSignKeyId(new Intent());
+                apiGetOrStartPendingIntent();
                 break;
             }
             case UI_REQUIRED: {
@@ -93,24 +87,20 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
                 break;
             }
             default: {
-                updateEnabled();
+                refreshTitleAndSummary();
                 openPgpApiManager.refreshConnection();
                 break;
             }
         }
     }
 
-    private void getSignKeyId(Intent data) {
-        data.setAction(OpenPgpApi.ACTION_GET_SIGN_KEY_ID);
-        data.putExtra(OpenPgpApi.EXTRA_USER_ID, defaultUserId);
-
-        OpenPgpApi api = openPgpApiManager.getOpenPgpApi();
-        api.executeApiAsync(data, null, null, new MyCallback());
-    }
-
     @Override
     public void onOpenPgpProviderStatusChanged() {
-        updateEnabled();
+        if (openPgpApiManager.getOpenPgpProviderState() == OpenPgpProviderState.OK) {
+            apiRetrievePendingIntentAndKeyInfo();
+        } else {
+            refreshTitleAndSummary();
+        }
     }
 
     @Override
@@ -120,27 +110,38 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         }
     }
 
-    private class MyCallback implements OpenPgpApi.IOpenPgpCallback {
+    private void apiRetrievePendingIntentAndKeyInfo() {
+        Intent data = new Intent();
+        apiRetrievePendingIntentAndKeyInfo(data);
+    }
+
+    private void apiRetrievePendingIntentAndKeyInfo(Intent data) {
+        data.setAction(OpenPgpApi.ACTION_GET_SIGN_KEY_ID);
+        data.putExtra(OpenPgpApi.EXTRA_USER_ID, defaultUserId);
+        data.putExtra(OpenPgpApi.EXTRA_PRESELECT_KEY_ID, keyId);
+        OpenPgpApi api = openPgpApiManager.getOpenPgpApi();
+        api.executeApiAsync(data, null, null, openPgpCallback);
+    }
+
+    private IOpenPgpCallback openPgpCallback = new OpenPgpApi.IOpenPgpCallback() {
         @Override
         public void onReturn(Intent result) {
-            switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
-                case OpenPgpApi.RESULT_CODE_SUCCESS: {
-
-                    long keyId = result.getLongExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, NO_KEY);
-                    save(keyId);
-
-                    break;
-                }
+            int resultCode = result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR);
+            switch (resultCode) {
+                case OpenPgpApi.RESULT_CODE_SUCCESS:
                 case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
-                    PendingIntent pi = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
-                    try {
-                        Activity act = (Activity) getContext();
-                        act.startIntentSenderFromChild(
-                                act, pi.getIntentSender(),
-                                REQUEST_CODE_KEY_PREFERENCE, null, 0, 0, 0);
-                    } catch (IntentSender.SendIntentException e) {
-                        Log.e(OpenPgpApi.TAG, "SendIntentException", e);
+                    PendingIntent pendingIntentSelectKey = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
+
+                    if (result.hasExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID)) {
+                        long keyId = result.getLongExtra(OpenPgpApi.EXTRA_SIGN_KEY_ID, NO_KEY);
+                        long keyCreationTime = result.getLongExtra("key_creation_time", 0);
+                        String primaryUserId = result.getStringExtra("primary_user_id");
+
+                        updateWidgetData(keyId, primaryUserId, keyCreationTime, pendingIntentSelectKey);
+                    } else {
+                        updateWidgetData(pendingIntentSelectKey);
                     }
+
                     break;
                 }
                 case OpenPgpApi.RESULT_CODE_ERROR: {
@@ -151,17 +152,97 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
                 }
             }
         }
-    }
+    };
 
-    private void save(long newValue) {
-        // Give the client a chance to ignore this change if they deem it
-        // invalid
-        if (!callChangeListener(newValue)) {
-            // They don't want the value to be set
+    private void apiGetOrStartPendingIntent() {
+        if (pendingIntentSelectKey != null) {
+            apiStartPendingIntent();
             return;
         }
 
-        setAndPersist(newValue);
+        pendingIntentRunImmediately = true;
+        apiRetrievePendingIntentAndKeyInfo();
+    }
+
+    private void apiStartPendingIntent() {
+        if (pendingIntentSelectKey == null) {
+            Log.e(OpenPgpApi.TAG, "Tried to launch pending intent but didn't have any?");
+            return;
+        }
+
+        try {
+            Activity act = (Activity) getContext();
+            act.startIntentSenderFromChild(act, pendingIntentSelectKey.getIntentSender(),
+                    REQUEST_CODE_KEY_PREFERENCE, null, 0, 0, 0);
+        } catch (IntentSender.SendIntentException e) {
+            Log.e(OpenPgpApi.TAG, "SendIntentException", e);
+        } finally {
+            pendingIntentSelectKey = null;
+        }
+    }
+
+    private void updateWidgetData(PendingIntent pendingIntentSelectKey) {
+        this.keyPrimaryUserId = null;
+        this.keyCreationTime = 0;
+        this.pendingIntentSelectKey = pendingIntentSelectKey;
+
+        maybeRunPendingIntentImmediately();
+        refreshTitleAndSummary();
+    }
+
+    private void updateWidgetData(long keyId, String primaryUserId, long keyCreationTime,
+            PendingIntent pendingIntentSelectKey) {
+        setAndPersist(keyId);
+        this.keyPrimaryUserId = primaryUserId;
+        this.keyCreationTime = keyCreationTime;
+        this.pendingIntentSelectKey = pendingIntentSelectKey;
+
+        callChangeListener(keyId);
+        maybeRunPendingIntentImmediately();
+        refreshTitleAndSummary();
+    }
+
+    private void maybeRunPendingIntentImmediately() {
+        if (!pendingIntentRunImmediately) {
+            return;
+        }
+
+        pendingIntentRunImmediately = false;
+        apiStartPendingIntent();
+    }
+
+    private void refreshTitleAndSummary() {
+        boolean isConfigured = openPgpApiManager != null &&
+                openPgpApiManager.getOpenPgpProviderState() != OpenPgpProviderState.UNCONFIGURED;
+        setEnabled(isConfigured);
+
+        if (this.keyId == NO_KEY) {
+            setTitle(R.string.openpgp_key_title);
+            setSummary(R.string.openpgp_no_key_selected);
+
+            return;
+        }
+
+        if (this.keyPrimaryUserId != null && this.keyCreationTime != 0) {
+            Context context = getContext();
+
+            UserId userId = OpenPgpUtils.splitUserId(keyPrimaryUserId);
+            if (userId.email != null) {
+                setTitle(context.getString(R.string.openpgp_key_using, userId.email));
+            } else if (userId.name != null) {
+                setTitle(context.getString(R.string.openpgp_key_using, userId.name));
+            } else {
+                setTitle(R.string.openpgp_key_using_no_name);
+            }
+
+            String creationTimeStr = DateUtils.formatDateTime(context, keyCreationTime,
+                    DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME |
+                            DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_ABBREV_MONTH);
+            setSummary(context.getString(R.string.openpgp_key_created, creationTimeStr));
+        } else {
+            setTitle(R.string.openpgp_key_title);
+            setSummary(R.string.openpgp_key_selected);
+        }
     }
 
     /**
@@ -169,6 +250,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
      */
     public void setValue(long keyId) {
         setAndPersist(keyId);
+        refreshTitleAndSummary();
     }
 
     /**
@@ -184,12 +266,6 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         // Save to persistent storage (this method will make sure this
         // preference should be persistent, along with other useful checks)
         persistLong(keyId);
-
-        // Data has changed, notify so UI can be refreshed!
-        notifyChanged();
-
-        // also update summary
-        setSummary(getSummary());
     }
 
     @Override
@@ -218,7 +294,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
                 return true;
             case REQUEST_CODE_KEY_PREFERENCE:
                 if (resultCode == Activity.RESULT_OK) {
-                    getSignKeyId(data);
+                    apiRetrievePendingIntentAndKeyInfo(data);
                 }
                 return true;
         }

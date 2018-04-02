@@ -781,9 +781,8 @@ public class AccountSettings extends K9PreferenceActivity {
             });
         }
 
-        pgpCryptoKey.setOpenPgpApiManager(openPgpApiManager);
-        pgpCryptoKey.setOpenPgpProvider(pgpProvider);
         pgpCryptoKey.setValue(account.getOpenPgpKey());
+        pgpCryptoKey.setOpenPgpProvider(openPgpApiManager, pgpProvider);
         pgpCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)));
         pgpCryptoKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
