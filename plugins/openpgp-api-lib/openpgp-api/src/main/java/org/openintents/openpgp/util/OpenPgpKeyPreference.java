@@ -263,7 +263,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         public SavedState(Parcel source) {
             super(source);
 
-            keyId = source.readInt();
+            keyId = source.readLong();
             defaultUserId = source.readString();
         }
 
