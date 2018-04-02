@@ -713,6 +713,8 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
+        setupCryptoSettings();
+
         if (savedInstanceState == null && startInOpenPgp) {
             PreferenceScreen preference = (PreferenceScreen) findPreference(PREFERENCE_CRYPTO);
             goToPreferenceScreen(preference);
