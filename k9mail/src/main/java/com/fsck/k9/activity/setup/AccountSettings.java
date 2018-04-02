@@ -777,6 +777,7 @@ public class AccountSettings extends K9PreferenceActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     pgpEnable.setOnPreferenceClickListener(null);
                     account.setOpenPgpProvider(null);
+                    account.setOpenPgpKey(Account.NO_OPENPGP_KEY);
                     setupCryptoSettings();
                     return true;
                 }
