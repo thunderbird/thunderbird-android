@@ -61,48 +61,20 @@ public class ComposeCryptoStatus {
             return CryptoStatusDisplayType.ERROR;
         }
 
-        switch (cryptoMode) {
-            case CHOICE_ENABLED:
-                if (recipientAutocryptStatusType.canEncrypt()) {
-                    if (recipientAutocryptStatusType.isConfirmed()) {
-                        return CryptoStatusDisplayType.CHOICE_ENABLED_TRUSTED;
-                    } else {
-                        return CryptoStatusDisplayType.CHOICE_ENABLED_UNTRUSTED;
-                    }
-                } else {
-                    return CryptoStatusDisplayType.CHOICE_ENABLED_ERROR;
-                }
-            case CHOICE_DISABLED:
-                if (recipientAutocryptStatusType.canEncrypt()) {
-                    if (recipientAutocryptStatusType.isConfirmed()) {
-                        return CryptoStatusDisplayType.CHOICE_DISABLED_TRUSTED;
-                    } else {
-                        return CryptoStatusDisplayType.CHOICE_DISABLED_UNTRUSTED;
-                    }
-                } else {
-                    return CryptoStatusDisplayType.CHOICE_DISABLED_UNAVAILABLE;
-                }
-            case NO_CHOICE:
-                if (recipientAutocryptStatusType == RecipientAutocryptStatusType.NO_RECIPIENTS) {
-                    return CryptoStatusDisplayType.NO_CHOICE_EMPTY;
-                } else if (canEncryptAndIsMutualDefault()) {
-                    if (recipientAutocryptStatusType.isConfirmed()) {
-                        return CryptoStatusDisplayType.NO_CHOICE_MUTUAL_TRUSTED;
-                    } else {
-                        return CryptoStatusDisplayType.NO_CHOICE_MUTUAL;
-                    }
-                } else if (recipientAutocryptStatusType.canEncrypt()) {
-                    if (recipientAutocryptStatusType.isConfirmed()) {
-                        return CryptoStatusDisplayType.NO_CHOICE_AVAILABLE_TRUSTED;
-                    } else {
-                        return CryptoStatusDisplayType.NO_CHOICE_AVAILABLE;
-                    }
-                }
-                return CryptoStatusDisplayType.NO_CHOICE_UNAVAILABLE;
-            case SIGN_ONLY:
-                return CryptoStatusDisplayType.SIGN_ONLY;
-            default:
-                throw new AssertionError("all CryptoModes must be handled!");
+        if (isEncryptionEnabled()) {
+            if (!recipientAutocryptStatusType.canEncrypt()) {
+                return CryptoStatusDisplayType.ENABLED_ERROR;
+            } else if (recipientAutocryptStatusType.isConfirmed()) {
+                return CryptoStatusDisplayType.ENABLED_TRUSTED;
+            } else {
+                return CryptoStatusDisplayType.ENABLED;
+            }
+        } else if (isSigningEnabled()) {
+            return CryptoStatusDisplayType.SIGN_ONLY;
+        } else if (recipientAutocryptStatusType.canEncrypt()) {
+            return CryptoStatusDisplayType.AVAILABLE;
+        } else {
+            return CryptoStatusDisplayType.UNAVAILABLE;
         }
     }
 
