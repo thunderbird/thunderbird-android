@@ -17,8 +17,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.text.TextUtils;
 import android.view.Menu;
 
 import com.fsck.k9.Account;
@@ -44,16 +42,15 @@ import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
-import org.openintents.openpgp.IOpenPgpService2;
-import org.openintents.openpgp.OpenPgpError;
+import org.openintents.openpgp.OpenPgpApiManager;
+import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
+import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError;
+import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState;
 import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpApi.PermissionPingCallback;
-import org.openintents.openpgp.util.OpenPgpServiceConnection;
-import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 import timber.log.Timber;
 
 
-public class RecipientPresenter implements PermissionPingCallback {
+public class RecipientPresenter {
     private static final String STATE_KEY_CC_SHOWN = "state:ccShown";
     private static final String STATE_KEY_BCC_SHOWN = "state:bccShown";
     private static final String STATE_KEY_LAST_FOCUSED_TYPE = "state:lastFocusedType";
@@ -78,13 +75,10 @@ public class RecipientPresenter implements PermissionPingCallback {
     private final RecipientsChangedListener listener;
     private ReplyToParser replyToParser;
     private Account account;
-    private String openPgpProvider;
     private Boolean hasContactPicker;
-    private PendingIntent pendingUserInteractionIntent;
-    private CryptoProviderState cryptoProviderState = CryptoProviderState.UNCONFIGURED;
-    private OpenPgpServiceConnection openPgpServiceConnection;
     @Nullable
     private ComposeCryptoStatus cachedCryptoStatus;
+    private OpenPgpApiManager openPgpApiManager;
 
 
     // persistent state, saved during onSaveInstanceState
@@ -94,7 +88,8 @@ public class RecipientPresenter implements PermissionPingCallback {
 
 
     public RecipientPresenter(Context context, LoaderManager loaderManager,
-            RecipientMvpView recipientMvpView, Account account, ComposePgpInlineDecider composePgpInlineDecider,
+            OpenPgpApiManager openPgpApiManager, RecipientMvpView recipientMvpView, Account account,
+            ComposePgpInlineDecider composePgpInlineDecider,
             ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider,
             AutocryptStatusInteractor autocryptStatusInteractor,
             ReplyToParser replyToParser, RecipientsChangedListener recipientsChangedListener) {
@@ -105,6 +100,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         this.composePgpEnableByDefaultDecider = composePgpEnableByDefaultDecider;
         this.replyToParser = replyToParser;
         this.listener = recipientsChangedListener;
+        this.openPgpApiManager = openPgpApiManager;
 
         recipientMvpView.setPresenter(this);
         recipientMvpView.setLoaderManager(loaderManager);
@@ -310,8 +306,9 @@ public class RecipientPresenter implements PermissionPingCallback {
             updateRecipientExpanderVisibility();
         }
 
-        // This does not strictly depend on the account, but this is as good a point to set this as any
-        setupCryptoProvider(account.getOpenPgpProvider());
+        String openPgpProvider = account.getOpenPgpProvider();
+        recipientMvpView.setCryptoProvider(openPgpProvider);
+        openPgpApiManager.setOpenPgpProvider(openPgpProvider, openPgpCallback);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -384,12 +381,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     public void asyncUpdateCryptoStatus() {
         cachedCryptoStatus = null;
 
-        boolean isOkStateButLostConnection = cryptoProviderState == CryptoProviderState.OK &&
-                (openPgpServiceConnection == null || !openPgpServiceConnection.isBound());
-        if (isOkStateButLostConnection) {
-            setCryptoProviderState(CryptoProviderState.LOST_CONNECTION);
-            pendingUserInteractionIntent = null;
-        }
+        OpenPgpProviderState openPgpProviderState = openPgpApiManager.getOpenPgpProviderState();
 
         Long accountCryptoKey = account.getOpenPgpKey();
         if (accountCryptoKey == Account.NO_OPENPGP_KEY) {
@@ -397,7 +389,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
 
         final ComposeCryptoStatus composeCryptoStatus = new ComposeCryptoStatusBuilder()
-                .setCryptoProviderState(cryptoProviderState)
+                .setOpenPgpProviderState(openPgpProviderState)
                 .setCryptoMode(currentCryptoMode)
                 .setEnablePgpInline(cryptoEnablePgpInline)
                 .setPreferEncryptMutual(account.getAutocryptPreferEncryptMutual())
@@ -405,17 +397,22 @@ public class RecipientPresenter implements PermissionPingCallback {
                 .setOpenPgpKeyId(accountCryptoKey)
                 .build();
 
+        if (openPgpProviderState != OpenPgpProviderState.OK) {
+            cachedCryptoStatus = composeCryptoStatus;
+            redrawCachedCryptoStatusIcon();
+            return;
+        }
+
         final String[] recipientAddresses = composeCryptoStatus.getRecipientAddresses();
 
         new AsyncTask<Void,Void,RecipientAutocryptStatus>() {
             @Override
             protected RecipientAutocryptStatus doInBackground(Void... voids) {
-                if (cryptoProviderState != CryptoProviderState.OK) {
+                OpenPgpApi openPgpApi = openPgpApiManager.getOpenPgpApi();
+                if (openPgpApi == null) {
                     return null;
                 }
-
-                return autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(
-                                getOpenPgpApi(), recipientAddresses);
+                return autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(openPgpApi, recipientAddresses);
             }
 
             @Override
@@ -508,7 +505,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     private void addRecipientsFromAddresses(final RecipientType recipientType, final Address... addresses) {
-        new RecipientLoader(context, openPgpProvider, addresses) {
+        new RecipientLoader(context, account.getOpenPgpProvider(), addresses) {
             @Override
             public void deliverResult(List<Recipient> result) {
                 Recipient[] recipientArray = result.toArray(new Recipient[result.size()]);
@@ -521,7 +518,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     private void addRecipientFromContactUri(final RecipientType recipientType, final Uri uri) {
-        new RecipientLoader(context, openPgpProvider, uri, false) {
+        new RecipientLoader(context, account.getOpenPgpProvider(), uri, false) {
             @Override
             public void deliverResult(List<Recipient> result) {
                 // TODO handle multiple available mail addresses for a contact?
@@ -568,7 +565,7 @@ public class RecipientPresenter implements PermissionPingCallback {
                 addRecipientFromContactUri(recipientType, data.getData());
                 break;
             case OPENPGP_USER_INTERACTION:
-                cryptoProviderBindOrCheckPermission();
+                openPgpApiManager.onUserInteractionResult();
                 break;
             case REQUEST_CODE_AUTOCRYPT:
                 asyncUpdateCryptoStatus();
@@ -615,7 +612,7 @@ public class RecipientPresenter implements PermissionPingCallback {
     }
 
     void onClickCryptoStatus() {
-        switch (cryptoProviderState) {
+        switch (openPgpApiManager.getOpenPgpProviderState()) {
             case UNCONFIGURED:
                 Timber.e("click on crypto status while unconfigured - this should not really happen?!");
                 return;
@@ -656,10 +653,15 @@ public class RecipientPresenter implements PermissionPingCallback {
                 onCryptoModeChanged(CryptoMode.NO_CHOICE);
                 return;
 
-            case LOST_CONNECTION:
+            case UI_REQUIRED:
+                // TODO show openpgp settings
+                PendingIntent pendingIntent = openPgpApiManager.getUserInteractionPendingIntent();
+                recipientMvpView.launchUserInteractionPendingIntent(pendingIntent, OPENPGP_USER_INTERACTION);
+                break;
+
             case UNINITIALIZED:
             case ERROR:
-                cryptoProviderBindOrCheckPermission();
+                openPgpApiManager.refreshConnection();
         }
     }
 
@@ -708,149 +710,6 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
-    private void setupCryptoProvider(String openPgpProvider) {
-        if (TextUtils.isEmpty(openPgpProvider)) {
-            openPgpProvider = null;
-        }
-
-        boolean providerIsBound = openPgpServiceConnection != null && openPgpServiceConnection.isBound();
-        boolean isSameProvider = openPgpProvider != null && openPgpProvider.equals(this.openPgpProvider);
-        if (isSameProvider && providerIsBound) {
-            cryptoProviderBindOrCheckPermission();
-            return;
-        }
-
-        if (providerIsBound) {
-            openPgpServiceConnection.unbindFromService();
-            openPgpServiceConnection = null;
-        }
-
-        this.openPgpProvider = openPgpProvider;
-
-        if (openPgpProvider == null) {
-            setCryptoProviderState(CryptoProviderState.UNCONFIGURED);
-            return;
-        }
-
-        setCryptoProviderState(CryptoProviderState.UNINITIALIZED);
-        openPgpServiceConnection = new OpenPgpServiceConnection(context, openPgpProvider, new OnBound() {
-            @Override
-            public void onBound(IOpenPgpService2 service) {
-                cryptoProviderBindOrCheckPermission();
-            }
-
-            @Override
-            public void onError(Exception e) {
-                onCryptoProviderError(e);
-            }
-        });
-        cryptoProviderBindOrCheckPermission();
-
-        recipientMvpView.setCryptoProvider(openPgpProvider);
-    }
-
-    private void cryptoProviderBindOrCheckPermission() {
-        if (openPgpServiceConnection == null) {
-            setCryptoProviderState(CryptoProviderState.UNCONFIGURED);
-            return;
-        }
-
-        if (!openPgpServiceConnection.isBound()) {
-            pendingUserInteractionIntent = null;
-            openPgpServiceConnection.bindToService();
-            return;
-        }
-
-        if (pendingUserInteractionIntent != null) {
-            recipientMvpView
-                    .launchUserInteractionPendingIntent(pendingUserInteractionIntent, OPENPGP_USER_INTERACTION);
-            pendingUserInteractionIntent = null;
-            return;
-        }
-
-        getOpenPgpApi().checkPermissionPing(this);
-    }
-
-    private void onCryptoProviderError(Exception e) {
-        // TODO handle error case better
-        recipientMvpView.showErrorOpenPgpConnection();
-        setCryptoProviderState(CryptoProviderState.ERROR);
-        Timber.e(e, "error connecting to crypto provider!");
-        asyncUpdateCryptoStatus();
-    }
-
-    @Override
-    public void onPgpPermissionCheckResult(Intent result) {
-        int resultCode = result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR);
-        switch (resultCode) {
-            case OpenPgpApi.RESULT_CODE_SUCCESS:
-                setCryptoProviderState(CryptoProviderState.OK);
-                break;
-
-            case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                recipientMvpView.showErrorOpenPgpUserInteractionRequired();
-                pendingUserInteractionIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT);
-                setCryptoProviderState(CryptoProviderState.ERROR);
-                break;
-
-            case OpenPgpApi.RESULT_CODE_ERROR:
-            default:
-                if (result.hasExtra(OpenPgpApi.RESULT_ERROR)) {
-                    OpenPgpError error = result.getParcelableExtra(OpenPgpApi.RESULT_ERROR);
-                    if (error != null) {
-                        handleOpenPgpError(error);
-                    } else {
-                        recipientMvpView.showErrorOpenPgpConnection();
-                        setCryptoProviderState(CryptoProviderState.ERROR);
-                    }
-                } else {
-                    recipientMvpView.showErrorOpenPgpConnection();
-                    setCryptoProviderState(CryptoProviderState.ERROR);
-                }
-                break;
-        }
-    }
-
-    private void handleOpenPgpError(OpenPgpError error) {
-        Timber.e("OpenPGP Api error: %s", error);
-
-        if (error.getErrorId() == OpenPgpError.INCOMPATIBLE_API_VERSIONS) {
-            // nothing we can do here, this is irrecoverable!
-            openPgpProvider = null;
-            account.setOpenPgpProvider(null);
-            recipientMvpView.showErrorOpenPgpIncompatible();
-            setCryptoProviderState(CryptoProviderState.UNCONFIGURED);
-        } else {
-            recipientMvpView.showErrorOpenPgpConnection();
-        }
-    }
-
-    private void setCryptoProviderState(CryptoProviderState state) {
-        cryptoProviderState = state;
-
-        if (state == CryptoProviderState.OK) {
-            recipientMvpView.setCryptoProvider(openPgpProvider);
-        } else {
-            recipientMvpView.setCryptoProvider(null);
-        }
-
-        asyncUpdateCryptoStatus();
-    }
-
-    public void onActivityDestroy() {
-        if (openPgpServiceConnection != null && openPgpServiceConnection.isBound()) {
-            openPgpServiceConnection.unbindFromService();
-        }
-        openPgpServiceConnection = null;
-    }
-
-    private OpenPgpApi getOpenPgpApi() {
-        if (openPgpServiceConnection == null || !openPgpServiceConnection.isBound()) {
-            Timber.e("obtained openpgpapi object, but service is not bound! inconsistent state?");
-        }
-        return new OpenPgpApi(context, openPgpServiceConnection.getService());
-    }
-
     public void builderSetProperties(MessageBuilder messageBuilder) {
         if (messageBuilder instanceof PgpMessageBuilder) {
             throw new IllegalArgumentException("PpgMessageBuilder must be called with ComposeCryptoStatus argument!");
@@ -866,7 +725,7 @@ public class RecipientPresenter implements PermissionPingCallback {
         pgpMessageBuilder.setCc(getCcAddresses());
         pgpMessageBuilder.setBcc(getBccAddresses());
 
-        pgpMessageBuilder.setOpenPgpApi(getOpenPgpApi());
+        pgpMessageBuilder.setOpenPgpApi(openPgpApiManager.getOpenPgpApi());
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
     }
 
@@ -955,33 +814,46 @@ public class RecipientPresenter implements PermissionPingCallback {
         }
     }
 
-    @VisibleForTesting
-    void setOpenPgpServiceConnection(OpenPgpServiceConnection openPgpServiceConnection, String cryptoProvider) {
-        this.openPgpServiceConnection = openPgpServiceConnection;
-        this.openPgpProvider = cryptoProvider;
-    }
-
     public boolean shouldSaveRemotely() {
         // TODO more appropriate logic?
         return cachedCryptoStatus == null || !cachedCryptoStatus.isEncryptionEnabled();
     }
 
-    public enum CryptoProviderState {
-        UNCONFIGURED,
-        UNINITIALIZED,
-        LOST_CONNECTION,
-        ERROR,
-        OK
+    public interface RecipientsChangedListener {
+        void onRecipientsChanged();
     }
+
+    private final OpenPgpApiManagerCallback openPgpCallback = new OpenPgpApiManagerCallback() {
+        @Override
+        public void onOpenPgpProviderStatusChanged() {
+            if (openPgpApiManager.getOpenPgpProviderState() == OpenPgpProviderState.UI_REQUIRED) {
+                recipientMvpView.showErrorOpenPgpUserInteractionRequired();
+            }
+
+            asyncUpdateCryptoStatus();
+        }
+
+        @Override
+        public void onOpenPgpProviderError(OpenPgpProviderError error) {
+            switch (error) {
+                case ConnectionLost:
+                    openPgpApiManager.refreshConnection();
+                    break;
+                case VersionIncompatible:
+                    recipientMvpView.showErrorOpenPgpIncompatible();
+                    break;
+                case ConnectionFailed:
+                default:
+                    recipientMvpView.showErrorOpenPgpConnection();
+                    break;
+            }
+        }
+    };
 
     public enum CryptoMode {
         SIGN_ONLY,
         NO_CHOICE,
         CHOICE_DISABLED,
         CHOICE_ENABLED,
-    }
-
-    public interface RecipientsChangedListener {
-        void onRecipientsChanged();
     }
 }

@@ -6,11 +6,8 @@ import java.util.List;
 
 import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Intent;
-import android.os.ParcelFileDescriptor;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
@@ -28,9 +25,11 @@ import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import org.junit.Before;
 import org.junit.Test;
-import org.openintents.openpgp.IOpenPgpService2;
+import org.mockito.ArgumentCaptor;
+import org.openintents.openpgp.OpenPgpApiManager;
+import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
+import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState;
 import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.ShadowOpenPgpAsyncTask;
 import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
@@ -42,6 +41,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -66,6 +66,8 @@ public class RecipientPresenterTest extends K9RobolectricTest {
     private RecipientPresenter.RecipientsChangedListener listener;
     private AutocryptStatusInteractor autocryptStatusInteractor;
     private RecipientAutocryptStatus noRecipientsAutocryptResult;
+    private OpenPgpApiManager openPgpApiManager;
+    private OpenPgpApiManagerCallback openPgpApiManagerCallback;
 
 
     @Before
@@ -74,6 +76,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         Robolectric.getBackgroundThreadScheduler().pause();
 
         recipientMvpView = mock(RecipientMvpView.class);
+        openPgpApiManager = mock(OpenPgpApiManager.class);
         account = mock(Account.class);
         composePgpInlineDecider = mock(ComposePgpInlineDecider.class);
         composePgpEnableByDefaultDecider = mock(ComposePgpEnableByDefaultDecider.class);
@@ -82,10 +85,16 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         LoaderManager loaderManager = mock(LoaderManager.class);
         listener = mock(RecipientPresenter.RecipientsChangedListener.class);
 
+        when(openPgpApiManager.getOpenPgpProviderState()).thenReturn(OpenPgpProviderState.UNCONFIGURED);
+
         recipientPresenter = new RecipientPresenter(
-                context, loaderManager, recipientMvpView, account, composePgpInlineDecider,
-                composePgpEnableByDefaultDecider, autocryptStatusInteractor, replyToParser, listener);
-        runBackgroundTask();
+                context, loaderManager, openPgpApiManager, recipientMvpView, account, composePgpInlineDecider,
+                composePgpEnableByDefaultDecider, autocryptStatusInteractor, replyToParser, listener
+        );
+
+        ArgumentCaptor<OpenPgpApiManagerCallback> callbackCaptor = ArgumentCaptor.forClass(OpenPgpApiManagerCallback.class);
+        verify(openPgpApiManager).setOpenPgpProvider(isNull(String.class), callbackCaptor.capture());
+        openPgpApiManagerCallback = callbackCaptor.getValue();
 
         noRecipientsAutocryptResult = new RecipientAutocryptStatus(RecipientAutocryptStatusType.NO_RECIPIENTS, null);
     }
@@ -129,6 +138,9 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
     @Test
     public void getCurrentCryptoStatus_withoutCryptoProvider() throws Exception {
+        when(openPgpApiManager.getOpenPgpProviderState()).thenReturn(OpenPgpProviderState.UNCONFIGURED);
+        recipientPresenter.asyncUpdateCryptoStatus();
+
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
         assertEquals(CryptoStatusDisplayType.UNCONFIGURED, status.getCryptoStatusDisplayType());
@@ -319,28 +331,21 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         assertTrue(taskRun);
     }
 
-    private void setupCryptoProvider(RecipientAutocryptStatus autocryptStatusResult) throws android.os.RemoteException {
+    private void setupCryptoProvider(RecipientAutocryptStatus autocryptStatusResult) throws Exception {
         Account account = mock(Account.class);
-        OpenPgpServiceConnection openPgpServiceConnection = mock(OpenPgpServiceConnection.class);
-        IOpenPgpService2 openPgpService2 = mock(IOpenPgpService2.class);
-        Intent permissionPingIntent = new Intent();
+        OpenPgpApi openPgpApi = mock(OpenPgpApi.class);
 
+        when(account.getOpenPgpProvider()).thenReturn(CRYPTO_PROVIDER);
+        when(account.isOpenPgpProviderConfigured()).thenReturn(true);
+        when(account.getOpenPgpKey()).thenReturn(CRYPTO_KEY_ID);
+        recipientPresenter.onSwitchAccount(account);
+
+        when(openPgpApiManager.getOpenPgpProviderState()).thenReturn(OpenPgpProviderState.OK);
+        when(openPgpApiManager.getOpenPgpApi()).thenReturn(openPgpApi);
         when(autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(
                 any(OpenPgpApi.class), any(String[].class))).thenReturn(autocryptStatusResult);
 
-        permissionPingIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
-        when(account.getOpenPgpKey()).thenReturn(CRYPTO_KEY_ID);
-        when(account.isOpenPgpProviderConfigured()).thenReturn(true);
-        when(account.getOpenPgpProvider()).thenReturn(CRYPTO_PROVIDER);
-        when(openPgpServiceConnection.isBound()).thenReturn(true);
-        when(openPgpServiceConnection.getService()).thenReturn(openPgpService2);
-        when(openPgpService2.execute(any(Intent.class), any(ParcelFileDescriptor.class), any(Integer.class)))
-                .thenReturn(permissionPingIntent);
-
-        recipientPresenter.setOpenPgpServiceConnection(openPgpServiceConnection, CRYPTO_PROVIDER);
-        recipientPresenter.onSwitchAccount(account);
-        // one for the permission ping, one for the async status update
-        runBackgroundTask();
+        openPgpApiManagerCallback.onOpenPgpProviderStatusChanged();
         runBackgroundTask();
     }
 }
