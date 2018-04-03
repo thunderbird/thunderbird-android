@@ -85,6 +85,7 @@ public class RecipientPresenter {
     private RecipientType lastFocusedType = RecipientType.TO;
     private CryptoMode currentCryptoMode = CryptoMode.NO_CHOICE;
     private boolean cryptoEnablePgpInline = false;
+    private boolean isReplyToEncryptedMessage = false;
 
 
     public RecipientPresenter(Context context, LoaderManager loaderManager,
@@ -170,8 +171,7 @@ public class RecipientPresenter {
             cryptoEnablePgpInline = true;
         }
 
-        boolean shouldEnablePgpByDefault = composePgpEnableByDefaultDecider.shouldEncryptByDefault(message);
-        currentCryptoMode = shouldEnablePgpByDefault ? CryptoMode.CHOICE_ENABLED : CryptoMode.NO_CHOICE;
+        isReplyToEncryptedMessage = composePgpEnableByDefaultDecider.shouldEncryptByDefault(message);
     }
 
     public void initFromTrustIdAction(String trustId) {
@@ -393,6 +393,7 @@ public class RecipientPresenter {
                 .setCryptoMode(currentCryptoMode)
                 .setEnablePgpInline(cryptoEnablePgpInline)
                 .setPreferEncryptMutual(account.getAutocryptPreferEncryptMutual())
+                .setIsReplyToEncrypted(isReplyToEncryptedMessage)
                 .setRecipients(getAllRecipients())
                 .setOpenPgpKeyId(accountCryptoKey)
                 .build();
@@ -638,6 +639,9 @@ public class RecipientPresenter {
                         recipientMvpView.launchUserInteractionPendingIntent(
                                 currentCryptoStatus.getAutocryptPendingIntent(), REQUEST_CODE_AUTOCRYPT);
                     } else if (currentCryptoStatus.canEncryptAndIsMutualDefault()) {
+                        onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
+                    } else if (currentCryptoStatus.isReplyToEncrypted()) {
+                        // TODO warning dialog
                         onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
                     } else {
                         onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
