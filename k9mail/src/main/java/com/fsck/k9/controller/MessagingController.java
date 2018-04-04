@@ -1832,6 +1832,11 @@ public class MessagingController {
                 }
             }
 
+            if (messages.isEmpty()) {
+                Timber.i("processingPendingMoveOrCopy: no remote messages to move, skipping");
+                return;
+            }
+
             if (!remoteSrcFolder.exists()) {
                 throw new MessagingException(
                         "processingPendingMoveOrCopy: remoteFolder " + srcFolder + " does not exist", true);
