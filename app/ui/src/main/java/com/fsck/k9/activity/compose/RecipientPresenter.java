@@ -222,6 +222,7 @@ public class RecipientPresenter {
 
     public void initFromDraftMessage(Message message) {
         initRecipientsFromDraftMessage(message);
+        initEncryptionStatus(message);
         initPgpInlineFromDraftMessage(message);
     }
 
@@ -233,6 +234,13 @@ public class RecipientPresenter {
 
         Address[] bccRecipients = message.getRecipients(RecipientType.BCC);
         addBccAddresses(bccRecipients);
+    }
+
+    private void initEncryptionStatus(Message message) {
+        boolean isEncryptedDraft = composePgpEnableByDefaultDecider.shouldEncryptByDefault(message);
+        if (isEncryptedDraft) {
+            currentCryptoMode = CryptoMode.CHOICE_ENABLED;
+        }
     }
 
     private void initPgpInlineFromDraftMessage(Message message) {
