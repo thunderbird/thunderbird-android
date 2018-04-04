@@ -1810,14 +1810,24 @@ public class MessagingController {
     }
 
     void processPendingMoveOrCopy(PendingMoveOrCopy command, Account account) throws MessagingException {
+        String srcFolder = command.srcFolder;
+        String destFolder = command.destFolder;
+        boolean isCopy = command.isCopy;
+
+        Map<String, String> newUidMap = command.newUidMap;
+        Collection<String> uids = newUidMap != null ? newUidMap.keySet() : command.uids;
+
+        processPendingMoveOrCopy(account, srcFolder, destFolder, uids, isCopy, newUidMap);
+    }
+
+    @VisibleForTesting
+    void processPendingMoveOrCopy(Account account, String srcFolder, String destFolder, Collection<String> uids,
+            boolean isCopy, Map<String, String> newUidMap) throws MessagingException {
         Folder remoteSrcFolder = null;
         Folder remoteDestFolder = null;
         LocalFolder localDestFolder;
-        try {
-            String srcFolder = command.srcFolder;
-            String destFolder = command.destFolder;
-            boolean isCopy = command.isCopy;
 
+        try {
             RemoteStore remoteStore = account.getRemoteStore();
             remoteSrcFolder = remoteStore.getFolder(srcFolder);
 
@@ -1825,7 +1835,6 @@ public class MessagingController {
             localDestFolder = localStore.getFolder(destFolder);
             List<Message> messages = new ArrayList<>();
 
-            Collection<String> uids = command.newUidMap != null ? command.newUidMap.keySet() : command.uids;
             for (String uid : uids) {
                 if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
                     messages.add(remoteSrcFolder.getMessage(uid));
@@ -1882,11 +1891,12 @@ public class MessagingController {
              * This next part is used to bring the local UIDs of the local destination folder
              * upto speed with the remote UIDs of remote destination folder.
              */
-            if (command.newUidMap != null && remoteUidMap != null && !remoteUidMap.isEmpty()) {
-                for (Map.Entry<String, String> entry : remoteUidMap.entrySet()) {
+            if (newUidMap != null && remoteUidMap != null && !remoteUidMap.isEmpty()) {
+                Timber.i("processingPendingMoveOrCopy: changing local uids of %d messages", remoteUidMap.size());
+                for (Entry<String, String> entry : remoteUidMap.entrySet()) {
                     String remoteSrcUid = entry.getKey();
                     String newUid = entry.getValue();
-                    String localDestUid = command.newUidMap.get(remoteSrcUid);
+                    String localDestUid = newUidMap.get(remoteSrcUid);
                     if (localDestUid == null) {
                         continue;
                     }
