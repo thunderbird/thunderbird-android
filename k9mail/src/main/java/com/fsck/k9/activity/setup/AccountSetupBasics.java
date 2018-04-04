@@ -23,6 +23,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.EmailAddressValidator;
@@ -396,21 +397,32 @@ public class AccountSetupBasics extends K9Activity
             password = mPasswordView.getText().toString();
         }
 
-        if (mAccount == null) {
-            mAccount = Preferences.getPreferences(this).newAccount();
-            mAccount.setChipColor(AccountCreator.pickColor(this));
-        }
-        mAccount.setName(getOwnerName());
-        mAccount.setEmail(email);
-
         // set default uris
         // NOTE: they will be changed again in AccountSetupAccountType!
         ServerSettings storeServer = new ServerSettings(ServerSettings.Type.IMAP, "mail." + domain, -1,
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
         ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
-        String storeUri = RemoteStore.createStoreUri(storeServer);
+
+        // createStoreUri() tosses for invalid values, such as: "foo@b.2" ... be graceful.
+        String storeUri = "";
+        try {
+            storeUri = RemoteStore.createStoreUri(storeServer);
+        } catch (IllegalArgumentException e) {
+            final String invalidAccount = getString(R.string.account_setup_basics_email_invalid);
+            Toast.makeText(AccountSetupBasics.this, invalidAccount, Toast.LENGTH_SHORT).show();
+            return;
+        }
         String transportUri = TransportUris.createTransportUri(transportServer);
+
+        // Create and set account info.
+        if (mAccount == null) {
+            mAccount = Preferences.getPreferences(this).newAccount();
+            mAccount.setChipColor(AccountCreator.pickColor(this));
+        }
+
+        mAccount.setName(getOwnerName());
+        mAccount.setEmail(email);
         mAccount.setStoreUri(storeUri);
         mAccount.setTransportUri(transportUri);
 
