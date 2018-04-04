@@ -3,6 +3,8 @@ package com.fsck.k9.controller;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -67,6 +69,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -839,6 +842,20 @@ public class MessagingControllerTest extends K9RobolectricTest {
         assertEquals(FetchProfile.Item.STRUCTURE, fetchProfileCaptor.getAllValues().get(2).get(0));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(3).size());
         assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(3).get(0));
+    }
+
+    @Test
+    public void processPendingMoveOrCopy_withOnlyLocalMessages() throws Exception {
+        configureRemoteStoreWithFolder();
+
+        Collection<String> uids = Arrays.asList(K9.LOCAL_UID_PREFIX + "msg1", K9.LOCAL_UID_PREFIX + "msg2");
+        controller.processPendingMoveOrCopy(
+                account, localFolder.getServerId(), FOLDER_NAME, uids, false, null);
+
+        verify(account).getRemoteStore();
+        verify(remoteStore).getFolder(FOLDER_NAME);
+        verify(remoteFolder).close();
+        verifyNoMoreInteractions(remoteFolder);
     }
 
     private void setupAccountWithMessageToSend() throws MessagingException {
