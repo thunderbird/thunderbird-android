@@ -130,7 +130,7 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     private void startOrContinueBuildMessage(@Nullable Intent pgpApiIntent) {
         try {
-            boolean shouldSign = cryptoStatus.isSigningEnabled();
+            boolean shouldSign = cryptoStatus.isSigningEnabled() && !isDraft();
             boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled();
             boolean isPgpInlineMode = cryptoStatus.isPgpInlineModeEnabled();
 
@@ -159,7 +159,8 @@ public class PgpMessageBuilder extends MessageBuilder {
             }
 
             if (pgpApiIntent == null) {
-                pgpApiIntent = buildOpenPgpApiIntent(shouldSign, shouldEncrypt, isPgpInlineMode);
+                boolean encryptToSelfOnly = isDraft();
+                pgpApiIntent = buildOpenPgpApiIntent(shouldSign, shouldEncrypt, encryptToSelfOnly, isPgpInlineMode);
             }
 
             PendingIntent returnedPendingIntent = launchOpenPgpApiIntent(pgpApiIntent, messageContentBodyPart,
@@ -227,21 +228,18 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     @NonNull
-    private Intent buildOpenPgpApiIntent(boolean shouldSign, boolean shouldEncrypt, boolean isPgpInlineMode) {
+    private Intent buildOpenPgpApiIntent(boolean shouldSign, boolean shouldEncrypt, boolean encryptToSelfOnly,
+            boolean isPgpInlineMode) {
         Intent pgpApiIntent;
 
         Long openPgpKeyId = cryptoStatus.getOpenPgpKeyId();
         if (shouldEncrypt) {
-            if (!shouldSign) {
-                throw new IllegalStateException("encrypt-only is not supported at this point and should never happen!");
-            }
-            // pgpApiIntent = new Intent(shouldSign ? OpenPgpApi.ACTION_SIGN_AND_ENCRYPT : OpenPgpApi.ACTION_ENCRYPT);
-            pgpApiIntent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
+            pgpApiIntent = new Intent(shouldSign ? OpenPgpApi.ACTION_SIGN_AND_ENCRYPT : OpenPgpApi.ACTION_ENCRYPT);
 
             long[] selfEncryptIds = { openPgpKeyId };
             pgpApiIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, selfEncryptIds);
 
-            if(!isDraft()) {
+            if(!encryptToSelfOnly) {
                 pgpApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.getRecipientAddresses());
 //                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
             }
