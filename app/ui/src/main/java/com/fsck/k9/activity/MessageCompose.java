@@ -1324,6 +1324,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         // See buildIdentityHeader(TextBody) for a detailed description of the composition of this blob.
         Map<IdentityField, String> k9identity = new HashMap<>();
         String[] identityHeaders = message.getHeader(K9.IDENTITY_HEADER);
+        if (identityHeaders.length == 0) {
+            identityHeaders = messageViewInfo.rootPart.getHeader(K9.IDENTITY_HEADER);
+        }
 
         if (identityHeaders.length > 0 && identityHeaders[0] != null) {
             k9identity = IdentityHeaderParser.parse(identityHeaders[0]);

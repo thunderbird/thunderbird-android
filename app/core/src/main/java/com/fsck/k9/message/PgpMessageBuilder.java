@@ -15,6 +15,7 @@ import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
+import com.fsck.k9.K9;
 import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
@@ -181,6 +182,11 @@ public class PgpMessageBuilder extends MessageBuilder {
         String[] contentType = currentProcessedMimeMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
         if (contentType.length > 0) {
             bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
+        }
+        if (isDraft()) {
+            String[] identityHeader = currentProcessedMimeMessage.getHeader(K9.IDENTITY_HEADER);
+            bodyPart.setHeader(K9.IDENTITY_HEADER, identityHeader[0]);
+            currentProcessedMimeMessage.removeHeader(K9.IDENTITY_HEADER);
         }
 
         return bodyPart;
