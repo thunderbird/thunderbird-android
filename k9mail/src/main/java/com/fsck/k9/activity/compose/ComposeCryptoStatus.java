@@ -26,6 +26,7 @@ public class ComposeCryptoStatus {
     private String[] recipientAddresses;
     private boolean enablePgpInline;
     private boolean preferEncryptMutual;
+    private boolean isReplyToEncrypted;
     private CryptoMode cryptoMode;
     private RecipientAutocryptStatus recipientAutocryptStatus;
 
@@ -60,48 +61,20 @@ public class ComposeCryptoStatus {
             return CryptoStatusDisplayType.ERROR;
         }
 
-        switch (cryptoMode) {
-            case CHOICE_ENABLED:
-                if (recipientAutocryptStatusType.canEncrypt()) {
-                    if (recipientAutocryptStatusType.isConfirmed()) {
-                        return CryptoStatusDisplayType.CHOICE_ENABLED_TRUSTED;
-                    } else {
-                        return CryptoStatusDisplayType.CHOICE_ENABLED_UNTRUSTED;
-                    }
-                } else {
-                    return CryptoStatusDisplayType.CHOICE_ENABLED_ERROR;
-                }
-            case CHOICE_DISABLED:
-                if (recipientAutocryptStatusType.canEncrypt()) {
-                    if (recipientAutocryptStatusType.isConfirmed()) {
-                        return CryptoStatusDisplayType.CHOICE_DISABLED_TRUSTED;
-                    } else {
-                        return CryptoStatusDisplayType.CHOICE_DISABLED_UNTRUSTED;
-                    }
-                } else {
-                    return CryptoStatusDisplayType.CHOICE_DISABLED_UNAVAILABLE;
-                }
-            case NO_CHOICE:
-                if (recipientAutocryptStatusType == RecipientAutocryptStatusType.NO_RECIPIENTS) {
-                    return CryptoStatusDisplayType.NO_CHOICE_EMPTY;
-                } else if (canEncryptAndIsMutualDefault()) {
-                    if (recipientAutocryptStatusType.isConfirmed()) {
-                        return CryptoStatusDisplayType.NO_CHOICE_MUTUAL_TRUSTED;
-                    } else {
-                        return CryptoStatusDisplayType.NO_CHOICE_MUTUAL;
-                    }
-                } else if (recipientAutocryptStatusType.canEncrypt()) {
-                    if (recipientAutocryptStatusType.isConfirmed()) {
-                        return CryptoStatusDisplayType.NO_CHOICE_AVAILABLE_TRUSTED;
-                    } else {
-                        return CryptoStatusDisplayType.NO_CHOICE_AVAILABLE;
-                    }
-                }
-                return CryptoStatusDisplayType.NO_CHOICE_UNAVAILABLE;
-            case SIGN_ONLY:
-                return CryptoStatusDisplayType.SIGN_ONLY;
-            default:
-                throw new AssertionError("all CryptoModes must be handled!");
+        if (isEncryptionEnabled()) {
+            if (!recipientAutocryptStatusType.canEncrypt()) {
+                return CryptoStatusDisplayType.ENABLED_ERROR;
+            } else if (recipientAutocryptStatusType.isConfirmed()) {
+                return CryptoStatusDisplayType.ENABLED_TRUSTED;
+            } else {
+                return CryptoStatusDisplayType.ENABLED;
+            }
+        } else if (isSigningEnabled()) {
+            return CryptoStatusDisplayType.SIGN_ONLY;
+        } else if (recipientAutocryptStatusType.canEncrypt()) {
+            return CryptoStatusDisplayType.AVAILABLE;
+        } else {
+            return CryptoStatusDisplayType.UNAVAILABLE;
         }
     }
 
@@ -137,7 +110,8 @@ public class ComposeCryptoStatus {
 
         boolean isExplicitlyEnabled = (cryptoMode == CryptoMode.CHOICE_ENABLED);
         boolean isMutualAndNotDisabled = (cryptoMode != CryptoMode.CHOICE_DISABLED && canEncryptAndIsMutualDefault());
-        return isExplicitlyEnabled || isMutualAndNotDisabled;
+        boolean isReplyAndNotDisabled = (cryptoMode != CryptoMode.CHOICE_DISABLED && isReplyToEncrypted());
+        return isExplicitlyEnabled || isMutualAndNotDisabled || isReplyAndNotDisabled;
     }
 
     boolean isSignOnly() {
@@ -176,6 +150,10 @@ public class ComposeCryptoStatus {
         return recipientAutocryptStatus.type.isMutual();
     }
 
+    public boolean isReplyToEncrypted() {
+        return isReplyToEncrypted;
+    }
+
     boolean canEncryptAndIsMutualDefault() {
         return allRecipientsCanEncrypt() && isSenderPreferEncryptMutual() && isRecipientsPreferEncryptMutual();
     }
@@ -196,6 +174,7 @@ public class ComposeCryptoStatus {
         private List<Recipient> recipients;
         private Boolean enablePgpInline;
         private Boolean preferEncryptMutual;
+        private Boolean isReplyToEncrypted;
 
         public ComposeCryptoStatusBuilder setOpenPgpProviderState(OpenPgpProviderState openPgpProviderState) {
             this.openPgpProviderState = openPgpProviderState;
@@ -227,6 +206,11 @@ public class ComposeCryptoStatus {
             return this;
         }
 
+        public ComposeCryptoStatusBuilder setIsReplyToEncrypted(boolean isReplyToEncrypted) {
+            this.isReplyToEncrypted = isReplyToEncrypted;
+            return this;
+        }
+
         public ComposeCryptoStatus build() {
             if (openPgpProviderState == null) {
                 throw new AssertionError("cryptoProviderState must be set!");
@@ -243,6 +227,9 @@ public class ComposeCryptoStatus {
             if (preferEncryptMutual == null) {
                 throw new AssertionError("preferEncryptMutual must be set!");
             }
+            if (isReplyToEncrypted == null) {
+                throw new AssertionError("isReplyToEncrypted must be set!");
+            }
 
             ArrayList<String> recipientAddresses = new ArrayList<>();
             for (Recipient recipient : recipients) {
@@ -254,6 +241,7 @@ public class ComposeCryptoStatus {
             result.cryptoMode = cryptoMode;
             result.recipientAddresses = recipientAddresses.toArray(new String[0]);
             result.openPgpKeyId = openPgpKeyId;
+            result.isReplyToEncrypted = isReplyToEncrypted;
             result.enablePgpInline = enablePgpInline;
             result.preferEncryptMutual = preferEncryptMutual;
             return result;
@@ -265,8 +253,10 @@ public class ComposeCryptoStatus {
         result.openPgpProviderState = openPgpProviderState;
         result.cryptoMode = cryptoMode;
         result.recipientAddresses = recipientAddresses;
+        result.isReplyToEncrypted = isReplyToEncrypted;
         result.openPgpKeyId = openPgpKeyId;
         result.enablePgpInline = enablePgpInline;
+        result.preferEncryptMutual = preferEncryptMutual;
         result.recipientAutocryptStatus = recipientAutocryptStatusType;
         return result;
     }

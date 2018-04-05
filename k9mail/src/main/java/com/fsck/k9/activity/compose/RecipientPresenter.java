@@ -85,6 +85,7 @@ public class RecipientPresenter {
     private RecipientType lastFocusedType = RecipientType.TO;
     private CryptoMode currentCryptoMode = CryptoMode.NO_CHOICE;
     private boolean cryptoEnablePgpInline = false;
+    private boolean isReplyToEncryptedMessage = false;
 
 
     public RecipientPresenter(Context context, LoaderManager loaderManager,
@@ -170,8 +171,7 @@ public class RecipientPresenter {
             cryptoEnablePgpInline = true;
         }
 
-        boolean shouldEnablePgpByDefault = composePgpEnableByDefaultDecider.shouldEncryptByDefault(message);
-        currentCryptoMode = shouldEnablePgpByDefault ? CryptoMode.CHOICE_ENABLED : CryptoMode.NO_CHOICE;
+        isReplyToEncryptedMessage = composePgpEnableByDefaultDecider.shouldEncryptByDefault(message);
     }
 
     public void initFromTrustIdAction(String trustId) {
@@ -393,6 +393,7 @@ public class RecipientPresenter {
                 .setCryptoMode(currentCryptoMode)
                 .setEnablePgpInline(cryptoEnablePgpInline)
                 .setPreferEncryptMutual(account.getAutocryptPreferEncryptMutual())
+                .setIsReplyToEncrypted(isReplyToEncryptedMessage)
                 .setRecipients(getAllRecipients())
                 .setOpenPgpKeyId(accountCryptoKey)
                 .build();
@@ -617,51 +618,55 @@ public class RecipientPresenter {
                 Timber.e("click on crypto status while unconfigured - this should not really happen?!");
                 return;
             case OK:
-                ComposeCryptoStatus currentCryptoStatus = getCurrentCachedCryptoStatus();
-                if (currentCryptoStatus == null) {
-                    Timber.e("click on crypto status while crypto status not available - should not really happen?!");
-                    return;
-                }
-
-                if (currentCryptoStatus.isEncryptionEnabled() && !currentCryptoStatus.allRecipientsCanEncrypt()) {
-                    recipientMvpView.showOpenPgpEnabledErrorDialog(false);
-                    return;
-                }
-
-                if (currentCryptoMode == CryptoMode.SIGN_ONLY) {
-                    recipientMvpView.showErrorIsSignOnly();
-                    return;
-                }
-
-                if (currentCryptoMode == CryptoMode.NO_CHOICE) {
-                    if (currentCryptoStatus.hasAutocryptPendingIntent()) {
-                        recipientMvpView.launchUserInteractionPendingIntent(
-                                currentCryptoStatus.getAutocryptPendingIntent(), REQUEST_CODE_AUTOCRYPT);
-                    } else if (currentCryptoStatus.canEncryptAndIsMutualDefault()) {
-                        onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
-                    } else {
-                        onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
-                    }
-                    return;
-                }
-
-                if (currentCryptoMode == CryptoMode.CHOICE_DISABLED && !currentCryptoStatus.canEncryptAndIsMutualDefault()) {
-                    onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
-                    return;
-                }
-
-                onCryptoModeChanged(CryptoMode.NO_CHOICE);
+                toggleEncryptionState(false);
                 return;
-
             case UI_REQUIRED:
                 // TODO show openpgp settings
                 PendingIntent pendingIntent = openPgpApiManager.getUserInteractionPendingIntent();
                 recipientMvpView.launchUserInteractionPendingIntent(pendingIntent, OPENPGP_USER_INTERACTION);
                 break;
-
             case UNINITIALIZED:
             case ERROR:
                 openPgpApiManager.refreshConnection();
+        }
+    }
+
+    private void toggleEncryptionState(boolean showGotIt) {
+        ComposeCryptoStatus currentCryptoStatus = getCurrentCachedCryptoStatus();
+        if (currentCryptoStatus == null) {
+            Timber.e("click on crypto status while crypto status not available - should not really happen?!");
+            return;
+        }
+
+        if (currentCryptoStatus.isEncryptionEnabled() && !currentCryptoStatus.allRecipientsCanEncrypt()) {
+            recipientMvpView.showOpenPgpEnabledErrorDialog(false);
+            return;
+        }
+
+        if (currentCryptoMode == CryptoMode.SIGN_ONLY) {
+            recipientMvpView.showErrorIsSignOnly();
+            return;
+        }
+
+        boolean isEncryptOnNoChoice = currentCryptoStatus.canEncryptAndIsMutualDefault() ||
+                currentCryptoStatus.isReplyToEncrypted();
+        if (currentCryptoMode == CryptoMode.NO_CHOICE) {
+            if (currentCryptoStatus.hasAutocryptPendingIntent()) {
+                recipientMvpView.launchUserInteractionPendingIntent(
+                        currentCryptoStatus.getAutocryptPendingIntent(), REQUEST_CODE_AUTOCRYPT);
+            } else if (isEncryptOnNoChoice) {
+                // TODO warning dialog if we override, especially from reply!
+                onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
+            } else {
+                onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
+                if (showGotIt) {
+                    recipientMvpView.showOpenPgpEncryptExplanationDialog();
+                }
+            }
+        } else if (currentCryptoMode == CryptoMode.CHOICE_DISABLED && !isEncryptOnNoChoice) {
+            onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
+        } else {
+            onCryptoModeChanged(CryptoMode.NO_CHOICE);
         }
     }
 
@@ -751,28 +756,8 @@ public class RecipientPresenter {
         }
     }
 
-    public void onMenuSetEnableEncryption(boolean enableEncryption) {
-        if (cachedCryptoStatus == null) {
-            Timber.e("Received crypto button press while status wasn't initialized?");
-            return;
-        }
-        if (enableEncryption) {
-            if (!cachedCryptoStatus.allRecipientsCanEncrypt()) {
-                onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
-                recipientMvpView.showOpenPgpEnabledErrorDialog(true);
-            } else if (cachedCryptoStatus.canEncryptAndIsMutualDefault()) {
-                onCryptoModeChanged(CryptoMode.NO_CHOICE);
-            } else {
-                recipientMvpView.showOpenPgpEncryptExplanationDialog();
-                onCryptoModeChanged(CryptoMode.CHOICE_ENABLED);
-            }
-        } else {
-            if (cachedCryptoStatus.canEncryptAndIsMutualDefault()) {
-                onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
-            } else {
-                onCryptoModeChanged(CryptoMode.NO_CHOICE);
-            }
-        }
+    public void onMenuToggleEncryption() {
+        toggleEncryptionState(true);
     }
 
     public void onCryptoPgpClickDisable() {

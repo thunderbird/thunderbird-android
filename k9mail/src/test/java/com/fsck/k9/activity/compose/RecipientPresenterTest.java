@@ -156,7 +156,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.NO_CHOICE_EMPTY, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.shouldUsePgpMessageBuilder());
     }
@@ -169,7 +169,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.NO_CHOICE_AVAILABLE, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.shouldUsePgpMessageBuilder());
     }
@@ -182,7 +182,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.NO_CHOICE_AVAILABLE_TRUSTED, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.shouldUsePgpMessageBuilder());
     }
@@ -195,7 +195,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.NO_CHOICE_UNAVAILABLE, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.shouldUsePgpMessageBuilder());
     }
@@ -210,7 +210,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.CHOICE_ENABLED_ERROR, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.ENABLED_ERROR, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.shouldUsePgpMessageBuilder());
     }
@@ -225,7 +225,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.CHOICE_DISABLED_UNTRUSTED, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.shouldUsePgpMessageBuilder());
     }
@@ -240,7 +240,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.CHOICE_ENABLED_UNTRUSTED, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.ENABLED, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.shouldUsePgpMessageBuilder());
     }
@@ -267,7 +267,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.NO_CHOICE_EMPTY, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getCryptoStatusDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.isPgpInlineModeEnabled());
     }
