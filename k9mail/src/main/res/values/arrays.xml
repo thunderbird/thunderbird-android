@@ -779,4 +779,49 @@
         <item>NEVER</item>
         <item>WHEN_IN_LANDSCAPE</item>
     </string-array>
+
+    <string-array name="general_settings_confirm_action_entries">
+        <item>@string/global_settings_confirm_action_delete</item>
+        <item>@string/global_settings_confirm_action_delete_starred</item>
+        <item>@string/global_settings_confirm_action_delete_notif</item>
+        <item>@string/global_settings_confirm_action_spam</item>
+        <item>@string/global_settings_confirm_menu_discard</item>
+        <item>@string/global_settings_confirm_menu_mark_all_read</item>
+    </string-array>
+
+    <string-array name="general_settings_confirm_action_values" translatable="false">
+        <item>delete</item>
+        <item>delete_starred</item>
+        <item>delete_notif</item>
+        <item>spam</item>
+        <item>discard</item>
+        <item>mark_all_read</item>
+    </string-array>
+
+    <string-array name="general_settings_messageview_visible_refile_actions_entries">
+        <item>@string/delete_action</item>
+        <item>@string/archive_action</item>
+        <item>@string/move_action</item>
+        <item>@string/copy_action</item>
+        <item>@string/spam_action</item>
+    </string-array>
+
+    <string-array name="general_settings_messageview_visible_refile_actions_values" translatable="false">
+        <item>delete</item>
+        <item>archive</item>
+        <item>move</item>
+        <item>copy</item>
+        <item>spam</item>
+    </string-array>
+
+    <string-array name="general_settings_volume_navigation_entries">
+        <item>@string/volume_navigation_message</item>
+        <item>@string/volume_navigation_list</item>
+    </string-array>
+
+    <string-array name="general_settings_volume_navigation_values" translatable="false">
+        <item>message</item>
+        <item>list</item>
+    </string-array>
+
 </resources>

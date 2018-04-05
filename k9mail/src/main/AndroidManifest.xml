@@ -303,6 +303,10 @@
             android:name=".ui.settings.AboutActivity"
             android:label="@string/about_action" />
 
+        <activity
+            android:name=".ui.settings.general.GeneralSettingsActivity"
+            android:label="@string/general_settings_title" />
+
         <receiver
             android:name=".service.BootReceiver"
             android:enabled="true">
