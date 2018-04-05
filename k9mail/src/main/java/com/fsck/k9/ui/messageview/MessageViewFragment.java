@@ -133,7 +133,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         Context context = getActivity().getApplicationContext();
         mController = MessagingController.getInstance(context);
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        messageCryptoPresenter = new MessageCryptoPresenter(savedInstanceState, messageCryptoMvpView);
+        messageCryptoPresenter = new MessageCryptoPresenter(messageCryptoMvpView);
         messageLoaderHelper = new MessageLoaderHelper(
                 context, getLoaderManager(), getFragmentManager(), messageLoaderCallbacks);
         mInitialized = true;
@@ -144,13 +144,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         super.onResume();
 
         messageCryptoPresenter.onResume();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        messageCryptoPresenter.onSaveInstanceState(outState);
     }
 
     @Override
