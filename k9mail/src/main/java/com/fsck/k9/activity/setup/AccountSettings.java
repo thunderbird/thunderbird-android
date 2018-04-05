@@ -23,7 +23,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
 import android.preference.SwitchPreference;
-import android.text.TextUtils;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
@@ -50,6 +49,7 @@ import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog.OnPreferEncryptChangedListener;
+import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import timber.log.Timber;
@@ -206,6 +206,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private ListPreference trashFolder;
     private CheckBoxPreference alwaysShowCcBcc;
     private SwitchPreference pgpEnable;
+    private OpenPgpApiManager openPgpApiManager;
 
 
     public static void actionSettings(Context context, Account account) {
@@ -224,6 +225,8 @@ public class AccountSettings extends K9PreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), getLifecycle());
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         account = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -710,6 +713,8 @@ public class AccountSettings extends K9PreferenceActivity {
             }
         });
 
+        setupCryptoSettings();
+
         if (savedInstanceState == null && startInOpenPgp) {
             PreferenceScreen preference = (PreferenceScreen) findPreference(PREFERENCE_CRYPTO);
             goToPreferenceScreen(preference);
@@ -772,16 +777,15 @@ public class AccountSettings extends K9PreferenceActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     pgpEnable.setOnPreferenceClickListener(null);
                     account.setOpenPgpProvider(null);
+                    account.setOpenPgpKey(Account.NO_OPENPGP_KEY);
                     setupCryptoSettings();
                     return true;
                 }
             });
-
-            pgpCryptoKey.setOpenPgpProvider(pgpProvider);
         }
 
-        pgpCryptoKey.setEnabled(isPgpConfigured);
         pgpCryptoKey.setValue(account.getOpenPgpKey());
+        pgpCryptoKey.setOpenPgpProvider(openPgpApiManager, pgpProvider);
         pgpCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)));
         pgpCryptoKey.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
