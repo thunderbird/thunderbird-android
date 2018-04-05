@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -205,9 +206,13 @@ public class MessageTopView extends LinearLayout {
         return mHeaderContainer;
     }
 
-    public void setHeaders(final Message message, Account account) {
+    public void setHeaders(Message message, Account account) {
         mHeaderContainer.populate(message, account);
         mHeaderContainer.setVisibility(View.VISIBLE);
+    }
+
+    public void setSubject(@NonNull String subject) {
+        mHeaderContainer.setSubject(subject);
     }
 
     public void setOnToggleFlagClickListener(OnClickListener listener) {

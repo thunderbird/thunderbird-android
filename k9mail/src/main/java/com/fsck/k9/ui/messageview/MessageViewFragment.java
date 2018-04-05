@@ -243,6 +243,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 mMessageView.getMessageHeaderView().hideCryptoStatus();
             }
         }
+
+        if (messageViewInfo.subject != null) {
+            displaySubject(messageViewInfo.subject);
+        }
     }
 
     private void displayHeaderForLoadingMessage(LocalMessage message) {
@@ -250,8 +254,17 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         if (mAccount.isOpenPgpProviderConfigured()) {
             mMessageView.getMessageHeaderView().setCryptoStatusLoading();
         }
-        displayMessageSubject(getSubjectForMessage(message));
+        displaySubject(message.getSubject());
         mFragmentListener.updateMenu();
+    }
+
+    private void displaySubject(String subject) {
+        if (TextUtils.isEmpty(subject)) {
+            subject = mContext.getString(R.string.general_no_subject);
+        }
+
+        mMessageView.setSubject(subject);
+        displayMessageSubject(subject);
     }
 
     /**
@@ -472,8 +485,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             mController.setFlag(mAccount, mMessage.getFolder().getServerId(),
                     Collections.singletonList(mMessage), Flag.SEEN, !mMessage.isSet(Flag.SEEN));
             mMessageView.setHeaders(mMessage, mAccount);
-            String subject = mMessage.getSubject();
-            displayMessageSubject(subject);
             mFragmentListener.updateMenu();
         }
     }
@@ -488,15 +499,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         if (mFragmentListener != null) {
             mFragmentListener.displayMessageSubject(subject);
         }
-    }
-
-    private String getSubjectForMessage(LocalMessage message) {
-        String subject = message.getSubject();
-        if (TextUtils.isEmpty(subject)) {
-            return mContext.getString(R.string.general_no_subject);
-        }
-
-        return subject;
     }
 
     public void moveMessage(MessageReference reference, String destFolderName) {
