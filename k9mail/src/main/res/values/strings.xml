@@ -1302,4 +1302,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="dialog_openkeychain_info_title">No OpenPGP app installed</string>
     <string name="dialog_openkeychain_info_install">Install</string>
     <string name="dialog_openkeychain_info_text">K-9 Mail requires OpenKeychain for end-to-end encryption.</string>
+
+    <string name="encrypted_subject">"Encrypted Message"</string>
 </resources>

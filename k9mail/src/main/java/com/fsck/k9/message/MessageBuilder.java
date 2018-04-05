@@ -39,7 +39,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 
 
 public abstract class MessageBuilder {
-    private final Context context;
+    protected final Context context;
     private final MessageIdGenerator messageIdGenerator;
     private final BoundaryGenerator boundaryGenerator;
 

@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 
 
 public class MimeHeader implements Cloneable {
+    public static final String SUBJECT = "Subject";
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
     public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
