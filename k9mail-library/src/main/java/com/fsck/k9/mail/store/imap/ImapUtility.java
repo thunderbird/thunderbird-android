@@ -171,6 +171,8 @@ class ImapUtility {
                 flagNames.add("\\Flagged");
             } else if (flag == Flag.FORWARDED && canCreateForwardedFlag) {
                 flagNames.add("$Forwarded");
+            } else if (flag == Flag.DRAFT) {
+                flagNames.add("\\Draft");
             }
         }
 
