@@ -208,6 +208,8 @@ public class MessageExtractor {
             outputViewableParts.add(viewable);
         } else if (isSameMimeType(part.getMimeType(), "application/pgp-signature")) {
             // ignore this type explicitly
+        } else if (isSameMimeType(part.getMimeType(), "text/rfc822-headers")) {
+            // ignore this type explicitly
         } else {
             if (skipSavingNonViewableParts) {
                 return;
