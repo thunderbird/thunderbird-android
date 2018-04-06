@@ -1229,8 +1229,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void processMessageToReplyTo(MessageViewInfo messageViewInfo) throws MessagingException {
         Message message = messageViewInfo.message;
 
-        if (message.getSubject() != null) {
-            final String subject = PREFIX.matcher(message.getSubject()).replaceFirst("");
+        if (messageViewInfo.subject != null) {
+            final String subject = PREFIX.matcher(messageViewInfo.subject).replaceFirst("");
 
             if (!subject.toLowerCase(Locale.US).startsWith("re:")) {
                 subjectView.setText("Re: " + subject);
@@ -1278,7 +1278,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void processMessageToForward(MessageViewInfo messageViewInfo, boolean asAttachment) throws MessagingException {
         Message message = messageViewInfo.message;
 
-        String subject = message.getSubject();
+        String subject = messageViewInfo.subject;
         if (subject != null && !subject.toLowerCase(Locale.US).startsWith("fwd:")) {
             subjectView.setText("Fwd: " + subject);
         } else {
@@ -1308,7 +1308,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void processDraftMessage(MessageViewInfo messageViewInfo) {
         Message message = messageViewInfo.message;
         draftId = MessagingController.getInstance(getApplication()).getId(message);
-        subjectView.setText(message.getSubject());
+        subjectView.setText(messageViewInfo.subject);
 
         recipientPresenter.initFromDraftMessage(message);
 
