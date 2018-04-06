@@ -20,6 +20,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.Viewable;
 import com.fsck.k9.mail.internet.Viewable.Flowed;
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
@@ -91,6 +92,40 @@ public class MessageViewInfoExtractor {
                     .withCryptoData(noProviderAnnotation, null, null);
         }
 
+        MessageViewInfo messageViewInfo = getMessageContent(message, cryptoAnnotations, extraParts, cryptoContentPart);
+        String subject = extractSubject(messageViewInfo);
+        messageViewInfo = messageViewInfo.withSubject(subject);
+
+        return messageViewInfo;
+    }
+
+    private String extractSubject(MessageViewInfo messageViewInfo) {
+        if (messageViewInfo.cryptoResultAnnotation != null && messageViewInfo.cryptoResultAnnotation.isEncrypted()) {
+            String protectedSubject = extractProtectedSubject(messageViewInfo);
+            if (protectedSubject != null) {
+                return protectedSubject;
+            }
+        }
+
+        return messageViewInfo.message.getSubject();
+    }
+
+    @Nullable
+    private String extractProtectedSubject(MessageViewInfo messageViewInfo) {
+        String protectedHeadersParam = MimeUtility.getHeaderParameter(
+                messageViewInfo.rootPart.getContentType(), "protected-headers");
+        String[] protectedSubjectHeader = messageViewInfo.rootPart.getHeader("Subject");
+
+        boolean hasProtectedSubject = "v1".equalsIgnoreCase(protectedHeadersParam) && protectedSubjectHeader.length > 0;
+        if (hasProtectedSubject) {
+            return protectedSubjectHeader[0];
+        }
+
+        return null;
+    }
+
+    private MessageViewInfo getMessageContent(Message message, @Nullable MessageCryptoAnnotations cryptoAnnotations,
+            ArrayList<Part> extraParts, Part cryptoContentPart) throws MessagingException {
         CryptoResultAnnotation cryptoContentPartAnnotation =
                 cryptoAnnotations != null ? cryptoAnnotations.get(cryptoContentPart) : null;
         if (cryptoContentPartAnnotation != null) {

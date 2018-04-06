@@ -109,6 +109,10 @@ public final class CryptoResultAnnotation {
         return openPgpDecryptionResult;
     }
 
+    public boolean isEncrypted() {
+        return openPgpDecryptionResult != null && openPgpDecryptionResult.result == OpenPgpDecryptionResult.RESULT_ENCRYPTED;
+    }
+
     @Nullable
     public OpenPgpSignatureResult getOpenPgpSignatureResult() {
         return openPgpSignatureResult;
