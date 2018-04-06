@@ -1,136 +1,103 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.helper
 
-import android.content.Context;
-import android.content.Intent;
+import android.content.Context
+import android.content.Intent
+import com.fsck.k9.Account
+import com.fsck.k9.BaseAccount
+import com.fsck.k9.K9
+import com.fsck.k9.Preferences
+import com.fsck.k9.R
+import com.fsck.k9.activity.FolderList
+import com.fsck.k9.activity.MessageList
+import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.helper.UnreadWidgetProperties.Type.ACCOUNT
+import com.fsck.k9.helper.UnreadWidgetProperties.Type.FOLDER
+import com.fsck.k9.helper.UnreadWidgetProperties.Type.SEARCH_ACCOUNT
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.search.LocalSearch
+import com.fsck.k9.search.SearchAccount
 
-import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
-import com.fsck.k9.BaseAccount;
-import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.R;
-import com.fsck.k9.activity.FolderList;
-import com.fsck.k9.activity.MessageList;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchAccount;
+class UnreadWidgetProperties(val appWidgetId: Int, val accountUuid: String, val folderServerId: String?) {
+    private val type: Type = calculateType()
 
-public class UnreadWidgetProperties {
 
-    private int appWidgetId;
-    private String accountUuid;
-    private String folderServerId;
-    private Type type;
-
-    public UnreadWidgetProperties(int appWidgetId, String accountUuid, String folderServerId) {
-        this.appWidgetId = appWidgetId;
-        this.accountUuid = accountUuid;
-        this.folderServerId = folderServerId;
-        calculateType();
-    }
-
-    public String getTitle(Context context) {
-        String accountName = getAccount(context).getDescription();
-        switch (type) {
-            case SEARCH_ACCOUNT:
-            case ACCOUNT:
-                return accountName;
-            case FOLDER:
-                return context.getString(R.string.unread_widget_title, accountName, folderServerId);
-            default:
-                return null;
+    fun getTitle(context: Context): String? {
+        val accountName = getAccount(context).description
+        return when (type) {
+            SEARCH_ACCOUNT, ACCOUNT -> accountName
+            FOLDER -> context.getString(R.string.unread_widget_title, accountName, folderServerId)
         }
     }
 
-    public int getUnreadCount(Context context) throws MessagingException {
-        MessagingController controller = MessagingController.getInstance(context);
-        BaseAccount baseAccount = getAccount(context);
-        AccountStats stats;
-        switch (type) {
-            case SEARCH_ACCOUNT:
-                stats = controller.getSearchAccountStatsSynchronous((SearchAccount) baseAccount, null);
-                return stats.unreadMessageCount;
-            case ACCOUNT:
-                Account account = (Account) baseAccount;
-                stats = controller.getAccountStats(account);
-                return stats.unreadMessageCount;
-            case FOLDER:
-                return controller.getFolderUnreadMessageCount((Account) baseAccount, folderServerId);
-            default:
-                return -1;
+    @Throws(MessagingException::class)
+    fun getUnreadCount(context: Context): Int {
+        val controller = MessagingController.getInstance(context)
+        val baseAccount = getAccount(context)
+
+        return when (type) {
+            SEARCH_ACCOUNT -> {
+                val stats = controller.getSearchAccountStatsSynchronous(baseAccount as SearchAccount, null)
+                stats.unreadMessageCount
+            }
+            ACCOUNT -> {
+                val stats = controller.getAccountStats(baseAccount as Account)
+                stats.unreadMessageCount
+            }
+            FOLDER -> controller.getFolderUnreadMessageCount(baseAccount as Account, folderServerId)
         }
     }
 
-    public Intent getClickIntent(Context context) {
-        switch (type) {
-            case SEARCH_ACCOUNT:
-                SearchAccount searchAccount = (SearchAccount) getAccount(context);
-                return MessageList.intentDisplaySearch(context,
-                        searchAccount.getRelatedSearch(), false, true, true);
-            case ACCOUNT:
-                return getClickIntentForAccount(context);
-            case FOLDER:
-                return getClickIntentForFolder(context);
-            default:
-                return null;
+    fun getClickIntent(context: Context): Intent = when (type) {
+        SEARCH_ACCOUNT -> {
+            val searchAccount = getAccount(context) as SearchAccount
+            MessageList.intentDisplaySearch(context,
+                    searchAccount.relatedSearch, false, true, true)
         }
+        ACCOUNT -> getClickIntentForAccount(context)
+        FOLDER -> getClickIntentForFolder(context)
     }
 
-    public int getAppWidgetId() {
-        return appWidgetId;
-    }
-
-    public String getAccountUuid() {
-        return accountUuid;
-    }
-
-    public String getFolderServerId() {
-        return folderServerId;
-    }
-
-    private void calculateType() {
-        if (SearchAccount.UNIFIED_INBOX.equals(accountUuid) ||
-                SearchAccount.ALL_MESSAGES.equals(accountUuid)) {
-            type = Type.SEARCH_ACCOUNT;
+    private fun calculateType(): Type {
+        return if (SearchAccount.UNIFIED_INBOX == accountUuid || SearchAccount.ALL_MESSAGES == accountUuid) {
+            SEARCH_ACCOUNT
         } else if (folderServerId != null) {
-            type = Type.FOLDER;
+            FOLDER
         } else {
-            type = Type.ACCOUNT;
+            ACCOUNT
         }
     }
 
-    private BaseAccount getAccount(Context context) {
-        if (SearchAccount.UNIFIED_INBOX.equals(accountUuid)) {
-            return SearchAccount.createUnifiedInboxAccount(context);
-        } else if (SearchAccount.ALL_MESSAGES.equals(accountUuid)) {
-            return SearchAccount.createAllMessagesAccount(context);
+    private fun getAccount(context: Context): BaseAccount = when (accountUuid) {
+        SearchAccount.UNIFIED_INBOX -> SearchAccount.createUnifiedInboxAccount(context)
+        SearchAccount.ALL_MESSAGES -> SearchAccount.createAllMessagesAccount(context)
+        else -> Preferences.getPreferences(context).getAccount(accountUuid)
+    }
+
+    private fun getClickIntentForAccount(context: Context): Intent {
+        val account = Preferences.getPreferences(context).getAccount(accountUuid)
+        if (K9.FOLDER_NONE == account.autoExpandFolder) {
+            return FolderList.actionHandleAccountIntent(context, account, false)
         }
-        return Preferences.getPreferences(context).getAccount(accountUuid);
+
+        val search = LocalSearch(account.autoExpandFolder)
+        search.addAllowedFolder(account.autoExpandFolder)
+        search.addAccountUuid(account.uuid)
+        return MessageList.intentDisplaySearch(context, search, false, true, true)
     }
 
-    private Intent getClickIntentForAccount(Context context) {
-        Account account = Preferences.getPreferences(context).getAccount(accountUuid);
-        if (K9.FOLDER_NONE.equals(account.getAutoExpandFolder())) {
-            return FolderList.actionHandleAccountIntent(context, account, false);
-        }
-        LocalSearch search = new LocalSearch(account.getAutoExpandFolder());
-        search.addAllowedFolder(account.getAutoExpandFolder());
-        search.addAccountUuid(account.getUuid());
-        return MessageList.intentDisplaySearch(context, search, false, true, true);
+    private fun getClickIntentForFolder(context: Context): Intent {
+        val account = Preferences.getPreferences(context).getAccount(accountUuid)
+        val search = LocalSearch(folderServerId)
+        search.addAllowedFolder(folderServerId)
+        search.addAccountUuid(account.uuid)
+
+        val clickIntent = MessageList.intentDisplaySearch(context, search, false, true, true)
+        clickIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        return clickIntent
     }
 
-    private Intent getClickIntentForFolder(Context context) {
-        Account account = Preferences.getPreferences(context).getAccount(accountUuid);
-        LocalSearch search = new LocalSearch(folderServerId);
-        search.addAllowedFolder(folderServerId);
-        search.addAccountUuid(account.getUuid());
-        Intent clickIntent = MessageList.intentDisplaySearch(context, search, false, true, true);
-        clickIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        return clickIntent;
-    }
 
-    public enum Type {
+    enum class Type {
         SEARCH_ACCOUNT,
         ACCOUNT,
         FOLDER
