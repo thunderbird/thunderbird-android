@@ -17,13 +17,13 @@ public class HtmlSanitizer {
                 .addAttributes("font", "color", "face", "size")
                 .addAttributes("table", "align", "background", "bgcolor", "border", "cellpadding", "cellspacing",
                         "width")
-                .addAttributes("tr", "align", "bgcolor", "valign")
+                .addAttributes("tr", "align", "background", "bgcolor", "valign")
                 .addAttributes("th",
-                        "align", "bgcolor", "colspan", "headers", "height", "nowrap", "rowspan", "scope", "sorted",
-                        "valign", "width")
+                        "align", "background", "bgcolor", "colspan", "headers", "height", "nowrap", "rowspan", "scope",
+                        "sorted", "valign", "width")
                 .addAttributes("td",
-                        "align", "bgcolor", "colspan", "headers", "height", "nowrap", "rowspan", "scope", "valign",
-                        "width")
+                        "align", "background", "bgcolor", "colspan", "headers", "height", "nowrap", "rowspan", "scope",
+                        "valign", "width")
                 .addAttributes("map", "name")
                 .addAttributes("area", "shape", "coords", "href", "alt")
                 .addProtocols("area", "href", "http", "https")
