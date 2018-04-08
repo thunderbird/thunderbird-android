@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import android.app.Application
 import com.fsck.k9.ui.settings.settingsUiModule
+import com.fsck.k9.widget.unread.unreadWidgetModule
 import org.koin.Koin
 import org.koin.KoinContext
 import org.koin.android.ext.koin.with
@@ -18,7 +19,8 @@ object DI {
 
     val appModules = listOf(
         mainModule,
-        settingsUiModule
+        settingsUiModule,
+        unreadWidgetModule
     )
 
     @JvmStatic fun start(application: Application) {

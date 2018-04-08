@@ -13,15 +13,23 @@ import android.content.Intent
 import timber.log.Timber
 import android.view.View
 import android.widget.RemoteViews
+import com.fsck.k9.widget.unread.UnreadWidgetRepository
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 
-class UnreadWidgetProvider : AppWidgetProvider() {
+class UnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
+    private val repository: UnreadWidgetRepository by inject()
+
+
     /**
      * Called when one or more widgets need to be updated.
      */
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         for (widgetId in appWidgetIds) {
-            val properties = UnreadWidgetConfiguration.getWidgetProperties(context, widgetId)
-            updateWidget(context, appWidgetManager, properties)
+            val properties = repository.getWidgetProperties(widgetId)
+            properties?.let {
+                updateWidget(context, appWidgetManager, it)
+            }
         }
     }
 
@@ -30,7 +38,7 @@ class UnreadWidgetProvider : AppWidgetProvider() {
      */
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         for (appWidgetId in appWidgetIds) {
-            UnreadWidgetConfiguration.deleteWidgetConfiguration(context, appWidgetId)
+            repository.deleteWidgetConfiguration(appWidgetId)
         }
     }
 
