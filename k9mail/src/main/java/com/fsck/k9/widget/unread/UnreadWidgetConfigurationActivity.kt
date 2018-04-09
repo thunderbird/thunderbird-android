@@ -15,7 +15,6 @@ import com.fsck.k9.R
 import com.fsck.k9.activity.ChooseAccount
 import com.fsck.k9.activity.ChooseFolder
 import com.fsck.k9.activity.K9PreferenceActivity
-import com.fsck.k9.helper.UnreadWidgetProperties
 import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.search.SearchAccount
 import org.koin.android.ext.android.inject
@@ -170,13 +169,10 @@ class UnreadWidgetConfigurationActivity : K9PreferenceActivity() {
     }
 
     private fun updateWidgetAndExit() {
-        val properties = UnreadWidgetProperties(appWidgetId, selectedAccountUuid!!, selectedFolder)
-        repository.saveWidgetProperties(properties)
+        val configuration = UnreadWidgetConfiguration(appWidgetId, selectedAccountUuid!!, selectedFolder)
+        repository.saveWidgetConfiguration(configuration)
 
-        // Update widget
-        val context = applicationContext
-        val appWidgetManager = AppWidgetManager.getInstance(context)
-        UnreadWidgetProvider.updateWidget(context, appWidgetManager, properties)
+        UnreadWidgetProvider.updateWidget(applicationContext, appWidgetId)
 
         // Let the caller know that the configuration was successful
         val resultValue = Intent()

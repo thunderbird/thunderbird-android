@@ -5,11 +5,11 @@ import com.fsck.k9.helper.UnreadWidgetProperties
 
 class UnreadWidgetRepository(val context: Context) {
 
-    fun saveWidgetProperties(properties: UnreadWidgetProperties) {
-        val appWidgetId = properties.appWidgetId
+    fun saveWidgetConfiguration(configuration: UnreadWidgetConfiguration) {
+        val appWidgetId = configuration.appWidgetId
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
-        editor.putString(PREF_PREFIX_KEY + appWidgetId, properties.accountUuid)
-        editor.putString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_NAME_SUFFIX_KEY, properties.folderServerId)
+        editor.putString(PREF_PREFIX_KEY + appWidgetId, configuration.accountUuid)
+        editor.putString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_NAME_SUFFIX_KEY, configuration.folderServerId)
         editor.apply()
     }
 
@@ -34,3 +34,5 @@ class UnreadWidgetRepository(val context: Context) {
         private const val PREF_FOLDER_NAME_SUFFIX_KEY = ".folder_name"
     }
 }
+
+data class UnreadWidgetConfiguration(val appWidgetId: Int, val accountUuid: String, val folderServerId: String?)

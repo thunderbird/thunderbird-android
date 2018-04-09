@@ -55,9 +55,18 @@ class UnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
             val thisWidget = ComponentName(appContext, UnreadWidgetProvider::class.java)
             val widgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
 
+            updateWidgets(context, *widgetIds)
+        }
+
+        @JvmStatic
+        fun updateWidget(context: Context, widgetId: Int) {
+            updateWidgets(context, widgetId)
+        }
+
+        private fun updateWidgets(context: Context, vararg widgetIds: Int) {
             val updateIntent = Intent(context, UnreadWidgetProvider::class.java)
             updateIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-            updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds)
+            updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds.toTypedArray())
 
             context.sendBroadcast(updateIntent)
         }
