@@ -207,6 +207,7 @@ public class Account implements BaseAccount, StoreConfig {
     private long openPgpKey;
     private boolean autocryptPreferEncryptMutual;
     private boolean openPgpHideSignOnly;
+    private boolean openPgpEncryptSubject;
     private boolean markMessageAsReadOnView;
     private boolean alwaysShowCcBcc;
     private boolean allowRemoteSearch;
@@ -435,6 +436,7 @@ public class Account implements BaseAccount, StoreConfig {
         openPgpProvider = storage.getString(accountUuid + ".openPgpProvider", "");
         openPgpKey = storage.getLong(accountUuid + ".cryptoKey", NO_OPENPGP_KEY);
         openPgpHideSignOnly = storage.getBoolean(accountUuid + ".openPgpHideSignOnly", true);
+        openPgpEncryptSubject = storage.getBoolean(accountUuid + ".openPgpEncryptSubject", true);
         autocryptPreferEncryptMutual = storage.getBoolean(accountUuid + ".autocryptMutualMode", false);
         allowRemoteSearch = storage.getBoolean(accountUuid + ".allowRemoteSearch", false);
         remoteSearchFullText = storage.getBoolean(accountUuid + ".remoteSearchFullText", false);
@@ -703,6 +705,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putBoolean(accountUuid + ".stripSignature", stripSignature);
         editor.putLong(accountUuid + ".cryptoKey", openPgpKey);
         editor.putBoolean(accountUuid + ".openPgpHideSignOnly", openPgpHideSignOnly);
+        editor.putBoolean(accountUuid + ".openPgpEncryptSubject", openPgpEncryptSubject);
         editor.putString(accountUuid + ".openPgpProvider", openPgpProvider);
         editor.putBoolean(accountUuid + ".autocryptMutualMode", autocryptPreferEncryptMutual);
         editor.putBoolean(accountUuid + ".allowRemoteSearch", allowRemoteSearch);
@@ -1553,6 +1556,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setOpenPgpHideSignOnly(boolean openPgpHideSignOnly) {
         this.openPgpHideSignOnly = openPgpHideSignOnly;
+    }
+
+    public boolean getOpenPgpEncryptSubject() {
+        return openPgpEncryptSubject;
+    }
+
+    public void setOpenPgpEncryptSubject(boolean openPgpEncryptSubject) {
+        this.openPgpEncryptSubject = openPgpEncryptSubject;
     }
 
     public boolean allowRemoteSearch() {
