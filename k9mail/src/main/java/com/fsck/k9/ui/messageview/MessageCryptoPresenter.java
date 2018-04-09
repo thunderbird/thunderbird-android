@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -30,25 +29,13 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
     private final MessageCryptoMvpView messageCryptoMvpView;
 
 
-    // persistent state
-    private boolean overrideCryptoWarning;
-
-
     // transient state
     private CryptoResultAnnotation cryptoResultAnnotation;
     private boolean reloadOnResumeWithoutRecreateFlag;
 
 
-    public MessageCryptoPresenter(Bundle savedInstanceState, MessageCryptoMvpView messageCryptoMvpView) {
+    public MessageCryptoPresenter(MessageCryptoMvpView messageCryptoMvpView) {
         this.messageCryptoMvpView = messageCryptoMvpView;
-
-        if (savedInstanceState != null) {
-            overrideCryptoWarning = savedInstanceState.getBoolean("overrideCryptoWarning");
-        }
-    }
-
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean("overrideCryptoWarning", overrideCryptoWarning);
     }
 
     public void onResume() {
@@ -65,10 +52,6 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
                 MessageCryptoDisplayStatus.fromResultAnnotation(messageViewInfo.cryptoResultAnnotation);
         if (displayStatus == MessageCryptoDisplayStatus.DISABLED) {
             return false;
-        }
-
-        if (cryptoResultAnnotation.isOverrideSecurityWarning()) {
-            overrideCryptoWarning = true;
         }
 
         messageView.getMessageHeaderView().setCryptoStatus(displayStatus);

@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.Globals;
+import com.fsck.k9.R;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor;
 import com.fsck.k9.autocrypt.AutocryptOperations;
@@ -175,6 +176,13 @@ public class PgpMessageBuilder extends MessageBuilder {
         String[] contentType = currentProcessedMimeMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
         if (contentType.length > 0) {
             bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
+        }
+
+        String[] subjects = currentProcessedMimeMessage.getHeader(MimeHeader.SUBJECT);
+        if (subjects.length > 0) {
+            bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, bodyPart.getContentType() + "; protected-headers=\"v1\"");
+            bodyPart.setHeader(MimeHeader.SUBJECT, subjects[0]);
+            currentProcessedMimeMessage.setHeader(MimeHeader.SUBJECT, context.getString(R.string.encrypted_subject));
         }
 
         addGossipHeadersToBodyPart(shouldEncrypt, bodyPart);

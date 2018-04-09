@@ -11,6 +11,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -317,14 +318,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             mSenderView.setVisibility(View.GONE);
         }
 
-        final String subject = message.getSubject();
-        if (TextUtils.isEmpty(subject)) {
-            mSubjectView.setText(mContext.getText(R.string.general_no_subject));
-        } else {
-            mSubjectView.setText(subject);
-        }
-        mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
-
         String dateTime = DateUtils.formatDateTime(mContext,
                 message.getSentDate().getTime(),
                 DateUtils.FORMAT_SHOW_DATE
@@ -363,6 +356,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         } else {
             hideAdditionalHeaders();
         }
+    }
+
+    public void setSubject(@NonNull String subject) {
+        mSubjectView.setText(subject);
+        mSubjectView.setTextColor(0xff000000 | defaultSubjectColor);
     }
 
     public static boolean shouldShowSender(Message message) {

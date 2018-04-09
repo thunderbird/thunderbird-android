@@ -37,6 +37,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.robolectric.RuntimeEnvironment;
 
 import static com.fsck.k9.message.TestMessageConstructionUtils.bodypart;
@@ -58,6 +59,8 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
     public static final String BODY_TEXT = "K-9 Mail rocks :>";
     public static final String BODY_TEXT_HTML = "K-9 Mail rocks :&gt;";
     public static final String BODY_TEXT_FLOWED = "K-9 Mail rocks :> \r\nflowed line\r\nnot flowed line";
+    public static final String SUBJECT = "sabject";
+    public static final String PROTECTED_SUBJECT = "protected subject";
 
 
     private MessageViewInfoExtractor messageViewInfoExtractor;
@@ -388,7 +391,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
 
     @Test
     public void extractMessage_withCryptoAnnotation() throws Exception {
-        Message message = messageFromBody(multipart("signed", "protocol=\"application/pgp-signature\"",
+        Message message = messageFromBody(SUBJECT, multipart("signed", "protocol=\"application/pgp-signature\"",
                 bodypart("text/plain", "text"),
                 bodypart("application/pgp-signature")
         ));
@@ -405,6 +408,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         assertSame(annotation, messageViewInfo.cryptoResultAnnotation);
         assertSame(message, messageViewInfo.message);
         assertSame(message, messageViewInfo.rootPart);
+        assertEquals(SUBJECT, messageViewInfo.subject);
         assertTrue(messageViewInfo.attachments.isEmpty());
         assertTrue(messageViewInfo.extraAttachments.isEmpty());
     }
@@ -505,6 +509,56 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         assertNull(messageViewInfo.text);
         assertNull(messageViewInfo.attachments);
         assertNull(messageViewInfo.extraAttachments);
+    }
+
+    @Test
+    public void extractMessage_openPgpEncrypted() throws Exception {
+        MimeBodyPart encryptedPayload = bodypart("text/plain", "encrypted text");
+        Message message = messageFromBody(multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
+                bodypart("application/pgp-encrypted"),
+                bodypart("application/octet-stream")
+        ));
+
+        MessageCryptoAnnotations cryptoAnnotations = new MessageCryptoAnnotations();
+        CryptoResultAnnotation openPgpResultAnnotation = CryptoResultAnnotation.createOpenPgpResultAnnotation(
+                null, null, null, null, encryptedPayload, false);
+        cryptoAnnotations.put(message, openPgpResultAnnotation);
+
+        MessageViewInfo messageViewInfo = messageViewInfoExtractor.extractMessageForView(message, cryptoAnnotations,
+                true);
+
+        assertSame(openPgpResultAnnotation, messageViewInfo.cryptoResultAnnotation);
+        assertEquals("<pre class=\"k9mail\">encrypted text</pre>", messageViewInfo.text);
+        assertTrue(messageViewInfo.attachments.isEmpty());
+        assertTrue(messageViewInfo.extraAttachments.isEmpty());
+    }
+
+    @Test
+    public void extractMessage_openPgpEncrypted_withProtectedSubject() throws Exception {
+        MimeBodyPart encryptedPayload = bodypart("text/plain", "encrypted text");
+        Message message = messageFromBody(multipart("encrypted", "protocol=\"application/pgp-encrypted\"",
+                bodypart("application/pgp-encrypted"),
+                bodypart("application/octet-stream")
+        ));
+
+        encryptedPayload.setHeader("Content-Type",
+                encryptedPayload.getHeader("Content-Type")[0] + "; protected-headers=v1");
+        encryptedPayload.setHeader("Subject", PROTECTED_SUBJECT);
+
+        MessageCryptoAnnotations cryptoAnnotations = new MessageCryptoAnnotations();
+        OpenPgpDecryptionResult decryptionResult = new OpenPgpDecryptionResult(OpenPgpDecryptionResult.RESULT_ENCRYPTED);
+        CryptoResultAnnotation openPgpResultAnnotation = CryptoResultAnnotation.createOpenPgpResultAnnotation(
+                decryptionResult, null, null, null, encryptedPayload, false);
+        cryptoAnnotations.put(message, openPgpResultAnnotation);
+
+        MessageViewInfo messageViewInfo = messageViewInfoExtractor.extractMessageForView(message, cryptoAnnotations,
+                true);
+
+        assertSame(openPgpResultAnnotation, messageViewInfo.cryptoResultAnnotation);
+        assertEquals("<pre class=\"k9mail\">encrypted text</pre>", messageViewInfo.text);
+        assertEquals(PROTECTED_SUBJECT, messageViewInfo.subject);
+        assertTrue(messageViewInfo.attachments.isEmpty());
+        assertTrue(messageViewInfo.extraAttachments.isEmpty());
     }
 
     @Test

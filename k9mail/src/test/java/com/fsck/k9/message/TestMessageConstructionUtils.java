@@ -13,6 +13,12 @@ import com.fsck.k9.mail.internet.TextBody;
 
 
 public class TestMessageConstructionUtils {
+    public static MimeMessage messageFromBody(String subject, BodyPart bodyPart) throws MessagingException {
+        MimeMessage message = messageFromBody(bodyPart);
+        message.setSubject(subject);
+        return message;
+    }
+
     public static MimeMessage messageFromBody(BodyPart bodyPart) throws MessagingException {
         MimeMessage message = new MimeMessage();
         MimeMessageHelper.setBody(message, bodyPart.getBody());
