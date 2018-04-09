@@ -299,6 +299,10 @@
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/prefs_title" />
 
+        <activity
+            android:name=".ui.settings.AboutActivity"
+            android:label="@string/about_action" />
+
         <receiver
             android:name=".service.BootReceiver"
             android:enabled="true">
