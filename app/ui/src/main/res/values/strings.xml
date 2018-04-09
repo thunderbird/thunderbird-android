@@ -606,6 +606,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_summary_config">Configuring…</string>
     <string name="account_settings_no_openpgp_provider_configured">No OpenPGP app configured</string>
     <string name="account_settings_no_openpgp_provider_installed">No OpenPGP app found - click to install</string>
+    <string name="account_settings_crypto_encrypt_all_drafts">Store all drafts encrypted</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_on">All drafts will be stored encrypted</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_off">Encrypt drafts only if encryption is enabled</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
@@ -1350,7 +1353,6 @@ You can keep this message and use it as a backup for your secret key. If you wan
 
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
-
 
     <!-- permissions -->
     <string name="permission_contacts_rationale_title">Allow access to contacts</string>

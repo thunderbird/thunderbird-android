@@ -216,6 +216,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean autocryptPreferEncryptMutual;
     private boolean openPgpHideSignOnly;
     private boolean openPgpEncryptSubject;
+    private boolean openPgpEncryptAllDrafts;
     private boolean markMessageAsReadOnView;
     private boolean alwaysShowCcBcc;
     private boolean allowRemoteSearch;
@@ -461,6 +462,7 @@ public class Account implements BaseAccount, StoreConfig {
         openPgpKey = storage.getLong(accountUuid + ".cryptoKey", NO_OPENPGP_KEY);
         openPgpHideSignOnly = storage.getBoolean(accountUuid + ".openPgpHideSignOnly", true);
         openPgpEncryptSubject = storage.getBoolean(accountUuid + ".openPgpEncryptSubject", true);
+        openPgpEncryptAllDrafts = storage.getBoolean(accountUuid + ".openPgpEncryptAllDrafts", true);
         autocryptPreferEncryptMutual = storage.getBoolean(accountUuid + ".autocryptMutualMode", false);
         allowRemoteSearch = storage.getBoolean(accountUuid + ".allowRemoteSearch", false);
         remoteSearchFullText = storage.getBoolean(accountUuid + ".remoteSearchFullText", false);
@@ -740,6 +742,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putLong(accountUuid + ".cryptoKey", openPgpKey);
         editor.putBoolean(accountUuid + ".openPgpHideSignOnly", openPgpHideSignOnly);
         editor.putBoolean(accountUuid + ".openPgpEncryptSubject", openPgpEncryptSubject);
+        editor.putBoolean(accountUuid + ".openPgpEncryptAllDrafts", openPgpEncryptAllDrafts);
         editor.putString(accountUuid + ".openPgpProvider", openPgpProvider);
         editor.putBoolean(accountUuid + ".autocryptMutualMode", autocryptPreferEncryptMutual);
         editor.putBoolean(accountUuid + ".allowRemoteSearch", allowRemoteSearch);
@@ -1589,6 +1592,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setOpenPgpEncryptSubject(boolean openPgpEncryptSubject) {
         this.openPgpEncryptSubject = openPgpEncryptSubject;
+    }
+
+    public boolean getOpenPgpEncryptAllDrafts() {
+        return openPgpEncryptAllDrafts;
+    }
+
+    public void setOpenPgpEncryptAllDrafts(boolean openPgpEncryptAllDrafts) {
+        this.openPgpEncryptAllDrafts = openPgpEncryptAllDrafts;
     }
 
     public boolean allowRemoteSearch() {

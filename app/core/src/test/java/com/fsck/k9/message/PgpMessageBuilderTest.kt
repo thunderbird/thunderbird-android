@@ -55,6 +55,7 @@ class PgpMessageBuilderTest : RobolectricTest() {
             false,
             false,
             true,
+            true,
             CryptoMode.NO_CHOICE
     )
     private val openPgpApi = mock(OpenPgpApi::class.java)
