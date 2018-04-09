@@ -1,21 +1,20 @@
 package com.fsck.k9.provider
 
-import com.fsck.k9.R
-import com.fsck.k9.activity.UnreadWidgetConfiguration
-import com.fsck.k9.helper.UnreadWidgetProperties
-
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import timber.log.Timber
 import android.view.View
 import android.widget.RemoteViews
+import com.fsck.k9.R
+import com.fsck.k9.helper.UnreadWidgetProperties
+import com.fsck.k9.widget.unread.UnreadWidgetConfigurationActivity
 import com.fsck.k9.widget.unread.UnreadWidgetRepository
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
+import timber.log.Timber
 
 class UnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
     private val repository: UnreadWidgetRepository by inject()
@@ -91,7 +90,7 @@ class UnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
             if (clickIntent == null) {
                 // If the widget configuration couldn't be loaded we open the configuration
                 // activity when the user clicks the widget.
-                clickIntent = Intent(context, UnreadWidgetConfiguration::class.java)
+                clickIntent = Intent(context, UnreadWidgetConfigurationActivity::class.java)
                 clickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             }
             clickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

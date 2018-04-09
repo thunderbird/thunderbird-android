@@ -1,4 +1,4 @@
-package com.fsck.k9.activity
+package com.fsck.k9.widget.unread
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager
@@ -12,10 +12,12 @@ import android.widget.Toast
 
 import com.fsck.k9.Preferences
 import com.fsck.k9.R
+import com.fsck.k9.activity.ChooseAccount
+import com.fsck.k9.activity.ChooseFolder
+import com.fsck.k9.activity.K9PreferenceActivity
 import com.fsck.k9.helper.UnreadWidgetProperties
 import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.search.SearchAccount
-import com.fsck.k9.widget.unread.UnreadWidgetRepository
 import org.koin.android.ext.android.inject
 
 import timber.log.Timber
@@ -24,7 +26,7 @@ import timber.log.Timber
 /**
  * Activity to select an account for the unread widget.
  */
-class UnreadWidgetConfiguration : K9PreferenceActivity() {
+class UnreadWidgetConfigurationActivity : K9PreferenceActivity() {
     private val repository: UnreadWidgetRepository by inject()
 
     /**
@@ -58,7 +60,7 @@ class UnreadWidgetConfiguration : K9PreferenceActivity() {
         addPreferencesFromResource(R.xml.unread_widget_configuration)
         unreadAccount = findPreference(PREFERENCE_UNREAD_ACCOUNT)
         unreadAccount.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val intent = Intent(this@UnreadWidgetConfiguration, ChooseAccount::class.java)
+            val intent = Intent(this@UnreadWidgetConfigurationActivity, ChooseAccount::class.java)
             startActivityForResult(intent, REQUEST_CHOOSE_ACCOUNT)
             false
         }
@@ -72,7 +74,7 @@ class UnreadWidgetConfiguration : K9PreferenceActivity() {
 
         unreadFolder = findPreference(PREFERENCE_UNREAD_FOLDER)
         unreadFolder.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val intent = Intent(this@UnreadWidgetConfiguration, ChooseFolder::class.java)
+            val intent = Intent(this@UnreadWidgetConfigurationActivity, ChooseFolder::class.java)
             intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, selectedAccountUuid)
             intent.putExtra(ChooseFolder.EXTRA_SHOW_DISPLAYABLE_ONLY, "yes")
             startActivityForResult(intent, REQUEST_CHOOSE_FOLDER)
