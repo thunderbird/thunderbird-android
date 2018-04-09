@@ -2,7 +2,10 @@ package com.fsck.k9.widget.unread
 
 import android.content.Context
 
-class UnreadWidgetRepository(val context: Context) {
+class UnreadWidgetRepository(
+        private val context: Context,
+        private val dataRetriever: UnreadWidgetDataProvider
+) {
 
     fun saveWidgetConfiguration(configuration: UnreadWidgetConfiguration) {
         val appWidgetId = configuration.appWidgetId
@@ -12,11 +15,14 @@ class UnreadWidgetRepository(val context: Context) {
         editor.apply()
     }
 
-    fun getWidgetProperties(appWidgetId: Int): UnreadWidgetData? {
+    fun getWidgetData(appWidgetId: Int): UnreadWidgetData? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val accountUuid = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null) ?: return null
         val folderServerId = prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_NAME_SUFFIX_KEY, null)
-        return UnreadWidgetData(appWidgetId, accountUuid, folderServerId)
+
+        val configuration = UnreadWidgetConfiguration(appWidgetId, accountUuid, folderServerId)
+
+        return dataRetriever.loadUnreadWidgetData(configuration)
     }
 
     fun deleteWidgetConfiguration(appWidgetId: Int) {

@@ -25,8 +25,8 @@ class UnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
      */
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         for (widgetId in appWidgetIds) {
-            val properties = repository.getWidgetProperties(widgetId)
-            properties?.let {
+            val widgetData = repository.getWidgetData(widgetId)
+            widgetData?.let {
                 updateWidget(context, appWidgetManager, it)
             }
         }
@@ -71,15 +71,15 @@ class UnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
             context.sendBroadcast(updateIntent)
         }
 
-        fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, properties: UnreadWidgetData) {
+        fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, data: UnreadWidgetData) {
             val remoteViews = RemoteViews(context.packageName, R.layout.unread_widget_layout)
 
-            val appWidgetId = properties.appWidgetId
+            val appWidgetId = data.configuration.appWidgetId
             var clickIntent: Intent? = null
 
             try {
-                clickIntent = properties.getClickIntent(context)
-                val unreadCount = properties.getUnreadCount(context)
+                clickIntent = data.clickIntent
+                val unreadCount = data.unreadCount
 
                 if (unreadCount <= 0) {
                     // Hide TextView for unread count if there are no unread messages.
@@ -91,7 +91,7 @@ class UnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
                     remoteViews.setTextViewText(R.id.unread_count, displayCount)
                 }
 
-                remoteViews.setTextViewText(R.id.title, properties.getTitle(context))
+                remoteViews.setTextViewText(R.id.title, data.title)
             } catch (e: Exception) {
                 Timber.e(e, "Error getting widget configuration")
             }

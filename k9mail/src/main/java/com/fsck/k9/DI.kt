@@ -1,6 +1,7 @@
 package com.fsck.k9
 
 import android.app.Application
+import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.ui.settings.settingsUiModule
 import com.fsck.k9.widget.unread.unreadWidgetModule
 import org.koin.Koin
@@ -15,6 +16,7 @@ import org.koin.standalone.StandAloneContext
 object DI {
     private val mainModule = applicationContext {
         bean { Preferences.getPreferences(get()) }
+        bean { MessagingController.getInstance(get()) }
     }
 
     val appModules = listOf(
