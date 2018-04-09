@@ -39,12 +39,12 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.power.DeviceIdleManager;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
-import com.fsck.k9.provider.UnreadWidgetProvider;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.service.ShutdownReceiver;
 import com.fsck.k9.service.StorageGoneReceiver;
 import com.fsck.k9.widget.list.MessageListWidgetProvider;
+import com.fsck.k9.widget.unread.UnreadWidgetUpdater;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
@@ -559,6 +559,8 @@ public class K9 extends Application {
         registerReceivers();
 
         MessagingController.getInstance(this).addListener(new SimpleMessagingListener() {
+            private UnreadWidgetUpdater unreadWidgetUpdater = DI.get(UnreadWidgetUpdater.class);
+
             private void broadcastIntent(String action, Account account, String folder, Message message) {
                 Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
                 Intent intent = new Intent(action, uri);
@@ -582,7 +584,7 @@ public class K9 extends Application {
 
             private void updateUnreadWidget() {
                 try {
-                    UnreadWidgetProvider.updateUnreadCount(K9.this);
+                    unreadWidgetUpdater.updateAll();
                 } catch (Exception e) {
                     Timber.e(e, "Error while updating unread widget(s)");
                 }

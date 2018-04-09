@@ -5,4 +5,5 @@ import org.koin.dsl.module.applicationContext
 val unreadWidgetModule = applicationContext {
     bean { UnreadWidgetRepository(get(), get()) }
     bean { UnreadWidgetDataProvider(get(), get(), get()) }
+    bean { UnreadWidgetUpdater(get()) }
 }

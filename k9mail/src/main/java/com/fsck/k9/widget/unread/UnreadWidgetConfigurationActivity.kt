@@ -15,7 +15,6 @@ import com.fsck.k9.R
 import com.fsck.k9.activity.ChooseAccount
 import com.fsck.k9.activity.ChooseFolder
 import com.fsck.k9.activity.K9PreferenceActivity
-import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.search.SearchAccount
 import org.koin.android.ext.android.inject
 
@@ -27,6 +26,7 @@ import timber.log.Timber
  */
 class UnreadWidgetConfigurationActivity : K9PreferenceActivity() {
     private val repository: UnreadWidgetRepository by inject()
+    private val unreadWidgetUpdater: UnreadWidgetUpdater by inject()
 
     /**
      * The ID of the widget we are configuring.
@@ -172,7 +172,7 @@ class UnreadWidgetConfigurationActivity : K9PreferenceActivity() {
         val configuration = UnreadWidgetConfiguration(appWidgetId, selectedAccountUuid!!, selectedFolder)
         repository.saveWidgetConfiguration(configuration)
 
-        UnreadWidgetProvider.updateWidget(applicationContext, appWidgetId)
+        unreadWidgetUpdater.update(appWidgetId)
 
         // Let the caller know that the configuration was successful
         val resultValue = Intent()
