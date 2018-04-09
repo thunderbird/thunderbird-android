@@ -75,6 +75,7 @@ class UnreadWidgetDataProvider(
         val folderServerId = configuration.folderServerId ?: return null
 
         val accountName = account.description
+        //FIXME: Use folder display name instead of folderServerId for title
         val title = context.getString(R.string.unread_widget_title, accountName, folderServerId)
 
         val unreadCount = messagingController.getFolderUnreadMessageCount(account, folderServerId)
@@ -85,7 +86,7 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getClickIntentForFolder(accountUuid: String, folderServerId: String): Intent {
-        val account = Preferences.getPreferences(context).getAccount(accountUuid)
+        val account = preferences.getAccount(accountUuid)
         val search = LocalSearch(folderServerId)
         search.addAllowedFolder(folderServerId)
         search.addAccountUuid(account.uuid)
