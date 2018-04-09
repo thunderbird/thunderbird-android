@@ -151,7 +151,12 @@ public class PgpMessageBuilder extends MessageBuilder {
             }
 
             if (messageContentBodyPart == null) {
-                messageContentBodyPart = createBodyPartFromMessageContent(shouldEncrypt);
+                messageContentBodyPart = createBodyPartFromMessageContent();
+
+                if (cryptoStatus.isEncryptSubject()) {
+                    encryptMessageSubject();
+                }
+                maybeAddGossipHeadersToBodyPart();
             }
 
             if (pgpApiIntent == null) {
@@ -171,34 +176,34 @@ public class PgpMessageBuilder extends MessageBuilder {
         }
     }
 
-    private MimeBodyPart createBodyPartFromMessageContent(boolean shouldEncrypt) throws MessagingException {
+    private MimeBodyPart createBodyPartFromMessageContent() throws MessagingException {
         MimeBodyPart bodyPart = currentProcessedMimeMessage.toBodyPart();
         String[] contentType = currentProcessedMimeMessage.getHeader(MimeHeader.HEADER_CONTENT_TYPE);
         if (contentType.length > 0) {
             bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
         }
 
-        String[] subjects = currentProcessedMimeMessage.getHeader(MimeHeader.SUBJECT);
-        if (subjects.length > 0) {
-            bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, bodyPart.getContentType() + "; protected-headers=\"v1\"");
-            bodyPart.setHeader(MimeHeader.SUBJECT, subjects[0]);
-            currentProcessedMimeMessage.setHeader(MimeHeader.SUBJECT, context.getString(R.string.encrypted_subject));
-        }
-
-        addGossipHeadersToBodyPart(shouldEncrypt, bodyPart);
-
         return bodyPart;
     }
 
-    private void addGossipHeadersToBodyPart(boolean shouldEncrypt, MimeBodyPart bodyPart) {
-        if (!shouldEncrypt) {
+    private void encryptMessageSubject() {
+        String[] subjects = currentProcessedMimeMessage.getHeader(MimeHeader.SUBJECT);
+        if (subjects.length > 0) {
+            messageContentBodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
+                    messageContentBodyPart.getContentType() + "; protected-headers=\"v1\"");
+            messageContentBodyPart.setHeader(MimeHeader.SUBJECT, subjects[0]);
+            currentProcessedMimeMessage.setHeader(MimeHeader.SUBJECT, context.getString(R.string.encrypted_subject));
+        }
+    }
+
+    private void maybeAddGossipHeadersToBodyPart() {
+        if (!cryptoStatus.isEncryptionEnabled()) {
             return;
         }
-
         String[] recipientAddresses = getCryptoRecipientsWithoutBcc();
         boolean hasMultipleOvertRecipients = recipientAddresses.length >= 2;
         if (hasMultipleOvertRecipients) {
-            addAutocryptGossipHeadersToPart(bodyPart, recipientAddresses);
+            addAutocryptGossipHeadersToPart(messageContentBodyPart, recipientAddresses);
         }
     }
 

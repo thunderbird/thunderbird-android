@@ -27,6 +27,7 @@ public class ComposeCryptoStatus {
     private boolean enablePgpInline;
     private boolean preferEncryptMutual;
     private boolean isReplyToEncrypted;
+    private boolean encryptSubject;
     private CryptoMode cryptoMode;
     private RecipientAutocryptStatus recipientAutocryptStatus;
 
@@ -166,6 +167,10 @@ public class ComposeCryptoStatus {
         return recipientAutocryptStatus.intent;
     }
 
+    public boolean isEncryptSubject() {
+        return encryptSubject;
+    }
+
     public static class ComposeCryptoStatusBuilder {
 
         private OpenPgpProviderState openPgpProviderState;
@@ -175,6 +180,7 @@ public class ComposeCryptoStatus {
         private Boolean enablePgpInline;
         private Boolean preferEncryptMutual;
         private Boolean isReplyToEncrypted;
+        private Boolean encryptSubject;
 
         public ComposeCryptoStatusBuilder setOpenPgpProviderState(OpenPgpProviderState openPgpProviderState) {
             this.openPgpProviderState = openPgpProviderState;
@@ -211,6 +217,11 @@ public class ComposeCryptoStatus {
             return this;
         }
 
+        public ComposeCryptoStatusBuilder setEncryptSubject(boolean encryptSubject) {
+            this.encryptSubject = encryptSubject;
+            return this;
+        }
+
         public ComposeCryptoStatus build() {
             if (openPgpProviderState == null) {
                 throw new AssertionError("cryptoProviderState must be set!");
@@ -230,6 +241,9 @@ public class ComposeCryptoStatus {
             if (isReplyToEncrypted == null) {
                 throw new AssertionError("isReplyToEncrypted must be set!");
             }
+            if (encryptSubject == null) {
+                throw new AssertionError("encryptSubject must be set!");
+            }
 
             ArrayList<String> recipientAddresses = new ArrayList<>();
             for (Recipient recipient : recipients) {
@@ -244,6 +258,7 @@ public class ComposeCryptoStatus {
             result.isReplyToEncrypted = isReplyToEncrypted;
             result.enablePgpInline = enablePgpInline;
             result.preferEncryptMutual = preferEncryptMutual;
+            result.encryptSubject = encryptSubject;
             return result;
         }
     }
@@ -257,6 +272,7 @@ public class ComposeCryptoStatus {
         result.openPgpKeyId = openPgpKeyId;
         result.enablePgpInline = enablePgpInline;
         result.preferEncryptMutual = preferEncryptMutual;
+        result.encryptSubject = encryptSubject;
         result.recipientAutocryptStatus = recipientAutocryptStatusType;
         return result;
     }

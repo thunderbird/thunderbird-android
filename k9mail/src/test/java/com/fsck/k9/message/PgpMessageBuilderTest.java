@@ -592,6 +592,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
                 .setEnablePgpInline(false)
                 .setPreferEncryptMutual(false)
                 .setIsReplyToEncrypted(false)
+                .setEncryptSubject(true)
                 .setOpenPgpKeyId(TEST_KEY_ID)
                 .setRecipients(new ArrayList<Recipient>())
                 .setOpenPgpProviderState(OpenPgpProviderState.OK);
