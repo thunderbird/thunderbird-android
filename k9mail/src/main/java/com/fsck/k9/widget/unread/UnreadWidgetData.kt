@@ -1,4 +1,4 @@
-package com.fsck.k9.helper
+package com.fsck.k9.widget.unread
 
 import android.content.Context
 import android.content.Intent
@@ -10,14 +10,14 @@ import com.fsck.k9.R
 import com.fsck.k9.activity.FolderList
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.helper.UnreadWidgetProperties.Type.ACCOUNT
-import com.fsck.k9.helper.UnreadWidgetProperties.Type.FOLDER
-import com.fsck.k9.helper.UnreadWidgetProperties.Type.SEARCH_ACCOUNT
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
+import com.fsck.k9.widget.unread.UnreadWidgetData.Type.ACCOUNT
+import com.fsck.k9.widget.unread.UnreadWidgetData.Type.FOLDER
+import com.fsck.k9.widget.unread.UnreadWidgetData.Type.SEARCH_ACCOUNT
 
-class UnreadWidgetProperties(val appWidgetId: Int, val accountUuid: String, val folderServerId: String?) {
+class UnreadWidgetData(val appWidgetId: Int, val accountUuid: String, val folderServerId: String?) {
     private val type: Type = calculateType()
 
 

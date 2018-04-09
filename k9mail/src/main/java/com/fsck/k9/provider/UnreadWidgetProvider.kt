@@ -9,7 +9,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import com.fsck.k9.R
-import com.fsck.k9.helper.UnreadWidgetProperties
+import com.fsck.k9.widget.unread.UnreadWidgetData
 import com.fsck.k9.widget.unread.UnreadWidgetConfigurationActivity
 import com.fsck.k9.widget.unread.UnreadWidgetRepository
 import org.koin.standalone.KoinComponent
@@ -71,7 +71,7 @@ class UnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
             context.sendBroadcast(updateIntent)
         }
 
-        fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, properties: UnreadWidgetProperties) {
+        fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, properties: UnreadWidgetData) {
             val remoteViews = RemoteViews(context.packageName, R.layout.unread_widget_layout)
 
             val appWidgetId = properties.appWidgetId
