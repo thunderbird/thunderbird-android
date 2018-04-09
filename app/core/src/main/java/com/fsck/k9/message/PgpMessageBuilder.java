@@ -145,7 +145,7 @@ public class PgpMessageBuilder extends MessageBuilder {
     private void startOrContinueBuildMessage(@Nullable Intent pgpApiIntent) {
         try {
             boolean shouldSign = cryptoStatus.isSigningEnabled() && !isDraft();
-            boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled();
+            boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled() || (isDraft() && cryptoStatus.isEncryptAllDrafts());
             boolean isPgpInlineMode = cryptoStatus.isPgpInlineModeEnabled() && !isDraft();
 
             if (!shouldSign && !shouldEncrypt) {

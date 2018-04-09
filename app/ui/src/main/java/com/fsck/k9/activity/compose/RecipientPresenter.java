@@ -429,6 +429,7 @@ public class RecipientPresenter {
                 cryptoEnablePgpInline,
                 account.getAutocryptPreferEncryptMutual(),
                 isReplyToEncryptedMessage,
+                account.getOpenPgpEncryptAllDrafts(),
                 account.getOpenPgpEncryptSubject(),
                 currentCryptoMode);
 

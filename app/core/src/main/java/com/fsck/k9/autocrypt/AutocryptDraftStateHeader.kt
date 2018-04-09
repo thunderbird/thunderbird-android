@@ -45,12 +45,12 @@ data class AutocryptDraftStateHeader(val isEncrypt: Boolean,
         const val VALUE_YES = "yes";
 
         fun fromCryptoStatus(cryptoStatus: CryptoStatus): AutocryptDraftStateHeader {
-            if (cryptoStatus.isSignOnly()) {
-                return AutocryptDraftStateHeader(false, true, cryptoStatus.isReplyToEncrypted(),
-                        cryptoStatus.isUserChoice(), cryptoStatus.isPgpInlineModeEnabled(), mapOf())
+            if (cryptoStatus.isSignOnly) {
+                return AutocryptDraftStateHeader(false, true, cryptoStatus.isReplyToEncrypted,
+                        cryptoStatus.isUserChoice(), cryptoStatus.isPgpInlineModeEnabled, mapOf())
             }
-            return AutocryptDraftStateHeader(cryptoStatus.isEncryptionEnabled(), false, cryptoStatus.isReplyToEncrypted(),
-                    cryptoStatus.isUserChoice(), cryptoStatus.isPgpInlineModeEnabled(), mapOf())
+            return AutocryptDraftStateHeader(cryptoStatus.isEncryptionEnabled, false, cryptoStatus.isReplyToEncrypted,
+                    cryptoStatus.isUserChoice(), cryptoStatus.isPgpInlineModeEnabled, mapOf())
         }
     }
 }

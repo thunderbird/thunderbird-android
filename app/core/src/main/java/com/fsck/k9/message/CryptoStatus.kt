@@ -11,6 +11,7 @@ interface CryptoStatus {
     fun isUserChoice(): Boolean
     val isReplyToEncrypted: Boolean
     fun hasRecipients(): Boolean
+    val isEncryptAllDrafts: Boolean
     val isEncryptSubject: Boolean
     fun getRecipientAddresses(): Array<String>
 }
