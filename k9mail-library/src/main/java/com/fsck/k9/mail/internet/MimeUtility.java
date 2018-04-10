@@ -909,7 +909,7 @@ public class MimeUtility {
     }
 
     public static String unfoldAndDecode(String s, Message message) {
-        return Rfc2231Parameters.decodeAll(decode(unfold(s), message), message);
+        return decode(unfold(s), message);
     }
 
     // TODO implement proper foldAndEncode

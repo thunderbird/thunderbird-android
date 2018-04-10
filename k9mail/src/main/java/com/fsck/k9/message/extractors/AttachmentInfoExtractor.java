@@ -11,6 +11,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+
+import com.fsck.k9.mail.internet.Rfc2231Parameters;
 import timber.log.Timber;
 import android.support.annotation.WorkerThread;
 
@@ -117,7 +119,7 @@ public class AttachmentInfoExtractor {
 
         String mimeType = part.getMimeType();
         String contentTypeHeader = MimeUtility.unfoldAndDecode(part.getContentType());
-        String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
+        String contentDisposition = Rfc2231Parameters.decodeAll(MimeUtility.unfoldAndDecode(part.getDisposition()),null);
 
         String name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
         if (name == null) {
