@@ -25,7 +25,9 @@ public class Rfc2231Parameters {
      *
      * @return the decoded string.
      */
-    public static String decodeAll(@NonNull String body, Message message) {
+    public static String decodeAll(String body, Message message) {
+        if (body == null) return null;
+        if (body.length() < 1) return "";
         String body2 = body.replaceAll("[\r\n]", "");
         String[] lines = body2.split("[\t ]*;[\t ]*");
         Rfc2231Parameters params = new Rfc2231Parameters(message);
