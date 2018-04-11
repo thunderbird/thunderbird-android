@@ -8,6 +8,43 @@ import static org.junit.Assert.assertEquals;
 
 public class Rfc2231DecodeTest {
     @Test
+    public void decodeAll_rfc2231_example_1()
+    {
+        // From RFC2231 3.
+        // this is Content-Type, not Content-Disposition, but same logic applies.
+        String source = "Content-Type: message/external-body; access-type=URL;\n" +
+                "         URL*0=\"ftp://\";\n" +
+                "         URL*1=\"cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"";
+        String decoded = Rfc2231Parameters.decodeAll(source, null);
+        String output = MimeUtility.getHeaderParameter(decoded, "URL");
+        assertEquals("ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar",output);
+    }
+
+    @Test
+    public void decodeAll_rfc2231_example_2()
+    {
+        // From RFC2231 4.
+        String source = "Content-Type: application/x-stuff;\n" +
+                "         title*=us-ascii'en-us'This%20is%20%2A%2A%2Afun%2A%2A%2A";
+        String decoded = Rfc2231Parameters.decodeAll(source, null);
+        String output = MimeUtility.getHeaderParameter(decoded, "title");
+        assertEquals("This is ***fun***",output);
+    }
+
+    @Test
+    public void decodeAll_rfc2231_example_3()
+    {
+        // From RFC2231 4.1
+        String source = "Content-Type: application/x-stuff;\n" +
+                "    title*0*=us-ascii'en'This%20is%20even%20more%20;\n" +
+                "    title*1*=%2A%2A%2Afun%2A%2A%2A%20;\n" +
+                "    title*2=\"isn't it!\"";
+        String decoded = Rfc2231Parameters.decodeAll(source, null);
+        String output = MimeUtility.getHeaderParameter(decoded, "title");
+        assertEquals("This is even more ***fun*** isn't it!",output);
+    }
+
+    @Test
     public void decodeAll_thunderbird_Japanese_decode()
     {
         String source = "Content-Disposition: attachment;\n" +
