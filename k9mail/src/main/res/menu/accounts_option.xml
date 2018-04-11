@@ -20,10 +20,6 @@
         app:showAsAction="always"
         android:title="@string/compose_action"/>
     <item
-        android:id="@+id/about"
-        android:icon="?attr/iconActionAbout"
-        android:title="@string/about_action"/>
-    <item
         android:id="@+id/import_export"
         android:icon="?attr/iconActionImportExport"
         android:title="@string/import_export_action">

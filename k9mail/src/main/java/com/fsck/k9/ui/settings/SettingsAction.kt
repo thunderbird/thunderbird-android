@@ -14,6 +14,11 @@ internal enum class SettingsAction {
         override fun execute(activity: Activity) {
             AccountSetupBasics.actionNewAccount(activity)
         }
+    },
+    ABOUT_SCREEN {
+        override fun execute(activity: Activity) {
+            AboutActivity.start(activity)
+        }
     };
 
     abstract fun execute(activity: Activity)

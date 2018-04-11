@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +24,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -44,7 +42,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -1229,9 +1226,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         case R.id.compose:
             onCompose();
             break;
-        case R.id.about:
-            onAbout();
-            break;
         case R.id.search:
             onSearchRequested();
             break;
@@ -1245,97 +1239,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             return super.onOptionsItemSelected(item);
         }
         return true;
-    }
-
-    private static final String[][] USED_LIBRARIES = new String[][] {
-            new String[] {"Android Support Library", "https://developer.android.com/topic/libraries/support-library/index.html"},
-            new String[] {"ckChangeLog", "https://github.com/cketti/ckChangeLog"},
-            new String[] {"Commons IO", "http://commons.apache.org/io/"},
-            new String[] {"Glide", "https://github.com/bumptech/glide"},
-            new String[] {"HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker"},
-            new String[] {"jsoup", "https://jsoup.org/"},
-            new String[] {"jutf7", "http://jutf7.sourceforge.net/"},
-            new String[] {"JZlib", "http://www.jcraft.com/jzlib/"},
-            new String[] {"Mime4j", "http://james.apache.org/mime4j/"},
-            new String[] {"Moshi", "https://github.com/square/moshi"},
-            new String[] {"Okio", "https://github.com/square/okio"},
-            new String[] {"SafeContentResolver", "https://github.com/cketti/SafeContentResolver"},
-            new String[] {"ShowcaseView", "https://github.com/amlcurran/ShowcaseView"},
-            new String[] {"Timber", "https://github.com/JakeWharton/timber"},
-            new String[] {"TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/"},
-    };
-
-    private void onAbout() {
-        String appName = getString(R.string.app_name);
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-        WebView wv = new WebView(this);
-        StringBuilder html = new StringBuilder()
-        .append("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />")
-        .append("<img src=\"file:///android_asset/icon.png\" alt=\"").append(appName).append("\"/>")
-        .append("<h1>")
-        .append(String.format(getString(R.string.about_title_fmt),
-                              "<a href=\"" + getString(R.string.app_webpage_url)) + "\">")
-        .append(appName)
-        .append("</a>")
-        .append("</h1><p>")
-        .append(appName)
-        .append(" ")
-        .append(String.format(getString(R.string.debug_version_fmt), getVersionNumber()))
-        .append("</p><p>")
-        .append(String.format(getString(R.string.app_authors_fmt),
-                              getString(R.string.app_authors)))
-        .append("</p><p>")
-        .append(String.format(getString(R.string.app_revision_fmt),
-                              "<a href=\"" + getString(R.string.app_revision_url) + "\">" +
-                              getString(R.string.app_revision_url) +
-                              "</a>"))
-        .append("</p><hr/><p>")
-        .append(String.format(getString(R.string.app_copyright_fmt), Integer.toString(year), Integer.toString(year)))
-        .append("</p><hr/><p>")
-        .append(getString(R.string.app_license))
-        .append("</p><hr/><p>");
-
-        StringBuilder libs = new StringBuilder().append("<ul>");
-        for (String[] library : USED_LIBRARIES) {
-            libs.append("<li><a href=\"").append(library[1]).append("\">").append(library[0]).append("</a></li>");
-        }
-        libs.append("</ul>");
-
-        html.append(String.format(getString(R.string.app_libraries), libs.toString()))
-        .append("</p>");
-
-
-        wv.loadDataWithBaseURL("file:///android_res/drawable/", html.toString(), "text/html", "utf-8", null);
-        new AlertDialog.Builder(this)
-        .setView(wv)
-        .setCancelable(true)
-        .setPositiveButton(R.string.okay_action, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface d, int c) {
-                d.dismiss();
-            }
-        })
-        .setNeutralButton(R.string.changelog_full_title, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface d, int c) {
-                new ChangeLog(Accounts.this).getFullLogDialog().show();
-            }
-        })
-        .show();
-    }
-
-    /**
-     * Get current version number.
-     *
-     * @return String version
-     */
-    private String getVersionNumber() {
-        String version = "?";
-        try {
-            PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
-            version = pi.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            //Log.e(TAG, "Package name not found", e);
-        }
-        return version;
     }
 
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
