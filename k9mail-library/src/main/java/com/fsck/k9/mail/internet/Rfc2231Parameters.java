@@ -109,7 +109,7 @@ public class Rfc2231Parameters {
             return source;
         }
 
-        if (source.startsWith("\\\"") && source.endsWith("\\\"")) {
+        if (source.startsWith("\"") && source.endsWith("\"")) {
             return source.substring(1, len - 1);
         } else {
             return source;
