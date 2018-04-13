@@ -524,7 +524,7 @@
         <incoming uri="imap+ssl+://imap.mail.ru" username="$email" />
         <outgoing uri="smtp+ssl+://smtp.mail.ru" username="$email" />
     </provider>
-    <!-- Yandex.ru variants -->
+    <!-- Yandex variants -->
     <provider id="comyanyandeximap" label="yandex.com" domain="yandex.com">
         <incoming uri="imap+ssl+://imap.yandex.com" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.yandex.com" username="$user" />
@@ -537,9 +537,17 @@
         <incoming uri="imap+ssl+://imap.ya.ru" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.ya.ru" username="$user" />
     </provider>
-    <provider id="ruyannarodimap" label="narod.ru" domain="narod.ru">
-        <incoming uri="imap+ssl+://imap.narod.ru" username="$user" />
-        <outgoing uri="smtp+ssl+://smtp.narod.ru" username="$user" />
+    <provider id="byyandeximap" label="yandex.by" domain="yandex.by">
+        <incoming uri="imap+ssl+://imap.yandex.by" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.yandex.by" username="$user" />
+    </provider>
+    <provider id="kzyandeximap" label="yandex.kz" domain="yandex.kz">
+        <incoming uri="imap+ssl+://imap.yandex.kz" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.yandex.kz" username="$user" />
+    </provider>
+    <provider id="uayandeximap" label="yandex.ua" domain="yandex.ua">
+        <incoming uri="imap+ssl+://imap.yandex.ua" username="$user" />
+        <outgoing uri="smtp+ssl+://smtp.yandex.ua" username="$user" />
     </provider>
     <!-- Rambler.ru variants -->
     <provider id="ruramramblerimap" label="rambler.ru" domain="rambler.ru">
