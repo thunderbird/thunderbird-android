@@ -49,6 +49,7 @@ import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog;
 import com.fsck.k9.ui.dialog.AutocryptPreferEncryptDialog.OnPreferEncryptChangedListener;
+import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpKeyPreference;
 import org.openintents.openpgp.util.OpenPgpProviderUtil;
@@ -64,6 +65,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final int DIALOG_AUTOCRYPT_PREFER_ENCRYPT = 3;
 
     private static final int ACTIVITY_MANAGE_IDENTITIES = 2;
+    private static final int ACTIVITY_CRYPTO_TRANSFER_KEY = 3;
 
     private static final String PREFERENCE_SCREEN_MAIN = "main";
     private static final String PREFERENCE_SCREEN_COMPOSING = "composing";
@@ -121,6 +123,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_CRYPTO_HIDE_SIGN_ONLY = "openpgp_hide_sign_only";
     private static final String PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT = "autocrypt_prefer_encrypt";
     private static final String PREFERENCE_CRYPTO_ENCRYPT_SUBJECT = "openpgp_encrypt_subject";
+    private static final String PREFERENCE_AUTOCRYPT_TRANSFER = "autocrypt_transfer";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
@@ -787,6 +790,16 @@ public class AccountSettings extends K9PreferenceActivity {
             });
         }
 
+        Preference autocryptTransfer = findPreference(PREFERENCE_AUTOCRYPT_TRANSFER);
+        autocryptTransfer.setEnabled(isPgpConfigured && isKeyConfigured);
+        autocryptTransfer.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                onClickAutocryptTransfer();
+                return true;
+            }
+        });
+
         pgpCryptoKey.setValue(account.getOpenPgpKey());
         pgpCryptoKey.setOpenPgpProvider(openPgpApiManager, pgpProvider);
         pgpCryptoKey.setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)));
@@ -814,6 +827,11 @@ public class AccountSettings extends K9PreferenceActivity {
 
         pgpEncryptSubject.setEnabled(isPgpConfigured && isKeyConfigured);
         pgpEncryptSubject.setChecked(account.getOpenPgpEncryptSubject());
+    }
+
+    private void onClickAutocryptTransfer() {
+        Intent intent = AutocryptKeyTransferActivity.Companion.createIntent(this, account.getUuid());
+        startActivity(intent);
     }
 
     private void removeListEntry(ListPreference listPreference, String remove) {
