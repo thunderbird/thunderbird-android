@@ -120,6 +120,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_CRYPTO_KEY = "openpgp_key";
     private static final String PREFERENCE_CRYPTO_HIDE_SIGN_ONLY = "openpgp_hide_sign_only";
     private static final String PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT = "autocrypt_prefer_encrypt";
+    private static final String PREFERENCE_CRYPTO_ENCRYPT_SUBJECT = "openpgp_encrypt_subject";
     private static final String PREFERENCE_CLOUD_SEARCH_ENABLED = "remote_search_enabled";
     private static final String PREFERENCE_REMOTE_SEARCH_NUM_RESULTS = "account_remote_search_num_results";
     private static final String PREFERENCE_REMOTE_SEARCH_FULL_TEXT = "account_remote_search_full_text";
@@ -187,6 +188,7 @@ public class AccountSettings extends K9PreferenceActivity {
     private OpenPgpKeyPreference pgpCryptoKey;
     private Preference autocryptPreferEncryptMutual;
     private SwitchPreference pgpHideSignOnly;
+    private SwitchPreference pgpEncryptSubject;
 
     private PreferenceScreen searchScreen;
     private CheckBoxPreference cloudSearchEnabled;
@@ -734,6 +736,7 @@ public class AccountSettings extends K9PreferenceActivity {
         pgpCryptoKey = (OpenPgpKeyPreference) findPreference(PREFERENCE_CRYPTO_KEY);
         autocryptPreferEncryptMutual = findPreference(PREFERENCE_AUTOCRYPT_PREFER_ENCRYPT);
         pgpHideSignOnly = (SwitchPreference) findPreference(PREFERENCE_CRYPTO_HIDE_SIGN_ONLY);
+        pgpEncryptSubject = (SwitchPreference) findPreference(PREFERENCE_CRYPTO_ENCRYPT_SUBJECT);
 
         String pgpProvider = account.getOpenPgpProvider();
         String pgpProviderName = null;
@@ -806,8 +809,10 @@ public class AccountSettings extends K9PreferenceActivity {
         });
 
         pgpHideSignOnly.setEnabled(isPgpConfigured && isKeyConfigured);
-        pgpHideSignOnly = (SwitchPreference) findPreference(PREFERENCE_CRYPTO_HIDE_SIGN_ONLY);
         pgpHideSignOnly.setChecked(account.getOpenPgpHideSignOnly());
+
+        pgpEncryptSubject.setEnabled(isPgpConfigured && isKeyConfigured);
+        pgpEncryptSubject.setChecked(account.getOpenPgpEncryptSubject());
     }
 
     private void removeListEntry(ListPreference listPreference, String remove) {
@@ -872,6 +877,7 @@ public class AccountSettings extends K9PreferenceActivity {
             account.setOpenPgpKey(pgpCryptoKey.getValue());
         }
         account.setOpenPgpHideSignOnly(pgpHideSignOnly.isChecked());
+        account.setOpenPgpEncryptSubject(pgpEncryptSubject.isChecked());
 
         account.setAutoExpandFolder(autoExpandFolder.getValue());
 

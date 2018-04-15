@@ -1304,4 +1304,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="dialog_openkeychain_info_text">K-9 Mail requires OpenKeychain for end-to-end encryption.</string>
 
     <string name="encrypted_subject">"Encrypted Message"</string>
+    <string name="account_settings_crypto_encrypt_subject">Encrypt message subjects</string>
+    <string name="account_settings_crypto_encrypt_subject_subtitle">May not be supported by some recipients</string>
 </resources>

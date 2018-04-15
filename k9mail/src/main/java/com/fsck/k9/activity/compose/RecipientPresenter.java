@@ -394,6 +394,7 @@ public class RecipientPresenter {
                 .setEnablePgpInline(cryptoEnablePgpInline)
                 .setPreferEncryptMutual(account.getAutocryptPreferEncryptMutual())
                 .setIsReplyToEncrypted(isReplyToEncryptedMessage)
+                .setEncryptSubject(account.getOpenPgpEncryptSubject())
                 .setRecipients(getAllRecipients())
                 .setOpenPgpKeyId(accountCryptoKey)
                 .build();

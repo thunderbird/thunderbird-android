@@ -227,6 +227,9 @@ public class AccountSettings {
         s.put("openPgpHideSignOnly", Settings.versions(
                 new V(50, new BooleanSetting(true))
         ));
+        s.put("openPgpEncryptSubject", Settings.versions(
+                new V(51, new BooleanSetting(true))
+        ));
         s.put("autocryptMutualMode", Settings.versions(
                 new V(50, new BooleanSetting(false))
         ));
