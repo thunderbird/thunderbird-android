@@ -264,4 +264,15 @@ public class HtmlSanitizerTest {
                 "<a href=\"rtsp://example.com/media.mp4\">RTSP</a>" +
                 "</body></html>", toCompactString(result));
     }
+
+    @Test
+    public void shouldKeepDirAttribute() {
+        String html = "<html><head></head><body>" +
+                "<table><tbody><tr><td dir=\"rtl\"></td></tr></tbody></table>" +
+                "</body></html>";
+
+        Document result = htmlSanitizer.sanitize(html);
+
+        assertEquals(html, toCompactString(result));
+    }
 }
