@@ -38,6 +38,7 @@ import static com.fsck.k9.message.TestMessageConstructionUtils.multipart;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.mock;
@@ -63,7 +64,8 @@ public class MessageCryptoHelperTest extends RobolectricTest {
         autocryptOperations = mock(AutocryptOperations.class);
 
         OpenPgpApiFactory openPgpApiFactory = mock(OpenPgpApiFactory.class);
-        when(openPgpApiFactory.createOpenPgpApi(any(Context.class), any(IOpenPgpService2.class))).thenReturn(openPgpApi);
+        when(openPgpApiFactory.createOpenPgpApi(any(Context.class), nullable(IOpenPgpService2.class)))
+                .thenReturn(openPgpApi);
 
         messageCryptoHelper = new MessageCryptoHelper(RuntimeEnvironment.application, openPgpApiFactory,
                 autocryptOperations, "org.example.dummy");

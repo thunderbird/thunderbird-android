@@ -43,6 +43,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Matchers;
@@ -55,6 +56,9 @@ import org.robolectric.shadows.ShadowLog;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anySet;
@@ -374,7 +378,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.searchLocalMessagesSynchronous(search, listener);
 
-        verify(localStore).searchForMessages(any(MessageRetrievalListener.class), eq(search));
+        verify(localStore).searchForMessages(nullable(MessageRetrievalListener.class), eq(search));
     }
 
     @Test
@@ -384,7 +388,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         LocalMessage localMessage = mock(LocalMessage.class);
         when(localMessage.getFolder()).thenReturn(localFolder);
         when(search.getAccountUuids()).thenReturn(new String[]{"allAccounts"});
-        when(localStore.searchForMessages(any(MessageRetrievalListener.class), eq(search)))
+        when(localStore.searchForMessages(nullable(MessageRetrievalListener.class), eq(search)))
                 .thenThrow(new MessagingException("Test"));
 
         controller.searchLocalMessagesSynchronous(search, listener);
@@ -410,7 +414,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(remoteNewMessage2.getUid()).thenReturn("newMessageUid2");
         when(localNewMessage2.getUid()).thenReturn("newMessageUid2");
         when(remoteFolder.search(anyString(), anySet(), anySet())).thenReturn(remoteMessages);
-        when(localFolder.extractNewMessages(Matchers.<List<Message>>any())).thenReturn(newRemoteMessages);
+        when(localFolder.extractNewMessages(ArgumentMatchers.<Message>anyList())).thenReturn(newRemoteMessages);
         when(localFolder.getMessage("newMessageUid1")).thenReturn(localNewMessage1);
         when(localFolder.getMessage("newMessageUid2")).thenAnswer(
             new Answer<LocalMessage>() {
@@ -431,9 +435,9 @@ public class MessagingControllerTest extends K9RobolectricTest {
                  return null;
              }
         }).when(remoteFolder).fetch(
-            Matchers.<List<Message>>eq(Collections.singletonList(remoteNewMessage2)),
+            eq(Collections.singletonList(remoteNewMessage2)),
             any(FetchProfile.class),
-            Matchers.<MessageRetrievalListener>eq(null));
+            isNull(MessageRetrievalListener.class));
         reqFlags = Collections.singleton(Flag.ANSWERED);
         forbiddenFlags = Collections.singleton(Flag.DELETED);
 
@@ -715,7 +719,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         LocalMessage localCopyOfRemoteDeletedMessage = mock(LocalMessage.class);
         when(account.syncRemoteDeletions()).thenReturn(true);
         when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
-        when(localFolder.getMessagesByUids(any(List.class)))
+        when(localFolder.getMessagesByUids(ArgumentMatchers.<String>anyList()))
                 .thenReturn(Collections.singletonList(localCopyOfRemoteDeletedMessage));
 
         controller.synchronizeMailboxSynchronousLegacy(account, FOLDER_NAME, listener);
@@ -751,7 +755,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(account.getEarliestPollDate()).thenReturn(dateOfEarliestPoll);
         when(localMessage.olderThan(dateOfEarliestPoll)).thenReturn(true);
         when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
-        when(localFolder.getMessagesByUids(any(List.class))).thenReturn(Collections.singletonList(localMessage));
+        when(localFolder.getMessagesByUids(ArgumentMatchers.<String>anyList()))
+                .thenReturn(Collections.singletonList(localMessage));
 
         controller.synchronizeMailboxSynchronousLegacy(account, FOLDER_NAME, listener);
 
@@ -782,8 +787,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.synchronizeMailboxSynchronousLegacy(account, FOLDER_NAME, listener);
 
-        verify(remoteFolder, atLeastOnce()).fetch(any(List.class), fetchProfileCaptor.capture(),
-                any(MessageRetrievalListener.class));
+        verify(remoteFolder, atLeastOnce()).fetch(anyList(), fetchProfileCaptor.capture(),
+                nullable(MessageRetrievalListener.class));
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.FLAGS));
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.ENVELOPE));
         assertEquals(2, fetchProfileCaptor.getAllValues().get(0).size());
@@ -799,8 +804,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.synchronizeMailboxSynchronousLegacy(account, FOLDER_NAME, listener);
 
-        verify(remoteFolder, atLeastOnce()).fetch(any(List.class), fetchProfileCaptor.capture(),
-                any(MessageRetrievalListener.class));
+        verify(remoteFolder, atLeastOnce()).fetch(anyList(), fetchProfileCaptor.capture(),
+                nullable(MessageRetrievalListener.class));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(0).size());
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.ENVELOPE));
     }
@@ -817,8 +822,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.synchronizeMailboxSynchronousLegacy(account, FOLDER_NAME, listener);
 
-        verify(remoteFolder, atLeast(2)).fetch(any(List.class), fetchProfileCaptor.capture(),
-                any(MessageRetrievalListener.class));
+        verify(remoteFolder, atLeast(2)).fetch(anyList(), fetchProfileCaptor.capture(),
+                nullable(MessageRetrievalListener.class));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(1).size());
         assertTrue(fetchProfileCaptor.getAllValues().get(1).contains(FetchProfile.Item.BODY));
     }
@@ -836,8 +841,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
         controller.synchronizeMailboxSynchronousLegacy(account, FOLDER_NAME, listener);
 
         //TODO: Don't bother fetching messages of a size we don't have
-        verify(remoteFolder, atLeast(4)).fetch(any(List.class), fetchProfileCaptor.capture(),
-                any(MessageRetrievalListener.class));
+        verify(remoteFolder, atLeast(4)).fetch(anyList(), fetchProfileCaptor.capture(),
+                nullable(MessageRetrievalListener.class));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(2).size());
         assertEquals(FetchProfile.Item.STRUCTURE, fetchProfileCaptor.getAllValues().get(2).get(0));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(3).size());
@@ -887,19 +892,19 @@ public class MessagingControllerTest extends K9RobolectricTest {
                 }
                 return null;
             }
-        }).when(remoteFolder).fetch(any(List.class), any(FetchProfile.class), any(MessageRetrievalListener.class));
+        }).when(remoteFolder).fetch(anyList(), any(FetchProfile.class), nullable(MessageRetrievalListener.class));
     }
 
     private Message buildSmallNewMessage() {
         Message message = mock(Message.class);
-        when(message.olderThan(any(Date.class))).thenReturn(false);
+        when(message.olderThan(nullable(Date.class))).thenReturn(false);
         when(message.getSize()).thenReturn((long) MAXIMUM_SMALL_MESSAGE_SIZE);
         return message;
     }
 
     private Message buildLargeNewMessage() {
         Message message = mock(Message.class);
-        when(message.olderThan(any(Date.class))).thenReturn(false);
+        when(message.olderThan(nullable(Date.class))).thenReturn(false);
         when(message.getSize()).thenReturn((long) (MAXIMUM_SMALL_MESSAGE_SIZE + 1));
         return message;
     }
@@ -915,8 +920,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         when(remoteMessage.getUid()).thenReturn(messageUid);
         when(localMessage.getUid()).thenReturn(messageUid);
-        when(remoteFolder.getMessages(anyInt(), anyInt(), any(Date.class), any(MessageRetrievalListener.class)))
-                .thenReturn(Collections.singletonList(remoteMessage));
+        when(remoteFolder.getMessages(anyInt(), anyInt(), nullable(Date.class),
+                nullable(MessageRetrievalListener.class))).thenReturn(Collections.singletonList(remoteMessage));
         return localMessage;
     }
 
@@ -924,8 +929,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
         String messageUid = "UID";
         Message remoteMessage = mock(Message.class);
         when(remoteMessage.getUid()).thenReturn(messageUid);
-        when(remoteFolder.getMessages(anyInt(), anyInt(), any(Date.class), any(MessageRetrievalListener.class)))
-                .thenReturn(Collections.singletonList(remoteMessage));
+        when(remoteFolder.getMessages(anyInt(), anyInt(), nullable(Date.class),
+                nullable(MessageRetrievalListener.class))).thenReturn(Collections.singletonList(remoteMessage));
     }
 
     private void configureAccount() throws MessagingException {

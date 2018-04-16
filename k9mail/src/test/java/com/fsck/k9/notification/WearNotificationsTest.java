@@ -306,7 +306,7 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
 
-    static class ActionMatcher extends ArgumentMatcher<WearableExtender> {
+    static class ActionMatcher implements ArgumentMatcher<WearableExtender> {
         private int icon;
         private String title;
         private PendingIntent pendingIntent;
@@ -318,13 +318,8 @@ public class WearNotificationsTest extends RobolectricTest {
         }
 
         @Override
-        public boolean matches(Object argument) {
-            if (!(argument instanceof WearableExtender)) {
-                return false;
-            }
-
-            WearableExtender wearableExtender = (WearableExtender) argument;
-            for (Action action : wearableExtender.getActions()) {
+        public boolean matches(WearableExtender argument) {
+            for (Action action : argument.getActions()) {
                 if (action.icon == icon && action.title.equals(title) && action.actionIntent == pendingIntent) {
                     return true;
                 }
@@ -334,7 +329,7 @@ public class WearNotificationsTest extends RobolectricTest {
         }
     }
 
-    static class NumberOfActionsMatcher extends ArgumentMatcher<WearableExtender> {
+    static class NumberOfActionsMatcher implements ArgumentMatcher<WearableExtender> {
         private final int expectedNumberOfActions;
 
         public NumberOfActionsMatcher(int expectedNumberOfActions) {
@@ -342,13 +337,8 @@ public class WearNotificationsTest extends RobolectricTest {
         }
 
         @Override
-        public boolean matches(Object argument) {
-            if (!(argument instanceof WearableExtender)) {
-                return false;
-            }
-
-            WearableExtender wearableExtender = (WearableExtender) argument;
-            return wearableExtender.getActions().size() == expectedNumberOfActions;
+        public boolean matches(WearableExtender argument) {
+            return argument.getActions().size() == expectedNumberOfActions;
         }
     }
 

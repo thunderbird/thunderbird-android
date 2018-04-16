@@ -16,8 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,6 +28,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
     private static final String ACCOUNT_NAME = "TestAccount";
 
 
+    private Notification notification;
     private NotificationManagerCompat notificationManager;
     private NotificationCompat.Builder builder;
     private NotificationController controller;
@@ -40,8 +39,9 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
+        notification = createFakeNotification();
         notificationManager = createFakeNotificationManager();
-        builder = createFakeNotificationBuilder();
+        builder = createFakeNotificationBuilder(notification);
         controller = createFakeNotificationController(notificationManager, builder);
         account = createFakeAccount();
         contentIntent = createFakeContentIntent();
@@ -55,7 +55,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
 
         authenticationErrorNotifications.showAuthenticationErrorNotification(account, INCOMING);
 
-        verify(notificationManager).notify(eq(notificationId), any(Notification.class));
+        verify(notificationManager).notify(notificationId, notification);
         assertAuthenticationErrorNotificationContents();
     }
 
@@ -74,7 +74,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
 
         authenticationErrorNotifications.showAuthenticationErrorNotification(account, OUTGOING);
 
-        verify(notificationManager).notify(eq(notificationId), any(Notification.class));
+        verify(notificationManager).notify(notificationId, notification);
         assertAuthenticationErrorNotificationContents();
     }
 
@@ -96,12 +96,18 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
         verify(builder).setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
     }
 
+    private Notification createFakeNotification() {
+        return mock(Notification.class);
+    }
+
     private NotificationManagerCompat createFakeNotificationManager() {
         return mock(NotificationManagerCompat.class);
     }
 
-    private Builder createFakeNotificationBuilder() {
-        return MockHelper.mockBuilder(NotificationCompat.Builder.class);
+    private Builder createFakeNotificationBuilder(Notification notification) {
+        Builder builder = MockHelper.mockBuilder(Builder.class);
+        when(builder.build()).thenReturn(notification);
+        return builder;
     }
 
     private NotificationController createFakeNotificationController(NotificationManagerCompat notificationManager,
