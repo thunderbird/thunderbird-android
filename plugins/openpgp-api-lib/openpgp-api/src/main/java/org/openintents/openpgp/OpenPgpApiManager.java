@@ -13,6 +13,7 @@ import android.text.TextUtils;
 
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
+import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 import timber.log.Timber;
@@ -207,6 +208,12 @@ public class OpenPgpApiManager implements LifecycleObserver {
             Timber.e("Obtained OpenPgpApi object, but service is not bound! Inconsistent state?");
         }
         return openPgpApi;
+    }
+
+    public String getReadableOpenPgpProviderName() {
+        String openPgpProviderName =
+                OpenPgpProviderUtil.getOpenPgpProviderName(context.getPackageManager(), openPgpProvider);
+        return openPgpProviderName != null ? openPgpProviderName : openPgpProvider;
     }
 
     public OpenPgpProviderState getOpenPgpProviderState() {

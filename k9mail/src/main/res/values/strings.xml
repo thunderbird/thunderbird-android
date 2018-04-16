@@ -1308,4 +1308,28 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="encrypted_subject">"Encrypted Message"</string>
     <string name="account_settings_crypto_encrypt_subject">Encrypt message subjects</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">May not be supported by some recipients</string>
+
+    <string name="toast_account_not_found">Internal error: Invalid account!</string>
+    <string name="toast_openpgp_provider_error">Error connecting to %s!</string>
+
+    <string name="ac_transfer_setting_title">Send Autocrypt Setup Message</string>
+    <string name="ac_transfer_setting_summary">Securely share end-to-end setup with other devices</string>
+
+    <string name="ac_transfer_title">Autocrypt Setup Message</string>
+    <string name="ac_transfer_intro">An Autocrypt Setup Message securely shares your end-to-end setup with other devices.</string>
+    <string name="ac_transfer_button_send">Send Setup Message</string>
+    <string name="ac_transfer_will_be_sent">The message will be sent to your address:</string>
+    <string name="ac_transfer_generating">Generating setup message…</string>
+    <string name="ac_transfer_sending_to">Sending message to:</string>
+    <string name="ac_transfer_finish">To finish, open the message on your other device and enter the setup code.</string>
+    <string name="ac_transfer_show_code">Show Setup Code</string>
+
+    <string name="ac_transfer_msg_subject">Autocrypt Setup Message</string>
+    <string name="ac_transfer_msg_body">This message contains all information to transfer your Autocrypt settings along with your secret key securely from your original device.
+
+To set up your new device for Autocrypt, please follow the instuctions that should be presented by your new device.
+
+You can keep this message and use it as a backup for your secret key. If you want to do this, you should write down the password and store it securely.
+</string>
+
 </resources>

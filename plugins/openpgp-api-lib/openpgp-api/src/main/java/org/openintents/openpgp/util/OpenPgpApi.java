@@ -275,6 +275,9 @@ public class OpenPgpApi {
     public static final String EXTRA_MINIMIZE_USER_ID = "minimize_user_id";
     public static final String RESULT_KEY_IDS = "key_ids";
 
+    // AUTOCRYPT_KEY_TRANSFER
+    public static final String ACTION_AUTOCRYPT_KEY_TRANSFER = "autocrypt_key_transfer";
+
     // BACKUP
     public static final String EXTRA_BACKUP_SECRET = "backup_secret";
 
