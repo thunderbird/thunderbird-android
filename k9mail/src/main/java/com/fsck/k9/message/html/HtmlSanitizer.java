@@ -28,7 +28,7 @@ public class HtmlSanitizer {
                 .addAttributes("area", "shape", "coords", "href", "alt")
                 .addProtocols("area", "href", "http", "https")
                 .addAttributes("img", "usemap")
-                .addAttributes(":all", "class", "style", "id")
+                .addAttributes(":all", "class", "style", "id", "dir")
                 .addProtocols("img", "src", "http", "https", "cid", "data")
                 .addProtocols("a", "href", "tel", "sip", "bitcoin", "ethereum", "rtsp");
 
