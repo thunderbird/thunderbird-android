@@ -52,6 +52,7 @@ class AutocryptKeyTransferActivity : K9Activity() {
         transfer_layout_generating.visibility = View.GONE
         transfer_layout_sending.visibility = View.GONE
         transfer_layout_finish.visibility = View.GONE
+        transfer_error_send.visibility = View.GONE
         transfer_show_code_button.visibility = View.GONE
     }
 
@@ -63,6 +64,19 @@ class AutocryptKeyTransferActivity : K9Activity() {
         transfer_layout_generating.visibility = View.VISIBLE
         transfer_layout_sending.visibility = View.VISIBLE
         transfer_layout_finish.visibility = View.GONE
+        transfer_error_send.visibility = View.GONE
+        transfer_show_code_button.visibility = View.GONE
+    }
+
+    fun sceneSendError() {
+        setupSceneTransition()
+
+        transfer_send_button.visibility = View.GONE
+        transfer_msg_info.visibility = View.GONE
+        transfer_layout_generating.visibility = View.VISIBLE
+        transfer_layout_sending.visibility = View.VISIBLE
+        transfer_layout_finish.visibility = View.GONE
+        transfer_error_send.visibility = View.VISIBLE
         transfer_show_code_button.visibility = View.GONE
     }
 
@@ -74,6 +88,7 @@ class AutocryptKeyTransferActivity : K9Activity() {
         transfer_layout_generating.visibility = View.VISIBLE
         transfer_layout_sending.visibility = View.VISIBLE
         transfer_layout_finish.visibility = View.VISIBLE
+        transfer_error_send.visibility = View.GONE
         transfer_show_code_button.visibility = View.VISIBLE
     }
 

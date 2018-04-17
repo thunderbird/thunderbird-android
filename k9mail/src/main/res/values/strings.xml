@@ -1331,5 +1331,6 @@ To set up your new device for Autocrypt, please follow the instuctions that shou
 
 You can keep this message and use it as a backup for your secret key. If you want to do this, you should write down the password and store it securely.
 </string>
+    <string name="ac_transfer_error_send">An error occurred while sending the message. Please check your network connectivity and outgoing server configuration.</string>
 
 </resources>

@@ -143,6 +143,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ac_transfer_error_send"
+        android:id="@+id/transfer_error_send"
+        tools:visibility="gone"
+        style="?android:textAppearanceMedium"
+        />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
