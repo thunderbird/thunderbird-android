@@ -133,7 +133,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         try {
             boolean shouldSign = cryptoStatus.isSigningEnabled() && !isDraft();
             boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled();
-            boolean isPgpInlineMode = cryptoStatus.isPgpInlineModeEnabled();
+            boolean isPgpInlineMode = cryptoStatus.isPgpInlineModeEnabled() && !isDraft();
 
             if (!shouldSign && !shouldEncrypt) {
                 queueMessageBuildSuccess(currentProcessedMimeMessage);
@@ -351,7 +351,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             return;
         }
 
-        if (cryptoStatus.isPgpInlineModeEnabled()) {
+        if (!isDraft() && cryptoStatus.isPgpInlineModeEnabled()) {
             mimeBuildInlineMessage(pgpResultTempBody);
             return;
         }
