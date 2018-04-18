@@ -107,7 +107,8 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         recipientPresenter.initFromReplyToMessage(message, false);
         runBackgroundTask();
 
-        verify(recipientMvpView).addRecipients(eq(RecipientType.TO), any(Recipient[].class));
+        Recipient toRecipient = new Recipient(TO_ADDRESSES.to[0]);
+        verify(recipientMvpView).addRecipients(eq(RecipientType.TO), eq(toRecipient));
     }
 
     @Test

@@ -40,6 +40,7 @@ import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
@@ -90,6 +91,8 @@ public class WebDavFolderTest {
         when(mockStore.getUrl()).thenReturn(storeUrl);
         when(mockStore.getHttpClient()).thenReturn(mockHttpClient);
         when(mockStore.getStoreConfig()).thenReturn(mockStoreConfig);
+        when(mockStore.getMessageEnvelopeXml(any(String[].class))).thenReturn("mockEnvelopeXml");
+        when(mockStore.getMessageFlagsXml(any(String[].class))).thenReturn("mockFlagsXml");
         folder = new WebDavFolder(mockStore, folderName);
 
         setupTempDirectory();
@@ -127,6 +130,10 @@ public class WebDavFolderTest {
         return webDavMessage;
     }
 
+    private WebDavMessage createWebDavMessage(int uid) {
+        return createWebDavMessage(String.valueOf(uid));
+    }
+
     private void setupGetUrlsRequestResponse(String uid, String url) throws MessagingException {
         String getUrlsXml = "<xml>GetUrls</xml>";
         when(mockStore.getMessageUrlsXml(new String[]{uid})).thenReturn(getUrlsXml);
@@ -146,7 +153,7 @@ public class WebDavFolderTest {
 
         List<WebDavMessage> messages = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            WebDavMessage mockMessage = mock(WebDavMessage.class);
+            WebDavMessage mockMessage = createWebDavMessage(i);
             messages.add(mockMessage);
         }
 
@@ -163,7 +170,7 @@ public class WebDavFolderTest {
 
         List<WebDavMessage> messages = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
-            WebDavMessage mockMessage = mock(WebDavMessage.class);
+            WebDavMessage mockMessage = createWebDavMessage(i);
             messages.add(mockMessage);
         }
         FetchProfile profile = new FetchProfile();
@@ -179,7 +186,7 @@ public class WebDavFolderTest {
 
         List<WebDavMessage> messages = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            WebDavMessage mockMessage = mock(WebDavMessage.class);
+            WebDavMessage mockMessage = createWebDavMessage(i);
             messages.add(mockMessage);
         }
         FetchProfile profile = new FetchProfile();
@@ -195,7 +202,7 @@ public class WebDavFolderTest {
 
         List<WebDavMessage> messages = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
-            WebDavMessage mockMessage = mock(WebDavMessage.class);
+            WebDavMessage mockMessage = createWebDavMessage(i);
             messages.add(mockMessage);
         }
 
@@ -210,7 +217,7 @@ public class WebDavFolderTest {
         setupStoreForMessageFetching();
         List<WebDavMessage> messages = setup25MessagesToFetch();
 
-        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), any(HttpContext.class))).thenAnswer(
+        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), nullable(HttpContext.class))).thenAnswer(
                 new Answer<HttpResponse>() {
                     @Override
                     public HttpResponse answer(InvocationOnMock invocation) throws Throwable {
@@ -242,7 +249,7 @@ public class WebDavFolderTest {
                 anyMapOf(String.class, String.class)))
                 .thenReturn(mockDataSet);
         List<WebDavMessage> messages = setup25MessagesToFetch();
-        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), any(HttpContext.class))).thenAnswer(
+        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), nullable(HttpContext.class))).thenAnswer(
                 new Answer<HttpResponse>() {
                     @Override
                     public HttpResponse answer(InvocationOnMock invocation) throws Throwable {
@@ -290,7 +297,7 @@ public class WebDavFolderTest {
         setupStoreForMessageFetching();
         List<WebDavMessage> messages = setup25MessagesToFetch();
 
-        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), any(HttpContext.class))).thenAnswer(
+        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), nullable(HttpContext.class))).thenAnswer(
                 new Answer<HttpResponse>() {
                     @Override
                     public HttpResponse answer(InvocationOnMock invocation) throws Throwable {
@@ -314,7 +321,7 @@ public class WebDavFolderTest {
         setupStoreForMessageFetching();
         List<WebDavMessage> messages = setup25MessagesToFetch();
 
-        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), any(HttpContext.class))).thenAnswer(
+        when(mockHttpClient.executeOverride(any(HttpUriRequest.class), nullable(HttpContext.class))).thenAnswer(
                 new Answer<HttpResponse>() {
                     @Override
                     public HttpResponse answer(InvocationOnMock invocation) throws Throwable {

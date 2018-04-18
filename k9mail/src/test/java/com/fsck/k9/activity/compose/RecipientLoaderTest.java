@@ -21,6 +21,7 @@ import org.robolectric.RuntimeEnvironment;
 import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.AdditionalMatchers.aryEq;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
@@ -158,9 +159,9 @@ public class RecipientLoaderTest extends RobolectricTest {
 
         when(contentResolver
                 .query(eq(Uri.parse("content://" + CRYPTO_PROVIDER + ".provider.exported/autocrypt_status")),
-                        aryEq(PROJECTION_CRYPTO_ADDRESSES), any(String.class),
+                        aryEq(PROJECTION_CRYPTO_ADDRESSES), nullable(String.class),
                         aryEq(new String[] { queriedAddress }),
-                        any(String.class))).thenReturn(cursor);
+                        nullable(String.class))).thenReturn(cursor);
     }
 
     private void setupCryptoProviderStatus(Address address, String uidStatus, String autocryptStatus) {
@@ -169,9 +170,9 @@ public class RecipientLoaderTest extends RobolectricTest {
 
         when(contentResolver
                 .query(eq(Uri.parse("content://" + CRYPTO_PROVIDER + ".provider.exported/autocrypt_status")),
-                        aryEq(PROJECTION_CRYPTO_STATUS), any(String.class),
+                        aryEq(PROJECTION_CRYPTO_STATUS), nullable(String.class),
                         aryEq(new String[] { address.getAddress() }),
-                        any(String.class))).thenReturn(cursorCryptoStatus);
+                        nullable(String.class))).thenReturn(cursorCryptoStatus);
     }
 
     private void setupContactProvider(String queriedAddress, String[]... contacts) {
@@ -182,9 +183,9 @@ public class RecipientLoaderTest extends RobolectricTest {
         when(contentResolver
                 .query(eq(Email.CONTENT_URI),
                         aryEq(PROJECTION),
-                        any(String.class),
+                        nullable(String.class),
                         aryEq(new String[] { queriedAddress, queriedAddress }),
-                        any(String.class))).thenReturn(cursor);
+                        nullable(String.class))).thenReturn(cursor);
     }
 
     private void setupNicknameContactProvider(String[]... contactsWithNickname) {
@@ -195,9 +196,9 @@ public class RecipientLoaderTest extends RobolectricTest {
         when(contentResolver
                 .query(eq(ContactsContract.Data.CONTENT_URI),
                         aryEq(PROJECTION_NICKNAME),
-                        any(String.class),
-                        any(String[].class),
-                        any(String.class))).thenReturn(cursor);
+                        nullable(String.class),
+                        nullable(String[].class),
+                        nullable(String.class))).thenReturn(cursor);
     }
 
     private void setupContactProviderForId(String id, String[]... contacts) {
@@ -208,9 +209,9 @@ public class RecipientLoaderTest extends RobolectricTest {
         when(contentResolver
                 .query(eq(Email.CONTENT_URI),
                         aryEq(PROJECTION),
-                        any(String.class),
+                        nullable(String.class),
                         aryEq(new String[] { id }),
-                        any(String.class))).thenReturn(cursor);
+                        nullable(String.class))).thenReturn(cursor);
     }
 
     @Test
@@ -300,7 +301,7 @@ public class RecipientLoaderTest extends RobolectricTest {
                         aryEq(PROJECTION),
                         isNull(String.class),
                         isNull(String[].class),
-                        any(String.class))).thenReturn(cursor);
+                        nullable(String.class))).thenReturn(cursor);
 
     }
 }

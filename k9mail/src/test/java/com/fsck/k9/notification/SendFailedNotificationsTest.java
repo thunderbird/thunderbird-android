@@ -17,7 +17,6 @@ import org.robolectric.RuntimeEnvironment;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,6 +27,7 @@ public class SendFailedNotificationsTest extends RobolectricTest {
     private static final String ACCOUNT_NAME = "TestAccount";
 
 
+    private Notification notification;
     private NotificationManagerCompat notificationManager;
     private Builder builder;
     private Account account;
@@ -38,8 +38,9 @@ public class SendFailedNotificationsTest extends RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
+        notification = createFakeNotification();
         notificationManager = createFakeNotificationManager();
-        builder = createFakeNotificationBuilder();
+        builder = createFakeNotificationBuilder(notification);
         NotificationController controller = createFakeNotificationController(notificationManager, builder);
         account = createFakeAccount();
         contentIntent = createFakeContentIntent();
@@ -55,7 +56,7 @@ public class SendFailedNotificationsTest extends RobolectricTest {
 
         sendFailedNotifications.showSendFailedNotification(account, exception);
 
-        verify(notificationManager).notify(eq(notificationId), any(Notification.class));
+        verify(notificationManager).notify(notificationId, notification);
         verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
         verify(builder).setTicker("Failed to send some messages");
         verify(builder).setContentTitle("Failed to send some messages");
@@ -71,12 +72,18 @@ public class SendFailedNotificationsTest extends RobolectricTest {
         verify(notificationManager).cancel(notificationId);
     }
 
+    private Notification createFakeNotification() {
+        return mock(Notification.class);
+    }
+
     private NotificationManagerCompat createFakeNotificationManager() {
         return mock(NotificationManagerCompat.class);
     }
 
-    private Builder createFakeNotificationBuilder() {
-        return MockHelper.mockBuilder(Builder.class);
+    private Builder createFakeNotificationBuilder(Notification notification) {
+        Builder builder = MockHelper.mockBuilder(Builder.class);
+        when(builder.build()).thenReturn(notification);
+        return builder;
     }
 
     private NotificationController createFakeNotificationController(NotificationManagerCompat notificationManager,

@@ -53,6 +53,7 @@ import org.robolectric.RuntimeEnvironment;
 import static com.fsck.k9.autocrypt.AutocryptOperationsHelper.assertMessageHasAutocryptHeader;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
@@ -164,7 +165,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
-        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class)))
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), nullable(OutputStream.class)))
                 .thenReturn(returnIntent);
 
         Callback mockCallback = mock(Callback.class);
@@ -184,8 +185,8 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
         Intent returnIntent = new Intent();
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
         returnIntent.putExtra(OpenPgpApi.RESULT_DETACHED_SIGNATURE, new byte[] { 1, 2, 3 });
-        when(openPgpApi.executeApi(capturedApiIntent.capture(), any(OpenPgpDataSource.class), any(OutputStream.class)))
-                .thenReturn(returnIntent);
+        when(openPgpApi.executeApi(capturedApiIntent.capture(), any(OpenPgpDataSource.class),
+                nullable(OutputStream.class))).thenReturn(returnIntent);
 
         Callback mockCallback = mock(Callback.class);
         pgpMessageBuilder.buildAsync(mockCallback);
@@ -236,7 +237,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
         when(returnIntent.getParcelableExtra(eq(OpenPgpApi.RESULT_INTENT)))
                 .thenReturn(mockPendingIntent);
 
-        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class)))
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), nullable(OutputStream.class)))
                 .thenReturn(returnIntent);
 
         Callback mockCallback = mock(Callback.class);
@@ -264,7 +265,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
             when(returnIntent.getParcelableExtra(eq(OpenPgpApi.RESULT_INTENT)))
                     .thenReturn(mockPendingIntent);
 
-            when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class)))
+            when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), nullable(OutputStream.class)))
                     .thenReturn(returnIntent);
 
             Callback mockCallback = mock(Callback.class);
@@ -285,12 +286,13 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
             returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
 
             Intent mockReturnIntent = mock(Intent.class);
-            when(openPgpApi.executeApi(same(mockReturnIntent), any(OpenPgpDataSource.class), any(OutputStream.class)))
-                    .thenReturn(returnIntent);
+            when(openPgpApi.executeApi(same(mockReturnIntent), any(OpenPgpDataSource.class),
+                    nullable(OutputStream.class))).thenReturn(returnIntent);
 
             Callback mockCallback = mock(Callback.class);
             pgpMessageBuilder.onActivityResult(returnedRequestCode, Activity.RESULT_OK, mockReturnIntent, mockCallback);
-            verify(openPgpApi).executeApi(same(mockReturnIntent), any(OpenPgpDataSource.class), any(OutputStream.class));
+            verify(openPgpApi).executeApi(same(mockReturnIntent), any(OpenPgpDataSource.class),
+                    nullable(OutputStream.class));
             verify(returnIntent).getIntExtra(eq(OpenPgpApi.RESULT_CODE), anyInt());
         }
     }
@@ -304,7 +306,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
 
         Intent returnIntent = spy(new Intent());
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
-        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class)))
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), nullable(OutputStream.class)))
                 .thenReturn(returnIntent);
 
         Callback mockCallback = mock(Callback.class);
@@ -326,7 +328,8 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
-        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class))).thenReturn(returnIntent);
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), nullable(OutputStream.class)))
+                .thenReturn(returnIntent);
         pgpMessageBuilder.buildAsync(mock(Callback.class));
 
         verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("alice@example.org"));
@@ -347,7 +350,8 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
-        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class))).thenReturn(returnIntent);
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), nullable(OutputStream.class)))
+                .thenReturn(returnIntent);
         pgpMessageBuilder.buildAsync(mock(Callback.class));
 
         verify(autocryptOpenPgpApiInteractor).getKeyMaterialForUserId(same(openPgpApi), eq("alice@example.org"));
@@ -367,7 +371,8 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
-        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class))).thenReturn(returnIntent);
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), nullable(OutputStream.class)))
+                .thenReturn(returnIntent);
         pgpMessageBuilder.buildAsync(mock(Callback.class));
 
         verify(autocryptOpenPgpApiInteractor).getKeyMaterialForKeyId(any(OpenPgpApi.class), any(Long.class), any(String.class));
@@ -387,8 +392,8 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
         Intent returnIntent = new Intent();
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
 
-        when(openPgpApi.executeApi(capturedApiIntent.capture(),
-                any(OpenPgpDataSource.class), any(OutputStream.class))).thenReturn(returnIntent);
+        when(openPgpApi.executeApi(capturedApiIntent.capture(), any(OpenPgpDataSource.class),
+                nullable(OutputStream.class))).thenReturn(returnIntent);
 
         Callback mockCallback = mock(Callback.class);
         pgpMessageBuilder.buildAsync(mockCallback);
@@ -441,8 +446,8 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
         Intent returnIntent = new Intent();
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
 
-        when(openPgpApi.executeApi(capturedApiIntent.capture(), any(OpenPgpDataSource.class), any(OutputStream.class)))
-                .thenReturn(returnIntent);
+        when(openPgpApi.executeApi(capturedApiIntent.capture(), any(OpenPgpDataSource.class),
+                nullable(OutputStream.class))).thenReturn(returnIntent);
 
         Callback mockCallback = mock(Callback.class);
         pgpMessageBuilder.buildAsync(mockCallback);
@@ -480,8 +485,8 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
         Intent returnIntent = new Intent();
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS);
 
-        when(openPgpApi.executeApi(capturedApiIntent.capture(), any(OpenPgpDataSource.class), any(OutputStream.class)))
-                .thenReturn(returnIntent);
+        when(openPgpApi.executeApi(capturedApiIntent.capture(), any(OpenPgpDataSource.class),
+                nullable(OutputStream.class))).thenReturn(returnIntent);
 
         Callback mockCallback = mock(Callback.class);
         pgpMessageBuilder.buildAsync(mockCallback);
@@ -550,7 +555,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
                 new OpenPgpError(OpenPgpError.OPPORTUNISTIC_MISSING_KEYS, "Missing keys"));
 
 
-        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class)))
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), nullable(OutputStream.class)))
                 .thenReturn(returnIntent);
 
         Callback mockCallback = mock(Callback.class);
@@ -577,7 +582,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
         // no OpenPgpApi.EXTRA_DETACHED_SIGNATURE!
 
 
-        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), any(OutputStream.class)))
+        when(openPgpApi.executeApi(any(Intent.class), any(OpenPgpDataSource.class), nullable(OutputStream.class)))
                 .thenReturn(returnIntentSigned);
         Callback mockCallback = mock(Callback.class);
         pgpMessageBuilder.buildAsync(mockCallback);

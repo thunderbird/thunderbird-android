@@ -38,6 +38,7 @@ import org.robolectric.shadows.ShadowLog;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeast;
@@ -253,7 +254,7 @@ public class ImapSyncTest extends RobolectricTest {
         imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
 
         verify(remoteFolder, atLeastOnce()).fetch(any(List.class), fetchProfileCaptor.capture(),
-                any(MessageRetrievalListener.class));
+                nullable(MessageRetrievalListener.class));
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.FLAGS));
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.ENVELOPE));
         assertEquals(2, fetchProfileCaptor.getAllValues().get(0).size());
@@ -270,7 +271,7 @@ public class ImapSyncTest extends RobolectricTest {
         imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
 
         verify(remoteFolder, atLeast(2)).fetch(any(List.class), fetchProfileCaptor.capture(),
-                any(MessageRetrievalListener.class));
+                nullable(MessageRetrievalListener.class));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(1).size());
         assertTrue(fetchProfileCaptor.getAllValues().get(1).contains(FetchProfile.Item.BODY));
     }
@@ -287,7 +288,7 @@ public class ImapSyncTest extends RobolectricTest {
 
         //TODO: Don't bother fetching messages of a size we don't have
         verify(remoteFolder, atLeast(4)).fetch(any(List.class), fetchProfileCaptor.capture(),
-                any(MessageRetrievalListener.class));
+                nullable(MessageRetrievalListener.class));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(2).size());
         assertEquals(FetchProfile.Item.STRUCTURE, fetchProfileCaptor.getAllValues().get(2).get(0));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(3).size());
@@ -309,19 +310,19 @@ public class ImapSyncTest extends RobolectricTest {
                 }
                 return null;
             }
-        }).when(remoteFolder).fetch(any(List.class), any(FetchProfile.class), any(MessageRetrievalListener.class));
+        }).when(remoteFolder).fetch(any(List.class), any(FetchProfile.class), nullable(MessageRetrievalListener.class));
     }
 
     private Message buildSmallNewMessage() {
         Message message = mock(Message.class);
-        when(message.olderThan(any(Date.class))).thenReturn(false);
+        when(message.olderThan(nullable(Date.class))).thenReturn(false);
         when(message.getSize()).thenReturn((long) MAXIMUM_SMALL_MESSAGE_SIZE);
         return message;
     }
 
     private Message buildLargeNewMessage() {
         Message message = mock(Message.class);
-        when(message.olderThan(any(Date.class))).thenReturn(false);
+        when(message.olderThan(nullable(Date.class))).thenReturn(false);
         when(message.getSize()).thenReturn((long) (MAXIMUM_SMALL_MESSAGE_SIZE + 1));
         return message;
     }
@@ -337,8 +338,8 @@ public class ImapSyncTest extends RobolectricTest {
 
         when(remoteMessage.getUid()).thenReturn(messageUid);
         when(localMessage.getUid()).thenReturn(messageUid);
-        when(remoteFolder.getMessages(anyInt(), anyInt(), any(Date.class), any(MessageRetrievalListener.class)))
-                .thenReturn(Collections.singletonList(remoteMessage));
+        when(remoteFolder.getMessages(anyInt(), anyInt(), nullable(Date.class),
+                nullable(MessageRetrievalListener.class))).thenReturn(Collections.singletonList(remoteMessage));
         return localMessage;
     }
 
@@ -346,16 +347,16 @@ public class ImapSyncTest extends RobolectricTest {
         String messageUid = "UID";
         Message remoteMessage = mock(Message.class);
         when(remoteMessage.getUid()).thenReturn(messageUid);
-        when(remoteFolder.getMessages(anyInt(), anyInt(), any(Date.class), any(MessageRetrievalListener.class)))
-                .thenReturn(Collections.singletonList(remoteMessage));
+        when(remoteFolder.getMessages(anyInt(), anyInt(), nullable(Date.class),
+                nullable(MessageRetrievalListener.class))).thenReturn(Collections.singletonList(remoteMessage));
     }
 
     private void setUpMessagingController() throws MessagingException {
         when(controller.getAccountStats(account)).thenReturn(accountStats);
-        when(controller.getListeners(any(MessagingListener.class))).thenAnswer(new Answer<Set<MessagingListener>>() {
+        when(controller.getListeners(nullable(MessagingListener.class))).thenAnswer(new Answer<Set<MessagingListener>>() {
             @Override
             public Set<MessagingListener> answer(InvocationOnMock invocation) throws Throwable {
-                MessagingListener listener = invocation.getArgumentAt(0, MessagingListener.class);
+                MessagingListener listener = invocation.getArgument(0);
                 Set<MessagingListener> set = new HashSet<>(1);
                 set.add(listener);
                 return set;
