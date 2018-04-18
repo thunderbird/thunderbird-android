@@ -153,10 +153,13 @@ public class PgpMessageBuilder extends MessageBuilder {
             if (messageContentBodyPart == null) {
                 messageContentBodyPart = createBodyPartFromMessageContent();
 
-                if (cryptoStatus.isEncryptSubject()) {
-                    encryptMessageSubject();
+                boolean payloadSupportsMimeHeaders = !isPgpInlineMode;
+                if (payloadSupportsMimeHeaders) {
+                    if (cryptoStatus.isEncryptSubject()) {
+                        encryptMessageSubject();
+                    }
+                    maybeAddGossipHeadersToBodyPart();
                 }
-                maybeAddGossipHeadersToBodyPart();
             }
 
             if (pgpApiIntent == null) {
