@@ -107,9 +107,6 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
             case LOADING:
                 // no need to do anything, there is a progress bar...
                 break;
-            case UNENCRYPTED_SIGN_UNKNOWN:
-                launchPendingIntent(cryptoResultAnnotation);
-                break;
             default:
                 displayCryptoInfoDialog(displayStatus);
                 break;
@@ -136,9 +133,9 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
                 displayStatus, cryptoResultAnnotation.hasOpenPgpInsecureWarningPendingIntent());
     }
 
-    private void launchPendingIntent(CryptoResultAnnotation cryptoResultAnnotation) {
+    void onClickSearchKey() {
         try {
-            PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpPendingIntent();
+            PendingIntent pendingIntent = cryptoResultAnnotation.getOpenPgpSigningKeyIntentIfAny();
             if (pendingIntent != null) {
                 messageCryptoMvpView.startPendingIntentForCryptoPresenter(
                         pendingIntent.getIntentSender(), REQUEST_CODE_UNKNOWN_KEY, null, 0, 0, 0);
