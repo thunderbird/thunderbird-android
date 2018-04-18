@@ -41,6 +41,7 @@ import timber.log.Timber;
 public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManagerCallback {
     private long keyId;
     private String defaultUserId;
+    private boolean showAutocryptHint;
     private OpenPgpApiManager openPgpApiManager;
     private Intent cachedActivityResultData;
 
@@ -67,6 +68,10 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
 
     public void setDefaultUserId(String userId) {
         defaultUserId = userId;
+    }
+
+    public void setShowAutocryptHint(boolean showAutocryptHint) {
+        this.showAutocryptHint = showAutocryptHint;
     }
 
     @Override
@@ -122,6 +127,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         data.setAction(OpenPgpApi.ACTION_GET_SIGN_KEY_ID);
         data.putExtra(OpenPgpApi.EXTRA_USER_ID, defaultUserId);
         data.putExtra(OpenPgpApi.EXTRA_PRESELECT_KEY_ID, keyId);
+        data.putExtra(OpenPgpApi.EXTRA_SHOW_AUTOCRYPT_HINT, showAutocryptHint);
         OpenPgpApi api = openPgpApiManager.getOpenPgpApi();
         api.executeApiAsync(data, null, null, openPgpCallback);
     }
