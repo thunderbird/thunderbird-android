@@ -6,14 +6,14 @@ import com.fsck.k9.AccountStats
 import com.fsck.k9.Preferences
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.controller.MessagingListener
 import com.fsck.k9.search.SearchAccount
-import com.fsck.k9.whenever
 import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.anyOrNull
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.mock
 import org.junit.Test
-import org.mockito.Matchers.any
-import org.mockito.Matchers.eq
-import org.mockito.Mockito.mock
+import org.mockito.ArgumentMatchers.eq
 import org.robolectric.RuntimeEnvironment
 
 
@@ -87,21 +87,19 @@ class UnreadWidgetDataProviderTest : RobolectricTest() {
     }
 
 
-    fun createAccount(): Account = mock(Account::class.java).apply {
-        whenever(uuid).thenReturn(ACCOUNT_UUID)
-        whenever(description).thenReturn(ACCOUNT_DESCRIPTION)
+    fun createAccount(): Account = mock {
+        on { uuid } doReturn ACCOUNT_UUID
+        on { description } doReturn ACCOUNT_DESCRIPTION
     }
 
-    fun createPreferences(): Preferences = mock(Preferences::class.java).apply {
-        whenever(getAccount(ACCOUNT_UUID)).thenReturn(account)
+    fun createPreferences(): Preferences = mock {
+        on { getAccount(ACCOUNT_UUID) } doReturn account
     }
 
-    fun createMessagingController(): MessagingController = mock(MessagingController::class.java).apply {
-        whenever(
-                getSearchAccountStatsSynchronous(any(SearchAccount::class.java), any(MessagingListener::class.java))
-        ).thenReturn(SEARCH_ACCOUNT_STATS)
-        whenever(getAccountStats(account)).thenReturn(ACCOUNT_STATS)
-        whenever(getFolderUnreadMessageCount(eq(account), eq(FOLDER_SERVER_ID))).thenReturn(FOLDER_UNREAD_COUNT)
+    fun createMessagingController(): MessagingController = mock {
+        on { getSearchAccountStatsSynchronous(any(), anyOrNull()) } doReturn SEARCH_ACCOUNT_STATS
+        on { getAccountStats(account) } doReturn ACCOUNT_STATS
+        on { getFolderUnreadMessageCount(eq(account), eq(FOLDER_SERVER_ID)) } doReturn FOLDER_UNREAD_COUNT
     }
 
     companion object {
