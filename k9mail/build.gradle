@@ -50,6 +50,7 @@ dependencies {
     testImplementation "junit:junit:${junitVersion}"
     testImplementation "com.google.truth:truth:${truthVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
     testImplementation "org.jdom:jdom2:2.0.6"
     testImplementation "org.koin:koin-test:${koinVersion}"
 }
