@@ -22,6 +22,7 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.RetainFragment;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
@@ -377,6 +378,14 @@ public class MessageLoaderHelper {
             messageViewInfo = createErrorStateMessageViewInfo();
             callback.onMessageViewInfoLoadFailed(messageViewInfo);
             return;
+        }
+
+        if (messageViewInfo.isSubjectEncrypted && !localMessage.hasCachedDecryptedSubject()) {
+            try {
+                localMessage.setCachedDecryptedSubject(messageViewInfo.subject);
+            } catch (MessagingException e) {
+                throw new AssertionError(e);
+            }
         }
 
         callback.onMessageViewInfoLoadFinished(messageViewInfo);

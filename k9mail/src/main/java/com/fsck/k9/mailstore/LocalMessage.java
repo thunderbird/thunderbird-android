@@ -250,6 +250,37 @@ public class LocalMessage extends MimeMessage {
         return databaseId;
     }
 
+    public boolean hasCachedDecryptedSubject() {
+        return isSet(Flag.X_SUBJECT_DECRYPTED);
+    }
+
+    public void setCachedDecryptedSubject(final String decryptedSubject) throws MessagingException {
+        try {
+            this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
+                @Override
+                public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
+                    try {
+                        LocalMessage.super.setFlag(Flag.X_SUBJECT_DECRYPTED, true);
+                    } catch (MessagingException e) {
+                        throw new WrappedException(e);
+                    }
+
+                    ContentValues cv = new ContentValues();
+                    cv.put("subject", decryptedSubject);
+                    cv.put("flags", LocalStore.serializeFlags(getFlags()));
+
+                    db.update("messages", cv, "id = ?", new String[] { Long.toString(databaseId) });
+
+                    return null;
+                }
+            });
+        } catch (WrappedException e) {
+            throw(MessagingException) e.getCause();
+        }
+
+        this.localStore.notifyChange();
+    }
+
     @Override
     public void setFlag(final Flag flag, final boolean set) throws MessagingException {
 
