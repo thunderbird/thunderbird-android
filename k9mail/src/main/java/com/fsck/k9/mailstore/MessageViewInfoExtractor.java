@@ -93,21 +93,20 @@ public class MessageViewInfoExtractor {
         }
 
         MessageViewInfo messageViewInfo = getMessageContent(message, cryptoAnnotations, extraParts, cryptoContentPart);
-        String subject = extractSubject(messageViewInfo);
-        messageViewInfo = messageViewInfo.withSubject(subject);
+        messageViewInfo = extractSubject(messageViewInfo);
 
         return messageViewInfo;
     }
 
-    private String extractSubject(MessageViewInfo messageViewInfo) {
+    private MessageViewInfo extractSubject(MessageViewInfo messageViewInfo) {
         if (messageViewInfo.cryptoResultAnnotation != null && messageViewInfo.cryptoResultAnnotation.isEncrypted()) {
             String protectedSubject = extractProtectedSubject(messageViewInfo);
             if (protectedSubject != null) {
-                return protectedSubject;
+                return messageViewInfo.withSubject(protectedSubject, true);
             }
         }
 
-        return messageViewInfo.message.getSubject();
+        return messageViewInfo.withSubject(messageViewInfo.message.getSubject(), false);
     }
 
     @Nullable
