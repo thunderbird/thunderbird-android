@@ -226,42 +226,58 @@ public abstract class MessageBuilder {
             Body body = new TempFileBody(attachment.filename);
             MimeBodyPart bp = new MimeBodyPart(body);
 
-            /*
-             * Correctly encode the filename here. Otherwise the whole
-             * header value (all parameters at once) will be encoded by
-             * MimeHeader.writeTo().
-             */
-            bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n name=\"%s\"",
-                    attachment.contentType,
-                    EncoderUtil.encodeIfNecessary(attachment.name,
-                            EncoderUtil.Usage.WORD_ENTITY, 7)));
-
-            if (!MimeUtil.isMessage(attachment.contentType)) {
-                bp.setEncoding(MimeUtility.getEncodingforType(attachment.contentType));
-            }
-
-            /*
-             * TODO: Oh the joys of MIME...
-             *
-             * From RFC 2183 (The Content-Disposition Header Field):
-             * "Parameter values longer than 78 characters, or which
-             *  contain non-ASCII characters, MUST be encoded as specified
-             *  in [RFC 2184]."
-             *
-             * Example:
-             *
-             * Content-Type: application/x-stuff
-             *  title*1*=us-ascii'en'This%20is%20even%20more%20
-             *  title*2*=%2A%2A%2Afun%2A%2A%2A%20
-             *  title*3="isn't it!"
-             */
-            bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
-                    "attachment;\r\n filename=\"%s\";\r\n size=%d",
-                    EncoderUtil.encodeIfNecessary(attachment.name, EncoderUtil.Usage.WORD_ENTITY, 7),
-                    attachment.size));
+            addContentType(bp, attachment.contentType, attachment.name);
+            addContentDisposition(bp, attachment.name, attachment.size);
 
             mp.addBodyPart(bp);
         }
+    }
+
+    /*
+     * Content-Type is defined in RFC 2045
+     *
+     * Example:
+     *
+     * Content-Type: text/plain; charset=us-ascii (Plain text)
+     *
+     * TODO: RFC 2231/2184 long parameter encoding
+     * Example:
+     *
+     * Content-Type: application/x-stuff
+     *  title*1*=us-ascii'en'This%20is%20even%20more%20
+     *  title*2*=%2A%2A%2Afun%2A%2A%2A%20
+     *  title*3="isn't it!"
+     */
+    private void addContentType(MimeBodyPart bp, String contentType, String name) throws MessagingException {
+        /*
+         * Correctly encode the filename here. Otherwise the whole
+         * header value (all parameters at once) will be encoded by
+         * MimeHeader.writeTo().
+         */
+        bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n name=\"%s\"",
+                contentType,
+                EncoderUtil.encodeIfNecessary(name,
+                        EncoderUtil.Usage.WORD_ENTITY, 7)));
+
+        if (!MimeUtil.isMessage(contentType)) {
+            bp.setEncoding(MimeUtility.getEncodingforType(contentType));
+        }
+    }
+
+    /*
+     * TODO: RFC 2231/2184 long parameter encoding
+     *
+     * From RFC 2183 (The Content-Disposition Header Field):
+     * "Parameter values longer than 78 characters, or which
+     *  contain non-ASCII characters, MUST be encoded as specified
+     *  in [RFC 2184]."
+     *
+     */
+    private void addContentDisposition(MimeBodyPart bp, String name, Long size) {
+        bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
+                "attachment;\r\n filename=\"%s\";\r\n size=%d",
+                EncoderUtil.encodeIfNecessary(name, EncoderUtil.Usage.WORD_ENTITY, 7),
+                size));
     }
 
     /**
