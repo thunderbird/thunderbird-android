@@ -104,7 +104,31 @@ public class MessageBuilderTest extends RobolectricTest {
             "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
             "\r\n" +
             "--" + BOUNDARY_1 + "--\r\n";
-    
+
+    public static final String ATTACHMENT_FILENAME_NON_ASCII = "テスト文書.txt";
+    public static final String MESSAGE_CONTENT_WITH_ATTACH_NON_ASCII_FILENAME = "" +
+            "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
+            "Content-Transfer-Encoding: 7bit\r\n" +
+            "\r\n" +
+            "--" + BOUNDARY_1 + "\r\n" +
+            "Content-Type: text/plain;\r\n" +
+            " charset=utf-8\r\n" +
+            "Content-Transfer-Encoding: quoted-printable\r\n" +
+            "\r\n" +
+            "soviet message\r\n" +
+            "text =E2=98=AD\r\n" +
+            "--" + BOUNDARY_1 + "\r\n" +
+            "Content-Type: text/plain;\r\n" +
+            " name=\"=?UTF-8?B?44OG44K544OI5paH5pu4LnR4dA==?=\"\r\n" +
+            "Content-Transfer-Encoding: base64\r\n" +
+            "Content-Disposition: attachment;\r\n" +
+            " filename=\"=?UTF-8?B?44OG44K544OI5paH5pu4LnR4dA==?=\";\r\n" +
+            " size=23\r\n" +
+            "\r\n" +
+            "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
+            "\r\n" +
+            "--" + BOUNDARY_1 + "--\r\n";
+
     public static final String MESSAGE_CONTENT_WITH_MESSAGE_ATTACH = "" +
             "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
             "Content-Transfer-Encoding: 7bit\r\n" +
@@ -172,6 +196,18 @@ public class MessageBuilderTest extends RobolectricTest {
 
         MimeMessage message = getMessageFromCallback();
         assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_ATTACH, getMessageContents(message));
+    }
+
+    @Test
+    public void build_withAttachment_nonAscii_shouldSucceed() throws Exception {
+        MessageBuilder messageBuilder = createSimpleMessageBuilder();
+        Attachment attachment = createAttachmentWithContent("text/plain", ATTACHMENT_FILENAME_NON_ASCII, TEST_ATTACHMENT_TEXT);
+        messageBuilder.setAttachments(Collections.singletonList(attachment));
+
+        messageBuilder.buildAsync(callback);
+
+        MimeMessage message = getMessageFromCallback();
+        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_ATTACH_NON_ASCII_FILENAME, getMessageContents(message));
     }
 
     @Test

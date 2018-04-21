@@ -257,7 +257,8 @@ public abstract class MessageBuilder {
              */
             bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
                     "attachment;\r\n filename=\"%s\";\r\n size=%d",
-                    attachment.name, attachment.size));
+                    EncoderUtil.encodeIfNecessary(attachment.name, EncoderUtil.Usage.WORD_ENTITY, 7),
+                    attachment.size));
 
             mp.addBodyPart(bp);
         }
