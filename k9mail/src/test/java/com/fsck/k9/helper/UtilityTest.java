@@ -38,6 +38,13 @@ public class UtilityTest {
     }
 
     @Test
+    public void stripNewLines_removesMultipleCarriageReturns() {
+        String result = Utility.stripNewLines("\nTest\r\n\rTest\n");
+
+        assertEquals("TestTest", result);
+    }
+
+    @Test
     public void stripNewLines_removesMidLineFeeds() {
         String result = Utility.stripNewLines("Test\nTest");
 
