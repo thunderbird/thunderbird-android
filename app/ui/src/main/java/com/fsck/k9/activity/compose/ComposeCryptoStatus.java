@@ -114,7 +114,7 @@ public class ComposeCryptoStatus implements CryptoStatus {
         return isExplicitlyEnabled || isMutualAndNotDisabled || isReplyAndNotDisabled;
     }
 
-    boolean isSignOnly() {
+    public boolean isSignOnly() {
         return cryptoMode == CryptoMode.SIGN_ONLY;
     }
 
@@ -132,6 +132,10 @@ public class ComposeCryptoStatus implements CryptoStatus {
 
     boolean allRecipientsCanEncrypt() {
         return recipientAutocryptStatus != null && recipientAutocryptStatus.type.canEncrypt();
+    }
+
+    public boolean isUserChoice() {
+        return cryptoMode != CryptoMode.NO_CHOICE;
     }
 
     public String[] getRecipientAddresses() {

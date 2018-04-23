@@ -7,6 +7,9 @@ interface CryptoStatus {
     fun isSigningEnabled(): Boolean
     fun isEncryptionEnabled(): Boolean
     fun isPgpInlineModeEnabled(): Boolean
+    fun isSignOnly(): Boolean
+    fun isUserChoice(): Boolean
+    fun isReplyToEncrypted(): Boolean
     fun hasRecipients(): Boolean
     fun isEncryptSubject(): Boolean
     fun getRecipientAddresses(): Array<String>
