@@ -8,10 +8,12 @@ import android.content.Context;
 import android.support.v4.app.LoaderManager;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
+import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser;
 import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.ReplyToParser.ReplyToAddresses;
 import com.fsck.k9.mail.Address;
@@ -90,7 +92,8 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
         recipientPresenter = new RecipientPresenter(
                 context, loaderManager, openPgpApiManager, recipientMvpView, account, composePgpInlineDecider,
-                composePgpEnableByDefaultDecider, autocryptStatusInteractor, replyToParser, listener
+                composePgpEnableByDefaultDecider, autocryptStatusInteractor, replyToParser, listener,
+                DI.get(AutocryptDraftStateHeaderParser.class)
         );
 
         ArgumentCaptor<OpenPgpApiManagerCallback> callbackCaptor = ArgumentCaptor.forClass(OpenPgpApiManagerCallback.class);

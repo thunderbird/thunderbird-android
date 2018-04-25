@@ -27,6 +27,8 @@ import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
+import com.fsck.k9.autocrypt.AutocryptDraftStateHeader;
+import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
@@ -35,6 +37,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
+import com.fsck.k9.mail.Part;
 import com.fsck.k9.message.AutocryptStatusInteractor;
 import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus;
 import com.fsck.k9.message.ComposePgpEnableByDefaultDecider;
@@ -73,12 +76,13 @@ public class RecipientPresenter {
     private final ComposePgpInlineDecider composePgpInlineDecider;
     private final AutocryptStatusInteractor autocryptStatusInteractor;
     private final RecipientsChangedListener listener;
+    private final OpenPgpApiManager openPgpApiManager;
+    private final AutocryptDraftStateHeaderParser draftStateHeaderParser;
     private ReplyToParser replyToParser;
     private Account account;
     private Boolean hasContactPicker;
     @Nullable
     private ComposeCryptoStatus cachedCryptoStatus;
-    private OpenPgpApiManager openPgpApiManager;
 
 
     // persistent state, saved during onSaveInstanceState
@@ -93,7 +97,8 @@ public class RecipientPresenter {
             ComposePgpInlineDecider composePgpInlineDecider,
             ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider,
             AutocryptStatusInteractor autocryptStatusInteractor,
-            ReplyToParser replyToParser, RecipientsChangedListener recipientsChangedListener) {
+            ReplyToParser replyToParser, RecipientsChangedListener recipientsChangedListener,
+            AutocryptDraftStateHeaderParser draftStateHeaderParser) {
         this.recipientMvpView = recipientMvpView;
         this.context = context;
         this.autocryptStatusInteractor = autocryptStatusInteractor;
@@ -102,6 +107,7 @@ public class RecipientPresenter {
         this.replyToParser = replyToParser;
         this.listener = recipientsChangedListener;
         this.openPgpApiManager = openPgpApiManager;
+        this.draftStateHeaderParser = draftStateHeaderParser;
 
         recipientMvpView.setPresenter(this);
         recipientMvpView.setLoaderManager(loaderManager);
@@ -220,10 +226,23 @@ public class RecipientPresenter {
         outState.putBoolean(STATE_KEY_CRYPTO_ENABLE_PGP_INLINE, cryptoEnablePgpInline);
     }
 
-    public void initFromDraftMessage(Message message) {
+    public void initFromDraftMessage(Message message, Part rootPart) {
         initRecipientsFromDraftMessage(message);
-        initEncryptionStatus(message);
-        initPgpInlineFromDraftMessage(message);
+
+        String[] draftStateHeader = rootPart.getHeader(AutocryptDraftStateHeader.AUTOCRYPT_DRAFT_STATE_HEADER);
+        if (draftStateHeader.length == 1) {
+            initEncryptionStateFromDraftStateHeader(draftStateHeader[0]);
+        } else {
+            initPgpInlineFromDraftMessage(message);
+        }
+    }
+
+    private void initEncryptionStateFromDraftStateHeader(String headerValue) {
+        AutocryptDraftStateHeader autocryptDraftStateHeader =
+                draftStateHeaderParser.parseAutocryptDraftStateHeader(headerValue);
+        if (autocryptDraftStateHeader != null) {
+            initEncryptionStateFromDraftStateHeader(autocryptDraftStateHeader);
+        }
     }
 
     private void initRecipientsFromDraftMessage(Message message) {
@@ -236,10 +255,18 @@ public class RecipientPresenter {
         addBccAddresses(bccRecipients);
     }
 
-    private void initEncryptionStatus(Message message) {
-        boolean isEncryptedDraft = composePgpEnableByDefaultDecider.shouldEncryptByDefault(message);
-        if (isEncryptedDraft) {
-            currentCryptoMode = CryptoMode.CHOICE_ENABLED;
+    private void initEncryptionStateFromDraftStateHeader(AutocryptDraftStateHeader draftState) {
+        cryptoEnablePgpInline = draftState.isPgpInline();
+        isReplyToEncryptedMessage = draftState.isReply();
+        if (!draftState.isByChoice()) {
+            // TODO if it's not by choice, we're going with our defaults. should we do something here if those differ?
+            return;
+        }
+
+        if (draftState.isSignOnly()) {
+            currentCryptoMode = CryptoMode.SIGN_ONLY;
+        } else {
+            currentCryptoMode = draftState.isEncrypt() ? CryptoMode.CHOICE_ENABLED : CryptoMode.CHOICE_DISABLED;
         }
     }
 

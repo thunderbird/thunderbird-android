@@ -4,4 +4,5 @@ import org.koin.dsl.module.applicationContext
 
 val autocryptModule = applicationContext {
     bean { AutocryptTransferMessageCreator(get()) }
+    bean { AutocryptDraftStateHeaderParser() }
 }

@@ -39,8 +39,4 @@ class AutocryptDraftStateHeaderParser internal constructor() {
         }
         return false
     }
-
-    companion object {
-        val instance = AutocryptDraftStateHeaderParser()
-    }
 }
