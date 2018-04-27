@@ -225,10 +225,10 @@ public class RecipientPresenter {
         outState.putBoolean(STATE_KEY_CRYPTO_ENABLE_PGP_INLINE, cryptoEnablePgpInline);
     }
 
-    public void initFromDraftMessage(Message message, Part rootPart) {
+    public void initFromDraftMessage(Message message) {
         initRecipientsFromDraftMessage(message);
 
-        String[] draftStateHeader = rootPart.getHeader(AutocryptDraftStateHeader.AUTOCRYPT_DRAFT_STATE_HEADER);
+        String[] draftStateHeader = message.getHeader(AutocryptDraftStateHeader.AUTOCRYPT_DRAFT_STATE_HEADER);
         if (draftStateHeader.length == 1) {
             initEncryptionStateFromDraftStateHeader(draftStateHeader[0]);
         } else {

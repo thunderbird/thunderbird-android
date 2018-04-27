@@ -168,11 +168,13 @@ public class PgpMessageBuilder extends MessageBuilder {
 
                 boolean payloadSupportsMimeHeaders = !isPgpInlineMode;
                 if (payloadSupportsMimeHeaders) {
-                    moveDraftStateIntoEncryptedPayload();
                     if (cryptoStatus.isEncryptSubject()) {
                         moveSubjectIntoEncryptedPayload();
                     }
                     maybeAddGossipHeadersToBodyPart();
+
+                    // unfortuntately, we can't store the Autocrypt-Draft-State header in the payload
+                    // see https://github.com/autocrypt/autocrypt/pull/376#issuecomment-384293480
                 }
             }
 
@@ -216,14 +218,6 @@ public class PgpMessageBuilder extends MessageBuilder {
                     messageContentBodyPart.getContentType() + "; protected-headers=\"v1\"");
             messageContentBodyPart.setHeader(MimeHeader.SUBJECT, subjects[0]);
             currentProcessedMimeMessage.setHeader(MimeHeader.SUBJECT, resourceProvider.encryptedSubject());
-        }
-    }
-
-    private void moveDraftStateIntoEncryptedPayload() {
-        String[] autocryptDraftState = currentProcessedMimeMessage.getHeader(AutocryptDraftStateHeader.AUTOCRYPT_DRAFT_STATE_HEADER);
-        if (autocryptDraftState.length == 1) {
-            messageContentBodyPart.setHeader(AutocryptDraftStateHeader.AUTOCRYPT_DRAFT_STATE_HEADER, autocryptDraftState[0]);
-            currentProcessedMimeMessage.removeHeader(AutocryptDraftStateHeader.AUTOCRYPT_DRAFT_STATE_HEADER);
         }
     }
 
