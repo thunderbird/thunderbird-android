@@ -409,10 +409,6 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     private void mimeBuildEncryptedMessage(@NonNull Body encryptedBodyPart) throws MessagingException {
-        if (!cryptoStatus.isEncryptionEnabled()) {
-            throw new IllegalStateException("call to mimeBuildEncryptedMessage while encryption isn't enabled!");
-        }
-
         MimeMultipart multipartEncrypted = createMimeMultipart();
         multipartEncrypted.setSubType("encrypted");
         multipartEncrypted.addBodyPart(new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted"));
