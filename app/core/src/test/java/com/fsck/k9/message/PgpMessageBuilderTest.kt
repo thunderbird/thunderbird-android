@@ -301,6 +301,25 @@ class PgpMessageBuilderTest : RobolectricTest() {
 
     @Test
     @Throws(MessagingException::class)
+    fun buildEncrypt__draftWithoutRecipients() {
+        val cryptoStatus = defaultCryptoStatus.copy(cryptoMode = CryptoMode.CHOICE_ENABLED)
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus)
+        pgpMessageBuilder.isDraft = true
+
+        val returnIntent = spy(Intent())
+        returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
+        `when`(openPgpApi.executeApi(any(Intent::class.java), any(OpenPgpDataSource::class.java), any(OutputStream::class.java)))
+                .thenReturn(returnIntent)
+
+        val mockCallback = mock(Callback::class.java)
+        pgpMessageBuilder.buildAsync(mockCallback)
+
+        verify(mockCallback).onMessageBuildSuccess(any<MimeMessage>(), eq(true))
+        verifyNoMoreInteractions(mockCallback)
+    }
+
+    @Test
+    @Throws(MessagingException::class)
     fun buildEncrypt__checkGossip() {
         val cryptoStatus = defaultCryptoStatus.copy(cryptoMode = CryptoMode.CHOICE_ENABLED,
                 recipientAddresses = listOf("alice@example.org", "bob@example.org"))

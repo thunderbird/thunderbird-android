@@ -159,7 +159,7 @@ public class PgpMessageBuilder extends MessageBuilder {
                 throw new MessagingException("Attachments are not supported in PGP/INLINE format!");
             }
 
-            if (shouldEncrypt && !cryptoStatus.hasRecipients()) {
+            if (shouldEncrypt && !isDraft() && !cryptoStatus.hasRecipients()) {
                 throw new MessagingException("Must have recipients to build message!");
             }
 
