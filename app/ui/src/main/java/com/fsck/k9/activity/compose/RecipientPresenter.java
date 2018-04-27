@@ -22,9 +22,7 @@ import android.view.Menu;
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
-import com.fsck.k9.activity.compose.ComposeCryptoStatus.ComposeCryptoStatusBuilder;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeader;
@@ -44,6 +42,7 @@ import com.fsck.k9.message.ComposePgpEnableByDefaultDecider;
 import com.fsck.k9.message.ComposePgpInlineDecider;
 import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.PgpMessageBuilder;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
@@ -423,16 +422,15 @@ public class RecipientPresenter {
             accountCryptoKey = null;
         }
 
-        final ComposeCryptoStatus composeCryptoStatus = new ComposeCryptoStatusBuilder()
-                .setOpenPgpProviderState(openPgpProviderState)
-                .setCryptoMode(currentCryptoMode)
-                .setEnablePgpInline(cryptoEnablePgpInline)
-                .setPreferEncryptMutual(account.getAutocryptPreferEncryptMutual())
-                .setIsReplyToEncrypted(isReplyToEncryptedMessage)
-                .setEncryptSubject(account.getOpenPgpEncryptSubject())
-                .setRecipients(getAllRecipients())
-                .setOpenPgpKeyId(accountCryptoKey)
-                .build();
+        final ComposeCryptoStatus composeCryptoStatus = new ComposeCryptoStatus(
+                openPgpProviderState,
+                accountCryptoKey,
+                getAllRecipients(),
+                cryptoEnablePgpInline,
+                account.getAutocryptPreferEncryptMutual(),
+                isReplyToEncryptedMessage,
+                account.getOpenPgpEncryptSubject(),
+                currentCryptoMode);
 
         if (openPgpProviderState != OpenPgpProviderState.OK) {
             cachedCryptoStatus = composeCryptoStatus;
@@ -440,7 +438,7 @@ public class RecipientPresenter {
             return;
         }
 
-        final String[] recipientAddresses = composeCryptoStatus.getRecipientAddresses();
+        final String[] recipientAddresses = composeCryptoStatus.getRecipientAddressesAsArray();
 
         new AsyncTask<Void,Void,RecipientAutocryptStatus>() {
             @Override
@@ -472,9 +470,9 @@ public class RecipientPresenter {
 
         recipientMvpView.setRecipientTokensShowCryptoEnabled(cachedCryptoStatus.isEncryptionEnabled());
 
-        CryptoStatusDisplayType cryptoStatusDisplayType = cachedCryptoStatus.getCryptoStatusDisplayType();
+        CryptoStatusDisplayType cryptoStatusDisplayType = cachedCryptoStatus.getDisplayType();
         recipientMvpView.showCryptoStatus(cryptoStatusDisplayType);
-        recipientMvpView.showCryptoSpecialMode(cachedCryptoStatus.getCryptoSpecialModeDisplayType());
+        recipientMvpView.showCryptoSpecialMode(cachedCryptoStatus.getSpecialModeDisplayType());
     }
 
     @Nullable
