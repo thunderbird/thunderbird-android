@@ -139,7 +139,12 @@ class DecoderUtil {
         if (qm2 == end - 2)
             return null;
 
-        String mimeCharset = body.substring(begin + 2, qm1);
+        // Extract charset, skipping language information if present (example: =?utf-8*en?Q?Text?=)
+        String charsetPart = body.substring(begin + 2, qm1);
+        int languageSuffixStart = charsetPart.indexOf('*');
+        boolean languageSuffixFound = languageSuffixStart != -1;
+        String mimeCharset = languageSuffixFound ? charsetPart.substring(0, languageSuffixStart) : charsetPart;
+
         String encoding = body.substring(qm1 + 1, qm2);
         String encodedText = body.substring(qm2 + 1, end - 2);
 

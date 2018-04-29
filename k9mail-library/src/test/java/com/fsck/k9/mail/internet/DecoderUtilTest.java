@@ -211,6 +211,15 @@ public class DecoderUtilTest {
         assertInputDecodesToExpected("(=?ISO-8859-1?Q?a?= =?ISO-8859-2?Q?_b?=)", "(a b)");
     }
 
+    @Test
+    public void decodeEncodedWords_withLanguageInformation() {
+        // Example from RFC 2231, section 5. This is unlikely to ever fail because our charset fallback is US-ASCII.
+        assertInputDecodesToExpected("=?US-ASCII*EN?Q?Keith_Moore?= <moore@cs.utk.edu>",
+                "Keith Moore <moore@cs.utk.edu>");
+
+        assertInputDecodesToExpected("=?utf-8*de?b?R3LDvMOfZQ==?=", "Grüße");
+    }
+
 
     private void assertInputDecodesToExpected(String input, String expected) {
         String decodedText = DecoderUtil.decodeEncodedWords(input, null);
