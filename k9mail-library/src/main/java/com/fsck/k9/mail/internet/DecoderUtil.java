@@ -86,13 +86,13 @@ class DecoderUtil {
             if (previousWord == null) {
                 sb.append(sep);
                 if (word == null) {
-                    sb.append(body.substring(begin, end));
+                    sb.append(body, begin, end);
                 }
             } else {
                 if (word == null) {
                     sb.append(charsetDecode(previousWord));
                     sb.append(sep);
-                    sb.append(body.substring(begin, end));
+                    sb.append(body, begin, end);
                 } else {
                     if (!CharsetUtil.isWhitespace(sep)) {
                         sb.append(charsetDecode(previousWord));
