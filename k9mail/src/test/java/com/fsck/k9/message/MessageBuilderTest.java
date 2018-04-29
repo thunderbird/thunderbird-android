@@ -29,7 +29,6 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
@@ -99,24 +98,22 @@ public class MessageBuilderTest extends RobolectricTest {
             "text =E2=98=AD\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
             "Content-Type: text/plain;\r\n" +
-            " name=\"attach.txt\"\r\n" +
+            " name=attach.txt\r\n" +
             "Content-Transfer-Encoding: base64\r\n" +
             "Content-Disposition: attachment;\r\n" +
-            " filename=\"attach.txt\";\r\n" +
+            " filename=attach.txt;\r\n" +
             " size=23\r\n" +
             "\r\n" +
             "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
             "\r\n" +
             "--" + BOUNDARY_1 + "--\r\n";
 
-    private static final String MESSAGE_CONTENT_WITH_LONG_CONTENT_TYPE =
+    private static final String MESSAGE_CONTENT_WITH_LONG_FILE_NAME =
             "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
             "Content-Transfer-Encoding: 7bit\r\n" +
             "\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
             "Content-Type: text/plain;\r\n" +
-            " title*1*=1234567891123456789212345678931234567894123456789\r\n" +
-            " title*2*=5123456789612345678971234567898123456789091234567890;\r\n" +
             " charset=utf-8\r\n" +
             "Content-Transfer-Encoding: quoted-printable\r\n" +
             "\r\n" +
@@ -124,10 +121,12 @@ public class MessageBuilderTest extends RobolectricTest {
             "text =E2=98=AD\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
             "Content-Type: text/plain;\r\n" +
-            " name=\"attach.txt\"\r\n" +
+            " name*0*=UTF-8''~~~~~~~~~1~~~~~~~~~2~~~~~~~~~3~~~~~~~~~4~~~~~~~~~5~~~~~~~~~6~;\r\n" +
+            " name*1*=~~~~~~~~7.txt\r\n" +
             "Content-Transfer-Encoding: base64\r\n" +
             "Content-Disposition: attachment;\r\n" +
-            " filename=\"attach.txt\";\r\n" +
+            " filename*0*=UTF-8''~~~~~~~~~1~~~~~~~~~2~~~~~~~~~3~~~~~~~~~4~~~~~~~~~5~~~~~~~;\r\n" +
+            " filename*1*=~~6~~~~~~~~~7.txt;\r\n" +
             " size=23\r\n" +
             "\r\n" +
             "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
@@ -148,10 +147,10 @@ public class MessageBuilderTest extends RobolectricTest {
             "text =E2=98=AD\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
             "Content-Type: text/plain;\r\n" +
-            " name=\"=?UTF-8?B?44OG44K544OI5paH5pu4LnR4dA==?=\"\r\n" +
+            " name*=UTF-8''%E3%83%86%E3%82%B9%E3%83%88%E6%96%87%E6%9B%B8.txt\r\n" +
             "Content-Transfer-Encoding: base64\r\n" +
             "Content-Disposition: attachment;\r\n" +
-            " filename=\"=?UTF-8?B?44OG44K544OI5paH5pu4LnR4dA==?=\";\r\n" +
+            " filename*=UTF-8''%E3%83%86%E3%82%B9%E3%83%88%E6%96%87%E6%9B%B8.txt;\r\n" +
             " size=23\r\n" +
             "\r\n" +
             "dGV4dCBkYXRhIGluIGF0dGFjaG1lbnQ=\r\n" +
@@ -171,9 +170,9 @@ public class MessageBuilderTest extends RobolectricTest {
             "text =E2=98=AD\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
             "Content-Type: message/rfc822;\r\n" +
-            " name=\"attach.txt\"\r\n" +
+            " name=attach.txt\r\n" +
             "Content-Disposition: attachment;\r\n" +
-            " filename=\"attach.txt\";\r\n" +
+            " filename=attach.txt;\r\n" +
             " size=23\r\n" +
             "\r\n" +
             "text data in attachment" +
@@ -228,19 +227,19 @@ public class MessageBuilderTest extends RobolectricTest {
         assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_ATTACH, getMessageContents(message));
     }
 
-    @Ignore("RFC2231/2184 not implemented") @Test
-    public void build_withAttachment_longContentType_shouldSucceed() throws Exception {
+    @Test
+    public void build_withAttachment_longFileName() throws Exception {
         MessageBuilder messageBuilder = createSimpleMessageBuilder();
         Attachment attachment = createAttachmentWithContent(
-                "text/plain;title=1234567891123456789212345678931234567894123456789" +
-                        "5123456789612345678971234567898123456789091234567890",
-                "attach.txt", TEST_ATTACHMENT_TEXT);
+                "text/plain",
+                "~~~~~~~~~1~~~~~~~~~2~~~~~~~~~3~~~~~~~~~4~~~~~~~~~5~~~~~~~~~6~~~~~~~~~7.txt",
+                TEST_ATTACHMENT_TEXT);
         messageBuilder.setAttachments(Collections.singletonList(attachment));
 
         messageBuilder.buildAsync(callback);
 
         MimeMessage message = getMessageFromCallback();
-        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_LONG_CONTENT_TYPE,
+        assertEquals(MESSAGE_HEADERS + MESSAGE_CONTENT_WITH_LONG_FILE_NAME,
                 getMessageContents(message));
     }
 
