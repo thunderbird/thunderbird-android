@@ -320,5 +320,3 @@ class MessageTest {
 }
 
 private fun Message.getFirstHeader(header: String): String = getHeader(header)[0]
-
-private fun String.crlf() = replace("\n", "\r\n")
