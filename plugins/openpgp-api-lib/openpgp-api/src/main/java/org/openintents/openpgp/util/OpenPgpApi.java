@@ -267,6 +267,7 @@ public class OpenPgpApi {
     // GET_SIGN_KEY_ID
     public static final String EXTRA_USER_ID = "user_id";
     public static final String EXTRA_PRESELECT_KEY_ID = "preselect_key_id";
+    public static final String EXTRA_SHOW_AUTOCRYPT_HINT = "show_autocrypt_hint";
 
     // GET_KEY
     public static final String EXTRA_KEY_ID = "key_id";
