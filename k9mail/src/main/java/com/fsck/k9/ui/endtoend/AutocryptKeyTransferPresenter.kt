@@ -5,16 +5,12 @@ import android.app.PendingIntent
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.content.Context
-import android.os.SystemClock
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.TransportProvider
-import com.fsck.k9.ui.endtoend.AutocryptKeyTransferLiveData.AutocryptSetupMessage
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError
@@ -27,10 +23,11 @@ class AutocryptKeyTransferPresenter internal constructor(
         private val transportProvider: TransportProvider) {
 
     private lateinit var account: Account
-    private var showTransferCodePi: PendingIntent? = null
+    private lateinit var showTransferCodePi: PendingIntent
 
     init {
-        viewModel.autocryptKeyTransferLiveData.observe(lifecycleOwner, Observer { msg -> onLoadedAutocryptSetupMessage(msg) })
+        viewModel.autocryptSetupMessageLiveEvent.observe(lifecycleOwner, Observer { msg -> onEventAutocryptSetupMessage(msg) })
+        viewModel.autocryptSetupTransferLiveEvent.observe(lifecycleOwner, Observer { pi -> onLoadedAutocryptSetupTransfer(pi) })
     }
 
     fun initFromIntent(accountUuid: String?) {
@@ -54,7 +51,8 @@ class AutocryptKeyTransferPresenter internal constructor(
         })
 
         view.setAddress(account.identities[0].email)
-        view.sceneBegin()
+
+        viewModel.autocryptSetupTransferLiveEvent.recall()
     }
 
     fun onClickTransferSend() {
@@ -64,47 +62,37 @@ class AutocryptKeyTransferPresenter internal constructor(
             delay(1200) // ux delay, to give the scene transition some breathing room
             view.setLoadingStateGenerating()
 
-            viewModel.autocryptKeyTransferLiveData.loadAutocryptSetupMessageAsync(
+            viewModel.autocryptSetupMessageLiveEvent.loadAutocryptSetupMessageAsync(
                     this@AutocryptKeyTransferPresenter.context.resources, openPgpApiManager.openPgpApi, account)
         }
     }
 
     fun onClickShowTransferCode() {
-        if (showTransferCodePi == null) {
-            return
-        }
-
-        view.launchUserInteractionPendingIntent(showTransferCodePi!!)
+        view.launchUserInteractionPendingIntent(showTransferCodePi)
     }
 
-    private fun onLoadedAutocryptSetupMessage(setupMsg: AutocryptSetupMessage?) {
+    private fun onEventAutocryptSetupMessage(setupMsg: AutocryptSetupMessage?) {
         if (setupMsg == null) {
             return
         }
 
-        this.showTransferCodePi = setupMsg.showTransferCodePi
         view.setLoadingStateSending()
+        view.sceneGeneratingAndSending()
 
         val transport = transportProvider.getTransport(context, account)
-        launch(UI) {
-            val startTime = SystemClock.elapsedRealtime()
+        viewModel.autocryptSetupTransferLiveEvent.sendMessageAsync(transport, setupMsg)
+    }
 
-            val msg = bg {
-                transport.sendMessage(setupMsg.setupMessage)
-            }
-
-            try {
-                msg.await()
-
-                val delayTime = 2000 - (SystemClock.elapsedRealtime() - startTime)
-                if (delayTime > 0) {
-                    delay(delayTime)
-                }
-
+    private fun onLoadedAutocryptSetupTransfer(result: AutocryptSetupTransferResult?) {
+        when (result) {
+            null -> view.sceneBegin()
+            is AutocryptSetupTransferResult.Success -> {
+                showTransferCodePi = result.showTransferCodePi
                 view.setLoadingStateFinished()
                 view.sceneFinished()
-            } catch (e: MessagingException) {
-                Timber.e(e, "Error sending setup message")
+            }
+            is AutocryptSetupTransferResult.Failure -> {
+                Timber.e(result.exception, "Error sending setup message")
                 view.setLoadingStateSendingFailed()
                 view.sceneSendError()
             }

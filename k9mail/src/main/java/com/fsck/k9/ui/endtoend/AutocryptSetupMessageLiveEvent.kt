@@ -1,11 +1,11 @@
 package com.fsck.k9.ui.endtoend
 
 import android.app.PendingIntent
-import android.arch.lifecycle.LiveData
 import android.content.Intent
 import android.content.res.Resources
 import com.fsck.k9.Account
 import com.fsck.k9.autocrypt.AutocryptTransferMessageUtil
+import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import kotlinx.coroutines.experimental.android.UI
@@ -15,7 +15,7 @@ import org.openintents.openpgp.util.OpenPgpApi
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
-class AutocryptKeyTransferLiveData : LiveData<AutocryptKeyTransferLiveData.AutocryptSetupMessage>() {
+class AutocryptSetupMessageLiveEvent : SingleLiveEvent<AutocryptSetupMessage>() {
     fun loadAutocryptSetupMessageAsync(resources: Resources, openPgpApi: OpenPgpApi, account: Account) {
         launch(UI) {
             val setupMessage = bg {
@@ -40,8 +40,8 @@ class AutocryptKeyTransferLiveData : LiveData<AutocryptKeyTransferLiveData.Autoc
 
         val setupMessage = AutocryptTransferMessageUtil.createAutocryptTransferMessage(resources, keyData, address)
 
-        return AutocryptSetupMessage(pi, setupMessage)
+        return AutocryptSetupMessage(setupMessage, pi)
     }
-
-    data class AutocryptSetupMessage(val showTransferCodePi: PendingIntent, val setupMessage: Message)
 }
+
+data class AutocryptSetupMessage(val setupMessage: Message, val showTransferCodePi: PendingIntent)
