@@ -22,7 +22,7 @@ import org.openintents.openpgp.OpenPgpApiManager
 import timber.log.Timber
 
 
-class AutocryptKeyTransferActivity : K9Activity() {
+class AutocryptKeyTransferActivity : K9Activity(), AutocryptKeyTransferView {
     private val viewModel: AutocryptKeyTransferViewModel by viewModel()
     private val transportProvider: TransportProvider by inject()
     private val openPgpApiManager: OpenPgpApiManager by inject { mapOf("lifecycle" to lifecycle) }
@@ -34,19 +34,19 @@ class AutocryptKeyTransferActivity : K9Activity() {
 
         val account = intent.getStringExtra(EXTRA_ACCOUNT)
 
-        presenter = AutocryptKeyTransferPresenter(applicationContext, this, viewModel, openPgpApiManager, transportProvider)
+        presenter = AutocryptKeyTransferPresenter(applicationContext, this, this, viewModel, openPgpApiManager, transportProvider)
         presenter.initFromIntent(account)
 
         transfer_send_button.setOnClickListener { presenter.onClickTransferSend() }
         transfer_show_code_button.setOnClickListener { presenter.onClickShowTransferCode() }
     }
 
-    fun setAddress(address: String) {
+    override fun setAddress(address: String) {
         transfer_address_1.text = address
         transfer_address_2.text = address
     }
 
-    fun sceneBegin() {
+    override fun sceneBegin() {
         transfer_send_button.visibility = View.VISIBLE
         transfer_msg_info.visibility = View.VISIBLE
         transfer_layout_generating.visibility = View.GONE
@@ -56,7 +56,7 @@ class AutocryptKeyTransferActivity : K9Activity() {
         transfer_show_code_button.visibility = View.GONE
     }
 
-    fun sceneGeneratingAndSending() {
+    override fun sceneGeneratingAndSending() {
         setupSceneTransition()
 
         transfer_send_button.visibility = View.GONE
@@ -68,7 +68,7 @@ class AutocryptKeyTransferActivity : K9Activity() {
         transfer_show_code_button.visibility = View.GONE
     }
 
-    fun sceneSendError() {
+    override fun sceneSendError() {
         setupSceneTransition()
 
         transfer_send_button.visibility = View.GONE
@@ -80,7 +80,7 @@ class AutocryptKeyTransferActivity : K9Activity() {
         transfer_show_code_button.visibility = View.GONE
     }
 
-    fun sceneFinished() {
+    override fun sceneFinished() {
         setupSceneTransition()
 
         transfer_send_button.visibility = View.GONE
@@ -92,35 +92,35 @@ class AutocryptKeyTransferActivity : K9Activity() {
         transfer_show_code_button.visibility = View.VISIBLE
     }
 
-    fun setLoadingStateGenerating() {
+    override fun setLoadingStateGenerating() {
         transfer_progress_generating.setDisplayedChild(StatusIndicator.Status.PROGRESS)
         transfer_progress_sending.setDisplayedChild(StatusIndicator.Status.IDLE)
     }
 
-    fun setLoadingStateSending() {
+    override fun setLoadingStateSending() {
         transfer_progress_generating.setDisplayedChild(StatusIndicator.Status.OK)
         transfer_progress_sending.setDisplayedChild(StatusIndicator.Status.PROGRESS)
     }
 
-    fun setLoadingStateSendingFailed() {
+    override fun setLoadingStateSendingFailed() {
         transfer_progress_generating.setDisplayedChild(StatusIndicator.Status.OK)
         transfer_progress_sending.setDisplayedChild(StatusIndicator.Status.ERROR)
     }
 
-    fun setLoadingStateFinished() {
+    override fun setLoadingStateFinished() {
         transfer_progress_generating.setDisplayedChild(StatusIndicator.Status.OK)
         transfer_progress_sending.setDisplayedChild(StatusIndicator.Status.OK)
     }
 
-    fun finishWithInvalidAccountError() {
+    override fun finishWithInvalidAccountError() {
         finishWithErrorToast(R.string.toast_account_not_found)
     }
 
-    fun finishWithProviderConnectError(providerName: String) {
+    override fun finishWithProviderConnectError(providerName: String) {
         finishWithErrorToast(R.string.toast_openpgp_provider_error, providerName)
     }
 
-    fun launchUserInteractionPendingIntent(pendingIntent: PendingIntent) {
+    override fun launchUserInteractionPendingIntent(pendingIntent: PendingIntent) {
         try {
             startIntentSender(pendingIntent.intentSender, null, 0, 0, 0)
         } catch (e: SendIntentException) {
@@ -144,4 +144,19 @@ class AutocryptKeyTransferActivity : K9Activity() {
             return intent
         }
     }
+}
+
+interface AutocryptKeyTransferView {
+    fun setAddress(address: String)
+    fun sceneBegin()
+    fun sceneGeneratingAndSending()
+    fun sceneSendError()
+    fun sceneFinished()
+    fun setLoadingStateGenerating()
+    fun setLoadingStateSending()
+    fun setLoadingStateSendingFailed()
+    fun setLoadingStateFinished()
+    fun finishWithInvalidAccountError()
+    fun finishWithProviderConnectError(providerName: String)
+    fun launchUserInteractionPendingIntent(pendingIntent: PendingIntent)
 }

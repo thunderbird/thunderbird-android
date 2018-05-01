@@ -2,6 +2,7 @@ package com.fsck.k9.ui.endtoend
 
 
 import android.app.PendingIntent
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.SystemClock
@@ -21,7 +22,7 @@ import timber.log.Timber
 
 
 class AutocryptKeyTransferPresenter internal constructor(
-        private val context: Context, private val view: AutocryptKeyTransferActivity,
+        private val context: Context, lifecycleOwner: LifecycleOwner, private val view: AutocryptKeyTransferView,
         private val viewModel: AutocryptKeyTransferViewModel, private val openPgpApiManager: OpenPgpApiManager,
         private val transportProvider: TransportProvider) {
 
@@ -29,7 +30,7 @@ class AutocryptKeyTransferPresenter internal constructor(
     private var showTransferCodePi: PendingIntent? = null
 
     init {
-        viewModel.autocryptKeyTransferLiveData.observe(view, Observer { msg -> onLoadedAutocryptSetupMessage(msg) })
+        viewModel.autocryptKeyTransferLiveData.observe(lifecycleOwner, Observer { msg -> onLoadedAutocryptSetupMessage(msg) })
     }
 
     fun initFromIntent(accountUuid: String?) {
