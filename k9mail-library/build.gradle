@@ -11,6 +11,7 @@ if (rootProject.testCoverage) {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
     implementation 'org.apache.james:apache-mime4j-core:0.8.1'
     implementation 'org.apache.james:apache-mime4j-dom:0.8.1'
     implementation "com.squareup.okio:okio:${okioVersion}"
@@ -23,7 +24,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:0.4.1'
     androidTestImplementation 'com.madgag.spongycastle:pg:1.51.0.0'
 
-    testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}"
     testImplementation "org.robolectric:robolectric:${robolectricVersion}"
     testImplementation "junit:junit:${junitVersion}"
     testImplementation "com.google.truth:truth:${truthVersion}"

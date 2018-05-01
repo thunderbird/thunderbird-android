@@ -3,13 +3,14 @@ package com.fsck.k9.message;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+
+import com.fsck.k9.mail.internet.Headers;
 import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
@@ -34,7 +35,6 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.TempFileBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
-import org.apache.james.mime4j.codec.EncoderUtil;
 import org.apache.james.mime4j.util.MimeUtil;
 
 
@@ -233,51 +233,18 @@ public abstract class MessageBuilder {
         }
     }
 
-    /*
-     * Content-Type is defined in RFC 2045
-     *
-     * Example:
-     *
-     * Content-Type: text/plain; charset=us-ascii (Plain text)
-     *
-     * TODO: RFC 2231/2184 long parameter encoding
-     * Example:
-     *
-     * Content-Type: application/x-stuff
-     *  title*1*=us-ascii'en'This%20is%20even%20more%20
-     *  title*2*=%2A%2A%2Afun%2A%2A%2A%20
-     *  title*3="isn't it!"
-     */
-    private void addContentType(MimeBodyPart bp, String contentType, String name) throws MessagingException {
-        /*
-         * Correctly encode the filename here. Otherwise the whole
-         * header value (all parameters at once) will be encoded by
-         * MimeHeader.writeTo().
-         */
-        bp.addHeader(MimeHeader.HEADER_CONTENT_TYPE, String.format("%s;\r\n name=\"%s\"",
-                contentType,
-                EncoderUtil.encodeIfNecessary(name,
-                        EncoderUtil.Usage.WORD_ENTITY, 7)));
+    private void addContentType(MimeBodyPart bodyPart, String contentType, String name) throws MessagingException {
+        String value = Headers.contentType(contentType, name);
+        bodyPart.addHeader(MimeHeader.HEADER_CONTENT_TYPE, value);
 
         if (!MimeUtil.isMessage(contentType)) {
-            bp.setEncoding(MimeUtility.getEncodingforType(contentType));
+            bodyPart.setEncoding(MimeUtility.getEncodingforType(contentType));
         }
     }
 
-    /*
-     * TODO: RFC 2231/2184 long parameter encoding
-     *
-     * From RFC 2183 (The Content-Disposition Header Field):
-     * "Parameter values longer than 78 characters, or which
-     *  contain non-ASCII characters, MUST be encoded as specified
-     *  in [RFC 2184]."
-     *
-     */
-    private void addContentDisposition(MimeBodyPart bp, String name, Long size) {
-        bp.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, String.format(Locale.US,
-                "attachment;\r\n filename=\"%s\";\r\n size=%d",
-                EncoderUtil.encodeIfNecessary(name, EncoderUtil.Usage.WORD_ENTITY, 7),
-                size));
+    private void addContentDisposition(MimeBodyPart bodyPart, String fileName, Long size) {
+        String value = Headers.contentDisposition("attachment", fileName, size);
+        bodyPart.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, value);
     }
 
     /**
