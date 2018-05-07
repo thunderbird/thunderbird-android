@@ -23,27 +23,40 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
     private MessagingController messagingController;
 
 
-    public static AttachmentDownloadDialogFragment newInstance(int size, String message) {
+    public static AttachmentDownloadDialogFragment newInstance(long size, String message) {
         AttachmentDownloadDialogFragment fragment = new AttachmentDownloadDialogFragment();
 
         Bundle args = new Bundle();
-        args.putInt(ARG_SIZE, size);
+        args.putLong(ARG_SIZE, size);
         args.putString(ARG_MESSAGE, message);
         fragment.setArguments(args);
 
         return fragment;
     }
 
+
+    private SizeUnit getAppropriateSizeUnit(long size) {
+        for (SizeUnit sizeUnit : SizeUnit.values()) {
+            if (size < 1024 * 10 * sizeUnit.size) {
+                return sizeUnit;
+            }
+        }
+        return SizeUnit.B;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle args = getArguments();
-        int size = args.getInt(ARG_SIZE);
+        long size = args.getLong(ARG_SIZE);
         String message = args.getString(ARG_MESSAGE);
+
+        final SizeUnit sizeUnit = getAppropriateSizeUnit(size);
+
 
         messagingListener = new SimpleMessagingListener() {
             @Override
             public void updateProgress(int progress) {
-                dialog.setProgress(progress);
+                dialog.setProgress((int) (progress / sizeUnit.size));
             }
         };
 
@@ -52,12 +65,24 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
 
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage(message);
-        dialog.setMax(size);
+        dialog.setMax((int) (size / sizeUnit.size));
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         dialog.setProgress(0);
+        dialog.setProgressNumberFormat("%1d/%2d " + sizeUnit.name());
         dialog.show();
 
         return dialog;
+    }
+
+    private enum SizeUnit {
+        B(1), KB(1024L), MB(1024L * 1024L), GB(1024L * 1024L * 1024L), TB(1024L * 1024L * 1024L * 1024L), PB(
+                1024L * 1024L * 1024L * 1024L * 1024L);
+
+        public final long size;
+
+        SizeUnit(long size) {
+            this.size = size;
+        }
     }
 
     @Override
