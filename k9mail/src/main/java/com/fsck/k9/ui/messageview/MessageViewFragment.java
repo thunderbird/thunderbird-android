@@ -534,7 +534,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             }
             case R.id.dialog_attachment_progress: {
                 String message = getString(R.string.dialog_attachment_progress_title);
-                int size = (int) currentAttachmentViewInfo.size;
+                long size = currentAttachmentViewInfo.size;
                 fragment = AttachmentDownloadDialogFragment.newInstance(size, message);
                 break;
             }
