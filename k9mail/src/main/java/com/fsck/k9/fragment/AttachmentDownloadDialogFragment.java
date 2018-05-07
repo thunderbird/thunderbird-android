@@ -34,29 +34,18 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
         return fragment;
     }
 
-
-    private SizeUnit getAppropriateSizeUnit(long size) {
-        for (SizeUnit sizeUnit : SizeUnit.values()) {
-            if (size < 1024 * 10 * sizeUnit.size) {
-                return sizeUnit;
-            }
-        }
-        return SizeUnit.B;
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle args = getArguments();
         long size = args.getLong(ARG_SIZE);
         String message = args.getString(ARG_MESSAGE);
 
-        final SizeUnit sizeUnit = getAppropriateSizeUnit(size);
-
+        final SizeUnit sizeUnit = SizeUnit.getAppropriateFor(size);
 
         messagingListener = new SimpleMessagingListener() {
             @Override
             public void updateProgress(int progress) {
-                dialog.setProgress((int) (progress / sizeUnit.size));
+                dialog.setProgress(sizeUnit.valueInSizeUnit(progress));
             }
         };
 
@@ -65,24 +54,13 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
 
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage(message);
-        dialog.setMax((int) (size / sizeUnit.size));
+        dialog.setMax(sizeUnit.valueInSizeUnit(size));
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         dialog.setProgress(0);
-        dialog.setProgressNumberFormat("%1d/%2d " + sizeUnit.name());
+        dialog.setProgressNumberFormat("%1d/%2d " + sizeUnit.shortName);
         dialog.show();
 
         return dialog;
-    }
-
-    private enum SizeUnit {
-        B(1), KB(1024L), MB(1024L * 1024L), GB(1024L * 1024L * 1024L), TB(1024L * 1024L * 1024L * 1024L), PB(
-                1024L * 1024L * 1024L * 1024L * 1024L);
-
-        public final long size;
-
-        SizeUnit(long size) {
-            this.size = size;
-        }
     }
 
     @Override
@@ -102,6 +80,38 @@ public class AttachmentDownloadDialogFragment extends DialogFragment {
         super.onCancel(dialog);
     }
 
+
+    private enum SizeUnit {
+        BYTE("B", 1L),
+        KIBIBYTE("KiB", 1024L),
+        MEBIBYTE("MiB", 1024L * 1024L),
+        GIBIBYTE("GiB", 1024L * 1024L * 1024L),
+        TEBIBYTE("TiB", 1024L * 1024L * 1024L * 1024L),
+        PEBIBYTE("PiB", 1024L * 1024L * 1024L * 1024L * 1024L);
+
+        public final String shortName;
+        public final long size;
+
+
+        static SizeUnit getAppropriateFor(long value) {
+            for (SizeUnit sizeUnit : values()) {
+                if (value < 1024L * 10L * sizeUnit.size) {
+                    return sizeUnit;
+                }
+            }
+            return SizeUnit.BYTE;
+        }
+
+
+        SizeUnit(String shortName, long size) {
+            this.shortName = shortName;
+            this.size = size;
+        }
+
+        int valueInSizeUnit(long value) {
+            return (int) (value / size);
+        }
+    }
 
     public interface AttachmentDownloadCancelListener {
         void onProgressCancel(AttachmentDownloadDialogFragment fragment);
