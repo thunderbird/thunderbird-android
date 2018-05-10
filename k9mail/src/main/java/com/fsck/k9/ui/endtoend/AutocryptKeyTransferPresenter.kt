@@ -18,9 +18,13 @@ import timber.log.Timber
 
 
 class AutocryptKeyTransferPresenter internal constructor(
-        private val context: Context, lifecycleOwner: LifecycleOwner, private val view: AutocryptKeyTransferView,
-        private val viewModel: AutocryptKeyTransferViewModel, private val openPgpApiManager: OpenPgpApiManager,
-        private val transportProvider: TransportProvider) {
+        lifecycleOwner: LifecycleOwner,
+        private val context: Context,
+        private val view: AutocryptKeyTransferActivity,
+        private val viewModel: AutocryptKeyTransferViewModel,
+        private val openPgpApiManager: OpenPgpApiManager,
+        private val transportProvider: TransportProvider
+) {
 
     private lateinit var account: Account
     private lateinit var showTransferCodePi: PendingIntent
