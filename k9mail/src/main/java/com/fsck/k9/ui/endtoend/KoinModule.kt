@@ -6,5 +6,15 @@ import org.koin.dsl.module.applicationContext
 val endToEndUiModule = applicationContext {
     factory { AutocryptSetupMessageLiveEvent() }
     factory { AutocryptSetupTransferLiveEvent() }
+    factory { params ->
+        AutocryptKeyTransferPresenter(
+                params["lifecycleOwner"],
+                get(),
+                get(parameters = { params.values }),
+                get(),
+                get(),
+                get(),
+                params["autocryptTransferView"])
+    }
     viewModel { AutocryptKeyTransferViewModel(get(), get()) }
 }

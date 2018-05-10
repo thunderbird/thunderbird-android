@@ -231,7 +231,7 @@ public class AccountSettings extends K9PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), getLifecycle());
+        openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), this);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         account = Preferences.getPreferences(this).getAccount(accountUuid);

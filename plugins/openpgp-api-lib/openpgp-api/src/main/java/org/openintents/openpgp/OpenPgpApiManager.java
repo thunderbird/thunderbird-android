@@ -2,9 +2,9 @@ package org.openintents.openpgp;
 
 
 import android.app.PendingIntent;
-import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.Lifecycle.Event;
 import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.content.Intent;
@@ -32,10 +32,10 @@ public class OpenPgpApiManager implements LifecycleObserver {
     private PendingIntent userInteractionPendingIntent;
     private OpenPgpProviderState openPgpProviderState = OpenPgpProviderState.UNCONFIGURED;
 
-    public OpenPgpApiManager(Context context, Lifecycle lifecycle) {
+    public OpenPgpApiManager(Context context, LifecycleOwner lifecycleOwner) {
         this.context = context;
 
-        lifecycle.addObserver(this);
+        lifecycleOwner.getLifecycle().addObserver(this);
     }
 
     @OnLifecycleEvent(Event.ON_CREATE)

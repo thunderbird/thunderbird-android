@@ -13,20 +13,16 @@ import android.view.View
 import com.fsck.k9.R
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.finishWithErrorToast
-import com.fsck.k9.mail.TransportProvider
 import com.fsck.k9.view.StatusIndicator
 import kotlinx.android.synthetic.main.crypto_key_transfer.*
-import org.koin.android.architecture.ext.viewModel
 import org.koin.android.ext.android.inject
-import org.openintents.openpgp.OpenPgpApiManager
 import timber.log.Timber
 
 
 class AutocryptKeyTransferActivity : K9Activity() {
-    private val viewModel: AutocryptKeyTransferViewModel by viewModel()
-    private val transportProvider: TransportProvider by inject()
-    private val openPgpApiManager: OpenPgpApiManager by inject { mapOf("lifecycle" to lifecycle) }
-    private lateinit var presenter: AutocryptKeyTransferPresenter
+    private val presenter: AutocryptKeyTransferPresenter by inject {
+        mapOf("lifecycleOwner" to this, "autocryptTransferView" to this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +33,6 @@ class AutocryptKeyTransferActivity : K9Activity() {
         transferSendButton.setOnClickListener { presenter.onClickTransferSend() }
         transferButtonShowCode.setOnClickListener { presenter.onClickShowTransferCode() }
 
-        presenter = AutocryptKeyTransferPresenter(this, applicationContext, this, viewModel, openPgpApiManager, transportProvider)
         presenter.initFromIntent(accountUuid)
     }
 
