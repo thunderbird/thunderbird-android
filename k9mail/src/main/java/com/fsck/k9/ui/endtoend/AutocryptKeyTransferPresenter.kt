@@ -68,7 +68,7 @@ class AutocryptKeyTransferPresenter internal constructor(
         view.sceneGeneratingAndSending()
 
         launch(UI) {
-            delay(1200) // ux delay, to give the scene transition some breathing room
+            view.uxDelay()
             view.setLoadingStateGenerating()
 
             viewModel.autocryptSetupMessageLiveEvent.loadAutocryptSetupMessageAsync(openPgpApiManager.openPgpApi, account)
