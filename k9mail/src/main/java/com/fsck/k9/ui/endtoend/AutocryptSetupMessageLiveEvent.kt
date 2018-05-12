@@ -2,9 +2,8 @@ package com.fsck.k9.ui.endtoend
 
 import android.app.PendingIntent
 import android.content.Intent
-import android.content.res.Resources
 import com.fsck.k9.Account
-import com.fsck.k9.autocrypt.AutocryptTransferMessageUtil
+import com.fsck.k9.autocrypt.AutocryptTransferMessageCreator
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
@@ -15,18 +14,18 @@ import org.openintents.openpgp.util.OpenPgpApi
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
-class AutocryptSetupMessageLiveEvent : SingleLiveEvent<AutocryptSetupMessage>() {
-    fun loadAutocryptSetupMessageAsync(resources: Resources, openPgpApi: OpenPgpApi, account: Account) {
+class AutocryptSetupMessageLiveEvent(val messageCreator: AutocryptTransferMessageCreator) : SingleLiveEvent<AutocryptSetupMessage>() {
+    fun loadAutocryptSetupMessageAsync(openPgpApi: OpenPgpApi, account: Account) {
         launch(UI) {
             val setupMessage = bg {
-                loadAutocryptSetupMessage(resources, openPgpApi, account)
+                loadAutocryptSetupMessage(openPgpApi, account)
             }
 
             value = setupMessage.await()
         }
     }
 
-    private fun loadAutocryptSetupMessage(resources: Resources, openPgpApi: OpenPgpApi, account: Account): AutocryptSetupMessage {
+    private fun loadAutocryptSetupMessage(openPgpApi: OpenPgpApi, account: Account): AutocryptSetupMessage {
         val keyIds = longArrayOf(account.openPgpKey)
         val address = Address.parse(account.getIdentity(0).email)[0]
 
@@ -38,7 +37,7 @@ class AutocryptSetupMessageLiveEvent : SingleLiveEvent<AutocryptSetupMessage>() 
         val keyData = baos.toByteArray()
         val pi: PendingIntent = result.getParcelableExtra(OpenPgpApi.RESULT_INTENT)
 
-        val setupMessage = AutocryptTransferMessageUtil.createAutocryptTransferMessage(resources, keyData, address)
+        val setupMessage = messageCreator.createAutocryptTransferMessage(keyData, address)
 
         return AutocryptSetupMessage(setupMessage, pi)
     }

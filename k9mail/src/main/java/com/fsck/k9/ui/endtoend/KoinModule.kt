@@ -4,7 +4,7 @@ import org.koin.android.architecture.ext.viewModel
 import org.koin.dsl.module.applicationContext
 
 val endToEndUiModule = applicationContext {
-    factory { AutocryptSetupMessageLiveEvent() }
+    factory { AutocryptSetupMessageLiveEvent(get()) }
     factory { AutocryptSetupTransferLiveEvent() }
     factory { params ->
         AutocryptKeyTransferPresenter(

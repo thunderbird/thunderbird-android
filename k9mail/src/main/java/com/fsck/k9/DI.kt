@@ -1,6 +1,8 @@
 package com.fsck.k9
 
 import android.app.Application
+import android.content.Context
+import com.fsck.k9.autocrypt.autocryptModule
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.openPgpModule
 import com.fsck.k9.mail.TransportProvider
@@ -21,6 +23,7 @@ object DI {
         bean { Preferences.getPreferences(get()) }
         bean { MessagingController.getInstance(get()) }
         bean { TransportProvider() }
+        bean { (get() as Context).resources }
     }
 
     val appModules = listOf(
@@ -28,7 +31,8 @@ object DI {
             settingsUiModule,
             unreadWidgetModule,
             endToEndUiModule,
-            openPgpModule
+            openPgpModule,
+            autocryptModule
     )
 
     @JvmStatic fun start(application: Application) {
