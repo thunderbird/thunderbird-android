@@ -60,6 +60,10 @@ class AutocryptKeyTransferPresenter internal constructor(
         viewModel.autocryptSetupTransferLiveEvent.recall()
     }
 
+    fun onClickHome() {
+        view.finishAsCancelled()
+    }
+
     fun onClickTransferSend() {
         view.sceneGeneratingAndSending()
 

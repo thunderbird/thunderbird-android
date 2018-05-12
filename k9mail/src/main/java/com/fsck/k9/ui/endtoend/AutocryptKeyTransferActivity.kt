@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
+import android.view.MenuItem
 import android.view.View
 import com.fsck.k9.R
 import com.fsck.k9.activity.K9Activity
@@ -30,10 +31,21 @@ class AutocryptKeyTransferActivity : K9Activity() {
 
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
 
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         transferSendButton.setOnClickListener { presenter.onClickTransferSend() }
         transferButtonShowCode.setOnClickListener { presenter.onClickShowTransferCode() }
 
         presenter.initFromIntent(accountUuid)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == android.R.id.home) {
+            presenter.onClickHome();
+            return true
+        } else {
+            return super.onOptionsItemSelected(item)
+        }
     }
 
     fun setAddress(address: String) {
@@ -130,6 +142,11 @@ class AutocryptKeyTransferActivity : K9Activity() {
             val transition = TransitionInflater.from(this).inflateTransition(R.transition.transfer_transitions)
             TransitionManager.beginDelayedTransition(findViewById(android.R.id.content), transition)
         }
+    }
+
+    fun finishAsCancelled() {
+        setResult(RESULT_CANCELED)
+        finish()
     }
 
     companion object {
