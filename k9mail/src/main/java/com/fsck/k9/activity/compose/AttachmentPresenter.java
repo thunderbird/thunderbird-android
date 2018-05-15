@@ -6,15 +6,15 @@ import java.util.LinkedHashMap;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
