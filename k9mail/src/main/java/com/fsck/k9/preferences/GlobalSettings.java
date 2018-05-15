@@ -422,7 +422,7 @@ public class GlobalSettings {
             super("");
 
             Map<String, String> mapping = new HashMap<>();
-            String[] values = K9.app.getResources().getStringArray(R.array.settings_language_values);
+            String[] values = K9.app.getResources().getStringArray(R.array.language_values);
             for (String value : values) {
                 if (value.length() == 0) {
                     mapping.put("", "default");

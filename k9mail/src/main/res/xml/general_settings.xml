@@ -16,16 +16,16 @@
 
             <com.fsck.k9.ui.settings.general.LanguagePreference
                 android:dialogTitle="@string/settings_language_label"
-                android:entries="@array/settings_language_entries"
-                android:entryValues="@array/settings_language_values"
+                android:entries="@array/language_entries"
+                android:entryValues="@array/language_values"
                 android:key="language"
                 android:summary="%s"
                 android:title="@string/settings_language_label" />
 
             <ListPreference
                 android:dialogTitle="@string/settings_theme_label"
-                android:entries="@array/settings_theme_entries"
-                android:entryValues="@array/settings_theme_values"
+                android:entries="@array/theme_entries"
+                android:entryValues="@array/theme_values"
                 android:key="theme"
                 android:summary="%s"
                 android:title="@string/settings_theme_label" />
@@ -39,16 +39,16 @@
             <ListPreference
                 android:dependency="fixed_message_view_theme"
                 android:dialogTitle="@string/settings_message_theme_label"
-                android:entries="@array/settings_message_theme_entries"
-                android:entryValues="@array/settings_message_theme_values"
+                android:entries="@array/message_theme_entries"
+                android:entryValues="@array/message_theme_values"
                 android:key="messageViewTheme"
                 android:summary="%s"
                 android:title="@string/settings_message_theme_label" />
 
             <ListPreference
                 android:dialogTitle="@string/settings_compose_theme_label"
-                android:entries="@array/settings_message_theme_entries"
-                android:entryValues="@array/settings_message_theme_values"
+                android:entries="@array/message_theme_entries"
+                android:entryValues="@array/message_theme_values"
                 android:key="message_compose_theme"
                 android:summary="%s"
                 android:title="@string/settings_compose_theme_label" />
@@ -110,8 +110,8 @@
 
             <ListPreference
                 android:dialogTitle="@string/global_settings_preview_lines_label"
-                android:entries="@array/settings_preview_lines_entries"
-                android:entryValues="@array/settings_preview_lines_values"
+                android:entries="@array/preview_lines_entries"
+                android:entryValues="@array/preview_lines_values"
                 android:key="messagelist_preview_lines"
                 android:summary="%s"
                 android:title="@string/global_settings_preview_lines_label" />
@@ -176,8 +176,8 @@
 
             <ListPreference
                 android:dialogTitle="@string/global_settings_splitview_mode_label"
-                android:entries="@array/global_settings_splitview_mode_entries"
-                android:entryValues="@array/global_settings_splitview_mode_values"
+                android:entries="@array/splitview_mode_entries"
+                android:entryValues="@array/splitview_mode_values"
                 android:key="splitview_mode"
                 android:summary="%s"
                 android:title="@string/global_settings_splitview_mode_label" />
@@ -195,8 +195,8 @@
 
             <MultiSelectListPreference
                 android:dialogTitle="@string/global_settings_messageview_visible_refile_actions_title"
-                android:entries="@array/general_settings_messageview_visible_refile_actions_entries"
-                android:entryValues="@array/general_settings_messageview_visible_refile_actions_values"
+                android:entries="@array/messageview_visible_refile_actions_entries"
+                android:entryValues="@array/messageview_visible_refile_actions_values"
                 android:key="messageview_visible_refile_actions"
                 android:summary="@string/global_settings_messageview_visible_refile_actions_summary"
                 android:title="@string/global_settings_messageview_visible_refile_actions_title" />
@@ -226,8 +226,8 @@
 
         <MultiSelectListPreference
             android:dialogTitle="@string/volume_navigation_title"
-            android:entries="@array/general_settings_volume_navigation_entries"
-            android:entryValues="@array/general_settings_volume_navigation_values"
+            android:entries="@array/volume_navigation_entries"
+            android:entryValues="@array/volume_navigation_values"
             android:key="volume_navigation"
             android:title="@string/volume_navigation_title" />
 
@@ -243,8 +243,8 @@
 
         <MultiSelectListPreference
             android:dialogTitle="@string/global_settings_confirm_actions_title"
-            android:entries="@array/general_settings_confirm_action_entries"
-            android:entryValues="@array/general_settings_confirm_action_values"
+            android:entries="@array/confirm_action_entries"
+            android:entryValues="@array/confirm_action_values"
             android:key="confirm_actions"
             android:summary="@string/global_settings_confirm_actions_summary"
             android:title="@string/global_settings_confirm_actions_title" />
@@ -283,16 +283,16 @@
 
         <ListPreference
             android:dialogTitle="@string/global_settings_notification_quick_delete_title"
-            android:entries="@array/global_settings_notification_quick_delete_entries"
-            android:entryValues="@array/global_settings_notification_quick_delete_values"
+            android:entries="@array/notification_quick_delete_entries"
+            android:entryValues="@array/notification_quick_delete_values"
             android:key="notification_quick_delete"
             android:summary="%s"
             android:title="@string/global_settings_notification_quick_delete_title" />
 
         <ListPreference
             android:dialogTitle="@string/global_settings_lock_screen_notification_visibility_title"
-            android:entries="@array/global_settings_lock_screen_notification_visibility_entries"
-            android:entryValues="@array/global_settings_lock_screen_notification_visibility_values"
+            android:entries="@array/lock_screen_notification_visibility_entries"
+            android:entryValues="@array/lock_screen_notification_visibility_values"
             android:key="lock_screen_notification_visibility"
             android:summary="%s"
             android:title="@string/global_settings_lock_screen_notification_visibility_title" />
@@ -331,8 +331,8 @@
         android:title="@string/privacy_preferences">
 
         <ListPreference
-            android:entries="@array/global_settings_notification_hide_subject_entries"
-            android:entryValues="@array/global_settings_notification_hide_subject_values"
+            android:entries="@array/notification_hide_subject_entries"
+            android:entryValues="@array/notification_hide_subject_values"
             android:key="notification_hide_subject"
             android:summary="%s"
             android:title="@string/global_settings_notification_hide_subject_title" />
