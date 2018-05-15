@@ -104,6 +104,7 @@ class AboutActivity : K9Activity() {
     companion object {
         private val USED_LIBRARIES = mapOf(
                 "Android Support Library" to "https://developer.android.com/topic/libraries/support-library/index.html",
+                "Android-Support-Preference-V7-Fix" to "https://github.com/Gericop/Android-Support-Preference-V7-Fix",
                 "ckChangeLog" to "https://github.com/cketti/ckChangeLog",
                 "Commons IO" to "http://commons.apache.org/io/",
                 "Glide" to "https://github.com/bumptech/glide",
