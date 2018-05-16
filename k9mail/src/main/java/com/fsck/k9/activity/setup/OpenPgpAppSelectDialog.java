@@ -4,10 +4,8 @@ package com.fsck.k9.activity.setup;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +16,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +37,7 @@ import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import timber.log.Timber;
 
 
-public class OpenPgpAppSelectDialog extends Activity {
+public class OpenPgpAppSelectDialog extends FragmentActivity {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String OPENKEYCHAIN_PACKAGE = "org.sufficientlysecure.keychain";
@@ -97,17 +97,17 @@ public class OpenPgpAppSelectDialog extends Activity {
 
     private void showOpenPgpSelectDialogFragment() {
         OpenPgpAppSelectFragment fragment = new OpenPgpAppSelectFragment();
-        fragment.show(getFragmentManager(), FRAG_OPENPGP_SELECT);
+        fragment.show(getSupportFragmentManager(), FRAG_OPENPGP_SELECT);
     }
 
     private void showApgDeprecationDialogFragment() {
         ApgDeprecationDialogFragment fragment = new ApgDeprecationDialogFragment();
-        fragment.show(getFragmentManager(), FRAG_APG_DEPRECATE);
+        fragment.show(getSupportFragmentManager(), FRAG_APG_DEPRECATE);
     }
 
     private void showOpenKeychainInfoFragment() {
         OpenKeychainInfoFragment fragment = new OpenKeychainInfoFragment();
-        fragment.show(getFragmentManager(), FRAG_OPENKEYCHAIN_INFO);
+        fragment.show(getSupportFragmentManager(), FRAG_OPENKEYCHAIN_INFO);
     }
 
     public static class OpenPgpAppSelectFragment extends DialogFragment {

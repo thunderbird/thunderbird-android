@@ -1,20 +1,20 @@
 package com.fsck.k9.activity.loader;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
-import timber.log.Timber;
+import android.support.v4.content.AsyncTaskLoader;
 
 import com.fsck.k9.activity.misc.Attachment;
-
 import com.fsck.k9.activity.misc.Attachment.LoadingState;
 import de.cketti.safecontentresolver.SafeContentResolver;
 import de.cketti.safecontentresolver.SafeContentResolverCompat;
 import org.apache.commons.io.IOUtils;
+import timber.log.Timber;
 
 /**
  * Loader to fetch the content of an attachment.

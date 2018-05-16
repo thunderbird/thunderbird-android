@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentManager;
-import android.app.FragmentManager.OnBackStackChangedListener;
-import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +15,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -267,7 +267,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
      * Get references to existing fragments if the activity was restarted.
      */
     private void findFragments() {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         messageListFragment = (MessageListFragment) fragmentManager.findFragmentById(
                 R.id.message_list_container);
         messageViewFragment = (MessageViewFragment) fragmentManager.findFragmentById(
@@ -280,7 +280,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
      * @see #findFragments()
      */
     private void initializeFragments() {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.addOnBackStackChangedListener(this);
 
         boolean hasMessageListFragment = (messageListFragment != null);
@@ -1174,7 +1174,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
 
             MessageViewFragment fragment = MessageViewFragment.newInstance(messageReference);
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.message_view_container, fragment);
             messageViewFragment = fragment;
             ft.commit();
@@ -1291,7 +1291,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     private void addMessageListFragment(MessageListFragment fragment, boolean addToBackStack) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         ft.replace(R.id.message_list_container, fragment);
         if (addToBackStack)
@@ -1350,7 +1350,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
      */
     private void removeMessageViewFragment() {
         if (messageViewFragment != null) {
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.remove(messageViewFragment);
             messageViewFragment = null;
             ft.commit();
@@ -1360,7 +1360,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     private void removeMessageListFragment() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.remove(messageListFragment);
         messageListFragment = null;
         ft.commit();
@@ -1374,7 +1374,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public void goBack() {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         if (displayMode == DisplayMode.MESSAGE_VIEW) {
             showMessageList();
         } else if (fragmentManager.getBackStackEntryCount() > 0) {

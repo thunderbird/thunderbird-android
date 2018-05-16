@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.LoaderManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
 import android.view.Menu;
 
 import com.fsck.k9.Account;

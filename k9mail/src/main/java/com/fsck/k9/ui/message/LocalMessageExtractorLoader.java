@@ -1,13 +1,13 @@
 package com.fsck.k9.ui.message;
 
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
+import android.support.v4.content.AsyncTaskLoader;
+
 import timber.log.Timber;
 
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfoExtractor;
 import com.fsck.k9.mailstore.MessageViewInfo;

@@ -4,8 +4,8 @@ package com.fsck.k9.activity.compose;
 import java.util.Arrays;
 import java.util.List;
 
-import android.app.LoaderManager;
 import android.app.PendingIntent;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.text.TextWatcher;
@@ -410,22 +410,22 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
 
     public void showOpenPgpInlineDialog(boolean firstTime) {
         PgpInlineDialog dialog = PgpInlineDialog.newInstance(firstTime, R.id.crypto_special_mode);
-        dialog.show(activity.getFragmentManager(), "openpgp_inline");
+        dialog.show(activity.getSupportFragmentManager(), "openpgp_inline");
     }
 
     public void showOpenPgpSignOnlyDialog(boolean firstTime) {
         PgpSignOnlyDialog dialog = PgpSignOnlyDialog.newInstance(firstTime, R.id.crypto_special_mode);
-        dialog.show(activity.getFragmentManager(), "openpgp_signonly");
+        dialog.show(activity.getSupportFragmentManager(), "openpgp_signonly");
     }
 
     public void showOpenPgpEnabledErrorDialog(final boolean isGotItDialog) {
         PgpEnabledErrorDialog dialog = PgpEnabledErrorDialog.newInstance(isGotItDialog, R.id.crypto_status_anchor);
-        dialog.show(activity.getFragmentManager(), "openpgp_error");
+        dialog.show(activity.getSupportFragmentManager(), "openpgp_error");
     }
 
     public void showOpenPgpEncryptExplanationDialog() {
         PgpEncryptDescriptionDialog dialog = PgpEncryptDescriptionDialog.newInstance(R.id.crypto_status_anchor);
-        dialog.show(activity.getFragmentManager(), "openpgp_description");
+        dialog.show(activity.getSupportFragmentManager(), "openpgp_description");
     }
 
     public void launchUserInteractionPendingIntent(PendingIntent pendingIntent, int requestCode) {

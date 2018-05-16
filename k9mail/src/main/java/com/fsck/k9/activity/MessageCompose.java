@@ -284,8 +284,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
         ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider = new ComposePgpEnableByDefaultDecider();
         OpenPgpApiManager openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), getLifecycle());
-        recipientPresenter = new RecipientPresenter(getApplicationContext(), getLoaderManager(), openPgpApiManager,
-                recipientMvpView, account, composePgpInlineDecider, composePgpEnableByDefaultDecider,
+        recipientPresenter = new RecipientPresenter(getApplicationContext(), getSupportLoaderManager(),
+                openPgpApiManager, recipientMvpView, account, composePgpInlineDecider, composePgpEnableByDefaultDecider,
                 AutocryptStatusInteractor.getInstance(), new ReplyToParser(), this
         );
         recipientPresenter.asyncUpdateCryptoStatus();
@@ -299,7 +299,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
         quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, account);
-        attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView, getLoaderManager(), this);
+        attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView,
+                getSupportLoaderManager(), this);
 
         messageContentView = (EolConvertingEditText) findViewById(R.id.message_content);
         messageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
@@ -396,8 +397,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if (action == Action.REPLY || action == Action.REPLY_ALL ||
                     action == Action.FORWARD || action == Action.FORWARD_AS_ATTACHMENT ||
                     action == Action.EDIT_DRAFT) {
-                messageLoaderHelper = new MessageLoaderHelper(this, getLoaderManager(), getFragmentManager(),
-                        messageLoaderCallbacks);
+                messageLoaderHelper = new MessageLoaderHelper(this, getSupportLoaderManager(),
+                        getSupportFragmentManager(), messageLoaderCallbacks);
                 internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_ON);
 
                 if (action == Action.FORWARD_AS_ATTACHMENT) {
@@ -1697,13 +1698,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             ProgressDialogFragment fragment = ProgressDialogFragment.newInstance(title,
                     getString(R.string.fetching_attachment_dialog_message));
-            fragment.show(getFragmentManager(), FRAGMENT_WAITING_FOR_ATTACHMENT);
+            fragment.show(getSupportFragmentManager(), FRAGMENT_WAITING_FOR_ATTACHMENT);
         }
 
         @Override
         public void dismissWaitingForAttachmentDialog() {
             ProgressDialogFragment fragment = (ProgressDialogFragment)
-                    getFragmentManager().findFragmentByTag(FRAGMENT_WAITING_FOR_ATTACHMENT);
+                    getSupportFragmentManager().findFragmentByTag(FRAGMENT_WAITING_FOR_ATTACHMENT);
 
             if (fragment != null) {
                 fragment.dismiss();
