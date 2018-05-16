@@ -38,7 +38,7 @@ public class ColorPickerDialog extends AlertDialog {
         mColorChangedListener = listener;
 
         @SuppressLint("InflateParams")
-        View view = LayoutInflater.from(context).inflate(R.layout.color_picker_dialog, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.holo_color_picker_dialog, null);
 
         mColorPicker = (ColorPicker) view.findViewById(R.id.color_picker);
         mColorPicker.setColor(color);

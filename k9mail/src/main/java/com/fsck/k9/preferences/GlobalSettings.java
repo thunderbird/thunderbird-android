@@ -30,7 +30,6 @@ import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.PseudoEnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
 import com.fsck.k9.preferences.Settings.SettingsUpgrader;
-import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
 import com.fsck.k9.preferences.Settings.WebFontSizeSetting;
 
@@ -423,7 +422,7 @@ public class GlobalSettings {
             super("");
 
             Map<String, String> mapping = new HashMap<>();
-            String[] values = K9.app.getResources().getStringArray(R.array.settings_language_values);
+            String[] values = K9.app.getResources().getStringArray(R.array.language_values);
             for (String value : values) {
                 if (value.length() == 0) {
                     mapping.put("", "default");
@@ -545,13 +544,15 @@ public class GlobalSettings {
     }
 
     private static class TimeSetting extends SettingsDescription<String> {
+        private static final String VALIDATION_EXPRESSION = "[0-2]*[0-9]:[0-5]*[0-9]";
+
         TimeSetting(String defaultValue) {
             super(defaultValue);
         }
 
         @Override
         public String fromString(String value) throws InvalidSettingValueException {
-            if (!value.matches(TimePickerPreference.VALIDATION_EXPRESSION)) {
+            if (!value.matches(VALIDATION_EXPRESSION)) {
                 throw new InvalidSettingValueException();
             }
             return value;
