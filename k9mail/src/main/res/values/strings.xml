@@ -1333,4 +1333,6 @@ You can keep this message and use it as a backup for your secret key. If you wan
 </string>
     <string name="ac_transfer_error_send">An error occurred while sending the message. Please check your network connectivity and outgoing server configuration.</string>
 
+    <string name="switch_on">On</string>
+    <string name="switch_off">Off</string>
 </resources>

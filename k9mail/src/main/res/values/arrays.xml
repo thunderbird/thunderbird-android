@@ -324,9 +324,9 @@
     </string-array>
 
     <string-array name="account_setup_delete_policy_values" translatable="false">
-        <item>0</item>
-        <item>2</item>
-        <item>3</item>
+        <item>NEVER</item>
+        <item>ON_DELETE</item>
+        <item>MARK_AS_READ</item>
     </string-array>
 
     <string-array name="account_setup_expunge_policy_entries">

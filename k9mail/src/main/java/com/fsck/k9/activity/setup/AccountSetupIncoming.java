@@ -94,6 +94,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         context.startActivity(intentActionEditIncomingSettings(context, account));
     }
 
+    public static void actionEditIncomingSettings(Context context, String accountUuid) {
+        Intent intent = new Intent(context, AccountSetupIncoming.class);
+        intent.setAction(Intent.ACTION_EDIT);
+        intent.putExtra(EXTRA_ACCOUNT, accountUuid);
+
+        context.startActivity(intent);
+    }
+
     public static Intent intentActionEditIncomingSettings(Context context, Account account) {
         Intent i = new Intent(context, AccountSetupIncoming.class);
         i.setAction(Intent.ACTION_EDIT);

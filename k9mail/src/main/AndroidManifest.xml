@@ -313,6 +313,10 @@
             android:name=".ui.settings.general.GeneralSettingsActivity"
             android:label="@string/general_settings_title" />
 
+        <activity
+            android:name=".ui.settings.account.AccountSettingsActivity"
+            android:label="@string/account_settings_title_fmt" />
+
         <receiver
             android:name=".service.BootReceiver"
             android:enabled="true">

@@ -1,5 +1,6 @@
 package com.fsck.k9.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -19,6 +20,12 @@ public class ManageIdentities extends ChooseIdentity {
     private boolean mIdentitiesChanged = false;
 
     private static final int ACTIVITY_EDIT_IDENTITY = 1;
+
+    public static void start(Activity activity, String accountUuid) {
+        Intent intent = new Intent(activity, ManageIdentities.class);
+        intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, accountUuid);
+        activity.startActivity(intent);
+    }
 
     @Override
     protected void setupClickListeners() {

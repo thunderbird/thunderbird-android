@@ -36,6 +36,13 @@ public class AccountSetupComposition extends K9Activity {
         context.startActivity(i);
     }
 
+    public static void actionEditCompositionSettings(Activity context, String accountUuid) {
+        Intent intent = new Intent(context, AccountSetupComposition.class);
+        intent.setAction(Intent.ACTION_EDIT);
+        intent.putExtra(EXTRA_ACCOUNT, accountUuid);
+        context.startActivity(intent);
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

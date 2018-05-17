@@ -27,9 +27,10 @@ dependencies {
     implementation 'commons-io:commons-io:2.4'
     implementation "com.android.support:support-v4:${androidSupportLibraryVersion}"
     implementation "com.android.support:appcompat-v7:${androidSupportLibraryVersion}"
-    implementation "com.android.support:preference-v14:${androidSupportLibraryVersion}"
+    implementation 'com.takisoft.fix:preference-v7:27.1.1.1'
     implementation 'com.takisoft.fix:preference-v7-datetimepicker:27.1.1.1'
     implementation 'com.takisoft.fix:preference-v7-colorpicker:27.1.1.1'
+    implementation 'com.takisoft.fix:preference-v7-ringtone:27.1.1.1'
     implementation "com.android.support:recyclerview-v7:${androidSupportLibraryVersion}"
     implementation "android.arch.lifecycle:extensions:1.1.0"
     implementation 'androidx.core:core-ktx:0.3'
