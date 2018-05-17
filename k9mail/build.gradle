@@ -55,6 +55,7 @@ dependencies {
     implementation "org.jetbrains.anko:anko-coroutines:0.10.4"
     implementation "org.koin:koin-android-architecture:${versions.koin}"
     implementation 'com.mikepenz:materialdrawer:6.0.7'
+    implementation 'com.github.ByteHamster:SearchPreference:v1.1.1'
 
     androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
 
