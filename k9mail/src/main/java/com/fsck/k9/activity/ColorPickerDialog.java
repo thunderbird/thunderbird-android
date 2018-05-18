@@ -40,10 +40,11 @@ public class ColorPickerDialog extends AlertDialog {
         @SuppressLint("InflateParams")
         View view = LayoutInflater.from(context).inflate(R.layout.holo_color_picker_dialog, null);
 
-        mColorPicker = (ColorPicker) view.findViewById(R.id.color_picker);
+        mColorPicker = view.findViewById(R.id.color_picker);
         mColorPicker.setColor(color);
 
         setView(view);
+        setTitle(R.string.color_picker_default_title);
 
         setButton(BUTTON_POSITIVE, context.getString(R.string.okay_action),
                 new DialogInterface.OnClickListener() {
@@ -51,6 +52,16 @@ public class ColorPickerDialog extends AlertDialog {
             public void onClick(DialogInterface dialog, int which) {
                 if (mColorChangedListener != null) {
                     mColorChangedListener.colorChanged(mColorPicker.getColor());
+                }
+            }
+        });
+
+        setButton(BUTTON_NEUTRAL, context.getString(R.string.account_settings_color_none),
+                new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (mColorChangedListener != null) {
+                    mColorChangedListener.colorChanged(0x0); // Transparent
                 }
             }
         });
