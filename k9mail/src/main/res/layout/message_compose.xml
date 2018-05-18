@@ -71,6 +71,8 @@
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
                 android:imeOptions="actionDone|flagNoEnterAction"
                 android:minLines="3"
+                android:paddingLeft="12dip"
+                android:paddingRight="12dip"
                 style="@style/ComposeEditTextLarge"
                 />
 
