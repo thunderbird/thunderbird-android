@@ -604,6 +604,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_settings_color_label">Account color</string>
     <string name="account_settings_color_summary">The accent color of this account used in folder and account list</string>
+    <string name="account_settings_color_none">No color</string>
 
     <string name="account_settings_led_color_label">Notification LED color</string>
     <string name="account_settings_led_color_summary">The color your device LED should blink for this account</string>
