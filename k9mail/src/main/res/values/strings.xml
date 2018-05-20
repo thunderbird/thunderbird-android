@@ -1327,7 +1327,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="ac_transfer_msg_subject">Autocrypt Setup Message</string>
     <string name="ac_transfer_msg_body">This message contains all information to transfer your Autocrypt settings along with your secret key securely from your original device.
 
-To set up your new device for Autocrypt, please follow the instuctions that should be presented by your new device.
+To set up your new device for Autocrypt, please follow the instructions that should be presented by your new device.
 
 You can keep this message and use it as a backup for your secret key. If you want to do this, you should write down the password and store it securely.
 </string>
