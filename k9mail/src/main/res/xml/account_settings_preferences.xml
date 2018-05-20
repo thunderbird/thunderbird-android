@@ -504,6 +504,12 @@
             android:summary="@string/account_settings_crypto_encrypt_subject_subtitle"
             />
 
+        <Preference
+            android:key="autocrypt_transfer"
+            android:singleLine="true"
+            android:title="@string/ac_transfer_setting_title"
+            android:summary="@string/ac_transfer_setting_summary" />
+
     </PreferenceScreen>
 
 </PreferenceScreen>

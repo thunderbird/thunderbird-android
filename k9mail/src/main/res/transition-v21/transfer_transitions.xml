@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android" android:transitionOrdering="sequential">
+    <autoTransition>
+        <targets>
+            <target android:excludeId="@+id/transferLayoutSending" />
+            <target android:excludeId="@+id/transferButtonShowCode" />
+        </targets>
+    </autoTransition>
+    <autoTransition>
+        <targets>
+            <target android:targetId="@+id/transferLayoutSending" />
+            <target android:targetId="@+id/transferButtonShowCode" />
+        </targets>
+    </autoTransition>
+</transitionSet>

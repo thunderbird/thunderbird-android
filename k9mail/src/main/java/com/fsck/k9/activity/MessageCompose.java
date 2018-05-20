@@ -283,7 +283,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
         ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider = new ComposePgpEnableByDefaultDecider();
-        OpenPgpApiManager openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), getLifecycle());
+        OpenPgpApiManager openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), this);
         recipientPresenter = new RecipientPresenter(getApplicationContext(), getSupportLoaderManager(),
                 openPgpApiManager, recipientMvpView, account, composePgpInlineDecider, composePgpEnableByDefaultDecider,
                 AutocryptStatusInteractor.getInstance(), new ReplyToParser(), this

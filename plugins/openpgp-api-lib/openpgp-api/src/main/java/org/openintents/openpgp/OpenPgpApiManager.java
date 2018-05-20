@@ -2,9 +2,9 @@ package org.openintents.openpgp;
 
 
 import android.app.PendingIntent;
-import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.Lifecycle.Event;
 import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import android.text.TextUtils;
 
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
+import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
 import timber.log.Timber;
@@ -31,10 +32,10 @@ public class OpenPgpApiManager implements LifecycleObserver {
     private PendingIntent userInteractionPendingIntent;
     private OpenPgpProviderState openPgpProviderState = OpenPgpProviderState.UNCONFIGURED;
 
-    public OpenPgpApiManager(Context context, Lifecycle lifecycle) {
+    public OpenPgpApiManager(Context context, LifecycleOwner lifecycleOwner) {
         this.context = context;
 
-        lifecycle.addObserver(this);
+        lifecycleOwner.getLifecycle().addObserver(this);
     }
 
     @OnLifecycleEvent(Event.ON_CREATE)
@@ -207,6 +208,12 @@ public class OpenPgpApiManager implements LifecycleObserver {
             Timber.e("Obtained OpenPgpApi object, but service is not bound! Inconsistent state?");
         }
         return openPgpApi;
+    }
+
+    public String getReadableOpenPgpProviderName() {
+        String openPgpProviderName =
+                OpenPgpProviderUtil.getOpenPgpProviderName(context.getPackageManager(), openPgpProvider);
+        return openPgpProviderName != null ? openPgpProviderName : openPgpProvider;
     }
 
     public OpenPgpProviderState getOpenPgpProviderState() {
