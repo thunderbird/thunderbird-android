@@ -36,7 +36,6 @@ import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.MessageReference;
-import com.fsck.k9.activity.setup.AccountSettings;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
@@ -49,6 +48,7 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener;
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
+import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import com.fsck.k9.view.MessageHeader;
 import timber.log.Timber;
@@ -702,7 +702,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         @Override
         public void showCryptoConfigDialog() {
-            AccountSettings.actionSettingsOpenPgp(getActivity(), mAccount);
+            AccountSettingsActivity.startCryptoSettings(getActivity(), mAccount.getUuid());
         }
     };
 
