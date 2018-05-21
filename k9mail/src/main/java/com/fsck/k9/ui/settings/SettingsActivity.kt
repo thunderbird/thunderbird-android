@@ -8,8 +8,8 @@ import android.view.MenuItem
 import com.fsck.k9.Account
 import com.fsck.k9.R
 import com.fsck.k9.activity.K9Activity
-import com.fsck.k9.activity.setup.AccountSettings
-import com.fsck.k9.ui.observe
+import com.fsck.k9.ui.observeNotNull
+import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.Section
@@ -50,7 +50,7 @@ class SettingsActivity : K9Activity() {
     }
 
     private fun populateSettingsList() {
-        viewModel.accounts.observe(this) { accounts ->
+        viewModel.accounts.observeNotNull(this) { accounts ->
             populateSettingsList(accounts)
         }
     }
@@ -96,7 +96,7 @@ class SettingsActivity : K9Activity() {
     }
 
     private fun launchAccountSettings(account: Account) {
-        AccountSettings.actionSettings(this, account)
+        AccountSettingsActivity.start(this, account.uuid)
     }
 
 

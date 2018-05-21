@@ -57,7 +57,7 @@ public class AccountSettings {
                 new V(1, new StringSetting("INBOX"))
         ));
         s.put("automaticCheckIntervalMinutes", Settings.versions(
-                new V(1, new IntegerResourceSetting(-1, R.array.account_settings_check_frequency_values))
+                new V(1, new IntegerResourceSetting(-1, R.array.check_frequency_values))
         ));
         s.put("chipColor", Settings.versions(
                 new V(1, new ColorSetting(0xFF0000FF))
@@ -70,14 +70,14 @@ public class AccountSettings {
         ));
         s.put("displayCount", Settings.versions(
                 new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
-                        R.array.account_settings_display_count_values))
+                        R.array.display_count_values))
         ));
         s.put("draftsFolderName", Settings.versions(
                 new V(1, new StringSetting(K9.FOLDER_NONE))
         ));
         s.put("expungePolicy", Settings.versions(
                 new V(1, new StringResourceSetting(Expunge.EXPUNGE_IMMEDIATELY.name(),
-                        R.array.account_setup_expunge_policy_values))
+                        R.array.expunge_policy_values))
         ));
         s.put("folderDisplayMode", Settings.versions(
                 new V(1, new EnumSetting<>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
@@ -116,10 +116,10 @@ public class AccountSettings {
                 new V(1, new IntegerRangeSetting(0, 100, 10))
         ));
         s.put("maximumAutoDownloadMessageSize", Settings.versions(
-                new V(1, new IntegerResourceSetting(32768, R.array.account_settings_autodownload_message_size_values))
+                new V(1, new IntegerResourceSetting(32768, R.array.autodownload_message_size_values))
         ));
         s.put("maximumPolledMessageAge", Settings.versions(
-                new V(1, new IntegerResourceSetting(-1, R.array.account_settings_message_age_values))
+                new V(1, new IntegerResourceSetting(-1, R.array.message_age_values))
         ));
         s.put("messageFormat", Settings.versions(
                 new V(1, new EnumSetting<>(MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT))
@@ -206,17 +206,17 @@ public class AccountSettings {
                 new V(1, new BooleanSetting(false))
         ));
         s.put("vibratePattern", Settings.versions(
-                new V(1, new IntegerResourceSetting(0, R.array.account_settings_vibrate_pattern_values))
+                new V(1, new IntegerResourceSetting(0, R.array.vibrate_pattern_values))
         ));
         s.put("vibrateTimes", Settings.versions(
-                new V(1, new IntegerResourceSetting(5, R.array.account_settings_vibrate_times_label))
+                new V(1, new IntegerResourceSetting(5, R.array.vibrate_times_label))
         ));
         s.put("allowRemoteSearch", Settings.versions(
                 new V(18, new BooleanSetting(true))
         ));
         s.put("remoteSearchNumResults", Settings.versions(
                 new V(18, new IntegerResourceSetting(Account.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
-                        R.array.account_settings_remote_search_num_results_values))
+                        R.array.remote_search_num_results_values))
         ));
         s.put("remoteSearchFullText", Settings.versions(
                 new V(18, new BooleanSetting(false))

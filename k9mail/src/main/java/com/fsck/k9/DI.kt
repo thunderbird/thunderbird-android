@@ -6,7 +6,10 @@ import com.fsck.k9.autocrypt.autocryptModule
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.openPgpModule
 import com.fsck.k9.mail.TransportProvider
+import com.fsck.k9.mailstore.StorageManager
+import com.fsck.k9.mailstore.mailStoreModule
 import com.fsck.k9.ui.endtoend.endToEndUiModule
+import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.settings.settingsUiModule
 import com.fsck.k9.widget.unread.unreadWidgetModule
 import org.koin.Koin
@@ -23,7 +26,9 @@ object DI {
         bean { Preferences.getPreferences(get()) }
         bean { MessagingController.getInstance(get()) }
         bean { TransportProvider() }
-        bean { (get() as Context).resources }
+        bean { get<Context>().resources }
+        bean { StorageManager.getInstance(get()) }
+        bean { FolderNameFormatter(get()) }
     }
 
     val appModules = listOf(
@@ -32,7 +37,8 @@ object DI {
             unreadWidgetModule,
             endToEndUiModule,
             openPgpModule,
-            autocryptModule
+            autocryptModule,
+            mailStoreModule
     )
 
     @JvmStatic fun start(application: Application) {
@@ -53,5 +59,10 @@ object DI {
         } else {
             koinContext.resolveInstance(kClass, parameters) { koinContext.beanRegistry.searchByName(name) }
         }
+    }
+
+    inline fun <reified T : Any> get(name: String = "", noinline parameters: Parameters = { emptyMap() }): T {
+        val koinContext = StandAloneContext.koinContext as KoinContext
+        return koinContext.get(name, parameters)
     }
 }

@@ -1,4 +1,4 @@
-package com.fsck.k9.activity.setup;
+package com.fsck.k9.ui.settings.account;
 
 
 import java.util.ArrayList;
@@ -32,7 +32,6 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
 import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.OpenPgpAppPreference;
 import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import timber.log.Timber;
 
@@ -41,6 +40,7 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String OPENKEYCHAIN_PACKAGE = "org.sufficientlysecure.keychain";
+    private static final String PACKAGE_NAME_APG = "org.thialfihar.android.apg";
     private static final String APG_PROVIDER_PLACEHOLDER = "apg-placeholder";
 
     public static final String FRAG_OPENPGP_SELECT = "openpgp_select";
@@ -124,7 +124,7 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
                     getResources().getDrawable(R.drawable.ic_action_cancel_launchersize_light));
             openPgpProviderList.add(noneEntry);
 
-            if (OpenPgpAppPreference.isApgInstalled(getActivity())) {
+            if (isApgInstalled(getActivity())) {
                 Drawable icon = getResources().getDrawable(R.drawable.ic_apg_small);
                 openPgpProviderList.add(new OpenPgpProviderEntry(
                         APG_PROVIDER_PLACEHOLDER, getString(R.string.apg), icon));
@@ -166,6 +166,13 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
                             icon, marketIntent));
                 }
             }
+        }
+
+        private boolean isApgInstalled(Context context) {
+            Intent intent = new Intent("org.openintents.openpgp.IOpenPgpService");
+            intent.setPackage(PACKAGE_NAME_APG);
+            List<ResolveInfo> resInfo = context.getPackageManager().queryIntentServices(intent, 0);
+            return resInfo != null && !resInfo.isEmpty();
         }
 
         @Override

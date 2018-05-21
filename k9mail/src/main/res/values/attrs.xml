@@ -95,5 +95,9 @@
         <attr name="previewInitialChild" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="AutocryptPreferEncryptPreference">
+        <attr name="summaryOn" format="string" />
+        <attr name="summaryOff" format="string" />
+    </declare-styleable>
 
 </resources>
