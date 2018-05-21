@@ -33,8 +33,8 @@
 
         <ListPreference
             android:dialogTitle="@string/account_settings_show_pictures_label"
-            android:entries="@array/account_settings_show_pictures_entries"
-            android:entryValues="@array/account_settings_show_pictures_values"
+            android:entries="@array/show_pictures_entries"
+            android:entryValues="@array/show_pictures_values"
             android:key="show_pictures_enum"
             android:summary="%s"
             android:title="@string/account_settings_show_pictures_label" />
@@ -52,48 +52,48 @@
 
         <ListPreference
             android:dialogTitle="@string/account_settings_mail_display_count_label"
-            android:entries="@array/account_settings_display_count_entries"
-            android:entryValues="@array/account_settings_display_count_values"
+            android:entries="@array/display_count_entries"
+            android:entryValues="@array/display_count_values"
             android:key="account_display_count"
             android:summary="%s"
             android:title="@string/account_settings_mail_display_count_label" />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_message_age_label"
-            android:entries="@array/account_settings_message_age_entries"
-            android:entryValues="@array/account_settings_message_age_values"
+            android:entries="@array/message_age_entries"
+            android:entryValues="@array/message_age_values"
             android:key="account_message_age"
             android:summary="%s"
             android:title="@string/account_settings_message_age_label" />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_autodownload_message_size_label"
-            android:entries="@array/account_settings_autodownload_message_size_entries"
-            android:entryValues="@array/account_settings_autodownload_message_size_values"
+            android:entries="@array/autodownload_message_size_entries"
+            android:entryValues="@array/autodownload_message_size_values"
             android:key="account_autodownload_size"
             android:summary="%s"
             android:title="@string/account_settings_autodownload_message_size_label" />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_mail_check_frequency_label"
-            android:entries="@array/account_settings_check_frequency_entries"
-            android:entryValues="@array/account_settings_check_frequency_values"
+            android:entries="@array/check_frequency_entries"
+            android:entryValues="@array/check_frequency_values"
             android:key="account_check_frequency"
             android:summary="%s"
             android:title="@string/account_settings_mail_check_frequency_label" />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_folder_sync_mode_label"
-            android:entries="@array/account_settings_folder_sync_mode_entries"
-            android:entryValues="@array/account_settings_folder_sync_mode_values"
+            android:entries="@array/folder_sync_mode_entries"
+            android:entryValues="@array/folder_sync_mode_values"
             android:key="folder_sync_mode"
             android:summary="%s"
             android:title="@string/account_settings_folder_sync_mode_label" />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_folder_push_mode_label"
-            android:entries="@array/account_settings_folder_push_mode_entries"
-            android:entryValues="@array/account_settings_folder_push_mode_values"
+            android:entries="@array/folder_push_mode_entries"
+            android:entryValues="@array/folder_push_mode_values"
             android:key="folder_push_mode"
             android:summary="%s"
             android:title="@string/account_settings_folder_push_mode_label" />
@@ -106,16 +106,16 @@
 
         <ListPreference
             android:dialogTitle="@string/account_setup_incoming_delete_policy_label"
-            android:entries="@array/account_setup_delete_policy_entries"
-            android:entryValues="@array/account_setup_delete_policy_values"
+            android:entries="@array/delete_policy_entries"
+            android:entryValues="@array/delete_policy_values"
             android:key="delete_policy"
             android:summary="%s"
             android:title="@string/account_setup_incoming_delete_policy_label" />
 
         <ListPreference
             android:dialogTitle="@string/account_setup_expunge_policy_label"
-            android:entries="@array/account_setup_expunge_policy_entries"
-            android:entryValues="@array/account_setup_expunge_policy_values"
+            android:entries="@array/expunge_policy_entries"
+            android:entryValues="@array/expunge_policy_values"
             android:key="expunge_policy"
             android:summary="%s"
             android:title="@string/account_setup_expunge_policy_label" />
@@ -134,8 +134,8 @@
                 android:title="@string/push_poll_on_connect_label" />
 
             <ListPreference
-                android:entries="@array/account_settings_push_limit_entries"
-                android:entryValues="@array/account_settings_push_limit_values"
+                android:entries="@array/push_limit_entries"
+                android:entryValues="@array/push_limit_values"
                 android:key="max_push_folders"
                 android:summary="%s"
                 android:title="@string/account_setup_push_limit_label" />
@@ -166,8 +166,8 @@
             android:title="@string/account_settings_identities_label" />
 
         <ListPreference
-            android:entries="@array/account_settings_message_format_entries"
-            android:entryValues="@array/account_settings_message_format_values"
+            android:entries="@array/message_format_entries"
+            android:entryValues="@array/message_format_values"
             android:key="message_format"
             android:summary="%s"
             android:title="@string/account_settings_message_format_label" />
@@ -182,8 +182,8 @@
             android:title="@string/account_settings_message_read_receipt_label" />
 
         <ListPreference
-            android:entries="@array/account_settings_quote_style_entries"
-            android:entryValues="@array/account_settings_quote_style_values"
+            android:entries="@array/quote_style_entries"
+            android:entryValues="@array/quote_style_values"
             android:key="quote_style"
             android:summary="%s"
             android:title="@string/account_settings_quote_style_label" />
@@ -231,24 +231,24 @@
 
         <ListPreference
             android:dialogTitle="@string/account_settings_folder_display_mode_label"
-            android:entries="@array/account_settings_folder_display_mode_entries"
-            android:entryValues="@array/account_settings_folder_display_mode_values"
+            android:entries="@array/folder_display_mode_entries"
+            android:entryValues="@array/folder_display_mode_values"
             android:key="folder_display_mode"
             android:summary="%s"
             android:title="@string/account_settings_folder_display_mode_label" />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_folder_target_mode_label"
-            android:entries="@array/account_settings_folder_target_mode_entries"
-            android:entryValues="@array/account_settings_folder_target_mode_values"
+            android:entries="@array/folder_target_mode_entries"
+            android:entryValues="@array/folder_target_mode_values"
             android:key="folder_target_mode"
             android:summary="%s"
             android:title="@string/account_settings_folder_target_mode_label" />
 
         <ListPreference
             android:dialogTitle="@string/account_settings_searchable_label"
-            android:entries="@array/account_settings_searchable_entries"
-            android:entryValues="@array/account_settings_searchable_values"
+            android:entries="@array/searchable_entries"
+            android:entryValues="@array/searchable_values"
             android:key="searchable_folders"
             android:summary="%s"
             android:title="@string/account_settings_searchable_label" />
@@ -305,8 +305,8 @@
         <ListPreference
             android:dependency="account_notify"
             android:dialogTitle="@string/account_settings_folder_notify_new_mail_mode_label"
-            android:entries="@array/account_settings_folder_notify_new_mail_mode_entries"
-            android:entryValues="@array/account_settings_folder_notify_new_mail_mode_values"
+            android:entries="@array/folder_notify_new_mail_mode_entries"
+            android:entryValues="@array/folder_notify_new_mail_mode_values"
             android:key="folder_notify_new_mail_mode"
             android:summary="%s"
             android:title="@string/account_settings_folder_notify_new_mail_mode_label" />
@@ -344,8 +344,8 @@
         <ListPreference
             android:dependency="account_vibrate"
             android:dialogTitle="@string/account_settings_vibrate_pattern_label"
-            android:entries="@array/account_settings_vibrate_pattern_entries"
-            android:entryValues="@array/account_settings_vibrate_pattern_values"
+            android:entries="@array/vibrate_pattern_entries"
+            android:entryValues="@array/vibrate_pattern_values"
             android:key="account_vibrate_pattern"
             android:layout="?android:attr/preferenceLayoutChild"
             android:summary="%s"
@@ -354,8 +354,8 @@
         <ListPreference
             android:dependency="account_vibrate"
             android:dialogTitle="@string/account_settings_vibrate_times"
-            android:entries="@array/account_settings_vibrate_times_label"
-            android:entryValues="@array/account_settings_vibrate_times_label"
+            android:entries="@array/vibrate_times_label"
+            android:entryValues="@array/vibrate_times_label"
             android:key="account_vibrate_times"
             android:layout="?android:attr/preferenceLayoutChild"
             android:summary="%s"
@@ -400,8 +400,8 @@
         <ListPreference
             android:dependency="remote_search_enabled"
             android:dialogTitle="@string/account_settings_remote_search_num_label"
-            android:entries="@array/account_settings_remote_search_num_results_entries"
-            android:entryValues="@array/account_settings_remote_search_num_results_values"
+            android:entries="@array/remote_search_num_results_entries"
+            android:entryValues="@array/remote_search_num_results_values"
             android:key="account_remote_search_num_results"
             android:summary="%s"
             android:title="@string/account_settings_remote_search_num_label" />

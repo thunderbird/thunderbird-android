@@ -94,7 +94,7 @@ public class RemoteControlService extends CoreService {
                                     needsReschedule |= account.setFolderSyncMode(FolderMode.valueOf(pollClasses));
                                 }
                                 if (pollFrequency != null) {
-                                    String[] allowedFrequencies = getResources().getStringArray(R.array.account_settings_check_frequency_values);
+                                    String[] allowedFrequencies = getResources().getStringArray(R.array.check_frequency_values);
                                     for (String allowedFrequency : allowedFrequencies) {
                                         if (allowedFrequency.equals(pollFrequency)) {
                                             Integer newInterval = Integer.parseInt(allowedFrequency);
