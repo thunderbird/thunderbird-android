@@ -84,7 +84,7 @@
             android:label="@string/welcome_message_title"/>
 
         <activity
-            android:name=".activity.setup.OpenPgpAppSelectDialog"
+            android:name=".ui.settings.account.OpenPgpAppSelectDialog"
             android:configChanges="locale"
             android:theme="@style/Theme.K9.Transparent"
             />

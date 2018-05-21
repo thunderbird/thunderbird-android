@@ -11,7 +11,6 @@ import com.fsck.k9.activity.ManageIdentities
 import com.fsck.k9.activity.setup.AccountSetupComposition
 import com.fsck.k9.activity.setup.AccountSetupIncoming
 import com.fsck.k9.activity.setup.AccountSetupOutgoing
-import com.fsck.k9.activity.setup.OpenPgpAppSelectDialog
 import com.fsck.k9.crypto.OpenPgpApiHelper
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
