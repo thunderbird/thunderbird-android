@@ -25,7 +25,7 @@ import com.fsck.k9.ui.observe
 import org.koin.android.architecture.ext.sharedViewModel
 import org.koin.android.ext.android.inject
 import org.openintents.openpgp.OpenPgpApiManager
-import org.openintents.openpgp.util.OpenPgpKeyPreferenceCompat
+import org.openintents.openpgp.util.OpenPgpKeyPreference
 import org.openintents.openpgp.util.OpenPgpProviderUtil
 
 class AccountSettingsFragment : PreferenceFragmentCompat() {
@@ -201,7 +201,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun configurePgpKey(account: Account, pgpProvider: String?) {
-        (findPreference(PREFERENCE_OPENPGP_KEY) as OpenPgpKeyPreferenceCompat).apply {
+        (findPreference(PREFERENCE_OPENPGP_KEY) as OpenPgpKeyPreference).apply {
             setOpenPgpProvider(openPgpApiManager, pgpProvider)
             setIntentSenderFragment(this@AccountSettingsFragment)
             setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)))
@@ -241,7 +241,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val openPgpKeyPreference = findPreference(PREFERENCE_OPENPGP_KEY) as? OpenPgpKeyPreferenceCompat
+        val openPgpKeyPreference = findPreference(PREFERENCE_OPENPGP_KEY) as? OpenPgpKeyPreference
         if (openPgpKeyPreference?.handleOnActivityResult(requestCode, resultCode, data) == true) {
             return
         }

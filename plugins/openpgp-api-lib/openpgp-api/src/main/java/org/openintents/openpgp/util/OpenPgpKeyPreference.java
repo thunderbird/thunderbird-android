@@ -1,4 +1,5 @@
 /*
+ * Copyright (C) 2018 The K-9 Dog Walkers
  * Copyright (C) 2015 Dominik Schürmann <dominik@dominikschuermann.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +24,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.TypedArray;
-import android.preference.Preference;
+import android.support.v4.app.Fragment;
+import android.support.v7.preference.Preference;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
 
@@ -44,6 +46,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
     private boolean showAutocryptHint;
     private OpenPgpApiManager openPgpApiManager;
     private Intent cachedActivityResultData;
+    private Fragment intentSenderFragment;
 
     private PendingIntent pendingIntentSelectKey;
     private boolean pendingIntentRunImmediately;
@@ -64,6 +67,10 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         this.openPgpApiManager = openPgpApiManager;
         this.openPgpApiManager.setOpenPgpProvider(openPgpProvider, this);
         refreshTitleAndSummary();
+    }
+
+    public void setIntentSenderFragment(Fragment fragment) {
+        intentSenderFragment = fragment;
     }
 
     public void setDefaultUserId(String userId) {
@@ -132,7 +139,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         api.executeApiAsync(data, null, null, openPgpCallback);
     }
 
-    private IOpenPgpCallback openPgpCallback = new OpenPgpApi.IOpenPgpCallback() {
+    private IOpenPgpCallback openPgpCallback = new IOpenPgpCallback() {
         @Override
         public void onReturn(Intent result) {
             int resultCode = result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR);
@@ -180,9 +187,9 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         }
 
         try {
-            Activity act = (Activity) getContext();
-            act.startIntentSenderFromChild(act, pendingIntentSelectKey.getIntentSender(),
-                    REQUEST_CODE_KEY_PREFERENCE, null, 0, 0, 0);
+            intentSenderFragment
+                    .startIntentSenderForResult(pendingIntentSelectKey.getIntentSender(), REQUEST_CODE_KEY_PREFERENCE,
+                    null, 0, 0, 0, null);
         } catch (IntentSender.SendIntentException e) {
             Timber.e(e,"Error launching pending intent");
         } finally {
@@ -271,6 +278,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
 
     private void setAndPersist(long newValue) {
         keyId = newValue;
+        notifyDependencyChange(shouldDisableDependents());
 
         // Save to persistent storage (this method will make sure this
         // preference should be persistent, along with other useful checks)
@@ -289,11 +297,17 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         if (restoreValue) {
             // Restore state
             keyId = getPersistedLong(keyId);
+            notifyDependencyChange(shouldDisableDependents());
         } else {
             // Set state
             long value = (Long) defaultValue;
             setAndPersist(value);
         }
+    }
+
+    @Override
+    public boolean shouldDisableDependents() {
+        return keyId == NO_KEY || super.shouldDisableDependents();
     }
 
     public boolean handleOnActivityResult(int requestCode, int resultCode, Intent data) {
