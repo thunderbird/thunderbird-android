@@ -3,6 +3,13 @@
 
     <declare-styleable name="K9Styles">
         <attr name="iconFolder" format="reference" />
+        <attr name="iconFolderInbox" format="reference" />
+        <attr name="iconFolderOutbox" format="reference" />
+        <attr name="iconFolderArchive" format="reference" />
+        <attr name="iconFolderDrafts" format="reference" />
+        <attr name="iconFolderSent" format="reference" />
+        <attr name="iconFolderSpam" format="reference" />
+        <attr name="iconFolderTrash" format="reference" />
         <attr name="iconListItemMenu" format="reference" />
         <attr name="iconMenuInfoDetails" format="reference" />
         <attr name="iconActionAddAttachment" format="reference" />

@@ -24,6 +24,8 @@ public class Search extends MessageList {
         super.onStop();
     }
 
-
-
+    @Override
+    protected boolean isDrawerEnabled() {
+        return false;
+    }
 }
