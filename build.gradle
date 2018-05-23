@@ -1,4 +1,19 @@
 buildscript {
+    ext {
+        kotlinVersion = '1.2.31'
+        androidCompileSdkVersion = '27'
+        androidBuildToolsVersion = '27.0.3'
+        androidSupportLibraryVersion = '27.1.1'
+        okioVersion = '1.14.0'
+        timberVersion = '4.5.1'
+        koinVersion = '0.9.1'
+
+        robolectricVersion = '3.7.1'
+        junitVersion = '4.12'
+        mockitoVersion = '2.18.0'
+        truthVersion = '0.35'
+    }
+
     repositories {
         jcenter()
         google()
