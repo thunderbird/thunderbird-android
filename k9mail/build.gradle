@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
 apply from: '../gradle/plugins/checkstyle-android.gradle'
 apply from: '../gradle/plugins/findbugs-android.gradle'

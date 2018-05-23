@@ -7,7 +7,7 @@ buildscript {
         ]
 
         versions = [
-                'kotlin': '1.2.31',
+                'kotlin': '1.2.41',
                 'supportLibrary': '27.1.1',
                 'preferencesFix': '27.1.1.1',
                 'lifecycleExtensions': '1.1.0',
