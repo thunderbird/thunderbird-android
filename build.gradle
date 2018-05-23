@@ -1,4 +1,29 @@
 buildscript {
+    ext {
+        buildConfig = [
+                'compileSdk': 27,
+                'minSdk': 15,
+                'buildTools': '27.0.3'
+        ]
+
+        versions = [
+                'kotlin': '1.2.41',
+                'supportLibrary': '27.1.1',
+                'preferencesFix': '27.1.1.1',
+                'lifecycleExtensions': '1.1.0',
+                'okio': '1.14.0',
+                'timber': '4.5.1',
+                'koin': '0.9.1',
+                'commonsIo': '2.4',
+
+                'junit': '4.12',
+                'robolectric': '3.7.1',
+                'mockito': '2.18.0',
+                'mockitoKotlin': '1.5.0',
+                'truth': '0.35'
+        ]
+    }
+
     repositories {
         jcenter()
         google()
@@ -6,24 +31,16 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:${kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:${versions.kotlin}"
     }
 }
 
 project.ext {
     testCoverage = project.hasProperty('testCoverage')
-    optimizeForDevelopment = project.hasProperty('optimizeForDevelopment') && optimizeForDevelopment == 'true'
 }
 
 subprojects {
-    project.plugins.whenPluginAdded { plugin ->
-        if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name) ||
-                "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
-            project.android.dexOptions.preDexLibraries = !rootProject.hasProperty('disablePreDex')
-        }
-    }
-
     repositories {
         jcenter()
         google()
