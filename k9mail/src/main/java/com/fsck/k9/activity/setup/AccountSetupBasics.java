@@ -38,7 +38,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.TransportUris;
-import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.RemoteStoreManager;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 import timber.log.Timber;
@@ -320,7 +320,7 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setStoreUri(incomingUri.toString());
             mAccount.setTransportUri(outgoingUri.toString());
 
-            ServerSettings incomingSettings = RemoteStore.decodeStoreUri(incomingUri.toString());
+            ServerSettings incomingSettings = RemoteStoreManager.decodeStoreUri(incomingUri.toString());
             mAccount.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
 
             // Check incoming here.  Then check outgoing in onActivityResult()
@@ -409,7 +409,7 @@ public class AccountSetupBasics extends K9Activity
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
         ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
-        String storeUri = RemoteStore.createStoreUri(storeServer);
+        String storeUri = RemoteStoreManager.createStoreUri(storeServer);
         String transportUri = TransportUris.createTransportUri(transportServer);
         mAccount.setStoreUri(storeUri);
         mAccount.setTransportUri(transportUri);

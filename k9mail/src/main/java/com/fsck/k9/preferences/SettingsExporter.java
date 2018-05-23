@@ -20,19 +20,18 @@ import java.util.TreeMap;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
-
-import com.fsck.k9.mail.TransportUris;
-import timber.log.Timber;
 import android.util.Xml;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.TransportUris;
+import com.fsck.k9.mail.store.RemoteStoreManager;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
 import org.xmlpull.v1.XmlSerializer;
+import timber.log.Timber;
 
 
 public class SettingsExporter {
@@ -235,7 +234,7 @@ public class SettingsExporter {
         }
 
         // Write incoming server settings
-        ServerSettings incoming = RemoteStore.decodeStoreUri(account.getStoreUri());
+        ServerSettings incoming = RemoteStoreManager.decodeStoreUri(account.getStoreUri());
         serializer.startTag(null, INCOMING_SERVER_ELEMENT);
         serializer.attribute(null, TYPE_ATTRIBUTE, incoming.type.name());
 

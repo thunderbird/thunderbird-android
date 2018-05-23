@@ -1,4 +1,5 @@
 include ':k9mail'
 include ':mail:common'
+include ':mail:k9mail'
 include ':plugins:HoloColorPicker'
 include ':plugins:openpgp-api-lib:openpgp-api'

@@ -19,7 +19,7 @@ configurations.all {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
-    implementation project(':mail:common')
+    implementation project(':mail:k9mail')
     implementation project(':plugins:HoloColorPicker')
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 

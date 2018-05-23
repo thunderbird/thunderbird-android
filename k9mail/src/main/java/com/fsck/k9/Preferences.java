@@ -1,6 +1,7 @@
 
 package com.fsck.k9;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,12 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import timber.log.Timber;
 
-import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.RemoteStoreManager;
 import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.Storage;
+import com.fsck.k9.preferences.StorageEditor;
+import timber.log.Timber;
 
 
 public class Preferences {
@@ -126,7 +127,7 @@ public class Preferences {
         }
 
         try {
-            RemoteStore.removeInstance(account);
+            RemoteStoreManager.removeInstance(account);
         } catch (Exception e) {
             Timber.e(e, "Failed to reset remote store for account %s", account.getUuid());
         }
