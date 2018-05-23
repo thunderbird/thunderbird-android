@@ -1,6 +1,5 @@
 package com.fsck.k9.mail.store.imap;
 
-import com.fsck.k9.mail.MessagingException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -8,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import com.fsck.k9.mail.MessagingException;
+
 
 /**
  * Represents an IMAP list response and is also the base class for the

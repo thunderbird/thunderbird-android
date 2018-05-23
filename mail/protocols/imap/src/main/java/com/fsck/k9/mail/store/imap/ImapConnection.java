@@ -485,7 +485,7 @@ class ImapConnection {
             if (!isConnected()) {
                 throw e;
             }
-            
+
             return login();
         }
     }
