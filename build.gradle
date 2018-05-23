@@ -1,17 +1,27 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.31'
-        androidCompileSdkVersion = '27'
-        androidBuildToolsVersion = '27.0.3'
-        androidSupportLibraryVersion = '27.1.1'
-        okioVersion = '1.14.0'
-        timberVersion = '4.5.1'
-        koinVersion = '0.9.1'
+        buildConfig = [
+                'compileSdk': 27,
+                'minSdk': 15,
+                'buildTools': '27.0.3'
+        ]
 
-        robolectricVersion = '3.7.1'
-        junitVersion = '4.12'
-        mockitoVersion = '2.18.0'
-        truthVersion = '0.35'
+        versions = [
+                'kotlin': '1.2.31',
+                'supportLibrary': '27.1.1',
+                'preferencesFix': '27.1.1.1',
+                'lifecycleExtensions': '1.1.0',
+                'okio': '1.14.0',
+                'timber': '4.5.1',
+                'koin': '0.9.1',
+                'commonsIo': '2.4',
+
+                'junit': '4.12',
+                'robolectric': '3.7.1',
+                'mockito': '2.18.0',
+                'mockitoKotlin': '1.5.0',
+                'truth': '0.35'
+        ]
     }
 
     repositories {
@@ -21,8 +31,8 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:${kotlinVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:${versions.kotlin}"
     }
 }
 
