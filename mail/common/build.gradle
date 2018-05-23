@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
-apply from: '../gradle/plugins/checkstyle-android.gradle'
-apply from: '../gradle/plugins/findbugs-android.gradle'
+apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
+apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
