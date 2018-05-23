@@ -97,7 +97,7 @@ android {
 
         debug {
             applicationIdSuffix ".debug"
-            testCoverageEnabled testCoverage
+            testCoverageEnabled rootProject.testCoverage
 
             buildConfigField "boolean", "DEVELOPER_MODE", "true"
         }
