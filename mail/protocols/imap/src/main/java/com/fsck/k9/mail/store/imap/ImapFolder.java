@@ -35,7 +35,6 @@ import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.store.imap.FolderNotFoundException;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;

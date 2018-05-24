@@ -26,11 +26,6 @@ dependencies {
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
-    testImplementation "com.jcraft:jzlib:1.0.7"
-
-    // The Android Gradle plugin doesn't seem to put the Apache HTTP Client on the runtime classpath anymore when
-    // running JVM tests.
-    testImplementation "org.apache.httpcomponents:httpclient:4.5.5"
 }
 
 android {
@@ -42,9 +37,6 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
-    // for using Apache HTTP Client
-    useLibrary 'org.apache.http.legacy'
 
     buildTypes {
         debug {

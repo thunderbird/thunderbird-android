@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'org.jetbrains.kotlin.android'
 
 apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
 apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
@@ -9,8 +8,6 @@ if (rootProject.testCoverage) {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
-
     api project(":mail:common")
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
