@@ -38,7 +38,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
@@ -88,7 +87,7 @@ public class SmtpTransport extends Transport {
             OAuth2TokenProvider oauthTokenProvider) throws MessagingException {
         ServerSettings settings;
         try {
-            settings = TransportUris.decodeTransportUri(storeConfig.getTransportUri());
+            settings = SmtpTransportUriDecoder.decodeSmtpUri(storeConfig.getTransportUri());
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding transport URI", e);
         }
