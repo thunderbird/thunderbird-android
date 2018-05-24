@@ -1,6 +1,5 @@
 include ':k9mail'
 include ':mail:common'
-include ':mail:k9mail'
 include ':mail:testing'
 include ':mail:protocols:imap'
 include ':mail:protocols:pop3'
