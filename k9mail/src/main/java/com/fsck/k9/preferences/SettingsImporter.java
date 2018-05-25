@@ -17,9 +17,6 @@ import android.content.SharedPreferences;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
-import com.fsck.k9.mail.TransportUris;
-import timber.log.Timber;
-
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
@@ -27,12 +24,14 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.RemoteStoreManager;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
+import timber.log.Timber;
 
 
 public class SettingsImporter {
@@ -347,7 +346,7 @@ public class SettingsImporter {
 
         // Write incoming server settings (storeUri)
         ServerSettings incoming = new ImportedServerSettings(account.incoming);
-        String storeUri = RemoteStore.createStoreUri(incoming);
+        String storeUri = RemoteStoreManager.createStoreUri(incoming);
         putString(editor, accountKeyPrefix + Account.STORE_URI_KEY, Base64.encode(storeUri));
 
         // Mark account as disabled if the AuthType isn't EXTERNAL and the

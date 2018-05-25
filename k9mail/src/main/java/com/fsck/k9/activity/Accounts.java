@@ -75,7 +75,7 @@ import com.fsck.k9.helper.SizeFormatter;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.TransportUris;
-import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.RemoteStoreManager;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
@@ -744,7 +744,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         private void show(final Accounts activity, boolean restore) {
-            ServerSettings incoming = RemoteStore.decodeStoreUri(mAccount.getStoreUri());
+            ServerSettings incoming = RemoteStoreManager.decodeStoreUri(mAccount.getStoreUri());
             ServerSettings outgoing = TransportUris.decodeTransportUri(mAccount.getTransportUri());
 
             /*
@@ -962,9 +962,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 if (mIncomingPassword != null) {
                     // Set incoming server password
                     String storeUri = mAccount.getStoreUri();
-                    ServerSettings incoming = RemoteStore.decodeStoreUri(storeUri);
+                    ServerSettings incoming = RemoteStoreManager.decodeStoreUri(storeUri);
                     ServerSettings newIncoming = incoming.newPassword(mIncomingPassword);
-                    String newStoreUri = RemoteStore.createStoreUri(newIncoming);
+                    String newStoreUri = RemoteStoreManager.createStoreUri(newIncoming);
                     mAccount.setStoreUri(newStoreUri);
                 }
 

@@ -42,6 +42,7 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.RemoteStoreManager;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import com.fsck.k9.service.MailService;
@@ -173,7 +174,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
 
         try {
-            ServerSettings settings = RemoteStore.decodeStoreUri(mAccount.getStoreUri());
+            ServerSettings settings = RemoteStoreManager.decodeStoreUri(mAccount.getStoreUri());
 
             if (savedInstanceState == null) {
                 // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
@@ -592,7 +593,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             ServerSettings settings = new ServerSettings(mStoreType, host, port,
                     connectionSecurity, authType, username, password, clientCertificateAlias, extra);
 
-            mAccount.setStoreUri(RemoteStore.createStoreUri(settings));
+            mAccount.setStoreUri(RemoteStoreManager.createStoreUri(settings));
 
             mAccount.setCompression(NetworkType.MOBILE, mCompressionMobile.isChecked());
             mAccount.setCompression(NetworkType.WIFI, mCompressionWifi.isChecked());
