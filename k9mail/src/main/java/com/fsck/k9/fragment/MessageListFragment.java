@@ -2907,4 +2907,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     LayoutInflater getK9LayoutInflater() {
         return layoutInflater;
     }
+
+    public LocalSearch getLocalSearch() {
+        return search;
+    }
 }

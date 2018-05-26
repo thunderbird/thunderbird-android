@@ -1335,4 +1335,8 @@ You can keep this message and use it as a backup for your secret key. If you wan
 
     <string name="switch_on">On</string>
     <string name="switch_off">Off</string>
+
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Close</string>
+
 </resources>

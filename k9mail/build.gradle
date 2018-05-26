@@ -13,6 +13,7 @@ if (rootProject.testCoverage) {
 configurations.all {
     resolutionStrategy {
         force "com.android.support:support-annotations:${versions.supportLibrary}"
+        force "com.android.support:design:${versions.supportLibrary}"
     }
 }
 
@@ -53,6 +54,7 @@ dependencies {
     implementation "com.xwray:groupie-kotlin-android-extensions:2.0.3"
     implementation "org.jetbrains.anko:anko-coroutines:0.10.4"
     implementation "org.koin:koin-android-architecture:${versions.koin}"
+    implementation 'com.mikepenz:materialdrawer:6.0.7'
 
     androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
 
