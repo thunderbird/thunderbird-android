@@ -4201,6 +4201,25 @@ public class MessagingController {
         }
 
         @Override
+        public void syncFlagChanged(@NotNull String folderServerId, @NotNull LocalMessage message) {
+            boolean shouldBeNotifiedOf = false;
+            if (message.isSet(Flag.DELETED) || isMessageSuppressed(message)) {
+                syncRemovedMessage(folderServerId, message);
+            } else {
+                LocalFolder localFolder = message.getFolder();
+                if (shouldNotifyForMessage(account, localFolder, message)) {
+                    shouldBeNotifiedOf = true;
+                }
+            }
+
+            // we're only interested in messages that need removing
+            if (!shouldBeNotifiedOf) {
+                MessageReference messageReference = message.makeMessageReference();
+                notificationController.removeNewMailNotification(account, messageReference);
+            }
+        }
+
+        @Override
         public void syncFinished(@NotNull String folderServerId, int totalMessagesInMailbox, int numNewMessages) {
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxFinished(account, folderServerId, totalMessagesInMailbox,

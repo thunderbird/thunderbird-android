@@ -14,6 +14,8 @@ interface SyncListener {
     // FIXME: Remove dependency on LocalMessage
     fun syncNewMessage(folderServerId: String, message: LocalMessage, previousUnreadMessageCount: Int)
     fun syncRemovedMessage(folderServerId: String, message: Message)
+    // FIXME: Remove dependency on LocalMessage
+    fun syncFlagChanged(folderServerId: String, message: LocalMessage)
 
     fun syncFinished(folderServerId: String, totalMessagesInMailbox: Int, numNewMessages: Int)
     fun syncFailed(folderServerId: String, message: String, exception: Exception?)

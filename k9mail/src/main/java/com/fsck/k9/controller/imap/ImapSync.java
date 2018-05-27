@@ -18,7 +18,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
-import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.SyncListener;
 import com.fsck.k9.controller.UidReverseComparator;
@@ -674,20 +673,7 @@ class ImapSync {
             LocalMessage localMessage = localFolder.getMessage(remoteMessage.getUid());
             boolean messageChanged = syncFlags(localMessage, remoteMessage);
             if (messageChanged) {
-                boolean shouldBeNotifiedOf = false;
-                if (localMessage.isSet(Flag.DELETED) || isMessageSuppressed(localMessage)) {
-                    listener.syncRemovedMessage(folder, localMessage);
-                } else {
-                    if (shouldNotifyForMessage(account, localFolder, localMessage)) {
-                        shouldBeNotifiedOf = true;
-                    }
-                }
-
-                // we're only interested in messages that need removing
-                if (!shouldBeNotifiedOf) {
-                    MessageReference messageReference = localMessage.makeMessageReference();
-                    notificationController.removeNewMailNotification(account, messageReference);
-                }
+                listener.syncFlagChanged(folder, localMessage);
             }
             progress.incrementAndGet();
             listener.syncProgress(folder, progress.get(), todo);
@@ -792,20 +778,5 @@ class ImapSync {
             MoreMessages newMoreMessages = (moreMessagesAvailable) ? MoreMessages.TRUE : MoreMessages.FALSE;
             localFolder.setMoreMessages(newMoreMessages);
         }
-    }
-
-
-    /*
-     * Methods calling back to MessagingController
-     *
-     * TODO: Move all of these to an interface so we don't have to depend on MessagingController directly
-     */
-
-    private boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message) {
-        return controller.shouldNotifyForMessage(account, localFolder, message);
-    }
-
-    private boolean isMessageSuppressed(LocalMessage message) {
-        return controller.isMessageSuppressed(message);
     }
 }
