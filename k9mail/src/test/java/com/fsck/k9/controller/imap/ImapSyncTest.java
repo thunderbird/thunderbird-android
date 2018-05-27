@@ -91,7 +91,7 @@ public class ImapSyncTest extends RobolectricTest {
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
-        imapSync = new ImapSync(notificationController, controller, appContext);
+        imapSync = new ImapSync(notificationController, controller);
 
         setUpMessagingController();
         configureAccount();

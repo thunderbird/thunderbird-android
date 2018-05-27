@@ -1,11 +1,8 @@
 package com.fsck.k9.controller.imap;
 
 
-import android.content.Context;
-
 import com.fsck.k9.Account;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.RemoteMessageStore;
 import com.fsck.k9.controller.SyncListener;
 import com.fsck.k9.mail.Folder;
@@ -16,9 +13,8 @@ public class ImapMessageStore implements RemoteMessageStore {
     private final ImapSync imapSync;
 
 
-    public ImapMessageStore(NotificationController notificationController, MessagingController controller,
-            Context context) {
-        this.imapSync = new ImapSync(notificationController, controller, context);
+    public ImapMessageStore(NotificationController notificationController, MessagingController controller) {
+        this.imapSync = new ImapSync(notificationController, controller);
     }
 
     @Override

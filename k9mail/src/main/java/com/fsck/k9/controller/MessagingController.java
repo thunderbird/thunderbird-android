@@ -261,7 +261,7 @@ public class MessagingController {
 
     private ImapMessageStore getImapMessageStore() {
         if (imapMessageStore == null) {
-            imapMessageStore = new ImapMessageStore(notificationController, this, context);
+            imapMessageStore = new ImapMessageStore(notificationController, this);
         }
 
         return imapMessageStore;
@@ -1573,26 +1573,6 @@ public class MessagingController {
             }
         }
         return messageChanged;
-    }
-
-    private String getRootCauseMessage(Throwable t) {
-        Throwable rootCause = t;
-        Throwable nextCause;
-        do {
-            nextCause = rootCause.getCause();
-            if (nextCause != null) {
-                rootCause = nextCause;
-            }
-        } while (nextCause != null);
-        if (rootCause instanceof MessagingException) {
-            return rootCause.getMessage();
-        } else {
-            // Remove the namespace on the exception so we have a fighting chance of seeing more of the error in the
-            // notification.
-            return (rootCause.getLocalizedMessage() != null)
-                    ? (rootCause.getClass().getSimpleName() + ": " + rootCause.getLocalizedMessage())
-                    : rootCause.getClass().getSimpleName();
-        }
     }
 
     private void queuePendingCommand(Account account, PendingCommand command) {

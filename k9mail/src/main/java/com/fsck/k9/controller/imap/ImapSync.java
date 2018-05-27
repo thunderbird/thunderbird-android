@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import android.content.Context;
-
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.AccountStats;
@@ -47,14 +45,12 @@ import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 class ImapSync {
     private final NotificationController notificationController;
     private final MessagingController controller;
-    private final Context context;
 
 
     // TODO: Replace all of these dependencies with one or more interfaces
-    ImapSync(NotificationController notificationController, MessagingController controller, Context context) {
+    ImapSync(NotificationController notificationController, MessagingController controller) {
         this.notificationController = notificationController;
         this.controller = controller;
-        this.context = context;
     }
 
     void sync(Account account, String folder, SyncListener listener, Folder providedRemoteFolder) {
@@ -307,7 +303,6 @@ class ImapSync {
             boolean flagSyncOnly, boolean purgeToVisibleLimit, final SyncListener listener) throws MessagingException {
 
         final Date earliestDate = account.getEarliestPollDate();
-        Date downloadStarted = new Date(); // now
 
         if (earliestDate != null) {
             Timber.d("Only syncing messages after %s", earliestDate);
@@ -330,7 +325,7 @@ class ImapSync {
         List<Message> messages = new ArrayList<>(inputMessages);
 
         for (Message message : messages) {
-            evaluateMessageForDownload(message, folder, localFolder, remoteFolder, account, unsyncedMessages,
+            evaluateMessageForDownload(message, folder, localFolder, remoteFolder, unsyncedMessages,
                     syncFlagMessages, flagSyncOnly, unreadBeforeStart, listener);
         }
 
@@ -404,7 +399,7 @@ class ImapSync {
          * download.
          */
 
-        refreshLocalMessageFlags(account, remoteFolder, localFolder, syncFlagMessages, progress, todo, listener);
+        refreshLocalMessageFlags(remoteFolder, localFolder, syncFlagMessages, progress, todo, listener);
 
         Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get());
 
@@ -424,7 +419,6 @@ class ImapSync {
     private void evaluateMessageForDownload(final Message message, final String folder,
             final LocalFolder localFolder,
             final Folder remoteFolder,
-            final Account account,
             final List<Message> unsyncedMessages,
             final List<Message> syncFlagMessages,
             boolean flagSyncOnly,
@@ -622,7 +616,7 @@ class ImapSync {
             }
 
             if (message.getBody() == null) {
-                downloadSaneBody(account, remoteFolder, localFolder, message);
+                downloadSaneBody(remoteFolder, localFolder, message);
             } else {
                 downloadPartial(remoteFolder, localFolder, message);
             }
@@ -647,7 +641,7 @@ class ImapSync {
         Timber.d("SYNC: Done fetching large messages for folder %s", folder);
     }
 
-    private void refreshLocalMessageFlags(final Account account, final Folder remoteFolder,
+    private void refreshLocalMessageFlags(final Folder remoteFolder,
             final LocalFolder localFolder,
             List<Message> syncFlagMessages,
             final AtomicInteger progress,
@@ -680,7 +674,7 @@ class ImapSync {
         }
     }
 
-    private void downloadSaneBody(Account account, Folder remoteFolder, LocalFolder localFolder, Message message)
+    private void downloadSaneBody(Folder remoteFolder, LocalFolder localFolder, Message message)
             throws MessagingException {
         /*
          * The provider was unable to get the structure of the message, so
