@@ -269,7 +269,6 @@ class ImapSync {
 
             listener.syncFailed(folder, rootMessage, e);
 
-            notifyUserIfCertificateProblem(account, e, true);
             Timber.e("Failed synchronizing folder %s:%s @ %tc", account.getDescription(), folder,
                     System.currentTimeMillis());
 
@@ -811,10 +810,6 @@ class ImapSync {
     private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
             throws IOException, MessagingException {
         controller.updateMoreMessages(remoteFolder, localFolder, earliestDate, remoteStart);
-    }
-
-    private void notifyUserIfCertificateProblem(Account account, Exception exception, boolean incoming) {
-        controller.notifyUserIfCertificateProblem(account, exception, incoming);
     }
 
     private boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message) {

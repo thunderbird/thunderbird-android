@@ -4204,6 +4204,8 @@ public class MessagingController {
 
             if (exception instanceof AuthenticationFailedException) {
                 handleAuthenticationFailure(account, true);
+            } else {
+                notifyUserIfCertificateProblem(account, exception, true);
             }
 
             for (MessagingListener messagingListener : getListeners(listener)) {
