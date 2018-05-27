@@ -96,6 +96,7 @@ import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
+import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
 
 
@@ -740,10 +741,41 @@ public class MessagingController {
             Folder providedRemoteFolder) {
         RemoteMessageStore remoteMessageStore = getRemoteMessageStore(account);
         if (remoteMessageStore != null) {
-            ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
-            remoteMessageStore.sync(account, folder, syncListener, providedRemoteFolder);
+            syncFolder(account, folder, listener, providedRemoteFolder, remoteMessageStore);
         } else {
             synchronizeMailboxSynchronousLegacy(account, folder, listener);
+        }
+    }
+
+    private void syncFolder(Account account, String folder, MessagingListener listener, Folder providedRemoteFolder,
+            RemoteMessageStore remoteMessageStore) {
+
+        Exception commandException = null;
+        try {
+            processPendingCommandsSynchronous(account);
+        } catch (Exception e) {
+            Timber.e(e, "Failure processing command, but allow message sync attempt");
+            commandException = e;
+        }
+
+        ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
+        remoteMessageStore.sync(account, folder, syncListener, providedRemoteFolder);
+
+        if (commandException != null && !syncListener.syncFailed) {
+            String rootMessage = getRootCauseMessage(commandException);
+            Timber.e("Root cause failure in %s:%s was '%s'", account.getDescription(), folder, rootMessage);
+            updateFolderStatus(account, folder, rootMessage);
+            listener.synchronizeMailboxFailed(account, folder, rootMessage);
+        }
+    }
+
+    private void updateFolderStatus(Account account, String folderServerId, String status) {
+        try {
+            LocalStore localStore = account.getLocalStore();
+            LocalFolder localFolder = localStore.getFolder(folderServerId);
+            localFolder.setStatus(status);
+        } catch (MessagingException e) {
+            Timber.w(e, "Couldn't update folder status for folder %s", folderServerId);
         }
     }
 
@@ -4099,6 +4131,7 @@ public class MessagingController {
     class ControllerSyncListener implements SyncListener {
         private final Account account;
         private final MessagingListener listener;
+        boolean syncFailed = false;
 
 
         ControllerSyncListener(Account account, MessagingListener listener) {
@@ -4167,6 +4200,8 @@ public class MessagingController {
 
         @Override
         public void syncFailed(@NotNull String folderServerId, @NotNull String message) {
+            syncFailed = true;
+
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxFailed(account, folderServerId, message);
             }

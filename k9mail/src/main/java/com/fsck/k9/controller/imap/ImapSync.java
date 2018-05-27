@@ -74,7 +74,6 @@ class ImapSync {
             return;
         }
 
-        Exception commandException = null;
         try {
             Timber.d("SYNC: About to process pending commands for account %s", account.getDescription());
 
@@ -86,13 +85,6 @@ class ImapSync {
             String folderName = localFolder.getName();
 
             listener.syncStarted(folder, folderName);
-
-            try {
-                processPendingCommandsSynchronous(account);
-            } catch (Exception e) {
-                Timber.e(e, "Failure processing command, but allow message sync attempt");
-                commandException = e;
-            }
 
             /*
              * Get the message list from the local store and create an index of
@@ -255,15 +247,6 @@ class ImapSync {
                     newMessages);
 
             listener.syncFinished(folder, remoteMessageCount, newMessages);
-
-
-            if (commandException != null) {
-                String rootMessage = getRootCauseMessage(commandException);
-                Timber.e("Root cause failure in %s:%s was '%s'",
-                        account.getDescription(), tLocalFolder.getServerId(), rootMessage);
-                localFolder.setStatus(rootMessage);
-                listener.syncFailed(folder, rootMessage);
-            }
 
             Timber.i("Done synchronizing folder %s:%s", account.getDescription(), folder);
 
@@ -826,10 +809,6 @@ class ImapSync {
      *
      * TODO: Move all of these to an interface so we don't have to depend on MessagingController directly
      */
-
-    private void processPendingCommandsSynchronous(Account account) throws MessagingException {
-        controller.processPendingCommandsSynchronous(account);
-    }
 
     private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
             throws IOException, MessagingException {
