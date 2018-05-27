@@ -261,7 +261,7 @@ public class MessagingController {
 
     private ImapMessageStore getImapMessageStore() {
         if (imapMessageStore == null) {
-            imapMessageStore = new ImapMessageStore(notificationController, this);
+            imapMessageStore = new ImapMessageStore(notificationController);
         }
 
         return imapMessageStore;
@@ -4111,12 +4111,25 @@ public class MessagingController {
     class ControllerSyncListener implements SyncListener {
         private final Account account;
         private final MessagingListener listener;
+        private final int previousUnreadMessageCount;
         boolean syncFailed = false;
 
 
         ControllerSyncListener(Account account, MessagingListener listener) {
             this.account = account;
             this.listener = listener;
+
+            previousUnreadMessageCount = getUnreadMessageCount();
+        }
+
+        private int getUnreadMessageCount() {
+            try {
+                AccountStats stats = getAccountStats(account);
+                return stats.unreadMessageCount;
+            } catch (MessagingException e) {
+                Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
+                return 0;
+            }
         }
 
         @Override
@@ -4157,8 +4170,7 @@ public class MessagingController {
         }
 
         @Override
-        public void syncNewMessage(@NotNull String folderServerId, @NotNull LocalMessage message,
-                int previousUnreadMessageCount) {
+        public void syncNewMessage(@NotNull String folderServerId, @NotNull LocalMessage message) {
             // Send a notification of this message
             LocalFolder localFolder = message.getFolder();
             if (shouldNotifyForMessage(account, localFolder, message)) {

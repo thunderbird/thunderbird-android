@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.Expunge;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.SyncListener;
@@ -44,13 +43,11 @@ import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 
 class ImapSync {
     private final NotificationController notificationController;
-    private final MessagingController controller;
 
 
     // TODO: Replace all of these dependencies with one or more interfaces
-    ImapSync(NotificationController notificationController, MessagingController controller) {
+    ImapSync(NotificationController notificationController) {
         this.notificationController = notificationController;
-        this.controller = controller;
     }
 
     void sync(Account account, String folder, SyncListener listener, Folder providedRemoteFolder) {
@@ -309,15 +306,6 @@ class ImapSync {
         }
         final String folder = remoteFolder.getServerId();
 
-        int unreadBeforeStart = 0;
-        try {
-            AccountStats stats = controller.getAccountStats(account);
-            unreadBeforeStart = stats.unreadMessageCount;
-
-        } catch (MessagingException e) {
-            Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
-        }
-
         List<Message> syncFlagMessages = new ArrayList<>();
         List<Message> unsyncedMessages = new ArrayList<>();
         final AtomicInteger newMessages = new AtomicInteger(0);
@@ -326,7 +314,7 @@ class ImapSync {
 
         for (Message message : messages) {
             evaluateMessageForDownload(message, folder, localFolder, remoteFolder, unsyncedMessages,
-                    syncFlagMessages, flagSyncOnly, unreadBeforeStart, listener);
+                    syncFlagMessages, flagSyncOnly, listener);
         }
 
         final AtomicInteger progress = new AtomicInteger(0);
@@ -382,7 +370,7 @@ class ImapSync {
         fp.add(FetchProfile.Item.BODY);
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
-        downloadSmallMessages(account, remoteFolder, localFolder, smallMessages, progress, unreadBeforeStart,
+        downloadSmallMessages(account, remoteFolder, localFolder, smallMessages, progress,
                 newMessages, todo, fp, listener);
         smallMessages.clear();
         /*
@@ -390,7 +378,7 @@ class ImapSync {
          */
         fp = new FetchProfile();
         fp.add(FetchProfile.Item.STRUCTURE);
-        downloadLargeMessages(account, remoteFolder, localFolder, largeMessages, progress, unreadBeforeStart,
+        downloadLargeMessages(account, remoteFolder, localFolder, largeMessages, progress,
                 newMessages, todo, fp, listener);
         largeMessages.clear();
 
@@ -422,7 +410,6 @@ class ImapSync {
             final List<Message> unsyncedMessages,
             final List<Message> syncFlagMessages,
             boolean flagSyncOnly,
-            int unreadBeforeStart,
             SyncListener listener) throws MessagingException {
         if (message.isSet(Flag.DELETED)) {
             Timber.v("Message with uid %s is marked as deleted", message.getUid());
@@ -450,7 +437,7 @@ class ImapSync {
                     localMessage.setFlag(Flag.X_DOWNLOADED_FULL, message.isSet(Flag.X_DOWNLOADED_FULL));
                     localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, message.isSet(Flag.X_DOWNLOADED_PARTIAL));
 
-                    listener.syncNewMessage(folder, localMessage, unreadBeforeStart);
+                    listener.syncNewMessage(folder, localMessage);
                 }
             }
         } else if (!localMessage.isSet(Flag.DELETED)) {
@@ -533,7 +520,6 @@ class ImapSync {
             final LocalFolder localFolder,
             List<T> smallMessages,
             final AtomicInteger progress,
-            final int unreadBeforeStart,
             final AtomicInteger newMessages,
             final int todo,
             FetchProfile fp,
@@ -575,7 +561,7 @@ class ImapSync {
 
                             // Update the listener with what we've found
                             listener.syncProgress(folder, progress.get(), todo);
-                            listener.syncNewMessage(folder, localMessage, unreadBeforeStart);
+                            listener.syncNewMessage(folder, localMessage);
                         } catch (MessagingException me) {
                             Timber.e(me, "SYNC: fetch small messages");
                         }
@@ -597,7 +583,6 @@ class ImapSync {
             final LocalFolder localFolder,
             List<T> largeMessages,
             final AtomicInteger progress,
-            final int unreadBeforeStart,
             final AtomicInteger newMessages,
             final int todo,
             FetchProfile fp,
@@ -635,7 +620,7 @@ class ImapSync {
             }
 
             listener.syncProgress(folder, progress.get(), todo);
-            listener.syncNewMessage(folder, localMessage, unreadBeforeStart);
+            listener.syncNewMessage(folder, localMessage);
         }
 
         Timber.d("SYNC: Done fetching large messages for folder %s", folder);
