@@ -38,6 +38,7 @@ import org.robolectric.shadows.ShadowLog;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -121,7 +122,8 @@ public class ImapSyncTest extends RobolectricTest {
 
         imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
 
-        verify(listener).syncFailed(FOLDER_NAME, "Exception: Message count -1 for folder Folder");
+        verify(listener).syncFailed(eq(FOLDER_NAME), eq("Exception: Message count -1 for folder Folder"),
+                any(Exception.class));
     }
 
     @Test

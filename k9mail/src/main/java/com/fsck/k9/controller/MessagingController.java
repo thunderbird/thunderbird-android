@@ -4199,8 +4199,12 @@ public class MessagingController {
         }
 
         @Override
-        public void syncFailed(@NotNull String folderServerId, @NotNull String message) {
+        public void syncFailed(@NotNull String folderServerId, @NotNull String message, Exception exception) {
             syncFailed = true;
+
+            if (exception instanceof AuthenticationFailedException) {
+                handleAuthenticationFailure(account, true);
+            }
 
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxFailed(account, folderServerId, message);

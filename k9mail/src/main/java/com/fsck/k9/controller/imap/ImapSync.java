@@ -251,9 +251,7 @@ class ImapSync {
             Timber.i("Done synchronizing folder %s:%s", account.getDescription(), folder);
 
         } catch (AuthenticationFailedException e) {
-            handleAuthenticationFailure(account, true);
-
-            listener.syncFailed(folder, "Authentication failure");
+            listener.syncFailed(folder, "Authentication failure", e);
         } catch (Exception e) {
             Timber.e(e, "synchronizeMailbox");
             // If we don't set the last checked, it can try too often during
@@ -269,7 +267,7 @@ class ImapSync {
                 }
             }
 
-            listener.syncFailed(folder, rootMessage);
+            listener.syncFailed(folder, rootMessage, e);
 
             notifyUserIfCertificateProblem(account, e, true);
             Timber.e("Failed synchronizing folder %s:%s @ %tc", account.getDescription(), folder,
@@ -813,10 +811,6 @@ class ImapSync {
     private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
             throws IOException, MessagingException {
         controller.updateMoreMessages(remoteFolder, localFolder, earliestDate, remoteStart);
-    }
-
-    private void handleAuthenticationFailure(Account account, boolean incoming) {
-        controller.handleAuthenticationFailure(account, incoming);
     }
 
     private void notifyUserIfCertificateProblem(Account account, Exception exception, boolean incoming) {
