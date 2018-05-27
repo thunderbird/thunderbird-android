@@ -24,7 +24,6 @@ import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.notification.NotificationController;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -75,8 +74,6 @@ public class ImapSyncTest extends RobolectricTest {
     private LocalStore localStore;
     @Mock
     private RemoteStore remoteStore;
-    @Mock
-    private NotificationController notificationController;
     @Captor
     private ArgumentCaptor<List<Message>> messageListCaptor;
     @Captor
@@ -91,7 +88,7 @@ public class ImapSyncTest extends RobolectricTest {
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
-        imapSync = new ImapSync(notificationController);
+        imapSync = new ImapSync();
 
         setUpMessagingController();
         configureAccount();

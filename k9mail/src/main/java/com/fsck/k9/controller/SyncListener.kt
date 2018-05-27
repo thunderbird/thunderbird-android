@@ -6,6 +6,8 @@ import com.fsck.k9.mailstore.LocalMessage
 interface SyncListener {
     fun syncStarted(folderServerId: String, folderName: String)
 
+    fun syncAuthenticationSuccess()
+
     fun syncHeadersStarted(folderServerId: String, folderName: String)
     fun syncHeadersProgress(folderServerId: String, completed: Int, total: Int)
     fun syncHeadersFinished(folderServerId: String, totalMessagesInMailbox: Int, numNewMessages: Int)

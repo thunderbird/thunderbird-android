@@ -261,7 +261,7 @@ public class MessagingController {
 
     private ImapMessageStore getImapMessageStore() {
         if (imapMessageStore == null) {
-            imapMessageStore = new ImapMessageStore(notificationController);
+            imapMessageStore = new ImapMessageStore();
         }
 
         return imapMessageStore;
@@ -4137,6 +4137,11 @@ public class MessagingController {
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxStarted(account, folderServerId, folderName);
             }
+        }
+
+        @Override
+        public void syncAuthenticationSuccess() {
+            notificationController.clearAuthenticationErrorNotification(account, true);
         }
 
         @Override

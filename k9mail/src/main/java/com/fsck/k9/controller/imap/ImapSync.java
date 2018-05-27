@@ -35,20 +35,12 @@ import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.MessageRemovalListener;
-import com.fsck.k9.notification.NotificationController;
 import timber.log.Timber;
 
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 
 
 class ImapSync {
-    private final NotificationController notificationController;
-
-
-    // TODO: Replace all of these dependencies with one or more interfaces
-    ImapSync(NotificationController notificationController) {
-        this.notificationController = notificationController;
-    }
 
     void sync(Account account, String folder, SyncListener listener, Folder providedRemoteFolder) {
         synchronizeMailboxSynchronous(account, folder, listener, providedRemoteFolder);
@@ -126,7 +118,7 @@ class ImapSync {
 
             }
 
-            notificationController.clearAuthenticationErrorNotification(account, true);
+            listener.syncAuthenticationSuccess();
 
             /*
              * Get the remote message count.
