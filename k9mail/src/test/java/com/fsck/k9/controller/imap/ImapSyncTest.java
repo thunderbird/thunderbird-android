@@ -14,7 +14,7 @@ import com.fsck.k9.AccountStats;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.controller.SimpleMessagingListener;
+import com.fsck.k9.controller.SyncListener;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
@@ -65,7 +65,7 @@ public class ImapSyncTest extends RobolectricTest {
     @Mock
     private AccountStats accountStats;
     @Mock
-    private SimpleMessagingListener listener;
+    private SyncListener listener;
     @Mock
     private LocalFolder localFolder;
     @Mock
@@ -103,7 +103,7 @@ public class ImapSyncTest extends RobolectricTest {
 
         imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
 
-        verify(listener).synchronizeMailboxFinished(account, FOLDER_NAME, 1, 0);
+        verify(listener).syncFinished(FOLDER_NAME, 1, 0);
     }
 
     @Test
@@ -112,7 +112,7 @@ public class ImapSyncTest extends RobolectricTest {
 
         imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
 
-        verify(listener).synchronizeMailboxFinished(account, FOLDER_NAME, 0, 0);
+        verify(listener).syncFinished(FOLDER_NAME, 0, 0);
     }
 
     @Test
@@ -121,8 +121,7 @@ public class ImapSyncTest extends RobolectricTest {
 
         imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
 
-        verify(listener).synchronizeMailboxFailed(account, FOLDER_NAME,
-                "Exception: Message count -1 for folder Folder");
+        verify(listener).syncFailed(FOLDER_NAME, "Exception: Message count -1 for folder Folder");
     }
 
     @Test

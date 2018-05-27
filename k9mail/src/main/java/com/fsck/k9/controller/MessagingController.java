@@ -92,6 +92,7 @@ import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
+import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
@@ -739,7 +740,8 @@ public class MessagingController {
             Folder providedRemoteFolder) {
         RemoteMessageStore remoteMessageStore = getRemoteMessageStore(account);
         if (remoteMessageStore != null) {
-            remoteMessageStore.sync(account, folder, listener, providedRemoteFolder);
+            ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
+            remoteMessageStore.sync(account, folder, syncListener, providedRemoteFolder);
         } else {
             synchronizeMailboxSynchronousLegacy(account, folder, listener);
         }
@@ -4092,5 +4094,89 @@ public class MessagingController {
 
     private interface MessageActor {
         void act(Account account, LocalFolder messageFolder, List<LocalMessage> messages);
+    }
+
+    class ControllerSyncListener implements SyncListener {
+        private final Account account;
+        private final MessagingListener listener;
+
+
+        ControllerSyncListener(Account account, MessagingListener listener) {
+            this.account = account;
+            this.listener = listener;
+        }
+
+        @Override
+        public void syncStarted(@NotNull String folderServerId, @NotNull String folderName) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxStarted(account, folderServerId, folderName);
+            }
+        }
+
+        @Override
+        public void syncHeadersStarted(@NotNull String folderServerId, @NotNull String folderName) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxHeadersStarted(account, folderServerId, folderName);
+            }
+        }
+
+        @Override
+        public void syncHeadersProgress(@NotNull String folderServerId, int completed, int total) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxHeadersProgress(account, folderServerId, completed, total);
+            }
+        }
+
+        @Override
+        public void syncHeadersFinished(@NotNull String folderServerId, int totalMessagesInMailbox,
+                int numNewMessages) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxHeadersFinished(account, folderServerId, totalMessagesInMailbox,
+                        numNewMessages);
+            }
+        }
+
+        @Override
+        public void syncProgress(@NotNull String folderServerId, int completed, int total) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxProgress(account, folderServerId, completed, total);
+            }
+        }
+
+        @Override
+        public void syncNewMessage(@NotNull String folderServerId, @NotNull Message message) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxNewMessage(account, folderServerId, message);
+            }
+        }
+
+        @Override
+        public void syncRemovedMessage(@NotNull String folderServerId, @NotNull Message message) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxRemovedMessage(account, folderServerId, message);
+            }
+        }
+
+        @Override
+        public void syncFinished(@NotNull String folderServerId, int totalMessagesInMailbox, int numNewMessages) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxFinished(account, folderServerId, totalMessagesInMailbox,
+                        numNewMessages);
+            }
+        }
+
+        @Override
+        public void syncFailed(@NotNull String folderServerId, @NotNull String message) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxFailed(account, folderServerId, message);
+            }
+        }
+
+        @Override
+        public void folderStatusChanged(@NotNull String folderServerId, int unreadMessageCount) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.folderStatusChanged(account, folderServerId, unreadMessageCount);
+            }
+        }
     }
 }
