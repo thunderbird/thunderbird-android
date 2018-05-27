@@ -4177,9 +4177,19 @@ public class MessagingController {
         }
 
         @Override
-        public void syncNewMessage(@NotNull String folderServerId, @NotNull Message message) {
-            for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxNewMessage(account, folderServerId, message);
+        public void syncNewMessage(@NotNull String folderServerId, @NotNull LocalMessage message,
+                int previousUnreadMessageCount) {
+            // Send a notification of this message
+            LocalFolder localFolder = message.getFolder();
+            if (shouldNotifyForMessage(account, localFolder, message)) {
+                // Notify with the localMessage so that we don't have to recalculate the content preview.
+                notificationController.addNewMailNotification(account, message, previousUnreadMessageCount);
+            }
+
+            if (!message.isSet(Flag.SEEN)) {
+                for (MessagingListener messagingListener : getListeners(listener)) {
+                    messagingListener.synchronizeMailboxNewMessage(account, folderServerId, message);
+                }
             }
         }
 

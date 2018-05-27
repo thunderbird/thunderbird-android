@@ -332,7 +332,7 @@ class ImapSync {
 
         for (Message message : messages) {
             evaluateMessageForDownload(message, folder, localFolder, remoteFolder, account, unsyncedMessages,
-                    syncFlagMessages, flagSyncOnly, listener);
+                    syncFlagMessages, flagSyncOnly, unreadBeforeStart, listener);
         }
 
         final AtomicInteger progress = new AtomicInteger(0);
@@ -429,6 +429,7 @@ class ImapSync {
             final List<Message> unsyncedMessages,
             final List<Message> syncFlagMessages,
             boolean flagSyncOnly,
+            int unreadBeforeStart,
             SyncListener listener) throws MessagingException {
         if (message.isSet(Flag.DELETED)) {
             Timber.v("Message with uid %s is marked as deleted", message.getUid());
@@ -437,7 +438,7 @@ class ImapSync {
             return;
         }
 
-        Message localMessage = localFolder.getMessage(message.getUid());
+        LocalMessage localMessage = localFolder.getMessage(message.getUid());
 
         if (localMessage == null) {
             if (!flagSyncOnly) {
@@ -456,9 +457,7 @@ class ImapSync {
                     localMessage.setFlag(Flag.X_DOWNLOADED_FULL, message.isSet(Flag.X_DOWNLOADED_FULL));
                     localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, message.isSet(Flag.X_DOWNLOADED_PARTIAL));
 
-                    if (!localMessage.isSet(Flag.SEEN)) {
-                        listener.syncNewMessage(folder, localMessage);
-                    }
+                    listener.syncNewMessage(folder, localMessage, unreadBeforeStart);
                 }
             }
         } else if (!localMessage.isSet(Flag.DELETED)) {
@@ -583,17 +582,7 @@ class ImapSync {
 
                             // Update the listener with what we've found
                             listener.syncProgress(folder, progress.get(), todo);
-                            if (!localMessage.isSet(Flag.SEEN)) {
-                                listener.syncNewMessage(folder, localMessage);
-                            }
-
-                            // Send a notification of this message
-
-                            if (shouldNotifyForMessage(account, localFolder, message)) {
-                                // Notify with the localMessage so that we don't have to recalculate the content preview.
-                                notificationController.addNewMailNotification(account, localMessage, unreadBeforeStart);
-                            }
-
+                            listener.syncNewMessage(folder, localMessage, unreadBeforeStart);
                         } catch (MessagingException me) {
                             Timber.e(me, "SYNC: fetch small messages");
                         }
@@ -653,15 +642,7 @@ class ImapSync {
             }
 
             listener.syncProgress(folder, progress.get(), todo);
-            if (!localMessage.isSet(Flag.SEEN)) {
-                listener.syncNewMessage(folder, localMessage);
-            }
-
-            // Send a notification of this message
-            if (shouldNotifyForMessage(account, localFolder, message)) {
-                // Notify with the localMessage so that we don't have to recalculate the content preview.
-                notificationController.addNewMailNotification(account, localMessage, unreadBeforeStart);
-            }
+            listener.syncNewMessage(folder, localMessage, unreadBeforeStart);
         }
 
         Timber.d("SYNC: Done fetching large messages for folder %s", folder);
