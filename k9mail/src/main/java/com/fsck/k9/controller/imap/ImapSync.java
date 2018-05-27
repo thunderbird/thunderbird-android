@@ -800,17 +800,25 @@ class ImapSync {
         }
     }
 
+    private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
+            throws MessagingException, IOException {
+
+        if (remoteStart == 1) {
+            localFolder.setMoreMessages(MoreMessages.FALSE);
+        } else {
+            boolean moreMessagesAvailable = remoteFolder.areMoreMessagesAvailable(remoteStart, earliestDate);
+
+            MoreMessages newMoreMessages = (moreMessagesAvailable) ? MoreMessages.TRUE : MoreMessages.FALSE;
+            localFolder.setMoreMessages(newMoreMessages);
+        }
+    }
+
 
     /*
      * Methods calling back to MessagingController
      *
      * TODO: Move all of these to an interface so we don't have to depend on MessagingController directly
      */
-
-    private void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
-            throws IOException, MessagingException {
-        controller.updateMoreMessages(remoteFolder, localFolder, earliestDate, remoteStart);
-    }
 
     private boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message) {
         return controller.shouldNotifyForMessage(account, localFolder, message);
