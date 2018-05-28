@@ -707,7 +707,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        messageListFragment = MessageListFragment.newInstance(search, false, true);
+        messageListFragment = MessageListFragment.newInstance(search, false, K9.isThreadedViewEnabled());
         ft.replace(R.id.message_list_container, messageListFragment);
 
         return ft;
