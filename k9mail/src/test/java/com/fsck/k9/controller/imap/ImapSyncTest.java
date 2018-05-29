@@ -20,7 +20,8 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.imap.ImapFolder;
+import com.fsck.k9.mail.store.imap.ImapStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -69,11 +70,11 @@ public class ImapSyncTest extends RobolectricTest {
     @Mock
     private LocalFolder localFolder;
     @Mock
-    private Folder remoteFolder;
+    private ImapFolder remoteFolder;
     @Mock
     private LocalStore localStore;
     @Mock
-    private RemoteStore remoteStore;
+    private ImapStore remoteStore;
     @Captor
     private ArgumentCaptor<List<Message>> messageListCaptor;
     @Captor
@@ -88,7 +89,7 @@ public class ImapSyncTest extends RobolectricTest {
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
-        imapSync = new ImapSync();
+        imapSync = new ImapSync(account, localStore, remoteStore);
 
         setUpMessagingController();
         configureAccount();
@@ -99,7 +100,7 @@ public class ImapSyncTest extends RobolectricTest {
     public void sync_withOneMessageInRemoteFolder_shouldFinishWithoutError() throws Exception {
         messageCountInRemoteFolder(1);
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         verify(listener).syncFinished(FOLDER_NAME, 1, 0);
     }
@@ -108,7 +109,7 @@ public class ImapSyncTest extends RobolectricTest {
     public void sync_withEmptyRemoteFolder_shouldFinishWithoutError() throws Exception {
         messageCountInRemoteFolder(0);
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         verify(listener).syncFinished(FOLDER_NAME, 0, 0);
     }
@@ -117,7 +118,7 @@ public class ImapSyncTest extends RobolectricTest {
     public void sync_withNegativeMessageCountInRemoteFolder_shouldFinishWithError() throws Exception {
         messageCountInRemoteFolder(-1);
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         verify(listener).syncFailed(eq(FOLDER_NAME), eq("Exception: Message count -1 for folder Folder"),
                 any(Exception.class));
@@ -127,7 +128,7 @@ public class ImapSyncTest extends RobolectricTest {
     public void sync_withRemoteFolderProvided_shouldNotOpenRemoteFolder() throws Exception {
         messageCountInRemoteFolder(1);
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         verify(remoteFolder, never()).open(Folder.OPEN_MODE_RW);
     }
@@ -137,7 +138,7 @@ public class ImapSyncTest extends RobolectricTest {
         messageCountInRemoteFolder(1);
         configureRemoteStoreWithFolder();
 
-        imapSync.sync(account, FOLDER_NAME, listener, null);
+        imapSync.sync(FOLDER_NAME, listener, null);
 
         verify(remoteFolder).open(Folder.OPEN_MODE_RO);
     }
@@ -146,7 +147,7 @@ public class ImapSyncTest extends RobolectricTest {
     public void sync_withRemoteFolderProvided_shouldNotCloseRemoteFolder() throws Exception {
         messageCountInRemoteFolder(1);
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         verify(remoteFolder, never()).close();
     }
@@ -156,7 +157,7 @@ public class ImapSyncTest extends RobolectricTest {
         messageCountInRemoteFolder(1);
         configureRemoteStoreWithFolder();
 
-        imapSync.sync(account, FOLDER_NAME, listener, null);
+        imapSync.sync(FOLDER_NAME, listener, null);
 
         verify(remoteFolder).close();
     }
@@ -167,7 +168,7 @@ public class ImapSyncTest extends RobolectricTest {
         when(account.getExpungePolicy()).thenReturn(Account.Expunge.EXPUNGE_ON_POLL);
         configureRemoteStoreWithFolder();
 
-        imapSync.sync(account, FOLDER_NAME, listener, null);
+        imapSync.sync(FOLDER_NAME, listener, null);
 
         verify(remoteFolder).expunge();
     }
@@ -177,7 +178,7 @@ public class ImapSyncTest extends RobolectricTest {
         messageCountInRemoteFolder(1);
         when(account.getExpungePolicy()).thenReturn(Account.Expunge.EXPUNGE_MANUALLY);
 
-        imapSync.sync(account, FOLDER_NAME, listener, null);
+        imapSync.sync(FOLDER_NAME, listener, null);
 
         verify(remoteFolder, never()).expunge();
     }
@@ -191,7 +192,7 @@ public class ImapSyncTest extends RobolectricTest {
         when(localFolder.getMessagesByUids(any(List.class)))
                 .thenReturn(Collections.singletonList(localCopyOfRemoteDeletedMessage));
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         verify(localFolder).destroyMessages(messageListCaptor.capture());
         assertEquals(localCopyOfRemoteDeletedMessage, messageListCaptor.getValue().get(0));
@@ -208,7 +209,7 @@ public class ImapSyncTest extends RobolectricTest {
         when(localMessage.olderThan(dateOfEarliestPoll)).thenReturn(false);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessage));
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         verify(localFolder, never()).destroyMessages(messageListCaptor.capture());
     }
@@ -225,7 +226,7 @@ public class ImapSyncTest extends RobolectricTest {
         when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
         when(localFolder.getMessagesByUids(any(List.class))).thenReturn(Collections.singletonList(localMessage));
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         verify(localFolder).destroyMessages(messageListCaptor.capture());
         assertEquals(localMessage, messageListCaptor.getValue().get(0));
@@ -238,7 +239,7 @@ public class ImapSyncTest extends RobolectricTest {
         when(account.syncRemoteDeletions()).thenReturn(false);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(remoteDeletedMessage));
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         verify(localFolder, never()).destroyMessages(messageListCaptor.capture());
     }
@@ -249,7 +250,7 @@ public class ImapSyncTest extends RobolectricTest {
         hasUnsyncedRemoteMessage();
         when(remoteFolder.supportsFetchingFlags()).thenReturn(true);
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         verify(remoteFolder, atLeastOnce()).fetch(any(List.class), fetchProfileCaptor.capture(),
                 nullable(MessageRetrievalListener.class));
@@ -266,7 +267,7 @@ public class ImapSyncTest extends RobolectricTest {
         when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
         respondToFetchEnvelopesWithMessage(smallMessage);
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         verify(remoteFolder, atLeast(2)).fetch(any(List.class), fetchProfileCaptor.capture(),
                 nullable(MessageRetrievalListener.class));
@@ -282,7 +283,7 @@ public class ImapSyncTest extends RobolectricTest {
         when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
         respondToFetchEnvelopesWithMessage(largeMessage);
 
-        imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
         //TODO: Don't bother fetching messages of a size we don't have
         verify(remoteFolder, atLeast(4)).fetch(any(List.class), fetchProfileCaptor.capture(),
@@ -362,9 +363,8 @@ public class ImapSyncTest extends RobolectricTest {
         });
     }
 
-    private void configureAccount() throws MessagingException {
+    private void configureAccount() {
         when(account.isAvailable(appContext)).thenReturn(true);
-        when(account.getLocalStore()).thenReturn(localStore);
         when(account.getMaximumAutoDownloadMessageSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
         when(account.getEmail()).thenReturn("user@host.com");
     }
@@ -375,8 +375,7 @@ public class ImapSyncTest extends RobolectricTest {
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
     }
 
-    private void configureRemoteStoreWithFolder() throws MessagingException {
-        when(account.getRemoteStore()).thenReturn(remoteStore);
+    private void configureRemoteStoreWithFolder() {
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
         when(remoteFolder.getServerId()).thenReturn(FOLDER_NAME);
     }

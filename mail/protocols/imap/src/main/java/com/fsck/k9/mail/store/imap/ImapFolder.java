@@ -40,7 +40,7 @@ import timber.log.Timber;
 import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
-class ImapFolder extends Folder<ImapMessage> {
+public class ImapFolder extends Folder<ImapMessage> {
     static final String INBOX = "INBOX";
     private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
         @Override

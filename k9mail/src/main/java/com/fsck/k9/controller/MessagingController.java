@@ -81,6 +81,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.imap.ImapStore;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
@@ -137,7 +138,7 @@ public class MessagingController {
     private final TransportProvider transportProvider;
     private final AccountStatsCollector accountStatsCollector;
 
-    private ImapMessageStore imapMessageStore;
+    private final Map<String, ImapMessageStore> imapMessageStores = new HashMap<>();
 
 
     private MessagingListener checkMailListener = null;
@@ -256,17 +257,42 @@ public class MessagingController {
     }
 
     private RemoteMessageStore getRemoteMessageStore(Account account) {
-        return account.getStoreUri().startsWith("imap") ? getImapMessageStore() : null;
+        return account.getStoreUri().startsWith("imap") ? getImapMessageStore(account) : null;
     }
 
-    private ImapMessageStore getImapMessageStore() {
-        if (imapMessageStore == null) {
-            imapMessageStore = new ImapMessageStore();
+    private ImapMessageStore getImapMessageStore(Account account) {
+        synchronized (imapMessageStores) {
+            ImapMessageStore imapMessageStore = imapMessageStores.get(account.getUuid());
+            if (imapMessageStore != null) {
+                return imapMessageStore;
+            }
         }
 
-        return imapMessageStore;
+        LocalStore localStore = getLocalStoreOrThrow(account);
+
+        synchronized (imapMessageStores) {
+            ImapStore remoteStore = (ImapStore) getRemoteStoreOrThrow(account);
+            ImapMessageStore imapMessageStore = new ImapMessageStore(account, localStore, remoteStore);
+            imapMessageStores.put(account.getUuid(), imapMessageStore);
+            return imapMessageStore;
+        }
     }
 
+    private LocalStore getLocalStoreOrThrow(Account account) {
+        try {
+            return account.getLocalStore();
+        } catch (MessagingException e) {
+            throw new IllegalStateException("Couldn't get LocalStore for account " + account.getDescription());
+        }
+    }
+
+    private RemoteStore getRemoteStoreOrThrow(Account account) {
+        try {
+            return account.getRemoteStore();
+        } catch (MessagingException e) {
+            throw new IllegalStateException("Couldn't get RemoteStore for account " + account.getDescription());
+        }
+    }
 
     public void addListener(MessagingListener listener) {
         listeners.add(listener);
@@ -759,7 +785,7 @@ public class MessagingController {
         }
 
         ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
-        remoteMessageStore.sync(account, folder, syncListener, providedRemoteFolder);
+        remoteMessageStore.sync(folder, syncListener, providedRemoteFolder);
 
         if (commandException != null && !syncListener.syncFailed) {
             String rootMessage = getRootCauseMessage(commandException);
