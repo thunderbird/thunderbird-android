@@ -92,9 +92,11 @@ import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
+import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
+import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
 
 
@@ -259,7 +261,7 @@ public class MessagingController {
 
     private ImapMessageStore getImapMessageStore() {
         if (imapMessageStore == null) {
-            imapMessageStore = new ImapMessageStore(notificationController, this, context);
+            imapMessageStore = new ImapMessageStore();
         }
 
         return imapMessageStore;
@@ -739,9 +741,41 @@ public class MessagingController {
             Folder providedRemoteFolder) {
         RemoteMessageStore remoteMessageStore = getRemoteMessageStore(account);
         if (remoteMessageStore != null) {
-            remoteMessageStore.sync(account, folder, listener, providedRemoteFolder);
+            syncFolder(account, folder, listener, providedRemoteFolder, remoteMessageStore);
         } else {
             synchronizeMailboxSynchronousLegacy(account, folder, listener);
+        }
+    }
+
+    private void syncFolder(Account account, String folder, MessagingListener listener, Folder providedRemoteFolder,
+            RemoteMessageStore remoteMessageStore) {
+
+        Exception commandException = null;
+        try {
+            processPendingCommandsSynchronous(account);
+        } catch (Exception e) {
+            Timber.e(e, "Failure processing command, but allow message sync attempt");
+            commandException = e;
+        }
+
+        ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
+        remoteMessageStore.sync(account, folder, syncListener, providedRemoteFolder);
+
+        if (commandException != null && !syncListener.syncFailed) {
+            String rootMessage = getRootCauseMessage(commandException);
+            Timber.e("Root cause failure in %s:%s was '%s'", account.getDescription(), folder, rootMessage);
+            updateFolderStatus(account, folder, rootMessage);
+            listener.synchronizeMailboxFailed(account, folder, rootMessage);
+        }
+    }
+
+    private void updateFolderStatus(Account account, String folderServerId, String status) {
+        try {
+            LocalStore localStore = account.getLocalStore();
+            LocalFolder localFolder = localStore.getFolder(folderServerId);
+            localFolder.setStatus(status);
+        } catch (MessagingException e) {
+            Timber.w(e, "Couldn't update folder status for folder %s", folderServerId);
         }
     }
 
@@ -1539,26 +1573,6 @@ public class MessagingController {
             }
         }
         return messageChanged;
-    }
-
-    private String getRootCauseMessage(Throwable t) {
-        Throwable rootCause = t;
-        Throwable nextCause;
-        do {
-            nextCause = rootCause.getCause();
-            if (nextCause != null) {
-                rootCause = nextCause;
-            }
-        } while (nextCause != null);
-        if (rootCause instanceof MessagingException) {
-            return rootCause.getMessage();
-        } else {
-            // Remove the namespace on the exception so we have a fighting chance of seeing more of the error in the
-            // notification.
-            return (rootCause.getLocalizedMessage() != null)
-                    ? (rootCause.getClass().getSimpleName() + ": " + rootCause.getLocalizedMessage())
-                    : rootCause.getClass().getSimpleName();
-        }
     }
 
     private void queuePendingCommand(Account account, PendingCommand command) {
@@ -4092,5 +4106,144 @@ public class MessagingController {
 
     private interface MessageActor {
         void act(Account account, LocalFolder messageFolder, List<LocalMessage> messages);
+    }
+
+    class ControllerSyncListener implements SyncListener {
+        private final Account account;
+        private final MessagingListener listener;
+        private final int previousUnreadMessageCount;
+        boolean syncFailed = false;
+
+
+        ControllerSyncListener(Account account, MessagingListener listener) {
+            this.account = account;
+            this.listener = listener;
+
+            previousUnreadMessageCount = getUnreadMessageCount();
+        }
+
+        private int getUnreadMessageCount() {
+            try {
+                AccountStats stats = getAccountStats(account);
+                return stats.unreadMessageCount;
+            } catch (MessagingException e) {
+                Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
+                return 0;
+            }
+        }
+
+        @Override
+        public void syncStarted(@NotNull String folderServerId, @NotNull String folderName) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxStarted(account, folderServerId, folderName);
+            }
+        }
+
+        @Override
+        public void syncAuthenticationSuccess() {
+            notificationController.clearAuthenticationErrorNotification(account, true);
+        }
+
+        @Override
+        public void syncHeadersStarted(@NotNull String folderServerId, @NotNull String folderName) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxHeadersStarted(account, folderServerId, folderName);
+            }
+        }
+
+        @Override
+        public void syncHeadersProgress(@NotNull String folderServerId, int completed, int total) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxHeadersProgress(account, folderServerId, completed, total);
+            }
+        }
+
+        @Override
+        public void syncHeadersFinished(@NotNull String folderServerId, int totalMessagesInMailbox,
+                int numNewMessages) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxHeadersFinished(account, folderServerId, totalMessagesInMailbox,
+                        numNewMessages);
+            }
+        }
+
+        @Override
+        public void syncProgress(@NotNull String folderServerId, int completed, int total) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxProgress(account, folderServerId, completed, total);
+            }
+        }
+
+        @Override
+        public void syncNewMessage(@NotNull String folderServerId, @NotNull LocalMessage message) {
+            // Send a notification of this message
+            LocalFolder localFolder = message.getFolder();
+            if (shouldNotifyForMessage(account, localFolder, message)) {
+                // Notify with the localMessage so that we don't have to recalculate the content preview.
+                notificationController.addNewMailNotification(account, message, previousUnreadMessageCount);
+            }
+
+            if (!message.isSet(Flag.SEEN)) {
+                for (MessagingListener messagingListener : getListeners(listener)) {
+                    messagingListener.synchronizeMailboxNewMessage(account, folderServerId, message);
+                }
+            }
+        }
+
+        @Override
+        public void syncRemovedMessage(@NotNull String folderServerId, @NotNull Message message) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxRemovedMessage(account, folderServerId, message);
+            }
+        }
+
+        @Override
+        public void syncFlagChanged(@NotNull String folderServerId, @NotNull LocalMessage message) {
+            boolean shouldBeNotifiedOf = false;
+            if (message.isSet(Flag.DELETED) || isMessageSuppressed(message)) {
+                syncRemovedMessage(folderServerId, message);
+            } else {
+                LocalFolder localFolder = message.getFolder();
+                if (shouldNotifyForMessage(account, localFolder, message)) {
+                    shouldBeNotifiedOf = true;
+                }
+            }
+
+            // we're only interested in messages that need removing
+            if (!shouldBeNotifiedOf) {
+                MessageReference messageReference = message.makeMessageReference();
+                notificationController.removeNewMailNotification(account, messageReference);
+            }
+        }
+
+        @Override
+        public void syncFinished(@NotNull String folderServerId, int totalMessagesInMailbox, int numNewMessages) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxFinished(account, folderServerId, totalMessagesInMailbox,
+                        numNewMessages);
+            }
+        }
+
+        @Override
+        public void syncFailed(@NotNull String folderServerId, @NotNull String message, Exception exception) {
+            syncFailed = true;
+
+            if (exception instanceof AuthenticationFailedException) {
+                handleAuthenticationFailure(account, true);
+            } else {
+                notifyUserIfCertificateProblem(account, exception, true);
+            }
+
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.synchronizeMailboxFailed(account, folderServerId, message);
+            }
+        }
+
+        @Override
+        public void folderStatusChanged(@NotNull String folderServerId, int unreadMessageCount) {
+            for (MessagingListener messagingListener : getListeners(listener)) {
+                messagingListener.folderStatusChanged(account, folderServerId, unreadMessageCount);
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@ import com.fsck.k9.AccountStats;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
-import com.fsck.k9.controller.SimpleMessagingListener;
+import com.fsck.k9.controller.SyncListener;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
@@ -24,7 +24,6 @@ import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.notification.NotificationController;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -38,6 +37,7 @@ import org.robolectric.shadows.ShadowLog;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -65,7 +65,7 @@ public class ImapSyncTest extends RobolectricTest {
     @Mock
     private AccountStats accountStats;
     @Mock
-    private SimpleMessagingListener listener;
+    private SyncListener listener;
     @Mock
     private LocalFolder localFolder;
     @Mock
@@ -74,8 +74,6 @@ public class ImapSyncTest extends RobolectricTest {
     private LocalStore localStore;
     @Mock
     private RemoteStore remoteStore;
-    @Mock
-    private NotificationController notificationController;
     @Captor
     private ArgumentCaptor<List<Message>> messageListCaptor;
     @Captor
@@ -90,7 +88,7 @@ public class ImapSyncTest extends RobolectricTest {
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
-        imapSync = new ImapSync(notificationController, controller, appContext);
+        imapSync = new ImapSync();
 
         setUpMessagingController();
         configureAccount();
@@ -103,7 +101,7 @@ public class ImapSyncTest extends RobolectricTest {
 
         imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
 
-        verify(listener).synchronizeMailboxFinished(account, FOLDER_NAME, 1, 0);
+        verify(listener).syncFinished(FOLDER_NAME, 1, 0);
     }
 
     @Test
@@ -112,7 +110,7 @@ public class ImapSyncTest extends RobolectricTest {
 
         imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
 
-        verify(listener).synchronizeMailboxFinished(account, FOLDER_NAME, 0, 0);
+        verify(listener).syncFinished(FOLDER_NAME, 0, 0);
     }
 
     @Test
@@ -121,8 +119,8 @@ public class ImapSyncTest extends RobolectricTest {
 
         imapSync.sync(account, FOLDER_NAME, listener, remoteFolder);
 
-        verify(listener).synchronizeMailboxFailed(account, FOLDER_NAME,
-                "Exception: Message count -1 for folder Folder");
+        verify(listener).syncFailed(eq(FOLDER_NAME), eq("Exception: Message count -1 for folder Folder"),
+                any(Exception.class));
     }
 
     @Test
