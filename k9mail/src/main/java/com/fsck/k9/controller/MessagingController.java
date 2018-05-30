@@ -1383,7 +1383,8 @@ public class MessagingController {
                             }
                             // Send a notification of this message
 
-                            if (shouldNotifyForMessage(account, localFolder, message)) {
+                            boolean isOldMessage = isOldMessage(account, message);
+                            if (shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
                                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                                 notificationController.addNewMailNotification(account, localMessage, unreadBeforeStart);
                             }
@@ -1403,6 +1404,11 @@ public class MessagingController {
                 });
 
         Timber.d("SYNC: Done fetching small messages for folder %s", folder);
+    }
+
+    private boolean isOldMessage(Account account, Message message) {
+        return account.getStoreUri().startsWith("pop3") &&
+                message.olderThan(new Date(account.getLatestOldMessageSeenTime()));
     }
 
     private <T extends Message> void downloadLargeMessages(final Account account, final Folder<T> remoteFolder,
@@ -1445,7 +1451,8 @@ public class MessagingController {
                 }
             }
             // Send a notification of this message
-            if (shouldNotifyForMessage(account, localFolder, message)) {
+            boolean isOldMessage = isOldMessage(account, message);
+            if (shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 notificationController.addNewMailNotification(account, localMessage, unreadBeforeStart);
             }
@@ -1561,7 +1568,8 @@ public class MessagingController {
                             l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
                         }
                     } else {
-                        if (shouldNotifyForMessage(account, localFolder, localMessage)) {
+                        boolean isOldMessage = isOldMessage(account, localMessage);
+                        if (shouldNotifyForMessage(account, localFolder, localMessage, isOldMessage)) {
                             shouldBeNotifiedOf = true;
                         }
                     }
@@ -3693,7 +3701,8 @@ public class MessagingController {
     }
 
 
-    public boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message) {
+    public boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message,
+            boolean isOldMessage) {
         // If we don't even have an account name, don't show the notification.
         // (This happens during initial account setup)
         if (account.getName() == null) {
@@ -3702,7 +3711,7 @@ public class MessagingController {
 
         // Do not notify if the user does not have notifications enabled or if the message has
         // been read.
-        if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN)) {
+        if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN) || isOldMessage) {
             return false;
         }
 
@@ -3721,13 +3730,6 @@ public class MessagingController {
             return false;
         }
 
-        // If the account is a POP3 account and the message is older than the oldest message we've
-        // previously seen, then don't notify about it.
-        if (account.getStoreUri().startsWith("pop3") &&
-                message.olderThan(new Date(account.getLatestOldMessageSeenTime()))) {
-            return false;
-        }
-
         // No notification for new messages in Trash, Drafts, Spam or Sent folder.
         // But do notify if it's the INBOX (see issue 1817).
         Folder folder = message.getFolder();
@@ -3739,19 +3741,6 @@ public class MessagingController {
                             || account.getSpamFolder().equals(folderServerId)
                             || account.getSentFolder().equals(folderServerId))) {
                 return false;
-            }
-        }
-
-        if (message.getUid() != null && localFolder.getLastUid() != null) {
-            try {
-                Integer messageUid = Integer.parseInt(message.getUid());
-                if (messageUid <= localFolder.getLastUid()) {
-                    Timber.d("Message uid is %s, max message uid is %s. Skipping notification.",
-                            messageUid, localFolder.getLastUid());
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                // Nothing to be done here.
             }
         }
 
@@ -4201,10 +4190,11 @@ public class MessagingController {
         }
 
         @Override
-        public void syncNewMessage(@NotNull String folderServerId, @NotNull LocalMessage message) {
+        public void syncNewMessage(@NotNull String folderServerId, @NotNull LocalMessage message,
+                boolean isOldMessage) {
             // Send a notification of this message
             LocalFolder localFolder = message.getFolder();
-            if (shouldNotifyForMessage(account, localFolder, message)) {
+            if (shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 notificationController.addNewMailNotification(account, message, previousUnreadMessageCount);
             }
@@ -4230,7 +4220,7 @@ public class MessagingController {
                 syncRemovedMessage(folderServerId, message);
             } else {
                 LocalFolder localFolder = message.getFolder();
-                if (shouldNotifyForMessage(account, localFolder, message)) {
+                if (shouldNotifyForMessage(account, localFolder, message, false)) {
                     shouldBeNotifiedOf = true;
                 }
             }
