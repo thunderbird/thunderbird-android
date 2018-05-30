@@ -29,7 +29,7 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
-import com.fsck.k9.mail.store.RemoteStore;
+import com.fsck.k9.mail.store.imap.ImapStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -41,13 +41,22 @@ import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 
 
 class ImapSync {
+    private final Account account;
+    private final LocalStore localStore;
+    private final ImapStore imapStore;
 
-    void sync(Account account, String folder, SyncListener listener, Folder providedRemoteFolder) {
-        synchronizeMailboxSynchronous(account, folder, listener, providedRemoteFolder);
+
+    ImapSync(Account account, LocalStore localStore, ImapStore imapStore) {
+        this.account = account;
+        this.localStore = localStore;
+        this.imapStore = imapStore;
     }
 
-    void synchronizeMailboxSynchronous(final Account account, final String folder, final SyncListener listener,
-            Folder providedRemoteFolder) {
+    void sync(String folder, SyncListener listener, Folder providedRemoteFolder) {
+        synchronizeMailboxSynchronous(folder, listener, providedRemoteFolder);
+    }
+
+    void synchronizeMailboxSynchronous(final String folder, final SyncListener listener, Folder providedRemoteFolder) {
         Folder remoteFolder = null;
         LocalFolder tLocalFolder = null;
 
@@ -62,7 +71,6 @@ class ImapSync {
             Timber.d("SYNC: About to process pending commands for account %s", account.getDescription());
 
             Timber.v("SYNC: About to get local folder %s", folder);
-            final LocalStore localStore = account.getLocalStore();
             tLocalFolder = localStore.getFolder(folder);
             final LocalFolder localFolder = tLocalFolder;
             localFolder.open(Folder.OPEN_MODE_RW);
@@ -82,10 +90,8 @@ class ImapSync {
                 Timber.v("SYNC: using providedRemoteFolder %s", folder);
                 remoteFolder = providedRemoteFolder;
             } else {
-                RemoteStore remoteStore = account.getRemoteStore();
-
                 Timber.v("SYNC: About to get remote folder %s", folder);
-                remoteFolder = remoteStore.getFolder(folder);
+                remoteFolder = imapStore.getFolder(folder);
 
                 /*
                  * Synchronization process:
@@ -213,7 +219,7 @@ class ImapSync {
             /*
              * Now we download the actual content of messages.
              */
-            int newMessages = downloadMessages(account, remoteFolder, localFolder, remoteMessages, false,
+            int newMessages = downloadMessages(remoteFolder, localFolder, remoteMessages, false,
                     true, listener);
 
             int unreadMessageCount = localFolder.getUnreadMessageCount();
@@ -270,8 +276,6 @@ class ImapSync {
      * Fetches the messages described by inputMessages from the remote store and writes them to
      * local storage.
      *
-     * @param account
-     *         The account the remote store belongs to.
      * @param remoteFolder
      *         The remote folder to download messages from.
      * @param localFolder
@@ -287,8 +291,7 @@ class ImapSync {
      *
      * @throws MessagingException
      */
-    int downloadMessages(final Account account, final Folder remoteFolder,
-            final LocalFolder localFolder, List<Message> inputMessages,
+    int downloadMessages(final Folder remoteFolder, final LocalFolder localFolder, List<Message> inputMessages,
             boolean flagSyncOnly, boolean purgeToVisibleLimit, final SyncListener listener) throws MessagingException {
 
         final Date earliestDate = account.getEarliestPollDate();
@@ -333,7 +336,7 @@ class ImapSync {
 
             Timber.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size(), folder);
 
-            fetchUnsyncedMessages(account, remoteFolder, unsyncedMessages, smallMessages, largeMessages, progress, todo,
+            fetchUnsyncedMessages(remoteFolder, unsyncedMessages, smallMessages, largeMessages, progress, todo,
                     fp, listener);
 
             String updatedPushState = localFolder.getPushState();
@@ -362,7 +365,7 @@ class ImapSync {
         fp.add(FetchProfile.Item.BODY);
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
-        downloadSmallMessages(account, remoteFolder, localFolder, smallMessages, progress,
+        downloadSmallMessages(remoteFolder, localFolder, smallMessages, progress,
                 newMessages, todo, fp, listener);
         smallMessages.clear();
         /*
@@ -370,7 +373,7 @@ class ImapSync {
          */
         fp = new FetchProfile();
         fp.add(FetchProfile.Item.STRUCTURE);
-        downloadLargeMessages(account, remoteFolder, localFolder, largeMessages, progress,
+        downloadLargeMessages(remoteFolder, localFolder, largeMessages, progress,
                 newMessages, todo, fp, listener);
         largeMessages.clear();
 
@@ -451,7 +454,7 @@ class ImapSync {
         }
     }
 
-    private <T extends Message> void fetchUnsyncedMessages(final Account account, final Folder<T> remoteFolder,
+    private <T extends Message> void fetchUnsyncedMessages(final Folder<T> remoteFolder,
             List<T> unsyncedMessages,
             final List<Message> smallMessages,
             final List<Message> largeMessages,
@@ -508,7 +511,7 @@ class ImapSync {
                 });
     }
 
-    private <T extends Message> void downloadSmallMessages(final Account account, final Folder<T> remoteFolder,
+    private <T extends Message> void downloadSmallMessages(final Folder<T> remoteFolder,
             final LocalFolder localFolder,
             List<T> smallMessages,
             final AtomicInteger progress,
@@ -571,7 +574,7 @@ class ImapSync {
         Timber.d("SYNC: Done fetching small messages for folder %s", folder);
     }
 
-    private <T extends Message> void downloadLargeMessages(final Account account, final Folder<T> remoteFolder,
+    private <T extends Message> void downloadLargeMessages(final Folder<T> remoteFolder,
             final LocalFolder localFolder,
             List<T> largeMessages,
             final AtomicInteger progress,
