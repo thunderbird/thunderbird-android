@@ -998,7 +998,7 @@ public class LocalStore {
         return attachmentInfoExtractor;
     }
 
-    void notifyChange() {
+    public void notifyChange() {
         Uri uri = Uri.withAppendedPath(EmailProvider.CONTENT_URI, "account/" + account.getUuid() + "/messages");
         contentResolver.notifyChange(uri, null);
     }

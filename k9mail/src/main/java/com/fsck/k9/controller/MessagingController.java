@@ -83,6 +83,7 @@ import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
+import com.fsck.k9.mailstore.K9BackendStorage;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -271,8 +272,9 @@ public class MessagingController {
         LocalStore localStore = getLocalStoreOrThrow(account);
 
         synchronized (imapMessageStores) {
+            BackendStorage backendStorage = new K9BackendStorage(localStore);
             ImapStore remoteStore = (ImapStore) getRemoteStoreOrThrow(account);
-            ImapMessageStore imapMessageStore = new ImapMessageStore(account, localStore, remoteStore);
+            ImapMessageStore imapMessageStore = new ImapMessageStore(account, backendStorage, remoteStore);
             imapMessageStores.put(account.getUuid(), imapMessageStore);
             return imapMessageStore;
         }
@@ -4126,6 +4128,7 @@ public class MessagingController {
     class ControllerSyncListener implements SyncListener {
         private final Account account;
         private final MessagingListener listener;
+        private final LocalStore localStore;
         private final int previousUnreadMessageCount;
         boolean syncFailed = false;
 
@@ -4133,6 +4136,7 @@ public class MessagingController {
         ControllerSyncListener(Account account, MessagingListener listener) {
             this.account = account;
             this.listener = listener;
+            this.localStore = getLocalStoreOrThrow(account);
 
             previousUnreadMessageCount = getUnreadMessageCount();
         }
@@ -4190,9 +4194,11 @@ public class MessagingController {
         }
 
         @Override
-        public void syncNewMessage(@NotNull String folderServerId, @NotNull LocalMessage message,
+        public void syncNewMessage(@NotNull String folderServerId, @NotNull String messageServerId,
                 boolean isOldMessage) {
+
             // Send a notification of this message
+            LocalMessage message = loadMessage(folderServerId, messageServerId);
             LocalFolder localFolder = message.getFolder();
             if (shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
@@ -4207,17 +4213,20 @@ public class MessagingController {
         }
 
         @Override
-        public void syncRemovedMessage(@NotNull String folderServerId, @NotNull Message message) {
+        public void syncRemovedMessage(@NotNull String folderServerId, @NotNull String messageServerId) {
+            // FIXME: This is kind of expensive. Get rid of the need to call synchronizeMailboxRemovedMessage()
+            LocalMessage message = loadMessage(folderServerId, messageServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxRemovedMessage(account, folderServerId, message);
             }
         }
 
         @Override
-        public void syncFlagChanged(@NotNull String folderServerId, @NotNull LocalMessage message) {
+        public void syncFlagChanged(@NotNull String folderServerId, @NotNull String messageServerId) {
             boolean shouldBeNotifiedOf = false;
+            LocalMessage message = loadMessage(folderServerId, messageServerId);
             if (message.isSet(Flag.DELETED) || isMessageSuppressed(message)) {
-                syncRemovedMessage(folderServerId, message);
+                syncRemovedMessage(folderServerId, message.getUid());
             } else {
                 LocalFolder localFolder = message.getFolder();
                 if (shouldNotifyForMessage(account, localFolder, message, false)) {
@@ -4259,6 +4268,16 @@ public class MessagingController {
         public void folderStatusChanged(@NotNull String folderServerId, int unreadMessageCount) {
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.folderStatusChanged(account, folderServerId, unreadMessageCount);
+            }
+        }
+
+        private LocalMessage loadMessage(String folderServerId, String messageServerId) {
+            try {
+                LocalFolder localFolder = localStore.getFolder(folderServerId);
+                localFolder.open(Folder.OPEN_MODE_RW);
+                return localFolder.getMessage(messageServerId);
+            } catch (MessagingException e) {
+                throw new RuntimeException("Couldn't load message (" + folderServerId + ":" + messageServerId + ")", e);
             }
         }
     }
