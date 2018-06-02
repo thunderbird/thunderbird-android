@@ -3,13 +3,21 @@ package com.fsck.k9.mailstore
 import android.content.ContentValues
 import android.database.Cursor
 import androidx.core.database.getStringOrNull
+import com.fsck.k9.Account
+import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.backend.api.MessageRemovalListener
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
+import java.util.Date
 
-class K9BackendFolder(private val localStore: LocalStore, private val folderServerId: String) : BackendFolder {
+class K9BackendFolder(
+        private val preferences: Preferences,
+        private val account: Account,
+        private val localStore: LocalStore,
+        private val folderServerId: String
+) : BackendFolder {
     private val database = localStore.database
     private val databaseId: String
     private val localFolder = localStore.getFolder(folderServerId)
@@ -207,6 +215,23 @@ class K9BackendFolder(private val localStore: LocalStore, private val folderServ
 
         val localMessage = localFolder.getMessage(message.uid)
         localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, true)
+    }
+
+    override fun getLatestOldMessageSeenTime(): Date = Date(account.latestOldMessageSeenTime)
+
+    override fun setLatestOldMessageSeenTime(date: Date) {
+        account.latestOldMessageSeenTime = date.time
+        account.save(preferences)
+    }
+
+    override fun getOldestMessageDate(): Date? {
+        return database.rawQuery("SELECT MIN(date) FROM messages WHERE folder_id = ?", databaseId) { cursor ->
+            if (cursor.moveToFirst()) {
+                Date(cursor.getLong(0))
+            } else {
+                null
+            }
+        }
     }
 
 

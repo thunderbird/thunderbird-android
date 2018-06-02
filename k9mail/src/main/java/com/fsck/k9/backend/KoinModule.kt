@@ -4,9 +4,13 @@ import org.koin.dsl.module.applicationContext
 
 val backendModule = applicationContext {
     bean { BackendManager(
-            mapOf<String, BackendFactory>(
-                    "imap" to get<ImapBackendFactory>()
+            mapOf(
+                    "imap" to get<ImapBackendFactory>(),
+                    "pop3" to get<Pop3BackendFactory>(),
+                    "webdav" to get<WebDavBackendFactory>()
             ))
     }
-    bean { ImapBackendFactory(get()) }
+    bean { ImapBackendFactory(get(), get()) }
+    bean { Pop3BackendFactory(get(), get()) }
+    bean { WebDavBackendFactory(get()) }
 }

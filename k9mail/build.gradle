@@ -27,6 +27,8 @@ dependencies {
     implementation project(":mail:protocols:smtp")
     implementation project(":backend:api")
     implementation project(":backend:imap")
+    implementation project(":backend:pop3")
+    implementation project(":backend:webdav")
 
     implementation project(':plugins:HoloColorPicker')
     implementation project(':plugins:openpgp-api-lib:openpgp-api')

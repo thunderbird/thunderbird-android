@@ -2,6 +2,7 @@ package com.fsck.k9.backend.api
 
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
+import java.util.Date
 
 //FIXME: add documentation
 interface BackendFolder {
@@ -24,6 +25,9 @@ interface BackendFolder {
     fun setMessageFlag(messageServerId: String, flag: Flag, value: Boolean)
     fun savePartialMessage(message: Message)
     fun saveCompleteMessage(message: Message)
+    fun getLatestOldMessageSeenTime(): Date
+    fun setLatestOldMessageSeenTime(date: Date)
+    fun getOldestMessageDate(): Date?
 
     enum class MoreMessages {
         UNKNOWN,

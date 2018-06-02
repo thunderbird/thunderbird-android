@@ -1,7 +1,6 @@
 package com.fsck.k9.controller;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -88,7 +87,6 @@ import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
 import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.UnavailableStorageException;
@@ -742,11 +740,7 @@ public class MessagingController {
     void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener,
             Folder providedRemoteFolder) {
         Backend remoteMessageStore = getBackend(account);
-        if (remoteMessageStore != null) {
-            syncFolder(account, folder, listener, providedRemoteFolder, remoteMessageStore);
-        } else {
-            synchronizeMailboxSynchronousLegacy(account, folder, listener);
-        }
+        syncFolder(account, folder, listener, providedRemoteFolder, remoteMessageStore);
     }
 
     private void syncFolder(Account account, String folder, MessagingListener listener, Folder providedRemoteFolder,
@@ -794,264 +788,8 @@ public class MessagingController {
         }
     }
 
-    void synchronizeMailboxSynchronousLegacy(Account account, String folder, MessagingListener listener) {
-
-        Folder remoteFolder = null;
-        LocalFolder tLocalFolder = null;
-
-        Timber.i("Synchronizing folder %s:%s", account.getDescription(), folder);
-
-        // We don't ever sync the Outbox
-        if (folder.equals(account.getOutboxFolder())) {
-            return;
-        }
-
-        Exception commandException = null;
-        try {
-            Timber.d("SYNC: About to process pending commands for account %s", account.getDescription());
-
-            Timber.v("SYNC: About to get local folder %s", folder);
-            final LocalStore localStore = account.getLocalStore();
-            tLocalFolder = localStore.getFolder(folder);
-            final LocalFolder localFolder = tLocalFolder;
-            localFolder.open(Folder.OPEN_MODE_RW);
-            String folderName = localFolder.getName();
-
-            for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxStarted(account, folder, folderName);
-            }
-
-            try {
-                processPendingCommandsSynchronous(account);
-            } catch (Exception e) {
-                Timber.e(e, "Failure processing command, but allow message sync attempt");
-                commandException = e;
-            }
-
-            /*
-             * Get the message list from the local store and create an index of
-             * the uids within the list.
-             */
-
-            Map<String, Long> localUidMap = localFolder.getAllMessagesAndEffectiveDates();
-
-            RemoteStore remoteStore = account.getRemoteStore();
-
-            Timber.v("SYNC: About to get remote folder %s", folder);
-            remoteFolder = remoteStore.getFolder(folder);
-
-            /*
-             * Synchronization process:
-             *
-            Open the folder
-            Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
-            Get the message count
-            Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
-            getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
-            See if we have each message locally, if not fetch it's flags and envelope
-            Get and update the unread count for the folder
-            Update the remote flags of any messages we have locally with an internal date newer than the remote message.
-            Get the current flags for any messages we have locally but did not just download
-            Update local flags
-            For any message we have locally but not remotely, delete the local message to keep cache clean.
-            Download larger parts of any new messages.
-            (Optional) Download small attachments in the background.
-             */
-
-            /*
-             * Open the remote folder. This pre-loads certain metadata like message count.
-             */
-            Timber.v("SYNC: About to open remote folder %s", folder);
-
-            remoteFolder.open(Folder.OPEN_MODE_RO);
-
-            notificationController.clearAuthenticationErrorNotification(account, true);
-
-            /*
-             * Get the remote message count.
-             */
-            int remoteMessageCount = remoteFolder.getMessageCount();
-
-            int visibleLimit = localFolder.getVisibleLimit();
-
-            if (visibleLimit < 0) {
-                visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
-            }
-
-            final List<Message> remoteMessages = new ArrayList<>();
-            Map<String, Message> remoteUidMap = new HashMap<>();
-
-            Timber.v("SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount);
-
-            final Date earliestDate = account.getEarliestPollDate();
-            long earliestTimestamp = earliestDate != null ? earliestDate.getTime() : 0L;
-
-
-            int remoteStart = 1;
-            if (remoteMessageCount > 0) {
-                /* Message numbers start at 1.  */
-                if (visibleLimit > 0) {
-                    remoteStart = Math.max(0, remoteMessageCount - visibleLimit) + 1;
-                } else {
-                    remoteStart = 1;
-                }
-
-                Timber.v("SYNC: About to get messages %d through %d for folder %s",
-                        remoteStart, remoteMessageCount, folder);
-
-                final AtomicInteger headerProgress = new AtomicInteger(0);
-                for (MessagingListener l : getListeners(listener)) {
-                    l.synchronizeMailboxHeadersStarted(account, folder, folderName);
-                }
-
-
-                List<? extends Message> remoteMessageArray =
-                        remoteFolder.getMessages(remoteStart, remoteMessageCount, earliestDate, null);
-
-                int messageCount = remoteMessageArray.size();
-
-                for (Message thisMess : remoteMessageArray) {
-                    headerProgress.incrementAndGet();
-                    for (MessagingListener l : getListeners(listener)) {
-                        l.synchronizeMailboxHeadersProgress(account, folder, headerProgress.get(), messageCount);
-                    }
-                    Long localMessageTimestamp = localUidMap.get(thisMess.getUid());
-                    if (localMessageTimestamp == null || localMessageTimestamp >= earliestTimestamp) {
-                        remoteMessages.add(thisMess);
-                        remoteUidMap.put(thisMess.getUid(), thisMess);
-                    }
-                }
-
-                Timber.v("SYNC: Got %d messages for folder %s", remoteUidMap.size(), folder);
-
-                for (MessagingListener l : getListeners(listener)) {
-                    l.synchronizeMailboxHeadersFinished(account, folder, headerProgress.get(), remoteUidMap.size());
-                }
-
-            } else if (remoteMessageCount < 0) {
-                throw new Exception("Message count " + remoteMessageCount + " for folder " + folder);
-            }
-
-            /*
-             * Remove any messages that are in the local store but no longer on the remote store or are too old
-             */
-            MoreMessages moreMessages = localFolder.getMoreMessages();
-            if (account.syncRemoteDeletions()) {
-                List<String> destroyMessageUids = new ArrayList<>();
-                for (String localMessageUid : localUidMap.keySet()) {
-                    if (!localMessageUid.startsWith(K9.LOCAL_UID_PREFIX) && remoteUidMap.get(localMessageUid) == null) {
-                        destroyMessageUids.add(localMessageUid);
-                    }
-                }
-
-                List<LocalMessage> destroyMessages = localFolder.getMessagesByUids(destroyMessageUids);
-                if (!destroyMessageUids.isEmpty()) {
-                    moreMessages = MoreMessages.UNKNOWN;
-
-                    localFolder.destroyMessages(destroyMessages);
-
-                    for (Message destroyMessage : destroyMessages) {
-                        for (MessagingListener l : getListeners(listener)) {
-                            l.synchronizeMailboxRemovedMessage(account, folder, destroyMessage);
-                        }
-                    }
-                }
-            }
-            // noinspection UnusedAssignment, free memory early? (better break up the method!)
-            localUidMap = null;
-
-            if (moreMessages == MoreMessages.UNKNOWN) {
-                updateMoreMessages(remoteFolder, localFolder, earliestDate, remoteStart);
-            }
-
-            /*
-             * Now we download the actual content of messages.
-             */
-            int newMessages = downloadMessages(account, remoteFolder, localFolder, remoteMessages, false, true);
-
-            int unreadMessageCount = localFolder.getUnreadMessageCount();
-            for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folder, unreadMessageCount);
-            }
-
-            /* Notify listeners that we're finally done. */
-
-            localFolder.setLastChecked(System.currentTimeMillis());
-            localFolder.setStatus(null);
-
-            Timber.d("Done synchronizing folder %s:%s @ %tc with %d new messages",
-                    account.getDescription(),
-                    folder,
-                    System.currentTimeMillis(),
-                    newMessages);
-
-            for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxFinished(account, folder, remoteMessageCount, newMessages);
-            }
-
-
-            if (commandException != null) {
-                String rootMessage = getRootCauseMessage(commandException);
-                Timber.e("Root cause failure in %s:%s was '%s'",
-                        account.getDescription(), tLocalFolder.getServerId(), rootMessage);
-                localFolder.setStatus(rootMessage);
-                for (MessagingListener l : getListeners(listener)) {
-                    l.synchronizeMailboxFailed(account, folder, rootMessage);
-                }
-            }
-
-            Timber.i("Done synchronizing folder %s:%s", account.getDescription(), folder);
-
-        } catch (AuthenticationFailedException e) {
-            handleAuthenticationFailure(account, true);
-
-            for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxFailed(account, folder, "Authentication failure");
-            }
-        } catch (Exception e) {
-            Timber.e(e, "synchronizeMailbox");
-            // If we don't set the last checked, it can try too often during
-            // failure conditions
-            String rootMessage = getRootCauseMessage(e);
-            if (tLocalFolder != null) {
-                try {
-                    tLocalFolder.setStatus(rootMessage);
-                    tLocalFolder.setLastChecked(System.currentTimeMillis());
-                } catch (MessagingException me) {
-                    Timber.e(e, "Could not set last checked on folder %s:%s",
-                            account.getDescription(), tLocalFolder.getServerId());
-                }
-            }
-
-            for (MessagingListener l : getListeners(listener)) {
-                l.synchronizeMailboxFailed(account, folder, rootMessage);
-            }
-            notifyUserIfCertificateProblem(account, e, true);
-            Timber.e("Failed synchronizing folder %s:%s @ %tc", account.getDescription(), folder,
-                    System.currentTimeMillis());
-
-        } finally {
-            closeFolder(remoteFolder);
-            closeFolder(tLocalFolder);
-        }
-
-    }
-
     public void handleAuthenticationFailure(Account account, boolean incoming) {
         notificationController.showAuthenticationErrorNotification(account, incoming);
-    }
-
-    public void updateMoreMessages(Folder remoteFolder, LocalFolder localFolder, Date earliestDate, int remoteStart)
-            throws MessagingException, IOException {
-
-        if (remoteStart == 1) {
-            localFolder.setMoreMessages(MoreMessages.FALSE);
-        } else {
-            boolean moreMessagesAvailable = remoteFolder.areMoreMessagesAvailable(remoteStart, earliestDate);
-
-            MoreMessages newMoreMessages = (moreMessagesAvailable) ? MoreMessages.TRUE : MoreMessages.FALSE;
-            localFolder.setMoreMessages(newMoreMessages);
-        }
     }
 
     private static void closeFolder(Folder f) {
