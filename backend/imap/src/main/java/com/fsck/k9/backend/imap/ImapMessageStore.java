@@ -1,4 +1,4 @@
-package com.fsck.k9.controller.imap;
+package com.fsck.k9.backend.imap;
 
 
 import com.fsck.k9.backend.api.BackendStorage;
@@ -13,7 +13,6 @@ public class ImapMessageStore implements RemoteMessageStore {
     private final ImapSync imapSync;
 
 
-    // TODO: Pass in SyncConfig interface instead of Account, LocalMessageStore interface instead of LocalStore
     public ImapMessageStore(String accountName, BackendStorage backendStorage, ImapStore imapStore) {
         this.imapSync = new ImapSync(accountName, backendStorage, imapStore);
     }

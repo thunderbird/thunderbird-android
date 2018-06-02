@@ -1,22 +1,19 @@
-package com.fsck.k9.controller.imap;
+package com.fsck.k9.backend.imap;
 
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fsck.k9.K9;
-import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.backend.api.BackendFolder;
 import com.fsck.k9.backend.api.BackendStorage;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.backend.api.SyncListener;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -31,7 +28,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.robolectric.shadows.ShadowLog;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -49,16 +45,16 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
-public class ImapSyncTest extends RobolectricTest {
+public class ImapSyncTest {
     private static final String ACCOUNT_NAME = "Account";
     private static final String FOLDER_NAME = "Folder";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
     private static final String MESSAGE_UID1 = "message-uid1";
+    private static final int DEFAULT_VISIBLE_LIMIT = 25;
+    private static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
 
     private ImapSync imapSync;
-    @Mock
-    private MessagingController controller;
     @Mock
     private SyncListener listener;
     @Mock
@@ -79,12 +75,10 @@ public class ImapSyncTest extends RobolectricTest {
 
     @Before
     public void setUp() {
-        ShadowLog.stream = System.out;
         MockitoAnnotations.initMocks(this);
 
         imapSync = new ImapSync(ACCOUNT_NAME, backendStorage, remoteStore);
 
-        setUpMessagingController();
         configureSyncConfig();
         configureBackendStorage();
     }
@@ -332,26 +326,14 @@ public class ImapSyncTest extends RobolectricTest {
                 nullable(MessageRetrievalListener.class))).thenReturn(Collections.singletonList(remoteMessage));
     }
 
-    private void setUpMessagingController() {
-        when(controller.getListeners(nullable(MessagingListener.class))).thenAnswer(new Answer<Set<MessagingListener>>() {
-            @Override
-            public Set<MessagingListener> answer(InvocationOnMock invocation) {
-                MessagingListener listener = invocation.getArgument(0);
-                Set<MessagingListener> set = new HashSet<>(1);
-                set.add(listener);
-                return set;
-            }
-        });
-    }
-
     private void configureSyncConfig() {
         syncConfig = new SyncConfig(
                 ExpungePolicy.MANUALLY,
                 null,
                 true,
                 MAXIMUM_SMALL_MESSAGE_SIZE,
-                K9.DEFAULT_VISIBLE_LIMIT,
-                MessagingController.SYNC_FLAGS);
+                DEFAULT_VISIBLE_LIMIT,
+                SYNC_FLAGS);
     }
 
     private void configureRemoteStoreWithFolder() {

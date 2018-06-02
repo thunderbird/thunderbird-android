@@ -1,4 +1,4 @@
-package com.fsck.k9.controller.imap;
+package com.fsck.k9.backend.imap;
 
 
 import java.io.IOException;
@@ -19,7 +19,6 @@ import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.backend.api.SyncListener;
-import com.fsck.k9.controller.UidReverseComparator;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.DefaultBodyFactory;
@@ -33,8 +32,6 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import timber.log.Timber;
-
-import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 
 
 class ImapSync {
@@ -235,7 +232,7 @@ class ImapSync {
             Timber.e(e, "synchronizeMailbox");
             // If we don't set the last checked, it can try too often during
             // failure conditions
-            String rootMessage = getRootCauseMessage(e);
+            String rootMessage = ExceptionHelper.getRootCauseMessage(e);
             if (backendFolder != null) {
                 try {
                     backendFolder.setStatus(rootMessage);
