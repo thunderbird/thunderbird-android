@@ -1,4 +1,4 @@
-package com.fsck.k9.mailstore;
+package com.fsck.k9.backend.api;
 
 import com.fsck.k9.mail.Message;
 

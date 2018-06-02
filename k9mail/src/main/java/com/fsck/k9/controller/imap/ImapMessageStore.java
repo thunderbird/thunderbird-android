@@ -2,9 +2,9 @@ package com.fsck.k9.controller.imap;
 
 
 import com.fsck.k9.Account;
-import com.fsck.k9.controller.BackendStorage;
-import com.fsck.k9.controller.RemoteMessageStore;
-import com.fsck.k9.controller.SyncListener;
+import com.fsck.k9.backend.api.BackendStorage;
+import com.fsck.k9.backend.api.RemoteMessageStore;
+import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.store.imap.ImapStore;
 

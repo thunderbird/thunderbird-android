@@ -1,4 +1,4 @@
-package com.fsck.k9.controller
+package com.fsck.k9.backend.api
 
 interface SyncListener {
     fun syncStarted(folderServerId: String, folderName: String)

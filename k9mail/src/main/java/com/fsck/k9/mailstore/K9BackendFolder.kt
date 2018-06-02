@@ -3,8 +3,9 @@ package com.fsck.k9.mailstore
 import android.content.ContentValues
 import android.database.Cursor
 import androidx.core.database.getStringOrNull
-import com.fsck.k9.controller.BackendFolder
-import com.fsck.k9.controller.BackendFolder.MoreMessages
+import com.fsck.k9.backend.api.BackendFolder
+import com.fsck.k9.backend.api.BackendFolder.MoreMessages
+import com.fsck.k9.backend.api.MessageRemovalListener
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 

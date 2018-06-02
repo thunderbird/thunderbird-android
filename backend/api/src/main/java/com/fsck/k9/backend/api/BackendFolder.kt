@@ -1,8 +1,7 @@
-package com.fsck.k9.controller
+package com.fsck.k9.backend.api
 
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
-import com.fsck.k9.mailstore.MessageRemovalListener
 
 //FIXME: add documentation
 interface BackendFolder {

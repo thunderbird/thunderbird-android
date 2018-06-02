@@ -30,6 +30,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.Search;
+import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
