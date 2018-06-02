@@ -12,6 +12,8 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.RobolectricTest;
+import com.fsck.k9.controller.BackendFolder;
+import com.fsck.k9.controller.BackendStorage;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SyncListener;
@@ -22,9 +24,6 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapStore;
-import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.mailstore.LocalStore;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -68,15 +67,15 @@ public class ImapSyncTest extends RobolectricTest {
     @Mock
     private SyncListener listener;
     @Mock
-    private LocalFolder localFolder;
-    @Mock
     private ImapFolder remoteFolder;
     @Mock
-    private LocalStore localStore;
+    private BackendStorage backendStorage;
+    @Mock
+    private BackendFolder backendFolder;
     @Mock
     private ImapStore remoteStore;
     @Captor
-    private ArgumentCaptor<List<Message>> messageListCaptor;
+    private ArgumentCaptor<List<String>> messageListCaptor;
     @Captor
     private ArgumentCaptor<FetchProfile> fetchProfileCaptor;
 
@@ -89,15 +88,15 @@ public class ImapSyncTest extends RobolectricTest {
         MockitoAnnotations.initMocks(this);
         appContext = ShadowApplication.getInstance().getApplicationContext();
 
-        imapSync = new ImapSync(account, localStore, remoteStore);
+        imapSync = new ImapSync(account, backendStorage, remoteStore);
 
         setUpMessagingController();
         configureAccount();
-        configureLocalStore();
+        configureBackendStorage();
     }
 
     @Test
-    public void sync_withOneMessageInRemoteFolder_shouldFinishWithoutError() throws Exception {
+    public void sync_withOneMessageInRemoteFolder_shouldFinishWithoutError() {
         messageCountInRemoteFolder(1);
 
         imapSync.sync(FOLDER_NAME, listener, remoteFolder);
@@ -106,7 +105,7 @@ public class ImapSyncTest extends RobolectricTest {
     }
 
     @Test
-    public void sync_withEmptyRemoteFolder_shouldFinishWithoutError() throws Exception {
+    public void sync_withEmptyRemoteFolder_shouldFinishWithoutError() {
         messageCountInRemoteFolder(0);
 
         imapSync.sync(FOLDER_NAME, listener, remoteFolder);
@@ -115,7 +114,7 @@ public class ImapSyncTest extends RobolectricTest {
     }
 
     @Test
-    public void sync_withNegativeMessageCountInRemoteFolder_shouldFinishWithError() throws Exception {
+    public void sync_withNegativeMessageCountInRemoteFolder_shouldFinishWithError() {
         messageCountInRemoteFolder(-1);
 
         imapSync.sync(FOLDER_NAME, listener, remoteFolder);
@@ -144,7 +143,7 @@ public class ImapSyncTest extends RobolectricTest {
     }
 
     @Test
-    public void sync_withRemoteFolderProvided_shouldNotCloseRemoteFolder() throws Exception {
+    public void sync_withRemoteFolderProvided_shouldNotCloseRemoteFolder() {
         messageCountInRemoteFolder(1);
 
         imapSync.sync(FOLDER_NAME, listener, remoteFolder);
@@ -153,7 +152,7 @@ public class ImapSyncTest extends RobolectricTest {
     }
 
     @Test
-    public void sync_withNoRemoteFolderProvided_shouldCloseRemoteFolderFromStore() throws Exception {
+    public void sync_withNoRemoteFolderProvided_shouldCloseRemoteFolderFromStore() {
         messageCountInRemoteFolder(1);
         configureRemoteStoreWithFolder();
 
@@ -184,18 +183,15 @@ public class ImapSyncTest extends RobolectricTest {
     }
 
     @Test
-    public void sync_withAccountSetToSyncRemoteDeletions_shouldDeleteLocalCopiesOfDeletedMessages() throws Exception {
+    public void sync_withAccountSetToSyncRemoteDeletions_shouldDeleteLocalCopiesOfDeletedMessages() {
         messageCountInRemoteFolder(0);
-        LocalMessage localCopyOfRemoteDeletedMessage = mock(LocalMessage.class);
         when(account.syncRemoteDeletions()).thenReturn(true);
-        when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
-        when(localFolder.getMessagesByUids(any(List.class)))
-                .thenReturn(Collections.singletonList(localCopyOfRemoteDeletedMessage));
+        when(backendFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
 
         imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
-        verify(localFolder).destroyMessages(messageListCaptor.capture());
-        assertEquals(localCopyOfRemoteDeletedMessage, messageListCaptor.getValue().get(0));
+        verify(backendFolder).destroyMessages(messageListCaptor.capture());
+        assertEquals(MESSAGE_UID1, messageListCaptor.getValue().get(0));
     }
 
     @Test
@@ -203,45 +199,41 @@ public class ImapSyncTest extends RobolectricTest {
             throws Exception {
         messageCountInRemoteFolder(1);
         Date dateOfEarliestPoll = new Date();
-        LocalMessage localMessage = localMessageWithCopyOnServer();
+        Message remoteMessage = messageOnServer();
         when(account.syncRemoteDeletions()).thenReturn(true);
         when(account.getEarliestPollDate()).thenReturn(dateOfEarliestPoll);
-        when(localMessage.olderThan(dateOfEarliestPoll)).thenReturn(false);
-        when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessage));
+        when(remoteMessage.olderThan(dateOfEarliestPoll)).thenReturn(false);
 
         imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
-        verify(localFolder, never()).destroyMessages(messageListCaptor.capture());
+        verify(backendFolder, never()).destroyMessages(messageListCaptor.capture());
     }
 
     @Test
     public void sync_withAccountSetToSyncRemoteDeletions_shouldDeleteLocalCopiesOfExistingMessagesBeforeEarliestPollDate()
             throws Exception {
         messageCountInRemoteFolder(1);
-        LocalMessage localMessage = localMessageWithCopyOnServer();
+        Message remoteMessage = messageOnServer();
         Date dateOfEarliestPoll = new Date();
         when(account.syncRemoteDeletions()).thenReturn(true);
         when(account.getEarliestPollDate()).thenReturn(dateOfEarliestPoll);
-        when(localMessage.olderThan(dateOfEarliestPoll)).thenReturn(true);
-        when(localFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
-        when(localFolder.getMessagesByUids(any(List.class))).thenReturn(Collections.singletonList(localMessage));
+        when(remoteMessage.olderThan(dateOfEarliestPoll)).thenReturn(true);
+        when(backendFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
 
         imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
-        verify(localFolder).destroyMessages(messageListCaptor.capture());
-        assertEquals(localMessage, messageListCaptor.getValue().get(0));
+        verify(backendFolder).destroyMessages(messageListCaptor.capture());
+        assertEquals(MESSAGE_UID1, messageListCaptor.getValue().get(0));
     }
 
     @Test
-    public void sync_withAccountSetNotToSyncRemoteDeletions_shouldNotDeleteLocalCopiesOfMessages() throws Exception {
+    public void sync_withAccountSetNotToSyncRemoteDeletions_shouldNotDeleteLocalCopiesOfMessages() {
         messageCountInRemoteFolder(0);
-        LocalMessage remoteDeletedMessage = mock(LocalMessage.class);
         when(account.syncRemoteDeletions()).thenReturn(false);
-        when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(remoteDeletedMessage));
 
         imapSync.sync(FOLDER_NAME, listener, remoteFolder);
 
-        verify(localFolder, never()).destroyMessages(messageListCaptor.capture());
+        verify(backendFolder, never()).destroyMessages(messageListCaptor.capture());
     }
 
     @Test
@@ -297,7 +289,7 @@ public class ImapSyncTest extends RobolectricTest {
     private void respondToFetchEnvelopesWithMessage(final Message message) throws MessagingException {
         doAnswer(new Answer() {
             @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
+            public Void answer(InvocationOnMock invocation) {
                 FetchProfile fetchProfile = (FetchProfile) invocation.getArguments()[1];
                 if (invocation.getArguments()[2] != null) {
                     MessageRetrievalListener listener = (MessageRetrievalListener) invocation.getArguments()[2];
@@ -326,20 +318,18 @@ public class ImapSyncTest extends RobolectricTest {
         return message;
     }
 
-    private void messageCountInRemoteFolder(int value) throws MessagingException {
+    private void messageCountInRemoteFolder(int value) {
         when(remoteFolder.getMessageCount()).thenReturn(value);
     }
 
-    private LocalMessage localMessageWithCopyOnServer() throws MessagingException {
+    private Message messageOnServer() throws MessagingException {
         String messageUid = "UID";
         Message remoteMessage = mock(Message.class);
-        LocalMessage localMessage = mock(LocalMessage.class);
 
         when(remoteMessage.getUid()).thenReturn(messageUid);
-        when(localMessage.getUid()).thenReturn(messageUid);
         when(remoteFolder.getMessages(anyInt(), anyInt(), nullable(Date.class),
                 nullable(MessageRetrievalListener.class))).thenReturn(Collections.singletonList(remoteMessage));
-        return localMessage;
+        return remoteMessage;
     }
 
     private void hasUnsyncedRemoteMessage() throws MessagingException {
@@ -354,7 +344,7 @@ public class ImapSyncTest extends RobolectricTest {
         when(controller.getAccountStats(account)).thenReturn(accountStats);
         when(controller.getListeners(nullable(MessagingListener.class))).thenAnswer(new Answer<Set<MessagingListener>>() {
             @Override
-            public Set<MessagingListener> answer(InvocationOnMock invocation) throws Throwable {
+            public Set<MessagingListener> answer(InvocationOnMock invocation) {
                 MessagingListener listener = invocation.getArgument(0);
                 Set<MessagingListener> set = new HashSet<>(1);
                 set.add(listener);
@@ -369,14 +359,12 @@ public class ImapSyncTest extends RobolectricTest {
         when(account.getEmail()).thenReturn("user@host.com");
     }
 
-    private void configureLocalStore() throws MessagingException {
-        when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
-        when(localFolder.getServerId()).thenReturn(FOLDER_NAME);
-        when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
-    }
-
     private void configureRemoteStoreWithFolder() {
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
         when(remoteFolder.getServerId()).thenReturn(FOLDER_NAME);
+    }
+
+    private void configureBackendStorage() {
+        when(backendStorage.getFolder(FOLDER_NAME)).thenReturn(backendFolder);
     }
 }

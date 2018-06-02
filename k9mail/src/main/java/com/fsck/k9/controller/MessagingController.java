@@ -83,6 +83,7 @@ import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
+import com.fsck.k9.mailstore.K9BackendStorage;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -271,8 +272,9 @@ public class MessagingController {
         LocalStore localStore = getLocalStoreOrThrow(account);
 
         synchronized (imapMessageStores) {
+            BackendStorage backendStorage = new K9BackendStorage(localStore);
             ImapStore remoteStore = (ImapStore) getRemoteStoreOrThrow(account);
-            ImapMessageStore imapMessageStore = new ImapMessageStore(account, localStore, remoteStore);
+            ImapMessageStore imapMessageStore = new ImapMessageStore(account, backendStorage, remoteStore);
             imapMessageStores.put(account.getUuid(), imapMessageStore);
             return imapMessageStore;
         }
@@ -1383,7 +1385,8 @@ public class MessagingController {
                             }
                             // Send a notification of this message
 
-                            if (shouldNotifyForMessage(account, localFolder, message)) {
+                            boolean isOldMessage = isOldMessage(account, message);
+                            if (shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
                                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                                 notificationController.addNewMailNotification(account, localMessage, unreadBeforeStart);
                             }
@@ -1403,6 +1406,11 @@ public class MessagingController {
                 });
 
         Timber.d("SYNC: Done fetching small messages for folder %s", folder);
+    }
+
+    private boolean isOldMessage(Account account, Message message) {
+        return account.getStoreUri().startsWith("pop3") &&
+                message.olderThan(new Date(account.getLatestOldMessageSeenTime()));
     }
 
     private <T extends Message> void downloadLargeMessages(final Account account, final Folder<T> remoteFolder,
@@ -1445,7 +1453,8 @@ public class MessagingController {
                 }
             }
             // Send a notification of this message
-            if (shouldNotifyForMessage(account, localFolder, message)) {
+            boolean isOldMessage = isOldMessage(account, message);
+            if (shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 notificationController.addNewMailNotification(account, localMessage, unreadBeforeStart);
             }
@@ -1561,7 +1570,8 @@ public class MessagingController {
                             l.synchronizeMailboxRemovedMessage(account, folder, localMessage);
                         }
                     } else {
-                        if (shouldNotifyForMessage(account, localFolder, localMessage)) {
+                        boolean isOldMessage = isOldMessage(account, localMessage);
+                        if (shouldNotifyForMessage(account, localFolder, localMessage, isOldMessage)) {
                             shouldBeNotifiedOf = true;
                         }
                     }
@@ -3693,7 +3703,8 @@ public class MessagingController {
     }
 
 
-    public boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message) {
+    public boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message,
+            boolean isOldMessage) {
         // If we don't even have an account name, don't show the notification.
         // (This happens during initial account setup)
         if (account.getName() == null) {
@@ -3702,7 +3713,7 @@ public class MessagingController {
 
         // Do not notify if the user does not have notifications enabled or if the message has
         // been read.
-        if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN)) {
+        if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN) || isOldMessage) {
             return false;
         }
 
@@ -3721,13 +3732,6 @@ public class MessagingController {
             return false;
         }
 
-        // If the account is a POP3 account and the message is older than the oldest message we've
-        // previously seen, then don't notify about it.
-        if (account.getStoreUri().startsWith("pop3") &&
-                message.olderThan(new Date(account.getLatestOldMessageSeenTime()))) {
-            return false;
-        }
-
         // No notification for new messages in Trash, Drafts, Spam or Sent folder.
         // But do notify if it's the INBOX (see issue 1817).
         Folder folder = message.getFolder();
@@ -3739,19 +3743,6 @@ public class MessagingController {
                             || account.getSpamFolder().equals(folderServerId)
                             || account.getSentFolder().equals(folderServerId))) {
                 return false;
-            }
-        }
-
-        if (message.getUid() != null && localFolder.getLastUid() != null) {
-            try {
-                Integer messageUid = Integer.parseInt(message.getUid());
-                if (messageUid <= localFolder.getLastUid()) {
-                    Timber.d("Message uid is %s, max message uid is %s. Skipping notification.",
-                            messageUid, localFolder.getLastUid());
-                    return false;
-                }
-            } catch (NumberFormatException e) {
-                // Nothing to be done here.
             }
         }
 
@@ -4137,6 +4128,7 @@ public class MessagingController {
     class ControllerSyncListener implements SyncListener {
         private final Account account;
         private final MessagingListener listener;
+        private final LocalStore localStore;
         private final int previousUnreadMessageCount;
         boolean syncFailed = false;
 
@@ -4144,6 +4136,7 @@ public class MessagingController {
         ControllerSyncListener(Account account, MessagingListener listener) {
             this.account = account;
             this.listener = listener;
+            this.localStore = getLocalStoreOrThrow(account);
 
             previousUnreadMessageCount = getUnreadMessageCount();
         }
@@ -4201,10 +4194,13 @@ public class MessagingController {
         }
 
         @Override
-        public void syncNewMessage(@NotNull String folderServerId, @NotNull LocalMessage message) {
+        public void syncNewMessage(@NotNull String folderServerId, @NotNull String messageServerId,
+                boolean isOldMessage) {
+
             // Send a notification of this message
+            LocalMessage message = loadMessage(folderServerId, messageServerId);
             LocalFolder localFolder = message.getFolder();
-            if (shouldNotifyForMessage(account, localFolder, message)) {
+            if (shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 notificationController.addNewMailNotification(account, message, previousUnreadMessageCount);
             }
@@ -4217,20 +4213,23 @@ public class MessagingController {
         }
 
         @Override
-        public void syncRemovedMessage(@NotNull String folderServerId, @NotNull Message message) {
+        public void syncRemovedMessage(@NotNull String folderServerId, @NotNull String messageServerId) {
+            // FIXME: This is kind of expensive. Get rid of the need to call synchronizeMailboxRemovedMessage()
+            LocalMessage message = loadMessage(folderServerId, messageServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxRemovedMessage(account, folderServerId, message);
             }
         }
 
         @Override
-        public void syncFlagChanged(@NotNull String folderServerId, @NotNull LocalMessage message) {
+        public void syncFlagChanged(@NotNull String folderServerId, @NotNull String messageServerId) {
             boolean shouldBeNotifiedOf = false;
+            LocalMessage message = loadMessage(folderServerId, messageServerId);
             if (message.isSet(Flag.DELETED) || isMessageSuppressed(message)) {
-                syncRemovedMessage(folderServerId, message);
+                syncRemovedMessage(folderServerId, message.getUid());
             } else {
                 LocalFolder localFolder = message.getFolder();
-                if (shouldNotifyForMessage(account, localFolder, message)) {
+                if (shouldNotifyForMessage(account, localFolder, message, false)) {
                     shouldBeNotifiedOf = true;
                 }
             }
@@ -4269,6 +4268,16 @@ public class MessagingController {
         public void folderStatusChanged(@NotNull String folderServerId, int unreadMessageCount) {
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.folderStatusChanged(account, folderServerId, unreadMessageCount);
+            }
+        }
+
+        private LocalMessage loadMessage(String folderServerId, String messageServerId) {
+            try {
+                LocalFolder localFolder = localStore.getFolder(folderServerId);
+                localFolder.open(Folder.OPEN_MODE_RW);
+                return localFolder.getMessage(messageServerId);
+            } catch (MessagingException e) {
+                throw new RuntimeException("Couldn't load message (" + folderServerId + ":" + messageServerId + ")", e);
             }
         }
     }
