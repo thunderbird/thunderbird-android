@@ -40,6 +40,7 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BuildConfig;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
@@ -47,9 +48,9 @@ import com.fsck.k9.R;
 import com.fsck.k9.activity.ActivityListener;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
-import com.fsck.k9.backend.api.BackendStorage;
-import com.fsck.k9.backend.api.MessageRemovalListener;
+import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
+import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.cache.EmailProviderCache;
@@ -61,7 +62,6 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
-import com.fsck.k9.backend.imap.ImapBackend;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -86,9 +86,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.imap.ImapStore;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
-import com.fsck.k9.mailstore.K9BackendStorage;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -131,6 +129,7 @@ public class MessagingController {
     private final Context context;
     private final Contacts contacts;
     private final NotificationController notificationController;
+    private final BackendManager backendManager = DI.get(BackendManager.class);
 
     private final Thread controllerThread;
 
@@ -142,8 +141,6 @@ public class MessagingController {
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final TransportProvider transportProvider;
     private final AccountStatsCollector accountStatsCollector;
-
-    private final Map<String, ImapBackend> imapBackends = new HashMap<>();
 
 
     private MessagingListener checkMailListener = null;
@@ -262,27 +259,7 @@ public class MessagingController {
     }
 
     private Backend getBackend(Account account) {
-        return account.getStoreUri().startsWith("imap") ? getImapBackend(account) : null;
-    }
-
-    private ImapBackend getImapBackend(Account account) {
-        synchronized (imapBackends) {
-            ImapBackend imapBackend = imapBackends.get(account.getUuid());
-            if (imapBackend != null) {
-                return imapBackend;
-            }
-        }
-
-        LocalStore localStore = getLocalStoreOrThrow(account);
-
-        synchronized (imapBackends) {
-            BackendStorage backendStorage = new K9BackendStorage(localStore);
-            ImapStore remoteStore = (ImapStore) getRemoteStoreOrThrow(account);
-            String accountName = account.getDescription();
-            ImapBackend imapMessageStore = new ImapBackend(accountName, backendStorage, remoteStore);
-            imapBackends.put(account.getUuid(), imapMessageStore);
-            return imapMessageStore;
-        }
+        return backendManager.getBackend(account);
     }
 
     private LocalStore getLocalStoreOrThrow(Account account) {
@@ -290,14 +267,6 @@ public class MessagingController {
             return account.getLocalStore();
         } catch (MessagingException e) {
             throw new IllegalStateException("Couldn't get LocalStore for account " + account.getDescription());
-        }
-    }
-
-    private RemoteStore getRemoteStoreOrThrow(Account account) {
-        try {
-            return account.getRemoteStore();
-        } catch (MessagingException e) {
-            throw new IllegalStateException("Couldn't get RemoteStore for account " + account.getDescription());
         }
     }
 
