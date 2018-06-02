@@ -50,6 +50,7 @@ import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.backend.api.BackendStorage;
 import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.backend.api.RemoteMessageStore;
+import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
@@ -277,7 +278,8 @@ public class MessagingController {
         synchronized (imapMessageStores) {
             BackendStorage backendStorage = new K9BackendStorage(localStore);
             ImapStore remoteStore = (ImapStore) getRemoteStoreOrThrow(account);
-            ImapMessageStore imapMessageStore = new ImapMessageStore(account, backendStorage, remoteStore);
+            String accountName = account.getDescription();
+            ImapMessageStore imapMessageStore = new ImapMessageStore(accountName, backendStorage, remoteStore);
             imapMessageStores.put(account.getUuid(), imapMessageStore);
             return imapMessageStore;
         }
@@ -794,8 +796,15 @@ public class MessagingController {
             return;
         }
 
+        SyncConfig syncConfig = new SyncConfig(
+                account.getExpungePolicy().toBackendExpungePolicy(),
+                account.getEarliestPollDate(),
+                account.syncRemoteDeletions(),
+                account.getMaximumAutoDownloadMessageSize(),
+                SYNC_FLAGS);
+
         ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
-        remoteMessageStore.sync(folder, syncListener, providedRemoteFolder);
+        remoteMessageStore.sync(folder, syncConfig, syncListener, providedRemoteFolder);
 
         if (commandException != null && !syncListener.syncFailed) {
             String rootMessage = getRootCauseMessage(commandException);
