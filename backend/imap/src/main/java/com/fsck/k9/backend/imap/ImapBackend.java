@@ -1,19 +1,19 @@
 package com.fsck.k9.backend.imap;
 
 
+import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.backend.api.BackendStorage;
-import com.fsck.k9.backend.api.RemoteMessageStore;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.store.imap.ImapStore;
 
 
-public class ImapMessageStore implements RemoteMessageStore {
+public class ImapBackend implements Backend {
     private final ImapSync imapSync;
 
 
-    public ImapMessageStore(String accountName, BackendStorage backendStorage, ImapStore imapStore) {
+    public ImapBackend(String accountName, BackendStorage backendStorage, ImapStore imapStore) {
         this.imapSync = new ImapSync(accountName, backendStorage, imapStore);
     }
 
