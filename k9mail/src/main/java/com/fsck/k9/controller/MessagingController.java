@@ -789,6 +789,11 @@ public class MessagingController {
             commandException = e;
         }
 
+        // We don't ever sync the Outbox
+        if (folder.equals(account.getOutboxFolder())) {
+            return;
+        }
+
         ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
         remoteMessageStore.sync(folder, syncListener, providedRemoteFolder);
 

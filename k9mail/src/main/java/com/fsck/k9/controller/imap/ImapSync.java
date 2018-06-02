@@ -60,11 +60,6 @@ class ImapSync {
 
         Timber.i("Synchronizing folder %s:%s", account.getDescription(), folder);
 
-        // We don't ever sync the Outbox
-        if (folder.equals(account.getOutboxFolder())) {
-            return;
-        }
-
         BackendFolder backendFolder = null;
         try {
             Timber.v("SYNC: About to get local folder %s", folder);
