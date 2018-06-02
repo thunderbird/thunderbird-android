@@ -30,4 +30,9 @@ interface BackendFolder {
         FALSE,
         TRUE
     }
+
+    companion object {
+        // TODO: Change the interface to be able to hide this (ugly) implementation detail.
+        const val LOCAL_UID_PREFIX = "K9LOCAL:"
+    }
 }

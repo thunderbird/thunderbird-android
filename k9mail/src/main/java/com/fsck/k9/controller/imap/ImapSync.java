@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.backend.api.BackendFolder;
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages;
 import com.fsck.k9.backend.api.BackendStorage;
@@ -125,7 +124,7 @@ class ImapSync {
             int visibleLimit = backendFolder.getVisibleLimit();
 
             if (visibleLimit < 0) {
-                visibleLimit = K9.DEFAULT_VISIBLE_LIMIT;
+                visibleLimit = syncConfig.getDefaultVisibleLimit();
             }
 
             final List<Message> remoteMessages = new ArrayList<>();
@@ -184,7 +183,8 @@ class ImapSync {
             if (syncConfig.getSyncRemoteDeletions()) {
                 List<String> destroyMessageUids = new ArrayList<>();
                 for (String localMessageUid : localUidMap.keySet()) {
-                    if (!localMessageUid.startsWith(K9.LOCAL_UID_PREFIX) && remoteUidMap.get(localMessageUid) == null) {
+                    if (!localMessageUid.startsWith(BackendFolder.LOCAL_UID_PREFIX) &&
+                            remoteUidMap.get(localMessageUid) == null) {
                         destroyMessageUids.add(localMessageUid);
                     }
                 }
@@ -461,15 +461,14 @@ class ImapSync {
                     public void messageFinished(T message, int number, int ofTotal) {
                         try {
                             if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
-                                if (K9.isDebug()) {
-                                    if (message.isSet(Flag.DELETED)) {
-                                        Timber.v("Newly downloaded message %s:%s:%s was marked deleted on server, " +
-                                                "skipping", accountName, folder, message.getUid());
-                                    } else {
-                                        Timber.d("Newly downloaded message %s is older than %s, skipping",
-                                                message.getUid(), earliestDate);
-                                    }
+                                if (message.isSet(Flag.DELETED)) {
+                                    Timber.v("Newly downloaded message %s:%s:%s was marked deleted on server, " +
+                                            "skipping", accountName, folder, message.getUid());
+                                } else {
+                                    Timber.d("Newly downloaded message %s is older than %s, skipping",
+                                            message.getUid(), earliestDate);
                                 }
+
                                 progress.incrementAndGet();
 
                                 //TODO: This might be the source of poll count errors in the UI. Is todo always the same as ofTotal

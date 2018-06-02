@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.backend.api.BackendFolder;
 import com.fsck.k9.backend.api.BackendStorage;
@@ -349,6 +350,7 @@ public class ImapSyncTest extends RobolectricTest {
                 null,
                 true,
                 MAXIMUM_SMALL_MESSAGE_SIZE,
+                K9.DEFAULT_VISIBLE_LIMIT,
                 MessagingController.SYNC_FLAGS);
     }
 
@@ -367,6 +369,7 @@ public class ImapSyncTest extends RobolectricTest {
                 syncConfig.getEarliestPollDate(),
                 syncConfig.getSyncRemoteDeletions(),
                 syncConfig.getMaximumAutoDownloadMessageSize(),
+                syncConfig.getDefaultVisibleLimit(),
                 syncConfig.getSyncFlags());
     }
 
@@ -376,6 +379,7 @@ public class ImapSyncTest extends RobolectricTest {
                 syncConfig.getEarliestPollDate(),
                 syncRemoteDeletions,
                 syncConfig.getMaximumAutoDownloadMessageSize(),
+                syncConfig.getDefaultVisibleLimit(),
                 syncConfig.getSyncFlags());
     }
 
@@ -385,6 +389,7 @@ public class ImapSyncTest extends RobolectricTest {
                 earliestPollDate,
                 true,
                 syncConfig.getMaximumAutoDownloadMessageSize(),
+                syncConfig.getDefaultVisibleLimit(),
                 syncConfig.getSyncFlags());
     }
 }

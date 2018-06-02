@@ -8,6 +8,7 @@ data class SyncConfig(
         val earliestPollDate: Date?,
         val syncRemoteDeletions: Boolean,
         val maximumAutoDownloadMessageSize: Int,
+        val defaultVisibleLimit: Int,
         val syncFlags: Set<Flag>
 ) {
     enum class ExpungePolicy {

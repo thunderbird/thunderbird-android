@@ -801,6 +801,7 @@ public class MessagingController {
                 account.getEarliestPollDate(),
                 account.syncRemoteDeletions(),
                 account.getMaximumAutoDownloadMessageSize(),
+                K9.DEFAULT_VISIBLE_LIMIT,
                 SYNC_FLAGS);
 
         ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
