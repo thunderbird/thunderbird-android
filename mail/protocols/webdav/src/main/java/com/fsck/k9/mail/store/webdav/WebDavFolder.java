@@ -39,7 +39,7 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 /**
  * A WebDav Folder
  */
-class WebDavFolder extends Folder<WebDavMessage> {
+public class WebDavFolder extends Folder<WebDavMessage> {
     private String mName;
     private String mFolderUrl;
     private boolean mIsOpen = false;

@@ -1707,36 +1707,8 @@ public class MessagingController {
      * Processes a pending mark read or unread command.
      */
     void processPendingSetFlag(PendingSetFlag command, Account account) throws MessagingException {
-        String folder = command.folder;
-
-        boolean newState = command.newState;
-        Flag flag = command.flag;
-
-        RemoteStore remoteStore = account.getRemoteStore();
-        Folder remoteFolder = remoteStore.getFolder(folder);
-        if (!remoteFolder.exists() || !remoteFolder.isFlagSupported(flag)) {
-            return;
-        }
-
-        try {
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
-                return;
-            }
-            List<Message> messages = new ArrayList<>();
-            for (String uid : command.uids) {
-                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                    messages.add(remoteFolder.getMessage(uid));
-                }
-            }
-
-            if (messages.isEmpty()) {
-                return;
-            }
-            remoteFolder.setFlags(messages, Collections.singleton(flag), newState);
-        } finally {
-            closeFolder(remoteFolder);
-        }
+        Backend backend = getBackend(account);
+        backend.setFlag(command.folder, command.uids, command.flag, command.newState);
     }
 
     private void queueExpunge(final Account account, final String folderServerId) {
