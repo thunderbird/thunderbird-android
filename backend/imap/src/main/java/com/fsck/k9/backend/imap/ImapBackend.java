@@ -17,11 +17,18 @@ import org.jetbrains.annotations.NotNull;
 public class ImapBackend implements Backend {
     private final ImapSync imapSync;
     private final CommandSetFlag commandSetFlag;
+    private final CommandMarkAllAsRead commandMarkAllAsRead;
 
 
     public ImapBackend(String accountName, BackendStorage backendStorage, ImapStore imapStore) {
         imapSync = new ImapSync(accountName, backendStorage, imapStore);
         commandSetFlag = new CommandSetFlag(imapStore);
+        commandMarkAllAsRead = new CommandMarkAllAsRead(imapStore);
+    }
+
+    @Override
+    public boolean getSupportsSeenFlag() {
+        return true;
     }
 
     @Override
@@ -34,5 +41,10 @@ public class ImapBackend implements Backend {
     public void setFlag(@NotNull String folderServerId, @NotNull List<String> messageServerIds, @NotNull Flag flag,
             boolean newState) throws MessagingException {
         commandSetFlag.setFlag(folderServerId, messageServerIds, flag, newState);
+    }
+
+    @Override
+    public void markAllAsRead(@NotNull String folderServerId) throws MessagingException {
+        commandMarkAllAsRead.markAllAsRead(folderServerId);
     }
 }

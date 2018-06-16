@@ -12,11 +12,17 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
     private val pop3Sync: Pop3Sync = Pop3Sync(accountName, backendStorage, pop3Store)
     private val commandSetFlag = CommandSetFlag(pop3Store)
 
+    override val supportsSeenFlag: Boolean = false
+
     override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?) {
         pop3Sync.sync(folder, syncConfig, listener)
     }
 
     override fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
         commandSetFlag.setFlag(folderServerId, messageServerIds, flag, newState)
+    }
+
+    override fun markAllAsRead(folderServerId: String) {
+        throw UnsupportedOperationException("not supported")
     }
 }

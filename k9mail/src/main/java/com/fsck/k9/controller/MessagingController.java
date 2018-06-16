@@ -1747,7 +1747,6 @@ public class MessagingController {
 
     void processPendingMarkAllAsRead(PendingMarkAllAsRead command, Account account) throws MessagingException {
         String folder = command.folder;
-        Folder remoteFolder = null;
         LocalFolder localFolder = null;
         try {
             LocalStore localStore = account.getLocalStore();
@@ -1763,25 +1762,13 @@ public class MessagingController {
             for (MessagingListener l : getListeners()) {
                 l.folderStatusChanged(account, folder, 0);
             }
-
-            RemoteStore remoteStore = account.getRemoteStore();
-            remoteFolder = remoteStore.getFolder(folder);
-
-            if (!remoteFolder.exists() || !remoteFolder.isFlagSupported(Flag.SEEN)) {
-                return;
-            }
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
-                return;
-            }
-
-            remoteFolder.setFlags(Collections.singleton(Flag.SEEN), true);
-            remoteFolder.close();
-        } catch (UnsupportedOperationException uoe) {
-            Timber.w(uoe, "Could not mark all server-side as read because store doesn't support operation");
         } finally {
             closeFolder(localFolder);
-            closeFolder(remoteFolder);
+        }
+
+        Backend backend = getBackend(account);
+        if (backend.getSupportsSeenFlag()) {
+            backend.markAllAsRead(folder);
         }
     }
 

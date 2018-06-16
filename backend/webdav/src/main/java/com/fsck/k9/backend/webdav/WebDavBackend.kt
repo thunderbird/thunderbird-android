@@ -12,6 +12,10 @@ import com.fsck.k9.mail.store.webdav.WebDavStore
 class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavStore: WebDavStore) : Backend {
     private val webDavSync: WebDavSync = WebDavSync(accountName, backendStorage, webDavStore)
     private val commandSetFlag = CommandSetFlag(webDavStore)
+    private val commandMarkAllAsRead = CommandMarkAllAsRead(webDavStore)
+
+    override val supportsSeenFlag: Boolean = true
+
 
     override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?) {
         webDavSync.sync(folder, syncConfig, listener)
@@ -20,5 +24,9 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
     @Throws(MessagingException::class)
     override fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
         commandSetFlag.setFlag(folderServerId, messageServerIds, flag, newState)
+    }
+
+    override fun markAllAsRead(folderServerId: String) {
+        commandMarkAllAsRead.markAllAsRead(folderServerId)
     }
 }
