@@ -21,6 +21,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
+import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder.FolderClass;
@@ -65,7 +66,17 @@ public class Account implements BaseAccount, StoreConfig {
     public enum Expunge {
         EXPUNGE_IMMEDIATELY,
         EXPUNGE_MANUALLY,
-        EXPUNGE_ON_POLL
+        EXPUNGE_ON_POLL;
+
+        public ExpungePolicy toBackendExpungePolicy() {
+            switch (this) {
+                case EXPUNGE_IMMEDIATELY: return ExpungePolicy.IMMEDIATELY;
+                case EXPUNGE_MANUALLY: return ExpungePolicy.MANUALLY;
+                case EXPUNGE_ON_POLL: return ExpungePolicy.ON_POLL;
+            }
+
+            throw new AssertionError("Unhandled case: " + this.name());
+        }
     }
 
     public enum DeletePolicy {

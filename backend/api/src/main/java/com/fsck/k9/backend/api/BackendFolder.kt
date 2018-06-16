@@ -1,8 +1,8 @@
-package com.fsck.k9.controller
+package com.fsck.k9.backend.api
 
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
-import com.fsck.k9.mailstore.MessageRemovalListener
+import java.util.Date
 
 //FIXME: add documentation
 interface BackendFolder {
@@ -25,10 +25,18 @@ interface BackendFolder {
     fun setMessageFlag(messageServerId: String, flag: Flag, value: Boolean)
     fun savePartialMessage(message: Message)
     fun saveCompleteMessage(message: Message)
+    fun getLatestOldMessageSeenTime(): Date
+    fun setLatestOldMessageSeenTime(date: Date)
+    fun getOldestMessageDate(): Date?
 
     enum class MoreMessages {
         UNKNOWN,
         FALSE,
         TRUE
+    }
+
+    companion object {
+        // TODO: Change the interface to be able to hide this (ugly) implementation detail.
+        const val LOCAL_UID_PREFIX = "K9LOCAL:"
     }
 }

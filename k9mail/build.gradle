@@ -25,6 +25,10 @@ dependencies {
     implementation project(":mail:protocols:pop3")
     implementation project(":mail:protocols:webdav")
     implementation project(":mail:protocols:smtp")
+    implementation project(":backend:api")
+    implementation project(":backend:imap")
+    implementation project(":backend:pop3")
+    implementation project(":backend:webdav")
 
     implementation project(':plugins:HoloColorPicker')
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
@@ -50,8 +54,8 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "net.jcip:jcip-annotations:1.0"
     implementation "org.apache.james:apache-mime4j-core:0.8.1"
-    implementation "com.xwray:groupie:2.0.3"
-    implementation "com.xwray:groupie-kotlin-android-extensions:2.0.3"
+    implementation "com.xwray:groupie:2.1.0"
+    implementation "com.xwray:groupie-kotlin-android-extensions:2.1.0"
     implementation "org.jetbrains.anko:anko-coroutines:0.10.4"
     implementation "org.koin:koin-android-architecture:${versions.koin}"
     implementation 'com.mikepenz:materialdrawer:6.0.7'
