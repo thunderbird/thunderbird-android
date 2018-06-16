@@ -13,6 +13,7 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
     private val commandSetFlag = CommandSetFlag(pop3Store)
 
     override val supportsSeenFlag: Boolean = false
+    override val supportsExpunge: Boolean = false
 
     override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?) {
         pop3Sync.sync(folder, syncConfig, listener)
@@ -23,6 +24,10 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
     }
 
     override fun markAllAsRead(folderServerId: String) {
+        throw UnsupportedOperationException("not supported")
+    }
+
+    override fun expunge(folderServerId: String) {
         throw UnsupportedOperationException("not supported")
     }
 }

@@ -15,6 +15,7 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
     private val commandMarkAllAsRead = CommandMarkAllAsRead(webDavStore)
 
     override val supportsSeenFlag: Boolean = true
+    override val supportsExpunge: Boolean = true
 
 
     override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?) {
@@ -28,5 +29,9 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
 
     override fun markAllAsRead(folderServerId: String) {
         commandMarkAllAsRead.markAllAsRead(folderServerId)
+    }
+
+    override fun expunge(folderServerId: String) {
+        throw UnsupportedOperationException("not supported")
     }
 }

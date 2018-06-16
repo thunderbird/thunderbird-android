@@ -1723,26 +1723,8 @@ public class MessagingController {
     }
 
     void processPendingExpunge(PendingExpunge command, Account account) throws MessagingException {
-        String folder = command.folder;
-
-        Timber.d("processPendingExpunge: folder = %s", folder);
-
-        RemoteStore remoteStore = account.getRemoteStore();
-        Folder remoteFolder = remoteStore.getFolder(folder);
-        try {
-            if (!remoteFolder.exists()) {
-                return;
-            }
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
-                return;
-            }
-            remoteFolder.expunge();
-
-            Timber.d("processPendingExpunge: complete for folder = %s", folder);
-        } finally {
-            closeFolder(remoteFolder);
-        }
+        Backend backend = getBackend(account);
+        backend.expunge(command.folder);
     }
 
     void processPendingMarkAllAsRead(PendingMarkAllAsRead command, Account account) throws MessagingException {

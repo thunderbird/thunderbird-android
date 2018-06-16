@@ -18,16 +18,23 @@ public class ImapBackend implements Backend {
     private final ImapSync imapSync;
     private final CommandSetFlag commandSetFlag;
     private final CommandMarkAllAsRead commandMarkAllAsRead;
+    private final CommandExpunge commandExpunge;
 
 
     public ImapBackend(String accountName, BackendStorage backendStorage, ImapStore imapStore) {
         imapSync = new ImapSync(accountName, backendStorage, imapStore);
         commandSetFlag = new CommandSetFlag(imapStore);
         commandMarkAllAsRead = new CommandMarkAllAsRead(imapStore);
+        commandExpunge = new CommandExpunge(imapStore);
     }
 
     @Override
     public boolean getSupportsSeenFlag() {
+        return true;
+    }
+
+    @Override
+    public boolean getSupportsExpunge() {
         return true;
     }
 
@@ -46,5 +53,10 @@ public class ImapBackend implements Backend {
     @Override
     public void markAllAsRead(@NotNull String folderServerId) throws MessagingException {
         commandMarkAllAsRead.markAllAsRead(folderServerId);
+    }
+
+    @Override
+    public void expunge(@NotNull String folderServerId) throws MessagingException {
+        commandExpunge.expunge(folderServerId);
     }
 }
