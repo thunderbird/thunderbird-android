@@ -2,6 +2,7 @@ package com.fsck.k9.backend.webdav
 
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.api.BackendStorage
+import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.Flag
@@ -11,6 +12,7 @@ import com.fsck.k9.mail.store.webdav.WebDavStore
 
 class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavStore: WebDavStore) : Backend {
     private val webDavSync: WebDavSync = WebDavSync(accountName, backendStorage, webDavStore)
+    private val commandGetFolders = CommandGetFolders(webDavStore)
     private val commandSetFlag = CommandSetFlag(webDavStore)
     private val commandMarkAllAsRead = CommandMarkAllAsRead(webDavStore)
     private val commandMoveOrCopyMessages = CommandMoveOrCopyMessages(webDavStore)
@@ -18,6 +20,10 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
     override val supportsSeenFlag: Boolean = true
     override val supportsExpunge: Boolean = true
 
+
+    override fun getFolders(forceListAll: Boolean): List<FolderInfo> {
+        return commandGetFolders.getFolders(forceListAll)
+    }
 
     override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?) {
         webDavSync.sync(folder, syncConfig, listener)

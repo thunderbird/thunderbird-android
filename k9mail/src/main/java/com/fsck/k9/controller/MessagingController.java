@@ -49,6 +49,7 @@ import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
+import com.fsck.k9.backend.api.FolderInfo;
 import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
@@ -433,12 +434,11 @@ public class MessagingController {
     void refreshRemoteSynchronous(final Account account, final MessagingListener listener) {
         List<LocalFolder> localFolders = null;
         try {
-            RemoteStore store = account.getRemoteStore();
-
-            List<? extends Folder> remoteFolders = store.getPersonalNamespaces(false);
+            Backend backend = getBackend(account);
+            List<FolderInfo> folders = backend.getFolders(false);
 
             LocalStore localStore = account.getLocalStore();
-            Map<String, Folder> remoteFolderMap = new HashMap<>();
+            Map<String, String> remoteFolderNameMap = new HashMap<>();
             List<LocalFolder> foldersToCreate = new LinkedList<>();
 
             localFolders = localStore.getPersonalNamespaces(false);
@@ -447,12 +447,13 @@ public class MessagingController {
                 localFolderServerIds.add(localFolder.getServerId());
             }
 
-            for (Folder remoteFolder : remoteFolders) {
-                if (!localFolderServerIds.contains(remoteFolder.getServerId())) {
-                    LocalFolder localFolder = localStore.getFolder(remoteFolder.getServerId());
+            for (FolderInfo folder : folders) {
+                String folderServerId = folder.getServerId();
+                if (!localFolderServerIds.contains(folderServerId)) {
+                    LocalFolder localFolder = localStore.getFolder(folderServerId);
                     foldersToCreate.add(localFolder);
                 }
-                remoteFolderMap.put(remoteFolder.getServerId(), remoteFolder);
+                remoteFolderNameMap.put(folderServerId, folder.getName());
             }
             localStore.createFolders(foldersToCreate, account.getDisplayCount());
 
@@ -470,10 +471,10 @@ public class MessagingController {
                     localFolder.delete(false);
                 }
 
-                boolean folderExistsOnServer = remoteFolderMap.containsKey(localFolderServerId);
+                boolean folderExistsOnServer = remoteFolderNameMap.containsKey(localFolderServerId);
                 if (folderExistsOnServer) {
-                    Folder remoteFolder = remoteFolderMap.get(localFolderServerId);
-                    localFolder.setName(remoteFolder.getName());
+                    String folderName = remoteFolderNameMap.get(localFolderServerId);
+                    localFolder.setName(folderName);
                 } else if (!account.isSpecialFolder(localFolderServerId)) {
                     localFolder.delete(false);
                 }

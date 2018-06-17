@@ -31,7 +31,7 @@ import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
  * POP3 only supports one folder, "Inbox". So the folder name is the ID here.
  */
 public class Pop3Folder extends Folder<Pop3Message> {
-    static final String INBOX = "INBOX";
+    public static final String INBOX = "INBOX";
 
 
     private Pop3Store pop3Store;

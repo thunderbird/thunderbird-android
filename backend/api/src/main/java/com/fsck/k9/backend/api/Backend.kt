@@ -10,6 +10,9 @@ interface Backend {
     val supportsSeenFlag: Boolean
     val supportsExpunge: Boolean
 
+    @Throws(MessagingException::class)
+    fun getFolders(forceListAll: Boolean): List<FolderInfo>
+
     // TODO: Add a way to cancel the sync process
     fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?)
 
