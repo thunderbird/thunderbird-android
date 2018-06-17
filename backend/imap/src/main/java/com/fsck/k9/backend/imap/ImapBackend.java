@@ -24,6 +24,7 @@ public class ImapBackend implements Backend {
     private final CommandMarkAllAsRead commandMarkAllAsRead;
     private final CommandExpunge commandExpunge;
     private final CommandMoveOrCopyMessages commandMoveOrCopyMessages;
+    private final CommandDeleteAll commandDeleteAll;
 
 
     public ImapBackend(String accountName, BackendStorage backendStorage, ImapStore imapStore) {
@@ -33,6 +34,7 @@ public class ImapBackend implements Backend {
         commandExpunge = new CommandExpunge(imapStore);
         commandMoveOrCopyMessages = new CommandMoveOrCopyMessages(imapStore);
         commandGetFolders = new CommandGetFolders(imapStore);
+        commandDeleteAll = new CommandDeleteAll(imapStore);
     }
 
     @Override
@@ -77,6 +79,11 @@ public class ImapBackend implements Backend {
     public void expungeMessages(@NotNull String folderServerId, @NotNull List<String> messageServerIds)
             throws MessagingException {
         commandExpunge.expungeMessages(folderServerId, messageServerIds);
+    }
+
+    @Override
+    public void deleteAllMessages(@NotNull String folderServerId) throws MessagingException {
+        commandDeleteAll.deleteAll(folderServerId);
     }
 
     @Nullable

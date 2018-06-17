@@ -2877,27 +2877,27 @@ public class MessagingController {
     }
 
     void processPendingEmptyTrash(Account account) throws MessagingException {
-        RemoteStore remoteStore = account.getRemoteStore();
-
-        Folder remoteFolder = remoteStore.getFolder(account.getTrashFolder());
-        try {
-            if (remoteFolder.exists()) {
-                remoteFolder.open(Folder.OPEN_MODE_RW);
-                remoteFolder.setFlags(Collections.singleton(Flag.DELETED), true);
-                if (Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
-                    remoteFolder.expunge();
-                }
-
-                // When we empty trash, we need to actually synchronize the folder
-                // or local deletes will never get cleaned up
-                synchronizeFolder(account, remoteFolder, true, 0, null);
-                compact(account, null);
-
-
-            }
-        } finally {
-            closeFolder(remoteFolder);
+        if (!account.hasTrashFolder()) {
+            return;
         }
+
+        Backend backend = getBackend(account);
+
+        String trashFolderServerId = account.getTrashFolder();
+        backend.deleteAllMessages(trashFolderServerId);
+
+        if (account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
+            backend.expunge(trashFolderServerId);
+        }
+
+        // When we empty trash, we need to actually synchronize the folder
+        // or local deletes will never get cleaned up
+        LocalStore localStore = account.getLocalStore();
+        LocalFolder folder = localStore.getFolder(trashFolderServerId);
+        folder.open(Folder.OPEN_MODE_RW);
+        synchronizeFolder(account, folder, true, 0, null);
+
+        compact(account, null);
     }
 
     public void emptyTrash(final Account account, MessagingListener listener) {

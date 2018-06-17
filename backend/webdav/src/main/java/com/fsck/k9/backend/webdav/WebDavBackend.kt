@@ -16,6 +16,7 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
     private val commandSetFlag = CommandSetFlag(webDavStore)
     private val commandMarkAllAsRead = CommandMarkAllAsRead(webDavStore)
     private val commandMoveOrCopyMessages = CommandMoveOrCopyMessages(webDavStore)
+    private val commandDeleteAll = CommandDeleteAll(webDavStore)
 
     override val supportsSeenFlag: Boolean = true
     override val supportsExpunge: Boolean = true
@@ -44,6 +45,10 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
 
     override fun expungeMessages(folderServerId: String, messageServerIds: List<String>) {
         throw UnsupportedOperationException("not supported")
+    }
+
+    override fun deleteAllMessages(folderServerId: String) {
+        commandDeleteAll.deleteAll(folderServerId)
     }
 
     override fun moveMessages(

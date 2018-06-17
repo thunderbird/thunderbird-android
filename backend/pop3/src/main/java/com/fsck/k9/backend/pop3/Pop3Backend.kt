@@ -13,6 +13,7 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
     private val pop3Sync: Pop3Sync = Pop3Sync(accountName, backendStorage, pop3Store)
     private val commandGetFolders = CommandGetFolders()
     private val commandSetFlag = CommandSetFlag(pop3Store)
+    private val commandDeleteAll = CommandDeleteAll(pop3Store)
 
     override val supportsSeenFlag: Boolean = false
     override val supportsExpunge: Boolean = false
@@ -39,6 +40,10 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
 
     override fun expungeMessages(folderServerId: String, messageServerIds: List<String>) {
         throw UnsupportedOperationException("not supported")
+    }
+
+    override fun deleteAllMessages(folderServerId: String) {
+        commandDeleteAll.deleteAll(folderServerId)
     }
 
     override fun moveMessages(

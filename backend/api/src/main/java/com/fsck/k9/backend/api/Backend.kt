@@ -29,6 +29,9 @@ interface Backend {
     fun expungeMessages(folderServerId: String, messageServerIds: List<String>)
 
     @Throws(MessagingException::class)
+    fun deleteAllMessages(folderServerId: String)
+
+    @Throws(MessagingException::class)
     fun moveMessages(
             sourceFolderServerId: String,
             targetFolderServerId: String,
