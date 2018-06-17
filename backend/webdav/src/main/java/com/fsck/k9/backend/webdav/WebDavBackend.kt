@@ -13,6 +13,7 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
     private val webDavSync: WebDavSync = WebDavSync(accountName, backendStorage, webDavStore)
     private val commandSetFlag = CommandSetFlag(webDavStore)
     private val commandMarkAllAsRead = CommandMarkAllAsRead(webDavStore)
+    private val commandMoveOrCopyMessages = CommandMoveOrCopyMessages(webDavStore)
 
     override val supportsSeenFlag: Boolean = true
     override val supportsExpunge: Boolean = true
@@ -33,5 +34,25 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
 
     override fun expunge(folderServerId: String) {
         throw UnsupportedOperationException("not supported")
+    }
+
+    override fun expungeMessages(folderServerId: String, messageServerIds: List<String>) {
+        throw UnsupportedOperationException("not supported")
+    }
+
+    override fun moveMessages(
+            sourceFolderServerId: String,
+            targetFolderServerId: String,
+            messageServerIds: List<String>
+    ): Map<String, String>? {
+        return commandMoveOrCopyMessages.moveMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
+    }
+
+    override fun copyMessages(
+            sourceFolderServerId: String,
+            targetFolderServerId: String,
+            messageServerIds: List<String>
+    ): Map<String, String>? {
+        return commandMoveOrCopyMessages.copyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
     }
 }

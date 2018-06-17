@@ -1589,105 +1589,56 @@ public class MessagingController {
         boolean isCopy = command.isCopy;
 
         Map<String, String> newUidMap = command.newUidMap;
-        Collection<String> uids = newUidMap != null ? newUidMap.keySet() : command.uids;
+        List<String> uids = newUidMap != null ? new ArrayList<>(newUidMap.keySet()) : command.uids;
 
         processPendingMoveOrCopy(account, srcFolder, destFolder, uids, isCopy, newUidMap);
     }
 
     @VisibleForTesting
-    void processPendingMoveOrCopy(Account account, String srcFolder, String destFolder, Collection<String> uids,
+    void processPendingMoveOrCopy(Account account, String srcFolder, String destFolder, List<String> uids,
             boolean isCopy, Map<String, String> newUidMap) throws MessagingException {
-        Folder remoteSrcFolder = null;
-        Folder remoteDestFolder = null;
         LocalFolder localDestFolder;
 
-        try {
-            RemoteStore remoteStore = account.getRemoteStore();
-            remoteSrcFolder = remoteStore.getFolder(srcFolder);
+        LocalStore localStore = account.getLocalStore();
+        localDestFolder = localStore.getFolder(destFolder);
 
-            LocalStore localStore = account.getLocalStore();
-            localDestFolder = localStore.getFolder(destFolder);
-            List<Message> messages = new ArrayList<>();
+        Backend backend = getBackend(account);
 
-            for (String uid : uids) {
-                if (!uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-                    messages.add(remoteSrcFolder.getMessage(uid));
+        Map<String, String> remoteUidMap;
+        if (isCopy) {
+            remoteUidMap = backend.copyMessages(srcFolder, destFolder, uids);
+        } else {
+            remoteUidMap = backend.moveMessages(srcFolder, destFolder, uids);
+        }
+
+        if (!isCopy && Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
+            Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolder);
+            backend.expungeMessages(srcFolder, uids);
+        }
+
+        /*
+         * This next part is used to bring the local UIDs of the local destination folder
+         * upto speed with the remote UIDs of remote destination folder.
+         */
+        if (newUidMap != null && remoteUidMap != null && !remoteUidMap.isEmpty()) {
+            Timber.i("processingPendingMoveOrCopy: changing local uids of %d messages", remoteUidMap.size());
+            for (Entry<String, String> entry : remoteUidMap.entrySet()) {
+                String remoteSrcUid = entry.getKey();
+                String newUid = entry.getValue();
+                String localDestUid = newUidMap.get(remoteSrcUid);
+                if (localDestUid == null) {
+                    continue;
                 }
-            }
 
-            if (messages.isEmpty()) {
-                Timber.i("processingPendingMoveOrCopy: no remote messages to move, skipping");
-                return;
-            }
-
-            if (!remoteSrcFolder.exists()) {
-                throw new MessagingException(
-                        "processingPendingMoveOrCopy: remoteFolder " + srcFolder + " does not exist", true);
-            }
-            remoteSrcFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteSrcFolder.getMode() != Folder.OPEN_MODE_RW) {
-                throw new MessagingException("processingPendingMoveOrCopy: could not open remoteSrcFolder "
-                        + srcFolder + " read/write", true);
-            }
-
-            Timber.d("processingPendingMoveOrCopy: source folder = %s, %d messages, destination folder = %s, " +
-                    "isCopy = %s", srcFolder, messages.size(), destFolder, isCopy);
-
-            Map<String, String> remoteUidMap = null;
-
-            if (!isCopy && destFolder.equals(account.getTrashFolder())) {
-                Timber.d("processingPendingMoveOrCopy doing special case for deleting message");
-
-                String trashFolder = destFolder;
-                if (K9.FOLDER_NONE.equals(trashFolder)) {
-                    trashFolder = null;
-                }
-                remoteSrcFolder.delete(messages, trashFolder);
-            } else {
-                remoteDestFolder = remoteStore.getFolder(destFolder);
-
-                if (isCopy) {
-                    remoteUidMap = remoteSrcFolder.copyMessages(messages, remoteDestFolder);
-                } else {
-                    remoteUidMap = remoteSrcFolder.moveMessages(messages, remoteDestFolder);
-                }
-            }
-            if (!isCopy && Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
-                Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolder);
-                List<String> movedUids = new ArrayList<>(messages.size());
-                for (Message message : messages) {
-                    movedUids.add(message.getUid());
-                }
-                remoteSrcFolder.expungeUids(movedUids);
-            }
-
-            /*
-             * This next part is used to bring the local UIDs of the local destination folder
-             * upto speed with the remote UIDs of remote destination folder.
-             */
-            if (newUidMap != null && remoteUidMap != null && !remoteUidMap.isEmpty()) {
-                Timber.i("processingPendingMoveOrCopy: changing local uids of %d messages", remoteUidMap.size());
-                for (Entry<String, String> entry : remoteUidMap.entrySet()) {
-                    String remoteSrcUid = entry.getKey();
-                    String newUid = entry.getValue();
-                    String localDestUid = newUidMap.get(remoteSrcUid);
-                    if (localDestUid == null) {
-                        continue;
-                    }
-
-                    Message localDestMessage = localDestFolder.getMessage(localDestUid);
-                    if (localDestMessage != null) {
-                        localDestMessage.setUid(newUid);
-                        localDestFolder.changeUid((LocalMessage) localDestMessage);
-                        for (MessagingListener l : getListeners()) {
-                            l.messageUidChanged(account, destFolder, localDestUid, newUid);
-                        }
+                Message localDestMessage = localDestFolder.getMessage(localDestUid);
+                if (localDestMessage != null) {
+                    localDestMessage.setUid(newUid);
+                    localDestFolder.changeUid((LocalMessage) localDestMessage);
+                    for (MessagingListener l : getListeners()) {
+                        l.messageUidChanged(account, destFolder, localDestUid, newUid);
                     }
                 }
             }
-        } finally {
-            closeFolder(remoteSrcFolder);
-            closeFolder(remoteDestFolder);
         }
     }
 

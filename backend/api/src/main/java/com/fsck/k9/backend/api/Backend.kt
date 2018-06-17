@@ -21,4 +21,21 @@ interface Backend {
 
     @Throws(MessagingException::class)
     fun expunge(folderServerId: String)
+
+    @Throws(MessagingException::class)
+    fun expungeMessages(folderServerId: String, messageServerIds: List<String>)
+
+    @Throws(MessagingException::class)
+    fun moveMessages(
+            sourceFolderServerId: String,
+            targetFolderServerId: String,
+            messageServerIds: List<String>
+    ): Map<String, String>?
+
+    @Throws(MessagingException::class)
+    fun copyMessages(
+            sourceFolderServerId: String,
+            targetFolderServerId: String,
+            messageServerIds: List<String>
+    ): Map<String, String>?
 }

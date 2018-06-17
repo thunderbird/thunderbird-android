@@ -30,4 +30,24 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
     override fun expunge(folderServerId: String) {
         throw UnsupportedOperationException("not supported")
     }
+
+    override fun expungeMessages(folderServerId: String, messageServerIds: List<String>) {
+        throw UnsupportedOperationException("not supported")
+    }
+
+    override fun moveMessages(
+            sourceFolderServerId: String,
+            targetFolderServerId: String,
+            messageServerIds: List<String>
+    ): Map<String, String>? {
+        throw UnsupportedOperationException("not supported")
+    }
+
+    override fun copyMessages(
+            sourceFolderServerId: String,
+            targetFolderServerId: String,
+            messageServerIds: List<String>
+    ): Map<String, String>? {
+        throw UnsupportedOperationException("not supported")
+    }
 }

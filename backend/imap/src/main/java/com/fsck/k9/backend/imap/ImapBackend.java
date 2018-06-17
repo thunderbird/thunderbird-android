@@ -2,6 +2,7 @@ package com.fsck.k9.backend.imap;
 
 
 import java.util.List;
+import java.util.Map;
 
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.backend.api.BackendStorage;
@@ -12,6 +13,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 public class ImapBackend implements Backend {
@@ -19,6 +21,7 @@ public class ImapBackend implements Backend {
     private final CommandSetFlag commandSetFlag;
     private final CommandMarkAllAsRead commandMarkAllAsRead;
     private final CommandExpunge commandExpunge;
+    private final CommandMoveOrCopyMessages commandMoveOrCopyMessages;
 
 
     public ImapBackend(String accountName, BackendStorage backendStorage, ImapStore imapStore) {
@@ -26,6 +29,7 @@ public class ImapBackend implements Backend {
         commandSetFlag = new CommandSetFlag(imapStore);
         commandMarkAllAsRead = new CommandMarkAllAsRead(imapStore);
         commandExpunge = new CommandExpunge(imapStore);
+        commandMoveOrCopyMessages = new CommandMoveOrCopyMessages(imapStore);
     }
 
     @Override
@@ -58,5 +62,25 @@ public class ImapBackend implements Backend {
     @Override
     public void expunge(@NotNull String folderServerId) throws MessagingException {
         commandExpunge.expunge(folderServerId);
+    }
+
+    @Override
+    public void expungeMessages(@NotNull String folderServerId, @NotNull List<String> messageServerIds)
+            throws MessagingException {
+        commandExpunge.expungeMessages(folderServerId, messageServerIds);
+    }
+
+    @Nullable
+    @Override
+    public Map<String, String> moveMessages(@NotNull String sourceFolderServerId, @NotNull String targetFolderServerId,
+            @NotNull List<String> messageServerIds) throws MessagingException {
+        return commandMoveOrCopyMessages.moveMessages(sourceFolderServerId, targetFolderServerId, messageServerIds);
+    }
+
+    @Nullable
+    @Override
+    public Map<String, String> copyMessages(@NotNull String sourceFolderServerId, @NotNull String targetFolderServerId,
+            @NotNull List<String> messageServerIds) throws MessagingException {
+        return commandMoveOrCopyMessages.copyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds);
     }
 }
