@@ -3,14 +3,17 @@ package com.fsck.k9.backend.imap;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.backend.api.BackendStorage;
 import com.fsck.k9.backend.api.FolderInfo;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
+import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +28,8 @@ public class ImapBackend implements Backend {
     private final CommandExpunge commandExpunge;
     private final CommandMoveOrCopyMessages commandMoveOrCopyMessages;
     private final CommandDeleteAll commandDeleteAll;
+    private final CommandSearch commandSearch;
+    private final CommandFetchMessage commandFetchMessage;
 
 
     public ImapBackend(String accountName, BackendStorage backendStorage, ImapStore imapStore) {
@@ -35,6 +40,8 @@ public class ImapBackend implements Backend {
         commandMoveOrCopyMessages = new CommandMoveOrCopyMessages(imapStore);
         commandGetFolders = new CommandGetFolders(imapStore);
         commandDeleteAll = new CommandDeleteAll(imapStore);
+        commandSearch = new CommandSearch(imapStore);
+        commandFetchMessage = new CommandFetchMessage(imapStore);
     }
 
     @Override
@@ -98,5 +105,20 @@ public class ImapBackend implements Backend {
     public Map<String, String> copyMessages(@NotNull String sourceFolderServerId, @NotNull String targetFolderServerId,
             @NotNull List<String> messageServerIds) throws MessagingException {
         return commandMoveOrCopyMessages.copyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds);
+    }
+
+    @NotNull
+    @Override
+    public List<String> search(@NotNull String folderServerId, @Nullable String query,
+            @Nullable Set<? extends Flag> requiredFlags, @Nullable Set<? extends Flag> forbiddenFlags)
+            throws MessagingException {
+        return commandSearch.search(folderServerId, query, requiredFlags, forbiddenFlags);
+    }
+
+    @NotNull
+    @Override
+    public Message fetchMessage(@NotNull String folderServerId, @NotNull String messageServerId,
+            @NotNull FetchProfile fetchProfile) throws MessagingException {
+        return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile);
     }
 }

@@ -5,8 +5,10 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
+import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Folder
+import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.store.webdav.WebDavStore
 
@@ -17,6 +19,7 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
     private val commandMarkAllAsRead = CommandMarkAllAsRead(webDavStore)
     private val commandMoveOrCopyMessages = CommandMoveOrCopyMessages(webDavStore)
     private val commandDeleteAll = CommandDeleteAll(webDavStore)
+    private val commandFetchMessage = CommandFetchMessage(webDavStore)
 
     override val supportsSeenFlag: Boolean = true
     override val supportsExpunge: Boolean = true
@@ -65,5 +68,18 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
             messageServerIds: List<String>
     ): Map<String, String>? {
         return commandMoveOrCopyMessages.copyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
+    }
+
+    override fun search(
+            folderServerId: String,
+            query: String?,
+            requiredFlags: Set<Flag>?,
+            forbiddenFlags: Set<Flag>?
+    ): List<String> {
+        throw UnsupportedOperationException("not supported")
+    }
+
+    override fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
+        return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile)
     }
 }

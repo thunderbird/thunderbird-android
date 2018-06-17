@@ -5,8 +5,10 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
+import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Folder
+import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.store.pop3.Pop3Store
 
 class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store: Pop3Store) : Backend {
@@ -14,6 +16,7 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
     private val commandGetFolders = CommandGetFolders()
     private val commandSetFlag = CommandSetFlag(pop3Store)
     private val commandDeleteAll = CommandDeleteAll(pop3Store)
+    private val commandFetchMessage = CommandFetchMessage(pop3Store)
 
     override val supportsSeenFlag: Boolean = false
     override val supportsExpunge: Boolean = false
@@ -60,5 +63,18 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
             messageServerIds: List<String>
     ): Map<String, String>? {
         throw UnsupportedOperationException("not supported")
+    }
+
+    override fun search(
+            folderServerId: String,
+            query: String?,
+            requiredFlags: Set<Flag>?,
+            forbiddenFlags: Set<Flag>?
+    ): List<String> {
+        throw UnsupportedOperationException("not supported")
+    }
+
+    override fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
+        return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile)
     }
 }

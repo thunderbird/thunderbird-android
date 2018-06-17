@@ -1,8 +1,10 @@
 package com.fsck.k9.backend.api
 
 
+import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Folder
+import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 
 
@@ -44,4 +46,15 @@ interface Backend {
             targetFolderServerId: String,
             messageServerIds: List<String>
     ): Map<String, String>?
+
+    @Throws(MessagingException::class)
+    fun search(
+            folderServerId: String,
+            query: String?,
+            requiredFlags: Set<Flag>?,
+            forbiddenFlags: Set<Flag>?
+    ): List<String>
+
+    @Throws(MessagingException::class)
+    fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message
 }

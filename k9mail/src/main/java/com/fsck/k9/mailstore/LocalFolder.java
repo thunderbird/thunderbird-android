@@ -2252,32 +2252,32 @@ public class LocalFolder extends Folder<LocalMessage> {
         return new ThreadInfo(threadId, msgId, messageId, rootId, parentId);
     }
 
-    public List<Message> extractNewMessages(final List<Message> messages)
+    public List<String> extractNewMessages(final List<String> messageServerIds)
             throws MessagingException {
 
         try {
-            return this.localStore.getDatabase().execute(false, new DbCallback<List<Message>>() {
+            return this.localStore.getDatabase().execute(false, new DbCallback<List<String>>() {
                 @Override
-                public List<Message> doDbWork(final SQLiteDatabase db) throws WrappedException {
+                public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
                         open(OPEN_MODE_RW);
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
 
-                    List<Message> result = new ArrayList<>();
+                    List<String> result = new ArrayList<>();
 
                     List<String> selectionArgs = new ArrayList<>();
                     Set<String> existingMessages = new HashSet<>();
                     int start = 0;
 
-                    while (start < messages.size()) {
+                    while (start < messageServerIds.size()) {
                         StringBuilder selection = new StringBuilder();
 
                         selection.append("folder_id = ? AND UID IN (");
                         selectionArgs.add(Long.toString(databaseId));
 
-                        int count = Math.min(messages.size() - start, LocalStore.UID_CHECK_BATCH_SIZE);
+                        int count = Math.min(messageServerIds.size() - start, LocalStore.UID_CHECK_BATCH_SIZE);
 
                         for (int i = start, end = start + count; i < end; i++) {
                             if (i > start) {
@@ -2286,7 +2286,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                                 selection.append("?");
                             }
 
-                            selectionArgs.add(messages.get(i).getUid());
+                            selectionArgs.add(messageServerIds.get(i));
                         }
 
                         selection.append(")");
@@ -2305,9 +2305,9 @@ public class LocalFolder extends Folder<LocalMessage> {
                         }
 
                         for (int i = start, end = start + count; i < end; i++) {
-                            Message message = messages.get(i);
-                            if (!existingMessages.contains(message.getUid())) {
-                                result.add(message);
+                            String messageServerId = messageServerIds.get(i);
+                            if (!existingMessages.contains(messageServerId)) {
+                                result.add(messageServerId);
                             }
                         }
 

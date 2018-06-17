@@ -183,7 +183,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private boolean remoteSearchPerformed = false;
     private Future<?> remoteSearchFuture = null;
-    private List<Message> extraSearchResults;
+    private List<String> extraSearchResults;
 
     private String title;
     private LocalSearch search = null;
@@ -360,7 +360,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 int numResults = extraSearchResults.size();
                 int limit = account.getRemoteSearchNumResults();
 
-                List<Message> toProcess = extraSearchResults;
+                List<String> toProcess = extraSearchResults;
 
                 if (limit > 0 && numResults > limit) {
                     toProcess = toProcess.subList(0, limit);
@@ -1318,7 +1318,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<Message> extraResults) {
+        public void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<String> extraResults) {
             handler.progress(false);
             handler.remoteSearchFinished();
             extraSearchResults = extraResults;

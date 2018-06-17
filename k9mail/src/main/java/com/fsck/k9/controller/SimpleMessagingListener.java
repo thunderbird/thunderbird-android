@@ -171,7 +171,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<Message> extraResults) {
+    public void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<String> extraResults) {
     }
 
     @Override

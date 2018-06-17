@@ -590,45 +590,36 @@ public class MessagingController {
             listener.remoteSearchStarted(folderServerId);
         }
 
-        List<Message> extraResults = new ArrayList<>();
+        List<String> extraResults = new ArrayList<>();
         try {
-            RemoteStore remoteStore = acct.getRemoteStore();
             LocalStore localStore = acct.getLocalStore();
 
-            if (remoteStore == null || localStore == null) {
-                throw new MessagingException("Could not get store");
-            }
-
-            Folder remoteFolder = remoteStore.getFolder(folderServerId);
             LocalFolder localFolder = localStore.getFolder(folderServerId);
-            if (remoteFolder == null || localFolder == null) {
+            if (localFolder == null) {
                 throw new MessagingException("Folder not found");
             }
 
-            List<Message> messages = remoteFolder.search(query, requiredFlags, forbiddenFlags);
+            Backend backend = getBackend(acct);
 
-            Timber.i("Remote search got %d results", messages.size());
+            List<String> messageServerIds = backend.search(folderServerId, query, requiredFlags, forbiddenFlags);
+
+            Timber.i("Remote search got %d results", messageServerIds.size());
 
             // There's no need to fetch messages already completely downloaded
-            List<Message> remoteMessages = localFolder.extractNewMessages(messages);
-            messages.clear();
+            messageServerIds = localFolder.extractNewMessages(messageServerIds);
 
             if (listener != null) {
-                listener.remoteSearchServerQueryComplete(folderServerId, remoteMessages.size(),
+                listener.remoteSearchServerQueryComplete(folderServerId, messageServerIds.size(),
                         acct.getRemoteSearchNumResults());
             }
 
-            Collections.sort(remoteMessages, new UidReverseComparator());
-
             int resultLimit = acct.getRemoteSearchNumResults();
-            if (resultLimit > 0 && remoteMessages.size() > resultLimit) {
-                extraResults = remoteMessages.subList(resultLimit, remoteMessages.size());
-                remoteMessages = remoteMessages.subList(0, resultLimit);
+            if (resultLimit > 0 && messageServerIds.size() > resultLimit) {
+                extraResults = messageServerIds.subList(resultLimit, messageServerIds.size());
+                messageServerIds = messageServerIds.subList(0, resultLimit);
             }
 
-            loadSearchResultsSynchronous(remoteMessages, localFolder, remoteFolder, listener);
-
-
+            loadSearchResultsSynchronous(acct, messageServerIds, localFolder);
         } catch (Exception e) {
             if (Thread.currentThread().isInterrupted()) {
                 Timber.i(e, "Caught exception on aborted remote search; safe to ignore.");
@@ -647,8 +638,8 @@ public class MessagingController {
 
     }
 
-    public void loadSearchResults(final Account account, final String folderServerId, final List<Message> messages,
-            final MessagingListener listener) {
+    public void loadSearchResults(final Account account, final String folderServerId,
+            final List<String> messageServerIds, final MessagingListener listener) {
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
@@ -656,20 +647,18 @@ public class MessagingController {
                     listener.enableProgressIndicator(true);
                 }
                 try {
-                    RemoteStore remoteStore = account.getRemoteStore();
                     LocalStore localStore = account.getLocalStore();
 
-                    if (remoteStore == null || localStore == null) {
+                    if (localStore == null) {
                         throw new MessagingException("Could not get store");
                     }
 
-                    Folder remoteFolder = remoteStore.getFolder(folderServerId);
                     LocalFolder localFolder = localStore.getFolder(folderServerId);
-                    if (remoteFolder == null || localFolder == null) {
+                    if (localFolder == null) {
                         throw new MessagingException("Folder not found");
                     }
 
-                    loadSearchResultsSynchronous(messages, localFolder, remoteFolder, listener);
+                    loadSearchResultsSynchronous(account, messageServerIds, localFolder);
                 } catch (MessagingException e) {
                     Timber.e(e, "Exception in loadSearchResults");
                 } finally {
@@ -681,25 +670,23 @@ public class MessagingController {
         });
     }
 
-    private void loadSearchResultsSynchronous(List<Message> messages, LocalFolder localFolder, Folder remoteFolder,
-            MessagingListener listener) throws MessagingException {
-        final FetchProfile header = new FetchProfile();
-        header.add(FetchProfile.Item.FLAGS);
-        header.add(FetchProfile.Item.ENVELOPE);
-        final FetchProfile structure = new FetchProfile();
-        structure.add(FetchProfile.Item.STRUCTURE);
+    private void loadSearchResultsSynchronous(Account account, List<String> messageServerIds, LocalFolder localFolder)
+            throws MessagingException {
 
-        int i = 0;
-        for (Message message : messages) {
-            i++;
-            LocalMessage localMsg = localFolder.getMessage(message.getUid());
+        FetchProfile fetchProfile = new FetchProfile();
+        fetchProfile.add(FetchProfile.Item.FLAGS);
+        fetchProfile.add(FetchProfile.Item.ENVELOPE);
+        fetchProfile.add(FetchProfile.Item.STRUCTURE);
 
-            if (localMsg == null) {
-                remoteFolder.fetch(Collections.singletonList(message), header, null);
-                //fun fact: ImapFolder.fetch can't handle getting STRUCTURE at same time as headers
-                remoteFolder.fetch(Collections.singletonList(message), structure, null);
+        Backend backend = getBackend(account);
+        String folderServerId = localFolder.getServerId();
+
+        for (String messageServerId : messageServerIds) {
+            LocalMessage localMessage = localFolder.getMessage(messageServerId);
+
+            if (localMessage == null) {
+                Message message = backend.fetchMessage(folderServerId, messageServerId, fetchProfile);
                 localFolder.appendMessages(Collections.singletonList(message));
-                localMsg = localFolder.getMessage(message.getUid());
             }
         }
     }

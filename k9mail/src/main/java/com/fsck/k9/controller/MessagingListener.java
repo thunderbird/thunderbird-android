@@ -69,7 +69,7 @@ public interface MessagingListener {
 
     void remoteSearchStarted(String folder);
     void remoteSearchServerQueryComplete(String folderServerId, int numResults, int maxResults);
-    void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<Message> extraResults);
+    void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<String> extraResults);
     void remoteSearchFailed(String folderServerId, String err);
 
     void enableProgressIndicator(boolean enable);
