@@ -77,4 +77,12 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
     override fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
         return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile)
     }
+
+    override fun findByMessageId(folderServerId: String, messageId: String): String? {
+        return null
+    }
+
+    override fun uploadMessage(folderServerId: String, message: Message): String? {
+        throw UnsupportedOperationException("not supported")
+    }
 }

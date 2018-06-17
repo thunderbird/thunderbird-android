@@ -1425,7 +1425,6 @@ public class MessagingController {
      * TODO update the local message UID instead of deleting it
      */
     void processPendingAppend(PendingAppend command, Account account) throws MessagingException {
-        Folder remoteFolder = null;
         LocalFolder localFolder = null;
         try {
 
@@ -1440,117 +1439,62 @@ public class MessagingController {
                 return;
             }
 
-            RemoteStore remoteStore = account.getRemoteStore();
-            remoteFolder = remoteStore.getFolder(folder);
-            if (!remoteFolder.exists()) {
-                Timber.w("Remote folder doesn't exist: %s", folder);
-                return;
-            }
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
-                return;
-            }
-
-            Message remoteMessage = null;
             if (!localMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
-                remoteMessage = remoteFolder.getMessage(localMessage.getUid());
+                //FIXME: This should never happen. Throw in debug builds.
+                return;
             }
 
-            if (remoteMessage == null) {
-                if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED)) {
-                    Timber.w("Local message with uid %s has flag %s  already set, checking for remote message with " +
-                            "same message id", localMessage.getUid(), X_REMOTE_COPY_STARTED);
-                    String rUid = remoteFolder.getUidFromMessageId(localMessage);
-                    if (rUid != null) {
-                        Timber.w("Local message has flag %s already set, and there is a remote message with uid %s, " +
-                                "assuming message was already copied and aborting this copy",
-                                X_REMOTE_COPY_STARTED, rUid);
+            Backend backend = getBackend(account);
 
-                        String oldUid = localMessage.getUid();
-                        localMessage.setUid(rUid);
-                        localFolder.changeUid(localMessage);
-                        for (MessagingListener l : getListeners()) {
-                            l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
-                        }
-                        return;
-                    } else {
-                        Timber.w("No remote message with message-id found, proceeding with append");
-                    }
-                }
+            if (localMessage.isSet(Flag.X_REMOTE_COPY_STARTED)) {
+                Timber.w("Local message with uid %s has flag %s  already set, checking for remote message with " +
+                        "same message id", localMessage.getUid(), X_REMOTE_COPY_STARTED);
 
-                /*
-                 * If the message does not exist remotely we just upload it and then
-                 * update our local copy with the new uid.
-                 */
-                FetchProfile fp = new FetchProfile();
-                fp.add(FetchProfile.Item.BODY);
-                localFolder.fetch(Collections.singletonList(localMessage), fp, null);
-                String oldUid = localMessage.getUid();
-                localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
-                remoteFolder.appendMessages(Collections.singletonList(localMessage));
+                String messageServerId = backend.findByMessageId(folder, localMessage.getMessageId());
+                if (messageServerId != null) {
+                    Timber.w("Local message has flag %s already set, and there is a remote message with uid %s, " +
+                            "assuming message was already copied and aborting this copy",
+                            X_REMOTE_COPY_STARTED, messageServerId);
 
-                if (localMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
-                    // We didn't get the server UID of the uploaded message. Remove the local message now. The uploaded
-                    // version will be downloaded during the next sync.
-                    localFolder.destroyMessages(Collections.singletonList(localMessage));
-                } else {
+                    String oldUid = localMessage.getUid();
+                    localMessage.setUid(messageServerId);
                     localFolder.changeUid(localMessage);
+
                     for (MessagingListener l : getListeners()) {
                         l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
                     }
-                }
-            } else {
-                /*
-                 * If the remote message exists we need to determine which copy to keep.
-                 */
-                /*
-                 * See if the remote message is newer than ours.
-                 */
-                FetchProfile fp = new FetchProfile();
-                fp.add(FetchProfile.Item.ENVELOPE);
-                remoteFolder.fetch(Collections.singletonList(remoteMessage), fp, null);
-                Date localDate = localMessage.getInternalDate();
-                Date remoteDate = remoteMessage.getInternalDate();
-                if (remoteDate != null && remoteDate.compareTo(localDate) > 0) {
-                    /*
-                     * If the remote message is newer than ours we'll just
-                     * delete ours and move on. A sync will get the server message
-                     * if we need to be able to see it.
-                     */
-                    localMessage.destroy();
+
+                    return;
                 } else {
-                    /*
-                     * Otherwise we'll upload our message and then delete the remote message.
-                     */
-                    fp = new FetchProfile();
-                    fp.add(FetchProfile.Item.BODY);
-                    localFolder.fetch(Collections.singletonList(localMessage), fp, null);
-                    String oldUid = localMessage.getUid();
+                    Timber.w("No remote message with message-id found, proceeding with append");
+                }
+            }
 
-                    localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
+            /*
+             * If the message does not exist remotely we just upload it and then
+             * update our local copy with the new uid.
+             */
+            FetchProfile fp = new FetchProfile();
+            fp.add(FetchProfile.Item.BODY);
+            localFolder.fetch(Collections.singletonList(localMessage), fp, null);
+            String oldUid = localMessage.getUid();
+            localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
 
-                    remoteFolder.appendMessages(Collections.singletonList(localMessage));
-                    if (localMessage.getUid().startsWith(K9.LOCAL_UID_PREFIX)) {
-                        // We didn't get the server UID of the uploaded message. Remove the local message now. The
-                        // uploaded version will be downloaded during the next sync.
-                        localFolder.destroyMessages(Collections.singletonList(localMessage));
-                    } else {
-                        localFolder.changeUid(localMessage);
-                        for (MessagingListener l : getListeners()) {
-                            l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
-                        }
-                    }
+            String messageServerId = backend.uploadMessage(folder, localMessage);
 
-                    if (remoteDate != null) {
-                        remoteMessage.setFlag(Flag.DELETED, true);
-                        if (Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
-                            remoteFolder.expungeUids(Collections.singletonList(remoteMessage.getUid()));
-                        }
-                    }
+            if (messageServerId == null) {
+                // We didn't get the server UID of the uploaded message. Remove the local message now. The uploaded
+                // version will be downloaded during the next sync.
+                localFolder.destroyMessages(Collections.singletonList(localMessage));
+            } else {
+                localMessage.setUid(messageServerId);
+                localFolder.changeUid(localMessage);
+
+                for (MessagingListener l : getListeners()) {
+                    l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
                 }
             }
         } finally {
-            closeFolder(remoteFolder);
             closeFolder(localFolder);
         }
     }

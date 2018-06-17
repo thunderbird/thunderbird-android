@@ -30,6 +30,8 @@ public class ImapBackend implements Backend {
     private final CommandDeleteAll commandDeleteAll;
     private final CommandSearch commandSearch;
     private final CommandFetchMessage commandFetchMessage;
+    private final CommandFindByMessageId commandFindByMessageId;
+    private final CommandUploadMessage commandUploadMessage;
 
 
     public ImapBackend(String accountName, BackendStorage backendStorage, ImapStore imapStore) {
@@ -42,6 +44,8 @@ public class ImapBackend implements Backend {
         commandDeleteAll = new CommandDeleteAll(imapStore);
         commandSearch = new CommandSearch(imapStore);
         commandFetchMessage = new CommandFetchMessage(imapStore);
+        commandFindByMessageId = new CommandFindByMessageId(imapStore);
+        commandUploadMessage = new CommandUploadMessage(imapStore);
     }
 
     @Override
@@ -120,5 +124,17 @@ public class ImapBackend implements Backend {
     public Message fetchMessage(@NotNull String folderServerId, @NotNull String messageServerId,
             @NotNull FetchProfile fetchProfile) throws MessagingException {
         return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile);
+    }
+
+    @Nullable
+    @Override
+    public String findByMessageId(@NotNull String folderServerId, @NotNull String messageId) throws MessagingException {
+        return commandFindByMessageId.findByMessageId(folderServerId, messageId);
+    }
+
+    @Nullable
+    @Override
+    public String uploadMessage(@NotNull String folderServerId, @NotNull Message message) throws MessagingException {
+        return commandUploadMessage.uploadMessage(folderServerId, message);
     }
 }

@@ -1775,7 +1775,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     @Override
-    public String getUidFromMessageId(Message message) throws MessagingException {
+    public String getUidFromMessageId(String messageId) throws MessagingException {
         throw new MessagingException("Cannot call getUidFromMessageId on LocalFolder");
     }
 

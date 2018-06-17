@@ -57,4 +57,10 @@ interface Backend {
 
     @Throws(MessagingException::class)
     fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message
+
+    @Throws(MessagingException::class)
+    fun findByMessageId(folderServerId: String, messageId: String): String?
+
+    @Throws(MessagingException::class)
+    fun uploadMessage(folderServerId: String, message: Message): String?
 }

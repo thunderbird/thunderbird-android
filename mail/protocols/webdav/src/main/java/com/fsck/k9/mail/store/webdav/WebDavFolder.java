@@ -700,7 +700,7 @@ public class WebDavFolder extends Folder<WebDavMessage> {
     }
 
     @Override
-    public String getUidFromMessageId(Message message) throws MessagingException {
+    public String getUidFromMessageId(String messageId) throws MessagingException {
         Timber.e("Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "
                         + " being uploaded to the Sent folder");
         return null;

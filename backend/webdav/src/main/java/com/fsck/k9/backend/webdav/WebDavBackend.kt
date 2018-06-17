@@ -20,6 +20,7 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
     private val commandMoveOrCopyMessages = CommandMoveOrCopyMessages(webDavStore)
     private val commandDeleteAll = CommandDeleteAll(webDavStore)
     private val commandFetchMessage = CommandFetchMessage(webDavStore)
+    private val commandUploadMessage = CommandUploadMessage(webDavStore)
 
     override val supportsSeenFlag: Boolean = true
     override val supportsExpunge: Boolean = true
@@ -81,5 +82,13 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
 
     override fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
         return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile)
+    }
+
+    override fun findByMessageId(folderServerId: String, messageId: String): String? {
+        return null
+    }
+
+    override fun uploadMessage(folderServerId: String, message: Message): String? {
+        return commandUploadMessage.uploadMessage(folderServerId, message)
     }
 }

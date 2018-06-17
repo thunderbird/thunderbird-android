@@ -111,7 +111,7 @@ public abstract class Folder<T extends Message> {
 
     public abstract void setFlags(Set<Flag> flags, boolean value) throws MessagingException;
 
-    public abstract String getUidFromMessageId(Message message) throws MessagingException;
+    public abstract String getUidFromMessageId(String messageId) throws MessagingException;
 
     public void expunge() throws MessagingException
         {}

@@ -533,7 +533,7 @@ public class Pop3Folder extends Folder<Pop3Message> {
     }
 
     @Override
-    public String getUidFromMessageId(Message message) throws MessagingException {
+    public String getUidFromMessageId(String messageId) throws MessagingException {
         return null;
     }
 
