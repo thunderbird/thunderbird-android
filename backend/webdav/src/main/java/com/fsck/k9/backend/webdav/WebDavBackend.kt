@@ -24,9 +24,11 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
     private val commandFetchMessage = CommandFetchMessage(webDavStore)
     private val commandUploadMessage = CommandUploadMessage(webDavStore)
 
-    override val supportsSeenFlag: Boolean = true
-    override val supportsExpunge: Boolean = true
-
+    override val supportsSeenFlag = true
+    override val supportsExpunge = true
+    override val supportsMove = true
+    override val supportsCopy = true
+    override val supportsTrashFolder = true
 
     override fun getFolders(forceListAll: Boolean): List<FolderInfo> {
         return commandGetFolders.getFolders(forceListAll)

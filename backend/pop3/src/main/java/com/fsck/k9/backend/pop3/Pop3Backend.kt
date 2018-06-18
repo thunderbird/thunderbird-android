@@ -20,8 +20,11 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
     private val commandDeleteAll = CommandDeleteAll(pop3Store)
     private val commandFetchMessage = CommandFetchMessage(pop3Store)
 
-    override val supportsSeenFlag: Boolean = false
-    override val supportsExpunge: Boolean = false
+    override val supportsSeenFlag = false
+    override val supportsExpunge = false
+    override val supportsMove = false
+    override val supportsCopy = false
+    override val supportsTrashFolder = false
 
     override fun getFolders(forceListAll: Boolean): List<FolderInfo> {
         return commandGetFolders.getFolders()

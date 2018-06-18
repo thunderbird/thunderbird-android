@@ -13,6 +13,9 @@ import com.fsck.k9.mail.Part
 interface Backend {
     val supportsSeenFlag: Boolean
     val supportsExpunge: Boolean
+    val supportsMove: Boolean
+    val supportsCopy: Boolean
+    val supportsTrashFolder: Boolean
 
     @Throws(MessagingException::class)
     fun getFolders(forceListAll: Boolean): List<FolderInfo>

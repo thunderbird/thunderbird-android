@@ -86,7 +86,6 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.power.TracingPowerManager;
 import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.pop3.Pop3Store;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -2372,24 +2371,11 @@ public class MessagingController {
     }
 
     public boolean isMoveCapable(final Account account) {
-        try {
-            RemoteStore remoteStore = account.getRemoteStore();
-            return remoteStore.isMoveCapable();
-        } catch (MessagingException me) {
-
-            Timber.e(me, "Exception while ascertaining move capability");
-            return false;
-        }
+        return getBackend(account).getSupportsMove();
     }
 
     public boolean isCopyCapable(final Account account) {
-        try {
-            RemoteStore remoteStore = account.getRemoteStore();
-            return remoteStore.isCopyCapable();
-        } catch (MessagingException me) {
-            Timber.e(me, "Exception while ascertaining copy capability");
-            return false;
-        }
+        return getBackend(account).getSupportsCopy();
     }
 
     public void moveMessages(final Account srcAccount, final String srcFolder,
@@ -2483,11 +2469,10 @@ public class MessagingController {
 
         try {
             LocalStore localStore = account.getLocalStore();
-            RemoteStore remoteStore = account.getRemoteStore();
-            if (!isCopy && !remoteStore.isMoveCapable()) {
+            if (!isCopy && !isMoveCapable(account)) {
                 return;
             }
-            if (isCopy && !remoteStore.isCopyCapable()) {
+            if (isCopy && !isCopyCapable(account)) {
                 return;
             }
 
@@ -2899,13 +2884,10 @@ public class MessagingController {
      *
      * @return {@code true} if the account only has a local Trash folder that is not synchronized
      * with a folder on the server. {@code false} otherwise.
-     *
-     * @throws MessagingException
-     *         In case of an error.
      */
-    private boolean isTrashLocalOnly(Account account) throws MessagingException {
-        // TODO: Get rid of the tight coupling once we properly support local folders
-        return (account.getRemoteStore() instanceof Pop3Store);
+    private boolean isTrashLocalOnly(Account account) {
+        Backend backend = getBackend(account);
+        return !backend.getSupportsTrashFolder();
     }
 
     public void sendAlternate(Context context, Account account, LocalMessage message) {

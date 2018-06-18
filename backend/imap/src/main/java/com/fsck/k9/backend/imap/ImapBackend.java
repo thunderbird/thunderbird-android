@@ -60,6 +60,21 @@ public class ImapBackend implements Backend {
         return true;
     }
 
+    @Override
+    public boolean getSupportsMove() {
+        return true;
+    }
+
+    @Override
+    public boolean getSupportsCopy() {
+        return true;
+    }
+
+    @Override
+    public boolean getSupportsTrashFolder() {
+        return true;
+    }
+
     @NotNull
     @Override
     public List<FolderInfo> getFolders(boolean forceListAll) {
