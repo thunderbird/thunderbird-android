@@ -29,15 +29,14 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         this.context = context;
     }
 
-    public void messagesFlagsChanged(Folder folder,
-                                     List<Message> messages) {
-        controller.messagesArrived(account, folder, messages, true);
+    public void messagesFlagsChanged(Folder folder, List<Message> messages) {
+        syncFolder(folder);
     }
     public void messagesArrived(Folder folder, List<Message> messages) {
-        controller.messagesArrived(account, folder, messages, false);
+        syncFolder(folder);
     }
     public void messagesRemoved(Folder folder, List<Message> messages) {
-        controller.messagesArrived(account, folder, messages, true);
+        syncFolder(folder);
     }
 
     public void syncFolder(Folder folder) {
