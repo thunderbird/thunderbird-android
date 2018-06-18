@@ -1975,17 +1975,12 @@ public class MessagingController {
         put("loadAttachment", listener, new Runnable() {
             @Override
             public void run() {
-                Folder remoteFolder = null;
                 LocalFolder localFolder = null;
                 try {
                     String folderServerId = message.getFolder().getServerId();
 
                     LocalStore localStore = account.getLocalStore();
                     localFolder = localStore.getFolder(folderServerId);
-
-                    RemoteStore remoteStore = account.getRemoteStore();
-                    remoteFolder = remoteStore.getFolder(folderServerId);
-                    remoteFolder.open(Folder.OPEN_MODE_RW);
 
                     ProgressBodyFactory bodyFactory = new ProgressBodyFactory(new ProgressListener() {
                         @Override
@@ -1996,8 +1991,8 @@ public class MessagingController {
                         }
                     });
 
-                    Message remoteMessage = remoteFolder.getMessage(message.getUid());
-                    remoteFolder.fetchPart(remoteMessage, part, null, bodyFactory);
+                    Backend backend = getBackend(account);
+                    backend.fetchPart(folderServerId, message.getUid(), part, bodyFactory);
 
                     localFolder.addPartToMessage(message, part);
 
@@ -2013,7 +2008,6 @@ public class MessagingController {
                     notifyUserIfCertificateProblem(account, me, true);
                 } finally {
                     closeFolder(localFolder);
-                    closeFolder(remoteFolder);
                 }
             }
         });

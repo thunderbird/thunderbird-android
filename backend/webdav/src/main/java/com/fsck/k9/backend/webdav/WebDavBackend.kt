@@ -5,11 +5,13 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
+import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.store.webdav.WebDavStore
 
 class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavStore: WebDavStore) : Backend {
@@ -86,6 +88,10 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
 
     override fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
         return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile)
+    }
+
+    override fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory) {
+        throw UnsupportedOperationException("not supported")
     }
 
     override fun findByMessageId(folderServerId: String, messageId: String): String? {

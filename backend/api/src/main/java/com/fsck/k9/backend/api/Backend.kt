@@ -1,11 +1,13 @@
 package com.fsck.k9.backend.api
 
 
+import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.Part
 
 
 interface Backend {
@@ -60,6 +62,9 @@ interface Backend {
 
     @Throws(MessagingException::class)
     fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message
+
+    @Throws(MessagingException::class)
+    fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory)
 
     @Throws(MessagingException::class)
     fun findByMessageId(folderServerId: String, messageId: String): String?

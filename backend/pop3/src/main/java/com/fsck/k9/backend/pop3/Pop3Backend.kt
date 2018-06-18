@@ -5,10 +5,12 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
+import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.store.pop3.Pop3Store
 
 class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store: Pop3Store) : Backend {
@@ -80,6 +82,10 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
 
     override fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
         return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile)
+    }
+
+    override fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory) {
+        throw UnsupportedOperationException("not supported")
     }
 
     override fun findByMessageId(folderServerId: String, messageId: String): String? {
