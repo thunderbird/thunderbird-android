@@ -49,7 +49,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anySetOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -978,26 +977,13 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void getUidFromMessageId_withoutMessageIdHeader_shouldReturnNull() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        ImapMessage message = createImapMessage("2");
-        when(message.getHeader("Message-ID")).thenReturn(new String[0]);
-
-        String uid = folder.getUidFromMessageId(message);
-
-        assertNull(uid);
-    }
-
-    @Test
     public void getUidFromMessageId_withMessageIdHeader_shouldIssueUidSearchCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
-        ImapMessage message = createImapMessage("2");
-        when(message.getHeader("Message-ID")).thenReturn(new String[] { "<00000000.0000000@example.org>" });
         setupUidSearchResponses("1 OK SEARCH Completed");
 
-        folder.getUidFromMessageId(message);
+        folder.getUidFromMessageId("<00000000.0000000@example.org>");
 
         assertCommandIssued("UID SEARCH HEADER MESSAGE-ID \"<00000000.0000000@example.org>\"");
     }
@@ -1007,11 +993,9 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
-        ImapMessage message = createImapMessage("2");
-        when(message.getHeader("Message-ID")).thenReturn(new String[] { "<00000000.0000000@example.org>" });
         setupUidSearchResponses("* SEARCH 23");
 
-        String uid = folder.getUidFromMessageId(message);
+        String uid = folder.getUidFromMessageId("<00000000.0000000@example.org>");
 
         assertEquals("23", uid);
     }
