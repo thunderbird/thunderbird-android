@@ -8,6 +8,8 @@ import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
+import com.fsck.k9.mail.PushReceiver
+import com.fsck.k9.mail.Pusher
 
 
 interface Backend {
@@ -16,6 +18,7 @@ interface Backend {
     val supportsMove: Boolean
     val supportsCopy: Boolean
     val supportsTrashFolder: Boolean
+    val isPushCapable: Boolean
 
     @Throws(MessagingException::class)
     fun getFolders(forceListAll: Boolean): List<FolderInfo>
@@ -74,4 +77,6 @@ interface Backend {
 
     @Throws(MessagingException::class)
     fun uploadMessage(folderServerId: String, message: Message): String?
+
+    fun createPusher(receiver: PushReceiver): Pusher
 }

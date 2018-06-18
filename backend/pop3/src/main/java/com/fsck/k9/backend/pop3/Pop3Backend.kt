@@ -11,6 +11,8 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
+import com.fsck.k9.mail.PushReceiver
+import com.fsck.k9.mail.Pusher
 import com.fsck.k9.mail.store.pop3.Pop3Store
 
 class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store: Pop3Store) : Backend {
@@ -25,6 +27,7 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
     override val supportsMove = false
     override val supportsCopy = false
     override val supportsTrashFolder = false
+    override val isPushCapable = false
 
     override fun getFolders(forceListAll: Boolean): List<FolderInfo> {
         return commandGetFolders.getFolders()
@@ -96,6 +99,10 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
     }
 
     override fun uploadMessage(folderServerId: String, message: Message): String? {
+        throw UnsupportedOperationException("not supported")
+    }
+
+    override fun createPusher(receiver: PushReceiver): Pusher {
         throw UnsupportedOperationException("not supported")
     }
 }

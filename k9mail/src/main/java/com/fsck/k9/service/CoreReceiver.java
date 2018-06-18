@@ -11,8 +11,8 @@ import android.os.PowerManager;
 import timber.log.Timber;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.mail.power.TracingPowerManager;
-import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.power.TracingPowerManager;
+import com.fsck.k9.power.TracingPowerManager.TracingWakeLock;
 
 public class CoreReceiver extends BroadcastReceiver {
 

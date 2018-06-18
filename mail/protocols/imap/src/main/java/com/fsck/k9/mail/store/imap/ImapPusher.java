@@ -7,21 +7,24 @@ import java.util.List;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
+import com.fsck.k9.mail.power.PowerManager;
 import timber.log.Timber;
 
 
-class ImapPusher implements Pusher {
+public class ImapPusher implements Pusher {
     private final ImapStore store;
     private final PushReceiver pushReceiver;
+    private final PowerManager powerManager;
 
     private final List<ImapFolderPusher> folderPushers = new ArrayList<>();
 
     private long lastRefresh = -1;
 
 
-    public ImapPusher(ImapStore store, PushReceiver pushReceiver) {
+    public ImapPusher(ImapStore store, PushReceiver pushReceiver, PowerManager powerManager) {
         this.store = store;
         this.pushReceiver = pushReceiver;
+        this.powerManager = powerManager;
     }
 
     @Override
@@ -92,7 +95,7 @@ class ImapPusher implements Pusher {
     }
 
     ImapFolderPusher createImapFolderPusher(String folderName) {
-        return new ImapFolderPusher(store, folderName, pushReceiver);
+        return new ImapFolderPusher(store, folderName, pushReceiver, powerManager);
     }
 
     long currentTimeMillis() {

@@ -14,8 +14,8 @@ import android.os.PowerManager;
 import timber.log.Timber;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.mail.power.TracingPowerManager;
-import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.power.TracingPowerManager;
+import com.fsck.k9.power.TracingPowerManager.TracingWakeLock;
 
 /**
  * {@code CoreService} is the base class for all K-9 Services.

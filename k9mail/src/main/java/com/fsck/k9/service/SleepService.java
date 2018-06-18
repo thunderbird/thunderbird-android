@@ -10,7 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 
-import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.mail.power.WakeLock;
 import timber.log.Timber;
 
 import static java.lang.Thread.currentThread;
@@ -26,7 +26,7 @@ public class SleepService extends CoreService {
 
     private static AtomicInteger latchId = new AtomicInteger();
 
-    public static void sleep(Context context, long sleepTime, TracingWakeLock wakeLock, long wakeLockTimeout) {
+    public static void sleep(Context context, long sleepTime, WakeLock wakeLock, long wakeLockTimeout) {
         Integer id = latchId.getAndIncrement();
         Timber.d("SleepService Preparing CountDownLatch with id = %d, thread %s", id, currentThread().getName());
 
@@ -105,7 +105,7 @@ public class SleepService extends CoreService {
     }
 
     private static void reacquireWakeLock(SleepDatum sleepDatum) {
-        TracingWakeLock wakeLock = sleepDatum.wakeLock;
+        WakeLock wakeLock = sleepDatum.wakeLock;
         if (wakeLock != null) {
             synchronized (wakeLock) {
                 long timeout = sleepDatum.timeout;
@@ -131,7 +131,7 @@ public class SleepService extends CoreService {
 
     private static class SleepDatum {
         CountDownLatch latch;
-        TracingWakeLock wakeLock;
+        WakeLock wakeLock;
         long timeout;
         CountDownLatch reacquireLatch;
     }

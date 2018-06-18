@@ -83,14 +83,13 @@ import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.mail.power.TracingPowerManager;
-import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
-import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
+import com.fsck.k9.power.TracingPowerManager;
+import com.fsck.k9.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
@@ -3452,18 +3451,16 @@ public class MessagingController {
                 }
 
                 try {
-                    RemoteStore store = account.getRemoteStore();
-                    if (!store.isPushCapable()) {
+                    Backend backend = getBackend(account);
+                    if (!backend.isPushCapable()) {
                         Timber.i("Account %s is not push capable, skipping", account.getDescription());
 
                         return false;
                     }
-                    Pusher pusher = store.getPusher(receiver);
-                    if (pusher != null) {
-                        Pusher oldPusher = pushers.putIfAbsent(account, pusher);
-                        if (oldPusher == null) {
-                            pusher.start(names);
-                        }
+                    Pusher pusher = backend.createPusher(receiver);
+                    Pusher oldPusher = pushers.putIfAbsent(account, pusher);
+                    if (oldPusher == null) {
+                        pusher.start(names);
                     }
                 } catch (Exception e) {
                     Timber.e(e, "Could not get remote store");

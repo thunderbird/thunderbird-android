@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.power;
+package com.fsck.k9.power;
 
 
 import java.util.Timer;
@@ -11,10 +11,11 @@ import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
 
 import com.fsck.k9.mail.K9MailLib;
+import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
 
-public class TracingPowerManager {
+public class TracingPowerManager implements com.fsck.k9.mail.power.PowerManager {
     private final static boolean TRACE = false;
     public static AtomicInteger wakeLockId = new AtomicInteger(0);
     PowerManager pm = null;
@@ -40,16 +41,25 @@ public class TracingPowerManager {
         }
     }
 
+    @NotNull
+    @Override
+    public com.fsck.k9.mail.power.WakeLock newWakeLock(@NotNull String tag) {
+        return new TracingWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag);
+    }
+
     public TracingWakeLock newWakeLock(int flags, String tag) {
         return new TracingWakeLock(flags, tag);
     }
-    public class TracingWakeLock {
+
+
+    public class TracingWakeLock implements com.fsck.k9.mail.power.WakeLock {
         final WakeLock wakeLock;
         final int id;
         final String tag;
         volatile TimerTask timerTask;
         volatile Long startTime = null;
         volatile Long timeout = null;
+
         public TracingWakeLock(int flags, String ntag) {
             tag = ntag;
             wakeLock = pm.newWakeLock(flags, tag);
@@ -58,6 +68,8 @@ public class TracingPowerManager {
                 Timber.v("TracingWakeLock for tag %s / id %d: Create", tag, id);
             }
         }
+
+        @Override
         public void acquire(long timeout) {
             synchronized (wakeLock) {
                 wakeLock.acquire(timeout);
@@ -71,6 +83,8 @@ public class TracingPowerManager {
             }
             this.timeout = timeout;
         }
+
+        @Override
         public void acquire() {
             synchronized (wakeLock) {
                 wakeLock.acquire();
@@ -85,11 +99,15 @@ public class TracingPowerManager {
             }
             timeout = null;
         }
+
+        @Override
         public void setReferenceCounted(boolean counted) {
             synchronized (wakeLock) {
                 wakeLock.setReferenceCounted(counted);
             }
         }
+
+        @Override
         public void release() {
             if (startTime != null) {
                 Long endTime = SystemClock.elapsedRealtime();
@@ -108,6 +126,7 @@ public class TracingPowerManager {
             }
             startTime = null;
         }
+
         private void cancelNotification() {
             if (timer != null) {
                 synchronized (timer) {
@@ -117,6 +136,7 @@ public class TracingPowerManager {
                 }
             }
         }
+
         private void raiseNotification() {
             if (timer != null) {
                 synchronized (timer) {
@@ -143,6 +163,5 @@ public class TracingPowerManager {
                 }
             }
         }
-
     }
 }
