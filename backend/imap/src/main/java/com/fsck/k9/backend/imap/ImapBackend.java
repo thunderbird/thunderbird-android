@@ -71,6 +71,12 @@ public class ImapBackend implements Backend {
     }
 
     @Override
+    public void downloadMessage(@NotNull SyncConfig syncConfig, @NotNull String folderServerId,
+            @NotNull String messageServerId) throws MessagingException {
+        imapSync.downloadMessage(syncConfig, folderServerId, messageServerId);
+    }
+
+    @Override
     public void setFlag(@NotNull String folderServerId, @NotNull List<String> messageServerIds, @NotNull Flag flag,
             boolean newState) throws MessagingException {
         commandSetFlag.setFlag(folderServerId, messageServerIds, flag, newState);

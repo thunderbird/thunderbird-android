@@ -34,6 +34,10 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
         webDavSync.sync(folder, syncConfig, listener)
     }
 
+    override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
+        throw UnsupportedOperationException("not implemented")
+    }
+
     @Throws(MessagingException::class)
     override fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
         commandSetFlag.setFlag(folderServerId, messageServerIds, flag, newState)

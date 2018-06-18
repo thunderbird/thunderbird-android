@@ -19,6 +19,9 @@ interface Backend {
     fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?)
 
     @Throws(MessagingException::class)
+    fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String)
+
+    @Throws(MessagingException::class)
     fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean)
 
     @Throws(MessagingException::class)

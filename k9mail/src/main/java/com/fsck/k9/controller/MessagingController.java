@@ -747,13 +747,7 @@ public class MessagingController {
             return;
         }
 
-        SyncConfig syncConfig = new SyncConfig(
-                account.getExpungePolicy().toBackendExpungePolicy(),
-                account.getEarliestPollDate(),
-                account.syncRemoteDeletions(),
-                account.getMaximumAutoDownloadMessageSize(),
-                K9.DEFAULT_VISIBLE_LIMIT,
-                SYNC_FLAGS);
+        SyncConfig syncConfig = createSyncConfig(account);
 
         ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
         remoteMessageStore.sync(folder, syncConfig, syncListener, providedRemoteFolder);
@@ -764,6 +758,16 @@ public class MessagingController {
             updateFolderStatus(account, folder, rootMessage);
             listener.synchronizeMailboxFailed(account, folder, rootMessage);
         }
+    }
+
+    private SyncConfig createSyncConfig(Account account) {
+        return new SyncConfig(
+                    account.getExpungePolicy().toBackendExpungePolicy(),
+                    account.getEarliestPollDate(),
+                    account.syncRemoteDeletions(),
+                    account.getMaximumAutoDownloadMessageSize(),
+                    K9.DEFAULT_VISIBLE_LIMIT,
+                    SYNC_FLAGS);
     }
 
     private void updateFolderStatus(Account account, String folderServerId, String status) {
@@ -1858,7 +1862,6 @@ public class MessagingController {
 
     private boolean loadMessageRemoteSynchronous(final Account account, final String folder,
             final String uid, final MessagingListener listener, final boolean loadPartialFromSearch) {
-        Folder remoteFolder = null;
         LocalFolder localFolder = null;
         try {
             LocalStore localStore = account.getLocalStore();
@@ -1878,21 +1881,16 @@ public class MessagingController {
                 message.setFlag(Flag.X_DOWNLOADED_FULL, true);
                 message.setFlag(Flag.X_DOWNLOADED_PARTIAL, false);
             } else {
-                RemoteStore remoteStore = account.getRemoteStore();
-                remoteFolder = remoteStore.getFolder(folder);
-                remoteFolder.open(Folder.OPEN_MODE_RW);
-
-                // Get the remote message and fully download it
-                Message remoteMessage = remoteFolder.getMessage(uid);
+                Backend backend = getBackend(account);
 
                 if (loadPartialFromSearch) {
-                    downloadMessages(account, remoteFolder, localFolder,
-                            Collections.singletonList(remoteMessage), false, false);
+                    SyncConfig syncConfig = createSyncConfig(account);
+                    backend.downloadMessage(syncConfig, folder, uid);
                 } else {
                     FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);
                     fp.add(FetchProfile.Item.FLAGS);
-                    remoteFolder.fetch(Collections.singletonList(remoteMessage), fp, null);
+                    Message remoteMessage = backend.fetchMessage(folder, uid, fp);
                     localFolder.appendMessages(Collections.singletonList(remoteMessage));
                 }
 
@@ -1917,7 +1915,6 @@ public class MessagingController {
             Timber.e(e, "Error while loading remote message");
             return false;
         } finally {
-            closeFolder(remoteFolder);
             closeFolder(localFolder);
         }
     }

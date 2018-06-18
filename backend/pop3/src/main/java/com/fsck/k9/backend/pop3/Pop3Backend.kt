@@ -29,6 +29,10 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
         pop3Sync.sync(folder, syncConfig, listener)
     }
 
+    override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
+        throw UnsupportedOperationException("not implemented")
+    }
+
     override fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
         commandSetFlag.setFlag(folderServerId, messageServerIds, flag, newState)
     }
