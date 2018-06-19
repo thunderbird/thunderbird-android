@@ -15,7 +15,7 @@ import com.fsck.k9.mail.PushReceiver
 import com.fsck.k9.mail.Pusher
 import com.fsck.k9.mail.store.pop3.Pop3Store
 
-class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store: Pop3Store) : Backend {
+class Pop3Backend(accountName: String, backendStorage: BackendStorage, private val pop3Store: Pop3Store) : Backend {
     private val pop3Sync: Pop3Sync = Pop3Sync(accountName, backendStorage, pop3Store)
     private val commandGetFolders = CommandGetFolders()
     private val commandSetFlag = CommandSetFlag(pop3Store)
@@ -27,6 +27,7 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
     override val supportsMove = false
     override val supportsCopy = false
     override val supportsTrashFolder = false
+    override val supportsSearchByDate = false
     override val isPushCapable = false
 
     override fun getFolders(forceListAll: Boolean): List<FolderInfo> {
@@ -104,5 +105,9 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, pop3Store
 
     override fun createPusher(receiver: PushReceiver): Pusher {
         throw UnsupportedOperationException("not supported")
+    }
+
+    override fun checkServerSettings() {
+        pop3Store.checkSettings()
     }
 }

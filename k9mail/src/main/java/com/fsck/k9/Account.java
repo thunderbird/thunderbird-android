@@ -29,8 +29,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
-import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.RemoteStoreManager;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.StorageManager;
@@ -1196,18 +1194,6 @@ public class Account implements BaseAccount, StoreConfig {
     public LocalStore getLocalStore() throws MessagingException {
         return LocalStore.getInstance(this, K9.app);
     }
-
-    public RemoteStore getRemoteStore() throws MessagingException {
-        return RemoteStoreManager.getInstance(K9.app, this);
-    }
-
-    // It'd be great if this actually went into the store implementation
-    // to get this, but that's expensive and not easily accessible
-    // during initialization
-    public boolean isSearchByDateCapable() {
-        return (getStoreUri().startsWith("imap"));
-    }
-
 
     @Override
     public synchronized String toString() {

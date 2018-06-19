@@ -498,7 +498,8 @@ public class MessagingControllerTest extends RobolectricTest {
     @Test
     public void searchRemoteMessagesSynchronous_shouldNotifyOnFinish() throws Exception {
         setupRemoteSearch();
-        when(account.getRemoteStore()).thenThrow(new MessagingException("Test"));
+        when(backend.search(anyString(), nullable(String.class), nullable(Set.class), nullable(Set.class)))
+                .thenThrow(new MessagingException("Test"));
 
         controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 

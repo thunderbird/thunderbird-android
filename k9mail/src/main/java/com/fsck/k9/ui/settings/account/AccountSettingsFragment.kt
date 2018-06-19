@@ -11,6 +11,7 @@ import com.fsck.k9.activity.ManageIdentities
 import com.fsck.k9.activity.setup.AccountSetupComposition
 import com.fsck.k9.activity.setup.AccountSetupIncoming
 import com.fsck.k9.activity.setup.AccountSetupOutgoing
+import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.OpenPgpApiHelper
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
@@ -32,6 +33,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
     private val dataStoreFactory: AccountSettingsDataStoreFactory by inject()
     private val storageManager: StorageManager by inject()
     private val openPgpApiManager: OpenPgpApiManager by inject(parameters = { mapOf("lifecycleOwner" to this) })
+    private val messagingController: MessagingController by inject()
 
     private val accountUuid: String by lazy {
         checkNotNull(arguments?.getString(ARG_ACCOUNT_UUID)) { "$ARG_ACCOUNT_UUID == null" }
@@ -102,7 +104,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
 
     private fun initializeDeletePolicy(account: Account) {
         (findPreference(PREFERENCE_DELETE_POLICY) as? ListPreference)?.apply {
-            if (!account.remoteStore.isSeenFlagSupported) {
+            if (!messagingController.supportsSeenFlag(account)) {
                 removeEntry(DELETE_POLICY_MARK_AS_READ)
             }
         }
@@ -110,7 +112,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
 
     private fun initializeExpungePolicy(account: Account) {
         findPreference(PREFERENCE_EXPUNGE_POLICY)?.apply {
-            if (!account.remoteStore.isExpungeCapable) {
+            if (!messagingController.supportsExpunge(account)) {
                 remove()
             }
         }
@@ -118,14 +120,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
 
     private fun initializeMessageAge(account: Account) {
         findPreference(PREFERENCE_MESSAGE_AGE)?.apply {
-            if (!account.isSearchByDateCapable) {
+            if (!messagingController.supportsSearchByDate(account)) {
                 remove()
             }
         }
     }
 
     private fun initializeAdvancedPushSettings(account: Account) {
-        if (!account.remoteStore.isPushCapable) {
+        if (!messagingController.isPushCapable(account)) {
             findPreference(PREFERENCE_PUSH_MODE)?.remove()
             findPreference(PREFERENCE_ADVANCED_PUSH_SETTINGS)?.remove()
             findPreference(PREFERENCE_REMOTE_SEARCH)?.remove()
@@ -217,7 +219,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
 
     private fun initializeFolderSettings(account: Account) {
         findPreference(PREFERENCE_FOLDERS)?.let {
-            if (!account.remoteStore.isMoveCapable) {
+            if (!messagingController.isMoveCapable(account)) {
                 findPreference(PREFERENCE_ARCHIVE_FOLDER).remove()
                 findPreference(PREFERENCE_DRAFTS_FOLDER).remove()
                 findPreference(PREFERENCE_SENT_FOLDER).remove()

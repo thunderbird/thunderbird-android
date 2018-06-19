@@ -18,6 +18,7 @@ interface Backend {
     val supportsMove: Boolean
     val supportsCopy: Boolean
     val supportsTrashFolder: Boolean
+    val supportsSearchByDate: Boolean
     val isPushCapable: Boolean
 
     @Throws(MessagingException::class)
@@ -79,4 +80,7 @@ interface Backend {
     fun uploadMessage(folderServerId: String, message: Message): String?
 
     fun createPusher(receiver: PushReceiver): Pusher
+
+    @Throws(MessagingException::class)
+    fun checkServerSettings()
 }

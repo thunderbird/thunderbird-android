@@ -80,7 +80,6 @@ import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.preferences.StorageEditor;
@@ -2506,11 +2505,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public boolean isAccountExpungeCapable() {
-        try {
-            return (account != null && account.getRemoteStore().isExpungeCapable());
-        } catch (Exception e) {
-            return false;
-        }
+        return account != null && messagingController.supportsExpunge(account);
     }
 
     public void onRemoteSearch() {

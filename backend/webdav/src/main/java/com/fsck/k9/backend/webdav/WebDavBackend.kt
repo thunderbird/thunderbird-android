@@ -16,7 +16,11 @@ import com.fsck.k9.mail.PushReceiver
 import com.fsck.k9.mail.Pusher
 import com.fsck.k9.mail.store.webdav.WebDavStore
 
-class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavStore: WebDavStore) : Backend {
+class WebDavBackend(
+        accountName: String,
+        backendStorage: BackendStorage,
+        private val webDavStore: WebDavStore
+) : Backend {
     private val webDavSync: WebDavSync = WebDavSync(accountName, backendStorage, webDavStore)
     private val commandGetFolders = CommandGetFolders(webDavStore)
     private val commandSetFlag = CommandSetFlag(webDavStore)
@@ -31,6 +35,7 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
     override val supportsMove = true
     override val supportsCopy = true
     override val supportsTrashFolder = true
+    override val supportsSearchByDate = false
     override val isPushCapable = false
 
     override fun getFolders(forceListAll: Boolean): List<FolderInfo> {
@@ -109,5 +114,9 @@ class WebDavBackend(accountName: String, backendStorage: BackendStorage, webDavS
 
     override fun createPusher(receiver: PushReceiver): Pusher {
         throw UnsupportedOperationException("not supported")
+    }
+
+    override fun checkServerSettings() {
+        webDavStore.checkSettings()
     }
 }

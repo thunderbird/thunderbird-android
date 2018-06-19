@@ -1834,6 +1834,26 @@ public class MessagingController {
         return getBackend(account).getSupportsCopy();
     }
 
+    public boolean isPushCapable(Account account) {
+        return getBackend(account).isPushCapable();
+    }
+
+    public boolean supportsSeenFlag(Account account) {
+        return getBackend(account).getSupportsSeenFlag();
+    }
+
+    public boolean supportsExpunge(Account account) {
+        return getBackend(account).getSupportsExpunge();
+    }
+
+    public boolean supportsSearchByDate(Account account) {
+        return getBackend(account).getSupportsSearchByDate();
+    }
+
+    public void checkServerSettings(Account account) throws MessagingException {
+        getBackend(account).checkServerSettings();
+    }
+
     public void moveMessages(final Account srcAccount, final String srcFolder,
             List<MessageReference> messageReferences, final String destFolder) {
         actOnMessageGroup(srcAccount, srcFolder, messageReferences, new MessageActor() {

@@ -86,6 +86,11 @@ public class ImapBackend implements Backend {
     }
 
     @Override
+    public boolean getSupportsSearchByDate() {
+        return true;
+    }
+
+    @Override
     public boolean isPushCapable() {
         return true;
     }
@@ -186,5 +191,10 @@ public class ImapBackend implements Backend {
     @Override
     public Pusher createPusher(@NotNull PushReceiver receiver) {
         return new ImapPusher(imapStore, receiver, powerManager);
+    }
+
+    @Override
+    public void checkServerSettings() throws MessagingException {
+        imapStore.checkSettings();
     }
 }

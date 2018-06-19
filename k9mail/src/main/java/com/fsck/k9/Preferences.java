@@ -12,7 +12,7 @@ import java.util.Map;
 
 import android.content.Context;
 
-import com.fsck.k9.mail.store.RemoteStoreManager;
+import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
@@ -30,7 +30,6 @@ public class Preferences {
         }
         return preferences;
     }
-
 
     private Storage storage;
     private Map<String, Account> accounts = null;
@@ -127,7 +126,7 @@ public class Preferences {
         }
 
         try {
-            RemoteStoreManager.removeInstance(account);
+            getBackendManager().removeBackend(account);
         } catch (Exception e) {
             Timber.e(e, "Failed to reset remote store for account %s", account.getUuid());
         }
@@ -183,5 +182,9 @@ public class Preferences {
                 return defaultEnum;
             }
         }
+    }
+
+    private BackendManager getBackendManager() {
+        return DI.get(BackendManager.class);
     }
 }
