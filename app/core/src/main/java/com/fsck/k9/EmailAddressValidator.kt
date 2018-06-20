@@ -14,14 +14,18 @@ class EmailAddressValidator : Validator {
     fun isValidAddressOnly(text: CharSequence): Boolean = EMAIL_ADDRESS_PATTERN.matcher(text).matches()
 
     companion object {
+
+        //https://www.rfc-editor.org/rfc/rfc2396.txt (3.2.2)
+
+        private const val ALPHA = "[a-zA-Z]"
+        private const val ALPHANUM = "[a-zA-Z0-9]"
+        private const val TOP_LABEL = "(($ALPHA($ALPHANUM|\\-|_)*$ALPHANUM)|$ALPHA)"
+        private const val DOMAIN_LABEL = "(($ALPHANUM($ALPHANUM|\\-|_)*$ALPHANUM)|$ALPHANUM)"
+        private const val HOST_NAME = "((($DOMAIN_LABEL\\.)+$TOP_LABEL)|$DOMAIN_LABEL)"
+
         private val EMAIL_ADDRESS_PATTERN = Pattern.compile(
                 "[a-zA-Z0-9\\+\\.\\_\\%\\-]{1,256}" +
-                        "\\@" +
-                        "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
-                        "(" +
-                        "\\." +
-                        "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
-                        ")+"
+                        "\\@$HOST_NAME"
         )
     }
 }
