@@ -1,4 +1,4 @@
-include ':k9mail'
+include ':app:k9mail'
 include ':mail:common'
 include ':mail:testing'
 include ':mail:protocols:imap'
