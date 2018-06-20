@@ -233,7 +233,7 @@ public class K9 extends Application {
     private static boolean hideSpecialAccounts = false;
     private static boolean autofitWidth;
     private static boolean quietTimeEnabled = false;
-    private static boolean notificationDuringQuietTimeEnabled = true;
+    private static boolean notificationDuringQuietTimeDisabled = true;
     private static String quietTimeStarts = null;
     private static String quietTimeEnds = null;
     private static String attachmentDefaultPath = "";
@@ -452,7 +452,7 @@ public class K9 extends Application {
         editor.putBoolean("useVolumeKeysForListNavigation", useVolumeKeysForListNavigation);
         editor.putBoolean("autofitWidth", autofitWidth);
         editor.putBoolean("quietTimeEnabled", quietTimeEnabled);
-        editor.putBoolean("notificationDuringQuietTimeEnabled", notificationDuringQuietTimeEnabled);
+        editor.putBoolean("notificationDuringQuietTimeDisabled", notificationDuringQuietTimeDisabled);
         editor.putString("quietTimeStarts", quietTimeStarts);
         editor.putString("quietTimeEnds", quietTimeEnds);
 
@@ -718,7 +718,7 @@ public class K9 extends Application {
         autofitWidth = storage.getBoolean("autofitWidth", true);
 
         quietTimeEnabled = storage.getBoolean("quietTimeEnabled", false);
-        notificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true);
+        notificationDuringQuietTimeDisabled = storage.getBoolean("notificationDuringQuietTimeDisabled", true);
         quietTimeStarts = storage.getString("quietTimeStarts", "21:00");
         quietTimeEnds = storage.getString("quietTimeEnds", "7:00");
 
@@ -986,12 +986,12 @@ public class K9 extends Application {
         K9.quietTimeEnabled = quietTimeEnabled;
     }
 
-    public static boolean isNotificationDuringQuietTimeEnabled() {
-        return notificationDuringQuietTimeEnabled;
+    public static boolean isNotificationDuringQuietTimeDisabled() {
+        return notificationDuringQuietTimeDisabled;
     }
 
-    public static void setNotificationDuringQuietTimeEnabled(boolean notificationDuringQuietTimeEnabled) {
-        K9.notificationDuringQuietTimeEnabled = notificationDuringQuietTimeEnabled;
+    public static void setNotificationDuringQuietTimeDisabled(boolean notificationDuringQuietTimeDisabled) {
+        K9.notificationDuringQuietTimeDisabled = notificationDuringQuietTimeDisabled;
     }
 
     public static String getQuietTimeStarts() {

@@ -175,6 +175,6 @@ public class NotificationController {
     }
 
     private boolean shouldShowNotifications() {
-        return !(K9.isNotificationDuringQuietTimeEnabled() && K9.isQuietTime());
+        return !(K9.isNotificationDuringQuietTimeDisabled() && K9.isQuietTime());
     }
 }
