@@ -452,7 +452,7 @@ public class K9 extends Application {
         editor.putBoolean("useVolumeKeysForListNavigation", useVolumeKeysForListNavigation);
         editor.putBoolean("autofitWidth", autofitWidth);
         editor.putBoolean("quietTimeEnabled", quietTimeEnabled);
-        editor.putBoolean("notificationDuringQuietTimeDisabled", notificationDuringQuietTimeDisabled);
+        editor.putBoolean("notificationDuringQuietTimeEnabled", notificationDuringQuietTimeDisabled);
         editor.putString("quietTimeStarts", quietTimeStarts);
         editor.putString("quietTimeEnds", quietTimeEnds);
 
@@ -718,7 +718,7 @@ public class K9 extends Application {
         autofitWidth = storage.getBoolean("autofitWidth", true);
 
         quietTimeEnabled = storage.getBoolean("quietTimeEnabled", false);
-        notificationDuringQuietTimeDisabled = storage.getBoolean("notificationDuringQuietTimeDisabled", true);
+        notificationDuringQuietTimeDisabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true);
         quietTimeStarts = storage.getString("quietTimeStarts", "21:00");
         quietTimeEnds = storage.getString("quietTimeEnds", "7:00");
 
