@@ -62,7 +62,9 @@ public class NotificationController {
     }
 
     public void showCertificateErrorNotification(Account account, boolean incoming) {
-        certificateErrorNotifications.showCertificateErrorNotification(account, incoming);
+        if (shouldShowNotifications()) {
+            certificateErrorNotifications.showCertificateErrorNotification(account, incoming);
+        }
     }
 
     public void clearCertificateErrorNotifications(Account account, boolean incoming) {
@@ -70,7 +72,9 @@ public class NotificationController {
     }
 
     public void showAuthenticationErrorNotification(Account account, boolean incoming) {
-        authenticationErrorNotifications.showAuthenticationErrorNotification(account, incoming);
+        if (shouldShowNotifications()) {
+            authenticationErrorNotifications.showAuthenticationErrorNotification(account, incoming);
+        }
     }
 
     public void clearAuthenticationErrorNotification(Account account, boolean incoming) {
@@ -78,7 +82,9 @@ public class NotificationController {
     }
 
     public void showSendingNotification(Account account) {
-        syncNotifications.showSendingNotification(account);
+        if (shouldShowNotifications()) {
+            syncNotifications.showSendingNotification(account);
+        }
     }
 
     public void clearSendingNotification(Account account) {
@@ -86,7 +92,9 @@ public class NotificationController {
     }
 
     public void showSendFailedNotification(Account account, Exception exception) {
-        sendFailedNotifications.showSendFailedNotification(account, exception);
+        if (shouldShowNotifications()) {
+            sendFailedNotifications.showSendFailedNotification(account, exception);
+        }
     }
 
     public void clearSendFailedNotification(Account account) {
@@ -94,7 +102,9 @@ public class NotificationController {
     }
 
     public void showFetchingMailNotification(Account account, Folder folder) {
-        syncNotifications.showFetchingMailNotification(account, folder);
+        if (shouldShowNotifications()) {
+            syncNotifications.showFetchingMailNotification(account, folder);
+        }
     }
 
     public void clearFetchingMailNotification(Account account) {
@@ -102,7 +112,9 @@ public class NotificationController {
     }
 
     public void addNewMailNotification(Account account, LocalMessage message, int previousUnreadMessageCount) {
-        newMailNotifications.addNewMailNotification(account, message, previousUnreadMessageCount);
+        if (shouldShowNotifications()) {
+            newMailNotifications.addNewMailNotification(account, message, previousUnreadMessageCount);
+        }
     }
 
     public void removeNewMailNotification(Account account, MessageReference messageReference) {
@@ -160,5 +172,9 @@ public class NotificationController {
 
     NotificationCompat.Builder createNotificationBuilder() {
         return new NotificationCompat.Builder(context);
+    }
+
+    private boolean shouldShowNotifications() {
+        return !(K9.isNotificationDuringQuietTimeDisabled() && K9.isQuietTime());
     }
 }
