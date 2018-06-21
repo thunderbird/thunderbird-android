@@ -23,8 +23,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.PushReceiver;
-import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -401,11 +399,6 @@ public class ImapStore extends RemoteStore {
 
     Set<Flag> getPermanentFlagsIndex() {
         return permanentFlagsIndex;
-    }
-
-    @Override
-    public Pusher getPusher(PushReceiver receiver) {
-        return new ImapPusher(this, receiver);
     }
 
 

@@ -7,8 +7,10 @@ import com.fsck.k9.backend.backendModule
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.openPgpModule
 import com.fsck.k9.mail.TransportProvider
+import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.mailstore.mailStoreModule
+import com.fsck.k9.power.TracingPowerManager
 import com.fsck.k9.ui.endtoend.endToEndUiModule
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.settings.settingsUiModule
@@ -30,6 +32,7 @@ object DI {
         bean { get<Context>().resources }
         bean { StorageManager.getInstance(get()) }
         bean { FolderNameFormatter(get()) }
+        bean { TracingPowerManager.getPowerManager(get()) as PowerManager }
     }
 
     val appModules = listOf(

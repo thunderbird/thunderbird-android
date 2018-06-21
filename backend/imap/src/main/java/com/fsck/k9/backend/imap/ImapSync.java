@@ -31,6 +31,7 @@ import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import timber.log.Timber;
 
@@ -256,6 +257,28 @@ class ImapSync {
 
     }
 
+    void downloadMessage(SyncConfig syncConfig, String folderServerId, String messageServerId)
+            throws MessagingException {
+        BackendFolder backendFolder = backendStorage.getFolder(folderServerId);
+        ImapFolder remoteFolder = imapStore.getFolder(folderServerId);
+        try {
+            remoteFolder.open(Folder.OPEN_MODE_RO);
+            Message remoteMessage = remoteFolder.getMessage(messageServerId);
+
+            downloadMessages(
+                    syncConfig,
+                    remoteFolder,
+                    backendFolder,
+                    Collections.singletonList(remoteMessage),
+                    false,
+                    false,
+                    null,
+                    new SimpleSyncListener());
+        } finally {
+            remoteFolder.close();
+        }
+    }
+
     /**
      * Fetches the messages described by inputMessages from the remote store and writes them to
      * local storage.
@@ -275,7 +298,7 @@ class ImapSync {
      *
      * @throws MessagingException
      */
-    int downloadMessages(SyncConfig syncConfig, Folder remoteFolder, BackendFolder backendFolder,
+    private int downloadMessages(SyncConfig syncConfig, Folder remoteFolder, BackendFolder backendFolder,
             List<Message> inputMessages, boolean flagSyncOnly, boolean purgeToVisibleLimit, Long lastUid,
             final SyncListener listener) throws MessagingException {
 

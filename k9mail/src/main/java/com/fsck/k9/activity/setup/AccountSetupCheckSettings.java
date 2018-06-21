@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
@@ -42,8 +43,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.filter.Hex;
-import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.webdav.WebDavStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import timber.log.Timber;
@@ -69,6 +68,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         INCOMING,
         OUTGOING
     }
+
+    private final MessagingController messagingController = DI.get(MessagingController.class);
 
     private Handler mHandler = new Handler();
 
@@ -487,7 +488,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         }
 
         private void checkOutgoing() throws MessagingException {
-            if (!(account.getRemoteStore() instanceof WebDavStore)) {
+            if (!isWebDavAccount()) {
                 publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
             }
             Transport transport = TransportProvider.getInstance().getTransport(K9.app, account);
@@ -500,20 +501,24 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         }
 
         private void checkIncoming() throws MessagingException {
-            RemoteStore store = account.getRemoteStore();
-            if (store instanceof WebDavStore) {
+            if (isWebDavAccount()) {
                 publishProgress(R.string.account_setup_check_settings_authenticate);
             } else {
                 publishProgress(R.string.account_setup_check_settings_check_incoming_msg);
             }
-            store.checkSettings();
 
-            if (store instanceof WebDavStore) {
+            messagingController.checkServerSettings(account);
+
+            if (isWebDavAccount()) {
                 publishProgress(R.string.account_setup_check_settings_fetch);
             }
             MessagingController.getInstance(getApplication()).listFoldersSynchronous(account, true, null);
             MessagingController.getInstance(getApplication())
                     .synchronizeMailbox(account, account.getInboxFolder(), null, null);
+        }
+
+        private boolean isWebDavAccount() {
+            return account.getStoreUri().startsWith("webdav");
         }
 
         private void createSpecialLocalFolders(CheckDirection direction) throws MessagingException {

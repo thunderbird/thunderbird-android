@@ -80,7 +80,6 @@ import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.preferences.StorageEditor;
@@ -183,7 +182,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private boolean remoteSearchPerformed = false;
     private Future<?> remoteSearchFuture = null;
-    private List<Message> extraSearchResults;
+    private List<String> extraSearchResults;
 
     private String title;
     private LocalSearch search = null;
@@ -360,7 +359,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 int numResults = extraSearchResults.size();
                 int limit = account.getRemoteSearchNumResults();
 
-                List<Message> toProcess = extraSearchResults;
+                List<String> toProcess = extraSearchResults;
 
                 if (limit > 0 && numResults > limit) {
                     toProcess = toProcess.subList(0, limit);
@@ -1318,7 +1317,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<Message> extraResults) {
+        public void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<String> extraResults) {
             handler.progress(false);
             handler.remoteSearchFinished();
             extraSearchResults = extraResults;
@@ -2506,11 +2505,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public boolean isAccountExpungeCapable() {
-        try {
-            return (account != null && account.getRemoteStore().isExpungeCapable());
-        } catch (Exception e) {
-            return false;
-        }
+        return account != null && messagingController.supportsExpunge(account);
     }
 
     public void onRemoteSearch() {

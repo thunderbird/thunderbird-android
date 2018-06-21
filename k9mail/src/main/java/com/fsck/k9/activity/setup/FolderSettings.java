@@ -10,14 +10,15 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.K9PreferenceActivity;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.service.MailService;
@@ -35,6 +36,8 @@ public class FolderSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_NOTIFY_CLASS = "folder_settings_folder_notify_mode";
     private static final String PREFERENCE_IN_TOP_GROUP = "folder_settings_in_top_group";
     private static final String PREFERENCE_INTEGRATE = "folder_settings_include_in_integrated_inbox";
+
+    private final MessagingController messagingController = DI.get(MessagingController.class);
 
     private LocalFolder mFolder;
 
@@ -69,13 +72,7 @@ public class FolderSettings extends K9PreferenceActivity {
             return;
         }
 
-        boolean isPushCapable = false;
-        try {
-            RemoteStore store = mAccount.getRemoteStore();
-            isPushCapable = store.isPushCapable();
-        } catch (Exception e) {
-            Timber.e(e, "Could not get remote store");
-        }
+        boolean isPushCapable = messagingController.isPushCapable(mAccount);
 
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 

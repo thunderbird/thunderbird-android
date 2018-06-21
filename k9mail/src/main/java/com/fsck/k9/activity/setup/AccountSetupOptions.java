@@ -12,18 +12,20 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.K9Activity;
-import com.fsck.k9.mail.store.RemoteStore;
-import timber.log.Timber;
+import com.fsck.k9.controller.MessagingController;
 
 
 public class AccountSetupOptions extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
+
+    private final MessagingController messagingController = DI.get(MessagingController.class);
 
     private Spinner mCheckFrequencyView;
 
@@ -116,15 +118,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
                                             .getDisplayCount());
 
 
-        boolean isPushCapable = false;
-        try {
-            RemoteStore store = mAccount.getRemoteStore();
-            isPushCapable = store.isPushCapable();
-        } catch (Exception e) {
-            Timber.e(e, "Could not get remote store");
-        }
-
-
+        boolean isPushCapable = messagingController.isPushCapable(mAccount);
         if (!isPushCapable) {
             mPushEnable.setVisibility(View.GONE);
         } else {

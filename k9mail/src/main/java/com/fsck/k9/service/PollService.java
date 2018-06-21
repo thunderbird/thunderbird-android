@@ -8,8 +8,8 @@ import timber.log.Timber;
 import com.fsck.k9.*;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.SimpleMessagingListener;
-import com.fsck.k9.mail.power.TracingPowerManager;
-import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.power.TracingPowerManager;
+import com.fsck.k9.power.TracingPowerManager.TracingWakeLock;
 
 import java.util.HashMap;
 import java.util.Map;

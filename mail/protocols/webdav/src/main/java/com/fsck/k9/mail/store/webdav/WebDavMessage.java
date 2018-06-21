@@ -16,7 +16,7 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 /**
  * A WebDav Message
  */
-class WebDavMessage extends MimeMessage {
+public class WebDavMessage extends MimeMessage {
     private String mUrl = "";
 
 
