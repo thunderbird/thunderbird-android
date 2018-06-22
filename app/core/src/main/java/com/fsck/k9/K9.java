@@ -5,26 +5,16 @@ package com.fsck.k9;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.SynchronousQueue;
 
 import android.app.Application;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.StrictMode;
 
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.SimpleMessagingListener;
@@ -36,15 +26,9 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.power.DeviceIdleManager;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.provider.MessageProvider;
-import com.fsck.k9.remotecontrol.K9RemoteControl;
-import com.fsck.k9.service.BootReceiver;
-import com.fsck.k9.service.MailService;
-import com.fsck.k9.service.ShutdownReceiver;
-import com.fsck.k9.service.StorageGoneReceiver;
 import com.fsck.k9.widget.list.MessageListWidgetProvider;
 import com.fsck.k9.widget.unread.UnreadWidgetUpdater;
 import timber.log.Timber;
@@ -321,110 +305,6 @@ public class K9 extends Application {
         }
     }
 
-    /**
-     * Called throughout the application when the number of accounts has changed. This method
-     * enables or disables the Compose activity, the boot receiver and the service based on
-     * whether any accounts are configured.
-     */
-    public static void setServicesEnabled(Context context) {
-        Context appContext = context.getApplicationContext();
-        int acctLength = Preferences.getPreferences(appContext).getAvailableAccounts().size();
-        boolean enable = acctLength > 0;
-
-        setServicesEnabled(appContext, enable, null);
-
-        updateDeviceIdleReceiver(appContext, enable);
-    }
-
-    private static void updateDeviceIdleReceiver(Context context, boolean enable) {
-        DeviceIdleManager deviceIdleManager = DeviceIdleManager.getInstance(context);
-        if (enable) {
-            deviceIdleManager.registerReceiver();
-        } else {
-            deviceIdleManager.unregisterReceiver();
-        }
-    }
-
-    private static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId) {
-
-        PackageManager pm = context.getPackageManager();
-
-        if (!enabled && pm.getComponentEnabledSetting(new ComponentName(context, MailService.class)) ==
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-            /*
-             * If no accounts now exist but the service is still enabled we're about to disable it
-             * so we'll reschedule to kill off any existing alarms.
-             */
-            MailService.actionReset(context, wakeLockId);
-        }
-        Class<?>[] classes = { MessageCompose.class, BootReceiver.class, MailService.class };
-
-        for (Class<?> clazz : classes) {
-
-            boolean alreadyEnabled = pm.getComponentEnabledSetting(new ComponentName(context, clazz)) ==
-                                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-
-            if (enabled != alreadyEnabled) {
-                pm.setComponentEnabledSetting(
-                    new ComponentName(context, clazz),
-                    enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
-            }
-        }
-
-        if (enabled && pm.getComponentEnabledSetting(new ComponentName(context, MailService.class)) ==
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-            /*
-             * And now if accounts do exist then we've just enabled the service and we want to
-             * schedule alarms for the new accounts.
-             */
-            MailService.actionReset(context, wakeLockId);
-        }
-
-    }
-
-    /**
-     * Register BroadcastReceivers programmatically because doing it from manifest
-     * would make K-9 auto-start. We don't want auto-start because the initialization
-     * sequence isn't safe while some events occur (SD card unmount).
-     */
-    protected void registerReceivers() {
-        final StorageGoneReceiver receiver = new StorageGoneReceiver();
-        final IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_MEDIA_EJECT);
-        filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
-        filter.addDataScheme("file");
-
-        final BlockingQueue<Handler> queue = new SynchronousQueue<Handler>();
-
-        // starting a new thread to handle unmount events
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                try {
-                    queue.put(new Handler());
-                } catch (InterruptedException e) {
-                    Timber.e(e);
-                }
-                Looper.loop();
-            }
-
-        }, "Unmount-thread").start();
-
-        try {
-            final Handler storageGoneHandler = queue.take();
-            registerReceiver(receiver, filter, null, storageGoneHandler);
-            Timber.i("Registered: unmount receiver");
-        } catch (InterruptedException e) {
-            Timber.e(e, "Unable to register unmount receiver");
-        }
-
-        registerReceiver(new ShutdownReceiver(), new IntentFilter(Intent.ACTION_SHUTDOWN));
-        Timber.i("Registered: shutdown receiver");
-    }
-
     public static void save(StorageEditor editor) {
         editor.putBoolean("enableDebugLogging", K9.DEBUG);
         editor.putBoolean("enableSensitiveLogging", K9.DEBUG_SENSITIVE);
@@ -500,18 +380,10 @@ public class K9 extends Application {
 
     @Override
     public void onCreate() {
-        if (K9.DEVELOPER_MODE) {
-            StrictMode.enableDefaults();
-        }
-
-        PRNGFixes.apply();
-
-        String packageName = getPackageName();
-        K9RemoteControl.init(packageName);
-        Intents.init(packageName);
+        Core.earlyInit(this);
 
         super.onCreate();
-        DI.start(this);
+        DI.start(this, Core.getCoreModules());
 
         K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {
             @Override public boolean enabled() {
@@ -540,8 +412,8 @@ public class K9 extends Application {
          * Enable background sync of messages
          */
 
-        setServicesEnabled(this);
-        registerReceivers();
+        Core.setServicesEnabled(this);
+        Core.registerReceivers(this);
 
         MessagingController.getInstance(this).addListener(new SimpleMessagingListener() {
             private UnreadWidgetUpdater unreadWidgetUpdater = DI.get(UnreadWidgetUpdater.class);

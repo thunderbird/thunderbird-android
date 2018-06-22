@@ -1,61 +1,22 @@
 package com.fsck.k9
 
 import android.app.Application
-import android.content.Context
-import com.fsck.k9.autocrypt.autocryptModule
-import com.fsck.k9.backend.backendModule
-import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.core.BuildConfig
-import com.fsck.k9.crypto.openPgpModule
-import com.fsck.k9.mail.TransportProvider
-import com.fsck.k9.mail.power.PowerManager
-import com.fsck.k9.mailstore.StorageManager
-import com.fsck.k9.mailstore.mailStoreModule
-import com.fsck.k9.message.extractors.extractorModule
-import com.fsck.k9.message.html.htmlModule
-import com.fsck.k9.power.TracingPowerManager
-import com.fsck.k9.ui.endtoend.endToEndUiModule
-import com.fsck.k9.ui.folders.FolderNameFormatter
-import com.fsck.k9.ui.settings.settingsUiModule
-import com.fsck.k9.widget.unread.unreadWidgetModule
 import org.koin.Koin
 import org.koin.KoinContext
 import org.koin.android.ext.koin.with
 import org.koin.android.logger.AndroidLogger
 import org.koin.core.parameter.Parameters
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module.Module
 import org.koin.log.EmptyLogger
 import org.koin.standalone.StandAloneContext
 
 object DI {
-    private val mainModule = applicationContext {
-        bean { Preferences.getPreferences(get()) }
-        bean { MessagingController.getInstance(get()) }
-        bean { TransportProvider() }
-        bean { get<Context>().resources }
-        bean { StorageManager.getInstance(get()) }
-        bean { FolderNameFormatter(get()) }
-        bean { TracingPowerManager.getPowerManager(get()) as PowerManager }
-    }
-
-    val appModules = listOf(
-            mainModule,
-            settingsUiModule,
-            unreadWidgetModule,
-            endToEndUiModule,
-            openPgpModule,
-            autocryptModule,
-            mailStoreModule,
-            backendModule,
-            extractorModule,
-            htmlModule
-    )
-
-    @JvmStatic fun start(application: Application) {
+    @JvmStatic fun start(application: Application, modules: List<Module>) {
         @Suppress("ConstantConditionIf")
         Koin.logger = if (BuildConfig.DEBUG) AndroidLogger() else EmptyLogger()
 
-        StandAloneContext.startKoin(appModules) with application
+        StandAloneContext.startKoin(modules) with application
     }
 
     @JvmOverloads

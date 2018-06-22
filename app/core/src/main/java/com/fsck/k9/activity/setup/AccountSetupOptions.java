@@ -12,8 +12,8 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Core;
 import com.fsck.k9.DI;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.core.R;
 import com.fsck.k9.activity.K9Activity;
@@ -148,7 +148,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
                 getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false)) {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);
         }
-        K9.setServicesEnabled(this);
+        Core.setServicesEnabled(this);
         AccountSetupNames.actionSetNames(this, mAccount);
         finish();
     }

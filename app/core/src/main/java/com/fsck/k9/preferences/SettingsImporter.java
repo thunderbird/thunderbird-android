@@ -18,6 +18,7 @@ import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Core;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -268,7 +269,7 @@ public class SettingsImporter {
 
             preferences.loadAccounts();
             K9.loadPrefs(preferences);
-            K9.setServicesEnabled(context);
+            Core.setServicesEnabled(context);
 
             return new ImportResults(globalSettingsImported, importedAccounts, erroneousAccounts);
 
