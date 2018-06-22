@@ -33,7 +33,7 @@ public class MessageProviderTest extends ProviderTestCase2 {
     public void setUp() throws Exception {
         super.setUp();
         mMockResolver = getMockContentResolver();
-        mContext = K9.app;
+        mContext = getMockContext();
         Preferences preferences = Preferences.getPreferences(getMockContext());
         List<Account> accountList = preferences.getAccounts();
         for (Account account: accountList) {

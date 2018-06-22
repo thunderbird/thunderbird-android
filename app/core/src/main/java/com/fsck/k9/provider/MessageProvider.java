@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.annotation.TargetApi;
-import android.app.Application;
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -35,11 +34,12 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+
+import com.fsck.k9.DI;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
@@ -104,29 +104,24 @@ public class MessageProvider extends ContentProvider {
         registerQueryHandler(new ThrottlingQueryHandler(new MessagesQueryHandler()));
         registerQueryHandler(new ThrottlingQueryHandler(new UnreadQueryHandler()));
 
-        K9.registerApplicationAware(new K9.ApplicationAware() {
-            @Override
-            public void initializeComponent(final Application application) {
-                Timber.v("Registering content resolver notifier");
+        return true;
+    }
 
-                MessagingController.getInstance(application).addListener(new SimpleMessagingListener() {
-                    @Override
-                    public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
-                        application.getContentResolver().notifyChange(CONTENT_URI, null);
-                    }
-                });
+    public static void init() {
+        Timber.v("Registering content resolver notifier");
+
+        final Context context = DI.get(Context.class);
+        MessagingController messagingController = DI.get(MessagingController.class);
+        messagingController.addListener(new SimpleMessagingListener() {
+            @Override
+            public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
+                context.getContentResolver().notifyChange(CONTENT_URI, null);
             }
         });
-
-        return true;
     }
 
     @Override
     public String getType(Uri uri) {
-        if (K9.app == null) {
-            return null;
-        }
-
         Timber.v("MessageProvider/getType: %s", uri);
 
         return null;
@@ -134,10 +129,6 @@ public class MessageProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        if (K9.app == null) {
-            return null;
-        }
-
         Timber.v("MessageProvider/query: %s", uri);
 
         int code = uriMatcher.match(uri);
@@ -159,9 +150,6 @@ public class MessageProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        if (K9.app == null) {
-            return 0;
-        }
 
         Timber.v("MessageProvider/delete: %s", uri);
 
@@ -200,10 +188,6 @@ public class MessageProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        if (K9.app == null) {
-            return null;
-        }
-
         Timber.v("MessageProvider/insert: %s", uri);
 
         return null;
@@ -211,10 +195,6 @@ public class MessageProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        if (K9.app == null) {
-            return 0;
-        }
-
         Timber.v("MessageProvider/update: %s", uri);
 
         // TBD

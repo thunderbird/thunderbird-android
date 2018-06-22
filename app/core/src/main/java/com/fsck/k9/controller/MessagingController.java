@@ -1602,7 +1602,7 @@ public class MessagingController {
             Timber.i("Scanning folder '%s' (%d) for messages to send",
                     account.getOutboxFolder(), localFolder.getDatabaseId());
 
-            Transport transport = transportProvider.getTransport(K9.app, account);
+            Transport transport = transportProvider.getTransport(context, account);
 
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {

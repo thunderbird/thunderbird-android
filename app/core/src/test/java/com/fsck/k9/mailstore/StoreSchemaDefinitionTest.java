@@ -43,7 +43,6 @@ public class StoreSchemaDefinitionTest extends RobolectricTest {
         ShadowLog.stream = System.out;
 
         Application application = RuntimeEnvironment.application;
-        K9.app = application;
         StorageManager.getInstance(application);
 
         storeSchemaDefinition = createStoreSchemaDefinition();

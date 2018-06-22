@@ -142,7 +142,6 @@ public class MessagingControllerTest extends RobolectricTest {
         ShadowLog.stream = System.out;
         MockitoAnnotations.initMocks(this);
         Application application = RuntimeEnvironment.application;
-        K9.app = application;
         appContext = application;
 
         DI.start(application);

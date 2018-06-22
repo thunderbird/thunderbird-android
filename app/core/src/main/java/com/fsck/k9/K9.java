@@ -3,9 +3,7 @@ package com.fsck.k9;
 
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
@@ -41,6 +39,7 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.power.DeviceIdleManager;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
+import com.fsck.k9.provider.MessageProvider;
 import com.fsck.k9.remotecontrol.K9RemoteControl;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.MailService;
@@ -56,24 +55,6 @@ public class K9 extends Application {
 
     public static final int VERSION_MIGRATE_OPENPGP_TO_ACCOUNTS = 63;
 
-    /**
-     * Components that are interested in knowing when the K9 instance is
-     * available and ready (Android invokes Application.onCreate() after other
-     * components') should implement this interface and register using
-     * {@link K9#registerApplicationAware(ApplicationAware)}.
-     */
-    public static interface ApplicationAware {
-        /**
-         * Called when the Application instance is available and ready.
-         *
-         * @param application
-         *            The application instance. Never <code>null</code>.
-         * @throws Exception
-         */
-        void initializeComponent(Application application);
-    }
-
-    public static Application app = null;
     public static File tempDirectory;
     public static final String LOG_TAG = "k9";
 
@@ -93,23 +74,6 @@ public class K9 extends Application {
      * @see #DATABASE_VERSION_CACHE
      */
     private static final String KEY_LAST_ACCOUNT_DATABASE_VERSION = "last_account_database_version";
-
-    /**
-     * Components that are interested in knowing when the K9 instance is
-     * available and ready.
-     *
-     * @see ApplicationAware
-     */
-    private static final List<ApplicationAware> observers = new ArrayList<ApplicationAware>();
-
-    /**
-     * This will be {@code true} once the initialization is complete and {@link #notifyObservers()}
-     * was called.
-     * Afterwards calls to {@link #registerApplicationAware(com.fsck.k9.K9.ApplicationAware)} will
-     * immediately call {@link com.fsck.k9.K9.ApplicationAware#initializeComponent(Application)} for the
-     * supplied argument.
-     */
-    private static boolean initialized = false;
 
     public enum BACKGROUND_OPS {
         ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
@@ -547,7 +511,6 @@ public class K9 extends Application {
         Intents.init(packageName);
 
         super.onCreate();
-        app = this;
         DI.start(this);
 
         K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {
@@ -662,7 +625,7 @@ public class K9 extends Application {
 
         });
 
-        notifyObservers();
+        MessageProvider.init();
     }
 
     /**
@@ -840,44 +803,6 @@ public class K9 extends Application {
         themeValue = storage.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal());
         K9.setK9ComposerThemeSetting(Theme.values()[themeValue]);
         K9.setUseFixedMessageViewTheme(storage.getBoolean("fixedMessageViewTheme", true));
-    }
-
-    /**
-     * since Android invokes Application.onCreate() only after invoking all
-     * other components' onCreate(), here is a way to notify interested
-     * component that the application is available and ready
-     */
-    protected void notifyObservers() {
-        synchronized (observers) {
-            for (final ApplicationAware aware : observers) {
-                Timber.v("Initializing observer: %s", aware);
-
-                try {
-                    aware.initializeComponent(this);
-                } catch (Exception e) {
-                    Timber.w(e, "Failure when notifying %s", aware);
-                }
-            }
-
-            initialized = true;
-            observers.clear();
-        }
-    }
-
-    /**
-     * Register a component to be notified when the {@link K9} instance is ready.
-     *
-     * @param component
-     *            Never <code>null</code>.
-     */
-    public static void registerApplicationAware(final ApplicationAware component) {
-        synchronized (observers) {
-            if (initialized) {
-                component.initializeComponent(K9.app);
-            } else if (!observers.contains(component)) {
-                observers.add(component);
-            }
-        }
     }
 
     public static String getK9Language() {
@@ -1452,7 +1377,7 @@ public class K9 extends Application {
         new AsyncTask<Void,Void,Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                Preferences prefs = Preferences.getPreferences(app);
+                Preferences prefs = DI.get(Preferences.class);
                 StorageEditor editor = prefs.getStorage().edit();
                 save(editor);
                 editor.commit();

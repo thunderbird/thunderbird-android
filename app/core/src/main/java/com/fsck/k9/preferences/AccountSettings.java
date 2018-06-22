@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import android.content.Context;
+
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
@@ -17,6 +19,7 @@ import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Account.Searchable;
 import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.Account.SortType;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
 import com.fsck.k9.mailstore.StorageManager;
@@ -268,13 +271,14 @@ public class AccountSettings {
     }
 
     private static class IntegerResourceSetting extends PseudoEnumSetting<Integer> {
+        private final Context context = DI.get(Context.class);
         private final Map<Integer, String> mapping;
 
         IntegerResourceSetting(int defaultValue, int resId) {
             super(defaultValue);
 
             Map<Integer, String> mapping = new HashMap<>();
-            String[] values = K9.app.getResources().getStringArray(resId);
+            String[] values = context.getResources().getStringArray(resId);
             for (String value : values) {
                 int intValue = Integer.parseInt(value);
                 mapping.put(intValue, value);
@@ -298,13 +302,14 @@ public class AccountSettings {
     }
 
     private static class StringResourceSetting extends PseudoEnumSetting<String> {
+        private final Context context = DI.get(Context.class);
         private final Map<String, String> mapping;
 
         StringResourceSetting(String defaultValue, int resId) {
             super(defaultValue);
 
             Map<String, String> mapping = new HashMap<>();
-            String[] values = K9.app.getResources().getStringArray(resId);
+            String[] values = context.getResources().getStringArray(resId);
             for (String value : values) {
                 mapping.put(value, value);
             }
@@ -338,18 +343,20 @@ public class AccountSettings {
     }
 
     private static class StorageProviderSetting extends SettingsDescription<String> {
+        private final Context context = DI.get(Context.class);
+
         StorageProviderSetting() {
             super(null);
         }
 
         @Override
         public String getDefaultValue() {
-            return StorageManager.getInstance(K9.app).getDefaultProviderId();
+            return StorageManager.getInstance(context).getDefaultProviderId();
         }
 
         @Override
         public String fromString(String value) {
-            StorageManager storageManager = StorageManager.getInstance(K9.app);
+            StorageManager storageManager = StorageManager.getInstance(context);
             Map<String, String> providers = storageManager.getAvailableProviders();
             if (providers.containsKey(value)) {
                 return value;

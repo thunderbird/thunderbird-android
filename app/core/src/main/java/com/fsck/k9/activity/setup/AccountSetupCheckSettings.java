@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -479,7 +480,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             if (!isWebDavAccount()) {
                 publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
             }
-            Transport transport = TransportProvider.getInstance().getTransport(K9.app, account);
+            Context context = DI.get(Context.class);
+            Transport transport = TransportProvider.getInstance().getTransport(context, account);
             transport.close();
             try {
                 transport.open();
