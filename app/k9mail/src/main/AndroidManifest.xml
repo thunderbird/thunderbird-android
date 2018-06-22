@@ -52,7 +52,7 @@
 
 
     <application
-        android:name="K9"
+        android:name="com.fsck.k9.App"
         android:allowTaskReparenting="false"
         android:icon="@drawable/icon"
         android:label="@string/app_name"

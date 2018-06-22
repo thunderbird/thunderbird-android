@@ -6,36 +6,25 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Application;
-import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.activity.UpgradeDatabases;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.core.R;
-import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.K9MailLib;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
-import com.fsck.k9.provider.MessageProvider;
-import com.fsck.k9.widget.list.MessageListWidgetProvider;
-import com.fsck.k9.widget.unread.UnreadWidgetUpdater;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
 
-public class K9 extends Application {
+public class K9 {
 
     public static final int VERSION_MIGRATE_OPENPGP_TO_ACCOUNTS = 63;
 
@@ -105,7 +94,7 @@ public class K9 extends Application {
      * A reference to the {@link SharedPreferences} used for caching the last known database
      * version.
      *
-     * @see #checkCachedDatabaseVersion()
+     * @see #checkCachedDatabaseVersion(Context)
      * @see #setDatabasesUpToDate(boolean)
      */
     private static SharedPreferences databaseVersionCache;
@@ -263,44 +252,11 @@ public class K9 extends Application {
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
 
     public static class Intents {
-
-        public static class EmailReceived {
-            public static String ACTION_EMAIL_RECEIVED;
-            public static String ACTION_EMAIL_DELETED;
-            public static String ACTION_REFRESH_OBSERVER;
-            public static String EXTRA_ACCOUNT;
-            public static String EXTRA_FOLDER;
-            public static String EXTRA_SENT_DATE;
-            public static String EXTRA_FROM;
-            public static String EXTRA_TO;
-            public static String EXTRA_CC;
-            public static String EXTRA_BCC;
-            public static String EXTRA_SUBJECT;
-            public static String EXTRA_FROM_SELF;
-        }
-
         public static class Share {
-            /*
-             * We don't want to use EmailReceived.EXTRA_FROM ("com.fsck.k9.intent.extra.FROM")
-             * because of different semantics (String array vs. string with comma separated
-             * email addresses)
-             */
             public static String EXTRA_FROM;
         }
 
         static void init(String packageName) {
-            EmailReceived.ACTION_EMAIL_RECEIVED = packageName + ".intent.action.EMAIL_RECEIVED";
-            EmailReceived.ACTION_EMAIL_DELETED = packageName + ".intent.action.EMAIL_DELETED";
-            EmailReceived.ACTION_REFRESH_OBSERVER = packageName + ".intent.action.REFRESH_OBSERVER";
-            EmailReceived.EXTRA_ACCOUNT = packageName + ".intent.extra.ACCOUNT";
-            EmailReceived.EXTRA_FOLDER = packageName + ".intent.extra.FOLDER";
-            EmailReceived.EXTRA_SENT_DATE = packageName + ".intent.extra.SENT_DATE";
-            EmailReceived.EXTRA_FROM = packageName + ".intent.extra.FROM";
-            EmailReceived.EXTRA_TO = packageName + ".intent.extra.TO";
-            EmailReceived.EXTRA_CC = packageName + ".intent.extra.CC";
-            EmailReceived.EXTRA_BCC = packageName + ".intent.extra.BCC";
-            EmailReceived.EXTRA_SUBJECT = packageName + ".intent.extra.SUBJECT";
-            EmailReceived.EXTRA_FROM_SELF = packageName + ".intent.extra.FROM_SELF";
             Share.EXTRA_FROM = packageName + ".intent.extra.SENDER";
         }
     }
@@ -378,13 +334,7 @@ public class K9 extends Application {
         fontSizes.save(editor);
     }
 
-    @Override
-    public void onCreate() {
-        Core.earlyInit(this);
-
-        super.onCreate();
-        DI.start(this, Core.getCoreModules());
-
+    public static void init(Context context) {
         K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {
             @Override public boolean enabled() {
                 return DEBUG;
@@ -395,109 +345,10 @@ public class K9 extends Application {
             }
         });
 
-        checkCachedDatabaseVersion();
+        checkCachedDatabaseVersion(context);
 
-        Preferences prefs = Preferences.getPreferences(this);
+        Preferences prefs = DI.get(Preferences.class);
         loadPrefs(prefs);
-
-        /*
-         * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
-         * doesn't work in Android and MimeMessage does not have access to a Context.
-         */
-        BinaryTempFileBody.setTempDirectory(getCacheDir());
-
-        LocalKeyStore.setKeyStoreLocation(getDir("KeyStore", MODE_PRIVATE).toString());
-
-        /*
-         * Enable background sync of messages
-         */
-
-        Core.setServicesEnabled(this);
-        Core.registerReceivers(this);
-
-        MessagingController.getInstance(this).addListener(new SimpleMessagingListener() {
-            private UnreadWidgetUpdater unreadWidgetUpdater = DI.get(UnreadWidgetUpdater.class);
-
-            private void broadcastIntent(String action, Account account, String folder, Message message) {
-                Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
-                Intent intent = new Intent(action, uri);
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folder);
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_SENT_DATE, message.getSentDate());
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM, Address.toString(message.getFrom()));
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)));
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_CC, Address.toString(message.getRecipients(Message.RecipientType.CC)));
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
-                K9.this.sendBroadcast(intent);
-
-                Timber.d("Broadcasted: action=%s account=%s folder=%s message uid=%s",
-                        action,
-                        account.getDescription(),
-                        folder,
-                        message.getUid());
-            }
-
-            private void updateUnreadWidget() {
-                try {
-                    unreadWidgetUpdater.updateAll();
-                } catch (Exception e) {
-                    Timber.e(e, "Error while updating unread widget(s)");
-                }
-            }
-
-            private void updateMailListWidget() {
-                try {
-                    MessageListWidgetProvider.triggerMessageListWidgetUpdate(K9.this);
-                } catch (RuntimeException e) {
-                    if (BuildConfig.DEBUG) {
-                        throw e;
-                    } else {
-                        Timber.e(e, "Error while updating message list widget");
-                    }
-                }
-            }
-
-            @Override
-            public void synchronizeMailboxRemovedMessage(Account account, String folderServerId, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folderServerId, message);
-                updateUnreadWidget();
-                updateMailListWidget();
-            }
-
-            @Override
-            public void messageDeleted(Account account, String folderServerId, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folderServerId, message);
-                updateUnreadWidget();
-                updateMailListWidget();
-            }
-
-            @Override
-            public void synchronizeMailboxNewMessage(Account account, String folderServerId, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folderServerId, message);
-                updateUnreadWidget();
-                updateMailListWidget();
-            }
-
-            @Override
-            public void folderStatusChanged(Account account, String folderServerId,
-                    int unreadMessageCount) {
-
-                updateUnreadWidget();
-                updateMailListWidget();
-
-                // let observers know a change occurred
-                Intent intent = new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null);
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folderServerId);
-                K9.this.sendBroadcast(intent);
-
-            }
-
-        });
-
-        MessageProvider.init();
     }
 
     /**
@@ -515,8 +366,8 @@ public class K9 extends Application {
      *
      * @see #areDatabasesUpToDate()
      */
-    public void checkCachedDatabaseVersion() {
-        databaseVersionCache = getSharedPreferences(DATABASE_VERSION_CACHE, MODE_PRIVATE);
+    public static void checkCachedDatabaseVersion(Context context) {
+        databaseVersionCache = context.getSharedPreferences(DATABASE_VERSION_CACHE, Context.MODE_PRIVATE);
 
         int cachedVersion = databaseVersionCache.getInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, 0);
 
@@ -528,8 +379,8 @@ public class K9 extends Application {
         }
     }
 
-    private void migrateOpenPgpGlobalToAccountSettings() {
-        Preferences preferences = Preferences.getPreferences(this);
+    private static void migrateOpenPgpGlobalToAccountSettings() {
+        Preferences preferences = DI.get(Preferences.class);
         Storage storage = preferences.getStorage();
 
         String openPgpProvider = storage.getString("openPgpProvider", null);
