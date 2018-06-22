@@ -31,6 +31,7 @@ import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
@@ -204,7 +205,7 @@ public class LocalStore {
         messageFulltextCreator = MessageFulltextCreator.newInstance();
         attachmentCounter = AttachmentCounter.newInstance();
         pendingCommandSerializer = PendingCommandSerializer.getInstance();
-        attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
+        attachmentInfoExtractor = DI.get(AttachmentInfoExtractor.class);
 
         this.account = account;
 

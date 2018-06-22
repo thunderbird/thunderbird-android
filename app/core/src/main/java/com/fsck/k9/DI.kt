@@ -11,6 +11,8 @@ import com.fsck.k9.mail.TransportProvider
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.mailstore.mailStoreModule
+import com.fsck.k9.message.extractors.extractorModule
+import com.fsck.k9.message.html.htmlModule
 import com.fsck.k9.power.TracingPowerManager
 import com.fsck.k9.ui.endtoend.endToEndUiModule
 import com.fsck.k9.ui.folders.FolderNameFormatter
@@ -44,7 +46,9 @@ object DI {
             openPgpModule,
             autocryptModule,
             mailStoreModule,
-            backendModule
+            backendModule,
+            extractorModule,
+            htmlModule
     )
 
     @JvmStatic fun start(application: Application) {

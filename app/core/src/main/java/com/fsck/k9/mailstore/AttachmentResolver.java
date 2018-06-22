@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
+
+import com.fsck.k9.DI;
 import timber.log.Timber;
 
 import com.fsck.k9.mail.Body;
@@ -41,7 +43,7 @@ public class AttachmentResolver {
 
     @WorkerThread
     public static AttachmentResolver createFromPart(Part part) {
-        AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
+        AttachmentInfoExtractor attachmentInfoExtractor = DI.get(AttachmentInfoExtractor.class);
         Map<String, Uri> contentIdToAttachmentUriMap = buildCidToAttachmentUriMap(attachmentInfoExtractor, part);
         return new AttachmentResolver(contentIdToAttachmentUriMap);
     }
