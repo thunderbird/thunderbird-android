@@ -1,4 +1,4 @@
-package com.fsck.k9.provider
+package com.fsck.k9.widget.unread
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -8,9 +8,6 @@ import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import com.fsck.k9.core.R
-import com.fsck.k9.widget.unread.UnreadWidgetConfigurationActivity
-import com.fsck.k9.widget.unread.UnreadWidgetData
-import com.fsck.k9.widget.unread.UnreadWidgetRepository
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import timber.log.Timber
