@@ -1,6 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fsck.k9.core">
-
-    <application android:name="com.fsck.k9.K9" />
-</manifest>
+<manifest package="com.fsck.k9.core" />

@@ -10,10 +10,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import android.content.Context;
 import android.os.Environment;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
+import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
@@ -416,13 +418,14 @@ public class GlobalSettings {
     }
 
     private static class LanguageSetting extends PseudoEnumSetting<String> {
+        private final Context context = DI.get(Context.class);
         private final Map<String, String> mapping;
 
         LanguageSetting() {
             super("");
 
             Map<String, String> mapping = new HashMap<>();
-            String[] values = K9.app.getResources().getStringArray(R.array.language_values);
+            String[] values = context.getResources().getStringArray(R.array.language_values);
             for (String value : values) {
                 if (value.length() == 0) {
                     mapping.put("", "default");

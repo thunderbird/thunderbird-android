@@ -13,6 +13,7 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.Core;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -142,10 +143,9 @@ public class MessagingControllerTest extends RobolectricTest {
         ShadowLog.stream = System.out;
         MockitoAnnotations.initMocks(this);
         Application application = RuntimeEnvironment.application;
-        K9.app = application;
         appContext = application;
 
-        DI.start(application);
+        DI.start(application, Core.getCoreModules());
         MessagingControllerTestExtra.backendManagerProvides(backend);
 
         controller = new MessagingController(appContext, notificationController, contacts, transportProvider,

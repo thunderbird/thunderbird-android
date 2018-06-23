@@ -3,77 +3,31 @@ package com.fsck.k9;
 
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.SynchronousQueue;
 
-import android.app.Application;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.StrictMode;
 
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.UpgradeDatabases;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.core.R;
-import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.K9MailLib;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.power.DeviceIdleManager;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
-import com.fsck.k9.remotecontrol.K9RemoteControl;
-import com.fsck.k9.service.BootReceiver;
-import com.fsck.k9.service.MailService;
-import com.fsck.k9.service.ShutdownReceiver;
-import com.fsck.k9.service.StorageGoneReceiver;
-import com.fsck.k9.widget.list.MessageListWidgetProvider;
-import com.fsck.k9.widget.unread.UnreadWidgetUpdater;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
 
-public class K9 extends Application {
+public class K9 {
 
     public static final int VERSION_MIGRATE_OPENPGP_TO_ACCOUNTS = 63;
 
-    /**
-     * Components that are interested in knowing when the K9 instance is
-     * available and ready (Android invokes Application.onCreate() after other
-     * components') should implement this interface and register using
-     * {@link K9#registerApplicationAware(ApplicationAware)}.
-     */
-    public static interface ApplicationAware {
-        /**
-         * Called when the Application instance is available and ready.
-         *
-         * @param application
-         *            The application instance. Never <code>null</code>.
-         * @throws Exception
-         */
-        void initializeComponent(Application application);
-    }
-
-    public static Application app = null;
     public static File tempDirectory;
     public static final String LOG_TAG = "k9";
 
@@ -93,23 +47,6 @@ public class K9 extends Application {
      * @see #DATABASE_VERSION_CACHE
      */
     private static final String KEY_LAST_ACCOUNT_DATABASE_VERSION = "last_account_database_version";
-
-    /**
-     * Components that are interested in knowing when the K9 instance is
-     * available and ready.
-     *
-     * @see ApplicationAware
-     */
-    private static final List<ApplicationAware> observers = new ArrayList<ApplicationAware>();
-
-    /**
-     * This will be {@code true} once the initialization is complete and {@link #notifyObservers()}
-     * was called.
-     * Afterwards calls to {@link #registerApplicationAware(com.fsck.k9.K9.ApplicationAware)} will
-     * immediately call {@link com.fsck.k9.K9.ApplicationAware#initializeComponent(Application)} for the
-     * supplied argument.
-     */
-    private static boolean initialized = false;
 
     public enum BACKGROUND_OPS {
         ALWAYS, NEVER, WHEN_CHECKED_AUTO_SYNC
@@ -157,7 +94,7 @@ public class K9 extends Application {
      * A reference to the {@link SharedPreferences} used for caching the last known database
      * version.
      *
-     * @see #checkCachedDatabaseVersion()
+     * @see #checkCachedDatabaseVersion(Context)
      * @see #setDatabasesUpToDate(boolean)
      */
     private static SharedPreferences databaseVersionCache;
@@ -315,150 +252,13 @@ public class K9 extends Application {
     public static final int BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000;
 
     public static class Intents {
-
-        public static class EmailReceived {
-            public static String ACTION_EMAIL_RECEIVED;
-            public static String ACTION_EMAIL_DELETED;
-            public static String ACTION_REFRESH_OBSERVER;
-            public static String EXTRA_ACCOUNT;
-            public static String EXTRA_FOLDER;
-            public static String EXTRA_SENT_DATE;
-            public static String EXTRA_FROM;
-            public static String EXTRA_TO;
-            public static String EXTRA_CC;
-            public static String EXTRA_BCC;
-            public static String EXTRA_SUBJECT;
-            public static String EXTRA_FROM_SELF;
-        }
-
         public static class Share {
-            /*
-             * We don't want to use EmailReceived.EXTRA_FROM ("com.fsck.k9.intent.extra.FROM")
-             * because of different semantics (String array vs. string with comma separated
-             * email addresses)
-             */
             public static String EXTRA_FROM;
         }
 
         static void init(String packageName) {
-            EmailReceived.ACTION_EMAIL_RECEIVED = packageName + ".intent.action.EMAIL_RECEIVED";
-            EmailReceived.ACTION_EMAIL_DELETED = packageName + ".intent.action.EMAIL_DELETED";
-            EmailReceived.ACTION_REFRESH_OBSERVER = packageName + ".intent.action.REFRESH_OBSERVER";
-            EmailReceived.EXTRA_ACCOUNT = packageName + ".intent.extra.ACCOUNT";
-            EmailReceived.EXTRA_FOLDER = packageName + ".intent.extra.FOLDER";
-            EmailReceived.EXTRA_SENT_DATE = packageName + ".intent.extra.SENT_DATE";
-            EmailReceived.EXTRA_FROM = packageName + ".intent.extra.FROM";
-            EmailReceived.EXTRA_TO = packageName + ".intent.extra.TO";
-            EmailReceived.EXTRA_CC = packageName + ".intent.extra.CC";
-            EmailReceived.EXTRA_BCC = packageName + ".intent.extra.BCC";
-            EmailReceived.EXTRA_SUBJECT = packageName + ".intent.extra.SUBJECT";
-            EmailReceived.EXTRA_FROM_SELF = packageName + ".intent.extra.FROM_SELF";
             Share.EXTRA_FROM = packageName + ".intent.extra.SENDER";
         }
-    }
-
-    /**
-     * Called throughout the application when the number of accounts has changed. This method
-     * enables or disables the Compose activity, the boot receiver and the service based on
-     * whether any accounts are configured.
-     */
-    public static void setServicesEnabled(Context context) {
-        Context appContext = context.getApplicationContext();
-        int acctLength = Preferences.getPreferences(appContext).getAvailableAccounts().size();
-        boolean enable = acctLength > 0;
-
-        setServicesEnabled(appContext, enable, null);
-
-        updateDeviceIdleReceiver(appContext, enable);
-    }
-
-    private static void updateDeviceIdleReceiver(Context context, boolean enable) {
-        DeviceIdleManager deviceIdleManager = DeviceIdleManager.getInstance(context);
-        if (enable) {
-            deviceIdleManager.registerReceiver();
-        } else {
-            deviceIdleManager.unregisterReceiver();
-        }
-    }
-
-    private static void setServicesEnabled(Context context, boolean enabled, Integer wakeLockId) {
-
-        PackageManager pm = context.getPackageManager();
-
-        if (!enabled && pm.getComponentEnabledSetting(new ComponentName(context, MailService.class)) ==
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-            /*
-             * If no accounts now exist but the service is still enabled we're about to disable it
-             * so we'll reschedule to kill off any existing alarms.
-             */
-            MailService.actionReset(context, wakeLockId);
-        }
-        Class<?>[] classes = { MessageCompose.class, BootReceiver.class, MailService.class };
-
-        for (Class<?> clazz : classes) {
-
-            boolean alreadyEnabled = pm.getComponentEnabledSetting(new ComponentName(context, clazz)) ==
-                                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-
-            if (enabled != alreadyEnabled) {
-                pm.setComponentEnabledSetting(
-                    new ComponentName(context, clazz),
-                    enabled ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED :
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
-            }
-        }
-
-        if (enabled && pm.getComponentEnabledSetting(new ComponentName(context, MailService.class)) ==
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-            /*
-             * And now if accounts do exist then we've just enabled the service and we want to
-             * schedule alarms for the new accounts.
-             */
-            MailService.actionReset(context, wakeLockId);
-        }
-
-    }
-
-    /**
-     * Register BroadcastReceivers programmatically because doing it from manifest
-     * would make K-9 auto-start. We don't want auto-start because the initialization
-     * sequence isn't safe while some events occur (SD card unmount).
-     */
-    protected void registerReceivers() {
-        final StorageGoneReceiver receiver = new StorageGoneReceiver();
-        final IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_MEDIA_EJECT);
-        filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
-        filter.addDataScheme("file");
-
-        final BlockingQueue<Handler> queue = new SynchronousQueue<Handler>();
-
-        // starting a new thread to handle unmount events
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                try {
-                    queue.put(new Handler());
-                } catch (InterruptedException e) {
-                    Timber.e(e);
-                }
-                Looper.loop();
-            }
-
-        }, "Unmount-thread").start();
-
-        try {
-            final Handler storageGoneHandler = queue.take();
-            registerReceiver(receiver, filter, null, storageGoneHandler);
-            Timber.i("Registered: unmount receiver");
-        } catch (InterruptedException e) {
-            Timber.e(e, "Unable to register unmount receiver");
-        }
-
-        registerReceiver(new ShutdownReceiver(), new IntentFilter(Intent.ACTION_SHUTDOWN));
-        Timber.i("Registered: shutdown receiver");
     }
 
     public static void save(StorageEditor editor) {
@@ -534,23 +334,7 @@ public class K9 extends Application {
         fontSizes.save(editor);
     }
 
-    @Override
-    public void onCreate() {
-        if (K9.DEVELOPER_MODE) {
-            StrictMode.enableDefaults();
-        }
-
-        PRNGFixes.apply();
-
-        String packageName = getPackageName();
-        K9RemoteControl.init(packageName);
-        Intents.init(packageName);
-
-        super.onCreate();
-        app = this;
-        DI.start(this);
-        Globals.setContext(this);
-
+    public static void init(Context context) {
         K9MailLib.setDebugStatus(new K9MailLib.DebugStatus() {
             @Override public boolean enabled() {
                 return DEBUG;
@@ -561,109 +345,10 @@ public class K9 extends Application {
             }
         });
 
-        checkCachedDatabaseVersion();
+        checkCachedDatabaseVersion(context);
 
-        Preferences prefs = Preferences.getPreferences(this);
+        Preferences prefs = DI.get(Preferences.class);
         loadPrefs(prefs);
-
-        /*
-         * We have to give MimeMessage a temp directory because File.createTempFile(String, String)
-         * doesn't work in Android and MimeMessage does not have access to a Context.
-         */
-        BinaryTempFileBody.setTempDirectory(getCacheDir());
-
-        LocalKeyStore.setKeyStoreLocation(getDir("KeyStore", MODE_PRIVATE).toString());
-
-        /*
-         * Enable background sync of messages
-         */
-
-        setServicesEnabled(this);
-        registerReceivers();
-
-        MessagingController.getInstance(this).addListener(new SimpleMessagingListener() {
-            private UnreadWidgetUpdater unreadWidgetUpdater = DI.get(UnreadWidgetUpdater.class);
-
-            private void broadcastIntent(String action, Account account, String folder, Message message) {
-                Uri uri = Uri.parse("email://messages/" + account.getAccountNumber() + "/" + Uri.encode(folder) + "/" + Uri.encode(message.getUid()));
-                Intent intent = new Intent(action, uri);
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folder);
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_SENT_DATE, message.getSentDate());
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM, Address.toString(message.getFrom()));
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)));
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_CC, Address.toString(message.getRecipients(Message.RecipientType.CC)));
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_BCC, Address.toString(message.getRecipients(Message.RecipientType.BCC)));
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_SUBJECT, message.getSubject());
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FROM_SELF, account.isAnIdentity(message.getFrom()));
-                K9.this.sendBroadcast(intent);
-
-                Timber.d("Broadcasted: action=%s account=%s folder=%s message uid=%s",
-                        action,
-                        account.getDescription(),
-                        folder,
-                        message.getUid());
-            }
-
-            private void updateUnreadWidget() {
-                try {
-                    unreadWidgetUpdater.updateAll();
-                } catch (Exception e) {
-                    Timber.e(e, "Error while updating unread widget(s)");
-                }
-            }
-
-            private void updateMailListWidget() {
-                try {
-                    MessageListWidgetProvider.triggerMessageListWidgetUpdate(K9.this);
-                } catch (RuntimeException e) {
-                    if (BuildConfig.DEBUG) {
-                        throw e;
-                    } else {
-                        Timber.e(e, "Error while updating message list widget");
-                    }
-                }
-            }
-
-            @Override
-            public void synchronizeMailboxRemovedMessage(Account account, String folderServerId, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folderServerId, message);
-                updateUnreadWidget();
-                updateMailListWidget();
-            }
-
-            @Override
-            public void messageDeleted(Account account, String folderServerId, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_DELETED, account, folderServerId, message);
-                updateUnreadWidget();
-                updateMailListWidget();
-            }
-
-            @Override
-            public void synchronizeMailboxNewMessage(Account account, String folderServerId, Message message) {
-                broadcastIntent(K9.Intents.EmailReceived.ACTION_EMAIL_RECEIVED, account, folderServerId, message);
-                updateUnreadWidget();
-                updateMailListWidget();
-            }
-
-            @Override
-            public void folderStatusChanged(Account account, String folderServerId,
-                    int unreadMessageCount) {
-
-                updateUnreadWidget();
-                updateMailListWidget();
-
-                // let observers know a change occurred
-                Intent intent = new Intent(K9.Intents.EmailReceived.ACTION_REFRESH_OBSERVER, null);
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_ACCOUNT, account.getDescription());
-                intent.putExtra(K9.Intents.EmailReceived.EXTRA_FOLDER, folderServerId);
-                K9.this.sendBroadcast(intent);
-
-            }
-
-        });
-
-        notifyObservers();
     }
 
     /**
@@ -681,8 +366,8 @@ public class K9 extends Application {
      *
      * @see #areDatabasesUpToDate()
      */
-    public void checkCachedDatabaseVersion() {
-        databaseVersionCache = getSharedPreferences(DATABASE_VERSION_CACHE, MODE_PRIVATE);
+    public static void checkCachedDatabaseVersion(Context context) {
+        databaseVersionCache = context.getSharedPreferences(DATABASE_VERSION_CACHE, Context.MODE_PRIVATE);
 
         int cachedVersion = databaseVersionCache.getInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, 0);
 
@@ -694,8 +379,8 @@ public class K9 extends Application {
         }
     }
 
-    private void migrateOpenPgpGlobalToAccountSettings() {
-        Preferences preferences = Preferences.getPreferences(this);
+    private static void migrateOpenPgpGlobalToAccountSettings() {
+        Preferences preferences = DI.get(Preferences.class);
         Storage storage = preferences.getStorage();
 
         String openPgpProvider = storage.getString("openPgpProvider", null);
@@ -841,44 +526,6 @@ public class K9 extends Application {
         themeValue = storage.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal());
         K9.setK9ComposerThemeSetting(Theme.values()[themeValue]);
         K9.setUseFixedMessageViewTheme(storage.getBoolean("fixedMessageViewTheme", true));
-    }
-
-    /**
-     * since Android invokes Application.onCreate() only after invoking all
-     * other components' onCreate(), here is a way to notify interested
-     * component that the application is available and ready
-     */
-    protected void notifyObservers() {
-        synchronized (observers) {
-            for (final ApplicationAware aware : observers) {
-                Timber.v("Initializing observer: %s", aware);
-
-                try {
-                    aware.initializeComponent(this);
-                } catch (Exception e) {
-                    Timber.w(e, "Failure when notifying %s", aware);
-                }
-            }
-
-            initialized = true;
-            observers.clear();
-        }
-    }
-
-    /**
-     * Register a component to be notified when the {@link K9} instance is ready.
-     *
-     * @param component
-     *            Never <code>null</code>.
-     */
-    public static void registerApplicationAware(final ApplicationAware component) {
-        synchronized (observers) {
-            if (initialized) {
-                component.initializeComponent(K9.app);
-            } else if (!observers.contains(component)) {
-                observers.add(component);
-            }
-        }
     }
 
     public static String getK9Language() {
@@ -1453,7 +1100,7 @@ public class K9 extends Application {
         new AsyncTask<Void,Void,Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                Preferences prefs = Preferences.getPreferences(app);
+                Preferences prefs = DI.get(Preferences.class);
                 StorageEditor editor = prefs.getStorage().edit();
                 save(editor);
                 editor.commit();

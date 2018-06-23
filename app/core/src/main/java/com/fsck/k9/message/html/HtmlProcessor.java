@@ -8,12 +8,7 @@ public class HtmlProcessor {
     private final HtmlSanitizer htmlSanitizer;
 
 
-    public static HtmlProcessor newInstance() {
-        HtmlSanitizer htmlSanitizer = new HtmlSanitizer();
-        return new HtmlProcessor(htmlSanitizer);
-    }
-
-    private HtmlProcessor(HtmlSanitizer htmlSanitizer) {
+    HtmlProcessor(HtmlSanitizer htmlSanitizer) {
         this.htmlSanitizer = htmlSanitizer;
     }
 

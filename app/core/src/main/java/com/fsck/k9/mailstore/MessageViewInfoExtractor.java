@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
 
-import com.fsck.k9.Globals;
 import com.fsck.k9.core.R;
 import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Address;
@@ -54,14 +53,6 @@ public class MessageViewInfoExtractor {
     private final HtmlProcessor htmlProcessor;
 
 
-    public static MessageViewInfoExtractor getInstance() {
-        Context context = Globals.getContext();
-        AttachmentInfoExtractor attachmentInfoExtractor = AttachmentInfoExtractor.getInstance();
-        HtmlProcessor htmlProcessor = HtmlProcessor.newInstance();
-        return new MessageViewInfoExtractor(context, attachmentInfoExtractor, htmlProcessor);
-    }
-
-    @VisibleForTesting
     MessageViewInfoExtractor(Context context, AttachmentInfoExtractor attachmentInfoExtractor,
             HtmlProcessor htmlProcessor) {
         this.context = context;

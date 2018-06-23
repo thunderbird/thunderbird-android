@@ -14,7 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
-import com.fsck.k9.Globals;
+import com.fsck.k9.DI;
 import com.fsck.k9.core.R;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor;
@@ -60,7 +60,7 @@ public class PgpMessageBuilder extends MessageBuilder {
 
 
     public static PgpMessageBuilder newInstance() {
-        Context context = Globals.getContext();
+        Context context = DI.get(Context.class);
         MessageIdGenerator messageIdGenerator = MessageIdGenerator.getInstance();
         BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();
         AutocryptOperations autocryptOperations = AutocryptOperations.getInstance();

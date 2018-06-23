@@ -61,6 +61,7 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
+import com.fsck.k9.Core;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -984,7 +985,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 mAccount.save(Preferences.getPreferences(mContext));
 
                 // Start services if necessary
-                K9.setServicesEnabled(mContext);
+                Core.setServicesEnabled(mContext);
 
                 // Get list of folders from remote server
                 MessagingController.getInstance(mApplication).listFolders(mAccount, true, null);
@@ -1050,7 +1051,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                         .deleteAccount(realAccount);
                         Preferences.getPreferences(Accounts.this)
                         .deleteAccount(realAccount);
-                        K9.setServicesEnabled(Accounts.this);
+                        Core.setServicesEnabled(Accounts.this);
                         refresh();
                     }
                 }

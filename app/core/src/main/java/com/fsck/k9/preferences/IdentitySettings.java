@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import android.content.Context;
+
+import com.fsck.k9.DI;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
@@ -78,13 +81,15 @@ class IdentitySettings {
     }
 
     private static class SignatureSetting extends SettingsDescription<String> {
+        private final Context context = DI.get(Context.class);
+
         SignatureSetting() {
             super(null);
         }
 
         @Override
         public String getDefaultValue() {
-            return K9.app.getResources().getString(R.string.default_signature);
+            return context.getResources().getString(R.string.default_signature);
         }
 
         @Override

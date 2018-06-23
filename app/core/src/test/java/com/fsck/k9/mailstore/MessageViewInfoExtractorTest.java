@@ -11,6 +11,7 @@ import java.util.TimeZone;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.fsck.k9.DI;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.mail.Address;
@@ -73,7 +74,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         context = RuntimeEnvironment.application;
 
         HtmlProcessor htmlProcessor = createFakeHtmlProcessor();
-        attachmentInfoExtractor = spy(AttachmentInfoExtractor.getInstance());
+        attachmentInfoExtractor = spy(DI.get(AttachmentInfoExtractor.class));
         messageViewInfoExtractor = new MessageViewInfoExtractor(context, attachmentInfoExtractor, htmlProcessor);
     }
 

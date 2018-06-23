@@ -15,7 +15,6 @@ import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.core.BuildConfig;
-import com.fsck.k9.GlobalsHelper;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
@@ -44,8 +43,6 @@ public class StoreSchemaDefinitionTest extends RobolectricTest {
         ShadowLog.stream = System.out;
 
         Application application = RuntimeEnvironment.application;
-        K9.app = application;
-        GlobalsHelper.setContext(application);
         StorageManager.getInstance(application);
 
         storeSchemaDefinition = createStoreSchemaDefinition();

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.fsck.k9.DI;
 import timber.log.Timber;
 
 import com.fsck.k9.mailstore.LocalMessage;
@@ -15,7 +16,7 @@ import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 
 
 public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo> {
-    private static final MessageViewInfoExtractor messageViewInfoExtractor = MessageViewInfoExtractor.getInstance();
+    private static final MessageViewInfoExtractor messageViewInfoExtractor = DI.get(MessageViewInfoExtractor.class);
 
 
     private final LocalMessage message;

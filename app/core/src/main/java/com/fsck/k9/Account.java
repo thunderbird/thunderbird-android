@@ -357,10 +357,11 @@ public class Account implements BaseAccount, StoreConfig {
     private synchronized void loadAccount(Preferences preferences) {
 
         Storage storage = preferences.getStorage();
+        StorageManager storageManager = DI.get(StorageManager.class);
 
         storeUri = Base64.decode(storage.getString(accountUuid + ".storeUri", null));
         localStorageProviderId = storage.getString(
-                accountUuid + ".localStorageProvider", StorageManager.getInstance(K9.app).getDefaultProviderId());
+                accountUuid + ".localStorageProvider", storageManager.getDefaultProviderId());
         transportUri = Base64.decode(storage.getString(accountUuid + ".transportUri", null));
         description = storage.getString(accountUuid + ".description", null);
         alwaysBcc = storage.getString(accountUuid + ".alwaysBcc", alwaysBcc);
@@ -1193,7 +1194,8 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public LocalStore getLocalStore() throws MessagingException {
-        return LocalStore.getInstance(this, K9.app);
+        Context context = DI.get(Context.class);
+        return LocalStore.getInstance(this, context);
     }
 
     @Override

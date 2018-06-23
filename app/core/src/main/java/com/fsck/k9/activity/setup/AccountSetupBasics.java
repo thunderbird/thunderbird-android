@@ -25,8 +25,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Core;
 import com.fsck.k9.EmailAddressValidator;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.core.R;
 import com.fsck.k9.account.AccountCreator;
@@ -373,7 +373,7 @@ public class AccountSetupBasics extends K9Activity
                 //We've successfully checked outgoing as well.
                 mAccount.setDescription(mAccount.getEmail());
                 mAccount.save(Preferences.getPreferences(this));
-                K9.setServicesEnabled(this);
+                Core.setServicesEnabled(this);
                 AccountSetupNames.actionSetNames(this, mAccount);
                 finish();
             }

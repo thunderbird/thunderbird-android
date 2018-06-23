@@ -15,9 +15,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
+
+import com.fsck.k9.Core;
 import timber.log.Timber;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
 
 /**
@@ -661,7 +662,7 @@ public class StorageManager {
         sync.unmounting = false;
         sync.writeLock.unlock();
 
-        K9.setServicesEnabled(context);
+        Core.setServicesEnabled(context);
     }
 
     /**
@@ -687,7 +688,7 @@ public class StorageManager {
         }
 
         // XXX we should reset mail service ONLY if there are accounts using the storage (this is not done in a regular listener because it has to be invoked afterward)
-        K9.setServicesEnabled(context);
+        Core.setServicesEnabled(context);
     }
 
     /**
