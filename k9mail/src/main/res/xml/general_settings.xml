@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch"
-    android:title="@string/general_settings_title">
+    android:title="@string/general_settings_title"
+    search:ignore="true">
 
     <PreferenceScreen
         android:icon="?attr/iconPreferencesDisplay"
