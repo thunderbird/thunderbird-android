@@ -39,7 +39,7 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 /**
  * A WebDav Folder
  */
-class WebDavFolder extends Folder<WebDavMessage> {
+public class WebDavFolder extends Folder<WebDavMessage> {
     private String mName;
     private String mFolderUrl;
     private boolean mIsOpen = false;
@@ -700,7 +700,7 @@ class WebDavFolder extends Folder<WebDavMessage> {
     }
 
     @Override
-    public String getUidFromMessageId(Message message) throws MessagingException {
+    public String getUidFromMessageId(String messageId) throws MessagingException {
         Timber.e("Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "
                         + " being uploaded to the Sent folder");
         return null;

@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.fsck.k9.mail.PushReceiver;
+import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.store.StoreConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,8 @@ public class ImapPusherTest {
         imapStore = mock(ImapStore.class);
 
         PushReceiver pushReceiver = mock(PushReceiver.class);
-        imapPusher = new TestImapPusher(imapStore, pushReceiver);
+        PowerManager powerManager = mock(PowerManager.class);
+        imapPusher = new TestImapPusher(imapStore, pushReceiver, powerManager);
     }
 
     @Test
@@ -156,8 +158,8 @@ public class ImapPusherTest {
         private final List<ImapFolderPusher> imapFolderPushers = new ArrayList<>();
 
 
-        public TestImapPusher(ImapStore store, PushReceiver receiver) {
-            super(store, receiver);
+        public TestImapPusher(ImapStore store, PushReceiver receiver, PowerManager powerManager) {
+            super(store, receiver, powerManager);
         }
 
         @Override

@@ -11,17 +11,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import android.content.Context;
-import android.os.PowerManager;
-
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.PushReceiver;
-import com.fsck.k9.mail.power.TracingPowerManager;
-import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.mail.power.PowerManager;
+import com.fsck.k9.mail.power.WakeLock;
 import com.fsck.k9.mail.store.RemoteStore;
 import timber.log.Timber;
 
@@ -39,21 +36,19 @@ class ImapFolderPusher extends ImapFolder {
     private final PushReceiver pushReceiver;
     private final Object threadLock = new Object();
     private final IdleStopper idleStopper = new IdleStopper();
-    private final TracingWakeLock wakeLock;
+    private final WakeLock wakeLock;
     private final List<ImapResponse> storedUntaggedResponses = new ArrayList<ImapResponse>();
     private Thread listeningThread;
     private volatile boolean stop = false;
     private volatile boolean idling = false;
 
 
-    public ImapFolderPusher(ImapStore store, String serverId, PushReceiver pushReceiver) {
+    public ImapFolderPusher(ImapStore store, String serverId, PushReceiver pushReceiver, PowerManager powerManager) {
         super(store, serverId);
         this.pushReceiver = pushReceiver;
 
-        Context context = pushReceiver.getContext();
-        TracingPowerManager powerManager = TracingPowerManager.getPowerManager(context);
         String tag = "ImapFolderPusher " + store.getStoreConfig().toString() + ":" + getServerId();
-        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag);
+        wakeLock = powerManager.newWakeLock(tag);
         wakeLock.setReferenceCounted(false);
     }
 

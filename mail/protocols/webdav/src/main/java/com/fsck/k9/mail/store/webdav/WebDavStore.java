@@ -91,6 +91,10 @@ public class WebDavStore extends RemoteStore {
     private Folder sendFolder = null;
     private Map<String, WebDavFolder> folderList = new HashMap<>();
 
+    public WebDavStore(StoreConfig storeConfig) throws MessagingException {
+        this(storeConfig, new WebDavHttpClient.WebDavHttpClientFactory());
+    }
+
     public WebDavStore(StoreConfig storeConfig, WebDavHttpClient.WebDavHttpClientFactory clientFactory)
             throws MessagingException {
         super(storeConfig, null);

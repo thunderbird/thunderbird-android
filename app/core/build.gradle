@@ -1,0 +1,104 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
+
+apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
+apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
+
+//noinspection GroovyAssignabilityCheck
+configurations.all {
+    resolutionStrategy {
+        force "com.android.support:support-annotations:${versions.supportLibrary}"
+        force "com.android.support:design:${versions.supportLibrary}"
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+
+    api project(":mail:common")
+    api project(":mail:protocols:imap")
+    api project(":mail:protocols:pop3")
+    api project(":mail:protocols:webdav")
+    api project(":mail:protocols:smtp")
+    api project(":backend:api")
+    api project(":backend:imap")
+    api project(":backend:pop3")
+    api project(":backend:webdav")
+
+    api project(':plugins:HoloColorPicker')
+    api project(':plugins:openpgp-api-lib:openpgp-api')
+
+    api "com.squareup.okio:okio:${versions.okio}"
+    api "commons-io:commons-io:${versions.commonsIo}"
+    api "com.android.support:support-v4:${versions.supportLibrary}"
+    api "com.android.support:appcompat-v7:${versions.supportLibrary}"
+    api "com.takisoft.fix:preference-v7:${versions.preferencesFix}"
+    api "com.takisoft.fix:preference-v7-datetimepicker:${versions.preferencesFix}"
+    api "com.takisoft.fix:preference-v7-colorpicker:${versions.preferencesFix}"
+    api "com.takisoft.fix:preference-v7-ringtone:${versions.preferencesFix}"
+    api "com.android.support:recyclerview-v7:${versions.supportLibrary}"
+    api "android.arch.lifecycle:extensions:${versions.lifecycleExtensions}"
+    api "androidx.core:core-ktx:0.3"
+    api "org.jsoup:jsoup:1.11.2"
+    api "de.cketti.library.changelog:ckchangelog:1.2.1"
+    api "com.github.bumptech.glide:glide:3.6.1"
+    api "com.splitwise:tokenautocomplete:2.0.7"
+    api "de.cketti.safecontentresolver:safe-content-resolver-v14:0.9.0"
+    api "com.github.amlcurran.showcaseview:library:5.4.1"
+    api "com.squareup.moshi:moshi:1.2.0"
+    api "com.jakewharton.timber:timber:${versions.timber}"
+    api "net.jcip:jcip-annotations:1.0"
+    api "org.apache.james:apache-mime4j-core:0.8.1"
+    api "com.xwray:groupie:2.1.0"
+    api "com.xwray:groupie-kotlin-android-extensions:2.1.0"
+    api "org.jetbrains.anko:anko-coroutines:0.10.4"
+    api "org.koin:koin-android-architecture:${versions.koin}"
+    api 'com.mikepenz:materialdrawer:6.0.7'
+    api 'com.github.ByteHamster:SearchPreference:v1.1.1'
+
+    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "com.google.truth:truth:${versions.truth}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}"
+    testImplementation "org.jdom:jdom2:2.0.6"
+    testImplementation "org.koin:koin-test:${versions.koin}"
+}
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        // For Robolectric tests
+        targetSdkVersion 22
+    }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}

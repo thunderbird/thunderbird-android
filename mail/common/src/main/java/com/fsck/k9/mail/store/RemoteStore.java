@@ -51,8 +51,4 @@ public abstract class RemoteStore {
     }
 
     public void sendMessages(List<? extends Message> messages) throws MessagingException { }
-
-    public Pusher getPusher(PushReceiver receiver) {
-        return null;
-    }
 }

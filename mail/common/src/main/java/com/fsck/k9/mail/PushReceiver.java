@@ -1,13 +1,12 @@
 package com.fsck.k9.mail;
 
+
 import java.util.List;
 
-import com.fsck.k9.mail.power.TracingPowerManager.TracingWakeLock;
+import com.fsck.k9.mail.power.WakeLock;
 
-import android.content.Context;
 
 public interface PushReceiver {
-    Context getContext();
     void syncFolder(Folder folder);
     void messagesArrived(Folder folder, List<Message> mess);
     void messagesFlagsChanged(Folder folder, List<Message> mess);
@@ -16,5 +15,5 @@ public interface PushReceiver {
     void pushError(String errorMessage, Exception e);
     void authenticationFailed();
     void setPushActive(String folderServerId, boolean enabled);
-    void sleep(TracingWakeLock wakeLock, long millis);
+    void sleep(WakeLock wakeLock, long millis);
 }

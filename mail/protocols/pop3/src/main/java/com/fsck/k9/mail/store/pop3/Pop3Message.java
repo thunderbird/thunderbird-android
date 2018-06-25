@@ -8,7 +8,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 
 
-class Pop3Message extends MimeMessage {
+public class Pop3Message extends MimeMessage {
     Pop3Message(String uid, Pop3Folder folder) {
         mUid = uid;
         mFolder = folder;

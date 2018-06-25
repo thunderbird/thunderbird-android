@@ -40,7 +40,7 @@ import timber.log.Timber;
 import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
-class ImapFolder extends Folder<ImapMessage> {
+public class ImapFolder extends Folder<ImapMessage> {
     static final String INBOX = "INBOX";
     private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
         @Override
@@ -1177,8 +1177,8 @@ class ImapFolder extends Folder<ImapMessage> {
                             String newUid = appendList.getString(2);
 
                             if (!TextUtils.isEmpty(newUid)) {
-                                message.setUid(newUid);
                                 uidMap.put(message.getUid(), newUid);
+                                message.setUid(newUid);
                                 continue;
                             }
                         }
@@ -1189,7 +1189,8 @@ class ImapFolder extends Folder<ImapMessage> {
                  * This part is executed in case the server does not support UIDPLUS or does
                  * not implement the APPENDUID response code.
                  */
-                String newUid = getUidFromMessageId(message);
+                String messageId = extractMessageId(message);
+                String newUid = messageId != null ? getUidFromMessageId(messageId) : null;
                 if (K9MailLib.isDebug()) {
                     Timber.d("Got UID %s for message for %s", newUid, getLogId());
                 }
@@ -1211,22 +1212,13 @@ class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
-    public String getUidFromMessageId(Message message) throws MessagingException {
-        /*
-        * Try to find the UID of the message we just appended using the
-        * Message-ID header.
-        */
+    private String extractMessageId(Message message) {
         String[] messageIdHeader = message.getHeader("Message-ID");
+        return messageIdHeader.length == 0 ? null : messageIdHeader[0];
+    }
 
-        if (messageIdHeader.length == 0) {
-            if (K9MailLib.isDebug()) {
-                Timber.d("Did not get a message-id in order to search for UID  for %s", getLogId());
-            }
-            return null;
-        }
-
-        String messageId = messageIdHeader[0];
+    @Override
+    public String getUidFromMessageId(String messageId) throws MessagingException {
         if (K9MailLib.isDebug()) {
             Timber.d("Looking for UID for message with message-id %s for %s", messageId, getLogId());
         }
