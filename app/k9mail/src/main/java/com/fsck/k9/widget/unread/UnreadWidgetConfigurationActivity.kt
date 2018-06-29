@@ -11,7 +11,7 @@ import android.view.MenuItem
 import android.widget.Toast
 
 import com.fsck.k9.Preferences
-import com.fsck.k9.core.R
+import com.fsck.k9.R
 import com.fsck.k9.activity.ChooseAccount
 import com.fsck.k9.activity.ChooseFolder
 import com.fsck.k9.activity.K9PreferenceActivity

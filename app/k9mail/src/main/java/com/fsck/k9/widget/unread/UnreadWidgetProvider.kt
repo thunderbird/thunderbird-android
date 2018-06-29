@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
-import com.fsck.k9.core.R
+import com.fsck.k9.R
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import timber.log.Timber

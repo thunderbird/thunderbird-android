@@ -25,7 +25,6 @@ import com.fsck.k9.service.ShutdownReceiver
 import com.fsck.k9.service.StorageGoneReceiver
 import com.fsck.k9.ui.endtoend.endToEndUiModule
 import com.fsck.k9.ui.settings.settingsUiModule
-import com.fsck.k9.widget.unread.unreadWidgetModule
 import timber.log.Timber
 import java.util.concurrent.SynchronousQueue
 
@@ -34,7 +33,6 @@ object Core {
     val coreModules = listOf(
             mainModule,
             settingsUiModule,
-            unreadWidgetModule,
             endToEndUiModule,
             openPgpModule,
             autocryptModule,
