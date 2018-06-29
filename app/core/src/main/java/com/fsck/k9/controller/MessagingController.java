@@ -2709,6 +2709,10 @@ public class MessagingController {
             return false;
         }
 
+        if (K9.isQuietTime() && !K9.isNotificationDuringQuietTimeEnabled()) {
+            return false;
+        }
+
         // Do not notify if the user does not have notifications enabled or if the message has
         // been read.
         if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN) || isOldMessage) {
