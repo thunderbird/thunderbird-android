@@ -32,7 +32,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/compose_action"
             android:scaleType="center"
-            android:src="?attr/iconActionCompose" />
+            android:src="@drawable/ic_envelope_dark" />
 
     </LinearLayout>
 
