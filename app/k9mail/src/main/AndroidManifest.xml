@@ -347,7 +347,7 @@
         </receiver>
 
         <receiver
-            android:name=".service.RemoteControlReceiver"
+            android:name=".external.remotecontrol.RemoteControlReceiver"
             android:enabled="true"
             android:permission="${applicationId}.permission.REMOTE_CONTROL">
             <intent-filter>
@@ -432,7 +432,7 @@
             android:enabled="true"/>
 
         <service
-            android:name=".service.RemoteControlService"
+            android:name=".external.remotecontrol.RemoteControlService"
             android:enabled="true"
             android:permission="${applicationId}.permission.REMOTE_CONTROL"/>
 

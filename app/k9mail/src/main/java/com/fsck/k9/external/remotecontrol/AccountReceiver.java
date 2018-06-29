@@ -1,9 +1,11 @@
-package com.fsck.k9.remotecontrol;
+package com.fsck.k9.external.remotecontrol;
+
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import timber.log.Timber;
 
 class AccountReceiver extends BroadcastReceiver {
