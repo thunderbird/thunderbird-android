@@ -53,7 +53,7 @@ public class NotificationController {
         this.context = context;
         this.notificationManager = notificationManager;
 
-        NotificationActionCreator actionBuilder = new NotificationActionCreator(context);
+        NotificationActionCreator actionBuilder = new K9NotificationActionCreator(context);
         certificateErrorNotifications = new CertificateErrorNotifications(this, actionBuilder);
         authenticationErrorNotifications = new AuthenticationErrorNotifications(this, actionBuilder);
         syncNotifications = new SyncNotifications(this, actionBuilder);
