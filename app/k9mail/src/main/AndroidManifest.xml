@@ -446,7 +446,7 @@
 
 
         <service
-            android:name="com.fsck.k9.service.K9ChooserTargetService"
+            android:name="com.fsck.k9.directshare.K9ChooserTargetService"
             android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE" >
             <intent-filter>
                 <action android:name="android.service.chooser.ChooserTargetService" />

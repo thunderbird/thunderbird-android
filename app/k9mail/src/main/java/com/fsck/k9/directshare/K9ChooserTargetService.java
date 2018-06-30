@@ -1,4 +1,4 @@
-package com.fsck.k9.service;
+package com.fsck.k9.directshare;
 
 
 import java.util.ArrayList;
