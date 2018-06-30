@@ -1,18 +1,20 @@
 
-package com.fsck.k9.service;
+package com.fsck.k9.external.remotecontrol;
+
+
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.remotecontrol.K9RemoteControl;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.service.CoreReceiver;
+import timber.log.Timber;
 
-import java.util.List;
-
-import static com.fsck.k9.remotecontrol.K9RemoteControl.*;
+import static com.fsck.k9.external.remotecontrol.K9RemoteControl.K9_ACCOUNT_DESCRIPTIONS;
+import static com.fsck.k9.external.remotecontrol.K9RemoteControl.K9_ACCOUNT_UUIDS;
 
 public class RemoteControlReceiver extends CoreReceiver {
     @Override

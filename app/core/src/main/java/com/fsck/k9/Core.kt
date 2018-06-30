@@ -18,7 +18,6 @@ import com.fsck.k9.mailstore.mailStoreModule
 import com.fsck.k9.message.extractors.extractorModule
 import com.fsck.k9.message.html.htmlModule
 import com.fsck.k9.power.DeviceIdleManager
-import com.fsck.k9.remotecontrol.K9RemoteControl
 import com.fsck.k9.service.BootReceiver
 import com.fsck.k9.service.MailService
 import com.fsck.k9.service.ShutdownReceiver
@@ -54,7 +53,6 @@ object Core {
         PRNGFixes.apply()
 
         val packageName = context.packageName
-        K9RemoteControl.init(packageName)
         K9.Intents.init(packageName)
     }
 

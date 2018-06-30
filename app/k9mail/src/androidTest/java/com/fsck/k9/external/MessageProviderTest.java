@@ -1,4 +1,7 @@
-package com.fsck.k9.provider;
+package com.fsck.k9.external;
+
+
+import java.util.List;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -7,15 +10,11 @@ import android.test.ProviderTestCase2;
 import android.test.mock.MockContentResolver;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class MessageProviderTest extends ProviderTestCase2 {

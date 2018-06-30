@@ -2,7 +2,7 @@ package com.fsck.k9
 
 import android.app.Application
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.provider.MessageProvider
+import com.fsck.k9.external.MessageProvider
 import org.koin.android.ext.android.inject
 
 class App : Application() {

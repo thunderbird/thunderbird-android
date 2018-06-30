@@ -20,7 +20,7 @@ import android.widget.RemoteViewsService;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.R;
-import com.fsck.k9.provider.MessageProvider;
+import com.fsck.k9.external.MessageProvider;
 
 
 public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
