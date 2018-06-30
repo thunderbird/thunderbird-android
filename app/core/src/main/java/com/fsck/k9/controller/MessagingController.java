@@ -42,7 +42,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.core.R;
-import com.fsck.k9.activity.ActivityListener;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
@@ -2320,7 +2319,7 @@ public class MessagingController {
         });
     }
 
-    public void clearFolder(final Account account, final String folderServerId, final ActivityListener listener) {
+    public void clearFolder(final Account account, final String folderServerId, final MessagingListener listener) {
         putBackground("clearFolder", listener, new Runnable() {
             @Override
             public void run() {
