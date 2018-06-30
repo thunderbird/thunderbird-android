@@ -41,7 +41,6 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
-import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
 import timber.log.Timber;
 
@@ -225,12 +224,6 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean remoteSearchFullText;
     private int remoteSearchNumResults;
 
-    private ColorChip unreadColorChip;
-    private ColorChip readColorChip;
-
-    private ColorChip flaggedUnreadColorChip;
-    private ColorChip flaggedReadColorChip;
-
 
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
@@ -342,8 +335,6 @@ public class Account implements BaseAccount, StoreConfig {
         notificationSetting.setRingEnabled(true);
         notificationSetting.setRingtone("content://settings/system/notification_sound");
         notificationSetting.setLedColor(chipColor);
-
-        cacheChips();
     }
 
     protected Account(Preferences preferences, String uuid) {
@@ -457,8 +448,6 @@ public class Account implements BaseAccount, StoreConfig {
         isEnabled = storage.getBoolean(accountUuid + ".enabled", true);
         markMessageAsReadOnView = storage.getBoolean(accountUuid + ".markMessageAsReadOnView", true);
         alwaysShowCcBcc = storage.getBoolean(accountUuid + ".alwaysShowCcBcc", false);
-
-        cacheChips();
 
         // Use email address as account description if necessary
         if (description == null) {
@@ -758,39 +747,10 @@ public class Account implements BaseAccount, StoreConfig {
 
     public synchronized void setChipColor(int color) {
         chipColor = color;
-        cacheChips();
-    }
-
-    private synchronized void cacheChips() {
-        readColorChip = new ColorChip(chipColor, true, ColorChip.CIRCULAR);
-        unreadColorChip = new ColorChip(chipColor, false, ColorChip.CIRCULAR);
-        flaggedReadColorChip = new ColorChip(chipColor, true, ColorChip.STAR);
-        flaggedUnreadColorChip = new ColorChip(chipColor, false, ColorChip.STAR);
     }
 
     public synchronized int getChipColor() {
         return chipColor;
-    }
-
-
-    public ColorChip generateColorChip(boolean messageRead, boolean messageFlagged) {
-        ColorChip chip;
-
-        if (messageRead) {
-            if (messageFlagged) {
-                chip = flaggedReadColorChip;
-            } else {
-                chip = readColorChip;
-            }
-        } else {
-            if (messageFlagged) {
-                chip = flaggedUnreadColorChip;
-            } else {
-                chip = unreadColorChip;
-            }
-        }
-
-        return chip;
     }
 
     @Override

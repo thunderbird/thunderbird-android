@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
 import com.fsck.k9.activity.MessageCompose
+import com.fsck.k9.activity.uiModule
 import com.fsck.k9.autocrypt.autocryptModule
 import com.fsck.k9.backend.backendModule
 import com.fsck.k9.crypto.openPgpModule
@@ -38,7 +39,8 @@ object Core {
             mailStoreModule,
             backendModule,
             extractorModule,
-            htmlModule
+            htmlModule,
+            uiModule
     )
 
     /**
