@@ -22,7 +22,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mailstore.DatabasePreviewType;
 import com.fsck.k9.ui.ContactBadge;
@@ -273,7 +272,7 @@ public class MessageListAdapter extends CursorAdapter {
 
     private void updateContactBadge(MessageViewHolder holder, Address counterpartyAddress) {
         if (counterpartyAddress != null) {
-            Utility.setContactForBadge(holder.contactBadge, counterpartyAddress);
+            holder.contactBadge.setContact(counterpartyAddress);
                     /*
                      * At least in Android 2.2 a different background + padding is used when no
                      * email address is available. ListView reuses the views but ContactBadge

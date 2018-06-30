@@ -37,7 +37,6 @@ import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
@@ -316,7 +315,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         if (K9.showContactPicture()) {
             if (counterpartyAddress != null) {
-                Utility.setContactForBadge(mContactBadge, counterpartyAddress);
+                mContactBadge.setContact(counterpartyAddress);
                 mContactsPictureLoader.loadContactPicture(counterpartyAddress, mContactBadge);
             } else {
                 mContactBadge.setImageResource(R.drawable.ic_contact_picture);
