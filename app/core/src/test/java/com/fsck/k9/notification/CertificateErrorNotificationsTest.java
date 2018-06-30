@@ -134,7 +134,7 @@ public class CertificateErrorNotificationsTest extends RobolectricTest {
 
     class TestCertificateErrorNotifications extends CertificateErrorNotifications {
         public TestCertificateErrorNotifications() {
-            super(controller);
+            super(controller, mock(NotificationActionCreator.class));
         }
 
         @Override

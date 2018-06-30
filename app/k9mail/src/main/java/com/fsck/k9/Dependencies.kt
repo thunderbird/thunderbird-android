@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import com.fsck.k9.external.BroadcastSenderListener
 import com.fsck.k9.external.externalModule
+import com.fsck.k9.notification.notificationModule
 import com.fsck.k9.widget.list.MessageListWidgetUpdateListener
 import com.fsck.k9.widget.list.messageListWidgetModule
 import com.fsck.k9.widget.unread.UnreadWidgetUpdateListener
@@ -22,5 +23,6 @@ val appModules = listOf(
         mainAppModule,
         externalModule,
         messageListWidgetModule,
-        unreadWidgetModule
+        unreadWidgetModule,
+        notificationModule
 )
