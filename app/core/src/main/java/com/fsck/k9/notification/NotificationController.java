@@ -9,6 +9,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.mail.Folder;
@@ -53,7 +54,7 @@ public class NotificationController {
         this.context = context;
         this.notificationManager = notificationManager;
 
-        NotificationActionCreator actionBuilder = new K9NotificationActionCreator(context);
+        NotificationActionCreator actionBuilder = DI.get(NotificationActionCreator.class);
         certificateErrorNotifications = new CertificateErrorNotifications(this, actionBuilder);
         authenticationErrorNotifications = new AuthenticationErrorNotifications(this, actionBuilder);
         syncNotifications = new SyncNotifications(this, actionBuilder);

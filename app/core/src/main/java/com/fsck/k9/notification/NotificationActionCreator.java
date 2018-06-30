@@ -10,7 +10,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.activity.MessageReference;
 
 
-interface NotificationActionCreator {
+public interface NotificationActionCreator {
     PendingIntent createViewMessagePendingIntent(MessageReference messageReference, int notificationId);
 
     PendingIntent createViewFolderPendingIntent(Account account, String folderServerId, int notificationId);
