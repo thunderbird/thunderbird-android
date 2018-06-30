@@ -41,11 +41,9 @@ import com.fsck.k9.BuildConfig;
 import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.FolderInfoHolder;
-import com.fsck.k9.activity.MessageInfoHolder;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.SimpleMessagingListener;
-import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -82,7 +80,6 @@ public class MessageProvider extends ContentProvider {
 
     private UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private List<QueryHandler> queryHandlers = new ArrayList<QueryHandler>();
-    private MessageHelper messageHelper;
 
     /**
      * How many simultaneous cursors we can afford to expose at once
@@ -94,8 +91,6 @@ public class MessageProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        messageHelper = MessageHelper.getInstance(getContext());
-
         registerQueryHandler(new ThrottlingQueryHandler(new AccountsQueryHandler()));
         registerQueryHandler(new ThrottlingQueryHandler(new MessagesQueryHandler()));
         registerQueryHandler(new ThrottlingQueryHandler(new UnreadQueryHandler()));
@@ -1077,12 +1072,12 @@ public class MessageProvider extends ContentProvider {
             Context context = getContext();
 
             for (LocalMessage message : messages) {
-                MessageInfoHolder messageInfoHolder = new MessageInfoHolder();
                 LocalFolder messageFolder = message.getFolder();
                 Account messageAccount = message.getAccount();
 
                 FolderInfoHolder folderInfoHolder = new FolderInfoHolder(context, messageFolder, messageAccount);
-                messageHelper.populate(messageInfoHolder, message, folderInfoHolder, messageAccount);
+                MessageInfoHolder messageInfoHolder =
+                        MessageInfoHolder.create(context, message, folderInfoHolder, messageAccount);
 
                 holders.add(messageInfoHolder);
             }
