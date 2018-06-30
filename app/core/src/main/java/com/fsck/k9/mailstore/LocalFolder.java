@@ -27,9 +27,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.activity.Search;
 import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.Utility;
@@ -74,6 +74,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     private static final long INVALID_MESSAGE_PART_ID = -1;
 
 
+    private final SearchStatusManager searchStatusManager = DI.get(SearchStatusManager.class);
     private final LocalStore localStore;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
 
@@ -418,7 +419,7 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     public void purgeToVisibleLimit(final MessageRemovalListener listener) throws MessagingException {
         // don't purge messages while a Search is active since it might throw away search results
-        if (Search.isActive()) {
+        if (searchStatusManager.isActive()) {
             return;
         }
 
