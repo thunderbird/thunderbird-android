@@ -477,7 +477,7 @@
         </provider>
 
         <provider
-            android:name=".provider.MessageProvider"
+            android:name=".external.MessageProvider"
             android:authorities="${applicationId}.messageprovider"
             android:exported="true"
             android:grantUriPermissions="true"

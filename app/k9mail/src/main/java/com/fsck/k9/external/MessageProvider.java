@@ -1,4 +1,4 @@
-package com.fsck.k9.provider;
+package com.fsck.k9.external;
 
 
 import java.lang.ref.WeakReference;
@@ -35,11 +35,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 
-import com.fsck.k9.DI;
-import timber.log.Timber;
-
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.BuildConfig;
+import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.MessageInfoHolder;
@@ -53,11 +52,12 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.search.SearchAccount;
+import timber.log.Timber;
 
 
 public class MessageProvider extends ContentProvider {
-    public static String AUTHORITY;
-    public static Uri CONTENT_URI;
+    public static String AUTHORITY = BuildConfig.APPLICATION_ID + ".messageprovider";
+    public static Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     private static final String[] DEFAULT_MESSAGE_PROJECTION = new String[] {
             MessageColumns._ID,
@@ -94,10 +94,6 @@ public class MessageProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        String packageName = getContext().getPackageName();
-        AUTHORITY = packageName + ".messageprovider";
-        CONTENT_URI = Uri.parse("content://" + AUTHORITY);
-
         messageHelper = MessageHelper.getInstance(getContext());
 
         registerQueryHandler(new ThrottlingQueryHandler(new AccountsQueryHandler()));
