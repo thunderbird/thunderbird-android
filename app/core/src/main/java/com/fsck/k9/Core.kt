@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
-import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.uiModule
 import com.fsck.k9.autocrypt.autocryptModule
 import com.fsck.k9.backend.backendModule
@@ -25,10 +24,16 @@ import com.fsck.k9.service.ShutdownReceiver
 import com.fsck.k9.service.StorageGoneReceiver
 import com.fsck.k9.ui.endtoend.endToEndUiModule
 import com.fsck.k9.ui.settings.settingsUiModule
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 import timber.log.Timber
 import java.util.concurrent.SynchronousQueue
 
-object Core {
+object Core : KoinComponent {
+    private val appConfig: AppConfig by inject()
+
+    private val componentsToDisable = listOf(BootReceiver::class.java, MailService::class.java)
+
     @JvmStatic
     val coreModules = listOf(
             mainModule,
@@ -103,12 +108,8 @@ object Core {
              */
             MailService.actionReset(context, wakeLockId)
         }
-        val classes = arrayOf(
-                MessageCompose::class.java,
-                BootReceiver::class.java,
-                MailService::class.java
-        )
 
+        val classes = componentsToDisable + appConfig.componentsToDisable
         for (clazz in classes) {
             val alreadyEnabled = pm.getComponentEnabledSetting(ComponentName(context, clazz)) ==
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED
