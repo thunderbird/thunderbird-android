@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.core.R;
 import com.fsck.k9.activity.K9Activity;
@@ -449,7 +448,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
         private void clearCertificateErrorNotifications(CheckDirection direction) {
             final MessagingController ctrl = MessagingController.getInstance(getApplication());
-            ctrl.clearCertificateErrorNotifications(account, direction);
+            boolean incoming = (direction == CheckDirection.INCOMING);
+            ctrl.clearCertificateErrorNotifications(account, incoming);
         }
 
         private boolean cancelled() {

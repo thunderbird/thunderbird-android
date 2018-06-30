@@ -42,7 +42,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.core.R;
-import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.backend.api.FolderInfo;
@@ -2983,8 +2982,7 @@ public class MessagingController {
         notificationController.removeNewMailNotification(account, messageReference);
     }
 
-    public void clearCertificateErrorNotifications(Account account, CheckDirection direction) {
-        boolean incoming = (direction == CheckDirection.INCOMING);
+    public void clearCertificateErrorNotifications(Account account, boolean incoming) {
         notificationController.clearCertificateErrorNotifications(account, incoming);
     }
 
