@@ -48,6 +48,7 @@ import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.core.R;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.compose.AttachmentPresenter;

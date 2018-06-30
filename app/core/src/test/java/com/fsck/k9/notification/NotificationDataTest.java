@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.controller.MessageReference;
 import org.junit.Before;
 import org.junit.Test;
 

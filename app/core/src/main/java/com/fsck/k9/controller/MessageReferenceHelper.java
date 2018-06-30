@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.controller;
 
 
 import java.util.ArrayList;

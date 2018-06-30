@@ -7,7 +7,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;

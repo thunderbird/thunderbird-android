@@ -11,13 +11,13 @@ import timber.log.Timber;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.service.CoreService;
 
-import static com.fsck.k9.activity.MessageReferenceHelper.toMessageReferenceList;
-import static com.fsck.k9.activity.MessageReferenceHelper.toMessageReferenceStringList;
+import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceList;
+import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceStringList;
 
 
 public class NotificationActionService extends CoreService {
