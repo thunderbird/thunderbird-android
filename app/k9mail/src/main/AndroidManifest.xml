@@ -387,7 +387,7 @@
         </receiver>
 
         <receiver
-            android:name=".provider.UnreadWidgetProvider"
+            android:name=".widget.unread.UnreadWidgetProvider"
             android:icon="@drawable/icon"
             android:label="@string/unread_widget_label">
             <intent-filter>

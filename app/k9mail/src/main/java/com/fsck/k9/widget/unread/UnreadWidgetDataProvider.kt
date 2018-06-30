@@ -5,7 +5,7 @@ import android.content.Intent
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
-import com.fsck.k9.core.R
+import com.fsck.k9.R
 import com.fsck.k9.activity.FolderList
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
