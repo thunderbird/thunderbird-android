@@ -962,7 +962,7 @@ public class FolderList extends K9ListActivity {
                         createUnreadSearch(account, folder));
                 holder.newMessageCountWrapper.setVisibility(View.VISIBLE);
 
-                ColorChip colorChip = colorChipProvider.getColorChip(account, false, false);
+                ColorChip colorChip = colorChipProvider.getColorChip(account, false);
                 holder.newMessageCountIcon.setBackgroundDrawable(colorChip.drawable());
             } else {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
@@ -983,7 +983,7 @@ public class FolderList extends K9ListActivity {
                         createFlaggedSearch(account, folder));
                 holder.flaggedMessageCountWrapper.setVisibility(View.VISIBLE);
 
-                ColorChip colorChip = colorChipProvider.getColorChip(account, false, true);
+                ColorChip colorChip = colorChipProvider.getColorChip(account, true);
                 holder.flaggedMessageCountIcon.setBackgroundDrawable(colorChip.drawable());
             } else {
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);

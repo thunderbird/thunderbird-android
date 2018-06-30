@@ -6,15 +6,11 @@ import com.fsck.k9.view.ColorChip
 internal class ColorChipProvider {
     val cache = mutableMapOf<String, ColorChipHolder>()
 
-    fun getColorChip(account: Account, messageRead: Boolean, messageFlagged: Boolean): ColorChip {
+    fun getColorChip(account: Account, flagged: Boolean): ColorChip {
         val chipHolder = getChipHolder(account)
 
-        return when {
-            messageRead && messageFlagged -> chipHolder.flaggedReadColorChip
-            messageRead && !messageFlagged -> chipHolder.readColorChip
-            !messageRead && messageFlagged -> chipHolder.flaggedUnreadColorChip
-            !messageRead && !messageFlagged -> chipHolder.unreadColorChip
-            else -> throw AssertionError()
+        return with(chipHolder) {
+            if (flagged) flaggedColorChip else unreadColorChip
         }
     }
 
@@ -33,19 +29,15 @@ internal class ColorChipProvider {
         val chipColor = account.chipColor
         return ColorChipHolder(
                 chipColor = chipColor,
-                readColorChip = ColorChip(chipColor, true, ColorChip.CIRCULAR),
-                unreadColorChip = ColorChip(chipColor, false, ColorChip.CIRCULAR),
-                flaggedReadColorChip = ColorChip(chipColor, true, ColorChip.STAR),
-                flaggedUnreadColorChip = ColorChip(chipColor, false, ColorChip.STAR)
+                unreadColorChip = ColorChip(chipColor, ColorChip.CIRCULAR),
+                flaggedColorChip = ColorChip(chipColor, ColorChip.STAR)
         )
     }
 
 
     data class ColorChipHolder(
             val chipColor: Int,
-            val readColorChip: ColorChip,
             val unreadColorChip: ColorChip,
-            val flaggedReadColorChip: ColorChip,
-            val flaggedUnreadColorChip: ColorChip
+            val flaggedColorChip: ColorChip
     )
 }
