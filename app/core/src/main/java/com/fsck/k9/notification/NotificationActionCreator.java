@@ -18,6 +18,8 @@ import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.activity.MessageReference;
 import com.fsck.k9.activity.NotificationDeleteConfirmation;
 import com.fsck.k9.activity.compose.MessageActions;
+import com.fsck.k9.activity.setup.AccountSetupIncoming;
+import com.fsck.k9.activity.setup.AccountSetupOutgoing;
 import com.fsck.k9.search.LocalSearch;
 
 
@@ -113,6 +115,20 @@ class NotificationActionCreator {
             int notificationId) {
         return getMarkAsReadPendingIntent(account, messageReferences, notificationId, context,
                 PendingIntent.FLAG_NO_CREATE);
+    }
+
+    public PendingIntent getEditIncomingServerSettingsIntent(Account account) {
+        Intent intent = AccountSetupIncoming.intentActionEditIncomingSettings(context, account);
+
+        return PendingIntent.getActivity(context, account.getAccountNumber(), intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    public PendingIntent getEditOutgoingServerSettingsIntent(Account account) {
+        Intent intent = AccountSetupOutgoing.intentActionEditOutgoingSettings(context, account);
+
+        return PendingIntent.getActivity(context, account.getAccountNumber(), intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent getMarkAsReadPendingIntent(Account account, List<MessageReference> messageReferences,

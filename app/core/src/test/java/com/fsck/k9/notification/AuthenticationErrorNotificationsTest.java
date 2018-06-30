@@ -134,7 +134,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
 
     class TestAuthenticationErrorNotifications extends AuthenticationErrorNotifications {
         public TestAuthenticationErrorNotifications() {
-            super(controller);
+            super(controller, mock(NotificationActionCreator.class));
         }
 
         @Override

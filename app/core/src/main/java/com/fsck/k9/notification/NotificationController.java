@@ -54,8 +54,8 @@ public class NotificationController {
         this.notificationManager = notificationManager;
 
         NotificationActionCreator actionBuilder = new NotificationActionCreator(context);
-        certificateErrorNotifications = new CertificateErrorNotifications(this);
-        authenticationErrorNotifications = new AuthenticationErrorNotifications(this);
+        certificateErrorNotifications = new CertificateErrorNotifications(this, actionBuilder);
+        authenticationErrorNotifications = new AuthenticationErrorNotifications(this, actionBuilder);
         syncNotifications = new SyncNotifications(this, actionBuilder);
         sendFailedNotifications = new SendFailedNotifications(this, actionBuilder);
         newMailNotifications = NewMailNotifications.newInstance(this, actionBuilder);
