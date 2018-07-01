@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -18,7 +19,6 @@ import android.os.Bundle;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9RobolectricTest;
-import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
@@ -441,7 +441,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
     public void buildSignWithAttach__withInlineEnabled__shouldThrow() {
         configureSignOnly();
         configurePgpInline();
-        pgpMessageBuilder.setAttachments(Collections.singletonList(Attachment.createAttachment(null, 0, null, true)));
+        pgpMessageBuilder.setAttachments(createAttachmentList());
 
         Callback mockCallback = mock(Callback.class);
         pgpMessageBuilder.buildAsync(mockCallback);
@@ -455,7 +455,7 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
     public void buildEncryptWithAttach__withInlineEnabled__shouldThrow() {
         configureEncryptAndSign();
         configurePgpInline();
-        pgpMessageBuilder.setAttachments(Collections.singletonList(Attachment.createAttachment(null, 0, null, true)));
+        pgpMessageBuilder.setAttachments(createAttachmentList());
 
         Callback mockCallback = mock(Callback.class);
         pgpMessageBuilder.buildAsync(mockCallback);
@@ -561,6 +561,12 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
                 .setDraft(false);
 
         return builder;
+    }
+
+    private static List<Attachment> createAttachmentList() {
+        Attachment attachment = mock(Attachment.class);
+        when(attachment.getState()).thenReturn(Attachment.LoadingState.URI_ONLY);
+        return Collections.singletonList(attachment);
     }
 
     private static void assertContentOfBodyPartEquals(String reason, BodyPart signatureBodyPart, byte[] expected) {

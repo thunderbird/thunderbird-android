@@ -677,7 +677,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setIdentity(identity)
                 .setMessageFormat(currentMessageFormat)
                 .setText(messageContentView.getCharacters())
-                .setAttachments(attachmentPresenter.createAttachmentList())
+                .setAttachments(attachmentPresenter.getAttachments())
                 .setSignature(signatureView.getCharacters())
                 .setSignatureBeforeQuotedText(account.isSignatureBeforeQuotedText())
                 .setIdentityChanged(identityChanged)

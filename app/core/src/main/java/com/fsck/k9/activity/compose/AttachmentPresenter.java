@@ -3,6 +3,7 @@ package com.fsck.k9.activity.compose;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -21,11 +22,11 @@ import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
-import com.fsck.k9.activity.misc.Attachment.LoadingState;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.message.Attachment.LoadingState;
 import com.fsck.k9.provider.RawMessageProvider;
 
 
@@ -117,6 +118,10 @@ public class AttachmentPresenter {
             result.add(attachment);
         }
         return result;
+    }
+
+    public List<com.fsck.k9.message.Attachment> getAttachments() {
+        return new ArrayList<com.fsck.k9.message.Attachment>(attachments.values());
     }
 
     public void onClickAddAttachment(RecipientPresenter recipientPresenter) {
