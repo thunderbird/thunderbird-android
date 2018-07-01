@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.provider.EmailProvider;
 
@@ -161,7 +159,7 @@ public class EmailProviderCache {
      *
      * <p><strong>Note:</strong>
      * Notifying the content resolver of the change will cause the {@code CursorLoader} in
-     * {@link MessageListFragment} to reload the cursor. But especially with flag changes this will
+     * {@code MessageListFragment} to reload the cursor. But especially with flag changes this will
      * block because of the DB write operation to update the flags. So additionally we use
      * {@link LocalBroadcastManager} to send a {@link #ACTION_CACHE_UPDATED} broadcast. This way
      * {@code MessageListFragment} can update the view without reloading the cursor.

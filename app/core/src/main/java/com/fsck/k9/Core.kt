@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
-import com.fsck.k9.activity.uiModule
 import com.fsck.k9.autocrypt.autocryptModule
 import com.fsck.k9.backend.backendModule
 import com.fsck.k9.crypto.openPgpModule
@@ -22,8 +21,6 @@ import com.fsck.k9.service.BootReceiver
 import com.fsck.k9.service.MailService
 import com.fsck.k9.service.ShutdownReceiver
 import com.fsck.k9.service.StorageGoneReceiver
-import com.fsck.k9.ui.endtoend.endToEndUiModule
-import com.fsck.k9.ui.settings.settingsUiModule
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import timber.log.Timber
@@ -37,15 +34,12 @@ object Core : KoinComponent {
     @JvmStatic
     val coreModules = listOf(
             mainModule,
-            settingsUiModule,
-            endToEndUiModule,
             openPgpModule,
             autocryptModule,
             mailStoreModule,
             backendModule,
             extractorModule,
-            htmlModule,
-            uiModule
+            htmlModule
     )
 
     /**
