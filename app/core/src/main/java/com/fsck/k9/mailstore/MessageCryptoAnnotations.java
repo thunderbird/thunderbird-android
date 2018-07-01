@@ -1,10 +1,9 @@
-package com.fsck.k9.ui.crypto;
+package com.fsck.k9.mailstore;
 
 
 import java.util.HashMap;
 
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mailstore.CryptoResultAnnotation;
 
 
 public class MessageCryptoAnnotations {
