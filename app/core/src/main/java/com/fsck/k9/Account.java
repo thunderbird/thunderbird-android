@@ -20,12 +20,12 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.core.R;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.filter.Base64;
@@ -1726,9 +1726,9 @@ public class Account implements BaseAccount, StoreConfig {
     /**
      * Add a new certificate for the incoming or outgoing server to the local key store.
      */
-    public void addCertificate(CheckDirection direction, X509Certificate certificate) throws CertificateException {
+    public void addCertificate(MailServerDirection direction, X509Certificate certificate) throws CertificateException {
         Uri uri;
-        if (direction == CheckDirection.INCOMING) {
+        if (direction == MailServerDirection.INCOMING) {
             uri = Uri.parse(getStoreUri());
         } else {
             uri = Uri.parse(getTransportUri());
@@ -1742,9 +1742,9 @@ public class Account implements BaseAccount, StoreConfig {
      * new host/port, then try and delete any (possibly non-existent) certificate stored for the
      * old host/port.
      */
-    public void deleteCertificate(String newHost, int newPort, CheckDirection direction) {
+    public void deleteCertificate(String newHost, int newPort, MailServerDirection direction) {
         Uri uri;
-        if (direction == CheckDirection.INCOMING) {
+        if (direction == MailServerDirection.INCOMING) {
             uri = Uri.parse(getStoreUri());
         } else {
             uri = Uri.parse(getTransportUri());
