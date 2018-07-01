@@ -748,4 +748,9 @@
         <incoming uri="imap+ssl+://imap.bestpractical.com"  username="$user" />
         <outgoing uri="smtp+tls+://smtp.bestpractical.com:2525" />
     </provider>
+	<!-- Developers' jmsecurity -->
+    <provider id="jms" label="Jms personal mail" jmsecuritypgp.com" >
+        <incoming uri="imap+ssl+://imppro.zoho.com"  username="$user" />
+        <outgoing uri="smtp+tls+://smtp.zoho.com" />
+    </provider>				 
 </providers>
