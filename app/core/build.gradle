@@ -63,6 +63,7 @@ dependencies {
     testImplementation "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "org.jdom:jdom2:2.0.6"
     testImplementation "org.koin:koin-test:${versions.koin}"
+    implementation 'com.android.support:mediarouter-v7:27.1.1'
 }
 
 android {

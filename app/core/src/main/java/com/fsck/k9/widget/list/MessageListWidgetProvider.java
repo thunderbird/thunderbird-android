@@ -38,10 +38,19 @@ public class MessageListWidgetProvider extends AppWidgetProvider {
         }
     }
 
+    //----------------------------------change LB 29.06.2018-------------------------------------
+    private PendingIntent enterpostActionPendingIntent(Context context) {
+        Intent intent = new Intent(context, MessageList.class);
+        intent.setAction(Intent.ACTION_VIEW);
+
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+//--------------------------------------------------------------------------------------------
+
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.message_list_widget_layout);
 
-        views.setTextViewText(R.id.folder, context.getString(R.string.integrated_inbox_title));
+        //views.setTextViewText(R.id.folder, context.getString(R.string.integrated_inbox_title));
 
         Intent intent = new Intent(context, MessageListWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -53,6 +62,9 @@ public class MessageListWidgetProvider extends AppWidgetProvider {
 
         PendingIntent composeAction = composeActionPendingIntent(context);
         views.setOnClickPendingIntent(R.id.new_message, composeAction);
+
+        PendingIntent enterpostAction = enterpostActionPendingIntent(context);
+        views.setOnClickPendingIntent(R.id.enter_post, enterpostAction);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
