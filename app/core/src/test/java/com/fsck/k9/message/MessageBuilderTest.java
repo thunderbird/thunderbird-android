@@ -16,7 +16,6 @@ import android.app.Application;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
 import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
@@ -352,17 +351,40 @@ public class MessageBuilderTest extends RobolectricTest {
         return outputStream.toString();
     }
 
-    private Attachment createAttachmentWithContent(String mimeType, String filename, String content) throws Exception {
-        byte[] bytes = content.getBytes();
-        File tempFile = File.createTempFile("pre", ".tmp");
+    private Attachment createAttachmentWithContent(final String mimeType, final String filename, String content) throws Exception {
+        final byte[] bytes = content.getBytes();
+        final File tempFile = File.createTempFile("pre", ".tmp");
         tempFile.deleteOnExit();
         FileOutputStream fileOutputStream = new FileOutputStream(tempFile);
         fileOutputStream.write(bytes);
         fileOutputStream.close();
 
-        return Attachment.createAttachment(null, 0, mimeType, true)
-                .deriveWithMetadataLoaded(mimeType, filename, bytes.length)
-                .deriveWithLoadComplete(tempFile.getAbsolutePath());
+        return new Attachment() {
+            @Override
+            public Long getSize() {
+                return (long) bytes.length;
+            }
+
+            @Override
+            public String getName() {
+                return filename;
+            }
+
+            @Override
+            public String getContentType() {
+                return mimeType;
+            }
+
+            @Override
+            public String getFileName() {
+                return tempFile.getAbsolutePath();
+            }
+
+            @Override
+            public LoadingState getState() {
+                return LoadingState.COMPLETE;
+            }
+        };
     }
 
     private MessageBuilder createSimpleMessageBuilder() {

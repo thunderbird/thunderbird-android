@@ -20,8 +20,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.core.R;
-import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import com.fsck.k9.view.ThemeUtils;

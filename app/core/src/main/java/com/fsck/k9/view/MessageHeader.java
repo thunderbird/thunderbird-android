@@ -18,7 +18,6 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
-import timber.log.Timber;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,19 +30,19 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
-import com.fsck.k9.core.R;
+import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
+import com.fsck.k9.core.R;
 import com.fsck.k9.helper.ClipboardManager;
-import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.MimeUtility;
-import com.fsck.k9.ui.messageview.OnCryptoClickListener;
 import com.fsck.k9.ui.ContactBadge;
+import com.fsck.k9.ui.messageview.OnCryptoClickListener;
+import timber.log.Timber;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
@@ -316,7 +315,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         if (K9.showContactPicture()) {
             if (counterpartyAddress != null) {
-                Utility.setContactForBadge(mContactBadge, counterpartyAddress);
+                mContactBadge.setContact(counterpartyAddress);
                 mContactsPictureLoader.loadContactPicture(counterpartyAddress, mContactBadge);
             } else {
                 mContactBadge.setImageResource(R.drawable.ic_contact_picture);

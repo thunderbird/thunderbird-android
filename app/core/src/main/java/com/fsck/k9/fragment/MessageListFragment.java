@@ -1,5 +1,6 @@
 package com.fsck.k9.fragment;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,7 +32,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import timber.log.Timber;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -52,17 +52,18 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.core.R;
 import com.fsck.k9.activity.ActivityListener;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.FolderInfoHolder;
-import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.activity.misc.ContactPictureLoader;
 import com.fsck.k9.cache.EmailProviderCache;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.core.BuildConfig;
+import com.fsck.k9.core.R;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.fragment.MessageListFragmentComparators.ArrivalComparator;
 import com.fsck.k9.fragment.MessageListFragmentComparators.AttachmentComparator;
@@ -74,7 +75,6 @@ import com.fsck.k9.fragment.MessageListFragmentComparators.ReverseIdComparator;
 import com.fsck.k9.fragment.MessageListFragmentComparators.SenderComparator;
 import com.fsck.k9.fragment.MessageListFragmentComparators.SubjectComparator;
 import com.fsck.k9.fragment.MessageListFragmentComparators.UnreadComparator;
-import com.fsck.k9.helper.ContactPicture;
 import com.fsck.k9.helper.MergeCursorWithUniqueId;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
@@ -92,6 +92,7 @@ import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
+import timber.log.Timber;
 
 import static com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FLAGGED_COLUMN;

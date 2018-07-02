@@ -11,7 +11,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.TextBody;
-import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
+import com.fsck.k9.mailstore.MessageCryptoAnnotations;
 import org.junit.Test;
 
 import static com.fsck.k9.message.TestMessageConstructionUtils.bodypart;

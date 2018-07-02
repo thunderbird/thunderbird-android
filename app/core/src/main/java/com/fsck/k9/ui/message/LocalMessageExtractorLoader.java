@@ -12,7 +12,7 @@ import timber.log.Timber;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfoExtractor;
 import com.fsck.k9.mailstore.MessageViewInfo;
-import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
+import com.fsck.k9.mailstore.MessageCryptoAnnotations;
 
 
 public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo> {

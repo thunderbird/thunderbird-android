@@ -4,12 +4,16 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+
 /**
  * Container class for information about an attachment.
  *
  * This is used by {@link com.fsck.k9.activity.MessageCompose} to fetch and manage attachments.
  */
-public class Attachment implements Parcelable {
+public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
     /**
      * The URI pointing to the source of the attachment.
      *
@@ -60,11 +64,34 @@ public class Attachment implements Parcelable {
      */
     public final String filename;
 
-    public enum LoadingState {
-        URI_ONLY,
-        METADATA,
-        COMPLETE,
-        CANCELLED
+    @NotNull
+    @Override
+    public LoadingState getState() {
+        return state;
+    }
+
+    @Nullable
+    @Override
+    public String getFileName() {
+        return filename;
+    }
+
+    @Nullable
+    @Override
+    public String getContentType() {
+        return contentType;
+    }
+
+    @Nullable
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Nullable
+    @Override
+    public Long getSize() {
+        return size;
     }
 
     private Attachment(Uri uri, LoadingState state, int loaderId, String contentType, boolean allowMessageType,

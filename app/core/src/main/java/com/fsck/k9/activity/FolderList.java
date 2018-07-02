@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -60,6 +61,7 @@ import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.service.MailService;
 import com.fsck.k9.ui.settings.SettingsActivity;
+import com.fsck.k9.view.ColorChip;
 import de.cketti.library.changelog.ChangeLog;
 import timber.log.Timber;
 
@@ -74,6 +76,8 @@ public class FolderList extends K9ListActivity {
     private static final String EXTRA_FROM_SHORTCUT = "fromShortcut";
 
     private static final boolean REFRESH_REMOTE = true;
+
+    private final ColorChipProvider colorChipProvider = DI.get(ColorChipProvider.class);
 
     private ListView listView;
 
@@ -957,8 +961,9 @@ public class FolderList extends K9ListActivity {
                 holder.newMessageCountWrapper.setOnClickListener(
                         createUnreadSearch(account, folder));
                 holder.newMessageCountWrapper.setVisibility(View.VISIBLE);
-                holder.newMessageCountIcon.setBackgroundDrawable(
-                        account.generateColorChip(false, false).drawable());
+
+                ColorChip colorChip = colorChipProvider.getColorChip(account, false);
+                holder.newMessageCountIcon.setBackgroundDrawable(colorChip.drawable());
             } else {
                 holder.newMessageCountWrapper.setVisibility(View.GONE);
             }
@@ -977,8 +982,9 @@ public class FolderList extends K9ListActivity {
                 holder.flaggedMessageCountWrapper.setOnClickListener(
                         createFlaggedSearch(account, folder));
                 holder.flaggedMessageCountWrapper.setVisibility(View.VISIBLE);
-                holder.flaggedMessageCountIcon.setBackgroundDrawable(
-                        account.generateColorChip(false, true).drawable());
+
+                ColorChip colorChip = colorChipProvider.getColorChip(account, true);
+                holder.flaggedMessageCountIcon.setBackgroundDrawable(colorChip.drawable());
             } else {
                 holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
             }

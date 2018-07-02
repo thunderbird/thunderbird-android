@@ -17,7 +17,7 @@ import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import org.junit.Before;
 import org.junit.Test;

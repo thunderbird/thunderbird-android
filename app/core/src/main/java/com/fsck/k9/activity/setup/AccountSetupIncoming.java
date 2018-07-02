@@ -39,6 +39,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
@@ -586,7 +587,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                         mWebdavMailboxPathView.getText().toString());
             }
 
-            mAccount.deleteCertificate(host, port, CheckDirection.INCOMING);
+            mAccount.deleteCertificate(host, port, MailServerDirection.INCOMING);
             ServerSettings settings = new ServerSettings(mStoreType, host, port,
                     connectionSecurity, authType, username, password, clientCertificateAlias, extra);
 

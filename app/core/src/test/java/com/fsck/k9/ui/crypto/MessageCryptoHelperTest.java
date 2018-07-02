@@ -19,6 +19,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
+import com.fsck.k9.mailstore.MessageCryptoAnnotations;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

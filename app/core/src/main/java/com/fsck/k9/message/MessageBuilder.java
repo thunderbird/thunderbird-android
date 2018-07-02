@@ -17,8 +17,7 @@ import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
-import com.fsck.k9.activity.MessageReference;
-import com.fsck.k9.activity.misc.Attachment;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BoundaryGenerator;
@@ -219,15 +218,15 @@ public abstract class MessageBuilder {
      */
     private void addAttachmentsToMessage(final MimeMultipart mp) throws MessagingException {
         for (Attachment attachment : attachments) {
-            if (attachment.state != Attachment.LoadingState.COMPLETE) {
+            if (attachment.getState() != Attachment.LoadingState.COMPLETE) {
                 continue;
             }
 
-            Body body = new TempFileBody(attachment.filename);
+            Body body = new TempFileBody(attachment.getFileName());
             MimeBodyPart bp = new MimeBodyPart(body);
 
-            addContentType(bp, attachment.contentType, attachment.name);
-            addContentDisposition(bp, attachment.name, attachment.size);
+            addContentType(bp, attachment.getContentType(), attachment.getName());
+            addContentDisposition(bp, attachment.getName(), attachment.getSize());
 
             mp.addBodyPart(bp);
         }

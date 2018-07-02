@@ -10,7 +10,7 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.fsck.k9.activity.misc.Attachment;
-import com.fsck.k9.activity.misc.Attachment.LoadingState;
+import com.fsck.k9.message.Attachment.LoadingState;
 import de.cketti.safecontentresolver.SafeContentResolver;
 import de.cketti.safecontentresolver.SafeContentResolverCompat;
 import org.apache.commons.io.IOUtils;

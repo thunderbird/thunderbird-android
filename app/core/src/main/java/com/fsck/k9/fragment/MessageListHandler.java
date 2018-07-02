@@ -7,7 +7,7 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Parcelable;
 
-import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.controller.MessageReference;
 
 /**
  * This class is used to run operations that modify UI elements in the UI thread.

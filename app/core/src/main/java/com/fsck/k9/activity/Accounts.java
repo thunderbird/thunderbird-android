@@ -62,6 +62,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
 import com.fsck.k9.Core;
+import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -113,6 +114,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private static final int DIALOG_RECREATE_ACCOUNT = 3;
     private static final int DIALOG_NO_FILE_MANAGER = 4;
 
+    private final ColorChipProvider colorChipProvider = DI.get(ColorChipProvider.class);
     private MessagingController controller;
 
     /*
@@ -1686,13 +1688,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
                 holder.chip.setBackgroundColor(realAccount.getChipColor());
 
-                holder.flaggedMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, true).drawable() );
-                holder.newMessageCountIcon.setBackgroundDrawable( realAccount.generateColorChip(false, false).drawable() );
+                ColorChip flaggedColorChip = colorChipProvider.getColorChip(realAccount, true);
+                holder.flaggedMessageCountIcon.setBackgroundDrawable(flaggedColorChip.drawable());
+
+                ColorChip unreadColorChip = colorChipProvider.getColorChip(realAccount, false);
+                holder.newMessageCountIcon.setBackgroundDrawable(unreadColorChip.drawable());
 
             } else {
                 holder.chip.setBackgroundColor(0xff999999);
-                holder.newMessageCountIcon.setBackgroundDrawable( new ColorChip(0xff999999, false, ColorChip.CIRCULAR).drawable() );
-                holder.flaggedMessageCountIcon.setBackgroundDrawable(new ColorChip(0xff999999, false, ColorChip.STAR).drawable());
+                holder.newMessageCountIcon.setBackgroundDrawable( new ColorChip(0xff999999, ColorChip.CIRCULAR).drawable() );
+                holder.flaggedMessageCountIcon.setBackgroundDrawable(new ColorChip(0xff999999, ColorChip.STAR).drawable());
             }
 
 

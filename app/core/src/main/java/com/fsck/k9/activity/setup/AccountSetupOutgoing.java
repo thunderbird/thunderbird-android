@@ -34,6 +34,7 @@ import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.TransportUris;
@@ -485,7 +486,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         int newPort = Integer.parseInt(mPortView.getText().toString());
         ServerSettings server = new ServerSettings(Type.SMTP, newHost, newPort, securityType, authType, username, password, clientCertificateAlias);
         uri = TransportUris.createTransportUri(server);
-        mAccount.deleteCertificate(newHost, newPort, CheckDirection.OUTGOING);
+        mAccount.deleteCertificate(newHost, newPort, MailServerDirection.OUTGOING);
         mAccount.setTransportUri(uri);
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
     }

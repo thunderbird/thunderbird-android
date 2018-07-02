@@ -11,6 +11,7 @@ import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
 import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus;
 import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatusType;
+import com.fsck.k9.message.CryptoStatus;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 
@@ -18,9 +19,7 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
  * during email composition to apply cryptographic operations before sending
  * or saving as draft.
  */
-public class ComposeCryptoStatus {
-
-
+public class ComposeCryptoStatus implements CryptoStatus {
     private OpenPgpProviderState openPgpProviderState;
     private Long openPgpKeyId;
     private String[] recipientAddresses;

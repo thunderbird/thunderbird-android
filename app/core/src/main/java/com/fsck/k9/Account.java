@@ -20,12 +20,12 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.core.R;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.filter.Base64;
@@ -41,7 +41,6 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
-import com.fsck.k9.view.ColorChip;
 import com.larswerkman.colorpicker.ColorPicker;
 import timber.log.Timber;
 
@@ -225,12 +224,6 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean remoteSearchFullText;
     private int remoteSearchNumResults;
 
-    private ColorChip unreadColorChip;
-    private ColorChip readColorChip;
-
-    private ColorChip flaggedUnreadColorChip;
-    private ColorChip flaggedReadColorChip;
-
 
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
@@ -342,8 +335,6 @@ public class Account implements BaseAccount, StoreConfig {
         notificationSetting.setRingEnabled(true);
         notificationSetting.setRingtone("content://settings/system/notification_sound");
         notificationSetting.setLedColor(chipColor);
-
-        cacheChips();
     }
 
     protected Account(Preferences preferences, String uuid) {
@@ -457,8 +448,6 @@ public class Account implements BaseAccount, StoreConfig {
         isEnabled = storage.getBoolean(accountUuid + ".enabled", true);
         markMessageAsReadOnView = storage.getBoolean(accountUuid + ".markMessageAsReadOnView", true);
         alwaysShowCcBcc = storage.getBoolean(accountUuid + ".alwaysShowCcBcc", false);
-
-        cacheChips();
 
         // Use email address as account description if necessary
         if (description == null) {
@@ -758,39 +747,10 @@ public class Account implements BaseAccount, StoreConfig {
 
     public synchronized void setChipColor(int color) {
         chipColor = color;
-        cacheChips();
-    }
-
-    private synchronized void cacheChips() {
-        readColorChip = new ColorChip(chipColor, true, ColorChip.CIRCULAR);
-        unreadColorChip = new ColorChip(chipColor, false, ColorChip.CIRCULAR);
-        flaggedReadColorChip = new ColorChip(chipColor, true, ColorChip.STAR);
-        flaggedUnreadColorChip = new ColorChip(chipColor, false, ColorChip.STAR);
     }
 
     public synchronized int getChipColor() {
         return chipColor;
-    }
-
-
-    public ColorChip generateColorChip(boolean messageRead, boolean messageFlagged) {
-        ColorChip chip;
-
-        if (messageRead) {
-            if (messageFlagged) {
-                chip = flaggedReadColorChip;
-            } else {
-                chip = readColorChip;
-            }
-        } else {
-            if (messageFlagged) {
-                chip = flaggedUnreadColorChip;
-            } else {
-                chip = unreadColorChip;
-            }
-        }
-
-        return chip;
     }
 
     @Override
@@ -1766,9 +1726,9 @@ public class Account implements BaseAccount, StoreConfig {
     /**
      * Add a new certificate for the incoming or outgoing server to the local key store.
      */
-    public void addCertificate(CheckDirection direction, X509Certificate certificate) throws CertificateException {
+    public void addCertificate(MailServerDirection direction, X509Certificate certificate) throws CertificateException {
         Uri uri;
-        if (direction == CheckDirection.INCOMING) {
+        if (direction == MailServerDirection.INCOMING) {
             uri = Uri.parse(getStoreUri());
         } else {
             uri = Uri.parse(getTransportUri());
@@ -1782,9 +1742,9 @@ public class Account implements BaseAccount, StoreConfig {
      * new host/port, then try and delete any (possibly non-existent) certificate stored for the
      * old host/port.
      */
-    public void deleteCertificate(String newHost, int newPort, CheckDirection direction) {
+    public void deleteCertificate(String newHost, int newPort, MailServerDirection direction) {
         Uri uri;
-        if (direction == CheckDirection.INCOMING) {
+        if (direction == MailServerDirection.INCOMING) {
             uri = Uri.parse(getStoreUri());
         } else {
             uri = Uri.parse(getTransportUri());

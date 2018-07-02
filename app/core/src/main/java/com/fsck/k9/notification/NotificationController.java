@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalMessage;
 

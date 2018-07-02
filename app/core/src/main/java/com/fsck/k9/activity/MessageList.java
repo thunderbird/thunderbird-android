@@ -46,6 +46,7 @@ import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.core.R;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
@@ -53,6 +54,7 @@ import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
 import com.fsck.k9.helper.ParcelableUtil;
 import com.fsck.k9.mailstore.Folder;
+import com.fsck.k9.mailstore.SearchStatusManager;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.search.LocalSearch;
@@ -164,6 +166,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
 
+    protected final SearchStatusManager searchStatusManager = DI.get(SearchStatusManager.class);
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
     private final FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
     private final Preferences preferences = DI.get(Preferences.class);
@@ -530,7 +533,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         if (!(this instanceof Search)) {
             //necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
             //when returning from search results
-            Search.setActive(false);
+            searchStatusManager.setActive(false);
         }
 
         if (account != null && !account.isAvailable(this)) {

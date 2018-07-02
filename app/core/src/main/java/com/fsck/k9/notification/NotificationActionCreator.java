@@ -7,7 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.controller.MessageReference;
 
 
 public interface NotificationActionCreator {

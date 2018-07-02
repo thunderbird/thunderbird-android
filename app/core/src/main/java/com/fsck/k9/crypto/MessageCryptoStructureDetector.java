@@ -21,7 +21,7 @@ import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
-import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
+import com.fsck.k9.mailstore.MessageCryptoAnnotations;
 
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 

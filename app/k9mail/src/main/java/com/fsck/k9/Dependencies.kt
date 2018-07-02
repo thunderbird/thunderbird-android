@@ -10,6 +10,7 @@ import com.fsck.k9.widget.unread.unreadWidgetModule
 import org.koin.dsl.module.applicationContext
 
 private val mainAppModule = applicationContext {
+    bean { App.appConfig }
     bean { MessagingListenerProvider(
             listOf(
                     get<UnreadWidgetUpdateListener>(),

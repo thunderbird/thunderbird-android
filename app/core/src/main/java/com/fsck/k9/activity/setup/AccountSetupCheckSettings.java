@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.core.R;
 import com.fsck.k9.activity.K9Activity;
@@ -40,6 +39,7 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.Folder.FolderType;
+import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.TransportProvider;
@@ -67,7 +67,16 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
     public enum CheckDirection {
         INCOMING,
-        OUTGOING
+        OUTGOING;
+
+        public MailServerDirection toMailServerDirection() {
+            switch (this) {
+                case INCOMING: return MailServerDirection.INCOMING;
+                case OUTGOING: return MailServerDirection.OUTGOING;
+            }
+
+            throw new AssertionError("Unknown value: " + this);
+        }
     }
 
     private final MessagingController messagingController = DI.get(MessagingController.class);
@@ -295,7 +304,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
      */
     private void acceptCertificate(X509Certificate certificate) {
         try {
-            mAccount.addCertificate(mDirection, certificate);
+            mAccount.addCertificate(mDirection.toMailServerDirection(), certificate);
         } catch (CertificateException e) {
             showErrorDialog(
                     R.string.account_setup_failed_dlg_certificate_message_fmt,
@@ -449,7 +458,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
         private void clearCertificateErrorNotifications(CheckDirection direction) {
             final MessagingController ctrl = MessagingController.getInstance(getApplication());
-            ctrl.clearCertificateErrorNotifications(account, direction);
+            boolean incoming = (direction == CheckDirection.INCOMING);
+            ctrl.clearCertificateErrorNotifications(account, incoming);
         }
 
         private boolean cancelled() {
