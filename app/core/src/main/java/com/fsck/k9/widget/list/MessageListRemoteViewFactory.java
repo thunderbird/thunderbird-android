@@ -15,12 +15,16 @@ import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.core.R;
+import com.fsck.k9.R;
 import com.fsck.k9.provider.MessageProvider;
+
+
+
 
 
 public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
@@ -41,6 +45,7 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
     private boolean senderAboveSubject;
     private int readTextColor;
     private int unreadTextColor;
+    private View v;
 
 
     public MessageListRemoteViewFactory(Context context) {
@@ -54,6 +59,8 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
         readTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_read);
         unreadTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_unread);
     }
+
+
 
     @Override
     public void onDataSetChanged() {
