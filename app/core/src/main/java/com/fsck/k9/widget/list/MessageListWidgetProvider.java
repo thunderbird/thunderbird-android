@@ -10,16 +10,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.K9;
-import com.fsck.k9.R;
-import com.fsck.k9.activity.AccountList;
-import com.fsck.k9.activity.Accounts;
-import com.fsck.k9.activity.K9PreferenceActivity;
+import com.fsck.k9.core.R;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageList;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.search.SearchAccount;
 
 
 public class MessageListWidgetProvider extends AppWidgetProvider {
@@ -44,17 +37,11 @@ public class MessageListWidgetProvider extends AppWidgetProvider {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
-    //----------------------------------change LB 29.06.2018-------------------------------------
-    private PendingIntent enterpostActionPendingIntent(Context context) {
-        Intent intent = new Intent(context, MessageList.class);
-        intent.setAction(Intent.ACTION_VIEW);
-
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-//--------------------------------------------------------------------------------------------
 
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.message_list_widget_layout);
+
+        views.setTextViewText(R.id.folder, context.getString(R.string.integrated_inbox_title));
 
         Intent intent = new Intent(context, MessageListWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -66,10 +53,6 @@ public class MessageListWidgetProvider extends AppWidgetProvider {
 
         PendingIntent composeAction = composeActionPendingIntent(context);
         views.setOnClickPendingIntent(R.id.new_message, composeAction);
-
-        //change LB 29.06.2018
-        PendingIntent enterpostAction = enterpostActionPendingIntent(context);
-        views.setOnClickPendingIntent(R.id.enter_post, enterpostAction);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
