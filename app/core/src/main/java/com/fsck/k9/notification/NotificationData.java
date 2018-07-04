@@ -10,7 +10,7 @@ import java.util.List;
 import android.util.SparseBooleanArray;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.controller.MessageReference;
 
 
 /**

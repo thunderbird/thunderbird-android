@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message.RecipientType;

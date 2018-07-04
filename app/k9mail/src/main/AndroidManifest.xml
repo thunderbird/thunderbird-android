@@ -347,7 +347,7 @@
         </receiver>
 
         <receiver
-            android:name=".service.RemoteControlReceiver"
+            android:name=".external.remotecontrol.RemoteControlReceiver"
             android:enabled="true"
             android:permission="${applicationId}.permission.REMOTE_CONTROL">
             <intent-filter>
@@ -387,7 +387,7 @@
         </receiver>
 
         <receiver
-            android:name=".provider.UnreadWidgetProvider"
+            android:name=".widget.unread.UnreadWidgetProvider"
             android:icon="@drawable/icon"
             android:label="@string/unread_widget_label">
             <intent-filter>
@@ -432,7 +432,7 @@
             android:enabled="true"/>
 
         <service
-            android:name=".service.RemoteControlService"
+            android:name=".external.remotecontrol.RemoteControlService"
             android:enabled="true"
             android:permission="${applicationId}.permission.REMOTE_CONTROL"/>
 
@@ -446,7 +446,7 @@
 
 
         <service
-            android:name="com.fsck.k9.service.K9ChooserTargetService"
+            android:name="com.fsck.k9.directshare.K9ChooserTargetService"
             android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE" >
             <intent-filter>
                 <action android:name="android.service.chooser.ChooserTargetService" />
@@ -477,7 +477,7 @@
         </provider>
 
         <provider
-            android:name=".provider.MessageProvider"
+            android:name=".external.MessageProvider"
             android:authorities="${applicationId}.messageprovider"
             android:exported="true"
             android:grantUriPermissions="true"

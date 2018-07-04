@@ -9,18 +9,22 @@ if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
 }
 
-//noinspection GroovyAssignabilityCheck
-configurations.all {
-    resolutionStrategy {
-        force "com.android.support:support-annotations:${versions.supportLibrary}"
-        force "com.android.support:design:${versions.supportLibrary}"
-    }
-}
-
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
+    implementation project(":app:ui")
     implementation project(":app:core")
+
+    implementation "com.android.support:appcompat-v7:${versions.supportLibrary}"
+    implementation "com.android.support:preference-v14:${versions.supportLibrary}"
+
+    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "com.google.truth:truth:${versions.truth}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}"
+    testImplementation "org.jdom:jdom2:2.0.6"
+    testImplementation "org.koin:koin-test:${versions.koin}"
 
     androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
 }

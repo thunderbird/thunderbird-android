@@ -16,7 +16,6 @@ import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.DI;
 import com.fsck.k9.core.R;
-import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
@@ -56,7 +55,7 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     private MimeMessage currentProcessedMimeMessage;
     private MimeBodyPart messageContentBodyPart;
-    private ComposeCryptoStatus cryptoStatus;
+    private CryptoStatus cryptoStatus;
 
 
     public static PgpMessageBuilder newInstance() {
@@ -417,7 +416,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         MimeMessageHelper.setBody(currentProcessedMimeMessage, inlineBodyPart);
     }
 
-    public void setCryptoStatus(ComposeCryptoStatus cryptoStatus) {
+    public void setCryptoStatus(CryptoStatus cryptoStatus) {
         this.cryptoStatus = cryptoStatus;
     }
 }

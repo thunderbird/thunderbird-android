@@ -42,9 +42,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.core.R;
-import com.fsck.k9.activity.ActivityListener;
-import com.fsck.k9.activity.MessageReference;
-import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.backend.api.FolderInfo;
@@ -2321,7 +2318,7 @@ public class MessagingController {
         });
     }
 
-    public void clearFolder(final Account account, final String folderServerId, final ActivityListener listener) {
+    public void clearFolder(final Account account, final String folderServerId, final MessagingListener listener) {
         putBackground("clearFolder", listener, new Runnable() {
             @Override
             public void run() {
@@ -2709,6 +2706,10 @@ public class MessagingController {
             return false;
         }
 
+        if (K9.isQuietTime() && !K9.isNotificationDuringQuietTimeEnabled()) {
+            return false;
+        }
+
         // Do not notify if the user does not have notifications enabled or if the message has
         // been read.
         if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN) || isOldMessage) {
@@ -2981,8 +2982,7 @@ public class MessagingController {
         notificationController.removeNewMailNotification(account, messageReference);
     }
 
-    public void clearCertificateErrorNotifications(Account account, CheckDirection direction) {
-        boolean incoming = (direction == CheckDirection.INCOMING);
+    public void clearCertificateErrorNotifications(Account account, boolean incoming) {
         notificationController.clearCertificateErrorNotifications(account, incoming);
     }
 

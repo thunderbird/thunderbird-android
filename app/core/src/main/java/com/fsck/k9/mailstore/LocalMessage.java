@@ -13,7 +13,7 @@ import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.core.BuildConfig;
-import com.fsck.k9.activity.MessageReference;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;

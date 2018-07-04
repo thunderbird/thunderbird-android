@@ -46,4 +46,14 @@ subprojects {
         google()
         maven { url 'https://jitpack.io' }
     }
+
+    configurations.all {
+        exclude group: "com.android.support", module: "support-media-compat"
+
+        resolutionStrategy {
+            force "com.android.support:support-annotations:${versions.supportLibrary}"
+            force "com.android.support:design:${versions.supportLibrary}"
+            force "com.android.support:support-fragment:${versions.supportLibrary}"
+        }
+    }
 }

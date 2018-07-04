@@ -27,7 +27,6 @@ import com.fsck.k9.mailstore.util.FlowedMessageUtils;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.message.html.HtmlProcessor;
-import com.fsck.k9.ui.crypto.MessageCryptoAnnotations;
 import org.openintents.openpgp.util.OpenPgpUtils;
 import timber.log.Timber;
 

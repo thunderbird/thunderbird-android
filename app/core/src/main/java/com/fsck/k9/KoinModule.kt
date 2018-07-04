@@ -6,7 +6,6 @@ import com.fsck.k9.mail.TransportProvider
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.power.TracingPowerManager
-import com.fsck.k9.ui.folders.FolderNameFormatter
 import org.koin.dsl.module.applicationContext
 
 val mainModule = applicationContext {
@@ -15,6 +14,5 @@ val mainModule = applicationContext {
     bean { TransportProvider() }
     bean { get<Context>().resources }
     bean { StorageManager.getInstance(get()) }
-    bean { FolderNameFormatter(get()) }
     bean { TracingPowerManager.getPowerManager(get()) as PowerManager }
 }

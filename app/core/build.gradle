@@ -5,14 +5,6 @@ apply plugin: 'org.jetbrains.kotlin.android.extensions'
 apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
 apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
 
-//noinspection GroovyAssignabilityCheck
-configurations.all {
-    resolutionStrategy {
-        force "com.android.support:support-annotations:${versions.supportLibrary}"
-        force "com.android.support:design:${versions.supportLibrary}"
-    }
-}
-
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
@@ -31,32 +23,18 @@ dependencies {
 
     api "com.squareup.okio:okio:${versions.okio}"
     api "commons-io:commons-io:${versions.commonsIo}"
-    api "com.android.support:support-v4:${versions.supportLibrary}"
-    api "com.android.support:appcompat-v7:${versions.supportLibrary}"
-    api "com.takisoft.fix:preference-v7:${versions.preferencesFix}"
-    api "com.takisoft.fix:preference-v7-datetimepicker:${versions.preferencesFix}"
-    api "com.takisoft.fix:preference-v7-colorpicker:${versions.preferencesFix}"
-    api "com.takisoft.fix:preference-v7-ringtone:${versions.preferencesFix}"
-    api "com.android.support:recyclerview-v7:${versions.supportLibrary}"
-    api "android.arch.lifecycle:extensions:${versions.lifecycleExtensions}"
     api "androidx.core:core-ktx:0.3"
     api "org.jsoup:jsoup:1.11.2"
-    api "de.cketti.library.changelog:ckchangelog:1.2.1"
-    api "com.github.bumptech.glide:glide:3.6.1"
-    api "com.splitwise:tokenautocomplete:2.0.7"
-    api "de.cketti.safecontentresolver:safe-content-resolver-v14:0.9.0"
-    api "com.github.amlcurran.showcaseview:library:5.4.1"
     api "com.squareup.moshi:moshi:1.2.0"
     api "com.jakewharton.timber:timber:${versions.timber}"
     api "net.jcip:jcip-annotations:1.0"
     api "org.apache.james:apache-mime4j-core:0.8.1"
-    api "com.xwray:groupie:2.1.0"
-    api "com.xwray:groupie-kotlin-android-extensions:2.1.0"
     api "org.jetbrains.anko:anko-coroutines:0.10.4"
     api "org.koin:koin-android-architecture:${versions.koin}"
     api 'com.mikepenz:materialdrawer:6.0.7'
     api 'com.github.ByteHamster:SearchPreference:v1.1.2'
 
+    testImplementation project(':mail:testing')
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"

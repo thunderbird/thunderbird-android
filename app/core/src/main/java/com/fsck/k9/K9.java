@@ -13,7 +13,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.fsck.k9.Account.SortType;
-import com.fsck.k9.activity.UpgradeDatabases;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.core.R;
 import com.fsck.k9.mail.K9MailLib;
@@ -36,7 +35,7 @@ public class K9 {
      * accounts' databases.
      *
      * <p>
-     * See {@link UpgradeDatabases} for a detailed explanation of the database upgrade process.
+     * See {@code UpgradeDatabases} for a detailed explanation of the database upgrade process.
      * </p>
      */
     private static final String DATABASE_VERSION_CACHE = "database_version_cache";
