@@ -36,12 +36,6 @@ class DeviceNotifications extends BaseNotifications {
         this.lockScreenNotification = lockScreenNotification;
     }
 
-    public static DeviceNotifications newInstance(NotificationHelper notificationHelper,
-            NotificationActionCreator actionCreator, WearNotifications wearNotifications) {
-        LockScreenNotification lockScreenNotification = LockScreenNotification.newInstance(notificationHelper);
-        return new DeviceNotifications(notificationHelper, actionCreator, lockScreenNotification, wearNotifications);
-    }
-
     public Notification buildSummaryNotification(Account account, NotificationData notificationData,
             boolean silent) {
         int unreadMessageCount = notificationData.getUnreadMessageCount();

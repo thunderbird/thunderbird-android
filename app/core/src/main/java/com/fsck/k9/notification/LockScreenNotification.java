@@ -29,10 +29,6 @@ class LockScreenNotification {
         this.notificationHelper = notificationHelper;
     }
 
-    public static LockScreenNotification newInstance(NotificationHelper notificationHelper) {
-        return new LockScreenNotification(notificationHelper);
-    }
-
     public void configureLockScreenNotification(Builder builder, NotificationData notificationData) {
         if (!NotificationController.platformSupportsLockScreenNotifications()) {
             return;
