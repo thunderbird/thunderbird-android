@@ -16,6 +16,7 @@ import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mailstore.mailStoreModule
 import com.fsck.k9.message.extractors.extractorModule
 import com.fsck.k9.message.html.htmlModule
+import com.fsck.k9.notification.coreNotificationModule
 import com.fsck.k9.power.DeviceIdleManager
 import com.fsck.k9.service.BootReceiver
 import com.fsck.k9.service.MailService
@@ -39,7 +40,8 @@ object Core : KoinComponent {
             mailStoreModule,
             backendModule,
             extractorModule,
-            htmlModule
+            htmlModule,
+            coreNotificationModule
     )
 
     /**
