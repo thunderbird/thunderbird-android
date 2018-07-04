@@ -1,12 +1,9 @@
 package com.fsck.k9.notification;
 
 
-import android.content.Context;
 import android.os.Build;
-import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.DI;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -20,12 +17,6 @@ public class NotificationController {
     private final NewMailNotifications newMailNotifications;
 
 
-    public static NotificationController newInstance(Context context) {
-        Context appContext = context.getApplicationContext();
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(appContext);
-        return new NotificationController(appContext, notificationManager);
-    }
-
     public static boolean platformSupportsExtendedNotifications() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
@@ -35,14 +26,18 @@ public class NotificationController {
     }
 
 
-    NotificationController(Context context, NotificationManagerCompat notificationManager) {
-        NotificationHelper notificationHelper = new NotificationHelper(context, notificationManager);
-        NotificationActionCreator actionBuilder = DI.get(NotificationActionCreator.class);
-        certificateErrorNotifications = new CertificateErrorNotifications(notificationHelper, actionBuilder);
-        authenticationErrorNotifications = new AuthenticationErrorNotifications(notificationHelper, actionBuilder);
-        syncNotifications = new SyncNotifications(notificationHelper, actionBuilder);
-        sendFailedNotifications = new SendFailedNotifications(notificationHelper, actionBuilder);
-        newMailNotifications = NewMailNotifications.newInstance(notificationHelper, actionBuilder);
+    NotificationController(
+            CertificateErrorNotifications certificateErrorNotifications,
+            AuthenticationErrorNotifications authenticationErrorNotifications,
+            SyncNotifications syncNotifications,
+            SendFailedNotifications sendFailedNotifications,
+            NewMailNotifications newMailNotifications
+    ) {
+        this.certificateErrorNotifications = certificateErrorNotifications;
+        this.authenticationErrorNotifications = authenticationErrorNotifications;
+        this.syncNotifications = syncNotifications;
+        this.sendFailedNotifications = sendFailedNotifications;
+        this.newMailNotifications = newMailNotifications;
     }
 
     public void showCertificateErrorNotification(Account account, boolean incoming) {
