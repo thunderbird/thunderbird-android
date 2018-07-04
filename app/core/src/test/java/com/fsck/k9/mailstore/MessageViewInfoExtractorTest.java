@@ -9,11 +9,12 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import android.app.Application;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
 import com.fsck.k9.DI;
 import com.fsck.k9.K9RobolectricTest;
-import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -40,9 +41,9 @@ import org.mockito.stubbing.Answer;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.robolectric.RuntimeEnvironment;
 
-import static com.fsck.k9.message.TestMessageConstructionUtils.bodypart;
-import static com.fsck.k9.message.TestMessageConstructionUtils.messageFromBody;
-import static com.fsck.k9.message.TestMessageConstructionUtils.multipart;
+import static com.fsck.k9.mail.TestMessageConstructionUtils.bodypart;
+import static com.fsck.k9.mail.TestMessageConstructionUtils.messageFromBody;
+import static com.fsck.k9.mail.TestMessageConstructionUtils.multipart;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
@@ -225,7 +226,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
 
     @Test
     public void testTextPlusRfc822Message() throws MessagingException {
-        K9ActivityCommon.setLanguage(context, "en");
+        setLanguage("en");
         Locale.setDefault(Locale.US);
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+01:00"));
 
@@ -626,5 +627,14 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         });
 
         return htmlProcessor;
+    }
+
+    private void setLanguage(String language) {
+        Locale locale = new Locale(language);
+
+        Resources resources = context.getResources();
+        Configuration config = resources.getConfiguration();
+        config.locale = locale;
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 }

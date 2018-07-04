@@ -16,7 +16,7 @@ class App : Application() {
 
         super.onCreate()
 
-        DI.start(this, Core.coreModules + appModules)
+        DI.start(this, Core.coreModules + uiModules + appModules)
 
         K9.init(this)
         Core.init(this)
