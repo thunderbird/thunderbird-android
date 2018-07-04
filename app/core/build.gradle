@@ -31,8 +31,6 @@ dependencies {
     api "org.apache.james:apache-mime4j-core:0.8.1"
     api "org.jetbrains.anko:anko-coroutines:0.10.4"
     api "org.koin:koin-android-architecture:${versions.koin}"
-    api 'com.mikepenz:materialdrawer:6.0.7'
-    api 'com.github.ByteHamster:SearchPreference:v1.1.2'
 
     testImplementation project(':mail:testing')
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
