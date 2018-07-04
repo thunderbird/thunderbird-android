@@ -11,5 +11,8 @@ val coreNotificationModule = applicationContext {
     bean { AuthenticationErrorNotifications(get(), get()) }
     bean { SyncNotifications(get(), get()) }
     bean { SendFailedNotifications(get(), get()) }
-    bean { NewMailNotifications.newInstance(get(), get()) }
+    bean { NewMailNotifications(get(), get(), get(), get()) }
+    bean { NotificationContentCreator(get()) }
+    bean { WearNotifications(get(), get()) }
+    bean { DeviceNotifications.newInstance(get(), get(), get()) }
 }

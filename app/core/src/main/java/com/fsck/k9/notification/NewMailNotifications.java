@@ -39,15 +39,6 @@ class NewMailNotifications {
         this.contentCreator = contentCreator;
     }
 
-    public static NewMailNotifications newInstance(NotificationHelper notificationHelper,
-            NotificationActionCreator actionCreator) {
-        NotificationContentCreator contentCreator = new NotificationContentCreator(notificationHelper.getContext());
-        WearNotifications wearNotifications = new WearNotifications(notificationHelper, actionCreator);
-        DeviceNotifications deviceNotifications = DeviceNotifications.newInstance(
-                notificationHelper, actionCreator, wearNotifications);
-        return new NewMailNotifications(notificationHelper, contentCreator, deviceNotifications, wearNotifications);
-    }
-
     public void addNewMailNotification(Account account, LocalMessage message, int unreadMessageCount) {
         NotificationContent content = contentCreator.createFromMessage(account, message);
 
