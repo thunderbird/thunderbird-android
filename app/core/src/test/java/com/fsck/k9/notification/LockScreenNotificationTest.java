@@ -42,10 +42,10 @@ public class LockScreenNotificationTest extends RobolectricTest {
         Context context = RuntimeEnvironment.application;
         builder = createFakeNotificationBuilder();
         publicBuilder = createFakeNotificationBuilder();
-        NotificationController controller = createFakeController(context, publicBuilder);
+        NotificationHelper notificationHelper = createFakeNotificationHelper(context, publicBuilder);
         Account account = createFakeAccount();
         notificationData = createFakeNotificationData(account);
-        lockScreenNotification = new LockScreenNotification(controller);
+        lockScreenNotification = new LockScreenNotification(notificationHelper);
     }
 
     @Test
@@ -164,13 +164,13 @@ public class LockScreenNotificationTest extends RobolectricTest {
         return builder;
     }
 
-    private NotificationController createFakeController(Context context, Builder builder) {
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.getContext()).thenReturn(context);
-        when(controller.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        when(controller.createNotificationBuilder()).thenReturn(builder);
+    private NotificationHelper createFakeNotificationHelper(Context context, Builder builder) {
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.getContext()).thenReturn(context);
+        when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
+        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
 
-        return controller;
+        return notificationHelper;
     }
 
     private NotificationData createFakeNotificationData(Account account) {

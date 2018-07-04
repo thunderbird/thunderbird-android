@@ -49,10 +49,10 @@ public class WearNotificationsTest extends RobolectricTest {
         notification = createNotification();
         builder = createNotificationBuilder(notification);
         actionCreator = createNotificationActionCreator();
-        NotificationController controller = createNotificationController(RuntimeEnvironment.application, builder);
+        NotificationHelper notificationHelper = createNotificationHelper(RuntimeEnvironment.application, builder);
         MessagingController messagingController = createMessagingController();
 
-        wearNotifications = new TestWearNotifications(controller, actionCreator, messagingController);
+        wearNotifications = new TestWearNotifications(notificationHelper, actionCreator, messagingController);
     }
 
     @Test
@@ -226,12 +226,12 @@ public class WearNotificationsTest extends RobolectricTest {
         return builder;
     }
 
-    private NotificationController createNotificationController(Context context, Builder builder) {
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.createNotificationBuilder()).thenReturn(builder);
-        when(controller.getAccountName(account)).thenReturn(ACCOUNT_NAME);
-        when(controller.getContext()).thenReturn(context);
-        return controller;
+    private NotificationHelper createNotificationHelper(Context context, Builder builder) {
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
+        when(notificationHelper.getAccountName(account)).thenReturn(ACCOUNT_NAME);
+        when(notificationHelper.getContext()).thenReturn(context);
+        return notificationHelper;
     }
 
     private NotificationActionCreator createNotificationActionCreator() {
@@ -345,9 +345,9 @@ public class WearNotificationsTest extends RobolectricTest {
     static class TestWearNotifications extends WearNotifications {
         private final MessagingController messagingController;
 
-        public TestWearNotifications(NotificationController controller, NotificationActionCreator actionCreator,
+        public TestWearNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
                 MessagingController messagingController) {
-            super(controller, actionCreator);
+            super(notificationHelper, actionCreator);
             this.messagingController = messagingController;
         }
 

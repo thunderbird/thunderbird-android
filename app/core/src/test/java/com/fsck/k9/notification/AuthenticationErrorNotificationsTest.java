@@ -30,7 +30,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
     private Notification notification;
     private NotificationManagerCompat notificationManager;
     private NotificationCompat.Builder builder;
-    private NotificationController controller;
+    private NotificationHelper notificationHelper;
     private Account account;
     private AuthenticationErrorNotifications authenticationErrorNotifications;
     private PendingIntent contentIntent;
@@ -41,7 +41,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
         notification = createFakeNotification();
         notificationManager = createFakeNotificationManager();
         builder = createFakeNotificationBuilder(notification);
-        controller = createFakeNotificationController(notificationManager, builder);
+        notificationHelper = createFakeNotificationHelper(notificationManager, builder);
         account = createFakeAccount();
         contentIntent = createFakeContentIntent();
 
@@ -109,13 +109,13 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
         return builder;
     }
 
-    private NotificationController createFakeNotificationController(NotificationManagerCompat notificationManager,
+    private NotificationHelper createFakeNotificationHelper(NotificationManagerCompat notificationManager,
             NotificationCompat.Builder builder) {
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.getContext()).thenReturn(RuntimeEnvironment.application);
-        when(controller.getNotificationManager()).thenReturn(notificationManager);
-        when(controller.createNotificationBuilder()).thenReturn(builder);
-        return controller;
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.getContext()).thenReturn(RuntimeEnvironment.application);
+        when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
+        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
+        return notificationHelper;
     }
 
     private Account createFakeAccount() {
@@ -133,7 +133,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
 
     class TestAuthenticationErrorNotifications extends AuthenticationErrorNotifications {
         public TestAuthenticationErrorNotifications() {
-            super(controller, mock(NotificationActionCreator.class));
+            super(notificationHelper, mock(NotificationActionCreator.class));
         }
 
         @Override

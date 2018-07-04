@@ -10,25 +10,25 @@ import com.fsck.k9.Account;
 import com.fsck.k9.core.R;
 import com.fsck.k9.mail.Folder;
 
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
+import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_FAST;
 
 
 class SyncNotifications {
     private static final boolean NOTIFICATION_LED_WHILE_SYNCING = false;
 
 
-    private final NotificationController controller;
+    private final NotificationHelper notificationHelper;
     private final NotificationActionCreator actionBuilder;
 
 
-    public SyncNotifications(NotificationController controller, NotificationActionCreator actionBuilder) {
-        this.controller = controller;
+    public SyncNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionBuilder) {
+        this.notificationHelper = notificationHelper;
         this.actionBuilder = actionBuilder;
     }
 
     public void showSendingNotification(Account account) {
-        Context context = controller.getContext();
-        String accountName = controller.getAccountName(account);
+        Context context = notificationHelper.getContext();
+        String accountName = notificationHelper.getAccountName(account);
         String title = context.getString(R.string.notification_bg_send_title);
         String tickerText = context.getString(R.string.notification_bg_send_ticker, accountName);
 
@@ -37,7 +37,7 @@ class SyncNotifications {
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
                 account, outboxFolder, notificationId);
 
-        NotificationCompat.Builder builder = controller.createNotificationBuilder()
+        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder()
                 .setSmallIcon(R.drawable.ic_notify_check_mail)
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)
@@ -48,7 +48,7 @@ class SyncNotifications {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
         if (NOTIFICATION_LED_WHILE_SYNCING) {
-            controller.configureNotification(builder, null, null,
+            notificationHelper.configureNotification(builder, null, null,
                     account.getNotificationSetting().getLedColor(),
                     NOTIFICATION_LED_BLINK_FAST, true);
         }
@@ -66,7 +66,7 @@ class SyncNotifications {
         String folderServerId = folder.getServerId();
         String folderName = folder.getName();
 
-        Context context = controller.getContext();
+        Context context = notificationHelper.getContext();
         String tickerText = context.getString(R.string.notification_bg_sync_ticker, accountName, folderName);
         String title = context.getString(R.string.notification_bg_sync_title);
         //TODO: Use format string from resources
@@ -76,7 +76,7 @@ class SyncNotifications {
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
                 account, folderServerId, notificationId);
 
-        NotificationCompat.Builder builder = controller.createNotificationBuilder()
+        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder()
                 .setSmallIcon(R.drawable.ic_notify_check_mail)
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)
@@ -88,7 +88,7 @@ class SyncNotifications {
                 .setCategory(NotificationCompat.CATEGORY_SERVICE);
 
         if (NOTIFICATION_LED_WHILE_SYNCING) {
-            controller.configureNotification(builder, null, null,
+            notificationHelper.configureNotification(builder, null, null,
                     account.getNotificationSetting().getLedColor(),
                     NOTIFICATION_LED_BLINK_FAST, true);
         }
@@ -102,6 +102,6 @@ class SyncNotifications {
     }
 
     private NotificationManagerCompat getNotificationManager() {
-        return controller.getNotificationManager();
+        return notificationHelper.getNotificationManager();
     }
 }

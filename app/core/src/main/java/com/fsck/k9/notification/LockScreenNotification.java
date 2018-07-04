@@ -21,16 +21,16 @@ class LockScreenNotification {
 
 
     private final Context context;
-    private final NotificationController controller;
+    private final NotificationHelper notificationHelper;
 
 
-    LockScreenNotification(NotificationController controller) {
-        context = controller.getContext();
-        this.controller = controller;
+    LockScreenNotification(NotificationHelper notificationHelper) {
+        context = notificationHelper.getContext();
+        this.notificationHelper = notificationHelper;
     }
 
-    public static LockScreenNotification newInstance(NotificationController controller) {
-        return new LockScreenNotification(controller);
+    public static LockScreenNotification newInstance(NotificationHelper notificationHelper) {
+        return new LockScreenNotification(notificationHelper);
     }
 
     public void configureLockScreenNotification(Builder builder, NotificationData notificationData) {
@@ -82,7 +82,7 @@ class LockScreenNotification {
     private Notification createPublicNotificationWithNewMessagesCount(NotificationData notificationData) {
         Builder builder = createPublicNotification(notificationData);
         Account account = notificationData.getAccount();
-        String accountName = controller.getAccountName(account);
+        String accountName = notificationHelper.getAccountName(account);
         builder.setContentText(accountName);
 
         return builder.build();
@@ -95,7 +95,7 @@ class LockScreenNotification {
         String title = context.getResources().getQuantityString(R.plurals.notification_new_messages_title,
                 newMessages, newMessages);
 
-        return controller.createNotificationBuilder()
+        return notificationHelper.createNotificationBuilder()
                 .setSmallIcon(R.drawable.notification_icon_new_mail)
                 .setColor(account.getChipColor())
                 .setNumber(unreadCount)

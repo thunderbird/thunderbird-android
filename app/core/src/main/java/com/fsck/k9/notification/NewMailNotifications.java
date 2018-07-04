@@ -23,7 +23,7 @@ import com.fsck.k9.mailstore.LocalMessage;
  * </p>
  */
 class NewMailNotifications {
-    private final NotificationController controller;
+    private final NotificationHelper notificationHelper;
     private final NotificationContentCreator contentCreator;
     private final DeviceNotifications deviceNotifications;
     private final WearNotifications wearNotifications;
@@ -31,21 +31,21 @@ class NewMailNotifications {
     private final Object lock = new Object();
 
 
-    NewMailNotifications(NotificationController controller, NotificationContentCreator contentCreator,
+    NewMailNotifications(NotificationHelper notificationHelper, NotificationContentCreator contentCreator,
             DeviceNotifications deviceNotifications, WearNotifications wearNotifications) {
-        this.controller = controller;
+        this.notificationHelper = notificationHelper;
         this.deviceNotifications = deviceNotifications;
         this.wearNotifications = wearNotifications;
         this.contentCreator = contentCreator;
     }
 
-    public static NewMailNotifications newInstance(NotificationController controller,
+    public static NewMailNotifications newInstance(NotificationHelper notificationHelper,
             NotificationActionCreator actionCreator) {
-        NotificationContentCreator contentCreator = new NotificationContentCreator(controller.getContext());
-        WearNotifications wearNotifications = new WearNotifications(controller, actionCreator);
+        NotificationContentCreator contentCreator = new NotificationContentCreator(notificationHelper.getContext());
+        WearNotifications wearNotifications = new WearNotifications(notificationHelper, actionCreator);
         DeviceNotifications deviceNotifications = DeviceNotifications.newInstance(
-                controller, actionCreator, wearNotifications);
-        return new NewMailNotifications(controller, contentCreator, deviceNotifications, wearNotifications);
+                notificationHelper, actionCreator, wearNotifications);
+        return new NewMailNotifications(notificationHelper, contentCreator, deviceNotifications, wearNotifications);
     }
 
     public void addNewMailNotification(Account account, LocalMessage message, int unreadMessageCount) {
@@ -171,6 +171,6 @@ class NewMailNotifications {
     }
 
     private NotificationManagerCompat getNotificationManager() {
-        return controller.getNotificationManager();
+        return notificationHelper.getNotificationManager();
     }
 }

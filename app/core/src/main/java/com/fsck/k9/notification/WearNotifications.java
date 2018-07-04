@@ -18,8 +18,8 @@ import com.fsck.k9.controller.MessagingController;
 
 class WearNotifications extends BaseNotifications {
 
-    public WearNotifications(NotificationController controller, NotificationActionCreator actionCreator) {
-        super(controller, actionCreator);
+    public WearNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator) {
+        super(notificationHelper, actionCreator);
     }
 
     public Notification buildStackedNotification(Account account, NotificationHolder holder) {

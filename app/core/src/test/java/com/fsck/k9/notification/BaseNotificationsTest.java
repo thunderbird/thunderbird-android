@@ -103,18 +103,18 @@ public class BaseNotificationsTest {
     }
 
     private TestNotifications createTestNotifications() {
-        NotificationController controller = createFakeController();
+        NotificationHelper notificationHelper = createFakeNotificationHelper();
         NotificationActionCreator actionCreator = mock(NotificationActionCreator.class);
 
-        return new TestNotifications(controller, actionCreator);
+        return new TestNotifications(notificationHelper, actionCreator);
     }
 
-    private NotificationController createFakeController() {
+    private NotificationHelper createFakeNotificationHelper() {
         Builder builder = MockHelper.mockBuilder(Builder.class);
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.createNotificationBuilder()).thenReturn(builder);
-        when(controller.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        return controller;
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
+        when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
+        return notificationHelper;
     }
 
     private Account createFakeAccount() {
@@ -129,8 +129,8 @@ public class BaseNotificationsTest {
 
         BigTextStyle bigTextStyle;
 
-        protected TestNotifications(NotificationController controller, NotificationActionCreator actionCreator) {
-            super(controller, actionCreator);
+        protected TestNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator) {
+            super(notificationHelper, actionCreator);
             bigTextStyle = mock(BigTextStyle.class);
         }
 

@@ -10,22 +10,22 @@ import com.fsck.k9.Account;
 import com.fsck.k9.core.R;
 import com.fsck.k9.helper.ExceptionHelper;
 
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_FAILURE_COLOR;
+import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_FAST;
+import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_FAILURE_COLOR;
 
 
 class SendFailedNotifications {
-    private final NotificationController controller;
+    private final NotificationHelper notificationHelper;
     private final NotificationActionCreator actionBuilder;
 
 
-    public SendFailedNotifications(NotificationController controller, NotificationActionCreator actionBuilder) {
-        this.controller = controller;
+    public SendFailedNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionBuilder) {
+        this.notificationHelper = notificationHelper;
         this.actionBuilder = actionBuilder;
     }
 
     public void showSendFailedNotification(Account account, Exception exception) {
-        Context context = controller.getContext();
+        Context context = notificationHelper.getContext();
         String title = context.getString(R.string.send_failure_subject);
         String text = ExceptionHelper.getRootCauseMessage(exception);
 
@@ -33,7 +33,7 @@ class SendFailedNotifications {
         PendingIntent folderListPendingIntent = actionBuilder.createViewFolderListPendingIntent(
                 account, notificationId);
 
-        NotificationCompat.Builder builder = controller.createNotificationBuilder()
+        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder()
                 .setSmallIcon(getSendFailedNotificationIcon())
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
@@ -44,7 +44,7 @@ class SendFailedNotifications {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_ERROR);
 
-        controller.configureNotification(builder, null, null, NOTIFICATION_LED_FAILURE_COLOR,
+        notificationHelper.configureNotification(builder, null, null, NOTIFICATION_LED_FAILURE_COLOR,
                 NOTIFICATION_LED_BLINK_FAST, true);
 
         getNotificationManager().notify(notificationId, builder.build());
@@ -61,6 +61,6 @@ class SendFailedNotifications {
     }
 
     private NotificationManagerCompat getNotificationManager() {
-        return controller.getNotificationManager();
+        return notificationHelper.getNotificationManager();
     }
 }

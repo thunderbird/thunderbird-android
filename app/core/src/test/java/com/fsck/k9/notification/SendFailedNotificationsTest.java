@@ -41,13 +41,13 @@ public class SendFailedNotificationsTest extends RobolectricTest {
         notification = createFakeNotification();
         notificationManager = createFakeNotificationManager();
         builder = createFakeNotificationBuilder(notification);
-        NotificationController controller = createFakeNotificationController(notificationManager, builder);
+        NotificationHelper notificationHelper = createFakeNotificationHelper(notificationManager, builder);
         account = createFakeAccount();
         contentIntent = createFakeContentIntent();
         NotificationActionCreator actionBuilder = createActionBuilder(contentIntent);
         notificationId = NotificationIds.getSendFailedNotificationId(account);
 
-        sendFailedNotifications = new SendFailedNotifications(controller, actionBuilder);
+        sendFailedNotifications = new SendFailedNotifications(notificationHelper, actionBuilder);
     }
 
     @Test
@@ -86,13 +86,13 @@ public class SendFailedNotificationsTest extends RobolectricTest {
         return builder;
     }
 
-    private NotificationController createFakeNotificationController(NotificationManagerCompat notificationManager,
+    private NotificationHelper createFakeNotificationHelper(NotificationManagerCompat notificationManager,
             Builder builder) {
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.getContext()).thenReturn(RuntimeEnvironment.application);
-        when(controller.getNotificationManager()).thenReturn(notificationManager);
-        when(controller.createNotificationBuilder()).thenReturn(builder);
-        return controller;
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.getContext()).thenReturn(RuntimeEnvironment.application);
+        when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
+        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
+        return notificationHelper;
     }
 
     private Account createFakeAccount() {

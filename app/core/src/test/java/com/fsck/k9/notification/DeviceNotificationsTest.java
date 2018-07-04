@@ -210,20 +210,20 @@ public class DeviceNotificationsTest extends RobolectricTest {
 
     private TestDeviceNotifications createDeviceNotifications(Builder builder,
             LockScreenNotification lockScreenNotification) {
-        NotificationController controller = createFakeNotificationController(builder);
+        NotificationHelper notificationHelper = createFakeNotificationHelper(builder);
         NotificationActionCreator actionCreator = mock(NotificationActionCreator.class);
         WearNotifications wearNotifications = mock(WearNotifications.class);
 
-        return new TestDeviceNotifications(controller, actionCreator, lockScreenNotification, wearNotifications);
+        return new TestDeviceNotifications(notificationHelper, actionCreator, lockScreenNotification, wearNotifications);
     }
 
-    private NotificationController createFakeNotificationController(final Builder builder) {
+    private NotificationHelper createFakeNotificationHelper(final Builder builder) {
         Application context = RuntimeEnvironment.application;
 
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.getContext()).thenReturn(context);
-        when(controller.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        when(controller.createNotificationBuilder()).thenAnswer(new Answer<Builder>() {
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.getContext()).thenReturn(context);
+        when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
+        when(notificationHelper.createNotificationBuilder()).thenAnswer(new Answer<Builder>() {
             private int invocationCount = 0;
 
             @Override
@@ -242,7 +242,7 @@ public class DeviceNotificationsTest extends RobolectricTest {
             }
         });
 
-        return controller;
+        return notificationHelper;
     }
 
 
@@ -251,9 +251,9 @@ public class DeviceNotificationsTest extends RobolectricTest {
         InboxStyle inboxStyle = mockBuilder(InboxStyle.class);
 
 
-        TestDeviceNotifications(NotificationController controller, NotificationActionCreator actionCreator,
+        TestDeviceNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
                 LockScreenNotification lockScreenNotification, WearNotifications wearNotifications) {
-            super(controller, actionCreator, lockScreenNotification, wearNotifications);
+            super(notificationHelper, actionCreator, lockScreenNotification, wearNotifications);
         }
 
         @Override

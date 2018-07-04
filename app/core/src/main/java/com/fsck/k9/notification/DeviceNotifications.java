@@ -20,7 +20,7 @@ import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.core.R;
 import com.fsck.k9.controller.MessageReference;
 
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_SLOW;
+import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_SLOW;
 import static com.fsck.k9.notification.NotificationController.platformSupportsExtendedNotifications;
 
 
@@ -29,17 +29,17 @@ class DeviceNotifications extends BaseNotifications {
     private final LockScreenNotification lockScreenNotification;
 
 
-    DeviceNotifications(NotificationController controller, NotificationActionCreator actionCreator,
+    DeviceNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
             LockScreenNotification lockScreenNotification, WearNotifications wearNotifications) {
-        super(controller, actionCreator);
+        super(notificationHelper, actionCreator);
         this.wearNotifications = wearNotifications;
         this.lockScreenNotification = lockScreenNotification;
     }
 
-    public static DeviceNotifications newInstance(NotificationController controller,
+    public static DeviceNotifications newInstance(NotificationHelper notificationHelper,
             NotificationActionCreator actionCreator, WearNotifications wearNotifications) {
-        LockScreenNotification lockScreenNotification = LockScreenNotification.newInstance(controller);
-        return new DeviceNotifications(controller, actionCreator, lockScreenNotification, wearNotifications);
+        LockScreenNotification lockScreenNotification = LockScreenNotification.newInstance(notificationHelper);
+        return new DeviceNotifications(notificationHelper, actionCreator, lockScreenNotification, wearNotifications);
     }
 
     public Notification buildSummaryNotification(Account account, NotificationData notificationData,
@@ -74,7 +74,7 @@ class DeviceNotifications extends BaseNotifications {
         }
 
         NotificationSetting notificationSetting = account.getNotificationSetting();
-        controller.configureNotification(
+        notificationHelper.configureNotification(
                 builder,
                 (notificationSetting.isRingEnabled()) ? notificationSetting.getRingtone() : null,
                 (notificationSetting.isVibrateEnabled()) ? notificationSetting.getVibration() : null,
@@ -86,7 +86,7 @@ class DeviceNotifications extends BaseNotifications {
     }
 
     private NotificationCompat.Builder createSimpleSummaryNotification(Account account, int unreadMessageCount) {
-        String accountName = controller.getAccountName(account);
+        String accountName = notificationHelper.getAccountName(account);
         CharSequence newMailText = context.getString(R.string.notification_new_title);
         String unreadMessageCountText = context.getString(R.string.notification_new_one_account_fmt,
                 unreadMessageCount, accountName);
@@ -123,7 +123,7 @@ class DeviceNotifications extends BaseNotifications {
         NotificationHolder latestNotification = notificationData.getHolderForLatestNotification();
 
         int newMessagesCount = notificationData.getNewMessagesCount();
-        String accountName = controller.getAccountName(account);
+        String accountName = notificationHelper.getAccountName(account);
         String title = context.getResources().getQuantityString(R.plurals.notification_new_messages_title,
                 newMessagesCount, newMessagesCount);
         String summary = (notificationData.hasSummaryOverflowMessages()) ?
