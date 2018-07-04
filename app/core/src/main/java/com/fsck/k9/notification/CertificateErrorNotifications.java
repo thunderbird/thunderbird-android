@@ -27,7 +27,7 @@ class CertificateErrorNotifications {
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming);
         Context context = controller.getContext();
 
-        PendingIntent editServerSettingsPendingIntent = createContentIntent(context, account, incoming);
+        PendingIntent editServerSettingsPendingIntent = createContentIntent(account, incoming);
         String title = context.getString(R.string.notification_certificate_error_title, account.getDescription());
         String text = context.getString(R.string.notification_certificate_error_text);
 
@@ -54,7 +54,7 @@ class CertificateErrorNotifications {
         getNotificationManager().cancel(notificationId);
     }
 
-    PendingIntent createContentIntent(Context context, Account account, boolean incoming) {
+    PendingIntent createContentIntent(Account account, boolean incoming) {
         return incoming ?
                 actionCreator.getEditIncomingServerSettingsIntent(account) :
                 actionCreator.getEditOutgoingServerSettingsIntent(account);

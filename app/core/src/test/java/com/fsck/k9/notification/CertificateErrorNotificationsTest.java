@@ -3,7 +3,6 @@ package com.fsck.k9.notification;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationManagerCompat;
@@ -138,7 +137,7 @@ public class CertificateErrorNotificationsTest extends RobolectricTest {
         }
 
         @Override
-        PendingIntent createContentIntent(Context context, Account account, boolean incoming) {
+        PendingIntent createContentIntent(Account account, boolean incoming) {
             return contentIntent;
         }
     }
