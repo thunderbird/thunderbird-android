@@ -2,39 +2,39 @@ package com.fsck.k9.notification;
 
 
 import android.app.PendingIntent;
-import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.core.R;
 import com.fsck.k9.helper.ExceptionHelper;
 
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_FAILURE_COLOR;
+import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_FAST;
+import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_FAILURE_COLOR;
 
 
 class SendFailedNotifications {
-    private final NotificationController controller;
+    private final NotificationHelper notificationHelper;
     private final NotificationActionCreator actionBuilder;
+    private final NotificationResourceProvider resourceProvider;
 
 
-    public SendFailedNotifications(NotificationController controller, NotificationActionCreator actionBuilder) {
-        this.controller = controller;
+    public SendFailedNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionBuilder,
+            NotificationResourceProvider resourceProvider) {
+        this.notificationHelper = notificationHelper;
         this.actionBuilder = actionBuilder;
+        this.resourceProvider = resourceProvider;
     }
 
     public void showSendFailedNotification(Account account, Exception exception) {
-        Context context = controller.getContext();
-        String title = context.getString(R.string.send_failure_subject);
+        String title = resourceProvider.sendFailedTitle();
         String text = ExceptionHelper.getRootCauseMessage(exception);
 
         int notificationId = NotificationIds.getSendFailedNotificationId(account);
         PendingIntent folderListPendingIntent = actionBuilder.createViewFolderListPendingIntent(
                 account, notificationId);
 
-        NotificationCompat.Builder builder = controller.createNotificationBuilder()
-                .setSmallIcon(getSendFailedNotificationIcon())
+        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder()
+                .setSmallIcon(resourceProvider.getIconWarning())
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setTicker(title)
@@ -44,7 +44,7 @@ class SendFailedNotifications {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_ERROR);
 
-        controller.configureNotification(builder, null, null, NOTIFICATION_LED_FAILURE_COLOR,
+        notificationHelper.configureNotification(builder, null, null, NOTIFICATION_LED_FAILURE_COLOR,
                 NOTIFICATION_LED_BLINK_FAST, true);
 
         getNotificationManager().notify(notificationId, builder.build());
@@ -55,12 +55,7 @@ class SendFailedNotifications {
         getNotificationManager().cancel(notificationId);
     }
 
-    private int getSendFailedNotificationIcon() {
-        //TODO: Use a different icon for send failure notifications
-        return R.drawable.notification_icon_new_mail;
-    }
-
     private NotificationManagerCompat getNotificationManager() {
-        return controller.getNotificationManager();
+        return notificationHelper.getNotificationManager();
     }
 }

@@ -2,43 +2,43 @@ package com.fsck.k9.notification;
 
 
 import android.app.PendingIntent;
-import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.core.R;
 import com.fsck.k9.mail.Folder;
 
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
+import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_FAST;
 
 
 class SyncNotifications {
     private static final boolean NOTIFICATION_LED_WHILE_SYNCING = false;
 
 
-    private final NotificationController controller;
+    private final NotificationHelper notificationHelper;
     private final NotificationActionCreator actionBuilder;
+    private final NotificationResourceProvider resourceProvider;
 
 
-    public SyncNotifications(NotificationController controller, NotificationActionCreator actionBuilder) {
-        this.controller = controller;
+    public SyncNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionBuilder,
+            NotificationResourceProvider resourceProvider) {
+        this.notificationHelper = notificationHelper;
         this.actionBuilder = actionBuilder;
+        this.resourceProvider = resourceProvider;
     }
 
     public void showSendingNotification(Account account) {
-        Context context = controller.getContext();
-        String accountName = controller.getAccountName(account);
-        String title = context.getString(R.string.notification_bg_send_title);
-        String tickerText = context.getString(R.string.notification_bg_send_ticker, accountName);
+        String accountName = notificationHelper.getAccountName(account);
+        String title = resourceProvider.sendingMailTitle();
+        String tickerText = resourceProvider.sendingMailBody(accountName);
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
         String outboxFolder = account.getOutboxFolder();
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
                 account, outboxFolder, notificationId);
 
-        NotificationCompat.Builder builder = controller.createNotificationBuilder()
-                .setSmallIcon(R.drawable.ic_notify_check_mail)
+        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder()
+                .setSmallIcon(resourceProvider.getIconSendingMail())
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)
                 .setTicker(tickerText)
@@ -48,7 +48,7 @@ class SyncNotifications {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
         if (NOTIFICATION_LED_WHILE_SYNCING) {
-            controller.configureNotification(builder, null, null,
+            notificationHelper.configureNotification(builder, null, null,
                     account.getNotificationSetting().getLedColor(),
                     NOTIFICATION_LED_BLINK_FAST, true);
         }
@@ -66,18 +66,17 @@ class SyncNotifications {
         String folderServerId = folder.getServerId();
         String folderName = folder.getName();
 
-        Context context = controller.getContext();
-        String tickerText = context.getString(R.string.notification_bg_sync_ticker, accountName, folderName);
-        String title = context.getString(R.string.notification_bg_sync_title);
+        String tickerText = resourceProvider.checkingMailTicker(accountName, folderName);
+        String title = resourceProvider.checkingMailTitle();
         //TODO: Use format string from resources
-        String text = accountName + context.getString(R.string.notification_bg_title_separator) + folderName;
+        String text = accountName + resourceProvider.checkingMailSeparator() + folderName;
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
                 account, folderServerId, notificationId);
 
-        NotificationCompat.Builder builder = controller.createNotificationBuilder()
-                .setSmallIcon(R.drawable.ic_notify_check_mail)
+        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder()
+                .setSmallIcon(resourceProvider.getIconCheckingMail())
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)
                 .setTicker(tickerText)
@@ -88,7 +87,7 @@ class SyncNotifications {
                 .setCategory(NotificationCompat.CATEGORY_SERVICE);
 
         if (NOTIFICATION_LED_WHILE_SYNCING) {
-            controller.configureNotification(builder, null, null,
+            notificationHelper.configureNotification(builder, null, null,
                     account.getNotificationSetting().getLedColor(),
                     NOTIFICATION_LED_BLINK_FAST, true);
         }
@@ -102,6 +101,6 @@ class SyncNotifications {
     }
 
     private NotificationManagerCompat getNotificationManager() {
-        return controller.getNotificationManager();
+        return notificationHelper.getNotificationManager();
     }
 }

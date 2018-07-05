@@ -2,37 +2,37 @@ package com.fsck.k9.notification;
 
 
 import android.app.PendingIntent;
-import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.core.R;
 
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_FAILURE_COLOR;
+import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_FAST;
+import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_FAILURE_COLOR;
 
 
 class CertificateErrorNotifications {
-    private final NotificationController controller;
+    private final NotificationHelper notificationHelper;
     private final NotificationActionCreator actionCreator;
+    private final NotificationResourceProvider resourceProvider;
 
 
-    public CertificateErrorNotifications(NotificationController controller, NotificationActionCreator actionCreator) {
-        this.controller = controller;
+    public CertificateErrorNotifications(NotificationHelper notificationHelper,
+            NotificationActionCreator actionCreator, NotificationResourceProvider resourceProvider) {
+        this.notificationHelper = notificationHelper;
         this.actionCreator = actionCreator;
+        this.resourceProvider = resourceProvider;
     }
 
     public void showCertificateErrorNotification(Account account, boolean incoming) {
         int notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming);
-        Context context = controller.getContext();
 
-        PendingIntent editServerSettingsPendingIntent = createContentIntent(context, account, incoming);
-        String title = context.getString(R.string.notification_certificate_error_title, account.getDescription());
-        String text = context.getString(R.string.notification_certificate_error_text);
+        PendingIntent editServerSettingsPendingIntent = createContentIntent(account, incoming);
+        String title = resourceProvider.certificateErrorTitle(account.getDescription());
+        String text = resourceProvider.certificateErrorBody();
 
-        NotificationCompat.Builder builder = controller.createNotificationBuilder()
-                .setSmallIcon(getCertificateErrorNotificationIcon())
+        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder()
+                .setSmallIcon(resourceProvider.getIconWarning())
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setTicker(title)
@@ -42,7 +42,7 @@ class CertificateErrorNotifications {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_ERROR);
 
-        controller.configureNotification(builder, null, null,
+        notificationHelper.configureNotification(builder, null, null,
                 NOTIFICATION_LED_FAILURE_COLOR,
                 NOTIFICATION_LED_BLINK_FAST, true);
 
@@ -54,18 +54,13 @@ class CertificateErrorNotifications {
         getNotificationManager().cancel(notificationId);
     }
 
-    PendingIntent createContentIntent(Context context, Account account, boolean incoming) {
+    PendingIntent createContentIntent(Account account, boolean incoming) {
         return incoming ?
                 actionCreator.getEditIncomingServerSettingsIntent(account) :
                 actionCreator.getEditOutgoingServerSettingsIntent(account);
     }
 
-    private int getCertificateErrorNotificationIcon() {
-        //TODO: Use a different icon for certificate error notifications
-        return R.drawable.notification_icon_new_mail;
-    }
-
     private NotificationManagerCompat getNotificationManager() {
-        return controller.getNotificationManager();
+        return notificationHelper.getNotificationManager();
     }
 }

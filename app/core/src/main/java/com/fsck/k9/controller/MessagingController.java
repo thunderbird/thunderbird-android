@@ -139,7 +139,7 @@ public class MessagingController {
     public static synchronized MessagingController getInstance(Context context) {
         if (inst == null) {
             Context appContext = context.getApplicationContext();
-            NotificationController notificationController = NotificationController.newInstance(appContext);
+            NotificationController notificationController = DI.get(NotificationController.class);
             Contacts contacts = Contacts.getInstance(context);
             TransportProvider transportProvider = TransportProvider.getInstance();
             AccountStatsCollector accountStatsCollector = new DefaultAccountStatsCollector(context);

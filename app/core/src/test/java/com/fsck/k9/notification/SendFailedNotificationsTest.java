@@ -9,7 +9,6 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.MockHelper;
-import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +26,7 @@ public class SendFailedNotificationsTest extends RobolectricTest {
     private static final String ACCOUNT_NAME = "TestAccount";
 
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private Notification notification;
     private NotificationManagerCompat notificationManager;
     private Builder builder;
@@ -41,13 +41,13 @@ public class SendFailedNotificationsTest extends RobolectricTest {
         notification = createFakeNotification();
         notificationManager = createFakeNotificationManager();
         builder = createFakeNotificationBuilder(notification);
-        NotificationController controller = createFakeNotificationController(notificationManager, builder);
+        NotificationHelper notificationHelper = createFakeNotificationHelper(notificationManager, builder);
         account = createFakeAccount();
         contentIntent = createFakeContentIntent();
         NotificationActionCreator actionBuilder = createActionBuilder(contentIntent);
         notificationId = NotificationIds.getSendFailedNotificationId(account);
 
-        sendFailedNotifications = new SendFailedNotifications(controller, actionBuilder);
+        sendFailedNotifications = new SendFailedNotifications(notificationHelper, actionBuilder, resourceProvider);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class SendFailedNotificationsTest extends RobolectricTest {
         sendFailedNotifications.showSendFailedNotification(account, exception);
 
         verify(notificationManager).notify(notificationId, notification);
-        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(builder).setSmallIcon(resourceProvider.getIconWarning());
         verify(builder).setTicker("Failed to send some messages");
         verify(builder).setContentTitle("Failed to send some messages");
         verify(builder).setContentText("Exception");
@@ -86,13 +86,13 @@ public class SendFailedNotificationsTest extends RobolectricTest {
         return builder;
     }
 
-    private NotificationController createFakeNotificationController(NotificationManagerCompat notificationManager,
+    private NotificationHelper createFakeNotificationHelper(NotificationManagerCompat notificationManager,
             Builder builder) {
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.getContext()).thenReturn(RuntimeEnvironment.application);
-        when(controller.getNotificationManager()).thenReturn(notificationManager);
-        when(controller.createNotificationBuilder()).thenReturn(builder);
-        return controller;
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.getContext()).thenReturn(RuntimeEnvironment.application);
+        when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
+        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
+        return notificationHelper;
     }
 
     private Account createFakeAccount() {

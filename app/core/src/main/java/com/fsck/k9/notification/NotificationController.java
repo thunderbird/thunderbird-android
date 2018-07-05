@@ -1,45 +1,21 @@
 package com.fsck.k9.notification;
 
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.text.TextUtils;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.DI;
-import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalMessage;
 
 
 public class NotificationController {
-    private static final int NOTIFICATION_LED_ON_TIME = 500;
-    private static final int NOTIFICATION_LED_OFF_TIME = 2000;
-    private static final int NOTIFICATION_LED_FAST_ON_TIME = 100;
-    private static final int NOTIFICATION_LED_FAST_OFF_TIME = 100;
-    static final int NOTIFICATION_LED_BLINK_SLOW = 0;
-    static final int NOTIFICATION_LED_BLINK_FAST = 1;
-    static final int NOTIFICATION_LED_FAILURE_COLOR = 0xffff0000;
-
-
-    private final Context context;
-    private final NotificationManagerCompat notificationManager;
     private final CertificateErrorNotifications certificateErrorNotifications;
     private final AuthenticationErrorNotifications authenticationErrorNotifications;
     private final SyncNotifications syncNotifications;
     private final SendFailedNotifications sendFailedNotifications;
     private final NewMailNotifications newMailNotifications;
 
-
-    public static NotificationController newInstance(Context context) {
-        Context appContext = context.getApplicationContext();
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(appContext);
-        return new NotificationController(appContext, notificationManager);
-    }
 
     public static boolean platformSupportsExtendedNotifications() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
@@ -50,16 +26,18 @@ public class NotificationController {
     }
 
 
-    NotificationController(Context context, NotificationManagerCompat notificationManager) {
-        this.context = context;
-        this.notificationManager = notificationManager;
-
-        NotificationActionCreator actionBuilder = DI.get(NotificationActionCreator.class);
-        certificateErrorNotifications = new CertificateErrorNotifications(this, actionBuilder);
-        authenticationErrorNotifications = new AuthenticationErrorNotifications(this, actionBuilder);
-        syncNotifications = new SyncNotifications(this, actionBuilder);
-        sendFailedNotifications = new SendFailedNotifications(this, actionBuilder);
-        newMailNotifications = NewMailNotifications.newInstance(this, actionBuilder);
+    NotificationController(
+            CertificateErrorNotifications certificateErrorNotifications,
+            AuthenticationErrorNotifications authenticationErrorNotifications,
+            SyncNotifications syncNotifications,
+            SendFailedNotifications sendFailedNotifications,
+            NewMailNotifications newMailNotifications
+    ) {
+        this.certificateErrorNotifications = certificateErrorNotifications;
+        this.authenticationErrorNotifications = authenticationErrorNotifications;
+        this.syncNotifications = syncNotifications;
+        this.sendFailedNotifications = sendFailedNotifications;
+        this.newMailNotifications = newMailNotifications;
     }
 
     public void showCertificateErrorNotification(Account account, boolean incoming) {
@@ -112,54 +90,5 @@ public class NotificationController {
 
     public void clearNewMailNotifications(Account account) {
         newMailNotifications.clearNewMailNotifications(account);
-    }
-
-    void configureNotification(NotificationCompat.Builder builder, String ringtone, long[] vibrationPattern,
-            Integer ledColor, int ledSpeed, boolean ringAndVibrate) {
-
-        if (K9.isQuietTime()) {
-            return;
-        }
-
-        if (ringAndVibrate) {
-            if (ringtone != null && !TextUtils.isEmpty(ringtone)) {
-                builder.setSound(Uri.parse(ringtone));
-            }
-
-            if (vibrationPattern != null) {
-                builder.setVibrate(vibrationPattern);
-            }
-        }
-
-        if (ledColor != null) {
-            int ledOnMS;
-            int ledOffMS;
-            if (ledSpeed == NOTIFICATION_LED_BLINK_SLOW) {
-                ledOnMS = NOTIFICATION_LED_ON_TIME;
-                ledOffMS = NOTIFICATION_LED_OFF_TIME;
-            } else {
-                ledOnMS = NOTIFICATION_LED_FAST_ON_TIME;
-                ledOffMS = NOTIFICATION_LED_FAST_OFF_TIME;
-            }
-
-            builder.setLights(ledColor, ledOnMS, ledOffMS);
-        }
-    }
-
-    String getAccountName(Account account) {
-        String accountDescription = account.getDescription();
-        return TextUtils.isEmpty(accountDescription) ? account.getEmail() : accountDescription;
-    }
-
-    Context getContext() {
-        return context;
-    }
-
-    NotificationManagerCompat getNotificationManager() {
-        return notificationManager;
-    }
-
-    NotificationCompat.Builder createNotificationBuilder() {
-        return new NotificationCompat.Builder(context);
     }
 }

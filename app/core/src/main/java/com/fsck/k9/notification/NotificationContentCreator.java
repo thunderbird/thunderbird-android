@@ -7,7 +7,6 @@ import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.core.R;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
@@ -20,10 +19,12 @@ import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
 
 class NotificationContentCreator {
     private final Context context;
+    private final NotificationResourceProvider resourceProvider;
 
 
-    public NotificationContentCreator(Context context) {
+    public NotificationContentCreator(Context context, NotificationResourceProvider resourceProvider) {
         this.context = context;
+        this.resourceProvider = resourceProvider;
     }
 
     public NotificationContent createFromMessage(Account account, LocalMessage message) {
@@ -69,7 +70,7 @@ class NotificationContentCreator {
             case TEXT:
                 return message.getPreview();
             case ENCRYPTED:
-                return context.getString(R.string.preview_encrypted);
+                return resourceProvider.previewEncrypted();
         }
 
         throw new AssertionError("Unknown preview type: " + previewType);
@@ -94,7 +95,7 @@ class NotificationContentCreator {
             return subject;
         }
 
-        return context.getString(R.string.general_no_subject);
+        return resourceProvider.noSubject();
     }
 
     private String getMessageSender(Account account, Message message) {
@@ -114,8 +115,8 @@ class NotificationContentCreator {
             Address[] recipients = message.getRecipients(Message.RecipientType.TO);
 
             if (recipients != null && recipients.length > 0) {
-                return context.getString(R.string.message_to_fmt,
-                        MessageHelper.toFriendly(recipients[0], contacts).toString());
+                String recipientDisplayName = MessageHelper.toFriendly(recipients[0], contacts).toString();
+                return resourceProvider.recipientDisplayName(recipientDisplayName);
             }
         }
 
@@ -123,6 +124,6 @@ class NotificationContentCreator {
     }
 
     private String getMessageSenderForDisplay(String sender) {
-        return (sender != null) ? sender : context.getString(R.string.general_no_sender);
+        return (sender != null) ? sender : resourceProvider.noSender();
     }
 }

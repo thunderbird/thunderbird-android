@@ -2,39 +2,38 @@ package com.fsck.k9.notification;
 
 
 import android.app.PendingIntent;
-import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.BigTextStyle;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.core.R;
 
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_BLINK_FAST;
-import static com.fsck.k9.notification.NotificationController.NOTIFICATION_LED_FAILURE_COLOR;
+import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_FAST;
+import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_FAILURE_COLOR;
 
 
 class AuthenticationErrorNotifications {
-    private final NotificationController controller;
+    private final NotificationHelper notificationHelper;
     private final NotificationActionCreator actionCreator;
+    private final NotificationResourceProvider resourceProvider;
 
 
-    public AuthenticationErrorNotifications(NotificationController controller,
-            NotificationActionCreator actionCreator) {
-        this.controller = controller;
+    public AuthenticationErrorNotifications(NotificationHelper notificationHelper,
+            NotificationActionCreator actionCreator, NotificationResourceProvider resourceProvider) {
+        this.notificationHelper = notificationHelper;
         this.actionCreator = actionCreator;
+        this.resourceProvider = resourceProvider;
     }
 
     public void showAuthenticationErrorNotification(Account account, boolean incoming) {
         int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, incoming);
-        Context context = controller.getContext();
 
-        PendingIntent editServerSettingsPendingIntent = createContentIntent(context, account, incoming);
-        String title = context.getString(R.string.notification_authentication_error_title);
-        String text = context.getString(R.string.notification_authentication_error_text, account.getDescription());
+        PendingIntent editServerSettingsPendingIntent = createContentIntent(account, incoming);
+        String title = resourceProvider.authenticationErrorTitle();
+        String text =  resourceProvider.authenticationErrorBody(account.getDescription());
 
-        NotificationCompat.Builder builder = controller.createNotificationBuilder()
-                .setSmallIcon(R.drawable.notification_icon_warning)
+        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder()
+                .setSmallIcon(resourceProvider.getIconWarning())
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setTicker(title)
@@ -45,7 +44,7 @@ class AuthenticationErrorNotifications {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_ERROR);
 
-        controller.configureNotification(builder, null, null,
+        notificationHelper.configureNotification(builder, null, null,
                 NOTIFICATION_LED_FAILURE_COLOR,
                 NOTIFICATION_LED_BLINK_FAST, true);
 
@@ -57,12 +56,12 @@ class AuthenticationErrorNotifications {
         getNotificationManager().cancel(notificationId);
     }
 
-    PendingIntent createContentIntent(Context context, Account account, boolean incoming) {
+    PendingIntent createContentIntent(Account account, boolean incoming) {
         return incoming ? actionCreator.getEditIncomingServerSettingsIntent(account) :
                 actionCreator.getEditOutgoingServerSettingsIntent(account);
     }
 
     private NotificationManagerCompat getNotificationManager() {
-        return controller.getNotificationManager();
+        return notificationHelper.getNotificationManager();
     }
 }

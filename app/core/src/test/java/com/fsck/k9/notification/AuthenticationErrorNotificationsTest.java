@@ -3,14 +3,12 @@ package com.fsck.k9.notification;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.MockHelper;
-import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,10 +26,11 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
     private static final String ACCOUNT_NAME = "TestAccount";
 
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private Notification notification;
     private NotificationManagerCompat notificationManager;
     private NotificationCompat.Builder builder;
-    private NotificationController controller;
+    private NotificationHelper notificationHelper;
     private Account account;
     private AuthenticationErrorNotifications authenticationErrorNotifications;
     private PendingIntent contentIntent;
@@ -42,7 +41,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
         notification = createFakeNotification();
         notificationManager = createFakeNotificationManager();
         builder = createFakeNotificationBuilder(notification);
-        controller = createFakeNotificationController(notificationManager, builder);
+        notificationHelper = createFakeNotificationHelper(notificationManager, builder);
         account = createFakeAccount();
         contentIntent = createFakeContentIntent();
 
@@ -88,7 +87,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
     }
 
     private void assertAuthenticationErrorNotificationContents() {
-        verify(builder).setSmallIcon(R.drawable.notification_icon_warning);
+        verify(builder).setSmallIcon(resourceProvider.getIconWarning());
         verify(builder).setTicker("Authentication failed");
         verify(builder).setContentTitle("Authentication failed");
         verify(builder).setContentText("Authentication failed for " + ACCOUNT_NAME + ". Update your server settings.");
@@ -110,13 +109,13 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
         return builder;
     }
 
-    private NotificationController createFakeNotificationController(NotificationManagerCompat notificationManager,
+    private NotificationHelper createFakeNotificationHelper(NotificationManagerCompat notificationManager,
             NotificationCompat.Builder builder) {
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.getContext()).thenReturn(RuntimeEnvironment.application);
-        when(controller.getNotificationManager()).thenReturn(notificationManager);
-        when(controller.createNotificationBuilder()).thenReturn(builder);
-        return controller;
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.getContext()).thenReturn(RuntimeEnvironment.application);
+        when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
+        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
+        return notificationHelper;
     }
 
     private Account createFakeAccount() {
@@ -134,11 +133,11 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
 
     class TestAuthenticationErrorNotifications extends AuthenticationErrorNotifications {
         public TestAuthenticationErrorNotifications() {
-            super(controller, mock(NotificationActionCreator.class));
+            super(notificationHelper, mock(NotificationActionCreator.class), resourceProvider);
         }
 
         @Override
-        PendingIntent createContentIntent(Context context, Account account, boolean incoming) {
+        PendingIntent createContentIntent(Account account, boolean incoming) {
             return contentIntent;
         }
     }
