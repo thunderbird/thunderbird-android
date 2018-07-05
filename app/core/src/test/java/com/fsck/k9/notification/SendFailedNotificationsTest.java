@@ -9,7 +9,6 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.MockHelper;
-import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +26,7 @@ public class SendFailedNotificationsTest extends RobolectricTest {
     private static final String ACCOUNT_NAME = "TestAccount";
 
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private Notification notification;
     private NotificationManagerCompat notificationManager;
     private Builder builder;
@@ -47,7 +47,7 @@ public class SendFailedNotificationsTest extends RobolectricTest {
         NotificationActionCreator actionBuilder = createActionBuilder(contentIntent);
         notificationId = NotificationIds.getSendFailedNotificationId(account);
 
-        sendFailedNotifications = new SendFailedNotifications(notificationHelper, actionBuilder);
+        sendFailedNotifications = new SendFailedNotifications(notificationHelper, actionBuilder, resourceProvider);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class SendFailedNotificationsTest extends RobolectricTest {
         sendFailedNotifications.showSendFailedNotification(account, exception);
 
         verify(notificationManager).notify(notificationId, notification);
-        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(builder).setSmallIcon(resourceProvider.getIconWarning());
         verify(builder).setTicker("Failed to send some messages");
         verify(builder).setContentTitle("Failed to send some messages");
         verify(builder).setContentText("Exception");

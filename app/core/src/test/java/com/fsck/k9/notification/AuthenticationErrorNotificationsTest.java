@@ -9,7 +9,6 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.MockHelper;
-import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +26,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
     private static final String ACCOUNT_NAME = "TestAccount";
 
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private Notification notification;
     private NotificationManagerCompat notificationManager;
     private NotificationCompat.Builder builder;
@@ -87,7 +87,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
     }
 
     private void assertAuthenticationErrorNotificationContents() {
-        verify(builder).setSmallIcon(R.drawable.notification_icon_warning);
+        verify(builder).setSmallIcon(resourceProvider.getIconWarning());
         verify(builder).setTicker("Authentication failed");
         verify(builder).setContentTitle("Authentication failed");
         verify(builder).setContentText("Authentication failed for " + ACCOUNT_NAME + ". Update your server settings.");
@@ -133,7 +133,7 @@ public class AuthenticationErrorNotificationsTest extends RobolectricTest {
 
     class TestAuthenticationErrorNotifications extends AuthenticationErrorNotifications {
         public TestAuthenticationErrorNotifications() {
-            super(notificationHelper, mock(NotificationActionCreator.class));
+            super(notificationHelper, mock(NotificationActionCreator.class), resourceProvider);
         }
 
         @Override

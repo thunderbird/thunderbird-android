@@ -9,7 +9,6 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.MockHelper;
-import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +26,7 @@ public class CertificateErrorNotificationsTest extends RobolectricTest {
     private static final String ACCOUNT_NAME = "TestAccount";
 
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private Notification notification;
     private NotificationManagerCompat notificationManager;
     private NotificationCompat.Builder builder;
@@ -87,7 +87,7 @@ public class CertificateErrorNotificationsTest extends RobolectricTest {
     }
 
     private void assertCertificateErrorNotificationContents() {
-        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(builder).setSmallIcon(resourceProvider.getIconWarning());
         verify(builder).setTicker("Certificate error for " + ACCOUNT_NAME);
         verify(builder).setContentTitle("Certificate error for " + ACCOUNT_NAME);
         verify(builder).setContentText("Check your server settings");
@@ -133,7 +133,7 @@ public class CertificateErrorNotificationsTest extends RobolectricTest {
 
     class TestCertificateErrorNotifications extends CertificateErrorNotifications {
         public TestCertificateErrorNotifications() {
-            super(notificationHelper, mock(NotificationActionCreator.class));
+            super(notificationHelper, mock(NotificationActionCreator.class), resourceProvider);
         }
 
         @Override

@@ -16,7 +16,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.NotificationSetting;
-import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +50,7 @@ public class DeviceNotificationsTest extends RobolectricTest {
     private static final Notification FAKE_NOTIFICATION = mock(Notification.class);
 
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private Account account;
     private NotificationData notificationData;
     private TestDeviceNotifications notifications;
@@ -75,7 +75,7 @@ public class DeviceNotificationsTest extends RobolectricTest {
 
         Notification result = notifications.buildSummaryNotification(account, notificationData, false);
 
-        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(builder).setSmallIcon(resourceProvider.getIconNewMail());
         verify(builder).setColor(ACCOUNT_COLOR);
         verify(builder).setAutoCancel(true);
         verify(builder).setNumber(UNREAD_MESSAGE_COUNT);
@@ -94,7 +94,7 @@ public class DeviceNotificationsTest extends RobolectricTest {
 
         Notification result = notifications.buildSummaryNotification(account, notificationData, false);
 
-        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(builder).setSmallIcon(resourceProvider.getIconNewMail());
         verify(builder).setColor(ACCOUNT_COLOR);
         verify(builder).setAutoCancel(true);
         verify(builder).setTicker(SUMMARY);
@@ -102,9 +102,9 @@ public class DeviceNotificationsTest extends RobolectricTest {
         verify(builder).setContentTitle(SENDER);
         verify(builder).setStyle(notifications.bigTextStyle);
         verify(notifications.bigTextStyle).bigText(PREVIEW);
-        verify(builder).addAction(R.drawable.notification_action_reply, "Reply", null);
-        verify(builder).addAction(R.drawable.notification_action_mark_as_read, "Mark Read", null);
-        verify(builder).addAction(R.drawable.notification_action_delete, "Delete", null);
+        verify(builder).addAction(resourceProvider.getIconReply(), "Reply", null);
+        verify(builder).addAction(resourceProvider.getIconMarkAsRead(), "Mark Read", null);
+        verify(builder).addAction(resourceProvider.getIconDelete(), "Delete", null);
         verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
         assertEquals(FAKE_NOTIFICATION, result);
     }
@@ -118,7 +118,7 @@ public class DeviceNotificationsTest extends RobolectricTest {
 
         Notification result = notifications.buildSummaryNotification(account, notificationData, false);
 
-        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(builder).setSmallIcon(resourceProvider.getIconNewMail());
         verify(builder).setColor(ACCOUNT_COLOR);
         verify(builder).setAutoCancel(true);
         verify(builder).setTicker(SUMMARY);
@@ -132,8 +132,8 @@ public class DeviceNotificationsTest extends RobolectricTest {
         verify(notifications.inboxStyle).setSummaryText(ACCOUNT_NAME);
         verify(notifications.inboxStyle).addLine(SUMMARY);
         verify(notifications.inboxStyle).addLine(SUMMARY_2);
-        verify(builder).addAction(R.drawable.notification_action_mark_as_read, "Mark Read", null);
-        verify(builder).addAction(R.drawable.notification_action_delete, "Delete", null);
+        verify(builder).addAction(resourceProvider.getIconMarkAsRead(), "Mark Read", null);
+        verify(builder).addAction(resourceProvider.getIconDelete(), "Delete", null);
         verify(lockScreenNotification).configureLockScreenNotification(builder, notificationData);
         assertEquals(FAKE_NOTIFICATION, result);
     }
@@ -159,7 +159,7 @@ public class DeviceNotificationsTest extends RobolectricTest {
 
         notifications.buildSummaryNotification(account, notificationData, false);
 
-        verify(builder, never()).addAction(R.drawable.notification_action_delete, "Delete", null);
+        verify(builder, never()).addAction(resourceProvider.getIconDelete(), "Delete", null);
     }
 
     @Test
@@ -170,7 +170,7 @@ public class DeviceNotificationsTest extends RobolectricTest {
 
         notifications.buildSummaryNotification(account, notificationData, false);
 
-        verify(builder, never()).addAction(R.drawable.notification_action_delete, "Delete", null);
+        verify(builder, never()).addAction(resourceProvider.getIconDelete(), "Delete", null);
     }
 
     private Builder createFakeNotificationBuilder() {
@@ -214,7 +214,8 @@ public class DeviceNotificationsTest extends RobolectricTest {
         NotificationActionCreator actionCreator = mock(NotificationActionCreator.class);
         WearNotifications wearNotifications = mock(WearNotifications.class);
 
-        return new TestDeviceNotifications(notificationHelper, actionCreator, lockScreenNotification, wearNotifications);
+        return new TestDeviceNotifications(notificationHelper, actionCreator, lockScreenNotification,
+                wearNotifications, resourceProvider);
     }
 
     private NotificationHelper createFakeNotificationHelper(final Builder builder) {
@@ -252,8 +253,9 @@ public class DeviceNotificationsTest extends RobolectricTest {
 
 
         TestDeviceNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
-                LockScreenNotification lockScreenNotification, WearNotifications wearNotifications) {
-            super(notificationHelper, actionCreator, lockScreenNotification, wearNotifications);
+                LockScreenNotification lockScreenNotification, WearNotifications wearNotifications,
+                NotificationResourceProvider resourceProvider) {
+            super(notificationHelper, actionCreator, lockScreenNotification, wearNotifications, resourceProvider);
         }
 
         @Override

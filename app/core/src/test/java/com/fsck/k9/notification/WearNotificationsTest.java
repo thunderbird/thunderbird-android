@@ -15,7 +15,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.MockHelper;
-import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
@@ -37,6 +36,7 @@ public class WearNotificationsTest extends RobolectricTest {
     private static final int ACCOUNT_NUMBER = 42;
     private static final String ACCOUNT_NAME = "accountName";
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private Account account;
     private Builder builder;
     private NotificationActionCreator actionCreator;
@@ -52,7 +52,8 @@ public class WearNotificationsTest extends RobolectricTest {
         NotificationHelper notificationHelper = createNotificationHelper(RuntimeEnvironment.application, builder);
         MessagingController messagingController = createMessagingController();
 
-        wearNotifications = new TestWearNotifications(notificationHelper, actionCreator, messagingController);
+        wearNotifications = new TestWearNotifications(notificationHelper, actionCreator, messagingController,
+                resourceProvider);
     }
 
     @Test
@@ -73,8 +74,8 @@ public class WearNotificationsTest extends RobolectricTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_reply_all_dark, "Reply", replyPendingIntent);
-        verifyAddAction(R.drawable.ic_opened_envelope_dark, "Mark Read", markAsReadPendingIntent);
+        verifyAddAction(resourceProvider.getWearIconReplyAll(), "Reply", replyPendingIntent);
+        verifyAddAction(resourceProvider.getWearIconMarkAsRead(), "Mark Read", markAsReadPendingIntent);
         verifyNumberOfActions(2);
     }
 
@@ -94,7 +95,7 @@ public class WearNotificationsTest extends RobolectricTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_trash_can_dark, "Delete", deletePendingIntent);
+        verifyAddAction(resourceProvider.getWearIconDelete(), "Delete", deletePendingIntent);
     }
 
     @Test
@@ -113,7 +114,7 @@ public class WearNotificationsTest extends RobolectricTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_archive_dark, "Archive", archivePendingIntent);
+        verifyAddAction(resourceProvider.getWearIconArchive(), "Archive", archivePendingIntent);
     }
 
     @Test
@@ -132,7 +133,7 @@ public class WearNotificationsTest extends RobolectricTest {
 
         assertEquals(notification, result);
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_alert_octagon_dark, "Spam", markAsSpamPendingIntent);
+        verifyAddAction(resourceProvider.getWearIconMarkAsSpam(), "Spam", markAsSpamPendingIntent);
     }
 
     @Test
@@ -148,7 +149,7 @@ public class WearNotificationsTest extends RobolectricTest {
         wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_opened_envelope_dark, "Mark All Read", markAllAsReadPendingIntent);
+        verifyAddAction(resourceProvider.getWearIconMarkAsRead(), "Mark All Read", markAllAsReadPendingIntent);
         verifyNumberOfActions(1);
     }
 
@@ -165,7 +166,7 @@ public class WearNotificationsTest extends RobolectricTest {
         wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_trash_can_dark, "Delete All", deletePendingIntent);
+        verifyAddAction(resourceProvider.getWearIconDelete(), "Delete All", deletePendingIntent);
     }
 
     @Test
@@ -181,7 +182,7 @@ public class WearNotificationsTest extends RobolectricTest {
         wearNotifications.addSummaryActions(builder, notificationData);
 
         verifyExtendWasOnlyCalledOnce();
-        verifyAddAction(R.drawable.ic_archive_dark, "Archive All", archivePendingIntent);
+        verifyAddAction(resourceProvider.getWearIconArchive(), "Archive All", archivePendingIntent);
     }
 
     private void disableOptionalActions() {
@@ -346,8 +347,8 @@ public class WearNotificationsTest extends RobolectricTest {
         private final MessagingController messagingController;
 
         public TestWearNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
-                MessagingController messagingController) {
-            super(notificationHelper, actionCreator);
+                MessagingController messagingController, NotificationResourceProvider resourceProvider) {
+            super(notificationHelper, actionCreator, resourceProvider);
             this.messagingController = messagingController;
         }
 

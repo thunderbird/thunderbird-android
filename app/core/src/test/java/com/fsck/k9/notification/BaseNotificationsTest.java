@@ -8,7 +8,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.MockHelper;
-import com.fsck.k9.core.R;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,6 +29,7 @@ public class BaseNotificationsTest {
     private static final String NOTIFICATION_PREVIEW = "Preview";
 
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private TestNotifications notifications;
 
 
@@ -44,7 +44,7 @@ public class BaseNotificationsTest {
 
         Builder builder = notifications.createAndInitializeNotificationBuilder(account);
 
-        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(builder).setSmallIcon(resourceProvider.getIconNewMail());
         verify(builder).setColor(ACCOUNT_COLOR);
         verify(builder).setAutoCancel(true);
     }
@@ -106,7 +106,7 @@ public class BaseNotificationsTest {
         NotificationHelper notificationHelper = createFakeNotificationHelper();
         NotificationActionCreator actionCreator = mock(NotificationActionCreator.class);
 
-        return new TestNotifications(notificationHelper, actionCreator);
+        return new TestNotifications(notificationHelper, actionCreator, resourceProvider);
     }
 
     private NotificationHelper createFakeNotificationHelper() {
@@ -129,8 +129,9 @@ public class BaseNotificationsTest {
 
         BigTextStyle bigTextStyle;
 
-        protected TestNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator) {
-            super(notificationHelper, actionCreator);
+        protected TestNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
+                NotificationResourceProvider resourceProvider) {
+            super(notificationHelper, actionCreator, resourceProvider);
             bigTextStyle = mock(BigTextStyle.class);
         }
 

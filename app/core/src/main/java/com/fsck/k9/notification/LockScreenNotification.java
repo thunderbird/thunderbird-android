@@ -6,27 +6,25 @@ import java.util.List;
 import java.util.Set;
 
 import android.app.Notification;
-import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.core.R;
 
 
 class LockScreenNotification {
     static final int MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION = 5;
 
 
-    private final Context context;
     private final NotificationHelper notificationHelper;
+    private final NotificationResourceProvider resourceProvider;
 
 
-    LockScreenNotification(NotificationHelper notificationHelper) {
-        context = notificationHelper.getContext();
+    LockScreenNotification(NotificationHelper notificationHelper, NotificationResourceProvider resourceProvider) {
         this.notificationHelper = notificationHelper;
+        this.resourceProvider = resourceProvider;
     }
 
     public void configureLockScreenNotification(Builder builder, NotificationData notificationData) {
@@ -88,11 +86,10 @@ class LockScreenNotification {
         Account account = notificationData.getAccount();
         int newMessages = notificationData.getNewMessagesCount();
         int unreadCount = notificationData.getUnreadMessageCount();
-        String title = context.getResources().getQuantityString(R.plurals.notification_new_messages_title,
-                newMessages, newMessages);
+        String title = resourceProvider.newMessagesTitle(newMessages);
 
         return notificationHelper.createNotificationBuilder()
-                .setSmallIcon(R.drawable.notification_icon_new_mail)
+                .setSmallIcon(resourceProvider.getIconNewMail())
                 .setColor(account.getChipColor())
                 .setNumber(unreadCount)
                 .setContentTitle(title)

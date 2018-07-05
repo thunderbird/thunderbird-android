@@ -33,6 +33,7 @@ public class NotificationContentCreatorTest extends RobolectricTest {
     private static final String RECIPIENT_NAME = "Bob";
 
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private NotificationContentCreator contentCreator;
     private MessageReference messageReference;
     private Account account;
@@ -152,7 +153,7 @@ public class NotificationContentCreatorTest extends RobolectricTest {
 
     private NotificationContentCreator createNotificationContentCreator() {
         Context context = RuntimeEnvironment.application;
-        return new NotificationContentCreator(context);
+        return new NotificationContentCreator(context, resourceProvider);
     }
 
     private Account createFakeAccount() {

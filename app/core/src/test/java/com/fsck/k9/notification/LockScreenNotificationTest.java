@@ -12,7 +12,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.LockScreenNotificationVisibility;
 import com.fsck.k9.MockHelper;
-import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +30,7 @@ public class LockScreenNotificationTest extends RobolectricTest {
     private static final int NEW_MESSAGE_COUNT = 3;
     private static final int UNREAD_MESSAGE_COUNT = 4;
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private Builder builder;
     private Builder publicBuilder;
     private LockScreenNotification lockScreenNotification;
@@ -45,7 +45,7 @@ public class LockScreenNotificationTest extends RobolectricTest {
         NotificationHelper notificationHelper = createFakeNotificationHelper(context, publicBuilder);
         Account account = createFakeAccount();
         notificationData = createFakeNotificationData(account);
-        lockScreenNotification = new LockScreenNotification(notificationHelper);
+        lockScreenNotification = new LockScreenNotification(notificationHelper, resourceProvider);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class LockScreenNotificationTest extends RobolectricTest {
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
-        verify(publicBuilder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(publicBuilder).setSmallIcon(resourceProvider.getIconNewMail());
         verify(publicBuilder).setNumber(1);
         verify(publicBuilder).setContentTitle("1 new message");
         verify(publicBuilder).setContentText(senderName);
@@ -107,7 +107,7 @@ public class LockScreenNotificationTest extends RobolectricTest {
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
-        verify(publicBuilder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(publicBuilder).setSmallIcon(resourceProvider.getIconNewMail());
         verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT);
         verify(publicBuilder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
         verify(publicBuilder).setContentText(
@@ -145,7 +145,7 @@ public class LockScreenNotificationTest extends RobolectricTest {
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
-        verify(publicBuilder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(publicBuilder).setSmallIcon(resourceProvider.getIconNewMail());
         verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT);
         verify(publicBuilder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
         verify(publicBuilder).setContentText(ACCOUNT_NAME);
