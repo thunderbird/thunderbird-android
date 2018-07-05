@@ -52,6 +52,7 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.ActivityListener;
@@ -154,6 +155,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         // make it immutable to prevent accidental alteration (content is immutable already)
         SORT_COMPARATORS = Collections.unmodifiableMap(map);
     }
+
+    private final SortTypeToastProvider sortTypeToastProvider = DI.get(SortTypeToastProvider.class);
 
     ListView listView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -856,7 +859,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void reSort() {
-        int toastString = sortType.getToast(sortAscending);
+        int toastString = sortTypeToastProvider.getToast(sortType, sortAscending);
 
         Toast toast = Toast.makeText(getActivity(), toastString, Toast.LENGTH_SHORT);
         toast.show();
