@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,13 +14,12 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Environment;
 
 import com.fsck.k9.Core;
+import com.fsck.k9.CoreResourceProvider;
+import com.fsck.k9.DI;
 import timber.log.Timber;
-
-import com.fsck.k9.core.R;
 
 /**
  * Manager for different {@link StorageProvider} -classes that abstract access
@@ -255,10 +255,14 @@ public class StorageManager {
      * </p>
      */
     public static class InternalStorageProvider implements StorageProvider {
-
         public static final String ID = "InternalStorage";
 
+        private final CoreResourceProvider resourceProvider;
         private File mRoot;
+
+        public InternalStorageProvider(CoreResourceProvider resourceProvider) {
+            this.resourceProvider = resourceProvider;
+        }
 
         @Override
         public String getId() {
@@ -273,7 +277,7 @@ public class StorageManager {
 
         @Override
         public String getName(Context context) {
-            return context.getString(R.string.local_storage_provider_internal_label);
+            return resourceProvider.internalStorageProviderName();
         }
 
         @Override
@@ -322,8 +326,9 @@ public class StorageManager {
      * </p>
      */
     public static class ExternalStorageProvider implements StorageProvider {
-
         public static final String ID = "ExternalStorage";
+
+        private final CoreResourceProvider resourceProvider;
 
         /**
          * Root of the denoted storage.
@@ -334,6 +339,11 @@ public class StorageManager {
          * Chosen base directory.
          */
         private File mApplicationDirectory;
+
+
+        public ExternalStorageProvider(CoreResourceProvider resourceProvider) {
+            this.resourceProvider = resourceProvider;
+        }
 
         @Override
         public String getId() {
@@ -349,7 +359,7 @@ public class StorageManager {
 
         @Override
         public String getName(Context context) {
-            return context.getString(R.string.local_storage_provider_external_label);
+            return resourceProvider.externalStorageProviderName();
         }
 
         @Override
@@ -375,83 +385,6 @@ public class StorageManager {
         @Override
         public File getRoot(Context context) {
             return mRoot;
-        }
-    }
-
-    /**
-     * Storage provider to allow access the /emmc directory on a HTC Incredible.
-     *
-     * <p>
-     * This implementation is experimental and _untested_.
-     * </p>
-     *
-     * See http://groups.google.com/group/android-developers/browse_frm/thread/96f15e57150ed173
-     *
-     * @see FixedStorageProviderBase
-     */
-    public static class HtcIncredibleStorageProvider extends FixedStorageProviderBase {
-
-        public static final String ID = "HtcIncredibleStorage";
-
-        @Override
-        public String getId() {
-            return ID;
-        }
-
-        @Override
-        public String getName(Context context) {
-            return context.getString(R.string.local_storage_provider_samsunggalaxy_label,
-                                     Build.MODEL);
-        }
-
-        @Override
-        protected boolean supportsVendor() {
-            return "inc".equals(Build.DEVICE);
-        }
-
-        @Override
-        protected File computeRoot(Context context) {
-            return new File("/emmc");
-        }
-    }
-
-    /**
-     * Storage provider to allow access the Samsung Galaxy S 'internal SD card'.
-     *
-     * <p>
-     * This implementation is experimental and _untested_.
-     * </p>
-     *
-     * See http://groups.google.com/group/android-developers/browse_frm/thread/a1adf7122a75a657
-     *
-     * @see FixedStorageProviderBase
-     */
-    public static class SamsungGalaxySStorageProvider extends FixedStorageProviderBase {
-
-        public static final String ID = "SamsungGalaxySStorage";
-
-        @Override
-        public String getId() {
-            return ID;
-        }
-
-        @Override
-        public String getName(Context context) {
-            return context.getString(R.string.local_storage_provider_samsunggalaxy_label,
-                                     Build.MODEL);
-        }
-
-        @Override
-        protected boolean supportsVendor() {
-            // FIXME
-            return "GT-I5800".equals(Build.DEVICE) || "GT-I9000".equals(Build.DEVICE)
-                   || "SGH-T959".equals(Build.DEVICE) || "SGH-I897".equals(Build.DEVICE);
-        }
-
-        @Override
-        protected File computeRoot(Context context) {
-            return Environment.getExternalStorageDirectory(); // was: new
-            // File("/sdcard")
         }
     }
 
@@ -497,7 +430,9 @@ public class StorageManager {
 
     public static synchronized StorageManager getInstance(final Context context) {
         if (instance == null) {
-            instance = new StorageManager(context.getApplicationContext());
+            Context applicationContext = context.getApplicationContext();
+            CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+            instance = new StorageManager(applicationContext, resourceProvider);
         }
         return instance;
     }
@@ -523,7 +458,7 @@ public class StorageManager {
      * @throws NullPointerException
      *             If <tt>context</tt> is <code>null</code>.
      */
-    protected StorageManager(final Context context) throws NullPointerException {
+    protected StorageManager(final Context context, CoreResourceProvider resourceProvider) throws NullPointerException {
         if (context == null) {
             throw new NullPointerException("No Context given");
         }
@@ -536,15 +471,12 @@ public class StorageManager {
          * Here is where we define which providers are used, currently we only
          * allow the internal storage and the regular external storage.
          *
-         * HTC Incredible storage and Samsung Galaxy S are omitted on purpose
-         * (they're experimental and I don't have those devices to test).
-         *
-         *
          * !!! Make sure InternalStorageProvider is the first provider as it'll
          * be considered as the default provider !!!
          */
-        final List<StorageProvider> allProviders = Arrays.asList(new InternalStorageProvider(),
-                new ExternalStorageProvider());
+        final List<StorageProvider> allProviders = Arrays.asList(
+                new InternalStorageProvider(resourceProvider),
+                new ExternalStorageProvider(resourceProvider));
         for (final StorageProvider provider : allProviders) {
             // check for provider compatibility
             if (provider.isSupported(context)) {
