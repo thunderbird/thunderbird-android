@@ -25,8 +25,9 @@ public class Preferences {
 
     public static synchronized Preferences getPreferences(Context context) {
         Context appContext = context.getApplicationContext();
+        CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         if (preferences == null) {
-            preferences = new Preferences(appContext);
+            preferences = new Preferences(appContext, resourceProvider);
         }
         return preferences;
     }
@@ -36,10 +37,12 @@ public class Preferences {
     private List<Account> accountsInOrder = null;
     private Account newAccount;
     private Context context;
+    private final CoreResourceProvider resourceProvider;
 
-    private Preferences(Context context) {
+    private Preferences(Context context, CoreResourceProvider resourceProvider) {
         storage = Storage.getStorage(context);
         this.context = context;
+        this.resourceProvider = resourceProvider;
         if (storage.isEmpty()) {
             Timber.i("Preferences storage is zero-size, importing from Android-style preferences");
             StorageEditor editor = storage.edit();
@@ -110,7 +113,7 @@ public class Preferences {
     }
 
     public synchronized Account newAccount() {
-        newAccount = new Account(context);
+        newAccount = new Account(context, resourceProvider);
         accounts.put(newAccount.getUuid(), newAccount);
         accountsInOrder.add(newAccount);
 

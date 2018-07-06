@@ -1,6 +1,7 @@
 package com.fsck.k9
 
 import android.app.Application
+import com.nhaarman.mockito_kotlin.mock
 import org.koin.dsl.module.applicationContext
 
 class TestApp : Application() {
@@ -17,4 +18,5 @@ class TestApp : Application() {
 
 val testModule = applicationContext {
     bean { AppConfig(emptyList()) }
+    bean { mock<CoreResourceProvider>() }
 }

@@ -21,7 +21,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
-import com.fsck.k9.core.R;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder.FolderClass;
@@ -259,7 +258,7 @@ public class Account implements BaseAccount, StoreConfig {
         TEXT, HTML, AUTO
     }
 
-    protected Account(Context context) {
+    protected Account(Context context, CoreResourceProvider resourceProvider) {
         accountUuid = UUID.randomUUID().toString();
         localStorageProviderId = StorageManager.getInstance(context).getDefaultProviderId();
         automaticCheckIntervalMinutes = -1;
@@ -316,8 +315,8 @@ public class Account implements BaseAccount, StoreConfig {
 
         Identity identity = new Identity();
         identity.setSignatureUse(true);
-        identity.setSignature(context.getString(R.string.default_signature));
-        identity.setDescription(context.getString(R.string.default_identity_description));
+        identity.setSignature(resourceProvider.defaultSignature());
+        identity.setDescription(resourceProvider.defaultIdentityDescription());
         identities.add(identity);
 
         notificationSetting = new NotificationSetting();

@@ -18,6 +18,7 @@ private val mainAppModule = applicationContext {
                     get<BroadcastSenderListener>()
             ))
     }
+    bean { K9CoreResourceProvider(get()) as CoreResourceProvider }
 }
 
 val appModules = listOf(
