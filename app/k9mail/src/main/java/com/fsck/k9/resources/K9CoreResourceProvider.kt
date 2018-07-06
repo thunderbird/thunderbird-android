@@ -7,4 +7,6 @@ import com.fsck.k9.R
 class K9CoreResourceProvider(private val context: Context) : CoreResourceProvider {
     override fun defaultSignature(): String = context.getString(R.string.default_signature)
     override fun defaultIdentityDescription(): String = context.getString(R.string.default_identity_description)
+
+    override fun sendAlternateChooserTitle(): String = context.getString(R.string.send_alternate_chooser_title)
 }
