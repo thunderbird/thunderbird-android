@@ -1,4 +1,4 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.ui.helper;
 
 import java.io.File;
 
@@ -13,7 +13,7 @@ import android.text.InputType;
 import android.widget.EditText;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.core.R;
+import com.fsck.k9.ui.R;
 
 public class FileBrowserHelper {
     /**

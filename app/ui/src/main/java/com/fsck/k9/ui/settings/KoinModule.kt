@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.settings
 
-import com.fsck.k9.helper.FileBrowserHelper
+import com.fsck.k9.ui.helper.FileBrowserHelper
 import com.fsck.k9.helper.NamedThreadFactory
 import com.fsck.k9.ui.account.AccountsLiveData
 import com.fsck.k9.ui.settings.account.AccountSettingsDataStoreFactory

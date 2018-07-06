@@ -50,7 +50,7 @@ import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
-import com.fsck.k9.helper.SizeFormatter;
+import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.power.TracingPowerManager;
