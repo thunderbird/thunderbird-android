@@ -17,4 +17,12 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
             context.getString(R.string.local_storage_provider_external_label)
 
     override fun contactDisplayNamePrefix(): String = context.getString(R.string.message_to_label)
+
+    override fun messageHeaderFrom(): String = context.getString(R.string.message_compose_quote_header_from)
+    override fun messageHeaderTo(): String = context.getString(R.string.message_compose_quote_header_to)
+    override fun messageHeaderCc(): String = context.getString(R.string.message_compose_quote_header_cc)
+    override fun messageHeaderDate(): String = context.getString(R.string.message_compose_quote_header_send_date)
+    override fun messageHeaderSubject(): String = context.getString(R.string.message_compose_quote_header_subject)
+
+    override fun noSubject(): String = context.getString(R.string.general_no_subject)
 }

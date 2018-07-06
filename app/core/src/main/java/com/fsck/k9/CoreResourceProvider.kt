@@ -10,4 +10,11 @@ interface CoreResourceProvider {
     fun externalStorageProviderName(): String
 
     fun contactDisplayNamePrefix(): String
+
+    fun messageHeaderFrom(): String
+    fun messageHeaderTo(): String
+    fun messageHeaderCc(): String
+    fun messageHeaderDate(): String
+    fun messageHeaderSubject(): String
+    fun noSubject(): String
 }
