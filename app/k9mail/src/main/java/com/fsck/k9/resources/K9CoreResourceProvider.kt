@@ -15,4 +15,6 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
 
     override fun externalStorageProviderName(): String =
             context.getString(R.string.local_storage_provider_external_label)
+
+    override fun contactDisplayNamePrefix(): String = context.getString(R.string.message_to_label)
 }

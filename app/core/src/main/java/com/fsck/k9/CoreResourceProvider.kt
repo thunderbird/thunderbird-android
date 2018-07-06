@@ -8,4 +8,6 @@ interface CoreResourceProvider {
 
     fun internalStorageProviderName(): String
     fun externalStorageProviderName(): String
+
+    fun contactDisplayNamePrefix(): String
 }
