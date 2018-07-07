@@ -19,6 +19,7 @@ import android.os.Bundle;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9RobolectricTest;
+import com.fsck.k9.TestCoreResourceProvider;
 import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
@@ -42,7 +43,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
-import org.robolectric.RuntimeEnvironment;
 
 import static com.fsck.k9.autocrypt.AutocryptOperationsHelper.assertMessageHasAutocryptHeader;
 import static org.junit.Assert.assertEquals;
@@ -523,8 +523,8 @@ public class PgpMessageBuilderTest extends K9RobolectricTest {
     private static PgpMessageBuilder createDefaultPgpMessageBuilder(OpenPgpApi openPgpApi,
             AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor, CryptoStatus cryptoStatus) {
         PgpMessageBuilder builder = new PgpMessageBuilder(
-                RuntimeEnvironment.application, MessageIdGenerator.getInstance(), BoundaryGenerator.getInstance(),
-                AutocryptOperations.getInstance(), autocryptOpenPgpApiInteractor);
+                MessageIdGenerator.getInstance(), BoundaryGenerator.getInstance(),
+                AutocryptOperations.getInstance(), autocryptOpenPgpApiInteractor, new TestCoreResourceProvider());
         builder.setOpenPgpApi(openPgpApi);
         builder.setCryptoStatus(cryptoStatus);
 

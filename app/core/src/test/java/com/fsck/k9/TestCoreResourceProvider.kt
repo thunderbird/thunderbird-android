@@ -30,4 +30,7 @@ class TestCoreResourceProvider : CoreResourceProvider {
     override fun messageHeaderSubject() = "Subject:"
 
     override fun noSubject() = "(No subject)"
+
+    override fun userAgent(): String = "K-9 Mail for Android"
+    override fun encryptedSubject(): String = "Encrypted message"
 }

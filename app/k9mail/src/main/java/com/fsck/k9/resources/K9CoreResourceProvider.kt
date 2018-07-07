@@ -25,4 +25,7 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
     override fun messageHeaderSubject(): String = context.getString(R.string.message_compose_quote_header_subject)
 
     override fun noSubject(): String = context.getString(R.string.general_no_subject)
+
+    override fun userAgent(): String = context.getString(R.string.message_header_mua)
+    override fun encryptedSubject(): String = context.getString(R.string.encrypted_subject)
 }

@@ -1,10 +1,10 @@
 package com.fsck.k9.message;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.VisibleForTesting;
 
+import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.MessagingException;
@@ -15,15 +15,16 @@ import com.fsck.k9.mail.internet.MimeMessage;
 public class SimpleMessageBuilder extends MessageBuilder {
 
     public static SimpleMessageBuilder newInstance() {
-        Context context = DI.get(Context.class);
         MessageIdGenerator messageIdGenerator = MessageIdGenerator.getInstance();
         BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();
-        return new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator);
+        CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+        return new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider);
     }
 
     @VisibleForTesting
-    SimpleMessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
-        super(context, messageIdGenerator, boundaryGenerator);
+    SimpleMessageBuilder(MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator,
+            CoreResourceProvider resourceProvider) {
+        super(messageIdGenerator, boundaryGenerator, resourceProvider);
     }
 
     @Override

@@ -17,4 +17,7 @@ interface CoreResourceProvider {
     fun messageHeaderDate(): String
     fun messageHeaderSubject(): String
     fun noSubject(): String
+
+    fun userAgent(): String
+    fun encryptedSubject(): String
 }

@@ -6,17 +6,16 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
+import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.mail.internet.Headers;
 import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
-import com.fsck.k9.core.R;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -38,9 +37,9 @@ import org.apache.james.mime4j.util.MimeUtil;
 
 
 public abstract class MessageBuilder {
-    protected final Context context;
     private final MessageIdGenerator messageIdGenerator;
     private final BoundaryGenerator boundaryGenerator;
+    protected final CoreResourceProvider resourceProvider;
 
 
     private String subject;
@@ -70,10 +69,11 @@ public abstract class MessageBuilder {
     private boolean isDraft;
     private boolean isPgpInlineEnabled;
 
-    protected MessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator) {
-        this.context = context;
+    protected MessageBuilder(MessageIdGenerator messageIdGenerator,
+            BoundaryGenerator boundaryGenerator, CoreResourceProvider resourceProvider) {
         this.messageIdGenerator = messageIdGenerator;
         this.boundaryGenerator = boundaryGenerator;
+        this.resourceProvider = resourceProvider;
     }
 
     /**
@@ -107,7 +107,7 @@ public abstract class MessageBuilder {
         }
 
         if (!K9.hideUserAgent()) {
-            message.setHeader("User-Agent", context.getString(R.string.message_header_mua));
+            message.setHeader("User-Agent", resourceProvider.userAgent());
         }
 
         final String replyTo = identity.getReplyTo();
