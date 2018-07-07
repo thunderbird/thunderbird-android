@@ -20,4 +20,7 @@ interface CoreResourceProvider {
 
     fun userAgent(): String
     fun encryptedSubject(): String
+
+    fun replyHeader(sender: String): String
+    fun replyHeader(sender: String, sentDate: String): String
 }

@@ -28,4 +28,10 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
 
     override fun userAgent(): String = context.getString(R.string.message_header_mua)
     override fun encryptedSubject(): String = context.getString(R.string.encrypted_subject)
+
+    override fun replyHeader(sender: String): String =
+            context.getString(R.string.message_compose_reply_header_fmt, sender)
+
+    override fun replyHeader(sender: String, sentDate: String): String =
+            context.getString(R.string.message_compose_reply_header_fmt_with_date, sentDate, sender)
 }
