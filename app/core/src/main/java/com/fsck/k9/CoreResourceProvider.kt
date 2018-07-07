@@ -16,11 +16,12 @@ interface CoreResourceProvider {
     fun messageHeaderCc(): String
     fun messageHeaderDate(): String
     fun messageHeaderSubject(): String
+    fun messageHeaderSeparator(): String
+
     fun noSubject(): String
-
     fun userAgent(): String
-    fun encryptedSubject(): String
 
+    fun encryptedSubject(): String
     fun replyHeader(sender: String): String
     fun replyHeader(sender: String, sentDate: String): String
 }

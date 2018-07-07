@@ -28,6 +28,7 @@ class TestCoreResourceProvider : CoreResourceProvider {
     override fun messageHeaderCc() = "Cc:"
     override fun messageHeaderDate() = "Sent:"
     override fun messageHeaderSubject() = "Subject:"
+    override fun messageHeaderSeparator() = "-------- Original Message --------"
 
     override fun noSubject() = "(No subject)"
 

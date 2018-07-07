@@ -23,6 +23,7 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
     override fun messageHeaderCc(): String = context.getString(R.string.message_compose_quote_header_cc)
     override fun messageHeaderDate(): String = context.getString(R.string.message_compose_quote_header_send_date)
     override fun messageHeaderSubject(): String = context.getString(R.string.message_compose_quote_header_subject)
+    override fun messageHeaderSeparator(): String = context.getString(R.string.message_compose_quote_header_separator)
 
     override fun noSubject(): String = context.getString(R.string.general_no_subject)
 
