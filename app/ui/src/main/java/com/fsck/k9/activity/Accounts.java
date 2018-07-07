@@ -440,8 +440,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * Creates and initializes the special accounts ('Unified Inbox' and 'All Messages')
      */
     private void createSpecialAccounts() {
-        unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount(this);
-        allMessagesAccount = SearchAccount.createAllMessagesAccount(this);
+        unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount();
+        allMessagesAccount = SearchAccount.createAllMessagesAccount();
     }
 
     @SuppressWarnings("unchecked")

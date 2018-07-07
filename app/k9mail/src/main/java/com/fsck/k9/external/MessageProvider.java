@@ -487,7 +487,7 @@ public class MessageProvider extends ContentProvider {
             BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<List<MessageInfoHolder>>();
 
             // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
-            SearchAccount integratedInboxAccount = SearchAccount.createUnifiedInboxAccount(getContext());
+            SearchAccount integratedInboxAccount = SearchAccount.createUnifiedInboxAccount();
             MessagingController msgController = MessagingController.getInstance(getContext());
 
             msgController.searchLocalMessages(integratedInboxAccount.getRelatedSearch(),

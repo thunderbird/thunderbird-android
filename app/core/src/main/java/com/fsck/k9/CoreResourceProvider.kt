@@ -24,4 +24,9 @@ interface CoreResourceProvider {
     fun encryptedSubject(): String
     fun replyHeader(sender: String): String
     fun replyHeader(sender: String, sentDate: String): String
+
+    fun searchAllMessagesTitle(): String
+    fun searchAllMessagesDetail(): String
+    fun searchUnifiedInboxTitle(): String
+    fun searchUnifiedInboxDetail(): String
 }

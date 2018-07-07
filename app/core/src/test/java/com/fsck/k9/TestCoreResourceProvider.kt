@@ -37,4 +37,9 @@ class TestCoreResourceProvider : CoreResourceProvider {
 
     override fun replyHeader(sender: String) = "$sender wrote:"
     override fun replyHeader(sender: String, sentDate: String) = "On $sentDate, $sender wrote:"
+
+    override fun searchAllMessagesTitle() = "All messages"
+    override fun searchAllMessagesDetail() = "All messages in searchable folders"
+    override fun searchUnifiedInboxTitle() = "Unified Inbox"
+    override fun searchUnifiedInboxDetail() = "All messages in unified folders"
 }
