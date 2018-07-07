@@ -8,16 +8,13 @@ import java.util.List;
 
 import android.app.Application;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.core.BuildConfig;
-import com.fsck.k9.K9;
-import com.fsck.k9.core.R;
-import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.MessagingException;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +31,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
-public class StoreSchemaDefinitionTest extends RobolectricTest {
+public class StoreSchemaDefinitionTest extends K9RobolectricTest {
     private StoreSchemaDefinition storeSchemaDefinition;
 
 
@@ -324,22 +321,14 @@ public class StoreSchemaDefinitionTest extends RobolectricTest {
     }
 
     private StoreSchemaDefinition createStoreSchemaDefinition() throws MessagingException {
-        Context context = createContext();
         Account account = createAccount();
         LockableDatabase lockableDatabase = createLockableDatabase();
 
         LocalStore localStore = mock(LocalStore.class);
         when(localStore.getDatabase()).thenReturn(lockableDatabase);
-        when(localStore.getContext()).thenReturn(context);
         when(localStore.getAccount()).thenReturn(account);
 
         return new StoreSchemaDefinition(localStore);
-    }
-
-    private Context createContext() {
-        Context context = mock(Context.class);
-        when(context.getString(R.string.special_mailbox_name_outbox)).thenReturn("Outbox");
-        return context;
     }
 
     private LockableDatabase createLockableDatabase() throws MessagingException {

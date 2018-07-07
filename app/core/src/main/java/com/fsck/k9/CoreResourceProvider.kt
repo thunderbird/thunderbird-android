@@ -29,4 +29,6 @@ interface CoreResourceProvider {
     fun searchAllMessagesDetail(): String
     fun searchUnifiedInboxTitle(): String
     fun searchUnifiedInboxDetail(): String
+
+    fun outboxFolderName(): String
 }

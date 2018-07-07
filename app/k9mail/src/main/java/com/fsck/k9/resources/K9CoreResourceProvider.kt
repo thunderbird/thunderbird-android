@@ -40,4 +40,6 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
     override fun searchAllMessagesDetail(): String = context.getString(R.string.search_all_messages_detail)
     override fun searchUnifiedInboxTitle(): String = context.getString(R.string.integrated_inbox_title)
     override fun searchUnifiedInboxDetail(): String = context.getString(R.string.integrated_inbox_detail)
+
+    override fun outboxFolderName(): String = context.getString(R.string.special_mailbox_name_outbox)
 }

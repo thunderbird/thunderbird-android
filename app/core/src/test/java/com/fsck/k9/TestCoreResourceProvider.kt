@@ -42,4 +42,6 @@ class TestCoreResourceProvider : CoreResourceProvider {
     override fun searchAllMessagesDetail() = "All messages in searchable folders"
     override fun searchUnifiedInboxTitle() = "Unified Inbox"
     override fun searchUnifiedInboxDetail() = "All messages in unified folders"
+
+    override fun outboxFolderName() = "Outbox"
 }
