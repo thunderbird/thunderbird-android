@@ -7,7 +7,7 @@ import android.text.SpannableStringBuilder;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.core.R;
+import com.fsck.k9.R;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
