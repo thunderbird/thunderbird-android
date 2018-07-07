@@ -8,12 +8,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import android.content.Context;
-
+import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import com.fsck.k9.EmailAddressValidator;
-import com.fsck.k9.K9;
-import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
@@ -81,7 +78,7 @@ class IdentitySettings {
     }
 
     private static class SignatureSetting extends SettingsDescription<String> {
-        private final Context context = DI.get(Context.class);
+        private final CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
 
         SignatureSetting() {
             super(null);
@@ -89,7 +86,7 @@ class IdentitySettings {
 
         @Override
         public String getDefaultValue() {
-            return context.getResources().getString(R.string.default_signature);
+            return resourceProvider.defaultSignature();
         }
 
         @Override
