@@ -9,6 +9,7 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.internet.MimeMessage
 import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockito_kotlin.mock
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
 
@@ -143,5 +144,5 @@ class IdentityHelperTest : RobolectricTest() {
     }
 
 
-    class DummyAccount : Account(RuntimeEnvironment.application)
+    class DummyAccount : Account(RuntimeEnvironment.application, mock())
 }

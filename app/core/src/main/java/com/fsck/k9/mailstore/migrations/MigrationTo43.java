@@ -4,15 +4,15 @@ package com.fsck.k9.mailstore.migrations;
 import java.util.List;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import timber.log.Timber;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.core.R;
+import com.fsck.k9.CoreResourceProvider;
+import com.fsck.k9.DI;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
+import timber.log.Timber;
 
 import static com.fsck.k9.Account.OUTBOX;
 
@@ -22,7 +22,6 @@ class MigrationTo43 {
         try {
             LocalStore localStore = migrationsHelper.getLocalStore();
             Account account = migrationsHelper.getAccount();
-            Context context = migrationsHelper.getContext();
 
             // If folder "OUTBOX" (old, v3.800 - v3.802) exists, rename it to
             // "K9MAIL_INTERNAL_OUTBOX" (new)
@@ -35,7 +34,8 @@ class MigrationTo43 {
             }
 
             // Check if old (pre v3.800) localized outbox folder exists
-            String localizedOutbox = context.getString(R.string.special_mailbox_name_outbox);
+            CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+            String localizedOutbox = resourceProvider.outboxFolderName();
             LocalFolder obsoleteOutbox = new LocalFolder(localStore, localizedOutbox);
             if (obsoleteOutbox.exists()) {
                 // Get all messages from the localized outbox ...

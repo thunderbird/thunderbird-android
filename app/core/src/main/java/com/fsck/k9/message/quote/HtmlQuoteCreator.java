@@ -5,14 +5,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.res.Resources;
+
+import com.fsck.k9.CoreResourceProvider;
+import com.fsck.k9.DI;
 import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
-import com.fsck.k9.core.R;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.message.html.HtmlConverter;
 
 
@@ -42,10 +43,10 @@ public class HtmlQuoteCreator {
      * @param messageBody Text of the message to be quoted.
      * @param quoteStyle Style of quoting.
      * @return Modified insertable message.
-     * @throws MessagingException
      */
     public static InsertableHtmlContent quoteOriginalHtmlMessage(Resources resources, Message originalMessage,
             String messageBody, QuoteStyle quoteStyle) {
+        CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);
 
         String sentDate = QuoteHelper.getSentDateText(resources, originalMessage);
@@ -54,13 +55,11 @@ public class HtmlQuoteCreator {
             StringBuilder header = new StringBuilder(QuoteHelper.QUOTE_BUFFER_LENGTH);
             header.append("<div class=\"gmail_quote\">");
             if (sentDate.length() != 0) {
-                header.append(HtmlConverter.textToHtmlFragment(String.format(
-                        resources.getString(R.string.message_compose_reply_header_fmt_with_date), sentDate, fromAddress)
-                ));
+                String replyHeader = resourceProvider.replyHeader(fromAddress, sentDate);
+                header.append(HtmlConverter.textToHtmlFragment(replyHeader));
             } else {
-                header.append(HtmlConverter.textToHtmlFragment(String.format(
-                        resources.getString(R.string.message_compose_reply_header_fmt), fromAddress)
-                ));
+                String replyHeader = resourceProvider.replyHeader(fromAddress);
+                header.append(HtmlConverter.textToHtmlFragment(replyHeader));
             }
             header.append("<blockquote class=\"gmail_quote\" " +
                     "style=\"margin: 0pt 0pt 0pt 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;\">\r\n");
@@ -75,27 +74,27 @@ public class HtmlQuoteCreator {
             header.append("<div style='font-size:10.0pt;font-family:\"Tahoma\",\"sans-serif\";padding:3.0pt 0in 0in 0in'>\r\n");
             header.append("<hr style='border:none;border-top:solid #E1E1E1 1.0pt'>\r\n"); // This gets converted into a horizontal line during html to text conversion.
             if (originalMessage.getFrom() != null && fromAddress.length() != 0) {
-                header.append("<b>").append(resources.getString(R.string.message_compose_quote_header_from)).append("</b> ")
+                header.append("<b>").append(resourceProvider.messageHeaderFrom()).append("</b> ")
                         .append(HtmlConverter.textToHtmlFragment(fromAddress))
                         .append("<br>\r\n");
             }
             if (sentDate.length() != 0) {
-                header.append("<b>").append(resources.getString(R.string.message_compose_quote_header_send_date)).append("</b> ")
+                header.append("<b>").append(resourceProvider.messageHeaderDate()).append("</b> ")
                         .append(sentDate)
                         .append("<br>\r\n");
             }
             if (originalMessage.getRecipients(RecipientType.TO) != null && originalMessage.getRecipients(RecipientType.TO).length != 0) {
-                header.append("<b>").append(resources.getString(R.string.message_compose_quote_header_to)).append("</b> ")
+                header.append("<b>").append(resourceProvider.messageHeaderTo()).append("</b> ")
                         .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getRecipients(RecipientType.TO))))
                         .append("<br>\r\n");
             }
             if (originalMessage.getRecipients(RecipientType.CC) != null && originalMessage.getRecipients(RecipientType.CC).length != 0) {
-                header.append("<b>").append(resources.getString(R.string.message_compose_quote_header_cc)).append("</b> ")
+                header.append("<b>").append(resourceProvider.messageHeaderCc()).append("</b> ")
                         .append(HtmlConverter.textToHtmlFragment(Address.toString(originalMessage.getRecipients(RecipientType.CC))))
                         .append("<br>\r\n");
             }
             if (originalMessage.getSubject() != null) {
-                header.append("<b>").append(resources.getString(R.string.message_compose_quote_header_subject)).append("</b> ")
+                header.append("<b>").append(resourceProvider.messageHeaderSubject()).append("</b> ")
                         .append(HtmlConverter.textToHtmlFragment(originalMessage.getSubject()))
                         .append("<br>\r\n");
             }

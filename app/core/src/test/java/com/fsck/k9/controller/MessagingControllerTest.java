@@ -8,16 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import android.app.Application;
 import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
-import com.fsck.k9.Core;
-import com.fsck.k9.DI;
+import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.K9;
+import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.backend.api.FolderInfo;
 import com.fsck.k9.helper.Contacts;
@@ -72,7 +70,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
-public class MessagingControllerTest extends RobolectricTest {
+public class MessagingControllerTest extends K9RobolectricTest {
     private static final String FOLDER_NAME = "Folder";
     private static final String SENT_FOLDER_NAME = "Sent";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
@@ -142,14 +140,12 @@ public class MessagingControllerTest extends RobolectricTest {
     public void setUp() throws MessagingException {
         ShadowLog.stream = System.out;
         MockitoAnnotations.initMocks(this);
-        Application application = RuntimeEnvironment.application;
-        appContext = application;
+        appContext = RuntimeEnvironment.application;
 
-        DI.start(application, Core.getCoreModules());
         MessagingControllerTestExtra.backendManagerProvides(backend);
 
         controller = new MessagingController(appContext, notificationController, contacts, transportProvider,
-                accountStatsCollector);
+                accountStatsCollector, mock(CoreResourceProvider.class));
 
         configureAccount();
         configureLocalStore();

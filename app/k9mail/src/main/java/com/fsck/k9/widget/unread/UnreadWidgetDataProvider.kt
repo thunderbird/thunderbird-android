@@ -40,8 +40,8 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getSearchAccount(accountUuid: String): SearchAccount = when (accountUuid) {
-        SearchAccount.UNIFIED_INBOX -> SearchAccount.createUnifiedInboxAccount(context)
-        SearchAccount.ALL_MESSAGES -> SearchAccount.createAllMessagesAccount(context)
+        SearchAccount.UNIFIED_INBOX -> SearchAccount.createUnifiedInboxAccount()
+        SearchAccount.ALL_MESSAGES -> SearchAccount.createAllMessagesAccount()
         else -> throw AssertionError("SearchAccount expected")
     }
 

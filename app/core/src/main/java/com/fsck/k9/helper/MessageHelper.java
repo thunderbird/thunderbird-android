@@ -9,8 +9,9 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.CoreResourceProvider;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.core.R;
 import com.fsck.k9.mail.Address;
 
 public class MessageHelper {
@@ -31,15 +32,18 @@ public class MessageHelper {
 
     public synchronized static MessageHelper getInstance(final Context context) {
         if (sInstance == null) {
-            sInstance = new MessageHelper(context);
+            CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+            sInstance = new MessageHelper(context, resourceProvider);
         }
         return sInstance;
     }
 
+    private final CoreResourceProvider resourceProvider;
     private Context mContext;
 
-    private MessageHelper(final Context context) {
+    private MessageHelper(Context context, CoreResourceProvider resourceProvider) {
         mContext = context;
+        this.resourceProvider = resourceProvider;
     }
 
     public CharSequence getDisplayName(Account account, Address[] fromAddrs, Address[] toAddrs) {
@@ -49,7 +53,7 @@ public class MessageHelper {
         if (fromAddrs.length > 0 && account.isAnIdentity(fromAddrs[0])) {
             CharSequence to = toFriendly(toAddrs, contactHelper);
             displayName = new SpannableStringBuilder(
-                    mContext.getString(R.string.message_to_label)).append(to);
+                    resourceProvider.contactDisplayNamePrefix()).append(to);
         } else {
             displayName = toFriendly(fromAddrs, contactHelper);
         }

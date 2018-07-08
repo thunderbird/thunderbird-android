@@ -12,7 +12,7 @@ import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.BACKGROUND_OPS;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.core.R;
+import com.fsck.k9.R;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.service.BootReceiver;

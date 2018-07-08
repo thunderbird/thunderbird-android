@@ -71,8 +71,8 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
         List<BaseAccount> accounts = new ArrayList<BaseAccount>();
 
         if (displaySpecialAccounts() && !K9.isHideSpecialAccounts()) {
-            BaseAccount unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount(this);
-            BaseAccount allMessagesAccount = SearchAccount.createAllMessagesAccount(this);
+            BaseAccount unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount();
+            BaseAccount allMessagesAccount = SearchAccount.createAllMessagesAccount();
 
             accounts.add(unifiedInboxAccount);
             accounts.add(allMessagesAccount);

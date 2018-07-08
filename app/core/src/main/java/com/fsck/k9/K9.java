@@ -14,7 +14,6 @@ import android.os.Environment;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.core.BuildConfig;
-import com.fsck.k9.core.R;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
@@ -546,14 +545,6 @@ public class K9 {
         LIGHT,
         DARK,
         USE_GLOBAL
-    }
-
-    public static int getK9ThemeResourceId(Theme themeId) {
-        return (themeId == Theme.LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
-    }
-
-    public static int getK9ThemeResourceId() {
-        return getK9ThemeResourceId(theme);
     }
 
     public static Theme getK9MessageViewTheme() {
