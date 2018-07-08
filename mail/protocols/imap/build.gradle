@@ -22,7 +22,7 @@ dependencies {
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation "com.squareup.okio:okio:${versions.okio}"
-    testImplementation "org.apache.james:apache-mime4j-core:0.8.1"
+    testImplementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
 }
 
 android {

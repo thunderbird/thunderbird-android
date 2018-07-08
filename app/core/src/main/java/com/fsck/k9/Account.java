@@ -40,7 +40,6 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
-import com.larswerkman.colorpicker.ColorPicker;
 import timber.log.Timber;
 
 import static com.fsck.k9.Preferences.getEnumStringPref;
@@ -59,6 +58,8 @@ public class Account implements BaseAccount, StoreConfig {
      * This local folder is used to store messages to be sent.
      */
     public static final String OUTBOX = "K9MAIL_INTERNAL_OUTBOX";
+
+    private static final int FALLBACK_ACCOUNT_COLOR = 0x0099CC;
 
     public enum Expunge {
         EXPUNGE_IMMEDIATELY,
@@ -397,7 +398,7 @@ public class Account implements BaseAccount, StoreConfig {
 
         accountNumber = storage.getInt(accountUuid + ".accountNumber", 0);
 
-        chipColor = storage.getInt(accountUuid + ".chipColor", ColorPicker.getRandomColor());
+        chipColor = storage.getInt(accountUuid + ".chipColor", FALLBACK_ACCOUNT_COLOR);
 
         sortType = getEnumStringPref(storage, accountUuid + ".sortTypeEnum", SortType.SORT_DATE);
 
