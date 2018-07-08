@@ -18,7 +18,6 @@ dependencies {
     api project(":backend:pop3")
     api project(":backend:webdav")
 
-    api project(':plugins:HoloColorPicker')
     api project(':plugins:openpgp-api-lib:openpgp-api')
 
     api "com.squareup.okio:okio:${versions.okio}"
