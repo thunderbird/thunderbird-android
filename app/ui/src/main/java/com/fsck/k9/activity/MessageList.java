@@ -47,6 +47,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
@@ -530,6 +531,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public void onResume() {
         super.onResume();
 
+        Contacts.clearCache();
         if (!(this instanceof Search)) {
             //necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
             //when returning from search results
