@@ -8,7 +8,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.MockHelper;
-import com.fsck.k9.core.R;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,6 +29,7 @@ public class BaseNotificationsTest {
     private static final String NOTIFICATION_PREVIEW = "Preview";
 
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private TestNotifications notifications;
 
 
@@ -44,7 +44,7 @@ public class BaseNotificationsTest {
 
         Builder builder = notifications.createAndInitializeNotificationBuilder(account);
 
-        verify(builder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(builder).setSmallIcon(resourceProvider.getIconNewMail());
         verify(builder).setColor(ACCOUNT_COLOR);
         verify(builder).setAutoCancel(true);
     }
@@ -103,18 +103,18 @@ public class BaseNotificationsTest {
     }
 
     private TestNotifications createTestNotifications() {
-        NotificationController controller = createFakeController();
+        NotificationHelper notificationHelper = createFakeNotificationHelper();
         NotificationActionCreator actionCreator = mock(NotificationActionCreator.class);
 
-        return new TestNotifications(controller, actionCreator);
+        return new TestNotifications(notificationHelper, actionCreator, resourceProvider);
     }
 
-    private NotificationController createFakeController() {
+    private NotificationHelper createFakeNotificationHelper() {
         Builder builder = MockHelper.mockBuilder(Builder.class);
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.createNotificationBuilder()).thenReturn(builder);
-        when(controller.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        return controller;
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
+        when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
+        return notificationHelper;
     }
 
     private Account createFakeAccount() {
@@ -129,8 +129,9 @@ public class BaseNotificationsTest {
 
         BigTextStyle bigTextStyle;
 
-        protected TestNotifications(NotificationController controller, NotificationActionCreator actionCreator) {
-            super(controller, actionCreator);
+        protected TestNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
+                NotificationResourceProvider resourceProvider) {
+            super(notificationHelper, actionCreator, resourceProvider);
             bigTextStyle = mock(BigTextStyle.class);
         }
 

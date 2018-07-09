@@ -73,7 +73,7 @@ import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.WelcomeMessage;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.helper.SizeFormatter;
+import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.TransportUris;
@@ -440,8 +440,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * Creates and initializes the special accounts ('Unified Inbox' and 'All Messages')
      */
     private void createSpecialAccounts() {
-        unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount(this);
-        allMessagesAccount = SearchAccount.createAllMessagesAccount(this);
+        unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount();
+        allMessagesAccount = SearchAccount.createAllMessagesAccount();
     }
 
     @SuppressWarnings("unchecked")

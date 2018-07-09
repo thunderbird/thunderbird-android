@@ -21,7 +21,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
-import com.fsck.k9.core.R;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Folder.FolderClass;
@@ -41,7 +40,6 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
-import com.larswerkman.colorpicker.ColorPicker;
 import timber.log.Timber;
 
 import static com.fsck.k9.Preferences.getEnumStringPref;
@@ -60,6 +58,8 @@ public class Account implements BaseAccount, StoreConfig {
      * This local folder is used to store messages to be sent.
      */
     public static final String OUTBOX = "K9MAIL_INTERNAL_OUTBOX";
+
+    private static final int FALLBACK_ACCOUNT_COLOR = 0x0099CC;
 
     public enum Expunge {
         EXPUNGE_IMMEDIATELY,
@@ -122,26 +122,18 @@ public class Account implements BaseAccount, StoreConfig {
     public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
     public enum SortType {
-        SORT_DATE(R.string.sort_earliest_first, R.string.sort_latest_first, false),
-        SORT_ARRIVAL(R.string.sort_earliest_first, R.string.sort_latest_first, false),
-        SORT_SUBJECT(R.string.sort_subject_alpha, R.string.sort_subject_re_alpha, true),
-        SORT_SENDER(R.string.sort_sender_alpha, R.string.sort_sender_re_alpha, true),
-        SORT_UNREAD(R.string.sort_unread_first, R.string.sort_unread_last, true),
-        SORT_FLAGGED(R.string.sort_flagged_first, R.string.sort_flagged_last, true),
-        SORT_ATTACHMENT(R.string.sort_attach_first, R.string.sort_unattached_first, true);
+        SORT_DATE(false),
+        SORT_ARRIVAL(false),
+        SORT_SUBJECT(true),
+        SORT_SENDER(true),
+        SORT_UNREAD(true),
+        SORT_FLAGGED(true),
+        SORT_ATTACHMENT(true);
 
-        private int ascendingToast;
-        private int descendingToast;
         private boolean defaultAscending;
 
-        SortType(int ascending, int descending, boolean ndefaultAscending) {
-            ascendingToast = ascending;
-            descendingToast = descending;
-            defaultAscending = ndefaultAscending;
-        }
-
-        public int getToast(boolean ascending) {
-            return (ascending) ? ascendingToast : descendingToast;
+        SortType(boolean defaultAscending) {
+            this.defaultAscending = defaultAscending;
         }
 
         public boolean isDefaultAscending() {
@@ -267,7 +259,7 @@ public class Account implements BaseAccount, StoreConfig {
         TEXT, HTML, AUTO
     }
 
-    protected Account(Context context) {
+    protected Account(Context context, CoreResourceProvider resourceProvider) {
         accountUuid = UUID.randomUUID().toString();
         localStorageProviderId = StorageManager.getInstance(context).getDefaultProviderId();
         automaticCheckIntervalMinutes = -1;
@@ -324,8 +316,8 @@ public class Account implements BaseAccount, StoreConfig {
 
         Identity identity = new Identity();
         identity.setSignatureUse(true);
-        identity.setSignature(context.getString(R.string.default_signature));
-        identity.setDescription(context.getString(R.string.default_identity_description));
+        identity.setSignature(resourceProvider.defaultSignature());
+        identity.setDescription(resourceProvider.defaultIdentityDescription());
         identities.add(identity);
 
         notificationSetting = new NotificationSetting();
@@ -406,7 +398,7 @@ public class Account implements BaseAccount, StoreConfig {
 
         accountNumber = storage.getInt(accountUuid + ".accountNumber", 0);
 
-        chipColor = storage.getInt(accountUuid + ".chipColor", ColorPicker.getRandomColor());
+        chipColor = storage.getInt(accountUuid + ".chipColor", FALLBACK_ACCOUNT_COLOR);
 
         sortType = getEnumStringPref(storage, accountUuid + ".sortTypeEnum", SortType.SORT_DATE);
 

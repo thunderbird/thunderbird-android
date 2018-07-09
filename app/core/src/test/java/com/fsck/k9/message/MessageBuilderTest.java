@@ -11,11 +11,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import android.app.Application;
-
 import com.fsck.k9.Account.QuoteStyle;
+import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.Identity;
 import com.fsck.k9.RobolectricTest;
+import com.fsck.k9.TestCoreResourceProvider;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
@@ -31,7 +31,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
-import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -179,9 +178,9 @@ public class MessageBuilderTest extends RobolectricTest {
             "--" + BOUNDARY_1 + "--\r\n";
 
 
-    private Application context;
     private MessageIdGenerator messageIdGenerator;
     private BoundaryGenerator boundaryGenerator;
+    private CoreResourceProvider resourceProvider = new TestCoreResourceProvider();
     private Callback callback;
 
 
@@ -194,7 +193,6 @@ public class MessageBuilderTest extends RobolectricTest {
         when(boundaryGenerator.generateBoundary()).thenReturn(BOUNDARY_1, BOUNDARY_2, BOUNDARY_3);
 
         callback = mock(Callback.class);
-        context =  RuntimeEnvironment.application;
     }
 
     @Test
@@ -303,7 +301,7 @@ public class MessageBuilderTest extends RobolectricTest {
 
     @Test
     public void buildWithException_shouldThrow() throws MessagingException {
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator) {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider) {
             @Override
             protected void buildMessageInternal() {
                 queueMessageBuildException(new MessagingException("expected error"));
@@ -319,7 +317,7 @@ public class MessageBuilderTest extends RobolectricTest {
     @Test
     public void buildWithException_detachAndReattach_shouldThrow() throws MessagingException {
         Callback anotherCallback = mock(Callback.class);
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator) {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider) {
             @Override
             protected void buildMessageInternal() {
                 queueMessageBuildException(new MessagingException("expected error"));
@@ -389,7 +387,7 @@ public class MessageBuilderTest extends RobolectricTest {
 
     private MessageBuilder createSimpleMessageBuilder() {
         Identity identity = createIdentity();
-        return new SimpleMessageBuilder(context, messageIdGenerator, boundaryGenerator)
+        return new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider)
                 .setSubject(TEST_SUBJECT)
                 .setSentDate(SENT_DATE)
                 .setHideTimeZone(true)

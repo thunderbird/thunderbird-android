@@ -36,12 +36,12 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.core.R;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.backend.api.FolderInfo;
@@ -130,6 +130,7 @@ public class MessagingController {
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final TransportProvider transportProvider;
     private final AccountStatsCollector accountStatsCollector;
+    private final CoreResourceProvider resourceProvider;
 
 
     private MessagingListener checkMailListener = null;
@@ -139,12 +140,13 @@ public class MessagingController {
     public static synchronized MessagingController getInstance(Context context) {
         if (inst == null) {
             Context appContext = context.getApplicationContext();
-            NotificationController notificationController = NotificationController.newInstance(appContext);
+            NotificationController notificationController = DI.get(NotificationController.class);
             Contacts contacts = Contacts.getInstance(context);
             TransportProvider transportProvider = TransportProvider.getInstance();
             AccountStatsCollector accountStatsCollector = new DefaultAccountStatsCollector(context);
+            CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
             inst = new MessagingController(appContext, notificationController, contacts, transportProvider,
-                    accountStatsCollector);
+                    accountStatsCollector, resourceProvider);
         }
         return inst;
     }
@@ -152,12 +154,14 @@ public class MessagingController {
 
     @VisibleForTesting
     MessagingController(Context context, NotificationController notificationController, Contacts contacts,
-            TransportProvider transportProvider, AccountStatsCollector accountStatsCollector) {
+            TransportProvider transportProvider, AccountStatsCollector accountStatsCollector,
+            CoreResourceProvider resourceProvider) {
         this.context = context;
         this.notificationController = notificationController;
         this.contacts = contacts;
         this.transportProvider = transportProvider;
         this.accountStatsCollector = accountStatsCollector;
+        this.resourceProvider = resourceProvider;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -2403,7 +2407,8 @@ public class MessagingController {
         msg.putExtra(Intent.EXTRA_CC, recipientsCc);
 
         msg.setType("text/plain");
-        context.startActivity(Intent.createChooser(msg, context.getString(R.string.send_alternate_chooser_title)));
+        Intent chooserIntent = Intent.createChooser(msg, resourceProvider.sendAlternateChooserTitle());
+        context.startActivity(chooserIntent);
     }
 
     /**

@@ -1,12 +1,7 @@
 package com.fsck.k9.autocrypt
 
 
-import java.util.Date
-
-import android.content.res.Resources
-
 import com.fsck.k9.K9
-import com.fsck.k9.core.R
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
@@ -19,13 +14,14 @@ import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.MimeMultipart
 import com.fsck.k9.mail.internet.TextBody
 import com.fsck.k9.mailstore.BinaryMemoryBody
+import java.util.Date
 
 
-class AutocryptTransferMessageCreator(val resources: Resources) {
+class AutocryptTransferMessageCreator(private val stringProvider: AutocryptStringProvider) {
     fun createAutocryptTransferMessage(data: ByteArray, address: Address): Message {
         try {
-            val subjectText = resources.getString(R.string.ac_transfer_msg_subject)
-            val messageText = resources.getString(R.string.ac_transfer_msg_body)
+            val subjectText = stringProvider.transferMessageSubject()
+            val messageText = stringProvider.transferMessageBody()
 
             val textBodyPart = MimeBodyPart(TextBody(messageText))
             val dataBodyPart = MimeBodyPart(BinaryMemoryBody(data, "7bit"))
@@ -53,6 +49,5 @@ class AutocryptTransferMessageCreator(val resources: Resources) {
         } catch (e: MessagingException) {
             throw AssertionError(e)
         }
-
     }
 }

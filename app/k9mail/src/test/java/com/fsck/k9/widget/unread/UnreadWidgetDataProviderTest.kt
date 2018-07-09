@@ -4,7 +4,7 @@ import android.content.Context
 import com.fsck.k9.Account
 import com.fsck.k9.AccountStats
 import com.fsck.k9.Preferences
-import com.fsck.k9.RobolectricTest
+import com.fsck.k9.AppRobolectricTest
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.SearchAccount
 import com.google.common.truth.Truth.assertThat
@@ -17,7 +17,7 @@ import org.mockito.ArgumentMatchers.eq
 import org.robolectric.RuntimeEnvironment
 
 
-class UnreadWidgetDataProviderTest : RobolectricTest() {
+class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     val context: Context = RuntimeEnvironment.application
     val account = createAccount()
     val preferences = createPreferences()

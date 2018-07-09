@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.support.v14.preference.MultiSelectListPreference
 import android.support.v7.preference.Preference
 import com.fsck.k9.ui.R
-import com.fsck.k9.helper.FileBrowserHelper
+import com.fsck.k9.ui.helper.FileBrowserHelper
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.ui.settings.onClick
 import com.fsck.k9.ui.settings.remove

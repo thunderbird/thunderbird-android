@@ -18,19 +18,17 @@ dependencies {
     api project(":backend:pop3")
     api project(":backend:webdav")
 
-    api project(':plugins:HoloColorPicker')
     api project(':plugins:openpgp-api-lib:openpgp-api')
 
-    api "com.squareup.okio:okio:${versions.okio}"
-    api "commons-io:commons-io:${versions.commonsIo}"
-    api "androidx.core:core-ktx:0.3"
-    api "org.jsoup:jsoup:1.11.2"
-    api "com.squareup.moshi:moshi:1.2.0"
-    api "com.jakewharton.timber:timber:${versions.timber}"
-    api "net.jcip:jcip-annotations:1.0"
-    api "org.apache.james:apache-mime4j-core:0.8.1"
-    api "org.jetbrains.anko:anko-coroutines:0.10.4"
     api "org.koin:koin-android-architecture:${versions.koin}"
+
+    implementation "com.squareup.okio:okio:${versions.okio}"
+    implementation "commons-io:commons-io:${versions.commonsIo}"
+    implementation "androidx.core:core-ktx:${versions.coreKtx}"
+    implementation "org.jsoup:jsoup:1.11.2"
+    implementation "com.squareup.moshi:moshi:1.2.0"
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
 
     testImplementation project(':mail:testing')
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"

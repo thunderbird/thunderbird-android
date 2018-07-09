@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 
 import com.fsck.k9.DI;
 import com.fsck.k9.K9RobolectricTest;
+import com.fsck.k9.TestCoreResourceProvider;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -75,7 +76,8 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
 
         HtmlProcessor htmlProcessor = createFakeHtmlProcessor();
         attachmentInfoExtractor = spy(DI.get(AttachmentInfoExtractor.class));
-        messageViewInfoExtractor = new MessageViewInfoExtractor(context, attachmentInfoExtractor, htmlProcessor);
+        messageViewInfoExtractor = new MessageViewInfoExtractor(attachmentInfoExtractor, htmlProcessor,
+                new TestCoreResourceProvider());
     }
 
     @Test
@@ -91,7 +93,8 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         // Prepare fixture
         HtmlProcessor htmlProcessor = mock(HtmlProcessor.class);
         MessageViewInfoExtractor messageViewInfoExtractor =
-                new MessageViewInfoExtractor(context, null, htmlProcessor);
+                new MessageViewInfoExtractor(null, htmlProcessor,
+                        new TestCoreResourceProvider());
         String value = "--sanitized html--";
         when(htmlProcessor.processForDisplay(anyString())).thenReturn(value);
 

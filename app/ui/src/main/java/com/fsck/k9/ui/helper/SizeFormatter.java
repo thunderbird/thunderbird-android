@@ -1,7 +1,9 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.ui.helper;
+
 
 import android.content.Context;
-import com.fsck.k9.core.R;
+
+import com.fsck.k9.ui.R;
 
 public class SizeFormatter {
     /*

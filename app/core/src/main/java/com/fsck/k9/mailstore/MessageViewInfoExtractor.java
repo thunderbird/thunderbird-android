@@ -6,12 +6,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
 
-import com.fsck.k9.core.R;
+import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
@@ -47,16 +46,16 @@ public class MessageViewInfoExtractor {
     private static final int FILENAME_SUFFIX_LENGTH = FILENAME_SUFFIX.length();
 
 
-    private final Context context;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
     private final HtmlProcessor htmlProcessor;
+    private final CoreResourceProvider resourceProvider;
 
 
-    MessageViewInfoExtractor(Context context, AttachmentInfoExtractor attachmentInfoExtractor,
-            HtmlProcessor htmlProcessor) {
-        this.context = context;
+    MessageViewInfoExtractor(AttachmentInfoExtractor attachmentInfoExtractor, HtmlProcessor htmlProcessor,
+            CoreResourceProvider resourceProvider) {
         this.attachmentInfoExtractor = attachmentInfoExtractor;
         this.htmlProcessor = htmlProcessor;
+        this.resourceProvider = resourceProvider;
     }
 
     @WorkerThread
@@ -435,7 +434,7 @@ public class MessageViewInfoExtractor {
         // From: <sender>
         Address[] from = message.getFrom();
         if (from != null && from.length > 0) {
-            text.append(context.getString(R.string.message_compose_quote_header_from));
+            text.append(resourceProvider.messageHeaderFrom());
             text.append(' ');
             text.append(Address.toString(from));
             text.append("\r\n");
@@ -444,7 +443,7 @@ public class MessageViewInfoExtractor {
         // To: <recipients>
         Address[] to = message.getRecipients(Message.RecipientType.TO);
         if (to != null && to.length > 0) {
-            text.append(context.getString(R.string.message_compose_quote_header_to));
+            text.append(resourceProvider.messageHeaderTo());
             text.append(' ');
             text.append(Address.toString(to));
             text.append("\r\n");
@@ -453,7 +452,7 @@ public class MessageViewInfoExtractor {
         // Cc: <recipients>
         Address[] cc = message.getRecipients(Message.RecipientType.CC);
         if (cc != null && cc.length > 0) {
-            text.append(context.getString(R.string.message_compose_quote_header_cc));
+            text.append(resourceProvider.messageHeaderCc());
             text.append(' ');
             text.append(Address.toString(cc));
             text.append("\r\n");
@@ -462,7 +461,7 @@ public class MessageViewInfoExtractor {
         // Date: <date>
         Date date = message.getSentDate();
         if (date != null) {
-            text.append(context.getString(R.string.message_compose_quote_header_send_date));
+            text.append(resourceProvider.messageHeaderDate());
             text.append(' ');
             text.append(date.toString());
             text.append("\r\n");
@@ -470,10 +469,10 @@ public class MessageViewInfoExtractor {
 
         // Subject: <subject>
         String subject = message.getSubject();
-        text.append(context.getString(R.string.message_compose_quote_header_subject));
+        text.append(resourceProvider.messageHeaderSubject());
         text.append(' ');
         if (subject == null) {
-            text.append(context.getString(R.string.general_no_subject));
+            text.append(resourceProvider.noSubject());
         } else {
             text.append(subject);
         }
@@ -499,35 +498,35 @@ public class MessageViewInfoExtractor {
         // From: <sender>
         Address[] from = message.getFrom();
         if (from != null && from.length > 0) {
-            addTableRow(html, context.getString(R.string.message_compose_quote_header_from),
+            addTableRow(html, resourceProvider.messageHeaderFrom(),
                     Address.toString(from));
         }
 
         // To: <recipients>
         Address[] to = message.getRecipients(Message.RecipientType.TO);
         if (to != null && to.length > 0) {
-            addTableRow(html, context.getString(R.string.message_compose_quote_header_to),
+            addTableRow(html, resourceProvider.messageHeaderTo(),
                     Address.toString(to));
         }
 
         // Cc: <recipients>
         Address[] cc = message.getRecipients(Message.RecipientType.CC);
         if (cc != null && cc.length > 0) {
-            addTableRow(html, context.getString(R.string.message_compose_quote_header_cc),
+            addTableRow(html, resourceProvider.messageHeaderCc(),
                     Address.toString(cc));
         }
 
         // Date: <date>
         Date date = message.getSentDate();
         if (date != null) {
-            addTableRow(html, context.getString(R.string.message_compose_quote_header_send_date),
+            addTableRow(html, resourceProvider.messageHeaderDate(),
                     date.toString());
         }
 
         // Subject: <subject>
         String subject = message.getSubject();
-        addTableRow(html, context.getString(R.string.message_compose_quote_header_subject),
-                (subject == null) ? context.getString(R.string.general_no_subject) : subject);
+        addTableRow(html, resourceProvider.messageHeaderSubject(),
+                (subject == null) ? resourceProvider.noSubject() : subject);
 
         html.append("</table>");
     }

@@ -12,8 +12,10 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.fsck.k9.K9;
+import com.fsck.k9.K9.Theme;
 import com.fsck.k9.activity.misc.SwipeGestureDetector;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
+import com.fsck.k9.ui.R;
 
 
 /**
@@ -72,7 +74,7 @@ public class K9ActivityCommon {
     private K9ActivityCommon(Activity activity) {
         mActivity = activity;
         setLanguage(mActivity, K9.getK9Language());
-        mActivity.setTheme(K9.getK9ThemeResourceId());
+        mActivity.setTheme(getK9ThemeResourceId());
     }
 
     /**
@@ -110,5 +112,13 @@ public class K9ActivityCommon {
     public void setupGestureDetector(OnSwipeGestureListener listener) {
         mGestureDetector = new GestureDetector(mActivity,
                 new SwipeGestureDetector(mActivity, listener));
+    }
+
+    public static int getK9ThemeResourceId(Theme themeId) {
+        return (themeId == Theme.LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
+    }
+
+    public static int getK9ThemeResourceId() {
+        return getK9ThemeResourceId(K9.getK9Theme());
     }
 }

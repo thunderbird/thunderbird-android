@@ -17,6 +17,8 @@ dependencies {
 
     implementation "com.android.support:appcompat-v7:${versions.supportLibrary}"
 
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"

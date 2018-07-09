@@ -12,7 +12,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.LockScreenNotificationVisibility;
 import com.fsck.k9.MockHelper;
-import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +30,7 @@ public class LockScreenNotificationTest extends RobolectricTest {
     private static final int NEW_MESSAGE_COUNT = 3;
     private static final int UNREAD_MESSAGE_COUNT = 4;
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private Builder builder;
     private Builder publicBuilder;
     private LockScreenNotification lockScreenNotification;
@@ -42,10 +42,10 @@ public class LockScreenNotificationTest extends RobolectricTest {
         Context context = RuntimeEnvironment.application;
         builder = createFakeNotificationBuilder();
         publicBuilder = createFakeNotificationBuilder();
-        NotificationController controller = createFakeController(context, publicBuilder);
+        NotificationHelper notificationHelper = createFakeNotificationHelper(context, publicBuilder);
         Account account = createFakeAccount();
         notificationData = createFakeNotificationData(account);
-        lockScreenNotification = new LockScreenNotification(controller);
+        lockScreenNotification = new LockScreenNotification(notificationHelper, resourceProvider);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class LockScreenNotificationTest extends RobolectricTest {
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
-        verify(publicBuilder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(publicBuilder).setSmallIcon(resourceProvider.getIconNewMail());
         verify(publicBuilder).setNumber(1);
         verify(publicBuilder).setContentTitle("1 new message");
         verify(publicBuilder).setContentText(senderName);
@@ -107,7 +107,7 @@ public class LockScreenNotificationTest extends RobolectricTest {
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
-        verify(publicBuilder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(publicBuilder).setSmallIcon(resourceProvider.getIconNewMail());
         verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT);
         verify(publicBuilder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
         verify(publicBuilder).setContentText(
@@ -145,7 +145,7 @@ public class LockScreenNotificationTest extends RobolectricTest {
 
         lockScreenNotification.configureLockScreenNotification(builder, notificationData);
 
-        verify(publicBuilder).setSmallIcon(R.drawable.notification_icon_new_mail);
+        verify(publicBuilder).setSmallIcon(resourceProvider.getIconNewMail());
         verify(publicBuilder).setNumber(UNREAD_MESSAGE_COUNT);
         verify(publicBuilder).setContentTitle(NEW_MESSAGE_COUNT + " new messages");
         verify(publicBuilder).setContentText(ACCOUNT_NAME);
@@ -164,13 +164,13 @@ public class LockScreenNotificationTest extends RobolectricTest {
         return builder;
     }
 
-    private NotificationController createFakeController(Context context, Builder builder) {
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.getContext()).thenReturn(context);
-        when(controller.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        when(controller.createNotificationBuilder()).thenReturn(builder);
+    private NotificationHelper createFakeNotificationHelper(Context context, Builder builder) {
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.getContext()).thenReturn(context);
+        when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
+        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
 
-        return controller;
+        return notificationHelper;
     }
 
     private NotificationData createFakeNotificationData(Account account) {

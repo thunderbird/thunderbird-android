@@ -10,24 +10,26 @@ import android.support.v4.app.NotificationCompat.Builder;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
-import com.fsck.k9.core.R;
 
 
 abstract class BaseNotifications {
     protected final Context context;
-    protected final NotificationController controller;
+    protected final NotificationHelper notificationHelper;
     protected final NotificationActionCreator actionCreator;
+    protected final NotificationResourceProvider resourceProvider;
 
 
-    protected BaseNotifications(NotificationController controller, NotificationActionCreator actionCreator) {
-        this.context = controller.getContext();
-        this.controller = controller;
+    protected BaseNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionCreator,
+            NotificationResourceProvider resourceProvider) {
+        this.context = notificationHelper.getContext();
+        this.notificationHelper = notificationHelper;
         this.actionCreator = actionCreator;
+        this.resourceProvider = resourceProvider;
     }
 
     protected NotificationCompat.Builder createBigTextStyleNotification(Account account, NotificationHolder holder,
             int notificationId) {
-        String accountName = controller.getAccountName(account);
+        String accountName = notificationHelper.getAccountName(account);
         NotificationContent content = holder.content;
         String groupKey = NotificationGroupKeys.getGroupKey(account);
 
@@ -51,7 +53,7 @@ abstract class BaseNotifications {
     }
 
     protected NotificationCompat.Builder createAndInitializeNotificationBuilder(Account account) {
-        return controller.createNotificationBuilder()
+        return notificationHelper.createNotificationBuilder()
                 .setSmallIcon(getNewMailNotificationIcon())
                 .setColor(account.getChipColor())
                 .setWhen(System.currentTimeMillis())
@@ -69,6 +71,6 @@ abstract class BaseNotifications {
     }
 
     private int getNewMailNotificationIcon() {
-        return R.drawable.notification_icon_new_mail;
+        return resourceProvider.getIconNewMail();
     }
 }

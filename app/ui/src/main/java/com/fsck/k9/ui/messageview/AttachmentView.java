@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.fsck.k9.K9;
 import com.fsck.k9.ui.R;
-import com.fsck.k9.helper.SizeFormatter;
+import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 
 

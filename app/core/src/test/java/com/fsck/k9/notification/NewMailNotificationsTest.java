@@ -40,12 +40,12 @@ public class NewMailNotificationsTest extends K9RobolectricTest {
         account = createAccount();
 
         notificationManager = createNotificationManager();
-        NotificationController controller = createNotificationController(notificationManager);
+        NotificationHelper notificationHelper = createNotificationHelper(notificationManager);
         contentCreator = createNotificationContentCreator();
         deviceNotifications = createDeviceNotifications();
         wearNotifications = createWearNotifications();
 
-        newMailNotifications = new TestNewMailNotifications(controller, contentCreator, deviceNotifications,
+        newMailNotifications = new TestNewMailNotifications(notificationHelper, contentCreator, deviceNotifications,
                 wearNotifications);
     }
 
@@ -297,10 +297,10 @@ public class NewMailNotificationsTest extends K9RobolectricTest {
         return mock(NotificationManagerCompat.class);
     }
 
-    private NotificationController createNotificationController(NotificationManagerCompat notificationManager) {
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.getNotificationManager()).thenReturn(notificationManager);
-        return controller;
+    private NotificationHelper createNotificationHelper(NotificationManagerCompat notificationManager) {
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
+        return notificationHelper;
     }
 
     private NotificationContentCreator createNotificationContentCreator() {
@@ -363,9 +363,9 @@ public class NewMailNotificationsTest extends K9RobolectricTest {
 
         public final NotificationData notificationData;
 
-        TestNewMailNotifications(NotificationController controller, NotificationContentCreator contentCreator,
+        TestNewMailNotifications(NotificationHelper notificationHelper, NotificationContentCreator contentCreator,
                 DeviceNotifications deviceNotifications, WearNotifications wearNotifications) {
-            super(controller, contentCreator, deviceNotifications, wearNotifications);
+            super(notificationHelper, contentCreator, deviceNotifications, wearNotifications);
             notificationData = mock(NotificationData.class);
         }
 

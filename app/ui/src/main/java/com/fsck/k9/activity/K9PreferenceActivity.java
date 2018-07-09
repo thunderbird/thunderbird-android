@@ -20,7 +20,7 @@ public abstract class K9PreferenceActivity extends PreferenceActivity implements
     @Override
     public void onCreate(Bundle icicle) {
         K9ActivityCommon.setLanguage(this, K9.getK9Language());
-        setTheme(K9.getK9ThemeResourceId());
+        setTheme(K9ActivityCommon.getK9ThemeResourceId());
         super.onCreate(icicle);
         lifecycleRegistry = new LifecycleRegistry(this);
         lifecycleRegistry.markState(State.CREATED);

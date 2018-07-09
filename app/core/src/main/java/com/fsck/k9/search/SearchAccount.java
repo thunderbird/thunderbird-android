@@ -1,9 +1,9 @@
 package com.fsck.k9.search;
 
-import android.content.Context;
 
 import com.fsck.k9.BaseAccount;
-import com.fsck.k9.core.R;
+import com.fsck.k9.CoreResourceProvider;
+import com.fsck.k9.DI;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 
@@ -18,24 +18,24 @@ public class SearchAccount implements BaseAccount {
 
 
     // create the all messages search ( all accounts is default when none specified )
-    public static SearchAccount createAllMessagesAccount(Context context) {
-        String name = context.getString(R.string.search_all_messages_title);
+    public static SearchAccount createAllMessagesAccount() {
+        CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+        String name = resourceProvider.searchAllMessagesTitle();
 
         LocalSearch tmpSearch = new LocalSearch(name);
         tmpSearch.and(SearchField.SEARCHABLE, "1", Attribute.EQUALS);
 
-        return new SearchAccount(ALL_MESSAGES, tmpSearch, name,
-                context.getString(R.string.search_all_messages_detail));
+        return new SearchAccount(ALL_MESSAGES, tmpSearch, name, resourceProvider.searchAllMessagesDetail());
     }
 
 
     // create the unified inbox meta account ( all accounts is default when none specified )
-    public static SearchAccount createUnifiedInboxAccount(Context context) {
-        String name = context.getString(R.string.integrated_inbox_title);
+    public static SearchAccount createUnifiedInboxAccount() {
+        CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+        String name = resourceProvider.searchUnifiedInboxTitle();
         LocalSearch tmpSearch = new LocalSearch(name);
         tmpSearch.and(SearchField.INTEGRATE, "1", Attribute.EQUALS);
-        return new SearchAccount(UNIFIED_INBOX, tmpSearch, name,
-                context.getString(R.string.integrated_inbox_detail));
+        return new SearchAccount(UNIFIED_INBOX, tmpSearch, name, resourceProvider.searchUnifiedInboxDetail());
     }
 
     private String mId;

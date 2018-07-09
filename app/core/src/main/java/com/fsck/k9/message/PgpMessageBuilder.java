@@ -8,14 +8,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 
+import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
-import com.fsck.k9.core.R;
 import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
@@ -59,19 +58,20 @@ public class PgpMessageBuilder extends MessageBuilder {
 
 
     public static PgpMessageBuilder newInstance() {
-        Context context = DI.get(Context.class);
         MessageIdGenerator messageIdGenerator = MessageIdGenerator.getInstance();
         BoundaryGenerator boundaryGenerator = BoundaryGenerator.getInstance();
         AutocryptOperations autocryptOperations = AutocryptOperations.getInstance();
         AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor = AutocryptOpenPgpApiInteractor.getInstance();
-        return new PgpMessageBuilder(context, messageIdGenerator, boundaryGenerator, autocryptOperations,
-                autocryptOpenPgpApiInteractor);
+        CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+        return new PgpMessageBuilder(messageIdGenerator, boundaryGenerator, autocryptOperations,
+                autocryptOpenPgpApiInteractor, resourceProvider);
     }
 
     @VisibleForTesting
-    PgpMessageBuilder(Context context, MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator,
-            AutocryptOperations autocryptOperations, AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor) {
-        super(context, messageIdGenerator, boundaryGenerator);
+    PgpMessageBuilder(MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator,
+            AutocryptOperations autocryptOperations, AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor,
+            CoreResourceProvider resourceProvider) {
+        super(messageIdGenerator, boundaryGenerator, resourceProvider);
 
         this.autocryptOperations = autocryptOperations;
         this.autocryptOpenPgpApiInteractor = autocryptOpenPgpApiInteractor;
@@ -191,7 +191,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             messageContentBodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                     messageContentBodyPart.getContentType() + "; protected-headers=\"v1\"");
             messageContentBodyPart.setHeader(MimeHeader.SUBJECT, subjects[0]);
-            currentProcessedMimeMessage.setHeader(MimeHeader.SUBJECT, context.getString(R.string.encrypted_subject));
+            currentProcessedMimeMessage.setHeader(MimeHeader.SUBJECT, resourceProvider.encryptedSubject());
         }
     }
 

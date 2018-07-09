@@ -33,6 +33,13 @@ dependencies {
     implementation 'com.mikepenz:materialdrawer:6.0.7'
     implementation 'com.github.ByteHamster:SearchPreference:v1.1.3'
 
+    implementation "commons-io:commons-io:${versions.commonsIo}"
+    implementation "androidx.core:core-ktx:${versions.coreKtx}"
+    implementation "net.jcip:jcip-annotations:1.0"
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
+    implementation "org.jetbrains.anko:anko-coroutines:0.10.4"
+
     testImplementation project(':mail:testing')
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"

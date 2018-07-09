@@ -9,7 +9,6 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.MockHelper;
-import com.fsck.k9.core.R;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.Folder;
 import org.junit.Before;
@@ -32,6 +31,7 @@ public class SyncNotificationsTest extends RobolectricTest {
     private static final String FOLDER_NAME = "Inbox";
 
 
+    private NotificationResourceProvider resourceProvider = new TestNotificationResourceProvider();
     private Notification notification;
     private NotificationManagerCompat notificationManager;
     private Builder builder;
@@ -45,12 +45,12 @@ public class SyncNotificationsTest extends RobolectricTest {
         notification = createFakeNotification();
         notificationManager = createFakeNotificationManager();
         builder = createFakeNotificationBuilder(notification);
-        NotificationController controller = createFakeNotificationController(notificationManager, builder);
+        NotificationHelper notificationHelper = createFakeNotificationHelper(notificationManager, builder);
         account = createFakeAccount();
         contentIntent = createFakeContentIntent();
         NotificationActionCreator actionBuilder = createActionBuilder(contentIntent);
 
-        syncNotifications = new SyncNotifications(controller, actionBuilder);
+        syncNotifications = new SyncNotifications(notificationHelper, actionBuilder, resourceProvider);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class SyncNotificationsTest extends RobolectricTest {
         syncNotifications.showSendingNotification(account);
 
         verify(notificationManager).notify(notificationId, notification);
-        verify(builder).setSmallIcon(R.drawable.ic_notify_check_mail);
+        verify(builder).setSmallIcon(resourceProvider.getIconSendingMail());
         verify(builder).setTicker("Sending mail: " + ACCOUNT_NAME);
         verify(builder).setContentTitle("Sending mail");
         verify(builder).setContentText(ACCOUNT_NAME);
@@ -85,7 +85,7 @@ public class SyncNotificationsTest extends RobolectricTest {
         syncNotifications.showFetchingMailNotification(account, folder);
 
         verify(notificationManager).notify(notificationId, notification);
-        verify(builder).setSmallIcon(R.drawable.ic_notify_check_mail);
+        verify(builder).setSmallIcon(resourceProvider.getIconCheckingMail());
         verify(builder).setTicker("Checking mail: " + ACCOUNT_NAME + ":" + FOLDER_NAME);
         verify(builder).setContentTitle("Checking mail");
         verify(builder).setContentText(ACCOUNT_NAME + ":" + FOLDER_NAME);
@@ -117,14 +117,14 @@ public class SyncNotificationsTest extends RobolectricTest {
         return builder;
     }
 
-    private NotificationController createFakeNotificationController(NotificationManagerCompat notificationManager,
+    private NotificationHelper createFakeNotificationHelper(NotificationManagerCompat notificationManager,
             Builder builder) {
-        NotificationController controller = mock(NotificationController.class);
-        when(controller.getContext()).thenReturn(RuntimeEnvironment.application);
-        when(controller.getNotificationManager()).thenReturn(notificationManager);
-        when(controller.createNotificationBuilder()).thenReturn(builder);
-        when(controller.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        return controller;
+        NotificationHelper notificationHelper = mock(NotificationHelper.class);
+        when(notificationHelper.getContext()).thenReturn(RuntimeEnvironment.application);
+        when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
+        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
+        when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
+        return notificationHelper;
     }
 
     private Account createFakeAccount() {
