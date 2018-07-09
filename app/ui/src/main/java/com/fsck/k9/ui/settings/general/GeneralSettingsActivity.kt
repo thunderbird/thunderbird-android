@@ -17,8 +17,6 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.fragmentTransaction
 import com.fsck.k9.ui.fragmentTransactionWithBackStack
 
-
-
 class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, SearchPreferenceResultListener {
     private lateinit var searchPreferenceActionView: SearchPreferenceActionView
     private lateinit var searchPreferenceMenuItem: MenuItem
@@ -39,6 +37,7 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
 
     override fun onSearchResultClicked(result: SearchPreferenceResult) {
         searchPreferenceActionView.close()
+        searchPreferenceMenuItem.collapseActionView()
 
         if (result.resourceFile == R.xml.font_preferences) {
             startActivity(Intent(this, FontSizeSettings::class.java))
@@ -73,6 +72,17 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
                 .addBreadcrumb(R.string.global_preferences)
                 .addBreadcrumb(R.string.font_size_settings_title)
                 .addFile(R.xml.font_preferences)
+
+        searchPreferenceMenuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                searchPreferenceActionView.onBackPressed()
+                return true
+            }
+
+            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                return true
+            }
+        })
         return true
     }
 
