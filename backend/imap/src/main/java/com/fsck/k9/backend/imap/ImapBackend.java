@@ -22,6 +22,7 @@ import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.store.imap.ImapPusher;
 import com.fsck.k9.mail.store.imap.ImapStore;
+import com.fsck.k9.mail.transport.smtp.SmtpTransport;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 public class ImapBackend implements Backend {
     private final ImapStore imapStore;
     private final PowerManager powerManager;
+    private final SmtpTransport smtpTransport;
     private final ImapSync imapSync;
     private final CommandGetFolders commandGetFolders;
     private final CommandSetFlag commandSetFlag;
@@ -43,9 +45,10 @@ public class ImapBackend implements Backend {
 
 
     public ImapBackend(String accountName, BackendStorage backendStorage, ImapStore imapStore,
-            PowerManager powerManager) {
+            PowerManager powerManager, SmtpTransport smtpTransport) {
         this.imapStore = imapStore;
         this.powerManager = powerManager;
+        this.smtpTransport = smtpTransport;
 
         imapSync = new ImapSync(accountName, backendStorage, imapStore);
         commandSetFlag = new CommandSetFlag(imapStore);
@@ -196,5 +199,10 @@ public class ImapBackend implements Backend {
     @Override
     public void checkServerSettings() throws MessagingException {
         imapStore.checkSettings();
+    }
+
+    @Override
+    public void sendMessage(@NotNull Message message) throws MessagingException {
+        smtpTransport.sendMessage(message);
     }
 }

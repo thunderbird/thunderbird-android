@@ -13,6 +13,7 @@ dependencies {
 
     api project(":backend:api")
     implementation project(":mail:protocols:imap")
+    implementation project(":mail:protocols:smtp")
 
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 

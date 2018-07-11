@@ -83,4 +83,7 @@ interface Backend {
 
     @Throws(MessagingException::class)
     fun checkServerSettings()
+
+    @Throws(MessagingException::class)
+    fun sendMessage(message: Message)
 }

@@ -5,6 +5,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.webdav.WebDavBackend
 import com.fsck.k9.mail.store.webdav.WebDavStore
+import com.fsck.k9.mail.transport.WebDavTransport
 import com.fsck.k9.mailstore.K9BackendStorage
 
 class WebDavBackendFactory(private val preferences: Preferences) : BackendFactory {
@@ -13,7 +14,8 @@ class WebDavBackendFactory(private val preferences: Preferences) : BackendFactor
         val accountName = account.description
         val backendStorage = K9BackendStorage(preferences, account, account.localStore)
         val webDavStore = createWebDavStore(account)
-        return WebDavBackend(accountName, backendStorage, webDavStore)
+        val webDavTransport = WebDavTransport(account)
+        return WebDavBackend(accountName, backendStorage, webDavStore, webDavTransport)
     }
 
     private fun createWebDavStore(account: Account): WebDavStore {
