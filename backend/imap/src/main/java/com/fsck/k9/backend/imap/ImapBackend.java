@@ -205,4 +205,9 @@ public class ImapBackend implements Backend {
     public void sendMessage(@NotNull Message message) throws MessagingException {
         smtpTransport.sendMessage(message);
     }
+
+    @Override
+    public void checkOutgoingServerSettings() throws MessagingException {
+        smtpTransport.checkSettings();
+    }
 }

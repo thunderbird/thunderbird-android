@@ -125,4 +125,8 @@ class WebDavBackend(
     override fun sendMessage(message: Message) {
         webDavTransport.sendMessage(message)
     }
+
+    override fun checkOutgoingServerSettings() {
+        webDavTransport.checkSettings()
+    }
 }

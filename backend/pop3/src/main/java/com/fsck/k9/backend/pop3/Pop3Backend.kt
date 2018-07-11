@@ -120,4 +120,8 @@ class Pop3Backend(
     override fun sendMessage(message: Message) {
         smtpTransport.sendMessage(message)
     }
+
+    override fun checkOutgoingServerSettings() {
+        smtpTransport.checkSettings()
+    }
 }

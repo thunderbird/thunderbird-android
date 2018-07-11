@@ -1849,6 +1849,10 @@ public class MessagingController {
         getBackend(account).checkIncomingServerSettings();
     }
 
+    public void checkOutgoingServerSettings(Account account) throws MessagingException {
+        getBackend(account).checkOutgoingServerSettings();
+    }
+
     public void moveMessages(final Account srcAccount, final String srcFolder,
             List<MessageReference> messageReferences, final String destFolder) {
         actOnMessageGroup(srcAccount, srcFolder, messageReferences, new MessageActor() {
