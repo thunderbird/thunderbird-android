@@ -4,12 +4,9 @@ package com.fsck.k9.ui.endtoend
 import android.app.PendingIntent
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
-import android.content.Context
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import com.fsck.k9.mail.TransportProvider
 import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
@@ -19,9 +16,7 @@ import timber.log.Timber
 
 class AutocryptKeyTransferPresenter internal constructor(
         lifecycleOwner: LifecycleOwner,
-        private val context: Context,
         private val openPgpApiManager: OpenPgpApiManager,
-        private val transportProvider: TransportProvider,
         private val preferences: Preferences,
         private val viewModel: AutocryptKeyTransferViewModel,
         private val view: AutocryptKeyTransferActivity
@@ -83,8 +78,7 @@ class AutocryptKeyTransferPresenter internal constructor(
         view.setLoadingStateSending()
         view.sceneGeneratingAndSending()
 
-        val transport = transportProvider.getTransport(context, account)
-        viewModel.autocryptSetupTransferLiveEvent.sendMessageAsync(transport, setupMsg)
+        viewModel.autocryptSetupTransferLiveEvent.sendMessageAsync(account, setupMsg)
     }
 
     private fun onLoadedAutocryptSetupTransfer(result: AutocryptSetupTransferResult?) {

@@ -1491,6 +1491,10 @@ public class MessagingController {
         }
     }
 
+    public void sendMessageBlocking(Account account, Message message) throws MessagingException {
+        Backend backend = getBackend(account);
+        backend.sendMessage(message);
+    }
 
     public void sendPendingMessages(MessagingListener listener) {
         final Preferences prefs = Preferences.getPreferences(context);
