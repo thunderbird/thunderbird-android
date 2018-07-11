@@ -531,7 +531,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public void onResume() {
         super.onResume();
 
-        Contacts.clearCache();
         if (!(this instanceof Search)) {
             //necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
             //when returning from search results
@@ -543,6 +542,12 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             return;
         }
         StorageManager.getInstance(getApplication()).addListener(mStorageListener);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Contacts.clearCache();
     }
 
     @Override

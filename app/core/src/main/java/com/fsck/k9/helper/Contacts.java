@@ -107,6 +107,7 @@ public class Contacts {
         }
 
         mContext.startActivity(contactIntent);
+        clearCache();
     }
 
     /**
@@ -121,6 +122,7 @@ public class Contacts {
         addIntent.putExtra(ContactsContract.Intents.Insert.PHONE, Uri.decode(phoneNumber));
         addIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(addIntent);
+        clearCache();
     }
 
     /**
