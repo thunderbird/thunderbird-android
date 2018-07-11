@@ -82,7 +82,7 @@ interface Backend {
     fun createPusher(receiver: PushReceiver): Pusher
 
     @Throws(MessagingException::class)
-    fun checkServerSettings()
+    fun checkIncomingServerSettings()
 
     @Throws(MessagingException::class)
     fun sendMessage(message: Message)

@@ -507,7 +507,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 publishProgress(R.string.account_setup_check_settings_check_incoming_msg);
             }
 
-            messagingController.checkServerSettings(account);
+            messagingController.checkIncomingServerSettings(account);
 
             if (isWebDavAccount()) {
                 publishProgress(R.string.account_setup_check_settings_fetch);

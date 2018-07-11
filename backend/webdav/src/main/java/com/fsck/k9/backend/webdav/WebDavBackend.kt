@@ -118,7 +118,7 @@ class WebDavBackend(
         throw UnsupportedOperationException("not supported")
     }
 
-    override fun checkServerSettings() {
+    override fun checkIncomingServerSettings() {
         webDavStore.checkSettings()
     }
 

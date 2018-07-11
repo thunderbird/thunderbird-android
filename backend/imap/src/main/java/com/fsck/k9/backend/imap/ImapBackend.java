@@ -197,7 +197,7 @@ public class ImapBackend implements Backend {
     }
 
     @Override
-    public void checkServerSettings() throws MessagingException {
+    public void checkIncomingServerSettings() throws MessagingException {
         imapStore.checkSettings();
     }
 

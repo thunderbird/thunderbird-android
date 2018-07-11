@@ -113,7 +113,7 @@ class Pop3Backend(
         throw UnsupportedOperationException("not supported")
     }
 
-    override fun checkServerSettings() {
+    override fun checkIncomingServerSettings() {
         pop3Store.checkSettings()
     }
 

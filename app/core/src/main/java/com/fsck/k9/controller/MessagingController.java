@@ -1845,8 +1845,8 @@ public class MessagingController {
         return getBackend(account).getSupportsSearchByDate();
     }
 
-    public void checkServerSettings(Account account) throws MessagingException {
-        getBackend(account).checkServerSettings();
+    public void checkIncomingServerSettings(Account account) throws MessagingException {
+        getBackend(account).checkIncomingServerSettings();
     }
 
     public void moveMessages(final Account srcAccount, final String srcFolder,
