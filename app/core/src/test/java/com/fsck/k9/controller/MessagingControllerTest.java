@@ -26,8 +26,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -97,10 +95,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private LocalStore localStore;
     @Mock
     private NotificationController notificationController;
-    @Mock
-    private TransportProvider transportProvider;
-    @Mock
-    private Transport transport;
     @Captor
     private ArgumentCaptor<List<LocalFolder>> localFolderListCaptor;
     @Captor
@@ -144,7 +138,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         MessagingControllerTestExtra.backendManagerProvides(backend);
 
-        controller = new MessagingController(appContext, notificationController, contacts, transportProvider,
+        controller = new MessagingController(appContext, notificationController, contacts,
                 accountStatsCollector, mock(CoreResourceProvider.class));
 
         configureAccount();
@@ -537,7 +531,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.sendPendingMessagesSynchronous(account);
 
-        verify(transport).sendMessage(localMessageToSend1);
+        verify(backend).sendMessage(localMessageToSend1);
     }
 
     @Test
@@ -546,9 +540,9 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.sendPendingMessagesSynchronous(account);
 
-        InOrder ordering = inOrder(localMessageToSend1, transport);
+        InOrder ordering = inOrder(localMessageToSend1, backend);
         ordering.verify(localMessageToSend1).setFlag(Flag.X_SEND_IN_PROGRESS, true);
-        ordering.verify(transport).sendMessage(localMessageToSend1);
+        ordering.verify(backend).sendMessage(localMessageToSend1);
         ordering.verify(localMessageToSend1).setFlag(Flag.X_SEND_IN_PROGRESS, false);
     }
 
@@ -582,7 +576,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Test
     public void sendPendingMessagesSynchronous_withAuthenticationFailure_shouldNotify() throws MessagingException {
         setupAccountWithMessageToSend();
-        doThrow(new AuthenticationFailedException("Test")).when(transport).sendMessage(localMessageToSend1);
+        doThrow(new AuthenticationFailedException("Test")).when(backend).sendMessage(localMessageToSend1);
 
         controller.sendPendingMessagesSynchronous(account);
 
@@ -592,7 +586,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Test
     public void sendPendingMessagesSynchronous_withCertificateFailure_shouldNotify() throws MessagingException {
         setupAccountWithMessageToSend();
-        doThrow(new CertificateValidationException("Test")).when(transport).sendMessage(localMessageToSend1);
+        doThrow(new CertificateValidationException("Test")).when(backend).sendMessage(localMessageToSend1);
 
         controller.sendPendingMessagesSynchronous(account);
 
@@ -615,7 +609,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(localStore.getFolder(SENT_FOLDER_NAME)).thenReturn(sentFolder);
         when(sentFolder.getDatabaseId()).thenReturn(1L);
         when(localFolder.exists()).thenReturn(true);
-        when(transportProvider.getTransport(appContext, account)).thenReturn(transport);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessageToSend1));
         when(localMessageToSend1.getUid()).thenReturn("localMessageToSend1");
         when(localMessageToSend1.getHeader(K9.IDENTITY_HEADER)).thenReturn(new String[]{});

@@ -843,4 +843,13 @@ public class SmtpTransport extends Transport {
     protected String getHostAddress(InetAddress localAddress) {
         return localAddress.getHostAddress();
     }
+
+    public void checkSettings() throws MessagingException {
+        close();
+        try {
+            open();
+        } finally {
+            close();
+        }
+    }
 }

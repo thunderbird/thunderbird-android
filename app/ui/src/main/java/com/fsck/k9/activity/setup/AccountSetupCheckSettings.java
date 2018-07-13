@@ -13,7 +13,6 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,8 +40,6 @@ import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
@@ -490,14 +487,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             if (!isWebDavAccount()) {
                 publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
             }
-            Context context = DI.get(Context.class);
-            Transport transport = TransportProvider.getInstance().getTransport(context, account);
-            transport.close();
-            try {
-                transport.open();
-            } finally {
-                transport.close();
-            }
+
+            messagingController.checkOutgoingServerSettings(account);
         }
 
         private void checkIncoming() throws MessagingException {
@@ -507,7 +498,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 publishProgress(R.string.account_setup_check_settings_check_incoming_msg);
             }
 
-            messagingController.checkServerSettings(account);
+            messagingController.checkIncomingServerSettings(account);
 
             if (isWebDavAccount()) {
                 publishProgress(R.string.account_setup_check_settings_fetch);

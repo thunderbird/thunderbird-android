@@ -14,8 +14,14 @@ import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.PushReceiver
 import com.fsck.k9.mail.Pusher
 import com.fsck.k9.mail.store.pop3.Pop3Store
+import com.fsck.k9.mail.transport.smtp.SmtpTransport
 
-class Pop3Backend(accountName: String, backendStorage: BackendStorage, private val pop3Store: Pop3Store) : Backend {
+class Pop3Backend(
+        accountName: String,
+        backendStorage: BackendStorage,
+        private val pop3Store: Pop3Store,
+        private val smtpTransport: SmtpTransport
+) : Backend {
     private val pop3Sync: Pop3Sync = Pop3Sync(accountName, backendStorage, pop3Store)
     private val commandGetFolders = CommandGetFolders()
     private val commandSetFlag = CommandSetFlag(pop3Store)
@@ -107,7 +113,15 @@ class Pop3Backend(accountName: String, backendStorage: BackendStorage, private v
         throw UnsupportedOperationException("not supported")
     }
 
-    override fun checkServerSettings() {
+    override fun checkIncomingServerSettings() {
         pop3Store.checkSettings()
+    }
+
+    override fun sendMessage(message: Message) {
+        smtpTransport.sendMessage(message)
+    }
+
+    override fun checkOutgoingServerSettings() {
+        smtpTransport.checkSettings()
     }
 }

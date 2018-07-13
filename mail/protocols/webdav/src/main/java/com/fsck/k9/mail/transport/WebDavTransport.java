@@ -38,4 +38,8 @@ public class WebDavTransport extends Transport {
     public void sendMessage(Message message) throws MessagingException {
         store.sendMessages(Collections.singletonList(message));
     }
+
+    public void checkSettings() throws MessagingException {
+        store.checkSettings();
+    }
 }

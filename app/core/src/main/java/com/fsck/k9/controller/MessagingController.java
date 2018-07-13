@@ -71,8 +71,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
-import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -128,7 +126,6 @@ public class MessagingController {
     private final ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<>();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
-    private final TransportProvider transportProvider;
     private final AccountStatsCollector accountStatsCollector;
     private final CoreResourceProvider resourceProvider;
 
@@ -142,10 +139,9 @@ public class MessagingController {
             Context appContext = context.getApplicationContext();
             NotificationController notificationController = DI.get(NotificationController.class);
             Contacts contacts = Contacts.getInstance(context);
-            TransportProvider transportProvider = TransportProvider.getInstance();
             AccountStatsCollector accountStatsCollector = new DefaultAccountStatsCollector(context);
             CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
-            inst = new MessagingController(appContext, notificationController, contacts, transportProvider,
+            inst = new MessagingController(appContext, notificationController, contacts,
                     accountStatsCollector, resourceProvider);
         }
         return inst;
@@ -154,12 +150,10 @@ public class MessagingController {
 
     @VisibleForTesting
     MessagingController(Context context, NotificationController notificationController, Contacts contacts,
-            TransportProvider transportProvider, AccountStatsCollector accountStatsCollector,
-            CoreResourceProvider resourceProvider) {
+            AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider) {
         this.context = context;
         this.notificationController = notificationController;
         this.contacts = contacts;
-        this.transportProvider = transportProvider;
         this.accountStatsCollector = accountStatsCollector;
         this.resourceProvider = resourceProvider;
 
@@ -1497,6 +1491,10 @@ public class MessagingController {
         }
     }
 
+    public void sendMessageBlocking(Account account, Message message) throws MessagingException {
+        Backend backend = getBackend(account);
+        backend.sendMessage(message);
+    }
 
     public void sendPendingMessages(MessagingListener listener) {
         final Preferences prefs = Preferences.getPreferences(context);
@@ -1603,7 +1601,7 @@ public class MessagingController {
             Timber.i("Scanning folder '%s' (%d) for messages to send",
                     account.getOutboxFolder(), localFolder.getDatabaseId());
 
-            Transport transport = transportProvider.getTransport(context, account);
+            Backend backend = getBackend(account);
 
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {
@@ -1638,7 +1636,7 @@ public class MessagingController {
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
 
                         Timber.i("Sending message with UID %s", message.getUid());
-                        transport.sendMessage(message);
+                        backend.sendMessage(message);
 
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
                         message.setFlag(Flag.SEEN, true);
@@ -1851,8 +1849,12 @@ public class MessagingController {
         return getBackend(account).getSupportsSearchByDate();
     }
 
-    public void checkServerSettings(Account account) throws MessagingException {
-        getBackend(account).checkServerSettings();
+    public void checkIncomingServerSettings(Account account) throws MessagingException {
+        getBackend(account).checkIncomingServerSettings();
+    }
+
+    public void checkOutgoingServerSettings(Account account) throws MessagingException {
+        getBackend(account).checkOutgoingServerSettings();
     }
 
     public void moveMessages(final Account srcAccount, final String srcFolder,
