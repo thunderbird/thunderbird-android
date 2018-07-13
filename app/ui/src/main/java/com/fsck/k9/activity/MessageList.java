@@ -250,7 +250,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         initializeActionBar();
-        initializeDrawer(savedInstanceState);
         initializeFolderIcons();
 
         // Enable gesture detection for MessageLists
@@ -262,6 +261,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         ViewModelProvider viewModelProvider = ViewModelProviders.of(this, new MessageListViewModelFactory());
         MessageListViewModel viewModel = viewModelProvider.get(MessageListViewModel.class);
+
+        initializeDrawer(savedInstanceState);
 
         if (isDrawerEnabled()) {
             viewModel.getFolders(account).observe(this, new Observer<List<Folder>>() {
@@ -717,7 +718,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     protected boolean isDrawerEnabled() {
-        return true;
+        return (account != null);
     }
 
     @SuppressLint("InflateParams")
