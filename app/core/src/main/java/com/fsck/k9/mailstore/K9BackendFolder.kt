@@ -234,6 +234,36 @@ class K9BackendFolder(
         }
     }
 
+    override fun getFolderExtraString(name: String): String? {
+        return database.getStringOrNull(
+                table = "folder_extra_values",
+                column = "value_string"
+        )
+    }
+
+    override fun setFolderExtraString(name: String, value: String) {
+        database.setString(
+                table = "folder_extra_values",
+                column = "value_string",
+                value = value
+        )
+    }
+
+    override fun getFolderExtraNumber(name: String): Long? {
+        return database.getLongOrNull(
+                table = "folder_extra_values",
+                column = "value_integer"
+        )
+    }
+
+    override fun setFolderExtraNumber(name: String, value: Long) {
+        database.setLong(
+                table = "folder_extra_values",
+                column = "value_integer",
+                value = value
+        )
+    }
+
 
     private fun LockableDatabase.getString(
             table: String = "folders",
@@ -248,6 +278,24 @@ class K9BackendFolder(
                     it.getStringOrNull(0)
                 } else {
                     throw IllegalStateException("Couldn't find value for column $table.$column")
+                }
+            }
+        }
+    }
+
+    private fun LockableDatabase.getStringOrNull(
+            table: String = "folders",
+            column: String,
+            selection: String = "id = ?",
+            vararg selectionArgs: String = arrayOf(databaseId)
+    ): String? {
+        return execute(false) { db ->
+            val cursor = db.query(table, arrayOf(column), selection, selectionArgs, null, null, null)
+            cursor.use {
+                if (it.moveToFirst()) {
+                    it.getStringOrNull(0)
+                } else {
+                    null
                 }
             }
         }
@@ -278,6 +326,24 @@ class K9BackendFolder(
                 put(column, if (value) 1 else 0)
             }
             db.update("messages", contentValues, "uid = ?", arrayOf(messageServerId))
+        }
+    }
+
+    private fun LockableDatabase.getLongOrNull(
+            table: String = "folders",
+            column: String,
+            selection: String = "id = ?",
+            vararg selectionArgs: String = arrayOf(databaseId)
+    ): Long? {
+        return execute(false) { db ->
+            val cursor = db.query(table, arrayOf(column), selection, selectionArgs, null, null, null)
+            cursor.use {
+                if (it.moveToFirst()) {
+                    it.getLongOrNull(0)
+                } else {
+                    null
+                }
+            }
         }
     }
 
