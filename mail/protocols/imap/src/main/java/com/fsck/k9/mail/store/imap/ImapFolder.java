@@ -640,6 +640,20 @@ public class ImapFolder extends Folder<ImapMessage> {
             return;
         }
 
+        synchronized (this) {
+            if (connection == null)
+                connection = store.getConnection();
+            try {
+                connection.open();
+            } catch (IOException ioe) {
+                throw new MessagingException("Unable to open IMAP connection for fetching search results", ioe);
+            } finally {
+                if (this.connection == null) {
+                    store.releaseConnection(connection);
+                }
+            }
+        }
+
         checkOpen();
 
         List<String> uids = new ArrayList<>(messages.size());
@@ -690,6 +704,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             try {
                 String commaSeparatedUids = ImapUtility.join(",", uidWindow);
                 String command = String.format("UID FETCH %s (%s)", commaSeparatedUids, spaceSeparatedFetchFields);
+                Timber.d("Sending command "+command);
                 connection.sendCommand(command, false);
 
                 ImapResponse response;
