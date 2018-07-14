@@ -10,7 +10,7 @@ import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.backend.api.MessageRemovalListener
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
-import java.util.Date
+import java.util.*
 
 class K9BackendFolder(
         private val preferences: Preferences,
@@ -151,14 +151,14 @@ class K9BackendFolder(
                 val forwarded = cursor.getInt(4) == 1
                 val flagsColumnValue = cursor.getString(5)
 
-                val flags = flagsColumnValue.split(',').map { Flag.valueOf(it) }.toMutableSet().apply {
+                val flags = if (flagsColumnValue.isNullOrBlank()) emptySet<Flag>()
+                else flagsColumnValue.split(',').map { Flag.valueOf(it) }.toMutableSet().apply {
                     if (deleted) add(Flag.DELETED)
                     if (read) add(Flag.SEEN)
                     if (flagged) add(Flag.FLAGGED)
                     if (answered) add(Flag.ANSWERED)
                     if (forwarded) add(Flag.FORWARDED)
                 }
-
                 flags
             }
         }
