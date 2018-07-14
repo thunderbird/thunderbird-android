@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,7 +34,9 @@ import com.fsck.k9.ui.crypto.MessageCryptoHelper;
 import com.fsck.k9.ui.crypto.OpenPgpApiFactory;
 import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
+
 import org.openintents.openpgp.OpenPgpDecryptionResult;
+
 import timber.log.Timber;
 
 
@@ -471,7 +475,17 @@ public class MessageLoaderHelper {
             if (!messageReference.equals(account.getUuid(), folderServerId, uid)) {
                 return;
             }
-            onMessageDownloadFinished();
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                onMessageDownloadFinished();
+            } else {
+                new Handler(Looper.getMainLooper()).post( new Runnable() {
+                            @Override
+                            public void run() {
+                                onMessageDownloadFinished();
+                            }
+                        }
+                );
+            }
         }
 
         @Override
