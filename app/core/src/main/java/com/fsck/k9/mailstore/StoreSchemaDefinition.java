@@ -73,6 +73,13 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
     }
 
     private static void dbCreateDatabaseFromScratch(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS account_extra_values");
+        db.execSQL("CREATE TABLE account_extra_values (" +
+                "name TEXT NOT NULL PRIMARY KEY, " +
+                "value_text TEXT, " +
+                "value_integer INTEGER " +
+                ")");
+
         db.execSQL("DROP TABLE IF EXISTS folders");
         db.execSQL("CREATE TABLE folders (" +
                 "id INTEGER PRIMARY KEY," +

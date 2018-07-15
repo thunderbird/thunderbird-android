@@ -6,7 +6,13 @@ import android.database.sqlite.SQLiteDatabase
 
 internal object MigrationTo64 {
     @JvmStatic
-    fun addFolderExtraValuesTable(db: SQLiteDatabase) {
+    fun addExtraValuesTables(db: SQLiteDatabase) {
+        db.execSQL("CREATE TABLE account_extra_values (" +
+                "name TEXT NOT NULL PRIMARY KEY, " +
+                "value_text TEXT, " +
+                "value_integer INTEGER " +
+                ")")
+
         db.execSQL("CREATE TABLE folder_extra_values (" +
                 "folder_id INTEGER NOT NULL, " +
                 "name TEXT NOT NULL, " +
