@@ -748,14 +748,18 @@ public class MessagingController {
         }
     }
 
-    private SyncConfig createSyncConfig(Account account) {
+    private SyncConfig createSyncConfig(Account account, boolean inRemoteSearch) {
         return new SyncConfig(
                     account.getExpungePolicy().toBackendExpungePolicy(),
-                    account.getEarliestPollDate(),
+                    (inRemoteSearch? null : account.getEarliestPollDate()),
                     account.syncRemoteDeletions(),
                     account.getMaximumAutoDownloadMessageSize(),
                     K9.DEFAULT_VISIBLE_LIMIT,
                     SYNC_FLAGS);
+    }
+
+    private SyncConfig createSyncConfig(Account account) {
+        return createSyncConfig(account, false);
     }
 
     private void updateFolderStatus(Account account, String folderServerId, String status) {
@@ -1334,7 +1338,7 @@ public class MessagingController {
                 Backend backend = getBackend(account);
 
                 if (loadPartialFromSearch) {
-                    SyncConfig syncConfig = createSyncConfig(account);
+                    SyncConfig syncConfig = createSyncConfig(account, true);
                     backend.downloadMessage(syncConfig, folder, uid);
                 } else {
                     FetchProfile fp = new FetchProfile();
