@@ -6,6 +6,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.imap.ImapBackend
+import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory
@@ -40,5 +41,13 @@ class ImapBackendFactory(
     private fun createSmtpTransport(account: Account): SmtpTransport {
         val oauth2TokenProvider: OAuth2TokenProvider? = null
         return SmtpTransport(account, DefaultTrustedSocketFactory(context), oauth2TokenProvider)
+    }
+
+    override fun decodeStoreUri(storeUri: String): ServerSettings {
+        return ImapStore.decodeUri(storeUri)
+    }
+
+    override fun createStoreUri(serverSettings: ServerSettings): String {
+        return ImapStore.createUri(serverSettings)
     }
 }

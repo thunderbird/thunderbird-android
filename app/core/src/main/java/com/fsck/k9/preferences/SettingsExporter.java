@@ -23,11 +23,12 @@ import android.os.Environment;
 import android.util.Xml;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.TransportUris;
-import com.fsck.k9.mail.store.RemoteStoreManager;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
 import org.xmlpull.v1.XmlSerializer;
@@ -234,7 +235,8 @@ public class SettingsExporter {
         }
 
         // Write incoming server settings
-        ServerSettings incoming = RemoteStoreManager.decodeStoreUri(account.getStoreUri());
+        BackendManager backendManager = DI.get(BackendManager.class);
+        ServerSettings incoming = backendManager.decodeStoreUri(account.getStoreUri());
         serializer.startTag(null, INCOMING_SERVER_ELEMENT);
         serializer.attribute(null, TYPE_ATTRIBUTE, incoming.type.name());
 
