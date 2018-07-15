@@ -45,11 +45,32 @@ class BackendManager(private val backendFactories: Map<String, BackendFactory>) 
     fun createStoreUri(serverSettings: ServerSettings): String {
         backendFactories.forEach { (storeUriPrefix, backendFactory) ->
             val type = serverSettings.type.name.toLowerCase(Locale.ROOT)
-            if (type.startsWith(storeUriPrefix)) {
+            if (type == storeUriPrefix) {
                 return backendFactory.createStoreUri(serverSettings)
             }
         }
 
-        throw IllegalArgumentException("Unsupported storeUri type")
+        throw IllegalArgumentException("Unsupported ServerSettings type")
+    }
+
+    fun decodeTransportUri(transportUri: String): ServerSettings {
+        backendFactories.forEach { (_, backendFactory) ->
+            if (transportUri.startsWith(backendFactory.transportUriPrefix)) {
+                return backendFactory.decodeTransportUri(transportUri)
+            }
+        }
+
+        throw IllegalArgumentException("Unsupported transportUri type")
+    }
+
+    fun createTransportUri(serverSettings: ServerSettings): String {
+        backendFactories.forEach { (_, backendFactory) ->
+            val type = serverSettings.type.name.toLowerCase(Locale.ROOT)
+            if (type == backendFactory.transportUriPrefix) {
+                return backendFactory.createTransportUri(serverSettings)
+            }
+        }
+
+        throw IllegalArgumentException("Unsupported ServerSettings type")
     }
 }

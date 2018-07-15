@@ -77,7 +77,6 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
@@ -750,7 +749,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         private void show(final Accounts activity, boolean restore) {
             ServerSettings incoming = backendManager.decodeStoreUri(mAccount.getStoreUri());
-            ServerSettings outgoing = TransportUris.decodeTransportUri(mAccount.getTransportUri());
+            ServerSettings outgoing = backendManager.decodeTransportUri(mAccount.getTransportUri());
 
             /*
              * Don't ask for the password to the outgoing server for WebDAV
@@ -978,9 +977,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 if (mOutgoingPassword != null) {
                     // Set outgoing server password
                     String transportUri = mAccount.getTransportUri();
-                    ServerSettings outgoing = TransportUris.decodeTransportUri(transportUri);
+                    ServerSettings outgoing = backendManager.decodeTransportUri(transportUri);
                     ServerSettings newOutgoing = outgoing.newPassword(mOutgoingPassword);
-                    String newTransportUri = TransportUris.createTransportUri(newOutgoing);
+                    String newTransportUri = backendManager.createTransportUri(newOutgoing);
                     mAccount.setTransportUri(newTransportUri);
                 }
 

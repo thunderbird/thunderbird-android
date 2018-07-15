@@ -39,7 +39,6 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 import timber.log.Timber;
@@ -414,7 +413,7 @@ public class AccountSetupBasics extends K9Activity
         ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
         String storeUri = backendManager.createStoreUri(storeServer);
-        String transportUri = TransportUris.createTransportUri(transportServer);
+        String transportUri = backendManager.createTransportUri(transportServer);
         mAccount.setStoreUri(storeUri);
         mAccount.setTransportUri(transportUri);
 

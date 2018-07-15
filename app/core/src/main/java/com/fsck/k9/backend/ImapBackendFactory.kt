@@ -12,6 +12,8 @@ import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
+import com.fsck.k9.mail.transport.smtp.SmtpTransportUriCreator
+import com.fsck.k9.mail.transport.smtp.SmtpTransportUriDecoder
 import com.fsck.k9.mailstore.K9BackendStorage
 
 class ImapBackendFactory(
@@ -19,6 +21,7 @@ class ImapBackendFactory(
         private val preferences: Preferences,
         private val powerManager: PowerManager
 ) : BackendFactory {
+    override val transportUriPrefix = "smtp"
 
     override fun createBackend(account: Account): Backend {
         val accountName = account.description
@@ -49,5 +52,13 @@ class ImapBackendFactory(
 
     override fun createStoreUri(serverSettings: ServerSettings): String {
         return ImapStore.createUri(serverSettings)
+    }
+
+    override fun decodeTransportUri(transportUri: String): ServerSettings {
+        return SmtpTransportUriDecoder.decodeSmtpUri(transportUri)
+    }
+
+    override fun createTransportUri(serverSettings: ServerSettings): String {
+        return SmtpTransportUriCreator.createSmtpUri(serverSettings)
     }
 }

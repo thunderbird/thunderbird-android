@@ -44,7 +44,6 @@ import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import com.fsck.k9.service.MailService;
@@ -538,7 +537,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     URI oldUri = new URI(mAccount.getTransportUri());
                     ServerSettings transportServer = new ServerSettings(Type.SMTP, oldUri.getHost(), oldUri.getPort(),
                             ConnectionSecurity.SSL_TLS_REQUIRED, authType, username, password, clientCertificateAlias);
-                    String transportUri = TransportUris.createTransportUri(transportServer);
+                    String transportUri = backendManager.createTransportUri(transportServer);
                     mAccount.setTransportUri(transportUri);
                 } catch (URISyntaxException use) {
                     /*

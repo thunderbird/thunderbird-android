@@ -27,7 +27,6 @@ import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import org.xmlpull.v1.XmlPullParser;
@@ -365,7 +364,7 @@ public class SettingsImporter {
         if (account.outgoing != null) {
             // Write outgoing server settings (transportUri)
             ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
-            String transportUri = TransportUris.createTransportUri(outgoing);
+            String transportUri = backendManager.createTransportUri(outgoing);
             putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Base64.encode(transportUri));
 
             /*

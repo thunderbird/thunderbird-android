@@ -10,9 +10,12 @@ import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory
 import com.fsck.k9.mail.store.pop3.Pop3Store
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
+import com.fsck.k9.mail.transport.smtp.SmtpTransportUriCreator
+import com.fsck.k9.mail.transport.smtp.SmtpTransportUriDecoder
 import com.fsck.k9.mailstore.K9BackendStorage
 
 class Pop3BackendFactory(private val context: Context, private val preferences: Preferences) : BackendFactory {
+    override val transportUriPrefix = "smtp"
 
     override fun createBackend(account: Account): Backend {
         val accountName = account.description
@@ -37,5 +40,13 @@ class Pop3BackendFactory(private val context: Context, private val preferences: 
 
     override fun createStoreUri(serverSettings: ServerSettings): String {
         return Pop3Store.createUri(serverSettings)
+    }
+
+    override fun decodeTransportUri(transportUri: String): ServerSettings {
+        return SmtpTransportUriDecoder.decodeSmtpUri(transportUri)
+    }
+
+    override fun createTransportUri(serverSettings: ServerSettings): String {
+        return SmtpTransportUriCreator.createSmtpUri(serverSettings)
     }
 }

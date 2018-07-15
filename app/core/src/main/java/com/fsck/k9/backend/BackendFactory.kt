@@ -9,4 +9,8 @@ interface BackendFactory {
 
     fun decodeStoreUri(storeUri: String): ServerSettings
     fun createStoreUri(serverSettings: ServerSettings): String
+
+    val transportUriPrefix: String
+    fun decodeTransportUri(transportUri: String): ServerSettings
+    fun createTransportUri(serverSettings: ServerSettings): String
 }

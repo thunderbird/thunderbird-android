@@ -10,6 +10,7 @@ import com.fsck.k9.mail.transport.WebDavTransport
 import com.fsck.k9.mailstore.K9BackendStorage
 
 class WebDavBackendFactory(private val preferences: Preferences) : BackendFactory {
+    override val transportUriPrefix = "webdav"
 
     override fun createBackend(account: Account): Backend {
         val accountName = account.description
@@ -28,6 +29,14 @@ class WebDavBackendFactory(private val preferences: Preferences) : BackendFactor
     }
 
     override fun createStoreUri(serverSettings: ServerSettings): String {
+        return WebDavStore.createUri(serverSettings)
+    }
+
+    override fun decodeTransportUri(transportUri: String): ServerSettings {
+        return WebDavStore.decodeUri(transportUri)
+    }
+
+    override fun createTransportUri(serverSettings: ServerSettings): String {
         return WebDavStore.createUri(serverSettings)
     }
 }
