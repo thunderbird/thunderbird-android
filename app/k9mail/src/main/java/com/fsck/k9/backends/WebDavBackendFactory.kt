@@ -1,7 +1,8 @@
-package com.fsck.k9.backend
+package com.fsck.k9.backends
 
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
+import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.webdav.WebDavBackend
 import com.fsck.k9.mail.ServerSettings
