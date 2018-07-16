@@ -23,7 +23,6 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
@@ -64,21 +63,13 @@ public class ImapStore extends RemoteStore {
     private final Map<String, ImapFolder> folderCache = new HashMap<String, ImapFolder>();
 
 
-    public static ImapStoreSettings decodeUri(String uri) {
-        return ImapStoreUriDecoder.decode(uri);
-    }
-
-    public static String createUri(ServerSettings server) {
-        return ImapStoreUriCreator.create(server);
-    }
-
     public ImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
             ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) throws MessagingException {
         super(storeConfig, trustedSocketFactory);
 
         ImapStoreSettings settings;
         try {
-            settings = decodeUri(storeConfig.getStoreUri());
+            settings = ImapStoreUriDecoder.decode(storeConfig.getStoreUri());
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding store URI", e);
         }

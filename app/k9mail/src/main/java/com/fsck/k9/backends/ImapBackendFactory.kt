@@ -12,6 +12,8 @@ import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory
 import com.fsck.k9.mail.store.imap.ImapStore
+import com.fsck.k9.mail.store.imap.ImapStoreUriCreator
+import com.fsck.k9.mail.store.imap.ImapStoreUriDecoder
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriCreator
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriDecoder
@@ -48,11 +50,11 @@ class ImapBackendFactory(
     }
 
     override fun decodeStoreUri(storeUri: String): ServerSettings {
-        return ImapStore.decodeUri(storeUri)
+        return ImapStoreUriDecoder.decode(storeUri)
     }
 
     override fun createStoreUri(serverSettings: ServerSettings): String {
-        return ImapStore.createUri(serverSettings)
+        return ImapStoreUriCreator.create(serverSettings)
     }
 
     override fun decodeTransportUri(transportUri: String): ServerSettings {

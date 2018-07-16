@@ -6,7 +6,8 @@ import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.mail.ServerSettings
-import com.fsck.k9.mail.store.imap.ImapStore
+import com.fsck.k9.mail.store.imap.ImapStoreUriCreator
+import com.fsck.k9.mail.store.imap.ImapStoreUriDecoder
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriCreator
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriDecoder
 import org.koin.dsl.module.applicationContext
@@ -21,11 +22,11 @@ fun setUpBackendManager() {
         }
 
         override fun decodeStoreUri(storeUri: String): ServerSettings {
-            return ImapStore.decodeUri(storeUri)
+            return ImapStoreUriDecoder.decode(storeUri)
         }
 
         override fun createStoreUri(serverSettings: ServerSettings): String {
-            return ImapStore.createUri(serverSettings)
+            return ImapStoreUriCreator.create(serverSettings)
         }
 
         override fun decodeTransportUri(transportUri: String): ServerSettings {

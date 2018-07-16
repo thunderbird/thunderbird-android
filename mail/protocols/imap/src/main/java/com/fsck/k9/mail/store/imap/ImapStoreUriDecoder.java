@@ -12,7 +12,7 @@ import com.fsck.k9.mail.ServerSettings.Type;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 
 
-class ImapStoreUriDecoder {
+public class ImapStoreUriDecoder {
     /**
      * Decodes an ImapStore URI.
      *
