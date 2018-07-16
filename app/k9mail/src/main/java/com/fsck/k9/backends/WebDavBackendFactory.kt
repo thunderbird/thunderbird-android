@@ -7,6 +7,8 @@ import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.webdav.WebDavBackend
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.webdav.WebDavStore
+import com.fsck.k9.mail.store.webdav.WebDavStoreUriCreator
+import com.fsck.k9.mail.store.webdav.WebDavStoreUriDecoder
 import com.fsck.k9.mail.transport.WebDavTransport
 import com.fsck.k9.mailstore.K9BackendStorage
 
@@ -26,18 +28,18 @@ class WebDavBackendFactory(private val preferences: Preferences) : BackendFactor
     }
 
     override fun decodeStoreUri(storeUri: String): ServerSettings {
-        return WebDavStore.decodeUri(storeUri)
+        return WebDavStoreUriDecoder.decode(storeUri)
     }
 
     override fun createStoreUri(serverSettings: ServerSettings): String {
-        return WebDavStore.createUri(serverSettings)
+        return WebDavStoreUriCreator.create(serverSettings)
     }
 
     override fun decodeTransportUri(transportUri: String): ServerSettings {
-        return WebDavStore.decodeUri(transportUri)
+        return WebDavStoreUriDecoder.decode(transportUri)
     }
 
     override fun createTransportUri(serverSettings: ServerSettings): String {
-        return WebDavStore.createUri(serverSettings)
+        return WebDavStoreUriCreator.create(serverSettings)
     }
 }

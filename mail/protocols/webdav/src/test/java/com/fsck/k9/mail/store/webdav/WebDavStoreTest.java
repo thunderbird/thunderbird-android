@@ -6,19 +6,13 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.StoreConfig;
-
 import javax.net.ssl.SSLException;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -82,26 +76,6 @@ public class WebDavStoreTest {
         when(mockHttpClient.getParams()).thenReturn(httpParams);
         when(mockHttpClient.getConnectionManager()).thenReturn(mockClientConnectionManager);
         when(mockClientConnectionManager.getSchemeRegistry()).thenReturn(mockSchemeRegistry);
-    }
-
-    @Test
-    public void createUri_withSetting_shouldProvideUri() {
-        ServerSettings serverSettings = new ServerSettings(Type.WebDAV, "example.org", 123456, ConnectionSecurity.NONE,
-                AuthType.PLAIN, "user", "password", null);
-
-        String result = WebDavStore.createUri(serverSettings);
-
-        assertEquals("webdav://user:password@example.org:123456/%7C%7C", result);
-    }
-
-    @Test
-    public void createUri_withSettingsWithTLS_shouldProvideSSLUri() {
-        ServerSettings serverSettings = new ServerSettings(Type.WebDAV, "example.org", 123456,
-                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, "user", "password", null);
-
-        String result = WebDavStore.createUri(serverSettings);
-
-        assertEquals("webdav+ssl+://user:password@example.org:123456/%7C%7C", result);
     }
 
     @Test(expected = MessagingException.class)

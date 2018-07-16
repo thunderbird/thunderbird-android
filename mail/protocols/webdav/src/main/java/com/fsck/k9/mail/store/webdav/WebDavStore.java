@@ -22,7 +22,6 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
@@ -60,15 +59,6 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
  */
 @SuppressWarnings("deprecation")
 public class WebDavStore extends RemoteStore {
-
-    public static WebDavStoreSettings decodeUri(String uri) {
-        return WebDavStoreUriDecoder.decode(uri);
-    }
-
-    public static String createUri(ServerSettings server) {
-        return WebDavStoreUriCreator.create(server);
-    }
-
     private ConnectionSecurity mConnectionSecurity;
     private String username;
     private String alias;
@@ -102,7 +92,7 @@ public class WebDavStore extends RemoteStore {
 
         WebDavStoreSettings settings;
         try {
-            settings = WebDavStore.decodeUri(storeConfig.getStoreUri());
+            settings = WebDavStoreUriDecoder.decode(storeConfig.getStoreUri());
         } catch (IllegalArgumentException e) {
             throw new MessagingException("Error while decoding store URI", e);
         }
