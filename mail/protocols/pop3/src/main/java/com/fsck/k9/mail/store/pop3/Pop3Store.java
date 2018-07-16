@@ -29,23 +29,16 @@ public class Pop3Store extends RemoteStore {
 
     private Map<String, Pop3Folder> mFolders = new HashMap<String, Pop3Folder>();
 
-    public Pop3Store(StoreConfig storeConfig, TrustedSocketFactory socketFactory) throws MessagingException {
+    public Pop3Store(ServerSettings serverSettings, StoreConfig storeConfig, TrustedSocketFactory socketFactory) {
         super(storeConfig, socketFactory);
 
-        ServerSettings settings;
-        try {
-            settings = Pop3StoreUriDecoder.decode(storeConfig.getStoreUri());
-        } catch (IllegalArgumentException e) {
-            throw new MessagingException("Error while decoding store URI", e);
-        }
-
-        host = settings.host;
-        port = settings.port;
-        connectionSecurity = settings.connectionSecurity;
-        username = settings.username;
-        password = settings.password;
-        clientCertificateAlias = settings.clientCertificateAlias;
-        authType = settings.authenticationType;
+        host = serverSettings.host;
+        port = serverSettings.port;
+        connectionSecurity = serverSettings.connectionSecurity;
+        username = serverSettings.username;
+        password = serverSettings.password;
+        clientCertificateAlias = serverSettings.clientCertificateAlias;
+        authType = serverSettings.authenticationType;
     }
 
     @Override

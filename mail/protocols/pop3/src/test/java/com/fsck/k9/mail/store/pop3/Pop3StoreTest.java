@@ -8,9 +8,13 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.List;
 
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
@@ -60,21 +64,14 @@ public class Pop3StoreTest {
 
     @Before
     public void setUp() throws Exception {
-        //Using a SSL socket allows us to mock it
-        when(mockStoreConfig.getStoreUri()).thenReturn("pop3+ssl+://PLAIN:user:password@server:12345");
+        ServerSettings serverSettings = createServerSettings();
         when(mockStoreConfig.getInboxFolder()).thenReturn(Pop3Folder.INBOX);
         when(mockTrustedSocketFactory.createSocket(null, "server", 12345, null)).thenReturn(mockSocket);
         when(mockSocket.isConnected()).thenReturn(true);
         when(mockSocket.isClosed()).thenReturn(false);
 
         when(mockSocket.getOutputStream()).thenReturn(mockOutputStream);
-        store = new Pop3Store(mockStoreConfig, mockTrustedSocketFactory);
-    }
-
-    @Test(expected = MessagingException.class)
-    public void withInvalidStoreUri_shouldThrowMessagingException() throws MessagingException {
-        when(mockStoreConfig.getStoreUri()).thenReturn("pop3://CRAM_MD5:user:password@[]:12345");
-        store = new Pop3Store(mockStoreConfig, mockTrustedSocketFactory);
+        store = new Pop3Store(serverSettings, mockStoreConfig, mockTrustedSocketFactory);
     }
 
     @Test
@@ -175,5 +172,17 @@ public class Pop3StoreTest {
         Pop3Folder folder = store.getFolder(Pop3Folder.INBOX);
 
         folder.open(Folder.OPEN_MODE_RW);
+    }
+
+    private ServerSettings createServerSettings() {
+        return new ServerSettings(
+                Type.POP3,
+                "server",
+                12345,
+                ConnectionSecurity.SSL_TLS_REQUIRED,
+                AuthType.PLAIN,
+                "user",
+                "password",
+                null);
     }
 }
