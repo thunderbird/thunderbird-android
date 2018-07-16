@@ -8,13 +8,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.List;
 
-import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
@@ -74,92 +70,6 @@ public class Pop3StoreTest {
         when(mockSocket.getOutputStream()).thenReturn(mockOutputStream);
         store = new Pop3Store(mockStoreConfig, mockTrustedSocketFactory);
     }
-
-    @Test
-    public void decodeUri_withTLSUri_shouldUseStartTls() {
-        ServerSettings settings = Pop3Store.decodeUri("pop3+tls+://PLAIN:user:password@server:12345");
-
-        assertEquals(settings.connectionSecurity, ConnectionSecurity.STARTTLS_REQUIRED);
-    }
-
-    @Test
-    public void decodeUri_withPlainUri_shouldUseNoSecurity() {
-        ServerSettings settings = Pop3Store.decodeUri("pop3://PLAIN:user:password@server:12345");
-        assertEquals(settings.connectionSecurity, ConnectionSecurity.NONE);
-    }
-
-    @Test
-    public void decodeUri_withExternalCertificateShouldProvideAlias_shouldUseNoSecurity() {
-        ServerSettings settings = Pop3Store.decodeUri("pop3://EXTERNAL:user:clientCert@server:12345");
-
-        assertEquals(settings.clientCertificateAlias, "clientCert");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void decodeUri_withNonPop3Uri_shouldThrowException() {
-        Pop3Store.decodeUri("imap://PLAIN:user:password@server:12345");
-    }
-
-    @Test
-    public void createUri_withSSLTLS_required_shouldProduceSSLUri() {
-        ServerSettings settings = new ServerSettings(Type.POP3, "server", 12345, ConnectionSecurity.SSL_TLS_REQUIRED,
-                AuthType.PLAIN, "user", "password", null);
-
-        String uri = Pop3Store.createUri(settings);
-
-        assertEquals(uri, "pop3+ssl+://PLAIN:user:password@server:12345");
-    }
-
-    @Test
-    public void createUri_withSTARTTLSRequired_shouldProduceTLSUri() {
-        ServerSettings settings = new ServerSettings(Type.POP3, "server", 12345, ConnectionSecurity.STARTTLS_REQUIRED,
-                AuthType.PLAIN, "user", "password", null);
-
-        String uri = Pop3Store.createUri(settings);
-
-        assertEquals(uri, "pop3+tls+://PLAIN:user:password@server:12345");
-    }
-
-    @Test
-    public void createUri_withNONE_shouldProducePop3Uri() {
-        ServerSettings settings = new ServerSettings(Type.POP3, "server", 12345, ConnectionSecurity.NONE,
-                AuthType.PLAIN, "user", "password", null);
-
-        String uri = Pop3Store.createUri(settings);
-
-        assertEquals(uri, "pop3://PLAIN:user:password@server:12345");
-    }
-
-    @Test
-    public void createUri_withPLAIN_shouldProducePlainAuthUri() {
-        ServerSettings settings = new ServerSettings(Type.POP3, "server", 12345, ConnectionSecurity.NONE,
-                AuthType.PLAIN, "user", "password", null);
-
-        String uri = Pop3Store.createUri(settings);
-
-        assertEquals(uri, "pop3://PLAIN:user:password@server:12345");
-    }
-
-    @Test
-    public void createUri_withEXTERNAL_shouldProduceExternalAuthUri() {
-        ServerSettings settings = new ServerSettings(Type.POP3, "server", 12345, ConnectionSecurity.NONE,
-                AuthType.EXTERNAL, "user", "password", "clientCert");
-
-        String uri = Pop3Store.createUri(settings);
-
-        assertEquals(uri, "pop3://EXTERNAL:user:clientCert@server:12345");
-    }
-
-    @Test
-    public void createUri_withCRAMMD5_shouldProduceCRAMMD5AuthUri() {
-        ServerSettings settings = new ServerSettings(Type.POP3, "server", 12345, ConnectionSecurity.NONE,
-                AuthType.CRAM_MD5, "user", "password", "clientCert");
-
-        String uri = Pop3Store.createUri(settings);
-
-        assertEquals(uri, "pop3://CRAM_MD5:user:password@server:12345");
-    }
-
 
     @Test(expected = MessagingException.class)
     public void withInvalidStoreUri_shouldThrowMessagingException() throws MessagingException {
