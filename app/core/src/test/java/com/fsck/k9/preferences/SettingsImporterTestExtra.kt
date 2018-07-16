@@ -5,9 +5,9 @@ import com.fsck.k9.Account
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.api.Backend
+import com.fsck.k9.backend.imap.ImapStoreUriCreator
+import com.fsck.k9.backend.imap.ImapStoreUriDecoder
 import com.fsck.k9.mail.ServerSettings
-import com.fsck.k9.mail.store.imap.ImapStoreUriCreator
-import com.fsck.k9.mail.store.imap.ImapStoreUriDecoder
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriCreator
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriDecoder
 import org.koin.dsl.module.applicationContext

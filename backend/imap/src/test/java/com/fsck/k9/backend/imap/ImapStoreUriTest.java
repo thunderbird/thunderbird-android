@@ -1,9 +1,11 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.backend.imap;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fsck.k9.backend.imap.ImapStoreUriCreator;
+import com.fsck.k9.backend.imap.ImapStoreUriDecoder;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;

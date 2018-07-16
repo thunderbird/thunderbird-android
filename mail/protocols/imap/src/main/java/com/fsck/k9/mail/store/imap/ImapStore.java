@@ -63,31 +63,25 @@ public class ImapStore extends RemoteStore {
     private final Map<String, ImapFolder> folderCache = new HashMap<String, ImapFolder>();
 
 
-    public ImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) throws MessagingException {
+    public ImapStore(ImapStoreSettings serverSettings, StoreConfig storeConfig,
+            TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
+            OAuth2TokenProvider oauthTokenProvider) {
         super(storeConfig, trustedSocketFactory);
 
-        ImapStoreSettings settings;
-        try {
-            settings = ImapStoreUriDecoder.decode(storeConfig.getStoreUri());
-        } catch (IllegalArgumentException e) {
-            throw new MessagingException("Error while decoding store URI", e);
-        }
+        host = serverSettings.host;
+        port = serverSettings.port;
 
-        host = settings.host;
-        port = settings.port;
-
-        connectionSecurity = settings.connectionSecurity;
+        connectionSecurity = serverSettings.connectionSecurity;
         this.connectivityManager = connectivityManager;
         this.oauthTokenProvider = oauthTokenProvider;
 
-        authType = settings.authenticationType;
-        username = settings.username;
-        password = settings.password;
-        clientCertificateAlias = settings.clientCertificateAlias;
+        authType = serverSettings.authenticationType;
+        username = serverSettings.username;
+        password = serverSettings.password;
+        clientCertificateAlias = serverSettings.clientCertificateAlias;
 
         // Make extra sure pathPrefix is null if "auto-detect namespace" is configured
-        pathPrefix = (settings.autoDetectNamespace) ? null : settings.pathPrefix;
+        pathPrefix = (serverSettings.autoDetectNamespace) ? null : serverSettings.pathPrefix;
 
         folderNameCodec = FolderNameCodec.newInstance();
     }

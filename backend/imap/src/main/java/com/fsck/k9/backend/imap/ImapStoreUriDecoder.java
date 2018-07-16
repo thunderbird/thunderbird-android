@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.backend.imap;
 
 
 import java.net.URI;
@@ -8,6 +8,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
+import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 
