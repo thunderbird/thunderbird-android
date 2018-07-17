@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.MessagingException;
@@ -66,9 +68,13 @@ public class WebDavStoreTest {
 
     private ArgumentCaptor<HttpGeneric> requestCaptor;
 
+    private StoreConfig storeConfig;
+    private WebDavStoreSettings serverSettings;
+    private WebDavStore webDavStore;
+
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         HttpParams httpParams = new BasicHttpParams();
@@ -76,28 +82,15 @@ public class WebDavStoreTest {
         when(mockHttpClient.getParams()).thenReturn(httpParams);
         when(mockHttpClient.getConnectionManager()).thenReturn(mockClientConnectionManager);
         when(mockClientConnectionManager.getSchemeRegistry()).thenReturn(mockSchemeRegistry);
-    }
 
-    @Test(expected = MessagingException.class)
-    public void constructor_withImapStoreUri_shouldThrow() throws Exception {
-        StoreConfig storeConfig = createStoreConfig("imap://user:password@imap.example.org");
-
-        new WebDavStore(storeConfig, mockHttpClientFactory);
-    }
-
-    @Test
-    public void checkSettings_withHttpPrefixedServerName_shouldUseInsecureConnection() throws Exception {
-        WebDavStore webDavStore = createWebDavStore("webdav://user:password@http://server:123456");
-        configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE);
-
-        webDavStore.checkSettings();
-
-        assertHttpClientUsesHttps(false);
+        storeConfig = createStoreConfig();
+        serverSettings = createWebDavStoreSettings(ConnectionSecurity.SSL_TLS_REQUIRED);
+        webDavStore = createWebDavStore();
     }
 
     @Test
     public void checkSettings_withWebDavUri_shouldUseInsecureConnection() throws Exception {
-        WebDavStore webDavStore = createWebDavStore("webdav://user:password@server:123456");
+        WebDavStore webDavStore = createWebDavStore(ConnectionSecurity.NONE);
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE);
 
         webDavStore.checkSettings();
@@ -107,7 +100,7 @@ public class WebDavStoreTest {
 
     @Test
     public void checkSettings_withWebDavSslUri_shouldUseSecureConnection() throws Exception {
-        WebDavStore webDavStore = createWebDavStore("webdav+ssl://user:password@server:123456");
+        WebDavStore webDavStore = createWebDavStore(ConnectionSecurity.SSL_TLS_REQUIRED);
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE);
 
         webDavStore.checkSettings();
@@ -117,7 +110,7 @@ public class WebDavStoreTest {
 
     @Test
     public void checkSettings_withWebDavTlsUri_shouldUseSecureConnection() throws Exception {
-        WebDavStore webDavStore = createWebDavStore("webdav+tls://user:password@server:123456");
+        WebDavStore webDavStore = createWebDavStore(ConnectionSecurity.STARTTLS_REQUIRED);
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE);
 
         webDavStore.checkSettings();
@@ -127,7 +120,6 @@ public class WebDavStoreTest {
 
     @Test
     public void checkSettings_withOkResponse_shouldPerformFormBasedAuthentication() throws Exception {
-        WebDavStore webDavStore = createDefaultWebDavStore();
         ArgumentCaptor<HttpGeneric> requestCaptor = ArgumentCaptor.forClass(HttpGeneric.class);
         when(mockHttpClient.executeOverride(requestCaptor.capture(), any(HttpContext.class)))
                 .thenReturn(OK_200_RESPONSE)
@@ -141,15 +133,14 @@ public class WebDavStoreTest {
         assertEquals(4, requests.size());
         assertEquals("GET", requests.get(0).getMethod()); // Checking auth type
         assertEquals("POST", requests.get(1).getMethod()); // Posting form data
-        assertEquals("http://example.org:80/exchweb/bin/auth/owaauth.dll", requests.get(1).getURI().toString());
+        assertEquals("https://webdav.example.org:443/exchweb/bin/auth/owaauth.dll", requests.get(1).getURI().toString());
         assertEquals("POST", requests.get(2).getMethod()); // Confirming login
-        assertEquals("http://example.org:80/exchweb/bin/auth/owaauth.dll", requests.get(2).getURI().toString());
+        assertEquals("https://webdav.example.org:443/exchweb/bin/auth/owaauth.dll", requests.get(2).getURI().toString());
         assertEquals("GET", requests.get(3).getMethod()); // Getting response
     }
 
     @Test
     public void checkSettings_withInitialUnauthorizedResponse_shouldPerformBasicAuthentication() throws Exception {
-        WebDavStore webDavStore = createDefaultWebDavStore();
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE);
 
         webDavStore.checkSettings();
@@ -164,7 +155,6 @@ public class WebDavStoreTest {
 
     @Test(expected = MessagingException.class)
     public void checkSettings_withUnauthorizedResponses_shouldThrow() throws Exception {
-        WebDavStore webDavStore = createDefaultWebDavStore();
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, UNAUTHORIZED_401_RESPONSE);
 
         webDavStore.checkSettings();
@@ -172,7 +162,6 @@ public class WebDavStoreTest {
 
     @Test(expected = MessagingException.class)
     public void checkSettings_withErrorResponse_shouldThrow() throws Exception {
-        WebDavStore webDavStore = createDefaultWebDavStore();
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, SERVER_ERROR_500_RESPONSE);
 
         webDavStore.checkSettings();
@@ -180,7 +169,6 @@ public class WebDavStoreTest {
 
     @Test(expected = CertificateValidationException.class)
     public void checkSettings_withSslException_shouldThrowCertificateValidationException() throws Exception {
-        WebDavStore webDavStore = createDefaultWebDavStore();
         ArgumentCaptor<HttpGeneric> requestCaptor = ArgumentCaptor.forClass(HttpGeneric.class);
         when(mockHttpClient.executeOverride(requestCaptor.capture(), any(HttpContext.class)))
                 .thenThrow(new SSLException("Test"));
@@ -191,7 +179,6 @@ public class WebDavStoreTest {
     //TODO: Is this really something we want to test?
     @Test
     public void checkSettings_shouldRegisterHttpsSchemeWithRegistry() throws Exception {
-        WebDavStore webDavStore = createDefaultWebDavStore();
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE);
 
         webDavStore.checkSettings();
@@ -203,17 +190,14 @@ public class WebDavStoreTest {
     }
 
     @Test
-    public void getFolder_shouldReturnWebDavFolderInstance() throws Exception {
-        WebDavStore webDavStore = createDefaultWebDavStore();
-
+    public void getFolder_shouldReturnWebDavFolderInstance() {
         Folder result = webDavStore.getFolder("INBOX");
 
         assertEquals(WebDavFolder.class, result.getClass());
     }
 
     @Test
-    public void getFolder_calledTwice_shouldReturnFirstInstance() throws Exception {
-        WebDavStore webDavStore = createDefaultWebDavStore();
+    public void getFolder_calledTwice_shouldReturnFirstInstance() {
         String folderName = "Trash";
         Folder webDavFolder = webDavStore.getFolder(folderName);
 
@@ -224,8 +208,6 @@ public class WebDavStoreTest {
 
     @Test
     public void getPersonalNamespaces_shouldRequestSpecialFolders() throws Exception {
-        StoreConfig storeConfig = createStoreConfig("webdav://user:password@example.org:80");
-        WebDavStore webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
@@ -238,8 +220,6 @@ public class WebDavStoreTest {
 
     @Test
     public void getPersonalNamespaces_shouldSetSpecialFolderNames() throws Exception {
-        StoreConfig storeConfig = createStoreConfig("webdav://user:password@example.org:80");
-        WebDavStore webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
@@ -250,8 +230,6 @@ public class WebDavStoreTest {
 
     @Test
     public void getPersonalNamespaces_shouldRequestFolderList() throws Exception {
-        StoreConfig storeConfig = createStoreConfig("webdav://user:password@example.org:80");
-        WebDavStore webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
@@ -264,8 +242,6 @@ public class WebDavStoreTest {
 
     @Test
     public void getPersonalNamespaces_shouldProvideListOfAllFoldersSentFromResponses() throws Exception {
-        StoreConfig storeConfig = createStoreConfig("webdav://user:password@example.org:80");
-        WebDavStore webDavStore = new WebDavStore(storeConfig, mockHttpClientFactory);
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
@@ -337,7 +313,7 @@ public class WebDavStoreTest {
     private Answer<HttpResponse> createOkResponseWithCookie() {
         return new Answer<HttpResponse>() {
             @Override
-            public HttpResponse answer(InvocationOnMock invocation) throws Throwable {
+            public HttpResponse answer(InvocationOnMock invocation) {
                 HttpContext context = (HttpContext) invocation.getArguments()[1];
                 if (context.getAttribute(ClientContext.COOKIE_STORE) != null) {
                     BasicCookieStore cookieStore =
@@ -351,20 +327,34 @@ public class WebDavStoreTest {
         };
     }
 
-    private StoreConfig createStoreConfig(String storeUri) {
+    private StoreConfig createStoreConfig() {
         StoreConfig storeConfig = mock(StoreConfig.class);
         when(storeConfig.getInboxFolder()).thenReturn("INBOX");
-        when(storeConfig.getStoreUri()).thenReturn(storeUri);
         return storeConfig;
     }
 
-    private WebDavStore createWebDavStore(String storeUri) throws MessagingException {
-        StoreConfig storeConfig = createStoreConfig(storeUri);
-        return new WebDavStore(storeConfig, mockHttpClientFactory);
+    private WebDavStoreSettings createWebDavStoreSettings(ConnectionSecurity connectionSecurity) {
+        return new WebDavStoreSettings(
+                "webdav.example.org",
+                443,
+                connectionSecurity,
+                AuthType.PLAIN,
+                "user",
+                "password",
+                null,
+                null,
+                null,
+                null,
+                null);
     }
 
-    private WebDavStore createDefaultWebDavStore() throws MessagingException {
-        return createWebDavStore("webdav://user:password@example.org:80");
+    private WebDavStore createWebDavStore() {
+        return new WebDavStore(serverSettings, storeConfig, mockHttpClientFactory);
+    }
+
+    private WebDavStore createWebDavStore(ConnectionSecurity connectionSecurity) {
+        WebDavStoreSettings serverSettings = createWebDavStoreSettings(connectionSecurity);
+        return new WebDavStore(serverSettings, storeConfig, mockHttpClientFactory);
     }
 
     private void configureHttpResponses(HttpResponse... responses) throws IOException {

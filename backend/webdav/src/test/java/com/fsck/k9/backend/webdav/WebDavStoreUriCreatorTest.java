@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.webdav;
+package com.fsck.k9.backend.webdav;
 
 
 import com.fsck.k9.mail.AuthType;

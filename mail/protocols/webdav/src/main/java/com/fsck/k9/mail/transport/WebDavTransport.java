@@ -1,22 +1,22 @@
-
 package com.fsck.k9.mail.transport;
+
+
+import java.util.Collections;
 
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.store.StoreConfig;
-import com.fsck.k9.mail.store.webdav.WebDavHttpClient;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
+import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import timber.log.Timber;
-
-import java.util.Collections;
 
 public class WebDavTransport extends Transport {
     private WebDavStore store;
 
-    public WebDavTransport(StoreConfig storeConfig) throws MessagingException {
-        store = new WebDavStore(storeConfig, new WebDavHttpClient.WebDavHttpClientFactory());
+    public WebDavTransport(WebDavStoreSettings serverSettings, StoreConfig storeConfig) {
+        store = new WebDavStore(serverSettings, storeConfig);
 
         if (K9MailLib.isDebug())
             Timber.d(">>> New WebDavTransport creation complete");
