@@ -31,6 +31,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.K9Activity;
@@ -43,8 +44,6 @@ import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.TransportUris;
-import com.fsck.k9.mail.store.RemoteStoreManager;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import com.fsck.k9.service.MailService;
@@ -59,6 +58,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
     private final MessagingController messagingController = DI.get(MessagingController.class);
+    private final BackendManager backendManager = DI.get(BackendManager.class);
 
     private Type mStoreType;
     private EditText mUsernameView;
@@ -178,7 +178,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
 
         try {
-            ServerSettings settings = RemoteStoreManager.decodeStoreUri(mAccount.getStoreUri());
+            ServerSettings settings = backendManager.decodeStoreUri(mAccount.getStoreUri());
 
             if (savedInstanceState == null) {
                 // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
@@ -537,7 +537,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     URI oldUri = new URI(mAccount.getTransportUri());
                     ServerSettings transportServer = new ServerSettings(Type.SMTP, oldUri.getHost(), oldUri.getPort(),
                             ConnectionSecurity.SSL_TLS_REQUIRED, authType, username, password, clientCertificateAlias);
-                    String transportUri = TransportUris.createTransportUri(transportServer);
+                    String transportUri = backendManager.createTransportUri(transportServer);
                     mAccount.setTransportUri(transportUri);
                 } catch (URISyntaxException use) {
                     /*
@@ -591,7 +591,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             ServerSettings settings = new ServerSettings(mStoreType, host, port,
                     connectionSecurity, authType, username, password, clientCertificateAlias, extra);
 
-            mAccount.setStoreUri(RemoteStoreManager.createStoreUri(settings));
+            mAccount.setStoreUri(backendManager.createStoreUri(settings));
 
             mAccount.setCompression(NetworkType.MOBILE, mCompressionMobile.isChecked());
             mAccount.setCompression(NetworkType.WIFI, mCompressionWifi.isChecked());

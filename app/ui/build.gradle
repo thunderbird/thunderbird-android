@@ -11,6 +11,10 @@ dependencies {
     implementation project(":app:core")
     implementation project(":mail:common")
 
+    //TODO: Remove AccountSetupIncoming's dependency on these
+    compileOnly project(":mail:protocols:imap")
+    compileOnly project(":mail:protocols:webdav")
+
     implementation project(':plugins:HoloColorPicker')
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 

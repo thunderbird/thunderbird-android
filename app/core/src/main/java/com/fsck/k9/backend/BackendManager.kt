@@ -2,6 +2,8 @@ package com.fsck.k9.backend
 
 import com.fsck.k9.Account
 import com.fsck.k9.backend.api.Backend
+import com.fsck.k9.mail.ServerSettings
+import java.util.Locale
 
 class BackendManager(private val backendFactories: Map<String, BackendFactory>) {
     private val backendCache = mutableMapOf<String, Backend>()
@@ -28,5 +30,47 @@ class BackendManager(private val backendFactories: Map<String, BackendFactory>) 
         }
 
         throw IllegalArgumentException("Unsupported account type")
+    }
+
+    fun decodeStoreUri(storeUri: String): ServerSettings {
+        backendFactories.forEach { (storeUriPrefix, backendFactory) ->
+            if (storeUri.startsWith(storeUriPrefix)) {
+                return backendFactory.decodeStoreUri(storeUri)
+            }
+        }
+
+        throw IllegalArgumentException("Unsupported storeUri type")
+    }
+
+    fun createStoreUri(serverSettings: ServerSettings): String {
+        backendFactories.forEach { (storeUriPrefix, backendFactory) ->
+            val type = serverSettings.type.name.toLowerCase(Locale.ROOT)
+            if (type == storeUriPrefix) {
+                return backendFactory.createStoreUri(serverSettings)
+            }
+        }
+
+        throw IllegalArgumentException("Unsupported ServerSettings type")
+    }
+
+    fun decodeTransportUri(transportUri: String): ServerSettings {
+        backendFactories.forEach { (_, backendFactory) ->
+            if (transportUri.startsWith(backendFactory.transportUriPrefix)) {
+                return backendFactory.decodeTransportUri(transportUri)
+            }
+        }
+
+        throw IllegalArgumentException("Unsupported transportUri type")
+    }
+
+    fun createTransportUri(serverSettings: ServerSettings): String {
+        backendFactories.forEach { (_, backendFactory) ->
+            val type = serverSettings.type.name.toLowerCase(Locale.ROOT)
+            if (type == backendFactory.transportUriPrefix) {
+                return backendFactory.createTransportUri(serverSettings)
+            }
+        }
+
+        throw IllegalArgumentException("Unsupported ServerSettings type")
     }
 }

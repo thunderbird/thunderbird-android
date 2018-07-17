@@ -26,8 +26,10 @@ import android.widget.EditText;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Core;
+import com.fsck.k9.DI;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.K9Activity;
@@ -37,8 +39,6 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.TransportUris;
-import com.fsck.k9.mail.store.RemoteStoreManager;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 import timber.log.Timber;
@@ -58,6 +58,9 @@ public class AccountSetupBasics extends K9Activity
             "com.fsck.k9.AccountSetupBasics.provider";
     private final static String STATE_KEY_CHECKED_INCOMING =
             "com.fsck.k9.AccountSetupBasics.checkedIncoming";
+
+
+    private final BackendManager backendManager = DI.get(BackendManager.class);
 
     private EditText mEmailView;
     private EditText mPasswordView;
@@ -320,7 +323,7 @@ public class AccountSetupBasics extends K9Activity
             mAccount.setStoreUri(incomingUri.toString());
             mAccount.setTransportUri(outgoingUri.toString());
 
-            ServerSettings incomingSettings = RemoteStoreManager.decodeStoreUri(incomingUri.toString());
+            ServerSettings incomingSettings = backendManager.decodeStoreUri(incomingUri.toString());
             mAccount.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(incomingSettings.type));
 
             // Check incoming here.  Then check outgoing in onActivityResult()
@@ -409,8 +412,8 @@ public class AccountSetupBasics extends K9Activity
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
         ServerSettings transportServer = new ServerSettings(ServerSettings.Type.SMTP, "mail." + domain, -1,
                 ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
-        String storeUri = RemoteStoreManager.createStoreUri(storeServer);
-        String transportUri = TransportUris.createTransportUri(transportServer);
+        String storeUri = backendManager.createStoreUri(storeServer);
+        String transportUri = backendManager.createTransportUri(transportServer);
         mAccount.setStoreUri(storeUri);
         mAccount.setTransportUri(transportUri);
 

@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 
+import static com.fsck.k9.preferences.MessagingControllerTestExtra.setUpBackendManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -25,6 +26,8 @@ public class SettingsImporterTest extends K9RobolectricTest {
     @Before
     public void before() {
         deletePreExistingAccounts();
+
+        setUpBackendManager();
     }
 
     private void deletePreExistingAccounts() {
