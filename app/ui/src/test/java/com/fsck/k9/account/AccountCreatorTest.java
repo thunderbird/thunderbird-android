@@ -42,20 +42,20 @@ public class AccountCreatorTest extends RobolectricTest {
     public void getDefaultPort_withNoConnectionSecurityAndImap_shouldReturnDefaultPort() {
         int result = AccountCreator.getDefaultPort(ConnectionSecurity.NONE, Type.IMAP);
 
-        assertEquals(Type.IMAP.defaultPort, result);
+        assertEquals(143, result);
     }
 
     @Test
     public void getDefaultPort_withStartTlsAndImap_shouldReturnDefaultPort() {
         int result = AccountCreator.getDefaultPort(ConnectionSecurity.STARTTLS_REQUIRED, Type.IMAP);
 
-        assertEquals(Type.IMAP.defaultPort, result);
+        assertEquals(143, result);
     }
 
     @Test
     public void getDefaultPort_withTlsAndImap_shouldReturnDefaultTlsPort() {
         int result = AccountCreator.getDefaultPort(ConnectionSecurity.SSL_TLS_REQUIRED, Type.IMAP);
 
-        assertEquals(Type.IMAP.defaultTlsPort, result);
+        assertEquals(993, result);
     }
 }

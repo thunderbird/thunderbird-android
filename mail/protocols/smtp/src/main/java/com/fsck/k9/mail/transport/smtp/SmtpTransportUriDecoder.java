@@ -13,6 +13,8 @@ import com.fsck.k9.mail.ServerSettings.Type;
 
 
 public class SmtpTransportUriDecoder {
+    private static final int DEFAULT_PORT = 587;
+    private static final int DEFAULT_TLS_PORT = 465;
 
     /**
      * Decodes a SmtpTransport URI.
@@ -57,13 +59,13 @@ public class SmtpTransportUriDecoder {
          */
         if (scheme.equals("smtp")) {
             connectionSecurity = ConnectionSecurity.NONE;
-            port = Type.SMTP.defaultPort;
+            port = DEFAULT_PORT;
         } else if (scheme.startsWith("smtp+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
-            port = Type.SMTP.defaultPort;
+            port = DEFAULT_PORT;
         } else if (scheme.startsWith("smtp+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = Type.SMTP.defaultTlsPort;
+            port = DEFAULT_TLS_PORT;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
         }

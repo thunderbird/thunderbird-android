@@ -55,17 +55,30 @@ public class AccountCreator {
     }
 
     public static int getDefaultPort(ConnectionSecurity securityType, Type storeType) {
-        switch (securityType) {
-            case NONE:
-            case STARTTLS_REQUIRED: {
-                return storeType.defaultPort;
-            }
-            case SSL_TLS_REQUIRED: {
-                return storeType.defaultTlsPort;
-            }
+        switch (storeType) {
+            case IMAP: return getImapDefaultPort(securityType);
+            case WebDAV: return getWebDavDefaultPort(securityType);
+            case POP3: return getPop3DefaultPort(securityType);
+            case SMTP: return getSmtpDefaultPort(securityType);
         }
 
-        throw new AssertionError("Unhandled ConnectionSecurity type encountered: " + securityType);
+        throw new AssertionError("Unhandled case: " + storeType);
+    }
+
+    public static int getImapDefaultPort(ConnectionSecurity connectionSecurity) {
+        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 993 : 143;
+    }
+
+    public static int getPop3DefaultPort(ConnectionSecurity connectionSecurity) {
+        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 995 : 110;
+    }
+
+    public static int getWebDavDefaultPort(ConnectionSecurity connectionSecurity) {
+        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 443 : 80;
+    }
+
+    public static int getSmtpDefaultPort(ConnectionSecurity connectionSecurity) {
+        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 465 : 587;
     }
 
     /*

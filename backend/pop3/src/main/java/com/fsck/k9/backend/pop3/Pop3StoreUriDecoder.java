@@ -7,12 +7,14 @@ import java.net.URISyntaxException;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.ServerSettings.Type;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 
 
 public class Pop3StoreUriDecoder {
+    private static final int DEFAULT_PORT = 110;
+    private static final int DEFAULT_TLS_PORT = 995;
+
     /**
      * Decodes a Pop3Store URI.
      *
@@ -59,13 +61,13 @@ public class Pop3StoreUriDecoder {
          */
         if (scheme.equals("pop3")) {
             connectionSecurity = ConnectionSecurity.NONE;
-            port = Type.POP3.defaultPort;
+            port = DEFAULT_PORT;
         } else if (scheme.startsWith("pop3+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
-            port = Type.POP3.defaultPort;
+            port = DEFAULT_PORT;
         } else if (scheme.startsWith("pop3+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = Type.POP3.defaultTlsPort;
+            port = DEFAULT_TLS_PORT;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
         }
