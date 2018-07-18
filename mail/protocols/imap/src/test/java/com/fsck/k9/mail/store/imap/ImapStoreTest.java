@@ -12,6 +12,8 @@ import java.util.Set;
 
 import android.net.ConnectivityManager;
 
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
@@ -42,12 +44,14 @@ public class ImapStoreTest {
 
     @Before
     public void setUp() throws Exception {
+        ImapStoreSettings serverSettings = createImapStoreSettings();
         storeConfig = createStoreConfig();
         TrustedSocketFactory trustedSocketFactory = mock(TrustedSocketFactory.class);
         ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
         OAuth2TokenProvider oauth2TokenProvider = mock(OAuth2TokenProvider.class);
 
-        imapStore = new TestImapStore(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
+        imapStore = new TestImapStore(serverSettings, storeConfig, trustedSocketFactory, connectivityManager,
+                oauth2TokenProvider);
     }
 
     @Test
@@ -357,10 +361,23 @@ public class ImapStoreTest {
         assertSame(imapConnectionTwo, result);
     }
 
+
+    private ImapStoreSettings createImapStoreSettings() {
+        return new ImapStoreSettings(
+                "imap.example.org",
+                143,
+                ConnectionSecurity.NONE,
+                AuthType.PLAIN,
+                "user",
+                "password",
+                null,
+                true,
+                null);
+    }
+
     private StoreConfig createStoreConfig() {
         StoreConfig storeConfig = mock(StoreConfig.class);
         when(storeConfig.getInboxFolder()).thenReturn("INBOX");
-        when(storeConfig.getStoreUri()).thenReturn("imap://user:password@imap.example.org");
 
         return storeConfig;
     }
@@ -379,9 +396,10 @@ public class ImapStoreTest {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();
         private String testCombinedPrefix;
 
-        public TestImapStore(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-                ConnectivityManager connectivityManager, OAuth2TokenProvider oauth2TokenProvider) throws MessagingException {
-            super(storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
+        public TestImapStore(ImapStoreSettings serverSettings, StoreConfig storeConfig,
+                TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
+                OAuth2TokenProvider oauth2TokenProvider) {
+            super(serverSettings, storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
         }
 
         @Override

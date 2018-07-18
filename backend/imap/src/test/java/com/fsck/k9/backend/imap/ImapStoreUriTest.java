@@ -1,9 +1,11 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.backend.imap;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fsck.k9.backend.imap.ImapStoreUriCreator;
+import com.fsck.k9.backend.imap.ImapStoreUriDecoder;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
@@ -18,7 +20,7 @@ public class ImapStoreUriTest {
     public void testDecodeStoreUriImapNoAuth() {
         String uri = "imap://user:pass@server/";
         
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -30,7 +32,7 @@ public class ImapStoreUriTest {
     public void testDecodeStoreUriImapNoPassword() {
         String uri = "imap://user:@server/";
         
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -42,7 +44,7 @@ public class ImapStoreUriTest {
     public void testDecodeStoreUriImapPlainNoPassword() {
         String uri = "imap://PLAIN:user:@server/";
         
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -54,7 +56,7 @@ public class ImapStoreUriTest {
     public void testDecodeStoreUriImapExternalAuth() {
         String uri = "imap://EXTERNAL:user:clientCertAlias@server/";
         
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(AuthType.EXTERNAL, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -67,7 +69,7 @@ public class ImapStoreUriTest {
     public void testDecodeStoreUriImapXOAuth2() {
         String uri = "imap://XOAUTH2:user:@server/";
         
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(AuthType.XOAUTH2, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -79,7 +81,7 @@ public class ImapStoreUriTest {
     @Test
     public void testDecodeStoreUriImapSSL() {
         String uri = "imap+tls+://PLAIN:user:pass@server/";
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(ConnectionSecurity.STARTTLS_REQUIRED, settings.connectionSecurity);
         assertEquals(AuthType.PLAIN, settings.authenticationType);
@@ -92,7 +94,7 @@ public class ImapStoreUriTest {
     public void testDecodeStoreUriImapTLS() {
         String uri = "imap+ssl+://PLAIN:user:pass@server/";
         
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(ConnectionSecurity.SSL_TLS_REQUIRED, settings.connectionSecurity);
         assertEquals(AuthType.PLAIN, settings.authenticationType);
@@ -105,7 +107,7 @@ public class ImapStoreUriTest {
     public void testDecodeStoreUriImapAllExtras() {
         String uri = "imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix";
         
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -120,7 +122,7 @@ public class ImapStoreUriTest {
     public void testDecodeStoreUriImapNoExtras() {
         String uri = "imap://PLAIN:user:pass@server:143/";
         
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -134,7 +136,7 @@ public class ImapStoreUriTest {
     public void testDecodeStoreUriImapPrefixOnly() {
         String uri = "imap://PLAIN:user:pass@server:143/customPathPrefix";
         
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -149,7 +151,7 @@ public class ImapStoreUriTest {
     public void testDecodeStoreUriImapEmptyPrefix() {
         String uri = "imap://PLAIN:user:pass@server:143/0%7C";
         
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -164,7 +166,7 @@ public class ImapStoreUriTest {
     public void testDecodeStoreUriImapAutodetectAndPrefix() {
         String uri = "imap://PLAIN:user:pass@server:143/1%7CcustomPathPrefix";
         
-        ServerSettings settings = ImapStore.decodeUri(uri);
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals(AuthType.PLAIN, settings.authenticationType);
         assertEquals("user", settings.username);
@@ -183,7 +185,7 @@ public class ImapStoreUriTest {
         ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
-        String uri = ImapStore.createUri(settings);
+        String uri = ImapStoreUriCreator.create(settings);
 
         assertEquals("imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix", uri);
     }
@@ -196,7 +198,7 @@ public class ImapStoreUriTest {
         ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
-        String uri = ImapStore.createUri(settings);
+        String uri = ImapStoreUriCreator.create(settings);
 
         assertEquals("imap://PLAIN:user:pass@server:143/0%7C", uri);
     }
@@ -206,7 +208,7 @@ public class ImapStoreUriTest {
         ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null);
 
-        String uri = ImapStore.createUri(settings);
+        String uri = ImapStoreUriCreator.create(settings);
 
         assertEquals("imap://PLAIN:user:pass@server:143/1%7C", uri);
     }
@@ -219,7 +221,7 @@ public class ImapStoreUriTest {
         ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
-        String uri = ImapStore.createUri(settings);
+        String uri = ImapStoreUriCreator.create(settings);
 
         assertEquals("imap://PLAIN:user:pass@server:143/1%7C", uri);
     }
@@ -229,11 +231,11 @@ public class ImapStoreUriTest {
         ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user@doma:n", "p@ssw:rd%", null, null);
 
-        String uri = ImapStore.createUri(settings);
+        String uri = ImapStoreUriCreator.create(settings);
 
         assertEquals("imap://PLAIN:user%2540doma%253An:p%2540ssw%253Ard%2525@server:143/1%7C", uri);
 
-        ServerSettings outSettings = ImapStore.decodeUri(uri);
+        ServerSettings outSettings = ImapStoreUriDecoder.decode(uri);
 
         assertEquals("user@doma:n", outSettings.username);
         assertEquals("p@ssw:rd%", outSettings.password);

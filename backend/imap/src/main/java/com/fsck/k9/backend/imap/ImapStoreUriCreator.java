@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.backend.imap;
 
 
 import java.net.URI;
@@ -7,11 +7,12 @@ import java.util.Map;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 
 
-class ImapStoreUriCreator {
+public class ImapStoreUriCreator {
     /**
      * Creates an ImapStore URI with the supplied settings.
      *
@@ -21,7 +22,6 @@ class ImapStoreUriCreator {
      * @return An ImapStore URI that holds the same information as the {@code server} parameter.
      *
      * @see com.fsck.k9.mail.store.StoreConfig#getStoreUri()
-     * @see ImapStore#decodeUri(String)
      */
     public static String create(ServerSettings server) {
         String userEnc = encodeUtf8(server.username);

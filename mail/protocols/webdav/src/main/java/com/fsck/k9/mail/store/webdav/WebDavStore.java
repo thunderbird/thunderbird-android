@@ -22,10 +22,10 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
+import com.fsck.k9.mail.store.webdav.WebDavHttpClient.WebDavHttpClientFactory;
 import javax.net.ssl.SSLException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -60,15 +60,6 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
  */
 @SuppressWarnings("deprecation")
 public class WebDavStore extends RemoteStore {
-
-    public static WebDavStoreSettings decodeUri(String uri) {
-        return WebDavStoreUriDecoder.decode(uri);
-    }
-
-    public static String createUri(ServerSettings server) {
-        return WebDavStoreUriCreator.create(server);
-    }
-
     private ConnectionSecurity mConnectionSecurity;
     private String username;
     private String alias;
@@ -91,34 +82,27 @@ public class WebDavStore extends RemoteStore {
     private Folder sendFolder = null;
     private Map<String, WebDavFolder> folderList = new HashMap<>();
 
-    public WebDavStore(StoreConfig storeConfig) throws MessagingException {
-        this(storeConfig, new WebDavHttpClient.WebDavHttpClientFactory());
+    public WebDavStore(WebDavStoreSettings serverSettings, StoreConfig storeConfig) {
+        this(serverSettings, storeConfig, new WebDavHttpClient.WebDavHttpClientFactory());
     }
 
-    public WebDavStore(StoreConfig storeConfig, WebDavHttpClient.WebDavHttpClientFactory clientFactory)
-            throws MessagingException {
+    public WebDavStore(WebDavStoreSettings serverSettings, StoreConfig storeConfig,
+            WebDavHttpClientFactory clientFactory) {
         super(storeConfig, null);
         httpClientFactory = clientFactory;
 
-        WebDavStoreSettings settings;
-        try {
-            settings = WebDavStore.decodeUri(storeConfig.getStoreUri());
-        } catch (IllegalArgumentException e) {
-            throw new MessagingException("Error while decoding store URI", e);
-        }
+        hostname = serverSettings.host;
+        port = serverSettings.port;
 
-        hostname = settings.host;
-        port = settings.port;
+        mConnectionSecurity = serverSettings.connectionSecurity;
 
-        mConnectionSecurity = settings.connectionSecurity;
+        username = serverSettings.username;
+        password = serverSettings.password;
+        alias = serverSettings.alias;
 
-        username = settings.username;
-        password = settings.password;
-        alias = settings.alias;
-
-        path = settings.path;
-        formBasedAuthPath = settings.authPath;
-        mailboxPath = settings.mailboxPath;
+        path = serverSettings.path;
+        formBasedAuthPath = serverSettings.authPath;
+        mailboxPath = serverSettings.mailboxPath;
 
 
         if (path == null || path.equals("")) {
@@ -148,10 +132,10 @@ public class WebDavStore extends RemoteStore {
 
     private String getRoot() {
         String root;
-        if (mConnectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-            root = "https";
-        } else {
+        if (mConnectionSecurity == ConnectionSecurity.NONE) {
             root = "http";
+        } else {
+            root = "https";
         }
         root += "://" + hostname + ":" + port;
         return root;

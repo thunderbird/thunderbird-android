@@ -1,7 +1,8 @@
-package com.fsck.k9.mail.store.webdav;
+package com.fsck.k9.backend.webdav;
 
 
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 
 import java.net.URI;
 import java.net.URISyntaxException;
