@@ -25,7 +25,7 @@ public class ImapStoreSettings extends ServerSettings {
             AuthType authenticationType, String username, String password, String clientCertificateAlias,
             boolean autodetectNamespace, String pathPrefix) {
 
-        super(Type.IMAP, host, port, connectionSecurity, authenticationType, username,
+        super("imap", host, port, connectionSecurity, authenticationType, username,
                 password, clientCertificateAlias);
 
         this.autoDetectNamespace = autodetectNamespace;

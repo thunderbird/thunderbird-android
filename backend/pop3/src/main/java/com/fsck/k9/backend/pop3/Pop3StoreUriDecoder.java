@@ -100,7 +100,7 @@ public class Pop3StoreUriDecoder {
             }
         }
 
-        return new ServerSettings(ServerSettings.Type.POP3, host, port, connectionSecurity, authType, username,
+        return new ServerSettings("pop3", host, port, connectionSecurity, authType, username,
                 password, clientCertificateAlias);
     }
 }

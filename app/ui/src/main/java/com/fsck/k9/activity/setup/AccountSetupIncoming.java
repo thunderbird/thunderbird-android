@@ -32,6 +32,7 @@ import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
+import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.K9Activity;
@@ -43,7 +44,6 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import com.fsck.k9.service.MailService;
@@ -60,7 +60,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final BackendManager backendManager = DI.get(BackendManager.class);
 
-    private Type mStoreType;
+    private String mStoreType;
     private EditText mUsernameView;
     private EditText mPasswordView;
     private ClientCertificateSpinner mClientCertificateSpinner;
@@ -202,7 +202,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             mStoreType = settings.type;
-            if (Type.POP3 == settings.type) {
+            if (settings.type.equals(Protocols.POP3)) {
                 serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
@@ -212,7 +212,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_section).setVisibility(View.GONE);
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
-            } else if (Type.IMAP == settings.type) {
+            } else if (settings.type.equals(Protocols.IMAP)) {
                 serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
 
                 ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
@@ -230,7 +230,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (!editSettings) {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 }
-            } else if (Type.WebDAV == settings.type) {
+            } else if (settings.type.equals(Protocols.WEBDAV)) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
                 mConnectionSecurityChoices = new ConnectionSecurity[] {
                         ConnectionSecurity.NONE,
@@ -535,8 +535,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     }
 
                     URI oldUri = new URI(mAccount.getTransportUri());
-                    ServerSettings transportServer = new ServerSettings(Type.SMTP, oldUri.getHost(), oldUri.getPort(),
-                            ConnectionSecurity.SSL_TLS_REQUIRED, authType, username, password, clientCertificateAlias);
+                    ServerSettings transportServer = new ServerSettings(Protocols.SMTP, oldUri.getHost(),
+                            oldUri.getPort(), ConnectionSecurity.SSL_TLS_REQUIRED, authType, username, password,
+                            clientCertificateAlias);
                     String transportUri = backendManager.createTransportUri(transportServer);
                     mAccount.setTransportUri(transportUri);
                 } catch (URISyntaxException use) {
@@ -571,13 +572,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             int port = Integer.parseInt(mPortView.getText().toString());
 
             Map<String, String> extra = null;
-            if (Type.IMAP == mStoreType) {
+            if (mStoreType.equals(Protocols.IMAP)) {
                 extra = new HashMap<String, String>();
                 extra.put(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY,
                         Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
                 extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
                         mImapPathPrefixView.getText().toString());
-            } else if (Type.WebDAV == mStoreType) {
+            } else if (mStoreType.equals(Protocols.WEBDAV)) {
                 extra = new HashMap<String, String>();
                 extra.put(WebDavStoreSettings.PATH_KEY,
                         mWebdavPathPrefixView.getText().toString());

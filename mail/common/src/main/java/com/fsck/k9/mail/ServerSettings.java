@@ -2,32 +2,17 @@ package com.fsck.k9.mail;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
- * This is an abstraction to get rid of the store- and transport-specific URIs.
- *
- * <p>
- * Right now it's only used for settings import/export. But the goal is to get rid of
- * store/transport URIs altogether.
- * </p>
- *
- * @see com.fsck.k9.mail.store.StoreConfig#getStoreUri()
- * @see com.fsck.k9.mail.store.StoreConfig#getTransportUri()
+ * Generic container to hold server settings.
  */
 public class ServerSettings {
-
-    public enum Type {
-        IMAP,
-        SMTP,
-        WebDAV,
-        POP3
-    }
-
     /**
-     * Name of the store or transport type (e.g. IMAP).
+     * Name of the protocol these server settings belong to. Must be all lower case.
      */
-    public final Type type;
+    public final String type;
 
     /**
      * The host name of the server.
@@ -107,10 +92,10 @@ public class ServerSettings {
      * @param clientCertificateAlias
      *         see {@link ServerSettings#clientCertificateAlias}
      */
-    public ServerSettings(Type type, String host, int port,
+    public ServerSettings(String type, String host, int port,
             ConnectionSecurity connectionSecurity, AuthType authenticationType, String username,
             String password, String clientCertificateAlias) {
-        this.type = type;
+        this.type = checkType(type);
         this.host = host;
         this.port = port;
         this.connectionSecurity = connectionSecurity;
@@ -143,10 +128,10 @@ public class ServerSettings {
      * @param extra
      *         see {@link ServerSettings#extra}
      */
-    public ServerSettings(Type type, String host, int port,
+    public ServerSettings(String type, String host, int port,
             ConnectionSecurity connectionSecurity, AuthType authenticationType, String username,
             String password, String clientCertificateAlias, Map<String, String> extra) {
-        this.type = type;
+        this.type = checkType(type);
         this.host = host;
         this.port = port;
         this.connectionSecurity = connectionSecurity;
@@ -166,8 +151,8 @@ public class ServerSettings {
      * @param type
      *         see {@link ServerSettings#type}
      */
-    public ServerSettings(Type type) {
-        this.type = type;
+    public ServerSettings(String type) {
+        this.type = checkType(type);
         host = null;
         port = -1;
         connectionSecurity = ConnectionSecurity.NONE;
@@ -203,13 +188,25 @@ public class ServerSettings {
                 username, password, newAlias);
     }
 
+    private String checkType(String type) {
+        if (type == null) {
+            throw new IllegalArgumentException("type == null");
+        }
+
+        if (!type.equals(type.toLowerCase(Locale.ROOT))) {
+            throw new IllegalArgumentException("type must be all lower case");
+        }
+
+        return type;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (! (obj instanceof ServerSettings)) {
             return false;
         }
         ServerSettings that = (ServerSettings) obj;
-        return type == that.type &&
+        return type.equals(that.type) &&
                 port == that.port &&
                 connectionSecurity == that.connectionSecurity &&
                 authenticationType == that.authenticationType &&

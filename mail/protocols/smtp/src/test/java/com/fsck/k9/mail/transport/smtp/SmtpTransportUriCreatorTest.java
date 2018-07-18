@@ -13,7 +13,7 @@ public class SmtpTransportUriCreatorTest {
     @Test
     public void encodeThenDecode() {
         ServerSettings serverSettings = new ServerSettings(
-                ServerSettings.Type.SMTP, "server", 123456,
+                "smtp", "server", 123456,
                 ConnectionSecurity.STARTTLS_REQUIRED, AuthType.CRAM_MD5,
                 "user", "password", null);
 
@@ -26,7 +26,7 @@ public class SmtpTransportUriCreatorTest {
     @Test
     public void encodeThenDecode_externalAuth_preservesCert() {
         ServerSettings serverSettings = new ServerSettings(
-                ServerSettings.Type.SMTP, "server", 123456,
+                "smtp", "server", 123456,
                 ConnectionSecurity.NONE, AuthType.EXTERNAL,
                 "username", null, "clientcert");
 
@@ -40,7 +40,7 @@ public class SmtpTransportUriCreatorTest {
     @Test
     public void createTransportUri_canEncodeSmtpSslUri() {
         ServerSettings serverSettings = new ServerSettings(
-                ServerSettings.Type.SMTP, "server", 123456,
+                "smtp", "server", 123456,
                 ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.EXTERNAL,
                 "user", "password", "clientCert");
 
@@ -52,7 +52,7 @@ public class SmtpTransportUriCreatorTest {
     @Test
     public void createTransportUri_canEncodeSmtpTlsUri() {
         ServerSettings serverSettings = new ServerSettings(
-                ServerSettings.Type.SMTP, "server", 123456,
+                "smtp", "server", 123456,
                 ConnectionSecurity.STARTTLS_REQUIRED, AuthType.PLAIN,
                 "user", "password", "clientCert");
 
@@ -64,7 +64,7 @@ public class SmtpTransportUriCreatorTest {
     @Test
     public void createTransportUri_canEncodeSmtpUri() {
         ServerSettings serverSettings = new ServerSettings(
-                ServerSettings.Type.SMTP, "server", 123456,
+                "smtp", "server", 123456,
                 ConnectionSecurity.NONE, AuthType.CRAM_MD5,
                 "user", "password", "clientCert");
 

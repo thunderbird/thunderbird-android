@@ -36,7 +36,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -85,7 +84,7 @@ public class SmtpTransport extends Transport {
 
     public SmtpTransport(ServerSettings serverSettings, StoreConfig storeConfig,
             TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oauthTokenProvider) {
-        if (serverSettings.type != Type.SMTP) {
+        if (!serverSettings.type.equals("smtp")) {
             throw new IllegalArgumentException("Expected SMTP StoreConfig!");
         }
 

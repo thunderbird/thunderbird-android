@@ -67,6 +67,7 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
+import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
@@ -758,7 +759,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
              * Also don't ask when the AuthType is EXTERNAL.
              */
             boolean configureOutgoingServer = AuthType.EXTERNAL != outgoing.authenticationType
-                    && !(ServerSettings.Type.WebDAV == outgoing.type)
+                    && !outgoing.type.equals(Protocols.WEBDAV)
                     && outgoing.username != null
                     && !outgoing.username.isEmpty()
                     && (outgoing.password == null || outgoing.password

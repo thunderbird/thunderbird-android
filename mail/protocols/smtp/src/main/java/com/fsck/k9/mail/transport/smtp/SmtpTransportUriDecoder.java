@@ -9,7 +9,6 @@ import java.net.URLDecoder;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.ServerSettings.Type;
 
 
 public class SmtpTransportUriDecoder {
@@ -97,7 +96,7 @@ public class SmtpTransportUriDecoder {
             }
         }
 
-        return new ServerSettings(Type.SMTP, host, port, connectionSecurity,
+        return new ServerSettings("smtp", host, port, connectionSecurity,
                 authType, username, password, clientCertificateAlias);
     }
 
