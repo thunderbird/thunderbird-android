@@ -3,8 +3,6 @@ package com.fsck.k9.activity.misc;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -18,7 +16,6 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
-import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +35,7 @@ import com.bumptech.glide.load.resource.transcode.BitmapToGlideDrawableTranscode
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.fsck.k9.contacts.ContactLetterExtractor;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
@@ -49,15 +47,7 @@ public class ContactPictureLoader {
      */
     private static final int PICTURE_SIZE = 40;
 
-    /**
-     * Pattern to extract the letter to be displayed as fallback image.
-     */
-    private static final Pattern EXTRACT_LETTER_PATTERN = Pattern.compile("\\p{L}\\p{M}*");
-
-    /**
-     * Letter to use when {@link #EXTRACT_LETTER_PATTERN} couldn't find a match.
-     */
-    private static final String FALLBACK_CONTACT_LETTER = "?";
+    private static final ContactLetterExtractor CONTACT_LETTER_EXTRACTOR = new ContactLetterExtractor();
 
 
     private final Context context;
@@ -84,16 +74,7 @@ public class ContactPictureLoader {
 
     @VisibleForTesting
     protected static String calcUnknownContactLetter(Address address) {
-        String letter = null;
-        String personal = address.getPersonal();
-        String str = (personal != null) ? personal : address.getAddress();
-        Matcher m = EXTRACT_LETTER_PATTERN.matcher(str);
-        if (m.find()) {
-            letter = m.group(0).toUpperCase(Locale.US);
-        }
-
-        return (TextUtils.isEmpty(letter)) ?
-                FALLBACK_CONTACT_LETTER : letter;
+        return CONTACT_LETTER_EXTRACTOR.extractContactLetter(address);
     }
 
     /**
