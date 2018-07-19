@@ -8,13 +8,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
 import android.widget.ImageView;
 
@@ -35,6 +30,7 @@ import com.bumptech.glide.load.resource.transcode.BitmapToGlideDrawableTranscode
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.fsck.k9.contacts.ContactLetterBitmapCreator;
 import com.fsck.k9.contacts.ContactLetterExtractor;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
@@ -47,35 +43,12 @@ public class ContactPictureLoader {
      */
     private static final int PICTURE_SIZE = 40;
 
-    private static final ContactLetterExtractor CONTACT_LETTER_EXTRACTOR = new ContactLetterExtractor();
-
 
     private final Context context;
+    private final ContactLetterBitmapCreator contactLetterBitmapCreator;
     private Contacts mContactsHelper;
     private int mPictureSizeInPx;
 
-    private int mDefaultBackgroundColor;
-
-    /**
-     * @see <a href="http://developer.android.com/design/style/color.html">Color palette used</a>
-     */
-    private final static int CONTACT_DUMMY_COLORS_ARGB[] = {
-        0xff33B5E5,
-        0xffAA66CC,
-        0xff99CC00,
-        0xffFFBB33,
-        0xffFF4444,
-        0xff0099CC,
-        0xff9933CC,
-        0xff669900,
-        0xffFF8800,
-        0xffCC0000
-    };
-
-    @VisibleForTesting
-    protected static String calcUnknownContactLetter(Address address) {
-        return CONTACT_LETTER_EXTRACTOR.extractContactLetter(address);
-    }
 
     /**
      * Constructor.
@@ -94,8 +67,8 @@ public class ContactPictureLoader {
         float scale = resources.getDisplayMetrics().density;
         mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
 
-        mDefaultBackgroundColor = defaultBackgroundColor;
-
+        ContactLetterExtractor contactLetterExtractor = new ContactLetterExtractor();
+        contactLetterBitmapCreator = new ContactLetterBitmapCreator(contactLetterExtractor, defaultBackgroundColor);
     }
 
     public void loadContactPicture(final Address address, final ImageView imageView) {
@@ -188,39 +161,6 @@ public class ContactPictureLoader {
         return loadIgnoringErors(bitmapTarget);
     }
 
-    private int calcUnknownContactColor(Address address) {
-        if (mDefaultBackgroundColor != 0) {
-            return mDefaultBackgroundColor;
-        }
-
-        int val = address.hashCode();
-        int colorIndex = (val & Integer.MAX_VALUE) % CONTACT_DUMMY_COLORS_ARGB.length;
-        return CONTACT_DUMMY_COLORS_ARGB[colorIndex];
-    }
-
-    private Bitmap drawTextAndBgColorOnBitmap(Bitmap bitmap, FallbackGlideParams params) {
-        Canvas canvas = new Canvas(bitmap);
-
-        int rgb = calcUnknownContactColor(params.address);
-        bitmap.eraseColor(rgb);
-
-        String letter = calcUnknownContactLetter(params.address);
-
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setStyle(Style.FILL);
-        paint.setARGB(255, 255, 255, 255);
-        paint.setTextSize(mPictureSizeInPx * 3 / 4); // just scale this down a bit
-        Rect rect = new Rect();
-        paint.getTextBounds(letter, 0, 1, rect);
-        float width = paint.measureText(letter);
-        canvas.drawText(letter,
-                (mPictureSizeInPx / 2f) - (width / 2f),
-                (mPictureSizeInPx / 2f) + (rect.height() / 2f), paint);
-
-        return bitmap;
-    }
-
     private class FallbackGlideBitmapDecoder implements ResourceDecoder<FallbackGlideParams, Bitmap> {
         private final Context context;
 
@@ -235,7 +175,9 @@ public class ContactPictureLoader {
             if (bitmap == null) {
                 bitmap = Bitmap.createBitmap(mPictureSizeInPx, mPictureSizeInPx, Bitmap.Config.ARGB_8888);
             }
-            drawTextAndBgColorOnBitmap(bitmap, source);
+
+            Address address = source.address;
+            contactLetterBitmapCreator.drawBitmap(bitmap, mPictureSizeInPx, address);
             return BitmapResource.obtain(bitmap, pool);
         }
 
