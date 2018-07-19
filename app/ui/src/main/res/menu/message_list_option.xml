@@ -16,7 +16,8 @@
         android:id="@+id/previous_message"
         android:title="@string/previous_action"
         android:icon="?attr/iconActionPreviousMessage"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:orderInCategory="1"/>
 
     <!-- MessageView -->
     <item
@@ -24,14 +25,15 @@
         android:title="@string/next_action"
         android:icon="?attr/iconActionNextMessage"
         app:showAsAction="always"
-    />
+        android:orderInCategory="2"/>
 
     <!-- MessageList -->
     <item
         android:id="@+id/search"
         android:icon="?attr/iconActionSearch"
         app:showAsAction="always"
-        android:title="@string/search_action"/>
+        android:title="@string/search_action"
+        android:orderInCategory="3"/>
 
     <!-- MessageList -->
     <item
@@ -47,7 +49,8 @@
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionRefresh"
         app:showAsAction="always"
-        android:title="@string/check_mail_action"/>
+        android:title="@string/check_mail_action"
+        android:orderInCategory="4"/>
 
     <!-- MessageView -->
     <item
@@ -55,7 +58,8 @@
         android:alphabeticShortcut="q"
         android:icon="?attr/iconActionDelete"
         app:showAsAction="always"
-        android:title="@string/delete_action"/>
+        android:title="@string/delete_action"
+          android:orderInCategory="6"/>
     <!-- MessageView -->
     <item
         android:id="@+id/archive"
@@ -86,7 +90,8 @@
         android:id="@+id/single_message_options"
         android:icon="?attr/iconActionSingleMessageOptions"
         app:showAsAction="ifRoom"
-        android:title="@string/single_message_options_action">
+        android:title="@string/single_message_options_action"
+          android:orderInCategory="7">
         <menu>
             <item
                 android:id="@+id/reply"
@@ -153,7 +158,8 @@
         android:id="@+id/set_sort"
         android:icon="?attr/iconActionSort"
         app:showAsAction="ifRoom"
-        android:title="@string/sort_by">
+        android:title="@string/sort_by"
+        android:orderInCategory="6">
         <menu>
             <item
                 android:id="@+id/set_sort_date"
@@ -185,7 +191,8 @@
         android:alphabeticShortcut="c"
         android:icon="?attr/iconActionCompose"
         app:showAsAction="ifRoom"
-        android:title="@string/compose_action"/>
+        android:title="@string/compose_action"
+        android:orderInCategory="5"/>
 
     <!-- MessageList -->
     <item
