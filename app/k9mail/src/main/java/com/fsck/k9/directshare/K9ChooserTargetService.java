@@ -21,7 +21,7 @@ import android.support.annotation.Nullable;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.compose.RecipientLoader;
 import com.fsck.k9.activity.misc.ContactPicture;
-import com.fsck.k9.activity.misc.ContactPictureLoader;
+import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 

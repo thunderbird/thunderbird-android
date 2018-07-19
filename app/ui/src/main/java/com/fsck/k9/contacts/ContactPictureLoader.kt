@@ -1,4 +1,4 @@
-package com.fsck.k9.activity.misc;
+package com.fsck.k9.contacts;
 
 
 import java.io.IOException;
@@ -30,7 +30,6 @@ import com.bumptech.glide.load.resource.transcode.BitmapToGlideDrawableTranscode
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.fsck.k9.contacts.ContactLetterBitmapCreator;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;

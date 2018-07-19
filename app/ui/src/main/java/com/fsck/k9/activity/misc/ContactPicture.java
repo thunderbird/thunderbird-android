@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.fsck.k9.DI;
 import com.fsck.k9.contacts.ContactLetterBitmapCreator;
+import com.fsck.k9.contacts.ContactPictureLoader;
+
 
 public class ContactPicture {
 
