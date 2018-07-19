@@ -31,7 +31,6 @@ import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.fsck.k9.contacts.ContactLetterBitmapCreator;
-import com.fsck.k9.contacts.ContactLetterExtractor;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
@@ -50,25 +49,14 @@ public class ContactPictureLoader {
     private int mPictureSizeInPx;
 
 
-    /**
-     * Constructor.
-     *
-     * @param context
-     *         A {@link Context} instance.
-     * @param defaultBackgroundColor
-     *         The ARGB value to be used as background color for the fallback picture. {@code 0} to
-     *         use a dynamically calculated background color.
-     */
-    public ContactPictureLoader(Context context, int defaultBackgroundColor) {
+    public ContactPictureLoader(Context context, ContactLetterBitmapCreator contactLetterBitmapCreator) {
         this.context = context.getApplicationContext();
+        this.contactLetterBitmapCreator = contactLetterBitmapCreator;
         mContactsHelper = Contacts.getInstance(this.context);
 
         Resources resources = context.getResources();
         float scale = resources.getDisplayMetrics().density;
         mPictureSizeInPx = (int) (PICTURE_SIZE * scale);
-
-        ContactLetterExtractor contactLetterExtractor = new ContactLetterExtractor();
-        contactLetterBitmapCreator = new ContactLetterBitmapCreator(contactLetterExtractor, defaultBackgroundColor);
     }
 
     public void loadContactPicture(final Address address, final ImageView imageView) {

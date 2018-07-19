@@ -1,24 +1,15 @@
 package com.fsck.k9.activity.misc;
 
-import android.content.Context;
-import android.util.TypedValue;
 
-import com.fsck.k9.K9;
-import com.fsck.k9.ui.R;
+import android.content.Context;
+
+import com.fsck.k9.DI;
+import com.fsck.k9.contacts.ContactLetterBitmapCreator;
 
 public class ContactPicture {
 
     public static ContactPictureLoader getContactPictureLoader(Context context) {
-        final int defaultBgColor;
-        if (!K9.isColorizeMissingContactPictures()) {
-            TypedValue outValue = new TypedValue();
-            context.getTheme().resolveAttribute(R.attr.contactPictureFallbackDefaultBackgroundColor,
-                    outValue, true);
-            defaultBgColor = outValue.data;
-        } else {
-            defaultBgColor = 0;
-        }
-
-        return new ContactPictureLoader(context, defaultBgColor);
+        ContactLetterBitmapCreator contactLetterBitmapCreator = DI.get(ContactLetterBitmapCreator.class);
+        return new ContactPictureLoader(context, contactLetterBitmapCreator);
     }
 }

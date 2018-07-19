@@ -8,13 +8,10 @@ import com.fsck.k9.mail.Address
 
 /**
  * Draw a `Bitmap` containing the "contact letter" obtained by [ContactLetterExtractor].
- *
- * @param defaultBackgroundColor The ARGB value to be used as background color for the fallback picture. `0` to use a
- * dynamically calculated background color.
  */
 class ContactLetterBitmapCreator(
         private val letterExtractor: ContactLetterExtractor,
-        private val defaultBackgroundColor: Int
+        private val config: ContactLetterBitmapConfig
 ) {
     fun drawBitmap(bitmap: Bitmap, pictureSizeInPx: Int, address: Address): Bitmap {
         val canvas = Canvas(bitmap)
@@ -43,8 +40,8 @@ class ContactLetterBitmapCreator(
     }
 
     private fun calcUnknownContactColor(address: Address): Int {
-        if (defaultBackgroundColor != 0) {
-            return defaultBackgroundColor
+        if (config.hasDefaultBackgroundColor) {
+            return config.defaultBackgroundColor
         }
 
         val hash = address.hashCode()
