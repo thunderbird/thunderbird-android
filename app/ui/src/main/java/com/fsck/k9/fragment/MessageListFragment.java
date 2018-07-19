@@ -430,7 +430,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         stars = K9.messageListStars();
 
         if (K9.showContactPicture()) {
-            contactsPictureLoader = ContactPicture.getContactPictureLoader(getActivity());
+            contactsPictureLoader = ContactPicture.getContactPictureLoader();
         }
 
         restoreInstanceState(savedInstanceState);

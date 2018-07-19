@@ -39,7 +39,7 @@ public class K9ChooserTargetService extends ChooserTargetService {
 
         Context applicationContext = getApplicationContext();
         recipientLoader = RecipientLoader.getMostContactedRecipientLoader(applicationContext, MAX_TARGETS);
-        contactPictureLoader = ContactPicture.getContactPictureLoader(applicationContext);
+        contactPictureLoader = ContactPicture.getContactPictureLoader();
     }
 
     @Override

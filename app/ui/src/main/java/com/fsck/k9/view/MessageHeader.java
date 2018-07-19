@@ -291,7 +291,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         if (K9.showContactPicture()) {
             mContactBadge.setVisibility(View.VISIBLE);
-            mContactsPictureLoader = ContactPicture.getContactPictureLoader(mContext);
+            mContactsPictureLoader = ContactPicture.getContactPictureLoader();
         }  else {
             mContactBadge.setVisibility(View.GONE);
         }
