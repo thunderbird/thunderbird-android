@@ -7,13 +7,15 @@ import java.net.URISyntaxException;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 
 
 public class ImapStoreUriDecoder {
+    private static final int DEFAULT_PORT = 143;
+    private static final int DEFAULT_TLS_PORT = 993;
+
     /**
      * Decodes an ImapStore URI.
      *
@@ -62,13 +64,13 @@ public class ImapStoreUriDecoder {
          */
         if (scheme.equals("imap")) {
             connectionSecurity = ConnectionSecurity.NONE;
-            port = Type.IMAP.defaultPort;
+            port = DEFAULT_PORT;
         } else if (scheme.startsWith("imap+tls")) {
             connectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED;
-            port = Type.IMAP.defaultPort;
+            port = DEFAULT_PORT;
         } else if (scheme.startsWith("imap+ssl")) {
             connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED;
-            port = Type.IMAP.defaultTlsPort;
+            port = DEFAULT_TLS_PORT;
         } else {
             throw new IllegalArgumentException("Unsupported protocol (" + scheme + ")");
         }

@@ -237,7 +237,7 @@ public class SettingsExporter {
         BackendManager backendManager = DI.get(BackendManager.class);
         ServerSettings incoming = backendManager.decodeStoreUri(account.getStoreUri());
         serializer.startTag(null, INCOMING_SERVER_ELEMENT);
-        serializer.attribute(null, TYPE_ATTRIBUTE, incoming.type.name());
+        serializer.attribute(null, TYPE_ATTRIBUTE, ServerTypeConverter.fromServerSettingsType(incoming.type));
 
         writeElement(serializer, HOST_ELEMENT, incoming.host);
         if (incoming.port != -1) {
@@ -269,7 +269,7 @@ public class SettingsExporter {
         // Write outgoing server settings
         ServerSettings outgoing = backendManager.decodeTransportUri(account.getTransportUri());
         serializer.startTag(null, OUTGOING_SERVER_ELEMENT);
-        serializer.attribute(null, TYPE_ATTRIBUTE, outgoing.type.name());
+        serializer.attribute(null, TYPE_ATTRIBUTE, ServerTypeConverter.fromServerSettingsType(outgoing.type));
 
         writeElement(serializer, HOST_ELEMENT, outgoing.host);
         if (outgoing.port != -1) {

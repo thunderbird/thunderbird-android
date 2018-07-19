@@ -4,8 +4,6 @@ package com.fsck.k9.backend.imap;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fsck.k9.backend.imap.ImapStoreUriCreator;
-import com.fsck.k9.backend.imap.ImapStoreUriDecoder;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
@@ -182,7 +180,7 @@ public class ImapStoreUriTest {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put("autoDetectNamespace", "false");
         extra.put("pathPrefix", "customPathPrefix");
-        ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
+        ServerSettings settings = new ServerSettings("imap", "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
         String uri = ImapStoreUriCreator.create(settings);
@@ -195,7 +193,7 @@ public class ImapStoreUriTest {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put("autoDetectNamespace", "false");
         extra.put("pathPrefix", "");
-        ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
+        ServerSettings settings = new ServerSettings("imap", "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
         String uri = ImapStoreUriCreator.create(settings);
@@ -205,7 +203,7 @@ public class ImapStoreUriTest {
 
     @Test
     public void testCreateStoreUriImapNoExtra() {
-        ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
+        ServerSettings settings = new ServerSettings("imap", "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null);
 
         String uri = ImapStoreUriCreator.create(settings);
@@ -218,7 +216,7 @@ public class ImapStoreUriTest {
         Map<String, String> extra = new HashMap<String, String>();
         extra.put("autoDetectNamespace", "true");
 
-        ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
+        ServerSettings settings = new ServerSettings("imap", "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user", "pass", null, extra);
 
         String uri = ImapStoreUriCreator.create(settings);
@@ -228,7 +226,7 @@ public class ImapStoreUriTest {
 
     @Test
     public void testCreateDecodeStoreUriWithSpecialCharactersInUsernameAndPassword() {
-        ServerSettings settings = new ServerSettings(ServerSettings.Type.IMAP, "server", 143,
+        ServerSettings settings = new ServerSettings("imap", "server", 143,
                 ConnectionSecurity.NONE, AuthType.PLAIN, "user@doma:n", "p@ssw:rd%", null, null);
 
         String uri = ImapStoreUriCreator.create(settings);

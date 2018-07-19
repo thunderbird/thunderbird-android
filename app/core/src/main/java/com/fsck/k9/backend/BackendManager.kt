@@ -3,7 +3,6 @@ package com.fsck.k9.backend
 import com.fsck.k9.Account
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.mail.ServerSettings
-import java.util.Locale
 
 class BackendManager(private val backendFactories: Map<String, BackendFactory>) {
     private val backendCache = mutableMapOf<String, Backend>()
@@ -44,8 +43,7 @@ class BackendManager(private val backendFactories: Map<String, BackendFactory>) 
 
     fun createStoreUri(serverSettings: ServerSettings): String {
         backendFactories.forEach { (storeUriPrefix, backendFactory) ->
-            val type = serverSettings.type.name.toLowerCase(Locale.ROOT)
-            if (type == storeUriPrefix) {
+            if (serverSettings.type == storeUriPrefix) {
                 return backendFactory.createStoreUri(serverSettings)
             }
         }
@@ -65,8 +63,7 @@ class BackendManager(private val backendFactories: Map<String, BackendFactory>) 
 
     fun createTransportUri(serverSettings: ServerSettings): String {
         backendFactories.forEach { (_, backendFactory) ->
-            val type = serverSettings.type.name.toLowerCase(Locale.ROOT)
-            if (type == backendFactory.transportUriPrefix) {
+            if (serverSettings.type == backendFactory.transportUriPrefix) {
                 return backendFactory.createTransportUri(serverSettings)
             }
         }

@@ -26,7 +26,7 @@ public class WebDavStoreSettings extends ServerSettings {
     public WebDavStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
             AuthType authenticationType, String username, String password, String clientCertificateAlias, String alias,
             String path, String authPath, String mailboxPath) {
-        super(Type.WebDAV, host, port, connectionSecurity, authenticationType, username,
+        super("webdav", host, port, connectionSecurity, authenticationType, username,
                 password, clientCertificateAlias);
         this.alias = alias;
         this.path = path;
