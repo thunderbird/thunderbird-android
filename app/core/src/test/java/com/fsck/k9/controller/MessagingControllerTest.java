@@ -251,7 +251,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void refreshRemoteSynchronous_shouldCreateFoldersFromRemote() throws MessagingException {
         FolderInfo remoteFolderInfo = new FolderInfo("NewFolder", "Folder Name");
         List<FolderInfo> folderInfoList = Collections.singletonList(remoteFolderInfo);
-        when(backend.getFolders(false)).thenAnswer(createAnswer(folderInfoList));
+        when(backend.getFolders()).thenAnswer(createAnswer(folderInfoList));
         LocalFolder newLocalFolder = mock(LocalFolder.class);
         when(localStore.getFolder("NewFolder")).thenReturn(newLocalFolder);
 
@@ -266,7 +266,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(oldLocalFolder.getServerId()).thenReturn("OldLocalFolder");
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(oldLocalFolder));
         List<FolderInfo> folderInfoList = Collections.emptyList();
-        when(backend.getFolders(false)).thenAnswer(createAnswer(folderInfoList));
+        when(backend.getFolders()).thenAnswer(createAnswer(folderInfoList));
 
         controller.refreshRemoteSynchronous(account, listener);
 
@@ -291,7 +291,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(localStore.getPersonalNamespaces(false))
                 .thenReturn(Collections.singletonList(missingSpecialFolder));
         List<FolderInfo> folderInfoList = Collections.emptyList();
-        when(backend.getFolders(false)).thenAnswer(createAnswer(folderInfoList));
+        when(backend.getFolders()).thenAnswer(createAnswer(folderInfoList));
 
         controller.refreshRemoteSynchronous(account, listener);
 
@@ -631,7 +631,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private void configureBackendWithFolder() throws MessagingException {
         FolderInfo remoteFolderInfo = new FolderInfo(FOLDER_NAME, FOLDER_NAME);
         List<FolderInfo> folderInfoList = Collections.singletonList(remoteFolderInfo);
-        when(backend.getFolders(false)).thenAnswer(createAnswer(folderInfoList));
+        when(backend.getFolders()).thenAnswer(createAnswer(folderInfoList));
     }
 
     private void setAccountsInPreferences(Map<String, Account> newAccounts)

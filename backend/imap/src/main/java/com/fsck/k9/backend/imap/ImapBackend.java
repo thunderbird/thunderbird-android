@@ -100,8 +100,8 @@ public class ImapBackend implements Backend {
 
     @NotNull
     @Override
-    public List<FolderInfo> getFolders(boolean forceListAll) {
-        return commandGetFolders.getFolders(forceListAll);
+    public List<FolderInfo> getFolders() {
+        return commandGetFolders.getFolders();
     }
 
     @Override

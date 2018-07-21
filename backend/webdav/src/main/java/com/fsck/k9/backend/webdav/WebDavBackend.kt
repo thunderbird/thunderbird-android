@@ -40,8 +40,8 @@ class WebDavBackend(
     override val supportsSearchByDate = false
     override val isPushCapable = false
 
-    override fun getFolders(forceListAll: Boolean): List<FolderInfo> {
-        return commandGetFolders.getFolders(forceListAll)
+    override fun getFolders(): List<FolderInfo> {
+        return commandGetFolders.getFolders()
     }
 
     override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?) {

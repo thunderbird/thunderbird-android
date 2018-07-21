@@ -36,7 +36,7 @@ class Pop3Backend(
     override val supportsSearchByDate = false
     override val isPushCapable = false
 
-    override fun getFolders(forceListAll: Boolean): List<FolderInfo> {
+    override fun getFolders(): List<FolderInfo> {
         return commandGetFolders.getFolders()
     }
 

@@ -6,8 +6,8 @@ import com.fsck.k9.mail.store.webdav.WebDavStore
 
 
 internal class CommandGetFolders(private val webDavStore: WebDavStore) {
-    fun getFolders(forceListAll: Boolean): List<FolderInfo> {
-        return webDavStore.getPersonalNamespaces(forceListAll).map {
+    fun getFolders(): List<FolderInfo> {
+        return webDavStore.personalNamespaces.map {
             FolderInfo(it.serverId, it.name)
         }
     }

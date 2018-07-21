@@ -6,8 +6,8 @@ import com.fsck.k9.mail.store.imap.ImapStore
 
 
 internal class CommandGetFolders(private val imapStore: ImapStore) {
-    fun getFolders(forceListAll: Boolean): List<FolderInfo> {
-        return imapStore.getPersonalNamespaces(forceListAll).map {
+    fun getFolders(): List<FolderInfo> {
+        return imapStore.personalNamespaces.map {
             FolderInfo(it.serverId, it.name)
         }
     }

@@ -121,13 +121,13 @@ public class ImapStore extends RemoteStore {
     }
 
     @Override
-    public List<ImapFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    public List<ImapFolder> getPersonalNamespaces() throws MessagingException {
         ImapConnection connection = getConnection();
 
         try {
             Set<String> folderNames = listFolders(connection, false);
 
-            if (forceListAll || !mStoreConfig.subscribedFoldersOnly()) {
+            if (!mStoreConfig.subscribedFoldersOnly()) {
                 return getFolders(folderNames);
             }
 

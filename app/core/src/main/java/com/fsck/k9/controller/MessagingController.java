@@ -423,7 +423,7 @@ public class MessagingController {
         List<LocalFolder> localFolders = null;
         try {
             Backend backend = getBackend(account);
-            List<FolderInfo> folders = backend.getFolders(false);
+            List<FolderInfo> folders = backend.getFolders();
 
             LocalStore localStore = account.getLocalStore();
             Map<String, String> remoteFolderNameMap = new HashMap<>();
