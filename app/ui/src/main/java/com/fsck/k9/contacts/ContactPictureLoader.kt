@@ -26,7 +26,6 @@ import com.bumptech.glide.request.target.Target
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mail.Address
 import com.fsck.k9.view.RecipientSelectView.Recipient
-import java.util.Locale
 
 
 class ContactPictureLoader(
@@ -35,6 +34,9 @@ class ContactPictureLoader(
 ) {
     private val contactsHelper: Contacts = Contacts.getInstance(context)
     private val pictureSizeInPx: Int = PICTURE_SIZE.toDip(context)
+    private val backgroundCacheId: String = with(contactLetterBitmapCreator.config) {
+        if (hasDefaultBackgroundColor) defaultBackgroundColor.toString() else "*"
+    }
 
 
     fun loadContactPicture(address: Address, imageView: ImageView) {
@@ -151,8 +153,7 @@ class ContactPictureLoader(
     }
 
     private inner class FallbackGlideParams(val address: Address) {
-        val id: String
-            get() = String.format(Locale.ROOT, "%s-%s", address.address, address.personal)
+        val id: String = "${address.address}-${address.personal}-$backgroundCacheId"
     }
 
     private inner class FallbackGlideModelLoader : ModelLoader<FallbackGlideParams, FallbackGlideParams> {
