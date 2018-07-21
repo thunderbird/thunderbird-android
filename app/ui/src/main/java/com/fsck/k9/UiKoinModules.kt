@@ -1,6 +1,7 @@
 package com.fsck.k9
 
 import com.fsck.k9.activity.activityModule
+import com.fsck.k9.contacts.contactsModule
 import com.fsck.k9.fragment.fragmentModule
 import com.fsck.k9.ui.endtoend.endToEndUiModule
 import com.fsck.k9.ui.settings.settingsUiModule
@@ -11,5 +12,6 @@ val uiModules = listOf(
         uiModule,
         settingsUiModule,
         endToEndUiModule,
-        fragmentModule
+        fragmentModule,
+        contactsModule
 )
