@@ -98,6 +98,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     // know whether or not an unread message added to the local folder is actually "new" or not.
     private Integer lastUid = null;
     private MoreMessages moreMessages = MoreMessages.UNKNOWN;
+    private boolean localOnly = false;
 
 
     public LocalFolder(LocalStore localStore, String serverId) {
@@ -213,6 +214,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         String moreMessagesValue = cursor.getString(LocalStore.MORE_MESSAGES_INDEX);
         moreMessages = MoreMessages.fromDatabaseName(moreMessagesValue);
         name = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
+        localOnly = cursor.getInt(LocalStore.LOCAL_ONLY_INDEX) == 1;
     }
 
     @Override
@@ -272,19 +274,19 @@ public class LocalFolder extends Folder<LocalMessage> {
         });
     }
 
+    /**
+     * Creates a local-only folder.
+     */
     @Override
     public boolean create(FolderType type) throws MessagingException {
-        return create(type, getAccount().getDisplayCount());
-    }
-
-    @Override
-    public boolean create(FolderType type, final int visibleLimit) throws MessagingException {
         if (exists()) {
             throw new MessagingException("Folder " + serverId + " already exists.");
         }
-        List<LocalFolder> foldersToCreate = new ArrayList<>(1);
-        foldersToCreate.add(this);
-        this.localStore.createFolders(foldersToCreate, visibleLimit);
+
+        localOnly = true;
+
+        int visibleLimit = getAccount().getDisplayCount();
+        this.localStore.createFolders(Collections.singletonList(this), visibleLimit);
 
         return true;
     }
@@ -585,6 +587,10 @@ public class LocalFolder extends Folder<LocalMessage> {
     public void setMoreMessages(MoreMessages moreMessages) throws MessagingException {
         this.moreMessages = moreMessages;
         updateFolderColumn("more_messages", moreMessages.getDatabaseName());
+    }
+
+    public boolean isLocalOnly() {
+        return localOnly;
     }
 
     private String getPrefId(String name) {
