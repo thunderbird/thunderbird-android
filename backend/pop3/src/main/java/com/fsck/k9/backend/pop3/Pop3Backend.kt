@@ -2,7 +2,6 @@ package com.fsck.k9.backend.pop3
 
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.api.BackendStorage
-import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.BodyFactory
@@ -23,7 +22,7 @@ class Pop3Backend(
         private val smtpTransport: SmtpTransport
 ) : Backend {
     private val pop3Sync: Pop3Sync = Pop3Sync(accountName, backendStorage, pop3Store)
-    private val commandGetFolders = CommandGetFolders()
+    private val commandRefreshFolderList = CommandRefreshFolderList(backendStorage)
     private val commandSetFlag = CommandSetFlag(pop3Store)
     private val commandDeleteAll = CommandDeleteAll(pop3Store)
     private val commandFetchMessage = CommandFetchMessage(pop3Store)
@@ -36,8 +35,8 @@ class Pop3Backend(
     override val supportsSearchByDate = false
     override val isPushCapable = false
 
-    override fun getFolders(): List<FolderInfo> {
-        return commandGetFolders.getFolders()
+    override fun refreshFolderList() {
+        commandRefreshFolderList.refreshFolderList()
     }
 
     override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?) {

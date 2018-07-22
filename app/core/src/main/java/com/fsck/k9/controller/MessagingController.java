@@ -44,7 +44,6 @@ import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
-import com.fsck.k9.backend.api.FolderInfo;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.cache.EmailProviderCache;
@@ -423,51 +422,9 @@ public class MessagingController {
         List<LocalFolder> localFolders = null;
         try {
             Backend backend = getBackend(account);
-            List<FolderInfo> folders = backend.getFolders();
+            backend.refreshFolderList();
 
             LocalStore localStore = account.getLocalStore();
-            Map<String, String> remoteFolderNameMap = new HashMap<>();
-            List<LocalFolder> foldersToCreate = new LinkedList<>();
-
-            localFolders = localStore.getPersonalNamespaces(false);
-            Set<String> localFolderServerIds = new HashSet<>();
-            for (Folder localFolder : localFolders) {
-                localFolderServerIds.add(localFolder.getServerId());
-            }
-
-            for (FolderInfo folder : folders) {
-                String folderServerId = folder.getServerId();
-                if (!localFolderServerIds.contains(folderServerId)) {
-                    LocalFolder localFolder = localStore.getFolder(folderServerId);
-                    foldersToCreate.add(localFolder);
-                }
-                remoteFolderNameMap.put(folderServerId, folder.getName());
-            }
-            localStore.createFolders(foldersToCreate, account.getDisplayCount());
-
-            localFolders = localStore.getPersonalNamespaces(false);
-
-            /*
-             * Clear out any folders that are no longer on the remote store.
-             */
-            for (LocalFolder localFolder : localFolders) {
-                String localFolderServerId = localFolder.getServerId();
-
-                // FIXME: This is a hack used to clean up when we accidentally created the
-                //        special placeholder folder "-NONE-".
-                if (K9.FOLDER_NONE.equals(localFolderServerId)) {
-                    localFolder.delete(false);
-                }
-
-                boolean folderExistsOnServer = remoteFolderNameMap.containsKey(localFolderServerId);
-                if (folderExistsOnServer) {
-                    String folderName = remoteFolderNameMap.get(localFolderServerId);
-                    localFolder.setName(folderName);
-                } else if (!account.isSpecialFolder(localFolderServerId)) {
-                    localFolder.delete(false);
-                }
-            }
-
             localFolders = localStore.getPersonalNamespaces(false);
 
             for (MessagingListener l : getListeners(listener)) {

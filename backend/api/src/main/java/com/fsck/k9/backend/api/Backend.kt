@@ -22,7 +22,7 @@ interface Backend {
     val isPushCapable: Boolean
 
     @Throws(MessagingException::class)
-    fun getFolders(): List<FolderInfo>
+    fun refreshFolderList()
 
     // TODO: Add a way to cancel the sync process
     fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?)

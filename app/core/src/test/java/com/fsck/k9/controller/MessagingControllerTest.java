@@ -17,7 +17,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.api.Backend;
-import com.fsck.k9.backend.api.FolderInfo;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -54,7 +53,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
@@ -248,95 +246,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     @Test
-    public void refreshRemoteSynchronous_shouldCreateFoldersFromRemote() throws MessagingException {
-        FolderInfo remoteFolderInfo = new FolderInfo("NewFolder", "Folder Name");
-        List<FolderInfo> folderInfoList = Collections.singletonList(remoteFolderInfo);
-        when(backend.getFolders()).thenAnswer(createAnswer(folderInfoList));
-        LocalFolder newLocalFolder = mock(LocalFolder.class);
-        when(localStore.getFolder("NewFolder")).thenReturn(newLocalFolder);
-
+    public void refreshRemoteSynchronous_shouldCallBackend() throws MessagingException {
         controller.refreshRemoteSynchronous(account, listener);
 
-        verify(localStore).createFolders(eq(Collections.singletonList(newLocalFolder)), anyInt());
-    }
-
-    @Test
-    public void refreshRemoteSynchronous_shouldDeleteFoldersNotOnRemote() throws MessagingException {
-        LocalFolder oldLocalFolder = mock(LocalFolder.class);
-        when(oldLocalFolder.getServerId()).thenReturn("OldLocalFolder");
-        when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(oldLocalFolder));
-        List<FolderInfo> folderInfoList = Collections.emptyList();
-        when(backend.getFolders()).thenAnswer(createAnswer(folderInfoList));
-
-        controller.refreshRemoteSynchronous(account, listener);
-
-        verify(oldLocalFolder).delete(false);
-    }
-
-    @Test
-    public void refreshRemoteSynchronous_shouldNotDeleteFoldersOnRemote() throws MessagingException {
-        configureBackendWithFolder();
-        when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
-
-        controller.refreshRemoteSynchronous(account, listener);
-
-        verify(localFolder, never()).delete(false);
-    }
-
-    @Test
-    public void refreshRemoteSynchronous_shouldNotDeleteSpecialFoldersNotOnRemote() throws MessagingException {
-        LocalFolder missingSpecialFolder = mock(LocalFolder.class);
-        when(account.isSpecialFolder("Outbox")).thenReturn(true);
-        when(missingSpecialFolder.getServerId()).thenReturn("Outbox");
-        when(localStore.getPersonalNamespaces(false))
-                .thenReturn(Collections.singletonList(missingSpecialFolder));
-        List<FolderInfo> folderInfoList = Collections.emptyList();
-        when(backend.getFolders()).thenAnswer(createAnswer(folderInfoList));
-
-        controller.refreshRemoteSynchronous(account, listener);
-
-        verify(missingSpecialFolder, never()).delete(false);
-    }
-
-    public static <T> Answer<T> createAnswer(final T value) {
-        return new Answer<T>() {
-            @Override
-            public T answer(InvocationOnMock invocation) throws Throwable {
-                return value;
-            }
-        };
-    }
-
-    @Test
-    public void refreshRemoteSynchronous_shouldProvideFolderList() throws MessagingException {
-        configureBackendWithFolder();
-        List<LocalFolder> folders = Collections.singletonList(localFolder);
-        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
-
-        controller.refreshRemoteSynchronous(account, listener);
-
-        verify(listener).listFolders(account, folders);
-    }
-
-    @Test
-    public void refreshRemoteSynchronous_shouldNotifyFinishedAfterSuccess() throws MessagingException {
-        configureBackendWithFolder();
-        List<LocalFolder> folders = Collections.singletonList(localFolder);
-        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
-
-        controller.refreshRemoteSynchronous(account, listener);
-
-        verify(listener).listFoldersFinished(account);
-    }
-
-    @Test
-    public void refreshRemoteSynchronous_shouldNotNotifyFinishedAfterFailure() throws MessagingException {
-        configureBackendWithFolder();
-        when(localStore.getPersonalNamespaces(false)).thenThrow(new MessagingException("Test"));
-
-        controller.refreshRemoteSynchronous(account, listener);
-
-        verify(listener, never()).listFoldersFinished(account);
+        verify(backend).refreshFolderList();
     }
 
     @Test
@@ -370,7 +283,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     private void setupRemoteSearch() throws Exception {
         setAccountsInPreferences(Collections.singletonMap("1", account));
-        configureBackendWithFolder();
 
         remoteMessages = new ArrayList<>();
         Collections.addAll(remoteMessages, "oldMessageUid", "newMessageUid1", "newMessageUid2");
@@ -626,12 +538,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
         when(localFolder.getServerId()).thenReturn(FOLDER_NAME);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
-    }
-
-    private void configureBackendWithFolder() throws MessagingException {
-        FolderInfo remoteFolderInfo = new FolderInfo(FOLDER_NAME, FOLDER_NAME);
-        List<FolderInfo> folderInfoList = Collections.singletonList(remoteFolderInfo);
-        when(backend.getFolders()).thenAnswer(createAnswer(folderInfoList));
     }
 
     private void setAccountsInPreferences(Map<String, Account> newAccounts)
