@@ -477,10 +477,10 @@ public class MessagingController {
                 l.listFoldersFinished(account);
             }
         } catch (Exception e) {
+            Timber.e(e);
             for (MessagingListener l : getListeners(listener)) {
                 l.listFoldersFailed(account, "");
             }
-            Timber.e(e);
         } finally {
             if (localFolders != null) {
                 for (Folder localFolder : localFolders) {
