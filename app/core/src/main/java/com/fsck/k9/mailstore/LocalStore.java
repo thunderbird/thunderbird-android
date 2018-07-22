@@ -179,7 +179,7 @@ public class LocalStore {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 63;
+    public static final int DB_VERSION = 64;
 
     private final Context context;
     private final ContentResolver contentResolver;

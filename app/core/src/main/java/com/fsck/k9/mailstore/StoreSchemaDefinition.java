@@ -73,6 +73,13 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
     }
 
     private static void dbCreateDatabaseFromScratch(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS account_extra_values");
+        db.execSQL("CREATE TABLE account_extra_values (" +
+                "name TEXT NOT NULL PRIMARY KEY, " +
+                "value_text TEXT, " +
+                "value_integer INTEGER " +
+                ")");
+
         db.execSQL("DROP TABLE IF EXISTS folders");
         db.execSQL("CREATE TABLE folders (" +
                 "id INTEGER PRIMARY KEY," +
@@ -96,6 +103,15 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
         db.execSQL("DROP INDEX IF EXISTS folder_server_id");
         db.execSQL("CREATE INDEX folder_server_id ON folders (server_id)");
+
+        db.execSQL("DROP TABLE IF EXISTS folder_extra_values");
+        db.execSQL("CREATE TABLE folder_extra_values (" +
+                "folder_id INTEGER NOT NULL, " +
+                "name TEXT NOT NULL, " +
+                "value_text TEXT, " +
+                "value_integer INTEGER, " +
+                "PRIMARY KEY (folder_id, name)" +
+                ")");
 
         db.execSQL("DROP TABLE IF EXISTS messages");
         db.execSQL("CREATE TABLE messages (" +
@@ -202,6 +218,13 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
 
         db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
         db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
+
+        db.execSQL("DROP TRIGGER IF EXISTS delete_folder_extra_values");
+        db.execSQL("CREATE TRIGGER delete_folder_extra_values " +
+                "BEFORE DELETE ON folders " +
+                "BEGIN " +
+                "DELETE FROM folder_extra_values WHERE old.id = folder_id; " +
+                "END;");
 
         db.execSQL("DROP TRIGGER IF EXISTS delete_message");
         db.execSQL("CREATE TRIGGER delete_message " +
