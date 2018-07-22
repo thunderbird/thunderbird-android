@@ -5,13 +5,24 @@ import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.mail.ServerSettings
 
 class BackendManager(private val backendFactories: Map<String, BackendFactory>) {
-    private val backendCache = mutableMapOf<String, Backend>()
+    private val backendCache = mutableMapOf<String, BackendContainer>()
 
 
     fun getBackend(account: Account): Backend {
         synchronized (backendCache) {
-            return backendCache[account.uuid] ?: createBackend(account).also { backendCache[account.uuid] = it }
+            val container = backendCache[account.uuid]
+            return if (container != null && isBackendStillValid(container, account)) {
+                container.backend
+            } else {
+                createBackend(account).also { backend ->
+                    backendCache[account.uuid] = BackendContainer(backend, account.storeUri, account.transportUri)
+                }
+            }
         }
+    }
+
+    private fun isBackendStillValid(container: BackendContainer, account: Account): Boolean {
+        return container.storeUri == account.storeUri && container.transportUri == account.transportUri
     }
 
     fun removeBackend(account: Account) {
@@ -70,4 +81,7 @@ class BackendManager(private val backendFactories: Map<String, BackendFactory>) 
 
         throw IllegalArgumentException("Unsupported ServerSettings type")
     }
+
+
+    private data class BackendContainer(val backend: Backend, val storeUri: String, val transportUri: String)
 }
