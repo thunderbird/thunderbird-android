@@ -279,7 +279,7 @@ public class MessageListAdapter extends CursorAdapter {
                      * doesn't reset the padding, so we do it ourselves.
                      */
             holder.contactBadge.setPadding(0, 0, 0, 0);
-            fragment.contactsPictureLoader.loadContactPicture(counterpartyAddress, holder.contactBadge);
+            fragment.contactsPictureLoader.setContactPicture(holder.contactBadge, counterpartyAddress);
         } else {
             holder.contactBadge.assignContactUri(null);
             holder.contactBadge.setImageResource(R.drawable.ic_contact_picture);

@@ -39,18 +39,37 @@ class ContactPictureLoader(
     }
 
 
-    fun loadContactPicture(address: Address, imageView: ImageView) {
-        val photoUri = contactsHelper.getPhotoUri(address.address)
-        loadContactPicture(photoUri, address, imageView)
+    fun setContactPicture(imageView: ImageView, address: Address) {
+        val contactPictureUri = contactsHelper.getPhotoUri(address.address)
+        if (contactPictureUri != null) {
+            setContactPicture(imageView, contactPictureUri, address)
+        } else {
+            setFallbackPicture(imageView, address)
+        }
     }
 
-    fun loadContactPicture(recipient: Recipient, imageView: ImageView) {
-        loadContactPicture(recipient.photoThumbnailUri, recipient.address, imageView)
+    fun setContactPicture(imageView: ImageView, recipient: Recipient) {
+        val contactPictureUri = recipient.photoThumbnailUri
+        if (contactPictureUri != null) {
+            setContactPicture(imageView, contactPictureUri, recipient.address)
+        } else {
+            setFallbackPicture(imageView, recipient.address)
+        }
     }
 
-    private fun loadFallbackPicture(address: Address, imageView: ImageView) {
+    private fun setContactPicture(imageView: ImageView, contactPictureUri: Uri, address: Address) {
+        Glide.with(imageView.context)
+                .load(contactPictureUri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .listener(FallbackImageRequestListener(address, imageView))
+                // for some reason, following 2 lines fix loading issues.
+                .dontAnimate()
+                .override(pictureSizeInPx, pictureSizeInPx)
+                .into(imageView)
+    }
+
+    private fun setFallbackPicture(imageView: ImageView, address: Address) {
         val context = imageView.context
-
         Glide.with(context)
                 .using(AddressModelLoader(backgroundCacheId), Address::class.java)
                 .from(Address::class.java)
@@ -67,72 +86,41 @@ class ContactPictureLoader(
                 .into(imageView)
     }
 
-    private fun loadContactPicture(photoUri: Uri?, address: Address, imageView: ImageView) {
-        if (photoUri != null) {
-            val noPhotoListener = object : RequestListener<Uri, GlideDrawable> {
-                override fun onException(
-                        e: Exception,
-                        model: Uri,
-                        target: Target<GlideDrawable>,
-                        isFirstResource: Boolean
-                ): Boolean {
-                    loadFallbackPicture(address, imageView)
-                    return true
-                }
-
-                override fun onResourceReady(
-                        resource: GlideDrawable,
-                        model: Uri,
-                        target: Target<GlideDrawable>,
-                        isFromMemoryCache: Boolean,
-                        isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-            }
-
-            Glide.with(imageView.context)
-                    .load(photoUri)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .listener(noPhotoListener)
-                    // for some reason, following 2 lines fix loading issues.
-                    .dontAnimate()
-                    .override(pictureSizeInPx, pictureSizeInPx)
-                    .into(imageView)
-        } else {
-            loadFallbackPicture(address, imageView)
-        }
-    }
-
-    fun loadContactPictureIcon(recipient: Recipient): Bitmap? {
-        return loadContactPicture(recipient.photoThumbnailUri, recipient.address)
-    }
-
     @WorkerThread
-    private fun loadContactPicture(photoUri: Uri?, address: Address): Bitmap? {
-        val bitmapTarget: FutureTarget<Bitmap>
-        if (photoUri != null) {
-            bitmapTarget = Glide.with(context)
-                    .load(photoUri)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .dontAnimate()
-                    .into(pictureSizeInPx, pictureSizeInPx)
-        } else {
-            bitmapTarget = Glide.with(context)
-                    .using(AddressModelLoader(backgroundCacheId), Address::class.java)
-                    .from(Address::class.java)
-                    .`as`(Bitmap::class.java)
-                    .decoder(ContactLetterBitmapDecoder())
-                    .encoder(BitmapEncoder(CompressFormat.PNG, 0))
-                    .cacheDecoder(FileToStreamDecoder(StreamBitmapDecoder(context)))
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .load(address)
-                    .dontAnimate()
-                    .into(pictureSizeInPx, pictureSizeInPx)
-        }
+    fun getContactPicture(recipient: Recipient): Bitmap? {
+        val contactPictureUri = recipient.photoThumbnailUri
+        val address = recipient.address
 
-        return loadIgnoringErrors(bitmapTarget)
+        return if (contactPictureUri != null) {
+            getContactPicture(contactPictureUri)
+        } else {
+            getFallbackPicture(address)
+        }
+    }
+
+    private fun getContactPicture(contactPictureUri: Uri): Bitmap? {
+        return Glide.with(context)
+                .load(contactPictureUri)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .dontAnimate()
+                .into(pictureSizeInPx, pictureSizeInPx)
+                .getOrNull()
+    }
+
+    private fun getFallbackPicture(address: Address): Bitmap? {
+        return Glide.with(context)
+                .using(AddressModelLoader(backgroundCacheId), Address::class.java)
+                .from(Address::class.java)
+                .`as`(Bitmap::class.java)
+                .decoder(ContactLetterBitmapDecoder())
+                .encoder(BitmapEncoder(CompressFormat.PNG, 0))
+                .cacheDecoder(FileToStreamDecoder(StreamBitmapDecoder(context)))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .load(address)
+                .dontAnimate()
+                .into(pictureSizeInPx, pictureSizeInPx)
+                .getOrNull()
     }
 
     private inner class ContactLetterBitmapDecoder : ResourceDecoder<Address, Bitmap> {
@@ -165,10 +153,35 @@ class ContactPictureLoader(
         }
     }
 
-    @WorkerThread
-    private fun <T> loadIgnoringErrors(target: FutureTarget<T>): T? {
+    private inner class FallbackImageRequestListener(
+            val address: Address,
+            val imageView: ImageView
+    ) : RequestListener<Uri, GlideDrawable> {
+
+        override fun onException(
+                e: Exception?,
+                model: Uri,
+                target: Target<GlideDrawable>,
+                isFirstResource: Boolean
+        ): Boolean {
+            setFallbackPicture(imageView, address)
+            return true
+        }
+
+        override fun onResourceReady(
+                resource: GlideDrawable,
+                model: Uri,
+                target: Target<GlideDrawable>,
+                isFromMemoryCache: Boolean,
+                isFirstResource: Boolean
+        ): Boolean {
+            return false
+        }
+    }
+
+    private fun <T> FutureTarget<T>.getOrNull(): T? {
         return try {
-            target.get()
+            get()
         } catch (e: Exception) {
             null
         }

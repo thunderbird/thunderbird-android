@@ -83,7 +83,7 @@ public class K9ChooserTargetService extends ChooserTargetService {
 
     @Nullable
     private Icon loadRecipientIcon(Recipient recipient) {
-        Bitmap bitmap = contactPictureLoader.loadContactPictureIcon(recipient);
+        Bitmap bitmap = contactPictureLoader.getContactPicture(recipient);
         if (bitmap == null) {
             return null;
         }

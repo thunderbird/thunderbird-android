@@ -316,7 +316,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         if (K9.showContactPicture()) {
             if (counterpartyAddress != null) {
                 mContactBadge.setContact(counterpartyAddress);
-                mContactsPictureLoader.loadContactPicture(counterpartyAddress, mContactBadge);
+                mContactsPictureLoader.setContactPicture(mContactBadge, counterpartyAddress);
             } else {
                 mContactBadge.setImageResource(R.drawable.ic_contact_picture);
             }
