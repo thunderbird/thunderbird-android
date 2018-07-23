@@ -11,9 +11,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.ResourceDecoder
 import com.bumptech.glide.load.data.DataFetcher
+import com.bumptech.glide.load.data.StreamLocalUriFetcher
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.Resource
 import com.bumptech.glide.load.model.ModelLoader
+import com.bumptech.glide.load.model.stream.StreamModelLoader
 import com.bumptech.glide.load.resource.bitmap.BitmapEncoder
 import com.bumptech.glide.load.resource.bitmap.BitmapResource
 import com.bumptech.glide.load.resource.bitmap.StreamBitmapDecoder
@@ -26,6 +28,7 @@ import com.bumptech.glide.request.target.Target
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mail.Address
 import com.fsck.k9.view.RecipientSelectView.Recipient
+import java.io.InputStream
 
 
 class ContactPictureLoader(
@@ -40,12 +43,16 @@ class ContactPictureLoader(
 
 
     fun setContactPicture(imageView: ImageView, address: Address) {
-        val contactPictureUri = contactsHelper.getPhotoUri(address.address)
-        if (contactPictureUri != null) {
-            setContactPicture(imageView, contactPictureUri, address)
-        } else {
-            setFallbackPicture(imageView, address)
-        }
+        Glide.with(imageView.context)
+                .using(ContactPictureModelLoader())
+                .from(Address::class.java)
+                .load(address)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .listener(FallbackImageRequestListener(address, imageView))
+                // for some reason, following 2 lines fix loading issues.
+                .dontAnimate()
+                .override(pictureSizeInPx, pictureSizeInPx)
+                .into(imageView)
     }
 
     fun setContactPicture(imageView: ImageView, recipient: Recipient) {
@@ -153,14 +160,43 @@ class ContactPictureLoader(
         }
     }
 
-    private inner class FallbackImageRequestListener(
+    private inner class ContactPictureModelLoader : StreamModelLoader<Address> {
+        override fun getResourceFetcher(address: Address, width: Int, height: Int): DataFetcher<InputStream>? {
+            return ContactPictureDataFetcher(address)
+        }
+    }
+
+    private inner class ContactPictureDataFetcher(val address: Address) : DataFetcher<InputStream> {
+        var streamLocalUriFetcher: StreamLocalUriFetcher? = null
+
+        override fun loadData(priority: Priority?): InputStream? {
+            val photoUri = contactsHelper.getPhotoUri(address.address)
+
+            return photoUri?.let {
+                StreamLocalUriFetcher(context, photoUri).also {
+                    streamLocalUriFetcher = it
+                }.loadData(priority)
+            }
+        }
+
+        override fun cancel() = Unit
+
+        override fun cleanup() {
+            streamLocalUriFetcher?.cleanup()
+        }
+
+        override fun getId() = "contact:${address.address}"
+    }
+
+
+    private inner class FallbackImageRequestListener<T>(
             val address: Address,
             val imageView: ImageView
-    ) : RequestListener<Uri, GlideDrawable> {
+    ) : RequestListener<T, GlideDrawable> {
 
         override fun onException(
                 e: Exception?,
-                model: Uri,
+                model: T,
                 target: Target<GlideDrawable>,
                 isFirstResource: Boolean
         ): Boolean {
@@ -170,7 +206,7 @@ class ContactPictureLoader(
 
         override fun onResourceReady(
                 resource: GlideDrawable,
-                model: Uri,
+                model: T,
                 target: Target<GlideDrawable>,
                 isFromMemoryCache: Boolean,
                 isFirstResource: Boolean
