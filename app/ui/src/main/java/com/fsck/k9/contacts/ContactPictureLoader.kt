@@ -52,15 +52,15 @@ class ContactPictureLoader(
         val context = imageView.context
 
         Glide.with(context)
-                .using(FallbackGlideModelLoader(), FallbackGlideParams::class.java)
-                .from(FallbackGlideParams::class.java)
+                .using(AddressModelLoader(backgroundCacheId), Address::class.java)
+                .from(Address::class.java)
                 .`as`(Bitmap::class.java)
                 .transcode(BitmapToGlideDrawableTranscoder(context), GlideDrawable::class.java)
-                .decoder(FallbackGlideBitmapDecoder())
+                .decoder(ContactLetterBitmapDecoder())
                 .encoder(BitmapEncoder(Bitmap.CompressFormat.PNG, 0))
                 .cacheDecoder(FileToStreamDecoder(StreamBitmapDecoder(context)))
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .load(FallbackGlideParams(address))
+                .load(address)
                 // for some reason, following 2 lines fix loading issues.
                 .dontAnimate()
                 .override(pictureSizeInPx, pictureSizeInPx)
@@ -120,14 +120,14 @@ class ContactPictureLoader(
                     .into(pictureSizeInPx, pictureSizeInPx)
         } else {
             bitmapTarget = Glide.with(context)
-                    .using(FallbackGlideModelLoader(), FallbackGlideParams::class.java)
-                    .from(FallbackGlideParams::class.java)
+                    .using(AddressModelLoader(backgroundCacheId), Address::class.java)
+                    .from(Address::class.java)
                     .`as`(Bitmap::class.java)
-                    .decoder(FallbackGlideBitmapDecoder())
+                    .decoder(ContactLetterBitmapDecoder())
                     .encoder(BitmapEncoder(CompressFormat.PNG, 0))
                     .cacheDecoder(FileToStreamDecoder(StreamBitmapDecoder(context)))
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .load(FallbackGlideParams(address))
+                    .load(address)
                     .dontAnimate()
                     .into(pictureSizeInPx, pictureSizeInPx)
         }
@@ -135,14 +135,14 @@ class ContactPictureLoader(
         return loadIgnoringErrors(bitmapTarget)
     }
 
-    private inner class FallbackGlideBitmapDecoder : ResourceDecoder<FallbackGlideParams, Bitmap> {
-        override fun decode(source: FallbackGlideParams, width: Int, height: Int): Resource<Bitmap> {
+    private inner class ContactLetterBitmapDecoder : ResourceDecoder<Address, Bitmap> {
+        override fun decode(address: Address, width: Int, height: Int): Resource<Bitmap> {
             val pool = Glide.get(context).bitmapPool
             val bitmap: Bitmap =
                     pool.getDirty(pictureSizeInPx, pictureSizeInPx, Bitmap.Config.ARGB_8888) ?:
                     Bitmap.createBitmap(pictureSizeInPx, pictureSizeInPx, Bitmap.Config.ARGB_8888)
 
-            contactLetterBitmapCreator.drawBitmap(bitmap, pictureSizeInPx, source.address)
+            contactLetterBitmapCreator.drawBitmap(bitmap, pictureSizeInPx, address)
 
             return BitmapResource.obtain(bitmap, pool)
         }
@@ -152,20 +152,16 @@ class ContactPictureLoader(
         }
     }
 
-    private inner class FallbackGlideParams(val address: Address) {
-        val id: String = "${address.address}-${address.personal}-$backgroundCacheId"
-    }
+    private class AddressModelLoader(val backgroundCacheId: String) : ModelLoader<Address, Address> {
+        override fun getResourceFetcher(address: Address, width: Int, height: Int): DataFetcher<Address> {
+            return object : DataFetcher<Address> {
+                override fun getId() = "${address.address}-${address.personal}-$backgroundCacheId"
 
-    private inner class FallbackGlideModelLoader : ModelLoader<FallbackGlideParams, FallbackGlideParams> {
-        override fun getResourceFetcher(
-                model: FallbackGlideParams,
-                width: Int,
-                height: Int
-        ): DataFetcher<FallbackGlideParams> = object : DataFetcher<FallbackGlideParams> {
-            override fun loadData(priority: Priority): FallbackGlideParams = model
-            override fun getId(): String = model.id
-            override fun cleanup() = Unit
-            override fun cancel() = Unit
+                override fun loadData(priority: Priority?): Address = address
+
+                override fun cleanup() = Unit
+                override fun cancel() = Unit
+            }
         }
     }
 
