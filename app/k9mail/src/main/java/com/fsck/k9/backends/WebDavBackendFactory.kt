@@ -17,7 +17,7 @@ class WebDavBackendFactory(private val preferences: Preferences) : BackendFactor
     override val transportUriPrefix = "webdav"
 
     override fun createBackend(account: Account): Backend {
-        val accountName = account.description
+        val accountName = account.displayName
         val backendStorage = K9BackendStorage(preferences, account, account.localStore)
         val serverSettings = WebDavStoreUriDecoder.decode(account.storeUri)
         val webDavStore = createWebDavStore(serverSettings, account)

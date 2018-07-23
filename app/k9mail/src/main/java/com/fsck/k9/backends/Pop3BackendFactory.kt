@@ -21,7 +21,7 @@ class Pop3BackendFactory(private val context: Context, private val preferences: 
     override val transportUriPrefix = "smtp"
 
     override fun createBackend(account: Account): Backend {
-        val accountName = account.description
+        val accountName = account.displayName
         val backendStorage = K9BackendStorage(preferences, account, account.localStore)
         val pop3Store = createPop3Store(account)
         val smtpTransport = createSmtpTransport(account)

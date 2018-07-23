@@ -27,7 +27,7 @@ class ImapBackendFactory(
     override val transportUriPrefix = "smtp"
 
     override fun createBackend(account: Account): Backend {
-        val accountName = account.description
+        val accountName = account.displayName
         val backendStorage = K9BackendStorage(preferences, account, account.localStore)
         val imapStore = createImapStore(account)
         val smtpTransport = createSmtpTransport(account)
