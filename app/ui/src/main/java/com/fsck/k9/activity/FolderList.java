@@ -642,7 +642,13 @@ public class FolderList extends K9ListActivity {
             public void listFoldersFailed(Account account, String message) {
                 if (account.equals(FolderList.this.account)) {
                     handler.progress(false);
-                    Toast.makeText(context, R.string.fetching_folders_failed, Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, R.string.fetching_folders_failed, Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
                 }
                 super.listFoldersFailed(account, message);
             }

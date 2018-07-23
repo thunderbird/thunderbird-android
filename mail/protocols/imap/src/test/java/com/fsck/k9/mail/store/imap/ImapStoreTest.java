@@ -161,26 +161,7 @@ public class ImapStoreTest {
     }
 
     @Test
-    public void getPersonalNamespaces_withForceListAll() throws Exception {
-        when(storeConfig.subscribedFoldersOnly()).thenReturn(true);
-        ImapConnection imapConnection = mock(ImapConnection.class);
-        List<ImapResponse> imapResponses = Arrays.asList(
-                createImapResponse("* LIST (\\HasNoChildren) \".\" \"INBOX\""),
-                createImapResponse("* LIST (\\Noselect \\HasChildren) \".\" \"Folder\""),
-                createImapResponse("* LIST (\\HasNoChildren) \".\" \"Folder.SubFolder\""),
-                createImapResponse("6 OK Success")
-        );
-        when(imapConnection.executeSimpleCommand("LIST \"\" \"*\"")).thenReturn(imapResponses);
-        imapStore.enqueueImapConnection(imapConnection);
-
-        List<? extends Folder> result = imapStore.getPersonalNamespaces(true);
-
-        assertNotNull(result);
-        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
-    }
-
-    @Test
-    public void getPersonalNamespaces_withoutForceListAllAndWithoutSubscribedFoldersOnly() throws Exception {
+    public void getPersonalNamespaces_withoutSubscribedFoldersOnly() throws Exception {
         when(storeConfig.subscribedFoldersOnly()).thenReturn(false);
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> imapResponses = Arrays.asList(
@@ -192,14 +173,14 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"*\"")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<? extends Folder> result = imapStore.getPersonalNamespaces(false);
+        List<? extends Folder> result = imapStore.getPersonalNamespaces();
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
     }
 
     @Test
-    public void getPersonalNamespaces_withSubscribedFoldersOnlyAndWithoutForceListAll_shouldOnlyReturnExistingSubscribedFolders()
+    public void getPersonalNamespaces_withSubscribedFoldersOnly_shouldOnlyReturnExistingSubscribedFolders()
             throws Exception {
         when(storeConfig.subscribedFoldersOnly()).thenReturn(true);
         ImapConnection imapConnection = mock(ImapConnection.class);
@@ -220,7 +201,7 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"*\"")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<? extends Folder> result = imapStore.getPersonalNamespaces(false);
+        List<? extends Folder> result = imapStore.getPersonalNamespaces();
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
@@ -239,7 +220,7 @@ public class ImapStoreTest {
         imapStore.enqueueImapConnection(imapConnection);
         imapStore.setTestCombinedPrefix("INBOX.");
 
-        List<ImapFolder> result = imapStore.getPersonalNamespaces(false);
+        List<ImapFolder> result = imapStore.getPersonalNamespaces();
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "FolderOne", "FolderTwo"), extractFolderNames(result));
@@ -259,7 +240,7 @@ public class ImapStoreTest {
         imapStore.enqueueImapConnection(imapConnection);
         imapStore.setTestCombinedPrefix("INBOX.");
 
-        List<ImapFolder> result = imapStore.getPersonalNamespaces(false);
+        List<ImapFolder> result = imapStore.getPersonalNamespaces();
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "FolderOne"), extractFolderNames(result));
@@ -272,7 +253,7 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand(anyString())).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        imapStore.getPersonalNamespaces(true);
+        imapStore.getPersonalNamespaces();
 
         verify(imapConnection, never()).close();
     }
@@ -284,7 +265,7 @@ public class ImapStoreTest {
         imapStore.enqueueImapConnection(imapConnection);
 
         try {
-            imapStore.getPersonalNamespaces(true);
+            imapStore.getPersonalNamespaces();
             fail("Expected exception");
         } catch (MessagingException ignored) {
         }

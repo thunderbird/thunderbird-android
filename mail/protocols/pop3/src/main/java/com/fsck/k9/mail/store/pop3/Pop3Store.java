@@ -53,7 +53,7 @@ public class Pop3Store extends RemoteStore {
     }
 
     @Override
-    public List<Pop3Folder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
+    public List<Pop3Folder> getPersonalNamespaces() {
         List<Pop3Folder> folders = new LinkedList<>();
         folders.add(getFolder(Pop3Folder.INBOX));
         return folders;

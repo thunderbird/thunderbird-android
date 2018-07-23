@@ -7,7 +7,6 @@ import java.util.Set;
 
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.backend.api.BackendStorage;
-import com.fsck.k9.backend.api.FolderInfo;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.mail.BodyFactory;
@@ -32,7 +31,7 @@ public class ImapBackend implements Backend {
     private final PowerManager powerManager;
     private final SmtpTransport smtpTransport;
     private final ImapSync imapSync;
-    private final CommandGetFolders commandGetFolders;
+    private final CommandRefreshFolderList commandRefreshFolderList;
     private final CommandSetFlag commandSetFlag;
     private final CommandMarkAllAsRead commandMarkAllAsRead;
     private final CommandExpunge commandExpunge;
@@ -55,7 +54,7 @@ public class ImapBackend implements Backend {
         commandMarkAllAsRead = new CommandMarkAllAsRead(imapStore);
         commandExpunge = new CommandExpunge(imapStore);
         commandMoveOrCopyMessages = new CommandMoveOrCopyMessages(imapStore);
-        commandGetFolders = new CommandGetFolders(imapStore);
+        commandRefreshFolderList = new CommandRefreshFolderList(backendStorage, imapStore);
         commandDeleteAll = new CommandDeleteAll(imapStore);
         commandSearch = new CommandSearch(imapStore);
         commandFetchMessage = new CommandFetchMessage(imapStore);
@@ -98,10 +97,9 @@ public class ImapBackend implements Backend {
         return true;
     }
 
-    @NotNull
     @Override
-    public List<FolderInfo> getFolders(boolean forceListAll) {
-        return commandGetFolders.getFolders(forceListAll);
+    public void refreshFolderList() {
+        commandRefreshFolderList.refreshFolderList();
     }
 
     @Override

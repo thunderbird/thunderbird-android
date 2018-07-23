@@ -394,6 +394,10 @@ public class LocalStore {
         return new LocalFolder(this, serverId);
     }
 
+    public LocalFolder getFolder(String serverId, String name) {
+        return new LocalFolder(this, serverId, name);
+    }
+
     // TODO this takes about 260-300ms, seems slow.
     public List<LocalFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         final List<LocalFolder> folders = new LinkedList<>();

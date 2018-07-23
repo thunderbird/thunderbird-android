@@ -6,8 +6,6 @@ import java.util.List;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.PushReceiver;
-import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 
 
@@ -26,7 +24,7 @@ public abstract class RemoteStore {
 
     public abstract Folder<? extends Message> getFolder(String name);
 
-    public abstract List<? extends Folder > getPersonalNamespaces(boolean forceListAll) throws MessagingException;
+    public abstract List<? extends Folder > getPersonalNamespaces() throws MessagingException;
 
     public abstract void checkSettings() throws MessagingException;
 
