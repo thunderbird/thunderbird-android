@@ -218,7 +218,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
         Intent intent = NotificationActionService.createArchiveMessageIntent(context, messageReference);
 
         return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
     }
 
     @Override

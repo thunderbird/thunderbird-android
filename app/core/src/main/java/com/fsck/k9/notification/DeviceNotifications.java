@@ -15,7 +15,7 @@ import android.support.v4.app.NotificationCompat.InboxStyle;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickMoveType;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.controller.MessageReference;
 
@@ -105,7 +105,7 @@ class DeviceNotifications extends BaseNotifications {
         NotificationContent content = holder.content;
         addReplyAction(builder, content, notificationId);
         addMarkAsReadAction(builder, content, notificationId);
-        addDeleteAction(builder, content, notificationId);
+        addQuickMoveAction(account, builder, content, notificationId);
 
         return builder;
     }
@@ -142,7 +142,7 @@ class DeviceNotifications extends BaseNotifications {
         builder.setStyle(style);
 
         addMarkAllAsReadAction(builder, notificationData);
-        addDeleteAllAction(builder, notificationData);
+        addQuickMoveAllAction(builder, notificationData);
 
         wearNotifications.addSummaryActions(builder, notificationData);
 
@@ -179,11 +179,20 @@ class DeviceNotifications extends BaseNotifications {
         builder.addAction(icon, title, markAllAsReadPendingIntent);
     }
 
-    private void addDeleteAllAction(Builder builder, NotificationData notificationData) {
-        if (K9.getNotificationQuickDeleteBehaviour() != NotificationQuickDelete.ALWAYS) {
+    private void addQuickMoveAllAction(Builder builder, NotificationData notificationData) {
+        if (K9.getNotificationQuickMoveTrigger() != K9.NotificationQuickMoveTrigger.ALWAYS) {
             return;
         }
+        NotificationQuickMoveType quickMoveType = K9.getNotificationQuickMoveType();
+        if(NotificationQuickMoveType.DELETE == quickMoveType) {
+            addDeleteAllAction(builder, notificationData);
+        }
+        if(NotificationQuickMoveType.ARCHIVE == quickMoveType) {
+            addArchiveAllAction(builder, notificationData);
+        }
+    }
 
+    private void addDeleteAllAction(Builder builder, NotificationData notificationData) {
         int icon = resourceProvider.getIconDelete();
         String title = resourceProvider.actionDelete();
 
@@ -195,16 +204,19 @@ class DeviceNotifications extends BaseNotifications {
         builder.addAction(icon, title, action);
     }
 
-    private void addDeleteAction(Builder builder, NotificationContent content, int notificationId) {
-        if (!isDeleteActionEnabled()) {
+    private void addArchiveAllAction(Builder builder, NotificationData notificationData) {
+        Account account = notificationData.getAccount();
+        if(!isArchiveActionAvailable(account))
+        {
             return;
         }
 
-        int icon = resourceProvider.getIconDelete();
-        String title = resourceProvider.actionDelete();
+        int icon = resourceProvider.getIconArchive();
+        String title = resourceProvider.actionArchive();
 
-        MessageReference messageReference = content.messageReference;
-        PendingIntent action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
+        ArrayList<MessageReference> messageReferences = notificationData.getAllMessageReferences();
+        PendingIntent action = actionCreator.createArchiveAllPendingIntent(account, messageReferences, notificationId);
 
         builder.addAction(icon, title, action);
     }

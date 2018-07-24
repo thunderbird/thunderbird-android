@@ -19,7 +19,8 @@ import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickMoveTrigger;
+import com.fsck.k9.K9.NotificationQuickMoveType;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.K9.Theme;
 import com.fsck.k9.core.R;
@@ -276,8 +277,11 @@ public class GlobalSettings {
         s.put("messageListSenderAboveSubject", Settings.versions(
                 new V(38, new BooleanSetting(false))
         ));
-        s.put("notificationQuickDelete", Settings.versions(
-                new V(38, new EnumSetting<>(NotificationQuickDelete.class, NotificationQuickDelete.NEVER))
+        s.put("notificationQuickMoveType", Settings.versions(
+                new V(38, new EnumSetting<>(K9.NotificationQuickMoveType.class, NotificationQuickMoveType.DELETE))
+        ));
+        s.put("notificationQuickMoveTrigger", Settings.versions(
+                new V(38, new EnumSetting<>(NotificationQuickMoveTrigger.class, NotificationQuickMoveTrigger.NEVER))
         ));
         s.put("notificationDuringQuietTimeEnabled", Settings.versions(
                 new V(39, new BooleanSetting(true))

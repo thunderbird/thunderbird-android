@@ -117,12 +117,22 @@ public class K9 {
         NEVER
     }
 
-    private static NotificationQuickDelete notificationQuickDelete = NotificationQuickDelete.NEVER;
+    private static NotificationQuickMoveType notificationQuickMoveType = NotificationQuickMoveType.DELETE;
 
     /**
-     * Controls behaviour of delete button in notifications.
+     * Controls type of quick move button in notifications.
      */
-    public enum NotificationQuickDelete {
+    public enum NotificationQuickMoveType {
+        DELETE,
+        ARCHIVE
+    }
+
+    private static NotificationQuickMoveTrigger notificationQuickMoveTrigger = NotificationQuickMoveTrigger.NEVER;
+
+    /**
+     * Controls behaviour of quick move button in notifications.
+     */
+    public enum NotificationQuickMoveTrigger {
         ALWAYS,
         FOR_SINGLE_MSG,
         NEVER
@@ -311,7 +321,8 @@ public class K9 {
         editor.putBoolean("sortAscending", sortAscending.get(sortType));
 
         editor.putString("notificationHideSubject", notificationHideSubject.toString());
-        editor.putString("notificationQuickDelete", notificationQuickDelete.toString());
+        editor.putString("notificationQuickMoveType", notificationQuickMoveType.toString());
+        editor.putString("notificationQuickMoveTrigger", notificationQuickMoveTrigger.toString());
         editor.putString("lockScreenNotificationVisibility", sLockScreenNotificationVisibility.toString());
 
         editor.putString("attachmentdefaultpath", attachmentDefaultPath);
@@ -468,9 +479,14 @@ public class K9 {
             K9.notificationHideSubject = NotificationHideSubject.valueOf(notificationHideSubject);
         }
 
-        String notificationQuickDelete = storage.getString("notificationQuickDelete", null);
-        if (notificationQuickDelete != null) {
-            K9.notificationQuickDelete = NotificationQuickDelete.valueOf(notificationQuickDelete);
+        String notificationQuickMoveType = storage.getString("notificationQuickMoveType", null);
+        if (notificationQuickMoveType != null) {
+            K9.notificationQuickMoveType = NotificationQuickMoveType.valueOf(notificationQuickMoveType);
+        }
+
+        String notificationQuickMoveTrigger = storage.getString("notificationQuickMoveTrigger", null);
+        if (notificationQuickMoveTrigger != null) {
+            K9.notificationQuickMoveTrigger = NotificationQuickMoveTrigger.valueOf(notificationQuickMoveTrigger);
         }
 
         String lockScreenNotificationVisibility = storage.getString("lockScreenNotificationVisibility", null);
@@ -876,12 +892,20 @@ public class K9 {
         notificationHideSubject = mode;
     }
 
-    public static NotificationQuickDelete getNotificationQuickDeleteBehaviour() {
-        return notificationQuickDelete;
+    public static NotificationQuickMoveType getNotificationQuickMoveType() {
+        return notificationQuickMoveType;
     }
 
-    public static void setNotificationQuickDeleteBehaviour(final NotificationQuickDelete mode) {
-        notificationQuickDelete = mode;
+    public static void setNotificationQuickMoveType(NotificationQuickMoveType type) {
+        notificationQuickMoveType = type;
+    }
+
+    public static NotificationQuickMoveTrigger getNotificationQuickMoveTrigger() {
+        return notificationQuickMoveTrigger;
+    }
+
+    public static void setNotificationQuickMoveTrigger(NotificationQuickMoveTrigger trigger) {
+        notificationQuickMoveTrigger = trigger;
     }
 
     public static LockScreenNotificationVisibility getLockScreenNotificationVisibility() {

@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat.WearableExtender;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.K9.NotificationQuickMoveType;
 
 
 class WearNotifications extends BaseNotifications {
@@ -47,7 +47,7 @@ class WearNotifications extends BaseNotifications {
         }
 
         Account account = notificationData.getAccount();
-        if (isArchiveActionAvailableForWear(account)) {
+        if (isArchiveActionAvailable(account)) {
             addArchiveAllAction(wearableExtender, notificationData);
         }
 
@@ -94,14 +94,15 @@ class WearNotifications extends BaseNotifications {
     }
 
     private void addActions(Builder builder, Account account, NotificationHolder holder) {
-        addDeviceActions(builder, holder);
+        addDeviceActions(builder, account, holder);
         addWearActions(builder, account, holder);
     }
 
-    private void addDeviceActions(Builder builder, NotificationHolder holder) {
+    private void addDeviceActions(Builder builder, Account account, NotificationHolder holder) {
         addDeviceReplyAction(builder, holder);
         addDeviceMarkAsReadAction(builder, holder);
-        addDeviceDeleteAction(builder, holder);
+        int notificationId = NotificationIds.getNewMailSummaryNotificationId(account);
+        addQuickMoveAction(account, builder, holder.content, notificationId);
     }
 
     private void addDeviceReplyAction(Builder builder, NotificationHolder holder) {
@@ -128,22 +129,6 @@ class WearNotifications extends BaseNotifications {
         builder.addAction(icon, title, action);
     }
 
-    private void addDeviceDeleteAction(Builder builder, NotificationHolder holder) {
-        if (!isDeleteActionEnabled()) {
-            return;
-        }
-
-        int icon = resourceProvider.getIconDelete();
-        String title = resourceProvider.actionDelete();
-
-        NotificationContent content = holder.content;
-        int notificationId = holder.notificationId;
-        MessageReference messageReference = content.messageReference;
-        PendingIntent action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId);
-
-        builder.addAction(icon, title, action);
-    }
-
     private void addWearActions(Builder builder, Account account, NotificationHolder holder) {
         NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender();
 
@@ -154,7 +139,7 @@ class WearNotifications extends BaseNotifications {
             addDeleteAction(wearableExtender, holder);
         }
 
-        if (isArchiveActionAvailableForWear(account)) {
+        if (isArchiveActionAvailable(account)) {
             addArchiveAction(wearableExtender, holder);
         }
 
@@ -226,29 +211,12 @@ class WearNotifications extends BaseNotifications {
     }
 
     private boolean isDeleteActionAvailableForWear() {
-        return isDeleteActionEnabled() && !K9.confirmDeleteFromNotification();
-    }
-
-    private boolean isArchiveActionAvailableForWear(Account account) {
-        String archiveFolderName = account.getArchiveFolder();
-        return archiveFolderName != null && isMovePossible(account, archiveFolderName);
+        return isQuickMoveEnabled() && NotificationQuickMoveType.DELETE == K9.getNotificationQuickMoveType()
+                && !K9.confirmDeleteFromNotification();
     }
 
     private boolean isSpamActionAvailableForWear(Account account) {
         String spamFolderName = account.getSpamFolder();
         return spamFolderName != null && !K9.confirmSpam() && isMovePossible(account, spamFolderName);
-    }
-
-    private boolean isMovePossible(Account account, String destinationFolderName) {
-        if (K9.FOLDER_NONE.equals(destinationFolderName)) {
-            return false;
-        }
-
-        MessagingController controller = createMessagingController();
-        return controller.isMoveCapable(account);
-    }
-
-    MessagingController createMessagingController() {
-        return MessagingController.getInstance(context);
     }
 }

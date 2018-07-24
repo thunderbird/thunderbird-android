@@ -9,7 +9,9 @@ import android.support.v4.app.NotificationCompat.Builder;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickMoveTrigger;
+import com.fsck.k9.controller.MessageReference;
+import com.fsck.k9.controller.MessagingController;
 
 
 abstract class BaseNotifications {
@@ -61,9 +63,36 @@ abstract class BaseNotifications {
                 .setCategory(NotificationCompat.CATEGORY_EMAIL);
     }
 
-    protected boolean isDeleteActionEnabled() {
-        NotificationQuickDelete deleteOption = K9.getNotificationQuickDeleteBehaviour();
-        return deleteOption == NotificationQuickDelete.ALWAYS || deleteOption == NotificationQuickDelete.FOR_SINGLE_MSG;
+    protected boolean isQuickMoveEnabled() {
+        NotificationQuickMoveTrigger moveAction = K9.getNotificationQuickMoveTrigger();
+        return moveAction == NotificationQuickMoveTrigger.ALWAYS || moveAction == NotificationQuickMoveTrigger.FOR_SINGLE_MSG;
+    }
+
+    protected boolean isArchiveActionAvailable(Account account) {
+        String archiveFolderName = account.getArchiveFolder();
+        return archiveFolderName != null && isMovePossible(account, archiveFolderName);
+    }
+
+    protected boolean isMovePossible(Account account, String destinationFolderName) {
+        if (K9.FOLDER_NONE.equals(destinationFolderName)) {
+            return false;
+        }
+
+        MessagingController controller = createMessagingController();
+        return controller.isMoveCapable(account);
+    }
+
+    protected void addQuickMoveAction(Account account, Builder builder, NotificationContent content, int notificationId) {
+        if (!isQuickMoveEnabled()) {
+            return;
+        }
+        K9.NotificationQuickMoveType quickMoveType = K9.getNotificationQuickMoveType();
+        if(K9.NotificationQuickMoveType.DELETE == quickMoveType) {
+            addDeleteAction(builder, content, notificationId);
+        }
+        if(K9.NotificationQuickMoveType.ARCHIVE == quickMoveType) {
+            addArchiveAction(account, builder, content, notificationId);
+        }
     }
 
     protected BigTextStyle createBigTextStyle(Builder builder) {
@@ -72,5 +101,33 @@ abstract class BaseNotifications {
 
     private int getNewMailNotificationIcon() {
         return resourceProvider.getIconNewMail();
+    }
+
+    private void addDeleteAction(Builder builder, NotificationContent content, int notificationId) {
+        int icon = resourceProvider.getIconDelete();
+        String title = resourceProvider.actionDelete();
+
+        MessageReference messageReference = content.messageReference;
+        PendingIntent action = actionCreator.createDeleteMessagePendingIntent(messageReference, notificationId);
+
+        builder.addAction(icon, title, action);
+    }
+
+    private void addArchiveAction(Account account, Builder builder, NotificationContent content, int notificationId) {
+        if(!isArchiveActionAvailable(account))
+        {
+            return;
+        }
+        int icon = resourceProvider.getIconArchive();
+        String title = resourceProvider.actionArchive();
+
+        MessageReference messageReference = content.messageReference;
+        PendingIntent action = actionCreator.createArchiveMessagePendingIntent(messageReference, notificationId);
+
+        builder.addAction(icon, title, action);
+    }
+
+    MessagingController createMessagingController() {
+        return MessagingController.getInstance(context);
     }
 }
