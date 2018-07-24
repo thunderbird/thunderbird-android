@@ -257,11 +257,6 @@
   <string name="global_settings_notification_hide_subject_never">Mitte kunagi</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kui seade on lukustatud</string>
   <string name="global_settings_notification_hide_subject_always">Alati</string>
-  <string name="global_settings_notification_quick_delete_title">Näita \"Kustuta\" nuppu</string>
-  <string name="global_settings_notification_quick_delete_never">Mitte kunagi</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Ühest kirjast teatamiseks</string>
-  <string name="global_settings_notification_quick_delete_always">Alati</string>
-  <string name="global_settings_notification_quick_delete_description">Näita kirjades nuppu kirjade kiireks kustutamiseks</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Lukustuskuva teatised</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Ühtegi lukustuskuva teatist</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Rakenduse nimi</string>

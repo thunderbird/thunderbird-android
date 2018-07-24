@@ -290,11 +290,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="global_settings_notification_hide_subject_never">常に表示する</string>
   <string name="global_settings_notification_hide_subject_when_locked">ロック時のみ隠す</string>
   <string name="global_settings_notification_hide_subject_always">常に隠す</string>
-  <string name="global_settings_notification_quick_delete_title">削除ボタンを表示</string>
-  <string name="global_settings_notification_quick_delete_never">常に表示しない</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">通知メッセージが1件の場合</string>
-  <string name="global_settings_notification_quick_delete_always">常に表示する</string>
-  <string name="global_settings_notification_quick_delete_description">通知領域に削除ボタンを表示する</string>
   <string name="global_settings_lock_screen_notification_visibility_title">ロック画面通知</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">ロック画面通知なし</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">アプリケーション名</string>

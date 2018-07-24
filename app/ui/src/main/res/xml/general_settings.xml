@@ -282,12 +282,20 @@
             app:pref_summaryHasTime="%s" />
 
         <ListPreference
-            android:dialogTitle="@string/global_settings_notification_quick_delete_title"
-            android:entries="@array/notification_quick_delete_entries"
-            android:entryValues="@array/notification_quick_delete_values"
-            android:key="notification_quick_delete"
+            android:dialogTitle="@string/global_settings_notification_quick_move_type_title"
+            android:entries="@array/notification_quick_move_type_entries"
+            android:entryValues="@array/notification_quick_move_type_values"
+            android:key="notification_quick_move_type"
             android:summary="%s"
-            android:title="@string/global_settings_notification_quick_delete_title" />
+            android:title="@string/global_settings_notification_quick_move_type_title" />
+
+        <ListPreference
+            android:dialogTitle="@string/global_settings_notification_quick_move_trigger_title"
+            android:entries="@array/notification_quick_move_trigger_entries"
+            android:entryValues="@array/notification_quick_move_trigger_values"
+            android:key="notification_quick_move_trigger"
+            android:summary="%s"
+            android:title="@string/global_settings_notification_quick_move_trigger_title" />
 
         <ListPreference
             android:dialogTitle="@string/global_settings_lock_screen_notification_visibility_title"

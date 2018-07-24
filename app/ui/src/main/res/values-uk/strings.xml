@@ -280,11 +280,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="global_settings_notification_hide_subject_never">Ніколи</string>
   <string name="global_settings_notification_hide_subject_when_locked">Коли пристрій заблоковано</string>
   <string name="global_settings_notification_hide_subject_always">Завжди</string>
-  <string name="global_settings_notification_quick_delete_title">Показувати кнопку \"Видалити\"</string>
-  <string name="global_settings_notification_quick_delete_never">Ніколи</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Сповіщення для одного повідомлення</string>
-  <string name="global_settings_notification_quick_delete_always">Завжди</string>
-  <string name="global_settings_notification_quick_delete_description">Показувати кнопку в сповіщеннях, що дозволяє швидке видалення повідомлень</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Нотатки заблокованого екрану</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">немає нотаток заблокованого екрану</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">ім\'я додатку</string>

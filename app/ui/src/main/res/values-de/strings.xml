@@ -292,11 +292,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_notification_hide_subject_never">Niemals</string>
   <string name="global_settings_notification_hide_subject_when_locked">Wenn der Bildschirm gesperrt ist</string>
   <string name="global_settings_notification_hide_subject_always">Immer</string>
-  <string name="global_settings_notification_quick_delete_title">Löschen erlauben</string>
-  <string name="global_settings_notification_quick_delete_never">Nie</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Für einzelne Nachricht</string>
-  <string name="global_settings_notification_quick_delete_always">Immer</string>
-  <string name="global_settings_notification_quick_delete_description">Der Benachrichtigung eine Schaltfläche zum Löschen der Nachrichten hinzufügen</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Sperrbildschirm-Benachrichtigungen</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Keine Sperrbildschirm-Benachrichtigungen</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Anwendungsname</string>

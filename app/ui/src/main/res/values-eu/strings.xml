@@ -291,11 +291,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="global_settings_notification_hide_subject_never">Inoiz ez</string>
   <string name="global_settings_notification_hide_subject_when_locked">Gailua blokeatuta dagoenean</string>
   <string name="global_settings_notification_hide_subject_always">Beti</string>
-  <string name="global_settings_notification_quick_delete_title">Erakutsi \'Ezabatu\' botoia</string>
-  <string name="global_settings_notification_quick_delete_never">Inoiz ez</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Mezu bakarreko jakinarazpenetarako</string>
-  <string name="global_settings_notification_quick_delete_always">Beti</string>
-  <string name="global_settings_notification_quick_delete_description">Erakutsi mezuak azkar ezabatzea ahalbidetzen duen botoi bat jakinarazpenetan</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Jakinarazpenak Blokeatutako Pantailan</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Jakinarazpenik ez blokeatutako pantailan</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Aplikazioaren izena</string>

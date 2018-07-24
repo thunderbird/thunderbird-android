@@ -288,11 +288,6 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="global_settings_notification_hide_subject_never">Soha</string>
   <string name="global_settings_notification_hide_subject_when_locked">Ha a készülék le van zárva</string>
   <string name="global_settings_notification_hide_subject_always">Mindig</string>
-  <string name="global_settings_notification_quick_delete_title">\'Törlés\' gomb megjelenítése</string>
-  <string name="global_settings_notification_quick_delete_never">Soha</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Egyszerű értesítés új levélnél</string>
-  <string name="global_settings_notification_quick_delete_always">Mindig</string>
-  <string name="global_settings_notification_quick_delete_description">Gomb mutatása az értesítések között a gyors üzenettörlés engedélyezéséhez</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Képernyőzár értesítések</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nincsenek képernyőzár értesítések</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Alkalmazás neve</string>

@@ -297,11 +297,6 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="global_settings_notification_hide_subject_never">Byth</string>
   <string name="global_settings_notification_hide_subject_when_locked">Pan mae\'r ddyfais ar glo</string>
   <string name="global_settings_notification_hide_subject_always">O hyd</string>
-  <string name="global_settings_notification_quick_delete_title">Dangos y botwm \'Dileu\'</string>
-  <string name="global_settings_notification_quick_delete_never">Byth</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Pan fydd hysbysiad un neges</string>
-  <string name="global_settings_notification_quick_delete_always">O hyd</string>
-  <string name="global_settings_notification_quick_delete_description">Dangos botwm yn yr hysbysiad sy\'n caniatáu dileu\'r neges yn gyflym</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Hysbysiadau ar y Sgrin Cloi</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Dim hysbysiadau ar y sgrin cloi</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Enw\'r ap</string>

@@ -285,11 +285,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="global_settings_notification_hide_subject_never">Nikdy</string>
   <string name="global_settings_notification_hide_subject_when_locked">Pri uzamknutom zariadení</string>
   <string name="global_settings_notification_hide_subject_always">Vždy</string>
-  <string name="global_settings_notification_quick_delete_title">Zobraziť tlačidlo \'Vymazať\'</string>
-  <string name="global_settings_notification_quick_delete_never">Nikdy</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Oznámenie pre jednu správu</string>
-  <string name="global_settings_notification_quick_delete_always">Vždy</string>
-  <string name="global_settings_notification_quick_delete_description">Zobraziť tlačidlo v oznámení pre rýchle vymazanie správy</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Oznámenia na obrazovke uzamknutia</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Žiadne oznámenia na obrazovke uzamknutia</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Názov aplikácie</string>

@@ -231,11 +231,6 @@
   <string name="global_settings_notification_hide_subject_never">Nikad</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kad je uređaj zaključan</string>
   <string name="global_settings_notification_hide_subject_always">Uvijek</string>
-  <string name="global_settings_notification_quick_delete_title">Prikaži gumb \'Obriši\'</string>
-  <string name="global_settings_notification_quick_delete_never">Nikada</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Za pojedinačnu obavijest poruke</string>
-  <string name="global_settings_notification_quick_delete_always">Uvijek</string>
-  <string name="global_settings_notification_quick_delete_description">Prikaži gumb u traci obavijesti koji dozvoljava brzo brisanje poruke</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Obavijesti Zaključanog Zaslona</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nema obavijesti zaključanog zaslona</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Naziv aplikacije</string>

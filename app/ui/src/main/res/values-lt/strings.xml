@@ -221,11 +221,6 @@
   <string name="global_settings_notification_hide_subject_never">Niekada</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kai įrenginys užrakintas</string>
   <string name="global_settings_notification_hide_subject_always">Visada</string>
-  <string name="global_settings_notification_quick_delete_title">Rodyti mygtuką „Šalinti“</string>
-  <string name="global_settings_notification_quick_delete_never">Niekada</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Vieno laiško pranešimui</string>
-  <string name="global_settings_notification_quick_delete_always">Visada</string>
-  <string name="global_settings_notification_quick_delete_description">Pranešimų juostoje rodyti mygtuką kuris leidžia greitai pašalinti laišką</string>
   <string name="quiet_time">Tylos laikas</string>
   <string name="quiet_time_description">Išjungti skambėjimą, pyptelėjimą ir mirgėjimą, nakties metu</string>
   <string name="quiet_time_starts">Tylos laikas prasideda</string>

@@ -292,11 +292,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_notification_hide_subject_never">Aldrei</string>
   <string name="global_settings_notification_hide_subject_when_locked">Þegar tækið er læst</string>
   <string name="global_settings_notification_hide_subject_always">Alltaf</string>
-  <string name="global_settings_notification_quick_delete_title">Sýna \'Eyða\' hnapp</string>
-  <string name="global_settings_notification_quick_delete_never">Aldrei</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Fyrir tilkynningu um stakan póst</string>
-  <string name="global_settings_notification_quick_delete_always">Alltaf</string>
-  <string name="global_settings_notification_quick_delete_description">Birta hnapp í tilkynningu sem gefur kost á að eyða skilaboðunum</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Tilkynningar á skjálæsingu</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Engar tilkynningar á skjálæsingu</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nafn forritsins</string>

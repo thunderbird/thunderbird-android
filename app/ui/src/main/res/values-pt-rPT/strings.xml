@@ -283,11 +283,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="global_settings_notification_hide_subject_never">Nunca</string>
   <string name="global_settings_notification_hide_subject_when_locked">Quando o dispositivo está bloqueado</string>
   <string name="global_settings_notification_hide_subject_always">Sempre</string>
-  <string name="global_settings_notification_quick_delete_title">Mostrar botão \'Eliminar\'</string>
-  <string name="global_settings_notification_quick_delete_never">Nunca</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Para notificações de apenas uma mensagem</string>
-  <string name="global_settings_notification_quick_delete_always">Sempre</string>
-  <string name="global_settings_notification_quick_delete_description">Mostrar um botão na notificação que permite a eliminação rápida de mensagens</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Notificações no ecrã de bloqueio</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Sem notificações no ecrã de bloqueio</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nome da aplicação</string>

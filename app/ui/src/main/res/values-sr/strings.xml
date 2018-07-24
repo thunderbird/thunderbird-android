@@ -287,11 +287,6 @@
   <string name="global_settings_notification_hide_subject_never">Никад</string>
   <string name="global_settings_notification_hide_subject_when_locked">Кад је уређај закључан</string>
   <string name="global_settings_notification_hide_subject_always">Увек</string>
-  <string name="global_settings_notification_quick_delete_title">Прикажи дугме за брисање</string>
-  <string name="global_settings_notification_quick_delete_never">Никад</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">За обавештења једне поруке</string>
-  <string name="global_settings_notification_quick_delete_always">Увек</string>
-  <string name="global_settings_notification_quick_delete_description">Прикажи дугме у обавештењу за брзо брисање поруке</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Обавештења на закључаном екрану</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Без обавештења на закључаном екрану</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Назив програма</string>

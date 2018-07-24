@@ -291,11 +291,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="global_settings_notification_hide_subject_never">Hiçbir zaman</string>
   <string name="global_settings_notification_hide_subject_when_locked">Cihaz kilitlendiği zaman</string>
   <string name="global_settings_notification_hide_subject_always">Her zaman</string>
-  <string name="global_settings_notification_quick_delete_title">\'Sil\' butonunu göster</string>
-  <string name="global_settings_notification_quick_delete_never">Hiçbir zaman</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Tek bir mesaj bildirimi için</string>
-  <string name="global_settings_notification_quick_delete_always">Her zaman</string>
-  <string name="global_settings_notification_quick_delete_description">Hızlı mesaj silmek için bildirimde buton göster</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Kilit Ekranı Bildirimleri</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Kilit ekranı bildirimi yok</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Uygulama adı</string>

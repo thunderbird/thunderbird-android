@@ -289,11 +289,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="global_settings_notification_hide_subject_never">Chan ann idir</string>
   <string name="global_settings_notification_hide_subject_when_locked">Nuair a bhios an t-uidheam glaiste</string>
   <string name="global_settings_notification_hide_subject_always">An-còmhnaidh</string>
-  <string name="global_settings_notification_quick_delete_title">Seall am putan “Sguab às”</string>
-  <string name="global_settings_notification_quick_delete_never">Chan ann idir</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Airson brath aon teachdaireachd</string>
-  <string name="global_settings_notification_quick_delete_always">An-còmhnaidh</string>
-  <string name="global_settings_notification_quick_delete_description">Seall putan sa bhrath a bheir comas dhut teachdaireachd a sguabadh às gu luath</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Brathan air an sgrìn-ghlasaidh</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Na seall brathan air an sgrìn-ghlasaidh</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Ainm na h-aplacaid</string>

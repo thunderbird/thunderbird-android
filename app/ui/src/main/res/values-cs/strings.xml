@@ -289,11 +289,6 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="global_settings_notification_hide_subject_never">Nikdy</string>
   <string name="global_settings_notification_hide_subject_when_locked">Když je telefon uzamčený</string>
   <string name="global_settings_notification_hide_subject_always">Vždy</string>
-  <string name="global_settings_notification_quick_delete_title">Zobrazit tlačítko \'Smazat\'</string>
-  <string name="global_settings_notification_quick_delete_never">Nikdy</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Pro mazaní jedné zprávy</string>
-  <string name="global_settings_notification_quick_delete_always">Vždy</string>
-  <string name="global_settings_notification_quick_delete_description">Zobrazit tlačítko pro rychlé mazání zpráv</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Oznámení na obrazovce uzamčení</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Žádná oznámení na obrazovce uzamčení</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Jméno aplikace</string>
