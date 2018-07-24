@@ -13,7 +13,8 @@ import android.support.v4.app.NotificationCompat.WearableExtender;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickMoveTrigger;
+import com.fsck.k9.K9.NotificationQuickMoveType;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.controller.MessageReference;
@@ -186,13 +187,13 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void disableOptionalActions() {
-        disableDeleteAction();
+        disableQuickMoveAction();
         disableArchiveAction();
         disableSpamAction();
     }
 
-    private void disableDeleteAction() {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
+    private void disableQuickMoveAction() {
+        K9.setNotificationQuickMoveTrigger(NotificationQuickMoveTrigger.NEVER);
     }
 
     private void disableArchiveAction() {
@@ -204,7 +205,8 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void enableDeleteAction() {
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
+        K9.setNotificationQuickMoveType(NotificationQuickMoveType.DELETE);
+        K9.setNotificationQuickMoveTrigger(NotificationQuickMoveTrigger.ALWAYS);
         K9.setConfirmDeleteFromNotification(false);
     }
 
@@ -217,7 +219,7 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void disableOptionalSummaryActions() {
-        disableDeleteAction();
+        disableQuickMoveAction();
         disableArchiveAction();
     }
 
