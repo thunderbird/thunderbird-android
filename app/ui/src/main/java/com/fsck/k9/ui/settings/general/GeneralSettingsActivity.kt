@@ -3,9 +3,11 @@ package com.fsck.k9.ui.settings.general
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback
 import android.support.v7.preference.PreferenceScreen
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.bytehamster.lib.preferencesearch.SearchPreferenceActionView
@@ -20,7 +22,8 @@ import com.fsck.k9.ui.fragmentTransactionWithBackStack
 class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, SearchPreferenceResultListener {
     private lateinit var searchPreferenceActionView: SearchPreferenceActionView
     private lateinit var searchPreferenceMenuItem: MenuItem
-
+    private lateinit var searchQuery: String
+    private var searchEnabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,9 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
             fragmentTransaction {
                 add(R.id.generalSettingsContainer, GeneralSettingsFragment.create())
             }
+        } else {
+            searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY)
+            searchEnabled = savedInstanceState.getBoolean(KEY_SEARCH_ENABLED)
         }
     }
 
@@ -83,6 +89,15 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
                 return true
             }
         })
+
+        if (searchEnabled) {
+            Handler().post {
+                // If we do not use a handler here, it will not be possible
+                // to use the menuItem after dismissing the searchView
+                searchPreferenceMenuItem.expandActionView()
+                searchPreferenceActionView.setQuery(searchQuery, false)
+            }
+        }
         return true
     }
 
@@ -113,9 +128,18 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
 
 
     companion object {
+        private const val KEY_SEARCH_QUERY = "search_query"
+        private const val KEY_SEARCH_ENABLED = "search_enabled"
         fun start(context: Context) {
             val intent = Intent(context, GeneralSettingsActivity::class.java)
             context.startActivity(intent)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(KEY_SEARCH_QUERY, searchPreferenceActionView.query.toString())
+        outState.putBoolean(KEY_SEARCH_ENABLED, !searchPreferenceActionView.isIconified)
+        searchPreferenceActionView.onBackPressed()
+        super.onSaveInstanceState(outState)
     }
 }
