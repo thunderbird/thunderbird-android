@@ -26,7 +26,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.backend.BackendManager;
+import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.K9Activity;
@@ -36,8 +39,6 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.ServerSettings.Type;
-import com.fsck.k9.mail.TransportUris;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 import timber.log.Timber;
@@ -49,6 +50,9 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
     private static final String STATE_SECURITY_TYPE_POSITION = "stateSecurityTypePosition";
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
+
+
+    private final BackendManager backendManager = DI.get(BackendManager.class);
 
     private EditText mUsernameView;
     private EditText mPasswordView;
@@ -153,7 +157,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
 
         try {
-            ServerSettings settings = TransportUris.decodeTransportUri(mAccount.getTransportUri());
+            ServerSettings settings = backendManager.decodeTransportUri(mAccount.getTransportUri());
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
 
@@ -443,7 +447,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
         mPortView.removeTextChangedListener(validationTextWatcher);
-        mPortView.setText(String.valueOf(AccountCreator.getDefaultPort(securityType, Type.SMTP)));
+        mPortView.setText(String.valueOf(AccountCreator.getDefaultPort(securityType, Protocols.SMTP)));
         mPortView.addTextChangedListener(validationTextWatcher);
     }
 
@@ -484,8 +488,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         String newHost = mServerView.getText().toString();
         int newPort = Integer.parseInt(mPortView.getText().toString());
-        ServerSettings server = new ServerSettings(Type.SMTP, newHost, newPort, securityType, authType, username, password, clientCertificateAlias);
-        uri = TransportUris.createTransportUri(server);
+        ServerSettings server = new ServerSettings(Protocols.SMTP, newHost, newPort, securityType, authType, username, password, clientCertificateAlias);
+        uri = backendManager.createTransportUri(server);
         mAccount.deleteCertificate(newHost, newPort, MailServerDirection.OUTGOING);
         mAccount.setTransportUri(uri);
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);

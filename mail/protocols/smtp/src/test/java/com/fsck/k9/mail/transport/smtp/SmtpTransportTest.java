@@ -1,7 +1,6 @@
 package com.fsck.k9.mail.transport.smtp;
 
 
-import java.io.IOException;
 import java.net.InetAddress;
 
 import com.fsck.k9.mail.AuthType;
@@ -12,7 +11,6 @@ import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.XOAuth2ChallengeParserTest;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.helpers.TestMessageBuilder;
@@ -56,20 +54,6 @@ public class SmtpTransportTest {
         oAuth2TokenProvider = mock(OAuth2TokenProvider.class);
         when(oAuth2TokenProvider.getToken(eq(USERNAME), anyLong()))
                 .thenReturn("oldToken").thenReturn("newToken");
-    }
-
-    @Test
-    public void SmtpTransport_withValidTransportUri() throws Exception {
-        StoreConfig storeConfig = setupStoreConfigWithTransportUri("smtp://user:password:CRAM_MD5@server:123456");
-
-        new SmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider);
-    }
-
-    @Test(expected = MessagingException.class)
-    public void SmtpTransport_withInvalidTransportUri_shouldThrow() throws Exception {
-        StoreConfig storeConfig = setupStoreConfigWithTransportUri("smpt://");
-
-        new SmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider);
     }
 
     @Test
@@ -923,32 +907,30 @@ public class SmtpTransportTest {
     }
 
 
-    private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server) throws IOException,
-            MessagingException {
+    private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server) throws Exception {
         return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE);
     }
 
-    private SmtpTransport startServerAndCreateSmtpTransportWithoutPassword(MockSmtpServer server) throws IOException,
-            MessagingException {
+    private SmtpTransport startServerAndCreateSmtpTransportWithoutPassword(MockSmtpServer server) throws Exception {
         return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null,
                 "localhost", "127.0.0.1");
     }
 
     private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server, AuthType authenticationType,
-            ConnectionSecurity connectionSecurity) throws IOException, MessagingException {
+            ConnectionSecurity connectionSecurity) throws Exception {
         return startServerAndCreateSmtpTransport(server, authenticationType, connectionSecurity, PASSWORD,
                 "localhost", "127.0.0.1");
     }
 
     private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server, AuthType authenticationType,
-            ConnectionSecurity connectionSecurity, String password,
-            String injectedHostname, String injectedIP) throws IOException, MessagingException {
+            ConnectionSecurity connectionSecurity, String password, String injectedHostname, String injectedIP)
+            throws Exception {
         server.start();
 
         String host = server.getHost();
         int port = server.getPort();
         ServerSettings serverSettings = new ServerSettings(
-                Type.SMTP,
+                "smtp",
                 host,
                 port,
                 connectionSecurity,
@@ -956,15 +938,9 @@ public class SmtpTransportTest {
                 USERNAME,
                 password,
                 CLIENT_CERTIFICATE_ALIAS);
-        String uri = SmtpTransportUriCreator.createSmtpUri(serverSettings);
-        StoreConfig storeConfig = setupStoreConfigWithTransportUri(uri);
 
-        return new TestSmtpTransport(storeConfig, socketFactory, oAuth2TokenProvider, injectedHostname, injectedIP);
-    }
-
-    private StoreConfig setupStoreConfigWithTransportUri(String value) {
-        when(storeConfig.getTransportUri()).thenReturn(value);
-        return storeConfig;
+        return new TestSmtpTransport(serverSettings, storeConfig, socketFactory, oAuth2TokenProvider, injectedHostname,
+                injectedIP);
     }
 
     private TestMessageBuilder getDefaultMessageBuilder() {
@@ -1007,11 +983,10 @@ public class SmtpTransportTest {
         private final String injectedHostname;
         private final String injectedIP;
 
-        TestSmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-                OAuth2TokenProvider oAuth2TokenProvider,
-                String injectedHostname, String injectedIP)
-                throws MessagingException {
-            super(storeConfig, trustedSocketFactory, oAuth2TokenProvider);
+        TestSmtpTransport(ServerSettings serverSettings, StoreConfig storeConfig,
+                TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oAuth2TokenProvider,
+                String injectedHostname, String injectedIP)  {
+            super(serverSettings, storeConfig, trustedSocketFactory, oAuth2TokenProvider);
             this.injectedHostname = injectedHostname;
             this.injectedIP = injectedIP;
         }

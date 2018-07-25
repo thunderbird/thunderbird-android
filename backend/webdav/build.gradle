@@ -12,7 +12,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
     api project(":backend:api")
-    implementation project(":mail:protocols:webdav")
+    api project(":mail:protocols:webdav")
 
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 

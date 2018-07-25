@@ -59,7 +59,7 @@ import com.fsck.k9.activity.ActivityListener;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.misc.ContactPicture;
-import com.fsck.k9.activity.misc.ContactPictureLoader;
+import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
@@ -430,7 +430,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         stars = K9.messageListStars();
 
         if (K9.showContactPicture()) {
-            contactsPictureLoader = ContactPicture.getContactPictureLoader(getActivity());
+            contactsPictureLoader = ContactPicture.getContactPictureLoader();
         }
 
         restoreInstanceState(savedInstanceState);

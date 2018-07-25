@@ -36,7 +36,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.ServerSettings.Type;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -83,28 +82,21 @@ public class SmtpTransport extends Transport {
     private boolean shouldHideHostname;
 
 
-    public SmtpTransport(StoreConfig storeConfig, TrustedSocketFactory trustedSocketFactory,
-            OAuth2TokenProvider oauthTokenProvider) throws MessagingException {
-        ServerSettings settings;
-        try {
-            settings = SmtpTransportUriDecoder.decodeSmtpUri(storeConfig.getTransportUri());
-        } catch (IllegalArgumentException e) {
-            throw new MessagingException("Error while decoding transport URI", e);
-        }
-
-        if (settings.type != Type.SMTP) {
+    public SmtpTransport(ServerSettings serverSettings, StoreConfig storeConfig,
+            TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oauthTokenProvider) {
+        if (!serverSettings.type.equals("smtp")) {
             throw new IllegalArgumentException("Expected SMTP StoreConfig!");
         }
 
-        host = settings.host;
-        port = settings.port;
+        host = serverSettings.host;
+        port = serverSettings.port;
 
-        connectionSecurity = settings.connectionSecurity;
+        connectionSecurity = serverSettings.connectionSecurity;
 
-        authType = settings.authenticationType;
-        username = settings.username;
-        password = settings.password;
-        clientCertificateAlias = settings.clientCertificateAlias;
+        authType = serverSettings.authenticationType;
+        username = serverSettings.username;
+        password = serverSettings.password;
+        clientCertificateAlias = serverSettings.clientCertificateAlias;
 
         this.trustedSocketFactory = trustedSocketFactory;
         this.oauthTokenProvider = oauthTokenProvider;
@@ -842,5 +834,14 @@ public class SmtpTransport extends Transport {
     @VisibleForTesting
     protected String getHostAddress(InetAddress localAddress) {
         return localAddress.getHostAddress();
+    }
+
+    public void checkSettings() throws MessagingException {
+        close();
+        try {
+            open();
+        } finally {
+            close();
+        }
     }
 }

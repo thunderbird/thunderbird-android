@@ -776,6 +776,10 @@ public class Account implements BaseAccount, StoreConfig {
         this.description = description;
     }
 
+    public String getDisplayName() {
+        return description != null ? description : getEmail();
+    }
+
     public synchronized String getName() {
         return identities.get(0).getName();
     }

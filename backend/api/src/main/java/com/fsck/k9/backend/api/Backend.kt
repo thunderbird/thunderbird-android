@@ -22,7 +22,7 @@ interface Backend {
     val isPushCapable: Boolean
 
     @Throws(MessagingException::class)
-    fun getFolders(forceListAll: Boolean): List<FolderInfo>
+    fun refreshFolderList()
 
     // TODO: Add a way to cancel the sync process
     fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?)
@@ -82,5 +82,11 @@ interface Backend {
     fun createPusher(receiver: PushReceiver): Pusher
 
     @Throws(MessagingException::class)
-    fun checkServerSettings()
+    fun checkIncomingServerSettings()
+
+    @Throws(MessagingException::class)
+    fun sendMessage(message: Message)
+
+    @Throws(MessagingException::class)
+    fun checkOutgoingServerSettings()
 }

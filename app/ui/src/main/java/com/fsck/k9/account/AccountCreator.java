@@ -12,7 +12,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.ServerSettings.Type;
+import com.fsck.k9.preferences.Protocols;
 import com.larswerkman.colorpicker.ColorPicker;
 
 
@@ -35,37 +35,41 @@ public class AccountCreator {
     };
 
 
-    public static DeletePolicy getDefaultDeletePolicy(Type type) {
+    public static DeletePolicy getDefaultDeletePolicy(String type) {
         switch (type) {
-            case IMAP: {
-                return DeletePolicy.ON_DELETE;
-            }
-            case POP3: {
-                return DeletePolicy.NEVER;
-            }
-            case WebDAV: {
-                return DeletePolicy.ON_DELETE;
-            }
-            case SMTP: {
-                throw new IllegalStateException("Delete policy doesn't apply to SMTP");
-            }
+            case Protocols.IMAP: return DeletePolicy.ON_DELETE;
+            case Protocols.POP3: return DeletePolicy.NEVER;
+            case Protocols.WEBDAV: return DeletePolicy.ON_DELETE;
         }
 
         throw new AssertionError("Unhandled case: " + type);
     }
 
-    public static int getDefaultPort(ConnectionSecurity securityType, Type storeType) {
-        switch (securityType) {
-            case NONE:
-            case STARTTLS_REQUIRED: {
-                return storeType.defaultPort;
-            }
-            case SSL_TLS_REQUIRED: {
-                return storeType.defaultTlsPort;
-            }
+    public static int getDefaultPort(ConnectionSecurity securityType, String serverType) {
+        switch (serverType) {
+            case Protocols.IMAP: return getImapDefaultPort(securityType);
+            case Protocols.WEBDAV: return getWebDavDefaultPort(securityType);
+            case Protocols.POP3: return getPop3DefaultPort(securityType);
+            case Protocols.SMTP: return getSmtpDefaultPort(securityType);
         }
 
-        throw new AssertionError("Unhandled ConnectionSecurity type encountered: " + securityType);
+        throw new AssertionError("Unhandled case: " + serverType);
+    }
+
+    private static int getImapDefaultPort(ConnectionSecurity connectionSecurity) {
+        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 993 : 143;
+    }
+
+    private static int getPop3DefaultPort(ConnectionSecurity connectionSecurity) {
+        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 995 : 110;
+    }
+
+    private static int getWebDavDefaultPort(ConnectionSecurity connectionSecurity) {
+        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 443 : 80;
+    }
+
+    private static int getSmtpDefaultPort(ConnectionSecurity connectionSecurity) {
+        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 465 : 587;
     }
 
     /*

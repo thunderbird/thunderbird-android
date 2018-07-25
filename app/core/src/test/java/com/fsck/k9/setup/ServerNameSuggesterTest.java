@@ -1,7 +1,7 @@
 package com.fsck.k9.setup;
 
 
-import com.fsck.k9.mail.ServerSettings.Type;
+import com.fsck.k9.preferences.Protocols;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ public class ServerNameSuggesterTest {
 
     @Test
     public void suggestServerName_forImapServer() throws Exception {
-        Type serverType = Type.IMAP;
+        String serverType = Protocols.IMAP;
         String domainPart = "example.org";
 
         String result = serverNameSuggester.suggestServerName(serverType, domainPart);
@@ -29,7 +29,7 @@ public class ServerNameSuggesterTest {
 
     @Test
     public void suggestServerName_forPop3Server() throws Exception {
-        Type serverType = Type.POP3;
+        String serverType = Protocols.POP3;
         String domainPart = "example.org";
 
         String result = serverNameSuggester.suggestServerName(serverType, domainPart);
@@ -39,7 +39,7 @@ public class ServerNameSuggesterTest {
 
     @Test
     public void suggestServerName_forWebDavServer() throws Exception {
-        Type serverType = Type.WebDAV;
+        String serverType = Protocols.WEBDAV;
         String domainPart = "example.org";
 
         String result = serverNameSuggester.suggestServerName(serverType, domainPart);
@@ -49,7 +49,7 @@ public class ServerNameSuggesterTest {
 
     @Test
     public void suggestServerName_forSmtpServer() throws Exception {
-        Type serverType = Type.SMTP;
+        String serverType = Protocols.SMTP;
         String domainPart = "example.org";
 
         String result = serverNameSuggester.suggestServerName(serverType, domainPart);

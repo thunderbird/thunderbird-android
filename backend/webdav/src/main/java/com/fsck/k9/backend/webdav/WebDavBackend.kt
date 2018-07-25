@@ -2,7 +2,6 @@ package com.fsck.k9.backend.webdav
 
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.api.BackendStorage
-import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.BodyFactory
@@ -15,14 +14,16 @@ import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.PushReceiver
 import com.fsck.k9.mail.Pusher
 import com.fsck.k9.mail.store.webdav.WebDavStore
+import com.fsck.k9.mail.transport.WebDavTransport
 
 class WebDavBackend(
         accountName: String,
         backendStorage: BackendStorage,
-        private val webDavStore: WebDavStore
+        private val webDavStore: WebDavStore,
+        private val webDavTransport: WebDavTransport
 ) : Backend {
     private val webDavSync: WebDavSync = WebDavSync(accountName, backendStorage, webDavStore)
-    private val commandGetFolders = CommandGetFolders(webDavStore)
+    private val commandGetFolders = CommandRefreshFolderList(backendStorage, webDavStore)
     private val commandSetFlag = CommandSetFlag(webDavStore)
     private val commandMarkAllAsRead = CommandMarkAllAsRead(webDavStore)
     private val commandMoveOrCopyMessages = CommandMoveOrCopyMessages(webDavStore)
@@ -38,8 +39,8 @@ class WebDavBackend(
     override val supportsSearchByDate = false
     override val isPushCapable = false
 
-    override fun getFolders(forceListAll: Boolean): List<FolderInfo> {
-        return commandGetFolders.getFolders(forceListAll)
+    override fun refreshFolderList() {
+        commandGetFolders.refreshFolderList()
     }
 
     override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?) {
@@ -116,7 +117,15 @@ class WebDavBackend(
         throw UnsupportedOperationException("not supported")
     }
 
-    override fun checkServerSettings() {
+    override fun checkIncomingServerSettings() {
         webDavStore.checkSettings()
+    }
+
+    override fun sendMessage(message: Message) {
+        webDavTransport.sendMessage(message)
+    }
+
+    override fun checkOutgoingServerSettings() {
+        webDavTransport.checkSettings()
     }
 }

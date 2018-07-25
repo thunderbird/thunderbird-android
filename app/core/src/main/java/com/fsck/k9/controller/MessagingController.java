@@ -44,7 +44,6 @@ import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
-import com.fsck.k9.backend.api.FolderInfo;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.cache.EmailProviderCache;
@@ -71,8 +70,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.Pusher;
-import com.fsck.k9.mail.Transport;
-import com.fsck.k9.mail.TransportProvider;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -128,7 +125,6 @@ public class MessagingController {
     private final ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<>();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
-    private final TransportProvider transportProvider;
     private final AccountStatsCollector accountStatsCollector;
     private final CoreResourceProvider resourceProvider;
 
@@ -142,10 +138,9 @@ public class MessagingController {
             Context appContext = context.getApplicationContext();
             NotificationController notificationController = DI.get(NotificationController.class);
             Contacts contacts = Contacts.getInstance(context);
-            TransportProvider transportProvider = TransportProvider.getInstance();
             AccountStatsCollector accountStatsCollector = new DefaultAccountStatsCollector(context);
             CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
-            inst = new MessagingController(appContext, notificationController, contacts, transportProvider,
+            inst = new MessagingController(appContext, notificationController, contacts,
                     accountStatsCollector, resourceProvider);
         }
         return inst;
@@ -154,12 +149,10 @@ public class MessagingController {
 
     @VisibleForTesting
     MessagingController(Context context, NotificationController notificationController, Contacts contacts,
-            TransportProvider transportProvider, AccountStatsCollector accountStatsCollector,
-            CoreResourceProvider resourceProvider) {
+            AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider) {
         this.context = context;
         this.notificationController = notificationController;
         this.contacts = contacts;
-        this.transportProvider = transportProvider;
         this.accountStatsCollector = accountStatsCollector;
         this.resourceProvider = resourceProvider;
 
@@ -429,51 +422,9 @@ public class MessagingController {
         List<LocalFolder> localFolders = null;
         try {
             Backend backend = getBackend(account);
-            List<FolderInfo> folders = backend.getFolders(false);
+            backend.refreshFolderList();
 
             LocalStore localStore = account.getLocalStore();
-            Map<String, String> remoteFolderNameMap = new HashMap<>();
-            List<LocalFolder> foldersToCreate = new LinkedList<>();
-
-            localFolders = localStore.getPersonalNamespaces(false);
-            Set<String> localFolderServerIds = new HashSet<>();
-            for (Folder localFolder : localFolders) {
-                localFolderServerIds.add(localFolder.getServerId());
-            }
-
-            for (FolderInfo folder : folders) {
-                String folderServerId = folder.getServerId();
-                if (!localFolderServerIds.contains(folderServerId)) {
-                    LocalFolder localFolder = localStore.getFolder(folderServerId);
-                    foldersToCreate.add(localFolder);
-                }
-                remoteFolderNameMap.put(folderServerId, folder.getName());
-            }
-            localStore.createFolders(foldersToCreate, account.getDisplayCount());
-
-            localFolders = localStore.getPersonalNamespaces(false);
-
-            /*
-             * Clear out any folders that are no longer on the remote store.
-             */
-            for (LocalFolder localFolder : localFolders) {
-                String localFolderServerId = localFolder.getServerId();
-
-                // FIXME: This is a hack used to clean up when we accidentally created the
-                //        special placeholder folder "-NONE-".
-                if (K9.FOLDER_NONE.equals(localFolderServerId)) {
-                    localFolder.delete(false);
-                }
-
-                boolean folderExistsOnServer = remoteFolderNameMap.containsKey(localFolderServerId);
-                if (folderExistsOnServer) {
-                    String folderName = remoteFolderNameMap.get(localFolderServerId);
-                    localFolder.setName(folderName);
-                } else if (!account.isSpecialFolder(localFolderServerId)) {
-                    localFolder.delete(false);
-                }
-            }
-
             localFolders = localStore.getPersonalNamespaces(false);
 
             for (MessagingListener l : getListeners(listener)) {
@@ -483,10 +434,10 @@ public class MessagingController {
                 l.listFoldersFinished(account);
             }
         } catch (Exception e) {
+            Timber.e(e);
             for (MessagingListener l : getListeners(listener)) {
                 l.listFoldersFailed(account, "");
             }
-            Timber.e(e);
         } finally {
             if (localFolders != null) {
                 for (Folder localFolder : localFolders) {
@@ -1497,6 +1448,10 @@ public class MessagingController {
         }
     }
 
+    public void sendMessageBlocking(Account account, Message message) throws MessagingException {
+        Backend backend = getBackend(account);
+        backend.sendMessage(message);
+    }
 
     public void sendPendingMessages(MessagingListener listener) {
         final Preferences prefs = Preferences.getPreferences(context);
@@ -1603,7 +1558,7 @@ public class MessagingController {
             Timber.i("Scanning folder '%s' (%d) for messages to send",
                     account.getOutboxFolder(), localFolder.getDatabaseId());
 
-            Transport transport = transportProvider.getTransport(context, account);
+            Backend backend = getBackend(account);
 
             for (LocalMessage message : localMessages) {
                 if (message.isSet(Flag.DELETED)) {
@@ -1638,7 +1593,7 @@ public class MessagingController {
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, true);
 
                         Timber.i("Sending message with UID %s", message.getUid());
-                        transport.sendMessage(message);
+                        backend.sendMessage(message);
 
                         message.setFlag(Flag.X_SEND_IN_PROGRESS, false);
                         message.setFlag(Flag.SEEN, true);
@@ -1851,8 +1806,12 @@ public class MessagingController {
         return getBackend(account).getSupportsSearchByDate();
     }
 
-    public void checkServerSettings(Account account) throws MessagingException {
-        getBackend(account).checkServerSettings();
+    public void checkIncomingServerSettings(Account account) throws MessagingException {
+        getBackend(account).checkIncomingServerSettings();
+    }
+
+    public void checkOutgoingServerSettings(Account account) throws MessagingException {
+        getBackend(account).checkOutgoingServerSettings();
     }
 
     public void moveMessages(final Account srcAccount, final String srcFolder,

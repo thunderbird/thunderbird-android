@@ -101,9 +101,13 @@ public class LocalFolder extends Folder<LocalMessage> {
 
 
     public LocalFolder(LocalStore localStore, String serverId) {
-        super();
+        this(localStore, serverId, null);
+    }
+
+    public LocalFolder(LocalStore localStore, String serverId, String name) {
         this.localStore = localStore;
         this.serverId = serverId;
+        this.name = name;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
 
         if (getAccount().getInboxFolder().equals(getServerId())) {

@@ -1,17 +1,16 @@
 package com.fsck.k9.mail.store.webdav;
 
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.ServerSettings;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings;
+
 
 /**
  * This class is used to store the decoded contents of an WebDavStore URI.
- *
- * @see WebDavStore#decodeUri(String)
  */
 public class WebDavStoreSettings extends ServerSettings {
     public static final String ALIAS_KEY = "alias";
@@ -24,11 +23,10 @@ public class WebDavStoreSettings extends ServerSettings {
     public final String authPath;
     public final String mailboxPath;
 
-    protected WebDavStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
-                                  AuthType authenticationType, String username, String password,
-                                  String clientCertificateAlias, String alias,
-                                  String path, String authPath, String mailboxPath) {
-        super(Type.WebDAV, host, port, connectionSecurity, authenticationType, username,
+    public WebDavStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
+            AuthType authenticationType, String username, String password, String clientCertificateAlias, String alias,
+            String path, String authPath, String mailboxPath) {
+        super("webdav", host, port, connectionSecurity, authenticationType, username,
                 password, clientCertificateAlias);
         this.alias = alias;
         this.path = path;

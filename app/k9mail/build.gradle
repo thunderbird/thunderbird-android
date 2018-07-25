@@ -14,6 +14,9 @@ dependencies {
 
     implementation project(":app:ui")
     implementation project(":app:core")
+    implementation project(":backend:imap")
+    implementation project(":backend:pop3")
+    implementation project(":backend:webdav")
 
     implementation "com.android.support:appcompat-v7:${versions.supportLibrary}"
 

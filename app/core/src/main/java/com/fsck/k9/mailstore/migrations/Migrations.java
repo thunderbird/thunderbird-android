@@ -83,6 +83,8 @@ public class Migrations {
                 MigrationTo61.removeErrorsFolder(db);
             case 61:
                 MigrationTo62.addServerIdColumnToFoldersTable(db);
+            case 63:
+                MigrationTo64.addExtraValuesTables(db);
         }
 
         if (shouldBuildFtsTable) {

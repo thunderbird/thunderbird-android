@@ -153,7 +153,7 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     }
 
     public static void setContactPhotoOrPlaceholder(Context context, ImageView imageView, Recipient recipient) {
-        ContactPicture.getContactPictureLoader(context).loadContactPicture(recipient, imageView);
+        ContactPicture.getContactPictureLoader().setContactPicture(imageView, recipient);
     }
 
     @Override

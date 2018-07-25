@@ -66,6 +66,8 @@ import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.backend.BackendManager;
+import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
@@ -76,8 +78,6 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.TransportUris;
-import com.fsck.k9.mail.store.RemoteStoreManager;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
@@ -687,6 +687,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * Ask the user for the incoming/outgoing server passwords.
      */
     private static class PasswordPromptDialog implements NonConfigurationInstance, TextWatcher {
+        private final BackendManager backendManager = DI.get(BackendManager.class);
+
         private AlertDialog mDialog;
         private EditText mIncomingPasswordView;
         private EditText mOutgoingPasswordView;
@@ -747,8 +749,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         private void show(final Accounts activity, boolean restore) {
-            ServerSettings incoming = RemoteStoreManager.decodeStoreUri(mAccount.getStoreUri());
-            ServerSettings outgoing = TransportUris.decodeTransportUri(mAccount.getTransportUri());
+            ServerSettings incoming = backendManager.decodeStoreUri(mAccount.getStoreUri());
+            ServerSettings outgoing = backendManager.decodeTransportUri(mAccount.getTransportUri());
 
             /*
              * Don't ask for the password to the outgoing server for WebDAV
@@ -757,7 +759,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
              * Also don't ask when the AuthType is EXTERNAL.
              */
             boolean configureOutgoingServer = AuthType.EXTERNAL != outgoing.authenticationType
-                    && !(ServerSettings.Type.WebDAV == outgoing.type)
+                    && !outgoing.type.equals(Protocols.WEBDAV)
                     && outgoing.username != null
                     && !outgoing.username.isEmpty()
                     && (outgoing.password == null || outgoing.password
@@ -933,6 +935,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      * Set the incoming/outgoing server password in the background.
      */
     private static class SetPasswordsAsyncTask extends ExtendedAsyncTask<Void, Void, Void> {
+        private final BackendManager backendManager = DI.get(BackendManager.class);
+
         private Account mAccount;
         private String mIncomingPassword;
         private String mOutgoingPassword;
@@ -965,18 +969,18 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 if (mIncomingPassword != null) {
                     // Set incoming server password
                     String storeUri = mAccount.getStoreUri();
-                    ServerSettings incoming = RemoteStoreManager.decodeStoreUri(storeUri);
+                    ServerSettings incoming = backendManager.decodeStoreUri(storeUri);
                     ServerSettings newIncoming = incoming.newPassword(mIncomingPassword);
-                    String newStoreUri = RemoteStoreManager.createStoreUri(newIncoming);
+                    String newStoreUri = backendManager.createStoreUri(newIncoming);
                     mAccount.setStoreUri(newStoreUri);
                 }
 
                 if (mOutgoingPassword != null) {
                     // Set outgoing server password
                     String transportUri = mAccount.getTransportUri();
-                    ServerSettings outgoing = TransportUris.decodeTransportUri(transportUri);
+                    ServerSettings outgoing = backendManager.decodeTransportUri(transportUri);
                     ServerSettings newOutgoing = outgoing.newPassword(mOutgoingPassword);
-                    String newTransportUri = TransportUris.createTransportUri(newOutgoing);
+                    String newTransportUri = backendManager.createTransportUri(newOutgoing);
                     mAccount.setTransportUri(newTransportUri);
                 }
 

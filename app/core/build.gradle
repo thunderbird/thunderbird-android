@@ -9,14 +9,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
     api project(":mail:common")
-    api project(":mail:protocols:imap")
-    api project(":mail:protocols:pop3")
-    api project(":mail:protocols:webdav")
-    api project(":mail:protocols:smtp")
     api project(":backend:api")
-    api project(":backend:imap")
-    api project(":backend:pop3")
-    api project(":backend:webdav")
 
     api project(':plugins:openpgp-api-lib:openpgp-api')
 
@@ -31,6 +24,8 @@ dependencies {
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
 
     testImplementation project(':mail:testing')
+    testImplementation project(":backend:imap")
+    testImplementation project(":mail:protocols:smtp")
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"

@@ -13,6 +13,7 @@ import android.widget.RemoteViews;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageList;
+import com.fsck.k9.search.SearchAccount;
 
 
 public class MessageListWidgetProvider extends AppWidgetProvider {
@@ -54,6 +55,9 @@ public class MessageListWidgetProvider extends AppWidgetProvider {
         PendingIntent composeAction = composeActionPendingIntent(context);
         views.setOnClickPendingIntent(R.id.new_message, composeAction);
 
+        PendingIntent headerClickAction = viewUnifiedInboxPendingIntent(context);
+        views.setOnClickPendingIntent(R.id.top_controls, headerClickAction);
+
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
@@ -74,6 +78,14 @@ public class MessageListWidgetProvider extends AppWidgetProvider {
         intent.setAction(Intent.ACTION_VIEW);
 
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private PendingIntent viewUnifiedInboxPendingIntent(Context context) {
+        SearchAccount unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount();
+        Intent intent = MessageList.intentDisplaySearch(
+                context, unifiedInboxAccount.getRelatedSearch(), true, true, true);
+
+        return PendingIntent.getActivity(context, -1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent composeActionPendingIntent(Context context) {

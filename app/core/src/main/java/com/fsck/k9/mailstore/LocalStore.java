@@ -179,7 +179,7 @@ public class LocalStore {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 63;
+    public static final int DB_VERSION = 64;
 
     private final Context context;
     private final ContentResolver contentResolver;
@@ -392,6 +392,10 @@ public class LocalStore {
 
     public LocalFolder getFolder(String serverId) {
         return new LocalFolder(this, serverId);
+    }
+
+    public LocalFolder getFolder(String serverId, String name) {
+        return new LocalFolder(this, serverId, name);
     }
 
     // TODO this takes about 260-300ms, seems slow.

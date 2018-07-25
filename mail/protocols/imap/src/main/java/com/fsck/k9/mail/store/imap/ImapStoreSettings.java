@@ -11,8 +11,6 @@ import com.fsck.k9.mail.ServerSettings;
 
 /**
  * This class is used to store the decoded contents of an ImapStore URI.
- *
- * @see ImapStore#decodeUri(String)
  */
 public class ImapStoreSettings extends ServerSettings {
     public static final String AUTODETECT_NAMESPACE_KEY = "autoDetectNamespace";
@@ -23,11 +21,11 @@ public class ImapStoreSettings extends ServerSettings {
     public final String pathPrefix;
 
 
-    protected ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
+    public ImapStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
             AuthType authenticationType, String username, String password, String clientCertificateAlias,
             boolean autodetectNamespace, String pathPrefix) {
 
-        super(Type.IMAP, host, port, connectionSecurity, authenticationType, username,
+        super("imap", host, port, connectionSecurity, authenticationType, username,
                 password, clientCertificateAlias);
 
         this.autoDetectNamespace = autodetectNamespace;

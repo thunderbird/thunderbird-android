@@ -1,5 +1,6 @@
 package com.fsck.k9
 
+import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.external.BroadcastSenderListener
 import com.fsck.k9.external.externalModule
 import com.fsck.k9.notification.notificationModule
@@ -27,5 +28,6 @@ val appModules = listOf(
         messageListWidgetModule,
         unreadWidgetModule,
         notificationModule,
-        resourcesModule
+        resourcesModule,
+        backendsModule
 )

@@ -12,7 +12,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
     api project(":backend:api")
-    implementation project(":mail:protocols:imap")
+    api project(":mail:protocols:imap")
+    api project(":mail:protocols:smtp")
 
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 

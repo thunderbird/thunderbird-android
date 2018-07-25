@@ -116,7 +116,6 @@ public class MessageHelper {
             return address.getAddress();
         } else if (contacts != null) {
             final String name = contacts.getNameForAddress(address.getAddress());
-            // TODO: The results should probably be cached for performance reasons.
             if (name != null) {
                 if (changeContactNameColor) {
                     final SpannableString coloredName = new SpannableString(name);
