@@ -98,7 +98,8 @@ class StoreSchemaDefinition implements LockableDatabase.SchemaDefinition {
                 "display_class TEXT, " +
                 "notify_class TEXT default '"+ Folder.FolderClass.INHERITED.name() + "', " +
                 "more_messages TEXT default \"unknown\", " +
-                "server_id TEXT" +
+                "server_id TEXT," +
+                "local_only INTEGER" +
                 ")");
 
         db.execSQL("DROP INDEX IF EXISTS folder_server_id");

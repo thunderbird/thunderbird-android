@@ -130,7 +130,8 @@ public class LocalStore {
 
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
-        "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages, server_id";
+        "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages, server_id, " +
+        "local_only";
 
     static final int FOLDER_ID_INDEX = 0;
     static final int FOLDER_NAME_INDEX = 1;
@@ -147,6 +148,7 @@ public class LocalStore {
     static final int FOLDER_NOTIFY_CLASS_INDEX = 12;
     static final int MORE_MESSAGES_INDEX = 13;
     static final int FOLDER_SERVER_ID_INDEX = 14;
+    static final int LOCAL_ONLY_INDEX = 15;
 
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -179,7 +181,7 @@ public class LocalStore {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 64;
+    public static final int DB_VERSION = 65;
 
     private final Context context;
     private final ContentResolver contentResolver;
@@ -900,6 +902,7 @@ public class LocalStore {
                 for (LocalFolder folder : foldersToCreate) {
                     String serverId = folder.getServerId();
                     String name = folder.getName();
+                    boolean localOnly = folder.isLocalOnly();
 
                     if (K9.DEVELOPER_MODE) {
                         Cursor cursor = db.query("folders", new String[] { "id", "server_id" },
@@ -942,7 +945,7 @@ public class LocalStore {
                     }
                     folder.refresh(serverId, prefHolder);   // Recover settings from Preferences
 
-                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate, server_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
+                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate, server_id, local_only) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
                                    name,
                                    visibleLimit,
                                    prefHolder.inTopGroup ? 1 : 0,
@@ -951,7 +954,8 @@ public class LocalStore {
                                    prefHolder.notifyClass.name(),
                                    prefHolder.pushClass.name(),
                                    prefHolder.integrate ? 1 : 0,
-                                   serverId
+                                   serverId,
+                                   localOnly ? 1 : 0
                                });
 
                 }

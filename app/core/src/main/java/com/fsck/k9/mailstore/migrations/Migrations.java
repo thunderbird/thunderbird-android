@@ -85,6 +85,8 @@ public class Migrations {
                 MigrationTo62.addServerIdColumnToFoldersTable(db);
             case 63:
                 MigrationTo64.addExtraValuesTables(db);
+            case 64:
+                MigrationTo65.addLocalOnlyColumnToFoldersTable(db, migrationsHelper);
         }
 
         if (shouldBuildFtsTable) {

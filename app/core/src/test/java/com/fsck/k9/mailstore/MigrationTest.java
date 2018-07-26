@@ -721,6 +721,9 @@ public class MigrationTest extends K9RobolectricTest {
         //FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
         preferences.loadAccounts();
 
-        return preferences.newAccount();
+        Account account = preferences.newAccount();
+        account.setStoreUri("imap+tls+://user:password@imap.example.org");
+
+        return account;
     }
 }

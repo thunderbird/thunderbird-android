@@ -22,7 +22,7 @@ class K9BackendStorage(
     }
 
     override fun getFolderServerIds(): List<String> {
-        return database.query("folders", arrayOf("server_id"), "server_id != ?", account.outboxFolder) { cursor ->
+        return database.query("folders", arrayOf("server_id"), "local_only = 0") { cursor ->
             val folderServerIds = mutableListOf<String>()
             while (cursor.moveToNext()) {
                 folderServerIds.add(cursor.getString(0))

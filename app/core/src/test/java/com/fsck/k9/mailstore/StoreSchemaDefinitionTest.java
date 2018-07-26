@@ -341,6 +341,7 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
         Account account = mock(Account.class);
         when(account.getInboxFolder()).thenReturn("Inbox");
         when(account.getLocalStorageProviderId()).thenReturn(StorageManager.InternalStorageProvider.ID);
+        when(account.getStoreUri()).thenReturn("dummy://");
         return account;
     }
 
