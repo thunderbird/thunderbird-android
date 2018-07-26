@@ -231,10 +231,7 @@
   <string name="global_settings_notification_hide_subject_never">אף פעם</string>
   <string name="global_settings_notification_hide_subject_when_locked">כשהמכשיר נעול</string>
   <string name="global_settings_notification_hide_subject_always">תמיד</string>
-  <string name="global_settings_notification_quick_delete_title">הצג את הכפתור \'מחק\'</string>
-  <string name="global_settings_notification_quick_delete_never">אף פעם</string>
-  <string name="global_settings_notification_quick_delete_always">תמיד</string>
-  <string name="quiet_time">שעות שקט</string>
+    <string name="quiet_time">שעות שקט</string>
   <string name="quiet_time_description">השבת צלצול, זמזום והבהוב בלילה</string>
   <string name="quiet_time_starts">התחלת שעות שקט</string>
   <string name="quiet_time_ends">סוף זמן שקט</string>

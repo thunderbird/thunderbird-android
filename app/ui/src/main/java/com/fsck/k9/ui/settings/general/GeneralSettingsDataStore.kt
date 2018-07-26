@@ -113,7 +113,8 @@ class GeneralSettingsDataStore(
             "messageViewTheme" -> themeToString(K9.getK9MessageViewThemeSetting())
             "messagelist_preview_lines" -> K9.messageListPreviewLines().toString()
             "splitview_mode" -> K9.getSplitViewMode().name
-            "notification_quick_delete" -> K9.getNotificationQuickDeleteBehaviour().name
+            "notification_quick_move_type" -> K9.getNotificationQuickMoveType().name
+            "notification_quick_move_trigger" -> K9.getNotificationQuickMoveTrigger().name
             "lock_screen_notification_visibility" -> K9.getLockScreenNotificationVisibility().name
             "background_ops" -> K9.getBackgroundOps().name
             "notification_hide_subject" -> K9.getNotificationHideSubject().name
@@ -135,7 +136,8 @@ class GeneralSettingsDataStore(
             "messageViewTheme" -> K9.setK9MessageViewThemeSetting(stringToTheme(value))
             "messagelist_preview_lines" -> K9.setMessageListPreviewLines(value.toInt())
             "splitview_mode" -> K9.setSplitViewMode(K9.SplitViewMode.valueOf(value))
-            "notification_quick_delete" -> K9.setNotificationQuickDeleteBehaviour(K9.NotificationQuickDelete.valueOf(value))
+            "notification_quick_move_type" -> K9.setNotificationQuickMoveType(K9.NotificationQuickMoveType.valueOf(value))
+            "notification_quick_move_trigger" -> K9.setNotificationQuickMoveTrigger(K9.NotificationQuickMoveTrigger.valueOf(value))
             "lock_screen_notification_visibility" -> K9.setLockScreenNotificationVisibility(K9.LockScreenNotificationVisibility.valueOf(value))
             "background_ops" -> setBackgroundOps(value)
             "notification_hide_subject" -> K9.setNotificationHideSubject(K9.NotificationHideSubject.valueOf(value))

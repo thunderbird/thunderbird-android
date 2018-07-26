@@ -13,6 +13,7 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override val wearIconArchive: Int = 10
     override val wearIconReplyAll: Int = 11
     override val wearIconMarkAsSpam: Int = 12
+    override val iconArchive: Int = 13
 
     override fun authenticationErrorTitle(): String = "Authentication failed"
 

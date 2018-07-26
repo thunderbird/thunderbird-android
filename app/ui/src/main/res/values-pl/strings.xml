@@ -289,11 +289,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="global_settings_notification_hide_subject_never">Nigdy</string>
   <string name="global_settings_notification_hide_subject_when_locked">Gdy urządzenie jest zablokowane</string>
   <string name="global_settings_notification_hide_subject_always">Zawsze</string>
-  <string name="global_settings_notification_quick_delete_title">Pokazuj przycisk „Usuń”</string>
-  <string name="global_settings_notification_quick_delete_never">Nigdy</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Dla powiadomień o pojedynczych wiadomościach</string>
-  <string name="global_settings_notification_quick_delete_always">Zawsze</string>
-  <string name="global_settings_notification_quick_delete_description">Pokazuj w oknie powiadomień przycisk pozwalający na szybkie usunięcie wiadomości</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Powiadomienia na ekranie blokady</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Bez powiadomień na ekranie blokady</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nazwa aplikacji</string>

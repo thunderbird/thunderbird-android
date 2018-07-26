@@ -291,11 +291,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="global_settings_notification_hide_subject_never">Ei koskaan</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kun laite on lukittu</string>
   <string name="global_settings_notification_hide_subject_always">Aina</string>
-  <string name="global_settings_notification_quick_delete_title">Näytä Poista-painike</string>
-  <string name="global_settings_notification_quick_delete_never">Ei koskaan</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Yksittäisen viestin ilmoituksessa</string>
-  <string name="global_settings_notification_quick_delete_always">Aina</string>
-  <string name="global_settings_notification_quick_delete_description">Näytä ilmoituksessa painike, joka mahdollistaa nopean viestin poistamisen</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Lukitusnäytön ilmoitukset</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Ei lukitusnäytön ilmoituksia</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Sovelluksen nimi</string>

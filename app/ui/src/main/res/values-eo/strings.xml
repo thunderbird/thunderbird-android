@@ -290,11 +290,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="global_settings_notification_hide_subject_never">Neniam</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kiam aparato estas ŝlosita</string>
   <string name="global_settings_notification_hide_subject_always">Ĉiam</string>
-  <string name="global_settings_notification_quick_delete_title">Montri butonon \'Forigi\'</string>
-  <string name="global_settings_notification_quick_delete_never">Neniam</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Por sciigoj pri unuopa mesaĝo</string>
-  <string name="global_settings_notification_quick_delete_always">Ĉiam</string>
-  <string name="global_settings_notification_quick_delete_description">Montras butonon en sciiga zono, kiu ebligas rapide forigi mesaĝon</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Sciigoj sur ŝlosita ekrano</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Sen sciigoj sur ŝlosita ekrano</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Aplikaĵa nomo</string>

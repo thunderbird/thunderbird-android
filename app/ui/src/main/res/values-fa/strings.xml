@@ -202,11 +202,6 @@
   <string name="global_settings_notification_hide_subject_never">هیچوقت</string>
   <string name="global_settings_notification_hide_subject_when_locked">زمانیکه دستگاه قفل است</string>
   <string name="global_settings_notification_hide_subject_always">همیشه</string>
-  <string name="global_settings_notification_quick_delete_title">نمایش دکمه \"پاک کردن\"</string>
-  <string name="global_settings_notification_quick_delete_never">هیچوقت</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">برای اعلام پیام تکی</string>
-  <string name="global_settings_notification_quick_delete_always">همیشه</string>
-  <string name="global_settings_notification_quick_delete_description">یک دکمه را در اعلام برای اجازه حذف سریع  پیام نمایش بده</string>
   <string name="global_settings_lock_screen_notification_visibility_title">قفل شدن اعلامات صفحه</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">عدم قفل شدن اعلامات صفحه</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">نام برنامه</string>

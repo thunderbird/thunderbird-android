@@ -293,11 +293,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="global_settings_notification_hide_subject_never">Kurrë</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kur pajisja është e kyçur</string>
   <string name="global_settings_notification_hide_subject_always">Përherë</string>
-  <string name="global_settings_notification_quick_delete_title">Shfaq butonin \'Fshije\'</string>
-  <string name="global_settings_notification_quick_delete_never">Kurrë</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Për njoftim mesazhi njësh</string>
-  <string name="global_settings_notification_quick_delete_always">Përherë</string>
-  <string name="global_settings_notification_quick_delete_description">Shfaq te njoftimi një buton që lejon fshirje të shpejtë mesazhi</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Njoftime Nën Ekran të Kyçur</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Pa njoftime nën ekran të kyçur</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Emër aplikacioni</string>

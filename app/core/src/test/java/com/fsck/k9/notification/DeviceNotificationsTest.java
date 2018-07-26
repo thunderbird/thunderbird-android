@@ -14,7 +14,8 @@ import android.support.v4.app.NotificationCompat.InboxStyle;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
-import com.fsck.k9.K9.NotificationQuickDelete;
+import com.fsck.k9.K9.NotificationQuickMoveTrigger;
+import com.fsck.k9.K9.NotificationQuickMoveType;
 import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
@@ -89,7 +90,8 @@ public class DeviceNotificationsTest extends RobolectricTest {
     @Test
     public void buildSummaryNotification_withSingleMessageNotification() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
+        K9.setNotificationQuickMoveType(NotificationQuickMoveType.DELETE);
+        K9.setNotificationQuickMoveTrigger(NotificationQuickMoveTrigger.ALWAYS);
         when(notificationData.isSingleMessageNotification()).thenReturn(true);
 
         Notification result = notifications.buildSummaryNotification(account, notificationData, false);
@@ -112,7 +114,8 @@ public class DeviceNotificationsTest extends RobolectricTest {
     @Test
     public void buildSummaryNotification_withMultiMessageNotification() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
+        K9.setNotificationQuickMoveType(NotificationQuickMoveType.DELETE);
+        K9.setNotificationQuickMoveTrigger(NotificationQuickMoveTrigger.ALWAYS);
         when(notificationData.isSingleMessageNotification()).thenReturn(false);
         when(notificationData.containsStarredMessages()).thenReturn(true);
 
@@ -141,7 +144,8 @@ public class DeviceNotificationsTest extends RobolectricTest {
     @Test
     public void buildSummaryNotification_withAdditionalMessages() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.ALWAYS);
+        K9.setNotificationQuickMoveType(NotificationQuickMoveType.DELETE);
+        K9.setNotificationQuickMoveTrigger(NotificationQuickMoveTrigger.ALWAYS);
         when(notificationData.isSingleMessageNotification()).thenReturn(false);
         when(notificationData.hasSummaryOverflowMessages()).thenReturn(true);
         when(notificationData.getSummaryOverflowMessagesCount()).thenReturn(23);
@@ -152,9 +156,10 @@ public class DeviceNotificationsTest extends RobolectricTest {
     }
 
     @Test
-    public void buildSummaryNotification_withoutDeleteAllAction() throws Exception {
+    public void buildSummaryNotification_withoutQuickMoveAllAction() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
+        K9.setNotificationQuickMoveType(NotificationQuickMoveType.DELETE);
+        K9.setNotificationQuickMoveTrigger(NotificationQuickMoveTrigger.NEVER);
         when(notificationData.isSingleMessageNotification()).thenReturn(false);
 
         notifications.buildSummaryNotification(account, notificationData, false);
@@ -163,9 +168,10 @@ public class DeviceNotificationsTest extends RobolectricTest {
     }
 
     @Test
-    public void buildSummaryNotification_withoutDeleteAction() throws Exception {
+    public void buildSummaryNotification_withoutQuickMoveAction() throws Exception {
         K9.setNotificationHideSubject(NotificationHideSubject.NEVER);
-        K9.setNotificationQuickDeleteBehaviour(NotificationQuickDelete.NEVER);
+        K9.setNotificationQuickMoveType(NotificationQuickMoveType.DELETE);
+        K9.setNotificationQuickMoveTrigger(NotificationQuickMoveTrigger.NEVER);
         when(notificationData.isSingleMessageNotification()).thenReturn(true);
 
         notifications.buildSummaryNotification(account, notificationData, false);

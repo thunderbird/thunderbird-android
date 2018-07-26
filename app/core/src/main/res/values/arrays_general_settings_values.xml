@@ -165,7 +165,12 @@
         <item name="3">ALWAYS</item>
     </string-array>
 
-    <string-array name="notification_quick_delete_values" translatable="false">
+    <string-array name="notification_quick_move_type_values" translatable="false">
+        <item name="1">DELETE</item>
+        <item name="2">ARCHIVE</item>
+    </string-array>
+
+    <string-array name="notification_quick_move_trigger_values" translatable="false">
         <item name="1">NEVER</item>
         <item name="2">FOR_SINGLE_MSG</item>
         <item name="3">ALWAYS</item>

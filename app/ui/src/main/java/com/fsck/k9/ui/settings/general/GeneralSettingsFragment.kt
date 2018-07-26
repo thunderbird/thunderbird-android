@@ -32,7 +32,8 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         initializeStartInUnifiedInbox()
         initializeConfirmActions()
         initializeLockScreenNotificationVisibility()
-        initializeNotificationQuickDelete()
+        initializeNotificationQuickMoveType()
+        initializeNotificationQuickMoveTrigger()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -85,10 +86,17 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private fun initializeNotificationQuickDelete() {
+    private fun initializeNotificationQuickMoveType() {
         val notificationActionsSupported = NotificationController.platformSupportsExtendedNotifications()
         if (!notificationActionsSupported) {
-            findPreference(PREFERENCE_NOTIFICATION_QUICK_DELETE)?.apply { remove() }
+            findPreference(PREFERENCE_NOTIFICATION_QUICK_MOVE_TYPE)?.apply { remove() }
+        }
+    }
+
+    private fun initializeNotificationQuickMoveTrigger() {
+        val notificationActionsSupported = NotificationController.platformSupportsExtendedNotifications()
+        if (!notificationActionsSupported) {
+            findPreference(PREFERENCE_NOTIFICATION_QUICK_MOVE_TRIGGER)?.apply { remove() }
         }
     }
 
@@ -117,7 +125,8 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         private const val PREFERENCE_HIDE_SPECIAL_ACCOUNTS = "hide_special_accounts"
         private const val PREFERENCE_CONFIRM_ACTIONS = "confirm_actions"
         private const val PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY = "lock_screen_notification_visibility"
-        private const val PREFERENCE_NOTIFICATION_QUICK_DELETE = "notification_quick_delete"
+        private const val PREFERENCE_NOTIFICATION_QUICK_MOVE_TYPE = "notification_quick_move_type"
+        private const val PREFERENCE_NOTIFICATION_QUICK_MOVE_TRIGGER = "notification_quick_move_trigger"
         private const val CONFIRM_ACTION_DELETE_FROM_NOTIFICATION = "delete_notif"
 
         fun create(rootKey: String? = null) = GeneralSettingsFragment().withArguments(

@@ -239,11 +239,6 @@
   <string name="global_settings_notification_hide_subject_never">하지 않음</string>
   <string name="global_settings_notification_hide_subject_when_locked">폰이 잠겨 있을 때</string>
   <string name="global_settings_notification_hide_subject_always">항상</string>
-  <string name="global_settings_notification_quick_delete_title">\'삭제\' 버튼 보이기</string>
-  <string name="global_settings_notification_quick_delete_never">하지 않음</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">알림에 메시지가 하나뿐일 때만</string>
-  <string name="global_settings_notification_quick_delete_always">항상</string>
-  <string name="global_settings_notification_quick_delete_description">알림에서 메시지를 바로 삭제하는 버튼을 보여 줍니다</string>
   <string name="global_settings_lock_screen_notification_visibility_title">잠금 화면 알림</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">잠금 화면 알림 없음</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">앱 이름</string>

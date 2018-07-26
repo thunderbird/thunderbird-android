@@ -295,11 +295,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="global_settings_notification_hide_subject_never">Никогда</string>
   <string name="global_settings_notification_hide_subject_when_locked">При блокировке</string>
   <string name="global_settings_notification_hide_subject_always">Всегда</string>
-  <string name="global_settings_notification_quick_delete_title">Кнопка \"Удалить\"</string>
-  <string name="global_settings_notification_quick_delete_never">Никогда</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Для одиночного</string>
-  <string name="global_settings_notification_quick_delete_always">Всегда</string>
-  <string name="global_settings_notification_quick_delete_description">Кнопка в уведомлении для быстрого удаления сообщения</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Встроить в экран блокировки</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Убрать с экрана блокировки</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Имя приложения</string>

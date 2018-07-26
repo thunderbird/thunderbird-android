@@ -290,11 +290,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="global_settings_notification_hide_subject_never">Никога</string>
   <string name="global_settings_notification_hide_subject_when_locked">Когато у-вото е заключено</string>
   <string name="global_settings_notification_hide_subject_always">Винаги</string>
-  <string name="global_settings_notification_quick_delete_title">Показвай бутон `Изтрий`</string>
-  <string name="global_settings_notification_quick_delete_never">Никога</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">За отделни съобщения</string>
-  <string name="global_settings_notification_quick_delete_always">Винаги</string>
-  <string name="global_settings_notification_quick_delete_description">Показвай бутон в известието, позволяващ бързо изтриване на съобщението</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Известия при заключен екран</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Без известия при заключен екран</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Име на програмата</string>

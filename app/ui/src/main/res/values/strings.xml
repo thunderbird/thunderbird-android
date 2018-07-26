@@ -353,12 +353,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>
     <string name="global_settings_notification_hide_subject_always">Always</string>
 
-    <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>
-    <string name="global_settings_notification_quick_delete_never">Never</string>
-    <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>
-    <string name="global_settings_notification_quick_delete_always">Always</string>
-    <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>
-
     <string name="global_settings_lock_screen_notification_visibility_title">Lock Screen Notifications</string>
     <string name="global_settings_lock_screen_notification_visibility_nothing">No lock screen notifications</string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">Application name</string>
@@ -1338,5 +1332,12 @@ You can keep this message and use it as a backup for your secret key. If you wan
 
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
+    <string name="global_settings_notification_quick_move_type_title">Move action</string>
+    <string name="global_settings_notification_quick_move_type_delete">Delete</string>
+    <string name="global_settings_notification_quick_move_type_archive">Archive</string>
+    <string name="global_settings_notification_quick_move_trigger_never">Never</string>
+    <string name="global_settings_notification_quick_move_trigger_when_single_msg">For single message notification</string>
+    <string name="global_settings_notification_quick_move_trigger_always">Always</string>
+    <string name="global_settings_notification_quick_move_trigger_title">Show move action</string>
 
 </resources>

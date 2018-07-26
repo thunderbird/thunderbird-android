@@ -276,11 +276,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="global_settings_notification_hide_subject_never">Aldrig</string>
   <string name="global_settings_notification_hide_subject_when_locked">Når enhed er låst</string>
   <string name="global_settings_notification_hide_subject_always">Altid</string>
-  <string name="global_settings_notification_quick_delete_title">Vis \'Slet\' knap</string>
-  <string name="global_settings_notification_quick_delete_never">Aldrig</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">For enkelt-meddelelsesbesked</string>
-  <string name="global_settings_notification_quick_delete_always">Altid</string>
-  <string name="global_settings_notification_quick_delete_description">Vis knap i beskedbjælke som tillader sletning af meddelelse</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Besked på låseskærmen</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Ingen besked på låseskærmen </string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Programnavn</string>

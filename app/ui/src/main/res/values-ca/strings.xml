@@ -292,11 +292,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_notification_hide_subject_never">Mai</string>
   <string name="global_settings_notification_hide_subject_when_locked">Quan el telèfon està bloquejat</string>
   <string name="global_settings_notification_hide_subject_always">Sempre</string>
-  <string name="global_settings_notification_quick_delete_title">Mostra el botó \"Elimina\"</string>
-  <string name="global_settings_notification_quick_delete_never">Mai</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Per a notificacions d\'un sol missatge</string>
-  <string name="global_settings_notification_quick_delete_always">Sempre</string>
-  <string name="global_settings_notification_quick_delete_description">Mostra un botó a les notificacions que permeti eliminar el missatge ràpidament.</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Bloqueja les notificacions de pantalla</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">No bloquegis les notificacions de pantalla</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nom de l\'aplicació</string>

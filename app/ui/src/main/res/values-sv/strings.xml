@@ -291,11 +291,6 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="global_settings_notification_hide_subject_never">Aldrig</string>
   <string name="global_settings_notification_hide_subject_when_locked">När enheten är låst</string>
   <string name="global_settings_notification_hide_subject_always">Alltid</string>
-  <string name="global_settings_notification_quick_delete_title">Visa \"Ta bort\"-knappen</string>
-  <string name="global_settings_notification_quick_delete_never">Aldrig</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">För borttagning av enstaka meddelande</string>
-  <string name="global_settings_notification_quick_delete_always">Alltid</string>
-  <string name="global_settings_notification_quick_delete_description">Visa en knapp i aviseringen som möjliggör snabb borttagning av meddelandet</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Aviseringar på låsskärmen</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Inga aviseringar på låsskärmen</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Applikationsnamn</string>

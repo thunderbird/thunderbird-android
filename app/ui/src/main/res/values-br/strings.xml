@@ -291,11 +291,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="global_settings_notification_hide_subject_never">Morse</string>
   <string name="global_settings_notification_hide_subject_when_locked">P’eo prennet an trevnad</string>
   <string name="global_settings_notification_hide_subject_always">Atav</string>
-  <string name="global_settings_notification_quick_delete_title">Diskouez an afell ’Dilemel’</string>
-  <string name="global_settings_notification_quick_delete_never">Morse</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Evit ar rebuzadurioù gant ur gemennadenn</string>
-  <string name="global_settings_notification_quick_delete_always">Atav</string>
-  <string name="global_settings_notification_quick_delete_description">Diskouez un afell er rebuzadur evit dilemel ur gemennadenn</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Rebuzadurioù ar skramm-prennañ</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Rebuzadur ebet er skramm prennañ</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Anv an arload</string>

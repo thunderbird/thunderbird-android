@@ -219,11 +219,6 @@
   <string name="global_settings_notification_hide_subject_never">絕不</string>
   <string name="global_settings_notification_hide_subject_when_locked">當手持設備上鎖時</string>
   <string name="global_settings_notification_hide_subject_always">預設</string>
-  <string name="global_settings_notification_quick_delete_title">顯示\'刪除\'鈕</string>
-  <string name="global_settings_notification_quick_delete_never">絕不</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">針對單一訊息通知</string>
-  <string name="global_settings_notification_quick_delete_always">預設</string>
-  <string name="global_settings_notification_quick_delete_description">在通知欄顯示訊息快速刪除按鈕</string>
   <string name="quiet_time">靜音設定</string>
   <string name="quiet_time_description">取消夜間響鈴, 鬧鐘及閃光</string>
   <string name="quiet_time_starts">啟動靜音</string>

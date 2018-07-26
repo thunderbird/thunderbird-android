@@ -293,11 +293,6 @@ Per favore invia segnalazioni di errori, contribuisci con nuove funzionalità e 
   <string name="global_settings_notification_hide_subject_never">Mai</string>
   <string name="global_settings_notification_hide_subject_when_locked">Quanto lo schermo è bloccato</string>
   <string name="global_settings_notification_hide_subject_always">Sempre</string>
-  <string name="global_settings_notification_quick_delete_title">Mostra il pulsante \'Elimina\'</string>
-  <string name="global_settings_notification_quick_delete_never">Mai</string>
-  <string name="global_settings_notification_quick_delete_when_single_msg">Per la notifica di un singolo messaggio</string>
-  <string name="global_settings_notification_quick_delete_always">Sempre</string>
-  <string name="global_settings_notification_quick_delete_description">Mostra un pulsante nella notifica che consente l\'eliminazione rapida</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Notifiche schermata di blocco</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nessuna notifica sulla schermata di blocco</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nome applicazione</string>
