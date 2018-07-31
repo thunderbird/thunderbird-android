@@ -151,8 +151,8 @@ class K9BackendFolder(
                 val forwarded = cursor.getInt(4) == 1
                 val flagsColumnValue = cursor.getString(5)
 
-                val flags = if (flagsColumnValue.isNullOrBlank()) emptySet<Flag>()
-                else flagsColumnValue.split(',').map { Flag.valueOf(it) }.toMutableSet().apply {
+                val flags = (if (flagsColumnValue.isNullOrBlank()) mutableSetOf<Flag>()
+                else flagsColumnValue.split(',').map { Flag.valueOf(it) }.toMutableSet()).apply {
                     if (deleted) add(Flag.DELETED)
                     if (read) add(Flag.SEEN)
                     if (flagged) add(Flag.FLAGGED)
