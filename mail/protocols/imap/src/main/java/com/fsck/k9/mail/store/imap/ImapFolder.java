@@ -704,7 +704,6 @@ public class ImapFolder extends Folder<ImapMessage> {
             try {
                 String commaSeparatedUids = ImapUtility.join(",", uidWindow);
                 String command = String.format("UID FETCH %s (%s)", commaSeparatedUids, spaceSeparatedFetchFields);
-                Timber.d("Sending command "+command);
                 connection.sendCommand(command, false);
 
                 ImapResponse response;
