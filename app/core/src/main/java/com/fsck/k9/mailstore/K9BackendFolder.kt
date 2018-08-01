@@ -10,7 +10,7 @@ import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.backend.api.MessageRemovalListener
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
-import java.util.*
+import java.util.Date;
 
 class K9BackendFolder(
         private val preferences: Preferences,
