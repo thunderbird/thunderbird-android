@@ -20,10 +20,16 @@ class EmailAddressValidatorTest {
         Assert.assertTrue(validator.isValidAddressOnly("example@1.com"))
         Assert.assertTrue(validator.isValidAddressOnly("admin@mailserver1"))
         Assert.assertTrue(validator.isValidAddressOnly("user@localserver"))
+        Assert.assertTrue(validator.isValidAddressOnly("\"very.(),:;<>[]\\\".VERY.\\\"very@\\\\ \\\"very\\\".unusual\"@strange.example.com"))
+        Assert.assertTrue(validator.isValidAddressOnly("\"()<>[]:,;@\\\\\\\"!#$%&'-/=?^_`{}| ~.a\"@example.org"))
+        Assert.assertTrue(validator.isValidAddressOnly("\" \"@example.org"))
+        Assert.assertTrue(validator.isValidAddressOnly("x@example.com"))
 
         Assert.assertFalse(validator.isValidAddressOnly("Abc.example.com"))
         Assert.assertFalse(validator.isValidAddressOnly("\"not\"right@example.com"))
         Assert.assertFalse(validator.isValidAddressOnly("john.doe@example..com"))
-        Assert.assertFalse(validator.isValidAddressOnly("example@c.2"))
+        Assert.assertFalse(validator.isValidAddressOnly("this\\ still\\\"not\\\\allowed@example.com"))
+        Assert.assertFalse(validator.isValidAddressOnly("john..doe@example.com"))
+        Assert.assertFalse(validator.isValidAddressOnly("1234567890123456789012345678901234567890123456789012345678901234+x@example.com"))
     }
 }
