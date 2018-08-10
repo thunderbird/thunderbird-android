@@ -8,6 +8,7 @@ import java.util.Map;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
+import com.fsck.k9.mail.util.Encryption;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 
@@ -25,7 +26,7 @@ public class ImapStoreUriCreator {
      */
     public static String create(ServerSettings server) {
         String userEnc = encodeUtf8(server.username);
-        String passwordEnc = (server.password != null) ? encodeUtf8(server.password) : "";
+        String passwordEnc = (server.password != null) ? encodeUtf8(Encryption.encode(server.password)) : "";
         String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
                 encodeUtf8(server.clientCertificateAlias) : "";
 
