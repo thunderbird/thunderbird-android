@@ -8,6 +8,7 @@ import java.net.URLEncoder;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.util.Encryption;
 
 
 public class SmtpTransportUriCreator {
@@ -26,7 +27,7 @@ public class SmtpTransportUriCreator {
         String userEnc = (server.username != null) ?
                 encodeUtf8(server.username) : "";
         String passwordEnc = (server.password != null) ?
-                encodeUtf8(server.password) : "";
+                encodeUtf8(Encryption.encode(server.password)) : "";
         String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
                 encodeUtf8(server.clientCertificateAlias) : "";
 
