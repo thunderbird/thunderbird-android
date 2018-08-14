@@ -408,7 +408,7 @@ class ImapConnection {
 
     private AuthenticationFailedException handlePermanentXoauth2Failure(NegativeImapResponseException e) {
         Timber.v(e, "Permanent failure during XOAUTH2");
-        return new AuthenticationFailedException(e.getMessage(), e);
+        return new AuthenticationFailedException(e.getMessage(), e, e.getAlertText());
     }
 
     private List<ImapResponse> handleTemporaryXoauth2Failure(NegativeImapResponseException e) throws IOException, MessagingException {
