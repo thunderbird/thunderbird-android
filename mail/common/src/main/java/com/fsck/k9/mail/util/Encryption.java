@@ -33,7 +33,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.security.auth.x500.X500Principal;
 
 /**
- * Created by csabavirag on 13/01/17.
+ * "Copyright © 2018, Oracle and/or its affiliates. All rights reserved."
  */
 
 public final class Encryption extends Application {
