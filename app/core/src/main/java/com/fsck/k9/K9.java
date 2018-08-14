@@ -15,6 +15,7 @@ import android.os.Environment;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.mail.K9MailLib;
+import com.fsck.k9.mail.util.Encryption;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
@@ -344,7 +345,7 @@ public class K9 {
         });
 
         checkCachedDatabaseVersion(context);
-
+        Encryption Enc = new Encryption(context.getApplicationContext());
         Preferences prefs = DI.get(Preferences.class);
         loadPrefs(prefs);
     }
