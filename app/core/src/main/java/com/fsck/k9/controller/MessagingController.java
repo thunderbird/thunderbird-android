@@ -109,13 +109,10 @@ public class MessagingController {
     public static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
 
-    private static MessagingController inst = null;
-
-
     private final Context context;
     private final Contacts contacts;
     private final NotificationController notificationController;
-    private final BackendManager backendManager = DI.get(BackendManager.class);
+    private final BackendManager backendManager;
 
     private final Thread controllerThread;
 
@@ -133,28 +130,20 @@ public class MessagingController {
     private volatile boolean stopped = false;
 
 
-    public static synchronized MessagingController getInstance(Context context) {
-        if (inst == null) {
-            Context appContext = context.getApplicationContext();
-            NotificationController notificationController = DI.get(NotificationController.class);
-            Contacts contacts = Contacts.getInstance(context);
-            AccountStatsCollector accountStatsCollector = new DefaultAccountStatsCollector(context);
-            CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
-            inst = new MessagingController(appContext, notificationController, contacts,
-                    accountStatsCollector, resourceProvider);
-        }
-        return inst;
+    public static MessagingController getInstance(Context context) {
+        return DI.get(MessagingController.class);
     }
 
 
-    @VisibleForTesting
     MessagingController(Context context, NotificationController notificationController, Contacts contacts,
-            AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider) {
+            AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider,
+            BackendManager backendManager) {
         this.context = context;
         this.notificationController = notificationController;
         this.contacts = contacts;
         this.accountStatsCollector = accountStatsCollector;
         this.resourceProvider = resourceProvider;
+        this.backendManager = backendManager;
 
         controllerThread = new Thread(new Runnable() {
             @Override

@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
 import com.fsck.k9.autocrypt.autocryptModule
+import com.fsck.k9.controller.controllerModule
 import com.fsck.k9.crypto.openPgpModule
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.ssl.LocalKeyStore
@@ -39,7 +40,8 @@ object Core : KoinComponent {
             mailStoreModule,
             extractorModule,
             htmlModule,
-            coreNotificationModule
+            coreNotificationModule,
+            controllerModule
     )
 
     /**
