@@ -138,7 +138,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
         appContext = RuntimeEnvironment.application;
 
         controller = new MessagingController(appContext, notificationController, contacts,
-                accountStatsCollector, mock(CoreResourceProvider.class), backendManager);
+                accountStatsCollector, mock(CoreResourceProvider.class), backendManager,
+                Collections.<ControllerExtension>emptyList());
 
         configureBackendManager();
         configureAccount();

@@ -37,6 +37,7 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.CoreResourceProvider;
+import com.fsck.k9.controller.ControllerExtension.ControllerInternals;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -83,6 +84,7 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
@@ -137,7 +139,7 @@ public class MessagingController {
 
     MessagingController(Context context, NotificationController notificationController, Contacts contacts,
             AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider,
-            BackendManager backendManager) {
+            BackendManager backendManager, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.contacts = contacts;
@@ -154,6 +156,32 @@ public class MessagingController {
         controllerThread.setName("MessagingController");
         controllerThread.start();
         addListener(memorizingMessagingListener);
+
+        initializeControllerExtensions(controllerExtensions);
+    }
+
+    private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
+        if (controllerExtensions.isEmpty()) {
+            return;
+        }
+
+        ControllerInternals internals = new ControllerInternals() {
+            @Override
+            public void put(@NotNull String description, @Nullable MessagingListener listener,
+                    @NotNull Runnable runnable) {
+                MessagingController.this.put(description, listener, runnable);
+            }
+
+            @Override
+            public void putBackground(@NotNull String description, @Nullable MessagingListener listener,
+                    @NotNull Runnable runnable) {
+                MessagingController.this.putBackground(description, listener, runnable);
+            }
+        };
+
+        for (ControllerExtension extension : controllerExtensions) {
+            extension.init(this, backendManager, internals);
+        }
     }
 
     @VisibleForTesting
