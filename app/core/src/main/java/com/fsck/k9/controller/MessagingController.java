@@ -37,6 +37,7 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.CoreResourceProvider;
+import com.fsck.k9.controller.ControllerExtension.ControllerInternals;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -83,6 +84,7 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
@@ -109,13 +111,10 @@ public class MessagingController {
     public static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
 
-    private static MessagingController inst = null;
-
-
     private final Context context;
     private final Contacts contacts;
     private final NotificationController notificationController;
-    private final BackendManager backendManager = DI.get(BackendManager.class);
+    private final BackendManager backendManager;
 
     private final Thread controllerThread;
 
@@ -133,28 +132,20 @@ public class MessagingController {
     private volatile boolean stopped = false;
 
 
-    public static synchronized MessagingController getInstance(Context context) {
-        if (inst == null) {
-            Context appContext = context.getApplicationContext();
-            NotificationController notificationController = DI.get(NotificationController.class);
-            Contacts contacts = Contacts.getInstance(context);
-            AccountStatsCollector accountStatsCollector = new DefaultAccountStatsCollector(context);
-            CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
-            inst = new MessagingController(appContext, notificationController, contacts,
-                    accountStatsCollector, resourceProvider);
-        }
-        return inst;
+    public static MessagingController getInstance(Context context) {
+        return DI.get(MessagingController.class);
     }
 
 
-    @VisibleForTesting
     MessagingController(Context context, NotificationController notificationController, Contacts contacts,
-            AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider) {
+            AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider,
+            BackendManager backendManager, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.contacts = contacts;
         this.accountStatsCollector = accountStatsCollector;
         this.resourceProvider = resourceProvider;
+        this.backendManager = backendManager;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -165,6 +156,32 @@ public class MessagingController {
         controllerThread.setName("MessagingController");
         controllerThread.start();
         addListener(memorizingMessagingListener);
+
+        initializeControllerExtensions(controllerExtensions);
+    }
+
+    private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
+        if (controllerExtensions.isEmpty()) {
+            return;
+        }
+
+        ControllerInternals internals = new ControllerInternals() {
+            @Override
+            public void put(@NotNull String description, @Nullable MessagingListener listener,
+                    @NotNull Runnable runnable) {
+                MessagingController.this.put(description, listener, runnable);
+            }
+
+            @Override
+            public void putBackground(@NotNull String description, @Nullable MessagingListener listener,
+                    @NotNull Runnable runnable) {
+                MessagingController.this.putBackground(description, listener, runnable);
+            }
+        };
+
+        for (ControllerExtension extension : controllerExtensions) {
+            extension.init(this, backendManager, internals);
+        }
     }
 
     @VisibleForTesting

@@ -1,6 +1,7 @@
 package com.fsck.k9
 
 import com.fsck.k9.backends.backendsModule
+import com.fsck.k9.controller.ControllerExtension
 import com.fsck.k9.external.BroadcastSenderListener
 import com.fsck.k9.external.externalModule
 import com.fsck.k9.notification.notificationModule
@@ -20,6 +21,7 @@ private val mainAppModule = applicationContext {
                     get<BroadcastSenderListener>()
             ))
     }
+    bean("controllerExtensions") { emptyList<ControllerExtension>() }
 }
 
 val appModules = listOf(

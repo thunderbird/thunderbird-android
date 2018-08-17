@@ -16,6 +16,7 @@ import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -73,6 +74,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
 
     private MessagingController controller;
+    @Mock
+    private BackendManager backendManager;
     @Mock
     private Backend backend;
     @Mock
@@ -134,11 +137,11 @@ public class MessagingControllerTest extends K9RobolectricTest {
         MockitoAnnotations.initMocks(this);
         appContext = RuntimeEnvironment.application;
 
-        MessagingControllerTestExtra.backendManagerProvides(backend);
-
         controller = new MessagingController(appContext, notificationController, contacts,
-                accountStatsCollector, mock(CoreResourceProvider.class));
+                accountStatsCollector, mock(CoreResourceProvider.class), backendManager,
+                Collections.<ControllerExtension>emptyList());
 
+        configureBackendManager();
         configureAccount();
         configureLocalStore();
     }
@@ -525,6 +528,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(localMessageToSend1.getUid()).thenReturn("localMessageToSend1");
         when(localMessageToSend1.getHeader(K9.IDENTITY_HEADER)).thenReturn(new String[]{});
         controller.addListener(listener);
+    }
+
+    private void configureBackendManager() {
+        when(backendManager.getBackend(account)).thenReturn(backend);
     }
 
     private void configureAccount() throws MessagingException {
