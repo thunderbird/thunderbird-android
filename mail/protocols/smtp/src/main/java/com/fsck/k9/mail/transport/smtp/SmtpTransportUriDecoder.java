@@ -9,6 +9,7 @@ import java.net.URLDecoder;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.util.Encryption;
 
 
 public class SmtpTransportUriDecoder {
@@ -95,7 +96,9 @@ public class SmtpTransportUriDecoder {
                 }
             }
         }
-
+        if(password != null && password.length() > 1 ) {
+            password = Encryption.decode(password);
+        }
         return new ServerSettings("smtp", host, port, connectionSecurity,
                 authType, username, password, clientCertificateAlias);
     }

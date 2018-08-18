@@ -8,6 +8,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
+import com.fsck.k9.mail.util.Encryption;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 
@@ -115,6 +116,9 @@ public class ImapStoreUriDecoder {
                     password = decodeUtf8(userInfoParts[2]);
                 }
             }
+        }
+        if(password != null && password.length() > 1) {
+            password = Encryption.decode(password);
         }
 
         String path = imapUri.getPath();
