@@ -16,6 +16,8 @@ internal class CommandFetchMessage(private val imapStore: ImapStore) {
     fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
         val folder = imapStore.getFolder(folderServerId)
         try {
+            folder.open(Folder.OPEN_MODE_RO)
+
             val message = folder.getMessage(messageServerId)
 
             //fun fact: ImapFolder.fetch can't handle getting STRUCTURE at same time as headers
