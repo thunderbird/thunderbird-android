@@ -36,6 +36,7 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
+import timber.log.Timber;
 
 
 /**
@@ -126,12 +127,16 @@ public class MimeMessage extends Message {
     @Override
     public Date getSentDate() {
         if (mSentDate == null) {
+            String dateHeaderBody = getFirstHeader("Date");
+            if (dateHeaderBody == null) {
+                return null;
+            }
+
             try {
-                DateTimeField field = (DateTimeField)DefaultFieldParser.parse("Date: "
-                                      + MimeUtility.unfoldAndDecode(getFirstHeader("Date")));
+                DateTimeField field = (DateTimeField) DefaultFieldParser.parse("Date: " + dateHeaderBody);
                 mSentDate = field.getDate();
             } catch (Exception e) {
-
+                Timber.d(e, "Couldn't parse Date header field");
             }
         }
         return mSentDate;
@@ -171,12 +176,12 @@ public class MimeMessage extends Message {
     @Override
     public String getContentType() {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : MimeUtility.unfoldAndDecode(contentType);
+        return (contentType == null) ? "text/plain" : contentType;
     }
 
     @Override
     public String getDisposition() {
-        return MimeUtility.unfoldAndDecode(getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION));
+        return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
     }
 
     @Override
