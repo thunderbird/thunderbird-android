@@ -918,40 +918,33 @@ public class MimeUtility {
     }
 
     /**
-     * Returns the named parameter of a header field. If name is null the first
-     * parameter is returned, or if there are no additional parameters in the
-     * field the entire field is returned. Otherwise the named parameter is
-     * searched for in a case insensitive fashion and returned.
+     * Returns the named parameter of a header field.
      *
-     * @param headerValue the header value
-     * @param parameterName the parameter name
-     * @return the value. if the parameter cannot be found the method returns null.
+     * <p>
+     * If name is {@code null} the "value" of the header is returned, i.e. "text/html" in the following example:
+     * <br>
+     *{@code Content-Type: text/html; charset="utf-8"}
+     * </p>
+     * <p>
+     * Note: Parsing header parameters is not a very cheap operation. Prefer using {@code MimeParameterDecoder}
+     * directly over calling this method multiple times for extracting different parameters from the the same header.
+     * </p>
+     *
+     * @param headerBody The header body.
+     * @param parameterName The parameter name. Might be {@code null}.
+     * @return the (parameter) value. if the parameter cannot be found the method returns null.
      */
-    public static String getHeaderParameter(String headerValue, String parameterName) {
-        if (headerValue == null) {
+    public static String getHeaderParameter(String headerBody, String parameterName) {
+        if (headerBody == null) {
             return null;
         }
-        headerValue = headerValue.replaceAll("\r|\n", "");
-        String[] parts = headerValue.split(";");
-        if (parameterName == null && parts.length > 0) {
-            return parts[0].trim();
+
+        if (parameterName == null) {
+            return MimeParameterDecoder.extractHeaderValue(headerBody);
+        } else {
+            MimeValue mimeValue = MimeParameterDecoder.decode(headerBody);
+            return mimeValue.getParameters().get(parameterName.toLowerCase(Locale.ROOT));
         }
-        for (String part : parts) {
-            if (parameterName != null &&
-                    part.trim().toLowerCase(Locale.US).startsWith(parameterName.toLowerCase(Locale.US))) {
-                String[] partParts = part.split("=", 2);
-                if (partParts.length == 2) {
-                    String parameter = partParts[1].trim();
-                    int len = parameter.length();
-                    if (len >= 2 && parameter.startsWith("\"") && parameter.endsWith("\"")) {
-                        return parameter.substring(1, len - 1);
-                    } else {
-                        return parameter;
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     public static Map<String,String> getAllHeaderParameters(String headerValue) {

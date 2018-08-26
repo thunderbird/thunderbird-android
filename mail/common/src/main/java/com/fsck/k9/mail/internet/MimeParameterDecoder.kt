@@ -55,6 +55,12 @@ object MimeParameterDecoder {
         )
     }
 
+    @JvmStatic
+    fun extractHeaderValue(headerBody: String): String {
+        val parser = MimeHeaderParser(headerBody)
+        return parser.readHeaderValue()
+    }
+
     private fun readBasicParameters(parser: MimeHeaderParser): BasicParameterResults {
         val parameters = mutableMapOf<String, ParameterValue>()
         val duplicateParameterNames = mutableSetOf<String>()
