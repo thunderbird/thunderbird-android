@@ -10,6 +10,10 @@ internal const val HTAB = '\t'
 // RFC 5234: SP = %x20
 internal const val SPACE = ' '
 
+
+// RFC 5234: CRLF = %d13.10
+internal const val CRLF = "\r\n"
+
 internal const val CR = '\r'
 internal const val LF = '\n'
 internal const val DQUOTE = '"'
