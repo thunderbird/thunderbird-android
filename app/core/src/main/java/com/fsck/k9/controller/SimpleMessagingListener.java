@@ -74,7 +74,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxRemovedMessage(Account account, String folderServerId, Message message) {
+    public void synchronizeMailboxRemovedMessage(Account account, String folderServerId, String messageServerId) {
     }
 
     @Override
@@ -127,7 +127,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void messageDeleted(Account account, String folderServerId, Message message) {
+    public void messageDeleted(Account account, String folderServerId, String messageServerId) {
     }
 
     @Override
