@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,8 +27,8 @@ import com.fsck.k9.helper.RetainFragment;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.mailstore.MessageCryptoAnnotations;
+import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.crypto.MessageCryptoCallback;
 import com.fsck.k9.ui.crypto.MessageCryptoHelper;
 import com.fsck.k9.ui.crypto.OpenPgpApiFactory;
@@ -81,7 +83,7 @@ public class MessageLoaderHelper {
     private LoaderManager loaderManager;
     @Nullable // make this explicitly nullable, make sure to cancel/ignore any operation if this is null
     private MessageLoaderCallbacks callback;
-
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     // transient state
     private boolean onlyLoadMetadata;
@@ -467,16 +469,26 @@ public class MessageLoaderHelper {
 
     MessagingListener downloadMessageListener = new SimpleMessagingListener() {
         @Override
-        public void loadMessageRemoteFinished(Account account, String folderServerId, String uid) {
-            if (!messageReference.equals(account.getUuid(), folderServerId, uid)) {
-                return;
-            }
-            onMessageDownloadFinished();
+        public void loadMessageRemoteFinished(final Account account, final String folderServerId, final String uid) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (!messageReference.equals(account.getUuid(), folderServerId, uid)) {
+                        return;
+                    }
+                    onMessageDownloadFinished();
+                }
+            });
         }
 
         @Override
         public void loadMessageRemoteFailed(Account account, String folderServerId, String uid, final Throwable t) {
-            onDownloadMessageFailed(t);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    onDownloadMessageFailed(t);
+                }
+            });
         }
     };
 
