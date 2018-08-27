@@ -50,6 +50,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
+import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.message.extractors.AttachmentCounter;
@@ -181,8 +182,6 @@ public class LocalStore {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    public static final int DB_VERSION = 65;
-
     private final Context context;
     private final ContentResolver contentResolver;
     private final MessagePreviewCreator messagePreviewCreator;
@@ -211,7 +210,11 @@ public class LocalStore {
 
         this.account = account;
 
-        database = new LockableDatabase(context, account.getUuid(), new StoreSchemaDefinition(this));
+        SchemaDefinitionFactory schemaDefinitionFactory = DI.get(SchemaDefinitionFactory.class);
+        RealMigrationsHelper migrationsHelper = new RealMigrationsHelper();
+        SchemaDefinition schemaDefinition = schemaDefinitionFactory.createSchemaDefinition(migrationsHelper);
+
+        database = new LockableDatabase(context, account.getUuid(), schemaDefinition);
         database.setStorageProviderId(account.getLocalStorageProviderId());
         database.open();
     }
@@ -245,6 +248,11 @@ public class LocalStore {
 
             return store;
         }
+    }
+
+    public static int getDbVersion() {
+        SchemaDefinitionFactory schemaDefinitionFactory = DI.get(SchemaDefinitionFactory.class);
+        return schemaDefinitionFactory.getDatabaseVersion();
     }
 
     public static void removeAccount(Account account) {
@@ -1352,6 +1360,33 @@ public class LocalStore {
             default: {
                 throw new IllegalArgumentException("Flag must be a special column flag");
             }
+        }
+    }
+
+    class RealMigrationsHelper implements MigrationsHelper {
+        @Override
+        public LocalStore getLocalStore() {
+            return LocalStore.this;
+        }
+
+        @Override
+        public Storage getStorage() {
+            return LocalStore.this.getStorage();
+        }
+
+        @Override
+        public Account getAccount() {
+            return LocalStore.this.getAccount();
+        }
+
+        @Override
+        public Context getContext() {
+            return LocalStore.this.getContext();
+        }
+
+        @Override
+        public String serializeFlags(List<Flag> flags) {
+            return LocalStore.serializeFlags(flags);
         }
     }
 }

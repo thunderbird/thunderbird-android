@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
 apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
 apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
@@ -8,32 +7,19 @@ apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
-    api project(":mail:common")
-    api project(":backend:api")
+    api "org.koin:koin-core:${versions.koin}"
 
-    api project(':plugins:openpgp-api-lib:openpgp-api')
-
-    api "org.koin:koin-android-architecture:${versions.koin}"
-
-    implementation "com.squareup.okio:okio:${versions.okio}"
-    implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "androidx.core:core-ktx:${versions.coreKtx}"
-    implementation "org.jsoup:jsoup:1.11.2"
-    implementation "com.squareup.moshi:moshi:1.2.0"
+    implementation project(":app:core")
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
 
     testImplementation project(':mail:testing')
-    testImplementation project(":backend:imap")
-    testImplementation project(":mail:protocols:smtp")
-    testImplementation project(":app:storage")
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
-    testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}"
-    testImplementation "org.jdom:jdom2:2.0.6"
     testImplementation "org.koin:koin-test:${versions.koin}"
+    testImplementation "commons-io:commons-io:${versions.commonsIo}"
 }
 
 android {
@@ -60,15 +46,5 @@ android {
         unitTests {
             includeAndroidResources = true
         }
-    }
-}
-
-androidExtensions {
-    experimental = true
-}
-
-kotlin {
-    experimental {
-        coroutines "enable"
     }
 }

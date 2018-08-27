@@ -14,12 +14,12 @@ dependencies {
 
     implementation project(":app:ui")
     implementation project(":app:core")
+    implementation project(":app:storage")
     implementation project(":backend:imap")
     implementation project(":backend:pop3")
     implementation project(":backend:webdav")
 
     implementation "com.android.support:appcompat-v7:${versions.supportLibrary}"
-
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
@@ -71,6 +71,9 @@ android {
         debug {
             applicationIdSuffix ".debug"
             testCoverageEnabled rootProject.testCoverage
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "boolean", "DEVELOPER_MODE", "true"
         }

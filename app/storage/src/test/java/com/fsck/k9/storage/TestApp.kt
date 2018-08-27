@@ -1,7 +1,11 @@
-package com.fsck.k9
+package com.fsck.k9.storage
 
 import android.app.Application
-import com.fsck.k9.storage.storageModule
+import com.fsck.k9.AppConfig
+import com.fsck.k9.Core
+import com.fsck.k9.CoreResourceProvider
+import com.fsck.k9.DI
+import com.fsck.k9.K9
 import com.nhaarman.mockito_kotlin.mock
 import org.koin.dsl.module.applicationContext
 
