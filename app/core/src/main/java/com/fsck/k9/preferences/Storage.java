@@ -225,8 +225,7 @@ public class Storage {
     }
 
     void doInTransaction(Runnable dbWork) {
-        ConcurrentMap<String, String> newStorage = new ConcurrentHashMap<String, String>();
-        newStorage.putAll(storage);
+        ConcurrentMap<String, String> newStorage = new ConcurrentHashMap<String, String>(storage);
         workingStorage.set(newStorage);
 
         SQLiteDatabase mDb = openDB();

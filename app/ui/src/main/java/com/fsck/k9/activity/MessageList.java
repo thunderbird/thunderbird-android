@@ -172,7 +172,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private final FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
     private final Preferences preferences = DI.get(Preferences.class);
 
-    private ActionBar actionBar;
     private ActionBarDrawerToggle drawerToggle;
     private Drawer drawer;
     private FragmentTransaction openFolderTransaction;
@@ -568,7 +567,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     private void initializeActionBar() {
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
 
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.actionbar_custom);

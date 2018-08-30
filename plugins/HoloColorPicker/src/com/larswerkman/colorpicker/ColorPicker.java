@@ -120,12 +120,7 @@ public class ColorPicker extends View {
 	 */
 	private Paint mPointerColor;
 
-	/**
-	 * The stroke width used to paint the color wheel (in pixels).
-	 */
-	private int mColorWheelStrokeWidth;
-
-	/**
+    /**
 	 * The radius of the pointer (in pixels).
 	 */
 	private int mPointerRadius;
@@ -190,7 +185,10 @@ public class ColorPicker extends View {
 		final TypedArray a = getContext().obtainStyledAttributes(attrs,
 				R.styleable.ColorPicker, defStyle, 0);
 
-		mColorWheelStrokeWidth = a.getInteger(R.styleable.ColorPicker_wheel_size, 16);
+		/*
+	  The stroke width used to paint the color wheel (in pixels).
+	 */
+        int mColorWheelStrokeWidth = a.getInteger(R.styleable.ColorPicker_wheel_size, 16);
 		mPointerRadius = a.getInteger(R.styleable.ColorPicker_pointer_size, 48);
 
 		a.recycle();

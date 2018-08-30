@@ -79,8 +79,6 @@ public class FolderList extends K9ListActivity {
 
     private final ColorChipProvider colorChipProvider = DI.get(ColorChipProvider.class);
 
-    private ListView listView;
-
     private FolderListAdapter adapter;
 
     private LayoutInflater inflater;
@@ -251,7 +249,7 @@ public class FolderList extends K9ListActivity {
         actionBar = getSupportActionBar();
         initializeActionBar();
         setContentView(R.layout.folder_list);
-        listView = getListView();
+        ListView listView = getListView();
         listView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         listView.setLongClickable(true);
         listView.setFastScrollEnabled(true);

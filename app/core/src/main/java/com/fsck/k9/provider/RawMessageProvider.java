@@ -35,7 +35,6 @@ import timber.log.Timber;
  * A simple ContentProvider that allows file access to a raw message.
  */
 public class RawMessageProvider extends ContentProvider {
-    private static String AUTHORITY;
     private static Uri CONTENT_URI;
 
     private static final String[] DEFAULT_PROJECTION = new String[] {
@@ -53,7 +52,7 @@ public class RawMessageProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         String packageName = getContext().getPackageName();
-        AUTHORITY = packageName + ".rawmessageprovider";
+        String AUTHORITY = packageName + ".rawmessageprovider";
         CONTENT_URI = Uri.parse("content://" + AUTHORITY);
         return true;
     }

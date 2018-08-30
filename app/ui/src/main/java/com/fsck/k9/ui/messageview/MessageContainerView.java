@@ -61,7 +61,6 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     private View unsignedTextContainer;
     private View unsignedTextDivider;
     private TextView unsignedText;
-    private View mAttachmentsContainer;
 
     private boolean showingPictures;
     private LayoutInflater mInflater;
@@ -86,7 +85,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         mMessageContentView.setOnCreateContextMenuListener(this);
         mMessageContentView.setVisibility(View.VISIBLE);
 
-        mAttachmentsContainer = findViewById(R.id.attachments_container);
+        View mAttachmentsContainer = findViewById(R.id.attachments_container);
         mAttachments = (LinearLayout) findViewById(R.id.attachments);
 
         unsignedTextContainer = findViewById(R.id.message_unsigned_container);

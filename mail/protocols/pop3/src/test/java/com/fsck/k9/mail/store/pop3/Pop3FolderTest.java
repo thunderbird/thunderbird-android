@@ -36,7 +36,6 @@ import static org.mockito.Mockito.when;
 public class Pop3FolderTest {
     private Pop3Store mockStore;
     private Pop3Connection mockConnection;
-    private StoreConfig mockStoreConfig;
     private MessageRetrievalListener<Pop3Message> mockListener;
     private Pop3Folder folder;
 
@@ -44,7 +43,7 @@ public class Pop3FolderTest {
     public void before() throws MessagingException {
         mockStore = mock(Pop3Store.class);
         mockConnection = mock(Pop3Connection.class);
-        mockStoreConfig = mock(StoreConfig.class);
+        StoreConfig mockStoreConfig = mock(StoreConfig.class);
         mockListener = mock(MessageRetrievalListener.class);
         when(mockStore.getConfig()).thenReturn(mockStoreConfig);
         when(mockStoreConfig.getInboxFolder()).thenReturn(Pop3Folder.INBOX);

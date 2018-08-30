@@ -67,9 +67,7 @@ public class WebDavStore extends RemoteStore {
     private String baseUrl;
     private String hostname;
     private int port;
-    private String path;
     private String formBasedAuthPath;
-    private String mailboxPath;
 
     private final WebDavHttpClient.WebDavHttpClientFactory httpClientFactory;
     private WebDavHttpClient httpClient = null;
@@ -100,9 +98,9 @@ public class WebDavStore extends RemoteStore {
         password = serverSettings.password;
         alias = serverSettings.alias;
 
-        path = serverSettings.path;
+        String path = serverSettings.path;
         formBasedAuthPath = serverSettings.authPath;
-        mailboxPath = serverSettings.mailboxPath;
+        String mailboxPath = serverSettings.mailboxPath;
 
 
         if (path == null || path.equals("")) {

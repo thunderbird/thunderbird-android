@@ -179,7 +179,7 @@ class ImapUtility {
         return ImapUtility.join(" ", flagNames);
     }
 
-    public static String join(String delimiter, Collection<? extends Object> tokens) {
+    public static String join(String delimiter, Collection<?> tokens) {
         if (tokens == null) {
             return null;
         }

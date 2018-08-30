@@ -42,7 +42,6 @@ public class MessageTopView extends LinearLayout {
 
     private ToolableViewAnimator viewAnimator;
     private ProgressBar progressBar;
-    private TextView progressText;
 
     private MessageHeader mHeaderContainer;
     private LayoutInflater mInflater;
@@ -70,7 +69,7 @@ public class MessageTopView extends LinearLayout {
 
         viewAnimator = (ToolableViewAnimator) findViewById(R.id.message_layout_animator);
         progressBar = (ProgressBar) findViewById(R.id.message_progress);
-        progressText = (TextView) findViewById(R.id.message_progress_text);
+        TextView progressText = (TextView) findViewById(R.id.message_progress_text);
 
         mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
         mDownloadRemainder.setVisibility(View.GONE);

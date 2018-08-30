@@ -66,7 +66,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private View mAnsweredIcon;
     private View mForwardedIcon;
     private Message mMessage;
-    private Account mAccount;
     private FontSizes mFontSizes = K9.getFontSizes();
     private Contacts mContacts;
     private SavedState mSavedState;
@@ -287,7 +286,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
 
         mMessage = message;
-        mAccount = account;
+        Account mAccount = account;
 
         if (K9.showContactPicture()) {
             mContactBadge.setVisibility(View.VISIBLE);

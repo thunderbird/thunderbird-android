@@ -3,6 +3,7 @@ package com.fsck.k9.cache;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.provider.EmailProvider.ThreadColumns;
 
@@ -17,7 +18,6 @@ public class EmailProviderCacheCursor extends CursorWrapper {
     private EmailProviderCache mCache;
     private List<Integer> mHiddenRows = new ArrayList<Integer>();
     private int mMessageIdColumn;
-    private int mFolderIdColumn;
     private int mThreadRootColumn;
 
     /**
@@ -34,7 +34,7 @@ public class EmailProviderCacheCursor extends CursorWrapper {
         mCache = EmailProviderCache.getCache(accountUuid, context);
 
         mMessageIdColumn = cursor.getColumnIndex(MessageColumns.ID);
-        mFolderIdColumn = cursor.getColumnIndex(MessageColumns.FOLDER_ID);
+        int mFolderIdColumn = cursor.getColumnIndex(MessageColumns.FOLDER_ID);
         mThreadRootColumn = cursor.getColumnIndex(ThreadColumns.ROOT);
 
         if (mMessageIdColumn == -1 || mFolderIdColumn == -1 || mThreadRootColumn == -1) {
