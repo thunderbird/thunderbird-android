@@ -33,7 +33,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="6dp"
                 style="@style/NegativeBulletPoint"
-                />
+                android:contentDescription="TODO" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="6dp"
                 style="@style/NegativeBulletPoint"
-                />
+                android:contentDescription="TODO" />
 
             <TextView
                 android:layout_width="wrap_content"

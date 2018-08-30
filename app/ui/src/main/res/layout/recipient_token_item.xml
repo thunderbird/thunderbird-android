@@ -12,7 +12,7 @@
         android:gravity="center_vertical"
         android:id="@+id/contact_photo"
         tools:src="@drawable/ic_contact_picture"
-        />
+        android:contentDescription="TODO" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
         android:visibility="gone"
         android:tint="?openpgp_black"
         tools:visibility="visible"
-        />
+        android:contentDescription="TODO" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
         android:visibility="gone"
         android:tint="?openpgp_green"
         tools:visibility="visible"
-        />
+        android:contentDescription="TODO" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -54,7 +54,7 @@
         android:visibility="gone"
         android:tint="?openpgp_red"
         tools:visibility="visible"
-        />
+        android:contentDescription="TODO" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
         android:src="@drawable/status_dots_1"
         android:tint="?attr/openpgp_red"
         android:visibility="gone"
-        />
+        android:contentDescription="TODO" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
         android:src="@drawable/status_dots_2"
         android:tint="?attr/openpgp_orange"
         android:visibility="gone"
-        />
+        android:contentDescription="TODO" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -90,6 +90,6 @@
         android:src="@drawable/status_dots_3"
         android:tint="?attr/openpgp_green"
         android:visibility="gone"
-        />
+        android:contentDescription="TODO" />
 
 </LinearLayout>

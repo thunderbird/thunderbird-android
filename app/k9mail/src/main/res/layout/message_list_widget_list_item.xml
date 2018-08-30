@@ -28,7 +28,8 @@
         android:layout_toStartOf="@+id/mail_date"
         android:src="@drawable/ic_email_attachment_small"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/sender"

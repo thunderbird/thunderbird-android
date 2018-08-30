@@ -22,7 +22,8 @@
                 android:layout_marginLeft="4dip"
                 android:layout_marginRight="4dip"
                 android:layout_marginBottom="4dip"
-                android:layout_marginTop="4dip" />
+                android:layout_marginTop="4dip"
+                android:contentDescription="TODO" />
             <TextView
                 android:id="@+id/attachment_name"
                 android:layout_width="wrap_content"
@@ -80,6 +81,7 @@
         <ImageView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:src="@drawable/ic_email_attachment" />
+            android:src="@drawable/ic_email_attachment"
+            android:contentDescription="TODO" />
     </LinearLayout>
 </com.fsck.k9.ui.messageview.AttachmentView>

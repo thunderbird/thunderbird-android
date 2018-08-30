@@ -23,7 +23,7 @@
             android:src="@drawable/status_signature"
             android:scaleType="fitCenter"
             android:tint="@color/light_black"
-            />
+            android:contentDescription="TODO" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/PositiveBulletPoint"
-            />
+            android:contentDescription="TODO" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/NegativeBulletPoint"
-            />
+            android:contentDescription="TODO" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/NegativeBulletPoint"
-            />
+            android:contentDescription="TODO" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -130,7 +130,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/NeutralBulletPoint"
-            />
+            android:contentDescription="TODO" />
 
         <TextView
             android:layout_width="wrap_content"

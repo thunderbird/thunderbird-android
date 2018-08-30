@@ -18,7 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitCenter"
-            android:src="@drawable/unread_widget_icon" />
+            android:src="@drawable/unread_widget_icon"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/unread_count"

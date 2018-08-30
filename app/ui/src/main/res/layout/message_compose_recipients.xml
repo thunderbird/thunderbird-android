@@ -63,7 +63,7 @@
                 android:id="@+id/crypto_special_inline"
                 android:src="@drawable/compatibility"
                 android:tint="@color/light_black"
-                />
+                android:contentDescription="TODO" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
                 android:id="@+id/crypto_special_sign_only"
                 android:src="@drawable/status_signature"
                 android:tint="?attr/openpgp_blue"
-                />
+                android:contentDescription="TODO" />
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -88,7 +88,7 @@
                     android:layout_margin="8dp"
                     android:src="@drawable/status_signature"
                     android:tint="?attr/openpgp_blue"
-                    />
+                    android:contentDescription="TODO" />
 
                 <ImageView
                     android:layout_width="16dp"
@@ -96,7 +96,7 @@
                     android:layout_gravity="right|bottom"
                     android:src="@drawable/compatibility"
                     android:tint="@color/light_black"
-                    />
+                    android:contentDescription="TODO" />
             </FrameLayout>
 
         </com.fsck.k9.view.ToolableViewAnimator>
@@ -128,7 +128,7 @@
                     android:id="@+id/crypto_status_disabled"
                     android:src="@drawable/status_lock_disabled"
                     android:tint="?attr/openpgp_dark_grey"
-                    />
+                    android:contentDescription="TODO" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -137,7 +137,7 @@
                     android:id="@+id/crypto_status_enabled"
                     android:src="@drawable/status_lock"
                     android:tint="?attr/openpgp_green"
-                    />
+                    android:contentDescription="TODO" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -151,7 +151,7 @@
                         android:layout_gravity="left|center_vertical"
                         android:src="@drawable/status_dots"
                         android:tint="?attr/openpgp_grey"
-                        />
+                        android:contentDescription="TODO" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -159,7 +159,7 @@
                         android:layout_gravity="left|center_vertical"
                         android:src="@drawable/status_lock_dots_3"
                         android:tint="?attr/openpgp_green"
-                        />
+                        android:contentDescription="TODO" />
 
                 </FrameLayout>
 
@@ -170,7 +170,7 @@
                     android:id="@+id/crypto_status_error"
                     android:src="@drawable/status_lock_error"
                     android:tint="?attr/openpgp_red"
-                    />
+                    android:contentDescription="TODO" />
 
             </com.fsck.k9.view.ToolableViewAnimator>
 
@@ -242,7 +242,7 @@
                 android:scaleType="centerCrop"
                 android:src="?attr/iconActionExpand"
                 android:id="@+id/recipient_expander"
-                />
+                android:contentDescription="TODO" />
 
             <Space
                 android:layout_width="wrap_content"
