@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="48"
-   height="48"
-   id="svg3870"
-   version="1.1"
-   inkscape:version="0.48.2 r9819"
-   sodipodi:docname="ic_action_request_read_receipt_light.svg"
-   inkscape:export-xdpi="45"
-   inkscape:export-ydpi="45">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    width="48"
+    height="48"
+    id="svg3870"
+    version="1.1"
+    inkscape:version="0.48.2 r9819"
+    sodipodi:docname="ic_action_request_read_receipt_light.svg"
+    inkscape:export-xdpi="45"
+    inkscape:export-ydpi="45">
   <defs
      id="defs3872">
     <clipPath
@@ -62,7 +60,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+          <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>

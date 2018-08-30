@@ -52,9 +52,9 @@ public class CryptoInfoDialog extends DialogFragment {
 
         View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.message_crypto_info_dialog, null);
 
-        statusIcon = (ImageView) dialogView.findViewById(R.id.crypto_info_top_icon_1);
-        titleText = (TextView) dialogView.findViewById(R.id.crypto_info_title);
-        descriptionText = (TextView) dialogView.findViewById(R.id.crypto_info_text);
+        statusIcon = dialogView.findViewById(R.id.crypto_info_top_icon_1);
+        titleText = dialogView.findViewById(R.id.crypto_info_title);
+        descriptionText = dialogView.findViewById(R.id.crypto_info_text);
 
         MessageCryptoDisplayStatus displayStatus =
                 MessageCryptoDisplayStatus.valueOf(getArguments().getString(ARG_DISPLAY_STATUS));

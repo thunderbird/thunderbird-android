@@ -78,7 +78,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     public void onFinishInflate() {
         super.onFinishInflate();
 
-        mMessageContentView = (MessageWebView) findViewById(R.id.message_content);
+        mMessageContentView = findViewById(R.id.message_content);
         if (!isInEditMode()) {
             mMessageContentView.configure();
         }
@@ -86,11 +86,11 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         mMessageContentView.setVisibility(View.VISIBLE);
 
         View mAttachmentsContainer = findViewById(R.id.attachments_container);
-        mAttachments = (LinearLayout) findViewById(R.id.attachments);
+        mAttachments = findViewById(R.id.attachments);
 
         unsignedTextContainer = findViewById(R.id.message_unsigned_container);
         unsignedTextDivider = findViewById(R.id.message_unsigned_divider);
-        unsignedText = (TextView) findViewById(R.id.message_unsigned_text);
+        unsignedText = findViewById(R.id.message_unsigned_text);
 
         showingPictures = false;
 

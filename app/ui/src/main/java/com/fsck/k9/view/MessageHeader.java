@@ -103,22 +103,22 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         mAnsweredIcon = findViewById(R.id.answered);
         mForwardedIcon = findViewById(R.id.forwarded);
-        mFromView = (TextView) findViewById(R.id.from);
-        mSenderView = (TextView) findViewById(R.id.sender);
-        mToView = (TextView) findViewById(R.id.to);
-        mToLabel = (TextView) findViewById(R.id.to_label);
-        mCcView = (TextView) findViewById(R.id.cc);
-        mCcLabel = (TextView) findViewById(R.id.cc_label);
-        mBccView = (TextView) findViewById(R.id.bcc);
-        mBccLabel = (TextView) findViewById(R.id.bcc_label);
+        mFromView = findViewById(R.id.from);
+        mSenderView = findViewById(R.id.sender);
+        mToView = findViewById(R.id.to);
+        mToLabel = findViewById(R.id.to_label);
+        mCcView = findViewById(R.id.cc);
+        mCcLabel = findViewById(R.id.cc_label);
+        mBccView = findViewById(R.id.bcc);
+        mBccLabel = findViewById(R.id.bcc_label);
 
-        mContactBadge = (ContactBadge) findViewById(R.id.contact_badge);
+        mContactBadge = findViewById(R.id.contact_badge);
 
-        mSubjectView = (TextView) findViewById(R.id.subject);
-        mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
+        mSubjectView = findViewById(R.id.subject);
+        mAdditionalHeadersView = findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
-        mDateView = (TextView) findViewById(R.id.date);
-        mFlagged = (CheckBox) findViewById(R.id.flagged);
+        mDateView = findViewById(R.id.date);
+        mFlagged = findViewById(R.id.flagged);
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
         mFontSizes.setViewTextSize(mSubjectView, mFontSizes.getMessageViewSubject());
@@ -143,7 +143,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mCcView.setOnLongClickListener(this);
         mBccView.setOnLongClickListener(this);
 
-        mCryptoStatusIcon = (MessageCryptoStatusView) findViewById(R.id.crypto_status_icon);
+        mCryptoStatusIcon = findViewById(R.id.crypto_status_icon);
         mCryptoStatusIcon.setOnClickListener(this);
 
         mMessageHelper = MessageHelper.getInstance(mContext);

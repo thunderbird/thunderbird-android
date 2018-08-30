@@ -42,9 +42,9 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_names);
-        mDescription = (EditText)findViewById(R.id.account_description);
-        mName = (EditText)findViewById(R.id.account_name);
-        mDoneButton = (Button)findViewById(R.id.done);
+        mDescription = findViewById(R.id.account_description);
+        mName = findViewById(R.id.account_name);
+        mDoneButton = findViewById(R.id.done);
         mDoneButton.setOnClickListener(this);
 
         TextWatcher validationTextWatcher = new TextWatcher() {

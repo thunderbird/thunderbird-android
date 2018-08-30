@@ -29,7 +29,7 @@ public class MessageCryptoStatusView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        iconSingle = (ImageView) findViewById(R.id.crypto_status_single);
+        iconSingle = findViewById(R.id.crypto_status_single);
     }
 
     public void setCryptoDisplayStatus(MessageCryptoDisplayStatus displayStatus) {

@@ -63,21 +63,21 @@ public class MessageTopView extends LinearLayout {
     public void onFinishInflate() {
         super.onFinishInflate();
 
-        mHeaderContainer = (MessageHeader) findViewById(R.id.header_container);
+        mHeaderContainer = findViewById(R.id.header_container);
         // mHeaderContainer.setOnLayoutChangedListener(this);
         mInflater = LayoutInflater.from(getContext());
 
-        viewAnimator = (ToolableViewAnimator) findViewById(R.id.message_layout_animator);
-        progressBar = (ProgressBar) findViewById(R.id.message_progress);
-        TextView progressText = (TextView) findViewById(R.id.message_progress_text);
+        viewAnimator = findViewById(R.id.message_layout_animator);
+        progressBar = findViewById(R.id.message_progress);
+        TextView progressText = findViewById(R.id.message_progress_text);
 
-        mDownloadRemainder = (Button) findViewById(R.id.download_remainder);
+        mDownloadRemainder = findViewById(R.id.download_remainder);
         mDownloadRemainder.setVisibility(View.GONE);
 
-        showPicturesButton = (Button) findViewById(R.id.show_pictures);
+        showPicturesButton = findViewById(R.id.show_pictures);
         setShowPicturesButtonListener();
 
-        containerView = (ViewGroup) findViewById(R.id.message_container);
+        containerView = findViewById(R.id.message_container);
 
         hideHeaderView();
     }
@@ -144,7 +144,7 @@ public class MessageTopView extends LinearLayout {
         View view = mInflater.inflate(R.layout.message_content_crypto_error, containerView, false);
         setCryptoProviderIcon(providerIcon, view);
 
-        TextView cryptoErrorText = (TextView) view.findViewById(R.id.crypto_error_text);
+        TextView cryptoErrorText = view.findViewById(R.id.crypto_error_text);
         OpenPgpError openPgpError = messageViewInfo.cryptoResultAnnotation.getOpenPgpError();
         if (openPgpError != null) {
             String errorText = openPgpError.getMessage();
@@ -187,7 +187,7 @@ public class MessageTopView extends LinearLayout {
     }
 
     private void setCryptoProviderIcon(Drawable openPgpApiProviderIcon, View view) {
-        ImageView cryptoProviderIcon = (ImageView) view.findViewById(R.id.crypto_error_icon);
+        ImageView cryptoProviderIcon = view.findViewById(R.id.crypto_error_icon);
         if (openPgpApiProviderIcon != null) {
             cryptoProviderIcon.setImageDrawable(openPgpApiProviderIcon);
         } else {

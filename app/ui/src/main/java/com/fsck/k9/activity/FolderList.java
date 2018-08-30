@@ -896,18 +896,18 @@ public class FolderList extends K9ListActivity {
 
             if (holder == null) {
                 holder = new FolderViewHolder();
-                holder.folderName = (TextView) view.findViewById(R.id.folder_name);
-                holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
-                holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
+                holder.folderName = view.findViewById(R.id.folder_name);
+                holder.newMessageCount = view.findViewById(R.id.new_message_count);
+                holder.flaggedMessageCount = view.findViewById(R.id.flagged_message_count);
                 holder.newMessageCountWrapper = view.findViewById(R.id.new_message_count_wrapper);
                 holder.flaggedMessageCountWrapper = view.findViewById(R.id.flagged_message_count_wrapper);
                 holder.newMessageCountIcon = view.findViewById(R.id.new_message_count_icon);
                 holder.flaggedMessageCountIcon = view.findViewById(R.id.flagged_message_count_icon);
 
-                holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
-                holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
+                holder.folderStatus = view.findViewById(R.id.folder_status);
+                holder.activeIcons = view.findViewById(R.id.active_icons);
                 holder.chip = view.findViewById(R.id.chip);
-                holder.folderListItemLayout = (LinearLayout)view.findViewById(R.id.folder_list_item_layout);
+                holder.folderListItemLayout = view.findViewById(R.id.folder_list_item_layout);
                 holder.folderServerId = folder.serverId;
 
                 view.setTag(holder);

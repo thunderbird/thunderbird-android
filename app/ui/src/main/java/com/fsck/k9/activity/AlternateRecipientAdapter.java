@@ -248,17 +248,17 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             layoutHeader = view.findViewById(R.id.alternate_container_header);
             layoutItem = view.findViewById(R.id.alternate_container_item);
 
-            headerName = (TextView) view.findViewById(R.id.alternate_header_name);
-            headerAddressLabel = (TextView) view.findViewById(R.id.alternate_header_label);
-            headerPhoto = (ContactBadge) view.findViewById(R.id.alternate_contact_photo);
+            headerName = view.findViewById(R.id.alternate_header_name);
+            headerAddressLabel = view.findViewById(R.id.alternate_header_label);
+            headerPhoto = view.findViewById(R.id.alternate_contact_photo);
             headerRemove = view.findViewById(R.id.alternate_remove);
 
-            itemAddress = (TextView) view.findViewById(R.id.alternate_address);
-            itemAddressLabel = (TextView) view.findViewById(R.id.alternate_address_label);
+            itemAddress = view.findViewById(R.id.alternate_address);
+            itemAddressLabel = view.findViewById(R.id.alternate_address_label);
             itemCryptoStatus = view.findViewById(R.id.alternate_crypto_status);
-            itemCryptoStatusIcon = (ImageView) view.findViewById(R.id.alternate_crypto_status_icon);
+            itemCryptoStatusIcon = view.findViewById(R.id.alternate_crypto_status_icon);
 
-            itemCryptoStatusSimple = (ImageView) view.findViewById(R.id.alternate_crypto_status_simple);
+            itemCryptoStatusSimple = view.findViewById(R.id.alternate_crypto_status_simple);
         }
 
         public void setShowAsHeader(boolean isHeader) {
