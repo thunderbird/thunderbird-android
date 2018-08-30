@@ -28,22 +28,32 @@ class Iso2022JpToShiftJisInputStream extends InputStream {
         int in1 = mIn.read();
         while (in1 == 0x1b) {
             in1 = mIn.read();
-            if (in1 == '(') {
-                in1 = mIn.read();
-                if (in1 == 'B' || in1 == 'J')
-                    charset = Charset.ASCII;
-                else if (in1 == 'I')  // Not defined in RFC 1468 but in CP50221.
-                    charset = Charset.JISX0201;
-                else
+            switch (in1) {
+                case '(':
+                    in1 = mIn.read();
+                    switch (in1) {
+                        case 'B':
+                        case 'J':
+                            charset = Charset.ASCII;
+                            break;
+                        case 'I':
+// Not defined in RFC 1468 but in CP50221.
+                            charset = Charset.JISX0201;
+                            break;
+                        default:
+                            throw new MalformedInputException(0);
+                    }
+                    break;
+                case '$':
+                    in1 = mIn.read();
+                    if (in1 == '@' || in1 == 'B')
+                        charset = Charset.JISX0208;
+                    else
+                        throw new MalformedInputException(0);
+                    break;
+                default:
                     throw new MalformedInputException(0);
-            } else if (in1 == '$') {
-                in1 = mIn.read();
-                if (in1 == '@' || in1 == 'B')
-                    charset = Charset.JISX0208;
-                else
-                    throw new MalformedInputException(0);
-            } else
-                throw new MalformedInputException(0);
+            }
             in1 = mIn.read();
         }
 

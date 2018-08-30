@@ -225,15 +225,19 @@ public class EmailProvider extends ContentProvider {
 
                 String[] dbProjection = dbColumnNames.toArray(new String[0]);
 
-                if (match == MESSAGES) {
-                    cursor = getMessages(accountUuid, dbProjection, selection, selectionArgs, sortOrder);
-                } else if (match == MESSAGES_THREADED) {
-                    cursor = getThreadedMessages(accountUuid, dbProjection, selection, selectionArgs, sortOrder);
-                } else if (match == MESSAGES_THREAD) {
-                    String threadId = segments.get(3);
-                    cursor = getThread(accountUuid, dbProjection, threadId, sortOrder);
-                } else {
-                    throw new RuntimeException("Not implemented");
+                switch (match) {
+                    case MESSAGES:
+                        cursor = getMessages(accountUuid, dbProjection, selection, selectionArgs, sortOrder);
+                        break;
+                    case MESSAGES_THREADED:
+                        cursor = getThreadedMessages(accountUuid, dbProjection, selection, selectionArgs, sortOrder);
+                        break;
+                    case MESSAGES_THREAD:
+                        String threadId = segments.get(3);
+                        cursor = getThread(accountUuid, dbProjection, threadId, sortOrder);
+                        break;
+                    default:
+                        throw new RuntimeException("Not implemented");
                 }
 
                 Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid + "/messages");

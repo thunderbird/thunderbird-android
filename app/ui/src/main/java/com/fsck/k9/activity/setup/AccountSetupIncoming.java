@@ -202,63 +202,67 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             mStoreType = settings.type;
-            if (settings.type.equals(Protocols.POP3)) {
-                serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
-                findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
-                findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
-                findViewById(R.id.compression_section).setVisibility(View.GONE);
-                findViewById(R.id.compression_label).setVisibility(View.GONE);
-                mSubscribedFoldersOnly.setVisibility(View.GONE);
-            } else if (settings.type.equals(Protocols.IMAP)) {
-                serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
+            switch (settings.type) {
+                case Protocols.POP3:
+                    serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
+                    findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
+                    findViewById(R.id.compression_section).setVisibility(View.GONE);
+                    findViewById(R.id.compression_label).setVisibility(View.GONE);
+                    mSubscribedFoldersOnly.setVisibility(View.GONE);
+                    break;
+                case Protocols.IMAP:
+                    serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
 
-                ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
+                    ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
 
-                mImapAutoDetectNamespaceView.setChecked(imapSettings.autoDetectNamespace);
-                if (imapSettings.pathPrefix != null) {
-                    mImapPathPrefixView.setText(imapSettings.pathPrefix);
-                }
+                    mImapAutoDetectNamespaceView.setChecked(imapSettings.autoDetectNamespace);
+                    if (imapSettings.pathPrefix != null) {
+                        mImapPathPrefixView.setText(imapSettings.pathPrefix);
+                    }
 
-                findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
-                findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
-                findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
 
-                if (!editSettings) {
-                    findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
-                }
-            } else if (settings.type.equals(Protocols.WEBDAV)) {
-                serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
-                mConnectionSecurityChoices = new ConnectionSecurity[] {
-                        ConnectionSecurity.NONE,
-                        ConnectionSecurity.SSL_TLS_REQUIRED };
+                    if (!editSettings) {
+                        findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
+                    }
+                    break;
+                case Protocols.WEBDAV:
+                    serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
+                    mConnectionSecurityChoices = new ConnectionSecurity[]{
+                            ConnectionSecurity.NONE,
+                            ConnectionSecurity.SSL_TLS_REQUIRED};
 
-                // Hide the unnecessary fields
-                findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
-                findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
-                findViewById(R.id.account_auth_type).setVisibility(View.GONE);
-                findViewById(R.id.compression_section).setVisibility(View.GONE);
-                findViewById(R.id.compression_label).setVisibility(View.GONE);
-                mSubscribedFoldersOnly.setVisibility(View.GONE);
+                    // Hide the unnecessary fields
+                    findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
+                    findViewById(R.id.account_auth_type_label).setVisibility(View.GONE);
+                    findViewById(R.id.account_auth_type).setVisibility(View.GONE);
+                    findViewById(R.id.compression_section).setVisibility(View.GONE);
+                    findViewById(R.id.compression_label).setVisibility(View.GONE);
+                    mSubscribedFoldersOnly.setVisibility(View.GONE);
 
-                WebDavStoreSettings webDavSettings = (WebDavStoreSettings) settings;
+                    WebDavStoreSettings webDavSettings = (WebDavStoreSettings) settings;
 
-                if (webDavSettings.path != null) {
-                    mWebdavPathPrefixView.setText(webDavSettings.path);
-                }
+                    if (webDavSettings.path != null) {
+                        mWebdavPathPrefixView.setText(webDavSettings.path);
+                    }
 
-                if (webDavSettings.authPath != null) {
-                    mWebdavAuthPathView.setText(webDavSettings.authPath);
-                }
+                    if (webDavSettings.authPath != null) {
+                        mWebdavAuthPathView.setText(webDavSettings.authPath);
+                    }
 
-                if (webDavSettings.mailboxPath != null) {
-                    mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
-                }
-            } else {
-                throw new Exception("Unknown account type: " + mAccount.getStoreUri());
+                    if (webDavSettings.mailboxPath != null) {
+                        mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
+                    }
+                    break;
+                default:
+                    throw new Exception("Unknown account type: " + mAccount.getStoreUri());
             }
 
             if (!editSettings) {

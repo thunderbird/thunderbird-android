@@ -353,22 +353,30 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             changesMadeSinceLastSave = true;
         } else {
             String action = intent.getAction();
-            if (ACTION_COMPOSE.equals(action)) {
-                this.action = Action.COMPOSE;
-            } else if (ACTION_REPLY.equals(action)) {
-                this.action = Action.REPLY;
-            } else if (ACTION_REPLY_ALL.equals(action)) {
-                this.action = Action.REPLY_ALL;
-            } else if (ACTION_FORWARD.equals(action)) {
-                this.action = Action.FORWARD;
-            } else if (ACTION_FORWARD_AS_ATTACHMENT.equals(action)) {
-                this.action = Action.FORWARD_AS_ATTACHMENT;
-            } else if (ACTION_EDIT_DRAFT.equals(action)) {
-                this.action = Action.EDIT_DRAFT;
-            } else {
-                // This shouldn't happen
-                Timber.w("MessageCompose was started with an unsupported action");
-                this.action = Action.COMPOSE;
+            switch (action) {
+                case ACTION_COMPOSE:
+                    this.action = Action.COMPOSE;
+                    break;
+                case ACTION_REPLY:
+                    this.action = Action.REPLY;
+                    break;
+                case ACTION_REPLY_ALL:
+                    this.action = Action.REPLY_ALL;
+                    break;
+                case ACTION_FORWARD:
+                    this.action = Action.FORWARD;
+                    break;
+                case ACTION_FORWARD_AS_ATTACHMENT:
+                    this.action = Action.FORWARD_AS_ATTACHMENT;
+                    break;
+                case ACTION_EDIT_DRAFT:
+                    this.action = Action.EDIT_DRAFT;
+                    break;
+                default:
+                    // This shouldn't happen
+                    Timber.w("MessageCompose was started with an unsupported action");
+                    this.action = Action.COMPOSE;
+                    break;
             }
         }
 
