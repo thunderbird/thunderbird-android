@@ -104,7 +104,7 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="forward_as_attachment_action">Reenviar como anexo</string>
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
-  <string name="refile_action">Arquivar...</string>
+  <string name="refile_action">Arquivar…</string>
   <string name="done_action">Feito</string>
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Gardar coma borrador</string>
@@ -800,8 +800,8 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="settings_import">Importar axustes</string>
   <string name="settings_import_selection">Importar selección</string>
   <string name="settings_import_global_settings">Axustes globais</string>
-  <string name="settings_exporting">Exportando axustes...</string>
-  <string name="settings_importing">Importando axustes...</string>
+  <string name="settings_exporting">Exportando axustes…</string>
+  <string name="settings_importing">Importando axustes…</string>
   <string name="settings_import_scanning_file">A escanear ficheiro…</string>
   <string name="settings_export_success">Gardando axustes exportados en  <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Gardáronse correctamente os axustes</string>
@@ -827,19 +827,19 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="settings_import_incoming_server">Servidor de entrada (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Servidor de saída (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Establecendo contrasinal...</item>
-    <item quantity="other">Establecendo contrasinais...</item>
+    <item quantity="one">Establecendo contrasinal…</item>
+    <item quantity="other">Establecendo contrasinais…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Utilizar o contrasinal do servidor de entrada</string>
   <string name="activate_account_action">Activar</string>
   <string name="account_unavailable">A conta \"<xliff:g id="account">%s</xliff:g>\" non está dispoñible; verifica o almacenamento</string>
-  <string name="settings_attachment_default_path">Gardar anexos en...</string>
+  <string name="settings_attachment_default_path">Gardar anexos en…</string>
   <string name="attachment_save_title">Gardar anexo</string>
   <string name="attachment_save_desc">Non se atopou xestor de ficheiros. Onde quere gardar este anexo?</string>
   <string name="manage_accounts_move_up_action">Subir</string>
   <string name="manage_accounts_move_down_action">Baixar</string>
-  <string name="manage_accounts_moving_message">Movendo conta...</string>
-  <string name="unread_widget_select_account">Mostrar conta de non lidas para...</string>
+  <string name="manage_accounts_moving_message">Movendo conta…</string>
+  <string name="unread_widget_select_account">Mostrar conta de non lidas para…</string>
   <string name="unread_widget_account_title">Conta</string>
   <string name="unread_widget_account_summary">A conta para a cal se mostrará o número de non lidos</string>
   <string name="unread_widget_unified_inbox_account_summary">Caixa de entrada unificada</string>
@@ -899,8 +899,8 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_settings_remote_search_enabled">Habilitar a busca en servidor</string>
   <string name="account_settings_remote_search_enabled_summary">Buscar mensaxes no servidor ademáis de no seu dispositivo</string>
   <string name="action_remote_search">Buscar mensaxes no servidor</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Tirar para busca ao servidor...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Soltar para busca no servidor...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Tirar para busca ao servidor…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Soltar para busca no servidor…</string>
   <string name="remote_search_unavailable_no_network">Precísase conexión a rede para buscar no servidor.</string>
   <string name="global_settings_background_as_unread_indicator_label">Cambiar a cor cando lido</string>
   <string name="global_settings_background_as_unread_indicator_summary">O fondo diferente mostrará que a mensaxe foi lida.</string>
@@ -1043,7 +1043,7 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="crypto_no_provider_message">Este correo foi cifrado con OpenPGP.\nPara lelo, precisa instalar e configurar un app compatible con OpenPGP</string>
   <string name="crypto_no_provider_button">Escolla o app OpenPGP</string>
   <string name="mail_list_widget_text">Lista de mensaxes K-9</string>
-  <string name="mail_list_widget_loading">Cargando mensaxes...</string>
+  <string name="mail_list_widget_loading">Cargando mensaxes…</string>
   <string name="fetching_folders_failed">Fallou a obtención da lista de cartafoles</string>
   <string name="messageview_crypto_warning_details">Mostrar detalles</string>
   <string name="error_recipient_crypto_retrieve">Fallo ao obter o estado do destinatario do proveedor OpenPGP!</string>

@@ -67,7 +67,7 @@
             android:id="@+id/alternate_remove"
             android:background="?android:selectableItemBackground"
             android:src="?attr/iconActionCancel"
-            />
+            android:contentDescription="TODO" />
 
     </LinearLayout>
 
@@ -120,7 +120,7 @@
                 android:layout_gravity="left|center_vertical"
                 android:src="@drawable/status_dots"
                 android:tint="?attr/openpgp_grey"
-                />
+                android:contentDescription="TODO" />
 
             <ImageView
                 android:id="@+id/alternate_crypto_status_icon"
@@ -129,7 +129,7 @@
                 android:layout_gravity="left|center_vertical"
                 tools:src="@drawable/status_lock_dots_2"
                 tools:tint="?attr/openpgp_grey"
-                />
+                android:contentDescription="TODO" />
 
         </FrameLayout>
 
@@ -143,7 +143,7 @@
             android:tint="?attr/openpgp_black"
             android:visibility="gone"
             tools:visibility="visible"
-            />
+            android:contentDescription="TODO" />
 
     </LinearLayout>
 

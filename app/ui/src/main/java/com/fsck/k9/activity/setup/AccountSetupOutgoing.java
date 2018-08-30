@@ -117,18 +117,18 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
 
 
-        mUsernameView = (EditText)findViewById(R.id.account_username);
-        mPasswordView = (EditText)findViewById(R.id.account_password);
-        mClientCertificateSpinner = (ClientCertificateSpinner)findViewById(R.id.account_client_certificate_spinner);
-        mClientCertificateLabelView = (TextView)findViewById(R.id.account_client_certificate_label);
-        mPasswordLabelView = (TextView)findViewById(R.id.account_password_label);
-        mServerView = (EditText)findViewById(R.id.account_server);
-        mPortView = (EditText)findViewById(R.id.account_port);
-        mRequireLoginView = (CheckBox)findViewById(R.id.account_require_login);
-        mRequireLoginSettingsView = (ViewGroup)findViewById(R.id.account_require_login_settings);
-        mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
-        mAuthTypeView = (Spinner)findViewById(R.id.account_auth_type);
-        mNextButton = (Button)findViewById(R.id.next);
+        mUsernameView = findViewById(R.id.account_username);
+        mPasswordView = findViewById(R.id.account_password);
+        mClientCertificateSpinner = findViewById(R.id.account_client_certificate_spinner);
+        mClientCertificateLabelView = findViewById(R.id.account_client_certificate_label);
+        mPasswordLabelView = findViewById(R.id.account_password_label);
+        mServerView = findViewById(R.id.account_server);
+        mPortView = findViewById(R.id.account_port);
+        mRequireLoginView = findViewById(R.id.account_require_login);
+        mRequireLoginSettingsView = findViewById(R.id.account_require_login_settings);
+        mSecurityTypeView = findViewById(R.id.account_security_type);
+        mAuthTypeView = findViewById(R.id.account_auth_type);
+        mNextButton = findViewById(R.id.next);
 
         mNextButton.setOnClickListener(this);
 

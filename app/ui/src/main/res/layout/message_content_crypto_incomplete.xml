@@ -17,7 +17,7 @@
             android:scaleType="centerCrop"
             android:id="@+id/crypto_error_icon"
             tools:src="@drawable/status_lock_error"
-            />
+            android:contentDescription="TODO" />
 
         <TextView
             android:layout_width="wrap_content"

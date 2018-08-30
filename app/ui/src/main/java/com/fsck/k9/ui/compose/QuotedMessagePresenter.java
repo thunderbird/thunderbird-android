@@ -244,58 +244,63 @@ public class QuotedMessagePresenter {
             return;
         }
 
-        if (messageFormat == MessageFormat.HTML) {
-            String bodyText; // defaults to null
-            Part part = MimeUtility.findFirstPartByMimeType(messageViewInfo.message, "text/html");
-            if (part != null) { // Shouldn't happen if we were the one who saved it.
-                quotedTextFormat = SimpleMessageFormat.HTML;
-                String text = MessageExtractor.getTextFromPart(part);
+        switch (messageFormat) {
+            case HTML:
+                String bodyText; // defaults to null
 
-                if (text == null) {
-                    Timber.d("Empty message; skipping.");
-                    bodyText = "";
-                } else {
-                    Timber.d("Loading message with offset %d, length %d. Text length is %d.",
-                            bodyOffset, bodyLength, text.length());
+                Part part = MimeUtility.findFirstPartByMimeType(messageViewInfo.message, "text/html");
+                if (part != null) { // Shouldn't happen if we were the one who saved it.
+                    quotedTextFormat = SimpleMessageFormat.HTML;
+                    String text = MessageExtractor.getTextFromPart(part);
 
-                    if (bodyOffset + bodyLength > text.length()) {
-                        // The draft was edited outside of K-9 Mail?
-                        Timber.d("The identity field from the draft contains an invalid LENGTH/OFFSET");
-                        bodyOffset = 0;
-                        bodyLength = 0;
-                    }
-                    // Grab our reply text.
-                    bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
-                }
-                view.setMessageContentCharacters(HtmlConverter.htmlToText(bodyText));
-
-                // Regenerate the quoted html without our user content in it.
-                StringBuilder quotedHTML = new StringBuilder();
-                quotedHTML.append(text.substring(0, bodyOffset));   // stuff before the reply
-                quotedHTML.append(text.substring(bodyOffset + bodyLength));
-                if (quotedHTML.length() > 0) {
-                    quotedHtmlContent = new InsertableHtmlContent();
-                    quotedHtmlContent.setQuotedContent(quotedHTML);
-                    // We don't know if bodyOffset refers to the header or to the footer
-                    quotedHtmlContent.setHeaderInsertionPoint(bodyOffset);
-                    if (bodyFooterOffset != null) {
-                        quotedHtmlContent.setFooterInsertionPoint(bodyFooterOffset);
+                    if (text == null) {
+                        Timber.d("Empty message; skipping.");
+                        bodyText = "";
                     } else {
-                        quotedHtmlContent.setFooterInsertionPoint(bodyOffset);
+                        Timber.d("Loading message with offset %d, length %d. Text length is %d.",
+                                bodyOffset, bodyLength, text.length());
+
+                        if (bodyOffset + bodyLength > text.length()) {
+                            // The draft was edited outside of K-9 Mail?
+                            Timber.d("The identity field from the draft contains an invalid LENGTH/OFFSET");
+                            bodyOffset = 0;
+                            bodyLength = 0;
+                        }
+                        // Grab our reply text.
+                        bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
                     }
-                    // TODO replace with MessageViewInfo data
-                    view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
-                            AttachmentResolver.createFromPart(messageViewInfo.rootPart));
+                    view.setMessageContentCharacters(HtmlConverter.htmlToText(bodyText));
+
+                    // Regenerate the quoted html without our user content in it.
+                    StringBuilder quotedHTML = new StringBuilder();
+                    quotedHTML.append(text.substring(0, bodyOffset));   // stuff before the reply
+                    quotedHTML.append(text.substring(bodyOffset + bodyLength));
+                    if (quotedHTML.length() > 0) {
+                        quotedHtmlContent = new InsertableHtmlContent();
+                        quotedHtmlContent.setQuotedContent(quotedHTML);
+                        // We don't know if bodyOffset refers to the header or to the footer
+                        quotedHtmlContent.setHeaderInsertionPoint(bodyOffset);
+                        if (bodyFooterOffset != null) {
+                            quotedHtmlContent.setFooterInsertionPoint(bodyFooterOffset);
+                        } else {
+                            quotedHtmlContent.setFooterInsertionPoint(bodyOffset);
+                        }
+                        // TODO replace with MessageViewInfo data
+                        view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
+                                AttachmentResolver.createFromPart(messageViewInfo.rootPart));
+                    }
                 }
-            }
-            if (bodyPlainOffset != null && bodyPlainLength != null) {
-                processSourceMessageText(messageViewInfo.rootPart, bodyPlainOffset, bodyPlainLength, false);
-            }
-        } else if (messageFormat == MessageFormat.TEXT) {
-            quotedTextFormat = SimpleMessageFormat.TEXT;
-            processSourceMessageText(messageViewInfo.rootPart, bodyOffset, bodyLength, true);
-        } else {
-            Timber.e("Unhandled message format.");
+                if (bodyPlainOffset != null && bodyPlainLength != null) {
+                    processSourceMessageText(messageViewInfo.rootPart, bodyPlainOffset, bodyPlainLength, false);
+                }
+                break;
+            case TEXT:
+                quotedTextFormat = SimpleMessageFormat.TEXT;
+                processSourceMessageText(messageViewInfo.rootPart, bodyOffset, bodyLength, true);
+                break;
+            default:
+                Timber.e("Unhandled message format.");
+                break;
         }
 
         // Set the cursor position if we have it.

@@ -66,7 +66,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private View mAnsweredIcon;
     private View mForwardedIcon;
     private Message mMessage;
-    private Account mAccount;
     private FontSizes mFontSizes = K9.getFontSizes();
     private Contacts mContacts;
     private SavedState mSavedState;
@@ -104,22 +103,22 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         mAnsweredIcon = findViewById(R.id.answered);
         mForwardedIcon = findViewById(R.id.forwarded);
-        mFromView = (TextView) findViewById(R.id.from);
-        mSenderView = (TextView) findViewById(R.id.sender);
-        mToView = (TextView) findViewById(R.id.to);
-        mToLabel = (TextView) findViewById(R.id.to_label);
-        mCcView = (TextView) findViewById(R.id.cc);
-        mCcLabel = (TextView) findViewById(R.id.cc_label);
-        mBccView = (TextView) findViewById(R.id.bcc);
-        mBccLabel = (TextView) findViewById(R.id.bcc_label);
+        mFromView = findViewById(R.id.from);
+        mSenderView = findViewById(R.id.sender);
+        mToView = findViewById(R.id.to);
+        mToLabel = findViewById(R.id.to_label);
+        mCcView = findViewById(R.id.cc);
+        mCcLabel = findViewById(R.id.cc_label);
+        mBccView = findViewById(R.id.bcc);
+        mBccLabel = findViewById(R.id.bcc_label);
 
-        mContactBadge = (ContactBadge) findViewById(R.id.contact_badge);
+        mContactBadge = findViewById(R.id.contact_badge);
 
-        mSubjectView = (TextView) findViewById(R.id.subject);
-        mAdditionalHeadersView = (TextView) findViewById(R.id.additional_headers_view);
+        mSubjectView = findViewById(R.id.subject);
+        mAdditionalHeadersView = findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
-        mDateView = (TextView) findViewById(R.id.date);
-        mFlagged = (CheckBox) findViewById(R.id.flagged);
+        mDateView = findViewById(R.id.date);
+        mFlagged = findViewById(R.id.flagged);
 
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
         mFontSizes.setViewTextSize(mSubjectView, mFontSizes.getMessageViewSubject());
@@ -144,7 +143,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mCcView.setOnLongClickListener(this);
         mBccView.setOnLongClickListener(this);
 
-        mCryptoStatusIcon = (MessageCryptoStatusView) findViewById(R.id.crypto_status_icon);
+        mCryptoStatusIcon = findViewById(R.id.crypto_status_icon);
         mCryptoStatusIcon.setOnClickListener(this);
 
         mMessageHelper = MessageHelper.getInstance(mContext);
@@ -287,7 +286,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
 
         mMessage = message;
-        mAccount = account;
 
         if (K9.showContactPicture()) {
             mContactBadge.setVisibility(View.VISIBLE);
@@ -331,7 +329,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
 
-        mChip.setBackgroundColor(mAccount.getChipColor());
+        mChip.setBackgroundColor(account.getChipColor());
 
         setVisibility(View.VISIBLE);
 
@@ -354,10 +352,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         Address[] from = message.getFrom();
         Address[] sender = message.getSender();
 
-        if (sender == null || sender.length == 0) {
-            return false;
-        }
-        return !Arrays.equals(from, sender);
+        return sender != null && sender.length != 0 && !Arrays.equals(from, sender);
     }
 
     public void hideCryptoStatus() {
@@ -419,9 +414,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     }
 
     private List<HeaderEntry> getAdditionalHeaders(final Message message) {
-        List<HeaderEntry> additionalHeaders = new LinkedList<HeaderEntry>();
+        List<HeaderEntry> additionalHeaders = new LinkedList<>();
 
-        Set<String> headerNames = new LinkedHashSet<String>(message.getHeaderNames());
+        Set<String> headerNames = new LinkedHashSet<>(message.getHeaderNames());
         for (String headerName : headerNames) {
             String[] headerValues = message.getHeader(headerName);
             for (String headerValue : headerValues) {

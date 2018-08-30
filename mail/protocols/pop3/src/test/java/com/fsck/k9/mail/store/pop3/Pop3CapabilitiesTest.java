@@ -10,7 +10,7 @@ public class Pop3CapabilitiesTest {
 
     @Test
     public void toString_producesReadableOutput() {
-        String result = new Pop3Capabilities().toString();;
+        String result = new Pop3Capabilities().toString();
 
         assertEquals(
                 "CRAM-MD5 false, PLAIN false, STLS false, TOP false, UIDL false, EXTERNAL false",

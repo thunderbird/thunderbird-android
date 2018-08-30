@@ -18,6 +18,6 @@
         android:id="@+id/crypto_status_single"
         android:src="@drawable/status_lock_disabled"
         android:tint="?attr/openpgp_grey"
-        />
+        android:contentDescription="TODO" />
 
 </com.fsck.k9.view.MessageCryptoStatusView>

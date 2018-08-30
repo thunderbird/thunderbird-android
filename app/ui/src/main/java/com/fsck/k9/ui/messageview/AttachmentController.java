@@ -153,17 +153,11 @@ public class AttachmentController {
     }
 
     private void writeAttachmentToStorage(File file) throws IOException {
-        InputStream in = context.getContentResolver().openInputStream(attachment.internalUri);
-        try {
-            OutputStream out = new FileOutputStream(file);
-            try {
+        try (InputStream in = context.getContentResolver().openInputStream(attachment.internalUri)) {
+            try (OutputStream out = new FileOutputStream(file)) {
                 IOUtils.copy(in, out);
                 out.flush();
-            } finally {
-                out.close();
             }
-        } finally {
-            in.close();
         }
     }
 

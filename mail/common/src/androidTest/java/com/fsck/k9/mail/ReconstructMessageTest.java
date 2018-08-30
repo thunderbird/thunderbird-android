@@ -9,8 +9,6 @@ import java.io.InputStream;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.internet.MimeMessage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -54,12 +52,9 @@ public class ReconstructMessageTest {
 
         BinaryTempFileBody.setTempDirectory(InstrumentationRegistry.getTargetContext().getCacheDir());
 
-        InputStream messageInputStream = new ByteArrayInputStream(messageSource.getBytes());
         MimeMessage message;
-        try {
+        try (InputStream messageInputStream = new ByteArrayInputStream(messageSource.getBytes())) {
             message = MimeMessage.parseMimeMessage(messageInputStream, true);
-        } finally {
-            messageInputStream.close();
         }
 
         ByteArrayOutputStream messageOutputStream = new ByteArrayOutputStream();

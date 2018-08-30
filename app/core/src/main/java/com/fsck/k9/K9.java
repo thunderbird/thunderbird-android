@@ -181,7 +181,7 @@ public class K9 {
     private static boolean hideHostnameWhenConnecting = false;
 
     private static SortType sortType;
-    private static Map<SortType, Boolean> sortAscending = new HashMap<SortType, Boolean>();
+    private static Map<SortType, Boolean> sortAscending = new HashMap<>();
 
     private static boolean useBackgroundAsUnreadIndicator = true;
     private static boolean threadedViewEnabled = true;

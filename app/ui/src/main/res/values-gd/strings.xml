@@ -809,9 +809,9 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="settings_import_incoming_server">Am frithealaiche a-steach (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Am frithealaiche a-mach (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Faclan-faire nan roghainnean...</item>
-    <item quantity="two">Faclan-faire nan roghainnean...</item>
-    <item quantity="few">Faclan-faire nan roghainnean...</item>
+    <item quantity="one">Faclan-faire nan roghainnean…</item>
+    <item quantity="two">Faclan-faire nan roghainnean…</item>
+    <item quantity="few">Faclan-faire nan roghainnean…</item>
     <item quantity="other">Faclan-faire nan roghainnean…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Cleachd facal-faire an fhrithealaiche a-steach</string>

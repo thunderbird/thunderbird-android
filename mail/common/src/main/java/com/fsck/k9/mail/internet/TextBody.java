@@ -129,17 +129,10 @@ public class TextBody implements Body, SizeAware {
     }
 
     private void writeSignSafeQuotedPrintable(OutputStream out, byte[] bytes) throws IOException {
-        SignSafeOutputStream signSafeOutputStream = new SignSafeOutputStream(out);
-        try {
-            QuotedPrintableOutputStream signSafeQuotedPrintableOutputStream =
-                    new QuotedPrintableOutputStream(signSafeOutputStream, false);
-            try {
+        try (SignSafeOutputStream signSafeOutputStream = new SignSafeOutputStream(out)) {
+            try (QuotedPrintableOutputStream signSafeQuotedPrintableOutputStream = new QuotedPrintableOutputStream(signSafeOutputStream, false)) {
                 signSafeQuotedPrintableOutputStream.write(bytes);
-            } finally {
-                signSafeQuotedPrintableOutputStream.close();
             }
-        } finally {
-            signSafeOutputStream.close();
         }
     }
 

@@ -15,9 +15,8 @@ import android.database.CursorWrapper;
  */
 public class EmailProviderCacheCursor extends CursorWrapper {
     private EmailProviderCache mCache;
-    private List<Integer> mHiddenRows = new ArrayList<Integer>();
+    private List<Integer> mHiddenRows = new ArrayList<>();
     private int mMessageIdColumn;
-    private int mFolderIdColumn;
     private int mThreadRootColumn;
 
     /**
@@ -34,7 +33,7 @@ public class EmailProviderCacheCursor extends CursorWrapper {
         mCache = EmailProviderCache.getCache(accountUuid, context);
 
         mMessageIdColumn = cursor.getColumnIndex(MessageColumns.ID);
-        mFolderIdColumn = cursor.getColumnIndex(MessageColumns.FOLDER_ID);
+        int mFolderIdColumn = cursor.getColumnIndex(MessageColumns.FOLDER_ID);
         mThreadRootColumn = cursor.getColumnIndex(ThreadColumns.ROOT);
 
         if (mMessageIdColumn == -1 || mFolderIdColumn == -1 || mThreadRootColumn == -1) {

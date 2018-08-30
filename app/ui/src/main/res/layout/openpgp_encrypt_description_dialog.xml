@@ -23,7 +23,7 @@
             android:src="@drawable/status_signature"
             android:scaleType="fitCenter"
             android:tint="@color/light_black"
-            />
+            android:contentDescription="TODO" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,14 +57,14 @@
             android:padding="6dp"
             android:src="@drawable/status_lock_disabled"
             android:tint="?attr/openpgp_dark_grey"
-            />
+            android:contentDescription="TODO" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:src="?attr/iconActionNextStatus"
-            />
+            android:contentDescription="TODO" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
             android:padding="6dp"
             android:src="@drawable/status_lock"
             android:tint="?attr/openpgp_green"
-            />
+            android:contentDescription="TODO" />
 
     </LinearLayout>
 

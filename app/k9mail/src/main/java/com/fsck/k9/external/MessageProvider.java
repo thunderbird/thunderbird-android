@@ -77,7 +77,7 @@ public class MessageProvider extends ContentProvider {
 
 
     private UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-    private List<QueryHandler> queryHandlers = new ArrayList<QueryHandler>();
+    private List<QueryHandler> queryHandlers = new ArrayList<>();
 
     /**
      * How many simultaneous cursors we can afford to expose at once
@@ -484,7 +484,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         protected MatrixCursor getMessages(String[] projection) throws InterruptedException {
-            BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<List<MessageInfoHolder>>();
+            BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<>();
 
             // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
             SearchAccount integratedInboxAccount = SearchAccount.createUnifiedInboxAccount();
@@ -530,44 +530,61 @@ public class MessageProvider extends ContentProvider {
         protected LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> resolveMessageExtractors(
                 String[] projection, int count) {
             LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> extractors =
-                    new LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>>();
+                    new LinkedHashMap<>();
 
             for (String field : projection) {
                 if (extractors.containsKey(field)) {
                     continue;
                 }
-                if (MessageColumns._ID.equals(field)) {
-                    extractors.put(field, new IdExtractor());
-                } else if (MessageColumns._COUNT.equals(field)) {
-                    extractors.put(field, new CountExtractor<MessageInfoHolder>(count));
-                } else if (MessageColumns.SUBJECT.equals(field)) {
-                    extractors.put(field, new SubjectExtractor());
-                } else if (MessageColumns.SENDER.equals(field)) {
-                    extractors.put(field, new SenderExtractor());
-                } else if (MessageColumns.SENDER_ADDRESS.equals(field)) {
-                    extractors.put(field, new SenderAddressExtractor());
-                } else if (MessageColumns.SEND_DATE.equals(field)) {
-                    extractors.put(field, new SendDateExtractor());
-                } else if (MessageColumns.PREVIEW.equals(field)) {
-                    extractors.put(field, new PreviewExtractor());
-                } else if (MessageColumns.URI.equals(field)) {
-                    extractors.put(field, new UriExtractor());
-                } else if (MessageColumns.DELETE_URI.equals(field)) {
-                    extractors.put(field, new DeleteUriExtractor());
-                } else if (MessageColumns.UNREAD.equals(field)) {
-                    extractors.put(field, new UnreadExtractor());
-                } else if (MessageColumns.ACCOUNT.equals(field)) {
-                    extractors.put(field, new AccountExtractor());
-                } else if (MessageColumns.ACCOUNT_COLOR.equals(field)) {
-                    extractors.put(field, new AccountColorExtractor());
-                } else if (MessageColumns.ACCOUNT_NUMBER.equals(field)) {
-                    extractors.put(field, new AccountNumberExtractor());
-                } else if (MessageColumns.HAS_ATTACHMENTS.equals(field)) {
-                    extractors.put(field, new HasAttachmentsExtractor());
-                } else if (MessageColumns.HAS_STAR.equals(field)) {
-                    extractors.put(field, new HasStarExtractor());
-                } else if (MessageColumns.INCREMENT.equals(field)) {
-                    extractors.put(field, new IncrementExtractor());
+                switch (field) {
+                    case MessageColumns._ID:
+                        extractors.put(field, new IdExtractor());
+                        break;
+                    case MessageColumns._COUNT:
+                        extractors.put(field, new CountExtractor<MessageInfoHolder>(count));
+                        break;
+                    case MessageColumns.SUBJECT:
+                        extractors.put(field, new SubjectExtractor());
+                        break;
+                    case MessageColumns.SENDER:
+                        extractors.put(field, new SenderExtractor());
+                        break;
+                    case MessageColumns.SENDER_ADDRESS:
+                        extractors.put(field, new SenderAddressExtractor());
+                        break;
+                    case MessageColumns.SEND_DATE:
+                        extractors.put(field, new SendDateExtractor());
+                        break;
+                    case MessageColumns.PREVIEW:
+                        extractors.put(field, new PreviewExtractor());
+                        break;
+                    case MessageColumns.URI:
+                        extractors.put(field, new UriExtractor());
+                        break;
+                    case MessageColumns.DELETE_URI:
+                        extractors.put(field, new DeleteUriExtractor());
+                        break;
+                    case MessageColumns.UNREAD:
+                        extractors.put(field, new UnreadExtractor());
+                        break;
+                    case MessageColumns.ACCOUNT:
+                        extractors.put(field, new AccountExtractor());
+                        break;
+                    case MessageColumns.ACCOUNT_COLOR:
+                        extractors.put(field, new AccountColorExtractor());
+                        break;
+                    case MessageColumns.ACCOUNT_NUMBER:
+                        extractors.put(field, new AccountNumberExtractor());
+                        break;
+                    case MessageColumns.HAS_ATTACHMENTS:
+                        extractors.put(field, new HasAttachmentsExtractor());
+                        break;
+                    case MessageColumns.HAS_STAR:
+                        extractors.put(field, new HasStarExtractor());
+                        break;
+                    case MessageColumns.INCREMENT:
+                        extractors.put(field, new IncrementExtractor());
+                        break;
                 }
             }
             return extractors;
@@ -603,16 +620,22 @@ public class MessageProvider extends ContentProvider {
 
                 int fieldIndex = 0;
                 for (String field : projection) {
-                    if (AccountColumns.ACCOUNT_NUMBER.equals(field)) {
-                        values[fieldIndex] = account.getAccountNumber();
-                    } else if (AccountColumns.ACCOUNT_NAME.equals(field)) {
-                        values[fieldIndex] = account.getDescription();
-                    } else if (AccountColumns.ACCOUNT_UUID.equals(field)) {
-                        values[fieldIndex] = account.getUuid();
-                    } else if (AccountColumns.ACCOUNT_COLOR.equals(field)) {
-                        values[fieldIndex] = account.getChipColor();
-                    } else {
-                        values[fieldIndex] = null;
+                    switch (field) {
+                        case AccountColumns.ACCOUNT_NUMBER:
+                            values[fieldIndex] = account.getAccountNumber();
+                            break;
+                        case AccountColumns.ACCOUNT_NAME:
+                            values[fieldIndex] = account.getDescription();
+                            break;
+                        case AccountColumns.ACCOUNT_UUID:
+                            values[fieldIndex] = account.getUuid();
+                            break;
+                        case AccountColumns.ACCOUNT_COLOR:
+                            values[fieldIndex] = account.getChipColor();
+                            break;
+                        default:
+                            values[fieldIndex] = null;
+                            break;
                     }
                     ++fieldIndex;
                 }
@@ -1030,7 +1053,7 @@ public class MessageProvider extends ContentProvider {
             MonitoredCursor wrapped = new MonitoredCursor((CrossProcessCursor) cursor, semaphore);
 
             // Use a weak reference not to actively prevent garbage collection
-            final WeakReference<MonitoredCursor> weakReference = new WeakReference<MonitoredCursor>(wrapped);
+            final WeakReference<MonitoredCursor> weakReference = new WeakReference<>(wrapped);
 
             // Make sure the cursor is closed after 30 seconds
             scheduledPool.schedule(new Runnable() {
@@ -1058,7 +1081,7 @@ public class MessageProvider extends ContentProvider {
      */
     protected class MessageInfoHolderRetrieverListener extends SimpleMessagingListener {
         private final BlockingQueue<List<MessageInfoHolder>> queue;
-        private List<MessageInfoHolder> holders = new ArrayList<MessageInfoHolder>();
+        private List<MessageInfoHolder> holders = new ArrayList<>();
 
 
         public MessageInfoHolderRetrieverListener(BlockingQueue<List<MessageInfoHolder>> queue) {

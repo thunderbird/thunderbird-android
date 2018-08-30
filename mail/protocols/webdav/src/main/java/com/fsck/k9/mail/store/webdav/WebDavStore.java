@@ -67,9 +67,7 @@ public class WebDavStore extends RemoteStore {
     private String baseUrl;
     private String hostname;
     private int port;
-    private String path;
     private String formBasedAuthPath;
-    private String mailboxPath;
 
     private final WebDavHttpClient.WebDavHttpClientFactory httpClientFactory;
     private WebDavHttpClient httpClient = null;
@@ -100,9 +98,9 @@ public class WebDavStore extends RemoteStore {
         password = serverSettings.password;
         alias = serverSettings.alias;
 
-        path = serverSettings.path;
+        String path = serverSettings.path;
         formBasedAuthPath = serverSettings.authPath;
-        mailboxPath = serverSettings.mailboxPath;
+        String mailboxPath = serverSettings.mailboxPath;
 
 
         if (path == null || path.equals("")) {
@@ -480,35 +478,39 @@ public class WebDavStore extends RemoteStore {
     private boolean authenticate()
             throws MessagingException {
         try {
-            if (authenticationType == WebDavConstants.AUTH_TYPE_NONE) {
-                ConnectionInfo info = doInitialConnection();
+            switch (authenticationType) {
+                case WebDavConstants.AUTH_TYPE_NONE:
+                    ConnectionInfo info = doInitialConnection();
 
-                if (info.requiredAuthType == WebDavConstants.AUTH_TYPE_BASIC) {
-                    HttpGeneric request = new HttpGeneric(baseUrl);
-                    request.setMethod("GET");
-                    request.setHeader("Authorization", authString);
+                    if (info.requiredAuthType == WebDavConstants.AUTH_TYPE_BASIC) {
+                        HttpGeneric request = new HttpGeneric(baseUrl);
+                        request.setMethod("GET");
+                        request.setHeader("Authorization", authString);
 
-                    WebDavHttpClient httpClient = getHttpClient();
-                    HttpResponse response = httpClient.executeOverride(request, httpContext);
+                        WebDavHttpClient httpClient = getHttpClient();
+                        HttpResponse response = httpClient.executeOverride(request, httpContext);
 
-                    int statusCode = response.getStatusLine().getStatusCode();
-                    if (statusCode >= 200 && statusCode < 300) {
-                        authenticationType = WebDavConstants.AUTH_TYPE_BASIC;
-                    } else if (statusCode == 401) {
-                        throw new MessagingException("Invalid username or password for authentication.");
-                    } else {
-                        throw new MessagingException("Error with code " + response.getStatusLine().getStatusCode() +
-                                " during request processing: " + response.getStatusLine().toString());
+                        int statusCode = response.getStatusLine().getStatusCode();
+                        if (statusCode >= 200 && statusCode < 300) {
+                            authenticationType = WebDavConstants.AUTH_TYPE_BASIC;
+                        } else if (statusCode == 401) {
+                            throw new MessagingException("Invalid username or password for authentication.");
+                        } else {
+                            throw new MessagingException("Error with code " + response.getStatusLine().getStatusCode() +
+                                    " during request processing: " + response.getStatusLine().toString());
+                        }
+                    } else if (info.requiredAuthType == WebDavConstants.AUTH_TYPE_FORM_BASED) {
+                        performFormBasedAuthentication(info);
                     }
-                } else if (info.requiredAuthType == WebDavConstants.AUTH_TYPE_FORM_BASED) {
-                    performFormBasedAuthentication(info);
-                }
-            } else if (authenticationType == WebDavConstants.AUTH_TYPE_BASIC) {
-                // Nothing to do, we authenticate with every request when
-                // using basic authentication.
-            } else if (authenticationType == WebDavConstants.AUTH_TYPE_FORM_BASED) {
-                // Our cookie expired, re-authenticate.
-                performFormBasedAuthentication(null);
+                    break;
+                case WebDavConstants.AUTH_TYPE_BASIC:
+                    // Nothing to do, we authenticate with every request when
+                    // using basic authentication.
+                    break;
+                case WebDavConstants.AUTH_TYPE_FORM_BASED:
+                    // Our cookie expired, re-authenticate.
+                    performFormBasedAuthentication(null);
+                    break;
             }
         } catch (IOException ioe) {
             Timber.e(ioe, "Error during authentication");

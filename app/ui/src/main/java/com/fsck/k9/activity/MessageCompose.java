@@ -278,7 +278,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         contacts = Contacts.getInstance(MessageCompose.this);
 
-        chooseIdentityButton = (TextView) findViewById(R.id.identity);
+        chooseIdentityButton = findViewById(R.id.identity);
         chooseIdentityButton.setOnClickListener(this);
 
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
@@ -292,21 +292,21 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         recipientPresenter.asyncUpdateCryptoStatus();
 
 
-        subjectView = (EditText) findViewById(R.id.subject);
+        subjectView = findViewById(R.id.subject);
         subjectView.getInputExtras(true).putBoolean("allowEmoji", true);
 
-        EolConvertingEditText upperSignature = (EolConvertingEditText) findViewById(R.id.upper_signature);
-        EolConvertingEditText lowerSignature = (EolConvertingEditText) findViewById(R.id.lower_signature);
+        EolConvertingEditText upperSignature = findViewById(R.id.upper_signature);
+        EolConvertingEditText lowerSignature = findViewById(R.id.lower_signature);
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
         quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, account);
         attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView,
                 getSupportLoaderManager(), this);
 
-        messageContentView = (EolConvertingEditText) findViewById(R.id.message_content);
+        messageContentView = findViewById(R.id.message_content);
         messageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
 
-        attachmentsView = (LinearLayout) findViewById(R.id.attachments);
+        attachmentsView = findViewById(R.id.attachments);
 
         TextWatcher draftNeedsChangingTextWatcher = new SimpleTextWatcher() {
             @Override
@@ -353,22 +353,30 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             changesMadeSinceLastSave = true;
         } else {
             String action = intent.getAction();
-            if (ACTION_COMPOSE.equals(action)) {
-                this.action = Action.COMPOSE;
-            } else if (ACTION_REPLY.equals(action)) {
-                this.action = Action.REPLY;
-            } else if (ACTION_REPLY_ALL.equals(action)) {
-                this.action = Action.REPLY_ALL;
-            } else if (ACTION_FORWARD.equals(action)) {
-                this.action = Action.FORWARD;
-            } else if (ACTION_FORWARD_AS_ATTACHMENT.equals(action)) {
-                this.action = Action.FORWARD_AS_ATTACHMENT;
-            } else if (ACTION_EDIT_DRAFT.equals(action)) {
-                this.action = Action.EDIT_DRAFT;
-            } else {
-                // This shouldn't happen
-                Timber.w("MessageCompose was started with an unsupported action");
-                this.action = Action.COMPOSE;
+            switch (action) {
+                case ACTION_COMPOSE:
+                    this.action = Action.COMPOSE;
+                    break;
+                case ACTION_REPLY:
+                    this.action = Action.REPLY;
+                    break;
+                case ACTION_REPLY_ALL:
+                    this.action = Action.REPLY_ALL;
+                    break;
+                case ACTION_FORWARD:
+                    this.action = Action.FORWARD;
+                    break;
+                case ACTION_FORWARD_AS_ATTACHMENT:
+                    this.action = Action.FORWARD_AS_ATTACHMENT;
+                    break;
+                case ACTION_EDIT_DRAFT:
+                    this.action = Action.EDIT_DRAFT;
+                    break;
+                default:
+                    // This shouldn't happen
+                    Timber.w("MessageCompose was started with an unsupported action");
+                    this.action = Action.COMPOSE;
+                    break;
             }
         }
 
@@ -1055,12 +1063,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (!attachmentPresenter.createAttachmentList().isEmpty()) {
             return true;
         }
-        if (subjectView.getText().length() != 0) {
-            return true;
-        }
-        return !recipientPresenter.getToAddresses().isEmpty() ||
-                !recipientPresenter.getCcAddresses().isEmpty() ||
-                !recipientPresenter.getBccAddresses().isEmpty();
+        return subjectView.getText().length() != 0 || !recipientPresenter.getToAddresses().isEmpty() || !recipientPresenter.getCcAddresses().isEmpty() || !recipientPresenter.getBccAddresses().isEmpty();
     }
 
     @Override
@@ -1733,7 +1736,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 throw new IllegalArgumentException();
             }
 
-            TextView nameView = (TextView) view.findViewById(R.id.attachment_name);
+            TextView nameView = view.findViewById(R.id.attachment_name);
             boolean hasMetadata = (attachment.state != Attachment.LoadingState.URI_ONLY);
             if (hasMetadata) {
                 nameView.setText(attachment.name);

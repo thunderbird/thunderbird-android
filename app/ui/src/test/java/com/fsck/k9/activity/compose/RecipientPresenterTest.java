@@ -61,7 +61,6 @@ public class RecipientPresenterTest extends K9RobolectricTest {
     private RecipientPresenter recipientPresenter;
     private ReplyToParser replyToParser;
     private ComposePgpInlineDecider composePgpInlineDecider;
-    private ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider;
     private Account account;
     private RecipientMvpView recipientMvpView;
     private RecipientPresenter.RecipientsChangedListener listener;
@@ -80,7 +79,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         openPgpApiManager = mock(OpenPgpApiManager.class);
         account = mock(Account.class);
         composePgpInlineDecider = mock(ComposePgpInlineDecider.class);
-        composePgpEnableByDefaultDecider = mock(ComposePgpEnableByDefaultDecider.class);
+        ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider = mock(ComposePgpEnableByDefaultDecider.class);
         autocryptStatusInteractor = mock(AutocryptStatusInteractor.class);
         replyToParser = mock(ReplyToParser.class);
         LoaderManager loaderManager = mock(LoaderManager.class);

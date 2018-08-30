@@ -517,7 +517,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         UNDEFINED,
         UNAVAILABLE,
         AVAILABLE_UNTRUSTED,
-        AVAILABLE_TRUSTED;
+        AVAILABLE_TRUSTED
     }
 
     public interface TokenListener<T> extends TokenCompleteTextView.TokenListener<T> {
@@ -546,8 +546,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
 
         RecipientTokenViewHolder(View view) {
-            vName = (TextView) view.findViewById(android.R.id.text1);
-            vContactPhoto = (ImageView) view.findViewById(R.id.contact_photo);
+            vName = view.findViewById(android.R.id.text1);
+            vContactPhoto = view.findViewById(R.id.contact_photo);
             cryptoStatusRed = view.findViewById(R.id.contact_crypto_status_red);
             cryptoStatusOrange = view.findViewById(R.id.contact_crypto_status_orange);
             cryptoStatusGreen = view.findViewById(R.id.contact_crypto_status_green);

@@ -34,12 +34,16 @@ class ImapResponseParser {
     public ImapResponse readResponse(ImapResponseCallback callback) throws IOException {
         try {
             int peek = inputStream.peek();
-            if (peek == '+') {
-                readContinuationRequest(callback);
-            } else if (peek == '*') {
-                readUntaggedResponse(callback);
-            } else {
-                readTaggedResponse(callback);
+            switch (peek) {
+                case '+':
+                    readContinuationRequest(callback);
+                    break;
+                case '*':
+                    readUntaggedResponse(callback);
+                    break;
+                default:
+                    readTaggedResponse(callback);
+                    break;
             }
 
             if (exception != null) {
@@ -79,7 +83,7 @@ class ImapResponseParser {
     List<ImapResponse> readStatusResponse(String tag, String commandToLog, String logId,
             UntaggedHandler untaggedHandler) throws IOException, NegativeImapResponseException {
 
-        List<ImapResponse> responses = new ArrayList<ImapResponse>();
+        List<ImapResponse> responses = new ArrayList<>();
 
         ImapResponse response;
         do {
@@ -227,33 +231,36 @@ class ImapResponseParser {
         while (true) {
             int ch = inputStream.peek();
 
-            if (ch == '(') {
-                return parseList(parent, '(', ')');
-            } else if (ch == '[') {
-                return parseList(parent, '[', ']');
-            } else if (ch == ')') {
-                expect(')');
-                return ")";
-            } else if (ch == ']') {
-                expect(']');
-                return "]";
-            } else if (ch == '"') {
-                return parseQuoted();
-            } else if (ch == '{') {
-                return parseLiteral();
-            } else if (ch == ' ') {
-                expect(' ');
-            } else if (ch == '\r') {
-                expect('\r');
-                expect('\n');
-                return null;
-            } else if (ch == '\n') {
-                expect('\n');
-                return null;
-            } else if (ch == '\t') {
-                expect('\t');
-            } else {
-                return parseBareString(true);
+            switch (ch) {
+                case '(':
+                    return parseList(parent, '(', ')');
+                case '[':
+                    return parseList(parent, '[', ']');
+                case ')':
+                    expect(')');
+                    return ")";
+                case ']':
+                    expect(']');
+                    return "]";
+                case '"':
+                    return parseQuoted();
+                case '{':
+                    return parseLiteral();
+                case ' ':
+                    expect(' ');
+                    break;
+                case '\r':
+                    expect('\r');
+                    expect('\n');
+                    return null;
+                case '\n':
+                    expect('\n');
+                    return null;
+                case '\t':
+                    expect('\t');
+                    break;
+                default:
+                    return parseBareString(true);
             }
         }
     }
@@ -261,12 +268,13 @@ class ImapResponseParser {
     private String parseString() throws IOException {
         int ch = inputStream.peek();
 
-        if (ch == '"') {
-            return parseQuoted();
-        } else if (ch == '{') {
-            return (String) parseLiteral();
-        } else {
-            return parseBareString(false);
+        switch (ch) {
+            case '"':
+                return parseQuoted();
+            case '{':
+                return (String) parseLiteral();
+            default:
+                return parseBareString(false);
         }
     }
 
@@ -473,11 +481,8 @@ class ImapResponseParser {
     }
 
     public static boolean equalsIgnoreCase(Object token, String symbol) {
-        if (token == null || !(token instanceof String)) {
-            return false;
-        }
+        return token != null && token instanceof String && symbol.equalsIgnoreCase((String) token);
 
-        return symbol.equalsIgnoreCase((String) token);
     }
 
     private void checkTokenIsString(Object token) throws IOException {

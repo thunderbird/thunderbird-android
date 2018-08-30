@@ -4,6 +4,7 @@ package com.fsck.k9.mail.store.imap;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
@@ -101,7 +102,7 @@ public class ImapResponseParserTest {
         parser.readStatusResponse("A2", null, null, untaggedHandler);
 
         assertEquals(1, untaggedHandler.responses.size());
-        assertEquals(asList("UNTAGGED"), untaggedHandler.responses.get(0));
+        assertEquals(Collections.singletonList("UNTAGGED"), untaggedHandler.responses.get(0));
     }
 
     @Test
@@ -119,7 +120,7 @@ public class ImapResponseParserTest {
         assertEquals(asList("0", "EXPUNGE"), responses.get(0));
         assertEquals(asList("42", "EXISTS"), responses.get(1));
         assertEquals(asList("OK", "COMMAND completed"), responses.get(2));
-        assertEquals(asList("UNTAGGED"), untaggedHandler.responses.get(0));
+        assertEquals(Collections.singletonList("UNTAGGED"), untaggedHandler.responses.get(0));
         assertEquals(responses.get(0), untaggedHandler.responses.get(1));
         assertEquals(responses.get(1), untaggedHandler.responses.get(2));
     }
@@ -133,11 +134,11 @@ public class ImapResponseParserTest {
 
         try {
             List<ImapResponse> responses = parser.readStatusResponse("A2", null, null, untaggedHandler);
-        } catch (NegativeImapResponseException e) {
+        } catch (NegativeImapResponseException ignored) {
         }
 
         assertEquals(1, untaggedHandler.responses.size());
-        assertEquals(asList("text"), untaggedHandler.responses.get(0));
+        assertEquals(Collections.singletonList("text"), untaggedHandler.responses.get(0));
 
     }
 
@@ -542,7 +543,7 @@ public class ImapResponseParserTest {
     } 
     
     static class TestUntaggedHandler implements UntaggedHandler {
-        public final List<ImapResponse> responses = new ArrayList<ImapResponse>();
+        public final List<ImapResponse> responses = new ArrayList<>();
 
         @Override
         public void handleAsyncUntaggedResponse(ImapResponse response) {

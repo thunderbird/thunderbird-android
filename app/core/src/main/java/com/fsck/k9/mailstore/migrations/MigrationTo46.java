@@ -23,8 +23,7 @@ class MigrationTo46 {
         ContentValues cv = new ContentValues();
         List<Flag> extraFlags = new ArrayList<>();
 
-        Cursor cursor = db.query("messages", projection, null, null, null, null, null);
-        try {
+        try (Cursor cursor = db.query("messages", projection, null, null, null, null, null)) {
             while (cursor.moveToNext()) {
                 long id = cursor.getLong(0);
                 String flagList = cursor.getString(1);
@@ -87,13 +86,11 @@ class MigrationTo46 {
                 cv.put("answered", answered);
                 cv.put("forwarded", forwarded);
 
-                db.update("messages", cv, "id = ?", new String[] { Long.toString(id) });
+                db.update("messages", cv, "id = ?", new String[]{Long.toString(id)});
 
                 cv.clear();
                 extraFlags.clear();
             }
-        } finally {
-            cursor.close();
         }
 
         db.execSQL("CREATE INDEX IF NOT EXISTS msg_read ON messages (read)");

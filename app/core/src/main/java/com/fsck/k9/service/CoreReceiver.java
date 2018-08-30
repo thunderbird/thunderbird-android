@@ -20,7 +20,7 @@ public class CoreReceiver extends BroadcastReceiver {
 
     public static final String WAKE_LOCK_ID = "com.fsck.k9.service.CoreReceiver.wakeLockId";
 
-    private static ConcurrentHashMap<Integer, TracingWakeLock> wakeLocks = new ConcurrentHashMap<Integer, TracingWakeLock>();
+    private static ConcurrentHashMap<Integer, TracingWakeLock> wakeLocks = new ConcurrentHashMap<>();
     private static AtomicInteger wakeLockSeq = new AtomicInteger(0);
 
     private static Integer getWakeLock(Context context) {

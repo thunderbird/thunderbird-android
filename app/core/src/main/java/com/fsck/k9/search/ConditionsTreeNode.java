@@ -25,7 +25,7 @@ import com.fsck.k9.search.SearchSpecification.SearchField;
 public class ConditionsTreeNode implements Parcelable {
 
     public enum Operator {
-        AND, OR, CONDITION;
+        AND, OR, CONDITION
     }
 
     public ConditionsTreeNode mLeft;
@@ -59,7 +59,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @return A condition tree.
      */
     public static ConditionsTreeNode buildTreeFromDB(Cursor cursor) {
-        Stack<ConditionsTreeNode> stack = new Stack<ConditionsTreeNode>();
+        Stack<ConditionsTreeNode> stack = new Stack<>();
         ConditionsTreeNode tmp = null;
 
         // root node
@@ -246,7 +246,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @return Set of all the leaves.
      */
     public Set<ConditionsTreeNode> getLeafSet() {
-        Set<ConditionsTreeNode> leafSet = new HashSet<ConditionsTreeNode>();
+        Set<ConditionsTreeNode> leafSet = new HashSet<>();
         return getLeafSet(leafSet);
     }
 
@@ -257,8 +257,8 @@ public class ConditionsTreeNode implements Parcelable {
      * @return List of all nodes in subtree in preorder.
      */
     public List<ConditionsTreeNode> preorder() {
-        List<ConditionsTreeNode> result = new ArrayList<ConditionsTreeNode>();
-        Stack<ConditionsTreeNode> stack = new Stack<ConditionsTreeNode>();
+        List<ConditionsTreeNode> result = new ArrayList<>();
+        Stack<ConditionsTreeNode> stack = new Stack<>();
         stack.push(this);
 
         while (!stack.isEmpty()) {
@@ -292,8 +292,6 @@ public class ConditionsTreeNode implements Parcelable {
      *
      * This method only supports node arguments with a null parent node.
      *
-     * @param Node to add.
-     * @param Operator that will connect the new node with this one.
      * @return New parent node, containing the operator.
      * @throws Exception Throws when the provided new node does not have a null parent.
      */

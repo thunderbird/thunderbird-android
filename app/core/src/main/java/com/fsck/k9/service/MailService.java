@@ -116,32 +116,41 @@ public class MailService extends CoreService {
                 intent, startId, hasConnectivity, doBackground);
 
         // MessagingController.getInstance(getApplication()).addListener(mListener);
-        if (ACTION_CHECK_MAIL.equals(intent.getAction())) {
-            Timber.i("***** MailService *****: checking mail");
-            if (hasConnectivity && doBackground) {
-                PollService.startService(this);
-            }
-            reschedulePollInBackground(hasConnectivity, doBackground, startId, false);
-        } else if (ACTION_CANCEL.equals(intent.getAction())) {
-            Timber.v("***** MailService *****: cancel");
-            cancel();
-        } else if (ACTION_RESET.equals(intent.getAction())) {
-            Timber.v("***** MailService *****: reschedule");
-            rescheduleAllInBackground(hasConnectivity, doBackground, startId);
-        } else if (ACTION_RESTART_PUSHERS.equals(intent.getAction())) {
-            Timber.v("***** MailService *****: restarting pushers");
-            reschedulePushersInBackground(hasConnectivity, doBackground, startId);
-        } else if (ACTION_RESCHEDULE_POLL.equals(intent.getAction())) {
-            Timber.v("***** MailService *****: rescheduling poll");
-            reschedulePollInBackground(hasConnectivity, doBackground, startId, true);
-        } else if (ACTION_REFRESH_PUSHERS.equals(intent.getAction())) {
-            refreshPushersInBackground(hasConnectivity, doBackground, startId);
-        } else if (CONNECTIVITY_CHANGE.equals(intent.getAction())) {
-            rescheduleAllInBackground(hasConnectivity, doBackground, startId);
-            Timber.i("Got connectivity action with hasConnectivity = %s, doBackground = %s",
-                    hasConnectivity, doBackground);
-        } else if (CANCEL_CONNECTIVITY_NOTICE.equals(intent.getAction())) {
-            /* do nothing */
+        switch (intent.getAction()) {
+            case ACTION_CHECK_MAIL:
+                Timber.i("***** MailService *****: checking mail");
+                if (hasConnectivity && doBackground) {
+                    PollService.startService(this);
+                }
+                reschedulePollInBackground(hasConnectivity, doBackground, startId, false);
+                break;
+            case ACTION_CANCEL:
+                Timber.v("***** MailService *****: cancel");
+                cancel();
+                break;
+            case ACTION_RESET:
+                Timber.v("***** MailService *****: reschedule");
+                rescheduleAllInBackground(hasConnectivity, doBackground, startId);
+                break;
+            case ACTION_RESTART_PUSHERS:
+                Timber.v("***** MailService *****: restarting pushers");
+                reschedulePushersInBackground(hasConnectivity, doBackground, startId);
+                break;
+            case ACTION_RESCHEDULE_POLL:
+                Timber.v("***** MailService *****: rescheduling poll");
+                reschedulePollInBackground(hasConnectivity, doBackground, startId, true);
+                break;
+            case ACTION_REFRESH_PUSHERS:
+                refreshPushersInBackground(hasConnectivity, doBackground, startId);
+                break;
+            case CONNECTIVITY_CHANGE:
+                rescheduleAllInBackground(hasConnectivity, doBackground, startId);
+                Timber.i("Got connectivity action with hasConnectivity = %s, doBackground = %s",
+                        hasConnectivity, doBackground);
+                break;
+            case CANCEL_CONNECTIVITY_NOTICE:
+                /* do nothing */
+                break;
         }
 
         if (isSyncDisabled() != oldIsSyncDisabled) {

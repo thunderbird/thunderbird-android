@@ -26,7 +26,7 @@ public final class TrustManagerFactory {
 
     private static class SecureX509TrustManager implements X509TrustManager {
         private static final Map<String, SecureX509TrustManager> mTrustManager =
-            new HashMap<String, SecureX509TrustManager>();
+                new HashMap<>();
 
         private final String mHost;
         private final int mPort;

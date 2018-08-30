@@ -31,10 +31,9 @@ class MigrationTo47 {
         db.execSQL("INSERT INTO threads (message_id) SELECT id FROM messages");
 
         // Copy thread structure from 'messages' table to 'threads'
-        Cursor cursor = db.query("messages",
-                new String[] { "id", "thread_root", "thread_parent" },
-                null, null, null, null, null);
-        try {
+        try (Cursor cursor = db.query("messages",
+                new String[]{"id", "thread_root", "thread_parent"},
+                null, null, null, null, null)) {
             ContentValues cv = new ContentValues();
             while (cursor.moveToNext()) {
                 cv.clear();
@@ -45,7 +44,7 @@ class MigrationTo47 {
                     db.execSQL("UPDATE threads SET root = (SELECT t.id FROM " +
                                     "threads t WHERE t.message_id = ?) " +
                                     "WHERE message_id = ?",
-                            new String[] {
+                            new String[]{
                                     Long.toString(threadRootMessageId),
                                     Long.toString(messageId)
                             });
@@ -56,14 +55,12 @@ class MigrationTo47 {
                     db.execSQL("UPDATE threads SET parent = (SELECT t.id FROM " +
                                     "threads t WHERE t.message_id = ?) " +
                                     "WHERE message_id = ?",
-                            new String[] {
+                            new String[]{
                                     Long.toString(threadParentMessageId),
                                     Long.toString(messageId)
                             });
                 }
             }
-        } finally {
-            cursor.close();
         }
 
         // Remove indices for old thread-related columns in 'messages' table

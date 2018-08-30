@@ -555,8 +555,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         Field accountsInOrder = Preferences.class.getDeclaredField("accountsInOrder");
         accountsInOrder.setAccessible(true);
-        ArrayList<Account> newAccountsInOrder = new ArrayList<>();
-        newAccountsInOrder.addAll(newAccounts.values());
+        ArrayList<Account> newAccountsInOrder = new ArrayList<>(newAccounts.values());
         accountsInOrder.set(Preferences.getPreferences(appContext), newAccountsInOrder);
     }
 }

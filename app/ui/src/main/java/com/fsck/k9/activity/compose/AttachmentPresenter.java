@@ -114,9 +114,7 @@ public class AttachmentPresenter {
 
     public ArrayList<Attachment> createAttachmentList() {
         ArrayList<Attachment> result = new ArrayList<>();
-        for (Attachment attachment : attachments.values()) {
-            result.add(attachment);
-        }
+        result.addAll(attachments.values());
         return result;
     }
 
@@ -213,12 +211,15 @@ public class AttachmentPresenter {
         listener.onAttachmentAdded();
         attachmentMvpView.addAttachmentView(attachment);
 
-        if (attachment.state == LoadingState.URI_ONLY) {
-            initAttachmentInfoLoader(attachment);
-        } else if (attachment.state == LoadingState.METADATA) {
-            initAttachmentContentLoader(attachment);
-        } else {
-            throw new IllegalStateException("Attachment can only be added in URI_ONLY or METADATA state!");
+        switch (attachment.state) {
+            case URI_ONLY:
+                initAttachmentInfoLoader(attachment);
+                break;
+            case METADATA:
+                initAttachmentContentLoader(attachment);
+                break;
+            default:
+                throw new IllegalStateException("Attachment can only be added in URI_ONLY or METADATA state!");
         }
     }
 

@@ -60,7 +60,7 @@ public class EmailProvider extends ContentProvider {
 
     private static final String MESSAGES_TABLE = "messages";
 
-    private static final Map<String, String> THREAD_AGGREGATION_FUNCS = new HashMap<String, String>();
+    private static final Map<String, String> THREAD_AGGREGATION_FUNCS = new HashMap<>();
     static {
         THREAD_AGGREGATION_FUNCS.put(MessageColumns.DATE, "MAX");
         THREAD_AGGREGATION_FUNCS.put(MessageColumns.INTERNAL_DATE, "MAX");
@@ -213,8 +213,8 @@ public class EmailProvider extends ContentProvider {
                 List<String> segments = uri.getPathSegments();
                 String accountUuid = segments.get(1);
 
-                List<String> dbColumnNames = new ArrayList<String>(projection.length);
-                Map<String, String> specialColumns = new HashMap<String, String>();
+                List<String> dbColumnNames = new ArrayList<>(projection.length);
+                Map<String, String> specialColumns = new HashMap<>();
                 for (String columnName : projection) {
                     if (SpecialColumns.ACCOUNT_UUID.equals(columnName)) {
                         specialColumns.put(SpecialColumns.ACCOUNT_UUID, accountUuid);
@@ -225,15 +225,19 @@ public class EmailProvider extends ContentProvider {
 
                 String[] dbProjection = dbColumnNames.toArray(new String[0]);
 
-                if (match == MESSAGES) {
-                    cursor = getMessages(accountUuid, dbProjection, selection, selectionArgs, sortOrder);
-                } else if (match == MESSAGES_THREADED) {
-                    cursor = getThreadedMessages(accountUuid, dbProjection, selection, selectionArgs, sortOrder);
-                } else if (match == MESSAGES_THREAD) {
-                    String threadId = segments.get(3);
-                    cursor = getThread(accountUuid, dbProjection, threadId, sortOrder);
-                } else {
-                    throw new RuntimeException("Not implemented");
+                switch (match) {
+                    case MESSAGES:
+                        cursor = getMessages(accountUuid, dbProjection, selection, selectionArgs, sortOrder);
+                        break;
+                    case MESSAGES_THREADED:
+                        cursor = getThreadedMessages(accountUuid, dbProjection, selection, selectionArgs, sortOrder);
+                        break;
+                    case MESSAGES_THREAD:
+                        String threadId = segments.get(3);
+                        cursor = getThread(accountUuid, dbProjection, threadId, sortOrder);
+                        break;
+                    default:
+                        throw new RuntimeException("Not implemented");
                 }
 
                 Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid + "/messages");

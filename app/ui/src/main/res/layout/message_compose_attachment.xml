@@ -12,7 +12,8 @@
         android:src="@drawable/ic_delete"
         android:layout_alignParentRight="true"
         android:layout_height="42dip"
-        android:layout_width="42dip" />
+        android:layout_width="42dip"
+        android:contentDescription="TODO" />
 
     <LinearLayout
         android:layout_width="1dip"
@@ -50,6 +51,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_email_attachment"
         android:layout_marginLeft="1dip"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:contentDescription="TODO" />
 
 </RelativeLayout>

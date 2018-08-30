@@ -90,7 +90,7 @@ public class IdentityAdapter extends BaseAdapter {
             } else {
                 view = mLayoutInflater.inflate(R.layout.choose_account_item, parent, false);
                 AccountHolder holder = new AccountHolder();
-                holder.name = (TextView) view.findViewById(R.id.name);
+                holder.name = view.findViewById(R.id.name);
                 holder.chip = view.findViewById(R.id.chip);
                 view.setTag(holder);
             }
@@ -105,8 +105,8 @@ public class IdentityAdapter extends BaseAdapter {
             } else {
                 view = mLayoutInflater.inflate(R.layout.choose_identity_item, parent, false);
                 IdentityHolder holder = new IdentityHolder();
-                holder.name = (TextView) view.findViewById(R.id.name);
-                holder.description = (TextView) view.findViewById(R.id.description);
+                holder.name = view.findViewById(R.id.name);
+                holder.description = view.findViewById(R.id.description);
                 view.setTag(holder);
             }
 

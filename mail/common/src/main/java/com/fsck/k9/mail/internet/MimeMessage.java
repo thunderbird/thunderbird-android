@@ -130,7 +130,7 @@ public class MimeMessage extends Message {
                 DateTimeField field = (DateTimeField)DefaultFieldParser.parse("Date: "
                                       + MimeUtility.unfoldAndDecode(getFirstHeader("Date")));
                 mSentDate = field.getDate();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }
@@ -249,56 +249,63 @@ public class MimeMessage extends Message {
 
     @Override
     public void setRecipients(RecipientType type, Address[] addresses) {
-        if (type == RecipientType.TO) {
-            if (addresses == null || addresses.length == 0) {
-                removeHeader("To");
-                this.mTo = null;
-            } else {
-                setHeader("To", Address.toEncodedString(addresses));
-                this.mTo = addresses;
-            }
-        } else if (type == RecipientType.CC) {
-            if (addresses == null || addresses.length == 0) {
-                removeHeader("CC");
-                this.mCc = null;
-            } else {
-                setHeader("CC", Address.toEncodedString(addresses));
-                this.mCc = addresses;
-            }
-        } else if (type == RecipientType.BCC) {
-            if (addresses == null || addresses.length == 0) {
-                removeHeader("BCC");
-                this.mBcc = null;
-            } else {
-                setHeader("BCC", Address.toEncodedString(addresses));
-                this.mBcc = addresses;
-            }
-        } else if (type == RecipientType.X_ORIGINAL_TO) {
-            if (addresses == null || addresses.length == 0) {
-                removeHeader("X-Original-To");
-                this.xOriginalTo = null;
-            } else {
-                setHeader("X-Original-To", Address.toEncodedString(addresses));
-                this.xOriginalTo = addresses;
-            }
-        } else if (type == RecipientType.DELIVERED_TO) {
-            if (addresses == null || addresses.length == 0) {
-                removeHeader("Delivered-To");
-                this.deliveredTo = null;
-            } else {
-                setHeader("Delivered-To", Address.toEncodedString(addresses));
-                this.deliveredTo = addresses;
-            }
-        } else if (type == RecipientType.X_ENVELOPE_TO) {
-            if (addresses == null || addresses.length == 0) {
-                removeHeader("X-Envelope-To");
-                this.xEnvelopeTo = null;
-            } else {
-                setHeader("X-Envelope-To", Address.toEncodedString(addresses));
-                this.xEnvelopeTo = addresses;
-            }
-        } else {
-            throw new IllegalStateException("Unrecognized recipient type.");
+        switch (type) {
+            case TO:
+                if (addresses == null || addresses.length == 0) {
+                    removeHeader("To");
+                    this.mTo = null;
+                } else {
+                    setHeader("To", Address.toEncodedString(addresses));
+                    this.mTo = addresses;
+                }
+                break;
+            case CC:
+                if (addresses == null || addresses.length == 0) {
+                    removeHeader("CC");
+                    this.mCc = null;
+                } else {
+                    setHeader("CC", Address.toEncodedString(addresses));
+                    this.mCc = addresses;
+                }
+                break;
+            case BCC:
+                if (addresses == null || addresses.length == 0) {
+                    removeHeader("BCC");
+                    this.mBcc = null;
+                } else {
+                    setHeader("BCC", Address.toEncodedString(addresses));
+                    this.mBcc = addresses;
+                }
+                break;
+            case X_ORIGINAL_TO:
+                if (addresses == null || addresses.length == 0) {
+                    removeHeader("X-Original-To");
+                    this.xOriginalTo = null;
+                } else {
+                    setHeader("X-Original-To", Address.toEncodedString(addresses));
+                    this.xOriginalTo = addresses;
+                }
+                break;
+            case DELIVERED_TO:
+                if (addresses == null || addresses.length == 0) {
+                    removeHeader("Delivered-To");
+                    this.deliveredTo = null;
+                } else {
+                    setHeader("Delivered-To", Address.toEncodedString(addresses));
+                    this.deliveredTo = addresses;
+                }
+                break;
+            case X_ENVELOPE_TO:
+                if (addresses == null || addresses.length == 0) {
+                    removeHeader("X-Envelope-To");
+                    this.xEnvelopeTo = null;
+                } else {
+                    setHeader("X-Envelope-To", Address.toEncodedString(addresses));
+                    this.xEnvelopeTo = addresses;
+                }
+                break;
+            default:
+                throw new IllegalStateException("Unrecognized recipient type.");
         }
     }
 

@@ -172,7 +172,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private final FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
     private final Preferences preferences = DI.get(Preferences.class);
 
-    private ActionBar actionBar;
     private ActionBarDrawerToggle drawerToggle;
     private Drawer drawer;
     private FragmentTransaction openFolderTransaction;
@@ -242,7 +241,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             setContentView(R.layout.split_message_list);
         } else {
             setContentView(R.layout.message_list);
-            viewSwitcher = (ViewSwitcher) findViewById(R.id.container);
+            viewSwitcher = findViewById(R.id.container);
             viewSwitcher.setFirstInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_left));
             viewSwitcher.setFirstOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out_right));
             viewSwitcher.setSecondInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_right));
@@ -399,7 +398,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     private void initializeLayout() {
-        messageViewContainer = (ViewGroup) findViewById(R.id.message_view_container);
+        messageViewContainer = findViewById(R.id.message_view_container);
 
         LayoutInflater layoutInflater = getLayoutInflater();
         messageViewPlaceHolder = layoutInflater.inflate(R.layout.empty_message_view, messageViewContainer, false);
@@ -568,7 +567,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     private void initializeActionBar() {
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
 
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.actionbar_custom);
@@ -576,10 +575,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         View customView = actionBar.getCustomView();
         actionBarMessageList = customView.findViewById(R.id.actionbar_message_list);
         actionBarMessageView = customView.findViewById(R.id.actionbar_message_view);
-        actionBarSubject = (MessageTitleView) customView.findViewById(R.id.message_title_view);
-        actionBarTitle = (TextView) customView.findViewById(R.id.actionbar_title_first);
-        actionBarSubTitle = (TextView) customView.findViewById(R.id.actionbar_title_sub);
-        actionBarProgress = (ProgressBar) customView.findViewById(R.id.actionbar_progress);
+        actionBarSubject = customView.findViewById(R.id.message_title_view);
+        actionBarTitle = customView.findViewById(R.id.actionbar_title_first);
+        actionBarSubTitle = customView.findViewById(R.id.actionbar_title_sub);
+        actionBarProgress = customView.findViewById(R.id.actionbar_progress);
         actionButtonIndeterminateProgress = getActionButtonIndeterminateProgress();
 
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -915,16 +914,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 return true;
             }
             case KeyEvent.KEYCODE_DPAD_LEFT: {
-                if (messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
-                    return showPreviousMessage();
-                }
-                return false;
+                return messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW && showPreviousMessage();
             }
             case KeyEvent.KEYCODE_DPAD_RIGHT: {
-                if (messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
-                    return showNextMessage();
-                }
-                return false;
+                return messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW && showNextMessage();
             }
 
         }

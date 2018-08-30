@@ -24,8 +24,8 @@ class NotificationData {
 
 
     private final Account account;
-    private final LinkedList<NotificationHolder> activeNotifications = new LinkedList<NotificationHolder>();
-    private final Deque<NotificationContent> additionalNotifications = new LinkedList<NotificationContent>();
+    private final LinkedList<NotificationHolder> activeNotifications = new LinkedList<>();
+    private final Deque<NotificationContent> additionalNotifications = new LinkedList<>();
     private final SparseBooleanArray notificationIdsInUse = new SparseBooleanArray();
     private int unreadMessageCount;
 
@@ -135,7 +135,7 @@ class NotificationData {
 
     public List<NotificationContent> getContentForSummaryNotification() {
         int size = calculateNumberOfMessagesForSummaryNotification();
-        List<NotificationContent> result = new ArrayList<NotificationContent>(size);
+        List<NotificationContent> result = new ArrayList<>(size);
 
         Iterator<NotificationHolder> iterator = activeNotifications.iterator();
         int notificationCount = 0;
@@ -209,7 +209,7 @@ class NotificationData {
 
     public ArrayList<MessageReference> getAllMessageReferences() {
         int newSize = activeNotifications.size() + additionalNotifications.size();
-        ArrayList<MessageReference> messageReferences = new ArrayList<MessageReference>(newSize);
+        ArrayList<MessageReference> messageReferences = new ArrayList<>(newSize);
 
         for (NotificationHolder holder : activeNotifications) {
             messageReferences.add(holder.content.messageReference);

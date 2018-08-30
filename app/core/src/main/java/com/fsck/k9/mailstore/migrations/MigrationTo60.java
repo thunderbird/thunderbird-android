@@ -228,21 +228,25 @@ class MigrationTo60 {
         int length = 0;
         for (int i = 0, count = bytes.length; i < count; i++) {
             ch = bytes[i];
-            if (ch == '%') {
-                int h = (bytes[i + 1] - '0');
-                int l = (bytes[i + 2] - '0');
-                if (h > 9) {
-                    h -= 7;
-                }
-                if (l > 9) {
-                    l -= 7;
-                }
-                bytes[length] = (byte) ((h << 4) | l);
-                i += 2;
-            } else if (ch == '+') {
-                bytes[length] = ' ';
-            } else {
-                bytes[length] = bytes[i];
+            switch (ch) {
+                case '%':
+                    int h = (bytes[i + 1] - '0');
+                    int l = (bytes[i + 2] - '0');
+                    if (h > 9) {
+                        h -= 7;
+                    }
+                    if (l > 9) {
+                        l -= 7;
+                    }
+                    bytes[length] = (byte) ((h << 4) | l);
+                    i += 2;
+                    break;
+                case '+':
+                    bytes[length] = ' ';
+                    break;
+                default:
+                    bytes[length] = bytes[i];
+                    break;
             }
             length++;
         }
