@@ -406,6 +406,7 @@ public class LocalMessage extends MimeMessage {
 
     @Override
     public LocalMessage clone() {
+        LocalMessage localMessage = (LocalMessage) super.clone();
         LocalMessage message = new LocalMessage(localStore);
         super.copy(message);
 

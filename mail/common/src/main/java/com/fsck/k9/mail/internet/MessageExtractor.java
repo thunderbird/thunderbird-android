@@ -450,11 +450,7 @@ public class MessageExtractor {
         }
 
         boolean isAttachmentDisposition = "attachment".equalsIgnoreCase(dispositionType) || dispositionFilename != null;
-        if (isAttachmentDisposition) {
-            return false;
-        }
-
-        return part.isMimeType("text/html") || part.isMimeType("text/plain") || part.isMimeType("application/pgp");
+        return !isAttachmentDisposition && (part.isMimeType("text/html") || part.isMimeType("text/plain") || part.isMimeType("application/pgp"));
 
     }
 

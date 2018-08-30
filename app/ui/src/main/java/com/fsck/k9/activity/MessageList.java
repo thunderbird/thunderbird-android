@@ -914,16 +914,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 return true;
             }
             case KeyEvent.KEYCODE_DPAD_LEFT: {
-                if (messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
-                    return showPreviousMessage();
-                }
-                return false;
+                return messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW && showPreviousMessage();
             }
             case KeyEvent.KEYCODE_DPAD_RIGHT: {
-                if (messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW) {
-                    return showNextMessage();
-                }
-                return false;
+                return messageViewFragment != null && displayMode == DisplayMode.MESSAGE_VIEW && showNextMessage();
             }
 
         }

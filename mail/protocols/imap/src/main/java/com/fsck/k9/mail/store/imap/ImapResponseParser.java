@@ -473,11 +473,8 @@ class ImapResponseParser {
     }
 
     public static boolean equalsIgnoreCase(Object token, String symbol) {
-        if (token == null || !(token instanceof String)) {
-            return false;
-        }
+        return token != null && token instanceof String && symbol.equalsIgnoreCase((String) token);
 
-        return symbol.equalsIgnoreCase((String) token);
     }
 
     private void checkTokenIsString(Object token) throws IOException {

@@ -2728,11 +2728,8 @@ public class MessagingController {
 
         // Don't notify if the sender address matches one of our identities and the user chose not
         // to be notified for such messages.
-        if (account.isAnIdentity(message.getFrom()) && !account.isNotifySelfNewMail()) {
-            return false;
-        }
+        return (!account.isAnIdentity(message.getFrom()) || account.isNotifySelfNewMail()) && (!account.isNotifyContactsMailOnly() || contacts.isAnyInContacts(message.getFrom()));
 
-        return !account.isNotifyContactsMailOnly() || contacts.isAnyInContacts(message.getFrom());
     }
 
     public void deleteAccount(Account account) {
