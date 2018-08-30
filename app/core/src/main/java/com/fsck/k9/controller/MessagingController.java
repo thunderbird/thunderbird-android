@@ -2732,11 +2732,7 @@ public class MessagingController {
             return false;
         }
 
-        if (account.isNotifyContactsMailOnly() && !contacts.isAnyInContacts(message.getFrom())) {
-            return false;
-        }
-
-        return true;
+        return !account.isNotifyContactsMailOnly() || contacts.isAnyInContacts(message.getFrom());
     }
 
     public void deleteAccount(Account account) {

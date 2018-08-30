@@ -286,7 +286,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
 
         mMessage = message;
-        Account mAccount = account;
 
         if (K9.showContactPicture()) {
             mContactBadge.setVisibility(View.VISIBLE);
@@ -330,7 +329,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
         mFlagged.setChecked(message.isSet(Flag.FLAGGED));
 
-        mChip.setBackgroundColor(mAccount.getChipColor());
+        mChip.setBackgroundColor(account.getChipColor());
 
         setVisibility(View.VISIBLE);
 

@@ -8,8 +8,5 @@ class EnhancedNegativeSmtpReplyException extends NegativeSmtpReplyException {
             StatusCodeSubject statusCodeSubject, StatusCodeDetail statusCodeDetail,
             String replyText) {
         super(replyCode, replyText);
-        StatusCodeClass statusCodeClass1 = statusCodeClass;
-        StatusCodeSubject statusCodeSubject1 = statusCodeSubject;
-        StatusCodeDetail statusCodeDetail1 = statusCodeDetail;
     }
 }

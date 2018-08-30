@@ -128,11 +128,9 @@ public interface SearchSpecification extends Parcelable {
         public boolean equals(Object o) {
             if (o instanceof SearchCondition) {
                 SearchCondition tmp = (SearchCondition) o;
-                if (tmp.attribute == attribute &&
+                return tmp.attribute == attribute &&
                         tmp.field == field &&
-                        tmp.value.equals(value)) {
-                    return true;
-                }
+                        tmp.value.equals(value);
             }
 
             return false;
