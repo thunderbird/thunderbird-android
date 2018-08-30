@@ -3,7 +3,6 @@ package com.fsck.k9.cache;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.provider.EmailProvider.ThreadColumns;
 

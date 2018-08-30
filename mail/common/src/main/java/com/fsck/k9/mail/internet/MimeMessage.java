@@ -130,7 +130,7 @@ public class MimeMessage extends Message {
                 DateTimeField field = (DateTimeField)DefaultFieldParser.parse("Date: "
                                       + MimeUtility.unfoldAndDecode(getFirstHeader("Date")));
                 mSentDate = field.getDate();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }
