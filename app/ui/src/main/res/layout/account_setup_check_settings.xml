@@ -14,7 +14,7 @@
 <LinearLayout
     android:orientation="vertical"
     android:layout_gravity="center_horizontal|center_vertical"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:padding="6dip"
     android:layout_width="fill_parent">
     <TextView
