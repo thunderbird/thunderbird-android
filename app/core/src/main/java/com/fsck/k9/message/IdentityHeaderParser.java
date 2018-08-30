@@ -21,7 +21,7 @@ public class IdentityHeaderParser {
      * @return A map containing the value for each {@link IdentityField} in the identity string.
      */
     public static Map<IdentityField, String> parse(final String identityString) {
-        Map<IdentityField, String> identity = new HashMap<IdentityField, String>();
+        Map<IdentityField, String> identity = new HashMap<>();
 
         Timber.d("Decoding identity: %s", identityString);
 

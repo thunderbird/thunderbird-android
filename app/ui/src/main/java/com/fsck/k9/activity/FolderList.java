@@ -589,7 +589,7 @@ public class FolderList extends K9ListActivity {
     }
 
     class FolderListAdapter extends BaseAdapter implements Filterable {
-        private List<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
+        private List<FolderInfoHolder> mFolders = new ArrayList<>();
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
         private Filter mFilter = new FolderListFilter();
 
@@ -667,8 +667,8 @@ public class FolderList extends K9ListActivity {
             public void listFolders(Account account, List<LocalFolder> folders) {
                 if (account.equals(FolderList.this.account)) {
 
-                    List<FolderInfoHolder> newFolders = new LinkedList<FolderInfoHolder>();
-                    List<FolderInfoHolder> topFolders = new LinkedList<FolderInfoHolder>();
+                    List<FolderInfoHolder> newFolders = new LinkedList<>();
+                    List<FolderInfoHolder> topFolders = new LinkedList<>();
 
                     Account.FolderMode aMode = account.getFolderDisplayMode();
                     for (LocalFolder folder : folders) {
@@ -1091,7 +1091,7 @@ public class FolderList extends K9ListActivity {
 
                 Locale locale = Locale.getDefault();
                 if ((searchTerm == null) || (searchTerm.length() == 0)) {
-                    List<FolderInfoHolder> list = new ArrayList<FolderInfoHolder>(mFolders);
+                    List<FolderInfoHolder> list = new ArrayList<>(mFolders);
                     results.values = list;
                     results.count = list.size();
                 } else {
@@ -1099,7 +1099,7 @@ public class FolderList extends K9ListActivity {
                     final String[] words = searchTermString.split(" ");
                     final int wordCount = words.length;
 
-                    final List<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
+                    final List<FolderInfoHolder> newValues = new ArrayList<>();
 
                     for (final FolderInfoHolder value : mFolders) {
                         if (value.displayName == null) {
@@ -1107,8 +1107,8 @@ public class FolderList extends K9ListActivity {
                         }
                         final String valueText = value.displayName.toLowerCase(locale);
 
-                        for (int k = 0; k < wordCount; k++) {
-                            if (valueText.contains(words[k])) {
+                        for (String word : words) {
+                            if (valueText.contains(word)) {
                                 newValues.add(value);
                                 break;
                             }

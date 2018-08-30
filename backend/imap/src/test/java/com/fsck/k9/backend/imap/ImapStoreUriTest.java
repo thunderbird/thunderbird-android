@@ -177,7 +177,7 @@ public class ImapStoreUriTest {
 
     @Test
     public void testCreateStoreUriImapPrefix() {
-        Map<String, String> extra = new HashMap<String, String>();
+        Map<String, String> extra = new HashMap<>();
         extra.put("autoDetectNamespace", "false");
         extra.put("pathPrefix", "customPathPrefix");
         ServerSettings settings = new ServerSettings("imap", "server", 143,
@@ -190,7 +190,7 @@ public class ImapStoreUriTest {
 
     @Test
     public void testCreateStoreUriImapEmptyPrefix() {
-        Map<String, String> extra = new HashMap<String, String>();
+        Map<String, String> extra = new HashMap<>();
         extra.put("autoDetectNamespace", "false");
         extra.put("pathPrefix", "");
         ServerSettings settings = new ServerSettings("imap", "server", 143,
@@ -213,7 +213,7 @@ public class ImapStoreUriTest {
 
     @Test
     public void testCreateStoreUriImapAutoDetectNamespace() {
-        Map<String, String> extra = new HashMap<String, String>();
+        Map<String, String> extra = new HashMap<>();
         extra.put("autoDetectNamespace", "true");
 
         ServerSettings settings = new ServerSettings("imap", "server", 143,

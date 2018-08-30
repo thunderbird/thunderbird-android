@@ -52,12 +52,9 @@ public class ReconstructMessageTest {
 
         BinaryTempFileBody.setTempDirectory(InstrumentationRegistry.getTargetContext().getCacheDir());
 
-        InputStream messageInputStream = new ByteArrayInputStream(messageSource.getBytes());
         MimeMessage message;
-        try {
+        try (InputStream messageInputStream = new ByteArrayInputStream(messageSource.getBytes())) {
             message = MimeMessage.parseMimeMessage(messageInputStream, true);
-        } finally {
-            messageInputStream.close();
         }
 
         ByteArrayOutputStream messageOutputStream = new ByteArrayOutputStream();

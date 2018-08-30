@@ -272,7 +272,7 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private ArrayList<MessageReference> createMessageReferenceList() {
-        ArrayList<MessageReference> messageReferences = new ArrayList<MessageReference>();
+        ArrayList<MessageReference> messageReferences = new ArrayList<>();
         messageReferences.add(createMessageReference(1));
         messageReferences.add(createMessageReference(2));
 

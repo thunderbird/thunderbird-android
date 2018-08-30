@@ -52,7 +52,7 @@ public class FolderListFilter<T> extends Filter {
         // first time this method is called.
         if (mOriginalValues == null) {
             int count = mFolders.getCount();
-            mOriginalValues = new ArrayList<T>(count);
+            mOriginalValues = new ArrayList<>(count);
             for (int i = 0; i < count; i++) {
                 mOriginalValues.add(mFolders.getItem(i));
             }
@@ -60,7 +60,7 @@ public class FolderListFilter<T> extends Filter {
 
         Locale locale = Locale.getDefault();
         if ((searchTerm == null) || (searchTerm.length() == 0)) {
-            List<T> list = new ArrayList<T>(mOriginalValues);
+            List<T> list = new ArrayList<>(mOriginalValues);
             results.values = list;
             results.count = list.size();
         } else {
@@ -70,13 +70,13 @@ public class FolderListFilter<T> extends Filter {
 
             final List<T> values = mOriginalValues;
 
-            final List<T> newValues = new ArrayList<T>();
+            final List<T> newValues = new ArrayList<>();
 
             for (final T value : values) {
                 final String valueText = value.toString().toLowerCase(locale);
 
-                for (int k = 0; k < wordCount; k++) {
-                    if (valueText.contains(words[k])) {
+                for (String word : words) {
+                    if (valueText.contains(word)) {
                         newValues.add(value);
                         break;
                     }

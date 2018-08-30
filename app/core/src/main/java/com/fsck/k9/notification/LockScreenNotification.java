@@ -99,7 +99,7 @@ class LockScreenNotification {
 
     String createCommaSeparatedListOfSenders(List<NotificationContent> contents) {
         // Use a LinkedHashSet so that we preserve ordering (newest to oldest), but still remove duplicates
-        Set<CharSequence> senders = new LinkedHashSet<CharSequence>(MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION);
+        Set<CharSequence> senders = new LinkedHashSet<>(MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION);
         for (NotificationContent content : contents) {
             senders.add(content.sender);
             if (senders.size() == MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION) {

@@ -18,7 +18,7 @@ public class MimeHeader implements Cloneable {
     public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
     public static final String HEADER_CONTENT_ID = "Content-ID";
 
-    private List<Field> mFields = new ArrayList<Field>();
+    private List<Field> mFields = new ArrayList<>();
     private String mCharset = null;
 
     public void clear() {
@@ -53,7 +53,7 @@ public class MimeHeader implements Cloneable {
 
     @NonNull
     public Set<String> getHeaderNames() {
-        Set<String> names = new LinkedHashSet<String>();
+        Set<String> names = new LinkedHashSet<>();
         for (Field field : mFields) {
             names.add(field.getName());
         }
@@ -62,7 +62,7 @@ public class MimeHeader implements Cloneable {
 
     @NonNull
     public String[] getHeader(String name) {
-        List<String> values = new ArrayList<String>();
+        List<String> values = new ArrayList<>();
         for (Field field : mFields) {
             if (field.getName().equalsIgnoreCase(name)) {
                 values.add(field.getValue());
@@ -72,7 +72,7 @@ public class MimeHeader implements Cloneable {
     }
 
     public void removeHeader(String name) {
-        List<Field> removeFields = new ArrayList<Field>();
+        List<Field> removeFields = new ArrayList<>();
         for (Field field : mFields) {
             if (field.getName().equalsIgnoreCase(name)) {
                 removeFields.add(field);
@@ -224,7 +224,7 @@ public class MimeHeader implements Cloneable {
     public MimeHeader clone() {
         try {
             MimeHeader header = (MimeHeader) super.clone();
-            header.mFields = new ArrayList<Field>(mFields);
+            header.mFields = new ArrayList<>(mFields);
             return header;
         } catch(CloneNotSupportedException e) {
             throw new AssertionError(e);

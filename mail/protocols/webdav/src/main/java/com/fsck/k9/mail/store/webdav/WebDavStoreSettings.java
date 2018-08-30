@@ -36,7 +36,7 @@ public class WebDavStoreSettings extends ServerSettings {
 
     @Override
     public Map<String, String> getExtra() {
-        Map<String, String> extra = new HashMap<String, String>();
+        Map<String, String> extra = new HashMap<>();
         putIfNotNull(extra, ALIAS_KEY, alias);
         putIfNotNull(extra, PATH_KEY, path);
         putIfNotNull(extra, AUTH_PATH_KEY, authPath);

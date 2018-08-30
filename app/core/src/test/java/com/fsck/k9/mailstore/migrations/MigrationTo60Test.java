@@ -298,13 +298,10 @@ public class MigrationTo60Test extends RobolectricTest {
 
     private List<String> getColumnList(SQLiteDatabase db, String table) {
         List<String> columns = new ArrayList<>();
-        Cursor columnCursor = db.rawQuery("PRAGMA table_info(" + table + ")", null);
-        try {
+        try (Cursor columnCursor = db.rawQuery("PRAGMA table_info(" + table + ")", null)) {
             while (columnCursor.moveToNext()) {
                 columns.add(columnCursor.getString(1));
             }
-        } finally {
-            columnCursor.close();
         }
         return columns;
     }

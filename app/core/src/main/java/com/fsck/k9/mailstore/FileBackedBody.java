@@ -40,11 +40,8 @@ public class FileBackedBody implements Body, SizeAware, RawDataBody {
 
     @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {
-        InputStream in = getInputStream();
-        try {
+        try (InputStream in = getInputStream()) {
             IOUtils.copy(in, out);
-        } finally {
-            in.close();
         }
     }
 

@@ -25,11 +25,8 @@ public class KeyStoreProvider {
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS");
 
-            InputStream keyStoreInputStream = KeyStoreProvider.class.getResourceAsStream(KEYSTORE_RESOURCE);
-            try {
+            try (InputStream keyStoreInputStream = KeyStoreProvider.class.getResourceAsStream(KEYSTORE_RESOURCE)) {
                 keyStore.load(keyStoreInputStream, KEYSTORE_PASSWORD.toCharArray());
-            } finally {
-                keyStoreInputStream.close();
             }
 
             return keyStore;

@@ -650,12 +650,11 @@ public class LocalStore {
         return database.execute(false, new DbCallback<AttachmentInfo>() {
             @Override
             public AttachmentInfo doDbWork(final SQLiteDatabase db) throws WrappedException {
-                Cursor cursor = db.query("message_parts",
-                        new String[] { "display_name", "decoded_body_size", "mime_type" },
+                try (Cursor cursor = db.query("message_parts",
+                        new String[]{"display_name", "decoded_body_size", "mime_type"},
                         "id = ?",
-                        new String[] { attachmentId },
-                        null, null, null);
-                try {
+                        new String[]{attachmentId},
+                        null, null, null)) {
                     if (!cursor.moveToFirst()) {
                         return null;
                     }
@@ -669,8 +668,6 @@ public class LocalStore {
                     attachmentInfo.type = mimeType;
 
                     return attachmentInfo;
-                } finally {
-                    cursor.close();
                 }
             }
         });
@@ -905,9 +902,8 @@ public class LocalStore {
                     boolean localOnly = folder.isLocalOnly();
 
                     if (K9.DEVELOPER_MODE) {
-                        Cursor cursor = db.query("folders", new String[] { "id", "server_id" },
-                                "server_id = ?", new String[] { serverId },null, null, null);
-                        try {
+                        try (Cursor cursor = db.query("folders", new String[]{"id", "server_id"},
+                                "server_id = ?", new String[]{serverId}, null, null, null)) {
                             if (cursor.moveToNext()) {
                                 long folderId = cursor.getLong(0);
                                 String folderServerId = cursor.getString(1);
@@ -916,8 +912,6 @@ public class LocalStore {
                                         " that already exists in the database as '" + folderServerId + "'" +
                                         " (" + folderId + ")");
                             }
-                        } finally {
-                            cursor.close();
                         }
                     }
 

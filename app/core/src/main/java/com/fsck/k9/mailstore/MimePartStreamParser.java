@@ -55,11 +55,8 @@ public class MimePartStreamParser {
     private static Body createBody(InputStream inputStream, String transferEncoding,
             FileFactory fileFactory) throws IOException {
         DeferredFileBody body = new DeferredFileBody(fileFactory, transferEncoding);
-        OutputStream outputStream = body.getOutputStream();
-        try {
+        try (OutputStream outputStream = body.getOutputStream()) {
             IOUtils.copy(inputStream, outputStream);
-        } finally {
-            outputStream.close();
         }
 
         return body;

@@ -15,7 +15,7 @@ import android.database.CursorWrapper;
  */
 public class EmailProviderCacheCursor extends CursorWrapper {
     private EmailProviderCache mCache;
-    private List<Integer> mHiddenRows = new ArrayList<Integer>();
+    private List<Integer> mHiddenRows = new ArrayList<>();
     private int mMessageIdColumn;
     private int mThreadRootColumn;
 
