@@ -1,6 +1,7 @@
 package com.fsck.k9.search;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -71,9 +72,7 @@ public class LocalSearch implements SearchSpecification {
 
         // initialize accounts
         if (accounts != null) {
-            for (String account : accounts.split(",")) {
-                mAccountUuids.add(account);
-            }
+            Collections.addAll(mAccountUuids, accounts.split(","));
         } else {
             // impossible but still not unrecoverable
         }

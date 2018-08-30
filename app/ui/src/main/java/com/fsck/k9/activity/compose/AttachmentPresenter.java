@@ -114,9 +114,7 @@ public class AttachmentPresenter {
 
     public ArrayList<Attachment> createAttachmentList() {
         ArrayList<Attachment> result = new ArrayList<>();
-        for (Attachment attachment : attachments.values()) {
-            result.add(attachment);
-        }
+        result.addAll(attachments.values());
         return result;
     }
 
