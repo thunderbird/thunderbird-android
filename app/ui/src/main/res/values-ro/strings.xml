@@ -835,8 +835,8 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="settings_import_incoming_server">Server primire (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Server trimitere (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Setare parolă...</item>
-    <item quantity="few">Setare parole...</item>
+    <item quantity="one">Setare parolă…</item>
+    <item quantity="few">Setare parole…</item>
     <item quantity="other">Setare parole…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Folosește parola serverului de primire</string>

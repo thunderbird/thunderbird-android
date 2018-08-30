@@ -6,14 +6,14 @@
         android:alphabeticShortcut="n"
         android:title="@string/add_attachment_action"
         android:icon="?attr/iconActionAddAttachment"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
     />
     <item
         android:id="@+id/send"
         android:alphabeticShortcut="s"
         android:title="@string/send_action"
         android:icon="?attr/iconActionSend"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
     />
     <item
         android:id="@+id/add_from_contacts"

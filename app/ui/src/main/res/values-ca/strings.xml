@@ -499,7 +499,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_led_color_label">Color del LED de notificació</string>
   <string name="account_settings_led_color_summary">El color en què ha de fer pampallugues el LED del telèfon per a aquest compte</string>
   <string name="account_settings_mail_display_count_label">Mida de la carpeta local</string>
-  <string name="account_settings_autodownload_message_size_label">Recupera missatges fins a...</string>
+  <string name="account_settings_autodownload_message_size_label">Recupera missatges fins a…</string>
   <string name="account_settings_autodownload_message_size_1">1 Kb</string>
   <string name="account_settings_autodownload_message_size_2">2 Kb</string>
   <string name="account_settings_autodownload_message_size_4">4 Kb</string>
@@ -659,7 +659,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="message_list_help_key">Del (o D) - Elimina\nC - Escriu\nM - Mou\nV - Arxiva\nY - Copia\nZ - Marca com a (no) llegit\nG - Estel\nO - Tipus de classificació\nI - Ordre de classificació\nQ - Torna a les carpetes\nS - Selecciona  / desmarca</string>
   <string name="folder_list_help_key">1 - Mostra només les carpetes de 1a classe\n2 - Mostra les carpetes de 1a i 2a classe\n3 - Mostra-ho tot excepte les carpetes de 2a classe\n4 - Mostra totes les carpetes\nQ - Torna als comptes\nS - Edita la configuració del compte</string>
   <string name="folder_list_filter_hint">El nom de carpeta conté</string>
-  <string name="folder_list_display_mode_label">Carpetes...</string>
+  <string name="folder_list_display_mode_label">Carpetes…</string>
   <string name="folder_list_display_mode_all">Mostra totes les carpetes</string>
   <string name="folder_list_display_mode_first_class">Mostra només carpetes de 1a classe</string>
   <string name="folder_list_display_mode_first_and_second_class">Mostra carpetes de 1a i 2a classe</string>
@@ -803,8 +803,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="settings_import">Importa la configuració</string>
   <string name="settings_import_selection">Importa la selecció</string>
   <string name="settings_import_global_settings">Configuració global</string>
-  <string name="settings_exporting">Exportant la configuració...</string>
-  <string name="settings_importing">Important la configuració...</string>
+  <string name="settings_exporting">Exportant la configuració…</string>
+  <string name="settings_importing">Important la configuració…</string>
   <string name="settings_import_scanning_file">Examinant el fitxer…</string>
   <string name="settings_export_success">S\'ha exportat la configuració global a <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">La configuració s\'ha exportat correctament.</string>
@@ -830,8 +830,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="settings_import_incoming_server">Servidor d\'entrada (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Servidor de sortida (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Establint la contrasenya...</item>
-    <item quantity="other">Establint les contrasenyes...</item>
+    <item quantity="one">Establint la contrasenya…</item>
+    <item quantity="other">Establint les contrasenyes…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Utilitza la contrasenya del servidor d\'entrada</string>
   <string name="activate_account_action">Activa</string>
@@ -841,8 +841,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="attachment_save_desc">No s\'ha trobat cap gestor de fitxers. On voleu desar l\'adjunt?</string>
   <string name="manage_accounts_move_up_action">Mou amunt</string>
   <string name="manage_accounts_move_down_action">Mou avall</string>
-  <string name="manage_accounts_moving_message">Movent el compte...</string>
-  <string name="unread_widget_select_account">Mostra el recompte de no llegits per a...</string>
+  <string name="manage_accounts_moving_message">Movent el compte…</string>
+  <string name="unread_widget_select_account">Mostra el recompte de no llegits per a…</string>
   <string name="unread_widget_account_title">Compte</string>
   <string name="unread_widget_account_summary">El compte per al qual s\'ha de mostrar el nombre de missatges no llegits.</string>
   <string name="unread_widget_unified_inbox_account_summary">Bústia unificada</string>
@@ -910,9 +910,9 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_threaded_view_label">Vista de fil de discussió</string>
   <string name="global_settings_threaded_view_summary">Recull els missatges del mateix fil de discussió</string>
   <string name="upgrade_databases_title">Actualització de les bases de dades</string>
-  <string name="upgrade_databases_unspecified">Actualitzant les bases de dades...</string>
+  <string name="upgrade_databases_unspecified">Actualitzant les bases de dades…</string>
   <string name="upgrade_database_format">Actualitzant la base de dades del compte \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">Carregant...</string>
+  <string name="message_list_loading">Carregant…</string>
   <string name="global_settings_splitview_mode_label">Mostra amb pantalla dividida</string>
   <string name="global_settings_splitview_always">Sempre</string>
   <string name="global_settings_splitview_never">Mai</string>
@@ -1021,7 +1021,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="locked_attach_unlock">Desbloqueja</string>
   <string name="locked_attach_unencrypted">Aquesta part no estava encriptada i pot no ser segura.</string>
   <string name="locked_attach_title">Adjunt no protegit</string>
-  <string name="message_progress_text">Carregant...</string>
+  <string name="message_progress_text">Carregant…</string>
   <string name="messageview_decrypt_cancelled">S\'ha cancel·lat la desencriptació.</string>
   <string name="messageview_decrypt_retry">Torna-hi</string>
   <string name="messageview_decrypt_incomplete">Cal baixar el missatge encriptat per desencriptar-lo.</string>
@@ -1046,7 +1046,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP.\nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
   <string name="crypto_no_provider_button">Trieu una aplicació d\'OpenPGP</string>
   <string name="mail_list_widget_text">Llista de missatges del K-9</string>
-  <string name="mail_list_widget_loading">Carregant missatges...</string>
+  <string name="mail_list_widget_loading">Carregant missatges…</string>
   <string name="fetching_folders_failed">Ha fallat recuperar la llista de carpetes.</string>
   <string name="messageview_crypto_warning_details">Mostra\'n els detalls</string>
   <string name="error_recipient_crypto_retrieve">Error en recuperar l\'estat del destinatari del proveïdor d\'OpenPGP!</string>

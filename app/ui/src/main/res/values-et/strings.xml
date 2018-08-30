@@ -852,7 +852,7 @@
   <string name="account_settings_remote_search_enabled_summary">Lisaks seadmes olevatele sõnumitele otsi ka serveris olevatest sõnumitest</string>
   <string name="action_remote_search">Otsi serveris olevaist sõnumitest</string>
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Käivita serverist otsimine…</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Vabasta serverist otsimiseks...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Vabasta serverist otsimiseks…</string>
   <string name="remote_search_unavailable_no_network">Võrguühendus on vajalik serverist otsimiseks.</string>
   <string name="global_settings_background_as_unread_indicator_label">Muuda lugemisel värvi</string>
   <string name="global_settings_background_as_unread_indicator_summary">Teistsugune taust näitab, et sõnum on loetud</string>

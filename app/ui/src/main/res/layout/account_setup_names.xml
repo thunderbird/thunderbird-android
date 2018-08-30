@@ -23,7 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:hint="@string/account_setup_names_account_name_label"
-        android:contentDescription="@string/account_setup_names_account_name_label" />
+        android:contentDescription="@string/account_setup_names_account_name_label"
+        android:inputType="" />
     <EditText
         android:id="@+id/account_name"
         android:singleLine="true"

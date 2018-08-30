@@ -656,7 +656,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Reddetme Tuşu</string>
   <string name="message_view_help_key">Del (veya D) - Sil\nR - Yanıtla\nA - Hepsini yanıtla\nC - Oluştur\nF - İlet\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)mış olarak İşaretle\nG - Yıldız\nO - Sıralama türü\nI - Sıralama düzeni\nQ - Klasörlere Geri Dön\nS - Seç/Seçimi kaldır\nK veya P - Önceki İleti\nK veya N - Sonraki İleti</string>
   <string name="message_list_help_key">Del (veya D) - Sil\nC - Oluştur\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)dı\nG - Yıldız\nO - Sıralama türü\nI - Sıralama düzeni\nQ - Klasörlere Geri Dön\nS - Seç/seçimi kaldır</string>
-  <string name="folder_list_help_key">1 - Yalnız 1. sınıf klasörleri göster\n2 - Yalnız 1. ve 2. sınıf klasörleri göster\n3 - 2. Sınıf klasörler hariç hepsini göster\n4 - Bütün klasörleri göster\nQ - Hesaplara dön\nS - Hesap ayarlarını düzenle</string>
+  <string name="folder_list_help_key">1 – Yalnız 1. sınıf klasörleri göster\n2 - Yalnız 1. ve 2. sınıf klasörleri göster\n3 - 2. Sınıf klasörler hariç hepsini göster\n4 - Bütün klasörleri göster\nQ - Hesaplara dön\nS - Hesap ayarlarını düzenle</string>
   <string name="folder_list_filter_hint">Klasör adı içeriği</string>
   <string name="folder_list_display_mode_label">Klasörleri göster…</string>
   <string name="folder_list_display_mode_all">Bütün klasörleri göster</string>

@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" 
             android:hint="@string/edit_identity_description_hint"
-            />
+			android:inputType="" />
         <TextView
             android:text="@string/edit_identity_name_label"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" 
             android:hint="@string/edit_identity_name_hint"
-            />
+			android:inputType="" />
         <TextView
             android:text="@string/edit_identity_email_label"
             android:layout_height="wrap_content"
@@ -98,7 +98,8 @@
 	            android:singleLine="false"
 	            android:layout_height="wrap_content"
 	            android:layout_width="fill_parent" 
-	            android:hint="@string/edit_identity_signature_hint"/>
+	            android:hint="@string/edit_identity_signature_hint"
+				android:inputType="" />
     	</LinearLayout>
     </LinearLayout>
 </ScrollView>
