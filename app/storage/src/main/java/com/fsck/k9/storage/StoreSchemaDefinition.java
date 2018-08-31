@@ -12,7 +12,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 65;
+    static final int DB_VERSION = 66;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -134,7 +134,8 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "flagged INTEGER default 0, " +
                 "answered INTEGER default 0, " +
                 "forwarded INTEGER default 0, " +
-                "message_part_id INTEGER" +
+                "message_part_id INTEGER," +
+                "encryption_type TEXT" +
                 ")");
 
         db.execSQL("DROP TABLE IF EXISTS message_parts");

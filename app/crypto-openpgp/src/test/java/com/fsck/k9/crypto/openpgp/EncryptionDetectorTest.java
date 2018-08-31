@@ -1,14 +1,15 @@
-package com.fsck.k9.message.extractors;
+package com.fsck.k9.crypto.openpgp;
 
 
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.message.extractors.TextPartFinder;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.fsck.k9.message.MessageCreationHelper.createMessage;
-import static com.fsck.k9.message.MessageCreationHelper.createMultipartMessage;
-import static com.fsck.k9.message.MessageCreationHelper.createPart;
-import static com.fsck.k9.message.MessageCreationHelper.createTextMessage;
+import static com.fsck.k9.crypto.openpgp.MessageCreationHelper.createMessage;
+import static com.fsck.k9.crypto.openpgp.MessageCreationHelper.createMultipartMessage;
+import static com.fsck.k9.crypto.openpgp.MessageCreationHelper.createPart;
+import static com.fsck.k9.crypto.openpgp.MessageCreationHelper.createTextMessage;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -24,14 +25,14 @@ public class EncryptionDetectorTest {
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         textPartFinder = mock(TextPartFinder.class);
 
         encryptionDetector = new EncryptionDetector(textPartFinder);
     }
 
     @Test
-    public void isEncrypted_withTextPlain_shouldReturnFalse() throws Exception {
+    public void isEncrypted_withTextPlain_shouldReturnFalse() {
         Message message = createTextMessage("text/plain", "plain text");
 
         boolean encrypted = encryptionDetector.isEncrypted(message);
@@ -50,7 +51,7 @@ public class EncryptionDetectorTest {
     }
 
     @Test
-    public void isEncrypted_withSMimePart_shouldReturnTrue() throws Exception {
+    public void isEncrypted_withSMimePart_shouldReturnTrue() {
         Message message = createMessage("application/pkcs7-mime");
 
         boolean encrypted = encryptionDetector.isEncrypted(message);
@@ -69,7 +70,7 @@ public class EncryptionDetectorTest {
     }
 
     @Test
-    public void isEncrypted_withInlinePgp_shouldReturnTrue() throws Exception {
+    public void isEncrypted_withInlinePgp_shouldReturnTrue() {
         Message message = createTextMessage("text/plain", "" +
                 "-----BEGIN PGP MESSAGE-----" + CRLF +
                 "some encrypted stuff here" + CRLF +
@@ -82,7 +83,7 @@ public class EncryptionDetectorTest {
     }
 
     @Test
-    public void isEncrypted_withPlainTextAndPreambleWithInlinePgp_shouldReturnFalse() throws Exception {
+    public void isEncrypted_withPlainTextAndPreambleWithInlinePgp_shouldReturnFalse() {
         Message message = createTextMessage("text/plain", "" +
                 "preamble" + CRLF +
                 "-----BEGIN PGP MESSAGE-----" + CRLF +
@@ -97,7 +98,7 @@ public class EncryptionDetectorTest {
     }
 
     @Test
-    public void isEncrypted_withQuotedInlinePgp_shouldReturnFalse() throws Exception {
+    public void isEncrypted_withQuotedInlinePgp_shouldReturnFalse() {
         Message message = createTextMessage("text/plain", "" +
                 "good talk!" + CRLF +
                 CRLF +

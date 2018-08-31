@@ -6,6 +6,7 @@ import com.fsck.k9.Core
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.DI
 import com.fsck.k9.K9
+import com.fsck.k9.crypto.EncryptionExtractor
 import com.nhaarman.mockito_kotlin.mock
 import org.koin.dsl.module.applicationContext
 
@@ -24,4 +25,5 @@ class TestApp : Application() {
 val testModule = applicationContext {
     bean { AppConfig(emptyList()) }
     bean { mock<CoreResourceProvider>() }
+    bean { mock<EncryptionExtractor>() }
 }

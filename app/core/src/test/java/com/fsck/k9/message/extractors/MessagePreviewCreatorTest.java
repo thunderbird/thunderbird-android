@@ -21,35 +21,19 @@ import static org.mockito.Mockito.when;
 public class MessagePreviewCreatorTest {
     private TextPartFinder textPartFinder;
     private PreviewTextExtractor previewTextExtractor;
-    private EncryptionDetector encryptionDetector;
     private MessagePreviewCreator previewCreator;
 
     @Before
     public void setUp() throws Exception {
         textPartFinder = mock(TextPartFinder.class);
         previewTextExtractor = mock(PreviewTextExtractor.class);
-        encryptionDetector = mock(EncryptionDetector.class);
 
-        previewCreator = new MessagePreviewCreator(textPartFinder, previewTextExtractor, encryptionDetector);
+        previewCreator = new MessagePreviewCreator(textPartFinder, previewTextExtractor);
     }
 
     @Test
-    public void createPreview_withEncryptedMessage() throws Exception {
+    public void createPreview_withoutTextPart() {
         Message message = createDummyMessage();
-        when(encryptionDetector.isEncrypted(message)).thenReturn(true);
-
-        PreviewResult result = previewCreator.createPreview(message);
-
-        assertFalse(result.isPreviewTextAvailable());
-        assertEquals(PreviewType.ENCRYPTED, result.getPreviewType());
-        verifyNoMoreInteractions(textPartFinder);
-        verifyNoMoreInteractions(previewTextExtractor);
-    }
-
-    @Test
-    public void createPreview_withoutTextPart() throws Exception {
-        Message message = createDummyMessage();
-        when(encryptionDetector.isEncrypted(message)).thenReturn(false);
         when(textPartFinder.findFirstTextPart(message)).thenReturn(null);
 
         PreviewResult result = previewCreator.createPreview(message);
@@ -63,7 +47,6 @@ public class MessagePreviewCreatorTest {
     public void createPreview_withEmptyTextPart() throws Exception {
         Message message = createDummyMessage();
         Part textPart = createEmptyPart("text/plain");
-        when(encryptionDetector.isEncrypted(message)).thenReturn(false);
         when(textPartFinder.findFirstTextPart(message)).thenReturn(textPart);
 
         PreviewResult result = previewCreator.createPreview(message);
@@ -77,7 +60,6 @@ public class MessagePreviewCreatorTest {
     public void createPreview_withTextPart() throws Exception {
         Message message = createDummyMessage();
         Part textPart = createTextPart("text/plain");
-        when(encryptionDetector.isEncrypted(message)).thenReturn(false);
         when(textPartFinder.findFirstTextPart(message)).thenReturn(textPart);
         when(previewTextExtractor.extractPreview(textPart)).thenReturn("expected");
 
@@ -92,7 +74,6 @@ public class MessagePreviewCreatorTest {
     public void createPreview_withPreviewTextExtractorThrowing() throws Exception {
         Message message = createDummyMessage();
         Part textPart = createTextPart("text/plain");
-        when(encryptionDetector.isEncrypted(message)).thenReturn(false);
         when(textPartFinder.findFirstTextPart(message)).thenReturn(textPart);
         when(previewTextExtractor.extractPreview(textPart)).thenThrow(new PreviewExtractionException(""));
 

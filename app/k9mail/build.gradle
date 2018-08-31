@@ -15,6 +15,7 @@ dependencies {
     implementation project(":app:ui")
     implementation project(":app:core")
     implementation project(":app:storage")
+    implementation project(":app:crypto-openpgp")
     implementation project(":backend:imap")
     implementation project(":backend:pop3")
     implementation project(":backend:webdav")

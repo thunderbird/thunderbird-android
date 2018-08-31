@@ -88,6 +88,8 @@ public class Migrations {
                 MigrationTo64.addExtraValuesTables(db);
             case 64:
                 MigrationTo65.addLocalOnlyColumnToFoldersTable(db, migrationsHelper);
+            case 65:
+                MigrationTo66.addEncryptionTypeColumnToMessagesTable(db);
         }
 
         if (shouldBuildFtsTable) {

@@ -15,29 +15,18 @@ public class MessageFulltextCreator {
 
 
     private final TextPartFinder textPartFinder;
-    private final EncryptionDetector encryptionDetector;
 
 
-    MessageFulltextCreator(TextPartFinder textPartFinder, EncryptionDetector encryptionDetector) {
+    MessageFulltextCreator(TextPartFinder textPartFinder) {
         this.textPartFinder = textPartFinder;
-        this.encryptionDetector = encryptionDetector;
     }
 
     public static MessageFulltextCreator newInstance() {
         TextPartFinder textPartFinder = new TextPartFinder();
-        EncryptionDetector encryptionDetector = new EncryptionDetector(textPartFinder);
-        return new MessageFulltextCreator(textPartFinder, encryptionDetector);
+        return new MessageFulltextCreator(textPartFinder);
     }
 
     public String createFulltext(@NonNull Message message) {
-        if (encryptionDetector.isEncrypted(message)) {
-            return null;
-        }
-
-        return extractText(message);
-    }
-
-    private String extractText(Message message) {
         Part textPart = textPartFinder.findFirstTextPart(message);
         if (textPart == null || hasEmptyBody(textPart)) {
             return null;

@@ -1,4 +1,4 @@
-package com.fsck.k9.message.extractors;
+package com.fsck.k9.crypto.openpgp;
 
 
 import android.support.annotation.NonNull;
@@ -9,10 +9,12 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.message.extractors.TextPartFinder;
 
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
 
+//FIXME: Make this only detect OpenPGP messages. Move support for S/MIME messages to separate module.
 class EncryptionDetector {
     private final TextPartFinder textPartFinder;
 
